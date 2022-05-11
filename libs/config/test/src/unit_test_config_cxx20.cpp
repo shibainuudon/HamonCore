@@ -22,6 +22,9 @@
 #include <concepts>
 #endif
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wmissing-field-initializers")
+
 namespace hamon_config_cxx20_test
 {
 
@@ -1828,3 +1831,5 @@ void f()
 #endif
 
 }	// namespace hamon_config_cxx20_test
+
+HAMON_WARNING_POP()
