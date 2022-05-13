@@ -21,12 +21,12 @@ private:
 	struct incomplete;
 public:
 	using type =
-		std::conditional_t<N <=  8, std::int_least8_t,
-		std::conditional_t<N <= 16, std::int_least16_t,
-		std::conditional_t<N <= 32, std::int_least32_t,
-		std::conditional_t<N <= 64, std::int_least64_t,
+		typename std::conditional<N <=  8, std::int_least8_t,
+		typename std::conditional<N <= 16, std::int_least16_t,
+		typename std::conditional<N <= 32, std::int_least32_t,
+		typename std::conditional<N <= 64, std::int_least64_t,
 		incomplete
-	>>>>;
+	>::type>::type>::type>::type;
 };
 
 template <std::size_t N>
