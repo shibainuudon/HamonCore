@@ -7,6 +7,7 @@
 #ifndef HAMON_CMATH_HPP
 #define HAMON_CMATH_HPP
 
+#include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/isinf.hpp>
