@@ -14,6 +14,7 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/trunc.hpp>
 
