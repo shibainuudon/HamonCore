@@ -11,7 +11,7 @@ endif()
 add_library(${TARGET_NAME} INTERFACE)
 add_library(${TARGET_ALIAS_NAME} ALIAS ${TARGET_NAME})
 
-target_include_directories(${TARGET_NAME} INTERFACE src)
+target_include_directories(${TARGET_NAME} INTERFACE include)
 
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../externals/googletest ${CMAKE_CURRENT_BINARY_DIR}/googletest)
