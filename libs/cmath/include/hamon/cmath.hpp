@@ -7,6 +7,7 @@
 #ifndef HAMON_CMATH_HPP
 #define HAMON_CMATH_HPP
 
+#include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
