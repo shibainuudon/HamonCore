@@ -9,5 +9,6 @@
 
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/iszero.hpp>
 
 #endif // HAMON_CMATH_HPP
