@@ -10,5 +10,6 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
 
 #endif // HAMON_CMATH_HPP
