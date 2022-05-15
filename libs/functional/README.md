@@ -1,7 +1,11 @@
-﻿[![type_traits](https://github.com/shibainuudon/HamonCore/actions/workflows/type_traits.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/type_traits.yml)
-# Hamon.TypeTraits
-このライブラリは型の特性を判定・操作するためのクラスを定義します。
-C++標準ライブラリの<type_traits>に無いTraitsを提供します。
+﻿[![functional](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml)
+# Hamon.Functional
+このライブラリはC++標準ライブラリの`<functional>`を拡張・改良する機能を提供します。
+
+## ビルドステータス
+| main | develop |
+| ---- | ------- |
+|[![functional](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml)|[![functional](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/functional.yml)|
 
 ## 依存ライブラリ
 * Hamon.Config
