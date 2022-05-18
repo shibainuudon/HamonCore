@@ -19,7 +19,13 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		bit
+		concepts
 		config
+		detail
+		tuple
+		type_traits
+		ranges
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
