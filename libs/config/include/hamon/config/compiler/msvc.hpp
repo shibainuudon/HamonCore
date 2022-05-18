@@ -766,7 +766,15 @@
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
-#  define HAMON_HAS_CXX17_CONSTEXPR
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
+#    define HAMON_HAS_CXX17_CONSTEXPR
+#  endif
+#endif
+
+#if (HAMON_CXX_STANDARD >= 20)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
+#    define HAMON_HAS_CXX20_CONSTEXPR
+#  endif
 #endif
 
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
