@@ -15,6 +15,7 @@
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
 #include <hamon/type_traits/make_int_n.hpp>
