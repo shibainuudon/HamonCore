@@ -22,6 +22,7 @@
 #include <hamon/type_traits/make_uint_fast_n.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 
 #endif // HAMON_TYPE_TRAITS_HPP
