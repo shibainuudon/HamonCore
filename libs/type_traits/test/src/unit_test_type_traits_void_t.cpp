@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_type_traits_void_t.cpp
+ *	@file	unit_test_type_traits_void_t.cpp
  *
  *	@brief	void_t のテスト
  */

@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_type_traits_enable_if.cpp
+ *	@file	unit_test_type_traits_enable_if.cpp
  *
  *	@brief	enable_if のテスト
  */

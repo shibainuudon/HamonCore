@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_type_traits_common_type.cpp
+ *	@file	unit_test_type_traits_common_type.cpp
  *
  *	@brief	common_type のテスト
  */

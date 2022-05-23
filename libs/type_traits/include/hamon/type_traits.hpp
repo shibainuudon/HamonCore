@@ -8,9 +8,12 @@
 #define HAMON_TYPE_TRAITS_HPP
 
 #include <hamon/type_traits/arithmetic_promote.hpp>
+#include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/copy_cv.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/float_promote.hpp>

@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_type_traits_negation.cpp
+ *	@file	unit_test_type_traits_negation.cpp
  *
  *	@brief	negation のテスト
  */
