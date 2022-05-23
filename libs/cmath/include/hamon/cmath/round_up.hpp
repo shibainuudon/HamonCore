@@ -11,6 +11,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 #include <type_traits>
@@ -63,10 +64,10 @@ round_up_impl(FloatType x, FloatType base) HAMON_NOEXCEPT
 template <
 	typename Arithmetic1,
 	typename Arithmetic2,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		std::is_arithmetic<Arithmetic1>::value &&
 		std::is_arithmetic<Arithmetic2>::value
-	>::type
+	>
 >
 inline HAMON_CONSTEXPR Arithmetic1
 round_up(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT

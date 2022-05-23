@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_CONVERTIBLE_TO_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -38,7 +39,7 @@ struct convertible_to_impl
 {
 private:
 	template <typename F, typename T,
-		typename = typename std::enable_if<std::is_convertible<F, T>::value>::type,
+		typename = hamon::enable_if_t<std::is_convertible<F, T>::value>,
 		typename Func = typename std::add_rvalue_reference<F>::type (&)(),
 		typename = decltype(static_cast<T>(std::declval<Func>()()))
 	>

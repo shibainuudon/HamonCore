@@ -25,6 +25,7 @@ using std::bit_cast;
 
 #else
 
+#include <hamon/type_traits/enable_if.hpp>
 #include <type_traits>
 #include <cstring>	// memcpy
 
@@ -59,11 +60,11 @@ namespace hamon
 template <
 	typename To,
 	typename From,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		sizeof(To) == sizeof(From) &&
 		std::is_trivially_copyable<To>::value &&
 		std::is_trivially_copyable<From>::value
-	>::type
+	>
 >
 inline To bit_cast(From const& src) HAMON_NOEXCEPT
 {

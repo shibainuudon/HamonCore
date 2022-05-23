@@ -10,6 +10,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <cstdint>
 #include <type_traits>
@@ -101,9 +102,9 @@ truncl(long double arg) HAMON_NOEXCEPT
 
 template <
 	typename IntegralType,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		std::is_integral<IntegralType>::value
-	>::type
+	>
 >
 inline HAMON_CONSTEXPR double
 trunc(IntegralType arg) HAMON_NOEXCEPT

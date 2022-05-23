@@ -11,6 +11,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -98,10 +99,10 @@ copysignl(long double x, long double y) HAMON_NOEXCEPT
 template <
 	typename Arithmetic1,
 	typename Arithmetic2,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		std::is_arithmetic<Arithmetic1>::value &&
 		std::is_arithmetic<Arithmetic2>::value
-	>::type
+	>
 >
 inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 copysign(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT

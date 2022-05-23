@@ -7,6 +7,7 @@
 #ifndef HAMON_CMATH_ISINF_HPP
 #define HAMON_CMATH_ISINF_HPP
 
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <limits>
@@ -55,9 +56,9 @@ isinf(long double arg) HAMON_NOEXCEPT
 
 template <
 	typename IntegralType,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		std::is_integral<IntegralType>::value
-	>::type
+	>
 >
 inline HAMON_CONSTEXPR bool
 isinf(IntegralType) HAMON_NOEXCEPT

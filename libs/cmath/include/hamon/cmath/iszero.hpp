@@ -7,6 +7,7 @@
 #ifndef HAMON_CMATH_ISZERO_HPP
 #define HAMON_CMATH_ISZERO_HPP
 
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -36,9 +37,9 @@ iszero(long double arg) HAMON_NOEXCEPT
 
 template <
 	typename IntegralType,
-	typename = typename std::enable_if<
+	typename = hamon::enable_if_t<
 		std::is_integral<IntegralType>::value
-	>::type
+	>
 >
 inline HAMON_CONSTEXPR bool
 iszero(IntegralType arg) HAMON_NOEXCEPT
