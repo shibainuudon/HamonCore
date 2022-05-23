@@ -29,11 +29,6 @@ using integral = std::is_integral<T>;
 
 #endif
 
-}	// namespace hamon
-
-namespace hamon
-{
-
 template <typename T>
 using integral_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)

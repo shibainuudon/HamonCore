@@ -10,10 +10,12 @@
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_SAME_AS_TEST(B, T1, T2)	\
-	static_assert(B == hamon::same_as<T1, T2>, "")
+	static_assert(B == hamon::same_as<T1, T2>, "");	\
+	static_assert(B == hamon::same_as_t<T1, T2>::value, "")
 #else
 #  define HAMON_SAME_AS_TEST(B, T1, T2)	\
-	static_assert(B == hamon::same_as<T1, T2>::value, "")
+	static_assert(B == hamon::same_as<T1, T2>::value, "");	\
+	static_assert(B == hamon::same_as_t<T1, T2>::value, "")
 #endif
 
 namespace hamon_concepts_test
