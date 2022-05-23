@@ -7,6 +7,7 @@
 #ifndef HAMON_CONCEPTS_DETAIL_CLASS_OR_ENUM_HPP
 #define HAMON_CONCEPTS_DETAIL_CLASS_OR_ENUM_HPP
 
+#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -27,12 +28,20 @@ concept class_or_enum =
 #else
 
 template <typename T>
-using class_or_enum = std::disjunction<
+using class_or_enum = hamon::disjunction<
 	std::is_class<T>,
 	std::is_union<T>,
 	std::is_enum<T>
 >;
 
+#endif
+
+template <typename T>
+using class_or_enum_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	std::bool_constant<hamon::detail::class_or_enum<T>>;
+#else
+	hamon::detail::class_or_enum<T>;
 #endif
 
 }	// namespace detail
