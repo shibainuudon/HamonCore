@@ -52,13 +52,15 @@ using constructible_from =
 
 #endif
 
+#include <hamon/type_traits/bool_constant.hpp>
+
 namespace hamon
 {
 
 template <typename T, typename... Args>
 using constructible_from_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::constructible_from<T, Args...>>;
+	hamon::bool_constant<hamon::constructible_from<T, Args...>>;
 #else
 	hamon::constructible_from<T, Args...>;
 #endif

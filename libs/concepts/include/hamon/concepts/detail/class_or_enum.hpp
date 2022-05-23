@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_DETAIL_CLASS_OR_ENUM_HPP
 
 #include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -39,7 +40,7 @@ using class_or_enum = hamon::disjunction<
 template <typename T>
 using class_or_enum_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::detail::class_or_enum<T>>;
+	hamon::bool_constant<hamon::detail::class_or_enum<T>>;
 #else
 	hamon::detail::class_or_enum<T>;
 #endif

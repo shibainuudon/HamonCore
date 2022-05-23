@@ -57,13 +57,15 @@ using same_as =
 
 #endif
 
+#include <hamon/type_traits/bool_constant.hpp>
+
 namespace hamon
 {
 
 template <typename T, typename U>
 using same_as_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::same_as<T, U>>;
+	hamon::bool_constant<hamon::same_as<T, U>>;
 #else
 	hamon::same_as<T, U>;
 #endif

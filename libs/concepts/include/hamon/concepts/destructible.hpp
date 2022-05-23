@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_DESTRUCTIBLE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <type_traits>
 #endif
@@ -34,7 +35,7 @@ using destructible = std::is_nothrow_destructible<T>;
 template <typename T>
 using destructible_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::destructible<T>>;
+	hamon::bool_constant<hamon::destructible<T>>;
 #else
 	hamon::destructible<T>;
 #endif

@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_INTEGRAL_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -32,7 +33,7 @@ using integral = std::is_integral<T>;
 template <typename T>
 using integral_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::integral<T>>;
+	hamon::bool_constant<hamon::integral<T>>;
 #else
 	hamon::integral<T>;
 #endif

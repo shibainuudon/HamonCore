@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -63,7 +64,7 @@ using convertible_to =
 template <typename From, typename To>
 using convertible_to_t =
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	std::bool_constant<hamon::convertible_to<From, To>>;
+	hamon::bool_constant<hamon::convertible_to<From, To>>;
 #else
 	hamon::convertible_to<From, To>;
 #endif
