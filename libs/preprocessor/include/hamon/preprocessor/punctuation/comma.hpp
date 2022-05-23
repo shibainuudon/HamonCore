@@ -1,0 +1,14 @@
+﻿/**
+ *	@file	comma.hpp
+ *
+ *	@brief
+ */
+
+#ifndef HAMON_PREPROCESSOR_PUNCTUATION_COMMA_HPP
+#define HAMON_PREPROCESSOR_PUNCTUATION_COMMA_HPP
+#
+# /* HAMON_PP_COMMA */
+#
+# define HAMON_PP_COMMA() ,
+#
+#endif // HAMON_PREPROCESSOR_PUNCTUATION_COMMA_HPP
