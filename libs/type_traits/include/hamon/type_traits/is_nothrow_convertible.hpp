@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -45,7 +46,7 @@ template <typename T>
 static void test_noexcept(T) noexcept;
 
 template <typename From, typename To>
-static std::integral_constant<bool, noexcept(test_noexcept<To>(std::declval<From>()))>
+static hamon::bool_constant<noexcept(test_noexcept<To>(std::declval<From>()))>
 is_nothrow_convertible_test();
 
 template <typename From, typename To>
