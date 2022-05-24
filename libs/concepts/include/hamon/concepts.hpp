@@ -15,5 +15,6 @@
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/signed_integral.hpp>
+#include <hamon/concepts/totally_ordered.hpp>
 
 #endif // HAMON_CONCEPTS_HPP
