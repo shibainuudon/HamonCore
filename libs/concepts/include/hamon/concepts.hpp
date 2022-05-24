@@ -12,6 +12,7 @@
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 
