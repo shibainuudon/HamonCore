@@ -7,6 +7,7 @@
 #ifndef HAMON_CONCEPTS_HPP
 #define HAMON_CONCEPTS_HPP
 
+#include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
