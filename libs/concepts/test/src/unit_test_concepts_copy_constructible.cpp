@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_concepts_copy_constructible.cpp
+ *	@file	unit_test_concepts_copy_constructible.cpp
  *
  *	@brief	copy_constructible のテスト
  */

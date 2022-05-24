@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_concepts_assignable_from.cpp
+ *	@file	unit_test_concepts_assignable_from.cpp
  *
  *	@brief	assignable_from のテスト
  */

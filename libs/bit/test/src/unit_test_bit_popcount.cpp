@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_bit_popcount.cpp
+ *	@file	unit_test_bit_popcount.cpp
  *
  *	@brief	popcount のテスト
  */

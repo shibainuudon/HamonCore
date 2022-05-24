@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_bit_bit_cast.cpp
+ *	@file	unit_test_bit_bit_cast.cpp
  *
  *	@brief	bit_cast のテスト
  */
