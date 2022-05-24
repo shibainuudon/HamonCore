@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/integral.hpp>
