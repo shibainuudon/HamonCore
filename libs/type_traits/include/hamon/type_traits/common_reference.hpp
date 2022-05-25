@@ -32,6 +32,7 @@ using std::common_reference_t;
 #include <hamon/type_traits/copy_cv.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/detail/common_type_fold.hpp>
 #include <hamon/type_traits/detail/common_type_pack.hpp>
@@ -53,8 +54,8 @@ namespace detail
 template <
 	typename A,
 	typename B,
-	typename X = typename std::remove_reference<A>::type,
-	typename Y = typename std::remove_reference<B>::type,
+	typename X = hamon::remove_reference_t<A>,
+	typename Y = hamon::remove_reference_t<B>,
 	bool = std::is_lvalue_reference<A>::value,
 	bool = std::is_lvalue_reference<B>::value,
 	typename = hamon::void_t<>
@@ -77,7 +78,7 @@ struct common_ref_impl<A, B, X, Y, true, true,
 
 // let C be remove_reference_t<COMMON-REF(X&, Y&)>&&
 template <typename X, typename Y>
-using common_ref_C = typename std::remove_reference<detail::common_ref<X&, Y&>>::type&&;
+using common_ref_C = hamon::remove_reference_t<detail::common_ref<X&, Y&>>&&;
 
 // If A and B are both rvalue reference types, ...
 template <typename A, typename B, typename X, typename Y>

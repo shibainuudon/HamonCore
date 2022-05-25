@@ -22,6 +22,7 @@ using std::remove_cvref_t;
 #else
 
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 
 namespace hamon
 {
@@ -33,7 +34,7 @@ namespace hamon
  */
 template <typename T>
 struct remove_cvref
-	: public hamon::remove_cv<typename std::remove_reference<T>::type>
+	: public hamon::remove_cv<hamon::remove_reference_t<T>>
 {};
 
 /**

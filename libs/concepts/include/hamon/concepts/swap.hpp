@@ -29,6 +29,7 @@ using std::ranges::swap;
 #include <hamon/concepts/detail/has_adl_swap.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -94,8 +95,8 @@ private:
 		, typename = hamon::enable_if_t<
 			hamon::same_as<T, U>::value &&
 			std::is_lvalue_reference<T>::value &&
-			hamon::move_constructible<typename std::remove_reference<T>::type>::value &&
-			hamon::assignable_from<T, typename std::remove_reference<T>::type>::value
+			hamon::move_constructible<hamon::remove_reference_t<T>>::value &&
+			hamon::assignable_from<T, hamon::remove_reference_t<T>>::value
 		>
 #endif
 	>
@@ -103,18 +104,18 @@ private:
 	requires
 		same_as<T, U> &&
 		std::is_lvalue_reference<T>::value &&
-		move_constructible<typename std::remove_reference<T>::type> &&
-		assignable_from<T, typename std::remove_reference<T>::type>
+		move_constructible<hamon::remove_reference_t<T>> &&
+		assignable_from<T, hamon::remove_reference_t<T>>
 #endif
 	static HAMON_CXX14_CONSTEXPR void
 	impl(hamon::detail::overload_priority<0>, T&& t, U&& u)
 		HAMON_NOEXCEPT_IF(
-			std::is_nothrow_move_constructible<typename std::remove_reference<T>::type>::value &&
-			std::is_nothrow_move_assignable<typename std::remove_reference<T>::type>::value)
+			std::is_nothrow_move_constructible<hamon::remove_reference_t<T>>::value &&
+			std::is_nothrow_move_assignable<hamon::remove_reference_t<T>>::value)
 	{
-		auto tmp = static_cast<typename std::remove_reference<T>::type&&>(t);
-		t = static_cast<typename std::remove_reference<T>::type&&>(u);
-		u = static_cast<typename std::remove_reference<T>::type&&>(tmp);
+		auto tmp = static_cast<hamon::remove_reference_t<T>&&>(t);
+		t = static_cast<hamon::remove_reference_t<T>&&>(u);
+		u = static_cast<hamon::remove_reference_t<T>&&>(tmp);
 	}
 
 public:

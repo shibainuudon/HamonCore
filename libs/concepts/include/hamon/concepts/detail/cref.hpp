@@ -7,7 +7,7 @@
 #ifndef HAMON_CONCEPTS_DETAIL_CREF_HPP
 #define HAMON_CONCEPTS_DETAIL_CREF_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/remove_reference.hpp>
 
 namespace hamon
 {
@@ -16,7 +16,7 @@ namespace detail
 {
 
 template <typename T>
-using cref = const typename std::remove_reference<T>::type&;
+using cref = const hamon::remove_reference_t<T>&;
 
 }	// namespace detail
 

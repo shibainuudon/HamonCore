@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -30,8 +31,8 @@ template <typename T, std::size_t N> void swap(T(&)[N], T(&)[N]) = delete;
 
 template <typename T, typename U>
 concept has_adl_swap =
-	(hamon::detail::class_or_enum<std::remove_reference_t<T>> ||
-	 hamon::detail::class_or_enum<std::remove_reference_t<U>>) &&
+	(hamon::detail::class_or_enum<hamon::remove_reference_t<T>> ||
+	 hamon::detail::class_or_enum<hamon::remove_reference_t<U>>) &&
 	requires(T&& t, U&& u)
 	{
 		swap(std::forward<T>(t), std::forward<U>(u));
@@ -47,8 +48,8 @@ private:
 		typename = decltype(swap(std::declval<T2>(), std::declval<U2>()))
 	>
 	static auto test(int) -> hamon::disjunction<
-		hamon::detail::class_or_enum<typename std::remove_reference<T2>::type>,
-		hamon::detail::class_or_enum<typename std::remove_reference<U2>::type>
+		hamon::detail::class_or_enum<hamon::remove_reference_t<T2>>,
+		hamon::detail::class_or_enum<hamon::remove_reference_t<U2>>
 	>;
 
 	template <typename T2, typename U2>
