@@ -10,6 +10,7 @@
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 
