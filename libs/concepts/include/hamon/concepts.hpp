@@ -19,6 +19,7 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 #include <hamon/concepts/swap.hpp>
+#include <hamon/concepts/swappable.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 
 #endif // HAMON_CONCEPTS_HPP
