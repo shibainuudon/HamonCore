@@ -13,6 +13,7 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/copyable.hpp>
+#include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/integral.hpp>
