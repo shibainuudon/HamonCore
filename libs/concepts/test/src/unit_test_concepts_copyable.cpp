@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_concepts_copyable.cpp
+ *	@file	unit_test_concepts_copyable.cpp
  *
  *	@brief	copyable のテスト
  */

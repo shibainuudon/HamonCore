@@ -8,6 +8,7 @@
 #define HAMON_TYPE_TRAITS_ARITHMETIC_PROMOTE_HPP
 
 #include <hamon/type_traits/type_identity.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -64,7 +65,7 @@ struct arithmetic_promote_impl<T, U, Tail...>
 template <typename... T>
 struct arithmetic_promote
 	: public detail::arithmetic_promote_impl<
-		typename std::remove_cv<T>::type...
+		hamon::remove_cv_t<T>...
 	>
 {};
 

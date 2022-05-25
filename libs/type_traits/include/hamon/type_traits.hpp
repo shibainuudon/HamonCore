@@ -29,6 +29,7 @@
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/void_t.hpp>

@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_FLOAT_PROMOTE_HPP
 #define HAMON_TYPE_TRAITS_FLOAT_PROMOTE_HPP
 
+#include <hamon/type_traits/remove_cv.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -71,7 +72,7 @@ struct float_promote_impl<T, U, Tail...>
 template <typename... Types>
 struct float_promote
 	: public detail::float_promote_impl<
-		typename std::remove_cv<Types>::type...
+		hamon::remove_cv_t<Types>...
 	>
 {};
 

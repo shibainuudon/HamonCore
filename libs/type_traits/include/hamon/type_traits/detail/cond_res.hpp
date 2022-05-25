@@ -8,10 +8,10 @@
 #define HAMON_TYPE_TRAITS_DETAIL_COND_RES_HPP
 
 #include <hamon/type_traits/copy_cv.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/config.hpp>
 #include <utility>
-#include <type_traits>
 
 HAMON_WARNING_PUSH();
 
@@ -41,9 +41,9 @@ template <typename X, typename Y>
 struct cond_res_impl_base<X, Y,
 	hamon::void_t<decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()>()())>>
 {
-	using type = typename std::remove_cv<
+	using type = hamon::remove_cv_t<
 		decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()>()())
-	>::type;
+	>;
 };
 
 template <typename X, typename Y>
