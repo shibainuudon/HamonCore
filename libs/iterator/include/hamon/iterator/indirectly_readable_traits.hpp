@@ -24,6 +24,7 @@ using std::indirectly_readable_traits;
 #include <hamon/iterator/concepts/detail/has_element_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/remove_extent.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <type_traits>
 
@@ -57,7 +58,7 @@ struct indirectly_readable_traits<T*>
 template <typename T>
 struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && std::is_array<T>::value>>
 {
-	using value_type = hamon::remove_cv_t<typename std::remove_extent<T>::type>;
+	using value_type = hamon::remove_cv_t<hamon::remove_extent_t<T>>;
 };
 
 // (4) Specialization for const-qualified types
