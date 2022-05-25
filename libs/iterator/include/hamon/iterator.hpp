@@ -7,6 +7,7 @@
 #ifndef HAMON_ITERATOR_HPP
 #define HAMON_ITERATOR_HPP
 
+#include <hamon/iterator/concepts.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
