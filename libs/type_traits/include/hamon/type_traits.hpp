@@ -32,6 +32,7 @@
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_extent.hpp>
+#include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/void_t.hpp>

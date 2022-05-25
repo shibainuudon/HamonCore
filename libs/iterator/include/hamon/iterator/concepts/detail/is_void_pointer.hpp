@@ -7,6 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_IS_VOID_POINTER_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_IS_VOID_POINTER_HPP
 
+#include <hamon/type_traits/remove_pointer.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -16,7 +17,7 @@ namespace detail
 {
 
 template <typename T>
-using is_void_pointer = std::is_void<typename std::remove_pointer<T>::type>;
+using is_void_pointer = std::is_void<hamon::remove_pointer_t<T>>;
 
 }	// namespace detail
 
