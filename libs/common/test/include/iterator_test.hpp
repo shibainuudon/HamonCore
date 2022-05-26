@@ -4,8 +4,8 @@
  *	@brief	
  */
 
-#ifndef UNIT_TEST_FND_TEST_COMMON_ITERATOR_TEST_HPP
-#define UNIT_TEST_FND_TEST_COMMON_ITERATOR_TEST_HPP
+#ifndef UNIT_TEST_TEST_COMMON_ITERATOR_TEST_HPP
+#define UNIT_TEST_TEST_COMMON_ITERATOR_TEST_HPP
 
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/config.hpp>
@@ -183,4 +183,4 @@ operator+(std::ptrdiff_t, contiguous_iterator_wrapper<T> const&);
 
 using namespace hamon_iterator_test;
 
-#endif // UNIT_TEST_FND_TEST_COMMON_ITERATOR_TEST_HPP
+#endif // UNIT_TEST_TEST_COMMON_ITERATOR_TEST_HPP
