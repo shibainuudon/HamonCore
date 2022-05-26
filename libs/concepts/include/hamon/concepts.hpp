@@ -20,6 +20,7 @@
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/swappable.hpp>
