@@ -17,6 +17,7 @@
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
