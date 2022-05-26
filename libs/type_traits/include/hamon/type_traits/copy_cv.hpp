@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_COPY_CV_HPP
 #define HAMON_TYPE_TRAITS_COPY_CV_HPP
 
+#include <hamon/type_traits/add_const.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -49,7 +50,7 @@ struct copy_cv_impl
 template <typename T>
 struct copy_cv_impl<T, true, false>
 {
-	using type = typename std::add_const<T>::type;
+	using type = hamon::add_const_t<T>;
 };
 
 template <typename T>
@@ -61,9 +62,9 @@ struct copy_cv_impl<T, false, true>
 template <typename T>
 struct copy_cv_impl<T, true, true>
 {
-	using type = typename std::add_const<
+	using type = hamon::add_const_t<
 		typename std::add_volatile<T>::type
-	>::type;
+	>;
 };
 
 } // namespace detail

@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_HPP
 
+#include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
@@ -29,7 +30,7 @@ struct is_implicitly_copy_constructible
 	: public hamon::is_implicitly_constructible<
 		T,
 		typename std::add_lvalue_reference<
-			typename std::add_const<T>::type
+			hamon::add_const_t<T>
 		>::type
 	>
 {};

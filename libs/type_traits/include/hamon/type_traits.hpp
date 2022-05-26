@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_HPP
 #define HAMON_TYPE_TRAITS_HPP
 
+#include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
