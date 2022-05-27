@@ -14,5 +14,6 @@
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/ranges.hpp>
 
 #endif // HAMON_ITERATOR_HPP
