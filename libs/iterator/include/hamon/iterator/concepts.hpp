@@ -9,6 +9,7 @@
 
 #include <hamon/iterator/concepts/incrementable.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
