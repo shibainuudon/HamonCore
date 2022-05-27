@@ -7,6 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_HPP
 #define HAMON_ITERATOR_CONCEPTS_HPP
 
+#include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/incrementable.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
