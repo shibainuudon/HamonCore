@@ -7,6 +7,7 @@
 #ifndef HAMON_TUPLE_HPP
 #define HAMON_TUPLE_HPP
 
+#include <hamon/tuple/concepts.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 
 #endif // HAMON_TUPLE_HPP
