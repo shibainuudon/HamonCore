@@ -43,6 +43,7 @@
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/type_identity.hpp>
+#include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/void_t.hpp>
 
 #endif // HAMON_TYPE_TRAITS_HPP
