@@ -15,6 +15,7 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/ranges.hpp>
 
