@@ -669,8 +669,12 @@
 #if (_MSC_FULL_VER >= 192930143)
 #endif
 
-// Visual Studio 2019 version 16.11.(14-15)
+// Visual Studio 2019 version 16.11.(14-16)
 #if (_MSC_FULL_VER >= 192930145)
+#endif
+
+// Visual Studio 2019 version 16.11.17
+#if (_MSC_FULL_VER >= 192930146)
 #endif
 
 // Visual Studio 2022 Preview version 17.0.0 Preview 1.(0-1)
@@ -733,6 +737,14 @@
 #if (_MSC_FULL_VER >= 193331424)
 #endif
 
+// Visual Studio 2022 Preview version 17.3.0 Preview 2.0
+#if (_MSC_FULL_VER >= 193331517)
+#endif
+
+// Visual Studio 2022 Preview version 17.3.0 Preview 6.0
+#if (_MSC_FULL_VER >= 193331629)
+#endif
+
 // Visual Studio 2022 Version 17.0.(0-1)
 #if (_MSC_FULL_VER >= 193030705)
 #endif
@@ -767,6 +779,18 @@
 
 // Visual Studio 2022 Version 17.2.2
 #if (_MSC_FULL_VER >= 193231329)
+#endif
+
+// Visual Studio 2022 Version 17.2.3
+#if (_MSC_FULL_VER >= 193231330)
+#endif
+
+// Visual Studio 2022 Version 17.2.4
+#if (_MSC_FULL_VER >= 193231331)
+#endif
+
+// Visual Studio 2022 Version 17.2.(5-6)
+#if (_MSC_FULL_VER >= 193231332)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
