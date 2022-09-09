@@ -119,25 +119,30 @@ public:
 
 private:
 	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<2>)
+	void save_impl(T const& t, hamon::detail::overload_priority<3>)
 	{
 		m_impl->save(t);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<1>)
+	void save_impl(T const& t, hamon::detail::overload_priority<2>)
 	{
 		m_impl->save(static_cast<std::uintmax_t>(t));
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<0>)
+	void save_impl(T const& t, hamon::detail::overload_priority<1>)
 	{
 		m_impl->save(static_cast<std::intmax_t>(t));
+	}
+	template <typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
+	void save_impl(T const& t, hamon::detail::overload_priority<0>)
+	{
+		save(static_cast<std::underlying_type_t<T>>(t));
 	}
 
 	template <typename T>
 	void save(T const& t)
 	{
-		save_impl(t, hamon::detail::overload_priority<2>{});
+		save_impl(t, hamon::detail::overload_priority<3>{});
 	}
 
 	std::unique_ptr<text_oarchive_impl_base>	m_impl;

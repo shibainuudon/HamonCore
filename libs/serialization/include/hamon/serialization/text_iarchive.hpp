@@ -123,29 +123,36 @@ public:
 
 private:
 	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<2>)
+	void load_impl(T& t, hamon::detail::overload_priority<3>)
 	{
 		m_impl->load(t);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<1>)
+	void load_impl(T& t, hamon::detail::overload_priority<2>)
 	{
 		std::uintmax_t i;
 		m_impl->load(i);
 		t = static_cast<T>(i);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<0>)
+	void load_impl(T& t, hamon::detail::overload_priority<1>)
 	{
 		std::intmax_t i;
 		m_impl->load(i);
+		t = static_cast<T>(i);
+	}
+	template <typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
+	void load_impl(T& t, hamon::detail::overload_priority<0>)
+	{
+		std::underlying_type_t<T> i;
+		load(i);
 		t = static_cast<T>(i);
 	}
 
 	template <typename T>
 	void load(T& t)
 	{
-		load_impl(t, hamon::detail::overload_priority<2>{});
+		load_impl(t, hamon::detail::overload_priority<3>{});
 	}
 
 	std::unique_ptr<text_iarchive_impl_base>	m_impl;
