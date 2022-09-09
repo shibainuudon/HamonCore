@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/detail/save_array.hpp>
 #include <hamon/serialization/detail/save_arithmetic.hpp>
+#include <hamon/serialization/detail/save_class.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -26,27 +27,39 @@ namespace detail
 struct save_value_fn
 {
 private:
+	// save array
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<3>)
 	{
 		hamon::serialization::save_array(ar, t);
 	}
+	
+	// save arithmetic
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_arithmetic<T>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
 	{
 		hamon::serialization::save_arithmetic(ar, t);
 	}
+
+	// save enum
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
 	{
 		hamon::serialization::save_arithmetic(ar, static_cast<std::underlying_type_t<T>>(t));
+	}
+
+	// save class
+	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_class<T>::value>>
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
+	{
+		hamon::serialization::save_class(ar, t);
 	}
 
 public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T const& t) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<2>{});
+		impl(ar, t, hamon::detail::overload_priority<3>{});
 	}
 };
 
