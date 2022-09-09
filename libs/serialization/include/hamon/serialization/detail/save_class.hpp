@@ -10,6 +10,7 @@
 #include <hamon/serialization/detail/has_adl_save_class.hpp>
 #include <hamon/serialization/detail/has_adl_save.hpp>
 #include <hamon/serialization/detail/serialize_value.hpp>
+#include <hamon/serialization/access.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -29,9 +30,16 @@ struct save_class_fn
 private:
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<has_adl_save_class<Archive, T>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<3>)
 	{
 		save_class(ar, t);
+	}
+
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<access::has_member_save<Archive&, T const&>::value>>
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
+	{
+		access::save(ar, t);
 	}
 
 	template <typename Archive, typename T,
@@ -51,7 +59,7 @@ public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T const& t) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<2>{});
+		impl(ar, t, hamon::detail::overload_priority<3>{});
 	}
 };
 

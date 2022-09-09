@@ -1,7 +1,7 @@
 ﻿/**
- *	@file	unit_test_serialization_object_member.cpp
+ *	@file	unit_test_serialization_object_split_member.cpp
  *
- *	@brief	メンバー関数serializeのテスト
+ *	@brief	メンバー関数save/loadのテスト
  */
 
 #include <hamon/serialization.hpp>
@@ -13,26 +13,19 @@
 namespace hamon_serialization_test
 {
 
-namespace object_member_test
+namespace object_split_member_test
 {
 
 class Object
 {
-private:
-	bool   a = get_random_value<bool>();
-	double b = get_random_value<double>();
-	int    c[2][3] =
+public:
+	int   a = get_random_value<int>();
+	char  b = get_random_value<char>();
+	float c[3] =
 	{
-		{
-			get_random_value<int>(),
-			get_random_value<int>(),
-			get_random_value<int>(),
-		},
-		{
-			get_random_value<int>(),
-			get_random_value<int>(),
-			get_random_value<int>(),
-		},
+		get_random_value<float>(),
+		get_random_value<float>(),
+		get_random_value<float>(),
 	};
 
 private:
@@ -41,12 +34,9 @@ private:
 		return
 			lhs.a == rhs.a &&
 			lhs.b == rhs.b &&
-			lhs.c[0][0] == rhs.c[0][0] &&
-			lhs.c[0][1] == rhs.c[0][1] &&
-			lhs.c[0][2] == rhs.c[0][2] &&
-			lhs.c[1][0] == rhs.c[1][0] &&
-			lhs.c[1][1] == rhs.c[1][1] &&
-			lhs.c[1][2] == rhs.c[1][2] &&
+			lhs.c[0] == rhs.c[0] &&
+			lhs.c[1] == rhs.c[1] &&
+			lhs.c[2] == rhs.c[2] &&
 			true;
 	}
 
@@ -59,16 +49,24 @@ private:
 	friend class hamon::serialization::access;
 
 	template <typename Archive>
-	void serialize(Archive& ar)
+	void save(Archive& ar) const
 	{
-		ar & a;
-		ar & b;
-		ar & c;
+		ar << a;
+		ar << b;
+		ar << c;
+	}
+
+	template <typename Archive>
+	void load(Archive& ar)
+	{
+		ar >> a;
+		ar >> b;
+		ar >> c;
 	}
 };
 
 template <typename Stream, typename OArchive, typename IArchive>
-void ObjectMemberTest()
+void ObjectSplitMemberTest()
 {
 	Object t;
 	Stream str;
@@ -87,26 +85,26 @@ void ObjectMemberTest()
 	}
 }
 
-using ObjectMemberTestTypes = ::testing::Types<
+using ObjectSplitMemberTestTypes = ::testing::Types<
 	std::tuple<std::stringstream,  hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
 	std::tuple<std::wstringstream, hamon::serialization::text_oarchive,   hamon::serialization::text_iarchive>,
 	std::tuple<std::stringstream,  hamon::serialization::binary_oarchive, hamon::serialization::binary_iarchive>
 >;
 
 template <typename T>
-class SerializationObjectMemberTest : public ::testing::Test {};
+class SerializationObjectSplitMemberTest : public ::testing::Test {};
 
-TYPED_TEST_SUITE(SerializationObjectMemberTest, ObjectMemberTestTypes);
+TYPED_TEST_SUITE(SerializationObjectSplitMemberTest, ObjectSplitMemberTestTypes);
 
-TYPED_TEST(SerializationObjectMemberTest, ObjectMemberTest)
+TYPED_TEST(SerializationObjectSplitMemberTest, ObjectSplitMemberTest)
 {
 	using Stream   = typename std::tuple_element<0, TypeParam>::type;
 	using OArchive = typename std::tuple_element<1, TypeParam>::type;
 	using IArchive = typename std::tuple_element<2, TypeParam>::type;
 
-	ObjectMemberTest<Stream, OArchive, IArchive>();
+	ObjectSplitMemberTest<Stream, OArchive, IArchive>();
 }
 
-}	// namespace object_member_test
+}	// namespace object_split_member_test
 
 }	// namespace hamon_serialization_test

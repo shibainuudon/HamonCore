@@ -36,11 +36,59 @@ public:
 	public:
 		static const bool value = type::value;
 	};
-	
+
+	template <typename Archive, typename T>
+	struct has_member_save
+	{
+	private:
+		template <typename A2, typename T2>
+		static auto test(int) -> decltype(
+			std::declval<T2>().save(std::declval<A2>()),
+			std::true_type());
+
+		template <typename A2, typename T2>
+		static auto test(...) -> std::false_type;
+
+		using type = decltype(test<Archive, T>(0));
+
+	public:
+		static const bool value = type::value;
+	};
+
+	template <typename Archive, typename T>
+	struct has_member_load
+	{
+	private:
+		template <typename A2, typename T2>
+		static auto test(int) -> decltype(
+			std::declval<T2>().load(std::declval<A2>()),
+			std::true_type());
+
+		template <typename A2, typename T2>
+		static auto test(...) -> std::false_type;
+
+		using type = decltype(test<Archive, T>(0));
+
+	public:
+		static const bool value = type::value;
+	};
+
 	template <typename Archive, typename T>
 	static void serialize(Archive& ar, T& t)
 	{
 		t.serialize(ar);
+	}
+
+	template <typename Archive, typename T>
+	static void save(Archive& ar, T const& t)
+	{
+		t.save(ar);
+	}
+	
+	template <typename Archive, typename T>
+	static void load(Archive& ar, T& t)
+	{
+		t.load(ar);
 	}
 };
 
