@@ -7,14 +7,18 @@
 #ifndef HAMON_SERIALIZATION_TEXT_IARCHIVE_HPP
 #define HAMON_SERIALIZATION_TEXT_IARCHIVE_HPP
 
+#include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <cstdint>
 #include <type_traits>
 #include <memory>
-#include <charconv>
 #include <string>
+
+#if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
+#include <charconv>
+#endif
 
 namespace hamon
 {
@@ -111,7 +115,7 @@ public:
 	template <typename T>
 	text_iarchive& operator>>(T& t)
 	{
-		load(t);
+		hamon::serialization::load_value(*this, t);
 		return *this;
 	}
 
@@ -123,36 +127,29 @@ public:
 
 private:
 	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<3>)
+	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<2>)
 	{
 		m_impl->load(t);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<2>)
+	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<1>)
 	{
 		std::uintmax_t i;
 		m_impl->load(i);
 		t = static_cast<T>(i);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<1>)
+	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<0>)
 	{
 		std::intmax_t i;
 		m_impl->load(i);
 		t = static_cast<T>(i);
 	}
-	template <typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
-	void load_impl(T& t, hamon::detail::overload_priority<0>)
-	{
-		std::underlying_type_t<T> i;
-		load(i);
-		t = static_cast<T>(i);
-	}
 
 	template <typename T>
-	void load(T& t)
+	friend void load_arithmetic(text_iarchive& oa, T& t)
 	{
-		load_impl(t, hamon::detail::overload_priority<3>{});
+		oa.load_arithmetic_impl(t, hamon::detail::overload_priority<2>{});
 	}
 
 	std::unique_ptr<text_iarchive_impl_base>	m_impl;

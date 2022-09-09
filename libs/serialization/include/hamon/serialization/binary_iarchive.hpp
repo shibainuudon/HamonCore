@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_BINARY_IARCHIVE_HPP
 #define HAMON_SERIALIZATION_BINARY_IARCHIVE_HPP
 
+#include <hamon/serialization/detail/load_value.hpp>
 #include <istream>
 #include <cstddef>
 #include <vector>
@@ -85,7 +86,7 @@ public:
 	template <typename T>
 	binary_iarchive& operator>>(T& t)
 	{
-		load(t);
+		hamon::serialization::load_value(*this, t);
 		return *this;
 	}
 
@@ -97,9 +98,9 @@ public:
 
 private:
 	template <typename T>
-	void load(T& t)
+	friend void load_arithmetic(binary_iarchive& oa, T& t)
 	{
-		m_impl->load(&t, sizeof(T));
+		oa.m_impl->load(&t, sizeof(T));
 	}
 
 	std::unique_ptr<binary_iarchive_impl_base>	m_impl;

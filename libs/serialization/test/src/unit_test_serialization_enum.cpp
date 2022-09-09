@@ -76,12 +76,12 @@ void EnumTest()
 		ia >> e;
 		ia >> f;
 
-		EXPECT_EQ(a, Value1);
-		EXPECT_EQ(b, Value3);
-		EXPECT_EQ(c, Green);
-		EXPECT_EQ(d, All);
-		EXPECT_EQ(e, Enum3::Value1);
-		EXPECT_EQ(f, Enum3::Value2);
+		EXPECT_EQ(Value1, a);
+		EXPECT_EQ(Value3, b);
+		EXPECT_EQ(Green,  c);
+		EXPECT_EQ(All,    d);
+		EXPECT_EQ(Enum3::Value1, e);
+		EXPECT_EQ(Enum3::Value2, f);
 	}
 }
 

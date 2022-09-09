@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_BINARY_OARCHIVE_HPP
 #define HAMON_SERIALIZATION_BINARY_OARCHIVE_HPP
 
+#include <hamon/serialization/detail/save_value.hpp>
 #include <ostream>
 #include <cstddef>
 #include <vector>
@@ -79,7 +80,7 @@ public:
 	template <typename T>
 	binary_oarchive& operator<<(T const& t)
 	{
-		save(t);
+		hamon::serialization::save_value(*this, t);
 		return *this;
 	}
 
@@ -91,9 +92,9 @@ public:
 
 private:
 	template <typename T>
-	void save(T const& t)
+	friend void save_arithmetic(binary_oarchive& oa, T const& t)
 	{
-		m_impl->save(&t, sizeof(T));
+		oa.m_impl->save(&t, sizeof(T));
 	}
 
 	std::unique_ptr<binary_oarchive_impl_base>	m_impl;

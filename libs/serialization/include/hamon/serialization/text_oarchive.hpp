@@ -7,15 +7,20 @@
 #ifndef HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
 #define HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
 
+#include <hamon/serialization/detail/save_value.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/config.hpp>
 #include <cstdint>
 #include <type_traits>
 #include <memory>
-#include <charconv>
 #include <limits>
 #include <array>
 #include <iomanip>
+
+#if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
+#include <charconv>
+#endif
 
 namespace hamon
 {
@@ -82,6 +87,7 @@ private:
 		std::array<char, digits + 1> buf{};
 		auto result = std::to_chars(buf.data(), buf.data() + buf.size(), t);
 		m_os << buf.data() << " ";
+		(void)result;
 #else
 		auto const flags = m_os.flags();
 		m_os << std::setprecision(std::numeric_limits<T>::max_digits10) << std::scientific << t << " ";
@@ -107,7 +113,7 @@ public:
 	template <typename T>
 	text_oarchive& operator<<(T const& t)
 	{
-		save(t);
+		hamon::serialization::save_value(*this, t);
 		return *this;
 	}
 
@@ -119,30 +125,25 @@ public:
 
 private:
 	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<3>)
+	void save_arithmetic_impl(T const& t, hamon::detail::overload_priority<2>)
 	{
 		m_impl->save(t);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<2>)
+	void save_arithmetic_impl(T const& t, hamon::detail::overload_priority<1>)
 	{
 		m_impl->save(static_cast<std::uintmax_t>(t));
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<1>)
+	void save_arithmetic_impl(T const& t, hamon::detail::overload_priority<0>)
 	{
 		m_impl->save(static_cast<std::intmax_t>(t));
 	}
-	template <typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
-	void save_impl(T const& t, hamon::detail::overload_priority<0>)
-	{
-		save(static_cast<std::underlying_type_t<T>>(t));
-	}
 
 	template <typename T>
-	void save(T const& t)
+	friend void save_arithmetic(text_oarchive& oa, T const& t)
 	{
-		save_impl(t, hamon::detail::overload_priority<3>{});
+		oa.save_arithmetic_impl(t, hamon::detail::overload_priority<2>{});
 	}
 
 	std::unique_ptr<text_oarchive_impl_base>	m_impl;
