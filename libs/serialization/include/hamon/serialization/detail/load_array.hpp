@@ -35,7 +35,7 @@ private:
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<0>)
 	{
-		for (std::size_t i = 0; i < std::extent_v<T>; ++i)
+		for (std::size_t i = 0; i < std::extent<T>::value; ++i)
 		{
 			ar >> t[i];
 		}

@@ -8,6 +8,7 @@
 #define HAMON_SERIALIZATION_DETAIL_SERIALIZE_VALUE_HPP
 
 #include <hamon/serialization/detail/has_adl_serialize.hpp>
+#include <hamon/serialization/detail/always_false.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -41,9 +42,9 @@ private:
 	}
 
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive&, T const&, hamon::detail::overload_priority<0>)
 	{
-		static_assert(false, "This type is not serializable.");
+		static_assert(always_false<T>::value, "This type is not serializable.");
 	}
 	
 public:

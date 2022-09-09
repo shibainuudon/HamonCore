@@ -12,6 +12,7 @@
 #include <hamon/serialization/detail/save_class.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -45,7 +46,7 @@ private:
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
 	{
-		hamon::serialization::save_arithmetic(ar, static_cast<std::underlying_type_t<T>>(t));
+		hamon::serialization::save_arithmetic(ar, static_cast<hamon::underlying_type_t<T>>(t));
 	}
 
 	// save class
