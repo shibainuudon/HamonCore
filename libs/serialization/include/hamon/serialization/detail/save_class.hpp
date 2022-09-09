@@ -7,10 +7,11 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_SAVE_CLASS_HPP
 #define HAMON_SERIALIZATION_DETAIL_SAVE_CLASS_HPP
 
-#include <hamon/serialization/detail/has_adl_save_class.hpp>
 #include <hamon/serialization/detail/has_adl_save.hpp>
 #include <hamon/serialization/detail/serialize_value.hpp>
+#include <hamon/serialization/detail/get_version.hpp>
 #include <hamon/serialization/access.hpp>
+#include <hamon/serialization/version.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -28,38 +29,55 @@ namespace detail
 struct save_class_fn
 {
 private:
+	// t.save(ar, version);
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_save_class<Archive, T>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<3>)
+		typename = hamon::enable_if_t<access::has_member_save<Archive&, T const&, version_t>::value>>
+	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<4>)
 	{
-		save_class(ar, t);
+		access::save(ar, t, version);
 	}
 
+	// t.save(ar);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<access::has_member_save<Archive&, T const&>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
+	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<3>)
 	{
 		access::save(ar, t);
 	}
 
+	// save(ar, t, version);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<has_adl_save<Archive&, T const&, version_t>::value>>
+	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<2>)
+	{
+		save(ar, t, version);
+	}
+
+	// save(ar, t);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<has_adl_save<Archive&, T const&>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
+	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<1>)
 	{
 		save(ar, t);
 	}
 
+	// serialize_value
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::serialize_value(ar, t);
+		hamon::serialization::serialize_value(ar, t, version);
 	}
 
 public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T const& t) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<3>{});
+		version_t const version = hamon::serialization::get_version(t);
+
+		// version_t を save
+		ar << version;
+
+		impl(ar, t, version, hamon::detail::overload_priority<4>{});
 	}
 };
 

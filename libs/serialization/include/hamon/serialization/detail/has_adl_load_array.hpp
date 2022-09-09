@@ -22,19 +22,19 @@ namespace detail
 template <typename Archive, typename T>
 void load_array(Archive&, T&) = delete;
 
-template <typename Archive, typename T>
+template <typename... Args>
 struct has_adl_load_array
 {
 private:
-	template <typename A2, typename T2>
+	template <typename... Args2>
 	static auto test(int) -> decltype(
-		load_array(std::declval<A2&>(), std::declval<T2&>()),
+		load_array(std::declval<Args2>()...),
 		std::true_type());
 
-	template <typename A2, typename T2>
+	template <typename... Args2>
 	static auto test(...) -> std::false_type;
 
-	using type = decltype(test<Archive, T>(0));
+	using type = decltype(test<Args...>(0));
 
 public:
 	static const bool value = type::value;

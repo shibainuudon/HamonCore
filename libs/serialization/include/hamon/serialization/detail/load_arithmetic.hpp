@@ -26,7 +26,7 @@ struct load_arithmetic_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<hamon::serialization::detail::has_adl_load_arithmetic<Archive, T>::value>>
+		typename = hamon::enable_if_t<has_adl_load_arithmetic<Archive&, T&>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<1>)
 	{
 		load_arithmetic(ar, t);

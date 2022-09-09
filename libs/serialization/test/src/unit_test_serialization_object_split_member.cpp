@@ -18,7 +18,7 @@ namespace object_split_member_test
 
 class Object
 {
-public:
+private:
 	int   a = get_random_value<int>();
 	char  b = get_random_value<char>();
 	float c[3] =

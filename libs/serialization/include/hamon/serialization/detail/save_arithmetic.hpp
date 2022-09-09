@@ -26,7 +26,7 @@ struct save_arithmetic_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<hamon::serialization::detail::has_adl_save_arithmetic<Archive, T>::value>>
+		typename = hamon::enable_if_t<has_adl_save_arithmetic<Archive&, T const&>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
 	{
 		save_arithmetic(ar, t);
