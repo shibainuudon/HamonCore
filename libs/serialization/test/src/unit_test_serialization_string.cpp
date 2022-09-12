@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_serialization_integral.cpp
+ *	@file	unit_test_serialization_string.cpp
  *
  *	@brief	std::stringのシリアライズのテスト
  */
@@ -24,7 +24,7 @@ void StringTestSub(TString const& s)
 	Stream str;
 	{
 		OArchive oa(str);
-		oa	<< s;
+		oa << s;
 	}
 	{
 		TString a;

@@ -13,6 +13,7 @@
 #include <hamon/serialization/string.hpp>
 #include <hamon/serialization/text_iarchive.hpp>
 #include <hamon/serialization/text_oarchive.hpp>
+#include <hamon/serialization/vector.hpp>
 #include <hamon/serialization/version.hpp>
 
 #endif // HAMON_SERIALIZATION_HPP

@@ -9,6 +9,7 @@
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
+#include <vector>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
@@ -21,7 +22,12 @@ namespace object_version_split_member_test
 class Object1
 {
 private:
-	int a = get_random_value<int>();
+	std::vector<float> a
+	{
+		get_random_value<float>(),
+		get_random_value<float>(),
+		get_random_value<float>(),
+	};
 
 private:
 	friend bool operator==(Object1 const& lhs, Object1 const& rhs)
