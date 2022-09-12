@@ -16,6 +16,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/copy_cv.hpp>
 #include <hamon/type_traits/disjunction.hpp>
