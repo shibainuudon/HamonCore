@@ -1,17 +1,17 @@
 ﻿/**
- *	@file	load_array.hpp
+ *	@file	load_string.hpp
  *
- *	@brief	load_arrayの定義
+ *	@brief	load_stringの定義
  */
 
-#ifndef HAMON_SERIALIZATION_DETAIL_LOAD_ARRAY_HPP
-#define HAMON_SERIALIZATION_DETAIL_LOAD_ARRAY_HPP
+#ifndef HAMON_SERIALIZATION_DETAIL_LOAD_STRING_HPP
+#define HAMON_SERIALIZATION_DETAIL_LOAD_STRING_HPP
 
-#include <hamon/serialization/detail/has_adl_load_array.hpp>
+#include <hamon/serialization/detail/has_adl_load_string.hpp>
+#include <hamon/serialization/detail/load_vector.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -22,23 +22,20 @@ namespace serialization
 namespace detail
 {
 
-struct load_array_fn
+struct load_string_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_load_array<Archive&, T&>::value>>
+		typename = hamon::enable_if_t<has_adl_load_string<Archive&, T&>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<1>)
 	{
-		load_array(ar, t);
+		load_string(ar, t);
 	}
 
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<0>)
 	{
-		for (auto&& x : t)
-		{
-			ar >> x;
-		}
+		hamon::serialization::load_vector(ar, t);
 	}
 
 public:
@@ -54,7 +51,7 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_array_fn load_array{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_string_fn load_string{};
 
 }	// inline namespace cpo
 
@@ -62,4 +59,4 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_array_fn load_array{};
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_DETAIL_LOAD_ARRAY_HPP
+#endif // HAMON_SERIALIZATION_DETAIL_LOAD_STRING_HPP

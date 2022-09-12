@@ -8,6 +8,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
+#include <sstream>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
@@ -40,23 +41,32 @@ void ArrayTest()
 			Enum::Value1,
 			Enum::Value3,
 		};
+		std::string const a4[] =
+		{
+			"quick brown fox",
+			"",
+			"いろはにほへと",
+		};
 
 		OArchive oa(str);
 		
 		oa << a1;
 		oa << a2;
 		oa << a3;
+		oa << a4;
 	}
 	{
 		int a[5];
 		float b[2][3];
 		Enum c[3];
+		std::string d[3];
 
 		IArchive ia(str);
 
 		ia >> a;
 		ia >> b;
 		ia >> c;
+		ia >> d;
 
 		EXPECT_EQ(1, a[0]);
 		EXPECT_EQ(2, a[1]);
@@ -72,6 +82,9 @@ void ArrayTest()
 		EXPECT_EQ(Enum::Value2, c[0]);
 		EXPECT_EQ(Enum::Value1, c[1]);
 		EXPECT_EQ(Enum::Value3, c[2]);
+		EXPECT_EQ("quick brown fox", d[0]);
+		EXPECT_EQ("", d[1]);
+		EXPECT_EQ("いろはにほへと", d[2]);
 	}
 }
 

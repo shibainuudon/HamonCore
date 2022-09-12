@@ -8,6 +8,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
+#include <sstream>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
@@ -21,7 +22,10 @@ class Object
 private:
 	bool   a = get_random_value<bool>();
 	double b = get_random_value<double>();
-	int    c[2][3] =
+public:
+	std::wstring c;
+private:
+	int    d[2][3] =
 	{
 		{
 			get_random_value<int>(),
@@ -41,12 +45,13 @@ private:
 		return
 			lhs.a == rhs.a &&
 			lhs.b == rhs.b &&
-			lhs.c[0][0] == rhs.c[0][0] &&
-			lhs.c[0][1] == rhs.c[0][1] &&
-			lhs.c[0][2] == rhs.c[0][2] &&
-			lhs.c[1][0] == rhs.c[1][0] &&
-			lhs.c[1][1] == rhs.c[1][1] &&
-			lhs.c[1][2] == rhs.c[1][2] &&
+			lhs.c == rhs.c &&
+			lhs.d[0][0] == rhs.d[0][0] &&
+			lhs.d[0][1] == rhs.d[0][1] &&
+			lhs.d[0][2] == rhs.d[0][2] &&
+			lhs.d[1][0] == rhs.d[1][0] &&
+			lhs.d[1][1] == rhs.d[1][1] &&
+			lhs.d[1][2] == rhs.d[1][2] &&
 			true;
 	}
 
@@ -64,6 +69,7 @@ private:
 		ar & a;
 		ar & b;
 		ar & c;
+		ar & d;
 	}
 };
 
@@ -71,6 +77,8 @@ template <typename Stream, typename OArchive, typename IArchive>
 void ObjectMemberTest()
 {
 	Object t;
+	t.c = L"Hello, World";
+
 	Stream str;
 	{
 		OArchive oa(str);

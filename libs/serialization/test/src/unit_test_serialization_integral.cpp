@@ -8,6 +8,8 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
+#include <sstream>
+#include <limits>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test

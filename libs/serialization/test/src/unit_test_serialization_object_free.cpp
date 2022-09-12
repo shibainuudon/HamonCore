@@ -8,6 +8,8 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
+#include <sstream>
+#include <string>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
@@ -27,6 +29,7 @@ public:
 		get_random_value<float>(),
 		get_random_value<float>(),
 	};
+	std::string d;
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)
@@ -37,6 +40,7 @@ private:
 			lhs.c[0] == rhs.c[0] &&
 			lhs.c[1] == rhs.c[1] &&
 			lhs.c[2] == rhs.c[2] &&
+			lhs.d == rhs.d &&
 			true;
 	}
 
@@ -52,12 +56,15 @@ void serialize(Archive& ar, Object& o)
 	ar & o.a;
 	ar & o.b;
 	ar & o.c;
+	ar & o.d;
 }
 
 template <typename Stream, typename OArchive, typename IArchive>
 void ObjectFreeTest()
 {
 	Object t;
+	t.d = "The quick brown fox jumps over the lazy dog";
+
 	Stream str;
 	{
 		OArchive oa(str);

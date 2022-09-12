@@ -1,17 +1,17 @@
 ﻿/**
- *	@file	save_array.hpp
+ *	@file	save_vector.hpp
  *
- *	@brief	save_arrayの定義
+ *	@brief	save_vectorの定義
  */
 
-#ifndef HAMON_SERIALIZATION_DETAIL_SAVE_ARRAY_HPP
-#define HAMON_SERIALIZATION_DETAIL_SAVE_ARRAY_HPP
+#ifndef HAMON_SERIALIZATION_DETAIL_SAVE_VECTOR_HPP
+#define HAMON_SERIALIZATION_DETAIL_SAVE_VECTOR_HPP
 
-#include <hamon/serialization/detail/has_adl_save_array.hpp>
+#include <hamon/serialization/detail/has_adl_save_vector.hpp>
+#include <hamon/serialization/detail/save_array.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -22,23 +22,21 @@ namespace serialization
 namespace detail
 {
 
-struct save_array_fn
+struct save_vector_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_save_array<Archive&, T const&>::value>>
+		typename = hamon::enable_if_t<has_adl_save_vector<Archive&, T const&>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
 	{
-		save_array(ar, t);
+		save_vector(ar, t);
 	}
 
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
 	{
-		for (auto&& x : t)
-		{
-			ar << x;
-		}
+		ar << t.size();
+		hamon::serialization::save_array(ar, t);
 	}
 
 public:
@@ -54,7 +52,7 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_array_fn save_array{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_vector_fn save_vector{};
 
 }	// inline namespace cpo
 
@@ -62,4 +60,4 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_array_fn save_array{};
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_DETAIL_SAVE_ARRAY_HPP
+#endif // HAMON_SERIALIZATION_DETAIL_SAVE_VECTOR_HPP
