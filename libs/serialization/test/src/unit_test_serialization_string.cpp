@@ -42,7 +42,7 @@ void StringTest()
 	StringTestSub<Stream, OArchive, IArchive>(std::string{});
 	StringTestSub<Stream, OArchive, IArchive>(std::string("Hello World"));
 	StringTestSub<Stream, OArchive, IArchive>(std::string(
-		"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b漢字\u3042\u3044\u3046"));
+		"0123 !\"#$%&'()-=^~|\\[]{}`@;:+*/?<>,._abcde \r\n\t\"\\\v\b"));
 
 	StringTestSub<Stream, OArchive, IArchive>(std::wstring{});
 	StringTestSub<Stream, OArchive, IArchive>(std::wstring(L"Hello World"));

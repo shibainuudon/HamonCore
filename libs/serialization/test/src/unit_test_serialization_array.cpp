@@ -45,7 +45,7 @@ void ArrayTest()
 		{
 			"quick brown fox",
 			"",
-			"いろはにほへと",
+			"Hello World!",
 		};
 
 		OArchive oa(str);
@@ -84,7 +84,7 @@ void ArrayTest()
 		EXPECT_EQ(Enum::Value3, c[2]);
 		EXPECT_EQ("quick brown fox", d[0]);
 		EXPECT_EQ("", d[1]);
-		EXPECT_EQ("いろはにほへと", d[2]);
+		EXPECT_EQ("Hello World!", d[2]);
 	}
 }
 
