@@ -19,6 +19,9 @@ namespace serialization
 namespace detail
 {
 
+namespace serialize_value_detail
+{
+
 template <typename Archive, typename T>
 void serialize(Archive&, T&) = delete;
 
@@ -39,6 +42,8 @@ private:
 public:
 	static const bool value = type::value;
 };
+
+}	// namespace serialize_value_detail
 
 }	// namespace detail
 

@@ -25,6 +25,9 @@ namespace serialization
 namespace detail
 {
 
+namespace serialize_value_detail
+{
+
 struct serialize_value_fn
 {
 private:
@@ -75,14 +78,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace serialize_value_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::serialize_value_fn serialize_value{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+serialize_value_detail::serialize_value_fn serialize_value{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

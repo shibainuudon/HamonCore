@@ -48,9 +48,9 @@ public:
 		m_first_value = false;
 
 		m_impl->put(get_indent_string());
-		hamon::serialization::save_value(*this, t.name());
+		hamon::serialization::detail::save_value(*this, t.name());
 		m_impl->put(": ");
-		hamon::serialization::save_value(*this, t.value());
+		hamon::serialization::detail::save_value(*this, t.value());
 		return *this;
 	}
 
@@ -189,7 +189,7 @@ private:
 				oa.m_impl->put(",\n");
 			}
 			oa.m_impl->put(oa.get_indent_string());
-			hamon::serialization::save_value(oa, t[i]);
+			hamon::serialization::detail::save_value(oa, t[i]);
 		}
 		oa.m_impl->put("\n");
 		oa.pop();

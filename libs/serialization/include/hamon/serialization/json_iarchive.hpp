@@ -46,9 +46,9 @@ public:
 		m_first_value = false;
 
 		std::string name;
-		hamon::serialization::load_value(*this, name);
+		hamon::serialization::detail::load_value(*this, name);
 		m_impl->get_one_char();		// ":"
-		hamon::serialization::load_value(*this, t.value());
+		hamon::serialization::detail::load_value(*this, t.value());
 		return *this;
 	}
 
@@ -162,7 +162,7 @@ private:
 			{
 				ia.m_impl->get_one_char();	// ","
 			}
-			hamon::serialization::load_value(ia, t[i]);
+			hamon::serialization::detail::load_value(ia, t[i]);
 		}
 		ia.m_impl->get_one_char();	// "]"
 	}

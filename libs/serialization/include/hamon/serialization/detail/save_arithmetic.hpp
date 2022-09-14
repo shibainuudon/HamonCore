@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_arithmetic_detail
+{
+
 struct save_arithmetic_fn
 {
 private:
@@ -40,14 +43,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_arithmetic_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_arithmetic_fn save_arithmetic{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+save_arithmetic_detail::save_arithmetic_fn save_arithmetic{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

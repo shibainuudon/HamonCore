@@ -80,7 +80,7 @@ public:
 	template <typename T>
 	binary_oarchive& operator<<(T const& t)
 	{
-		hamon::serialization::save_value(*this, t);
+		hamon::serialization::detail::save_value(*this, t);
 		return *this;
 	}
 

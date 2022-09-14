@@ -20,13 +20,13 @@ namespace serialization
 template <typename Archive, typename CharT>
 void save_class(Archive& oa, std::basic_string<CharT> const& t)
 {
-	hamon::serialization::save_string(oa, t);
+	hamon::serialization::detail::save_string(oa, t);
 }
 
 template <typename Archive, typename CharT>
 void load_class(Archive& ia, std::basic_string<CharT>& t)
 {
-	hamon::serialization::load_string(ia, t);
+	hamon::serialization::detail::load_string(ia, t);
 }
 
 }	// namespace serialization

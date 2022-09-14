@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace load_arithmetic_detail
+{
+
 struct load_arithmetic_fn
 {
 private:
@@ -40,14 +43,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace load_arithmetic_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_arithmetic_fn load_arithmetic{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+load_arithmetic_detail::load_arithmetic_fn load_arithmetic{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

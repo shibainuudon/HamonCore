@@ -43,19 +43,6 @@ public:
 private:
 	std::string	m_name;
 	T&			m_value;
-
-private:
-	template <typename Archive>
-	friend void save_class(Archive& oa, nvp<T> const& t)
-	{
-		oa << t.value();
-	}
-
-	template <typename Archive>
-	friend void load_class(Archive& ia, nvp<T> const& t)
-	{
-		ia >> t.value();
-	}
 };
 
 template <typename T>
@@ -70,6 +57,18 @@ inline nvp<T> const
 make_nvp(std::string name, T& t)
 {
 	return nvp<T>(std::move(name), t);
+}
+
+template <typename Archive, typename T>
+void save_class(Archive& oa, nvp<T> const& t)
+{
+	oa << t.value();
+}
+
+template <typename Archive, typename T>
+void load_class(Archive& ia, nvp<T> const& t)
+{
+	ia >> t.value();
 }
 
 }	// namespace serialization

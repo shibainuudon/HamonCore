@@ -23,6 +23,9 @@ namespace serialization
 namespace detail
 {
 
+namespace get_version_detail
+{
+
 struct get_version_fn
 {
 private:
@@ -57,14 +60,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace get_version_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::get_version_fn get_version{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+get_version_detail::get_version_fn get_version{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

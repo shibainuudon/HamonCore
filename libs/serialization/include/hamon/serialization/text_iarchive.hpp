@@ -33,7 +33,7 @@ public:
 	template <typename T>
 	text_iarchive& operator>>(T& t)
 	{
-		hamon::serialization::load_value(*this, t);
+		hamon::serialization::detail::load_value(*this, t);
 		return *this;
 	}
 

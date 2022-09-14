@@ -19,6 +19,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_string_detail
+{
+
 template <typename Archive, typename T>
 void save_string(Archive&, T const&) = delete;
 
@@ -39,6 +42,8 @@ private:
 public:
 	static const bool value = type::value;
 };
+
+}	// namespace save_string_detail
 
 }	// namespace detail
 

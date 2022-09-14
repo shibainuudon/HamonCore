@@ -9,7 +9,6 @@
 
 #include <hamon/serialization/detail/has_adl_save.hpp>
 #include <hamon/serialization/detail/serialize_value.hpp>
-#include <hamon/serialization/detail/get_version.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -25,6 +24,9 @@ namespace serialization
 {
 
 namespace detail
+{
+
+namespace save_detail
 {
 
 struct save_fn
@@ -66,7 +68,7 @@ private:
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::serialize_value(ar, t, version);
+		hamon::serialization::detail::serialize_value(ar, t, version);
 	}
 
 public:
@@ -77,14 +79,16 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_fn save{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR save_detail::save_fn save{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

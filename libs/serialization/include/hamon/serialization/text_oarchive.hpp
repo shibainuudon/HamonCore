@@ -33,7 +33,7 @@ public:
 	template <typename T>
 	text_oarchive& operator<<(T const& t)
 	{
-		hamon::serialization::save_value(*this, t);
+		hamon::serialization::detail::save_value(*this, t);
 		m_impl->put(" ");
 		return *this;
 	}

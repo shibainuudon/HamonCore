@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace load_array_detail
+{
+
 struct load_array_fn
 {
 private:
@@ -49,14 +52,16 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace load_array_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_array_fn load_array{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR load_array_detail::load_array_fn load_array{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

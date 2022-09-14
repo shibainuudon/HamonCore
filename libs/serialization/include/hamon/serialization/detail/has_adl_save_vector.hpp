@@ -19,6 +19,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_vector_detail
+{
+
 template <typename Archive, typename T>
 void save_vector(Archive&, T const&) = delete;
 
@@ -39,6 +42,8 @@ private:
 public:
 	static const bool value = type::value;
 };
+
+}	// namespace save_vector_detail
 
 }	// namespace detail
 

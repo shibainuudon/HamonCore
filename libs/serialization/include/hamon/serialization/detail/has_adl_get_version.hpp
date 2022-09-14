@@ -20,6 +20,9 @@ namespace serialization
 namespace detail
 {
 
+namespace get_version_detail
+{
+
 template <typename T>
 void get_version(T const&) = delete;
 
@@ -40,6 +43,8 @@ private:
 public:
 	static const bool value = type::value;
 };
+
+}	// namespace get_version_detail
 
 }	// namespace detail
 

@@ -25,6 +25,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_value_detail
+{
+
 struct save_value_fn
 {
 private:
@@ -32,28 +35,28 @@ private:
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<3>)
 	{
-		hamon::serialization::save_array(ar, t);
+		hamon::serialization::detail::save_array(ar, t);
 	}
 	
 	// save arithmetic
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_arithmetic<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<2>)
 	{
-		hamon::serialization::save_arithmetic(ar, t);
+		hamon::serialization::detail::save_arithmetic(ar, t);
 	}
 
 	// save enum
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
 	{
-		hamon::serialization::save_arithmetic(ar, static_cast<hamon::underlying_type_t<T>>(t));
+		hamon::serialization::detail::save_arithmetic(ar, static_cast<hamon::underlying_type_t<T>>(t));
 	}
 
 	// save class
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_class<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::save_class(ar, t);
+		hamon::serialization::detail::save_class(ar, t);
 	}
 
 public:
@@ -64,14 +67,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_value_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_value_fn save_value{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+save_value_detail::save_value_fn save_value{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

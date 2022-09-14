@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_array_detail
+{
+
 struct save_array_fn
 {
 private:
@@ -49,14 +52,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_array_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_array_fn save_array{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+save_array_detail::save_array_fn save_array{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

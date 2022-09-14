@@ -36,6 +36,9 @@ void end_load_class(Archive&)
 {
 }
 
+namespace load_class_detail
+{
+
 struct load_class_fn
 {
 private:
@@ -58,7 +61,7 @@ private:
 		// version_t を load
 		ar >> make_nvp("version", version);
 
-		hamon::serialization::load(ar, t, version);
+		hamon::serialization::detail::load(ar, t, version);
 
 		end_load_class(ar);
 	}
@@ -71,14 +74,16 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace load_class_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_class_fn load_class{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR load_class_detail::load_class_fn load_class{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

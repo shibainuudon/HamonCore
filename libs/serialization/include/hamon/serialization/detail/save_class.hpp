@@ -37,6 +37,9 @@ void end_save_class(Archive&)
 {
 }
 
+namespace save_class_detail
+{
+
 struct save_class_fn
 {
 private:
@@ -54,12 +57,12 @@ private:
 	{
 		start_save_class(ar);
 
-		version_t const version = hamon::serialization::get_version(t);
+		version_t const version = hamon::serialization::detail::get_version(t);
 
 		// version_t を save
 		ar << make_nvp("version", version);
 
-		hamon::serialization::save(ar, t, version);
+		hamon::serialization::detail::save(ar, t, version);
 
 		end_save_class(ar);
 	}
@@ -72,14 +75,16 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_class_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_class_fn save_class{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR save_class_detail::save_class_fn save_class{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

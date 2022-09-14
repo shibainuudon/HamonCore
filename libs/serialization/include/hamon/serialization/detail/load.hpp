@@ -26,6 +26,9 @@ namespace serialization
 namespace detail
 {
 
+namespace load_detail
+{
+
 struct load_fn
 {
 private:
@@ -65,7 +68,7 @@ private:
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T& t, version_t version, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::serialize_value(ar, t, version);
+		hamon::serialization::detail::serialize_value(ar, t, version);
 	}
 
 public:
@@ -76,14 +79,16 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace load_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_fn load{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR load_detail::load_fn load{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

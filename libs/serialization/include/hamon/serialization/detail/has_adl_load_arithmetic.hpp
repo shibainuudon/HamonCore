@@ -19,6 +19,9 @@ namespace serialization
 namespace detail
 {
 
+namespace load_arithmetic_detail
+{
+
 template <typename Archive, typename T>
 void load_arithmetic(Archive&, T&) = delete;
 
@@ -39,6 +42,8 @@ private:
 public:
 	static const bool value = type::value;
 };
+
+}	// namespace load_arithmetic_detail
 
 }	// namespace detail
 

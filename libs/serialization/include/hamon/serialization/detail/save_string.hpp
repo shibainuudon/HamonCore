@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace save_string_detail
+{
+
 struct save_string_fn
 {
 private:
@@ -35,7 +38,7 @@ private:
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::save_vector(ar, t);
+		hamon::serialization::detail::save_vector(ar, t);
 	}
 
 public:
@@ -46,14 +49,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace save_string_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::save_string_fn save_string{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+save_string_detail::save_string_fn save_string{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 

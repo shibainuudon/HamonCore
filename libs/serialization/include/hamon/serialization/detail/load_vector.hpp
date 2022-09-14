@@ -22,6 +22,9 @@ namespace serialization
 namespace detail
 {
 
+namespace load_vector_detail
+{
+
 struct load_vector_fn
 {
 private:
@@ -39,7 +42,7 @@ private:
 		ar >> size;
 
 		t.resize(size);
-		hamon::serialization::load_array(ar, t);
+		hamon::serialization::detail::load_array(ar, t);
 	}
 
 public:
@@ -50,14 +53,17 @@ public:
 	}
 };
 
-}	// namespace detail
+}	// namespace load_vector_detail
 
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR detail::load_vector_fn load_vector{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+load_vector_detail::load_vector_fn load_vector{};
 
 }	// inline namespace cpo
+
+}	// namespace detail
 
 }	// namespace serialization
 
