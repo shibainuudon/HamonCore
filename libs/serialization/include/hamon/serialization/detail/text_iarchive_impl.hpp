@@ -51,6 +51,7 @@ public:
 #endif
 
 	virtual char get_one_char() = 0;
+	virtual void unget_one_char() = 0;
 };
 
 template <typename IStream>
@@ -126,6 +127,12 @@ public:
 	char get_one_char() override
 	{
 		return static_cast<char>(get_one_char_impl(m_is));
+	}
+
+	void unget_one_char() override
+	{
+		auto const rdbuf = m_is.rdbuf();
+		rdbuf->sungetc();
 	}
 
 private:

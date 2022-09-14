@@ -153,10 +153,10 @@ private:
 	}
 
 	template <typename T>
-	friend void load_array(json_iarchive& ia, T& t)
+	friend void load_array(json_iarchive& ia, T& t, std::size_t size)
 	{
 		ia.m_impl->get_one_char();	// "["
-		for (std::size_t i = 0; i < std::extent<T>::value; ++i)
+		for (std::size_t i = 0; i < size; ++i)
 		{
 			if (i != 0)
 			{
@@ -165,6 +165,31 @@ private:
 			hamon::serialization::detail::load_value(ia, t[i]);
 		}
 		ia.m_impl->get_one_char();	// "]"
+	}
+	
+	template <typename T>
+	friend void load_vector(json_iarchive& ia, T& t)
+	{
+		using element_type = typename T::value_type;
+
+		ia.m_impl->get_one_char();	// "["
+		for (;;)
+		{
+			auto const c = ia.m_impl->get_one_char();
+			if (c == ']')
+			{
+				break;
+			}
+
+			if (c != ',')
+			{
+				ia.m_impl->unget_one_char();
+			}
+
+			element_type e;
+			hamon::serialization::detail::load_value(ia, e);
+			t.push_back(e);
+		}
 	}
 
 	friend void start_load_class(json_iarchive& ia)

@@ -23,7 +23,7 @@ namespace load_array_detail
 {
 
 template <typename Archive, typename T>
-void load_array(Archive&, T&) = delete;
+void load_array(Archive&, T&, std::size_t) = delete;
 
 template <typename... Args>
 struct has_adl_load_array

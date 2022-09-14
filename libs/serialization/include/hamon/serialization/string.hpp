@@ -26,6 +26,7 @@ void save_class(Archive& oa, std::basic_string<CharT> const& t)
 template <typename Archive, typename CharT>
 void load_class(Archive& ia, std::basic_string<CharT>& t)
 {
+	t.clear();
 	hamon::serialization::detail::load_string(ia, t);
 }
 

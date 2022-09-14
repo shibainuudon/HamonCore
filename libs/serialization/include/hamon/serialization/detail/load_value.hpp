@@ -35,7 +35,7 @@ private:
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<3>)
 	{
-		hamon::serialization::detail::load_array(ar, t);
+		hamon::serialization::detail::load_array(ar, t, std::extent<T>::value);
 	}
 
 	// load arithmetic

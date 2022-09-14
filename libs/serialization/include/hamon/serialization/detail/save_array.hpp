@@ -29,26 +29,26 @@ struct save_array_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_save_array<Archive&, T const&>::value>>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<1>)
+		typename = hamon::enable_if_t<has_adl_save_array<Archive&, T const&, std::size_t>::value>>
+	static void impl(Archive& ar, T const& t, std::size_t size, hamon::detail::overload_priority<1>)
 	{
-		save_array(ar, t);
+		save_array(ar, t, size);
 	}
 
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T const& t, std::size_t size, hamon::detail::overload_priority<0>)
 	{
-		for (auto&& x : t)
+		for (std::size_t i = 0; i < size; ++i)
 		{
-			ar << x;
+			ar << t[i];
 		}
 	}
 
 public:
 	template <typename Archive, typename T>
-	void operator()(Archive& ar, T const& t) const
+	void operator()(Archive& ar, T const& t, std::size_t size) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<1>{});
+		impl(ar, t, size, hamon::detail::overload_priority<1>{});
 	}
 };
 

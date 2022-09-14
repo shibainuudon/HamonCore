@@ -70,12 +70,12 @@ public:
 	}
 
 private:
-	void push(void)
+	void increment_indent_level(void)
 	{
 		m_value_index_stack.push(0);
 	}
 
-	void pop(void)
+	void decrement_indent_level(void)
 	{
 		m_value_index_stack.pop();
 	}
@@ -83,14 +83,14 @@ private:
 	void start_object(void)
 	{
 		m_impl->put("{\n");
-		push();
+		increment_indent_level();
 		m_first_value = true;
 	}
 
 	void end_object(void)
 	{
 		m_impl->put("\n");
-		pop();
+		decrement_indent_level();
 		m_impl->put(get_indent_string());
 		m_impl->put("}");
 	}
@@ -178,11 +178,11 @@ private:
 	}
 
 	template <typename T>
-	friend void save_array(json_oarchive& oa, T const& t)
+	friend void save_array(json_oarchive& oa, T const& t, std::size_t size)
 	{
 		oa.m_impl->put("[\n");
-		oa.push();
-		for (std::size_t i = 0; i < std::extent<T>::value; ++i)
+		oa.increment_indent_level();
+		for (std::size_t i = 0; i < size; ++i)
 		{
 			if (i != 0)
 			{
@@ -192,9 +192,15 @@ private:
 			hamon::serialization::detail::save_value(oa, t[i]);
 		}
 		oa.m_impl->put("\n");
-		oa.pop();
+		oa.decrement_indent_level();
 		oa.m_impl->put(oa.get_indent_string());
 		oa.m_impl->put("]");
+	}
+
+	template <typename T>
+	friend void save_vector(json_oarchive& oa, T const& t)
+	{
+		save_array(oa, t, t.size());
 	}
 
 	friend void start_save_class(json_oarchive& oa)

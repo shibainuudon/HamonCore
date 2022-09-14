@@ -24,8 +24,20 @@ struct Point
 	float y;
 };
 
+inline bool operator==(Point const& lhs, Point const& rhs)
+{
+	return
+		lhs.x == rhs.x &&
+		lhs.y == rhs.y;
+}
+
+inline bool operator!=(Point const& lhs, Point const& rhs)
+{
+	return !(lhs == rhs);
+}
+
 template <typename Archive>
-void serialize(Archive& ar, Point& o)
+inline void serialize(Archive& ar, Point& o)
 {
 	ar & hamon::serialization::make_nvp("x", o.x);
 	ar & o.y;
@@ -38,6 +50,8 @@ public:
 	float       b{};
 	std::string c{};
 	Point		d{};
+	std::vector<int> e{};
+	std::vector<std::vector<std::string>> f{};
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)
@@ -46,6 +60,9 @@ private:
 			lhs.a == rhs.a &&
 			lhs.b == rhs.b &&
 			lhs.c == rhs.c &&
+			lhs.d == rhs.d &&
+			lhs.e == rhs.e &&
+			lhs.f == rhs.f &&
 			true;
 	}
 
@@ -64,6 +81,8 @@ private:
 		ar & hamon::serialization::make_nvp("b", b);
 		ar & c;
 		ar & hamon::serialization::make_nvp("d", d);
+		ar & hamon::serialization::make_nvp("e", e);
+		ar & hamon::serialization::make_nvp("f", f);
 	}
 };
 
@@ -75,6 +94,12 @@ void JsonTest()
 	obj.b = 12.5f;
 	obj.c = "The quick brown fox";
 	obj.d = { 1, 2 };
+	obj.e = { 3, 1, 4, 1, 5 };
+	obj.f =
+	{
+		{ "Foo", "Bar", },
+		{ "Fizz", "Buzz", "FizzBuzz", },
+	};
 
 	Stream str;
 	{
@@ -142,7 +167,25 @@ R"({
             "version": 0,
             "x": 1,
             "value0": 2
-        }
+        },
+        "e": [
+            3,
+            1,
+            4,
+            1,
+            5
+        ],
+        "f": [
+            [
+                "Foo",
+                "Bar"
+            ],
+            [
+                "Fizz",
+                "Buzz",
+                "FizzBuzz"
+            ]
+        ]
     }
 })";
 	EXPECT_EQ(expected, str.str());

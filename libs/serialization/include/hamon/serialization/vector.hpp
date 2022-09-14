@@ -26,6 +26,7 @@ void save_class(Archive& oa, std::vector<T> const& t)
 template <typename Archive, typename T>
 void load_class(Archive& ia, std::vector<T>& t)
 {
+	t.clear();
 	hamon::serialization::detail::load_vector(ia, t);
 }
 
