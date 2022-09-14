@@ -110,7 +110,7 @@ void JsonTest()
 		bool const e = false;
 		std::string const f = "hello world";
 		std::string const g = "A\"B\\C/D\bE\fF\nG\rH\tI";
-		int const h[5] = {1, 1, 2, 3, 5};
+		std::array<int, 5> const h = {1, 1, 2, 3, 5};
 		float const i[2][3] =
 		{
 			{ 0.5f, -0.5f,  1.5f},
@@ -197,7 +197,7 @@ R"({
 		bool e;
 		std::string f;
 		std::string g;
-		int h[5];
+		std::array<int, 5> h;
 		float i[2][3];
 		Object j;
 

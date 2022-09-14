@@ -8,6 +8,7 @@
 #define HAMON_SERIALIZATION_HPP
 
 #include <hamon/serialization/access.hpp>
+#include <hamon/serialization/array.hpp>
 #include <hamon/serialization/binary_iarchive.hpp>
 #include <hamon/serialization/binary_oarchive.hpp>
 #include <hamon/serialization/json_iarchive.hpp>
