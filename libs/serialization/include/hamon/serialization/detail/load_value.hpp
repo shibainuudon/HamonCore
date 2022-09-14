@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_LOAD_VALUE_HPP
 #define HAMON_SERIALIZATION_DETAIL_LOAD_VALUE_HPP
 
+#include <hamon/serialization/detail/has_adl_load_value.hpp>
 #include <hamon/serialization/detail/load_array.hpp>
 #include <hamon/serialization/detail/load_arithmetic.hpp>
 #include <hamon/serialization/detail/load_class.hpp>
@@ -31,6 +32,14 @@ namespace load_value_detail
 struct load_value_fn
 {
 private:
+	// load_value(ar, t);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<has_adl_load_value<Archive&, T&>::value>>
+	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<4>)
+	{
+		load_value(ar, t);
+	}
+
 	// load array
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<3>)
@@ -65,7 +74,7 @@ public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T& t) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<3>{});
+		impl(ar, t, hamon::detail::overload_priority<4>{});
 	}
 };
 

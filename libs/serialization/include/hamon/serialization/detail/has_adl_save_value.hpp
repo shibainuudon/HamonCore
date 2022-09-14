@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	has_adl_save_class.hpp
+ *	@file	has_adl_save_value.hpp
  *
- *	@brief	has_adl_save_classの定義
+ *	@brief	has_adl_save_valueの定義
  */
 
-#ifndef HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_CLASS_HPP
-#define HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_CLASS_HPP
+#ifndef HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_VALUE_HPP
+#define HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_VALUE_HPP
 
 #include <type_traits>
 #include <utility>
@@ -19,19 +19,19 @@ namespace serialization
 namespace detail
 {
 
-namespace save_class_detail
+namespace save_value_detail
 {
 
 template <typename Archive, typename T>
-void save_class(Archive&, T const&) = delete;
+void save_value(Archive&, T const&) = delete;
 
 template <typename... Args>
-struct has_adl_save_class
+struct has_adl_save_value
 {
 private:
 	template <typename... Args2>
 	static auto test(int) -> decltype(
-		save_class(std::declval<Args2>()...),
+		save_value(std::declval<Args2>()...),
 		std::true_type());
 
 	template <typename... Args2>
@@ -43,7 +43,7 @@ public:
 	static const bool value = type::value;
 };
 
-}	// namespace save_class_detail
+}	// namespace save_value_detail
 
 }	// namespace detail
 
@@ -51,4 +51,4 @@ public:
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_CLASS_HPP
+#endif // HAMON_SERIALIZATION_DETAIL_HAS_ADL_SAVE_VALUE_HPP

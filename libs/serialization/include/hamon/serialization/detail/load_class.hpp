@@ -7,15 +7,14 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_LOAD_CLASS_HPP
 #define HAMON_SERIALIZATION_DETAIL_LOAD_CLASS_HPP
 
-#include <hamon/serialization/detail/has_adl_load_class.hpp>
-#include <hamon/serialization/detail/load.hpp>
+#include <hamon/serialization/detail/has_adl_load.hpp>
+#include <hamon/serialization/detail/serialize_value.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -42,17 +41,48 @@ namespace load_class_detail
 struct load_class_fn
 {
 private:
-	// load_class(ar, t);
+	// t.load(ar, version);
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_load_class<Archive&, T&>::value>>
-	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<1>)
+		typename = hamon::enable_if_t<access::has_member_load<Archive&, T&, version_t>::value>>
+	static void impl(Archive& ar, T& t, version_t version, hamon::detail::overload_priority<4>)
 	{
-		load_class(ar, t);
+		access::load(ar, t, version);
 	}
 
-	// default
+	// t.load(ar);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<access::has_member_load<Archive&, T&>::value>>
+	static void impl(Archive& ar, T& t, version_t, hamon::detail::overload_priority<3>)
+	{
+		access::load(ar, t);
+	}
+
+	// load(ar, t, version);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<has_adl_load<Archive&, T&, version_t>::value>>
+	static void impl(Archive& ar, T& t, version_t version, hamon::detail::overload_priority<2>)
+	{
+		load(ar, t, version);
+	}
+
+	// load(ar, t);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<has_adl_load<Archive&, T&>::value>>
+	static void impl(Archive& ar, T& t, version_t, hamon::detail::overload_priority<1>)
+	{
+		load(ar, t);
+	}
+
+	// serialize_value
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T& t, version_t version, hamon::detail::overload_priority<0>)
+	{
+		hamon::serialization::detail::serialize_value(ar, t, version);
+	}
+
+public:
+	template <typename Archive, typename T>
+	void operator()(Archive& ar, T& t) const
 	{
 		start_load_class(ar);
 
@@ -61,16 +91,9 @@ private:
 		// version_t を load
 		ar >> make_nvp("version", version);
 
-		hamon::serialization::detail::load(ar, t, version);
+		impl(ar, t, version, hamon::detail::overload_priority<4>{});
 
 		end_load_class(ar);
-	}
-
-public:
-	template <typename Archive, typename T>
-	void operator()(Archive& ar, T& t) const
-	{
-		impl(ar, t, hamon::detail::overload_priority<1>{});
 	}
 };
 

@@ -11,7 +11,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <cstddef>
 
 namespace hamon
 {

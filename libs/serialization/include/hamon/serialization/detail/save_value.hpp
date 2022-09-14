@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_SAVE_VALUE_HPP
 #define HAMON_SERIALIZATION_DETAIL_SAVE_VALUE_HPP
 
+#include <hamon/serialization/detail/has_adl_save_value.hpp>
 #include <hamon/serialization/detail/save_array.hpp>
 #include <hamon/serialization/detail/save_arithmetic.hpp>
 #include <hamon/serialization/detail/save_class.hpp>
@@ -31,6 +32,14 @@ namespace save_value_detail
 struct save_value_fn
 {
 private:
+	// save_value(ar, t);
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<has_adl_save_value<Archive&, T const&>::value>>
+	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<4>)
+	{
+		save_value(ar, t);
+	}
+
 	// save array
 	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<3>)
@@ -63,7 +72,7 @@ public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T const& t) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<3>{});
+		impl(ar, t, hamon::detail::overload_priority<4>{});
 	}
 };
 

@@ -19,7 +19,7 @@ namespace serialization
 namespace detail
 {
 
-namespace save_detail
+namespace save_class_detail
 {
 
 template <typename Archive, typename T>
@@ -43,7 +43,7 @@ public:
 	static const bool value = type::value;
 };
 
-}	// namespace save_detail
+}	// namespace save_class_detail
 
 }	// namespace detail
 

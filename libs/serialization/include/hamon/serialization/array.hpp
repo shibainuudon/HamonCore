@@ -18,13 +18,13 @@ namespace serialization
 {
 
 template <typename Archive, typename T, std::size_t N>
-void save_class(Archive& oa, std::array<T, N> const& t)
+void save_value(Archive& oa, std::array<T, N> const& t)
 {
 	hamon::serialization::detail::save_array(oa, t, N);
 }
 
 template <typename Archive, typename T, std::size_t N>
-void load_class(Archive& ia, std::array<T, N>& t)
+void load_value(Archive& ia, std::array<T, N>& t)
 {
 	hamon::serialization::detail::load_array(ia, t, N);
 }

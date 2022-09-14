@@ -60,13 +60,13 @@ make_nvp(std::string name, T& t)
 }
 
 template <typename Archive, typename T>
-void save_class(Archive& oa, nvp<T> const& t)
+void save_value(Archive& oa, nvp<T> const& t)
 {
 	oa << t.value();
 }
 
 template <typename Archive, typename T>
-void load_class(Archive& ia, nvp<T> const& t)
+void load_value(Archive& ia, nvp<T> const& t)
 {
 	ia >> t.value();
 }
