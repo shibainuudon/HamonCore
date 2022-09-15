@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/detail/text_oarchive_impl.hpp>
 #include <hamon/serialization/detail/save_value.hpp>
+#include <hamon/serialization/string.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>

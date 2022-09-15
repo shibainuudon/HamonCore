@@ -4,11 +4,12 @@
  *	@brief	メンバー関数save/loadのテスト
  */
 
-#include <hamon/serialization.hpp>
+#include <hamon/serialization/access.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
+#include "serialization_test_archives.hpp"
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
