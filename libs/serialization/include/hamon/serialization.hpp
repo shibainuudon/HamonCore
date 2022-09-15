@@ -16,6 +16,7 @@
 #include <hamon/serialization/string.hpp>
 #include <hamon/serialization/text_iarchive.hpp>
 #include <hamon/serialization/text_oarchive.hpp>
+#include <hamon/serialization/unique_ptr.hpp>
 #include <hamon/serialization/vector.hpp>
 #include <hamon/serialization/version.hpp>
 

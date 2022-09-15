@@ -93,6 +93,24 @@ public:
 		static const bool value = type::value;
 	};
 
+	template <typename T>
+	struct has_member_get_class_id
+	{
+	private:
+		template <typename U,
+			typename R = decltype(std::declval<U>().get_class_id())
+		>
+		static auto test(int) -> hamon::convertible_to_t<R, const char*>;
+
+		template <typename U>
+		static auto test(...) -> std::false_type;
+
+		using type = decltype(test<T>(0));
+
+	public:
+		static const bool value = type::value;
+	};
+
 	template <typename Archive, typename T, typename... Args>
 	static void serialize(Archive& ar, T& t, Args&&... args)
 	{
@@ -115,6 +133,18 @@ public:
 	static version_t get_version(T const& t)
 	{
 		return static_cast<version_t>(t.get_version());
+	}
+
+	template <typename T>
+	static const char* get_class_id(T const& t)
+	{
+		return t.get_class_id();
+	}
+
+	template <typename T>
+	static const char* static_class_id()
+	{
+		return T::static_class_id();
 	}
 };
 
