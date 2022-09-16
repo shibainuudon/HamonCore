@@ -47,9 +47,13 @@ private:
 	}
 };
 
+static int s_save_invoke_count = 0;
+static int s_load_invoke_count = 0;
+
 template <typename Archive>
 void save(Archive& ar, Object const& o)
 {
+	++s_save_invoke_count;
 	ar << o.a;
 	ar << o.b;
 	ar << o.c;
@@ -58,6 +62,7 @@ void save(Archive& ar, Object const& o)
 template <typename Archive>
 void load(Archive& ar, Object& o)
 {
+	++s_load_invoke_count;
 	ar >> o.a;
 	ar >> o.b;
 	ar >> o.c;
@@ -66,12 +71,19 @@ void load(Archive& ar, Object& o)
 template <typename Stream, typename OArchive, typename IArchive>
 void ObjectSplitFreeTest()
 {
+	s_save_invoke_count = 0;
+	s_load_invoke_count = 0;
+
 	Object t;
 	Stream str;
 	{
 		OArchive oa(str);
 		oa << t;
 	}
+
+	EXPECT_EQ(1, s_save_invoke_count);
+	EXPECT_EQ(0, s_load_invoke_count);
+	
 	{
 		Object tmp;
 		EXPECT_NE(t, tmp);
@@ -81,6 +93,9 @@ void ObjectSplitFreeTest()
 
 		EXPECT_EQ(t, tmp);
 	}
+
+	EXPECT_EQ(1, s_save_invoke_count);
+	EXPECT_EQ(1, s_load_invoke_count);
 }
 
 using ObjectSplitFreeTestTypes = ::testing::Types<

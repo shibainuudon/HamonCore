@@ -47,12 +47,17 @@ private:
 		return !(lhs == rhs);
 	}
 
+public:
+	static int s_save_invoke_count;
+	static int s_load_invoke_count;
+
 private:
 	friend class hamon::serialization::access;
 
 	template <typename Archive>
 	void save(Archive& ar) const
 	{
+		++s_save_invoke_count;
 		ar << a;
 		ar << b;
 		ar << c;
@@ -61,21 +66,32 @@ private:
 	template <typename Archive>
 	void load(Archive& ar)
 	{
+		++s_load_invoke_count;
 		ar >> a;
 		ar >> b;
 		ar >> c;
 	}
 };
 
+int Object::s_save_invoke_count = 0;
+int Object::s_load_invoke_count = 0;
+
 template <typename Stream, typename OArchive, typename IArchive>
 void ObjectSplitMemberTest()
 {
+	Object::s_save_invoke_count = 0;
+	Object::s_load_invoke_count = 0;
+
 	Object t;
 	Stream str;
 	{
 		OArchive oa(str);
 		oa << t;
 	}
+
+	EXPECT_EQ(1, Object::s_save_invoke_count);
+	EXPECT_EQ(0, Object::s_load_invoke_count);
+
 	{
 		Object tmp;
 		EXPECT_NE(t, tmp);
@@ -85,6 +101,9 @@ void ObjectSplitMemberTest()
 
 		EXPECT_EQ(t, tmp);
 	}
+
+	EXPECT_EQ(1, Object::s_save_invoke_count);
+	EXPECT_EQ(1, Object::s_load_invoke_count);
 }
 
 using ObjectSplitMemberTestTypes = ::testing::Types<
