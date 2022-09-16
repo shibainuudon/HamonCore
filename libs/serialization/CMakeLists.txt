@@ -21,6 +21,8 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		concepts
 		config
+		detail
+		type_traits
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
