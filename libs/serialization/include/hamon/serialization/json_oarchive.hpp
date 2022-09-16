@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_JSON_OARCHIVE_HPP
 #define HAMON_SERIALIZATION_JSON_OARCHIVE_HPP
 
+#include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_oarchive_impl.hpp>
 #include <hamon/serialization/detail/save_value.hpp>
 #include <hamon/serialization/string.hpp>
@@ -24,7 +25,7 @@ namespace hamon
 namespace serialization
 {
 
-class json_oarchive
+class json_oarchive : public detail::archive_base
 {
 public:
 	template <typename OStream>

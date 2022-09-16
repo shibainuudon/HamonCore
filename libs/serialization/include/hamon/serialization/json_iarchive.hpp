@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_JSON_IARCHIVE_HPP
 #define HAMON_SERIALIZATION_JSON_IARCHIVE_HPP
 
+#include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -21,7 +22,7 @@ namespace hamon
 namespace serialization
 {
 
-class json_iarchive
+class json_iarchive : public detail::archive_base
 {
 public:
 	template <typename IStream>

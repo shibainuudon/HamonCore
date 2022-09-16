@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
 #define HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
 
+#include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_oarchive_impl.hpp>
 #include <hamon/serialization/detail/save_value.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -21,7 +22,7 @@ namespace hamon
 namespace serialization
 {
 
-class text_oarchive
+class text_oarchive : public detail::archive_base
 {
 public:
 	template <typename OStream>

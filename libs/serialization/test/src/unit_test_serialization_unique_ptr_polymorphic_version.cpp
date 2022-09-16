@@ -8,6 +8,7 @@
 #include <hamon/serialization/base_object.hpp>
 #include <hamon/serialization/class_id.hpp>
 #include <hamon/serialization/export_class.hpp>
+#include <hamon/serialization/version.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -111,7 +112,9 @@ void UniquePtrPolymorphicVersionTest()
 		Stream str;
 		{
 			OArchive oa(str);
-			oa << p1 << p2 << p3;
+			oa << p1;
+			oa << p2;
+			oa << p3;
 
 			EXPECT_EQ(3, Base::instance_count);
 			EXPECT_EQ(2, Derived::instance_count);
@@ -130,7 +133,9 @@ void UniquePtrPolymorphicVersionTest()
 			EXPECT_EQ(3, Base::instance_count);
 			EXPECT_EQ(2, Derived::instance_count);
 
-			ia >> a >> b >> c;
+			ia >> a;
+			ia >> b;
+			ia >> c;
 
 			EXPECT_EQ(6, Base::instance_count);
 			EXPECT_EQ(4, Derived::instance_count);
