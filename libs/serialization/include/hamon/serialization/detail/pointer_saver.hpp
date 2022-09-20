@@ -7,11 +7,13 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_POINTER_SAVER_HPP
 #define HAMON_SERIALIZATION_DETAIL_POINTER_SAVER_HPP
 
+#include <hamon/serialization/detail/construct_data.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
 #include <map>
 #include <string>
 #include <functional>
+#include <type_traits>
 
 namespace hamon
 {
@@ -33,12 +35,22 @@ public:
 	}
 
 private:
-	template <typename T>
+	template <typename T, bool = std::is_default_constructible<T>::value>
 	struct save_func
 	{
 		void operator()(Archive& oa, void const* p) const
 		{
 			oa << make_nvp("value", *(static_cast<T const*>(p)));
+		}
+	};
+
+	template <typename T>
+	struct save_func<T, false>
+	{
+		void operator()(Archive& oa, void const* p) const
+		{
+			hamon::serialization::detail::construct_data<T const> data{static_cast<T const*>(p)};
+			oa << make_nvp("value", data);
 		}
 	};
 

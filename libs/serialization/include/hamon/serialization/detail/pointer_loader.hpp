@@ -7,11 +7,13 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_POINTER_LOADER_HPP
 #define HAMON_SERIALIZATION_DETAIL_POINTER_LOADER_HPP
 
+#include <hamon/serialization/detail/construct_data.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
 #include <map>
 #include <string>
 #include <functional>
+#include <type_traits>
 
 namespace hamon
 {
@@ -33,13 +35,26 @@ public:
 	}
 
 private:
-	template <typename T>
+	template <typename T, bool = std::is_default_constructible<T>::value>
 	struct load_func
 	{
 		void* operator()(Archive& ia) const
 		{
 			auto p = new T();
 			ia >> make_nvp("value", *p);
+			return p;
+		}
+	};
+	
+	template <typename T>
+	struct load_func<T, false>
+	{
+		void* operator()(Archive& ia) const
+		{
+			std::allocator<T> alloc{};
+			T* p = alloc.allocate(1);
+			hamon::serialization::detail::construct_data<T> data{p};
+			ia >> make_nvp("value", data);
 			return p;
 		}
 	};
