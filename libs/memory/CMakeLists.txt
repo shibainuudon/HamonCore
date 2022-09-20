@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE core)
+set(TARGET_NAME_BASE memory)
 
 set(TARGET_NAME hamon_${TARGET_NAME_BASE})
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE})
@@ -14,33 +14,23 @@ project(${TARGET_NAME} LANGUAGES C CXX)
 add_library(${TARGET_NAME} INTERFACE)
 add_library(${TARGET_ALIAS_NAME} ALIAS ${TARGET_NAME})
 
-add_library(${TARGET_NAME}_test INTERFACE)
-add_library(${TARGET_ALIAS_NAME}_test ALIAS ${TARGET_NAME}_test)
-
-set(SUBDIRECTORIES
-	algorithm
-	bit
-	cmath
-	concepts
-	config
-	functional
-	iterator
-	memory
-	preprocessor
-	ranges
-	tuple
-	type_traits
-	utility)
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 include(AddSubLibrary)
 
-add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/libs
-	INTERFACE ${SUBDIRECTORIES})
+add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
+	INTERFACE
+		config
+		common)
 
-foreach(SUBDIRECTORY ${SUBDIRECTORIES})
-	target_link_libraries(${TARGET_NAME}_test INTERFACE Hamon::${SUBDIRECTORY}_test)
-endforeach()
+option(HAMON_BUILD_TESTING "Build tests" ON)
+option(HAMON_COVERAGE "Coverage" OFF)
+
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/include)
+
+add_subdirectory(test)
 
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	if(HAMON_BUILD_TESTING)
