@@ -23,7 +23,7 @@ namespace save_array_detail
 {
 
 template <typename Archive, typename T>
-void save_array(Archive&, T const&, std::size_t) = delete;
+void save_array(Archive&, T const&) = delete;
 
 template <typename... Args>
 struct has_adl_save_array

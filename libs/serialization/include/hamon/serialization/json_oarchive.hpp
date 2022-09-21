@@ -180,18 +180,20 @@ private:
 	}
 
 	template <typename T>
-	friend void save_array(json_oarchive& oa, T const& t, std::size_t size)
+	friend void save_array(json_oarchive& oa, T const& t)
 	{
 		oa.m_impl->put("[\n");
 		oa.increment_indent_level();
-		for (std::size_t i = 0; i < size; ++i)
+		std::size_t i = 0;
+		for (auto const& x : t)
 		{
 			if (i != 0)
 			{
 				oa.m_impl->put(",\n");
 			}
 			oa.m_impl->put(oa.get_indent_string());
-			hamon::serialization::detail::save_value(oa, t[i]);
+			hamon::serialization::detail::save_value(oa, x);
+			++i;
 		}
 		oa.m_impl->put("\n");
 		oa.decrement_indent_level();
@@ -202,7 +204,7 @@ private:
 	template <typename T>
 	friend void save_vector(json_oarchive& oa, T const& t)
 	{
-		save_array(oa, t, t.size());
+		save_array(oa, t);
 	}
 
 	friend void start_save_class(json_oarchive& oa)

@@ -39,7 +39,7 @@ private:
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
 	{
 		ar << t.size();
-		hamon::serialization::detail::save_array(ar, t, t.size());
+		hamon::serialization::detail::save_array(ar, t);
 	}
 
 public:

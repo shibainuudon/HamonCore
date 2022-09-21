@@ -29,26 +29,26 @@ struct load_array_fn
 {
 private:
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<has_adl_load_array<Archive&, T&, std::size_t>::value>>
-	static void impl(Archive& ar, T& t, std::size_t size, hamon::detail::overload_priority<1>)
+		typename = hamon::enable_if_t<has_adl_load_array<Archive&, T&>::value>>
+	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<1>)
 	{
-		load_array(ar, t, size);
+		load_array(ar, t);
 	}
 
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T& t, std::size_t size, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<0>)
 	{
-		for (std::size_t i = 0; i < size; ++i)
+		for (auto& x : t)
 		{
-			ar >> t[i];
+			ar >> x;
 		}
 	}
 
 public:
 	template <typename Archive, typename T>
-	void operator()(Archive& ar, T& t, std::size_t size) const
+	void operator()(Archive& ar, T& t) const
 	{
-		impl(ar, t, size, hamon::detail::overload_priority<1>{});
+		impl(ar, t, hamon::detail::overload_priority<1>{});
 	}
 };
 

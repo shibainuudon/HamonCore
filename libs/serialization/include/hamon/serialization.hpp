@@ -16,6 +16,7 @@
 #include <hamon/serialization/export_class.hpp>
 #include <hamon/serialization/json_iarchive.hpp>
 #include <hamon/serialization/json_oarchive.hpp>
+#include <hamon/serialization/list.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/shared_ptr.hpp>
 #include <hamon/serialization/string.hpp>

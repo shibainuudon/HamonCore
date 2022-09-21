@@ -43,7 +43,7 @@ private:
 		ar >> size;
 
 		t.resize(size);
-		hamon::serialization::detail::load_array(ar, t, size);
+		hamon::serialization::detail::load_array(ar, t);
 	}
 
 public:

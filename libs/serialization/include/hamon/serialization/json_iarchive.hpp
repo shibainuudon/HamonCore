@@ -154,16 +154,18 @@ private:
 	}
 
 	template <typename T>
-	friend void load_array(json_iarchive& ia, T& t, std::size_t size)
+	friend void load_array(json_iarchive& ia, T& t)
 	{
 		ia.m_impl->get_one_char();	// "["
-		for (std::size_t i = 0; i < size; ++i)
+		std::size_t i = 0;
+		for (auto& x : t)
 		{
 			if (i != 0)
 			{
 				ia.m_impl->get_one_char();	// ","
 			}
-			hamon::serialization::detail::load_value(ia, t[i]);
+			hamon::serialization::detail::load_value(ia, x);
+			++i;
 		}
 		ia.m_impl->get_one_char();	// "]"
 	}
