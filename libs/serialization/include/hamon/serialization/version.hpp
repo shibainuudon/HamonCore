@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	version.hpp
  *
- *	@brief	versionの定義
+ *	@brief	version_t の定義
  */
 
 #ifndef HAMON_SERIALIZATION_VERSION_HPP

@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	list.hpp
  *
- *	@brief	listのシリアライズの定義
+ *	@brief	std::list のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_LIST_HPP

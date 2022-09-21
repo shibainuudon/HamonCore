@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unique_ptr.hpp
  *
- *	@brief	unique_ptr のシリアライズの定義
+ *	@brief	std::unique_ptr のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_UNIQUE_PTR_HPP

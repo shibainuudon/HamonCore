@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	weak_ptr.hpp
  *
- *	@brief	weak_ptrのシリアライズの定義
+ *	@brief	std::weak_ptr のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_WEAK_PTR_HPP

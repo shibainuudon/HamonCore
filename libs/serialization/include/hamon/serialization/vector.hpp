@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	vector.hpp
  *
- *	@brief	vectorのシリアライズの定義
+ *	@brief	std::vector のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_VECTOR_HPP

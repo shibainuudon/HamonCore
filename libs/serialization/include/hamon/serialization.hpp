@@ -18,6 +18,7 @@
 #include <hamon/serialization/json_oarchive.hpp>
 #include <hamon/serialization/list.hpp>
 #include <hamon/serialization/nvp.hpp>
+#include <hamon/serialization/pair.hpp>
 #include <hamon/serialization/shared_ptr.hpp>
 #include <hamon/serialization/string.hpp>
 #include <hamon/serialization/text_iarchive.hpp>

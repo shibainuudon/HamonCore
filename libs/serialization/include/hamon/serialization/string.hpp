@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	string.hpp
  *
- *	@brief	stringのシリアライズの定義
+ *	@brief	std::string のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_STRING_HPP

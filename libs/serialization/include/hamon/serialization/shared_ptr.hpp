@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	shared_ptr.hpp
  *
- *	@brief	shared_ptr のシリアライズの定義
+ *	@brief	std::shared_ptr のシリアライズの定義
  */
 
 #ifndef HAMON_SERIALIZATION_SHARED_PTR_HPP
