@@ -76,11 +76,11 @@ public:
 	};
 
 	template <typename T>
-	struct has_member_get_version
+	struct has_member_get_class_version
 	{
 	private:
 		template <typename U,
-			typename R = decltype(std::declval<U>().get_version())
+			typename R = decltype(std::declval<U>().get_class_version())
 		>
 		static auto test(int) -> hamon::convertible_to_t<R, version_t>;
 
@@ -130,9 +130,9 @@ public:
 	}
 
 	template <typename T>
-	static version_t get_version(T const& t)
+	static version_t get_class_version(T const& t)
 	{
-		return static_cast<version_t>(t.get_version());
+		return static_cast<version_t>(t.get_class_version());
 	}
 
 	template <typename T>

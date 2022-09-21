@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/detail/has_adl_load.hpp>
 #include <hamon/serialization/detail/serialize_value.hpp>
+#include <hamon/serialization/detail/load_class_version.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -85,14 +86,8 @@ public:
 	void operator()(Archive& ar, T& t) const
 	{
 		start_load_class(ar);
-
-		version_t version{};
-
-		// version_t を load
-		ar >> make_nvp("version", version);
-
+		auto const version = hamon::serialization::detail::load_class_version(ar, t);
 		impl(ar, t, version, hamon::detail::overload_priority<4>{});
-
 		end_load_class(ar);
 	}
 };

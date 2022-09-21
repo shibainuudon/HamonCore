@@ -19,7 +19,7 @@ namespace hamon_serialization_test
 namespace object_version_free_test
 {
 
-// get_version のオーバーロードなし
+// get_class_version のオーバーロードなし
 class Object1
 {
 public:
@@ -44,7 +44,7 @@ void serialize(Archive& ar, Object1& o, hamon::serialization::version_t version)
 	ar & o.a;
 }
 
-// メンバ関数 get_version
+// メンバ関数 get_class_version
 class Object2
 {
 public:
@@ -64,7 +64,7 @@ private:
 private:
 	friend class hamon::serialization::access;
 
-	constexpr hamon::serialization::version_t get_version() const
+	constexpr hamon::serialization::version_t get_class_version() const
 	{
 		return 1;
 	}
@@ -77,7 +77,7 @@ void serialize(Archive& ar, Object2& o, hamon::serialization::version_t version)
 	ar & o.a;
 }
 
-// フリー関数 get_version
+// フリー関数 get_class_version
 class Object3
 {
 public:
@@ -95,7 +95,7 @@ private:
 	}
 
 private:
-	friend constexpr hamon::serialization::version_t get_version(Object3 const&)
+	friend constexpr hamon::serialization::version_t get_class_version(Object3 const&)
 	{
 		return 2;
 	}

@@ -8,10 +8,9 @@
 #define HAMON_SERIALIZATION_DETAIL_SAVE_CONSTRUCT_DATA_HPP
 
 #include <hamon/serialization/detail/has_adl_save_construct_data.hpp>
-#include <hamon/serialization/detail/get_version.hpp>
 #include <hamon/serialization/detail/always_false.hpp>
+#include <hamon/serialization/detail/save_class_version.hpp>
 #include <hamon/serialization/version.hpp>
-#include <hamon/serialization/nvp.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -59,14 +58,8 @@ public:
 	void operator()(Archive& ar, T const* p) const
 	{
 		start_save_class(ar);
-
-		version_t const version = hamon::serialization::detail::get_version(*p);
-
-		// version_t を save
-		ar << make_nvp("version", version);
-
+		auto const version = hamon::serialization::detail::save_class_version(ar, *p);
 		impl(ar, p, version, hamon::detail::overload_priority<2>{});
-
 		end_save_class(ar);
 	}
 };

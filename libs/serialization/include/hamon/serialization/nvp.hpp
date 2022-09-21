@@ -59,6 +59,13 @@ make_nvp(std::string name, T& t)
 	return nvp<T>(std::move(name), t);
 }
 
+template <typename T>
+inline nvp<T const> const
+make_nvp(std::string name, T const& t)
+{
+	return nvp<T const>(std::move(name), t);
+}
+
 template <typename Archive, typename T>
 void save_value(Archive& oa, nvp<T> const& t)
 {

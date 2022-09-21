@@ -19,7 +19,7 @@ namespace hamon_serialization_test
 namespace object_version_member_test
 {
 
-// get_version のオーバーロードなし
+// get_class_version のオーバーロードなし
 class Object1
 {
 private:
@@ -47,7 +47,7 @@ private:
 	}
 };
 
-// メンバ関数 get_version
+// メンバ関数 get_class_version
 class Object2
 {
 private:
@@ -74,13 +74,13 @@ private:
 		ar & a;
 	}
 
-	constexpr hamon::serialization::version_t get_version() const
+	constexpr hamon::serialization::version_t get_class_version() const
 	{
 		return 3;
 	}
 };
 
-// フリー関数 get_version
+// フリー関数 get_class_version
 class Object3
 {
 private:
@@ -107,7 +107,7 @@ private:
 		ar & a;
 	}
 
-	friend constexpr hamon::serialization::version_t get_version(Object3 const&)
+	friend constexpr hamon::serialization::version_t get_class_version(Object3 const&)
 	{
 		return 4;
 	}

@@ -8,6 +8,7 @@
 #define HAMON_SERIALIZATION_WEAK_PTR_HPP
 
 #include <hamon/serialization/shared_ptr.hpp>
+#include <hamon/serialization/detail/has_class_version.hpp>
 #include <memory>
 
 namespace hamon
@@ -30,6 +31,15 @@ void load(Archive& ia, std::weak_ptr<T>& t)
 	load(ia, sp);
 	t = sp;
 }
+
+namespace detail
+{
+
+template <typename T>
+struct has_class_version<std::weak_ptr<T>>
+	: public std::false_type {};
+
+}	// namespace detail
 
 }	// namespace serialization
 

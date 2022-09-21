@@ -42,7 +42,7 @@ private:
 		ar & o.a;
 	}
 
-	friend constexpr hamon::serialization::version_t get_version(Base const&)
+	friend constexpr hamon::serialization::version_t get_class_version(Base const&)
 	{
 		return 10;
 	}
@@ -79,7 +79,7 @@ private:
 		ar & o.b;
 	}
 
-	friend constexpr hamon::serialization::version_t get_version(Derived const&)
+	friend constexpr hamon::serialization::version_t get_class_version(Derived const&)
 	{
 		return 20;
 	}

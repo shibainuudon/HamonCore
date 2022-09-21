@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/detail/save_pointer.hpp>
 #include <hamon/serialization/detail/load_pointer.hpp>
+#include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <memory>
 
@@ -66,6 +67,15 @@ void save(Archive& oa, std::shared_ptr<T[]> const& t) = delete;
 
 template <typename Archive, typename T>
 void load(Archive& ia, std::shared_ptr<T[]>& t) = delete;
+
+namespace detail
+{
+
+template <typename T>
+struct has_class_version<std::shared_ptr<T>>
+	: public std::false_type {};
+
+}	// namespace detail
 
 }	// namespace serialization
 

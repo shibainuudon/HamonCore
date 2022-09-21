@@ -31,24 +31,24 @@ struct load_pointer_fn
 private:
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<std::is_class<T>::value>>
-	static void impl(Archive& ar, T*& t, hamon::detail::overload_priority<1>)
+	static void impl(Archive& ar, T*& p, hamon::detail::overload_priority<1>)
 	{
-		std::string s;
-		ar >> make_nvp("class_id", s);
-		hamon::serialization::detail::pointer_loader<Archive>::get_instance().load(ar, s, t);
+		std::string id;
+		ar >> make_nvp("class_id", id);
+		hamon::serialization::detail::pointer_loader<Archive>::get_instance().load(ar, id, p);
 	}
 
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T*& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T*& p, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::detail::pointer_loader<Archive>::get_instance().load(ar, "", t);
+		hamon::serialization::detail::pointer_loader<Archive>::get_instance().load(ar, "", p);
 	}
 
 public:
 	template <typename Archive, typename T>
-	void operator()(Archive& ar, T*& t) const
+	void operator()(Archive& ar, T*& p) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<1>{});
+		impl(ar, p, hamon::detail::overload_priority<1>{});
 	}
 };
 

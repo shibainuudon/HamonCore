@@ -8,6 +8,7 @@
 #define HAMON_SERIALIZATION_DETAIL_LOAD_CONSTRUCT_DATA_HPP
 
 #include <hamon/serialization/detail/has_adl_load_construct_data.hpp>
+#include <hamon/serialization/detail/load_class_version.hpp>
 #include <hamon/serialization/detail/always_false.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -58,14 +59,8 @@ public:
 	void operator()(Archive& ar, T* p) const
 	{
 		start_load_class(ar);
-
-		version_t version{};
-
-		// version_t を load
-		ar >> make_nvp("version", version);
-
+		auto const version = hamon::serialization::detail::load_class_version(ar, *p);
 		impl(ar, p, version, hamon::detail::overload_priority<2>{});
-
 		end_load_class(ar);
 	}
 };

@@ -32,24 +32,24 @@ struct save_pointer_fn
 private:
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<std::is_class<T>::value>>
-	static void impl(Archive& ar, T* const& t, hamon::detail::overload_priority<1>)
+	static void impl(Archive& ar, T* const& p, hamon::detail::overload_priority<1>)
 	{
-		std::string s = hamon::serialization::detail::get_class_id(*t);
-		ar << make_nvp("class_id", s);
-		hamon::serialization::detail::pointer_saver<Archive>::get_instance().save(ar, s, t);
+		std::string id = hamon::serialization::detail::get_class_id(*p);
+		ar << make_nvp("class_id", id);
+		hamon::serialization::detail::pointer_saver<Archive>::get_instance().save(ar, id, p);
 	}
 
 	template <typename Archive, typename T>
-	static void impl(Archive& ar, T* const& t, hamon::detail::overload_priority<0>)
+	static void impl(Archive& ar, T* const& p, hamon::detail::overload_priority<0>)
 	{
-		hamon::serialization::detail::pointer_saver<Archive>::get_instance().save(ar, "", t);
+		hamon::serialization::detail::pointer_saver<Archive>::get_instance().save(ar, "", p);
 	}
 
 public:
 	template <typename Archive, typename T>
-	void operator()(Archive& ar, T* const& t) const
+	void operator()(Archive& ar, T* const& p) const
 	{
-		impl(ar, t, hamon::detail::overload_priority<1>{});
+		impl(ar, p, hamon::detail::overload_priority<1>{});
 	}
 };
 
