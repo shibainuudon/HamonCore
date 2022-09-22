@@ -17,6 +17,7 @@
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
+#include <algorithm>
 
 namespace hamon
 {
@@ -38,6 +39,19 @@ public:
 	virtual void load(float&) = 0;
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
+
+	virtual void load_string(std::string&) = 0;
+	virtual void load_string(std::wstring&) = 0;
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+	virtual void load_string(std::u8string&) = 0;
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+	virtual void load_string(std::u16string&) = 0;
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+	virtual void load_string(std::u32string&) = 0;
+#endif
+
 	virtual void load_quoted_string(std::string&) = 0;
 	virtual void load_quoted_string(std::wstring&) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
@@ -95,6 +109,86 @@ public:
 		load_float(t);
 	}
 	
+private:
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2,
+		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
+	>
+	static void load_string_impl_2(
+		std::basic_istream<CharT1, Traits1>& is,
+		std::basic_string<CharT2, Traits2>& s)
+	{
+		std::basic_string<CharT1> tmp;
+		tmp.resize(s.size());
+		is.read(&tmp[0], tmp.size());
+		std::transform(tmp.begin(), tmp.end(), s.begin(),
+			[](CharT1 c){return static_cast<CharT2>(c);});
+	}
+
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2,
+		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
+	>
+	static void load_string_impl_2(
+		std::basic_istream<CharT1, Traits1>& is,
+		std::basic_string<CharT2, Traits2>& s)
+	{
+		std::streamsize count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
+		is.read(reinterpret_cast<CharT1*>(&s[0]), count);
+	}
+
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2
+	>
+	static void load_string_impl(
+		std::basic_istream<CharT1, Traits1>& is,
+		std::basic_string<CharT2, Traits2>& s,
+		bool skip_whitespace)
+	{
+		using istream_type = std::basic_istream<CharT1, Traits1>;
+		const typename istream_type::sentry ok(is, !skip_whitespace);
+
+		if (ok)
+		{
+			load_string_impl_2(is, s);
+		}
+	}
+
+public:
+	void load_string(std::string& str) override
+	{
+		load_string_impl(m_is, str, true);
+	}
+
+	void load_string(std::wstring& str) override
+	{
+		load_string_impl(m_is, str, true);
+	}
+
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+	void load_string(std::u8string& str) override
+	{
+		load_string_impl(m_is, str, true);
+	}
+#endif
+
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+	void load_string(std::u16string& str) override
+	{
+		load_string_impl(m_is, str, true);
+	}
+#endif
+
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+	void load_string(std::u32string& str) override
+	{
+		load_string_impl(m_is, str, true);
+	}
+#endif
+
 	void load_quoted_string(std::string& t) override
 	{
 		load_quoted_string_impl(m_is, t);
@@ -136,8 +230,6 @@ public:
 	}
 
 private:
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4244)	// '引数': 'wchar_t' から 'const CharT' への変換です。データが失われる可能性があります。
 	template <typename T>
 	void load_float(T& t)
 	{
@@ -149,7 +241,10 @@ HAMON_WARNING_DISABLE_MSVC(4244)	// '引数': 'wchar_t' から 'const CharT' へ
 		using char_type = typename IStream::char_type;
 		std::basic_string<char_type> tmp;
 		m_is >> tmp;
-		std::string s(tmp.begin(), tmp.end());
+		std::string s;
+		s.resize(tmp.size());
+		std::transform(tmp.begin(), tmp.end(), s.begin(),
+			[](char_type c){return static_cast<char>(c);});
 		auto first = s.data();
 		auto last  = s.data() + s.length();
 #if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
@@ -157,87 +252,8 @@ HAMON_WARNING_DISABLE_MSVC(4244)	// '引数': 'wchar_t' から 'const CharT' へ
 		m_is.seekg(result.ptr - last, std::ios_base::cur);	// 変換できなかったぶん戻す
 #else
 		char* end;
-		t = std::strtold(first, &end);
+		t = static_cast<T>(std::strtold(first, &end));
 		m_is.seekg(end - last, std::ios_base::cur);	// 変換できなかったぶん戻す
-#endif
-	}
-HAMON_WARNING_POP();
-
-	template <typename CharT, typename Traits>
-	static void load_quoted_string_impl(
-		std::basic_istream<CharT, Traits>& is,
-		std::basic_string<CharT, Traits>& s)
-	{
-#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		is >> std::quoted(s);
-#else
-		std::ios_base::iostate state = std::ios_base::goodbit;
-		const typename std::basic_istream<CharT, Traits>::sentry ok(is);
-
-		if (ok)// state okay, extract characters
-		{
-			try
-			{
-				const auto rdbuf  = is.rdbuf();
-				const auto delim  = Traits::to_int_type('"');
-				const auto escape = Traits::to_int_type('\\');
-				auto c = rdbuf->sgetc();
-
-				if (!Traits::eq_int_type(c, delim))
-				{
-					// no leading delimiter
-					is >> s;
-					return;
-				}
-
-				s.clear();
-				for (;;)
-				{
-					c = rdbuf->snextc();
-					if (Traits::eq_int_type(Traits::eof(), c))
-					{
-						// no trailing delimiter; fail
-						state = std::ios_base::eofbit | std::ios_base::failbit;
-						break;
-					}
-					else if (Traits::eq_int_type(c, escape))
-					{
-						// escape; read next character literally
-						auto c2 = rdbuf->snextc();
-						if (Traits::eq_int_type(Traits::eof(), c2))
-						{
-							// bad escape; fail
-							state = std::ios_base::eofbit | std::ios_base::failbit;
-							break;
-						}
-						if (!Traits::eq_int_type(delim, c2))
-						{
-							s.push_back(Traits::to_char_type(c));
-						}
-						c = c2;
-					}
-					else if (Traits::eq_int_type(c, delim))
-					{
-						// found trailing delimiter
-						if (Traits::eq_int_type(Traits::eof(), rdbuf->sbumpc()))
-						{
-							// consume trailing delimiter
-							state = std::ios_base::eofbit;
-						}
-
-						break;
-					}
-
-					s.push_back(Traits::to_char_type(c));
-				}
-			}
-			catch (...)
-			{
-				is.setstate(std::ios_base::badbit);
-			}
-		}
-
-		is.setstate(state);
 #endif
 	}
 
@@ -249,72 +265,41 @@ HAMON_WARNING_POP();
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s)
 	{
-		std::ios_base::iostate state = std::ios_base::goodbit;
-		const typename std::basic_istream<CharT1, Traits1>::sentry ok(is);
-		if (ok)
+#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
+		is >> std::quoted(s);
+#else
+		using String = std::basic_string<CharT2, Traits2>;
+		auto const delim  = String(1, '"');
+		auto const escape = String(1, '\\');
+
+		String tmp;
+		tmp.resize(1);
+		load_string_impl(is, tmp, true);
+
+		if (tmp != delim)
 		{
-			auto const delim  = CharT1('\"');
-			auto const escape = CharT1('\\');
-
-			auto const rdbuf = is.rdbuf();
-			auto c = rdbuf->sgetc();
-			if (c != delim)
-			{
-				//is >> s;
-				// TODO: delim から始まっていなければエラー
-				return;
-			}
-
-			for (;;)
-			{
-				c = rdbuf->snextc();
-
-				if (c == Traits1::eof())
-				{
-					state = std::ios_base::eofbit |
-					        std::ios_base::failbit;
-					break;
-				}
-
-				if (c == delim)
-				{
-					c = rdbuf->sbumpc();
-					if (c == Traits1::eof())
-					{
-						state = std::ios_base::eofbit;
-					}
-					break;
-				}
-
-				// "\x"の後に16進数で文字コードが入っている
-
-				if (c == escape)
-				{
-					c = rdbuf->snextc();
-					if (c == Traits1::eof())
-					{
-						state = std::ios_base::eofbit |
-								std::ios_base::failbit;
-						break;
-					}
-
-					// TODO: c == 'x' のはずなのでチェックする
-				}
-
-				char buf[sizeof(CharT2) * 2 + 1]{};
-				for (std::size_t i = 0; i < sizeof(CharT2) * 2; ++i)
-				{
-					c = rdbuf->snextc();
-					buf[i] = static_cast<char>(c);
-				}
-				auto ul = std::strtoul(buf, nullptr, 16);
-				s += static_cast<CharT2>(ul);
-			}
+			return;
 		}
 
-		is.setstate(state);
+		for (;;)
+		{
+			load_string_impl(is, tmp, false);
+			if (tmp == delim)
+			{
+				break;
+			}
+
+			s += tmp;
+
+			if (tmp == escape)
+			{
+				load_string_impl(is, tmp, false);
+				s += tmp;
+			}
+		}
+#endif
 	}
-	
+
 	template <typename CharT, typename Traits>
 	static CharT get_one_char_impl(
 		std::basic_istream<CharT, Traits>& is)

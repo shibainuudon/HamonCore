@@ -74,7 +74,10 @@ private:
 	template <typename T>
 	friend void load_string(text_iarchive& ia, T& t)
 	{
-		ia.m_impl->load_quoted_string(t);
+		std::size_t length;
+		ia >> length;
+		t.resize(length);
+		ia.m_impl->load_string(t);
 	}
 
 private:

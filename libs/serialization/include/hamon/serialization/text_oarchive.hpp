@@ -71,7 +71,8 @@ private:
 	template <typename T>
 	friend void save_string(text_oarchive& oa, T const& t)
 	{
-		oa.m_impl->save_quoted_string(t);
+		oa << t.length();
+		oa.m_impl->save_string(t);
 	}
 
 private:

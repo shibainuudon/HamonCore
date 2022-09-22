@@ -130,7 +130,7 @@ private:
 		{
 			switch (c)
 			{
-			case '"':  result += c; break;
+			case '"':  result += '\\'; result += '"';  break;
 			case '\\': result += '\\'; result += '\\'; break;
 			case '/':  result += '\\'; result += '/';  break;
 			case '\b': result += '\\'; result += 'b';  break;
@@ -144,10 +144,20 @@ private:
 		return result;
 	}
 
+	template <typename CharT>
+	static std::basic_string<CharT> quote(std::basic_string<CharT> const& str)
+	{
+		return
+			std::basic_string<CharT>(1, CharT('"')) +
+			str +
+			std::basic_string<CharT>(1, CharT('"'));
+	}
+
 private:
 	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
 	void save_arithmetic_impl(T const& t, hamon::detail::overload_priority<2>)
 	{
+		// TODO: inf, nan のときはダブルコーテーションでクォートする
 		m_impl->save(t);
 	}
 	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
@@ -175,8 +185,7 @@ private:
 	template <typename T>
 	friend void save_string(json_oarchive& oa, T const& t)
 	{
-		auto escaped_str = escape(t);
-		oa.m_impl->save_quoted_string(escaped_str);
+		oa.m_impl->save_string(quote(escape(t)));
 	}
 
 	template <typename T>

@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/config.hpp>
+#include <algorithm>
 #include <cstdint>
 #include <cstddef>
 #include <string>
@@ -41,16 +42,17 @@ public:
 	virtual void save(float) = 0;
 	virtual void save(double) = 0;
 	virtual void save(long double) = 0;
-	virtual void save_quoted_string(std::string const&) = 0;
-	virtual void save_quoted_string(std::wstring const&) = 0;
+
+	virtual void save_string(std::string const&) = 0;
+	virtual void save_string(std::wstring const&) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void save_quoted_string(std::u8string const&) = 0;
+	virtual void save_string(std::u8string const&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void save_quoted_string(std::u16string const&) = 0;
+	virtual void save_string(std::u16string const&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void save_quoted_string(std::u32string const&) = 0;
+	virtual void save_string(std::u32string const&) = 0;
 #endif
 
 	virtual void put(const char*) = 0;
@@ -97,36 +99,69 @@ public:
 	{
 		save_float_impl(t);
 	}
-	
-	void save_quoted_string(std::string const& t) override
+
+private:
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2,
+		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
+	>
+	static void save_string_impl(
+		std::basic_ostream<CharT1, Traits1>& os,
+		std::basic_string<CharT2, Traits2> const& s)
 	{
-		save_quoted_string_impl(m_os, t);
+		std::basic_string<CharT1> tmp;
+		tmp.resize(s.size());
+		std::transform(s.begin(), s.end(), tmp.begin(),
+			[](CharT2 c){return static_cast<CharT1>(c);});
+		os.write(tmp.c_str(), tmp.size());
 	}
 
-	void save_quoted_string(std::wstring const& t) override
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2,
+		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
+	>
+	static void save_string_impl(
+		std::basic_ostream<CharT1, Traits1>& os,
+		std::basic_string<CharT2, Traits2> const& s)
 	{
-		save_quoted_string_impl(m_os, t);
+		std::streamsize count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
+		os.write(reinterpret_cast<CharT1 const*>(s.data()), count);
+	}
+
+public:
+	void save_string(std::string const& str) override
+	{
+		save_string_impl(m_os, str);
+	}
+
+	void save_string(std::wstring const& str) override
+	{
+		save_string_impl(m_os, str);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void save_quoted_string(std::u8string const& t) override
+	void save_string(std::u8string const& str) override
 	{
-		save_quoted_string_impl(m_os, t);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void save_quoted_string(std::u16string const& t) override
-	{
-		save_quoted_string_impl(m_os, t);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void save_quoted_string(std::u32string const& t) override
-	{
-		save_quoted_string_impl(m_os, t);
+		save_string_impl(m_os, str);
 	}
 #endif
 
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+	void save_string(std::u16string const& str) override
+	{
+		save_string_impl(m_os, str);
+	}
+#endif
+
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+	void save_string(std::u32string const& str) override
+	{
+		save_string_impl(m_os, str);
+	}
+#endif
+	
 	void put(const char* s) override
 	{
 		m_os << s;
@@ -172,123 +207,6 @@ private:
 			<< std::scientific << t;
 		m_os.flags(flags);
 #endif
-	}
-
-	template <typename CharT, typename Traits>
-	static void save_quoted_string_impl(
-		std::basic_ostream<CharT, Traits>& os,
-		std::basic_string<CharT, Traits> const& s)
-	{
-#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		os << std::quoted(s);
-#else
-		const typename std::basic_ostream<CharT, Traits>::sentry ok(os);
-		if (!ok)
-		{
-			os.setstate(std::ios_base::badbit);
-			return;
-		}
-		
-		std::ios_base::iostate state = std::ios_base::goodbit;
-
-		auto const delim  = CharT('\"');
-		auto const escape = CharT('\\');
-
-		auto const rdbuf = os.rdbuf();
-
-		auto sputc = [&rdbuf, &state](CharT c)
-		{
-			if (state == std::ios_base::goodbit &&
-				rdbuf->sputc(c) == Traits::eof())
-			{
-				state |= std::ios_base::badbit;
-				return false;
-			}
-			return true;
-		};
-
-		sputc(delim);
-
-		for (auto c : s)
-		{
-			if (c == delim)// || c == escape)
-			{
-				if (!sputc(escape))
-				{
-					break;
-				}
-			}
-			
-			if (!sputc(c))
-			{
-				break;
-			}
-		}
-
-		sputc(delim);
-
-		os.width(0);
-		os.setstate(state);
-#endif
-	}
-
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
-	>
-	static void save_quoted_string_impl(
-		std::basic_ostream<CharT1, Traits1>& os,
-		std::basic_string<CharT2, Traits2> const& s)
-	{
-		auto const delim  = CharT1('\"');
-		auto const escape = CharT1('\\');
-		auto const zero   = CharT1('0');
-
-		os << delim;
-		for (auto c : s)
-		{
-			// "\x"の後に16進数で文字コードを出力する
-			os << escape;
-			os << "x";
-
-			// c を符号なし整数型として出力したい。
-			// ただし、unsigned char型はoperator<<が特殊な動作をするので、
-			// (符号拡張を避けながら)uint64_t型にキャストする。
-			using unsigned_type =
-				hamon::conditional_t<sizeof(CharT2) == 1, std::uint8_t,
-				hamon::conditional_t<sizeof(CharT2) == 2, std::uint16_t,
-				hamon::conditional_t<sizeof(CharT2) == 4, std::uint32_t,
-				std::uint64_t
-			>>>;
-			auto const t = std::uint64_t(unsigned_type(c));
-			constexpr auto digits = sizeof(CharT2) * 2;
-
-#if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L)
-			// to_charsを使うパターン
-			std::array<char, digits + 1> buf{};
-			auto result = std::to_chars(buf.data(), buf.data() + buf.size(), t, 16);
-			// 先頭を'0'で埋める
-			for (std::size_t i = 0; i < digits - (result.ptr - buf.data()); ++i)
-			{
-				os << zero;
-			}
-			os << buf.data();
-#elif 0
-			// snprintfを使うパターン
-			std::array<char, 5> fmt{};	// フォーマット文字列。"%02x"など。
-			std::snprintf(fmt.data(), fmt.size(), "%%0%dx", (int)digits);
-			std::array<char, digits + 1> buf{};
-			std::snprintf(buf.data(), buf.size(), fmt.data(), c);
-			os << buf.data();
-#else
-			// operator<<を使うパターン
-			auto const old_flags = os.flags();
-			os << std::hex << std::right << std::setw(digits)
-			   << std::setfill(zero) << t;
-			os.flags(old_flags);
-#endif
-		}
-		os << delim;
 	}
 
 private:
