@@ -15,6 +15,8 @@
 #include <hamon/serialization/json_oarchive.hpp>
 #include <hamon/serialization/text_iarchive.hpp>
 #include <hamon/serialization/text_oarchive.hpp>
+#include <hamon/serialization/xml_iarchive.hpp>
+#include <hamon/serialization/xml_oarchive.hpp>
 
 namespace hamon
 {
@@ -30,10 +32,12 @@ struct class_exporter
 		hamon::serialization::detail::pointer_saver<binary_oarchive>::get_instance().template register_class<T>();
 		hamon::serialization::detail::pointer_saver<text_oarchive>::get_instance().template register_class<T>();
 		hamon::serialization::detail::pointer_saver<json_oarchive>::get_instance().template register_class<T>();
+		hamon::serialization::detail::pointer_saver<xml_oarchive>::get_instance().template register_class<T>();
 
 		hamon::serialization::detail::pointer_loader<binary_iarchive>::get_instance().template register_class<T>();
 		hamon::serialization::detail::pointer_loader<text_iarchive>::get_instance().template register_class<T>();
 		hamon::serialization::detail::pointer_loader<json_iarchive>::get_instance().template register_class<T>();
+		hamon::serialization::detail::pointer_loader<xml_iarchive>::get_instance().template register_class<T>();
 	}
 };
 

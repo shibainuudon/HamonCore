@@ -76,8 +76,7 @@ private:
 	{
 		std::size_t length;
 		ia >> length;
-		t.resize(length);
-		ia.m_impl->load_string(t);
+		ia.m_impl->load_string(t, length);
 	}
 
 private:

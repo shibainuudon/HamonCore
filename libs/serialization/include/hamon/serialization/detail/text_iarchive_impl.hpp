@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <cstdint>
 #include <cstdlib>	// strtold
@@ -33,6 +34,9 @@ class text_iarchive_impl_base
 public:
 	virtual ~text_iarchive_impl_base() {}
 
+	virtual std::streampos tellg(void) = 0;
+	virtual void seekg(std::streampos pos) = 0;
+
 	virtual void load(bool&) = 0;
 	virtual void load(std::intmax_t&) = 0;
 	virtual void load(std::uintmax_t&) = 0;
@@ -40,30 +44,47 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-	virtual void load_string(std::string&) = 0;
-	virtual void load_string(std::wstring&) = 0;
+	virtual void load_string(std::string&, std::size_t length) = 0;
+	virtual void load_string(std::wstring&, std::size_t length) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_string(std::u8string&) = 0;
+	virtual void load_string(std::u8string&, std::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_string(std::u16string&) = 0;
+	virtual void load_string(std::u16string&, std::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_string(std::u32string&) = 0;
+	virtual void load_string(std::u32string&, std::size_t length) = 0;
 #endif
 
-	virtual void load_quoted_string(std::string&) = 0;
-	virtual void load_quoted_string(std::wstring&) = 0;
+public:
+	template <typename CharT, typename Traits>
+	void load_quoted_string(
+		std::basic_string<CharT, Traits>& s,
+		CharT leading_delim  = CharT('"'),
+		CharT trailing_delim = CharT('"'))
+	{
+		vload_quoted_string(s, leading_delim, trailing_delim);
+	}
+
+private:
+	virtual void vload_quoted_string(
+		std::string&, char, char) = 0;
+	virtual void vload_quoted_string(
+		std::wstring&, wchar_t, wchar_t) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_quoted_string(std::u8string&) = 0;
+	virtual void vload_quoted_string(
+		std::u8string&, char8_t, char8_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_quoted_string(std::u16string&) = 0;
+	virtual void vload_quoted_string(
+		std::u16string&, char16_t, char16_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_quoted_string(std::u32string&) = 0;
+	virtual void vload_quoted_string(
+		std::u32string&, char32_t, char32_t) = 0;
 #endif
 
+public:
 	virtual char get_one_char() = 0;
 	virtual void unget_one_char() = 0;
 };
@@ -76,6 +97,16 @@ public:
 	explicit text_iarchive_impl(IStream& is)
 		: m_is(is)
 	{}
+	
+	std::streampos tellg(void) override
+	{
+		return m_is.tellg();
+	}
+
+	void seekg(std::streampos pos) override
+	{
+		m_is.seekg(pos);
+	}
 
 	void load(bool& t) override
 	{
@@ -112,30 +143,34 @@ public:
 private:
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
-		hamon::enable_if_t<(sizeof(CharT1) > sizeof(CharT2))>* = nullptr
+		typename CharT2, typename Traits2
 	>
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s)
+		std::basic_string<CharT2, Traits2>& s,
+		std::size_t length,
+		std::true_type)
 	{
 		std::basic_string<CharT1> tmp;
-		tmp.resize(s.size());
+		tmp.resize(length);
 		is.read(&tmp[0], tmp.size());
+		s.resize(length);
 		std::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](CharT1 c){return static_cast<CharT2>(c);});
 	}
 
 	template <
 		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2,
-		hamon::enable_if_t<sizeof(CharT1) <= sizeof(CharT2)>* = nullptr
+		typename CharT2, typename Traits2
 	>
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s)
+		std::basic_string<CharT2, Traits2>& s,
+		std::size_t length,
+		std::false_type)
 	{
-		std::streamsize count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
+		std::streamsize count = (length * sizeof(CharT2)) / sizeof(CharT1);
+		s.resize(length);
 		is.read(reinterpret_cast<CharT1*>(&s[0]), count);
 	}
 
@@ -146,6 +181,7 @@ private:
 	static void load_string_impl(
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
+		std::size_t length,
 		bool skip_whitespace)
 	{
 		using istream_type = std::basic_istream<CharT1, Traits1>;
@@ -153,80 +189,152 @@ private:
 
 		if (ok)
 		{
-			load_string_impl_2(is, s);
+			load_string_impl_2(is, s, length,
+				hamon::bool_constant<(sizeof(CharT1) > sizeof(CharT2))>{});
 		}
 	}
 
+private:
+	template <
+		typename CharT1, typename Traits1,
+		typename CharT2, typename Traits2
+	>
+	static void load_quoted_string_impl(
+		std::basic_istream<CharT1, Traits1>& is,
+		std::basic_string<CharT2, Traits2>& s,
+		CharT2 leading_delim,
+		CharT2 trailing_delim)
+	{
+#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
+		is >> std::quoted(s);
+#else
+		using String = std::basic_string<CharT2, Traits2>;
+		auto const leading_delim_str  = String(1, leading_delim);
+		auto const trailing_delim_str = String(1, trailing_delim);
+		auto const escape = String(1, '\\');
+
+		String tmp;
+		load_string_impl(is, tmp, 1, true);
+
+		if (tmp != leading_delim_str)
+		{
+			return;
+		}
+
+		for (;;)
+		{
+			load_string_impl(is, tmp, 1, false);
+			if (tmp == trailing_delim_str)
+			{
+				break;
+			}
+
+			s += tmp;
+
+			if (tmp == escape)
+			{
+				load_string_impl(is, tmp, 1, false);
+				s += tmp;
+			}
+		}
+#endif
+	}
+
 public:
-	void load_string(std::string& str) override
+	void vload_quoted_string(
+		std::string& t,
+		char leading_delim,
+		char trailing_delim) override
 	{
-		load_string_impl(m_is, str, true);
+		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
 	}
 
-	void load_string(std::wstring& str) override
+	void vload_quoted_string(
+		std::wstring& t,
+		wchar_t leading_delim,
+		wchar_t trailing_delim) override
 	{
-		load_string_impl(m_is, str, true);
+		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_string(std::u8string& str) override
+	void vload_quoted_string(
+		std::u8string& t,
+		char8_t leading_delim,
+		char8_t trailing_delim) override
 	{
-		load_string_impl(m_is, str, true);
+		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+	}
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+	void vload_quoted_string(
+		std::u16string& t,
+		char16_t leading_delim,
+		char16_t trailing_delim) override
+	{
+		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+	}
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+	void vload_quoted_string(
+		std::u32string& t,
+		char32_t leading_delim,
+		char32_t trailing_delim) override
+	{
+		load_quoted_string_impl(m_is, t, leading_delim, trailing_delim);
+	}
+#endif
+
+public:
+	void load_string(std::string& str, std::size_t length) override
+	{
+		load_string_impl(m_is, str, length, true);
+	}
+
+	void load_string(std::wstring& str, std::size_t length) override
+	{
+		load_string_impl(m_is, str, length, true);
+	}
+
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+	void load_string(std::u8string& str, std::size_t length) override
+	{
+		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_string(std::u16string& str) override
+	void load_string(std::u16string& str, std::size_t length) override
 	{
-		load_string_impl(m_is, str, true);
+		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_string(std::u32string& str) override
+	void load_string(std::u32string& str, std::size_t length) override
 	{
-		load_string_impl(m_is, str, true);
+		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
-	void load_quoted_string(std::string& t) override
-	{
-		load_quoted_string_impl(m_is, t);
-	}
-
-	void load_quoted_string(std::wstring& t) override
-	{
-		load_quoted_string_impl(m_is, t);
-	}
-
-#if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_quoted_string(std::u8string& t) override
-	{
-		load_quoted_string_impl(m_is, t);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_quoted_string(std::u16string& t) override
-	{
-		load_quoted_string_impl(m_is, t);
-	}
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_quoted_string(std::u32string& t) override
-	{
-		load_quoted_string_impl(m_is, t);
-	}
-#endif
-	
+public:
 	char get_one_char() override
 	{
 		return static_cast<char>(get_one_char_impl(m_is));
 	}
 
+private:
+	template <typename CharT1, typename Traits1>
+	static void unget_one_char_impl(
+		std::basic_istream<CharT1, Traits1>& is)
+	{
+		is.rdbuf()->sungetc();
+	}
+
+public:
 	void unget_one_char() override
 	{
-		auto const rdbuf = m_is.rdbuf();
-		rdbuf->sungetc();
+		unget_one_char_impl(m_is);
 	}
 
 private:
@@ -254,49 +362,6 @@ private:
 		char* end;
 		t = static_cast<T>(std::strtold(first, &end));
 		m_is.seekg(end - last, std::ios_base::cur);	// 変換できなかったぶん戻す
-#endif
-	}
-
-	template <
-		typename CharT1, typename Traits1,
-		typename CharT2, typename Traits2
-	>
-	static void load_quoted_string_impl(
-		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s)
-	{
-#if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
-		is >> std::quoted(s);
-#else
-		using String = std::basic_string<CharT2, Traits2>;
-		auto const delim  = String(1, '"');
-		auto const escape = String(1, '\\');
-
-		String tmp;
-		tmp.resize(1);
-		load_string_impl(is, tmp, true);
-
-		if (tmp != delim)
-		{
-			return;
-		}
-
-		for (;;)
-		{
-			load_string_impl(is, tmp, false);
-			if (tmp == delim)
-			{
-				break;
-			}
-
-			s += tmp;
-
-			if (tmp == escape)
-			{
-				load_string_impl(is, tmp, false);
-				s += tmp;
-			}
-		}
 #endif
 	}
 

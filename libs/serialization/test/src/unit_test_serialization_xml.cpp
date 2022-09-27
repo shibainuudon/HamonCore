@@ -1,30 +1,22 @@
 ﻿/**
- *	@file	unit_test_serialization_json.cpp
+ *	@file	unit_test_serialization_xml.cpp
  *
- *	@brief	JSONシリアライズのテスト
+ *	@brief	XMLシリアライズのテスト
  */
 
-#include <hamon/serialization/json_iarchive.hpp>
-#include <hamon/serialization/json_oarchive.hpp>
+#include <hamon/serialization/xml_iarchive.hpp>
+#include <hamon/serialization/xml_oarchive.hpp>
+#include <hamon/serialization/array.hpp>
 #include <hamon/serialization/string.hpp>
 #include <hamon/serialization/vector.hpp>
-#include <hamon/serialization/array.hpp>
-#include <hamon/serialization/nvp.hpp>
-#include <hamon/serialization/access.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <tuple>
-#include <sstream>
-#include <limits>
-#include <array>
-#include <vector>
-#include <string>
 #include "serialization_test_utility.hpp"
 
 namespace hamon_serialization_test
 {
 
-namespace json_test
+namespace xml_test
 {
 
 struct Point
@@ -49,7 +41,7 @@ template <typename Archive>
 inline void serialize(Archive& ar, Point& o)
 {
 	ar & hamon::serialization::make_nvp("x", o.x);
-	ar & o.y;
+	ar & hamon::serialization::make_nvp("y", o.y);
 }
 
 class Object
@@ -96,7 +88,7 @@ private:
 };
 
 template <typename Stream, typename OArchive, typename IArchive>
-void JsonTest()
+void XmlTest()
 {
 	Object obj;
 	obj.a = 10;
@@ -118,7 +110,7 @@ void JsonTest()
 		float const d = std::numeric_limits<float>::infinity();
 		bool const e = false;
 		std::string const f = "hello world";
-		std::string const g = "A\"B\\C/D\bE\fF\nG\rH\tI";
+		std::string const g = "A\"B\'C<DE>F&G";
 		std::array<int, 5> const h = {1, 1, 2, 3, 5};
 		float const i[2][3] =
 		{
@@ -139,65 +131,68 @@ void JsonTest()
 		oa << hamon::serialization::make_nvp("i", i);
 		oa << hamon::serialization::make_nvp("obj", obj);
 	}
+
 	std::string expected =
-R"({
-    "value0": 3,
-    "b": 1.5,
-    "value1": true,
-    "value2": inf,
-    "e": false,
-    "f": "hello world",
-    "value3": "A\"B\\C\/D\bE\fF\nG\rH\tI",
-    "h": [
-        1,
-        1,
-        2,
-        3,
-        5
-    ],
-    "i": [
-        [
-            0.5,
-            -0.5,
-            1.5
-        ],
-        [
-            -1.5,
-            2.5,
-            -2.5
-        ]
-    ],
-    "obj": {
-        "version": 0,
-        "value0": 10,
-        "b": 12.5,
-        "value1": "The quick brown fox",
-        "d": {
-            "version": 0,
-            "x": 1,
-            "value0": 2
-        },
-        "e": [
-            3,
-            1,
-            4,
-            1,
-            5
-        ],
-        "f": [
-            [
-                "Foo",
-                "Bar"
-            ],
-            [
-                "Fizz",
-                "Buzz",
-                "FizzBuzz"
-            ]
-        ]
-    }
-})";
+R"(<?xml version="1.0"?>
+<serialization>
+    <value0>3</value0>
+    <b>1.5</b>
+    <value1>true</value1>
+    <value2>inf</value2>
+    <e>false</e>
+    <f>hello world</f>
+    <value3>A&quot;B&apos;C&lt;DE&gt;F&amp;G</value3>
+    <h>
+        <value0>1</value0>
+        <value1>1</value1>
+        <value2>2</value2>
+        <value3>3</value3>
+        <value4>5</value4>
+    </h>
+    <i>
+        <value0>
+            <value0>0.5</value0>
+            <value1>-0.5</value1>
+            <value2>1.5</value2>
+        </value0>
+        <value1>
+            <value0>-1.5</value0>
+            <value1>2.5</value1>
+            <value2>-2.5</value2>
+        </value1>
+    </i>
+    <obj>
+        <version>0</version>
+        <value0>10</value0>
+        <b>12.5</b>
+        <value1>The quick brown fox</value1>
+        <d>
+            <version>0</version>
+            <x>1</x>
+            <y>2</y>
+        </d>
+        <e>
+            <value0>3</value0>
+            <value1>1</value1>
+            <value2>4</value2>
+            <value3>1</value3>
+            <value4>5</value4>
+        </e>
+        <f>
+            <value0>
+                <value0>Foo</value0>
+                <value1>Bar</value1>
+            </value0>
+            <value1>
+                <value0>Fizz</value0>
+                <value1>Buzz</value1>
+                <value2>FizzBuzz</value2>
+            </value1>
+        </f>
+    </obj>
+</serialization>)";
 	EXPECT_EQ(expected, str.str());
+
 	{
 		int a;
 		float b;
@@ -213,13 +208,13 @@ R"({
 		IArchive ia(str);
 
 		ia >> a;
-		ia >> b;
+		ia >> hamon::serialization::make_nvp("b", b);
 		ia >> c;
 		ia >> d;
 		ia >> e;
 		ia >> f;
 		ia >> g;
-		ia >> h;
+		ia >> hamon::serialization::make_nvp("h", h);
 		ia >> i;
 		ia >> j;
 
@@ -229,7 +224,7 @@ R"({
 		EXPECT_EQ(d, std::numeric_limits<float>::infinity());
 		EXPECT_EQ(e, false);
 		EXPECT_EQ(f, "hello world");
-		EXPECT_EQ(g, "A\"B\\C/D\bE\fF\nG\rH\tI");
+		EXPECT_EQ(g, "A\"B\'C<DE>F&G");
 		EXPECT_EQ(h[0], 1);
 		EXPECT_EQ(h[1], 1);
 		EXPECT_EQ(h[2], 2);
@@ -245,24 +240,24 @@ R"({
 	}
 }
 
-using JsonTestTypes = ::testing::Types<
-	std::tuple<std::stringstream,  hamon::serialization::json_oarchive,   hamon::serialization::json_iarchive>
+using XmlTestTypes = ::testing::Types<
+	std::tuple<std::stringstream, hamon::serialization::xml_oarchive, hamon::serialization::xml_iarchive>
 >;
 
 template <typename T>
-class SerializationJsonTest : public ::testing::Test {};
+class SerializationXmlTest : public ::testing::Test {};
 
-TYPED_TEST_SUITE(SerializationJsonTest, JsonTestTypes);
+TYPED_TEST_SUITE(SerializationXmlTest, XmlTestTypes);
 
-TYPED_TEST(SerializationJsonTest, JsonTest)
+TYPED_TEST(SerializationXmlTest, XmlTest)
 {
 	using Stream   = typename std::tuple_element<0, TypeParam>::type;
 	using OArchive = typename std::tuple_element<1, TypeParam>::type;
 	using IArchive = typename std::tuple_element<2, TypeParam>::type;
 
-	JsonTest<Stream, OArchive, IArchive>();
+	XmlTest<Stream, OArchive, IArchive>();
 }
 
-}	// namespace json_test
+}	// namespace xml_test
 
 }	// namespace hamon_serialization_test
