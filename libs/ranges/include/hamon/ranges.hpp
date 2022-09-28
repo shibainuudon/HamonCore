@@ -10,5 +10,7 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/iterator_t.hpp>
+#include <hamon/ranges/views.hpp>
 
 #endif // HAMON_RANGES_HPP
