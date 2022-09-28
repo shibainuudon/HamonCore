@@ -11,6 +11,7 @@
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/incrementable.hpp>
+#include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
