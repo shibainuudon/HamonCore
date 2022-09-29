@@ -4,7 +4,7 @@
  *	@brief	base64 のテスト
  */
 
-#include <hamon/base64.hpp>
+#include <hamon/base64/base64.hpp>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
