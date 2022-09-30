@@ -19,6 +19,7 @@
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/invocable.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/regular.hpp>
