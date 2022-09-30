@@ -14,4 +14,5 @@
 ## 依存ライブラリ
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.Memory
 * Hamon.TypeTraits
