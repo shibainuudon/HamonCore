@@ -10,6 +10,7 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
+#include <hamon/concepts/common_with.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
