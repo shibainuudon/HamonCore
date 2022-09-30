@@ -28,6 +28,7 @@
 #include <hamon/concepts/predicate.hpp>
 #include <hamon/concepts/regular.hpp>
 #include <hamon/concepts/regular_invocable.hpp>
+#include <hamon/concepts/relation.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/signed_integral.hpp>
