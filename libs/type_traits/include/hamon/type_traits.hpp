@@ -21,6 +21,7 @@
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/copy_cv.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/float_promote.hpp>
