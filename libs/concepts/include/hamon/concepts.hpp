@@ -33,7 +33,7 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/signed_integral.hpp>
-//#include <hamon/concepts/strict_weak_order.hpp>
+#include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/swappable.hpp>
 //#include <hamon/concepts/swappable_with.hpp>
