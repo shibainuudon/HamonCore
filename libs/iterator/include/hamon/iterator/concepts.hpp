@@ -15,7 +15,7 @@
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/concepts/indirect_equivalence_relation.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
-//#include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
+#include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
 //#include <hamon/iterator/concepts/indirectly_comparable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 //#include <hamon/iterator/concepts/indirectly_copyable_storable.hpp>
