@@ -19,7 +19,7 @@
 //#include <hamon/iterator/concepts/indirectly_comparable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable_storable.hpp>
-//#include <hamon/iterator/concepts/indirectly_movable.hpp>
+#include <hamon/iterator/concepts/indirectly_movable.hpp>
 //#include <hamon/iterator/concepts/indirectly_movable_storable.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 //#include <hamon/iterator/concepts/indirectly_regular_unary_invocable.hpp>
