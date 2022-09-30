@@ -36,7 +36,7 @@
 #include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/swappable.hpp>
-//#include <hamon/concepts/swappable_with.hpp>
+#include <hamon/concepts/swappable_with.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 //#include <hamon/concepts/totally_ordered_with.hpp>
 //#include <hamon/concepts/unsigned_integral.hpp>
