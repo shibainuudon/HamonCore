@@ -20,6 +20,7 @@
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
+#include <hamon/concepts/equivalence_relation.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/invocable.hpp>
@@ -32,8 +33,12 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/signed_integral.hpp>
+//#include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/swappable.hpp>
+//#include <hamon/concepts/swappable_with.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
+//#include <hamon/concepts/totally_ordered_with.hpp>
+//#include <hamon/concepts/unsigned_integral.hpp>
 
 #endif // HAMON_CONCEPTS_HPP
