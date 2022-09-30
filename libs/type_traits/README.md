@@ -15,3 +15,4 @@ C++標準ライブラリの`<type_traits>`を拡張・改良します。
 
 ## 依存ライブラリ
 * Hamon.Config
+* Hamon.Preprocessor
