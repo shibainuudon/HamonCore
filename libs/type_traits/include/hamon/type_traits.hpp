@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/add_cv.hpp>
+#include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/add_volatile.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
