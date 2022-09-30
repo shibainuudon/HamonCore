@@ -22,7 +22,7 @@
 #include <hamon/iterator/concepts/indirectly_movable.hpp>
 #include <hamon/iterator/concepts/indirectly_movable_storable.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
-//#include <hamon/iterator/concepts/indirectly_regular_unary_invocable.hpp>
+#include <hamon/iterator/concepts/indirectly_regular_unary_invocable.hpp>
 //#include <hamon/iterator/concepts/indirectly_swappable.hpp>
 //#include <hamon/iterator/concepts/indirectly_unary_invocable.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
