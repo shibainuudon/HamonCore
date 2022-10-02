@@ -22,6 +22,7 @@ using std::destroy_at;
 
 #else
 
+#include <hamon/memory/addressof.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -44,7 +45,7 @@ inline void destroy_at_impl(T* p, std::true_type)
 {
 	for (auto& x : *p)
 	{
-		hamon::destroy_at(std::addressof(x));
+		hamon::destroy_at(hamon::addressof(x));
 	}
 }
 
