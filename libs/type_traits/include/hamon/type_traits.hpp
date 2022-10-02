@@ -35,12 +35,14 @@
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
+#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
 #include <hamon/type_traits/make_int_n.hpp>
 #include <hamon/type_traits/make_uint_fast_n.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
+#include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_all_extents.hpp>
 #include <hamon/type_traits/remove_const.hpp>
