@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_fnd_ranges_sentinel_t.cpp
+ *	@file	unit_test_ranges_sentinel_t.cpp
  *
  *	@brief	ranges::sentinel_t のテスト
  */
