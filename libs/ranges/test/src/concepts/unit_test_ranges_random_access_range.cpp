@@ -17,10 +17,12 @@
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::random_access_range<__VA_ARGS__>, "")
+	static_assert(B == hamon::ranges::random_access_range<__VA_ARGS__>, "");	\
+	static_assert(B == hamon::ranges::random_access_range_t<__VA_ARGS__>::value, "")
 #else
 #  define HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::random_access_range<__VA_ARGS__>::value, "")
+	static_assert(B == hamon::ranges::random_access_range<__VA_ARGS__>::value, "");	\
+	static_assert(B == hamon::ranges::random_access_range_t<__VA_ARGS__>::value, "")
 #endif
 
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(true,  int      [2]);

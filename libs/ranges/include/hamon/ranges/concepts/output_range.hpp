@@ -76,4 +76,22 @@ using output_range = typename ranges::detail::output_range_impl<Range, T>::type;
 
 #endif
 
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon
+{
+namespace ranges
+{
+
+template <typename Range, typename T>
+using output_range_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::ranges::output_range<Range, T>>;
+#else
+	hamon::ranges::output_range<Range, T>;
+#endif
+
+}	// namespace ranges
+}	// namespace hamon
+
 #endif // HAMON_RANGES_CONCEPTS_OUTPUT_RANGE_HPP
