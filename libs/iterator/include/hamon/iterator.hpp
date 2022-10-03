@@ -26,7 +26,7 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
-//#include <hamon/iterator/indirect_result_t.hpp>
+#include <hamon/iterator/indirect_result_t.hpp>
 //#include <hamon/iterator/istreambuf_iterator.hpp>
 //#include <hamon/iterator/istream_iterator.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
