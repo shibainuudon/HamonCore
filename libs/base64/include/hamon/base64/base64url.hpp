@@ -15,7 +15,7 @@ namespace hamon
 struct base64url : public detail::base64_impl<base64url>
 {
 private:
-	static char const* get_char_table()
+	static HAMON_CONSTEXPR char const* get_char_table()
 	{
 		return
 			"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -23,7 +23,7 @@ private:
 			"0123456789-_";
 	}
 
-	static char get_padding()
+	static HAMON_CONSTEXPR char get_padding()
 	{
 		return '\0';
 	}
