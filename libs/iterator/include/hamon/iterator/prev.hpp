@@ -20,25 +20,8 @@ using std::prev;
 
 #else
 
-#include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-/**
- *	@brief	
- */
-template <
-	typename BidirectionalIterator,
-	typename Distance = hamon::iter_difference_t<BidirectionalIterator>
->
-HAMON_CONSTEXPR BidirectionalIterator
-prev(BidirectionalIterator const& it, Distance n = 1);
-
-}	// namespace hamon
-
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/config.hpp>
 
@@ -65,9 +48,15 @@ prev_impl(RandomAccessIterator const& it, Distance n, std::random_access_iterato
 
 }	// namespace detail
 
-template <typename BidirectionalIterator, typename Distance>
+/**
+ *	@brief	
+ */
+template <
+	typename BidirectionalIterator,
+	typename Distance = hamon::iter_difference_t<BidirectionalIterator>
+>
 inline HAMON_CONSTEXPR BidirectionalIterator
-prev(BidirectionalIterator const& it, Distance n)
+prev(BidirectionalIterator const& it, Distance n = 1)
 {
 	using Category = hamon::iterator_category<BidirectionalIterator>*;
 	return detail::prev_impl(it, n, Category());

@@ -21,23 +21,6 @@ using std::advance;
 #else
 
 #include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-/**
- *	@brief	
- */
-template <
-	typename InputIterator,
-	typename Distance = hamon::iter_difference_t<InputIterator>
->
-HAMON_CXX14_CONSTEXPR void
-advance(InputIterator& it, Distance n);
-
-}	// namespace hamon
-
 #include <hamon/iterator/iterator_category.hpp>
 //#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
@@ -88,7 +71,13 @@ advance_impl(RandomAccessIterator& it, Distance n, std::random_access_iterator_t
 
 }	// namespace detail
 
-template <typename InputIterator, typename Distance>
+/**
+ *	@brief	
+ */
+template <
+	typename InputIterator,
+	typename Distance = hamon::iter_difference_t<InputIterator>
+>
 inline HAMON_CXX14_CONSTEXPR void
 advance(InputIterator& it, Distance n)
 {

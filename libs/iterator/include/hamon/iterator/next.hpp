@@ -20,25 +20,8 @@ using std::next;
 
 #else
 
-#include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-/**
- *	@brief	
- */
-template <
-	typename InputIterator,
-	typename Distance = hamon::iter_difference_t<InputIterator>
->
-HAMON_CONSTEXPR InputIterator
-next(InputIterator const& it, Distance n = 1);
-
-}	// namespace hamon
-
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/config.hpp>
 
@@ -65,9 +48,15 @@ next_impl(RandomAccessIterator const& it, Distance n, std::random_access_iterato
 
 }	// namespace detail
 
-template <typename InputIterator, typename Distance>
+/**
+ *	@brief	
+ */
+template <
+	typename InputIterator,
+	typename Distance = hamon::iter_difference_t<InputIterator>
+>
 inline HAMON_CONSTEXPR InputIterator
-next(InputIterator const& it, Distance n)
+next(InputIterator const& it, Distance n = 1)
 {
 	using Category = hamon::iterator_category<InputIterator>*;
 	return detail::next_impl(it, n, Category());
