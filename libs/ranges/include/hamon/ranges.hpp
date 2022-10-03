@@ -27,8 +27,8 @@
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
 #include <hamon/ranges/range_size_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
-//#include <hamon/ranges/rbegin.hpp>
-//#include <hamon/ranges/rend.hpp>
+#include <hamon/ranges/rbegin.hpp>
+#include <hamon/ranges/rend.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/ssize.hpp>
