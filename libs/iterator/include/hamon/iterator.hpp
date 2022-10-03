@@ -44,7 +44,7 @@
 //#include <hamon/iterator/ostreambuf_iterator.hpp>
 //#include <hamon/iterator/ostream_iterator.hpp>
 #include <hamon/iterator/prev.hpp>
-//#include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/iterator/ranges.hpp>
 #include <hamon/iterator/rbegin.hpp>
 #include <hamon/iterator/rend.hpp>
