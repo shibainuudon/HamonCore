@@ -10,7 +10,7 @@
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 //#include <hamon/ranges/concepts/common_range.hpp>
-//#include <hamon/ranges/concepts/contiguous_range.hpp>
+#include <hamon/ranges/concepts/contiguous_range.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 //#include <hamon/ranges/concepts/enable_view.hpp>
