@@ -68,8 +68,7 @@ HAMON_CONTIGUOUS_ITERATOR_TEST(false, void(A::*)());
 #endif
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, int A::*);
 
-#if 0
-
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::array<int, 1>::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::array<A, 1>::const_iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::deque<int>::iterator);
@@ -82,7 +81,6 @@ HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::vector<int>::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::vector<A>::const_iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::vector<bool>::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::vector<bool>::const_iterator);
-
 #endif
 
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, weakly_incrementable_wrapper<int>);

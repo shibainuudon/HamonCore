@@ -24,6 +24,7 @@ using std::contiguous_iterator;
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
