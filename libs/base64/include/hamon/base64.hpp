@@ -8,6 +8,8 @@
 #define HAMON_BASE64_HPP
 
 #include <hamon/base64/base64.hpp>
+#include <hamon/base64/base64_xml_name.hpp>
+#include <hamon/base64/base64_xml_nmtoken.hpp>
 #include <hamon/base64/base64url.hpp>
 
 #endif // HAMON_BASE64_HPP
