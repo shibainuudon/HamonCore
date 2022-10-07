@@ -14,5 +14,7 @@
 |[![cmath](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml)|[![cmath](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml)|
 
 ## 依存ライブラリ
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.Numbers
 * Hamon.TypeTraits
