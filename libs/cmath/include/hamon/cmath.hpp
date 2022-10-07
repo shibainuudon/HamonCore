@@ -22,6 +22,7 @@
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/smoothstep.hpp>
 #include <hamon/cmath/trunc.hpp>
 
 #endif // HAMON_CMATH_HPP
