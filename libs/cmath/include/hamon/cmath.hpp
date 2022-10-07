@@ -23,6 +23,7 @@
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/smoothstep.hpp>
+#include <hamon/cmath/sqrt.hpp>
 #include <hamon/cmath/step.hpp>
 #include <hamon/cmath/trunc.hpp>
 
