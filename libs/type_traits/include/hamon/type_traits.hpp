@@ -26,6 +26,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
+#include <hamon/type_traits/is_aggregate.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
@@ -35,10 +36,10 @@
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
-#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
 #include <hamon/type_traits/make_int_n.hpp>
+#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/type_traits/make_uint_fast_n.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
