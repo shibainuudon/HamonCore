@@ -11,5 +11,6 @@
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
+#include <hamon/algorithm/iter_swap.hpp>
 
 #endif // HAMON_ALGORITHM_HPP
