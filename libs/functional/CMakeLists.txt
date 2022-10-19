@@ -23,6 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		concepts
 		config
 		detail
+		memory
 		tuple
 		type_traits
 		ranges
