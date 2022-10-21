@@ -13,6 +13,7 @@
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/algorithm/ranges.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
 
 #endif // HAMON_ALGORITHM_HPP
