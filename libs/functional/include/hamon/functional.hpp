@@ -33,6 +33,7 @@
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/not_equal_to.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/functional/ranges.hpp>
 #include <hamon/functional/ref.hpp>
 #include <hamon/functional/reference_wrapper.hpp>
 
