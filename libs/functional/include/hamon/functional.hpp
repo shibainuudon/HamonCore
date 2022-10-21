@@ -11,6 +11,7 @@
 #include <hamon/functional/cref.hpp>
 #include <hamon/functional/hash.hpp>
 #include <hamon/functional/hash_combine.hpp>
+#include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/invoke_r.hpp>
 #include <hamon/functional/ref.hpp>
