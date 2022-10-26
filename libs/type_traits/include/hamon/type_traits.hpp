@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_HPP
 #define HAMON_TYPE_TRAITS_HPP
 
+#include <hamon/type_traits/accumulation.hpp>
 #include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/add_cv.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
