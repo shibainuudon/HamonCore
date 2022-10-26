@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef GET_RANDOM_VALUE_HPP
-#define GET_RANDOM_VALUE_HPP
+#ifndef UNIT_TEST_TEST_COMMON_GET_RANDOM_VALUE_HPP
+#define UNIT_TEST_TEST_COMMON_GET_RANDOM_VALUE_HPP
 
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -72,4 +72,4 @@ inline T get_random_value()
 
 }	// namespace
 
-#endif // GET_RANDOM_VALUE_HPP
+#endif // UNIT_TEST_TEST_COMMON_GET_RANDOM_VALUE_HPP
