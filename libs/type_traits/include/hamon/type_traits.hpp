@@ -38,6 +38,10 @@
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable_r.hpp>
+#include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_nothrow_swappable_with.hpp>
+#include <hamon/type_traits/is_swappable.hpp>
+#include <hamon/type_traits/is_swappable_with.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
