@@ -26,6 +26,13 @@ namespace weak_ordering_test
 
 inline HAMON_CXX17_CONSTEXPR bool test01()
 {
+	auto x = hamon::weak_ordering::less;
+	auto y = hamon::weak_ordering::equivalent;
+	auto z = hamon::weak_ordering::greater;
+	VERIFY(x == x);
+	VERIFY(x != y);
+	VERIFY(x != z);
+
 	VERIFY(hamon::weak_ordering::less       == hamon::weak_ordering::less);
 	VERIFY(hamon::weak_ordering::less       != hamon::weak_ordering::equivalent);
 	VERIFY(hamon::weak_ordering::less       != hamon::weak_ordering::greater);

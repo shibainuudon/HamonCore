@@ -27,6 +27,13 @@ namespace strong_ordering_test
 
 inline HAMON_CXX17_CONSTEXPR bool test01()
 {
+	auto x = hamon::strong_ordering::less;
+	auto y = hamon::strong_ordering::equivalent;
+	auto z = hamon::strong_ordering::greater;
+	VERIFY(x == x);
+	VERIFY(x != y);
+	VERIFY(x != z);
+
 	VERIFY(hamon::strong_ordering::less       == hamon::strong_ordering::less);
 	VERIFY(hamon::strong_ordering::less       != hamon::strong_ordering::equal);
 	VERIFY(hamon::strong_ordering::less       != hamon::strong_ordering::equivalent);

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<!-- HAMON_HAS_CXX17_INLINE_VARIABLES -->
+	<Type Name="hamon::strong_ordering_t">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equal</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<Expand/>
+	</Type>
+	<Type Name="hamon::weak_ordering_t">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equivalent</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<Expand/>
+	</Type>
+	<Type Name="hamon::partial_ordering_t">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equivalent</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<DisplayString Condition="m_value == 2">unordered</DisplayString>
+		<Expand/>
+	</Type>
+
+	<!-- NOT HAMON_HAS_CXX17_INLINE_VARIABLES -->
+	<Type Name="hamon::strong_ordering_t&lt;*&gt;">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equal</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<Expand/>
+	</Type>
+	<Type Name="hamon::weak_ordering_t&lt;*&gt;">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equivalent</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<Expand/>
+	</Type>
+	<Type Name="hamon::partial_ordering_t&lt;*&gt;">
+		<DisplayString Condition="m_value == -1">less</DisplayString>
+		<DisplayString Condition="m_value == 0">equivalent</DisplayString>
+		<DisplayString Condition="m_value == 1">greater</DisplayString>
+		<DisplayString Condition="m_value == 2">unordered</DisplayString>
+		<Expand/>
+	</Type>
+</AutoVisualizer>

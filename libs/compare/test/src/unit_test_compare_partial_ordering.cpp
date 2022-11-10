@@ -25,6 +25,15 @@ namespace partial_ordering_test
 
 inline HAMON_CXX17_CONSTEXPR bool test01()
 {
+	auto x = hamon::partial_ordering::less;
+	auto y = hamon::partial_ordering::equivalent;
+	auto z = hamon::partial_ordering::greater;
+	auto w = hamon::partial_ordering::unordered;
+	VERIFY(x == x);
+	VERIFY(x != y);
+	VERIFY(x != z);
+	VERIFY(x != w);
+
 	VERIFY(hamon::partial_ordering::less == hamon::partial_ordering::less);
 	VERIFY(hamon::partial_ordering::less != hamon::partial_ordering::equivalent);
 	VERIFY(hamon::partial_ordering::less != hamon::partial_ordering::greater);
