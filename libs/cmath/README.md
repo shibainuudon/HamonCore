@@ -1,4 +1,5 @@
 ﻿[![cmath](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml)
+
 # Hamon.CMath
 このライブラリはC++標準ライブラリの`<cmath>`を拡張・改良する機能を提供します。
 
@@ -9,11 +10,13 @@
 * 関数を追加
 
 ## ビルドステータス
+
 | main | develop |
 | ---- | ------- |
 |[![cmath](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml)|[![cmath](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/cmath.yml)|
 
 ## 依存ライブラリ
+
 * Hamon.Concepts
 * Hamon.Config
 * Hamon.Numbers

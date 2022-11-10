@@ -13,6 +13,7 @@
 
 ## 依存ライブラリ
 
+* Hamon.Base64
 * Hamon.Concepts
 * Hamon.Config
 * Hamon.Detail
@@ -23,7 +24,7 @@
 * Binary
 * Text
 * JSON
-* XML(WIP)
+* XML
 * PortableBinary(WIP)
 
 ## 使い方

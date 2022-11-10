@@ -7,6 +7,7 @@
 Hamon.Coreのその他のライブラリの基礎となるライブラリです。
 
 ## ビルドステータス
+
 | main | develop |
 | ---- | ------- |
 |[![config](https://github.com/shibainuudon/HamonCore/actions/workflows/config.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/config.yml)|[![config](https://github.com/shibainuudon/HamonCore/actions/workflows/config.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/config.yml)|
@@ -21,4 +22,5 @@ Hamon.Coreのその他のライブラリの基礎となるライブラリです�
 | HAMON_CXX_STANDARD | C++バージョン      | 20                     |
 
 ## 依存ライブラリ
+
 なし
