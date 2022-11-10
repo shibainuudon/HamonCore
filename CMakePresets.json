@@ -12,7 +12,8 @@
 			"generator": "Ninja",
 			"binaryDir": "${sourceDir}/build/${presetName}",
 			"cacheVariables": {
-				"CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}"
+				"CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
+				"CMAKE_UNITY_BUILD": "ON"
 			}
 		},
 
