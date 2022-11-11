@@ -37,6 +37,7 @@ set(SUBDIRECTORIES
 	serialization
 	tuple
 	type_traits
+	units
 	utility)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
