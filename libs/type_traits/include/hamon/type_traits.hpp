@@ -52,6 +52,7 @@
 #include <hamon/type_traits/make_uint_n.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/nth.hpp>
 #include <hamon/type_traits/remove_all_extents.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
