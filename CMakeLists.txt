@@ -29,6 +29,7 @@ set(SUBDIRECTORIES
 	iterator
 	memory
 	numbers
+	numeric
 	preprocessor
 	qvm
 	ranges
