@@ -1,0 +1,6 @@
+﻿function(copy_files expr dir)
+	file(GLOB FILE_NAMES CONFIGURE_DEPENDS ${expr})
+	foreach(FILE_NAME ${FILE_NAMES})
+		configure_file(${FILE_NAME} ${dir} COPYONLY)
+	endforeach()
+endfunction()

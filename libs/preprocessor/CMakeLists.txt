@@ -27,6 +27,11 @@ option(HAMON_COVERAGE "Coverage" OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+include(CopyFiles)
+if (MSVC)
+	copy_files(*.natvis ${CMAKE_BINARY_DIR})
+endif()
+
 target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/include)
 
 add_subdirectory(test)
