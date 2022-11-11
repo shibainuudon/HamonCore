@@ -33,6 +33,7 @@ set(SUBDIRECTORIES
 	preprocessor
 	qvm
 	ranges
+	ratio
 	serialization
 	tuple
 	type_traits
