@@ -21,6 +21,7 @@ set(SUBDIRECTORIES
 	algorithm
 	base64
 	bit
+	bitflags
 	cmath
 	compare
 	concepts
