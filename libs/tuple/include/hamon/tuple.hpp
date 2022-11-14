@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/concepts.hpp>
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/tuple/tuple_init_type.hpp>
 #include <hamon/tuple/tuple_last_type.hpp>
 #include <hamon/tuple/tuple_sort_type.hpp>
