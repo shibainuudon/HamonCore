@@ -29,6 +29,7 @@
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/is_aggregate.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
+#include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
