@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::bitflags&lt;*,*,*&gt;">
+		<Expand>
+			<IndexListItems>
+				<Size>$T2</Size>
+				<ValueNode>(m_value &gt;&gt; $i) &amp; 1</ValueNode>
+			</IndexListItems>
+		</Expand>
+	</Type>
+</AutoVisualizer>
