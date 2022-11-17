@@ -27,6 +27,7 @@ set(SUBDIRECTORIES
 	concepts
 	config
 	functional
+	ios
 	iterator
 	memory
 	numbers
