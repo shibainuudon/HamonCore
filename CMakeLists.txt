@@ -34,6 +34,7 @@ set(SUBDIRECTORIES
 	numeric
 	preprocessor
 	qvm
+	random
 	ranges
 	ratio
 	serialization
