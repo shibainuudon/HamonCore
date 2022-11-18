@@ -87,11 +87,11 @@ private:
 	void serialize(Archive& ar)
 	{
 		ar & a;
-		ar & hamon::serialization::make_nvp("b", b);
+		ar & HAMON_SERIALIZATION_NVP(b);
 		ar & c;
-		ar & hamon::serialization::make_nvp("d", d);
-		ar & hamon::serialization::make_nvp("e", e);
-		ar & hamon::serialization::make_nvp("f", f);
+		ar & HAMON_SERIALIZATION_NVP(d);
+		ar & HAMON_SERIALIZATION_NVP(e);
+		ar & HAMON_SERIALIZATION_NVP(f);
 	}
 };
 
@@ -129,15 +129,15 @@ void JsonTest()
 		OArchive oa(str);
 		
 		oa << a;
-		oa << hamon::serialization::make_nvp("b", b);
+		oa << HAMON_SERIALIZATION_NVP(b);
 		oa << c;
 		oa << d;
-		oa << hamon::serialization::make_nvp("e", e);
-		oa << hamon::serialization::make_nvp("f", f);
+		oa << HAMON_SERIALIZATION_NVP(e);
+		oa << HAMON_SERIALIZATION_NVP(f);
 		oa << g;
-		oa << hamon::serialization::make_nvp("h", h);
-		oa << hamon::serialization::make_nvp("i", i);
-		oa << hamon::serialization::make_nvp("obj", obj);
+		oa << HAMON_SERIALIZATION_NVP(h);
+		oa << HAMON_SERIALIZATION_NVP(i);
+		oa << HAMON_SERIALIZATION_NVP(obj);
 	}
 	std::string expected =
 R"({

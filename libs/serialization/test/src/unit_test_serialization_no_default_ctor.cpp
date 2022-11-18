@@ -74,12 +74,12 @@ void NoDefaultCtorTest()
 
 		OArchive oa(str);
 		
-		oa << hamon::serialization::make_nvp("p0", p0);
-		oa << hamon::serialization::make_nvp("p1", p1);
-		oa << hamon::serialization::make_nvp("p2", p2);
-		oa << hamon::serialization::make_nvp("p3", p3);
-		oa << hamon::serialization::make_nvp("p4", p4);
-		oa << hamon::serialization::make_nvp("p5", p5);
+		oa << HAMON_SERIALIZATION_NVP(p0);
+		oa << HAMON_SERIALIZATION_NVP(p1);
+		oa << HAMON_SERIALIZATION_NVP(p2);
+		oa << HAMON_SERIALIZATION_NVP(p3);
+		oa << HAMON_SERIALIZATION_NVP(p4);
+		oa << HAMON_SERIALIZATION_NVP(p5);
 	}
 
 #if 0

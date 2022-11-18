@@ -44,8 +44,8 @@ struct Point
 	template <typename Archive>
 	void serialize(Archive& ar)
 	{
-		ar & hamon::serialization::make_nvp("x", x);
-		ar & hamon::serialization::make_nvp("y", y);
+		ar & HAMON_SERIALIZATION_NVP(x);
+		ar & HAMON_SERIALIZATION_NVP(y);
 	}
 };
 

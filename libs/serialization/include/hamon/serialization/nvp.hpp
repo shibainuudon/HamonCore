@@ -82,4 +82,9 @@ void load_value(Archive& ia, nvp<T> const& t)
 
 }	// namespace hamon
 
+#include <hamon/preprocessor/stringize.hpp>
+
+#define HAMON_SERIALIZATION_NVP(name) \
+	hamon::serialization::make_nvp(HAMON_PP_STRINGIZE(name), name)
+
 #endif // HAMON_SERIALIZATION_NVP_HPP

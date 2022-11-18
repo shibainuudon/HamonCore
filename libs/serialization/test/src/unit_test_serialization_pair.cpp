@@ -32,9 +32,9 @@ struct Object
 	template <typename Archive>
 	void serialize(Archive& ar)
 	{
-		ar & hamon::serialization::make_nvp("n", n);
-		ar & hamon::serialization::make_nvp("f", f);
-		ar & hamon::serialization::make_nvp("v", v);
+		ar & HAMON_SERIALIZATION_NVP(n);
+		ar & HAMON_SERIALIZATION_NVP(f);
+		ar & HAMON_SERIALIZATION_NVP(v);
 	}
 };
 
