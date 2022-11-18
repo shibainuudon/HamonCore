@@ -33,7 +33,7 @@ private:
 	// t.serialize(ar, version);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<access::has_member_serialize<Archive&, T&, version_t>::value>>
-	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<4>)
+	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<5>)
 	{
 		access::serialize(ar, const_cast<T&>(t), version);
 	}
@@ -41,7 +41,7 @@ private:
 	// t.serialize(ar);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<access::has_member_serialize<Archive&, T&>::value>>
-	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<3>)
+	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<4>)
 	{
 		access::serialize(ar, const_cast<T&>(t));
 	}
@@ -49,7 +49,7 @@ private:
 	// serialize(ar, t, version);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<has_adl_serialize<Archive&, T&, version_t>::value>>
-	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<2>)
+	static void impl(Archive& ar, T const& t, version_t version, hamon::detail::overload_priority<3>)
 	{
 		serialize(ar, const_cast<T&>(t), version);
 	}
@@ -57,9 +57,18 @@ private:
 	// serialize(ar, t);
 	template <typename Archive, typename T,
 		typename = hamon::enable_if_t<has_adl_serialize<Archive&, T&>::value>>
-	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<1>)
+	static void impl(Archive& ar, T const& t, version_t, hamon::detail::overload_priority<2>)
 	{
 		serialize(ar, const_cast<T&>(t));
+	}
+
+	// 空のクラス
+	template <typename Archive, typename T,
+		typename = hamon::enable_if_t<std::is_empty<T>::value>>
+	static void impl(Archive&, T const&, version_t, hamon::detail::overload_priority<1>)
+	{
+		// save,load,serialize等が定義されておらず、
+		// 空のクラスのときは何もしない
 	}
 
 	// fallback
@@ -68,12 +77,12 @@ private:
 	{
 		static_assert(always_false<T>::value, "This type is not serializable.");
 	}
-	
+
 public:
 	template <typename Archive, typename T>
 	void operator()(Archive& ar, T const& t, version_t version) const
 	{
-		impl(ar, t, version, hamon::detail::overload_priority<4>{});
+		impl(ar, t, version, hamon::detail::overload_priority<5>{});
 	}
 };
 
