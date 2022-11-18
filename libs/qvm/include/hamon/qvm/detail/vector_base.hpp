@@ -12,6 +12,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/serialization/access.hpp>
+#include <hamon/serialization/nvp.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <cstdlib>		// std::abort
@@ -339,6 +341,17 @@ private:
 		(void)msg;
 		std::abort();
 #endif
+	}
+
+private:
+	/**
+	 *	@brief	シリアライズ
+	 */
+	friend class hamon::serialization::access;
+	template <typename Archive>
+	void serialize(Archive& ar)
+	{
+		ar & HAMON_SERIALIZATION_NVP(m_elems);
 	}
 };
 

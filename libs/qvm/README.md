@@ -16,4 +16,5 @@ Quaternion, Vector, Matrix ライブラリ
 * Hamon.CMath
 * Hamon.Config
 * Hamon.Functional
+* Hamon.Serialization
 * Hamon.TypeTraits

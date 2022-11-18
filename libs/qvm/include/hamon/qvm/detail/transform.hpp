@@ -17,6 +17,9 @@
 #include <cstddef>
 #include <utility>
 
+HAMON_WARNING_PUSH();
+HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-parameter");
+
 namespace hamon
 {
 
@@ -32,13 +35,13 @@ template <
 	typename T = hamon::qvm::detail::vector_element_t<Vector>,
 	typename T2 = decltype(std::declval<F>()(std::declval<T>())),
 	typename = hamon::enable_if_t<detail::vector_rank<Vector>::value == 1>,
+	typename Result = detail::rebind_t<Vector, T2>,
 	std::size_t... Is
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Vector const& v, F unary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
-->detail::rebind_t<Vector, T2>
 {
-	return { unary_op(v[Is])... };
+	return Result{ unary_op(v[Is])... };
 }
 
 template <
@@ -48,13 +51,13 @@ template <
 	typename T2 = decltype(std::declval<F>()(std::declval<T>())),
 	typename = hamon::enable_if_t<(detail::vector_rank<Matrix>::value > 1)>,
 	std::size_t M = hamon::qvm::detail::vector_size<typename Matrix::value_type>::value,
+	typename Result = detail::rebind_t<Matrix, T2>,
 	std::size_t... Is
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Matrix const& m, F unary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
-->detail::rebind_t<Matrix, T2>
 {
-	return { transform_impl(m[Is], unary_op, hamon::make_index_sequence<M>{})... };
+	return Result{ transform_impl(m[Is], unary_op, hamon::make_index_sequence<M>{})... };
 }
 
 template <
@@ -65,13 +68,13 @@ template <
 	typename T2 = hamon::qvm::detail::vector_element_t<Vector2>,
 	typename T3 = decltype(std::declval<F>()(std::declval<T1>(), std::declval<T2>())),
 	typename = hamon::enable_if_t<detail::vector_rank<Vector1>::value == 1>,
+	typename Result = detail::rebind_t<Vector1, T3>,
 	std::size_t... Is
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Vector1 const& lhs, Vector2 const& rhs, F binary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
-->detail::rebind_t<Vector1, T3>
 {
-	return { binary_op(lhs[Is], rhs[Is])... };
+	return Result{ binary_op(lhs[Is], rhs[Is])... };
 }
 
 template <
@@ -84,13 +87,13 @@ template <
 	typename = hamon::enable_if_t<(detail::vector_rank<Matrix1>::value > 1)>,
 	std::size_t M1 = hamon::qvm::detail::vector_size<typename Matrix1::value_type>::value,
 	std::size_t M2 = hamon::qvm::detail::vector_size<typename Matrix2::value_type>::value,
+	typename Result = detail::rebind_t<Matrix1, T3>,
 	std::size_t... Is
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Matrix1 const& lhs, Matrix2 const& rhs, F binary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
-->detail::rebind_t<Matrix1, T3>
 {
-	return { transform_impl(lhs[Is], rhs[Is], binary_op, hamon::make_index_sequence<M1>{})... };
+	return Result{ transform_impl(lhs[Is], rhs[Is], binary_op, hamon::make_index_sequence<M1>{})... };
 }
 
 }	// namespace detail
@@ -132,5 +135,7 @@ transform(Vector1 const& lhs, Vector2 const& rhs, F binary_op) HAMON_NOEXCEPT
 }	// namespace qvm
 
 }	// namespace hamon
+
+HAMON_WARNING_POP();
 
 #endif // HAMON_QVM_DETAIL_TRANSFORM_HPP

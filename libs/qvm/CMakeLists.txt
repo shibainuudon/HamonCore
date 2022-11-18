@@ -23,6 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cmath
 		config
 		functional
+		serialization
 		type_traits
 		common)
 

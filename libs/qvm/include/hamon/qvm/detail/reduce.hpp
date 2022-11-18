@@ -33,11 +33,11 @@ template <
 	hamon::enable_if_t<detail::vector_rank<Vector>::value == 1>* = nullptr
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
-reduce_impl(Vector const& v, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
+reduce_impl_2(Vector const& v, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
 {
 	return I == N ?
 		init :
-		reduce_impl(
+		reduce_impl_2(
 			v,
 			binary_op(init, v[I]),
 			binary_op,
@@ -52,16 +52,41 @@ template <
 	hamon::enable_if_t<(detail::vector_rank<Matrix>::value > 1)>* = nullptr
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
-reduce_impl(Matrix const& m, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
+reduce_impl_2(Matrix const& m, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
 {
 	return I == N ?
 		init :
-		reduce_impl(
+		reduce_impl_2(
 			m,
-			reduce_impl(m[I], init, binary_op, 0),
+			reduce_impl_2(m[I], init, binary_op, 0),
 			binary_op,
 			I+1);
 }
+
+template <
+	typename Vector,
+	std::size_t N = hamon::qvm::detail::vector_size<Vector>::value
+>
+struct reduce_impl_t
+{
+	template <typename U, typename F>
+	HAMON_CONSTEXPR U
+	operator()(Vector const& v, U init, F binary_op) const HAMON_NOEXCEPT
+	{
+		return reduce_impl_2(v, init, binary_op, 0);
+	}
+};
+
+template <typename Vector>
+struct reduce_impl_t<Vector, 0>
+{
+	template <typename U, typename F>
+	HAMON_CONSTEXPR U
+	operator()(Vector const&, U init, F) const HAMON_NOEXCEPT
+	{
+		return init;
+	}
+};
 
 }	// namespace detail
 
@@ -74,7 +99,7 @@ template <
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
 reduce(Vector const& v, U init = {}, F binary_op = {}) HAMON_NOEXCEPT
 {
-	return detail::reduce_impl(v, init, binary_op, 0);
+	return detail::reduce_impl_t<Vector>{}(v, init, binary_op);
 }
 
 }	// namespace qvm

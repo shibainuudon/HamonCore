@@ -7,7 +7,9 @@
 #ifndef UNIT_TEST_QVM_VECTOR_TEST_HPP
 #define UNIT_TEST_QVM_VECTOR_TEST_HPP
 
+#include <hamon/qvm/vector.hpp>
 #include <gtest/gtest.h>
+#include "get_random_value.hpp"
 
 namespace hamon_qvm_test
 {
@@ -22,6 +24,18 @@ class VectorFloatTest : public ::testing::Test {};
 
 TYPED_TEST_SUITE(VectorTest,      VectorTestTypes);
 TYPED_TEST_SUITE(VectorFloatTest, VectorTestFloatTypes);
+
+
+template <typename T, std::size_t N>
+hamon::qvm::vector<T, N> make_random_vector()
+{
+	hamon::qvm::vector<T, N> result;
+	for (auto& x : result)
+	{
+		x = get_random_value<T>();
+	}
+	return result;
+}
 
 }	// namespace hamon_qvm_test
 
