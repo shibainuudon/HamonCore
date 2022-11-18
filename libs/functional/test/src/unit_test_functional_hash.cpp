@@ -14,11 +14,14 @@
 #include <bitset>
 #include <memory>
 #include "constexpr_test.hpp"
+#include "get_random_value.hpp"
 
 #if defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
 #  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ HAMON_CXX20_CONSTEXPR_EXPECT_EQ
+#  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE HAMON_CXX20_CONSTEXPR_EXPECT_NE
 #else
 #  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ EXPECT_EQ
+#  define HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE EXPECT_NE
 #endif
 
 namespace hamon_functional_test
@@ -119,6 +122,41 @@ GTEST_TEST(FunctionalTest, HashAdlTest)
 	EXPECT_EQ(12u, hamon::hash(std::move(s4_4)));
 }
 
+template <typename T>
+void HashIntegralTest()
+{
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(T(0), T(-1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), T( 0));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(T(0), T( 1));
+
+	for (int i = 0; i < 100; ++i)
+	{
+		auto const a = get_random_value<T>(T(0), T(10));
+		auto const b = get_random_value<T>(T(0), T(10));
+		if (a == b)
+		{
+			EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		}
+		else
+		{
+			EXPECT_NE(hamon::hash(a), hamon::hash(b));
+		}
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(b), hamon::hash(b));
+	}
+	for (int i = 0; i < 100; ++i)
+	{
+		auto const a = get_random_value<T>();
+		auto const b = get_random_value<T>();
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_NE(hamon::hash(a), hamon::hash(a + T(1)));
+		EXPECT_NE(hamon::hash(a), hamon::hash(a - T(1)));
+		EXPECT_EQ(hamon::hash(b), hamon::hash(b));
+		EXPECT_NE(hamon::hash(b), hamon::hash(b + T(1)));
+		EXPECT_NE(hamon::hash(b), hamon::hash(b - T(1)));
+	}
+}
+
 GTEST_TEST(FunctionalTest, HashIntegralTest)
 {
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(false));
@@ -141,45 +179,121 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(11u, hamon::hash((unsigned int)11));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12u, hamon::hash((long)12));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(13u, hamon::hash((unsigned long)13));
+
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t( 0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t( 1)), hamon::hash(std::int64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t(-1)), hamon::hash(std::int64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 1)), hamon::hash(std::int64_t(-1)));
+
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = 14;
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x9E377D44ULL :
-			14;
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::int64_t b = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x21C88688ULL :
-			0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::int64_t b = 0xFFFFFFFFFFFFFFFEULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = 15;
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x9E377D84ULL :
-			15;
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::int64_t b = 0x7FFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
+	}
+
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t( 0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t( 1)), hamon::hash(std::uint64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t(-1)), hamon::hash(std::uint64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 1)), hamon::hash(std::uint64_t(-1)));
+	{
+		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x21C88688ULL :
-			0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0xFFFFFFFFFFFFFFFEULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
+	}
+	{
+		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0x7FFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
+	}
+
+	HashIntegralTest<signed char>();
+	HashIntegralTest<signed short>();
+	HashIntegralTest<signed int>();
+	HashIntegralTest<signed long>();
+	HashIntegralTest<signed long long>();
+	HashIntegralTest<unsigned char>();
+	HashIntegralTest<unsigned short>();
+	HashIntegralTest<unsigned int>();
+	HashIntegralTest<unsigned long>();
+	HashIntegralTest<unsigned long long>();
+}
+
+template <typename T>
+void HashFloatTest()
+{
+	HAMON_CXX11_CONSTEXPR T const eps = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR T const max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR T const min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR T const low = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR T const inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR T const nan = std::numeric_limits<T>::quiet_NaN();
+
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(T(0)), hamon::hash(T(0)));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(T(1)), hamon::hash(T(1)));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(T(-1)), hamon::hash(T(-1)));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(T(0) + eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(T(0) - eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(1)), hamon::hash(T(1) + eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(1)), hamon::hash(T(1) - eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(1)), hamon::hash(T(-1)));
+
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(eps), hamon::hash(eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(max), hamon::hash(max));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(min), hamon::hash(min));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(low), hamon::hash(low));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(inf), hamon::hash(inf));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(nan), hamon::hash(nan));
+
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(eps));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(max));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(min));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(low));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(inf));
+	HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(nan));
+
+	for (int i = 0; i < 100; ++i)
+	{
+		auto const a = get_random_value<T>(T(-1), T(1));
+		auto const b = get_random_value<T>(T(-1), T(1));
+		if (a == b)
+		{
+			EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		}
+		else
+		{
+			EXPECT_NE(hamon::hash(a), hamon::hash(b));
+		}
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(b), hamon::hash(b));
+		EXPECT_NE(hamon::hash(a), hamon::hash(-a));
+		EXPECT_NE(hamon::hash(b), hamon::hash(-b));
 	}
 }
 
 GTEST_TEST(FunctionalTest, HashFloatTest)
 {
-	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(0.0f));
-	HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(0x3f000000u, hamon::hash(0.5f));
-//	HAMON_CXX20_CONSTEXPR_EXPECT_EQ(0x4004000000000000u, hamon::hash(2.5));
+	HashFloatTest<float>();
+	HashFloatTest<double>();
+	HashFloatTest<long double>();
 }
 
 GTEST_TEST(FunctionalTest, HashPointerTest)
@@ -187,11 +301,16 @@ GTEST_TEST(FunctionalTest, HashPointerTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(nullptr));
 
 	int i = 0;
-	int* p = &i;
-	int const* cp = &i;
+	int j = 0;
+	int* p1 = &i;
+	int* p2 = &j;
+	int const* cp1 = &i;
+	int const* cp2 = &j;
 
-	EXPECT_EQ((std::size_t)&i, hamon::hash(p));
-	EXPECT_EQ((std::size_t)&i, hamon::hash(cp));
+	EXPECT_EQ(hamon::hash(p1), hamon::hash(cp1));
+	EXPECT_EQ(hamon::hash(p2), hamon::hash(cp2));
+
+	EXPECT_NE(hamon::hash(p1), hamon::hash(p2));
 }
 
 GTEST_TEST(FunctionalTest, HashEnumTest)
@@ -205,31 +324,34 @@ GTEST_TEST(FunctionalTest, HashEnumTest)
 		Value1, Value2, Value3
 	};
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Value1_1));
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Value1_2));
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(Value1_3));
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Enum2::Value1));
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Enum2::Value2));
-	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(Enum2::Value3));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Value1_1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Value1_2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(Value1_3));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Enum2::Value1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Enum2::Value2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(Enum2::Value3));
 }
 
 GTEST_TEST(FunctionalTest, HashArrayTest)
 {
 	{
 		HAMON_CXX11_CONSTEXPR int a[] = {1, 2, 3};
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0xFB58D153u :
-			0x44DF543DFB06F3DAu;
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR int b[] = {1, 2, 3};
+		HAMON_CXX11_CONSTEXPR int c[] = {3, 2, 1};
+
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR float a[] = {0.0f, 0.5f, -1.5f, 2.0f};
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x3C2D221Au :
-			0xD357157CC35DF290u;
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR float b[] = {0.0f, 0.5f, -1.5f, 2.0f};
+		HAMON_CXX11_CONSTEXPR float c[] = {0.0f, 0.5f, -1.5f};
+		HAMON_CXX11_CONSTEXPR float d[] = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(d));
 	}
 }
 
@@ -237,19 +359,22 @@ GTEST_TEST(FunctionalTest, HashStdArrayTest)
 {
 	{
 		HAMON_CXX11_CONSTEXPR std::array<int, 3> a = {1, 2, 3};
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0xFB58D153u :
-			0x44DF543DFB06F3DAu;
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::array<int, 3> b = {1, 2, 3};
+		HAMON_CXX11_CONSTEXPR std::array<int, 3> c = {2, 3, 1};
+
+		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_CXX17_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR std::array<float, 4> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		HAMON_CXX11_CONSTEXPR std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x3C2D221Au :
-			0xD357157CC35DF290u;
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(expect, hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR std::array<float, 4> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		HAMON_CXX11_CONSTEXPR std::array<float, 3> c = {0.0f, 0.5f, -1.5f};
+		HAMON_CXX11_CONSTEXPR std::array<float, 5> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(d));
 	}
 }
 
@@ -261,19 +386,22 @@ GTEST_TEST(FunctionalTest, HashVectorTest)
 	}
 	{
 		const std::vector<int> a = {1, 2, 3};
-		const std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0xFB58D153u :
-			0x44DF543DFB06F3DAu;
-		EXPECT_EQ(expect, hamon::hash(a));
+		const std::vector<int> b = {1, 2, 3};
+		const std::vector<int> c = {1,-2, 3};
+
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		const std::vector<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x3C2D221Au :
-			0xD357157CC35DF290u;
-		EXPECT_EQ(expect, hamon::hash(a));
+		const std::vector<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		const std::vector<float> c = {0.0f, 0.5f, -1.5f};
+		const std::vector<float> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		EXPECT_NE(hamon::hash(a), hamon::hash(d));
 	}
 }
 
@@ -285,19 +413,22 @@ GTEST_TEST(FunctionalTest, HashListTest)
 	}
 	{
 		const std::list<int> a = {1, 2, 3};
-		const std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0xFB58D153u :
-			0x44DF543DFB06F3DAu;
-		EXPECT_EQ(expect, hamon::hash(a));
+		const std::list<int> b = {1, 2, 3};
+		const std::list<int> c = {1,-2, 3};
+
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		const std::list<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::size_t expect =
-			sizeof(std::size_t) == 4 ?
-			0x3C2D221Au :
-			0xD357157CC35DF290u;
-		EXPECT_EQ(expect, hamon::hash(a));
+		const std::list<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		const std::list<float> c = {0.0f, 0.5f, -1.5f, 2.1f};
+		const std::list<float> d = {0.1f, 0.5f, -1.5f, 2.0f};
+		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		EXPECT_NE(hamon::hash(a), hamon::hash(d));
 	}
 }
 
@@ -374,3 +505,4 @@ GTEST_TEST(FunctionalTest, HashUniquePtrTest)
 }	// namespace hamon_functional_test
 
 #undef HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ
+#undef HAMON_BIT_CAST_CONSTEXPR_EXPECT_NE

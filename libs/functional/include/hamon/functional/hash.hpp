@@ -30,6 +30,8 @@
 #include <type_traits>
 #include <tuple>
 #include <climits>
+#include <limits>
+#include <array>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4293)
@@ -49,22 +51,60 @@ hash_combine(std::size_t seed, T const&... args) HAMON_NOEXCEPT;
 struct hash_t
 {
 private:
+	template <typename Iterator>
+	static HAMON_CXX14_CONSTEXPR std::size_t
+	hash_range(Iterator first, Iterator last)
+	{
+		std::size_t result = 0;
+		for (; first != last; ++first)
+		{
+			result = hash_combine(result, *first);
+		}
+		return result;
+	}
+
 	template <typename T>
-	static constexpr std::size_t hash_combine_integral(std::size_t seed, T x, std::size_t n)
+	static HAMON_CXX11_CONSTEXPR std::size_t
+	hash_combine_integral(std::size_t seed, T x, std::size_t n)
 	{
 		return n <= sizeof(std::size_t) ?
 			seed :
 			hash_combine_integral(
-				hash_combine(seed, static_cast<std::size_t>(x)),
+				hash_combine(seed, static_cast<std::size_t>(x >> (sizeof(std::size_t) * CHAR_BIT))),
 				x >> (sizeof(std::size_t) * CHAR_BIT),
 				n - sizeof(std::size_t));
 	}
 
 	template <typename T, std::size_t... Is>
-	static constexpr std::size_t hash_combine_tuple(T&& x, hamon::index_sequence<Is...>)
+	static HAMON_CXX11_CONSTEXPR std::size_t
+	hash_combine_tuple(T&& x, hamon::index_sequence<Is...>)
 	{
 		return hash_combine(0, std::get<Is>(std::forward<T>(x))...);
 	}
+
+	template <typename T, std::size_t Digits = std::numeric_limits<hamon::remove_cvref_t<T>>::digits>
+	struct hash_float
+	{
+		static HAMON_CXX11_CONSTEXPR std::size_t
+		impl(T&& x)
+		{
+			using type = std::array<unsigned char, sizeof(T)>;
+			return hash_t{}(hamon::bit_cast<type>(x));
+		}
+	};
+
+	// long double が 拡張倍精度(80bit) の場合、パディングが入る
+	template <typename T>
+	struct hash_float<T, 64>
+	{
+		static HAMON_CXX14_CONSTEXPR std::size_t
+		impl(T&& x)
+		{
+			using type = std::array<unsigned char, sizeof(T)>;
+			auto const arr = hamon::bit_cast<type>(x);
+			return hash_range(arr.begin(), arr.begin() + 10);
+		}
+	};
 
 	// (1) メンバーのhash関数が呼び出せるならx.hash()
 	template <HAMON_CONSTRAINED_PARAM(detail::has_member_hash, RawT), typename T>
@@ -90,18 +130,17 @@ private:
 		return hash_combine_integral(static_cast<std::size_t>(x), x, sizeof(T));
 	}
 	
-	// (4) floating_pointなら同じサイズの符号無し整数型にbit_castしてhash
+	// (4) floating_pointなら同じサイズのarrayにbit_castしてhash
 	template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<6>)
 	{
-		using uint_type = hamon::make_uint_n_t<sizeof(T) * CHAR_BIT>;
-		return hash_t{}(hamon::bit_cast<uint_type>(x));
+		return hash_float<T>::impl(std::forward<T>(x));
 	}
 
-	// (5) enum なら underlying_type_t<T> にキャスト
+	// (5) enum なら underlying_type_t<T> にキャストしてhash
 	template <typename RawT, typename T, typename = hamon::enable_if_t<std::is_enum<RawT>::value>>
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<5>)
 	{
 		return hash_t{}(hamon::underlying_type_t<T>(x));
@@ -115,13 +154,13 @@ private:
 		return 0;
 	}
 
-	// (7) ポインターなら同じサイズの符号無し整数型にbit_castしてhash
+	// (7) ポインターなら同じサイズのarrayにbit_castしてhash
 	template <typename RawT, typename T, typename = hamon::enable_if_t<std::is_pointer<RawT>::value>>
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<3>)
 	{
-		using uint_type = hamon::make_uint_n_t<sizeof(T)*CHAR_BIT>;
-		return hash_t{}(hamon::bit_cast<uint_type>(x));
+		using type = std::array<unsigned char, sizeof(T)>;
+		return hash_t{}(hamon::bit_cast<type>(x));
 	}
 
 	// (8) range なら hash_combine(begin(x)...end(x))
@@ -129,12 +168,7 @@ private:
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<2>)
 	{
-		std::size_t result = 0;
-		for (auto&& v : x)
-		{
-			result = hash_combine(result, v);
-		}
-		return result;
+		return hash_range(std::begin(x), std::end(x));
 	}
 
 	// (9) tuple-like なら hash_combine(get<I>(x)...)
