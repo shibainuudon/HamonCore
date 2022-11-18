@@ -11,7 +11,7 @@
 #include <hamon/serialization/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include "serialization_test_utility.hpp"
+#include "get_random_value.hpp"
 
 namespace hamon_serialization_test
 {

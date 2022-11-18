@@ -13,7 +13,7 @@
 #include <sstream>
 #include <vector>
 #include "serialization_test_archives.hpp"
-#include "serialization_test_utility.hpp"
+#include "get_random_value.hpp"
 
 namespace hamon_serialization_test
 {
