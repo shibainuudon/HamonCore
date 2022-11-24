@@ -16,32 +16,32 @@ GTEST_TEST(BitflagsTest, CountTest)
 {
 	{
 		HAMON_CONSTEXPR Bitflag1 const b{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag1 const b(kOption1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag1 const b(kOption2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag1 const b =
 			Bitflag1(kOption1) |
 			Bitflag1(kOption3);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag2 const b{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag2 const b =
 			Bitflag2(Enum2::kOption4) |
 			Bitflag2(Enum2::kOption6) |
 			Bitflag2(Enum2::kOption8);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag2 const b =
@@ -50,17 +50,17 @@ GTEST_TEST(BitflagsTest, CountTest)
 			Bitflag2(Enum2::kOption6) |
 			Bitflag2(Enum2::kOption7) |
 			Bitflag2(Enum2::kOption8);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag3 const b{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, b.count());
 	}
 	{
 		HAMON_CONSTEXPR Bitflag3 const b =
 			Bitflag3(Enum3::kOption7) |
 			Bitflag3(Enum3::kOption8);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, b.count());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, b.count());
 	}
 }
 
