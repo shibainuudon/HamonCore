@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/config.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
 #include <type_traits>
@@ -427,10 +428,18 @@ TYPED_TEST(MatrixTest, PlusTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(m3[3], vector4(-76,  78, -10,  10));
 	}
 
+#if (defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 110000))
+	// gcc11 でcompiler internal errorになるのを回避
+	EXPECT_TRUE(Matrix3x3PlusTest<T>());
+	EXPECT_TRUE(Matrix3x4PlusTest<T>());
+	EXPECT_TRUE(Matrix4x3PlusTest<T>());
+	EXPECT_TRUE(Matrix4x4PlusTest<T>());
+#else
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x3PlusTest<T>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x4PlusTest<T>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix4x3PlusTest<T>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix4x4PlusTest<T>());
+#endif
 }
 
 #undef VERIFY
