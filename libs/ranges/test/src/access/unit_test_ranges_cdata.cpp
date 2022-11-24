@@ -8,6 +8,7 @@
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
+#include <hamon/type_traits/is_detected.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include "constexpr_test.hpp"
@@ -17,6 +18,14 @@ namespace hamon_ranges_test
 
 namespace cdata_test
 {
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <typename T>
+using has_cdata_t = decltype(hamon::ranges::cdata(std::declval<T&&>()));
+
+template <typename T>
+using has_cdata = hamon::is_detected<has_cdata_t, T>;
 
 struct R
 {
@@ -28,13 +37,17 @@ struct R
 
 struct R3
 {
-	long l = 0;
+	static int i;
+	static long l;
 
-	HAMON_CXX14_CONSTEXPR int* data() const { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR long* begin(R3&& r); // this function is not defined
+	HAMON_CXX14_CONSTEXPR int* data() &; // this function is not defined
+	friend HAMON_CXX14_CONSTEXPR long* begin(R3&& r); // not defined
 	friend HAMON_CXX14_CONSTEXPR const long* begin(const R3& r) { return &r.l; }
 	friend HAMON_CXX14_CONSTEXPR const short* begin(const R3&&); // not defined
 };
+
+int R3::i = 0;
+long R3::l = 0;
 
 }	// namespace cdata_test
 
@@ -42,7 +55,6 @@ struct R3
 
 HAMON_RANGES_START_NAMESPACE
 
-// This is a lie, ranges::begin(R3&&) returns a dangling iterator.
 template <>
 HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::cdata_test::R3);
 
@@ -56,39 +68,47 @@ namespace cdata_test
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
+	static_assert(has_cdata<R&>::value, "");
+	static_assert(has_cdata<const R&>::value, "");
 	R r;
 	const R& c = r;
+	VERIFY(hamon::ranges::cdata(r) == (R*)nullptr);
+	static_assert(noexcept(hamon::ranges::cdata(r)), "");
+	VERIFY(hamon::ranges::cdata(c) == (R*)nullptr);
+	static_assert(noexcept(hamon::ranges::cdata(c)), "");
 
-	static_assert(!noexcept(hamon::ranges::data(std::declval<R&>())), "");
-	static_assert( noexcept(hamon::ranges::data(std::declval<R const&>())), "");
-	static_assert( noexcept(hamon::ranges::cdata(std::declval<R&>())), "");
-	static_assert( noexcept(hamon::ranges::cdata(std::declval<R const&>())), "");
+	// not lvalues and not borrowed ranges
+	static_assert(!has_cdata<R>::value, "");
+	static_assert(!has_cdata<const R>::value, "");
 
-	return
-		hamon::ranges::data(r) == &r.j &&
-		hamon::ranges::data(c) == (R*)nullptr &&
-		hamon::ranges::cdata(r) == (R*)nullptr &&
-		hamon::ranges::cdata(c) == (R*)nullptr;
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	int a[] ={0, 1};
-	return hamon::ranges::cdata(a) == a + 0;
+	int a[] ={ 0, 1 };
+	VERIFY(hamon::ranges::cdata(a) == a + 0);
+
+	static_assert( has_cdata<int(&)[2]>::value, "");
+	static_assert(!has_cdata<int(&&)[2]>::value, "");
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
+	static_assert(has_cdata<R3&>::value, "");
+	static_assert(has_cdata<R3>::value, "");  // borrowed range
+	static_assert(has_cdata<const R3&>::value, "");
+	static_assert(has_cdata<const R3>::value, "");  // borrowed range
+
 	R3 r;
 	const R3& c = r;
+	VERIFY(hamon::ranges::cdata(r) == hamon::ranges::data(c));
+	VERIFY(hamon::ranges::cdata(std::move(r)) == hamon::ranges::data(c));
+	VERIFY(hamon::ranges::cdata(std::move(c)) == hamon::ranges::begin(c));
 
-	return
-		hamon::ranges::cdata(r) == hamon::ranges::data(c) &&
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
-		hamon::ranges::cdata(std::move(r)) == hamon::ranges::begin(c) &&
-		hamon::ranges::cdata(std::move(c)) == hamon::ranges::begin(c) &&
-#endif
-		true;
+	return true;
 }
 
 GTEST_TEST(RangesTest, CDataTest)
@@ -97,6 +117,8 @@ GTEST_TEST(RangesTest, CDataTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
+
+#undef VERIFY
 
 }	// namespace cdata_test
 

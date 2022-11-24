@@ -9,7 +9,6 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/utility/as_const.hpp>
-//#include <hamon/assert.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include <vector>
@@ -21,15 +20,17 @@ namespace hamon_ranges_test
 namespace cend_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
 struct R
 {
-	int a[4] ={0, 1, 2, 3};
+	int a[4] { 0, 1, 2, 3 };
 
 	       HAMON_CXX14_CONSTEXPR const int* begin() const { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&& ) noexcept { return nullptr; }
+	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&&) noexcept { return nullptr; }
 
 	// Should be ignored because it doesn't return a sentinel for int*
-	       HAMON_CXX14_CONSTEXPR const long* end() const { return nullptr; }
+	HAMON_CXX14_CONSTEXPR const long* end() const { return nullptr; }
 
 	friend HAMON_CXX14_CONSTEXPR       int* end(R& r) { return r.a + 0; }
 	friend HAMON_CXX14_CONSTEXPR       int* end(R&& r) { return r.a + 1; }
@@ -51,7 +52,7 @@ struct RR
 {
 	short s = 0;
 	long l = 0;
-	int a[4] ={0, 1, 2, 3};
+	int a[4] { 0, 1, 2, 3 };
 
 	       HAMON_CXX14_CONSTEXPR const void* begin() const; // return type not an iterator
 
@@ -96,50 +97,47 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::cend(a)), const int*>::value, "");
 	static_assert(noexcept(hamon::ranges::cend(a)), "");
-	return hamon::ranges::cend(a) == (a + 2);
-}
+	VERIFY(hamon::ranges::cend(a) == (a + 2));
 
-bool test02()
-{
-	std::vector<int> v ={1,2,3};
-
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cend(v)), decltype(v.cend())>::value, "");
-	return hamon::ranges::cend(v) == v.cend();
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
 	R r;
 	const R& c = r;
-	RV v{r};
-	const RV cv{r};
+	VERIFY(hamon::ranges::cend(r) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(c) == hamon::ranges::end(c));
 
-	return
-		hamon::ranges::cend(r) == hamon::ranges::end(c) &&
-		hamon::ranges::cend(c) == hamon::ranges::end(c) &&
-		hamon::ranges::cend(std::move(v))  == hamon::ranges::end(c) &&
-		hamon::ranges::cend(std::move(cv)) == hamon::ranges::end(c);
+	RV v{ r };
+	const RV cv{ r };
+	VERIFY(hamon::ranges::cend(std::move(v)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(std::move(cv)) == hamon::ranges::end(c));
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
 	RR r;
 	const RR& c = r;
+	VERIFY(hamon::ranges::cend(r) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(c) == hamon::ranges::end(c));
 
-	return
-		hamon::ranges::cend(r) == hamon::ranges::end(c) &&
-		hamon::ranges::cend(c) == hamon::ranges::end(c) &&
-		hamon::ranges::cend(std::move(r)) == hamon::ranges::end(c) &&
-		hamon::ranges::cend(std::move(c)) == hamon::ranges::end(c);
+	VERIFY(hamon::ranges::cend(std::move(r)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(std::move(c)) == hamon::ranges::end(c));
+
+	return true;
 }
 
 GTEST_TEST(RangesTest, CEndTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
+
+#undef VERIFY
 
 }	// namespace cend_test
 

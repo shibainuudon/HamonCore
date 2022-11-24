@@ -9,9 +9,12 @@
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/is_unbounded_array.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -29,13 +32,15 @@ namespace detail
 
 template <typename T>
 concept sentinel_size =
-	requires(T&& t)
+	requires(T& t)
 	{
-		{ ranges::begin(std::forward<T>(t)) }
-			-> hamon::forward_iterator;
+		requires (!hamon::is_unbounded_array<hamon::remove_reference_t<T>>::value);
 
-		{ ranges::end(std::forward<T>(t)) }
-			-> hamon::sized_sentinel_for<decltype(ranges::begin(std::forward<T>(t)))>;
+		{ ranges::begin(t) } -> hamon::forward_iterator;
+
+		{ ranges::end(t) } -> hamon::sized_sentinel_for<decltype(ranges::begin(t))>;
+
+		detail::to_unsigned_like(ranges::end(t) - ranges::begin(t));
 	};
 
 #else
@@ -45,8 +50,12 @@ struct sentinel_size_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(ranges::begin(std::declval<U&&>())),
-		typename E = decltype(ranges::end(std::declval<U&&>()))
+		typename = hamon::enable_if_t<
+			!hamon::is_unbounded_array<hamon::remove_reference_t<U>>::value
+		>,
+		typename B = decltype(ranges::begin(std::declval<U&>())),
+		typename E = decltype(ranges::end(std::declval<U&>())),
+		typename = decltype(detail::to_unsigned_like(std::declval<E>() - std::declval<B>()))
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::forward_iterator<B>,

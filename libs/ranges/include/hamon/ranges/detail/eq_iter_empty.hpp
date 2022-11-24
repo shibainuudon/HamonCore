@@ -11,6 +11,8 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_unbounded_array.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -28,10 +30,11 @@ namespace detail
 
 template <typename T>
 concept eq_iter_empty =
-	requires(T&& t)
+	requires(T& t)
 	{
-		{ ranges::begin(std::forward<T>(t)) } -> hamon::forward_iterator;
-		bool(ranges::begin(std::forward<T>(t)) == ranges::end(std::forward<T>(t)));
+		requires (!hamon::is_unbounded_array<hamon::remove_reference_t<T>>::value);
+		{ ranges::begin(t) } -> hamon::forward_iterator;
+		bool(ranges::begin(t) == ranges::end(t));
 	};
 
 #else
@@ -41,9 +44,12 @@ struct eq_iter_empty_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(ranges::begin(std::declval<U&&>())),
+		typename = hamon::enable_if_t<
+			!hamon::is_unbounded_array<hamon::remove_reference_t<U>>::value
+		>,
+		typename B = decltype(ranges::begin(std::declval<U&>())),
 		typename = hamon::enable_if_t<hamon::forward_iterator<B>::value>,
-		typename = decltype(bool(ranges::begin(std::declval<U&&>()) == ranges::end(std::declval<U&&>())))
+		typename = decltype(bool(ranges::begin(std::declval<U&>()) == ranges::end(std::declval<U&>())))
 	>
 	static auto test(int) -> std::true_type;
 

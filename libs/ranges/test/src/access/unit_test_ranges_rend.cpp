@@ -14,12 +14,15 @@
 #include <gtest/gtest.h>
 #include <utility>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_ranges_test
 {
 
 namespace rend_test
 {
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 struct R1
 {
@@ -55,6 +58,22 @@ struct R3
 	friend HAMON_CXX14_CONSTEXPR const long* end(const R3&& r) { return r.l + 2; }
 };
 
+struct R4
+	: test_range<int, bidirectional_iterator_wrapper>
+{
+	HAMON_CXX14_CONSTEXPR R4(int(&a)[2]) : test_range(a) { }
+
+	using test_range::begin;
+
+	// Replace test_range::end() to return same type as begin()
+	// so ranges::rend will wrap it in a reverse_iterator.
+	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper<int>
+	end() &
+	{
+		return bidirectional_iterator_wrapper<int>{m_last};
+	}
+};
+
 }	// namespace rend_test
 
 }	// namespace hamon_ranges_test
@@ -79,14 +98,15 @@ namespace rend_test
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	R1 r;
+	constexpr R1 r;
 
 	// decay-copy(t.rend()) if it is a valid expression
 	// and its type S models sentinel_for<decltype(ranges::rbegin(E))>
 
-	return
-		hamon::ranges::rend(r) == &r.i + 1 &&
-		hamon::ranges::rend(std::move(r)) == &r.i + 1;
+	VERIFY(hamon::ranges::rend(r) == &r.i + 1);
+	VERIFY(hamon::ranges::rend(std::move(r)) == &r.i + 1);
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
@@ -99,23 +119,33 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	auto i1 = hamon::ranges::rbegin(r);
 	auto i2 = rend(r);
 	static_assert(hamon::sentinel_for_t<decltype(i2), decltype(i1)>::value, "");
+	VERIFY(hamon::ranges::rend(r) == &r.i);
+	static_assert(!noexcept(hamon::ranges::rend(r)), "");
 
-	static_assert(!noexcept(hamon::ranges::rend(std::declval<R2&>())), "");
-
-	return hamon::ranges::rend(r) == &r.i;
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	R3 r;
+	constexpr R3 r;
 
 	// Otherwise, make_reverse_iterator(ranges::begin(t)) if both
 	// ranges::begin(t) and ranges::end(t) are valid expressions
 	// of the same type I which models bidirectional_iterator.
 
-	return
-		hamon::ranges::rend(r)            == hamon::make_reverse_iterator(hamon::ranges::begin(r)) &&
-		hamon::ranges::rend(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::begin(std::move(r)));
+	VERIFY(hamon::ranges::rend(r) == hamon::make_reverse_iterator(hamon::ranges::begin(r)));
+	VERIFY(hamon::ranges::rend(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::begin(std::move(r))));
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test04()
+{
+	int a[2] ={ };
+	R4 r(a);
+	VERIFY(hamon::ranges::rend(r) == hamon::make_reverse_iterator(hamon::ranges::begin(r)));
+
+	return true;
 }
 
 GTEST_TEST(RangesTest, REndTest)
@@ -123,7 +153,10 @@ GTEST_TEST(RangesTest, REndTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
+
+#undef VERIFY
 
 }	// namespace rend_test
 

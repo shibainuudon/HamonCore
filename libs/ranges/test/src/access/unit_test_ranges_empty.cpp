@@ -20,118 +20,105 @@ namespace hamon_ranges_test
 namespace empty_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+struct R
+{
+	constexpr int empty() const & { return 0; }
+	constexpr const void* empty() const && { return this; }
+};
+
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	int a[2] ={};
-	return !hamon::ranges::empty(a);
+	constexpr R r;
+	static_assert(!hamon::ranges::empty(r), "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r)), bool>::value, "");
+
+	static_assert(!hamon::ranges::empty(std::move(r)), "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(std::move(r))), bool>::value, "");
+
+	return true;
 }
 
-bool test02()
+HAMON_CXX14_CONSTEXPR bool test02()
 {
-	std::vector<int> v1 ={1};
-	std::vector<int> v2;
-	std::list<int>   l1 ={1,2};
-	std::list<int>   l2;
-	std::forward_list<int> fl1 ={1,2,3};
-	std::forward_list<int> fl2;
+	int a[] ={ 0, 1 };
+	VERIFY(!hamon::ranges::empty(a));
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(v1)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(v2)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(l1)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(l2)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(fl1)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(fl2)), bool>::value, "");
+	test_range<int, random_access_iterator_wrapper> r(a);
+	VERIFY(!hamon::ranges::empty(r));
 
-	return
-		!hamon::ranges::empty(v1) &&
-		 hamon::ranges::empty(v2) &&
-		!hamon::ranges::empty(l1) &&
-		 hamon::ranges::empty(l2) &&
-		!hamon::ranges::empty(fl1) &&
-		 hamon::ranges::empty(fl2);
+	test_range<int, forward_iterator_wrapper> i(a);
+	VERIFY(!hamon::ranges::empty(i));
+
+	test_sized_range<int, random_access_iterator_wrapper> sr(a);
+	VERIFY(!hamon::ranges::empty(sr));
+
+	test_sized_range<int, input_iterator_wrapper> si(a);
+	VERIFY(!hamon::ranges::empty(si));
+
+	test_sized_range<int, output_iterator_wrapper> so(a);
+	VERIFY(!hamon::ranges::empty(so));
+
+	return true;
 }
-
-struct R1
-{
-	HAMON_CXX14_CONSTEXPR int empty() const noexcept { return 0; }
-};
-struct R2
-{
-	HAMON_CXX14_CONSTEXPR const void* empty() const { return this; }
-};
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	R1 r1{};
-	R2 r2{};
+	struct R1
+	{
+		HAMON_CXX14_CONSTEXPR bool empty() & { return true; }
+	};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r1)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r2)), bool>::value, "");
+	struct R2
+	{
+		HAMON_CXX14_CONSTEXPR unsigned size() & { return 0; }
+	};
 
-	static_assert( noexcept(hamon::ranges::empty(std::declval<R1 const&>())), "");
-	static_assert(!noexcept(hamon::ranges::empty(std::declval<R2 const&>())), "");
+	VERIFY(hamon::ranges::empty(R1{}));
+	VERIFY(hamon::ranges::empty(R2{}));
 
-	return
-		!hamon::ranges::empty(r1) &&
-		 hamon::ranges::empty(r2);
+	return true;
 }
-
-struct R3
-{
-	HAMON_CXX14_CONSTEXPR int size() const noexcept { return 0; }
-};
-struct R4
-{
-	HAMON_CXX14_CONSTEXPR int size() const { return 1; }
-};
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	R3 r3{};
-	R4 r4{};
+	struct E1
+	{
+		bool empty() const noexcept { return {}; }
+	};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r3)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r4)), bool>::value, "");
+	struct E2
+	{
+		bool empty() const noexcept(false) { return {}; }
+	};
 
-	static_assert( noexcept(hamon::ranges::empty(std::declval<R3 const&>())), "");
-	static_assert(!noexcept(hamon::ranges::empty(std::declval<R4 const&>())), "");
+	struct E3
+	{
+		struct B
+		{
+			explicit operator bool() const noexcept(false) { return true; }
+		};
 
-	return
-		 hamon::ranges::empty(r3) &&
-		!hamon::ranges::empty(r4);
-}
+		B empty() const noexcept { return {}; }
+	};
 
-HAMON_CXX14_CONSTEXPR bool test05()
-{
-	int a[2] {};
-	test_forward_range<int>       r1{};
-	test_forward_range<int>       r2(a, a);
-	test_forward_range<int>       r3(a, a+1);
-	test_bidirectional_range<int> r4{};
-	test_bidirectional_range<int> r5(a, a+2);
+	static_assert( noexcept(hamon::ranges::empty(E1{})), "");
+	static_assert(!noexcept(hamon::ranges::empty(E2{})), "");
+	static_assert(!noexcept(hamon::ranges::empty(E3{})), "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r1)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r2)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r3)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r4)), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r5)), bool>::value, "");
-
-	return
-		 hamon::ranges::empty(r1) &&
-		 hamon::ranges::empty(r2) &&
-		!hamon::ranges::empty(r3) &&
-		 hamon::ranges::empty(r4) &&
-		!hamon::ranges::empty(r5);
+	return true;
 }
 
 GTEST_TEST(RangesTest, EmptyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }
+
+#undef VERIFY
 
 }	// namespace empty_test
 

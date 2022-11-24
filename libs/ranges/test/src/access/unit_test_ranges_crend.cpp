@@ -18,6 +18,8 @@ namespace hamon_ranges_test
 namespace crend_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
 struct R1
 {
 	int i = 0;
@@ -82,48 +84,46 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	R1 r;
 	const R1& c = r;
+	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(std::move(r)) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(std::move(c)) == hamon::ranges::rend(c));
 
-	return
-		hamon::ranges::crend(r) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(c) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(std::move(r)) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(std::move(c)) == hamon::ranges::rend(c);
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
 	R2 r;
 	const R2& c = r;
+	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(std::move(r)) == hamon::ranges::rend(std::move(c)));
+	VERIFY(hamon::ranges::crend(std::move(c)) == hamon::ranges::rend(std::move(c)));
 
-	return
-		hamon::ranges::crend(r) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(c) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(std::move(r)) == hamon::ranges::rend(std::move(c)) &&
-		hamon::ranges::crend(std::move(c)) == hamon::ranges::rend(std::move(c));
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-#if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 90000))
-	static_assert(!noexcept(hamon::ranges::crend(std::declval<R3&>())), "");
-	static_assert(!noexcept(hamon::ranges::crend(std::declval<R3 const&>())), "");
-#endif
-
 	R3 r;
 	const R3& c = r;
-	return
-		hamon::ranges::crend(r) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(c) == hamon::ranges::rend(c);
+	static_assert(!noexcept(hamon::ranges::crend(r)), "");
+	static_assert(!noexcept(hamon::ranges::crend(c)), "");
+	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	int a[2] ={};
+	int a[2] ={ };
 	const auto& c = a;
+	VERIFY(hamon::ranges::crend(a) == hamon::ranges::rend(c));
+	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
 
-	return
-		hamon::ranges::crend(a) == hamon::ranges::rend(c) &&
-		hamon::ranges::crend(c) == hamon::ranges::rend(c);
+	return true;
 }
 
 GTEST_TEST(RangesTest, CREndTest)
@@ -133,6 +133,8 @@ GTEST_TEST(RangesTest, CREndTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
+
+#undef VERIFY
 
 }	// namespace crend_test
 

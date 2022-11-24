@@ -24,11 +24,11 @@ using std::ranges::size;
 #include <hamon/ranges/detail/has_member_size.hpp>
 #include <hamon/ranges/detail/has_adl_size.hpp>
 #include <hamon/ranges/detail/sentinel_size.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -50,18 +50,13 @@ struct size_fn
 {
 private:
 	template <
-		typename T
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
+		typename T,
+		typename = hamon::enable_if_t<
 			hamon::is_bounded_array<hamon::remove_reference_t<T>>::value
 		>
-#endif
 	>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires hamon::is_bounded_array<hamon::remove_reference_t<T>>::value
-#endif
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<3>, T&&) HAMON_NOEXCEPT
+	impl(T&&, hamon::detail::overload_priority<3>) HAMON_NOEXCEPT
 	->decltype(std::extent<hamon::remove_reference_t<T>>::value)
 	{
 		return std::extent<hamon::remove_reference_t<T>>::value;
@@ -69,33 +64,36 @@ private:
 
 	template <HAMON_CONSTRAINED_PARAM(has_member_size, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<2>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(decay_copy(std::forward<T>(t).size()))
-	->decltype(std::forward<T>(t).size())
+	impl(T&& t, hamon::detail::overload_priority<2>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().size()))
+	->decltype(t.size())
 	{
-		return std::forward<T>(t).size();
+		return t.size();
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(has_adl_size, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(decay_copy(size(std::forward<T>(t))))
-	->decltype(size(std::forward<T>(t)))
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(size(std::declval<T&>())))
+	->decltype(size(t))
 	{
-		return size(std::forward<T>(t));
+		return size(t);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(sentinel_size, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<0>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			detail::to_unsigned_like(ranges::end(std::forward<T>(t)) - ranges::begin(std::forward<T>(t))))
+	impl(T&& t, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_IF_EXPR(ranges::end(std::declval<T&>()) - ranges::begin(std::declval<T&>()))
+	->decltype(detail::to_unsigned_like(ranges::end(t)-ranges::begin(t)))
+	{
+		return detail::to_unsigned_like(ranges::end(t)-ranges::begin(t));
+	}
 
 public:
 	template <typename T>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<3>{}, std::forward<T>(t)))
+			impl(std::forward<T>(t), hamon::detail::overload_priority<3>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

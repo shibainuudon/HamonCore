@@ -25,6 +25,7 @@ namespace ranges
 namespace detail
 {
 
+// Poison pills so that unqualified lookup doesn't find std::begin.
 #if 0
 void begin(auto&) = delete;
 void begin(const auto&) = delete;

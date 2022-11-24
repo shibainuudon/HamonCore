@@ -48,27 +48,37 @@ struct empty_fn
 private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_empty, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<2>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			bool(std::forward<T>(t).empty()))
+	impl(T&& t, hamon::detail::overload_priority<2>)
+		HAMON_NOEXCEPT_IF_EXPR(bool(t.empty()))
+	->decltype(bool(t.empty()))
+	{
+		return bool(t.empty());
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(size0_empty, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			ranges::size(std::forward<T>(t)) == 0)
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(ranges::size(t) == 0)
+	->decltype(ranges::size(t) == 0)
+	{
+		return ranges::size(t) == 0;
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(eq_iter_empty, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<0>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			bool(ranges::begin(std::forward<T>(t)) == ranges::end(std::forward<T>(t))))
+	impl(T&& t, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_IF_EXPR(
+			bool(ranges::begin(t) == ranges::end(t)))
+	->decltype(bool(ranges::begin(t) == ranges::end(t)))
+	{
+		return bool(ranges::begin(t) == ranges::end(t));
+	}
 
 public:
 	template <typename T>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<2>{}, std::forward<T>(t)))
+			impl(std::forward<T>(t), hamon::detail::overload_priority<2>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

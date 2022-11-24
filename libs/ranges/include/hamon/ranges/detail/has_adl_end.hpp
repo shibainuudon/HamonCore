@@ -26,6 +26,7 @@ namespace ranges
 namespace detail
 {
 
+// Poison pills so that unqualified lookup doesn't find std::end.
 #if 0
 void end(auto&) = delete;
 void end(const auto&) = delete;

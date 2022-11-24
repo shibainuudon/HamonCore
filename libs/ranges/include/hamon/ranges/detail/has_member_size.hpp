@@ -8,8 +8,8 @@
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_SIZE_HPP
 
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
-#include <hamon/ranges/detail/integer_like.hpp>
+#include <hamon/ranges/detail/is_integer_like.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
@@ -30,9 +30,9 @@ namespace detail
 template <typename T>
 concept has_member_size =
 	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
-	requires(T&& t)
+	requires(T& t)
 	{
-		{ decay_copy(std::forward<T>(t).size()) } -> detail::integer_like;
+		{ hamon::detail::decay_copy(t.size()) } -> detail::is_integer_like;
 	};
 
 #else
@@ -45,9 +45,9 @@ private:
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,
-		typename S = decltype(decay_copy(std::declval<U&&>().size()))
+		typename S = decltype(hamon::detail::decay_copy(std::declval<U&>().size()))
 	>
-	static auto test(int) -> detail::integer_like<S>;
+	static auto test(int) -> detail::is_integer_like<S>;
 
 	template <typename U>
 	static auto test(...) -> std::false_type;

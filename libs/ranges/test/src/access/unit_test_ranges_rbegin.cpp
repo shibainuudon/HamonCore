@@ -12,12 +12,15 @@
 #include <gtest/gtest.h>
 #include <utility>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_ranges_test
 {
 
 namespace rbegin_test
 {
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 struct R1
 {
@@ -37,6 +40,21 @@ struct R2
 
 	friend HAMON_CXX14_CONSTEXPR const long* begin(const R2&&); // not defined
 	friend HAMON_CXX14_CONSTEXPR const long* end(const R2&&); // not defined
+};
+
+struct R3 : test_range<int, bidirectional_iterator_wrapper>
+{
+	HAMON_CXX14_CONSTEXPR R3(int(&a)[2]) : test_range(a) { }
+
+	using test_range::begin;
+
+	// Replace test_range::end() to return same type as begin()
+	// so ranges::rbegin will wrap it in a reverse_iterator .
+	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper<int>
+	end() &
+	{
+		return bidirectional_iterator_wrapper<int>{m_last};
+	}
 };
 
 }	// namespace rbegin_test
@@ -63,29 +81,48 @@ namespace rbegin_test
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	R1 r;
+	constexpr R1 r;
 	// decay-copy(t.rbegin()) if it is a valid expression
 	// and its type I models input_or_output_iterator.
-	return
-		hamon::ranges::rbegin(r) == &r.i &&
-		hamon::ranges::rbegin(std::move(r)) == &r.i;
+	VERIFY(hamon::ranges::rbegin(r) == &r.i);
+	VERIFY(hamon::ranges::rbegin(std::move(r)) == &r.i);
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	R2 r;
+	constexpr R2 r;
 	// Otherwise, decay-copy(rbegin(t)) if it is a valid expression
 	// and its type I models input_or_output_iterator [...]
-	return
-		hamon::ranges::rbegin(r)            == hamon::make_reverse_iterator(hamon::ranges::end(r)) &&
-		hamon::ranges::rbegin(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::end(std::move(r)));
+	VERIFY(hamon::ranges::rbegin(r) == hamon::make_reverse_iterator(hamon::ranges::end(r)));
+	VERIFY(hamon::ranges::rbegin(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::end(std::move(r))));
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test03()
+{
+	int a[2] {};
+	R3 r(a);
+
+	// Otherwise, make_reverse_iterator(ranges::end(t)) if both ranges::begin(t)
+	// and ranges::end(t) are valid expressions of the same type I which models
+	// bidirectional_iterator.
+
+	VERIFY(hamon::ranges::rbegin(r) == hamon::make_reverse_iterator(hamon::ranges::end(r)));
+
+	return true;
 }
 
 GTEST_TEST(RangesTest, RBeginTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
+
+#undef VERIFY
 
 }	// namespace rbegin_test
 

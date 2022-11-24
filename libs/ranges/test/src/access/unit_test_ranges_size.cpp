@@ -5,17 +5,23 @@
  */
 
 #include <hamon/ranges/size.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
+#include <hamon/concepts/same_as.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include <vector>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_ranges_test
 {
 
 namespace size_test
 {
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 struct R
 {
@@ -39,6 +45,12 @@ struct R5
 	HAMON_CXX14_CONSTEXPR R5* end() { return this + 1; }
 };
 
+struct Incomplete;
+using A = Incomplete[2]; // bounded array of incomplete type
+extern A& f();
+
+static_assert(hamon::same_as_t<decltype(hamon::ranges::size(f())), std::size_t>::value, "");
+
 }	// namespace size_test
 
 }	// namespace hamon_ranges_test
@@ -58,63 +70,68 @@ namespace size_test
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	int a1[10] = {};
-	int a2[2]  = {};
+	constexpr int a[10] {};
+	static_assert(hamon::ranges::size(a) == 10, "");
+	static_assert(noexcept(hamon::ranges::size(a)), "");
 
-	static_assert(noexcept(hamon::ranges::size(a1)), "");
+	int a2[2] {};
+	VERIFY(hamon::ranges::size(a2) == 2);
 	static_assert(noexcept(hamon::ranges::size(a2)), "");
 
-	return
-		hamon::ranges::size(a1) == 10 &&
-		hamon::ranges::size(a2) == 2;
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	R r{};
+	R r;
 	const R& c = r;
 
-	static_assert(!noexcept(hamon::ranges::size(std::declval<R&>())), "");
-	static_assert( noexcept(hamon::ranges::size(std::declval<R const&>())), "");
+	static_assert(!noexcept(hamon::ranges::size(r)), "");
+	static_assert( noexcept(hamon::ranges::size(c)), "");
 
-	return
-		hamon::ranges::size(r) == 1 &&
-		hamon::ranges::size(c) == 2L;
+	VERIFY(hamon::ranges::size(r) == 1);
+	VERIFY(hamon::ranges::size(c) == 2L);
+
+	int a[3] { };
+	test_sized_range<int, input_iterator_wrapper> ri(a);
+	static_assert(noexcept(hamon::ranges::size(ri)), "");
+	VERIFY(hamon::ranges::size(ri) == 3);
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	R3 r{};
+	R3 r;
 	const R3& c = r;
+	
+	static_assert( noexcept(hamon::ranges::size(r)), "");
+	static_assert( noexcept(hamon::ranges::size(std::move(r))), "");
+	static_assert(!noexcept(hamon::ranges::size(c)), "");
+	static_assert(!noexcept(hamon::ranges::size(std::move(c))), "");
 
-	static_assert( noexcept(hamon::ranges::size(std::declval<R3&>())), "");
-	static_assert(!noexcept(hamon::ranges::size(std::declval<R3 const&>())), "");
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
-	static_assert(!noexcept(hamon::ranges::size(std::declval<R3&&>())), "");
-	static_assert( noexcept(hamon::ranges::size(std::declval<R3 const&&>())), "");
-#endif
+	VERIFY(hamon::ranges::size(r) == 1);
+	VERIFY(hamon::ranges::size(std::move(r)) == 1);
+	VERIFY(hamon::ranges::size(c) == 2L);
+	VERIFY(hamon::ranges::size(std::move(c)) == 2L);
 
-	return
-		hamon::ranges::size(r) == 1 &&
-		hamon::ranges::size(c) == 2L &&
-#if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
-		hamon::ranges::size(std::move(r)) == 3U &&
-		hamon::ranges::size(std::move(c)) == 4UL &&
-#endif
-		true;
+	return true;
 }
 
-bool test04()
+HAMON_CXX14_CONSTEXPR bool test04()
 {
-	std::vector<int> v = {1,2,3};
-
-	return hamon::ranges::size(v) == 3;
+	int a[] { 0, 1 };
+	test_range<int, random_access_iterator_wrapper> r(a);
+	VERIFY(hamon::ranges::size(r) == unsigned(hamon::ranges::end(r) - hamon::ranges::begin(r)));
+	
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test05()
 {
-	R5 r{};
-	return hamon::ranges::size(r) == 1;
+	R5 r;
+	VERIFY(hamon::ranges::size(r) == 1);
+	return true;
 }
 
 GTEST_TEST(RangesTest, SizeTest)
@@ -122,9 +139,11 @@ GTEST_TEST(RangesTest, SizeTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
-	                      EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }
+
+#undef VERIFY
 
 }	// namespace size_test
 

@@ -8,7 +8,7 @@
 #define HAMON_RANGES_DETAIL_HAS_ADL_REND_HPP
 
 #include <hamon/ranges/rbegin.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -42,7 +42,7 @@ concept has_adl_rend =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T& t)
 	{
-		{ decay_copy(rend(t)) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
+		{ hamon::detail::decay_copy(rend(t)) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
 	};
 
 #else
@@ -56,7 +56,7 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename E = decltype(decay_copy(rend(std::declval<U&>()))),
+		typename E = decltype(hamon::detail::decay_copy(rend(std::declval<U&>()))),
 		typename B = decltype(ranges::rbegin(std::declval<U&>()))
 	>
 	static auto test(int) -> hamon::sentinel_for<E, B>;

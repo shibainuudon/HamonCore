@@ -22,11 +22,11 @@ using std::ranges::data;
 #else
 
 #include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
 #include <hamon/ranges/detail/has_member_data.hpp>
 #include <hamon/ranges/detail/begin_data.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -48,8 +48,8 @@ struct data_fn
 private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_data, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(decay_copy(std::declval<T>().data()))
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().data()))
 	->decltype(t.data())
 	{
 		return t.data();
@@ -57,15 +57,18 @@ private:
 
 	template <HAMON_CONSTRAINED_PARAM(begin_data, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<0>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			hamon::to_address(ranges::begin(std::forward<T>(t))))
+	impl(T&& t, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_IF_EXPR(ranges::begin(std::declval<T&>()))
+	->decltype(hamon::to_address(ranges::begin(t)))
+	{
+		return hamon::to_address(ranges::begin(t));
+	}
 
 public:
 	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t)))
+			impl(std::forward<T>(t), hamon::detail::overload_priority<1>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

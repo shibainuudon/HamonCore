@@ -7,6 +7,7 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_MEMBER_DATA_HPP
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_DATA_HPP
 
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/config.hpp>
@@ -31,8 +32,10 @@ concept pointer_to_object =
 
 template <typename T>
 concept has_member_data =
-	std::is_lvalue_reference<T>::value &&
-	requires(T t) { { t.data() } -> pointer_to_object; };
+	requires(T& t)
+	{
+		{ hamon::detail::decay_copy(t.data()) } -> pointer_to_object;
+	};
 
 #else
 
@@ -40,9 +43,9 @@ template <typename T>
 struct has_member_data_impl
 {
 private:
-	template <typename U, typename P = decltype(std::declval<U&>().data())>
+	template <typename U,
+		typename P = decltype(hamon::detail::decay_copy(std::declval<U&>().data()))>
 	static auto test(int) -> hamon::conjunction<
-		std::is_lvalue_reference<U>,
 		std::is_pointer<P>,
 		std::is_object<hamon::remove_pointer_t<P>>
 	>;

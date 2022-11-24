@@ -24,9 +24,9 @@ namespace detail
 
 template <typename T>
 concept has_member_empty =
-	requires(T&& t)
+	requires(T& t)
 	{
-		bool(std::forward<T>(t).empty());
+		bool(t.empty());
 	};
 
 #else
@@ -36,7 +36,7 @@ struct has_member_empty_impl
 {
 private:
 	template <typename U,
-		typename = decltype(bool(std::declval<U&&>().empty()))
+		typename = decltype(bool(std::declval<U&>().empty()))
 	>
 	static auto test(int) -> std::true_type;
 

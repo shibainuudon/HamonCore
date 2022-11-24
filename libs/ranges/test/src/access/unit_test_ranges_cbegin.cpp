@@ -20,9 +20,11 @@ namespace hamon_ranges_test
 namespace cbegin_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
 struct R
 {
-	int a[4] ={0, 1, 2, 3};
+	int a[4] ={ 0, 1, 2, 3 };
 
 	friend HAMON_CXX14_CONSTEXPR       int* begin(R& r) { return r.a + 0; }
 	friend HAMON_CXX14_CONSTEXPR       int* begin(R&&); // this function is not defined
@@ -42,10 +44,10 @@ struct RR
 {
 	short s = 0;
 	long l = 0;
-	int a[4] ={0, 1, 2, 3};
+	int a[4] ={ 0, 1, 2, 3 };
 
-	       HAMON_CXX14_CONSTEXPR       short* begin() noexcept { return &s; }
-	       HAMON_CXX14_CONSTEXPR const long*  begin() const { return &l; }
+	HAMON_CXX14_CONSTEXPR       short* begin() noexcept { return &s; }
+	HAMON_CXX14_CONSTEXPR const long*  begin() const { return &l; }
 
 	friend HAMON_CXX14_CONSTEXPR       int* begin(RR& r) { return r.a + 0; }
 	friend HAMON_CXX14_CONSTEXPR       int* begin(RR&& r) { return r.a + 1; }
@@ -81,50 +83,49 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(a)), const int*>::value, "");
 	static_assert(noexcept(hamon::ranges::cbegin(a)), "");
-	return hamon::ranges::cbegin(a) == (a + 0);
-}
+	VERIFY(hamon::ranges::cbegin(a) == (a + 0));
 
-bool test02()
-{
-	std::vector<int> v ={1,2,3};
+	constexpr long b[2] ={};
+	static_assert(hamon::ranges::cbegin(b) == (b + 0), "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(v)), decltype(v.cbegin())>::value, "");
-	return hamon::ranges::cbegin(v) == v.cbegin();
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
 	R r;
 	const R& c = r;
-	RV v{r};
-	const RV cv{r};
+	VERIFY(hamon::ranges::cbegin(r) == hamon::ranges::begin(c));
+	VERIFY(hamon::ranges::cbegin(c) == hamon::ranges::begin(c));
 
-	return
-		hamon::ranges::cbegin(r) == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(c) == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(std::move(v))  == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(std::move(cv)) == hamon::ranges::begin(c);
+	RV v{ r };
+	VERIFY(hamon::ranges::cbegin(std::move(v)) == hamon::ranges::begin(c));
+	const RV cv{ r };
+	VERIFY(hamon::ranges::cbegin(std::move(cv)) == hamon::ranges::begin(c));
+
+	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
 	RR r;
 	const RR& c = r;
+	VERIFY(hamon::ranges::cbegin(r) == hamon::ranges::begin(c));
+	VERIFY(hamon::ranges::cbegin(std::move(r)) == hamon::ranges::begin(c));
+	VERIFY(hamon::ranges::cbegin(c) == hamon::ranges::begin(c));
+	VERIFY(hamon::ranges::cbegin(std::move(c)) == hamon::ranges::begin(c));
 
-	return
-		hamon::ranges::cbegin(r) == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(c) == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(std::move(r)) == hamon::ranges::begin(c) &&
-		hamon::ranges::cbegin(std::move(c)) == hamon::ranges::begin(c);
+	return true;
 }
 
 GTEST_TEST(RangesTest, CBeginTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
+
+#undef VERIFY
 
 }	// namespace cbegin_test
 

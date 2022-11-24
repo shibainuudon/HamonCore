@@ -26,10 +26,7 @@ namespace detail
 
 template <typename T>
 concept begin_data =
-	requires(T&& t)
-	{
-		{ ranges::begin(std::forward<T>(t)) } -> hamon::contiguous_iterator;
-	};
+	hamon::contiguous_iterator<decltype(ranges::begin(std::declval<T&>()))>;
 
 #else
 
@@ -37,7 +34,7 @@ template <typename T>
 struct begin_data_impl
 {
 private:
-	template <typename U, typename B = decltype(ranges::begin(std::declval<U>()))>
+	template <typename U, typename B = decltype(ranges::begin(std::declval<U&>()))>
 	static auto test(int) -> hamon::contiguous_iterator<B>;
 
 	template <typename U>

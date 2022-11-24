@@ -30,6 +30,7 @@ using std::ranges::begin;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_all_extents.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -48,37 +49,31 @@ struct begin_fn
 {
 private:
 	template <
-		typename T
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<std::is_array<hamon::remove_reference_t<T>>::value>
-#endif
+		typename T,
+		typename = hamon::enable_if_t<
+			std::is_array<hamon::remove_reference_t<T>>::value
+		>
 	>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires std::is_array<hamon::remove_reference_t<T>>::value
-#endif
-	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<2>, T&& t) HAMON_NOEXCEPT
-	->decltype(t + 0)
+	static HAMON_CONSTEXPR hamon::decay_t<T>
+	impl(T&& t, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 	{
 		static_assert(std::is_lvalue_reference<T>::value, "");
-		using U = hamon::remove_all_extents_t<hamon::remove_reference_t<T>>;
-		static_assert(sizeof(U) != 0, "not array of incomplete type");
 		return t + 0;
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(has_member_begin, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(t.begin()))
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().begin()))
 	->decltype(t.begin())
 	{
 		return t.begin();
 	}
-
+	
 	template <HAMON_CONSTRAINED_PARAM(has_adl_begin, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<0>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(begin(t)))
+	impl(T&& t, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(begin(std::declval<T&>())))
 	->decltype(begin(t))
 	{
 		return begin(t);
@@ -86,9 +81,9 @@ private:
 
 public:
 	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<2>{}, std::forward<T>(t)))
+			impl(std::forward<T>(t), hamon::detail::overload_priority<2>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

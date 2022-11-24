@@ -39,7 +39,7 @@ namespace detail {
 struct cdata_fn
 {
 	template <typename T>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			ranges::data(ranges::detail::as_const(std::forward<T>(t))))
 };

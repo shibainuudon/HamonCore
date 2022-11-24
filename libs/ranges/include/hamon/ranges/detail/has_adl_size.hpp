@@ -7,9 +7,9 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_ADL_SIZE_HPP
 #define HAMON_RANGES_DETAIL_HAS_ADL_SIZE_HPP
 
-#include <hamon/ranges/detail/decay_copy.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
-#include <hamon/ranges/detail/integer_like.hpp>
+#include <hamon/ranges/detail/is_integer_like.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -44,7 +44,7 @@ concept has_adl_size =
 	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
 	requires(T&& t)
 	{
-		{ decay_copy(size(std::forward<T>(t))) } -> detail::integer_like;
+		{ hamon::detail::decay_copy(size(std::forward<T>(t))) } -> detail::is_integer_like;
 	};
 
 #else
@@ -61,9 +61,9 @@ private:
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,
-		typename S = decltype(decay_copy(size(std::declval<U&&>())))
+		typename S = decltype(hamon::detail::decay_copy(size(std::declval<U&&>())))
 	>
-	static auto test(int) -> detail::integer_like<S>;
+	static auto test(int) -> detail::is_integer_like<S>;
 
 	template <typename U>
 	static auto test(...) -> std::false_type;

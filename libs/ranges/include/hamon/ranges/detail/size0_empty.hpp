@@ -25,9 +25,9 @@ namespace detail
 
 template <typename T>
 concept size0_empty =
-	requires(T&& t)
+	requires(T& t)
 	{
-		ranges::size(std::forward<T>(t)) == 0;
+		ranges::size(t) == 0;
 	};
 
 #else
@@ -37,7 +37,7 @@ struct size0_empty_impl
 {
 private:
 	template <typename U,
-		typename = decltype(ranges::size(std::declval<U&&>()) == 0)
+		typename = decltype(ranges::size(std::declval<U&>()) == 0)
 	>
 	static auto test(int) -> std::true_type;
 

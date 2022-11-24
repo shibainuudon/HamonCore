@@ -7,7 +7,7 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_ADL_RBEGIN_HPP
 #define HAMON_RANGES_DETAIL_HAS_ADL_RBEGIN_HPP
 
-#include <hamon/ranges/detail/decay_copy.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -40,7 +40,7 @@ concept has_adl_rbegin =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T& t)
 	{
-		{ decay_copy(rbegin(t)) } -> hamon::input_or_output_iterator;
+		{ hamon::detail::decay_copy(rbegin(t)) } -> hamon::input_or_output_iterator;
 	};
 
 #else
@@ -54,7 +54,7 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename B = decltype(decay_copy(rbegin(std::declval<U&>())))
+		typename B = decltype(hamon::detail::decay_copy(rbegin(std::declval<U&>())))
 	>
 	static auto test(int) -> hamon::input_or_output_iterator<B>;
 

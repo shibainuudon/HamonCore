@@ -8,6 +8,7 @@
 #define HAMON_DETAIL_DECAY_COPY_HPP
 
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -19,9 +20,9 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR typename std::decay<T>::type
+inline HAMON_CONSTEXPR hamon::decay_t<T>
 decay_copy(T&& t)
-HAMON_NOEXCEPT_IF((hamon::is_nothrow_convertible<T, typename std::decay<T>::type>::value))
+HAMON_NOEXCEPT_IF((hamon::is_nothrow_convertible<T, hamon::decay_t<T>>::value))
 {
 	return std::forward<T>(t);
 }

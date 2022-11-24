@@ -23,13 +23,13 @@ using std::ranges::rend;
 #else
 
 #include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
 #include <hamon/ranges/detail/has_member_rend.hpp>
 #include <hamon/ranges/detail/has_adl_rend.hpp>
 #include <hamon/ranges/detail/reversable.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -51,8 +51,8 @@ struct rend_fn
 private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_rend, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<2>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(decay_copy(t.rend()))
+	impl(T&& t, hamon::detail::overload_priority<2>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().rend()))
 	->decltype(t.rend())
 	{
 		return t.rend();
@@ -60,8 +60,8 @@ private:
 
 	template <HAMON_CONSTRAINED_PARAM(has_adl_rend, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_IF_EXPR(decay_copy(rend(t)))
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(rend(std::declval<T&>())))
 	->decltype(rend(t))
 	{
 		return rend(t);
@@ -69,7 +69,7 @@ private:
 
 	template <HAMON_CONSTRAINED_PARAM(reversable, T)>
 	static HAMON_CONSTEXPR auto
-	impl(hamon::detail::overload_priority<0>, T&& t)
+	impl(T&& t, hamon::detail::overload_priority<0>)
 		noexcept(
 			noexcept(ranges::begin(t)) &&
 			std::is_nothrow_copy_constructible<decltype(ranges::begin(t))>::value
@@ -81,9 +81,9 @@ private:
 
 public:
 	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_CONSTEXPR auto operator()(T&& t) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<2>{}, std::forward<T>(t)))
+			impl(std::forward<T>(t), hamon::detail::overload_priority<2>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

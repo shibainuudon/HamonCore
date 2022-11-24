@@ -25,6 +25,7 @@ using std::ranges::ssize;
 #include <hamon/ranges/size.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <limits>
@@ -38,42 +39,32 @@ namespace detail {
 
 struct ssize_fn
 {
-private:
-	template <typename T>
-	struct result_type
-	{
-		using iter_type = decltype(ranges::begin(std::declval<T&&>()));
-		using diff_type = hamon::iter_difference_t<iter_type>;
-		using type = hamon::conditional_t<
-			std::is_integral<diff_type>::value &&
-			std::numeric_limits<diff_type>::digits < std::numeric_limits<std::ptrdiff_t>::digits,
-			std::ptrdiff_t,
-			diff_type
-		>;
-	};
-
-	template <typename T>
-	using result_type_t = typename result_type<T>::type;
-
 public:
 	template <
-		typename T
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = decltype(ranges::begin(std::declval<T&&>()))
-		, typename = decltype(ranges::size(std::declval<T&&>()))
-#endif
+		typename T,
+		typename size_type = decltype(ranges::size(std::declval<T&>())),
+		typename result_type =
+			hamon::conditional_t<
+				hamon::integral_t<size_type>::value,
+				hamon::conditional_t<
+					(std::numeric_limits<size_type>::digits < std::numeric_limits<std::ptrdiff_t>::digits),
+					std::ptrdiff_t,
+					hamon::make_signed_t<size_type>
+				>,
+				hamon::ranges::detail::max_diff_type
+			>
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires requires (T&& e)
+	requires requires (T& e)
 	{
-		ranges::begin(std::forward<T>(e));
-		ranges::size(std::forward<T>(e));
+		ranges::size(e);
 	}
 #endif
-	HAMON_CONSTEXPR result_type_t<T> operator()(T&& e) const
-		HAMON_NOEXCEPT_IF_EXPR(ranges::size(std::forward<T>(e)))
+	HAMON_NODISCARD HAMON_CONSTEXPR result_type
+	operator() (T&& t) const
+		HAMON_NOEXCEPT_IF_EXPR(ranges::size(t))
 	{
-		return static_cast<result_type_t<T>>(ranges::size(std::forward<T>(e)));
+		return static_cast<result_type>(ranges::size(t));
 	}
 };
 

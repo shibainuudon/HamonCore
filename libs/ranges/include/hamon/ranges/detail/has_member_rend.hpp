@@ -8,7 +8,7 @@
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_REND_HPP
 
 #include <hamon/ranges/rbegin.hpp>
-#include <hamon/ranges/detail/decay_copy.hpp>
+#include <hamon/detail/decay_copy.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
@@ -29,7 +29,8 @@ template <typename T>
 concept has_member_rend =
 	requires(T& t)
 	{
-		{ decay_copy(t.rend()) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
+		{ hamon::detail::decay_copy(t.rend()) }
+			-> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
 	};
 
 #else
@@ -39,7 +40,7 @@ struct has_member_rend_impl
 {
 private:
 	template <typename U,
-		typename E = decltype(decay_copy(std::declval<U&>().rend())),
+		typename E = decltype(hamon::detail::decay_copy(std::declval<U&>().rend())),
 		typename B = decltype(ranges::rbegin(std::declval<U&>()))
 	>
 	static auto test(int) -> hamon::sentinel_for<E, B>;
