@@ -1309,6 +1309,11 @@ struct Object
 		++s_dtor_count;
 	}
 
+	static void *operator new(std::size_t size)
+	{
+		return ::operator new(size);
+	}
+	
 	static void operator delete(Object* p, std::destroying_delete_t)
 	{
 		++s_delete_count;
