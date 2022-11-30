@@ -28,8 +28,8 @@ struct S
 		++construct_count;
 	}
 
-	S(int x, float y, double z)
-		: x{ x }, y{ y }, z{ z }
+	S(int x_, float y_, double z_)
+		: x{ x_ }, y{ y_ }, z{ z_ }
 	{
 		++construct_count;
 	}

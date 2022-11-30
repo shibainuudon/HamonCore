@@ -26,20 +26,20 @@ class Object
 {
 public:
 	Object(int a)
-		: a(a), b(0)
+		: m_a(a), m_b(0)
 	{}
 
 	Object(int a, float b)
-		: a(a), b(b)
+		: m_a(a), m_b(b)
 	{}
 
 private:
-	int   a;
-	float b;
+	int   m_a;
+	float m_b;
 
 public:
-	int   GetA() const { return a; }
-	float GetB() const { return b; }
+	int   GetA() const { return m_a; }
+	float GetB() const { return m_b; }
 };
 
 template <typename Archive>
