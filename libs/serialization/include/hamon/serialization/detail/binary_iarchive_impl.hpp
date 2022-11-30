@@ -31,13 +31,13 @@ void load_binary(std::basic_istream<CharT, Traits>& is, void* p, std::size_t siz
 	if (size % sizeof(CharT) == 0)
 	{
 		// size が sizeof(CharT) の倍数のときはそのまま読み込めば良い
-		pbuf->sgetn(static_cast<CharT*>(p), count);
+		pbuf->sgetn(static_cast<CharT*>(p), static_cast<std::streamsize>(count));
 	}
 	else
 	{
 		// そうでないときは、一時バッファに読み込んでからコピーする
 		std::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
-		pbuf->sgetn(buf.data(), count);
+		pbuf->sgetn(buf.data(), static_cast<std::streamsize>(count));
 		std::memcpy(p, buf.data(), size);
 	}
 

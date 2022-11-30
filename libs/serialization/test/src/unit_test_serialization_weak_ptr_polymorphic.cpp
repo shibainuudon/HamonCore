@@ -58,7 +58,7 @@ public:
 
 	float GetValue() const override
 	{
-		return Base::GetValue() + b;
+		return Base::GetValue() + static_cast<float>(b);
 	}
 
 private:

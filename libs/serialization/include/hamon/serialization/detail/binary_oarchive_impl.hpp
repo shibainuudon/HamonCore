@@ -29,14 +29,14 @@ void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, std::size
 	if (size % sizeof(CharT) == 0)
 	{
 		// size が sizeof(CharT) の倍数のときはそのまま書き込めば良い
-		pbuf->sputn(static_cast<CharT const*>(p), count);
+		pbuf->sputn(static_cast<CharT const*>(p), static_cast<std::streamsize>(count));
 	}
 	else
 	{
 		// そうでないときは、一時バッファにコピーしてから書き込む
 		std::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
 		std::memcpy(buf.data(), p, size);
-		pbuf->sputn(buf.data(), count);
+		pbuf->sputn(buf.data(), static_cast<std::streamsize>(count));
 	}
 }
 

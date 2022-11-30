@@ -47,10 +47,10 @@ if (MSVC)
   endif()
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  target_compile_options(${TARGET_NAME} INTERFACE -Wall -Wextra -Wshadow -Werror)
+  target_compile_options(${TARGET_NAME} INTERFACE -Wall -Wextra -Wshadow -Wconversion -Werror)
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(${TARGET_NAME} INTERFACE -Wall -Wextra -Wshadow -Werror)
+  target_compile_options(${TARGET_NAME} INTERFACE -Wall -Wextra -Wshadow -Wconversion -Werror)
 endif()
 
 add_subdirectory(test)

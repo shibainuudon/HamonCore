@@ -45,9 +45,14 @@ namespace detail
 template <typename T>
 static void test_noexcept(T) noexcept;
 
+HAMON_WARNING_PUSH();
+HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-conversion");
+
 template <typename From, typename To>
 static hamon::bool_constant<noexcept(test_noexcept<To>(std::declval<From>()))>
 is_nothrow_convertible_test();
+
+HAMON_WARNING_POP();
 
 template <typename From, typename To>
 struct is_nothrow_convertible_helper : decltype(is_nothrow_convertible_test<From, To>())

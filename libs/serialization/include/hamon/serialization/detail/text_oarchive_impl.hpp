@@ -114,7 +114,7 @@ private:
 		tmp.resize(s.size());
 		std::transform(s.begin(), s.end(), tmp.begin(),
 			[](CharT2 c){return static_cast<CharT1>(c);});
-		os.write(tmp.c_str(), tmp.size());
+		os.write(tmp.c_str(), static_cast<std::streamsize>(tmp.size()));
 	}
 
 	template <
@@ -126,8 +126,8 @@ private:
 		std::basic_ostream<CharT1, Traits1>& os,
 		std::basic_string<CharT2, Traits2> const& s)
 	{
-		std::streamsize count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
-		os.write(reinterpret_cast<CharT1 const*>(s.data()), count);
+		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
+		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<std::streamsize>(count));
 	}
 
 public:

@@ -95,7 +95,7 @@ private:
 			int i = 0;
 			while (i < 3 && first != last)
 			{
-				arr3[i++] = *first++;
+				arr3[i++] = static_cast<std::uint8_t>(*first++);
 			}
 
 			std::uint8_t const arr4[4]
@@ -185,7 +185,7 @@ private:
 
 			for (int j = 0; j < (i - 1); ++j)
 			{
-				result[count] = arr3[j];
+				result[count] = static_cast<T>(arr3[j]);
 				++count;
 			}
 		}
@@ -232,7 +232,7 @@ public:
 	get_encoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
 	{
 		return get_encoded_size(
-			hamon::distance(first, last) * sizeof(hamon::iter_value_t<Iterator>));
+			static_cast<std::size_t>(hamon::distance(first, last)) * sizeof(hamon::iter_value_t<Iterator>));
 	}
 
 	/**
@@ -259,7 +259,7 @@ public:
 	static HAMON_CONSTEXPR std::size_t
 	get_decoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
 	{
-		return get_decoded_size(hamon::distance(first, last));
+		return get_decoded_size(static_cast<std::size_t>(hamon::distance(first, last)));
 	}
 
 	/**

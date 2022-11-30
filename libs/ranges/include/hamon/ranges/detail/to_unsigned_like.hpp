@@ -40,7 +40,7 @@ template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
 HAMON_CONSTEXPR hamon::make_unsigned_t<T>
 to_unsigned_like(T t) HAMON_NOEXCEPT
 {
-	return t;
+	return static_cast<hamon::make_unsigned_t<T>>(t);
 }
 
 }	// namespace detail

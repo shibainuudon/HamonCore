@@ -198,7 +198,8 @@ operator*(
 {
 	using Q = quantity<T, D, S, O>;
 	using Q2 = detail::quantity_without_offset_t<Q>;
-	return Q { Q2 { static_cast<T>(Q2 { lhs }.value() * rhs) } };
+	using CT = hamon::common_type_t<T, ArithmeticType>;
+	return Q { Q2 { static_cast<T>(static_cast<CT>(Q2 { lhs }.value()) * static_cast<CT>(rhs)) } };
 }
 
 /**
@@ -303,7 +304,8 @@ operator/(
 {
 	using Q = quantity<T, D, S, O>;
 	using Q2 = detail::quantity_without_offset_t<Q>;
-	return Q { Q2 { static_cast<T>(Q2 { lhs }.value() / rhs) } };
+	using CT = hamon::common_type_t<T, ArithmeticType>;
+	return Q { Q2 { static_cast<T>(static_cast<CT>(Q2 { lhs }.value()) / static_cast<CT>(rhs)) } };
 }
 
 /**
@@ -377,13 +379,17 @@ operator/(
 {
 	using Q1 = quantity<T1, D1, S1, O1>;
 	using Q2 = quantity<T2, D2, S2, O2>;
-	using result_type = detail::quantity_divide_result_t<Q1, Q2>;
-	return result_type
+	using Q3 = detail::quantity_divide_result_t<Q1, Q2>;
+	using Q1_2 = detail::quantity_without_scale_offset_t<Q1>;
+	using Q2_2 = detail::quantity_without_scale_offset_t<Q2>;
+	using Q3_2 = detail::quantity_without_scale_offset_t<Q3>;
+	using T3 = typename Q3_2::value_type;
+	return Q3
 	{
-		detail::quantity_without_scale_offset_t<result_type>
+		Q3_2
 		{
-			detail::quantity_without_scale_offset_t<Q1>{lhs}.value() /
-			detail::quantity_without_scale_offset_t<Q2>{rhs}.value()
+			static_cast<T3>(Q1_2{lhs}.value()) /
+			static_cast<T3>(Q2_2{rhs}.value())
 		}
 	};
 }

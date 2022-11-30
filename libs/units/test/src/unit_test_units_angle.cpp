@@ -47,15 +47,15 @@ TYPED_TEST(AngleTest, AccuracyTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(315.0, (double)degrees(radians(p * T(1.75))).value(), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(360.0, (double)degrees(radians(p * T(2.00))).value(), error);
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 0.00, (double)radians(degrees(  0.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 0.25, (double)radians(degrees( 45.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 0.50, (double)radians(degrees( 90.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 0.75, (double)radians(degrees(135.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 1.00, (double)radians(degrees(180.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 1.25, (double)radians(degrees(225.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 1.50, (double)radians(degrees(270.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 1.75, (double)radians(degrees(315.0)).value(), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(p * 2.00, (double)radians(degrees(360.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 0.00), (double)radians(degrees(  0.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 0.25), (double)radians(degrees( 45.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 0.50), (double)radians(degrees( 90.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 0.75), (double)radians(degrees(135.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 1.00), (double)radians(degrees(180.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 1.25), (double)radians(degrees(225.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 1.50), (double)radians(degrees(270.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 1.75), (double)radians(degrees(315.0)).value(), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 2.00), (double)radians(degrees(360.0)).value(), error);
 }
 
 TYPED_TEST(AngleTest, SinTest)

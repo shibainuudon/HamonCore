@@ -153,7 +153,7 @@ private:
 	{
 		std::basic_string<CharT1> tmp;
 		tmp.resize(length);
-		is.read(&tmp[0], tmp.size());
+		is.read(&tmp[0], static_cast<std::streamsize>(tmp.size()));
 		s.resize(length);
 		std::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](CharT1 c){return static_cast<CharT2>(c);});
@@ -169,9 +169,9 @@ private:
 		std::size_t length,
 		std::false_type)
 	{
-		std::streamsize count = (length * sizeof(CharT2)) / sizeof(CharT1);
+		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
 		s.resize(length);
-		is.read(reinterpret_cast<CharT1*>(&s[0]), count);
+		is.read(reinterpret_cast<CharT1*>(&s[0]), static_cast<std::streamsize>(count));
 	}
 
 	template <

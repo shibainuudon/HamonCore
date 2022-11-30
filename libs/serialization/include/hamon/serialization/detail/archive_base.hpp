@@ -45,7 +45,7 @@ public:
 	template <typename T>
 	std::shared_ptr<T> get_shared_ptr(int index)
 	{
-		return std::static_pointer_cast<T>(m_list[index]);
+		return std::static_pointer_cast<T>(m_list[static_cast<std::size_t>(index)]);
 	}
 
 private:

@@ -131,7 +131,7 @@ struct test_sized_range : public test_range<T, Iterator>
 
 	HAMON_CONSTEXPR std::size_t size() const noexcept
 	{
-		return base_t::m_last - base_t::m_first;
+		return static_cast<std::size_t>(base_t::m_last - base_t::m_first);
 	}
 };
 

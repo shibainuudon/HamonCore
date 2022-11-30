@@ -495,7 +495,7 @@ private:
 	make_value(E pos)
 	{
 		return static_cast<size_type>(pos) < N ?
-			static_cast<value_type>(1) << (static_cast<size_type>(pos)) :
+			static_cast<value_type>(static_cast<value_type>(1) << (static_cast<size_type>(pos))) :
 			(throw_out_of_range(), static_cast<value_type>(0));
 	}
 
