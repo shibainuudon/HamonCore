@@ -89,7 +89,10 @@ inline bool test03()
 		std::list<int> x = { 1, 2, 3, 4, 5, 6, 7 };
 		std::list<int> w(x.size());
 		auto res = ranges::copy(x.rbegin(), x.rend(), w.rbegin());
+#if !defined(HAMON_STDLIB_LIBSTDCPP3)
+		// libstdc++のranges::copyのバグでres.inに正しい値が帰ってこない
 		VERIFY(res.in  == x.rend());
+#endif
 		VERIFY(res.out == w.rend());
 		int const y[7] = { 1, 2, 3, 4, 5, 6, 7 };
 		VERIFY(ranges::equal(w, y));
