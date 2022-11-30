@@ -4,7 +4,8 @@
  *	@brief	シリアライズのテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/vector/operators.hpp>
 #include <gtest/gtest.h>
 #include "serialize_test.hpp"
 #include "vector_test.hpp"

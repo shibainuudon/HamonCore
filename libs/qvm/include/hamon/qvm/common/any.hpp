@@ -4,10 +4,9 @@
  *	@brief	any の定義
  */
 
-#ifndef HAMON_QVM_MATRIX_ANY_HPP
-#define HAMON_QVM_MATRIX_ANY_HPP
+#ifndef HAMON_QVM_COMMON_ANY_HPP
+#define HAMON_QVM_COMMON_ANY_HPP
 
-#include <hamon/qvm/matrix/matrix.hpp>
 #include <hamon/qvm/detail/reduce.hpp>
 #include <hamon/functional/logical_or.hpp>
 #include <hamon/config.hpp>
@@ -22,15 +21,18 @@ namespace qvm
 /**
  *	@brief	any
  */
-template <std::size_t R, std::size_t C>
+template <
+	template <typename, std::size_t...> class GenType,
+	std::size_t... Ns
+>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-any(matrix<bool, R, C> const& m) HAMON_NOEXCEPT
+any(GenType<bool, Ns...> const& v) HAMON_NOEXCEPT
 {
-	return hamon::qvm::reduce(m, false, hamon::logical_or<>{});
+	return hamon::qvm::detail::reduce(v, false, hamon::logical_or<>{});
 }
 
 }	// namespace qvm
 
 }	// namespace hamon
 
-#endif // HAMON_QVM_MATRIX_ANY_HPP
+#endif // HAMON_QVM_COMMON_ANY_HPP

@@ -8,9 +8,14 @@
 #define HAMON_QVM_QUATERNION_OPERATORS_HPP
 
 #include <hamon/qvm/quaternion/quaternion.hpp>
+#include <hamon/qvm/quaternion/detail/mul_quaternion.hpp>
+#include <hamon/qvm/detail/plus.hpp>
+#include <hamon/qvm/detail/minus.hpp>
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/qvm/detail/multiplies_scalar.hpp>
 #include <hamon/qvm/detail/divides_scalar.hpp>
+#include <hamon/qvm/common/all.hpp>
+#include <hamon/qvm/common/equal.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/negate.hpp>
@@ -32,11 +37,7 @@ template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 operator==(quaternion<T1> const& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
 {
-	return
-		lhs[0] == rhs[0] &&
-		lhs[1] == rhs[1] &&
-		lhs[2] == rhs[2] &&
-		lhs[3] == rhs[3];
+	return hamon::qvm::all(hamon::qvm::equal(lhs, rhs));
 }
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
@@ -69,9 +70,9 @@ operator+(quaternion<T> const& v) HAMON_NOEXCEPT
 template <typename T>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(quaternion<T> const& v) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(v, hamon::negate<>{}))
+->decltype(hamon::qvm::detail::transform(v, hamon::negate<>{}))
 {
-	return hamon::qvm::transform(v, hamon::negate<>{});
+	return hamon::qvm::detail::transform(v, hamon::negate<>{});
 }
 
 /**
@@ -80,9 +81,9 @@ operator-(quaternion<T> const& v) HAMON_NOEXCEPT
 template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator+(quaternion<T1> const& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, rhs, hamon::plus<>{}))
+->decltype(hamon::qvm::detail::plus(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, rhs, hamon::plus<>{});
+	return hamon::qvm::detail::plus(lhs, rhs);
 }
 
 /**
@@ -101,9 +102,9 @@ operator+=(quaternion<T1>& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
 template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(quaternion<T1> const& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, rhs, hamon::minus<>{}))
+->decltype(hamon::qvm::detail::minus(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, rhs, hamon::minus<>{});
+	return hamon::qvm::detail::minus(lhs, rhs);
 }
 
 /**
@@ -122,15 +123,9 @@ operator-=(quaternion<T1>& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
 template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(quaternion<T1> const& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
-->quaternion<decltype(std::declval<T1>() * std::declval<T2>())>
+->decltype(hamon::qvm::detail::mul_quaternion(lhs, rhs))
 {
-	return
-	{
-		(lhs.w() * rhs.x()) + (lhs.x() * rhs.w()) + (lhs.y() * rhs.z()) - (lhs.z() * rhs.y()),
-		(lhs.w() * rhs.y()) - (lhs.x() * rhs.z()) + (lhs.y() * rhs.w()) + (lhs.z() * rhs.x()),
-		(lhs.w() * rhs.z()) + (lhs.x() * rhs.y()) - (lhs.y() * rhs.x()) + (lhs.z() * rhs.w()),
-		(lhs.w() * rhs.w()) - (lhs.x() * rhs.x()) - (lhs.y() * rhs.y()) - (lhs.z() * rhs.z()),
-	};
+	return hamon::qvm::detail::mul_quaternion(lhs, rhs);
 }
 
 /**
@@ -152,9 +147,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, detail::multiplies_scalar<T2>{rhs}))
+->decltype(hamon::qvm::detail::multiplies_scalar(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, detail::multiplies_scalar<T2>{rhs});
+	return hamon::qvm::detail::multiplies_scalar(lhs, rhs);
 }
 
 /**
@@ -166,9 +161,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(T2 lhs, quaternion<T1> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(rhs, detail::multiplies_scalar<T2>{lhs}))
+->decltype(hamon::qvm::detail::multiplies_scalar(rhs, lhs))
 {
-	return hamon::qvm::transform(rhs, detail::multiplies_scalar<T2>{lhs});
+	return hamon::qvm::detail::multiplies_scalar(rhs, lhs);
 }
 
 /**
@@ -193,9 +188,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator/(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, detail::divides_scalar<T2>{rhs}))
+->decltype(hamon::qvm::detail::divides_scalar(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, detail::divides_scalar<T2>{rhs});
+	return hamon::qvm::detail::divides_scalar(lhs, rhs);
 }
 
 /**

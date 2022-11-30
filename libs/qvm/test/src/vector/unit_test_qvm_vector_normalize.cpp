@@ -4,7 +4,9 @@
  *	@brief	normalize のテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/vector/operators.hpp>
+#include <hamon/qvm/vector/normalize.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"

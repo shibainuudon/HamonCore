@@ -7,9 +7,11 @@
 #ifndef HAMON_QVM_MATRIX_MATRIX_HPP
 #define HAMON_QVM_MATRIX_MATRIX_HPP
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/vector/operators.hpp>
+#include <hamon/qvm/vector/normalize.hpp>
+#include <hamon/qvm/vector/cross.hpp>
 #include <hamon/qvm/detail/vector_base.hpp>
-#include <hamon/qvm/detail/rebind.hpp>
 #include <hamon/qvm/matrix/detail/make_diagonal_matrix.hpp>
 #include <hamon/qvm/matrix/detail/make_rotation_x_matrix.hpp>
 #include <hamon/qvm/matrix/detail/make_rotation_y_matrix.hpp>
@@ -41,6 +43,12 @@ private:
 	using base_type = hamon::qvm::detail::vector_base<qvm::vector<T, Col>, Row>;
 	using row_type = qvm::vector<T, Col>;
 
+	template <typename>
+	struct is_square_matrix
+	{
+		static const bool value = (Row == Col);
+	};
+
 public:
 	using value_type             = typename base_type::value_type;
 	using pointer                = T*;
@@ -68,6 +76,7 @@ public:
 	 *
 	 *	対角成分に引数がコピーされ、それ以外は0となる
 	 */
+	template <typename Dummy = void, typename = hamon::enable_if_t<is_square_matrix<Dummy>::value>>
 	explicit HAMON_CONSTEXPR
 	matrix(T const& v) HAMON_NOEXCEPT
 		: matrix{ scalar(v) }
@@ -183,7 +192,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	diagonal(qvm::vector<U, N> const& vec) HAMON_NOEXCEPT
 	{
-		return detail::make_diagonal_matrix<matrix>(vec);
+		return detail::make_diagonal_matrix<matrix>::invoke(vec);
 	}
 
 	template <typename... Args>
@@ -197,15 +206,17 @@ public:
 	/**
 	 *	@brief	スカラー行列を作成します
 	 */
+	template <typename Dummy = void, typename = hamon::enable_if_t<is_square_matrix<Dummy>::value>>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	scalar(T const& v) HAMON_NOEXCEPT
 	{
-		return detail::make_diagonal_matrix<matrix>(row_type{v});
+		return detail::make_diagonal_matrix<matrix>::invoke(row_type{v});
 	}
 
 	/**
 	 *	@brief	単位行列を作成します
 	 */
+	template <typename Dummy = void, typename = hamon::enable_if_t<is_square_matrix<Dummy>::value>>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	identity() HAMON_NOEXCEPT
 	{
@@ -221,7 +232,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	rotation_x(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		return detail::make_rotation_x_matrix<matrix>(angle);
+		return detail::make_rotation_x_matrix<matrix>::invoke(angle);
 	}
 
 	/**
@@ -233,7 +244,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	rotation_y(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		return detail::make_rotation_y_matrix<matrix>(angle);
+		return detail::make_rotation_y_matrix<matrix>::invoke(angle);
 	}
 
 	/**
@@ -245,7 +256,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	rotation_z(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		return detail::make_rotation_z_matrix<matrix>(angle);
+		return detail::make_rotation_z_matrix<matrix>::invoke(angle);
 	}
 
 	/**
@@ -258,7 +269,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	rotation(Vector3 const& axis, AngleType const& angle) HAMON_NOEXCEPT
 	{
-		return detail::make_rotation_matrix<matrix>(axis, angle);
+		return detail::make_rotation_matrix<matrix>::invoke(axis, angle);
 	}
 
 	/**
@@ -273,7 +284,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	translation(qvm::vector<U, N> const& vec) HAMON_NOEXCEPT
 	{
-		return detail::make_translation_matrix<matrix>(vec);
+		return detail::make_translation_matrix<matrix>::invoke(vec);
 	}
 
 	template <typename... Args>
@@ -317,12 +328,11 @@ public:
 	 *	@param	near_z	ビューボリュームの最小Z値
 	 *	@param	far_z	ビューボリュームの最大Z値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	frustum_lh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_frustum_matrix_lh<matrix>(left, right, bottom, top, near_z, far_z))
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	frustum_lh(T left, T right, T bottom, T top, T near_z, T far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_frustum_matrix_lh<matrix>(left, right, bottom, top, near_z, far_z);
+		return detail::make_frustum_matrix_lh<matrix>::invoke(
+			left, right, bottom, top, near_z, far_z);
 	}
 
 	/**
@@ -335,12 +345,11 @@ public:
 	 *	@param	near_z	ビューボリュームの最小Z値
 	 *	@param	far_z	ビューボリュームの最大Z値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	frustum_rh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_frustum_matrix_rh<matrix>(left, right, bottom, top, near_z, far_z))
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	frustum_rh(T left, T right, T bottom, T top, T near_z, T far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_frustum_matrix_rh<matrix>(left, right, bottom, top, near_z, far_z);
+		return detail::make_frustum_matrix_rh<matrix>::invoke(
+			left, right, bottom, top, near_z, far_z);
 	}
 
 	/**
@@ -351,12 +360,12 @@ public:
 	 *	@param	near_z	視点に近いほうのビュー平面のZ値
 	 *	@param	far_z	視点から遠いほうのビュー平面のZ値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	perspective_lh(T1 const& fovy, T2 const& aspect, T3 const& near_z, T4 const& far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_perspective_matrix_lh<matrix>(fovy, aspect, near_z, far_z))
+	template <typename Angle>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	perspective_lh(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_perspective_matrix_lh<matrix>(fovy, aspect, near_z, far_z);
+		return detail::make_perspective_matrix_lh<matrix>::invoke(
+			fovy, aspect, near_z, far_z);
 	}
 
 	/**
@@ -367,12 +376,12 @@ public:
 	 *	@param	near_z	視点に近いほうのビュー平面のZ値
 	 *	@param	far_z	視点から遠いほうのビュー平面のZ値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	perspective_rh(T1 const& fovy, T2 const& aspect, T3 const& near_z, T4 const& far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_perspective_matrix_rh<matrix>(fovy, aspect, near_z, far_z))
+	template <typename Angle>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	perspective_rh(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_perspective_matrix_rh<matrix>(fovy, aspect, near_z, far_z);
+		return detail::make_perspective_matrix_rh<matrix>::invoke(
+			fovy, aspect, near_z, far_z);
 	}
 
 	/**
@@ -385,12 +394,11 @@ public:
 	 *	@param	near_z	ビューボリュームの最小Z値
 	 *	@param	far_z	ビューボリュームの最大Z値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	orthographic_lh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_orthographic_matrix_lh<matrix>(left, right, bottom, top, near_z, far_z))
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	orthographic_lh(T left, T right, T bottom, T top, T near_z, T far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_orthographic_matrix_lh<matrix>(left, right, bottom, top, near_z, far_z);
+		return detail::make_orthographic_matrix_lh<matrix>::invoke(
+			left, right, bottom, top, near_z, far_z);
 	}
 
 	/**
@@ -403,12 +411,11 @@ public:
 	 *	@param	near_z	ビューボリュームの最小Z値
 	 *	@param	far_z	ビューボリュームの最大Z値
 	 */
-	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	orthographic_rh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
-	->decltype(detail::make_orthographic_matrix_rh<matrix>(left, right, bottom, top, near_z, far_z))
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	orthographic_rh(T left, T right, T bottom, T top, T near_z, T far_z) HAMON_NOEXCEPT
 	{
-		return detail::make_orthographic_matrix_rh<matrix>(left, right, bottom, top, near_z, far_z);
+		return detail::make_orthographic_matrix_rh<matrix>::invoke(
+			left, right, bottom, top, near_z, far_z);
 	}
 
 	/**
@@ -418,12 +425,14 @@ public:
 	 *	@param	dir		視点の向き(正規化していなくても可)
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <typename Vector3>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	look_to_lh(Vector3 const& eye, Vector3 const& dir, Vector3 const& up) HAMON_NOEXCEPT
-	->decltype(detail::make_look_to_matrix<matrix>(eye, dir, up))
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	look_to_lh(
+		Vector<T, 3> const& eye,
+		Vector<T, 3> const& dir,
+		Vector<T, 3> const& up) HAMON_NOEXCEPT
 	{
-		return detail::make_look_to_matrix<matrix>(eye, dir, up);
+		return detail::make_look_to_matrix<matrix>::invoke(eye, dir, up);
 	}
 
 	/**
@@ -433,12 +442,14 @@ public:
 	 *	@param	dir		視点の向き(正規化していなくても可)
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <typename Vector3>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	look_to_rh(Vector3 const& eye, Vector3 const& dir, Vector3 const& up) HAMON_NOEXCEPT
-	->decltype(detail::make_look_to_matrix<matrix>(eye, -dir, up))
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	look_to_rh(
+		Vector<T, 3> const& eye,
+		Vector<T, 3> const& dir,
+		Vector<T, 3> const& up) HAMON_NOEXCEPT
 	{
-		return detail::make_look_to_matrix<matrix>(eye, -dir, up);
+		return detail::make_look_to_matrix<matrix>::invoke(eye, -dir, up);
 	}
 
 	/**
@@ -448,10 +459,12 @@ public:
 	 *	@param	at		注視点
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <typename Vector3>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	look_at_lh(Vector3 const& eye, Vector3 const& at, Vector3 const& up) HAMON_NOEXCEPT
-	->decltype(look_to_lh(eye, at - eye, up))
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	look_at_lh(
+		Vector<T, 3> const& eye,
+		Vector<T, 3> const& at,
+		Vector<T, 3> const& up) HAMON_NOEXCEPT
 	{
 		return look_to_lh(eye, at - eye, up);
 	}
@@ -463,10 +476,12 @@ public:
 	 *	@param	at		注視点
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <typename Vector3>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	look_at_rh(Vector3 const& eye, Vector3 const& at, Vector3 const& up) HAMON_NOEXCEPT
-	->decltype(look_to_rh(eye, at - eye, up))
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	look_at_rh(
+		Vector<T, 3> const& eye,
+		Vector<T, 3> const& at,
+		Vector<T, 3> const& up) HAMON_NOEXCEPT
 	{
 		return look_to_rh(eye, at - eye, up);
 	}
@@ -481,39 +496,13 @@ public:
 	 *	@param	min_depth
 	 *	@param	max_depth
 	 */
-	template <typename T1, typename T2, typename T3, typename T4, typename T5, typename T6>
-	HAMON_NODISCARD static HAMON_CONSTEXPR auto
-	viewport(T1 x, T2 y, T3 width, T4 height, T5 min_depth, T6 max_depth) HAMON_NOEXCEPT
-	->decltype(detail::make_viewport_matrix<matrix>(x, y, width, height, min_depth, max_depth))
+	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
+	viewport(T x, T y, T width, T height, T min_depth, T max_depth) HAMON_NOEXCEPT
 	{
-		return detail::make_viewport_matrix<matrix>(x, y, width, height, min_depth, max_depth);
+		return detail::make_viewport_matrix<matrix>::invoke(
+			x, y, width, height, min_depth, max_depth);
 	}
 };
-
-namespace detail
-{
-
-template <typename T, std::size_t R, std::size_t C>
-struct vector_size<hamon::qvm::matrix<T, R, C>>
-	: public std::integral_constant<std::size_t, R> {};
-
-template <typename T, std::size_t R, std::size_t C>
-struct vector_element<hamon::qvm::matrix<T, R, C>>
-{
-	using type = T;
-};
-
-template <typename T, std::size_t R, std::size_t C>
-struct vector_rank<hamon::qvm::matrix<T, R, C>>
-	: public std::integral_constant<std::size_t, vector_rank<T>::value + 2> {};
-
-template <typename T, std::size_t R, std::size_t C, typename U>
-struct rebind<hamon::qvm::matrix<T, R, C>, U>
-{
-	using type = hamon::qvm::matrix<U, R, C>;
-};
-
-}	// namespace detail
 
 }	// namespace qvm
 

@@ -7,14 +7,17 @@
 #ifndef HAMON_QVM_QUATERNION_QUATERNION_FWD_HPP
 #define HAMON_QVM_QUATERNION_QUATERNION_FWD_HPP
 
+#include <cstddef>
+
 namespace hamon
 {
 
 namespace qvm
 {
 
-template <typename T>
+template <typename T, std::size_t N = 4>
 class quaternion;
+
 }	// namespace qvm
 
 }	// namespace hamon

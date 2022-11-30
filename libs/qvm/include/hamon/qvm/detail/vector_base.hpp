@@ -11,6 +11,7 @@
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -100,7 +101,12 @@ public:
 	 *	@brief	スカラー型N個のコンストラクタ
 	 */
 	template <typename... Args,
-		typename = hamon::enable_if_t<(sizeof...(Args) == N)>
+		typename = hamon::enable_if_t<
+			(sizeof...(Args) == N) &&
+			hamon::conjunction<
+				std::is_convertible<Args, T>...
+			>::value
+		>
 	>
 	HAMON_CONSTEXPR
 	vector_base(Args const&... args) HAMON_NOEXCEPT

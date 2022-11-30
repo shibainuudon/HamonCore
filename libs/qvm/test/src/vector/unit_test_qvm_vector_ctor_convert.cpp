@@ -4,7 +4,7 @@
  *	@brief	vector の変換コンストラクタのテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"

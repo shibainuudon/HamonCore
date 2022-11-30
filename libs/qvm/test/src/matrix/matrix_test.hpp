@@ -7,7 +7,7 @@
 #ifndef UNIT_TEST_QVM_MATRIX_TEST_HPP
 #define UNIT_TEST_QVM_MATRIX_TEST_HPP
 
-#include <hamon/qvm/matrix.hpp>
+#include <hamon/qvm/matrix/matrix.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
 

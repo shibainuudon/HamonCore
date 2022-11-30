@@ -4,11 +4,11 @@
  *	@brief	length のテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/vector/length.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {

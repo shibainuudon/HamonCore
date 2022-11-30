@@ -19,68 +19,78 @@ namespace qvm
 namespace detail
 {
 
-template <typename Matrix, typename Vector3>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_look_to_matrix_impl_2(
-	Vector3 const& eye,
-	Vector3 const& xaxis,
-	Vector3 const& yaxis,
-	Vector3 const& zaxis) HAMON_NOEXCEPT
+// make_look_to_matrix
+template <typename Matrix>
+struct make_look_to_matrix;
+
+template <
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T
+>
+struct make_look_to_matrix<Matrix<T, 4, 4>>
 {
-	return
+private:
+	template <typename Vector3>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	impl_2(
+		Vector3 const& eye,
+		Vector3 const& xaxis,
+		Vector3 const& yaxis,
+		Vector3 const& zaxis) HAMON_NOEXCEPT
 	{
-		xaxis.x(), yaxis.x(), zaxis.x(), 0,
-		xaxis.y(), yaxis.y(), zaxis.y(), 0,
-		xaxis.z(), yaxis.z(), zaxis.z(), 0,
-		-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1,
-	};
-}
+		return
+		{
+			xaxis.x(), yaxis.x(), zaxis.x(), 0,
+			xaxis.y(), yaxis.y(), zaxis.y(), 0,
+			xaxis.z(), yaxis.z(), zaxis.z(), 0,
+			-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1,
+		};
+	}
 
-template <typename Matrix, typename Vector3>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_look_to_matrix_impl_1(
-	Vector3 const& eye,
-	Vector3 const& xaxis,
-	Vector3 const& zaxis) HAMON_NOEXCEPT
-{
-	return make_look_to_matrix_impl_2<Matrix>(
-		eye, xaxis, cross(zaxis, xaxis), zaxis);
-}
+	template <typename Vector3>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	impl_1(
+		Vector3 const& eye,
+		Vector3 const& xaxis,
+		Vector3 const& zaxis) HAMON_NOEXCEPT
+	{
+		return impl_2(eye, xaxis, cross(zaxis, xaxis), zaxis);
+	}
 
-template <typename Matrix, typename Vector3>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_look_to_matrix_impl(
-	Vector3 const& eye,
-	Vector3 const& up,
-	Vector3 const& zaxis) HAMON_NOEXCEPT
-{
-	return make_look_to_matrix_impl_1<Matrix>(
-		eye, normalize(cross(up, zaxis)), zaxis);
-}
+	template <typename Vector3>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	impl(
+		Vector3 const& eye,
+		Vector3 const& up,
+		Vector3 const& zaxis) HAMON_NOEXCEPT
+	{
+		return impl_1(eye, normalize(cross(up, zaxis)), zaxis);
+	}
 
-template <typename Matrix, typename Vector3>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_look_to_matrix(
-	Vector3 const& eye,
-	Vector3 const& dir,
-	Vector3 const& up) HAMON_NOEXCEPT
-{
-	// 以下のコードをC++11でもconstexprになるようにします
-	//auto const zaxis = normalize(dir);
-	//auto const xaxis = normalize(cross(up, zaxis));
-	//auto const yaxis = cross(zaxis, xaxis);
+public:
+	template <typename Vector3>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	invoke(
+		Vector3 const& eye,
+		Vector3 const& dir,
+		Vector3 const& up) HAMON_NOEXCEPT
+	{
+		// 以下のコードをC++11でもconstexprになるようにします
+		//auto const zaxis = normalize(dir);
+		//auto const xaxis = normalize(cross(up, zaxis));
+		//auto const yaxis = cross(zaxis, xaxis);
 
-	//return
-	//{
-	//	xaxis.x(), yaxis.x(), zaxis.x(), 0,
-	//	xaxis.y(), yaxis.y(), zaxis.y(), 0,
-	//	xaxis.z(), yaxis.z(), zaxis.z(), 0,
-	//	-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1,
-	//};
+		//return
+		//{
+		//	xaxis.x(), yaxis.x(), zaxis.x(), 0,
+		//	xaxis.y(), yaxis.y(), zaxis.y(), 0,
+		//	xaxis.z(), yaxis.z(), zaxis.z(), 0,
+		//	-dot(xaxis, eye), -dot(yaxis, eye), -dot(zaxis, eye), 1,
+		//};
 
-	return make_look_to_matrix_impl<Matrix>(
-		eye, up, normalize(dir));
-}
+		return impl(eye, up, normalize(dir));
+	}
+};
 
 }	// namespace detail
 

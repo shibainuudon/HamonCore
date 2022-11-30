@@ -8,7 +8,6 @@
 #define HAMON_QVM_QUATERNION_DETAIL_MAKE_LOOK_AT_QUATERNION_HPP
 
 #include <hamon/qvm/quaternion/quaternion.hpp>
-#include <hamon/qvm/matrix/matrix.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

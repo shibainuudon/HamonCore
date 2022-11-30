@@ -8,6 +8,7 @@
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_PERSPECTIVE_MATRIX_HPP
 
 #include <hamon/config.hpp>
+#include <cstddef>
 #include <cmath>
 
 namespace hamon
@@ -19,63 +20,71 @@ namespace qvm
 namespace detail
 {
 
-template <typename Matrix, typename T>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_perspective_matrix_lh_impl(T yscale, T aspect, T zn, T zf) HAMON_NOEXCEPT
-{
-	return
-	{
-		yscale / aspect, 0,       0,              0,
-		0,               yscale,  0,              0,
-		0,               0,      -zf/(zn-zf),     1,
-		0,               0,       zn*zf/(zn-zf),  0,
-	};
-}
+// make_perspective_matrix_lh
+template <typename Matrix>
+struct make_perspective_matrix_lh;
 
 template <
-	typename Matrix,
-	typename T1, typename T2, typename T3, typename T4
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_perspective_matrix_lh(T1 const& fovy, T2 const& aspect, T3 const& near_z, T4 const& far_z) HAMON_NOEXCEPT
+struct make_perspective_matrix_lh<Matrix<T, 4, 4>>
 {
-	using std::tan;
-	using T = vector_element_t<Matrix>;
-	return make_perspective_matrix_lh_impl<Matrix>(
-		static_cast<T>(T(1) / tan(fovy * T(0.5))),
-		static_cast<T>(aspect),
-		static_cast<T>(near_z),
-		static_cast<T>(far_z));
-}
-
-template <typename Matrix, typename T>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_perspective_matrix_rh_impl(T yscale, T aspect, T zn, T zf) HAMON_NOEXCEPT
-{
-	return
+private:
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	impl(T yscale, T aspect, T zn, T zf) HAMON_NOEXCEPT
 	{
-		yscale / aspect, 0,       0,              0,
-		0,               yscale,  0,              0,
-		0,               0,       zf/(zn-zf),    -1,
-		0,               0,       zn*zf/(zn-zf),  0,
-	};
-}
+		return
+		{
+			yscale / aspect, 0,       0,              0,
+			0,               yscale,  0,              0,
+			0,               0,      -zf/(zn-zf),     1,
+			0,               0,       zn*zf/(zn-zf),  0,
+		};
+	}
+
+public:
+	template <typename Angle>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	invoke(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
+	{
+		using std::tan;
+		return impl(static_cast<T>(T(1) / tan(fovy * T(0.5))), aspect, near_z, far_z);
+	}
+};
+
+// make_perspective_matrix_rh
+template <typename Matrix>
+struct make_perspective_matrix_rh;
 
 template <
-	typename Matrix,
-	typename T1, typename T2, typename T3, typename T4
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_perspective_matrix_rh(T1 const& fovy, T2 const& aspect, T3 const& near_z, T4 const& far_z) HAMON_NOEXCEPT
+struct make_perspective_matrix_rh<Matrix<T, 4, 4>>
 {
-	using std::tan;
-	using T = vector_element_t<Matrix>;
-	return make_perspective_matrix_rh_impl<Matrix>(
-		static_cast<T>(T(1) / tan(fovy * T(0.5))),
-		static_cast<T>(aspect),
-		static_cast<T>(near_z),
-		static_cast<T>(far_z));
-}
+private:
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	impl(T yscale, T aspect, T zn, T zf) HAMON_NOEXCEPT
+	{
+		return
+		{
+			yscale / aspect, 0,       0,              0,
+			0,               yscale,  0,              0,
+			0,               0,       zf/(zn-zf),    -1,
+			0,               0,       zn*zf/(zn-zf),  0,
+		};
+	}
+
+public:
+	template <typename Angle>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	invoke(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
+	{
+		using std::tan;
+		return impl(static_cast<T>(T(1) / tan(fovy * T(0.5))), aspect, near_z, far_z);
+	}
+};
 
 }	// namespace detail
 

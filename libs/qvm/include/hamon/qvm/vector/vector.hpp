@@ -9,10 +9,6 @@
 
 #include <hamon/qvm/vector/vector_fwd.hpp>
 #include <hamon/qvm/vector/vector_cat.hpp>
-#include <hamon/qvm/detail/vector_size.hpp>
-#include <hamon/qvm/detail/vector_element.hpp>
-#include <hamon/qvm/detail/vector_rank.hpp>
-#include <hamon/qvm/detail/rebind.hpp>
 #include <hamon/qvm/detail/vector_xyzw.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -33,22 +29,19 @@ namespace qvm
 namespace detail
 {
 
-template <typename T>
-struct is_vector : public std::false_type {};
-
-}	// namespace detail
-
 template <typename T, typename = hamon::enable_if_t<std::is_arithmetic<T>::value>>
 HAMON_CONSTEXPR vector<T, 1> to_vector(T const& v)
 {
 	return vector<T, 1>{v};
 }
 
-template <typename T, typename = hamon::enable_if_t<detail::is_vector<T>::value>>
-HAMON_CONSTEXPR T to_vector(T const& v)
+template <typename T, std::size_t N>
+HAMON_CONSTEXPR vector<T, N> to_vector(vector<T, N> const& v)
 {
 	return v;
 }
+
+}	// namespace detail
 
 template <typename T, std::size_t N>
 class vector : public hamon::qvm::detail::vector_xyzw<T, N>
@@ -68,6 +61,8 @@ public:
 	using const_iterator         = typename base_type::const_iterator;
 	using reverse_iterator       = typename base_type::reverse_iterator;
 	using const_reverse_iterator = typename base_type::const_reverse_iterator;
+
+	static const size_type static_size = N;
 
 public:
 	/**
@@ -114,23 +109,17 @@ public:
 	template <typename... Args,
 		typename = hamon::enable_if_t<
 			(sizeof...(Args) != 1) &&
-			(sizeof...(Args) != N) &&
-			hamon::conjunction<
-				hamon::disjunction<
-					hamon::is_implicitly_constructible<T, Args>,
-					hamon::qvm::detail::is_vector<Args>
-				>...
-			>::value
+			(sizeof...(Args) != N)
 		>,
+		typename Concatnated =
+			decltype(vector_cat(detail::to_vector(std::declval<Args>())...)),
 		typename = hamon::enable_if_t<
-			hamon::accumulation<
-				hamon::qvm::detail::vector_size<Args>...
-			>::value == N
+			Concatnated::static_size == N
 		>
 	>
 	explicit HAMON_CONSTEXPR
 	vector(Args const&... args) HAMON_NOEXCEPT
-		: vector{ vector_cat(to_vector(args)...) }
+		: vector{ vector_cat(detail::to_vector(args)...) }
 	{}
 
 	/**
@@ -161,35 +150,6 @@ private:
 		: base_type{ swallow<Is>(v)... }
 	{}
 };
-
-namespace detail
-{
-
-template <typename T, std::size_t N>
-struct is_vector<hamon::qvm::vector<T, N>>
-	: public std::true_type {};
-
-template <typename T, std::size_t N>
-struct vector_size<hamon::qvm::vector<T, N>>
-	: public std::integral_constant<std::size_t, N> {};
-
-template <typename T, std::size_t N>
-struct vector_element<hamon::qvm::vector<T, N>>
-{
-	using type = T;
-};
-
-template <typename T, std::size_t N>
-struct vector_rank<hamon::qvm::vector<T, N>>
-	: public std::integral_constant<std::size_t, vector_rank<T>::value + 1> {};
-
-template <typename T, std::size_t N, typename U>
-struct rebind<hamon::qvm::vector<T, N>, U>
-{
-	using type = hamon::qvm::vector<U, N>;
-};
-
-}	// namespace detail
 
 }	// namespace qvm
 

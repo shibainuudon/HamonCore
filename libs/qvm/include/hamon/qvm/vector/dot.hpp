@@ -30,11 +30,11 @@ namespace qvm
 template <typename T1, typename T2, std::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 dot(vector<T1, N> const& v1, vector<T2, N> const& v2) HAMON_NOEXCEPT
-->decltype(hamon::qvm::reduce(
-		hamon::qvm::transform(v1, v2, hamon::multiplies<>{})))
+->decltype(hamon::qvm::detail::reduce(
+		hamon::qvm::detail::transform(v1, v2, hamon::multiplies<>{})))
 {
-	return hamon::qvm::reduce(
-		hamon::qvm::transform(v1, v2, hamon::multiplies<>{}));
+	return hamon::qvm::detail::reduce(
+		hamon::qvm::detail::transform(v1, v2, hamon::multiplies<>{}));
 }
 
 }	// namespace qvm

@@ -7,7 +7,7 @@
 #ifndef UNIT_TEST_QVM_VECTOR_TEST_HPP
 #define UNIT_TEST_QVM_VECTOR_TEST_HPP
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
 

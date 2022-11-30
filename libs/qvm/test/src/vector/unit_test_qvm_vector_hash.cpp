@@ -4,7 +4,7 @@
  *	@brief	hashのテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
 #include <hamon/functional/hash.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"

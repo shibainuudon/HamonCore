@@ -27,10 +27,10 @@ void SizeTest()
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(M, m[N-1].size());
 	}
 	{
-		HAMON_CONSTEXPR matrix_type const m{44};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(N, m.size());
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(M, m[0].size());
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(M, m[N-1].size());
+		matrix_type const m = make_random_matrix<T, N, M>();
+		EXPECT_EQ(N, m.size());
+		EXPECT_EQ(M, m[0].size());
+		EXPECT_EQ(M, m[N-1].size());
 	}
 }
 

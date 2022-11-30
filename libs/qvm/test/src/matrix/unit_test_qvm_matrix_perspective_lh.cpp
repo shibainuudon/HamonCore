@@ -63,7 +63,7 @@ TYPED_TEST(MatrixFloatTest, PerspectiveLHTest)
 	{
 		auto const m = matrix4x4::perspective_lh(
 			hamon::degrees_to_radians(60.0f),
-			16.0 / 9.0,
+			T(16.0 / 9.0),
 			0.5f,
 			5000);
 

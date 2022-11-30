@@ -8,9 +8,11 @@
 #define HAMON_QVM_MATRIX_OPERATORS_HPP
 
 #include <hamon/qvm/matrix/matrix.hpp>
-#include <hamon/qvm/matrix/all.hpp>
-#include <hamon/qvm/matrix/equal.hpp>
+#include <hamon/qvm/common/all.hpp>
+#include <hamon/qvm/common/equal.hpp>
 #include <hamon/qvm/matrix/detail/mul_matrix.hpp>
+#include <hamon/qvm/detail/plus.hpp>
+#include <hamon/qvm/detail/minus.hpp>
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/qvm/detail/multiplies_scalar.hpp>
 #include <hamon/qvm/detail/divides_scalar.hpp>
@@ -68,9 +70,9 @@ operator+(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 template <typename T, std::size_t R, std::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(matrix<T, R, C> const& v) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(v, hamon::negate<>{}))
+->decltype(hamon::qvm::detail::transform(v, hamon::negate<>{}))
 {
-	return hamon::qvm::transform(v, hamon::negate<>{});
+	return hamon::qvm::detail::transform(v, hamon::negate<>{});
 }
 
 /**
@@ -79,9 +81,9 @@ operator-(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 template <typename T1, typename T2, std::size_t R, std::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator+(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, rhs, hamon::plus<>{}))
+->decltype(hamon::qvm::detail::plus(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, rhs, hamon::plus<>{});
+	return hamon::qvm::detail::plus(lhs, rhs);
 }
 
 /**
@@ -100,9 +102,9 @@ operator+=(matrix<T1, R, C>& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 template <typename T1, typename T2, std::size_t R, std::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, rhs, hamon::minus<>{}))
+->decltype(hamon::qvm::detail::minus(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, rhs, hamon::minus<>{});
+	return hamon::qvm::detail::minus(lhs, rhs);
 }
 
 /**
@@ -151,9 +153,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(matrix<T1, R, C> const& lhs, T2 rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, detail::multiplies_scalar<T2>{rhs}))
+->decltype(hamon::qvm::detail::multiplies_scalar(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, detail::multiplies_scalar<T2>{rhs});
+	return hamon::qvm::detail::multiplies_scalar(lhs, rhs);
 }
 
 /**
@@ -165,9 +167,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(T2 lhs, matrix<T1, R, C> const& rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(rhs, detail::multiplies_scalar<T2>{lhs}))
+->decltype(hamon::qvm::detail::multiplies_scalar(rhs, lhs))
 {
-	return hamon::qvm::transform(rhs, detail::multiplies_scalar<T2>{lhs});
+	return hamon::qvm::detail::multiplies_scalar(rhs, lhs);
 }
 
 /**
@@ -192,9 +194,9 @@ template <
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator/(matrix<T1, R, C> const& lhs, T2 rhs) HAMON_NOEXCEPT
-->decltype(hamon::qvm::transform(lhs, detail::divides_scalar<T2>{rhs}))
+->decltype(hamon::qvm::detail::divides_scalar(lhs, rhs))
 {
-	return hamon::qvm::transform(lhs, detail::divides_scalar<T2>{rhs});
+	return hamon::qvm::detail::divides_scalar(lhs, rhs);
 }
 
 /**

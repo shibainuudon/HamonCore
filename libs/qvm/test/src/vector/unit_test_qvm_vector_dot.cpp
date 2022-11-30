@@ -4,7 +4,8 @@
  *	@brief	dot のテスト
  */
 
-#include <hamon/qvm/vector.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/vector/dot.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
 #include <type_traits>

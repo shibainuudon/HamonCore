@@ -4,10 +4,10 @@
  *	@brief	allのテスト
  */
 
-#include <hamon/qvm/matrix.hpp>
+#include <hamon/qvm/matrix/matrix.hpp>
+#include <hamon/qvm/common/all.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {

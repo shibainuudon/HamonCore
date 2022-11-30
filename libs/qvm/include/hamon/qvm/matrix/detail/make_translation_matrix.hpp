@@ -20,37 +20,42 @@ namespace qvm
 namespace detail
 {
 
-template <typename Vector, typename Arg, std::size_t... Js>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Vector
-make_translation_matrix_impl(Arg const& v, std::size_t N, std::size_t I, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
-{
-	return I == (N - 1) ?
-		Vector{ v, 1 } :
-		Vector{ (I == Js ? 1 : 0)... };
-}
+template <typename Matrix>
+struct make_translation_matrix;
 
 template <
-	typename Matrix,
-	typename Arg,
-	typename Vector = typename Matrix::value_type,
-	std::size_t... Is>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_translation_matrix_impl(Arg const& arg, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T, std::size_t N
+>
+struct make_translation_matrix<Matrix<T, N, N>>
 {
-	return
-	{
-		make_translation_matrix_impl<Vector>(
-			arg, sizeof...(Is), Is, hamon::make_index_sequence<vector_size<Vector>::value>{})...
-	};
-}
+private:
+	static const std::size_t M = N - 1;
 
-template <typename Matrix, typename Arg>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_translation_matrix(Arg const& arg) HAMON_NOEXCEPT
-{
-	return make_translation_matrix_impl<Matrix>(
-		arg, hamon::make_index_sequence<vector_size<Matrix>::value>{});
-}
+	template <template <typename, std::size_t> class Vector, std::size_t... Js>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Vector<T, N>
+	impl(Vector<T, M> const& v, std::size_t i, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
+	{
+		return i == M ?
+			Vector<T, N>{ v, 1 } :
+			Vector<T, N>{ (i == Js ? 1 : 0)... };
+	}
+
+	template <template <typename, std::size_t> class Vector, std::size_t... Is>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
+	impl(Vector<T, M> const& v, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
+	{
+		return { impl(v, Is, hamon::make_index_sequence<N>{})... };
+	}
+
+public:
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
+	invoke(Vector<T, M> const& v) HAMON_NOEXCEPT
+	{
+		return impl(v, hamon::make_index_sequence<N>{});
+	}
+};
 
 }	// namespace detail
 

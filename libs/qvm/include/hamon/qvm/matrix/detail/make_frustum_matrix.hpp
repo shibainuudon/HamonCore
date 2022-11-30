@@ -8,6 +8,7 @@
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_FRUSTUM_MATRIX_HPP
 
 #include <hamon/config.hpp>
+#include <cstddef>
 
 namespace hamon
 {
@@ -18,65 +19,51 @@ namespace qvm
 namespace detail
 {
 
-template <typename Matrix, typename T>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_frustum_matrix_lh_impl(T l, T r, T b, T t, T zn, T zf) HAMON_NOEXCEPT
-{
-	return
-	{
-		 2*zn/(r-l),   0,            0,             0,
-		 0,            2*zn/(t-b),   0,             0,
-		-(l+r)/(r-l), -(t+b)/(t-b), -zf/(zn-zf),    1,
-		 0,            0,            zn*zf/(zn-zf), 0,
-	};
-}
+// make_frustum_matrix_lh
+template <typename Matrix>
+struct make_frustum_matrix_lh;
 
 template <
-	typename Matrix,
-	typename T1, typename T2, typename T3, typename T4, typename T5, typename T6
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_frustum_matrix_lh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
+struct make_frustum_matrix_lh<Matrix<T, 4, 4>>
 {
-	using T = vector_element_t<Matrix>;
-	return make_frustum_matrix_lh_impl<Matrix>(
-		static_cast<T>(left),
-		static_cast<T>(right),
-		static_cast<T>(bottom),
-		static_cast<T>(top),
-		static_cast<T>(near_z),
-		static_cast<T>(far_z));
-}
-
-template <typename Matrix, typename T>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_frustum_matrix_rh_impl(T l, T r, T b, T t, T zn, T zf) HAMON_NOEXCEPT
-{
-	return
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	invoke(T l, T r, T b, T t, T zn, T zf) HAMON_NOEXCEPT
 	{
-		2*zn/(r-l),  0,           0,             0,
-		0,           2*zn/(t-b),  0,             0,
-		(l+r)/(r-l), (t+b)/(t-b), zf/(zn-zf),   -1,
-		0,           0,           zn*zf/(zn-zf), 0,
-	};
-}
+		return
+		{
+			 2*zn/(r-l),   0,            0,             0,
+			 0,            2*zn/(t-b),   0,             0,
+			-(l+r)/(r-l), -(t+b)/(t-b), -zf/(zn-zf),    1,
+			 0,            0,            zn*zf/(zn-zf), 0,
+		};
+	}
+};
+
+// make_frustum_matrix_rh
+template <typename Matrix>
+struct make_frustum_matrix_rh;
 
 template <
-	typename Matrix,
-	typename T1, typename T2, typename T3, typename T4, typename T5, typename T6
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_frustum_matrix_rh(T1 left, T2 right, T3 bottom, T4 top, T5 near_z, T6 far_z) HAMON_NOEXCEPT
+struct make_frustum_matrix_rh<Matrix<T, 4, 4>>
 {
-	using T = vector_element_t<Matrix>;
-	return make_frustum_matrix_rh_impl<Matrix>(
-		static_cast<T>(left),
-		static_cast<T>(right),
-		static_cast<T>(bottom),
-		static_cast<T>(top),
-		static_cast<T>(near_z),
-		static_cast<T>(far_z));
-}
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
+	invoke(T l, T r, T b, T t, T zn, T zf) HAMON_NOEXCEPT
+	{
+		return
+		{
+			2*zn/(r-l),  0,           0,             0,
+			0,           2*zn/(t-b),  0,             0,
+			(l+r)/(r-l), (t+b)/(t-b), zf/(zn-zf),   -1,
+			0,           0,           zn*zf/(zn-zf), 0,
+		};
+	}
+};
 
 }	// namespace detail
 

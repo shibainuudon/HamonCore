@@ -7,14 +7,11 @@
 #ifndef HAMON_QVM_DETAIL_REDUCE_HPP
 #define HAMON_QVM_DETAIL_REDUCE_HPP
 
-#include <hamon/qvm/detail/vector_rank.hpp>
-#include <hamon/qvm/detail/vector_element.hpp>
-#include <hamon/qvm/detail/vector_size.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
-#include <utility>
+#include <cstddef>	// size_t
+#include <utility>	// declval
 
 namespace hamon
 {
@@ -25,82 +22,59 @@ namespace qvm
 namespace detail
 {
 
+// vとinitが同じ型のときのオーバーロード
+template <typename T, typename F>
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+reduce_impl(T v, T init, F binary_op, std::size_t) HAMON_NOEXCEPT
+{
+	return binary_op(init, v);
+}
+
+// reduce_implのループ
 template <
-	typename Vector,
-	typename U,
-	typename F,
-	std::size_t N = hamon::qvm::detail::vector_size<Vector>::value,
-	hamon::enable_if_t<detail::vector_rank<Vector>::value == 1>* = nullptr
+	template <typename, std::size_t...> class GenType,
+	typename T, std::size_t N0, std::size_t... Ns,
+	typename U, typename F,
+	typename = hamon::enable_if_t<N0 != 0>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
-reduce_impl_2(Vector const& v, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
+reduce_impl(GenType<T, N0, Ns...> const& v, U init, F binary_op, std::size_t i) HAMON_NOEXCEPT
 {
-	return I == N ?
+	return i == N0 ?
 		init :
-		reduce_impl_2(
+		reduce_impl(
 			v,
-			binary_op(init, v[I]),
+			reduce_impl(v[i], init, binary_op, 0),
 			binary_op,
-			I+1);
+			i+1);
 }
 
+// 要素数が0のときのオーバーロード
 template <
-	typename Matrix,
-	typename U,
-	typename F,
-	std::size_t N = hamon::qvm::detail::vector_size<Matrix>::value,
-	hamon::enable_if_t<(detail::vector_rank<Matrix>::value > 1)>* = nullptr
+	template <typename, std::size_t...> class GenType,
+	typename T, std::size_t... Ns,
+	typename U, typename F
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
-reduce_impl_2(Matrix const& m, U init, F binary_op, std::size_t I) HAMON_NOEXCEPT
+reduce_impl(GenType<T, 0, Ns...> const&, U init, F, std::size_t) HAMON_NOEXCEPT
 {
-	return I == N ?
-		init :
-		reduce_impl_2(
-			m,
-			reduce_impl_2(m[I], init, binary_op, 0),
-			binary_op,
-			I+1);
+	return init;
 }
 
 template <
-	typename Vector,
-	std::size_t N = hamon::qvm::detail::vector_size<Vector>::value
->
-struct reduce_impl_t
-{
-	template <typename U, typename F>
-	HAMON_CONSTEXPR U
-	operator()(Vector const& v, U init, F binary_op) const HAMON_NOEXCEPT
-	{
-		return reduce_impl_2(v, init, binary_op, 0);
-	}
-};
-
-template <typename Vector>
-struct reduce_impl_t<Vector, 0>
-{
-	template <typename U, typename F>
-	HAMON_CONSTEXPR U
-	operator()(Vector const&, U init, F) const HAMON_NOEXCEPT
-	{
-		return init;
-	}
-};
-
-}	// namespace detail
-
-template <
-	typename Vector,
-	typename T = hamon::qvm::detail::vector_element_t<Vector>,
+	template <typename, std::size_t...> class GenType,
+	typename T,
+	std::size_t... Ns,
 	typename F = hamon::plus<>,
 	typename U = decltype(std::declval<F>()(std::declval<T>(), std::declval<T>()))
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
-reduce(Vector const& v, U init = {}, F binary_op = {}) HAMON_NOEXCEPT
+reduce(GenType<T, Ns...> const& v, U init = {}, F binary_op = {}) HAMON_NOEXCEPT
 {
-	return detail::reduce_impl_t<Vector>{}(v, init, binary_op);
+	return detail::reduce_impl(v, init, binary_op, 0);
 }
+
+}	// namespace detail
 
 }	// namespace qvm
 

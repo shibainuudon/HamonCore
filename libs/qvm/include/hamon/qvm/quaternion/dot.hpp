@@ -25,11 +25,11 @@ namespace qvm
 template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 dot(quaternion<T1> const& v1, quaternion<T2> const& v2) HAMON_NOEXCEPT
-->decltype(hamon::qvm::reduce(
-		hamon::qvm::transform(v1, v2, hamon::multiplies<>{})))
+->decltype(hamon::qvm::detail::reduce(
+		hamon::qvm::detail::transform(v1, v2, hamon::multiplies<>{})))
 {
-	return hamon::qvm::reduce(
-		hamon::qvm::transform(v1, v2, hamon::multiplies<>{}));
+	return hamon::qvm::detail::reduce(
+		hamon::qvm::detail::transform(v1, v2, hamon::multiplies<>{}));
 }
 
 }	// namespace qvm

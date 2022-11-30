@@ -12,12 +12,8 @@
 #include <hamon/qvm/quaternion/detail/quaternion_to_matrix.hpp>
 #include <hamon/qvm/quaternion/detail/make_look_at_quaternion.hpp>
 #include <hamon/qvm/detail/vector_xyzw.hpp>
-#include <hamon/qvm/detail/vector_size.hpp>
-#include <hamon/qvm/detail/vector_element.hpp>
-#include <hamon/qvm/detail/vector_rank.hpp>
-#include <hamon/qvm/detail/rebind.hpp>
-#include <hamon/qvm/vector.hpp>
-#include <hamon/qvm/matrix.hpp>
+#include <hamon/qvm/vector/vector.hpp>
+#include <hamon/qvm/matrix/matrix.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/config.hpp>
@@ -30,11 +26,11 @@ namespace hamon
 namespace qvm
 {
 
-template <typename T>
-class quaternion : public hamon::qvm::detail::vector_xyzw<T, 4>
+template <typename T, std::size_t N>
+class quaternion : public hamon::qvm::detail::vector_xyzw<T, N>
 {
 private:
-	using base_type = hamon::qvm::detail::vector_xyzw<T, 4>;
+	using base_type = hamon::qvm::detail::vector_xyzw<T, N>;
 
 public:
 	using value_type             = typename base_type::value_type;
@@ -213,31 +209,6 @@ public:
 		return detail::make_look_at_quaternion<quaternion>(eye, lookat, up);
 	}
 };
-
-namespace detail
-{
-
-template <typename T>
-struct vector_size<hamon::qvm::quaternion<T>>
-	: public std::integral_constant<std::size_t, 4> {};
-
-template <typename T>
-struct vector_element<hamon::qvm::quaternion<T>>
-{
-	using type = T;
-};
-
-template <typename T>
-struct vector_rank<hamon::qvm::quaternion<T>>
-	: public std::integral_constant<std::size_t, vector_rank<T>::value + 1> {};
-
-template <typename T, typename U>
-struct rebind<hamon::qvm::quaternion<T>, U>
-{
-	using type = hamon::qvm::quaternion<U>;
-};
-
-}	// namespace detail
 
 }	// namespace qvm
 

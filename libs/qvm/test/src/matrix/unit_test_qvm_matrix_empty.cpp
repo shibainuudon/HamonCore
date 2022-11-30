@@ -27,10 +27,10 @@ void EmptyTest()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!m[N-1].empty());
 	}
 	{
-		HAMON_CONSTEXPR matrix_type const m{42};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!m.empty());
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!m[0].empty());
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!m[N-1].empty());
+		matrix_type const m = make_random_matrix<T, N, M>();
+		EXPECT_TRUE(!m.empty());
+		EXPECT_TRUE(!m[0].empty());
+		EXPECT_TRUE(!m[N-1].empty());
 	}
 }
 

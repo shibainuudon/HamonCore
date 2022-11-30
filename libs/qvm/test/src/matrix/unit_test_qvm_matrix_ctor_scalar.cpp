@@ -100,30 +100,11 @@ void Matrix3x4CtorScalarTest()
 	static_assert(!std::is_constructible<matrix3x4, T, T, T, T>::value, "");
 	static_assert(!std::is_constructible<matrix3x4, T, T, T>::value, "");
 	static_assert(!std::is_constructible<matrix3x4, T, T>::value, "");
-	static_assert( std::is_constructible<matrix3x4, T>::value, "");
+	static_assert(!std::is_constructible<matrix3x4, T>::value, "");
 
 	static_assert( std::is_nothrow_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_nothrow_constructible<matrix3x4, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!hamon::is_implicitly_constructible<matrix3x4, T>::value, "");
-
-	// スカラー型を1つ受け取るコンストラクタ
-	{
-		HAMON_CONSTEXPR matrix3x4 const m {42};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[0][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[0][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[0][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[0][3]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[1][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[1][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[1][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[1][3]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[2][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[2][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[2][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[2][3]);
-	}
 
 	// スカラー型を12個受け取るコンストラクタ
 	{
@@ -169,30 +150,11 @@ void Matrix4x3CtorScalarTest()
 	static_assert(!std::is_constructible<matrix4x3, T, T, T, T>::value, "");
 	static_assert(!std::is_constructible<matrix4x3, T, T, T>::value, "");
 	static_assert(!std::is_constructible<matrix4x3, T, T>::value, "");
-	static_assert( std::is_constructible<matrix4x3, T>::value, "");
+	static_assert(!std::is_constructible<matrix4x3, T>::value, "");
 
 	static_assert( std::is_nothrow_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_nothrow_constructible<matrix4x3, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!hamon::is_implicitly_constructible<matrix4x3, T>::value, "");
-
-	// スカラー型を1つ受け取るコンストラクタ
-	{
-		HAMON_CONSTEXPR matrix4x3 const m {42};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[0][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[0][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[0][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[1][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[1][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[1][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[2][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[2][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(42, m[2][2]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[3][0]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[3][1]);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, m[3][2]);
-	}
 
 	// スカラー型を12個受け取るコンストラクタ
 	{

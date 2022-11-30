@@ -20,30 +20,38 @@ namespace qvm
 namespace detail
 {
 
-template <typename Vector, typename Arg, std::size_t... Js>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Vector
-make_diagonal_matrix_impl(Arg const& v, std::size_t I, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
-{
-	return Vector{ (I == Js ? v[I] : 0)... };
-}
+template <typename Matrix>
+struct make_diagonal_matrix;
 
 template <
-	typename Matrix,
-	typename Arg,
-	typename Vector = typename Matrix::value_type,
-	std::size_t... Is>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_diagonal_matrix_impl(Arg const& arg, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
+	template <typename, std::size_t, std::size_t> class Matrix,
+	typename T, std::size_t N
+>
+struct make_diagonal_matrix<Matrix<T, N, N>>
 {
-	return { make_diagonal_matrix_impl<Vector>(arg, Is, hamon::make_index_sequence<vector_size<Vector>::value>{})... };
-}
+private:
+	template <template <typename, std::size_t> class Vector, std::size_t... Js>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Vector<T, N>
+	impl_2(Vector<T, N> const& v, std::size_t I, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
+	{
+		return Vector<T, N>{ (I == Js ? v[I] : 0)... };
+	}
 
-template <typename Matrix, typename Arg>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Matrix
-make_diagonal_matrix(Arg const& arg) HAMON_NOEXCEPT
-{
-	return make_diagonal_matrix_impl<Matrix>(arg, hamon::make_index_sequence<vector_size<Matrix>::value>{});
-}
+	template <template <typename, std::size_t> class Vector, std::size_t... Is>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
+	impl(Vector<T, N> const& arg, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
+	{
+		return Matrix<T, N, N>{ impl_2(arg, Is, hamon::make_index_sequence<N>{})... };
+	}
+
+public:
+	template <template <typename, std::size_t> class Vector>
+	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
+	invoke(Vector<T, N> const& arg) HAMON_NOEXCEPT
+	{
+		return impl(arg, hamon::make_index_sequence<N>{});
+	}
+};
 
 }	// namespace detail
 
