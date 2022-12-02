@@ -28,10 +28,10 @@ GTEST_TEST(AlgorithmTest, EqualTest)
 	HAMON_CONSTEXPR_OR_CONST int a5[] {0,1};
 	HAMON_CONSTEXPR_OR_CONST int a6[] {0,1,2,3};
 
-	HAMON_CXX17_CONSTEXPR std::array<float, 3> a7{{0, 1, 2}};
-	HAMON_CXX17_CONSTEXPR std::array<float, 3> a8{{1, 1, 2}};
-	HAMON_CXX17_CONSTEXPR std::array<float, 2> a9{{0, 1}};
-	HAMON_CXX17_CONSTEXPR std::array<float, 4> a10{{0, 1, 2, 3}};
+	HAMON_CXX17_CONSTEXPR std::array<int, 3> a7{{0, 1, 2}};
+	HAMON_CXX17_CONSTEXPR std::array<int, 3> a8{{1, 1, 2}};
+	HAMON_CXX17_CONSTEXPR std::array<int, 2> a9{{0, 1}};
+	HAMON_CXX17_CONSTEXPR std::array<int, 4> a10{{0, 1, 2, 3}};
 
 	const std::vector<int> v1 {0,1,2};
 	const std::vector<int> v2 {0,1,2,3};
