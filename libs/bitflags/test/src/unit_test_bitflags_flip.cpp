@@ -156,6 +156,9 @@ GTEST_TEST(BitflagsTest, FlipTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FlipTest());
 
+HAMON_WARNING_PUSH();
+HAMON_WARNING_DISABLE_GCC("-Wconversion");
+
 	{
 		Bitflag1 b{};
 		EXPECT_THROW   ((void)b.flip((Enum1)-1), std::out_of_range);
@@ -177,6 +180,8 @@ GTEST_TEST(BitflagsTest, FlipTest)
 		EXPECT_NO_THROW((void)b.flip((Enum3)15));
 		EXPECT_THROW   ((void)b.flip((Enum3)16), std::out_of_range);
 	}
+
+HAMON_WARNING_POP();
 }
 
 #undef VERIFY

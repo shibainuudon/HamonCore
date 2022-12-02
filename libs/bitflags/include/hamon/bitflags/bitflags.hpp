@@ -171,7 +171,7 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	count() const HAMON_NOEXCEPT
 	{
-		return hamon::popcount(m_value);
+		return static_cast<size_type>(hamon::popcount(m_value));
 	}
 
 	/**
@@ -349,7 +349,7 @@ public:
 	HAMON_CXX14_CONSTEXPR bitflags&
 	reset(E pos)
 	{
-		m_value &= ~make_value(pos);
+		m_value &= static_cast<value_type>(~make_value(pos));
 		return *this;
 	}
 
@@ -494,9 +494,12 @@ private:
 	HAMON_NODISCARD static HAMON_CONSTEXPR value_type
 	make_value(E pos)
 	{
+HAMON_WARNING_PUSH();
+HAMON_WARNING_DISABLE_GCC("-Wconversion");
 		return static_cast<size_type>(pos) < N ?
 			static_cast<value_type>(static_cast<value_type>(1) << (static_cast<size_type>(pos))) :
 			(throw_out_of_range(), static_cast<value_type>(0));
+HAMON_WARNING_POP();
 	}
 
 	HAMON_NODISCARD static HAMON_CONSTEXPR value_type
