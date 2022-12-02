@@ -46,7 +46,7 @@ popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
 	x = ((x & UINT64_C(0x3333333333333333)) + ((x >> 2) & UINT64_C(0x3333333333333333)));
 	x = ((x + (x >> 4)) & UINT64_C(0x0f0f0f0f0f0f0f0f));
 	x = (x * UINT64_C(0x0101010101010101));
-	return x >> 56;
+	return static_cast<int>(x >> 56);
 }
 
 #else
@@ -54,7 +54,7 @@ popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
 inline HAMON_CONSTEXPR int
 popcount_impl_4(std::uint64_t x) HAMON_NOEXCEPT
 {
-	return (x * UINT64_C(0x0101010101010101)) >> 56;
+	return static_cast<int>((x * UINT64_C(0x0101010101010101)) >> 56);
 }
 
 inline HAMON_CONSTEXPR int
