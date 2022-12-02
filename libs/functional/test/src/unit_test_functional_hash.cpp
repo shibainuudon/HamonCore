@@ -40,22 +40,22 @@ public:
 
 	HAMON_CXX14_CONSTEXPR std::size_t hash() &
 	{
-		return value * 1;
+		return static_cast<std::size_t>(value * 1);
 	}
 
 	HAMON_CXX11_CONSTEXPR std::size_t hash() const&
 	{
-		return value * 2;
+		return static_cast<std::size_t>(value * 2);
 	}
 
 	HAMON_CXX14_CONSTEXPR std::size_t hash() &&
 	{
-		return value * 3;
+		return static_cast<std::size_t>(value * 3);
 	}
 
 	HAMON_CXX11_CONSTEXPR std::size_t hash() const&&
 	{
-		return value * 4;
+		return static_cast<std::size_t>(value * 4);
 	}
 };
 
@@ -86,22 +86,22 @@ public:
 
 	friend constexpr std::size_t hash(S2 & s)
 	{
-		return s.value * 1;
+		return static_cast<std::size_t>(s.value * 1);
 	}
 
 	friend constexpr std::size_t hash(S2 const& s)
 	{
-		return s.value * 2;
+		return static_cast<std::size_t>(s.value * 2);
 	}
 	
 	friend constexpr std::size_t hash(S2 && s)
 	{
-		return s.value * 3;
+		return static_cast<std::size_t>(s.value * 3);
 	}
 	
 	friend constexpr std::size_t hash(S2 const&& s)
 	{
-		return s.value * 4;
+		return static_cast<std::size_t>(s.value * 4);
 	}
 };
 
@@ -188,18 +188,18 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 1)), hamon::hash(std::int64_t(-1)));
 
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::int64_t b = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::int64_t b = 0xFFFFFFFFFFFFFFFEULL;
+		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFE);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::int64_t b = 0x7FFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x3FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 
@@ -210,18 +210,18 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t(-1)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 1)), hamon::hash(std::uint64_t(-1)));
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0xFFFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0xFFFFFFFFFFFFFFFEULL;
+		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFE);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = 0xFFFFFFFFFFFFFFFFULL;
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = 0x7FFFFFFFFFFFFFFFULL;
+		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 

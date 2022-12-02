@@ -51,14 +51,14 @@ GTEST_TEST(FunctionalTest, RangesPlusTest)
 	static_assert(!hamon::is_invocable<F, int, void*>::value, "");
 	static_assert(!hamon::is_invocable<F, int*, void*>::value, "");
 	static_assert( hamon::is_invocable<F, int, int>::value, "");
-	static_assert( hamon::is_invocable<F, int, float>::value, "");
-	static_assert( hamon::is_invocable<F, float, int>::value, "");
-	static_assert( hamon::is_invocable<F, float, float>::value, "");
+	static_assert( hamon::is_invocable<F, int, long>::value, "");
+	static_assert( hamon::is_invocable<F, long, int>::value, "");
+	static_assert( hamon::is_invocable<F, long, long>::value, "");
 
 	static_assert( hamon::is_nothrow_invocable<F, int, int>::value, "");
-	static_assert( hamon::is_nothrow_invocable<F, int, float>::value, "");
-	static_assert( hamon::is_nothrow_invocable<F, float, int>::value, "");
-	static_assert( hamon::is_nothrow_invocable<F, float, float>::value, "");
+	static_assert( hamon::is_nothrow_invocable<F, int, long>::value, "");
+	static_assert( hamon::is_nothrow_invocable<F, long, int>::value, "");
+	static_assert( hamon::is_nothrow_invocable<F, long, long>::value, "");
 
 	static_assert(F{}( 10,  3) ==  13, "");
 	static_assert(F{}( 10, -3) ==   7, "");
@@ -70,10 +70,10 @@ GTEST_TEST(FunctionalTest, RangesPlusTest)
 	static_assert(F{}(-2.5,  5) ==  2.5, "");
 	static_assert(F{}(-2.5, -5) == -7.5, "");
 
-	static_assert(F{}( 3,  1.5f) ==  4.5, "");
-	static_assert(F{}( 3, -1.5f) ==  1.5, "");
-	static_assert(F{}(-3,  1.5f) == -1.5, "");
-	static_assert(F{}(-3, -1.5f) == -4.5, "");
+	static_assert(F{}( 3,  1.5) ==  4.5, "");
+	static_assert(F{}( 3, -1.5) ==  1.5, "");
+	static_assert(F{}(-3,  1.5) == -1.5, "");
+	static_assert(F{}(-3, -1.5) == -4.5, "");
 
 	static_assert(!hamon::is_invocable<F, A, A>::value, "");
 	static_assert(!hamon::is_invocable<F, A, B>::value, "");

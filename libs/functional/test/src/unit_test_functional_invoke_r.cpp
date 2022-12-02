@@ -12,9 +12,6 @@
 #include <type_traits>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4244);
-
 namespace hamon_functional_test
 {
 
@@ -26,12 +23,12 @@ HAMON_CONSTEXPR int function1()
 	return 0;
 }
 
-HAMON_CONSTEXPR long function2(float)
+HAMON_CONSTEXPR short function2(float)
 {
 	return 1;
 }
 
-HAMON_CONSTEXPR short function3(int, float)
+HAMON_CONSTEXPR char function3(int, float)
 {
 	return 2;
 }
@@ -93,7 +90,7 @@ struct Bar
 		return 10;
 	}
 
-	long f3() volatile
+	char f3() volatile
 	{
 		return 11;
 	}
@@ -193,15 +190,15 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<int  >(function3, 0, 0.0f));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<char >(function3, 0, 0.0f));
 
-		static_assert(std::is_same<decltype(hamon::invoke_r<int >(function1)), int>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<long>(function1)), long>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<void>(function1)), void>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<int >(function2, 0.0f)), int>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<long>(function2, 0.0f)), long>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<void>(function2, 0.0f)), void>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<int >(function3, 0, 0.0f)), int>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<long>(function3, 0, 0.0f)), long>::value, "");
-		static_assert(std::is_same<decltype(hamon::invoke_r<void>(function3, 0, 0.0f)), void>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<int  >(function1)), int>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<long >(function1)), long>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<void >(function1)), void>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<int  >(function2, 0.0f)), int>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<short>(function2, 0.0f)), short>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<void >(function2, 0.0f)), void>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<int  >(function3, 0, 0.0f)), int>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<char >(function3, 0, 0.0f)), char>::value, "");
+		static_assert(std::is_same<decltype(hamon::invoke_r<void >(function3, 0, 0.0f)), void>::value, "");
 	}
 	{
 		HAMON_CONSTEXPR Foo f{};
@@ -389,5 +386,3 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 }	// namespace invoke_r_test
 
 }	// namespace hamon_functional_test
-
-HAMON_WARNING_POP();
