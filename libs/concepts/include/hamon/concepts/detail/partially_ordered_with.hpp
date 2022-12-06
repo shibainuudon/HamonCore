@@ -38,8 +38,8 @@ concept partially_ordered_with =
 
 #else
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_CLANG("-Wordered-compare-function-pointers");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wordered-compare-function-pointers")
 
 template <typename T, typename U>
 struct partially_ordered_with_impl
@@ -76,7 +76,7 @@ public:
 	using type = decltype(test<T, U>(0));
 };
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 template <typename T, typename U>
 using partially_ordered_with =

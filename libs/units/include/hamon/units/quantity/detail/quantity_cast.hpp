@@ -27,9 +27,9 @@ ratio_to_float()
 	return static_cast<long double>(R::num) / R::den;
 }
 
-HAMON_WARNING_PUSH();
+HAMON_WARNING_PUSH()
 #if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 100000)
-HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-float-conversion");
+HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-float-conversion")
 #endif
 
 template <typename ToQuantity, typename T, typename D, typename S, typename O>
@@ -44,7 +44,7 @@ quantity_cast(quantity<T, D, S, O> const& q) HAMON_NOEXCEPT
 		(q.value() + ratio_to_float<O>()) * S2::num / S2::den - ratio_to_float<O1>()));
 }
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 }	// namespace detail
 

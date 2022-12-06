@@ -9,8 +9,8 @@
 #include <cstdint>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4307);	// 整数定数がオーバーフローしました。
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4307)	// 整数定数がオーバーフローしました。
 
 namespace hamon_bit_test
 {
@@ -208,4 +208,4 @@ GTEST_TEST(BitTest, PopCountTest)
 
 }	// namespace hamon_bit_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()

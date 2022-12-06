@@ -12,8 +12,8 @@
 #include <cstddef>
 #include <utility>
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-parameter");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-parameter")
 
 namespace hamon
 {
@@ -116,6 +116,6 @@ transform(GenType<T1, N0, Ns...> const& lhs, GenType<T2, N0, Ns...> const& rhs, 
 
 }	// namespace hamon
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 #endif // HAMON_QVM_DETAIL_TRANSFORM_HPP

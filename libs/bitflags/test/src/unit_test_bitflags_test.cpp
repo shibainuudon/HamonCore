@@ -100,8 +100,8 @@ GTEST_TEST(BitflagsTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (b.test(Enum3::kOption9));
 	}
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_GCC("-Wconversion");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 
 	{
 		Bitflag1 b{};
@@ -125,7 +125,7 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion");
 		EXPECT_THROW   ((void)b.test((Enum3)16), std::out_of_range);
 	}
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 }
 
 }	// namespace test_test

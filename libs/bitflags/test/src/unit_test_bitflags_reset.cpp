@@ -146,8 +146,8 @@ GTEST_TEST(BitflagsTest, ResetTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ResetTest());
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_GCC("-Wconversion");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 
 	{
 		Bitflag1 b{};
@@ -171,7 +171,7 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion");
 		EXPECT_THROW   ((void)b.reset((Enum3)16), std::out_of_range);
 	}
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 }
 
 #undef VERIFY

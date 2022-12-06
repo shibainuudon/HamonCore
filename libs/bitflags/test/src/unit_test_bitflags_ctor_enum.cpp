@@ -38,8 +38,8 @@ GTEST_TEST(BitflagsTest, CtorEnumTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b3_2.to_ulong(), 16u);
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(b3_3.to_ulong(), 32u);
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_GCC("-Wconversion");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 
 	EXPECT_THROW   (Bitflag1 b{(Enum1)-1}; (void)b, std::out_of_range);
 	EXPECT_NO_THROW(Bitflag1 b{(Enum1) 0}; (void)b);
@@ -56,7 +56,7 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion");
 	EXPECT_NO_THROW(Bitflag3 b{(Enum3)15}; (void)b);
 	EXPECT_THROW   (Bitflag3 b{(Enum3)16}; (void)b, std::out_of_range);
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 }
 
 }	// namespace hamon_bitflags_test

@@ -175,8 +175,8 @@ public:
 		return traits_type::ref(m_elems, i);
 	}
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4702);	// unreachable code
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// unreachable code
 
 	/**
 	 *	@brief	at
@@ -200,7 +200,7 @@ HAMON_WARNING_DISABLE_MSVC(4702);	// unreachable code
 			(throw_out_of_range("qvm::vector::at"), traits_type::ref(m_elems, 0));
 	}
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 	/**
 	 *	@brief	begin

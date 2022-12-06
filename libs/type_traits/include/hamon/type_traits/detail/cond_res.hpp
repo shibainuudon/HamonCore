@@ -13,10 +13,10 @@
 #include <hamon/config.hpp>
 #include <utility>
 
-HAMON_WARNING_PUSH();
+HAMON_WARNING_PUSH()
 
 #if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 100000)
-HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-volatile");
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-volatile")
 #endif
 
 namespace hamon
@@ -32,7 +32,7 @@ using cond_res = decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()
 
 #else
 
-HAMON_WARNING_DISABLE_MSVC(4239);
+HAMON_WARNING_DISABLE_MSVC(4239)
 
 template <typename X, typename Y, typename = void>
 struct cond_res_impl_base {};
@@ -70,6 +70,6 @@ using cond_res = typename cond_res_impl<X, Y>::type;
 
 }	// namespace hamon
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 #endif // HAMON_TYPE_TRAITS_DETAIL_COND_RES_HPP

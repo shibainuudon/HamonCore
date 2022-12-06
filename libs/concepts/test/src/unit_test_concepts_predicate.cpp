@@ -17,8 +17,8 @@
 	static_assert(B == hamon::predicate_t<__VA_ARGS__>::value, "")
 #endif
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_CLANG("-Wunneeded-internal-declaration");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wunneeded-internal-declaration")
 
 namespace hamon_concepts_test
 {
@@ -140,6 +140,6 @@ HAMON_PREDICATE_TEST(false, NotPredicate, int, int);
 
 }	// namespace hamon_concepts_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 #undef HAMON_PREDICATE_TEST

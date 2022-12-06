@@ -430,9 +430,9 @@ namespace pointer_to_bool_converting_test
 struct X { bool b; };
 void f(X) {}
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4130);	// '!=': logical operation on address of string constant
-HAMON_WARNING_DISABLE_GCC("-Wnarrowing");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4130)	// '!=': logical operation on address of string constant
+HAMON_WARNING_DISABLE_GCC("-Wnarrowing")
 
 GTEST_TEST(ConfigTest, Cxx20PointerToBoolConvertingTest)
 {
@@ -446,7 +446,7 @@ GTEST_TEST(ConfigTest, Cxx20PointerToBoolConvertingTest)
 #endif
 }
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 }	// namespace pointer_to_bool_converting_test
 
@@ -1240,13 +1240,13 @@ GTEST_TEST(ConfigTest, Cxx20DeprecateCommaInSubscriptingExpressionsTest)
 
 #if !defined(HAMON_HAS_CXX20_DEPRECATE_COMMA_IN_SUBSCRIPTING_EXPRESSIONS)
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4709);	// comma operator within array index expression
-HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-comma-subscript");
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4709)	// comma operator within array index expression
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-comma-subscript")
 
 	auto x = a[++index, 0];		// C++17 まで OK, C++20 から deprecated
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
 
 #else
 

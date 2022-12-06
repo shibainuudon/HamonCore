@@ -6,10 +6,10 @@
 
 #include <hamon/config.hpp>
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4146); // 符号付きの値を代入する変数は、符号付き型にキャストしなければなりません。
-HAMON_WARNING_DISABLE_MSVC(4307); // '+': 整数定数がオーバーフローしました。
-HAMON_WARNING_DISABLE_MSVC(4308); // 負の整数定数が符号なしの型に変換されました。
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4146) // 符号付きの値を代入する変数は、符号付き型にキャストしなければなりません。
+HAMON_WARNING_DISABLE_MSVC(4307) // '+': 整数定数がオーバーフローしました。
+HAMON_WARNING_DISABLE_MSVC(4308) // 負の整数定数が符号なしの型に変換されました。
 
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/begin.hpp>
@@ -171,4 +171,4 @@ GTEST_TEST(IteratorTest, NextTest)
 
 }	// namespace hamon_iterator_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
