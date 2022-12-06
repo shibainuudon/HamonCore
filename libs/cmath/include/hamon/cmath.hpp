@@ -13,6 +13,7 @@
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/cmath/factorial.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
