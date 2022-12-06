@@ -1,0 +1,123 @@
+﻿/**
+ *	@file	unit_test_cmath_log.cpp
+ *
+ *	@brief	log のテスト
+ */
+
+#include <hamon/cmath/log.hpp>
+#include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/float_promote.hpp>
+#include <hamon/numbers.hpp>
+#include <gtest/gtest.h>
+#include <type_traits>
+#include <limits>
+#include "constexpr_test.hpp"
+
+namespace hamon_cmath_test
+{
+
+namespace log_test
+{
+
+static_assert(std::is_same<float,       decltype(hamon::log(0.0f))>::value, "");
+static_assert(std::is_same<float,       decltype(hamon::logf(0.0f))>::value, "");
+static_assert(std::is_same<double,      decltype(hamon::log(0.0 ))>::value, "");
+static_assert(std::is_same<double,      decltype(hamon::log(0   ))>::value, "");
+static_assert(std::is_same<long double, decltype(hamon::log(0.0l))>::value, "");
+static_assert(std::is_same<long double, decltype(hamon::logl(0.0l))>::value, "");
+
+template <typename T>
+void LogTestFloat(double error)
+{
+	HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
+
+	EXPECT_NEAR(-1.38629436111989, (double)hamon::log(T(0.25)), error);
+	EXPECT_NEAR(-0.69314718055995, (double)hamon::log(T(0.50)), error);
+	EXPECT_NEAR(-0.28768207245178, (double)hamon::log(T(0.75)), error);
+	EXPECT_NEAR( 0.00000000000000, (double)hamon::log(T(1.00)), error);
+	EXPECT_NEAR( 0.22314355131421, (double)hamon::log(T(1.25)), error);
+	EXPECT_NEAR( 0.40546510810816, (double)hamon::log(T(1.50)), error);
+	EXPECT_NEAR( 0.69314718055994, (double)hamon::log(T(2.00)), error);
+	EXPECT_NEAR( 1.00000000000000, (double)hamon::log(hamon::numbers::e_fn<T>()),  error);
+	EXPECT_NEAR( 1.09861228866810, (double)hamon::log(T(3.00)), error);
+	EXPECT_NEAR( 1.38629436111989, (double)hamon::log(T(4.00)), error);
+
+	//If the argument is ±0, -∞ is returned and FE_DIVBYZERO is raised.
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::log(T(+0.0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::log(T(-0.0)));
+
+	//If the argument is 1, +0 is returned
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero (hamon::log(T(+1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::signbit(hamon::log(T(+1.0))));
+
+	//If the argument is negative, NaN is returned and FE_INVALID is raised.
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(T(-1.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(T(-2.0))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(T( 0.0) - eps)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(-inf)));
+
+	//If the argument is +∞, +∞ is returned
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(inf, hamon::log(inf));
+
+	//If the argument is NaN, NaN is returned
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log( nan)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(-nan)));
+}
+
+template <typename T>
+void LogTestSignedInt(void)
+{
+	using R = hamon::float_promote_t<T>;
+	HAMON_CONSTEXPR auto inf = std::numeric_limits<R>::infinity();
+
+	HAMON_CONSTEXPR double error = 0.000000000001;
+
+	EXPECT_NEAR(0.69314718055994, hamon::log(T(2)), error);
+	EXPECT_NEAR(1.09861228866810, hamon::log(T(3)), error);
+	
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::log(T(0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0,  hamon::log(T(1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(-T(1))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::log(-T(2))));
+}
+
+template <typename T>
+void LogTestUnsignedInt(void)
+{
+	using R = hamon::float_promote_t<T>;
+	HAMON_CONSTEXPR auto inf = std::numeric_limits<R>::infinity();
+
+	HAMON_CONSTEXPR double error = 0.000000000001;
+
+	EXPECT_NEAR(0.69314718055994, hamon::log(T(2)), error);
+	EXPECT_NEAR(1.09861228866810, hamon::log(T(3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::log(T(0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0,  hamon::log(T(1)));
+}
+
+GTEST_TEST(CMathTest, LogTest)
+{
+	LogTestFloat<float>(0.000001);
+	LogTestFloat<double>(0.000000000001);
+	LogTestFloat<long double>(0.000000000001);
+
+//	LogTestSignedInt<int>();
+	LogTestSignedInt<signed char>();
+//	LogTestSignedInt<short>();
+	LogTestSignedInt<long>();
+//	LogTestSignedInt<long long>();
+
+	LogTestUnsignedInt<unsigned int>();
+//	LogTestUnsignedInt<unsigned char>();
+	LogTestUnsignedInt<unsigned short>();
+//	LogTestUnsignedInt<unsigned long>();
+	LogTestUnsignedInt<unsigned long long>();
+}
+
+}	// namespace log_test
+
+}	// namespace hamon_cmath_test
