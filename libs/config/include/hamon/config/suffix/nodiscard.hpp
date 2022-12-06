@@ -11,7 +11,7 @@
 //	[[nodiscard]] workaround
 //
 #if !defined(HAMON_NODISCARD)
-#	if HAMON_HAS_CPP_ATTRIBUTE(nodiscard)
+#	if defined(HAMON_HAS_CXX17_NODISCARD)
 #		define HAMON_NODISCARD [[nodiscard]]
 #	else
 #		define HAMON_NODISCARD
