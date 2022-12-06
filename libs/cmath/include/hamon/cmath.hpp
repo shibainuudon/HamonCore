@@ -17,6 +17,7 @@
 #include <hamon/cmath/factorial.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/fmod.hpp>
+#include <hamon/cmath/isfinite.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
