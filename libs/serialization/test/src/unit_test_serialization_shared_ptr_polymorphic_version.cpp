@@ -45,7 +45,7 @@ private:
 		ar & a;
 	}
 
-	constexpr hamon::serialization::version_t get_class_version() const
+	hamon::serialization::version_t get_class_version() const
 	{
 		return 5;
 	}
@@ -84,7 +84,7 @@ private:
 		ar & b;
 	}
 	
-	constexpr hamon::serialization::version_t get_class_version() const
+	hamon::serialization::version_t get_class_version() const
 	{
 		return 42;
 	}
