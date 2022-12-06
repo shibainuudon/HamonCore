@@ -81,7 +81,7 @@ hash_combine_impl(std::size_t seed, T const& v, Rest const&... rest) HAMON_NOEXC
  *	複数の値からハッシュ値を計算する
  */
 template <typename... T>
-inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
 hash_combine(std::size_t seed, T const&... args) HAMON_NOEXCEPT
 {
 	return detail::hash_combine_impl(seed, args...);

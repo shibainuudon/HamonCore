@@ -5,6 +5,7 @@
  */
 
 #include <hamon/functional/hash.hpp>
+#include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
@@ -38,7 +39,7 @@ private:
 public:
 	HAMON_CXX11_CONSTEXPR S1(int v) : value(v) {}
 
-	HAMON_CXX14_CONSTEXPR std::size_t hash() &
+	HAMON_CXX14_CONSTEXPR std::size_t hash() & HAMON_NOEXCEPT
 	{
 		return static_cast<std::size_t>(value * 1);
 	}
@@ -53,7 +54,7 @@ public:
 		return static_cast<std::size_t>(value * 3);
 	}
 
-	HAMON_CXX11_CONSTEXPR std::size_t hash() const&&
+	HAMON_CXX11_CONSTEXPR std::size_t hash() const&& HAMON_NOEXCEPT
 	{
 		return static_cast<std::size_t>(value * 4);
 	}
@@ -61,6 +62,11 @@ public:
 
 GTEST_TEST(FunctionalTest, HashMemberTest)
 {
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S1&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S1 const&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S1&&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S1 const&&>::value, "");
+
 	HAMON_CXX11_CONSTEXPR S1 const s1_1{1};
 	HAMON_CXX11_CONSTEXPR S1 const s1_2{2};
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(s1_1));
@@ -84,12 +90,12 @@ private:
 public:
 	HAMON_CXX11_CONSTEXPR S2(int v) : value(v) {}
 
-	friend constexpr std::size_t hash(S2 & s)
+	friend constexpr std::size_t hash(S2 & s) HAMON_NOEXCEPT
 	{
 		return static_cast<std::size_t>(s.value * 1);
 	}
 
-	friend constexpr std::size_t hash(S2 const& s)
+	friend constexpr std::size_t hash(S2 const& s) HAMON_NOEXCEPT
 	{
 		return static_cast<std::size_t>(s.value * 2);
 	}
@@ -107,6 +113,11 @@ public:
 
 GTEST_TEST(FunctionalTest, HashAdlTest)
 {
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S2&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S2 const&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S2&&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S2 const&&>::value, "");
+
 	HAMON_CXX11_CONSTEXPR S2 const s4_1{3};
 	HAMON_CXX11_CONSTEXPR S2 const s4_2{4};
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 6u, hamon::hash(s4_1));
@@ -125,9 +136,11 @@ GTEST_TEST(FunctionalTest, HashAdlTest)
 template <typename T>
 void HashIntegralTest()
 {
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(T(0), T(-1));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), T( 0));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(T(0), T( 1));
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, T>::value, "");
+
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(T(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(T(0)), hamon::hash(T( 0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(T( 1)));
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -240,6 +253,8 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 template <typename T>
 void HashFloatTest()
 {
+//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, T>::value, "");
+
 	HAMON_CXX11_CONSTEXPR T const eps = std::numeric_limits<T>::epsilon();
 	HAMON_CXX11_CONSTEXPR T const max = std::numeric_limits<T>::max();
 	HAMON_CXX11_CONSTEXPR T const min = std::numeric_limits<T>::min();
@@ -298,6 +313,10 @@ GTEST_TEST(FunctionalTest, HashFloatTest)
 
 GTEST_TEST(FunctionalTest, HashPointerTest)
 {
+//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, int*>::value, "");
+//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, void*>::value, "");
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, std::nullptr_t>::value, "");
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(nullptr));
 
 	int i = 0;
@@ -323,6 +342,9 @@ GTEST_TEST(FunctionalTest, HashEnumTest)
 	{
 		Value1, Value2, Value3
 	};
+
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, Enum1>::value, "");
+	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, Enum2>::value, "");
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Value1_1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Value1_2));
