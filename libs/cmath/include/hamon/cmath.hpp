@@ -29,6 +29,7 @@
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/cmath/sin.hpp>
 #include <hamon/cmath/smoothstep.hpp>
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/cmath/step.hpp>
