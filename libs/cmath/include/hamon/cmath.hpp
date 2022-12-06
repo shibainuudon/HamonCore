@@ -11,6 +11,7 @@
 #include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/copysign.hpp>
+#include <hamon/cmath/cos.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/cmath/exp.hpp>
 #include <hamon/cmath/fabs.hpp>
