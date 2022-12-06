@@ -7,8 +7,8 @@
 #ifndef HAMON_RANGES_DETAIL_IS_INTEGER_LIKE_HPP
 #define HAMON_RANGES_DETAIL_IS_INTEGER_LIKE_HPP
 
-#include <hamon/ranges/detail/max_diff_type.hpp>
-#include <hamon/ranges/detail/max_size_type.hpp>
+#include <hamon/detail/max_diff_type.hpp>
+#include <hamon/detail/max_size_type.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -38,8 +38,8 @@ concept integral_nonbool =
 template <typename T>
 concept is_integer_like =
 	detail::integral_nonbool<T> ||
-	hamon::same_as<T, detail::max_diff_type> ||
-	hamon::same_as<T, detail::max_size_type>;
+	hamon::same_as<T, hamon::detail::max_diff_type> ||
+	hamon::same_as<T, hamon::detail::max_size_type>;
 
 template <typename T>
 using is_integer_like_t = hamon::bool_constant<is_integer_like<T>>;
@@ -58,8 +58,8 @@ using integral_nonbool = hamon::conjunction<
 template <typename T>
 using is_integer_like = hamon::disjunction<
 	detail::integral_nonbool<T>,
-	hamon::same_as<T, detail::max_diff_type>,
-	hamon::same_as<T, detail::max_size_type>
+	hamon::same_as<T, hamon::detail::max_diff_type>,
+	hamon::same_as<T, hamon::detail::max_size_type>
 >;
 
 template <typename T>

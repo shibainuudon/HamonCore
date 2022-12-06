@@ -23,6 +23,7 @@ using std::ranges::ssize;
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/detail/max_diff_type.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/make_signed.hpp>
@@ -51,7 +52,7 @@ public:
 					std::ptrdiff_t,
 					hamon::make_signed_t<size_type>
 				>,
-				hamon::ranges::detail::max_diff_type
+				hamon::detail::max_diff_type
 			>
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
