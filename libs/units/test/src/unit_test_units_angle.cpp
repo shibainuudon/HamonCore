@@ -33,9 +33,9 @@ TYPED_TEST(AngleTest, AccuracyTest)
 	using radians = hamon::units::radians<T>;
 	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
 
-	HAMON_CONSTEXPR double error = angle_accuracy<T>::get();
+	HAMON_CXX11_CONSTEXPR double error = angle_accuracy<T>::get();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(  0.0, (double)degrees(radians(p * T(0.00))).value(), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 45.0, (double)degrees(radians(p * T(0.25))).value(), error);
@@ -58,118 +58,127 @@ TYPED_TEST(AngleTest, AccuracyTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)(p * 2.00), (double)radians(degrees(360.0)).value(), error);
 }
 
+template <typename T>
+struct angle_error;
+template <> struct angle_error<float>       { static HAMON_CONSTEXPR double get() { return 0.00001; } };
+template <> struct angle_error<double>      { static HAMON_CONSTEXPR double get() { return 0.00000000001; } };
+template <> struct angle_error<long double> { static HAMON_CONSTEXPR double get() { return 0.00000000001; } };
+
 TYPED_TEST(AngleTest, SinTest)
 {
-	using radians = hamon::units::radians<TypeParam>;
-	using degrees = hamon::units::degrees<TypeParam>;
+	using T = TypeParam;
+	using radians = hamon::units::radians<T>;
+	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CONSTEXPR auto p = hamon::numbers::pi_fn<TypeParam>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
 
-	const double error = 0.000001;
+	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 
-	EXPECT_NEAR( 0.00000000000, (double)sin(radians(p * TypeParam(0.000))), error);
-	EXPECT_NEAR( 0.70710678118, (double)sin(radians(p * TypeParam(0.250))), error);
-	EXPECT_NEAR( 1.00000000000, (double)sin(radians(p * TypeParam(0.500))), error);
-	EXPECT_NEAR( 0.70710678118, (double)sin(radians(p * TypeParam(0.750))), error);
-	EXPECT_NEAR( 0.00000000000, (double)sin(radians(p * TypeParam(1.000))), error);
-	EXPECT_NEAR(-0.70710678118, (double)sin(radians(p * TypeParam(1.250))), error);
-	EXPECT_NEAR(-1.00000000000, (double)sin(radians(p * TypeParam(1.500))), error);
-	EXPECT_NEAR(-0.70710678118, (double)sin(radians(p * TypeParam(1.750))), error);
-	EXPECT_NEAR( 0.00000000000, (double)sin(radians(p * TypeParam(2.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(radians(p * T(0.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::sin(radians(p * T(0.250))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::sin(radians(p * T(0.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::sin(radians(p * T(0.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(radians(p * T(1.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::sin(radians(p * T(1.250))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::sin(radians(p * T(1.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::sin(radians(p * T(1.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(radians(p * T(2.000))), error);
 
-	EXPECT_NEAR( 0.00000000000, (double)sin(degrees(  0)), error);
-	EXPECT_NEAR( 0.50000000000, (double)sin(degrees( 30)), error);
-	EXPECT_NEAR( 0.70710678118, (double)sin(degrees( 45)), error);
-	EXPECT_NEAR( 0.86602540378, (double)sin(degrees( 60)), error);
-	EXPECT_NEAR( 1.00000000000, (double)sin(degrees( 90)), error);
-	EXPECT_NEAR( 0.86602540378, (double)sin(degrees(120)), error);
-	EXPECT_NEAR( 0.70710678118, (double)sin(degrees(135)), error);
-	EXPECT_NEAR( 0.50000000000, (double)sin(degrees(150)), error);
-	EXPECT_NEAR( 0.00000000000, (double)sin(degrees(180)), error);
-	EXPECT_NEAR(-0.50000000000, (double)sin(degrees(210)), error);
-	EXPECT_NEAR(-0.70710678118, (double)sin(degrees(225)), error);
-	EXPECT_NEAR(-0.86602540378, (double)sin(degrees(240)), error);
-	EXPECT_NEAR(-1.00000000000, (double)sin(degrees(270)), error);
-	EXPECT_NEAR(-0.86602540378, (double)sin(degrees(300)), error);
-	EXPECT_NEAR(-0.70710678118, (double)sin(degrees(315)), error);
-	EXPECT_NEAR(-0.50000000000, (double)sin(degrees(330)), error);
-	EXPECT_NEAR( 0.00000000000, (double)sin(degrees(360)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(degrees(  0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.50000000000, (double)hamon::ranges::sin(degrees( 30)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::sin(degrees( 45)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.86602540378, (double)hamon::ranges::sin(degrees( 60)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::sin(degrees( 90)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.86602540378, (double)hamon::ranges::sin(degrees(120)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::sin(degrees(135)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.50000000000, (double)hamon::ranges::sin(degrees(150)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(degrees(180)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.50000000000, (double)hamon::ranges::sin(degrees(210)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::sin(degrees(225)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.86602540378, (double)hamon::ranges::sin(degrees(240)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::sin(degrees(270)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.86602540378, (double)hamon::ranges::sin(degrees(300)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::sin(degrees(315)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.50000000000, (double)hamon::ranges::sin(degrees(330)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::sin(degrees(360)), error);
 }
 
 TYPED_TEST(AngleTest, CosTest)
 {
-	using radians = hamon::units::radians<TypeParam>;
-	using degrees = hamon::units::degrees<TypeParam>;
+	using T = TypeParam;
+	using radians = hamon::units::radians<T>;
+	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CONSTEXPR auto p = hamon::numbers::pi_fn<TypeParam>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
 
-	const double error = 0.000001;
+	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 
-	EXPECT_NEAR( 1.00000000000, (double)cos(radians(p * TypeParam(0.000))), error);
-	EXPECT_NEAR( 0.70710678118, (double)cos(radians(p * TypeParam(0.250))), error);
-	EXPECT_NEAR( 0.00000000000, (double)cos(radians(p * TypeParam(0.500))), error);
-	EXPECT_NEAR(-0.70710678118, (double)cos(radians(p * TypeParam(0.750))), error);
-	EXPECT_NEAR(-1.00000000000, (double)cos(radians(p * TypeParam(1.000))), error);
-	EXPECT_NEAR(-0.70710678118, (double)cos(radians(p * TypeParam(1.250))), error);
-	EXPECT_NEAR( 0.00000000000, (double)cos(radians(p * TypeParam(1.500))), error);
-	EXPECT_NEAR( 0.70710678118, (double)cos(radians(p * TypeParam(1.750))), error);
-	EXPECT_NEAR( 1.00000000000, (double)cos(radians(p * TypeParam(2.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::cos(radians(p * T(0.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::cos(radians(p * T(0.250))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::cos(radians(p * T(0.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::cos(radians(p * T(0.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::cos(radians(p * T(1.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::cos(radians(p * T(1.250))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::cos(radians(p * T(1.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::cos(radians(p * T(1.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::cos(radians(p * T(2.000))), error);
 
-	EXPECT_NEAR( 1.00000000000, (double)cos(degrees(  0)), error);
-	EXPECT_NEAR( 0.86602540378, (double)cos(degrees( 30)), error);
-	EXPECT_NEAR( 0.70710678118, (double)cos(degrees( 45)), error);
-	EXPECT_NEAR( 0.50000000000, (double)cos(degrees( 60)), error);
-	EXPECT_NEAR( 0.00000000000, (double)cos(degrees( 90)), error);
-	EXPECT_NEAR(-0.50000000000, (double)cos(degrees(120)), error);
-	EXPECT_NEAR(-0.70710678118, (double)cos(degrees(135)), error);
-	EXPECT_NEAR(-0.86602540378, (double)cos(degrees(150)), error);
-	EXPECT_NEAR(-1.00000000000, (double)cos(degrees(180)), error);
-	EXPECT_NEAR(-0.86602540378, (double)cos(degrees(210)), error);
-	EXPECT_NEAR(-0.70710678118, (double)cos(degrees(225)), error);
-	EXPECT_NEAR(-0.50000000000, (double)cos(degrees(240)), error);
-	EXPECT_NEAR( 0.00000000000, (double)cos(degrees(270)), error);
-	EXPECT_NEAR( 0.50000000000, (double)cos(degrees(300)), error);
-	EXPECT_NEAR( 0.70710678118, (double)cos(degrees(315)), error);
-	EXPECT_NEAR( 0.86602540378, (double)cos(degrees(330)), error);
-	EXPECT_NEAR( 1.00000000000, (double)cos(degrees(360)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::cos(degrees(  0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.86602540378, (double)hamon::ranges::cos(degrees( 30)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::cos(degrees( 45)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.50000000000, (double)hamon::ranges::cos(degrees( 60)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::cos(degrees( 90)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.50000000000, (double)hamon::ranges::cos(degrees(120)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::cos(degrees(135)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.86602540378, (double)hamon::ranges::cos(degrees(150)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::cos(degrees(180)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.86602540378, (double)hamon::ranges::cos(degrees(210)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.70710678118, (double)hamon::ranges::cos(degrees(225)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.50000000000, (double)hamon::ranges::cos(degrees(240)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::cos(degrees(270)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.50000000000, (double)hamon::ranges::cos(degrees(300)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.70710678118, (double)hamon::ranges::cos(degrees(315)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.86602540378, (double)hamon::ranges::cos(degrees(330)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::cos(degrees(360)), error);
 }
 
 TYPED_TEST(AngleTest, TanTest)
 {
-	using radians = hamon::units::radians<TypeParam>;
-	using degrees = hamon::units::degrees<TypeParam>;
+	using T = TypeParam;
+	using radians = hamon::units::radians<T>;
+	using degrees = hamon::units::degrees<T>;
 
-	HAMON_CONSTEXPR auto p = hamon::numbers::pi_fn<TypeParam>();
+	HAMON_CXX11_CONSTEXPR auto p = hamon::numbers::pi_fn<T>();
 
-	const double error = 0.000001;
+	HAMON_CXX11_CONSTEXPR double error = angle_error<T>::get();
 
-	EXPECT_NEAR( 0.00000000000, (double)tan(radians(p * TypeParam(0.000))), error);
-	EXPECT_NEAR( 1.00000000000, (double)tan(radians(p * TypeParam(0.250))), error);
-//	EXPECT_NEAR( 1.6331239e+16, (double)tan(radians(p * TypeParam(0.500))), error);
-	EXPECT_NEAR(-1.00000000000, (double)tan(radians(p * TypeParam(0.750))), error);
-	EXPECT_NEAR( 0.00000000000, (double)tan(radians(p * TypeParam(1.000))), error);
-	EXPECT_NEAR( 1.00000000000, (double)tan(radians(p * TypeParam(1.250))), error);
-//	EXPECT_NEAR( 5.4437465e+15, (double)tan(radians(p * TypeParam(1.500))), error);
-	EXPECT_NEAR(-1.00000000000, (double)tan(radians(p * TypeParam(1.750))), error);
-	EXPECT_NEAR( 0.00000000000, (double)tan(radians(p * TypeParam(2.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(radians(p * T(0.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::tan(radians(p * T(0.250))), error);
+//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.6331239e+16, (double)hamon::ranges::tan(radians(p * T(0.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::tan(radians(p * T(0.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(radians(p * T(1.000))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::tan(radians(p * T(1.250))), error);
+//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 5.4437465e+15, (double)hamon::ranges::tan(radians(p * T(1.500))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::tan(radians(p * T(1.750))), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(radians(p * T(2.000))), error);
 
-	EXPECT_NEAR( 0.00000000000, (double)tan(degrees(  0)), error);
-	EXPECT_NEAR( 0.57735026919, (double)tan(degrees( 30)), error);
-	EXPECT_NEAR( 1.00000000000, (double)tan(degrees( 45)), error);
-	EXPECT_NEAR( 1.73205080757, (double)tan(degrees( 60)), error);
-//	EXPECT_NEAR( 1.6331239e+16, (double)tan(degrees( 90)), error);
-	EXPECT_NEAR(-1.73205080757, (double)tan(degrees(120)), error);
-	EXPECT_NEAR(-1.00000000000, (double)tan(degrees(135)), error);
-	EXPECT_NEAR(-0.57735026919, (double)tan(degrees(150)), error);
-	EXPECT_NEAR( 0.00000000000, (double)tan(degrees(180)), error);
-	EXPECT_NEAR( 0.57735026919, (double)tan(degrees(210)), error);
-	EXPECT_NEAR( 1.00000000000, (double)tan(degrees(225)), error);
-	EXPECT_NEAR( 1.73205080757, (double)tan(degrees(240)), error);
-//	EXPECT_NEAR( 5.4437465e+15, (double)tan(degrees(270)), error);
-	EXPECT_NEAR(-1.73205080757, (double)tan(degrees(300)), error);
-	EXPECT_NEAR(-1.00000000000, (double)tan(degrees(315)), error);
-	EXPECT_NEAR(-0.57735026919, (double)tan(degrees(330)), error);
-	EXPECT_NEAR( 0.00000000000, (double)tan(degrees(360)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(degrees(  0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.57735026919, (double)hamon::ranges::tan(degrees( 30)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::tan(degrees( 45)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.73205080757, (double)hamon::ranges::tan(degrees( 60)), error);
+//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.6331239e+16, (double)hamon::ranges::tan(degrees( 90)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.73205080757, (double)hamon::ranges::tan(degrees(120)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::tan(degrees(135)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.57735026919, (double)hamon::ranges::tan(degrees(150)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(degrees(180)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.57735026919, (double)hamon::ranges::tan(degrees(210)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, (double)hamon::ranges::tan(degrees(225)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.73205080757, (double)hamon::ranges::tan(degrees(240)), error);
+//	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 5.4437465e+15, (double)hamon::ranges::tan(degrees(270)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.73205080757, (double)hamon::ranges::tan(degrees(300)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.00000000000, (double)hamon::ranges::tan(degrees(315)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.57735026919, (double)hamon::ranges::tan(degrees(330)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::ranges::tan(degrees(360)), error);
 }
 
 }	// namespace units_angle_test

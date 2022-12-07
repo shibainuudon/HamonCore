@@ -9,7 +9,9 @@
 
 #include <hamon/units/base_dimensions/angle.hpp>
 #include <hamon/units/quantity.hpp>
-#include <cmath>
+#include <hamon/cmath/ranges/sin.hpp>
+#include <hamon/cmath/ranges/cos.hpp>
+#include <hamon/cmath/ranges/tan.hpp>
 
 namespace hamon
 {
@@ -25,27 +27,30 @@ template <typename T> using radians = radian<T>;
  *	@brief	sinのオーバーロード
  */
 template <typename T>
-inline T sin(radians<T> const& r)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+sin(radians<T> const& r) HAMON_NOEXCEPT
 {
-	return std::sin(r.value());
+	return hamon::ranges::sin(r.value());
 }
 
 /**
  *	@brief	cosのオーバーロード
  */
 template <typename T>
-inline T cos(radians<T> const& r)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+cos(radians<T> const& r) HAMON_NOEXCEPT
 {
-	return std::cos(r.value());
+	return hamon::ranges::cos(r.value());
 }
 
 /**
  *	@brief	tanのオーバーロード
  */
 template <typename T>
-inline T tan(radians<T> const& r)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+tan(radians<T> const& r) HAMON_NOEXCEPT
 {
-	return std::tan(r.value());
+	return hamon::ranges::tan(r.value());
 }
 
 }	// namespace units

@@ -26,7 +26,8 @@ template <typename T> using degrees = degree<T>;
  *	@brief	sinのオーバーロード
  */
 template <typename T>
-inline T sin(degrees<T> const& d)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+sin(degrees<T> const& d) HAMON_NOEXCEPT
 {
 	return sin(radians<T>(d));
 }
@@ -35,7 +36,8 @@ inline T sin(degrees<T> const& d)
  *	@brief	cosのオーバーロード
  */
 template <typename T>
-inline T cos(degrees<T> const& d)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+cos(degrees<T> const& d) HAMON_NOEXCEPT
 {
 	return cos(radians<T>(d));
 }
@@ -44,7 +46,8 @@ inline T cos(degrees<T> const& d)
  *	@brief	tanのオーバーロード
  */
 template <typename T>
-inline T tan(degrees<T> const& d)
+HAMON_NODISCARD inline HAMON_CONSTEXPR T
+tan(degrees<T> const& d) HAMON_NOEXCEPT
 {
 	return tan(radians<T>(d));
 }
