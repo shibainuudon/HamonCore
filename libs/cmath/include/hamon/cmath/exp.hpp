@@ -11,9 +11,12 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/factorial.hpp>
+#include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
+#include <type_traits>
 #include <cmath>
 
 namespace hamon
@@ -46,9 +49,34 @@ exp_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
+exp_unchecked_ct_1(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
+{
+	return last - n == 1 ?
+		pow_n(x, n) / unchecked_factorial<T>(n) :
+		exp_unchecked_ct_1(x, n, n + (last - n) / 2) +
+		exp_unchecked_ct_1(x, n + (last - n) / 2, last);
+}
+
+template <typename T>
+inline HAMON_CONSTEXPR T
+exp_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	return !(x > -1) ?
+		T(1) / (T(1) + exp_unchecked_ct_1(-x, 1, max_factorial<T>() / 2 + 1)) :
+		        T(1) + exp_unchecked_ct_1( x, 1, max_factorial<T>() / 2 + 1);
+}
+
+template <typename T>
+inline HAMON_CONSTEXPR T
 exp_unchecked(T x) HAMON_NOEXCEPT
 {
-	return std::exp(x);	// TODO
+#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
+	if (!std::is_constant_evaluated())
+	{
+		return std::exp(x);
+	}
+#endif
+	return exp_unchecked_ct(x);
 }
 
 #endif

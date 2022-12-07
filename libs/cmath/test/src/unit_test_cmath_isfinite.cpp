@@ -5,7 +5,6 @@
  */
 
 #include <hamon/cmath/isfinite.hpp>
-#include <hamon/cmath/exp.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -38,7 +37,6 @@ void IsFiniteTestFloat(void)
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isfinite(inf));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isfinite(-inf));
-	EXPECT_FALSE(hamon::isfinite(hamon::exp(T(80000))));
 	EXPECT_FALSE(hamon::isfinite(T(1) / zero));
 	EXPECT_FALSE(hamon::isfinite(max * T(2)));
 	EXPECT_FALSE(hamon::isfinite(lowest * T(2)));
