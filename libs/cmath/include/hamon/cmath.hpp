@@ -9,6 +9,7 @@
 
 #include <hamon/cmath/abs.hpp>
 #include <hamon/cmath/almost_equal.hpp>
+#include <hamon/cmath/asin.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/cos.hpp>
