@@ -25,6 +25,7 @@
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/log.hpp>
 #include <hamon/cmath/radians_to_degrees.hpp>
+#include <hamon/cmath/ranges.hpp>
 #include <hamon/cmath/repeat.hpp>
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/saturate.hpp>
