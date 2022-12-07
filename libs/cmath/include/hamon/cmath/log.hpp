@@ -10,9 +10,14 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/factorial.hpp>
+#include <hamon/cmath/sqrt.hpp>
+#include <hamon/cmath/detail/pow_n.hpp>
+#include <hamon/numbers/sqrt2.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
+#include <type_traits>
 #include <limits>
 #include <cmath>
 
@@ -46,9 +51,41 @@ log_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
+log_unchecked_ct_2(T x, unsigned int n, unsigned int last)
+{
+	return last - n == 1 ?
+		(n % 2 ? 1 : -1) * pow_n(x, n) / T(n) :
+		log_unchecked_ct_2(x, n, n + (last - n) / 2) +
+		log_unchecked_ct_2(x, n + (last - n) / 2, last);
+}
+template <typename T>
+inline HAMON_CONSTEXPR T
+log_unchecked_ct_1(T x)
+{
+	return !(x > hamon::numbers::sqrt2_fn<T>()) ?
+		log_unchecked_ct_2(x - T(1), 1, max_factorial<T>() + 1) :
+		T(2) * log_unchecked_ct_1(hamon::sqrt(x));
+}
+template <typename T>
+inline HAMON_CONSTEXPR T
+log_unchecked_ct(T x)
+{
+	return x < 1 ?
+		-log_unchecked_ct_1(T(1) / x) :
+		log_unchecked_ct_1(x);
+}
+
+template <typename T>
+inline HAMON_CONSTEXPR T
 log_unchecked(T x) HAMON_NOEXCEPT
 {
-	return std::log(x);	// TODO
+#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
+	if (!std::is_constant_evaluated())
+	{
+		return std::log(x);
+	}
+#endif
+	return log_unchecked_ct(x);
 }
 
 #endif
