@@ -7,9 +7,9 @@
 #ifndef HAMON_QVM_MATRIX_DETAIL_MAKE_PERSPECTIVE_MATRIX_HPP
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_PERSPECTIVE_MATRIX_HPP
 
+#include <hamon/cmath/ranges/tan.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <cmath>
 
 namespace hamon
 {
@@ -48,8 +48,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
 	invoke(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
 	{
-		using std::tan;
-		return impl(static_cast<T>(T(1) / tan(fovy * T(0.5))), aspect, near_z, far_z);
+		return impl(static_cast<T>(T(1) / hamon::ranges::tan(fovy * T(0.5))), aspect, near_z, far_z);
 	}
 };
 
@@ -81,8 +80,7 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 4, 4>
 	invoke(Angle const& fovy, T const& aspect, T const& near_z, T const& far_z) HAMON_NOEXCEPT
 	{
-		using std::tan;
-		return impl(static_cast<T>(T(1) / tan(fovy * T(0.5))), aspect, near_z, far_z);
+		return impl(static_cast<T>(T(1) / hamon::ranges::tan(fovy * T(0.5))), aspect, near_z, far_z);
 	}
 };
 

@@ -7,9 +7,10 @@
 #ifndef HAMON_QVM_MATRIX_DETAIL_MAKE_ROTATION_MATRIX_HPP
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_ROTATION_MATRIX_HPP
 
+#include <hamon/cmath/ranges/sin.hpp>
+#include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <cmath>
 
 namespace hamon
 {
@@ -46,14 +47,12 @@ private:
 	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, 3, 3>
 	impl(Vector3 const& axis, AngleType const& angle) HAMON_NOEXCEPT
 	{
-		using std::sin;
-		using std::cos;
 		return impl_1(
 			static_cast<T>(axis.x()),
 			static_cast<T>(axis.y()),
 			static_cast<T>(axis.z()),
-			static_cast<T>(sin(angle)),
-			static_cast<T>(cos(angle)));
+			static_cast<T>(hamon::ranges::sin(angle)),
+			static_cast<T>(hamon::ranges::cos(angle)));
 	}
 
 public:

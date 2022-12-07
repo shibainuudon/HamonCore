@@ -16,8 +16,9 @@
 #include <hamon/qvm/matrix/matrix.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/cmath/ranges/sin.hpp>
+#include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 #include <cstddef>
 
 namespace hamon
@@ -141,9 +142,13 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR quaternion
 	rotation_x(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		using std::sin;
-		using std::cos;
-		return {T(sin(angle * 0.5)), 0, 0, T(cos(angle * 0.5))};
+		return
+		{
+			T(hamon::ranges::sin(angle * 0.5)),
+			0,
+			0,
+			T(hamon::ranges::cos(angle * 0.5))
+		};
 	}
 
 	/**
@@ -155,9 +160,13 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR quaternion
 	rotation_y(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		using std::sin;
-		using std::cos;
-		return {0, T(sin(angle * 0.5)), 0, T(cos(angle * 0.5))};
+		return
+		{
+			0,
+			T(hamon::ranges::sin(angle * 0.5)),
+			0,
+			T(hamon::ranges::cos(angle * 0.5))
+		};
 	}
 
 	/**
@@ -169,9 +178,13 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR quaternion
 	rotation_z(AngleType const& angle) HAMON_NOEXCEPT
 	{
-		using std::sin;
-		using std::cos;
-		return {0, 0, T(sin(angle * 0.5)), T(cos(angle * 0.5))};
+		return
+		{
+			0,
+			0,
+			T(hamon::ranges::sin(angle * 0.5)),
+			T(hamon::ranges::cos(angle * 0.5))
+		};
 	}
 
 	/**
@@ -184,12 +197,10 @@ public:
 	HAMON_NODISCARD static HAMON_CONSTEXPR quaternion
 	rotation(vector<T2, 3> const& axis, AngleType const& angle) HAMON_NOEXCEPT
 	{
-		using std::sin;
-		using std::cos;
 		return
 		{
-			normalize(axis) * sin(angle * 0.5f),
-			static_cast<T>(cos(angle * 0.5f))
+			normalize(axis) * hamon::ranges::sin(angle * 0.5f),
+			static_cast<T>(hamon::ranges::cos(angle * 0.5f))
 		};
 	}
 
