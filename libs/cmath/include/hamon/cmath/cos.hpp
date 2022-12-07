@@ -10,9 +10,14 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/factorial.hpp>
+#include <hamon/cmath/fmod.hpp>
+#include <hamon/cmath/detail/pow_n.hpp>
+#include <hamon/numbers/pi.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
+#include <type_traits>
 #include <limits>
 #include <cmath>
 
@@ -46,9 +51,35 @@ cos_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
+cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last)
+{
+	return
+		last - n == 1 ?
+			(n % 2 ? -1 : 1) * pow_n(x2, n) / unchecked_factorial<T>(2 * n) :
+			cos_unchecked_ct_1(x2, n, n + (last - n) / 2) +
+			cos_unchecked_ct_1(x2, n + (last - n) / 2, last);
+}
+
+template <typename T>
+inline HAMON_CONSTEXPR T
+cos_unchecked_ct(T x)
+{
+	return T(1) + cos_unchecked_ct_1(
+		pow2(hamon::fmod(x, hamon::numbers::pi_fn<T>() * 2)),
+		1, max_factorial<T>() / 2 + 1);
+}
+
+template <typename T>
+inline HAMON_CONSTEXPR T
 cos_unchecked(T x) HAMON_NOEXCEPT
 {
-	return std::cos(x);
+#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
+	if (!std::is_constant_evaluated())
+	{
+		return std::cos(x);
+	}
+#endif
+	return cos_unchecked_ct(x);
 }
 
 #endif
