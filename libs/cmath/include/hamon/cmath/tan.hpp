@@ -10,9 +10,12 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/cmath/sin.hpp>
+#include <hamon/cmath/cos.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
+#include <type_traits>
 #include <limits>
 #include <cmath>
 
@@ -48,7 +51,13 @@ template <typename T>
 inline HAMON_CONSTEXPR T
 tan_unchecked(T x) HAMON_NOEXCEPT
 {
-	return std::tan(x);
+#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
+	if (!std::is_constant_evaluated())
+	{
+		return std::tan(x);
+	}
+#endif
+	return sin_unchecked_ct(x) / cos_unchecked_ct(x);
 }
 
 #endif
