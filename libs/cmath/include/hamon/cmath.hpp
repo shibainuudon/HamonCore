@@ -8,6 +8,7 @@
 #define HAMON_CMATH_HPP
 
 #include <hamon/cmath/abs.hpp>
+#include <hamon/cmath/acos.hpp>
 #include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/asin.hpp>
 #include <hamon/cmath/ceil.hpp>
