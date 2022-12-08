@@ -25,6 +25,7 @@
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/fma.hpp>
 #include <hamon/cmath/fmod.hpp>
+#include <hamon/cmath/frac.hpp>
 #include <hamon/cmath/isfinite.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
