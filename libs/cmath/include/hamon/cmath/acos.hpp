@@ -48,7 +48,7 @@ acos_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-acos_unchecked_ct(T x)
+acos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return (hamon::numbers::pi_fn<T>() / 2) - hamon::asin(x);
 }

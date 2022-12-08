@@ -52,7 +52,7 @@ atan_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-atan_unchecked_ct_2(T x, unsigned int n, unsigned int last)
+atan_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
 		(n % 2 ? -1 : 1) * pow_n(x, 2 * n + 1) / T(2 * n + 1) :
@@ -62,7 +62,7 @@ atan_unchecked_ct_2(T x, unsigned int n, unsigned int last)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last)
+atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last) HAMON_NOEXCEPT
 {
 	return
 		x > sqrt2 + 1 ?
@@ -74,7 +74,7 @@ atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-atan_unchecked_ct(T x)
+atan_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
 		-atan_unchecked_ct(-x) :

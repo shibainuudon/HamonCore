@@ -51,7 +51,7 @@ log_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-log_unchecked_ct_2(T x, unsigned int n, unsigned int last)
+log_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
 		(n % 2 ? 1 : -1) * pow_n(x, n) / T(n) :
@@ -60,7 +60,7 @@ log_unchecked_ct_2(T x, unsigned int n, unsigned int last)
 }
 template <typename T>
 inline HAMON_CONSTEXPR T
-log_unchecked_ct_1(T x)
+log_unchecked_ct_1(T x) HAMON_NOEXCEPT
 {
 	return !(x > hamon::numbers::sqrt2_fn<T>()) ?
 		log_unchecked_ct_2(x - T(1), 1, max_factorial<T>() + 1) :
@@ -68,7 +68,7 @@ log_unchecked_ct_1(T x)
 }
 template <typename T>
 inline HAMON_CONSTEXPR T
-log_unchecked_ct(T x)
+log_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 1 ?
 		-log_unchecked_ct_1(T(1) / x) :

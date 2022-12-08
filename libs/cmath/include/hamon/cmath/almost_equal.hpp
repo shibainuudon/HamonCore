@@ -24,14 +24,14 @@ namespace detail
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-tmax(T a, T b)
+tmax(T a, T b) HAMON_NOEXCEPT
 {
 	return b < a ? a : b;
 }
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-eps(T x, T y)
+eps(T x, T y) HAMON_NOEXCEPT
 {
 	return std::numeric_limits<T>::epsilon() *
 		tmax(tmax(hamon::fabs(x), hamon::fabs(y)), T(1));

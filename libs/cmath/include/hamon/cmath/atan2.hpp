@@ -53,7 +53,7 @@ atan2_unchecked(long double y, long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-atan2_unchecked_ct_1(T y, T x, T pi)
+atan2_unchecked_ct_1(T y, T x, T pi) HAMON_NOEXCEPT
 {
 	return
 		x < 0 ?
@@ -63,7 +63,7 @@ atan2_unchecked_ct_1(T y, T x, T pi)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-atan2_unchecked_ct(T y, T x)
+atan2_unchecked_ct(T y, T x) HAMON_NOEXCEPT
 {
 	return atan2_unchecked_ct_1(y, x, hamon::numbers::pi_fn<T>());
 }

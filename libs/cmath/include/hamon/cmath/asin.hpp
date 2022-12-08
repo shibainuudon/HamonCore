@@ -49,7 +49,7 @@ asin_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-asin_impl_center_1(T x, T x2)
+asin_impl_center_1(T x, T x2) HAMON_NOEXCEPT
 {
 	return ((((((((((((
 		T( 0.0316658385792867081040808)) * x2 +
@@ -68,14 +68,14 @@ asin_impl_center_1(T x, T x2)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-asin_impl_center(T x)
+asin_impl_center(T x) HAMON_NOEXCEPT
 {
 	return asin_impl_center_1(x, x * x);
 }
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-asin_impl_tail(T x)
+asin_impl_tail(T x) HAMON_NOEXCEPT
 {
 	return (hamon::numbers::pi_fn<T>() / 2) + hamon::sqrt(T(1) - x) *
 		(((((((((((((
@@ -96,7 +96,7 @@ asin_impl_tail(T x)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-asin_unchecked_ct(T x)
+asin_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return
 		x < T(-0.5) ?

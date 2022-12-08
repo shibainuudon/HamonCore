@@ -55,7 +55,7 @@ pow_unchecked(long double x, long double y) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-pow_unchecked_ct(T x, T y)
+pow_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 {
 	return
 		!(x < 0) ?

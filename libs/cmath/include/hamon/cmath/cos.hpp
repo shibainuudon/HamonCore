@@ -51,7 +51,7 @@ cos_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last)
+cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return
 		last - n == 1 ?
@@ -62,7 +62,7 @@ cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last)
 
 template <typename T>
 inline HAMON_CONSTEXPR T
-cos_unchecked_ct(T x)
+cos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return T(1) + cos_unchecked_ct_1(
 		pow2(hamon::fmod(x, hamon::numbers::pi_fn<T>() * 2)),

@@ -45,25 +45,25 @@ sqrt_unchecked(long double x) HAMON_NOEXCEPT
 
 #else
 
-template<typename T>
+template <typename T>
 inline HAMON_CONSTEXPR T
-sqrt_unchecked_ct_2(T x, T s, T s2)
+sqrt_unchecked_ct_2(T x, T s, T s2) HAMON_NOEXCEPT
 {
 	return !(s < s2) ?
 		s2 :
 		detail::sqrt_unchecked_ct_2(x, (x / s + s) / 2, s);
 }
 
-template<typename T>
+template <typename T>
 inline HAMON_CONSTEXPR T
-sqrt_unchecked_ct_1(T x, T s)
+sqrt_unchecked_ct_1(T x, T s) HAMON_NOEXCEPT
 {
 	return detail::sqrt_unchecked_ct_2(x, (x / s + s) / 2, s);
 }
 
-template<typename T>
+template <typename T>
 inline HAMON_CONSTEXPR T
-sqrt_unchecked_ct(T x)
+sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return detail::sqrt_unchecked_ct_1(x, x > 1 ? x : T(1));
 }
