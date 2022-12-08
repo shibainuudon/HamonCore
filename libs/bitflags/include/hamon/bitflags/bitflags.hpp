@@ -248,7 +248,7 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR bitflags
 	operator<<(size_type pos) const HAMON_NOEXCEPT
 	{
-		return bitflags((m_value << pos) & get_mask_bit());
+		return bitflags(static_cast<value_type>((m_value << pos) & get_mask_bit()));
 	}
 
 	/**
@@ -260,7 +260,7 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR bitflags
 	operator>>(size_type pos) const HAMON_NOEXCEPT
 	{
-		return bitflags(m_value >> pos);
+		return bitflags(static_cast<value_type>(m_value >> pos));
 	}
 
 	/**
@@ -304,7 +304,7 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR bitflags
 	operator~() const HAMON_NOEXCEPT
 	{
-		return bitflags(~m_value & get_mask_bit());
+		return bitflags(static_cast<value_type>(~m_value & get_mask_bit()));
 	}
 
 	/**
@@ -349,7 +349,7 @@ public:
 	HAMON_CXX14_CONSTEXPR bitflags&
 	reset(E pos)
 	{
-		m_value &= static_cast<value_type>(~make_value(pos));
+		m_value = static_cast<value_type>(m_value & ~make_value(pos));
 		return *this;
 	}
 
@@ -391,7 +391,7 @@ public:
 	HAMON_CXX14_CONSTEXPR bitflags&
 	flip() HAMON_NOEXCEPT
 	{
-		m_value ^= get_mask_bit();
+		m_value = static_cast<value_type>(m_value ^ get_mask_bit());
 		return *this;
 	}
 
@@ -438,7 +438,7 @@ public:
 			{
 				result.append(1, zero);
 			}
-			value <<= 1;
+			value = static_cast<value_type>(value << 1);
 		}
 		return result;
 	}
