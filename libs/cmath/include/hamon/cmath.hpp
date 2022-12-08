@@ -25,6 +25,8 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
+#include <hamon/cmath/is_even.hpp>
+#include <hamon/cmath/is_odd.hpp>
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/log.hpp>
 #include <hamon/cmath/radians_to_degrees.hpp>
