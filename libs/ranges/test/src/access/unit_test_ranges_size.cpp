@@ -45,11 +45,14 @@ struct R5
 	HAMON_CXX14_CONSTEXPR R5* end() { return this + 1; }
 };
 
+#if !(defined(HAMON_GCC_VERSION) && HAMON_GCC_VERSION < 110000)
 struct Incomplete;
 using A = Incomplete[2]; // bounded array of incomplete type
 extern A& f();
 
+// gcc10 だと以下の部分でコンパイルエラーになる
 static_assert(hamon::same_as_t<decltype(hamon::ranges::size(f())), std::size_t>::value, "");
+#endif
 
 }	// namespace size_test
 
