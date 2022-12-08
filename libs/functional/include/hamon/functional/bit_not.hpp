@@ -36,7 +36,7 @@ struct bit_not
 {
 	HAMON_CONSTEXPR T operator()(T const& arg) const
 	{
-		return ~arg;
+		return static_cast<T>(~arg);
 	}
 };
 
