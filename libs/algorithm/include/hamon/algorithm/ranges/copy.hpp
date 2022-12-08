@@ -80,7 +80,7 @@ private:
 				auto num = last - first;
 				if (num)
 				{
-					std::memmove(result, first, sizeof(ValueTypeI) * num);
+					std::memmove(result, first, sizeof(ValueTypeI) * static_cast<std::size_t>(num));
 				}
 				return { first + num, result + num };
 			}
