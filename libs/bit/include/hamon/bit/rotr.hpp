@@ -65,7 +65,7 @@ template <
 inline HAMON_CONSTEXPR T
 rotr(T x, unsigned int shift) HAMON_NOEXCEPT
 {
-	return detail::rotr_impl(x, shift & (bitsof(x) - 1));
+	return detail::rotr_impl(x, static_cast<unsigned int>(shift & (bitsof(x) - 1)));
 }
 
 }	// namespace hamon
