@@ -12,6 +12,7 @@
 #include <hamon/algorithm/ranges/max_element.hpp>
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
+#include <hamon/ranges/begin.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -48,7 +49,7 @@ matrix_to_quaternion(matrix<T, 3, 3> const& m) HAMON_NOEXCEPT
 	auto const v = hamon::sqrt(*max_it) * 0.5f;
 	auto const mult = 0.25f / v;
 
-	switch (hamon::ranges::distance(elem, max_it))
+	switch (hamon::ranges::distance(hamon::ranges::begin(elem), max_it))
 	{
 	case 0: // x
 		return
