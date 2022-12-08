@@ -13,6 +13,7 @@
 #include <hamon/cmath/asin.hpp>
 #include <hamon/cmath/atan.hpp>
 #include <hamon/cmath/atan2.hpp>
+#include <hamon/cmath/cbrt.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/cos.hpp>
