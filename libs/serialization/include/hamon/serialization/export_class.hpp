@@ -42,7 +42,7 @@ struct class_exporter
 };
 
 #define HAMON_SERIALIZATION_EXPORT_CLASS(T) \
-	static const hamon::serialization::class_exporter<T> s_serialization_class_exporter{};
+	static const hamon::serialization::class_exporter<T> s_serialization_class_exporter{}
 
 }	// namespace serialization
 
