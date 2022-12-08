@@ -433,6 +433,7 @@ void f(X) {}
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4130)	// '!=': logical operation on address of string constant
 HAMON_WARNING_DISABLE_GCC("-Wnarrowing")
+HAMON_WARNING_DISABLE_CLANG("-Wstring-conversion")
 
 GTEST_TEST(ConfigTest, Cxx20PointerToBoolConvertingTest)
 {
