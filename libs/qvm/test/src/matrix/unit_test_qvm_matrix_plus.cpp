@@ -18,8 +18,17 @@ namespace matrix_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+// gcc11,12でinternal compiler errorになるのを回避
+#if (defined(HAMON_GCC_VERSION) && (110000 <= HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000))
+#  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR
+#  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
+#else
+#  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR              HAMON_CXX14_CONSTEXPR
+#  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE  HAMON_CXX14_CONSTEXPR_EXPECT_TRUE
+#endif
+
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool Matrix3x3PlusTest()
+inline HAMON_QVM_MATRIX_PLUS_CONSTEXPR bool Matrix3x3PlusTest()
 {
 	using matrix3x3  = hamon::qvm::matrix<T, 3, 3>;
 	using matrix3x3i = hamon::qvm::matrix<int, 3, 3>;
@@ -67,7 +76,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x3PlusTest()
 }
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool Matrix3x4PlusTest()
+inline HAMON_QVM_MATRIX_PLUS_CONSTEXPR bool Matrix3x4PlusTest()
 {
 	using matrix3x4  = hamon::qvm::matrix<T, 3, 4>;
 	using matrix3x4i = hamon::qvm::matrix<int, 3, 4>;
@@ -115,7 +124,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x4PlusTest()
 }
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool Matrix4x3PlusTest()
+inline HAMON_QVM_MATRIX_PLUS_CONSTEXPR bool Matrix4x3PlusTest()
 {
 	using matrix4x3  = hamon::qvm::matrix<T, 4, 3>;
 	using matrix4x3i = hamon::qvm::matrix<int, 4, 3>;
@@ -167,7 +176,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x3PlusTest()
 }
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool Matrix4x4PlusTest()
+inline HAMON_QVM_MATRIX_PLUS_CONSTEXPR bool Matrix4x4PlusTest()
 {
 	using matrix4x4  = hamon::qvm::matrix<T, 4, 4>;
 	using matrix4x4i = hamon::qvm::matrix<int, 4, 4>;
@@ -428,19 +437,14 @@ TYPED_TEST(MatrixTest, PlusTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(m3[3], vector4(-76,  78, -10,  10));
 	}
 
-#if (defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 110000))
-	// gcc11 でcompiler internal errorになるのを回避
-	EXPECT_TRUE(Matrix3x3PlusTest<T>());
-	EXPECT_TRUE(Matrix3x4PlusTest<T>());
-	EXPECT_TRUE(Matrix4x3PlusTest<T>());
-	EXPECT_TRUE(Matrix4x4PlusTest<T>());
-#else
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x3PlusTest<T>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x4PlusTest<T>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix4x3PlusTest<T>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix4x4PlusTest<T>());
-#endif
+	HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE(Matrix3x3PlusTest<T>());
+	HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE(Matrix3x4PlusTest<T>());
+	HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE(Matrix4x3PlusTest<T>());
+	HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE(Matrix4x4PlusTest<T>());
 }
+
+#undef HAMON_QVM_MATRIX_PLUS_CONSTEXPR
+#undef HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE
 
 #undef VERIFY
 
