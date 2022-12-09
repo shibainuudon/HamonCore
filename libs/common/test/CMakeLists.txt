@@ -13,6 +13,8 @@ add_library(${TARGET_ALIAS_NAME} ALIAS ${TARGET_NAME})
 
 target_include_directories(${TARGET_NAME} INTERFACE include)
 
+target_precompile_headers(${TARGET_NAME} INTERFACE include/pch.hpp)
+
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../externals/googletest ${CMAKE_CURRENT_BINARY_DIR}/googletest)
 target_link_libraries(${TARGET_NAME}
