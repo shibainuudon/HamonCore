@@ -555,7 +555,7 @@ GTEST_TEST(ConfigTest, Cxx20TwosComplementSignedIntegersTest)
 {
 	{
 		std::int8_t x = 11;
-		std::int8_t y = -x;
+		std::int8_t y = static_cast<std::int8_t>(-x);
 		EXPECT_TRUE(y == (~x + 1)); // 負数は、ビット反転して+1した値
 	}
 }
