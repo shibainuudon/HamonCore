@@ -78,7 +78,7 @@ struct X : public std::shared_ptr<int>
 	std::string fun_payload = "hoge";
 };
 
-template<int N>
+template <int N>
 std::string& get(X& x)
 {
 	if constexpr (N == 0)
@@ -93,11 +93,11 @@ std::string& get(X& x)
 namespace std
 {
 
-template<>
+template <>
 struct tuple_size<hamon_config_cxx20_test::relaxing_structured_bindings_test::X>
 	: public std::integral_constant<int, 1> {};
 
-template<>
+template <>
 struct tuple_element<0, hamon_config_cxx20_test::relaxing_structured_bindings_test::X>
 {
 	using type = std::string;
@@ -1300,38 +1300,54 @@ GTEST_TEST(ConfigTest, Cxx20ArraySizeDeductionNewTest)
 namespace destroying_delete_test
 {
 
+static int s_ctor_count   = 0;
 static int s_dtor_count   = 0;
 static int s_delete_count = 0;
 
 struct Object
 {
+	Object()
+	{
+		++s_ctor_count;
+	}
+
 	~Object()
 	{
 		++s_dtor_count;
 	}
 
-	static void *operator new(std::size_t size)
+	static Object* New()
 	{
-		return ::operator new(size);
+		return new(::operator new(sizeof(Object))) Object();
 	}
 	
-	static void operator delete(Object* p, std::destroying_delete_t)
+	void operator delete(Object* p, std::destroying_delete_t)
 	{
 		++s_delete_count;
-		p->~Object();
 		::operator delete(p);
 	}
 };
 
 GTEST_TEST(ConfigTest, Cxx20DestroyingDeleteTest)
 {
+	s_ctor_count   = 0;
+	s_dtor_count   = 0;
+	s_delete_count = 0;
+
+	EXPECT_TRUE(s_ctor_count   == 0);
 	EXPECT_TRUE(s_dtor_count   == 0);
 	EXPECT_TRUE(s_delete_count == 0);
 
-	Object* p = new Object;
+	Object* p = Object::New();
+
+	EXPECT_TRUE(s_ctor_count   == 1);
+	EXPECT_TRUE(s_dtor_count   == 0);
+	EXPECT_TRUE(s_delete_count == 0);
+
 	delete p;
 
-	EXPECT_TRUE(s_dtor_count   == 1);
+	EXPECT_TRUE(s_ctor_count   == 1);
+	EXPECT_TRUE(s_dtor_count   == 0);
 	EXPECT_TRUE(s_delete_count == 1);
 }
 
