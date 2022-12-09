@@ -52,6 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
+        - { os: ubuntu-22.04, cc: "gcc-12",   cxx: "g++-12" }
         - { os: ubuntu-22.04, cc: "gcc-11",   cxx: "g++-11" }
         - { os: ubuntu-22.04, cc: "gcc-10",   cxx: "g++-10" }
         - { os: ubuntu-20.04, cc: "gcc-9",    cxx: "g++-9"  }
