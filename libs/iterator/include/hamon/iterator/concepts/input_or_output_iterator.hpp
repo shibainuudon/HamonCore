@@ -21,7 +21,7 @@ using std::input_or_output_iterator;
 #else
 
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
-#include <hamon/iterator/concepts/detail/can_reference.hpp>
+#include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
