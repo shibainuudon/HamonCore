@@ -36,6 +36,9 @@
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/llround.hpp>
 #include <hamon/cmath/log.hpp>
+#include <hamon/cmath/log10.hpp>
+#include <hamon/cmath/log1p.hpp>
+#include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/lround.hpp>
 #include <hamon/cmath/pow.hpp>
 #include <hamon/cmath/radians_to_degrees.hpp>
