@@ -45,6 +45,7 @@
 #include <hamon/cmath/round_down.hpp>
 #include <hamon/cmath/round_half_even.hpp>
 #include <hamon/cmath/round_up.hpp>
+#include <hamon/cmath/rsqrt.hpp>
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/sin.hpp>
