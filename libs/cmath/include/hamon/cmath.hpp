@@ -42,6 +42,8 @@
 #include <hamon/cmath/ranges.hpp>
 #include <hamon/cmath/repeat.hpp>
 #include <hamon/cmath/round.hpp>
+#include <hamon/cmath/round_down.hpp>
+#include <hamon/cmath/round_half_even.hpp>
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/signbit.hpp>
