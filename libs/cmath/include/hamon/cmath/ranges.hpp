@@ -13,6 +13,8 @@
 #include <hamon/cmath/ranges/atan.hpp>
 #include <hamon/cmath/ranges/ceil.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
+#include <hamon/cmath/ranges/exp.hpp>
+#include <hamon/cmath/ranges/exp2.hpp>
 #include <hamon/cmath/ranges/floor.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
