@@ -17,6 +17,9 @@
 #include <hamon/cmath/ranges/exp2.hpp>
 #include <hamon/cmath/ranges/floor.hpp>
 #include <hamon/cmath/ranges/fma.hpp>
+#include <hamon/cmath/ranges/log.hpp>
+#include <hamon/cmath/ranges/log10.hpp>
+#include <hamon/cmath/ranges/log2.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
 
