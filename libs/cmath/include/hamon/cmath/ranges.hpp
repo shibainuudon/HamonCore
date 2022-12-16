@@ -20,6 +20,7 @@
 #include <hamon/cmath/ranges/log.hpp>
 #include <hamon/cmath/ranges/log10.hpp>
 #include <hamon/cmath/ranges/log2.hpp>
+#include <hamon/cmath/ranges/pow.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
 
