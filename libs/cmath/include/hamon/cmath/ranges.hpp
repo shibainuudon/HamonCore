@@ -9,6 +9,7 @@
 
 #include <hamon/cmath/ranges/abs.hpp>
 #include <hamon/cmath/ranges/acos.hpp>
+#include <hamon/cmath/ranges/almost_equal.hpp>
 #include <hamon/cmath/ranges/asin.hpp>
 #include <hamon/cmath/ranges/atan.hpp>
 #include <hamon/cmath/ranges/ceil.hpp>
