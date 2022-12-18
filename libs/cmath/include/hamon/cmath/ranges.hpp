@@ -12,6 +12,7 @@
 #include <hamon/cmath/ranges/almost_equal.hpp>
 #include <hamon/cmath/ranges/asin.hpp>
 #include <hamon/cmath/ranges/atan.hpp>
+#include <hamon/cmath/ranges/cbrt.hpp>
 #include <hamon/cmath/ranges/ceil.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/cmath/ranges/exp.hpp>
