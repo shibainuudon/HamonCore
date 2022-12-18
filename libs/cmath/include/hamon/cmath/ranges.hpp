@@ -18,6 +18,7 @@
 #include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/cmath/ranges/exp.hpp>
 #include <hamon/cmath/ranges/exp2.hpp>
+#include <hamon/cmath/ranges/fabs.hpp>
 #include <hamon/cmath/ranges/floor.hpp>
 #include <hamon/cmath/ranges/fma.hpp>
 #include <hamon/cmath/ranges/log.hpp>
