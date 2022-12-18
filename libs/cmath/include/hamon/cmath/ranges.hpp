@@ -14,6 +14,7 @@
 #include <hamon/cmath/ranges/atan.hpp>
 #include <hamon/cmath/ranges/cbrt.hpp>
 #include <hamon/cmath/ranges/ceil.hpp>
+#include <hamon/cmath/ranges/copysign.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/cmath/ranges/exp.hpp>
 #include <hamon/cmath/ranges/exp2.hpp>
