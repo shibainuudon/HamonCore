@@ -15,8 +15,17 @@ target_include_directories(${TARGET_NAME} INTERFACE include)
 
 target_precompile_headers(${TARGET_NAME} INTERFACE include/pch.hpp)
 
-option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../../externals/googletest ${CMAKE_CURRENT_BINARY_DIR}/googletest)
+find_package(GTest)
+if (NOT ${GTest_FOUND})
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    GIT_REPOSITORY https://github.com/hogletgames/googletest.git
+    GIT_TAG 5376968f6948923e2411081fd9372e71a59d8e77 # release-1.12.0
+  )
+  FetchContent_MakeAvailable(googletest)
+endif()
+
 target_link_libraries(${TARGET_NAME}
   INTERFACE
     GTest::gtest
