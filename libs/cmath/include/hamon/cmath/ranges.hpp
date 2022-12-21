@@ -28,7 +28,9 @@
 #include <hamon/cmath/ranges/pow.hpp>
 #include <hamon/cmath/ranges/round.hpp>
 #include <hamon/cmath/ranges/round_half_even.hpp>
+#include <hamon/cmath/ranges/rsqrt.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
+#include <hamon/cmath/ranges/sqrt.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
 
 #endif // HAMON_CMATH_RANGES_HPP
