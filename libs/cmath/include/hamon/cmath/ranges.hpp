@@ -25,7 +25,7 @@
 #include <hamon/cmath/ranges/floor.hpp>
 #include <hamon/cmath/ranges/fma.hpp>
 #include <hamon/cmath/ranges/fmod.hpp>
-//#include <hamon/cmath/ranges/frac.hpp>
+#include <hamon/cmath/ranges/frac.hpp>
 //#include <hamon/cmath/ranges/isfinite.hpp>
 //#include <hamon/cmath/ranges/isinf.hpp>
 //#include <hamon/cmath/ranges/isnan.hpp>
