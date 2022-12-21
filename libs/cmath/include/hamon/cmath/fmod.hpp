@@ -15,7 +15,9 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
+#include <type_traits>
 #include <limits>
+#include <cmath>
 
 namespace hamon
 {
@@ -27,6 +29,12 @@ template <typename T>
 inline HAMON_CONSTEXPR T
 fmod_unchecked(T x, T y) HAMON_NOEXCEPT
 {
+#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
+	if (!std::is_constant_evaluated())
+	{
+		return std::fmod(x, y);
+	}
+#endif
 	return x - (hamon::trunc(x / y) * y);
 }
 
