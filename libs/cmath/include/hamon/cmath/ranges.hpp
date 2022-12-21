@@ -35,5 +35,6 @@
 #include <hamon/cmath/ranges/sqrt.hpp>
 #include <hamon/cmath/ranges/step.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
+#include <hamon/cmath/ranges/trunc.hpp>
 
 #endif // HAMON_CMATH_RANGES_HPP

@@ -68,7 +68,17 @@ trunc_impl(FloatType x) HAMON_NOEXCEPT
 }	// namespace detail
 
 /**
- *	@brief	std::trunc のconstexpr版
+ *	@brief	ゼロ方向への丸め
+ *
+ *	@param	arg	対象となる値
+ *
+ *	@return	引数 arg をゼロ方向に丸めた整数値
+ *
+ *	ゼロ方向に丸めた整数値とは、絶対値が引数 arg の絶対値以下で、かつ、引数 arg に最も近い整数値である。
+ *
+ *	arg が ±∞ の場合、argをそのまま返す。
+ *	arg が ±0  の場合、argをそのまま返す。
+ *	arg が NaN  の場合、NaNを返す。
  */
 inline HAMON_CONSTEXPR float
 trunc(float arg) HAMON_NOEXCEPT
