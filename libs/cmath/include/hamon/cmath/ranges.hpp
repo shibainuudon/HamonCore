@@ -33,6 +33,7 @@
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/smoothstep.hpp>
 #include <hamon/cmath/ranges/sqrt.hpp>
+#include <hamon/cmath/ranges/step.hpp>
 #include <hamon/cmath/ranges/tan.hpp>
 
 #endif // HAMON_CMATH_RANGES_HPP
