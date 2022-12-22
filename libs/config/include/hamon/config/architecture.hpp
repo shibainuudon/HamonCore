@@ -25,4 +25,8 @@
 #include <hamon/config/architecture/x86.hpp>
 #include <hamon/config/architecture/z.hpp>
 
+#if !defined(HAMON_ARCHITECTURE)
+#  define HAMON_ARCHITECTURE "unknown"
+#endif
+
 #endif // HAMON_CONFIG_ARCHITECTURE_HPP

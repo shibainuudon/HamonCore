@@ -19,6 +19,10 @@
 // MacOS
 #  define HAMON_PLATFORM_CONFIG "hamon/config/platform/macos.hpp"
 
+#elif defined (__wasm__)
+// Web assembly:
+#  define HAMON_PLATFORM_CONFIG "hamon/config/platform/wasm.hpp"
+
 #else
 #  error "Unknown platform"
 

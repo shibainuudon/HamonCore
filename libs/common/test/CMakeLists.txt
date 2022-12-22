@@ -30,3 +30,22 @@ target_link_libraries(${TARGET_NAME}
   INTERFACE
     GTest::gtest
     GTest::gtest_main)
+
+# emscriptenビルドのときは例外を無効にする
+if (EMSCRIPTEN)
+  if (MSVC)
+    # /EHs-c-
+    target_compile_options(${TARGET_NAME} INTERFACE /EHs-)
+    target_compile_options(${TARGET_NAME} INTERFACE /EHc-)
+
+    # _HAS_EXCEPTIONS
+    target_compile_options(${TARGET_NAME} INTERFACE /D_HAS_EXCEPTIONS=0)
+
+  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(${TARGET_NAME} INTERFACE -fno-exceptions)
+
+  elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    target_compile_options(${TARGET_NAME} INTERFACE -fno-exceptions)
+
+  endif()
+endif()

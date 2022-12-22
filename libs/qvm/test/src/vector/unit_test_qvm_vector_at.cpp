@@ -108,7 +108,9 @@ TYPED_TEST(VectorTest, AtTest)
 		static_assert(std::is_same<decltype(v.at(1)), T const&>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, v.at(0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, v.at(1));
+#if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW((void)v.at(2), std::out_of_range);
+#endif
 	}
 	{
 		HAMON_CONSTEXPR vector3 const v{3, 4, 5};
@@ -131,6 +133,7 @@ TYPED_TEST(VectorTest, AtTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8, v.at(3));
 	}
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		vector2 v{1, 2};
 		EXPECT_THROW((void)v.at(2), std::out_of_range);
@@ -155,6 +158,7 @@ TYPED_TEST(VectorTest, AtTest)
 		vector4 const v{5, 6, 7, 8};
 		EXPECT_THROW((void)v.at(4), std::out_of_range);
 	}
+#endif
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Vector2AtTest<T>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Vector3AtTest<T>());

@@ -11,6 +11,8 @@
 namespace hamon_config_noreturn_test
 {
 
+#if !defined(HAMON_NO_EXCEPTIONS)
+
 HAMON_NORETURN void report_error()
 {
 	throw std::runtime_error("");
@@ -30,5 +32,7 @@ GTEST_TEST(ConfigTest, NoReturnTest)
 {
 	func(1);
 }
+
+#endif
 
 }	// namespace hamon_config_noreturn_test

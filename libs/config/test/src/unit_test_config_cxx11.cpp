@@ -832,12 +832,14 @@ namespace noreturn_test
 {
 
 #if defined(HAMON_HAS_CXX11_NORETURN)
+#if !defined(HAMON_NO_EXCEPTIONS)
 
 [[noreturn]] void report_error()
 {
 	throw std::runtime_error("");
 }
 
+#endif
 #endif	// defined(HAMON_HAS_CXX11_NORETURN)
 
 }	// namespace noreturn_test

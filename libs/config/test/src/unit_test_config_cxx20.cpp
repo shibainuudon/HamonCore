@@ -807,6 +807,7 @@ namespace constexpr_try_catch_test
 {
 
 #if defined(HAMON_HAS_CXX20_CONSTEXPR_TRY_CATCH)
+#if !defined(HAMON_NO_EXCEPTIONS)
 constexpr int f(int x)
 {
 	try
@@ -824,6 +825,7 @@ GTEST_TEST(ConfigTest, Cxx20ConstexprTryCatchTest)
 	static_assert(f(1) == 2, "");
 	static_assert(f(2) == 3, "");
 }
+#endif
 #endif
 
 }	// namespace constexpr_try_catch_test
@@ -1238,6 +1240,7 @@ GTEST_TEST(ConfigTest, Cxx20DeprecateCommaInSubscriptingExpressionsTest)
 {
 	int a[] = {1,2,3,4,5};
 	int index = 0;
+	(void)index;
 
 #if !defined(HAMON_HAS_CXX20_DEPRECATE_COMMA_IN_SUBSCRIPTING_EXPRESSIONS)
 

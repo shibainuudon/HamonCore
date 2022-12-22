@@ -219,6 +219,7 @@ TYPED_TEST(MatrixTest, AtTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(m.at(2), vector4( 8,  9, 10, 11));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(m.at(3), vector4(12, 13, 14, 15));
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		matrix3x3 m;
 		EXPECT_THROW((void)m.at(3), std::out_of_range);
@@ -251,6 +252,7 @@ TYPED_TEST(MatrixTest, AtTest)
 		matrix4x4 const m;
 		EXPECT_THROW((void)m.at(4), std::out_of_range);
 	}
+#endif
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x3AtTest<T>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Matrix3x4AtTest<T>());

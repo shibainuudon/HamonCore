@@ -65,11 +65,11 @@ struct RR
 	       HAMON_CXX14_CONSTEXPR const long* end() const { return &l; }
 
 	friend HAMON_CXX14_CONSTEXPR const int* begin(RR&&) noexcept;
-	friend                       int* end(RR&) { throw 1; } // not valid for rvalues
+	friend                       int* end(RR&) { return nullptr;/*throw 1;*/ } // not valid for rvalues
 	friend HAMON_CXX14_CONSTEXPR int* end(RR&& r) { return r.a + 1; }
 
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const RR&&) noexcept;
-	friend                       const int* end(const RR&) { throw 1; } // not valid for rvalues
+	friend                       const int* end(const RR&) { return nullptr;/*throw 1;*/ } // not valid for rvalues
 	friend HAMON_CXX14_CONSTEXPR const int* end(const RR&& r) noexcept { return r.a + 3; }
 };
 

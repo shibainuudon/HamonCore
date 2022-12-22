@@ -63,6 +63,7 @@ TYPED_TEST(QuaternionTest, AtTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(q.at(2), 7);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(q.at(3), 8);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		quaternion q{1, 2, 3, 4};
 		EXPECT_THROW((void)q.at(4), std::out_of_range);
@@ -71,6 +72,7 @@ TYPED_TEST(QuaternionTest, AtTest)
 		quaternion const q{5, 6, 7, 8};
 		EXPECT_THROW((void)q.at(4), std::out_of_range);
 	}
+#endif
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AtTest<T>());
 }

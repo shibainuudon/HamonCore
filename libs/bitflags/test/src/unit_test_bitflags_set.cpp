@@ -114,6 +114,7 @@ GTEST_TEST(BitflagsTest, SetTest)
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wconversion")
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		Bitflag1 b{};
 		EXPECT_THROW   ((void)b.set((Enum1)-1), std::out_of_range);
@@ -135,6 +136,7 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion")
 		EXPECT_NO_THROW((void)b.set((Enum3)15));
 		EXPECT_THROW   ((void)b.set((Enum3)16), std::out_of_range);
 	}
+#endif
 
 HAMON_WARNING_POP()
 }
