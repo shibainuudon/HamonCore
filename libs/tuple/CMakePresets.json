@@ -86,6 +86,22 @@
 				}
 			}
 		},
+		{
+			"name": "emscripten",
+			"inherits": [ "base" ],
+			"hidden": true,
+			"condition": {
+				"lhs": "$env{EMSDK}",
+				"type": "notEquals",
+				"rhs": ""
+			},
+			"cacheVariables": {
+				"CMAKE_TOOLCHAIN_FILE": {
+					"type": "FILEPATH",
+					"value": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake"
+				}
+			}
+		},
 
 		// architecture
 		{
@@ -226,6 +242,41 @@
 			"inherits": [ "windows", "clang-cl", "x64", "c++20", "release" ]
 		},
 
+		// Windows Emscripten
+		{
+			"name": "win-emscripten-c++11-debug",
+			"inherits": [ "windows", "emscripten", "c++11", "debug" ]
+		},
+		{
+			"name": "win-emscripten-c++11-release",
+			"inherits": [ "windows", "emscripten", "c++11", "release" ]
+		},
+		{
+			"name": "win-emscripten-c++14-debug",
+			"inherits": [ "windows", "emscripten", "c++14", "debug" ]
+		},
+		{
+			"name": "win-emscripten-c++14-release",
+			"inherits": [ "windows", "emscripten", "c++14", "release" ]
+		},
+		{
+			"name": "win-emscripten-c++17-debug",
+			"inherits": [ "windows", "emscripten", "c++17", "debug" ]
+		},
+		{
+			"name": "win-emscripten-c++17-release",
+			"inherits": [ "windows", "emscripten", "c++17", "release" ]
+		},
+		{
+			"name": "win-emscripten-c++20-debug",
+			"inherits": [ "windows", "emscripten", "c++20", "debug" ]
+		},
+		{
+			"name": "win-emscripten-c++20-release",
+			"inherits": [ "windows", "emscripten", "c++20", "release" ]
+		},
+
+		// Linux GCC
 		{
 			"name": "linux-gcc-c++11-debug",
 			"inherits": [ "linux", "gcc", "c++11", "debug" ]
@@ -290,6 +341,40 @@
 		{
 			"name": "linux-clang-c++20-release",
 			"inherits": [ "linux", "clang", "c++20", "release" ]
+		},
+
+		// Linux Emscripten
+		{
+			"name": "linux-emscripten-c++11-debug",
+			"inherits": [ "linux", "emscripten", "c++11", "debug" ]
+		},
+		{
+			"name": "linux-emscripten-c++11-release",
+			"inherits": [ "linux", "emscripten", "c++11", "release" ]
+		},
+		{
+			"name": "linux-emscripten-c++14-debug",
+			"inherits": [ "linux", "emscripten", "c++14", "debug" ]
+		},
+		{
+			"name": "linux-emscripten-c++14-release",
+			"inherits": [ "linux", "emscripten", "c++14", "release" ]
+		},
+		{
+			"name": "linux-emscripten-c++17-debug",
+			"inherits": [ "linux", "emscripten", "c++17", "debug" ]
+		},
+		{
+			"name": "linux-emscripten-c++17-release",
+			"inherits": [ "linux", "emscripten", "c++17", "release" ]
+		},
+		{
+			"name": "linux-emscripten-c++20-debug",
+			"inherits": [ "linux", "emscripten", "c++20", "debug" ]
+		},
+		{
+			"name": "linux-emscripten-c++20-release",
+			"inherits": [ "linux", "emscripten", "c++20", "release" ]
 		}
 	]
 }
