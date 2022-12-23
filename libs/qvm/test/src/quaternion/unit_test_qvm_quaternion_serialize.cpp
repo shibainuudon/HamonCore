@@ -15,7 +15,21 @@ namespace hamon_qvm_test
 namespace quaternion_test
 {
 
-TYPED_TEST(QuaternionTest, SerializeTest)
+using QuaternionSerializeTestTypes = ::testing::Types<
+	int
+	, float
+	, double
+#if !defined(__EMSCRIPTEN__)
+	, long double
+#endif
+>;
+
+template <typename T>
+class QuaternionSerializeTest : public ::testing::Test {};
+
+TYPED_TEST_SUITE(QuaternionSerializeTest, QuaternionSerializeTestTypes);
+
+TYPED_TEST(QuaternionSerializeTest, SerializeTest)
 {
 	using namespace hamon::serialization;
 	using T = TypeParam;

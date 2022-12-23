@@ -16,8 +16,22 @@ namespace hamon_qvm_test
 namespace vector_test
 {
 
+using VectorSerializeTestTypes = ::testing::Types<
+	int
+	, float
+	, double
+#if !defined(__EMSCRIPTEN__)
+	, long double
+#endif
+>;
+
+template <typename T>
+class VectorSerializeTest : public ::testing::Test {};
+
+TYPED_TEST_SUITE(VectorSerializeTest, VectorSerializeTestTypes);
+
 template <typename T, std::size_t N>
-void VectorSerializeTest()
+void VectorSerializeTestSub()
 {
 	using namespace hamon::serialization;
 	using vector_type = hamon::qvm::vector<T, N>;
@@ -37,14 +51,14 @@ void VectorSerializeTest()
 #endif
 }
 
-TYPED_TEST(VectorTest, SerializeTest)
+TYPED_TEST(VectorSerializeTest, SerializeTest)
 {
 	using T = TypeParam;
-	VectorSerializeTest<T, 0>();
-	VectorSerializeTest<T, 1>();
-	VectorSerializeTest<T, 2>();
-	VectorSerializeTest<T, 3>();
-	VectorSerializeTest<T, 4>();
+	VectorSerializeTestSub<T, 0>();
+	VectorSerializeTestSub<T, 1>();
+	VectorSerializeTestSub<T, 2>();
+	VectorSerializeTestSub<T, 3>();
+	VectorSerializeTestSub<T, 4>();
 }
 
 }	// namespace vector_test

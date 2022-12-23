@@ -14,9 +14,23 @@ namespace hamon_qvm_test
 
 namespace matrix_test
 {
+	
+using MatrixSerializeTestTypes = ::testing::Types<
+	int
+	, float
+	, double
+#if !defined(__EMSCRIPTEN__)
+	, long double
+#endif
+>;
+
+template <typename T>
+class MatrixSerializeTest : public ::testing::Test {};
+
+TYPED_TEST_SUITE(MatrixSerializeTest, MatrixSerializeTestTypes);
 
 template <typename T, std::size_t N, std::size_t M>
-void MatrixSerializeTest()
+void MatrixSerializeTestSub()
 {
 	using namespace hamon::serialization;
 	using matrix_type = hamon::qvm::matrix<T, N, M>;
@@ -36,25 +50,25 @@ void MatrixSerializeTest()
 #endif
 }
 
-TYPED_TEST(MatrixTest, SerializeTest)
+TYPED_TEST(MatrixSerializeTest, SerializeTest)
 {
 	using T = TypeParam;
-	MatrixSerializeTest<T, 1, 1>();
-	MatrixSerializeTest<T, 1, 2>();
-	MatrixSerializeTest<T, 1, 3>();
-	MatrixSerializeTest<T, 1, 4>();
-	MatrixSerializeTest<T, 2, 1>();
-	MatrixSerializeTest<T, 2, 2>();
-	MatrixSerializeTest<T, 2, 3>();
-	MatrixSerializeTest<T, 2, 4>();
-	MatrixSerializeTest<T, 3, 1>();
-	MatrixSerializeTest<T, 3, 2>();
-	MatrixSerializeTest<T, 3, 3>();
-	MatrixSerializeTest<T, 3, 4>();
-	MatrixSerializeTest<T, 4, 1>();
-	MatrixSerializeTest<T, 4, 2>();
-	MatrixSerializeTest<T, 4, 3>();
-	MatrixSerializeTest<T, 4, 4>();
+	MatrixSerializeTestSub<T, 1, 1>();
+	MatrixSerializeTestSub<T, 1, 2>();
+	MatrixSerializeTestSub<T, 1, 3>();
+	MatrixSerializeTestSub<T, 1, 4>();
+	MatrixSerializeTestSub<T, 2, 1>();
+	MatrixSerializeTestSub<T, 2, 2>();
+	MatrixSerializeTestSub<T, 2, 3>();
+	MatrixSerializeTestSub<T, 2, 4>();
+	MatrixSerializeTestSub<T, 3, 1>();
+	MatrixSerializeTestSub<T, 3, 2>();
+	MatrixSerializeTestSub<T, 3, 3>();
+	MatrixSerializeTestSub<T, 3, 4>();
+	MatrixSerializeTestSub<T, 4, 1>();
+	MatrixSerializeTestSub<T, 4, 2>();
+	MatrixSerializeTestSub<T, 4, 3>();
+	MatrixSerializeTestSub<T, 4, 4>();
 }
 
 }	// namespace matrix_test

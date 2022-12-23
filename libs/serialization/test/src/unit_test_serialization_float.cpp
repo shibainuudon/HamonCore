@@ -105,7 +105,9 @@ TYPED_TEST(SerializationFloatTest, FloatTest)
 
 	FloatTest<Stream, OArchive, IArchive, float>();
 	FloatTest<Stream, OArchive, IArchive, double>();
+#if !defined(__EMSCRIPTEN__)
 	FloatTest<Stream, OArchive, IArchive, long double>();
+#endif
 }
 
 }	// namespace float_test
