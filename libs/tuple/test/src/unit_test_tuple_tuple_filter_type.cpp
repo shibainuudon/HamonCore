@@ -32,7 +32,7 @@ template <template <typename...> class Tuple>
 void TupleInitTypeTest()
 {
 	{
-		using t1 = Tuple<char, unsigned char, int, unsigned int, float, double>;
+		using t1 = Tuple<signed char, unsigned char, int, unsigned int, float, double>;
 		using t2 = hamon::tuple_filter_type_t<t1, IsUnsigned>;
 		using t3 = hamon::tuple_filter_type_t<t1, IsFloatingPoint>;
 
