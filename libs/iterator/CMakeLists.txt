@@ -47,6 +47,8 @@ if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 		add_executable(unit_test)
 		target_link_libraries(unit_test PRIVATE ${TARGET_NAME}_test)
 		include(GoogleTest)
-		gtest_discover_tests(unit_test DISCOVERY_TIMEOUT 30)
+		gtest_discover_tests(unit_test
+			DISCOVERY_TIMEOUT 30
+			DISCOVERY_MODE PRE_TEST)
 	endif()
 endif()
