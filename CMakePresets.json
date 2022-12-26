@@ -1,5 +1,5 @@
 ﻿{
-	"version": 2,
+	"version": 3,
 	"cmakeMinimumRequired": {
 		"major": 3,
 		"minor": 20,
@@ -35,6 +35,29 @@
 			"vendor": {
 				"microsoft.com/VisualStudioSettings/CMake/1.0": {
 					"hostOS": [ "Linux" ]
+				}
+			}
+		},
+		{
+			"name": "android",
+			"inherits": [ "base" ],
+			"hidden": true,
+			"condition": {
+				"lhs": "$env{ANDROID_NDK}",
+				"type": "notEquals",
+				"rhs": ""
+			},
+			"cacheVariables": {
+				"CMAKE_SYSTEM_NAME": "Android",
+				//"CMAKE_SYSTEM_VERSION": 21,
+				//"CMAKE_ANDROID_ARCH_ABI": ("armeabi-v7a", "arm64-v8a", "x86", "x86_64" のどれか)
+				"CMAKE_ANDROID_NDK": "$env{ANDROID_NDK}",
+				//"CMAKE_ANDROID_NDK_DEPRECATED_HEADERS": true,
+				//"CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION": "",
+				//"CMAKE_ANDROID_STL_TYPE": ""
+				"CMAKE_TOOLCHAIN_FILE": {
+					"type": "FILEPATH",
+					"value": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
 				}
 			}
 		},
@@ -380,6 +403,40 @@
 		{
 			"name": "linux-emscripten-c++20-release",
 			"inherits": [ "linux", "emscripten", "c++20", "release" ]
+		},
+
+		// Android
+		{
+			"name": "android-c++11-debug",
+			"inherits": [ "android", "c++11", "debug" ]
+		},
+		{
+			"name": "android-c++11-release",
+			"inherits": [ "android", "c++11", "release" ]
+		},
+		{
+			"name": "android-c++14-debug",
+			"inherits": [ "android", "c++14", "debug" ]
+		},
+		{
+			"name": "android-c++14-release",
+			"inherits": [ "android", "c++14", "release" ]
+		},
+		{
+			"name": "android-c++17-debug",
+			"inherits": [ "android", "c++17", "debug" ]
+		},
+		{
+			"name": "android-c++17-release",
+			"inherits": [ "android", "c++17", "release" ]
+		},
+		{
+			"name": "android-c++20-debug",
+			"inherits": [ "android", "c++20", "debug" ]
+		},
+		{
+			"name": "android-c++20-release",
+			"inherits": [ "android", "c++20", "release" ]
 		}
 	]
 }
