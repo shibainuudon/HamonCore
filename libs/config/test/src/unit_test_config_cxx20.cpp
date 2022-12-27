@@ -1379,7 +1379,8 @@ GTEST_TEST(ConfigTest, Cxx20ConversionsToUnboundedArrayTest)
 //export module mylib;
 #endif
 
-#if defined(HAMON_HAS_CXX20_COROUTINES)
+#if defined(HAMON_HAS_CXX20_COROUTINES) && \
+	defined(__cpp_lib_coroutine) && (__cpp_lib_coroutine >= 201902)
 namespace coroutines_test
 {
 
