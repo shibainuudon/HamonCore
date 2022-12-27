@@ -63,6 +63,7 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
+#include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/type_traits/unwrap_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
 
