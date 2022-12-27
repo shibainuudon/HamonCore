@@ -7,9 +7,11 @@
 #ifndef HAMON_TYPE_TRAITS_IS_INVOCABLE_HPP
 #define HAMON_TYPE_TRAITS_IS_INVOCABLE_HPP
 
+#include <hamon/functional/config.hpp>
 #include <type_traits>
 
-#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703)
+#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
+	defined(HAMON_USE_STD_REFERENCE_WRAPPER)
 
 namespace hamon
 {

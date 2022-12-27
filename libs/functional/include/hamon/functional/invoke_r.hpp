@@ -23,6 +23,7 @@ using std::invoke_r;
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -51,9 +52,12 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(std::forward<Args>(args)...))
 
 }	// namespace detail
 
-template <typename R, typename F, typename... Args>
-#if defined(HAMON_HAS_CXX20_CONCEPTS) &&	\
-	!(defined(HAMON_APPLE_CLANG) && (HAMON_APPLE_CLANG <= 130000))
+template <typename R, typename F, typename... Args
+#if !defined(HAMON_HAS_CXX20_CONCEPTS)
+	, typename = hamon::enable_if_t<hamon::is_invocable_r<R, F, Args...>::value>
+#endif
+>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires hamon::is_invocable_r<R, F, Args...>::value
 #endif
 HAMON_CXX14_CONSTEXPR R

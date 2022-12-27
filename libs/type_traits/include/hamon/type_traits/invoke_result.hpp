@@ -7,9 +7,11 @@
 #ifndef HAMON_TYPE_TRAITS_INVOKE_RESULT_HPP
 #define HAMON_TYPE_TRAITS_INVOKE_RESULT_HPP
 
+#include <hamon/functional/config.hpp>
 #include <type_traits>
 
-#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703)
+#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
+	defined(HAMON_USE_STD_REFERENCE_WRAPPER)
 
 namespace hamon
 {
@@ -44,23 +46,13 @@ struct invoke_result;
 
 }	// namespace hamon
 
-#include <hamon/type_traits/invoke_result.hpp>
-#include <hamon/type_traits/add_lvalue_reference.hpp>
-#include <hamon/type_traits/add_rvalue_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/decay.hpp>
-#include <hamon/type_traits/remove_cv.hpp>
-#include <hamon/type_traits/remove_reference.hpp>
-#include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/copy_cv.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/type_identity.hpp>
-#include <hamon/type_traits/void_t.hpp>
-#include <hamon/type_traits/detail/cv_traits.hpp>
-#include <hamon/type_traits/detail/is_same_or_base_of.hpp>
-#include <hamon/type_traits/detail/member_object_pointer_traits.hpp>
-#include <hamon/type_traits/detail/member_function_pointer_traits.hpp>
-#include <hamon/config.hpp>
+#include <hamon/type_traits/unwrap_reference.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -71,114 +63,111 @@ namespace detail
 {
 
 // invoke_result_failure
-struct invoke_result_failure {};
-
-// is_mem_fn_callable
-template <typename MemFn, typename Arg>
-struct is_mem_fn_callable
-{
-	using MemFnCv = detail::member_function_cv_traits_t<hamon::remove_reference_t<MemFn>>;
-	using ArgCv   = detail::cv_traits_t<hamon::remove_reference_t<Arg>>;
-	HAMON_STATIC_CONSTEXPR bool value =
-		std::is_same<ArgCv, detail::cv_qualifier_none>::value ||
-		std::is_same<MemFnCv, detail::cv_qualifier_cv>::value ||
-		std::is_same<ArgCv, MemFnCv>::value;
-};
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_CLANG("-Wunused-volatile-lvalue")
-
-// is_dereferenceable
-template <typename T>
-struct is_dereferenceable
-{
-	template <typename U>
-	static auto test(int) -> decltype(*std::declval<U>(), std::true_type());
-	template <typename...>
-	static auto test(...) -> std::false_type;
-
-	using type = decltype(test<T>(0));
-	HAMON_STATIC_CONSTEXPR bool value = type::value;
-};
-
-HAMON_WARNING_POP()
+struct invoke_result_failure
+{};
 
 // invoke_result_memfun_ref
-template <typename F, typename Arg0, typename... Args>
+template <typename MemFn, typename Obj, typename... Args>
 struct invoke_result_memfun_ref
 {
-	template <typename U, typename UArg0, typename... UArgs>
-	static auto test(int) -> hamon::type_identity<decltype((std::declval<UArg0>().*std::declval<U>())(std::declval<UArgs>()...))>;
+private:
+	template <typename UF, typename UArg0, typename... UArgs>
+	static auto test(int) -> hamon::type_identity<
+		decltype((std::declval<UArg0>().*std::declval<UF>())(std::declval<UArgs>()...))>;
+
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
 
-	using type =
-		hamon::conditional_t<
-			is_mem_fn_callable<F, Arg0>::value,
-			decltype(test<F, Arg0, Args...>(0)),
-			invoke_result_failure>;
+public:
+	using type = decltype(test<MemFn, Obj, Args...>(0));
 };
 
 // invoke_result_memfun_deref
-template <typename F, typename Arg0, typename... Args>
-struct invoke_result_memfun_deref
-	: public invoke_result_memfun_ref<F, decltype(*std::declval<Arg0>()), Args...>
-{};
-
-// invoke_result_memfun
 template <typename MemFn, typename Obj, typename... Args>
-struct invoke_result_memfun
+struct invoke_result_memfun_deref
 {
-	using T = typename member_function_pointer_traits<hamon::remove_reference_t<MemFn>>::class_type;
-	using ObjVal = hamon::remove_cv_t<hamon::remove_reference_t<Obj>>;
-	using type =
-		typename hamon::conditional<
-			is_same_or_base_of<hamon::decay_t<T>, ObjVal>::value,
-			invoke_result_memfun_ref<MemFn, Obj, Args...>,
-			hamon::conditional_t<
-				is_dereferenceable<Obj>::value,
-				invoke_result_memfun_deref<MemFn, Obj, Args...>,
-				hamon::type_identity<invoke_result_failure>
-			>
-		>::type::type;
+private:
+	template <typename UF, typename UArg0, typename... UArgs>
+	static auto test(int) -> hamon::type_identity<
+		decltype(((*std::declval<UArg0>()).*std::declval<UF>())(std::declval<UArgs>()...))>;
+
+	template <typename...>
+	static auto test(...) -> invoke_result_failure;
+
+public:
+	using type = decltype(test<MemFn, Obj, Args...>(0));
 };
 
-// invoke_result_pmd
-template <typename Ret, typename Class, typename Arg>
-struct invoke_result_pmd
+// invoke_result_memobj_ref
+template <typename MemPtr, typename Obj>
+struct invoke_result_memobj_ref
 {
-	using ArgVal = hamon::remove_pointer_t<hamon::remove_reference_t<Arg>>;
-	using type =
-		hamon::conditional_t<
-			is_same_or_base_of<hamon::decay_t<Class>, hamon::decay_t<ArgVal>>::value,
-			hamon::conditional_t<
-				std::is_pointer<hamon::remove_reference_t<Arg>>::value || std::is_lvalue_reference<Arg>::value,
-				hamon::add_lvalue_reference<hamon::copy_cv_t<Ret, ArgVal>>,
-				hamon::add_rvalue_reference<hamon::copy_cv_t<Ret, ArgVal>>
-			>,
-			invoke_result_failure
-		>;
+private:
+	template <typename F, typename T>
+	static auto test(int) -> hamon::type_identity<
+		decltype(std::declval<T>().*std::declval<F>())>;
+
+	template <typename...>
+	static auto test(...) -> invoke_result_failure;
+
+public:
+	using type = decltype(test<MemPtr, Obj>(0));
+};
+
+// invoke_result_memobj_deref
+template <typename MemPtr, typename Arg>
+struct invoke_result_memobj_deref
+{
+private:
+	template <typename F, typename T>
+	static auto test(int) -> hamon::type_identity<
+		decltype((*std::declval<T>()).*std::declval<F>())>;
+
+	template <typename...>
+	static auto test(...) -> invoke_result_failure;
+
+public:
+	using type = decltype(test<MemPtr, Arg>(0));
 };
 
 // invoke_result_memobj
-template <typename MemPtr, typename... Args>
-struct invoke_result_memobj
+template <typename MemPtr, typename Arg>
+struct invoke_result_memobj;
+
+template <typename Res, typename Class, typename Arg>
+struct invoke_result_memobj<Res Class::*, Arg>
 {
-	using type = invoke_result_failure;
+private:
+	using Argval = hamon::remove_cvref_t<Arg>;
+	using MemPtr = Res Class::*;
+
+public:
+	using type = typename hamon::conditional_t<
+		hamon::disjunction<
+			std::is_same<Argval, Class>,
+			std::is_base_of<Class, Argval>
+		>::value,
+		invoke_result_memobj_ref<MemPtr, Arg>,
+		invoke_result_memobj_deref<MemPtr, Arg>
+	>::type;
 };
 
-template <typename MemPtr, typename Obj>
-struct invoke_result_memobj<MemPtr, Obj>
-{
-	using Traits =
-		member_object_pointer_traits<
-			hamon::remove_reference_t<MemPtr>
-		>;
+// invoke_result_memfun
+template <typename MemPtr, typename Arg, typename... Args>
+struct invoke_result_memfun;
 
-	using type = typename invoke_result_pmd<
-		typename Traits::result_type,
-		typename Traits::class_type,
-		Obj
+template <typename Res, typename Class, typename Arg, typename... Args>
+struct invoke_result_memfun<Res Class::*, Arg, Args...>
+{
+private:
+	using Argval = hamon::remove_reference_t<Arg>;
+	using MemPtr = Res Class::*;
+
+public:
+	using type = typename hamon::conditional_t<
+		std::is_base_of<Class, Argval>::value,
+		invoke_result_memfun_ref<MemPtr, Arg, Args...>,
+		invoke_result_memfun_deref<MemPtr, Arg, Args...>
 	>::type;
 };
 
@@ -186,11 +175,14 @@ struct invoke_result_memobj<MemPtr, Obj>
 template <typename F, typename... Args>
 struct invoke_result_other
 {
+private:
 	template <typename U, typename... UArgs>
 	static auto test(int) -> hamon::type_identity<decltype(std::declval<U>()(std::declval<UArgs>()...))>;
+
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
 
+public:
 	using type = decltype(test<F, Args...>(0));
 };
 
@@ -201,19 +193,37 @@ struct invoke_result_impl
 	using type = invoke_result_failure;
 };
 
-template <typename F, typename Arg, typename... Args>
-struct invoke_result_impl<true, false, F, Arg, Args...>
-	: public invoke_result_memobj<F, Arg, Args...>
+template <typename MemPtr, typename Arg>
+struct invoke_result_impl<true, false, MemPtr, Arg>
+	: public invoke_result_memobj<
+		hamon::decay_t<MemPtr>,
+		hamon::unwrap_reference_t<Arg>
+	>
 {};
 
-template <typename F, typename Arg, typename... Args>
-struct invoke_result_impl<false, true, F, Arg, Args...>
-	: public invoke_result_memfun<F, Arg, Args...>
+template <typename MemPtr, typename Arg, typename... Args>
+struct invoke_result_impl<false, true, MemPtr, Arg, Args...>
+	: public invoke_result_memfun<
+		hamon::decay_t<MemPtr>,
+		hamon::unwrap_reference_t<Arg>,
+		Args...
+	>
 {};
 
 template <typename F, typename... Args>
 struct invoke_result_impl<false, false, F, Args...>
 	: public invoke_result_other<F, Args...>
+{
+};
+
+// detail::invoke_result
+template <typename F, typename... ArgTypes>
+struct invoke_result
+	: public invoke_result_impl<
+		std::is_member_object_pointer<hamon::remove_reference_t<F>>::value,
+		std::is_member_function_pointer<hamon::remove_reference_t<F>>::value,
+		F, ArgTypes...
+	>::type
 {};
 
 }	// namespace detail
@@ -221,12 +231,14 @@ struct invoke_result_impl<false, false, F, Args...>
 // invoke_result
 template <typename F, typename... ArgTypes>
 struct invoke_result
-	: public detail::invoke_result_impl<
-		std::is_member_object_pointer<hamon::remove_reference_t<F>>::value,
-		std::is_member_function_pointer<hamon::remove_reference_t<F>>::value,
-		F, ArgTypes...
-	>::type
-{};
+	: public hamon::detail::invoke_result<F, ArgTypes...>
+{
+	//static_assert(std::__is_complete_or_unbounded(__type_identity<F>{}),
+	//	"F must be a complete class or an unbounded array");
+	//static_assert((std::__is_complete_or_unbounded(
+	//	__type_identity<ArgTypes>{}) && ...),
+	//	"each argument type must be a complete class or an unbounded array");
+};
 
 }	// namespace hamon
 

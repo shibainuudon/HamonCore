@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_invocable_r.hpp>
+#include <hamon/functional/reference_wrapper.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 
@@ -102,6 +103,8 @@ HAMON_IS_INVOCABLE_R_TEST(false, long, mem_type_i, int&);
 HAMON_IS_INVOCABLE_R_TEST(true,  int,  mem_type_i, X&);
 HAMON_IS_INVOCABLE_R_TEST(true,  int&, mem_type_i, X&);
 HAMON_IS_INVOCABLE_R_TEST(true,  long, mem_type_i, X&);
+HAMON_IS_INVOCABLE_R_TEST(true,  int,  mem_type_i, hamon::reference_wrapper<X>);
+HAMON_IS_INVOCABLE_R_TEST(true,  int,  mem_type_i, hamon::reference_wrapper<X const>);
 
 using memfun_type_i = int (X::*)();
 
@@ -109,6 +112,8 @@ HAMON_IS_INVOCABLE_R_TEST(true,  int,  memfun_type_i, X&);
 HAMON_IS_INVOCABLE_R_TEST(false, int&, memfun_type_i, X&);
 HAMON_IS_INVOCABLE_R_TEST(true,  long, memfun_type_i, X&);
 HAMON_IS_INVOCABLE_R_TEST(false, int,  memfun_type_i, const X&);
+HAMON_IS_INVOCABLE_R_TEST(true,  int,  memfun_type_i, hamon::reference_wrapper<X>);
+HAMON_IS_INVOCABLE_R_TEST(false, int,  memfun_type_i, hamon::reference_wrapper<X const>);
 
 using memfun_type_iic = int& (X::*)(int&) const;
 
@@ -116,6 +121,8 @@ HAMON_IS_INVOCABLE_R_TEST(true,  int,   memfun_type_iic, const X&, int&);
 HAMON_IS_INVOCABLE_R_TEST(true,  int&,  memfun_type_iic, const X&, int&);
 HAMON_IS_INVOCABLE_R_TEST(true,  long,  memfun_type_iic, const X&, int&);
 HAMON_IS_INVOCABLE_R_TEST(false, long&, memfun_type_iic, const X&, int&);
+HAMON_IS_INVOCABLE_R_TEST(true,  int,   memfun_type_iic, hamon::reference_wrapper<X>, int&);
+HAMON_IS_INVOCABLE_R_TEST(true,  int,   memfun_type_iic, hamon::reference_wrapper<X const>, int&);
 
 struct F
 {
@@ -383,6 +390,23 @@ HAMON_IS_INVOCABLE_R_TEST(false, char,   F               , int, int);
 HAMON_IS_INVOCABLE_R_TEST(false, char,   F const         , int, int);
 HAMON_IS_INVOCABLE_R_TEST(false, char,   F       volatile, int, int);
 HAMON_IS_INVOCABLE_R_TEST(false, char,   F const volatile, int, int);
+
+HAMON_IS_INVOCABLE_R_TEST(true,  int&,   hamon::reference_wrapper<F>);
+HAMON_IS_INVOCABLE_R_TEST(false, long&,  hamon::reference_wrapper<F>);
+HAMON_IS_INVOCABLE_R_TEST(false, short&, hamon::reference_wrapper<F>);
+HAMON_IS_INVOCABLE_R_TEST(false, char&,  hamon::reference_wrapper<F>);
+HAMON_IS_INVOCABLE_R_TEST(false, int&,   hamon::reference_wrapper<F const>);
+HAMON_IS_INVOCABLE_R_TEST(true,  long&,  hamon::reference_wrapper<F const>);
+HAMON_IS_INVOCABLE_R_TEST(false, short&, hamon::reference_wrapper<F const>);
+HAMON_IS_INVOCABLE_R_TEST(false, char&,  hamon::reference_wrapper<F const>);
+HAMON_IS_INVOCABLE_R_TEST(false, int&,   hamon::reference_wrapper<F>, int);
+HAMON_IS_INVOCABLE_R_TEST(false, long&,  hamon::reference_wrapper<F>, int);
+HAMON_IS_INVOCABLE_R_TEST(true,  short&, hamon::reference_wrapper<F>, int);
+HAMON_IS_INVOCABLE_R_TEST(false, char&,  hamon::reference_wrapper<F>, int);
+HAMON_IS_INVOCABLE_R_TEST(false, int&,   hamon::reference_wrapper<F const>, int);
+HAMON_IS_INVOCABLE_R_TEST(false, long&,  hamon::reference_wrapper<F const>, int);
+HAMON_IS_INVOCABLE_R_TEST(false, short&, hamon::reference_wrapper<F const>, int);
+HAMON_IS_INVOCABLE_R_TEST(true,  char&,  hamon::reference_wrapper<F const>, int);
 
 }	// namespace is_invocable_r_test
 
