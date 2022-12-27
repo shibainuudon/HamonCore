@@ -7,6 +7,7 @@
 #ifndef HAMON_FUNCTIONAL_REFERENCE_WRAPPER_HPP
 #define HAMON_FUNCTIONAL_REFERENCE_WRAPPER_HPP
 
+#include <hamon/functional/fwd/reference_wrapper_fwd.hpp>
 #include <hamon/functional/config.hpp>
 
 #if defined(HAMON_USE_STD_REFERENCE_WRAPPER)
