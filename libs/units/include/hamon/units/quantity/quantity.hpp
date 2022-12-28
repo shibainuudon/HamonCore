@@ -17,6 +17,7 @@
 #include <hamon/units/quantity/detail/quantity_without_scale_offset.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/compare/config.hpp>
 #include <hamon/config.hpp>
 #include <ratio>
 #include <ostream>
@@ -412,7 +413,7 @@ operator==(
 	return type{lhs}.value() == type{rhs}.value();
 }
 
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON) && defined(HAMON_HAS_STD_COMPARE)
 
 /**
  *	@brief	quantity <=> quantity
