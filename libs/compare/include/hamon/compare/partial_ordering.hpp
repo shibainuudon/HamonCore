@@ -58,9 +58,9 @@ public:
 	HAMON_CONSTEXPR
 	partial_ordering_t(std::partial_ordering ord) HAMON_NOEXCEPT
 		: m_value(cmp_cat::type(
-			ord == std::partial_ordering::less    ? cmp_cat::Ord::less    :
-			ord == std::partial_ordering::greater ? cmp_cat::Ord::greater :
-			                                        cmp_cat::Ord::equivalent))
+			ord < 0 ? cmp_cat::Ord::less    :
+			ord > 0 ? cmp_cat::Ord::greater :
+			          cmp_cat::Ord::equivalent))
 	{}
 
 	// * extension *
@@ -68,9 +68,9 @@ public:
 	HAMON_CONSTEXPR
 	partial_ordering_t(std::weak_ordering ord) HAMON_NOEXCEPT
 		: m_value(cmp_cat::type(
-			ord == std::weak_ordering::less    ? cmp_cat::Ord::less    :
-			ord == std::weak_ordering::greater ? cmp_cat::Ord::greater :
-			                                     cmp_cat::Ord::equivalent))
+			ord < 0 ? cmp_cat::Ord::less    :
+			ord > 0 ? cmp_cat::Ord::greater :
+			          cmp_cat::Ord::equivalent))
 	{}
 
 	// * extension *
@@ -78,9 +78,9 @@ public:
 	HAMON_CONSTEXPR
 	partial_ordering_t(std::strong_ordering ord) HAMON_NOEXCEPT
 		: m_value(cmp_cat::type(
-			ord == std::strong_ordering::less    ? cmp_cat::Ord::less    :
-			ord == std::strong_ordering::greater ? cmp_cat::Ord::greater :
-			                                       cmp_cat::Ord::equivalent))
+			ord < 0 ? cmp_cat::Ord::less    :
+			ord > 0 ? cmp_cat::Ord::greater :
+			          cmp_cat::Ord::equivalent))
 	{}
 #endif
 
