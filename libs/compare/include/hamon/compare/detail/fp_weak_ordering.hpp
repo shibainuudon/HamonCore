@@ -52,7 +52,7 @@ fp_weak_ordering(T e, T f)
 	{
 		return hamon::weak_ordering::greater;
 	}
-	else if (po == hamon::partial_ordering::equivalent)
+	else if (hamon::partial_ordering{po} == hamon::partial_ordering::equivalent)
 	{
 		return hamon::weak_ordering::equivalent;
 	}
