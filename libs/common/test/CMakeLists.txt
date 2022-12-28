@@ -23,6 +23,7 @@ if (NOT ${GTest_FOUND})
     GIT_REPOSITORY https://github.com/hogletgames/googletest.git
     GIT_TAG 5376968f6948923e2411081fd9372e71a59d8e77 # release-1.12.0
   )
+  set(BUILD_GMOCK OFF CACHE BOOL "" FORCE)
   FetchContent_MakeAvailable(googletest)
 endif()
 
