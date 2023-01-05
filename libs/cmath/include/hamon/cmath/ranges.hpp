@@ -49,7 +49,7 @@
 #include <hamon/cmath/ranges/round_up.hpp>
 #include <hamon/cmath/ranges/rsqrt.hpp>
 #include <hamon/cmath/ranges/saturate.hpp>
-//#include <hamon/cmath/ranges/signbit.hpp>
+#include <hamon/cmath/ranges/signbit.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/smoothstep.hpp>
 #include <hamon/cmath/ranges/sqrt.hpp>
