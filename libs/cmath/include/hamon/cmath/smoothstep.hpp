@@ -87,7 +87,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 smoothstep(Arithmetic1 from, Arithmetic2 to, Arithmetic3 x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

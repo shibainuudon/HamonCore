@@ -111,38 +111,38 @@ sqrt_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±0 の場合、argをそのまま返す。
  *	arg が NaN の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 sqrt(float arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 sqrtf(float arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sqrt(double arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 sqrt(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 sqrtl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sqrt(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(static_cast<double>(arg));

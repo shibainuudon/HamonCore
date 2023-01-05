@@ -189,31 +189,31 @@ pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	x が +∞ かつ、y が正の値の場合、+∞ を返す。
  *	上記以外で、xかyの少なくともどちらかがNaNの場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 pow(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 powf(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 pow(double x, double y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 pow(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 powl(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
@@ -223,7 +223,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 pow(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

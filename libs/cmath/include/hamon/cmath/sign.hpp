@@ -52,26 +52,26 @@ sign_impl(FloatType x) HAMON_NOEXCEPT
  *	x == 0 の場合、 0を返す。
  *	x >  0 の場合、 1を返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 sign(float arg) HAMON_NOEXCEPT
 {
 	return detail::sign_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sign(double arg) HAMON_NOEXCEPT
 {
 	return detail::sign_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 sign(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sign_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sign(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::sign_impl(static_cast<double>(arg));

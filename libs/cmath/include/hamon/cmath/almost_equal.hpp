@@ -82,7 +82,7 @@ template <
 		std::is_arithmetic<Arithmetic2>::value
 	>
 >
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 almost_equal(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::arithmetic_promote_t<Arithmetic1, Arithmetic2>;

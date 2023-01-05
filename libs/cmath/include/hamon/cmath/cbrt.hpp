@@ -105,38 +105,38 @@ cbrt_impl(FloatType x) HAMON_NOEXCEPT
  *	@note	cbrt(x) は pow(x, 1.0 / 3.0) と違い、
  *			xが負の値でも立方根を計算できる。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 cbrt(float arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 cbrtf(float arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 cbrt(double arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 cbrt(long double arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 cbrtl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 cbrt(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::cbrt_impl(static_cast<double>(arg));

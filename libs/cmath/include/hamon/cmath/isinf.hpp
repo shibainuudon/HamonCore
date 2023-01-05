@@ -36,19 +36,19 @@ isinf_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::isinf のconstexpr版
  */
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isinf(float arg) HAMON_NOEXCEPT
 {
 	return detail::isinf_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isinf(double arg) HAMON_NOEXCEPT
 {
 	return detail::isinf_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isinf(long double arg) HAMON_NOEXCEPT
 {
 	return detail::isinf_impl(arg);
@@ -60,7 +60,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isinf(IntegralType) HAMON_NOEXCEPT
 {
 	return false;

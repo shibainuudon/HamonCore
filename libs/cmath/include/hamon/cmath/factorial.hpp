@@ -303,7 +303,7 @@ factorial_impl(unsigned int n) HAMON_NOEXCEPT
  *	を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-inline HAMON_CONSTEXPR Arithmetic
+HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic
 factorial(unsigned int n) HAMON_NOEXCEPT
 {
 	return detail::factorial_impl<Arithmetic>(n);

@@ -66,31 +66,31 @@ copysign_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	yが±0または±NaNのとき、xの符号は変更されない。
  *	これはconstexpr関数にするための制限。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 copysign(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::copysign_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 copysignf(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::copysign_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 copysign(double x, double y) HAMON_NOEXCEPT
 {
 	return detail::copysign_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 copysign(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::copysign_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 copysignl(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::copysign_impl(x, y);
@@ -104,7 +104,7 @@ template <
 		std::is_arithmetic<Arithmetic2>::value
 	>
 >
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 copysign(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

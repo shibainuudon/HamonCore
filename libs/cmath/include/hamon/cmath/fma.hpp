@@ -99,31 +99,31 @@ fma_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	xかyがNaNの場合、NaNを返す。
  *	zがNaNで、x*y が 0*inf または inf*0 でない場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fma(float x, float y, float z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fmaf(float x, float y, float z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 fma(double x, double y, double z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fma(long double x, long double y, long double z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fmal(long double x, long double y, long double z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
@@ -134,7 +134,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 fma(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

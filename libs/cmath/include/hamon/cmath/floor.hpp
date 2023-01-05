@@ -86,38 +86,38 @@ floor_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±0  の場合、argをそのまま返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 floor(float arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 floorf(float arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 floor(double arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 floor(long double arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 floorl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 floor(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(static_cast<double>(arg));

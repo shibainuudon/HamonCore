@@ -94,38 +94,38 @@ sin_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞ の場合、NaNを返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 sin(float arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 sinf(float arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sin(double arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 sin(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 sinl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 sin(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::sin_impl(static_cast<double>(arg));

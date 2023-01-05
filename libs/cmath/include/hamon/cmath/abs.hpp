@@ -79,7 +79,7 @@ abs_impl(T x) HAMON_NOEXCEPT
  *	・hamon::absは全ての算術型に対応している。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-inline HAMON_CONSTEXPR Arithmetic
+HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic
 abs(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::abs_impl(x);

@@ -95,38 +95,38 @@ acos_impl(FloatType x) HAMON_NOEXCEPT
  *	|arg| > 1  の場合、NaN を返す。
  *	arg が NaN の場合、NaN を返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 acos(float arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 acosf(float arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 acos(double arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 acos(long double arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 acosl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 acos(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::acos_impl(static_cast<double>(arg));

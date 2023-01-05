@@ -65,7 +65,7 @@ round_half_even_impl(FloatType x) HAMON_NOEXCEPT
  *	https://ja.wikipedia.org/wiki/%E7%AB%AF%E6%95%B0%E5%87%A6%E7%90%86#.E6.9C.80.E8.BF.91.E6.8E.A5.E5.81.B6.E6.95.B0.E3.81.B8.E3.81.AE.E4.B8.B8.E3.82.81
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
 round_half_even(Arithmetic x)
 {
 	using type = hamon::float_promote_t<Arithmetic>;

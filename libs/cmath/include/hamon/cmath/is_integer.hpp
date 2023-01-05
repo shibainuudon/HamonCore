@@ -57,7 +57,7 @@ is_integer_impl(T x) HAMON_NOEXCEPT
  *	x が NaN または ±∞ の場合、falseを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 is_integer(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::is_integer_impl(x);

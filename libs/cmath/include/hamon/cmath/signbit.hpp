@@ -21,7 +21,7 @@ namespace hamon
  *	argが±0または±NaNのとき、falseを返す。
  *	これはconstexpr関数にするための制限。
  */
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 signbit(float arg) HAMON_NOEXCEPT
 {
 	// argがNANのときのために
@@ -29,13 +29,13 @@ signbit(float arg) HAMON_NOEXCEPT
 	return 0.0f > arg;
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 signbit(double arg) HAMON_NOEXCEPT
 {
 	return 0.0 > arg;
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 signbit(long double arg) HAMON_NOEXCEPT
 {
 	return 0.0l > arg;
@@ -47,7 +47,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 signbit(IntegralType arg) HAMON_NOEXCEPT
 {
 	return arg < 0;

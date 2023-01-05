@@ -111,38 +111,38 @@ exp_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が +∞  の場合、+∞ を返す。
  *	arg が NaN  の場合、NaN を返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 exp(float arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 expf(float arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 exp(double arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 exp(long double arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 expl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 exp(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::exp_impl(static_cast<double>(arg));

@@ -105,38 +105,38 @@ round_impl(FloatType x) HAMON_NOEXCEPT
  *	x が ±0  の場合、xをそのまま返す。
  *	x が NaN  の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 round(float arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 roundf(float arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 round(double arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 round(long double arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 roundl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 round(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(static_cast<double>(arg));

@@ -69,7 +69,7 @@ template <
 		std::is_arithmetic<Arithmetic2>::value
 	>
 >
-inline HAMON_CONSTEXPR Arithmetic1
+HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic1
 round_up(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

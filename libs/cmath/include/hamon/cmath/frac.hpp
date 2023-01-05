@@ -68,7 +68,7 @@ frac_impl(Integral) HAMON_NOEXCEPT
  *	x が NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
 frac(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::frac_impl(x);

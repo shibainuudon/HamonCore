@@ -87,38 +87,38 @@ tan_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞ の場合、NaNを返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 tan(float arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 tanf(float arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 tan(double arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 tan(long double arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 tanl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 tan(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(static_cast<double>(arg));

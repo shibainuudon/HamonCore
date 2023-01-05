@@ -80,31 +80,31 @@ trunc_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±0  の場合、argをそのまま返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 trunc(float arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 truncf(float arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 trunc(double arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 trunc(long double arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 truncl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
@@ -116,7 +116,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 trunc(IntegralType arg) HAMON_NOEXCEPT
 {
 	return static_cast<double>(arg);

@@ -54,31 +54,31 @@ fabs_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::fabs のconstexpr版
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fabs(float arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fabsf(float arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 fabs(double arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fabs(long double arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fabsl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(arg);
@@ -90,7 +90,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 fabs(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::fabs_impl(static_cast<double>(arg));

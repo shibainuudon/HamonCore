@@ -148,38 +148,38 @@ asin_impl(FloatType x) HAMON_NOEXCEPT
  *	|arg| > 1  の場合、NaN を返す。
  *	arg が NaN の場合、NaN を返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 asin(float arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 asinf(float arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 asin(double arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 asin(long double arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 asinl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 asin(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::asin_impl(static_cast<double>(arg));

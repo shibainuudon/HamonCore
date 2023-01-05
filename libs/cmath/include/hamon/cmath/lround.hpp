@@ -91,38 +91,38 @@ lround_impl(FloatType x) HAMON_NOEXCEPT
  *	x が numeric_limits<long>::max() より大きい場合、numeric_limits<long>::max() を返す。
  *	x が NaN の場合、numeric_limits<long>::min() を返す。
  */
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lround(float arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lroundf(float arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lround(double arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lround(long double arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lroundl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CONSTEXPR long
 lround(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(static_cast<double>(arg));

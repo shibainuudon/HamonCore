@@ -78,31 +78,31 @@ ceil_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::ceil のconstexpr版
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 ceil(float arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 ceilf(float arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 ceil(double arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 ceil(long double arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 ceill(long double arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
@@ -114,7 +114,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 ceil(IntegralType arg) HAMON_NOEXCEPT
 {
 	return static_cast<double>(arg);

@@ -72,7 +72,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-inline HAMON_CONSTEXPR Arithmetic1
+HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic1
 round_down(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

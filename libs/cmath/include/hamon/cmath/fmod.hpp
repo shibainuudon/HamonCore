@@ -66,31 +66,31 @@ fmod_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	y が ±∞ かつ、x が 有限の値の場合、x をそのまま返す。
  *	x か y の少なくともどちらかがNaNの場合、NaNを返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fmod(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::fmod_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 fmodf(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::fmod_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 fmod(double x, double y) HAMON_NOEXCEPT
 {
 	return detail::fmod_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fmod(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::fmod_impl(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 fmodl(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::fmod_impl(x, y);
@@ -100,7 +100,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 fmod(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

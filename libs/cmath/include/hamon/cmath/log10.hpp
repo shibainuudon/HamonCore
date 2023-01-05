@@ -102,38 +102,38 @@ log10_impl(FloatType x) HAMON_NOEXCEPT
  *	x が +∞  だった場合、+∞ を返す。
  *	x が NaN だった場合、NaN を返す。
  */
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 log10(float arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(arg);
 }
 
-inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CONSTEXPR float
 log10f(float arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(arg);
 }
 
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 log10(double arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 log10(long double arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(arg);
 }
 
-inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CONSTEXPR long double
 log10l(long double arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CONSTEXPR double
 log10(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::log10_impl(static_cast<double>(arg));

@@ -33,19 +33,19 @@ isnan_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::isnan のconstexpr版
  */
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isnan(float arg) HAMON_NOEXCEPT
 {
 	return detail::isnan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isnan(double arg) HAMON_NOEXCEPT
 {
 	return detail::isnan_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isnan(long double arg) HAMON_NOEXCEPT
 {
 	return detail::isnan_impl(arg);
@@ -57,7 +57,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isnan(IntegralType) HAMON_NOEXCEPT
 {
 	return false;

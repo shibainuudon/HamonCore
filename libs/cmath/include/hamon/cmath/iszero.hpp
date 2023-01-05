@@ -17,19 +17,19 @@ namespace hamon
 /**
  *	@brief	std::iszero のconstexpr版
  */
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 iszero(float arg) HAMON_NOEXCEPT
 {
 	return arg == 0.0f;
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 iszero(double arg) HAMON_NOEXCEPT
 {
 	return arg == 0.0;
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 iszero(long double arg) HAMON_NOEXCEPT
 {
 	return arg == 0.0l;
@@ -41,7 +41,7 @@ template <
 		std::is_integral<IntegralType>::value
 	>
 >
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 iszero(IntegralType arg) HAMON_NOEXCEPT
 {
 	return arg == 0;

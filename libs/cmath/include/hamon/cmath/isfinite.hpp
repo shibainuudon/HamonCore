@@ -41,26 +41,26 @@ isfinite_impl(FloatType x) HAMON_NOEXCEPT
  *
  *	@note	argが整数型のときはdoubleにキャストしてから調べる。
  */
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isfinite(float arg) HAMON_NOEXCEPT
 {
 	return detail::isfinite_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isfinite(double arg) HAMON_NOEXCEPT
 {
 	return detail::isfinite_impl(arg);
 }
 
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isfinite(long double arg) HAMON_NOEXCEPT
 {
 	return detail::isfinite_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 isfinite(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::isfinite_impl(static_cast<double>(arg));
