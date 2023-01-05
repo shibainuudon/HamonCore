@@ -50,6 +50,7 @@
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cmath/rsqrt.hpp>
 #include <hamon/cmath/saturate.hpp>
+#include <hamon/cmath/sign.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/sin.hpp>
 #include <hamon/cmath/smoothstep.hpp>
