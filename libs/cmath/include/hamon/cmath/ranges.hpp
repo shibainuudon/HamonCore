@@ -44,9 +44,9 @@
 //#include <hamon/cmath/ranges/radians_to_degrees.hpp>
 #include <hamon/cmath/ranges/repeat.hpp>
 #include <hamon/cmath/ranges/round.hpp>
-//#include <hamon/cmath/ranges/round_down.hpp>
+#include <hamon/cmath/ranges/round_down.hpp>
 #include <hamon/cmath/ranges/round_half_even.hpp>
-//#include <hamon/cmath/ranges/round_up.hpp>
+#include <hamon/cmath/ranges/round_up.hpp>
 #include <hamon/cmath/ranges/rsqrt.hpp>
 #include <hamon/cmath/ranges/saturate.hpp>
 //#include <hamon/cmath/ranges/signbit.hpp>
