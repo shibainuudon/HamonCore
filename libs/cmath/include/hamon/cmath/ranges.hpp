@@ -42,7 +42,7 @@
 //#include <hamon/cmath/ranges/lround.hpp>
 #include <hamon/cmath/ranges/pow.hpp>
 //#include <hamon/cmath/ranges/radians_to_degrees.hpp>
-//#include <hamon/cmath/ranges/repeat.hpp>
+#include <hamon/cmath/ranges/repeat.hpp>
 #include <hamon/cmath/ranges/round.hpp>
 //#include <hamon/cmath/ranges/round_down.hpp>
 #include <hamon/cmath/ranges/round_half_even.hpp>
