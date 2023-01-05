@@ -37,7 +37,7 @@
 //#include <hamon/cmath/ranges/llround.hpp>
 #include <hamon/cmath/ranges/log.hpp>
 #include <hamon/cmath/ranges/log10.hpp>
-//#include <hamon/cmath/ranges/log1p.hpp>
+#include <hamon/cmath/ranges/log1p.hpp>
 #include <hamon/cmath/ranges/log2.hpp>
 //#include <hamon/cmath/ranges/lround.hpp>
 #include <hamon/cmath/ranges/pow.hpp>
