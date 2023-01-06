@@ -1456,8 +1456,10 @@ void g() noexcept(noexcept([]{}));
 // sizeofのオペランド
 auto s = sizeof([]{});
 
+#if !defined(HAMON_NO_RTTI)
 // typeidのオペランド
 auto& t = typeid([]{});
+#endif
 
 }	// namespace lambdas_in_unevaluated_contexts_test
 #endif
