@@ -357,13 +357,24 @@ GTEST_TEST(FunctionalTest, HashEnumTest)
 GTEST_TEST(FunctionalTest, HashArrayTest)
 {
 	{
+		HAMON_CXX11_CONSTEXPR const char a[] = "abcde";
+		HAMON_CXX11_CONSTEXPR const char b[] = "abcde";
+		HAMON_CXX11_CONSTEXPR const char c[] = "abcda";
+		HAMON_CXX11_CONSTEXPR const char d[] = "abcd";
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(d));
+	}
+	{
 		HAMON_CXX11_CONSTEXPR int a[] = {1, 2, 3};
 		HAMON_CXX11_CONSTEXPR int b[] = {1, 2, 3};
 		HAMON_CXX11_CONSTEXPR int c[] = {3, 2, 1};
 
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
-		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR float a[] = {0.0f, 0.5f, -1.5f, 2.0f};
@@ -384,9 +395,9 @@ GTEST_TEST(FunctionalTest, HashStdArrayTest)
 		HAMON_CXX11_CONSTEXPR std::array<int, 3> b = {1, 2, 3};
 		HAMON_CXX11_CONSTEXPR std::array<int, 3> c = {2, 3, 1};
 
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR std::array<float, 4> a = {0.0f, 0.5f, -1.5f, 2.0f};
