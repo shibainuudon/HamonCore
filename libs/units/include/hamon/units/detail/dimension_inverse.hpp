@@ -7,8 +7,8 @@
 #ifndef HAMON_UNITS_DETAIL_DIMENSION_INVERSE_HPP
 #define HAMON_UNITS_DETAIL_DIMENSION_INVERSE_HPP
 
-#include <hamon/units/detail/derived_dimension_fwd.hpp>
-#include <hamon/units/detail/dimension_holder_fwd.hpp>
+#include <hamon/units/detail/derived_dimension.hpp>
+#include <hamon/units/detail/dimension_holder.hpp>
 #include <hamon/units/detail/make_derived_dimension.hpp>
 
 namespace hamon

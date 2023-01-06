@@ -7,14 +7,26 @@
 #ifndef HAMON_UNITS_DETAIL_BASE_DIMENSION_TRAITS_HPP
 #define HAMON_UNITS_DETAIL_BASE_DIMENSION_TRAITS_HPP
 
+#include <hamon/functional/hash.hpp>
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
 namespace units
 {
 
+template <typename T>
+constexpr std::size_t get_type_hash() noexcept
+{
+	return hamon::hash(HAMON_CURRENT_FUNCTION);
+}
+
 template <typename BaseDimension>
-struct base_dimension_traits;
+struct base_dimension_traits
+{
+	HAMON_STATIC_CONSTEXPR std::size_t order = get_type_hash<BaseDimension>();
+};
 
 }	// namespace units
 

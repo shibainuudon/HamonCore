@@ -493,9 +493,9 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 	// quantity * quantity
 	{
 		using D1 = hamon::units::length_dimension;
-		using D2 = hamon::units::derived_dimension<
+		using D2 = hamon::units::make_derived_dimension_t<
 			hamon::units::dimension_holder<
-				hamon::units::length_base_dimension, 2
+				hamon::units::length_dimension_tag, 2
 			>
 		>;
 
@@ -510,12 +510,12 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 	{
 		using D1 = hamon::units::length_dimension;
 		using D2 = hamon::units::mass_dimension;
-		using D3 = hamon::units::derived_dimension<
+		using D3 = hamon::units::make_derived_dimension_t<
 			hamon::units::dimension_holder<
-				hamon::units::length_base_dimension
+				hamon::units::length_dimension_tag
 			>,
 			hamon::units::dimension_holder<
-				hamon::units::mass_base_dimension
+				hamon::units::mass_dimension_tag
 			>
 		>;
 
@@ -529,9 +529,9 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 	}
 	{
 		using D1 = hamon::units::length_dimension;
-		using D2 = hamon::units::derived_dimension<
+		using D2 = hamon::units::make_derived_dimension_t<
 			hamon::units::dimension_holder<
-				hamon::units::length_base_dimension, 2
+				hamon::units::length_dimension_tag, 2
 			>
 		>;
 		using Q1 = hamon::units::quantity<T, D1>;
@@ -572,9 +572,9 @@ TYPED_TEST(QuantityTest, DivScalarTest)
 	// Scalar / quantity
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x = T(10) / Q(2);
-		using D2 = hamon::units::derived_dimension<
+		using D2 = hamon::units::make_derived_dimension_t<
 			hamon::units::dimension_holder<
-				hamon::units::length_base_dimension, -1
+				hamon::units::length_dimension_tag, -1
 			>
 		>;
 		using Q2 = hamon::units::quantity<T, D2>;
@@ -602,12 +602,12 @@ TYPED_TEST(QuantityTest, DivQuantityTest)
 	{
 		using D1 = hamon::units::length_dimension;
 		using D2 = hamon::units::mass_dimension;
-		using D3 = hamon::units::derived_dimension<
+		using D3 = hamon::units::make_derived_dimension_t<
 			hamon::units::dimension_holder<
-				hamon::units::length_base_dimension
+				hamon::units::length_dimension_tag
 			>,
 			hamon::units::dimension_holder<
-				hamon::units::mass_base_dimension, -1
+				hamon::units::mass_dimension_tag, -1
 			>
 		>;
 

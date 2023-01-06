@@ -7,8 +7,8 @@
 #ifndef HAMON_UNITS_DETAIL_MAKE_DERIVED_DIMENSION_HPP
 #define HAMON_UNITS_DETAIL_MAKE_DERIVED_DIMENSION_HPP
 
-#include <hamon/units/detail/derived_dimension_fwd.hpp>
-#include <hamon/units/detail/dimension_holder_fwd.hpp>
+#include <hamon/units/detail/derived_dimension.hpp>
+#include <hamon/units/detail/dimension_holder.hpp>
 #include <hamon/units/detail/base_dimension_traits.hpp>
 #include <hamon/tuple/tuple_sort_type.hpp>
 #include <hamon/tuple/tuple_filter_type.hpp>
@@ -33,6 +33,13 @@ namespace units
  */
 template <typename... DimensionHolders>
 struct make_derived_dimension;
+
+/**
+ *	@brief	make_derived_dimension::type のエイリアステンプレート
+ */
+template <typename... DimensionHolders>
+using make_derived_dimension_t =
+	typename make_derived_dimension<DimensionHolders...>::type;
 
 namespace detail
 {

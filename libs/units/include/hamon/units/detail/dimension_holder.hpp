@@ -7,7 +7,6 @@
 #ifndef HAMON_UNITS_DETAIL_DIMENSION_HOLDER_HPP
 #define HAMON_UNITS_DETAIL_DIMENSION_HOLDER_HPP
 
-#include <hamon/units/detail/dimension_holder_fwd.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -16,7 +15,7 @@ namespace hamon
 namespace units
 {
 
-template <typename Dimension, int Power>
+template <typename Dimension, int Power = 1>
 struct dimension_holder
 {
 	using type = Dimension;

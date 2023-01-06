@@ -7,7 +7,7 @@
 #ifndef HAMON_UNITS_DETAIL_DIMENSION_MULTIPLY_HPP
 #define HAMON_UNITS_DETAIL_DIMENSION_MULTIPLY_HPP
 
-#include <hamon/units/detail/derived_dimension_fwd.hpp>
+#include <hamon/units/detail/derived_dimension.hpp>
 #include <hamon/units/detail/make_derived_dimension.hpp>
 
 namespace hamon
