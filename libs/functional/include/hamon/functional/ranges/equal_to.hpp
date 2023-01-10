@@ -54,7 +54,7 @@ struct equal_to
 		>
 	>
 #endif
-	HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
+	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() == std::declval<U>())
 	{
 		return std::forward<T>(t) == std::forward<U>(u);

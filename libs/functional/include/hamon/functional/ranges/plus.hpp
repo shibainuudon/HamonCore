@@ -22,7 +22,7 @@ namespace ranges
 struct plus
 {
 	template <typename T, typename U>
-	HAMON_CONSTEXPR auto operator()(T&& lhs, U&& rhs) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& lhs, U&& rhs) const
 	HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() + std::declval<U>())
 	->decltype(std::forward<T>(lhs) + std::forward<U>(rhs))
 	{

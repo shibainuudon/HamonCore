@@ -90,7 +90,7 @@ private:
 
 public:
 	template <typename T, typename U>
-	HAMON_CONSTEXPR auto operator()(T&& t, U&& u) const
+	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t), std::forward<U>(u)))
 	->decltype(impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t), std::forward<U>(u)))
 	{

@@ -56,7 +56,7 @@ struct not_equal_to
 		>
 	>
 #endif
-	HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
+	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<U>() == std::declval<T>())
 	{
 		return !hamon::ranges::equal_to{}(std::forward<T>(t), std::forward<U>(u));

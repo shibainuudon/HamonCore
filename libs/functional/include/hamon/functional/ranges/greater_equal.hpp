@@ -56,7 +56,7 @@ struct greater_equal
 		>
 	>
 #endif
-	HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
+	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() < std::declval<U>())
 	{
 		return !hamon::ranges::less{}(std::forward<T>(t), std::forward<U>(u));
