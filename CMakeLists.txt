@@ -43,6 +43,7 @@ set(SUBDIRECTORIES
 	string
 	string_view
 	tuple
+	type_info
 	type_traits
 	units
 	utility)
