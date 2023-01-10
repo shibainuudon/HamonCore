@@ -28,12 +28,7 @@
 #include <hamon/config/suffix/unreachable.hpp>
 #include <hamon/config/suffix/warning.hpp>
 
-//#define HAMON_HEADER_ONLY
-
-#if defined(HAMON_HEADER_ONLY)
-#  define HAMON_INLINE	inline
-#else
-#  define HAMON_INLINE
-#endif
+#define HAMON_STRINGIZE(text) HAMON_STRINGIZE_I(text)
+#define HAMON_STRINGIZE_I(text) #text
 
 #endif // HAMON_CONFIG_SUFFIX_HPP
