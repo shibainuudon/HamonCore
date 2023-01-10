@@ -22,7 +22,7 @@ using std::advance;
 
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
-//#include <hamon/assert.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -35,7 +35,7 @@ template <typename InputIterator, typename Distance>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl(InputIterator& it, Distance n, std::input_iterator_tag*)
 {
-	//HAMON_ASSERT(n >= 0);
+	HAMON_ASSERT(n >= 0);
 	for (; 0 < n; --n)
 	{
 		++it;

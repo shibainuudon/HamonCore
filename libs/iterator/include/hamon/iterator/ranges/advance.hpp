@@ -35,7 +35,7 @@ using std::ranges::advance;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-//#include <hamon/assert.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -79,7 +79,7 @@ template <typename It>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl_1(hamon::detail::overload_priority<0>, It& it, hamon::iter_difference_t<It> n)
 {
-	//HAMON_ASSERT(n >= 0);
+	HAMON_ASSERT(n >= 0);
 	while (n-- > 0)
 	{
 		++it;
@@ -174,7 +174,7 @@ advance_impl_3(hamon::detail::overload_priority<1>, It& it, Difference n, Sent b
 {
 	const auto diff = bound - it;
 	// n and bound must not lead in opposite directions:
-	//HAMON_ASSERT(n == 0 || diff == 0 || ((n < 0) == (diff < 0)));
+	HAMON_ASSERT(n == 0 || diff == 0 || ((n < 0) == (diff < 0)));
 	const auto absdiff = diff < 0 ? -diff : diff;
 	const auto absn = n < 0 ? -n : n;;
 	if (absn >= absdiff)
@@ -218,7 +218,7 @@ template <typename It, typename Difference, typename Sent>
 inline HAMON_CXX14_CONSTEXPR Difference
 advance_impl_4(hamon::detail::overload_priority<0>, It& /*it*/, Difference n, Sent /*bound*/)
 {
-	//HAMON_ASSERT(n >= 0);
+	HAMON_ASSERT(n >= 0);
 	return n;
 }
 
