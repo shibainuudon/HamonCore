@@ -28,8 +28,8 @@ struct incrementable_wrapper
 	using difference_type = std::ptrdiff_t;
 	HAMON_CXX14_CONSTEXPR incrementable_wrapper& operator++();
 	HAMON_CXX14_CONSTEXPR incrementable_wrapper  operator++(int);
-	HAMON_CXX14_CONSTEXPR bool operator==(const incrementable_wrapper&) const;
-	HAMON_CXX14_CONSTEXPR bool operator!=(const incrementable_wrapper&) const;
+	HAMON_CXX11_CONSTEXPR bool operator==(const incrementable_wrapper&) const;
+	HAMON_CXX11_CONSTEXPR bool operator!=(const incrementable_wrapper&) const;
 };
 
 template <typename T>
@@ -37,14 +37,14 @@ struct indirectly_readable_wrapper
 {
 	T*	m_ptr;
 	using value_type = T;
-	HAMON_CXX14_CONSTEXPR T const& operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T const& operator*() const { return *m_ptr; }
 };
 
 template <typename T>
 struct indirectly_writable_wrapper
 {
 	T*	m_ptr;
-	HAMON_CXX14_CONSTEXPR T& operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T& operator*() const { return *m_ptr; }
 };
 
 template <typename T>
@@ -67,9 +67,9 @@ struct input_iterator_wrapper
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR input_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR void                    operator++(int) { ++m_ptr; }
-	HAMON_CXX14_CONSTEXPR T&                      operator*() const { return *m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator==(const input_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator!=(const input_iterator_wrapper& rhs) const { return !(*this == rhs); }
+	HAMON_CXX11_CONSTEXPR T&                      operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const input_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const input_iterator_wrapper& rhs) const { return !(*this == rhs); }
 };
 
 template <typename T>
@@ -80,7 +80,7 @@ struct output_iterator_wrapper
 	using difference_type   = std::ptrdiff_t;
 	HAMON_CXX14_CONSTEXPR output_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR output_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
-	HAMON_CXX14_CONSTEXPR T&                       operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                       operator*() const { return *m_ptr; }
 };
 
 template <typename T>
@@ -93,9 +93,9 @@ struct forward_iterator_wrapper
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR forward_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR forward_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
-	HAMON_CXX14_CONSTEXPR T&                        operator*() const { return *m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator==(const forward_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator!=(const forward_iterator_wrapper& rhs) const { return !(*this == rhs); }
+	HAMON_CXX11_CONSTEXPR T&                        operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const forward_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const forward_iterator_wrapper& rhs) const { return !(*this == rhs); }
 };
 
 template <typename T>
@@ -110,9 +110,9 @@ struct bidirectional_iterator_wrapper
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper& operator--() { --m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper  operator--(int);
-	HAMON_CXX14_CONSTEXPR T&                              operator*() const { return *m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator==(const bidirectional_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator!=(const bidirectional_iterator_wrapper& rhs) const { return !(*this == rhs); }
+	HAMON_CXX11_CONSTEXPR T&                              operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const bidirectional_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const bidirectional_iterator_wrapper& rhs) const { return !(*this == rhs); }
 };
 
 template <typename T>
@@ -126,20 +126,20 @@ struct random_access_iterator_wrapper
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper& operator+=(difference_type n) { m_ptr += n; return *this; }
-	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper  operator+(difference_type n) const { return {m_ptr + n}; }
+	HAMON_CXX11_CONSTEXPR random_access_iterator_wrapper  operator+(difference_type n) const { return {m_ptr + n}; }
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper& operator--() { --m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper  operator--(int) { auto t = *this; --m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper& operator-=(difference_type n) { m_ptr -= n; return *this; }
-	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper  operator-(difference_type n) const { return {m_ptr - n}; }
-	HAMON_CXX14_CONSTEXPR difference_type                 operator-(random_access_iterator_wrapper const& rhs) const { return m_ptr - rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR T&                              operator*() const { return *m_ptr; }
-	HAMON_CXX14_CONSTEXPR T&                              operator[](difference_type i) const { return m_ptr[i]; }
-	HAMON_CXX14_CONSTEXPR bool operator==(const random_access_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator!=(const random_access_iterator_wrapper& rhs) const { return m_ptr != rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator< (const random_access_iterator_wrapper& rhs) const { return m_ptr <  rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator> (const random_access_iterator_wrapper& rhs) const { return m_ptr >  rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator<=(const random_access_iterator_wrapper& rhs) const { return m_ptr <= rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator>=(const random_access_iterator_wrapper& rhs) const { return m_ptr >= rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR random_access_iterator_wrapper  operator-(difference_type n) const { return {m_ptr - n}; }
+	HAMON_CXX11_CONSTEXPR difference_type                 operator-(random_access_iterator_wrapper const& rhs) const { return m_ptr - rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                              operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                              operator[](difference_type i) const { return m_ptr[i]; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const random_access_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const random_access_iterator_wrapper& rhs) const { return m_ptr != rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator< (const random_access_iterator_wrapper& rhs) const { return m_ptr <  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator> (const random_access_iterator_wrapper& rhs) const { return m_ptr >  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator<=(const random_access_iterator_wrapper& rhs) const { return m_ptr <= rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator>=(const random_access_iterator_wrapper& rhs) const { return m_ptr >= rhs.m_ptr; }
 };
 
 template <typename T>
@@ -158,21 +158,21 @@ struct contiguous_iterator_wrapper
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator+=(difference_type n) { m_ptr += n; return *this; }
-	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper  operator+(difference_type n) const { return {m_ptr + n}; }
+	HAMON_CXX11_CONSTEXPR contiguous_iterator_wrapper  operator+(difference_type n) const { return {m_ptr + n}; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator--() { --m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper  operator--(int) { auto t = *this; --m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator-=(difference_type n) { m_ptr -= n; return *this; }
-	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper  operator-(difference_type n) const { return {m_ptr - n}; }
-	HAMON_CXX14_CONSTEXPR difference_type              operator-(contiguous_iterator_wrapper const& rhs) const { return m_ptr - rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR T&                           operator*() const { return *m_ptr; }
-	HAMON_CXX14_CONSTEXPR T&                           operator[](difference_type i) const { return m_ptr[i]; }
-	HAMON_CXX14_CONSTEXPR T*                           operator->() const { return m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator==(const contiguous_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator!=(const contiguous_iterator_wrapper& rhs) const { return m_ptr != rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator< (const contiguous_iterator_wrapper& rhs) const { return m_ptr <  rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator> (const contiguous_iterator_wrapper& rhs) const { return m_ptr >  rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator<=(const contiguous_iterator_wrapper& rhs) const { return m_ptr <= rhs.m_ptr; }
-	HAMON_CXX14_CONSTEXPR bool operator>=(const contiguous_iterator_wrapper& rhs) const { return m_ptr >= rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR contiguous_iterator_wrapper  operator-(difference_type n) const { return {m_ptr - n}; }
+	HAMON_CXX11_CONSTEXPR difference_type              operator-(contiguous_iterator_wrapper const& rhs) const { return m_ptr - rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                           operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                           operator[](difference_type i) const { return m_ptr[i]; }
+	HAMON_CXX11_CONSTEXPR T*                           operator->() const { return m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const contiguous_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const contiguous_iterator_wrapper& rhs) const { return m_ptr != rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator< (const contiguous_iterator_wrapper& rhs) const { return m_ptr <  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator> (const contiguous_iterator_wrapper& rhs) const { return m_ptr >  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator<=(const contiguous_iterator_wrapper& rhs) const { return m_ptr <= rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator>=(const contiguous_iterator_wrapper& rhs) const { return m_ptr >= rhs.m_ptr; }
 };
 
 template <typename T>
