@@ -21,6 +21,6 @@
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
-//#include <hamon/ranges/concepts/viewable_range.hpp>
+#include <hamon/ranges/concepts/viewable_range.hpp>
 
 #endif // HAMON_RANGES_CONCEPTS_HPP
