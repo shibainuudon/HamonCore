@@ -41,6 +41,7 @@ set(SUBDIRECTORIES
 	ratio
 	serialization
 	string
+	string_view
 	tuple
 	type_traits
 	units
