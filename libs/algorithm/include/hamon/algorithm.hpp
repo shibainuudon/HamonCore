@@ -9,6 +9,7 @@
 
 #include <hamon/algorithm/config.hpp>
 #include <hamon/algorithm/copy.hpp>
+#include <hamon/algorithm/copy_n.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
