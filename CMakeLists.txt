@@ -39,6 +39,7 @@ set(SUBDIRECTORIES
 	ranges
 	ratio
 	serialization
+	string
 	tuple
 	type_traits
 	units
