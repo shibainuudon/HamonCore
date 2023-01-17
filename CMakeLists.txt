@@ -26,6 +26,7 @@ set(SUBDIRECTORIES
 	compare
 	concepts
 	config
+	cstring
 	debug
 	functional
 	ios
