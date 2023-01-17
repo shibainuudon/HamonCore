@@ -62,10 +62,10 @@ public:
 
 GTEST_TEST(FunctionalTest, HashMemberTest)
 {
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S1&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S1 const&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S1&&>::value, "");
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S1 const&&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), S1&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::hash), S1 const&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::hash), S1&&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), S1 const&&>::value, "");
 
 	HAMON_CXX11_CONSTEXPR S1 const s1_1{1};
 	HAMON_CXX11_CONSTEXPR S1 const s1_2{2};
@@ -113,10 +113,10 @@ public:
 
 GTEST_TEST(FunctionalTest, HashAdlTest)
 {
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S2&>::value, "");
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, S2 const&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S2&&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<hamon::hash_t, S2 const&&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), S2&>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), S2 const&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::hash), S2&&>::value, "");
+	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::hash), S2 const&&>::value, "");
 
 	HAMON_CXX11_CONSTEXPR S2 const s4_1{3};
 	HAMON_CXX11_CONSTEXPR S2 const s4_2{4};
@@ -136,7 +136,7 @@ GTEST_TEST(FunctionalTest, HashAdlTest)
 template <typename T>
 void HashIntegralTest()
 {
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, T>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), T>::value, "");
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(T(0)), hamon::hash(T(-1)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(T(0)), hamon::hash(T( 0)));
@@ -253,7 +253,7 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 template <typename T>
 void HashFloatTest()
 {
-//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, T>::value, "");
+//	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), T>::value, "");
 
 	HAMON_CXX11_CONSTEXPR T const eps = std::numeric_limits<T>::epsilon();
 	HAMON_CXX11_CONSTEXPR T const max = std::numeric_limits<T>::max();
@@ -313,9 +313,9 @@ GTEST_TEST(FunctionalTest, HashFloatTest)
 
 GTEST_TEST(FunctionalTest, HashPointerTest)
 {
-//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, int*>::value, "");
-//	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, void*>::value, "");
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, std::nullptr_t>::value, "");
+//	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), int*>::value, "");
+//	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), void*>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), std::nullptr_t>::value, "");
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(nullptr));
 
@@ -343,8 +343,8 @@ GTEST_TEST(FunctionalTest, HashEnumTest)
 		Value1, Value2, Value3
 	};
 
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, Enum1>::value, "");
-	static_assert( hamon::is_nothrow_invocable<hamon::hash_t, Enum2>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), Enum1>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), Enum2>::value, "");
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(Value1_1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, hamon::hash(Value1_2));
@@ -484,39 +484,39 @@ GTEST_TEST(FunctionalTest, HashStringTest)
 GTEST_TEST(FunctionalTest, HashPairTest)
 {
 	{
-		std::pair<int, float> p {1, 2.5f};
-		EXPECT_EQ(hamon::hash_combine(0, 1, 2.5f), hamon::hash(p));
+		HAMON_CXX14_CONSTEXPR std::pair<int, float> p {1, 2.5f};
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0, 1, 2.5f), hamon::hash(p));
 	}
 	{
-		std::pair<S1, S2> p{S1{3}, S2{4}};
-		EXPECT_EQ(hamon::hash_combine(0, 3*2, 4*2), hamon::hash(p));
+		HAMON_CXX14_CONSTEXPR std::pair<S1, S2> p{S1{3}, S2{4}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0, 3*2, 4*2), hamon::hash(p));
 	}
 }
 
 GTEST_TEST(FunctionalTest, HashTupleTest)
 {
 	{
-		std::tuple<> t;
-		EXPECT_EQ(hamon::hash_combine(0), hamon::hash(t));
+		HAMON_CXX14_CONSTEXPR std::tuple<> t;
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0), hamon::hash(t));
 	}
 	{
-		std::tuple<int> t{2};
-		EXPECT_EQ(hamon::hash_combine(0, 2), hamon::hash(t));
+		HAMON_CXX14_CONSTEXPR std::tuple<int> t{2};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0, 2), hamon::hash(t));
 	}
 	{
-		std::tuple<int, int> t{3, 4};
-		EXPECT_EQ(hamon::hash_combine(0, 3, 4), hamon::hash(t));
+		HAMON_CXX14_CONSTEXPR std::tuple<int, int> t{3, 4};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0, 3, 4), hamon::hash(t));
 	}
 	{
-		std::tuple<S1, float, S2, int> t{S1{4}, 5.5f, S2{6}, 7};
-		EXPECT_EQ(hamon::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::hash(t));
+		HAMON_CXX14_CONSTEXPR std::tuple<S1, float, S2, int> t{S1{4}, 5.5f, S2{6}, 7};
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::hash(t));
 	}
 }
 
 GTEST_TEST(FunctionalTest, HashBitsetTest)
 {
 	{
-		std::bitset<4> b;
+		HAMON_CXX11_CONSTEXPR std::bitset<4> b;
 		EXPECT_EQ(std::hash<std::bitset<4>>{}(b), hamon::hash(b));
 	}
 }

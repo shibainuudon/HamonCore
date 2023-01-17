@@ -12,6 +12,7 @@
 #include <hamon/bit/bit_cast.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
@@ -19,6 +20,8 @@
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/ranges/concepts/range.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -62,16 +65,31 @@ private:
 		return hash_combine(0, x[Is]...);
 	}
 
+#if HAMON_CXX_STANDARD < 14
 	template <typename Iterator>
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX11_CONSTEXPR std::size_t
+	hash_range_impl(Iterator first, Iterator last, std::size_t result)
+	{
+		return first == last ?
+			result :
+			hash_range_impl(hamon::next(first), last, hash_combine(result, *first));
+	}
+#endif
+
+	template <typename Iterator>
+	static HAMON_CXX11_CONSTEXPR std::size_t
 	hash_range(Iterator first, Iterator last)
 	{
+#if HAMON_CXX_STANDARD < 14
+		return hash_range_impl(first, last, 0);
+#else
 		std::size_t result = 0;
 		for (; first != last; ++first)
 		{
 			result = hash_combine(result, *first);
 		}
 		return result;
+#endif
 	}
 
 	template <typename T>
@@ -182,7 +200,7 @@ private:
 
 	// (9) tuple-like なら hash_combine(get<I>(x)...)
 	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, RawT), typename T>
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<2>)
 	HAMON_HASH_RETURN(
 		hash_combine_tuple(
@@ -191,10 +209,10 @@ private:
 
 	// (10) range なら begin(x)からend(x)までループしてhash_combine
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, RawT), typename T>
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<1>)
 	HAMON_HASH_RETURN(
-		hash_range(std::begin(x), std::end(x)))
+		hash_range(hamon::ranges::begin(x), hamon::ranges::end(x)))
 
 	// (11) std::hash<T>が呼び出せるなら std::hash<T>{}(x)
 	template <typename RawT, typename T>
