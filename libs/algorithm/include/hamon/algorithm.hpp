@@ -21,7 +21,7 @@
 #include <hamon/algorithm/count.hpp>
 #include <hamon/algorithm/count_if.hpp>
 #include <hamon/algorithm/equal.hpp>
-//#include <hamon/algorithm/equal_range.hpp>
+#include <hamon/algorithm/equal_range.hpp>
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/algorithm/find.hpp>
