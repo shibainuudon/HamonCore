@@ -18,8 +18,8 @@
 #include <hamon/algorithm/copy_backward.hpp>
 //#include <hamon/algorithm/copy_if.hpp>
 #include <hamon/algorithm/copy_n.hpp>
-//#include <hamon/algorithm/count.hpp>
-//#include <hamon/algorithm/count_if.hpp>
+#include <hamon/algorithm/count.hpp>
+#include <hamon/algorithm/count_if.hpp>
 #include <hamon/algorithm/equal.hpp>
 //#include <hamon/algorithm/equal_range.hpp>
 #include <hamon/algorithm/fill.hpp>
