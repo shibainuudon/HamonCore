@@ -43,8 +43,8 @@
 //#include <hamon/algorithm/is_sorted_until.hpp>
 //#include <hamon/algorithm/is_unique.hpp>
 #include <hamon/algorithm/iter_swap.hpp>
-//#include <hamon/algorithm/lexicographical_compare.hpp>
-//#include <hamon/algorithm/lexicographical_compare_three_way.hpp>
+#include <hamon/algorithm/lexicographical_compare.hpp>
+#include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/lower_bound.hpp>
 //#include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/max.hpp>
