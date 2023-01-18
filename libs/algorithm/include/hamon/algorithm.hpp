@@ -33,7 +33,7 @@
 #include <hamon/algorithm/for_each_n.hpp>
 #include <hamon/algorithm/generate.hpp>
 #include <hamon/algorithm/generate_n.hpp>
-//#include <hamon/algorithm/includes.hpp>
+#include <hamon/algorithm/includes.hpp>
 //#include <hamon/algorithm/inplace_merge.hpp>
 //#include <hamon/algorithm/is_heap.hpp>
 //#include <hamon/algorithm/is_heap_until.hpp>
