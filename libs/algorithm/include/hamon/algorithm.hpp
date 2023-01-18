@@ -8,8 +8,8 @@
 #define HAMON_ALGORITHM_HPP
 
 //#include <hamon/algorithm/adjacent_find.hpp>
-//#include <hamon/algorithm/all_of.hpp>
-//#include <hamon/algorithm/any_of.hpp>
+#include <hamon/algorithm/all_of.hpp>
+#include <hamon/algorithm/any_of.hpp>
 //#include <hamon/algorithm/binary_search.hpp>
 #include <hamon/algorithm/clamp.hpp>
 #include <hamon/algorithm/config.hpp>
@@ -58,7 +58,7 @@
 //#include <hamon/algorithm/move.hpp>
 //#include <hamon/algorithm/move_backward.hpp>
 //#include <hamon/algorithm/next_permutation.hpp>
-//#include <hamon/algorithm/none_of.hpp>
+#include <hamon/algorithm/none_of.hpp>
 //#include <hamon/algorithm/nth_element.hpp>
 //#include <hamon/algorithm/partial_sort.hpp>
 //#include <hamon/algorithm/partial_sort_copy.hpp>
