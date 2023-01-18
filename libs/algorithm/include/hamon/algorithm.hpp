@@ -29,8 +29,8 @@
 #include <hamon/algorithm/find_first_of.hpp>
 #include <hamon/algorithm/find_if.hpp>
 #include <hamon/algorithm/find_if_not.hpp>
-//#include <hamon/algorithm/for_each.hpp>
-//#include <hamon/algorithm/for_each_n.hpp>
+#include <hamon/algorithm/for_each.hpp>
+#include <hamon/algorithm/for_each_n.hpp>
 //#include <hamon/algorithm/generate.hpp>
 //#include <hamon/algorithm/generate_n.hpp>
 //#include <hamon/algorithm/includes.hpp>
