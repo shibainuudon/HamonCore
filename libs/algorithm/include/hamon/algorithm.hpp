@@ -35,8 +35,8 @@
 #include <hamon/algorithm/generate_n.hpp>
 #include <hamon/algorithm/includes.hpp>
 //#include <hamon/algorithm/inplace_merge.hpp>
-//#include <hamon/algorithm/is_heap.hpp>
-//#include <hamon/algorithm/is_heap_until.hpp>
+#include <hamon/algorithm/is_heap.hpp>
+#include <hamon/algorithm/is_heap_until.hpp>
 //#include <hamon/algorithm/is_partitioned.hpp>
 //#include <hamon/algorithm/is_permutation.hpp>
 #include <hamon/algorithm/is_sorted.hpp>
