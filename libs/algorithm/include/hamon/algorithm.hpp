@@ -25,7 +25,7 @@
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/algorithm/find.hpp>
-//#include <hamon/algorithm/find_end.hpp>
+#include <hamon/algorithm/find_end.hpp>
 #include <hamon/algorithm/find_first_of.hpp>
 #include <hamon/algorithm/find_if.hpp>
 #include <hamon/algorithm/find_if_not.hpp>
