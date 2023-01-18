@@ -39,8 +39,8 @@
 //#include <hamon/algorithm/is_heap_until.hpp>
 //#include <hamon/algorithm/is_partitioned.hpp>
 //#include <hamon/algorithm/is_permutation.hpp>
-//#include <hamon/algorithm/is_sorted.hpp>
-//#include <hamon/algorithm/is_sorted_until.hpp>
+#include <hamon/algorithm/is_sorted.hpp>
+#include <hamon/algorithm/is_sorted_until.hpp>
 //#include <hamon/algorithm/is_unique.hpp>
 #include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
