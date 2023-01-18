@@ -7,7 +7,7 @@
 #ifndef HAMON_ALGORITHM_HPP
 #define HAMON_ALGORITHM_HPP
 
-//#include <hamon/algorithm/adjacent_find.hpp>
+#include <hamon/algorithm/adjacent_find.hpp>
 #include <hamon/algorithm/all_of.hpp>
 #include <hamon/algorithm/any_of.hpp>
 //#include <hamon/algorithm/binary_search.hpp>
