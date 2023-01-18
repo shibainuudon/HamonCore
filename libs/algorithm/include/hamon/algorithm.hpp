@@ -13,7 +13,7 @@
 #include <hamon/algorithm/binary_search.hpp>
 #include <hamon/algorithm/clamp.hpp>
 #include <hamon/algorithm/config.hpp>
-//#include <hamon/algorithm/contains.hpp>
+#include <hamon/algorithm/contains.hpp>
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/algorithm/copy_backward.hpp>
 //#include <hamon/algorithm/copy_if.hpp>
@@ -24,11 +24,11 @@
 //#include <hamon/algorithm/equal_range.hpp>
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/algorithm/fill_n.hpp>
-//#include <hamon/algorithm/find.hpp>
+#include <hamon/algorithm/find.hpp>
 //#include <hamon/algorithm/find_end.hpp>
-//#include <hamon/algorithm/find_first_of.hpp>
-//#include <hamon/algorithm/find_if.hpp>
-//#include <hamon/algorithm/find_if_not.hpp>
+#include <hamon/algorithm/find_first_of.hpp>
+#include <hamon/algorithm/find_if.hpp>
+#include <hamon/algorithm/find_if_not.hpp>
 //#include <hamon/algorithm/for_each.hpp>
 //#include <hamon/algorithm/for_each_n.hpp>
 //#include <hamon/algorithm/generate.hpp>
