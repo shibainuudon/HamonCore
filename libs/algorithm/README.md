@@ -18,7 +18,13 @@
 
 ## 依存ライブラリ
 
+* Hamon.Compare
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.Debug
+* Hamon.Detail
 * Hamon.Functional
 * Hamon.Iterator
+* Hamon.Numeric
+* Hamon.Ranges
+* Hamon.TypeTraits

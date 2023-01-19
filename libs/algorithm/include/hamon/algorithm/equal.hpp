@@ -39,7 +39,7 @@ template <
 	typename BinaryPredicate
 >
 inline HAMON_CXX14_CONSTEXPR bool
-equal(
+equal_impl(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2,
 	BinaryPredicate pred)
@@ -61,7 +61,7 @@ template <
 	typename BinaryPredicate
 >
 inline HAMON_CXX14_CONSTEXPR bool
-equal(
+equal_impl(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
 	BinaryPredicate pred,
@@ -85,7 +85,7 @@ template <
 	typename BinaryPredicate
 >
 inline HAMON_CXX14_CONSTEXPR bool
-equal(
+equal_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
@@ -97,7 +97,7 @@ equal(
 		return false;
 	}
 
-	return hamon::detail::equal(first1, last1, first2, pred);
+	return hamon::detail::equal_impl(first1, last1, first2, pred);
 }
 
 }	// namespace detail
@@ -125,7 +125,7 @@ equal(
 	InputIterator2 first2,
 	BinaryPredicate pred)
 {
-	return hamon::detail::equal(
+	return hamon::detail::equal_impl(
 		first1, last1, first2, pred);
 }
 
@@ -187,7 +187,7 @@ equal(
 {
 	using Category1 = hamon::iterator_category<InputIterator1>*;
 	using Category2 = hamon::iterator_category<InputIterator2>*;
-	return hamon::detail::equal(
+	return hamon::detail::equal_impl(
 		first1, last1, first2, last2, pred, Category1(), Category2());
 }
 

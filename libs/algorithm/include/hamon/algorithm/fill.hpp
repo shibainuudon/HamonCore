@@ -34,7 +34,7 @@ namespace detail
 
 template <typename ForwardIterator, typename T>
 inline HAMON_CXX14_CONSTEXPR void
-fill(
+fill_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	T const& value,
@@ -48,7 +48,7 @@ fill(
 
 template <typename RandomAccessIterator, typename T>
 inline HAMON_CXX14_CONSTEXPR void
-fill(
+fill_impl(
 	RandomAccessIterator first,
 	RandomAccessIterator last,
 	T const& value,
@@ -80,7 +80,7 @@ inline HAMON_CXX14_CONSTEXPR void
 fill(ForwardIterator first, ForwardIterator last, T const& value)
 {
 	using Category = hamon::iterator_category<ForwardIterator>*;
-	hamon::detail::fill(first, last, value, Category());
+	hamon::detail::fill_impl(first, last, value, Category());
 }
 
 }	// namespace hamon
