@@ -62,9 +62,9 @@
 //#include <hamon/algorithm/nth_element.hpp>
 //#include <hamon/algorithm/partial_sort.hpp>
 //#include <hamon/algorithm/partial_sort_copy.hpp>
-//#include <hamon/algorithm/partition.hpp>
-//#include <hamon/algorithm/partition_copy.hpp>
-//#include <hamon/algorithm/partition_point.hpp>
+#include <hamon/algorithm/partition.hpp>
+#include <hamon/algorithm/partition_copy.hpp>
+#include <hamon/algorithm/partition_point.hpp>
 //#include <hamon/algorithm/pop_heap.hpp>
 #include <hamon/algorithm/prev_permutation.hpp>
 //#include <hamon/algorithm/push_heap.hpp>
