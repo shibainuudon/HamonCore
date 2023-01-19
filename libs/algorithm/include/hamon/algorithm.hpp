@@ -66,7 +66,7 @@
 //#include <hamon/algorithm/partition_copy.hpp>
 //#include <hamon/algorithm/partition_point.hpp>
 //#include <hamon/algorithm/pop_heap.hpp>
-//#include <hamon/algorithm/prev_permutation.hpp>
+#include <hamon/algorithm/prev_permutation.hpp>
 //#include <hamon/algorithm/push_heap.hpp>
 //#include <hamon/algorithm/radix_sort.hpp>
 #include <hamon/algorithm/ranges.hpp>
