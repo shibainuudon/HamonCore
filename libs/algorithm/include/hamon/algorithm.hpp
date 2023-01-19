@@ -46,7 +46,7 @@
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/lower_bound.hpp>
-//#include <hamon/algorithm/make_heap.hpp>
+#include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/max_element.hpp>
 #include <hamon/algorithm/merge.hpp>
@@ -65,9 +65,9 @@
 #include <hamon/algorithm/partition.hpp>
 #include <hamon/algorithm/partition_copy.hpp>
 #include <hamon/algorithm/partition_point.hpp>
-//#include <hamon/algorithm/pop_heap.hpp>
+#include <hamon/algorithm/pop_heap.hpp>
 #include <hamon/algorithm/prev_permutation.hpp>
-//#include <hamon/algorithm/push_heap.hpp>
+#include <hamon/algorithm/push_heap.hpp>
 //#include <hamon/algorithm/radix_sort.hpp>
 #include <hamon/algorithm/ranges.hpp>
 #include <hamon/algorithm/remove.hpp>
@@ -93,7 +93,7 @@
 //#include <hamon/algorithm/shift_right.hpp>
 //#include <hamon/algorithm/shuffle.hpp>
 //#include <hamon/algorithm/sort.hpp>
-//#include <hamon/algorithm/sort_heap.hpp>
+#include <hamon/algorithm/sort_heap.hpp>
 //#include <hamon/algorithm/stable_partition.hpp>
 //#include <hamon/algorithm/stable_sort.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
