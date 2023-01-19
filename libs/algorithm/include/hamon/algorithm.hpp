@@ -97,7 +97,7 @@
 //#include <hamon/algorithm/stable_partition.hpp>
 //#include <hamon/algorithm/stable_sort.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
-//#include <hamon/algorithm/transform.hpp>
+#include <hamon/algorithm/transform.hpp>
 //#include <hamon/algorithm/unique.hpp>
 //#include <hamon/algorithm/unique_copy.hpp>
 #include <hamon/algorithm/upper_bound.hpp>
