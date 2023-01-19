@@ -49,7 +49,7 @@
 //#include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/max_element.hpp>
-//#include <hamon/algorithm/merge.hpp>
+#include <hamon/algorithm/merge.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/algorithm/min_element.hpp>
 #include <hamon/algorithm/minmax.hpp>
