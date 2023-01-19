@@ -54,7 +54,7 @@
 #include <hamon/algorithm/min_element.hpp>
 #include <hamon/algorithm/minmax.hpp>
 #include <hamon/algorithm/minmax_element.hpp>
-//#include <hamon/algorithm/mismatch.hpp>
+#include <hamon/algorithm/mismatch.hpp>
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 //#include <hamon/algorithm/next_permutation.hpp>
