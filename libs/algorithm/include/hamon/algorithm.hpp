@@ -70,10 +70,10 @@
 //#include <hamon/algorithm/push_heap.hpp>
 //#include <hamon/algorithm/radix_sort.hpp>
 #include <hamon/algorithm/ranges.hpp>
-//#include <hamon/algorithm/remove.hpp>
-//#include <hamon/algorithm/remove_copy.hpp>
-//#include <hamon/algorithm/remove_copy_if.hpp>
-//#include <hamon/algorithm/remove_if.hpp>
+#include <hamon/algorithm/remove.hpp>
+#include <hamon/algorithm/remove_copy.hpp>
+#include <hamon/algorithm/remove_copy_if.hpp>
+#include <hamon/algorithm/remove_if.hpp>
 //#include <hamon/algorithm/replace.hpp>
 //#include <hamon/algorithm/replace_copy.hpp>
 //#include <hamon/algorithm/replace_copy_if.hpp>
