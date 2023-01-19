@@ -74,10 +74,10 @@
 #include <hamon/algorithm/remove_copy.hpp>
 #include <hamon/algorithm/remove_copy_if.hpp>
 #include <hamon/algorithm/remove_if.hpp>
-//#include <hamon/algorithm/replace.hpp>
-//#include <hamon/algorithm/replace_copy.hpp>
-//#include <hamon/algorithm/replace_copy_if.hpp>
-//#include <hamon/algorithm/replace_if.hpp>
+#include <hamon/algorithm/replace.hpp>
+#include <hamon/algorithm/replace_copy.hpp>
+#include <hamon/algorithm/replace_copy_if.hpp>
+#include <hamon/algorithm/replace_if.hpp>
 #include <hamon/algorithm/reverse.hpp>
 #include <hamon/algorithm/reverse_copy.hpp>
 //#include <hamon/algorithm/rotate.hpp>
