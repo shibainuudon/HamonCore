@@ -17,7 +17,7 @@
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/bit/countr_one.hpp>
 #include <hamon/bit/countr_zero.hpp>
-//#include <hamon/bit/endian.hpp>
+#include <hamon/bit/endian.hpp>
 #include <hamon/bit/has_single_bit.hpp>
 #include <hamon/bit/popcount.hpp>
 #include <hamon/bit/rotl.hpp>
