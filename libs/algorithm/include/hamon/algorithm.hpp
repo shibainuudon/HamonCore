@@ -89,8 +89,8 @@
 #include <hamon/algorithm/set_intersection.hpp>
 #include <hamon/algorithm/set_symmetric_difference.hpp>
 #include <hamon/algorithm/set_union.hpp>
-//#include <hamon/algorithm/shift_left.hpp>
-//#include <hamon/algorithm/shift_right.hpp>
+#include <hamon/algorithm/shift_left.hpp>
+#include <hamon/algorithm/shift_right.hpp>
 //#include <hamon/algorithm/shuffle.hpp>
 //#include <hamon/algorithm/sort.hpp>
 #include <hamon/algorithm/sort_heap.hpp>
