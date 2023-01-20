@@ -9,7 +9,24 @@
 
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
+#include <hamon/memory/destroy.hpp>
 #include <hamon/memory/destroy_at.hpp>
+//#include <hamon/memory/destroy_n.hpp>
+//#include <hamon/memory/make_shared.hpp>
+//#include <hamon/memory/make_unique.hpp>
+//#include <hamon/memory/pointer_traits.hpp>
+//#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/to_address.hpp>
+//#include <hamon/memory/uninitialized_copy.hpp>
+//#include <hamon/memory/uninitialized_copy_n.hpp>
+//#include <hamon/memory/uninitialized_default_construct.hpp>
+//#include <hamon/memory/uninitialized_default_construct_n.hpp>
+//#include <hamon/memory/uninitialized_fill.hpp>
+//#include <hamon/memory/uninitialized_fill_n.hpp>
+//#include <hamon/memory/uninitialized_move.hpp>
+//#include <hamon/memory/uninitialized_move_n.hpp>
+//#include <hamon/memory/uninitialized_value_construct.hpp>
+//#include <hamon/memory/uninitialized_value_construct_n.hpp>
+//#include <hamon/memory/unique_ptr.hpp>
 
 #endif // HAMON_MEMORY_HPP
