@@ -13,10 +13,10 @@
 //#include <hamon/bit/bit_width.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/config.hpp>
-//#include <hamon/bit/countl_one.hpp>
-//#include <hamon/bit/countl_zero.hpp>
-//#include <hamon/bit/countr_one.hpp>
-//#include <hamon/bit/countr_zero.hpp>
+#include <hamon/bit/countl_one.hpp>
+#include <hamon/bit/countl_zero.hpp>
+#include <hamon/bit/countr_one.hpp>
+#include <hamon/bit/countr_zero.hpp>
 //#include <hamon/bit/endian.hpp>
 //#include <hamon/bit/has_single_bit.hpp>
 #include <hamon/bit/popcount.hpp>
