@@ -82,7 +82,7 @@
 #include <hamon/algorithm/reverse_copy.hpp>
 #include <hamon/algorithm/rotate.hpp>
 #include <hamon/algorithm/rotate_copy.hpp>
-//#include <hamon/algorithm/sample.hpp>
+#include <hamon/algorithm/sample.hpp>
 #include <hamon/algorithm/search.hpp>
 #include <hamon/algorithm/search_n.hpp>
 #include <hamon/algorithm/set_difference.hpp>
