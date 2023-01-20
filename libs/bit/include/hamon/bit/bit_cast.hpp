@@ -26,6 +26,9 @@ using std::bit_cast;
 #else
 
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 #include <type_traits>
 #include <cstring>	// memcpy
 
@@ -47,30 +50,40 @@ namespace hamon
  *	・is_trivially_copyable_v<To> == trueであること
  *	・is_trivially_copyable_v<From> == trueであること
  *
- *  C++20でstd::bit_castが使える場合そちらを使い、
  *	型ToとFrom、およびその全てのサブオブジェクトが以下の条件を全て満たす場合、constexpr関数として評価される：
  *	・is_union_v<T> == false
  *	・is_pointer_v<T> == false
  *	・is_member_pointer_v<T> == false
  *	・is_volatile_v<T> == false
  *	・Tが参照の非静的メンバ変数を持たないこと
- * 
- *  std::bit_castが使えない場合、constexprにすることはできない
  */
 template <
 	typename To,
 	typename From,
 	typename = hamon::enable_if_t<
-		sizeof(To) == sizeof(From) &&
-		std::is_trivially_copyable<To>::value &&
-		std::is_trivially_copyable<From>::value
+		hamon::conjunction<
+			hamon::bool_constant<sizeof(To) == sizeof(From)>,
+			std::is_trivially_copyable<To>,
+			std::is_trivially_copyable<From>
+		>::value
 	>
 >
-inline To bit_cast(From const& src) HAMON_NOEXCEPT
+HAMON_NODISCARD inline HAMON_CONSTEXPR To
+bit_cast(From const& src) HAMON_NOEXCEPT
 {
+#if HAMON_HAS_BUILTIN(__builtin_bit_cast)
+
+// bit_cast が constexpr であることを定義
+#define	HAMON_HAS_CONSTEXPR_BIT_CAST
+
+	return __builtin_bit_cast(To, src);
+
+#else
+
 	To dst;
 	std::memcpy(&dst, &src, sizeof(To));
 	return dst;
+#endif
 }
 
 }	// namespace hamon

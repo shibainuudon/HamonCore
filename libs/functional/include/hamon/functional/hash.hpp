@@ -111,14 +111,20 @@ private:
 		return hash_combine(0, std::get<Is>(std::forward<T>(x))...);
 	}
 
+	template <typename T, std::size_t N>
+	struct Array
+	{
+		T buf[N];
+	};
+
 	template <typename T, std::size_t Digits = std::numeric_limits<hamon::remove_cvref_t<T>>::digits>
 	struct hash_float
 	{
 		static HAMON_CXX11_CONSTEXPR std::size_t
 		impl(T&& x)
 		{
-			using type = std::array<unsigned char, sizeof(T)>;
-			return hash_t{}(hamon::bit_cast<type>(x));
+			using type = Array<unsigned char, sizeof(T)>;
+			return hash_t{}(hamon::bit_cast<type>(x).buf);
 		}
 	};
 
@@ -126,12 +132,18 @@ private:
 	template <typename T>
 	struct hash_float<T, 64>
 	{
-		static HAMON_CXX14_CONSTEXPR std::size_t
+	private:
+		static HAMON_CXX11_CONSTEXPR std::size_t
+		impl2(Array<unsigned char, sizeof(T)> const& arr)
+		{
+			return hash_range(arr.buf, arr.buf + 10);
+		}
+	public:
+		static HAMON_CXX11_CONSTEXPR std::size_t
 		impl(T&& x)
 		{
-			using type = std::array<unsigned char, sizeof(T)>;
-			auto const arr = hamon::bit_cast<type>(x);
-			return hash_range(arr.begin(), arr.begin() + 10);
+			using type = Array<unsigned char, sizeof(T)>;
+			return impl2(hamon::bit_cast<type>(x));
 		}
 	};
 
