@@ -8,8 +8,8 @@
 #define HAMON_BIT_HPP
 
 #include <hamon/bit/bit_cast.hpp>
-//#include <hamon/bit/bit_ceil.hpp>
-//#include <hamon/bit/bit_floor.hpp>
+#include <hamon/bit/bit_ceil.hpp>
+#include <hamon/bit/bit_floor.hpp>
 //#include <hamon/bit/bit_width.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/config.hpp>
