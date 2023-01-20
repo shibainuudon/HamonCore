@@ -59,7 +59,7 @@
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/next_permutation.hpp>
 #include <hamon/algorithm/none_of.hpp>
-//#include <hamon/algorithm/nth_element.hpp>
+#include <hamon/algorithm/nth_element.hpp>
 #include <hamon/algorithm/partial_sort.hpp>
 #include <hamon/algorithm/partial_sort_copy.hpp>
 #include <hamon/algorithm/partition.hpp>
