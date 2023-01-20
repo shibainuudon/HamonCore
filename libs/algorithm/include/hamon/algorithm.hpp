@@ -94,7 +94,7 @@
 #include <hamon/algorithm/shuffle.hpp>
 //#include <hamon/algorithm/sort.hpp>
 #include <hamon/algorithm/sort_heap.hpp>
-//#include <hamon/algorithm/stable_partition.hpp>
+#include <hamon/algorithm/stable_partition.hpp>
 //#include <hamon/algorithm/stable_sort.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
 #include <hamon/algorithm/transform.hpp>
