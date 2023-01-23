@@ -4,8 +4,8 @@
  *	@brief	
  */
 
-#ifndef UNIT_TEST_FND_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP
-#define UNIT_TEST_FND_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP
+#ifndef UNIT_TEST_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP
+#define UNIT_TEST_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -105,4 +105,4 @@ struct StringViewTestHelper<char32_t>
 }	// namespace string_view_test
 }	// namespace hamon_test
 
-#endif // UNIT_TEST_FND_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP
+#endif // UNIT_TEST_STRING_VIEW_STRING_VIEW_TEST_HELPER_HPP

@@ -230,4 +230,4 @@ operator*=(vector<T1, 3>& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
 
 }	// namespace hamon
 
-#endif // HAMON_QVM_QUATERNION_QUATERNION_HPP
+#endif // HAMON_QVM_QUATERNION_OPERATORS_HPP

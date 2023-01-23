@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef HAMON_PCH_HPP
-#define HAMON_PCH_HPP
+#ifndef UNIT_TEST_COMMON_PCH_HPP
+#define UNIT_TEST_COMMON_PCH_HPP
 
 #include <algorithm>
 #include <array>
@@ -34,4 +34,4 @@
 
 #include <gtest/gtest.h>
 
-#endif // HAMON_PCH_HPP
+#endif // UNIT_TEST_COMMON_PCH_HPP

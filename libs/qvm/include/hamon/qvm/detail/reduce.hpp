@@ -80,4 +80,4 @@ reduce(GenType<T, Ns...> const& v, U init = {}, F binary_op = {}) HAMON_NOEXCEPT
 
 }	// namespace hamon
 
-#endif // HAMON_QVM_DETAIL_reduce_HPP
+#endif // HAMON_QVM_DETAIL_REDUCE_HPP

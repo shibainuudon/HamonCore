@@ -4,8 +4,8 @@
  *	@brief	is_reference_wrapper クラステンプレートの定義
  */
 
-#ifndef HAMON_TYPE_TRAITS_DETAIL_IS_REFERENCE_WRAPPER_HPP
-#define HAMON_TYPE_TRAITS_DETAIL_IS_REFERENCE_WRAPPER_HPP
+#ifndef HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP
+#define HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP
 
 #include <hamon/functional/config.hpp>
 #include <type_traits>
@@ -57,4 +57,4 @@ struct is_reference_wrapper<T&>
 
 }	// namespace hamon
 
-#endif // HAMON_TYPE_TRAITS_DETAIL_IS_REFERENCE_WRAPPER_HPP
+#endif // HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP

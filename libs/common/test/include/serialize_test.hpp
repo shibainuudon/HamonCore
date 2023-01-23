@@ -4,8 +4,8 @@
  *	@brief	
  */
 
-#ifndef UNIT_TEST_TEST_COMMON_SERIALIZE_TEST_HPP
-#define UNIT_TEST_TEST_COMMON_SERIALIZE_TEST_HPP
+#ifndef UNIT_TEST_COMMON_SERIALIZE_TEST_HPP
+#define UNIT_TEST_COMMON_SERIALIZE_TEST_HPP
 
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/binary_iarchive.hpp>
@@ -39,4 +39,4 @@ void SerializeTest(T const& value)
 
 }	// namespace
 
-#endif // UNIT_TEST_TEST_COMMON_SERIALIZE_TEST_HPP
+#endif // UNIT_TEST_COMMON_SERIALIZE_TEST_HPP

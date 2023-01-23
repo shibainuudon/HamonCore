@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef UNIT_TEST_BITFLAGS_TEST_HPP
-#define UNIT_TEST_BITFLAGS_TEST_HPP
+#ifndef UNIT_TEST_BITFLAGS_BITFLAGS_TEST_HPP
+#define UNIT_TEST_BITFLAGS_BITFLAGS_TEST_HPP
 
 #include <hamon/bitflags.hpp>
 #include <cstdint>
@@ -42,4 +42,4 @@ using Bitflag3 = hamon::bitflags<Enum3, 16>;
 
 }	// namespace hamon_bitflags_test
 
-#endif // UNIT_TEST_BITFLAGS_TEST_HPP
+#endif // UNIT_TEST_BITFLAGS_BITFLAGS_TEST_HPP

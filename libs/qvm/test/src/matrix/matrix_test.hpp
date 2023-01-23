@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef UNIT_TEST_QVM_MATRIX_TEST_HPP
-#define UNIT_TEST_QVM_MATRIX_TEST_HPP
+#ifndef UNIT_TEST_QVM_MATRIX_MATRIX_TEST_HPP
+#define UNIT_TEST_QVM_MATRIX_MATRIX_TEST_HPP
 
 #include <hamon/qvm/matrix/matrix.hpp>
 #include <gtest/gtest.h>
@@ -41,4 +41,4 @@ hamon::qvm::matrix<T, N, M> make_random_matrix()
 
 }	// namespace hamon_qvm_test
 
-#endif // UNIT_TEST_QVM_MATRIX_TEST_HPP
+#endif // UNIT_TEST_QVM_MATRIX_MATRIX_TEST_HPP

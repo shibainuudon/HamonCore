@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef UNIT_TEST_NUMBERS_TEST_HPP
-#define UNIT_TEST_NUMBERS_TEST_HPP
+#ifndef UNIT_TEST_NUMBERS_NUMBERS_TEST_HPP
+#define UNIT_TEST_NUMBERS_NUMBERS_TEST_HPP
 
 #include <hamon/config.hpp>
 
@@ -18,4 +18,4 @@
 	EXPECT_NEAR((double)(HAMON_PP_CAT(X, _fn)<T>()), (double)(expected), error)
 #endif
 
-#endif // UNIT_TEST_NUMBERS_TEST_HPP
+#endif // UNIT_TEST_NUMBERS_NUMBERS_TEST_HPP

@@ -4,8 +4,8 @@
  *	@brief	
  */
 
-#ifndef UNIT_TEST_TEST_COMMON_RANGES_TEST_HPP
-#define UNIT_TEST_TEST_COMMON_RANGES_TEST_HPP
+#ifndef UNIT_TEST_COMMON_RANGES_TEST_HPP
+#define UNIT_TEST_COMMON_RANGES_TEST_HPP
 
 #include <hamon/ranges/views/view_base.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -177,4 +177,4 @@ template <typename T, std::size_t N> using test_output_static_sized_view        
 
 using namespace hamon_ranges_test;
 
-#endif // UNIT_TEST_TEST_COMMON_RANGES_TEST_HPP
+#endif // UNIT_TEST_COMMON_RANGES_TEST_HPP

@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef UNIT_TEST_FND_TUPLE_MY_TUPLE_HPP
-#define UNIT_TEST_FND_TUPLE_MY_TUPLE_HPP
+#ifndef UNIT_TEST_TUPLE_MY_TUPLE_HPP
+#define UNIT_TEST_TUPLE_MY_TUPLE_HPP
 
 //#include <hamon/tuple/tuple_element.hpp>
 //#include <hamon/type_traits/nth.hpp>
@@ -36,4 +36,4 @@ public:
 }	// namespace std
 #endif
 
-#endif // UNIT_TEST_FND_TUPLE_MY_TUPLE_HPP
+#endif // UNIT_TEST_TUPLE_MY_TUPLE_HPP
