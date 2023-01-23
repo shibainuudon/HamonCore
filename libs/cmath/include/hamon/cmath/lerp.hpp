@@ -7,9 +7,11 @@
 #ifndef HAMON_CMATH_LERP_HPP
 #define HAMON_CMATH_LERP_HPP
 
+#include <hamon/config.hpp>
 #include <cmath>
 
-#if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902)
+#if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902) &&	\
+	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000))
 
 namespace hamon
 {
@@ -19,8 +21,6 @@ using std::lerp;
 }	// namespace hamon
 
 #else
-
-#include <hamon/config.hpp>
 
 namespace hamon
 {
