@@ -52,6 +52,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   target_compile_options(${TARGET_NAME} INTERFACE -fno-rtti -Wall -Wextra -Wshadow -Wconversion -Wpedantic -Werror)
+  target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-array-bounds>")
 endif()
 
 add_subdirectory(test)
