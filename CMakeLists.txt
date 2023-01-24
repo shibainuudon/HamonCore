@@ -41,6 +41,7 @@ set(SUBDIRECTORIES
 	ranges
 	ratio
 	serialization
+	span
 	string
 	string_view
 	tuple
