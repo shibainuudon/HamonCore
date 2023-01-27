@@ -122,4 +122,6 @@ HAMON_IS_AGGREGATE_TEST_CV(true,  ArrayType);
 
 }	// namespace hamon_type_traits_test
 
+#else
+#pragma message("hamon doesn't have is_aggregate")
 #endif
