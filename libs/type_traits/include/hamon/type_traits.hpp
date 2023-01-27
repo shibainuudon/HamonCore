@@ -48,7 +48,7 @@
 //#include <hamon/type_traits/is_convertible.hpp>
 //#include <hamon/type_traits/is_copy_assignable.hpp>
 //#include <hamon/type_traits/is_copy_constructible.hpp>
-//#include <hamon/type_traits/is_corresponding_member.hpp>
+#include <hamon/type_traits/is_corresponding_member.hpp>
 //#include <hamon/type_traits/is_default_constructible.hpp>
 //#include <hamon/type_traits/is_destructible.hpp>
 #include <hamon/type_traits/is_detected.hpp>
