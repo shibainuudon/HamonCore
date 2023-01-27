@@ -65,7 +65,7 @@
 //#include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
-//#include <hamon/type_traits/is_layout_compatible.hpp>
+#include <hamon/type_traits/is_layout_compatible.hpp>
 //#include <hamon/type_traits/is_literal_type.hpp>
 //#include <hamon/type_traits/is_lvalue_reference.hpp>
 //#include <hamon/type_traits/is_member_function_pointer.hpp>
