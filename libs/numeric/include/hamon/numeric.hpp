@@ -19,7 +19,7 @@
 #include <hamon/numeric/midpoint.hpp>
 //#include <hamon/numeric/partial_sum.hpp>
 //#include <hamon/numeric/ranges.hpp>
-//#include <hamon/numeric/reduce.hpp>
+#include <hamon/numeric/reduce.hpp>
 //#include <hamon/numeric/transform_exclusive_scan.hpp>
 //#include <hamon/numeric/transform_inclusive_scan.hpp>
 //#include <hamon/numeric/transform_reduce.hpp>
