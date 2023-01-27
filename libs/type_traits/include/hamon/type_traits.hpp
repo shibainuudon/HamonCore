@@ -54,7 +54,7 @@
 #include <hamon/type_traits/is_detected.hpp>
 //#include <hamon/type_traits/is_empty.hpp>
 //#include <hamon/type_traits/is_enum.hpp>
-//#include <hamon/type_traits/is_final.hpp>
+#include <hamon/type_traits/is_final.hpp>
 //#include <hamon/type_traits/is_floating_point.hpp>
 //#include <hamon/type_traits/is_function.hpp>
 //#include <hamon/type_traits/is_fundamental.hpp>
