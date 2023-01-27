@@ -7,9 +7,9 @@
 #ifndef HAMON_NUMERIC_HPP
 #define HAMON_NUMERIC_HPP
 
-//#include <hamon/numeric/accumulate.hpp>
+#include <hamon/numeric/accumulate.hpp>
 //#include <hamon/numeric/adjacent_difference.hpp>
-//#include <hamon/numeric/config.hpp>
+#include <hamon/numeric/config.hpp>
 //#include <hamon/numeric/exclusive_scan.hpp>
 #include <hamon/numeric/gcd.hpp>
 //#include <hamon/numeric/inclusive_scan.hpp>
