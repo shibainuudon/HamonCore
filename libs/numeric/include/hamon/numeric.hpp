@@ -14,7 +14,7 @@
 #include <hamon/numeric/gcd.hpp>
 //#include <hamon/numeric/inclusive_scan.hpp>
 #include <hamon/numeric/inner_product.hpp>
-//#include <hamon/numeric/iota.hpp>
+#include <hamon/numeric/iota.hpp>
 #include <hamon/numeric/lcm.hpp>
 #include <hamon/numeric/midpoint.hpp>
 //#include <hamon/numeric/partial_sum.hpp>
