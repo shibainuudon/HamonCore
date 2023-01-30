@@ -23,11 +23,14 @@
 //#include <hamon/algorithm/ranges/equal_range.hpp>
 //#include <hamon/algorithm/ranges/fill.hpp>
 //#include <hamon/algorithm/ranges/fill_n.hpp>
-//#include <hamon/algorithm/ranges/find.hpp>
+#include <hamon/algorithm/ranges/find.hpp>
 //#include <hamon/algorithm/ranges/find_end.hpp>
 //#include <hamon/algorithm/ranges/find_first_of.hpp>
-//#include <hamon/algorithm/ranges/find_if.hpp>
-//#include <hamon/algorithm/ranges/find_if_not.hpp>
+#include <hamon/algorithm/ranges/find_if.hpp>
+#include <hamon/algorithm/ranges/find_if_not.hpp>
+//#include <hamon/algorithm/ranges/find_last.hpp>
+//#include <hamon/algorithm/ranges/find_last_if.hpp>
+//#include <hamon/algorithm/ranges/find_last_if_not.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/algorithm/ranges/for_each_n.hpp>
 //#include <hamon/algorithm/ranges/generate.hpp>
