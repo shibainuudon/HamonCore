@@ -17,8 +17,8 @@
 //#include <hamon/algorithm/ranges/copy_backward.hpp>
 //#include <hamon/algorithm/ranges/copy_if.hpp>
 //#include <hamon/algorithm/ranges/copy_n.hpp>
-//#include <hamon/algorithm/ranges/count.hpp>
-//#include <hamon/algorithm/ranges/count_if.hpp>
+#include <hamon/algorithm/ranges/count.hpp>
+#include <hamon/algorithm/ranges/count_if.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 //#include <hamon/algorithm/ranges/equal_range.hpp>
 //#include <hamon/algorithm/ranges/fill.hpp>
