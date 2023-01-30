@@ -26,6 +26,6 @@
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/make_integer_sequence.hpp>
 #include <hamon/utility/to_underlying.hpp>
-//#include <hamon/utility/unreachable.hpp>
+#include <hamon/utility/unreachable.hpp>
 
 #endif // HAMON_UTILITY_HPP
