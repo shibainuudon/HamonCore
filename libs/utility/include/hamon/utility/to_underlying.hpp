@@ -30,7 +30,7 @@ namespace hamon
  *	@biref	列挙型Tの値を基底型に変換する。
  */
 template <typename T>
-inline HAMON_CONSTEXPR hamon::underlying_type_t<T>
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::underlying_type_t<T>
 to_underlying(T value) HAMON_NOEXCEPT
 {
 	return static_cast<hamon::underlying_type_t<T>>(value);

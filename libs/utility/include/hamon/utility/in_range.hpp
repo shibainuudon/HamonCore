@@ -68,7 +68,7 @@ struct in_range_impl<U, T, true, false>
 }	// namespace detail
 
 template <typename U, typename T>
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 in_range(T t) HAMON_NOEXCEPT
 {
 	static_assert(hamon::detail::is_standard_integer<U>::value, "");

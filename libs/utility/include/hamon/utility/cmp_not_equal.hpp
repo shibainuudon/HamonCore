@@ -27,7 +27,7 @@ namespace hamon
 {
 
 template <typename T, typename U>
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 cmp_not_equal(T t, U u) HAMON_NOEXCEPT
 {
 	return !hamon::cmp_equal(t, u);

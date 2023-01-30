@@ -30,7 +30,7 @@ namespace hamon
  *
  */
 template <typename T>
-inline HAMON_CONSTEXPR hamon::add_const_t<T>&
+HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::add_const_t<T>&
 as_const(T& t) HAMON_NOEXCEPT
 {
 	return t;

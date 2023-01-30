@@ -67,7 +67,7 @@ struct cmp_less_impl<T, U, false, true>
 }	// namespace detail
 
 template <typename T, typename U>
-inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 cmp_less(T t, U u) HAMON_NOEXCEPT
 {
 	static_assert(hamon::detail::is_standard_integer<T>::value, "");
