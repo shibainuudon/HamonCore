@@ -37,7 +37,7 @@
 //#include <hamon/algorithm/ranges/in_found_result.hpp>
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
 //#include <hamon/algorithm/ranges/in_in_out_result.hpp>
-//#include <hamon/algorithm/ranges/in_in_result.hpp>
+#include <hamon/algorithm/ranges/in_in_result.hpp>
 //#include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 //#include <hamon/algorithm/ranges/is_heap.hpp>
@@ -57,7 +57,7 @@
 //#include <hamon/algorithm/ranges/minmax_element.hpp>
 #include <hamon/algorithm/ranges/min_element.hpp>
 //#include <hamon/algorithm/ranges/min_max_result.hpp>
-//#include <hamon/algorithm/ranges/mismatch.hpp>
+#include <hamon/algorithm/ranges/mismatch.hpp>
 //#include <hamon/algorithm/ranges/move.hpp>
 //#include <hamon/algorithm/ranges/move_backward.hpp>
 //#include <hamon/algorithm/ranges/next_permutation.hpp>
