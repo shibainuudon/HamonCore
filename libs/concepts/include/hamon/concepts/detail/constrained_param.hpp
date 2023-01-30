@@ -25,6 +25,7 @@
 #define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)		C<T1> T2
 #define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)		C T1 = D
 #define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)	C<T1> T2 = D
+#define HAMON_CONSTRAINED_PARAM_D_4(C, T1, T2, T3, D)	C<T1, T2> T3 = D
 
 #else
 
@@ -32,6 +33,7 @@
 #define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)		typename T2, typename = hamon::enable_if_t<C<T2, T1>::value>
 #define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)		typename T1 = D, typename = hamon::enable_if_t<C<T1>::value>
 #define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)	typename T2 = D, typename = hamon::enable_if_t<C<T2, T1>::value>
+#define HAMON_CONSTRAINED_PARAM_D_4(C, T1, T2, T3, D)	typename T3 = D, typename = hamon::enable_if_t<C<T3, T2, T1>::value>
 
 #endif
 
