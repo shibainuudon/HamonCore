@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	copy.hpp
+ *	@file	copy_backward.hpp
  *
- *	@brief	ranges::copy の定義
+ *	@brief	ranges::copy_backward の定義
  */
 
-#ifndef HAMON_ALGORITHM_RANGES_COPY_HPP
-#define HAMON_ALGORITHM_RANGES_COPY_HPP
+#ifndef HAMON_ALGORITHM_RANGES_COPY_BACKWARD_HPP
+#define HAMON_ALGORITHM_RANGES_COPY_BACKWARD_HPP
 
 #include <hamon/algorithm/config.hpp>
 
@@ -19,7 +19,7 @@ namespace hamon
 namespace ranges
 {
 
-using std::ranges::copy;
+using std::ranges::copy_backward;
 
 }	// namespace ranges
 
@@ -30,13 +30,13 @@ using std::ranges::copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/iterator/concepts/input_iterator.hpp>
+#include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
-#include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
+#include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
+#include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -55,9 +55,9 @@ namespace ranges
 {
 
 template <typename Iter, typename Out>
-using copy_result = in_out_result<Iter, Out>;
+using copy_backward_result = in_out_result<Iter, Out>;
 
-struct copy_fn
+struct copy_backward_fn
 {
 private:
 	template <
@@ -65,7 +65,7 @@ private:
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter, Sent),
 		typename Out
 	>
-	static HAMON_CXX14_CONSTEXPR copy_result<Iter, Out>
+	static HAMON_CXX14_CONSTEXPR copy_backward_result<Iter, Out>
 	impl(Iter first, Sent last, Out result,
 		hamon::detail::overload_priority<1>)
 	{
@@ -79,47 +79,49 @@ private:
 				auto num = last - first;
 				if (num)
 				{
-					std::memmove(result, first, sizeof(ValueTypeI) * static_cast<std::size_t>(num));
+					std::memmove(result - num, first, sizeof(ValueTypeI) * static_cast<std::size_t>(num));
 				}
-				return { first + num, result + num };
+				return { first + num, result - num };
 			}
 		}
 #endif
 
+		auto lasti = ranges::next(first, last);
+		auto tail = lasti;
+
 		for (auto n = last - first; n > 0; --n)
 		{
-			*result = *first;
-			++first;
-			++result;
+			--tail;
+			--result;
+			*result = *tail;
 		}
 
-		return { std::move(first), std::move(result) };
+		return { std::move(lasti), std::move(result) };
 	}
 
-	template <
-		typename Iter,
-		typename Sent,
-		typename Out
-	>
-	static HAMON_CXX14_CONSTEXPR copy_result<Iter, Out>
+	template <typename Iter, typename Sent, typename Out>
+	static HAMON_CXX14_CONSTEXPR copy_backward_result<Iter, Out>
 	impl(Iter first, Sent last, Out result,
 		hamon::detail::overload_priority<0>)
 	{
-		while (first != last)
+		auto lasti = ranges::next(first, last);
+		auto tail = lasti;
+
+		while (first != tail)
 		{
-			*result = *first;
-			++first;
-			++result;
+			--tail;
+			--result;
+			*result = *tail;
 		}
 
-		return { std::move(first), std::move(result) };
+		return { std::move(lasti), std::move(result) };
 	}
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
 			hamon::indirectly_copyable<Iter, Out>::value
@@ -129,7 +131,7 @@ public:
 	>
 	requires hamon::indirectly_copyable<Iter, Out>
 #endif
-	HAMON_CXX14_CONSTEXPR copy_result<Iter, Out>
+	HAMON_CXX14_CONSTEXPR copy_backward_result<Iter, Out>
 	operator()(Iter first, Sent last, Out result) const
 	{
 		return impl(
@@ -140,8 +142,8 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::bidirectional_range, Range),
+		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
 			hamon::indirectly_copyable<ranges::iterator_t<Range>, Out>::value
@@ -151,7 +153,8 @@ public:
 	>
 	requires hamon::indirectly_copyable<ranges::iterator_t<Range>, Out>
 #endif
-	HAMON_CXX14_CONSTEXPR copy_result<ranges::borrowed_iterator_t<Range>, Out>
+	HAMON_CXX14_CONSTEXPR
+	copy_backward_result<ranges::borrowed_iterator_t<Range>, Out>
 	operator()(Range&& r, Out result) const
 	{
 		return (*this)(
@@ -163,7 +166,7 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR copy_fn copy{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR copy_backward_fn copy_backward{};
 
 }	// inline namespace cpo
 
@@ -173,4 +176,4 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR copy_fn copy{};
 
 #endif
 
-#endif // HAMON_ALGORITHM_RANGES_COPY_HPP
+#endif // HAMON_ALGORITHM_RANGES_COPY_BACKWARD_HPP
