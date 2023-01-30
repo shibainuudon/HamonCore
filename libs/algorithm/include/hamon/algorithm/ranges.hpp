@@ -28,14 +28,14 @@
 //#include <hamon/algorithm/ranges/find_first_of.hpp>
 //#include <hamon/algorithm/ranges/find_if.hpp>
 //#include <hamon/algorithm/ranges/find_if_not.hpp>
-//#include <hamon/algorithm/ranges/for_each.hpp>
-//#include <hamon/algorithm/ranges/for_each_n.hpp>
+#include <hamon/algorithm/ranges/for_each.hpp>
+#include <hamon/algorithm/ranges/for_each_n.hpp>
 //#include <hamon/algorithm/ranges/generate.hpp>
 //#include <hamon/algorithm/ranges/generate_n.hpp>
 //#include <hamon/algorithm/ranges/includes.hpp>
 //#include <hamon/algorithm/ranges/inplace_merge.hpp>
 //#include <hamon/algorithm/ranges/in_found_result.hpp>
-//#include <hamon/algorithm/ranges/in_fun_result.hpp>
+#include <hamon/algorithm/ranges/in_fun_result.hpp>
 //#include <hamon/algorithm/ranges/in_in_out_result.hpp>
 //#include <hamon/algorithm/ranges/in_in_result.hpp>
 //#include <hamon/algorithm/ranges/in_out_out_result.hpp>
