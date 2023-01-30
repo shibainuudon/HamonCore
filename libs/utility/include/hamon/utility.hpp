@@ -14,7 +14,7 @@
 #include <hamon/utility/cmp_less.hpp>
 #include <hamon/utility/cmp_less_equal.hpp>
 #include <hamon/utility/cmp_not_equal.hpp>
-//#include <hamon/utility/exchange.hpp>
+#include <hamon/utility/exchange.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/index_sequence_for.hpp>
 #include <hamon/utility/integer_sequence.hpp>
