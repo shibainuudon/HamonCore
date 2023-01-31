@@ -40,7 +40,7 @@
 //#include <hamon/algorithm/ranges/inplace_merge.hpp>
 //#include <hamon/algorithm/ranges/in_found_result.hpp>
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
-//#include <hamon/algorithm/ranges/in_in_out_result.hpp>
+#include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/in_in_result.hpp>
 //#include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/in_out_result.hpp>
@@ -101,7 +101,7 @@
 //#include <hamon/algorithm/ranges/stable_sort.hpp>
 //#include <hamon/algorithm/ranges/starts_with.hpp>
 //#include <hamon/algorithm/ranges/swap_ranges.hpp>
-//#include <hamon/algorithm/ranges/transform.hpp>
+#include <hamon/algorithm/ranges/transform.hpp>
 //#include <hamon/algorithm/ranges/unique.hpp>
 //#include <hamon/algorithm/ranges/unique_copy.hpp>
 //#include <hamon/algorithm/ranges/upper_bound.hpp>
