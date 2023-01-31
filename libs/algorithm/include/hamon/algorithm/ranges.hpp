@@ -62,8 +62,8 @@
 #include <hamon/algorithm/ranges/min_element.hpp>
 //#include <hamon/algorithm/ranges/min_max_result.hpp>
 #include <hamon/algorithm/ranges/mismatch.hpp>
-//#include <hamon/algorithm/ranges/move.hpp>
-//#include <hamon/algorithm/ranges/move_backward.hpp>
+#include <hamon/algorithm/ranges/move.hpp>
+#include <hamon/algorithm/ranges/move_backward.hpp>
 //#include <hamon/algorithm/ranges/next_permutation.hpp>
 #include <hamon/algorithm/ranges/none_of.hpp>
 //#include <hamon/algorithm/ranges/nth_element.hpp>
