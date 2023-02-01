@@ -34,7 +34,7 @@
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
-//#include <hamon/iterator/concepts/sortable.hpp>
+#include <hamon/iterator/concepts/sortable.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 
 #endif // HAMON_ITERATOR_CONCEPTS_HPP
