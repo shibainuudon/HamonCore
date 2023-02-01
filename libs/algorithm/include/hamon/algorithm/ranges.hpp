@@ -51,7 +51,7 @@
 #include <hamon/algorithm/ranges/is_sorted.hpp>
 #include <hamon/algorithm/ranges/is_sorted_until.hpp>
 //#include <hamon/algorithm/ranges/lexicographical_compare.hpp>
-//#include <hamon/algorithm/ranges/lower_bound.hpp>
+#include <hamon/algorithm/ranges/lower_bound.hpp>
 //#include <hamon/algorithm/ranges/make_heap.hpp>
 //#include <hamon/algorithm/ranges/max.hpp>
 #include <hamon/algorithm/ranges/max_element.hpp>
@@ -104,6 +104,6 @@
 #include <hamon/algorithm/ranges/transform.hpp>
 //#include <hamon/algorithm/ranges/unique.hpp>
 //#include <hamon/algorithm/ranges/unique_copy.hpp>
-//#include <hamon/algorithm/ranges/upper_bound.hpp>
+#include <hamon/algorithm/ranges/upper_bound.hpp>
 
 #endif // HAMON_ALGORITHM_RANGES_HPP
