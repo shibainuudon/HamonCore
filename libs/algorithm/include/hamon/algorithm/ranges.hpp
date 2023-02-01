@@ -50,7 +50,7 @@
 #include <hamon/algorithm/ranges/is_permutation.hpp>
 #include <hamon/algorithm/ranges/is_sorted.hpp>
 #include <hamon/algorithm/ranges/is_sorted_until.hpp>
-//#include <hamon/algorithm/ranges/lexicographical_compare.hpp>
+#include <hamon/algorithm/ranges/lexicographical_compare.hpp>
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 //#include <hamon/algorithm/ranges/make_heap.hpp>
 //#include <hamon/algorithm/ranges/max.hpp>
