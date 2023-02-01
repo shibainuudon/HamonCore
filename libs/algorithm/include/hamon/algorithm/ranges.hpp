@@ -64,7 +64,7 @@
 #include <hamon/algorithm/ranges/mismatch.hpp>
 #include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/algorithm/ranges/move_backward.hpp>
-//#include <hamon/algorithm/ranges/next_permutation.hpp>
+#include <hamon/algorithm/ranges/next_permutation.hpp>
 #include <hamon/algorithm/ranges/none_of.hpp>
 //#include <hamon/algorithm/ranges/nth_element.hpp>
 //#include <hamon/algorithm/ranges/partial_sort.hpp>
@@ -73,7 +73,7 @@
 //#include <hamon/algorithm/ranges/partition_copy.hpp>
 //#include <hamon/algorithm/ranges/partition_point.hpp>
 //#include <hamon/algorithm/ranges/pop_heap.hpp>
-//#include <hamon/algorithm/ranges/prev_permutation.hpp>
+#include <hamon/algorithm/ranges/prev_permutation.hpp>
 //#include <hamon/algorithm/ranges/push_heap.hpp>
 //#include <hamon/algorithm/ranges/radix_sort.hpp>
 //#include <hamon/algorithm/ranges/remove.hpp>
