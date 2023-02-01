@@ -94,7 +94,7 @@
 //#include <hamon/algorithm/ranges/set_intersection.hpp>
 //#include <hamon/algorithm/ranges/set_symmetric_difference.hpp>
 //#include <hamon/algorithm/ranges/set_union.hpp>
-//#include <hamon/algorithm/ranges/shuffle.hpp>
+#include <hamon/algorithm/ranges/shuffle.hpp>
 //#include <hamon/algorithm/ranges/sort.hpp>
 //#include <hamon/algorithm/ranges/sort_heap.hpp>
 //#include <hamon/algorithm/ranges/stable_partition.hpp>
