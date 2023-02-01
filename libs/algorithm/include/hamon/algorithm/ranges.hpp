@@ -58,7 +58,7 @@
 //#include <hamon/algorithm/ranges/merge.hpp>
 //#include <hamon/algorithm/ranges/min.hpp>
 //#include <hamon/algorithm/ranges/minmax.hpp>
-//#include <hamon/algorithm/ranges/minmax_element.hpp>
+#include <hamon/algorithm/ranges/minmax_element.hpp>
 #include <hamon/algorithm/ranges/min_element.hpp>
 //#include <hamon/algorithm/ranges/min_max_result.hpp>
 #include <hamon/algorithm/ranges/mismatch.hpp>
