@@ -100,7 +100,7 @@
 //#include <hamon/algorithm/ranges/stable_partition.hpp>
 //#include <hamon/algorithm/ranges/stable_sort.hpp>
 //#include <hamon/algorithm/ranges/starts_with.hpp>
-//#include <hamon/algorithm/ranges/swap_ranges.hpp>
+#include <hamon/algorithm/ranges/swap_ranges.hpp>
 #include <hamon/algorithm/ranges/transform.hpp>
 //#include <hamon/algorithm/ranges/unique.hpp>
 //#include <hamon/algorithm/ranges/unique_copy.hpp>
