@@ -11,7 +11,7 @@
 #include <hamon/algorithm/ranges/all_of.hpp>
 #include <hamon/algorithm/ranges/any_of.hpp>
 #include <hamon/algorithm/ranges/binary_search.hpp>
-//#include <hamon/algorithm/ranges/clamp.hpp>
+#include <hamon/algorithm/ranges/clamp.hpp>
 //#include <hamon/algorithm/ranges/contains.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/copy_backward.hpp>
