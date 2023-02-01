@@ -23,12 +23,13 @@
 //#include <hamon/ranges/views/reverse_view.hpp>
 //#include <hamon/ranges/views/single_view.hpp>
 //#include <hamon/ranges/views/split_view.hpp>
-//#include <hamon/ranges/views/subrange.hpp>
-//#include <hamon/ranges/views/subrange_kind.hpp>
+#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/views/subrange_kind.hpp>
 //#include <hamon/ranges/views/take_view.hpp>
 //#include <hamon/ranges/views/take_while_view.hpp>
 //#include <hamon/ranges/views/transform_view.hpp>
 #include <hamon/ranges/views/view_base.hpp>
 #include <hamon/ranges/views/view_interface.hpp>
+#include <hamon/ranges/views/view_interface_fwd.hpp>
 
 #endif // HAMON_RANGES_VIEWS_HPP
