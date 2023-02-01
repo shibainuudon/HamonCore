@@ -88,5 +88,4 @@ using output_iterator_t =
 
 }	// namespace hamon
 
-
 #endif // HAMON_ITERATOR_CONCEPTS_OUTPUT_ITERATOR_HPP

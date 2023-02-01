@@ -30,7 +30,7 @@
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/mergeable.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
-//#include <hamon/iterator/concepts/permutable.hpp>
+#include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
