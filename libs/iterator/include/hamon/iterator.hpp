@@ -20,7 +20,7 @@
 #include <hamon/iterator/crbegin.hpp>
 #include <hamon/iterator/crend.hpp>
 #include <hamon/iterator/data.hpp>
-//#include <hamon/iterator/default_sentinel.hpp>
+#include <hamon/iterator/default_sentinel.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/empty.hpp>
 #include <hamon/iterator/end.hpp>
