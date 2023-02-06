@@ -125,8 +125,8 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 		char x[3] = { 1, 2, 3 };
 		int y[4] = { 0 };
 		int z[3] = { 1, 2, 3 };
-		test_container<char, bidirectional_iterator_wrapper> cx(x);
-		test_container<int, bidirectional_iterator_wrapper> cy(y);
+		test_container<char, bidirectional_iterator_wrapper<char>> cx(x);
+		test_container<int, bidirectional_iterator_wrapper<int>> cy(y);
 		auto res = ranges::copy_backward(cx, ranges::end(cy));
 		VERIFY(res.in.m_ptr == x + 3);
 		VERIFY(res.out.m_ptr == y + 1);

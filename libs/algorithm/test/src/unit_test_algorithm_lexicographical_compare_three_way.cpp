@@ -84,8 +84,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 		int arr1[] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 		int arr2[] = { 0, 1, 2, 3, 4, 5, 6, 777 };
 		{
-			test_container<int, input_iterator_wrapper> c1(arr1);
-			test_container<int, input_iterator_wrapper> c2(arr2);
+			test_container<int, input_iterator_wrapper<int>> c1(arr1);
+			test_container<int, input_iterator_wrapper<int>> c2(arr2);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);
@@ -97,8 +97,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 				c1.begin(), c1.end()) > 0);
 		}
 		{
-			test_container<int, input_iterator_wrapper> c1(arr1, arr1 + 6);
-			test_container<int, input_iterator_wrapper> c2(arr2, arr2 + 6);
+			test_container<int, input_iterator_wrapper<int>> c1(arr1, arr1 + 6);
+			test_container<int, input_iterator_wrapper<int>> c2(arr2, arr2 + 6);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);
@@ -110,8 +110,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 				c1.begin(), c1.end()) == 0);
 		}
 		{
-			test_container<int, input_iterator_wrapper> c1(arr1);
-			test_container<int, input_iterator_wrapper> c2(arr2, arr2 + 7);
+			test_container<int, input_iterator_wrapper<int>> c1(arr1);
+			test_container<int, input_iterator_wrapper<int>> c2(arr2, arr2 + 7);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);
@@ -123,8 +123,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 				c1.begin(), c1.end()) < 0);
 		}
 		{
-			test_container<int, input_iterator_wrapper>   c1(arr1);
-			test_container<int, forward_iterator_wrapper> c2(arr2);
+			test_container<int, input_iterator_wrapper<int>>   c1(arr1);
+			test_container<int, forward_iterator_wrapper<int>> c2(arr2);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);
@@ -136,8 +136,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 				c1.begin(), c1.end()) > 0);
 		}
 		{
-			test_container<int, input_iterator_wrapper>   c1(arr1);
-			test_container<int, forward_iterator_wrapper> c2(arr2, arr2 + 7);
+			test_container<int, input_iterator_wrapper<int>>   c1(arr1);
+			test_container<int, forward_iterator_wrapper<int>> c2(arr2, arr2 + 7);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);
@@ -152,8 +152,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 				c1.begin(), c1.end()) < 0);
 		}
 		{
-			test_container<int, forward_iterator_wrapper> c1(arr1, arr1 + 7);
-			test_container<int, input_iterator_wrapper>   c2(arr2);
+			test_container<int, forward_iterator_wrapper<int>> c1(arr1, arr1 + 7);
+			test_container<int, input_iterator_wrapper<int>>   c2(arr2);
 			EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 				c1.begin(), c1.end(),
 				c1.begin(), c1.end()) == 0);

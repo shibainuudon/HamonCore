@@ -96,7 +96,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	namespace ranges = hamon::ranges;
 	{
 		int x[] = { 1,2,3,4,5 };
-		test_container<int, IterWrap> cx(x);
+		test_container<int, IterWrap<int>> cx(x);
 		auto ret = hamon::shift_right(ranges::begin(cx), ranges::end(cx), 0);
 		VERIFY(ret == ranges::begin(cx));
 		int y[] = { 1,2,3,4,5 };
@@ -104,7 +104,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		int x[] = { 1,2,3,4,5 };
-		test_container<int, IterWrap> cx(x);
+		test_container<int, IterWrap<int>> cx(x);
 		auto ret = hamon::shift_right(ranges::begin(cx), ranges::end(cx), 1);
 		VERIFY(ret == ranges::next(ranges::begin(cx), 1));
 //		VERIFY(x[0] == 1);	// undefined
@@ -115,7 +115,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		int x[] = { 1,2,3,4,5 };
-		test_container<int, IterWrap> cx(x);
+		test_container<int, IterWrap<int>> cx(x);
 		auto ret = hamon::shift_right(ranges::begin(cx), ranges::end(cx), 4);
 		VERIFY(ret == ranges::next(ranges::begin(cx), 4));
 //		VERIFY(x[0] == 1);	// undefined
@@ -126,7 +126,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		int x[] = { 1,2,3,4,5 };
-		test_container<int, IterWrap> cx(x);
+		test_container<int, IterWrap<int>> cx(x);
 		auto ret = hamon::shift_right(ranges::begin(cx), ranges::end(cx), 5);
 		VERIFY(ret == ranges::end(cx));
 		int y[] = { 1,2,3,4,5 };
@@ -134,7 +134,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		int x[] = { 1,2,3,4,5 };
-		test_container<int, IterWrap> cx(x);
+		test_container<int, IterWrap<int>> cx(x);
 		auto ret = hamon::shift_right(ranges::begin(cx), ranges::end(cx), 6);
 		VERIFY(ret == ranges::end(cx));
 		int y[] = { 1,2,3,4,5 };
@@ -182,7 +182,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 			x[i] = X(i);
 		}
 
-		test_container<X, IterWrap> cx(x);
+		test_container<X, IterWrap<X>> cx(x);
 		auto out = hamon::shift_right(cx.begin(), cx.end(), n);
 		if (n < N)
 		{

@@ -18,13 +18,13 @@
 namespace hamon_ranges_test
 {
 
-template <typename T, template <typename> class Iterator>
+template <typename T, typename Iterator>
 struct test_container
 {
 	T* m_first;
 	T* m_last;
 
-	using iterator = Iterator<T>;
+	using iterator = Iterator;
 
 	HAMON_CONSTEXPR test_container() : m_first(nullptr), m_last(nullptr) {}
 	HAMON_CONSTEXPR test_container(T* first, T* last) : m_first(first), m_last(last) {}
@@ -41,7 +41,6 @@ struct test_container
 	HAMON_CONSTEXPR iterator begin() const { return iterator{m_first}; }
 	HAMON_CONSTEXPR iterator end()   const { return iterator{m_last}; }
 };
-
 
 template <typename Iterator>
 struct test_sentinel

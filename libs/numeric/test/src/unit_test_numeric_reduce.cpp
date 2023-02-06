@@ -28,7 +28,7 @@ namespace reduce_test
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int a[5] = {1, 2, 3, 4, 5};
-	test_container<int, input_iterator_wrapper> con(a);
+	test_container<int, input_iterator_wrapper<int>> con(a);
 	int res = hamon::reduce(con.begin(), con.end());
 	VERIFY(res == 15);
 
