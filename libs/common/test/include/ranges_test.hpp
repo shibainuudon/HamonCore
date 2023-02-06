@@ -90,14 +90,14 @@ operator-(Iterator const& i, test_sentinel<Iterator> const& s) noexcept
 	return i.m_ptr - s.m_it.m_ptr;
 }
 
-template <typename T, template <typename> class Iterator>
+template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
 struct test_range
 {
 	T* m_first;
 	T* m_last;
 
-	using iterator = Iterator<T>;
-	using sentinel = test_sentinel<iterator>;
+	using iterator = Iterator;
+	using sentinel = Sentinel;
 
 	HAMON_CONSTEXPR test_range() : m_first(nullptr), m_last(nullptr) {}
 	HAMON_CONSTEXPR test_range(T* first, T* last) : m_first(first), m_last(last) {}
@@ -115,18 +115,18 @@ struct test_range
 	HAMON_CONSTEXPR sentinel end()   const { return sentinel{iterator{m_last}}; }
 };
 
-template <typename T> using test_contiguous_range    = test_range<T, contiguous_iterator_wrapper>;
-template <typename T> using test_random_access_range = test_range<T, random_access_iterator_wrapper>;
-template <typename T> using test_bidirectional_range = test_range<T, bidirectional_iterator_wrapper>;
-template <typename T> using test_forward_range       = test_range<T, forward_iterator_wrapper>;
-template <typename T> using test_input_range         = test_range<T, input_iterator_wrapper>;
-template <typename T> using test_output_range        = test_range<T, output_iterator_wrapper>;
+template <typename T> using test_contiguous_range    = test_range<T, contiguous_iterator_wrapper<T>>;
+template <typename T> using test_random_access_range = test_range<T, random_access_iterator_wrapper<T>>;
+template <typename T> using test_bidirectional_range = test_range<T, bidirectional_iterator_wrapper<T>>;
+template <typename T> using test_forward_range       = test_range<T, forward_iterator_wrapper<T>>;
+template <typename T> using test_input_range         = test_range<T, input_iterator_wrapper<T>>;
+template <typename T> using test_output_range        = test_range<T, output_iterator_wrapper<T>>;
 
 template <typename T, template <typename> class Iterator>
-struct test_sized_range : public test_range<T, Iterator>
+struct test_sized_range : public test_range<T, Iterator<T>>
 {
-	using base_t = test_range<T, Iterator>;
-	using test_range<T, Iterator>::test_range;
+	using base_t = test_range<T, Iterator<T>>;
+	using test_range<T, Iterator<T>>::test_range;
 
 	HAMON_CONSTEXPR std::size_t size() const noexcept
 	{
@@ -142,9 +142,9 @@ template <typename T> using test_input_sized_range         = test_sized_range<T,
 template <typename T> using test_output_sized_range        = test_sized_range<T, output_iterator_wrapper>;
 
 template <typename T, std::size_t N, template <typename> class Iterator>
-struct test_static_sized_range : public test_range<T, Iterator>
+struct test_static_sized_range : public test_range<T, Iterator<T>>
 {
-	using test_range<T, Iterator>::test_range;
+	using test_range<T, Iterator<T>>::test_range;
 
 	static HAMON_CONSTEXPR std::size_t size() noexcept
 	{

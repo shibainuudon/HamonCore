@@ -30,9 +30,9 @@ test01()
 	int x[] = { 1,2,3,4,5,6,7 };
 	for (int i = -1; i <= 7; i++)
 	{
-		test_range<int, in_wrapper> rx(x);
+		test_range<int, in_wrapper<int>> rx(x);
 		int w[7]{};
-		test_range<int, out_wrapper> rw(w);
+		test_range<int, out_wrapper<int>> rw(w);
 		ranges::copy_n(rx.begin(), i, rw.begin());
 		if (i >= 0)
 		{

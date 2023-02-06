@@ -51,8 +51,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		int const x[] = { 1, 2, 3 };
 		int w[3] = {};
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int const> rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::copy(rx, rw.begin());
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());
@@ -62,8 +62,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		char const x[] = { 1, 2, 3, 4 };
 		int w[4] = {};
-		test_range<char const, input_iterator_wrapper> rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<char const> rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::copy(rx, rw.begin());
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());

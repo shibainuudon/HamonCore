@@ -39,19 +39,19 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	namespace ranges = hamon::ranges;
 	{
 		int x[] = { 6,2,2,4,6,1,3,7,5 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		VERIFY( ranges::is_partitioned(rx, IsEven{}));
 		VERIFY(!ranges::is_partitioned(rx, IsOdd{}));
 	}
 	{
 		int x[] = { 1,2,4,6,8,6,4,2 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		VERIFY(!ranges::is_partitioned(rx, IsEven{}));
 		VERIFY( ranges::is_partitioned(rx, IsOdd{}));
 	}
 	{
 		int x[] = { 2,4,6,1,3,5,2 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		VERIFY(!ranges::is_partitioned(rx, IsEven{}));
 		VERIFY(!ranges::is_partitioned(rx, IsOdd{}));
 	}
@@ -68,13 +68,13 @@ inline bool test02()
 	}
 	{
 		int x[] = { 2,4,6,1,3,5 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		VERIFY( ranges::is_partitioned(rx, [](int a) { return a%2==0; }));
 		VERIFY(!ranges::is_partitioned(rx, [](int a) { return a%2==1; }));
 	}
 	{
 		int x[] = { 2,4,6,1,3,5 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		VERIFY(!ranges::is_partitioned(rx, [](int a) { return a%2==0; }, [](int a) { return a+1; }));
 		VERIFY( ranges::is_partitioned(rx, [](int a) { return a%2==1; }, [](int a) { return a+1; }));
 	}

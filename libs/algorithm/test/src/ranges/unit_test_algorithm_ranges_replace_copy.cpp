@@ -39,8 +39,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		int x[] = { 1,3,1,4,1,5,1 };
 		int w[7] = {};
-		test_range<int, input_iterator_wrapper> rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int> rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::replace_copy(rx, rw.begin(), 1, 0);
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());

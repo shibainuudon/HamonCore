@@ -101,15 +101,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[] ={ 0, 1 };
 
-	test_range<int, random_access_iterator_wrapper> r(a);
+	test_random_access_range<int> r(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(r)), decltype(r.begin())>::value, "");
 	VERIFY(hamon::ranges::begin(r) == r.begin());
 
-	test_range<int, input_iterator_wrapper> i(a);
+	test_input_range<int> i(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(i)), decltype(i.begin())>::value, "");
 	VERIFY(hamon::ranges::begin(i) == i.begin());
 
-	test_range<int, output_iterator_wrapper> o(a);
+	test_output_range<int> o(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(o)), decltype(o.begin())>::value, "");
 	*hamon::ranges::begin(o) = 99;
 	VERIFY(a[0] == 99);

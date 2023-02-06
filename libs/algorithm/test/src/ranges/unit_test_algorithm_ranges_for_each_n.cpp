@@ -28,14 +28,14 @@ struct Foo
 	}
 };
 
-template <template <typename> class wrapper>
+template <template <typename> class iter_wrapper>
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	namespace ranges = hamon::ranges;
 
 	int x[] = { 1,2,3,4,5 };
 	{
-		test_range<int, wrapper> rx(x);
+		test_range<int, iter_wrapper<int>> rx(x);
 		Foo func{};
 		auto res = ranges::for_each_n(rx.begin(), 3, hamon::ref(func));
 		VERIFY(res.in.m_ptr == x+3);
@@ -44,7 +44,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(func.s == 1+2+3+1);
 	}
 	{
-		test_range<int, wrapper> rx(x);
+		test_range<int, iter_wrapper<int>> rx(x);
 		Foo func{};
 		auto res= ranges::for_each_n(rx.begin(), -1, hamon::ref(func));
 		VERIFY(res.in.m_ptr == x);
@@ -53,7 +53,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(func.s == 1);
 	}
 	{
-		test_range<int, wrapper> rx(x);
+		test_range<int, iter_wrapper<int>> rx(x);
 		Foo func{};
 		auto res = ranges::for_each_n(rx.begin(), 5, hamon::ref(func), hamon::negate<>{});
 		VERIFY(res.in.m_ptr == x+5);

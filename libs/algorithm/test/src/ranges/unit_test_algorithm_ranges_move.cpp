@@ -89,8 +89,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		char x[3] = { 1, 2, 3 };
 		int  y[4] = { 0 };
 		int  z[3] = { 1, 2, 3 };
-		test_range<char, input_iterator_wrapper> cx(x);
-		test_range<int, output_iterator_wrapper> cy(y);
+		test_input_range<char> cx(x);
+		test_output_range<int> cy(y);
 		auto res = ranges::move(cx, ranges::begin(cy));
 		VERIFY(res.in.m_ptr == x+3);
 		VERIFY(res.out.m_ptr == y+3);
@@ -185,7 +185,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 	X x[] = { {2}, {2}, {6}, {8}, {10} };
 	X y[] = { {2}, {6}, {8}, {10}, {11}, {2} };
 	X z[] = { {2}, {2}, {6}, {8}, {10} };
-	test_range<X, input_iterator_wrapper> rx(x);
+	test_input_range<X> rx(x);
 	auto res = ranges::move(
 		std::move_iterator{ ranges::begin(rx) },
 		std::move_sentinel{ ranges::end(rx) },

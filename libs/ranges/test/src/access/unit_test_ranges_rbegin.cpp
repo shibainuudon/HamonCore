@@ -42,7 +42,7 @@ struct R2
 	friend HAMON_CXX14_CONSTEXPR const long* end(const R2&&); // not defined
 };
 
-struct R3 : test_range<int, bidirectional_iterator_wrapper>
+struct R3 : test_bidirectional_range<int>
 {
 	HAMON_CXX14_CONSTEXPR R3(int(&a)[2]) : test_range(a) { }
 

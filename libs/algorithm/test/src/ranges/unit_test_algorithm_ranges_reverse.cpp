@@ -24,7 +24,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	namespace ranges = hamon::ranges;
 	{
 		int x[] = { 1, 2, 3, 4 };
-		test_range<int, iter_wrapper> rx(x);
+		test_range<int, iter_wrapper<int>> rx(x);
 		auto res = ranges::reverse(rx);
 		VERIFY(res == rx.end());
 		const int y[] ={ 4, 3, 2, 1 };
@@ -32,7 +32,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int x[] = { 1, 2, 3, 4, 5 };
-		test_range<int, iter_wrapper> rx(x);
+		test_range<int, iter_wrapper<int>> rx(x);
 		auto res = ranges::reverse(rx);
 		VERIFY(res == rx.end());
 		const int y[] ={ 5, 4, 3, 2, 1 };

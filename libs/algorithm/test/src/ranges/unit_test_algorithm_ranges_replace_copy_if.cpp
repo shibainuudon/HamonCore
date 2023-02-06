@@ -68,8 +68,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		int const x[] = { 3,1,4,1,5,9,2,6,5 };
 		int w[9] = {};
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int const> rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::replace_copy_if(rx, rw.begin(), Less<5>{}, 0);
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());
@@ -80,8 +80,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		int const x[] = { 3,1,4,1,5,9,2,6,5 };
 		int w[9] = {};
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int const> rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::replace_copy_if(rx, rw.begin(), Greater<3>{}, 8);
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());

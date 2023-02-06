@@ -58,8 +58,8 @@ inline bool test02()
 
 	{
 		int w[7];
-		test_range<int, input_iterator_wrapper>  rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int>  rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
 			[](int a) { return (a%2)==0; });
 		VERIFY(res.in == rx.end() && res.out.m_ptr == w+3);
@@ -68,8 +68,8 @@ inline bool test02()
 	}
 	{
 		int w[7];
-		test_range<int, input_iterator_wrapper>  rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int>  rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
 			[](int a) { return (a%2)==1; });
 		VERIFY(res.in == rx.end() && res.out.m_ptr == w+4);
@@ -78,8 +78,8 @@ inline bool test02()
 	}
 	{
 		int w[7];
-		test_range<int, input_iterator_wrapper>  rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int>  rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
 			[](int a) { return (a%2)==0; },
 			[](int a) { return a+1; });

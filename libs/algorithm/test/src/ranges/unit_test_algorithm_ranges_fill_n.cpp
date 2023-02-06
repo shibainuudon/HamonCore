@@ -39,7 +39,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int x[] = { 1, 2, 3, 4, 5, 6 };
-		test_range<int, output_iterator_wrapper> rx(x);
+		test_output_range<int> rx(x);
 		auto res = ranges::fill_n(rx.begin(), 3, 17);
 		VERIFY(res.m_ptr == ranges::next(x, 3));
 		int const y[] = { 17, 17, 17, 4, 5, 6 };

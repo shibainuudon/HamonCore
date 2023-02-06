@@ -36,9 +36,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	int y[] = { 2, 2, 6, 8, 10, 11, 11 };
 	int z[] = { 3, 3, 7, 9, 11, 12, 12 };
 
-	test_range<int, forward_iterator_wrapper> cx(x);
-	test_range<int, forward_iterator_wrapper> cy(y);
-	test_range<int, forward_iterator_wrapper> cz(z);
+	test_forward_range<int> cx(x);
+	test_forward_range<int> cy(y);
+	test_forward_range<int> cz(z);
 	VERIFY( hamon::ranges::equal(cx, cy));
 	VERIFY(!hamon::ranges::equal(cx, cy, {}, Proj{}));
 	VERIFY(!hamon::ranges::equal(cx, cy, {}, {}, Proj{}));
@@ -54,9 +54,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(!hamon::ranges::equal(cx, cz, hamon::ranges::greater{}));
 	VERIFY( hamon::ranges::equal(cx, cz, hamon::ranges::less{}));
 
-	test_range<int, input_iterator_wrapper> rx(x);
-	test_range<int, input_iterator_wrapper> ry(y);
-	test_range<int, input_iterator_wrapper> rz(z);
+	test_input_range<int> rx(x);
+	test_input_range<int> ry(y);
+	test_input_range<int> rz(z);
 	VERIFY( hamon::ranges::equal(rx, ry));
 	VERIFY(!hamon::ranges::equal(rx, ry, {}, Proj{}));
 	VERIFY(!hamon::ranges::equal(rx, ry, {}, {}, Proj{}));
@@ -109,14 +109,14 @@ bool test03()
 	VERIFY(hamon::ranges::equal(w, w + 4, w + 1, w + 5));
 	VERIFY(hamon::ranges::equal(w, w + 5, w, w + 5, hamon::ranges::greater{}, Proj{}));
 
-	test_range<int, forward_iterator_wrapper> cx(x), cy(y);
-	test_range<X, forward_iterator_wrapper> cz(z);
+	test_forward_range<int> cx(x), cy(y);
+	test_forward_range<X> cz(z);
 	VERIFY(hamon::ranges::equal(cx, cy));
 	VERIFY(!hamon::ranges::equal(cx, cy, {}, Proj{}));
 	VERIFY(!hamon::ranges::equal(cx, cz, {}, {}, &X::i));
 
-	test_range<int, input_iterator_wrapper> rx(x), ry(y);
-	test_range<X, input_iterator_wrapper> rz(z);
+	test_input_range<int> rx(x), ry(y);
+	test_input_range<X> rz(z);
 	VERIFY(hamon::ranges::equal(rx, ry));
 
 	rx.m_first = x;

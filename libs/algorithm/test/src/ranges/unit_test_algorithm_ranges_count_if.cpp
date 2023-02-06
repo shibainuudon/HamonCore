@@ -59,13 +59,13 @@ inline bool test02()
 	res = ranges::count_if(x, x+7, [](int i) { return i < 0; }, &X::i);
 	VERIFY(res == 0);
 
-	test_range<X, forward_iterator_wrapper> c(x);
+	test_forward_range<X> c(x);
 	res = ranges::count_if(c, [](int i) { return i == 2; }, &X::i);
 	VERIFY(res == 3);
 	res = ranges::count_if(c, [](int i) { return i < 0; }, &X::i);
 	VERIFY(res == 0);
 
-	test_range<X, input_iterator_wrapper> r(x);
+	test_input_range<X> r(x);
 	res = ranges::count_if(c, [](int i) { return i == 2; }, &X::i);
 	VERIFY(res == 3);
 	res = ranges::count_if(c, [](int i) { return i < 0; }, &X::i);

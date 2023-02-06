@@ -69,13 +69,13 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	X x[] = { {2}, {4}, {6}, {8}, {10}, {11} };
 
 	{
-		test_range<X, forward_iterator_wrapper> c(x);
+		test_forward_range<X> c(x);
 		Bar b;
 		ranges::for_each(c, hamon::ref(b));
 		VERIFY(b.a == 82);
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		Bar b;
 		ranges::for_each(r, hamon::ref(b));
 		VERIFY(b.a == 82);
@@ -90,13 +90,13 @@ inline bool test03()
 	X x[] = { {2}, {4}, {6}, {8}, {10}, {11} };
 
 	{
-		test_range<X, forward_iterator_wrapper> c(x);
+		test_forward_range<X> c(x);
 		Foo f;
 		ranges::for_each(c, hamon::ref(f), &X::i);
 		VERIFY(f.a == 41);
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		Foo f;
 		ranges::for_each(r, hamon::ref(f), &X::i);
 		VERIFY(f.a == 41);

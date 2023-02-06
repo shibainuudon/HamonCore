@@ -46,7 +46,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int a[] = {1,2,2,3,3,3,4,1};
-		test_range<int, forward_iterator_wrapper> r(a);
+		test_forward_range<int> r(a);
 		auto it = ranges::is_sorted_until(r);
 		VERIFY(it == ranges::next(r.begin(), 7));
 	}

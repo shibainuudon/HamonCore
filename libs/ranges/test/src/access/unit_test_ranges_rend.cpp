@@ -59,7 +59,7 @@ struct R3
 };
 
 struct R4
-	: test_range<int, bidirectional_iterator_wrapper>
+	: test_bidirectional_range<int>
 {
 	HAMON_CXX14_CONSTEXPR R4(int(&a)[2]) : test_range(a) { }
 

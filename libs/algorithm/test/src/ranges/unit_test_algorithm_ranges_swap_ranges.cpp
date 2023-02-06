@@ -26,8 +26,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		int y[4] = { 2, 4, 6, 0 };
 		int z[3] = { 1, 2, 3 };
 		int w[3] = { 2, 4, 6 };
-		test_range<int, input_iterator_wrapper> cx(x);
-		test_range<int, input_iterator_wrapper> cy(y);
+		test_input_range<int> cx(x);
+		test_input_range<int> cy(y);
 		auto res = ranges::swap_ranges(cx, cy);
 		VERIFY(res.in1.m_ptr == x+3 && res.in2.m_ptr == y+3);
 		VERIFY(ranges::equal(y, y+3, z, z+3));

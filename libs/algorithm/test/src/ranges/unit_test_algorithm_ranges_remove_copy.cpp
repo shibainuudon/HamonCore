@@ -34,7 +34,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int const x[] = { 1, 2, 3, 4, 5 };
-		test_range<int const, forward_iterator_wrapper> rx(x);
+		test_forward_range<int const> rx(x);
 		int w[5] = {};
 		auto res = ranges::remove_copy(rx, w, 2);
 		VERIFY(res.in  == rx.end());
@@ -64,7 +64,7 @@ inline bool test02()
 	}
 	{
 		X x[] = { {1}, {2}, {3} };
-		test_range<X, forward_iterator_wrapper> rx(x);
+		test_forward_range<X> rx(x);
 		X w[3] = {};
 		auto res = ranges::remove_copy(rx, w, 0, &X::i);
 		VERIFY(res.in  == rx.end());

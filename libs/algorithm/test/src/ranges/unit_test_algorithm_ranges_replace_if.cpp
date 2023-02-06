@@ -61,7 +61,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	namespace ranges = hamon::ranges;
 	{
 		int x[] = { 3,1,4,1,5,9,2,6,5 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		auto res = ranges::replace_if(rx, Less<5>{}, 0);
 		VERIFY(res == rx.end());
 		int y[] = { 0,0,0,0,5,9,0,6,5 };
@@ -69,7 +69,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		int x[] = { 3,1,4,1,5,9,2,6,5 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		auto res = ranges::replace_if(rx, Greater<3>{}, 8);
 		VERIFY(res == rx.end());
 		int y[] = { 3,1,8,1,8,8,2,8,8 };

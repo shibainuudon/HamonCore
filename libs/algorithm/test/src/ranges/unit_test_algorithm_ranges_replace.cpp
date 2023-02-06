@@ -36,7 +36,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	namespace ranges = hamon::ranges;
 	{
 		int x[] = { 1,3,1,4,1,5,1 };
-		test_range<int, input_iterator_wrapper> rx(x);
+		test_input_range<int> rx(x);
 		auto res = ranges::replace(rx, 1, 0);
 		VERIFY(res == rx.end());
 		int y[] = { 0,3,0,4,0,5,0 };

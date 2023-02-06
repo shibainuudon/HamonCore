@@ -32,8 +32,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,5 };
 		int const y[] = { 1,2,3,4,5 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY(!ranges::lexicographical_compare(rx, ry));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));
@@ -42,8 +42,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,5 };
 		int const y[] = { 1,2,3,4,6 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY( ranges::lexicographical_compare(rx, ry));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY( ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));
@@ -52,8 +52,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,6 };
 		int const y[] = { 1,2,3,4,5 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY(!ranges::lexicographical_compare(rx, ry));
 		VERIFY( ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));
@@ -62,8 +62,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,5 };
 		int const y[] = { 1,2,3,4,5,6 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY( ranges::lexicographical_compare(rx, ry));
 		VERIFY( ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY( ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));
@@ -72,8 +72,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,5 };
 		int const y[] = { 1,2,3,4 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY(!ranges::lexicographical_compare(rx, ry));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY(!ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));
@@ -82,8 +82,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int const x[] = { 1,2,3,4,5 };
 		int const y[] = { 1,2,3,4,-6 };
-		test_range<int const, input_iterator_wrapper> rx(x);
-		test_range<int const, input_iterator_wrapper> ry(y);
+		test_input_range<int const> rx(x);
+		test_input_range<int const> ry(y);
 		VERIFY(!ranges::lexicographical_compare(rx, ry));
 		VERIFY( ranges::lexicographical_compare(rx, ry, ranges::greater{}));
 		VERIFY( ranges::lexicographical_compare(rx, ry, {}, Abs{}, Abs{}));

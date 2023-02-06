@@ -43,7 +43,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(res.found == false);
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -51,7 +51,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -59,7 +59,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -67,7 +67,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -75,7 +75,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -83,7 +83,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r);
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == false);
@@ -94,7 +94,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		int x[] = {5,-4,3,-2,1};
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r, ranges::greater{}, Abs{});
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);
@@ -102,7 +102,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 			VERIFY(ranges::equal(x, y));
 		}
 		{
-			test_range<int, bidirectional_iterator_wrapper> r(x);
+			test_bidirectional_range<int> r(x);
 			auto res = ranges::next_permutation(r, ranges::greater{}, Abs{});
 			VERIFY(res.in == r.end());
 			VERIFY(res.found == true);

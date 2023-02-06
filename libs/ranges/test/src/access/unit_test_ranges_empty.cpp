@@ -45,10 +45,10 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	int a[] ={ 0, 1 };
 	VERIFY(!hamon::ranges::empty(a));
 
-	test_range<int, random_access_iterator_wrapper> r(a);
+	test_random_access_range<int> r(a);
 	VERIFY(!hamon::ranges::empty(r));
 
-	test_range<int, forward_iterator_wrapper> i(a);
+	test_forward_range<int> i(a);
 	VERIFY(!hamon::ranges::empty(i));
 
 	test_sized_range<int, random_access_iterator_wrapper> sr(a);

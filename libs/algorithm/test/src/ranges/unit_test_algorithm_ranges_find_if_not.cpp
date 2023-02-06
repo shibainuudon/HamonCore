@@ -90,19 +90,19 @@ inline bool test02()
 		VERIFY(res == x+6);
 	}
 	{
-		test_range<X, forward_iterator_wrapper> c(x);
+		test_forward_range<X> c(x);
 		auto res2 = ranges::find_if_not(c, [](int i) { return i <= 7; }, &X::i);
 		VERIFY(res2 != ranges::end(c) && (*res2).i == 8);
 		res2 = ranges::find_if_not(c, [](int i) { return i <= 11; }, &X::i);
 		VERIFY(res2 == ranges::end(c));
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		auto res3 = ranges::find_if_not(r, [](int i) { return i <= 10; }, &X::i);
 		VERIFY(res3 != ranges::end(r) && (*res3).i == 11);
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		auto res3 = ranges::find_if_not(r, [](int i) { return i != 9; }, &X::i);
 		VERIFY(res3 == ranges::end(r));
 	}

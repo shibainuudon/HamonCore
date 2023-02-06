@@ -91,7 +91,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	int a[] ={ 0, 1 };
 	VERIFY(hamon::ranges::data(a) == a + 0);
 
-	test_range<int, contiguous_iterator_wrapper> r(a);
+	test_contiguous_range<int> r(a);
 	VERIFY(hamon::ranges::data(r) == hamon::to_address(hamon::ranges::begin(r)));
 
 	static_assert( has_data<int(&)[2]>::value, "");

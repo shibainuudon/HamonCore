@@ -115,15 +115,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	// Otherwise, decay-copy(t.end()) if it is a valid expression
 	// and its type S models sentinel_for<decltype(ranges::begin(E))>.
 
-	test_range<int, random_access_iterator_wrapper> r(a);
+	test_random_access_range<int> r(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(r)), decltype(r.end())>::value, "");
 	VERIFY(hamon::ranges::end(r) == hamon::ranges::next(r.begin(), 2));
 
-	test_range<int, input_iterator_wrapper> i(a);
+	test_input_range<int> i(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(i)), decltype(i.end())>::value, "");
 	VERIFY(hamon::ranges::end(i) == hamon::ranges::next(i.begin(), 2));
 
-	test_range<int, output_iterator_wrapper> o(a);
+	test_output_range<int> o(a);
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(o)), decltype(o.end())>::value, "");
 	VERIFY(hamon::ranges::end(o) == hamon::ranges::next(o.begin(), 2));
 

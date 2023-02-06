@@ -26,14 +26,14 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	for (int i = 0; i < 8; ++i)
 	{
 		int x[] = {0,1,2,3,4,5,6,7};
-		test_range<int, forward_iterator_wrapper> r(x);
+		test_forward_range<int> r(x);
 		auto res = ranges::upper_bound(r, i);
 		VERIFY(res == ranges::next(r.begin(), std::ptrdiff_t(i) + 1));
 	}
 	for (int i = 0; i < 8; ++i)
 	{
 		int x[] = {7,6,5,4,3,2,1,0};
-		test_range<int, forward_iterator_wrapper> r(x);
+		test_forward_range<int> r(x);
 		auto res = ranges::upper_bound(r, i, ranges::greater{});
 		VERIFY(res == ranges::next(r.begin(), std::ptrdiff_t(7) - i + 1));
 	}

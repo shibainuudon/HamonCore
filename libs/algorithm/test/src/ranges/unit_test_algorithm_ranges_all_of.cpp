@@ -47,10 +47,10 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY( ranges::all_of(x, ILess{ 12 }));
 	VERIFY(!ranges::all_of(x, ILess{ 11 }));
 
-	test_range<int, forward_iterator_wrapper> c(x);
+	test_forward_range<int> c(x);
 	VERIFY( ranges::all_of(c, NotZero<int>{}));
 
-	test_range<int, input_iterator_wrapper> r(x);
+	test_input_range<int> r(x);
 	VERIFY( ranges::all_of(r, NotZero<int>{}));
 
 	return true;
@@ -70,10 +70,10 @@ inline bool test02()
 	VERIFY( ranges::all_of(x, ILess{ 12 }, &X::i));
 	VERIFY(!ranges::all_of(x, ILess{ 11 }, &X::i));
 
-	test_range<X, forward_iterator_wrapper> c(x);
+	test_forward_range<X> c(x);
 	VERIFY( ranges::all_of(c, NotZero<int>{}, &X::i));
 
-	test_range<X, input_iterator_wrapper> r(x);
+	test_input_range<X> r(x);
 	VERIFY( ranges::all_of(r, NotZero<int>{}, &X::i));
 
 	return true;

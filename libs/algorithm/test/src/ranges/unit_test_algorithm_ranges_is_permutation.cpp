@@ -30,7 +30,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY( ranges::is_permutation(x, x+6, y, y+6));
 	VERIFY(!ranges::is_permutation(x, x+6, y, y+5));
 
-	test_range<int, forward_iterator_wrapper> rx(x), ry(y), rz(z);
+	test_forward_range<int> rx(x), ry(y), rz(z);
 	VERIFY( ranges::is_permutation(rx, ry));
 	VERIFY(!ranges::is_permutation(rx, rz));
 

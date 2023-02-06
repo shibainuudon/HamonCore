@@ -50,13 +50,13 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int const a[] = {0,0,0,1,1,2,3,3,3,4,5,5,5,5};
-		test_range<int const, forward_iterator_wrapper> r(a);
+		test_forward_range<int const> r(a);
 		VERIFY(true  == ranges::is_sorted(r));
 		VERIFY(false == ranges::is_sorted(r, ranges::greater{}));
 	}
 	{
 		int const a[] = {3,1,4,1,5,9,2};
-		test_range<int const, forward_iterator_wrapper> r(a);
+		test_forward_range<int const> r(a);
 		VERIFY(false == ranges::is_sorted(r));
 		VERIFY(false == ranges::is_sorted(r, ranges::greater{}));
 	}

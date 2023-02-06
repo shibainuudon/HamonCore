@@ -32,19 +32,19 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(res == x+6);
 	}
 	{
-		test_range<int, forward_iterator_wrapper> c(x);
+		test_forward_range<int> c(x);
 		auto res = ranges::find(c, 8);
 		VERIFY(res != ranges::end(c) && *res == 8);
 		res = ranges::find(c, 9);
 		VERIFY(res == ranges::end(c));
 	}
 	{
-		test_range<int, input_iterator_wrapper> r(x);
+		test_input_range<int> r(x);
 		auto res = ranges::find(r, 8);
 		VERIFY(res != ranges::end(r) && *res == 8);
 	}
 	{
-		test_range<int, input_iterator_wrapper> r(x);
+		test_input_range<int> r(x);
 		auto res = ranges::find(r, 9);
 		VERIFY(res == ranges::end(r));
 	}
@@ -67,19 +67,19 @@ inline bool test02()
 		VERIFY(res == x+6);
 	}
 	{
-		test_range<X, forward_iterator_wrapper> c(x);
+		test_forward_range<X> c(x);
 		auto res = ranges::find(c, 8, &X::i);
 		VERIFY(res != ranges::end(c) && (*res).i == 8);
 		res = ranges::find(c, 9, &X::i);
 		VERIFY(res == ranges::end(c));
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		auto res = ranges::find(r, 8, &X::i);
 		VERIFY(res != ranges::end(r) && (*res).i == 8);
 	}
 	{
-		test_range<X, input_iterator_wrapper> r(x);
+		test_input_range<X> r(x);
 		auto res = ranges::find(r, 9, &X::i);
 		VERIFY(res == ranges::end(r));
 	}

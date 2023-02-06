@@ -42,8 +42,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		int x[] = {3,1,4,1,5};
 		int w[5] = {};
-		test_range<int, input_iterator_wrapper>  rx(x);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int>  rx(x);
+		test_output_range<int> rw(w);
 		auto res = ranges::transform(rx, rw.begin(), hamon::negate<>{});
 		VERIFY(res.in  == rx.end());
 		VERIFY(res.out == rw.end());
@@ -77,9 +77,9 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 		int x[] = {1,2,3,4,5};
 		int y[] = {2,4,6,8,10};
 		int w[5] = {};
-		test_range<int, input_iterator_wrapper>  rx(x);
-		test_range<int, input_iterator_wrapper>  ry(y);
-		test_range<int, output_iterator_wrapper> rw(w);
+		test_input_range<int>  rx(x);
+		test_input_range<int>  ry(y);
+		test_output_range<int> rw(w);
 		auto res = ranges::transform(rx, ry, rw.begin(), hamon::plus<>{});
 		VERIFY(res.in1 == rx.end());
 		VERIFY(res.in2 == ry.end());

@@ -24,7 +24,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	namespace ranges = hamon::ranges;
 	{
 		int const x[] = { 1,2,2,4,4,4 };
-		test_range<int const, forward_iterator_wrapper> r(x);
+		test_forward_range<int const> r(x);
 		VERIFY(false == ranges::binary_search(r, 0));
 		VERIFY(true  == ranges::binary_search(r, 1));
 		VERIFY(true  == ranges::binary_search(r, 2));
@@ -34,7 +34,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int const x[] = { 5,5,5,4,1,0 };
-		test_range<int const, forward_iterator_wrapper> r(x);
+		test_forward_range<int const> r(x);
 		auto pred = ranges::greater{};
 		VERIFY(true  == ranges::binary_search(r, 0, pred));
 		VERIFY(true  == ranges::binary_search(r, 1, pred));

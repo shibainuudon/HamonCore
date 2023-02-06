@@ -61,20 +61,20 @@ inline bool test02()
 	auto res = ranges::mismatch(xa, xa+6, xb, xb+6, {}, &X::i, &X::i);
 	VERIFY(res.in1 == xa+3 && res.in2 == xb+3);
 
-	test_range<X, forward_iterator_wrapper> ca(xa);
-	test_range<X, forward_iterator_wrapper> cb(xb);
+	test_forward_range<X> ca(xa);
+	test_forward_range<X> cb(xb);
 	auto res2 = ranges::mismatch(ca, cb, {}, &X::i, &X::i);
 	VERIFY((*res2.in1).i == 4 && (*res2.in2).i == 3);
 	res2 = ranges::mismatch(ca, ca, {}, &X::i, &X::i);
 	VERIFY(res2.in1 == ranges::end(ca) && res2.in2 == ranges::end(ca));
 
-	test_range<X, input_iterator_wrapper> ra(xa);
-	test_range<X, input_iterator_wrapper> rb(xb);
+	test_input_range<X> ra(xa);
+	test_input_range<X> rb(xb);
 	auto res3 = ranges::mismatch(ra, rb, {}, &X::i, &X::i);
 	VERIFY((*res3.in1).i == 4 && (*res3.in2).i == 3);
 
-	test_range<X, input_iterator_wrapper> ra2(xa);
-	test_range<X, input_iterator_wrapper> ra3(xa);
+	test_input_range<X> ra2(xa);
+	test_input_range<X> ra3(xa);
 	res3 = ranges::mismatch(ra2, ra3, {}, &X::i, &X::i);
 	VERIFY(res3.in1 == ranges::end(ra2) && res3.in2 == ranges::end(ra3));
 

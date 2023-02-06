@@ -52,17 +52,17 @@ inline bool test02()
 	res = ranges::count(x, x+7, 9, &X::i);
 	VERIFY(res == 0);
 
-	test_range<X, forward_iterator_wrapper> c(x);
+	test_forward_range<X> c(x);
 	res = ranges::count(c, 6, &X::i);
 	VERIFY(res == 1);
 	res = ranges::count(c, 9, &X::i);
 	VERIFY(res == 0);
 
-	test_range<X, input_iterator_wrapper> r(x);
+	test_input_range<X> r(x);
 	res = ranges::count(r, 2, &X::i);
 	VERIFY(res == 3);
 
-	test_range<X, input_iterator_wrapper> r2(x);
+	test_input_range<X> r2(x);
 	res = ranges::count(r2, 9, &X::i);
 	VERIFY(res == 0);
 

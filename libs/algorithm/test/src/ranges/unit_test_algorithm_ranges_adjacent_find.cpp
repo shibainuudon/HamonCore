@@ -42,7 +42,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 struct X { int i; };
 
-template <template <typename> class IterWrap>
+template <template <typename> class iter_wrapper>
 inline bool test02()
 {
 	namespace ranges = hamon::ranges;
@@ -51,17 +51,17 @@ inline bool test02()
 		VERIFY(ranges::adjacent_find(x, x+6, {}, &X::i) == x+0);
 		VERIFY(ranges::adjacent_find(x+1, x+6, {}, &X::i) == x+6);
 
-		test_range<X, IterWrap> r(x);
+		test_range<X, iter_wrapper<X>> r(x);
 		VERIFY(ranges::adjacent_find(r, {}, &X::i) == ranges::begin(r));
 	}
 	{
 		X x[] = { {1}, {2}, {6}, {8}, {10}, {10} };
-		test_range<X, IterWrap> r(x);
+		test_range<X, iter_wrapper<X>> r(x);
 		VERIFY(ranges::adjacent_find(r, {}, &X::i) == ranges::next(ranges::begin(r), 4));
 	}
 	{
 		X x[] = { {1}, {2}, {6}, {8}, {10}, {11} };
-		test_range<X, IterWrap> r(x);
+		test_range<X, iter_wrapper<X>> r(x);
 		VERIFY(ranges::adjacent_find(r, {}, &X::i) == ranges::end(r));
 	}
 	return true;

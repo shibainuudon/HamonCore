@@ -43,7 +43,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int const x[] = { 1,2,3,4,5 };
-		test_range<int const, forward_iterator_wrapper> rx(x);
+		test_forward_range<int const> rx(x);
 		int w[5] = {};
 		auto res = ranges::remove_copy_if(rx, w, IsOdd{});
 		VERIFY(res.in  == rx.end());
@@ -53,7 +53,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int const x[] = { 1,3,5,7 };
-		test_range<int const, forward_iterator_wrapper> rx(x);
+		test_forward_range<int const> rx(x);
 		int w[4] = {};
 		auto res = ranges::remove_copy_if(rx, w, IsOdd{});
 		VERIFY(res.in  == rx.end());
@@ -81,7 +81,7 @@ inline bool test02()
 	}
 	{
 		int const x[] = { 1,2,3,4,5 };
-		test_range<int const, input_iterator_wrapper> rx(x);
+		test_input_range<int const> rx(x);
 		int w[5] = {};
 		auto res = ranges::remove_copy_if(rx, w, [](int a) {return a % 2 == 1; });
 		VERIFY(res.in  == rx.end());
@@ -91,7 +91,7 @@ inline bool test02()
 	}
 	{
 		X const x[] = { {3},{1},{4},{1},{5} };
-		test_range<X const, forward_iterator_wrapper> rx(x);
+		test_forward_range<X const> rx(x);
 		X w[2] = {};
 		auto res = ranges::remove_copy_if(rx, w, [](int a) {return a < 4; }, &X::i);
 		VERIFY(res.in  == rx.end());

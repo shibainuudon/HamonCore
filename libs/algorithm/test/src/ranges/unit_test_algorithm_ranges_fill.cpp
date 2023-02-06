@@ -31,7 +31,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		int x[] = { 1, 2, 3, 4, 5 };
-		test_range<int, output_iterator_wrapper> rx(x);
+		test_output_range<int> rx(x);
 		auto res = ranges::fill(rx, 18);
 		VERIFY(res == rx.end());
 		int const y[] = { 18, 18, 18, 18, 18 };
@@ -57,7 +57,7 @@ inline bool test02()
 	}
 	{
 		X x[] = { {1}, {2}, {3}, {4}, {5} };
-		test_range<X, output_iterator_wrapper> rx(x);
+		test_range<X, output_iterator_wrapper<X>> rx(x);
 		auto res = ranges::fill(rx, X{ 18 });
 		VERIFY(res == rx.end());
 		int const y[] = { 18, 18, 18, 18, 18 };

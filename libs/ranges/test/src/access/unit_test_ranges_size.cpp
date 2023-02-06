@@ -124,7 +124,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 HAMON_CXX14_CONSTEXPR bool test04()
 {
 	int a[] { 0, 1 };
-	test_range<int, random_access_iterator_wrapper> r(a);
+	test_random_access_range<int> r(a);
 	VERIFY(hamon::ranges::size(r) == unsigned(hamon::ranges::end(r) - hamon::ranges::begin(r)));
 	
 	return true;
