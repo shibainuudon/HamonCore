@@ -96,7 +96,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	VERIFY(hamon::ranges::size(c) == 2L);
 
 	int a[3] { };
-	test_sized_range<int, input_iterator_wrapper> ri(a);
+	test_input_sized_range<int> ri(a);
 	static_assert(noexcept(hamon::ranges::size(ri)), "");
 	VERIFY(hamon::ranges::size(ri) == 3);
 

@@ -73,7 +73,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[3]{ };
-	test_sized_range<int, input_iterator_wrapper> ri(a);
+	test_input_sized_range<int> ri(a);
 	VERIFY(hamon::ranges::ssize(ri) == 3);
 #if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 	static_assert(noexcept(hamon::ranges::ssize(ri)), "");
