@@ -21,7 +21,6 @@ using std::weakly_incrementable;
 #else
 
 #include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/signed_integer_like.hpp>
@@ -37,7 +36,6 @@ namespace hamon
 
 template <typename Iter>
 concept weakly_incrementable =
-	hamon::default_initializable<Iter> &&
 	hamon::movable<Iter> &&
 	requires(Iter i)
 	{
@@ -57,7 +55,6 @@ struct weakly_incrementable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::default_initializable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::movable<I2>::value>,
 		typename D = hamon::iter_difference_t<I2>,
 		typename = hamon::enable_if_t<hamon::ranges::detail::signed_integer_like<D>::value>,
