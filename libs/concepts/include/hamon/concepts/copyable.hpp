@@ -81,6 +81,7 @@ using copyable =
 #endif
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/negation.hpp>
 
 namespace hamon
 {
@@ -91,6 +92,23 @@ using copyable_t =
 	hamon::bool_constant<hamon::copyable<T>>;
 #else
 	hamon::copyable<T>;
+#endif
+
+// not_copyable
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+template <typename T>
+concept not_copyable = !hamon::copyable<T>;
+#else
+template <typename T>
+using not_copyable = hamon::negation<hamon::copyable<T>>;
+#endif
+
+template <typename T>
+using not_copyable_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::not_copyable<T>>;
+#else
+	hamon::not_copyable<T>;
 #endif
 
 }	// namespace hamon
