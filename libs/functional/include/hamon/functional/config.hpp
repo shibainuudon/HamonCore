@@ -8,6 +8,7 @@
 #define HAMON_FUNCTIONAL_CONFIG_HPP
 
 #include <hamon/config.hpp>
+#include <hamon/ranges/config.hpp>
 #include <functional>
 
 #if HAMON_CXX_STANDARD >= 17
@@ -16,7 +17,7 @@
 #  endif
 #endif
 
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202106)
+#if defined(HAMON_USE_STD_RANGES)
 #  define HAMON_USE_STD_RANGES_FUNCTIONAL
 #endif
 
