@@ -7,7 +7,7 @@
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/dangling.hpp>
 #include <hamon/ranges/views/subrange.hpp>
-//#include <hamon/span.hpp>
+#include <hamon/span.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <type_traits>
 #include "ranges_test.hpp"
@@ -31,8 +31,8 @@ HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_bidirectional_range<char>&, hamon::ra
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_forward_range<char>&,       hamon::ranges::subrange<forward_iterator_wrapper<char>>);
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_input_range<char>&,         hamon::ranges::subrange<input_iterator_wrapper<char>>);
 //HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_output_range<char>&,        hamon::ranges::dangling);
-//HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<char>,               hamon::ranges::subrange<hamon::span<char>::iterator>);
-//HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<char HAMON_PP_COMMA() 10>, hamon::ranges::subrange<hamon::span<char HAMON_PP_COMMA() 10>::iterator>);
+HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<char>,               hamon::ranges::subrange<hamon::span<char>::iterator>);
+HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<char HAMON_PP_COMMA() 10>, hamon::ranges::subrange<hamon::span<char HAMON_PP_COMMA() 10>::iterator>);
 
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(int      [2],                   hamon::ranges::dangling);
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(int const[2],                   hamon::ranges::dangling);
@@ -50,7 +50,7 @@ HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_bidirectional_range<int>&, hamon::ran
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_forward_range<int>&,       hamon::ranges::subrange<forward_iterator_wrapper<int>>);
 HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_input_range<int>&,         hamon::ranges::subrange<input_iterator_wrapper<int>>);
 //HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(test_output_range<int>&,        hamon::ranges::dangling);
-//HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<int>,               hamon::ranges::subrange<hamon::span<int>::iterator>);
-//HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<int HAMON_PP_COMMA() 10>, hamon::ranges::subrange<hamon::span<int HAMON_PP_COMMA() 10>::iterator>);
+HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<int>,               hamon::ranges::subrange<hamon::span<int>::iterator>);
+HAMON_RANGES_BORROWED_SUBRANGE_T_TEST(hamon::span<int HAMON_PP_COMMA() 10>, hamon::ranges::subrange<hamon::span<int HAMON_PP_COMMA() 10>::iterator>);
 
 #undef HAMON_RANGES_BORROWED_SUBRANGE_T_TEST

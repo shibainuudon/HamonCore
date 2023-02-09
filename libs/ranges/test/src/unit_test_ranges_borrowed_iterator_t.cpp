@@ -7,7 +7,7 @@
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/dangling.hpp>
 //#include <hamon/ranges/views/subrange.hpp>
-//#include <hamon/span.hpp>
+#include <hamon/span.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <type_traits>
 #include "ranges_test.hpp"
@@ -39,9 +39,9 @@ HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<bidirectional_iter
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<forward_iterator_wrapper<char>>,       forward_iterator_wrapper<char>);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<input_iterator_wrapper<char>>,         input_iterator_wrapper<char>);
 //HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<output_iterator_wrapper<char>>,        output_iterator_wrapper<char>);
+#endif
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::span<char>,               hamon::span<char>::iterator);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::span<char HAMON_PP_COMMA() 10>, hamon::span<char HAMON_PP_COMMA() 10>::iterator);
-#endif
 
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(int      [2],                   hamon::ranges::dangling);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(int const[2],                   hamon::ranges::dangling);
@@ -67,8 +67,8 @@ HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<bidirectional_iter
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<forward_iterator_wrapper<int>>,       forward_iterator_wrapper<int>);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<input_iterator_wrapper<int>>,         input_iterator_wrapper<int>);
 //HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::ranges::subrange<output_iterator_wrapper<int>>,        output_iterator_wrapper<int>);
+#endif
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::span<int>,               hamon::span<int>::iterator);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(hamon::span<int HAMON_PP_COMMA() 10>, hamon::span<int HAMON_PP_COMMA() 10>::iterator);
-#endif
 
 #undef HAMON_RANGES_BORROWED_ITERATOR_T_TEST

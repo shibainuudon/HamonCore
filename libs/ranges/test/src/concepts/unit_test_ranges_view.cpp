@@ -11,7 +11,7 @@
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 //#include <hamon/string_view.hpp>
-//#include <hamon/span.hpp>
+#include <hamon/span.hpp>
 #include <hamon/config.hpp>
 #include <array>
 #include <vector>
@@ -212,10 +212,10 @@ HAMON_RANGES_VIEW_TEST(true,  hamon::u16string_view);
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 HAMON_RANGES_VIEW_TEST(true,  hamon::u32string_view);
 #endif
+#endif
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int>);
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int, 0>);
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int, 1>);
-#endif
 
 HAMON_RANGES_VIEW_TEST(false, test_contiguous_range<int>);
 HAMON_RANGES_VIEW_TEST(false, test_contiguous_range<int>&);

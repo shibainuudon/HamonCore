@@ -23,6 +23,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		iterator
 		memory
 		preprocessor
+		span
 		tuple
 		type_traits
 		utility)

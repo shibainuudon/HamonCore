@@ -11,7 +11,7 @@
 //#include <hamon/ranges/views/iota_view.hpp>
 //#include <hamon/ranges/views/ref_view.hpp>
 //#include <hamon/string_view.hpp>
-//#include <hamon/span.hpp>
+#include <hamon/span.hpp>
 #include "ranges_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -96,10 +96,10 @@ HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::u16string_view);
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::u32string_view);
 #endif
+#endif
 
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::span<int>);
 HAMON_RANGES_BORROWED_RANGE_TEST(true, hamon::span<int, 99>);
-#endif
 
 HAMON_RANGES_BORROWED_RANGE_TEST(true,  test_contiguous_range<hamon_ranges_test::borrowed_range_test::A>);
 HAMON_RANGES_BORROWED_RANGE_TEST(false, test_contiguous_range<hamon_ranges_test::borrowed_range_test::B>);
