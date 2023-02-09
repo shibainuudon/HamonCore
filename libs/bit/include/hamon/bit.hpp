@@ -12,6 +12,7 @@
 #include <hamon/bit/bit_floor.hpp>
 #include <hamon/bit/bit_width.hpp>
 #include <hamon/bit/bitsof.hpp>
+#include <hamon/bit/byteswap.hpp>
 #include <hamon/bit/config.hpp>
 #include <hamon/bit/countl_one.hpp>
 #include <hamon/bit/countl_zero.hpp>
