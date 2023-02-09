@@ -9,6 +9,7 @@
 #include <hamon/algorithm/ranges/count.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/views/subrange.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <gtest/gtest.h>
 #include <vector>
@@ -238,8 +239,15 @@ struct sentinel
 	{
 		return x == y.it;
 	}
-
 	friend bool operator!=(It x, sentinel y)
+	{
+		return !(x == y);
+	}
+	friend bool operator==(sentinel y, It x)
+	{
+		return x == y.it;
+	}
+	friend bool operator!=(sentinel y, It x)
 	{
 		return !(x == y);
 	}
@@ -247,34 +255,34 @@ struct sentinel
 
 inline void test06()
 {
-#if 0	// TODO subrange 対応
 	std::vector<int> v = { 1,2,3,4,5 };
 	std::vector<int> w = { 0,0,0,0,0 };
-	std::ranges::subrange sr =
+	using Iter = std::vector<int>::iterator;
+	using Sent = sentinel<Iter>;
+	hamon::ranges::subrange<Iter, Sent> sr =
 	{
 		v.begin(),
-		sentinel{v.end()}
+		Sent{v.end()}
 	};
 	hamon::ranges::move(sr, w.begin());
 	const int x[] = { 1, 2, 3, 4, 5 };
 	EXPECT_TRUE(hamon::ranges::equal(w, x));
-#endif
 }
 
 inline void test07()
 {
-#if 0	// TODO subrange 対応
 	std::vector<int> v = { 1,2,3,4,5 };
 	std::vector<int> w = { 0,0,0,0,0 };
-	std::ranges::subrange sr =
+	using Iter = hamon::reverse_iterator<std::vector<int>::iterator>;
+	using Sent = sentinel<Iter>;
+	hamon::ranges::subrange<Iter, Sent> sr =
 	{
-		hamon::reverse_iterator{v.end()},
-		sentinel{hamon::reverse_iterator{v.begin()}}
+		Iter{v.end()},
+		Sent{Iter{v.begin()}}
 	};
-	hamon::ranges::move(sr, hamon::reverse_iterator{ w.end() });
+	hamon::ranges::move(sr, Iter{ w.end() });
 	const int x[] = { 1, 2, 3, 4, 5 };
 	EXPECT_TRUE(hamon::ranges::equal(w, x));
-#endif
 }
 
 #undef VERIFY

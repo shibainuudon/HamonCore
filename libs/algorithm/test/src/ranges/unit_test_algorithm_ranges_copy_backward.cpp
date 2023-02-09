@@ -9,6 +9,7 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/views/subrange.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include <list>
@@ -31,6 +32,18 @@ struct sentinel
 	friend bool operator==(It x, sentinel y)
 	{
 		return x == y.it;
+	}
+	friend bool operator!=(It x, sentinel y)
+	{
+		return !(x == y);
+	}
+	friend bool operator==(sentinel y, It x)
+	{
+		return x == y.it;
+	}
+	friend bool operator!=(sentinel y, It x)
+	{
+		return !(x == y);
 	}
 };
 
@@ -61,32 +74,36 @@ inline bool test01()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool test02()
+inline bool test02()
 {
 	namespace ranges = hamon::ranges;
 
-#if 0
-	std::vector<int> v = { 1,2,3,4,5 }, w = { 0,0,0,0,0 };
-	ranges::subrange sr = { v.begin(), sentinel{v.end()} };
+	std::vector<int> v = { 1,2,3,4,5 };
+	std::vector<int> w = { 0,0,0,0,0 };
+	using Iter = std::vector<int>::iterator;
+	using Sent = sentinel<Iter>;
+	ranges::subrange<Iter, Sent> sr = { v.begin(), Sent{v.end()} };
 	ranges::copy_backward(sr, w.end());
 
-	VERIFY(ranges::equal(w, (int[]) { 1, 2, 3, 4, 5 }));
-#endif
+	int const y[] = { 1,2,3,4,5 };
+	VERIFY(ranges::equal(w, y));
 
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool test03()
+inline bool test03()
 {
 	namespace ranges = hamon::ranges;
 
-#if 0
-	using std::reverse_iterator;
-	std::vector<int> v = { 1,2,3,4,5 }, w = { 0,0,0,0,0 };
-	ranges::subrange sr = { reverse_iterator{v.end()}, sentinel{reverse_iterator{v.begin()}} };
-	ranges::copy_backward(sr, reverse_iterator{ w.begin() });
-	VERIFY(ranges::equal(w, (int[]) { 1, 2, 3, 4, 5 }));
-#endif
+	std::vector<int> v = { 1,2,3,4,5 };
+	std::vector<int> w = { 0,0,0,0,0 };
+	using Iter = hamon::reverse_iterator<std::vector<int>::iterator>;
+	using Sent = sentinel<Iter>;
+	ranges::subrange<Iter, Sent> sr = { Iter{v.end()}, Sent{Iter{v.begin()}} };
+	ranges::copy_backward(sr, Iter{ w.begin() });
+
+	int const y[] = { 1,2,3,4,5 };
+	VERIFY(ranges::equal(w, y));
 
 	return true;
 }
@@ -212,8 +229,8 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 GTEST_TEST(AlgorithmTest, RangesCopyBackwardTest)
 {
 	                      EXPECT_TRUE(test01());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	                      EXPECT_TRUE(test02());
+	                      EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 	                      EXPECT_TRUE(test06());
