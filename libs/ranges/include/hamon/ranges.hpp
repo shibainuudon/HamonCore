@@ -9,7 +9,7 @@
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
-//#include <hamon/ranges/borrowed_subrange_t.hpp>
+#include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/cbegin.hpp>
 #include <hamon/ranges/cdata.hpp>
 #include <hamon/ranges/cend.hpp>
