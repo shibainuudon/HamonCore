@@ -21,19 +21,25 @@
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-#define HAMON_CONSTRAINED_PARAM_1(C, T1)			C T1
-#define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)		C<T1> T2
-#define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)		C T1 = D
-#define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)	C<T1> T2 = D
+#define HAMON_CONSTRAINED_PARAM_1(C, T1)					C T1
+#define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)				C<T1> T2
+#define HAMON_CONSTRAINED_PARAM_3(C, T1, T2, T3)			C<T1, T2> T3
+#define HAMON_CONSTRAINED_PARAM_4(C, T1, T2, T3, T4)		C<T1, T2, T3> T4
+#define HAMON_CONSTRAINED_PARAM_5(C, T1, T2, T3, T4, T5)	C<T1, T2, T3, T4> T5
+#define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)			C T1 = D
+#define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)		C<T1> T2 = D
 #define HAMON_CONSTRAINED_PARAM_D_4(C, T1, T2, T3, D)	C<T1, T2> T3 = D
 
 #else
 
-#define HAMON_CONSTRAINED_PARAM_1(C, T1)			typename T1, typename = hamon::enable_if_t<C<T1>::value>
-#define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)		typename T2, typename = hamon::enable_if_t<C<T2, T1>::value>
-#define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)		typename T1 = D, typename = hamon::enable_if_t<C<T1>::value>
-#define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)	typename T2 = D, typename = hamon::enable_if_t<C<T2, T1>::value>
-#define HAMON_CONSTRAINED_PARAM_D_4(C, T1, T2, T3, D)	typename T3 = D, typename = hamon::enable_if_t<C<T3, T2, T1>::value>
+#define HAMON_CONSTRAINED_PARAM_1(C, T1)					typename T1, typename = hamon::enable_if_t<C<T1>::value>
+#define HAMON_CONSTRAINED_PARAM_2(C, T1, T2)				typename T2, typename = hamon::enable_if_t<C<T2, T1>::value>
+#define HAMON_CONSTRAINED_PARAM_3(C, T1, T2, T3)			typename T3, typename = hamon::enable_if_t<C<T3, T1, T2>::value>
+#define HAMON_CONSTRAINED_PARAM_4(C, T1, T2, T3, T4)		typename T4, typename = hamon::enable_if_t<C<T4, T1, T2, T3>::value>
+#define HAMON_CONSTRAINED_PARAM_5(C, T1, T2, T3, T4, T5)	typename T5, typename = hamon::enable_if_t<C<T5, T1, T2, T3, T4>::value>
+#define HAMON_CONSTRAINED_PARAM_D_2(C, T1, D)			typename T1 = D, typename = hamon::enable_if_t<C<T1>::value>
+#define HAMON_CONSTRAINED_PARAM_D_3(C, T1, T2, D)		typename T2 = D, typename = hamon::enable_if_t<C<T2, T1>::value>
+#define HAMON_CONSTRAINED_PARAM_D_4(C, T1, T2, T3, D)	typename T3 = D, typename = hamon::enable_if_t<C<T3, T1, T2>::value>
 
 #endif
 
