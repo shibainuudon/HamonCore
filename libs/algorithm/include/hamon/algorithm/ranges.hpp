@@ -42,7 +42,7 @@
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/in_in_result.hpp>
-//#include <hamon/algorithm/ranges/in_out_out_result.hpp>
+#include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 //#include <hamon/algorithm/ranges/is_heap.hpp>
 //#include <hamon/algorithm/ranges/is_heap_until.hpp>
@@ -70,7 +70,7 @@
 //#include <hamon/algorithm/ranges/partial_sort.hpp>
 //#include <hamon/algorithm/ranges/partial_sort_copy.hpp>
 #include <hamon/algorithm/ranges/partition.hpp>
-//#include <hamon/algorithm/ranges/partition_copy.hpp>
+#include <hamon/algorithm/ranges/partition_copy.hpp>
 //#include <hamon/algorithm/ranges/partition_point.hpp>
 //#include <hamon/algorithm/ranges/pop_heap.hpp>
 #include <hamon/algorithm/ranges/prev_permutation.hpp>
