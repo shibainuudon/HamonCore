@@ -91,10 +91,10 @@
 //#include <hamon/algorithm/ranges/sample.hpp>
 #include <hamon/algorithm/ranges/search.hpp>
 #include <hamon/algorithm/ranges/search_n.hpp>
-//#include <hamon/algorithm/ranges/set_difference.hpp>
-//#include <hamon/algorithm/ranges/set_intersection.hpp>
-//#include <hamon/algorithm/ranges/set_symmetric_difference.hpp>
-//#include <hamon/algorithm/ranges/set_union.hpp>
+#include <hamon/algorithm/ranges/set_difference.hpp>
+#include <hamon/algorithm/ranges/set_intersection.hpp>
+#include <hamon/algorithm/ranges/set_symmetric_difference.hpp>
+#include <hamon/algorithm/ranges/set_union.hpp>
 #include <hamon/algorithm/ranges/shuffle.hpp>
 //#include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/sort_heap.hpp>
