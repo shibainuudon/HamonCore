@@ -21,7 +21,7 @@
 #include <hamon/algorithm/ranges/count_if.hpp>
 //#include <hamon/algorithm/ranges/ends_with.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
-//#include <hamon/algorithm/ranges/equal_range.hpp>
+#include <hamon/algorithm/ranges/equal_range.hpp>
 #include <hamon/algorithm/ranges/fill.hpp>
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/algorithm/ranges/find.hpp>
