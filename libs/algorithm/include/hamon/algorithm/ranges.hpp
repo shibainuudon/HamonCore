@@ -69,7 +69,7 @@
 //#include <hamon/algorithm/ranges/nth_element.hpp>
 //#include <hamon/algorithm/ranges/partial_sort.hpp>
 //#include <hamon/algorithm/ranges/partial_sort_copy.hpp>
-//#include <hamon/algorithm/ranges/partition.hpp>
+#include <hamon/algorithm/ranges/partition.hpp>
 //#include <hamon/algorithm/ranges/partition_copy.hpp>
 //#include <hamon/algorithm/ranges/partition_point.hpp>
 //#include <hamon/algorithm/ranges/pop_heap.hpp>
