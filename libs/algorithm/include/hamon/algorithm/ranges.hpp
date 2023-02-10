@@ -98,7 +98,7 @@
 #include <hamon/algorithm/ranges/shuffle.hpp>
 //#include <hamon/algorithm/ranges/sort.hpp>
 //#include <hamon/algorithm/ranges/sort_heap.hpp>
-//#include <hamon/algorithm/ranges/stable_partition.hpp>
+#include <hamon/algorithm/ranges/stable_partition.hpp>
 //#include <hamon/algorithm/ranges/stable_sort.hpp>
 //#include <hamon/algorithm/ranges/starts_with.hpp>
 #include <hamon/algorithm/ranges/swap_ranges.hpp>
