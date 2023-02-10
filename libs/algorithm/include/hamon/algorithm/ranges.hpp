@@ -88,6 +88,7 @@
 #include <hamon/algorithm/ranges/reverse_copy.hpp>
 #include <hamon/algorithm/ranges/rotate.hpp>
 #include <hamon/algorithm/ranges/rotate_copy.hpp>
+//#include <hamon/algorithm/ranges/sample.hpp>
 #include <hamon/algorithm/ranges/search.hpp>
 #include <hamon/algorithm/ranges/search_n.hpp>
 //#include <hamon/algorithm/ranges/set_difference.hpp>
@@ -102,8 +103,8 @@
 //#include <hamon/algorithm/ranges/starts_with.hpp>
 #include <hamon/algorithm/ranges/swap_ranges.hpp>
 #include <hamon/algorithm/ranges/transform.hpp>
-//#include <hamon/algorithm/ranges/unique.hpp>
-//#include <hamon/algorithm/ranges/unique_copy.hpp>
+#include <hamon/algorithm/ranges/unique.hpp>
+#include <hamon/algorithm/ranges/unique_copy.hpp>
 #include <hamon/algorithm/ranges/upper_bound.hpp>
 
 #endif // HAMON_ALGORITHM_RANGES_HPP
