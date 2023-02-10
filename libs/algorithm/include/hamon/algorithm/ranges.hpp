@@ -44,8 +44,8 @@
 #include <hamon/algorithm/ranges/in_in_result.hpp>
 #include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/in_out_result.hpp>
-//#include <hamon/algorithm/ranges/is_heap.hpp>
-//#include <hamon/algorithm/ranges/is_heap_until.hpp>
+#include <hamon/algorithm/ranges/is_heap.hpp>
+#include <hamon/algorithm/ranges/is_heap_until.hpp>
 #include <hamon/algorithm/ranges/is_partitioned.hpp>
 #include <hamon/algorithm/ranges/is_permutation.hpp>
 #include <hamon/algorithm/ranges/is_sorted.hpp>
