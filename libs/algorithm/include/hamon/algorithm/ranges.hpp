@@ -76,10 +76,10 @@
 #include <hamon/algorithm/ranges/prev_permutation.hpp>
 //#include <hamon/algorithm/ranges/push_heap.hpp>
 //#include <hamon/algorithm/ranges/radix_sort.hpp>
-//#include <hamon/algorithm/ranges/remove.hpp>
+#include <hamon/algorithm/ranges/remove.hpp>
 #include <hamon/algorithm/ranges/remove_copy.hpp>
 #include <hamon/algorithm/ranges/remove_copy_if.hpp>
-//#include <hamon/algorithm/ranges/remove_if.hpp>
+#include <hamon/algorithm/ranges/remove_if.hpp>
 #include <hamon/algorithm/ranges/replace.hpp>
 #include <hamon/algorithm/ranges/replace_copy.hpp>
 #include <hamon/algorithm/ranges/replace_copy_if.hpp>
