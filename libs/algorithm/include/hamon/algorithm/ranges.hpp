@@ -25,8 +25,8 @@
 #include <hamon/algorithm/ranges/fill.hpp>
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/algorithm/ranges/find.hpp>
-//#include <hamon/algorithm/ranges/find_end.hpp>
-//#include <hamon/algorithm/ranges/find_first_of.hpp>
+#include <hamon/algorithm/ranges/find_end.hpp>
+#include <hamon/algorithm/ranges/find_first_of.hpp>
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/find_if_not.hpp>
 //#include <hamon/algorithm/ranges/find_last.hpp>
