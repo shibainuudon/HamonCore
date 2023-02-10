@@ -55,7 +55,7 @@
 #include <hamon/algorithm/ranges/make_heap.hpp>
 #include <hamon/algorithm/ranges/max.hpp>
 #include <hamon/algorithm/ranges/max_element.hpp>
-//#include <hamon/algorithm/ranges/merge.hpp>
+#include <hamon/algorithm/ranges/merge.hpp>
 #include <hamon/algorithm/ranges/min.hpp>
 #include <hamon/algorithm/ranges/minmax.hpp>
 #include <hamon/algorithm/ranges/minmax_element.hpp>
