@@ -66,7 +66,7 @@
 #include <hamon/algorithm/ranges/move_backward.hpp>
 #include <hamon/algorithm/ranges/next_permutation.hpp>
 #include <hamon/algorithm/ranges/none_of.hpp>
-//#include <hamon/algorithm/ranges/nth_element.hpp>
+#include <hamon/algorithm/ranges/nth_element.hpp>
 #include <hamon/algorithm/ranges/partial_sort.hpp>
 #include <hamon/algorithm/ranges/partial_sort_copy.hpp>
 #include <hamon/algorithm/ranges/partition.hpp>
