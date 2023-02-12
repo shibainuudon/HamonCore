@@ -27,7 +27,6 @@ HAMON_CONSTEXPR bool is_even(int x)
 GTEST_TEST(AlgorithmTest, RangesStablePartitionTest)
 {
 	namespace ranges = hamon::ranges;
-#if 0	// TODO
 	{
 		int x[] = {1,2,3,4,5};
 		test_bidirectional_range<int> rx(x);
@@ -37,7 +36,6 @@ GTEST_TEST(AlgorithmTest, RangesStablePartitionTest)
 		int const y[] = {2,4,1,3,5};
 		EXPECT_TRUE(ranges::equal(x, y));
 	}
-#endif
 	{
 		std::vector<int> x = {1,2,3,4,5};
 		auto ret = ranges::stable_partition(x, is_even);

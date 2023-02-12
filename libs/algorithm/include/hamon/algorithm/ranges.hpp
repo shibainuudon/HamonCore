@@ -37,8 +37,8 @@
 #include <hamon/algorithm/ranges/generate.hpp>
 #include <hamon/algorithm/ranges/generate_n.hpp>
 #include <hamon/algorithm/ranges/includes.hpp>
-//#include <hamon/algorithm/ranges/inplace_merge.hpp>
-//#include <hamon/algorithm/ranges/in_found_result.hpp>
+#include <hamon/algorithm/ranges/inplace_merge.hpp>
+#include <hamon/algorithm/ranges/in_found_result.hpp>
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/in_in_result.hpp>

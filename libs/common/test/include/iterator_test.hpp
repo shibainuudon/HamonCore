@@ -105,6 +105,7 @@ struct bidirectional_iterator_wrapper
 	using iterator_category = std::bidirectional_iterator_tag;
 	using value_type        = T;
 	using difference_type   = std::ptrdiff_t;
+	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
