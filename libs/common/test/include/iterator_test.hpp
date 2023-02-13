@@ -64,6 +64,7 @@ struct input_iterator_wrapper
 	using iterator_category = std::input_iterator_tag;
 	using value_type        = T;
 	using difference_type   = std::ptrdiff_t;
+	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR input_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR void                    operator++(int) { ++m_ptr; }
@@ -77,7 +78,10 @@ struct output_iterator_wrapper
 {
 	T*	m_ptr;
 	using iterator_category = std::output_iterator_tag;
+	using value_type        = T;
 	using difference_type   = std::ptrdiff_t;
+	using pointer           = T*;
+	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR output_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR output_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX11_CONSTEXPR T&                       operator*() const { return *m_ptr; }
@@ -90,6 +94,7 @@ struct forward_iterator_wrapper
 	using iterator_category = std::forward_iterator_tag;
 	using value_type        = T;
 	using difference_type   = std::ptrdiff_t;
+	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR forward_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR forward_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
@@ -156,6 +161,7 @@ struct contiguous_iterator_wrapper
 	using iterator_category = std::random_access_iterator_tag;
 	using value_type        = T;
 	using difference_type   = std::ptrdiff_t;
+	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
