@@ -70,7 +70,8 @@ struct minmax_fn
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR minmax_result<T const&>
-	operator()(T const& a, T const& b,
+	operator()(
+		T const& a, T const& b,
 		Comp comp = {}, Proj proj = {}) const
 	{
 		if (hamon::invoke(std::move(comp),

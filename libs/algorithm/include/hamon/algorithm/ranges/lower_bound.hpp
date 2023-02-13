@@ -66,8 +66,7 @@ struct lower_bound_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR Iter
-	operator()(
+	HAMON_CXX14_CONSTEXPR Iter operator()(
 		Iter first, Sent last,
 		T const& value, Comp comp = {}, Proj proj = {}) const
 	{

@@ -67,7 +67,8 @@ struct minmax_element_fn
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR minmax_element_result<Iter>
-	operator()(Iter first, Sent last,
+	operator()(
+		Iter first, Sent last,
 		Comp comp = {}, Proj proj = {}) const
 	{
 		if (first == last)

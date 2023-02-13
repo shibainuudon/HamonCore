@@ -101,8 +101,7 @@ public:
 			ProjectedIter,
 			Fun)
 	>
-	HAMON_CXX14_CONSTEXPR for_each_n_result<Iter, Fun>
-	operator()(
+	HAMON_CXX14_CONSTEXPR for_each_n_result<Iter, Fun> operator()(
 		Iter first, hamon::iter_difference_t<Iter> n,
 		Fun f, Proj proj = {}) const
 	{

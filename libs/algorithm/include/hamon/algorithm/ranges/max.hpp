@@ -65,8 +65,8 @@ struct max_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR T const&
-	operator()(T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR T const& operator()(
+		T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
 	{
 		if (hamon::invoke(std::move(comp),
 			hamon::invoke(proj, a),

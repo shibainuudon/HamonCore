@@ -62,8 +62,7 @@ struct find_first_of_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2,
 		Pred pred = {},
@@ -96,8 +95,7 @@ struct find_first_of_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r1, Range2&& r2,
 		Pred pred = {},
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const

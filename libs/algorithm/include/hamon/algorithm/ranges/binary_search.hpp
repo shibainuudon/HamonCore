@@ -64,8 +64,8 @@ struct binary_search_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR bool
-	operator()(Iter first, Sent last,
+	HAMON_CXX14_CONSTEXPR bool operator()(
+		Iter first, Sent last,
 		T const& value, Comp comp = {}, Proj proj = {}) const
 	{
 		auto i = ranges::lower_bound(first, last, value, comp, proj);
@@ -90,9 +90,8 @@ struct binary_search_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR bool
-	operator()(Range&& r,
-		T const& value, Comp comp = {}, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR bool operator()(
+		Range&& r, T const& value, Comp comp = {}, Proj proj = {}) const
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

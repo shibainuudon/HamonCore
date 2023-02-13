@@ -30,6 +30,7 @@ using std::ranges::replace_copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -45,7 +46,6 @@ using std::ranges::replace_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -57,29 +57,6 @@ namespace ranges
 
 template <typename Iter, typename Out>
 using replace_copy_result = in_out_result<Iter, Out>;
-
-namespace detail
-{
-
-template <typename Iter, typename T1, typename Out, typename Proj>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept replace_copyable =
-	hamon::indirectly_copyable<Iter, Out> &&
-	hamon::indirect_binary_predicate<
-		ranges::equal_to,
-		hamon::projected<Iter, Proj>,
-		T1 const*>;
-#else
-using replace_copyable = hamon::conjunction<
-	hamon::indirectly_copyable<Iter, Out>,
-	hamon::indirect_binary_predicate<
-		ranges::equal_to,
-		hamon::projected<Iter, Proj>,
-		T1 const*>
->;
-#endif
-
-}	// namespace detail
 
 struct replace_copy_fn
 {
@@ -99,7 +76,12 @@ struct replace_copy_fn
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		replace_copy_result<Iter HAMON_PP_COMMA() Out>,
-		detail::replace_copyable<Iter, T1, Out, Proj>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<Iter HAMON_PP_COMMA() Out>,
+			hamon::indirect_binary_predicate<
+				ranges::equal_to HAMON_PP_COMMA()
+				hamon::projected<Iter HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				T1 const*>))
 	{
 		for (; first != last; ++first, (void)++result)
 		{
@@ -132,8 +114,12 @@ struct replace_copy_fn
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		replace_copy_result<
 			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
-		detail::replace_copyable<
-			ranges::iterator_t<Range>, T1, Out, Proj>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<ranges::iterator_t<Range> HAMON_PP_COMMA() Out>,
+			hamon::indirect_binary_predicate<
+				ranges::equal_to HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				T1 const*>))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

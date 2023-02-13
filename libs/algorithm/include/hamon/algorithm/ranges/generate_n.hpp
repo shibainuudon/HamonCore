@@ -27,13 +27,17 @@ using std::ranges::generate_n;
 
 #else
 
-#include <hamon/algorithm/ranges/detail/generatable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
+#include <hamon/concepts/invocable.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
+#include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -52,7 +56,9 @@ struct generate_n_fn
 		Out first, hamon::iter_difference_t<Out> n, F gen) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Out,
-		detail::generatable<Out, F>)
+		HAMON_CONCEPTS_AND(
+			hamon::invocable<F&>,
+			hamon::indirectly_writable<Out HAMON_PP_COMMA() hamon::invoke_result_t<F&>>))
 	{
 		for (; n > 0; --n, (void)++first)
 		{

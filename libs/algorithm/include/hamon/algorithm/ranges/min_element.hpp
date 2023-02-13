@@ -62,8 +62,7 @@ struct min_element_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR Iter
-	operator()(
+	HAMON_CXX14_CONSTEXPR Iter operator()(
 		Iter first, Sent last,
 		Comp comp = {}, Proj proj = {}) const
 	{

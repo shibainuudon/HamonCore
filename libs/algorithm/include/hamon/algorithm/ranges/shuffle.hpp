@@ -30,6 +30,7 @@ using std::ranges::shuffle;
 #include <hamon/algorithm/shuffle.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
@@ -41,7 +42,6 @@ using std::ranges::shuffle;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -50,23 +50,6 @@ namespace hamon
 
 namespace ranges
 {
-
-namespace detail
-{
-
-template <typename Iter, typename Gen>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept shuffleable =
-	hamon::permutable<Iter> &&
-	hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>;
-#else
-using shuffleable = hamon::conjunction<
-	hamon::permutable<Iter>,
-	hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>
->;
-#endif
-
-}	// namespace detail
 
 struct shuffle_fn
 {
@@ -78,7 +61,10 @@ struct shuffle_fn
 	auto operator()(Iter first, Sent last, Gen&& g) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
-		detail::shuffleable<Iter, Gen>)
+		HAMON_CONCEPTS_AND(
+			hamon::permutable<Iter>,
+			hamon::uniform_random_bit_generator<
+				hamon::remove_reference_t<Gen>>))
 	{
 		auto lasti = ranges::next(first, last);
 		hamon::shuffle(std::move(first), lasti, std::forward<Gen>(g));
@@ -92,7 +78,10 @@ struct shuffle_fn
 	auto operator()(Range&& r, Gen&& g) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
-		detail::shuffleable<ranges::iterator_t<Range>, Gen>)
+		HAMON_CONCEPTS_AND(
+			hamon::permutable<ranges::iterator_t<Range>>,
+			hamon::uniform_random_bit_generator<
+				hamon::remove_reference_t<Gen>>))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r), std::forward<Gen>(g));

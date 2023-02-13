@@ -31,6 +31,8 @@ using std::ranges::unique_copy;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
+#include <hamon/concepts/detail/or.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -52,8 +54,6 @@ using std::ranges::unique_copy;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -65,35 +65,6 @@ namespace ranges
 
 template <typename Iter, typename Out>
 using unique_copy_result = in_out_result<Iter, Out>;
-
-namespace detail
-{
-
-template <typename Iter, typename Out>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept unique_copyable =
-	hamon::indirectly_copyable<Iter, Out> &&
-	(hamon::forward_iterator<Iter> ||
-		(hamon::input_iterator<Out> &&
-		hamon::same_as<hamon::iter_value_t<Iter>, hamon::iter_value_t<Out>>) ||
-		hamon::indirectly_copyable_storable<Iter, Out>);
-#else
-using unique_copyable = hamon::conjunction<
-	hamon::indirectly_copyable<Iter, Out>,
-	hamon::disjunction<
-		hamon::forward_iterator<Iter>,
-		hamon::conjunction<
-			hamon::input_iterator<Out>,
-			hamon::same_as<
-				hamon::iter_value_t<Iter>,
-				hamon::iter_value_t<Out>
-			>
-		>,
-		hamon::indirectly_copyable_storable<Iter, Out>
-	>
->;
-#endif
-}	// namespace detail
 
 struct unique_copy_fn
 {
@@ -191,12 +162,22 @@ public:
 			Comp,
 			ranges::equal_to)
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last, Out result,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Iter first, Sent last, Out result,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		unique_copy_result<Iter HAMON_PP_COMMA() Out>,
-		detail::unique_copyable<Iter, Out>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<Iter HAMON_PP_COMMA() Out>,
+			HAMON_CONCEPTS_OR(
+				hamon::forward_iterator<Iter>,
+			HAMON_CONCEPTS_OR(
+				HAMON_CONCEPTS_AND(
+					hamon::input_iterator<Out>,
+					hamon::same_as<
+						hamon::iter_value_t<Iter> HAMON_PP_COMMA()
+						hamon::iter_value_t<Out>>),
+				hamon::indirectly_copyable_storable<Iter HAMON_PP_COMMA() Out>))))
 	{
 		if (first == last)
 		{
@@ -223,11 +204,21 @@ public:
 			Comp,
 			ranges::equal_to)
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, Out result, Comp comp = {}, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, Out result, Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		unique_copy_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
-		detail::unique_copyable<ranges::iterator_t<Range>, Out>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<ranges::iterator_t<Range> HAMON_PP_COMMA() Out>,
+			HAMON_CONCEPTS_OR(
+				hamon::forward_iterator<ranges::iterator_t<Range>>,
+			HAMON_CONCEPTS_OR(
+				HAMON_CONCEPTS_AND(
+					hamon::input_iterator<Out>,
+					hamon::same_as<
+						hamon::iter_value_t<ranges::iterator_t<Range>> HAMON_PP_COMMA()
+						hamon::iter_value_t<Out>>),
+				hamon::indirectly_copyable_storable<ranges::iterator_t<Range> HAMON_PP_COMMA() Out>))))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

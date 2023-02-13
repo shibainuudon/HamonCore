@@ -65,8 +65,8 @@ struct min_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR T const&
-	operator()(T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR T const& operator()(
+		T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
 	{
 		if (hamon::invoke(std::move(comp),
 			hamon::invoke(proj, b),
@@ -90,8 +90,8 @@ struct min_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::range_value_t<Range>,
 		hamon::indirectly_copyable_storable<

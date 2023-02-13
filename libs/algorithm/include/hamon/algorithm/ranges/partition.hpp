@@ -157,8 +157,7 @@ public:
 			ProjectedIter,
 			Pred)
 	>
-	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
-	operator()(
+	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter> operator()(
 		Iter first, Sent last,
 		Pred pred, Proj proj = {}) const
 	{

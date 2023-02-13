@@ -54,8 +54,8 @@ struct clamp_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR T const&
-	operator()(T const& val, T const& lo, T const& hi,
+	HAMON_CXX14_CONSTEXPR T const& operator()(
+		T const& val, T const& lo, T const& hi,
 		Comp comp = {}, Proj proj = {}) const
 	{
 		HAMON_ASSERT(!(hamon::invoke(comp,

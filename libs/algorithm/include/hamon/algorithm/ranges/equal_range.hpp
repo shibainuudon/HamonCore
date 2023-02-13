@@ -71,8 +71,7 @@ struct equal_range_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
-	operator()(
+	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter> operator()(
 		Iter first, Sent last,
 		T const& value, Comp comp = {}, Proj proj = {}) const
 	{

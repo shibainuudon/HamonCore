@@ -59,8 +59,8 @@ struct nth_element_fn
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Iter nth, Sent last,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Iter first, Iter nth, Sent last,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
@@ -80,8 +80,8 @@ struct nth_element_fn
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, ranges::iterator_t<Range> nth,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, ranges::iterator_t<Range> nth,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,

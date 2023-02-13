@@ -73,8 +73,7 @@ public:
 		typename T,
 		typename Proj = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::subrange<Iter>,

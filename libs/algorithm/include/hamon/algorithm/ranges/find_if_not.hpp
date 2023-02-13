@@ -82,7 +82,7 @@ struct find_if_not_fn
 			Pred)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
-		operator()(Range&& r, Pred pred, Proj proj = {}) const
+	operator()(Range&& r, Pred pred, Proj proj = {}) const
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r), std::move(pred), std::move(proj));

@@ -60,8 +60,7 @@ struct partition_point_fn
 		HAMON_CONSTRAINED_PARAM(
 			hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
-	HAMON_CXX14_CONSTEXPR Iter
-	operator()(
+	HAMON_CXX14_CONSTEXPR Iter operator()(
 		Iter first, Sent last,
 		Pred pred, Proj proj = {}) const
 	{

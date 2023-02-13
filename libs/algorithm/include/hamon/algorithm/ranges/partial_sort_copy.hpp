@@ -34,6 +34,7 @@ using std::ranges::partial_sort_copy;
 #include <hamon/algorithm/ranges/sort_heap.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -52,7 +53,6 @@ using std::ranges::partial_sort_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -65,29 +65,6 @@ namespace ranges
 template <typename Iter, typename Out>
 using partial_sort_copy_result = in_out_result<Iter, Out>;
 
-namespace detail
-{
-
-template <typename Iter1, typename Iter2, typename Comp, typename Proj1, typename Proj2>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept partial_sort_copyable =
-	hamon::indirectly_copyable<Iter1, Iter2> &&
-	hamon::sortable<Iter2, Comp, Proj2> &&
-	hamon::indirect_strict_weak_order<Comp,
-		hamon::projected<Iter1, Proj1>,
-		hamon::projected<Iter2, Proj2>>;
-#else
-using partial_sort_copyable = hamon::conjunction<
-	hamon::indirectly_copyable<Iter1, Iter2>,
-	hamon::sortable<Iter2, Comp, Proj2>,
-	hamon::indirect_strict_weak_order<Comp,
-		hamon::projected<Iter1, Proj1>,
-		hamon::projected<Iter2, Proj2>>
->;
-#endif
-
-}	// namespace detail
-
 struct partial_sort_copy_fn
 {
 	template <
@@ -99,8 +76,7 @@ struct partial_sort_copy_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first,        Sent1 last,
 		Iter2 result_first, Sent2 result_last,
 		Comp  comp  = {},
@@ -108,7 +84,19 @@ struct partial_sort_copy_fn
 		Proj2 proj2 = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		partial_sort_copy_result<Iter1 HAMON_PP_COMMA() Iter2>,
-		detail::partial_sort_copyable<Iter1, Iter2, Comp, Proj1, Proj2>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<
+				Iter1 HAMON_PP_COMMA()
+				Iter2>,
+		HAMON_CONCEPTS_AND(
+			hamon::sortable<
+				Iter2 HAMON_PP_COMMA()
+				Comp HAMON_PP_COMMA()
+				Proj2>,
+			hamon::indirect_strict_weak_order<
+				Comp HAMON_PP_COMMA()
+				hamon::projected<Iter1 HAMON_PP_COMMA() Proj1> HAMON_PP_COMMA()
+				hamon::projected<Iter2 HAMON_PP_COMMA() Proj2>>)))
 	{
 		if (result_first == result_last)
 		{
@@ -150,8 +138,7 @@ struct partial_sort_copy_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r, Range2&& out,
 		Comp  comp  = {},
 		Proj1 proj1 = {},
@@ -160,10 +147,19 @@ struct partial_sort_copy_fn
 		partial_sort_copy_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::borrowed_iterator_t<Range2>>,
-		detail::partial_sort_copyable<
-			ranges::iterator_t<Range1>,
-			ranges::iterator_t<Range2>,
-			Comp, Proj1, Proj2>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<
+				ranges::iterator_t<Range1> HAMON_PP_COMMA()
+				ranges::iterator_t<Range2>>,
+		HAMON_CONCEPTS_AND(
+			hamon::sortable<
+				ranges::iterator_t<Range2> HAMON_PP_COMMA()
+				Comp HAMON_PP_COMMA()
+				Proj2>,
+			hamon::indirect_strict_weak_order<
+				Comp HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<Range1> HAMON_PP_COMMA() Proj1> HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<Range2> HAMON_PP_COMMA() Proj2>>)))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

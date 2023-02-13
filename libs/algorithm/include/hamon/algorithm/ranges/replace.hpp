@@ -29,6 +29,7 @@ using std::ranges::replace;
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -37,12 +38,12 @@ using std::ranges::replace;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -51,25 +52,6 @@ namespace hamon
 
 namespace ranges
 {
-
-namespace detail
-{
-
-template <typename Iter, typename T1, typename T2, typename Proj>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept replaceable =
-	hamon::indirectly_writable<Iter, T2 const&> &&
-	hamon::indirect_binary_predicate<
-		ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>;
-#else
-using replaceable = hamon::conjunction<
-	hamon::indirectly_writable<Iter, T2 const&>,
-	hamon::indirect_binary_predicate<
-		ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>
->;
-#endif
-
-}	// namespace detail
 
 struct replace_fn
 {
@@ -87,7 +69,12 @@ struct replace_fn
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
-		detail::replaceable<Iter, T1, T2, Proj>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_writable<Iter HAMON_PP_COMMA() T2 const&>,
+			hamon::indirect_binary_predicate<
+				ranges::equal_to HAMON_PP_COMMA()
+				hamon::projected<Iter HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				T1 const*>))
 	{
 		for (; first != last; ++first)
 		{
@@ -113,7 +100,12 @@ struct replace_fn
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
-		detail::replaceable<ranges::iterator_t<Range>, T1, T2, Proj>)
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_writable<ranges::iterator_t<Range> HAMON_PP_COMMA() T2 const&>,
+			hamon::indirect_binary_predicate<
+				ranges::equal_to HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				T1 const*>))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

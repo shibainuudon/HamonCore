@@ -64,8 +64,8 @@ struct prev_permutation_fn
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Iter first, Sent last,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		prev_permutation_result<Iter>,

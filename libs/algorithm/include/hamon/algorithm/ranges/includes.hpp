@@ -66,8 +66,7 @@ struct includes_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR bool
-	operator()(
+	HAMON_CXX14_CONSTEXPR bool operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2,
 		Comp  comp  = {},
@@ -114,8 +113,7 @@ struct includes_fn
 			Comp,
 			ranges::less)
 	>
-	HAMON_CXX14_CONSTEXPR bool
-	operator()(
+	HAMON_CXX14_CONSTEXPR bool operator()(
 		Range1&& r1, Range2&& r2,
 		Comp  comp  = {},
 		Proj1 proj1 = {},
