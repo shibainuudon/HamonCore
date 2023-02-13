@@ -27,6 +27,7 @@ using std::ranges::find;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -40,7 +41,6 @@ using std::ranges::find;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -57,24 +57,15 @@ struct find_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename T,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirect_binary_predicate<
-				ranges::equal_to,
-				hamon::projected<Iter, Proj>,
-				T const*
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirect_binary_predicate<
-		ranges::equal_to,
-		hamon::projected<Iter, Proj>,
-		T const*>
-#endif
-	HAMON_CXX14_CONSTEXPR Iter operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, T const& value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		Iter,
+		hamon::indirect_binary_predicate<
+			ranges::equal_to,
+			hamon::projected<Iter, Proj>,
+			T const*>)
 	{
 		while (first != last && !(hamon::invoke(proj, *first) == value))
 		{
@@ -88,24 +79,15 @@ struct find_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 		typename T,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirect_binary_predicate<
-				ranges::equal_to,
-				hamon::projected<ranges::iterator_t<Range>, Proj>,
-				T const*
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirect_binary_predicate<
-		ranges::equal_to,
-		hamon::projected<ranges::iterator_t<Range>, Proj>,
-		T const*>
-#endif
-	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
-	operator()(Range&& r, T const& value, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, T const& value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		ranges::borrowed_iterator_t<Range>,
+		hamon::indirect_binary_predicate<
+			ranges::equal_to,
+			hamon::projected<ranges::iterator_t<Range>, Proj>,
+			T const*>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r), value, std::move(proj));

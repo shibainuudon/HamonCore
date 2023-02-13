@@ -29,6 +29,7 @@ using std::ranges::next_permutation;
 
 #include <hamon/algorithm/ranges/in_found_result.hpp>
 #include <hamon/algorithm/ranges/reverse.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -38,14 +39,11 @@ using std::ranges::next_permutation;
 #include <hamon/iterator/concepts/sortable.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
-#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -54,14 +52,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> T requires C
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> hamon::enable_if_t<C::value, T>
-#endif
 
 template <typename Iter>
 using next_permutation_result = in_found_result<Iter>;
@@ -79,7 +69,7 @@ struct next_permutation_fn
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		next_permutation_result<Iter>,
-		hamon::sortable<Iter HAMON_PP_COMMA() Comp HAMON_PP_COMMA() Proj>)
+		hamon::sortable<Iter, Comp, Proj>)
 	{
 		if (first == last)
 		{
@@ -135,15 +125,13 @@ struct next_permutation_fn
 	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		next_permutation_result<ranges::borrowed_iterator_t<Range>>,
-		hamon::sortable<ranges::iterator_t<Range> HAMON_PP_COMMA() Comp HAMON_PP_COMMA() Proj>)
+		hamon::sortable<ranges::iterator_t<Range>, Comp, Proj>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
 			std::move(comp), std::move(proj));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

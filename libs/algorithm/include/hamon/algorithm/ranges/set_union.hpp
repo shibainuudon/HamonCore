@@ -29,6 +29,7 @@ using std::ranges::set_union;
 
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -43,8 +44,6 @@ using std::ranges::set_union;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -53,14 +52,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 template <typename Iter1, typename Iter2, typename Out>
 using set_union_result = in_in_out_result<Iter1, Iter2, Out>;
@@ -77,8 +68,7 @@ struct set_union_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2,
 		Out result,
@@ -139,8 +129,7 @@ struct set_union_fn
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
-	HAMON_CXX14_CONSTEXPR auto
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r1, Range2&& r2,
 		Out result,
 		Comp  comp  = {},
@@ -163,8 +152,6 @@ struct set_union_fn
 			std::move(proj1), std::move(proj2));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

@@ -28,6 +28,7 @@ using std::ranges::move_backward;
 #else
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -36,13 +37,12 @@ using std::ranges::move_backward;
 #include <hamon/iterator/concepts/indirectly_movable.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
@@ -123,17 +123,12 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_movable<Iter, Out>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_movable<Iter, Out>
-#endif
-	HAMON_CXX14_CONSTEXPR move_backward_result<Iter, Out>
+	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, Out result) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		move_backward_result<Iter HAMON_PP_COMMA() Out>,
+		hamon::indirectly_movable<Iter, Out>)
 	{
 		return impl(
 			std::move(first),
@@ -145,18 +140,12 @@ public:
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, Range),
 		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_movable<ranges::iterator_t<Range>, Out>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_movable<ranges::iterator_t<Range>, Out>
-#endif
-	HAMON_CXX14_CONSTEXPR
-	move_backward_result<ranges::borrowed_iterator_t<Range>, Out>
+	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		move_backward_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
+		hamon::indirectly_movable<ranges::iterator_t<Range>, Out>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

@@ -29,6 +29,7 @@ using std::ranges::make_heap;
 
 #include <hamon/algorithm/make_heap.hpp>
 #include <hamon/algorithm/ranges/detail/make_comp_proj.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -49,14 +50,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 struct make_heap_fn
 {
@@ -95,8 +88,6 @@ struct make_heap_fn
 			std::move(comp), std::move(proj));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

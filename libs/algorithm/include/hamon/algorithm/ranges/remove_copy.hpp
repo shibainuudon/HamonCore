@@ -28,6 +28,7 @@ using std::ranges::remove_copy;
 #else
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -38,12 +39,12 @@ using std::ranges::remove_copy;
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
@@ -57,6 +58,29 @@ namespace ranges
 template <typename Iter, typename Out>
 using remove_copy_result = in_out_result<Iter, Out>;
 
+namespace detail
+{
+
+template <typename Iter, typename Out, typename T, typename Proj>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+concept remove_copyable =
+	hamon::indirectly_copyable<Iter, Out> &&
+	hamon::indirect_binary_predicate<
+		ranges::equal_to,
+		hamon::projected<Iter, Proj>,
+		T const*>;
+#else
+using remove_copyable = hamon::conjunction<
+	hamon::indirectly_copyable<Iter, Out>,
+	hamon::indirect_binary_predicate<
+		ranges::equal_to,
+		hamon::projected<Iter, Proj>,
+		T const*>
+>;
+#endif
+
+}	// namespace detail
+
 struct remove_copy_fn
 {
 	template <
@@ -65,29 +89,13 @@ struct remove_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename T,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::indirectly_copyable<Iter, Out>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to,
-				hamon::projected<Iter, Proj>,
-				T const*>
-		>::value>
 	>
-#else
-	>
-	requires
-		hamon::indirectly_copyable<Iter, Out> &&
-		hamon::indirect_binary_predicate<
-			ranges::equal_to,
-			hamon::projected<Iter, Proj>,
-			T const*>
-#endif
-	HAMON_CXX14_CONSTEXPR
-	remove_copy_result<Iter, Out>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, Out result,
 		T const& value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		remove_copy_result<Iter HAMON_PP_COMMA() Out>,
+		detail::remove_copyable<Iter, Out, T, Proj>)
 	{
 		for (; first != last; ++first)
 		{
@@ -106,29 +114,15 @@ struct remove_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename T,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::indirectly_copyable<ranges::iterator_t<Range>, Out>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to,
-				hamon::projected<ranges::iterator_t<Range>, Proj>,
-				T const*>
-		>::value>
 	>
-#else
-	>
-	requires
-		hamon::indirectly_copyable<ranges::iterator_t<Range>, Out> &&
-		hamon::indirect_binary_predicate<
-			ranges::equal_to,
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-			T const*>
-#endif
-	HAMON_CXX14_CONSTEXPR
-	remove_copy_result<ranges::borrowed_iterator_t<Range>, Out>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Out result,
 		T const& value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		remove_copy_result<
+			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
+		detail::remove_copyable<
+			ranges::iterator_t<Range>, Out, T, Proj>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

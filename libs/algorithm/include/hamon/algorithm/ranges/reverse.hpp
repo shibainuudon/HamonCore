@@ -27,6 +27,7 @@ using std::ranges::reverse;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -40,7 +41,6 @@ using std::ranges::reverse;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -49,14 +49,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> T requires C
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> hamon::enable_if_t<C::value, T>
-#endif
 
 struct reverse_fn
 {
@@ -138,8 +130,6 @@ public:
 		return (*this)(ranges::begin(r), ranges::end(r));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

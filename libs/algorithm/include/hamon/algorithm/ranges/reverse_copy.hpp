@@ -28,6 +28,7 @@ using std::ranges::reverse_copy;
 #else
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -40,7 +41,6 @@ using std::ranges::reverse_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -49,14 +49,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> T requires C
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, C)	\
-	-> hamon::enable_if_t<C::value, T>
-#endif
 
 template <typename Iter, typename Out>
 using reverse_copy_result = in_out_result<Iter, Out>;
@@ -101,8 +93,6 @@ struct reverse_copy_fn
 			std::move(result));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

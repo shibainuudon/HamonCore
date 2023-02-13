@@ -27,6 +27,7 @@ using std::ranges::search;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -40,8 +41,6 @@ using std::ranges::search;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -50,14 +49,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 struct search_fn
 {
@@ -160,8 +151,6 @@ struct search_fn
 			std::move(proj2));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

@@ -28,6 +28,7 @@ using std::ranges::partition_copy;
 #else
 
 #include <hamon/algorithm/ranges/in_out_out_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -43,7 +44,6 @@ using std::ranges::partition_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
@@ -53,14 +53,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 template <typename Iter, typename Out1, typename Out2>
 using partition_copy_result = in_out_out_result<Iter, Out1, Out2>;
@@ -147,8 +139,6 @@ struct partition_copy_fn
 			std::move(pred), std::move(proj));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

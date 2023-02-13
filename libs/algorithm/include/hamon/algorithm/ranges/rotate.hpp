@@ -31,6 +31,7 @@ using std::ranges::rotate;
 #include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/algorithm/ranges/reverse.hpp>
 #include <hamon/algorithm/ranges/move_backward.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -45,7 +46,6 @@ using std::ranges::rotate;
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_subrange_t.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -54,14 +54,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 struct rotate_fn
 {
@@ -263,8 +255,6 @@ public:
 			ranges::end(r));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

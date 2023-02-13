@@ -27,6 +27,7 @@ using std::ranges::replace;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -41,7 +42,6 @@ using std::ranges::replace;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
@@ -52,6 +52,25 @@ namespace hamon
 namespace ranges
 {
 
+namespace detail
+{
+
+template <typename Iter, typename T1, typename T2, typename Proj>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+concept replaceable =
+	hamon::indirectly_writable<Iter, T2 const&> &&
+	hamon::indirect_binary_predicate<
+		ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>;
+#else
+using replaceable = hamon::conjunction<
+	hamon::indirectly_writable<Iter, T2 const&>,
+	hamon::indirect_binary_predicate<
+		ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>
+>;
+#endif
+
+}	// namespace detail
+
 struct replace_fn
 {
 	template <
@@ -60,26 +79,15 @@ struct replace_fn
 		typename T1,
 		typename T2,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::indirectly_writable<Iter, T2 const&>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>
-		>::value>
 	>
-#else
-	>
-	requires
-		hamon::indirectly_writable<Iter, T2 const&> &&
-		hamon::indirect_binary_predicate<
-			ranges::equal_to, hamon::projected<Iter, Proj>, T1 const*>
-#endif
-	HAMON_CXX14_CONSTEXPR Iter
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		Iter,
+		detail::replaceable<Iter, T1, T2, Proj>)
 	{
 		for (; first != last; ++first)
 		{
@@ -97,30 +105,15 @@ struct replace_fn
 		typename T1,
 		typename T2,
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::indirectly_writable<ranges::iterator_t<Range>, T2 const&>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to,
-				hamon::projected<ranges::iterator_t<Range>, Proj>,
-				T1 const*>
-		>::value>
 	>
-#else
-	>
-	requires
-		hamon::indirectly_writable<ranges::iterator_t<Range>, T2 const&> &&
-		hamon::indirect_binary_predicate<
-			ranges::equal_to,
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-			T1 const*>
-#endif
-	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r,
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		ranges::borrowed_iterator_t<Range>,
+		detail::replaceable<ranges::iterator_t<Range>, T1, T2, Proj>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

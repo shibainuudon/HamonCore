@@ -29,6 +29,7 @@ using std::ranges::stable_partition;
 
 #include <hamon/algorithm/stable_partition.hpp>
 #include <hamon/algorithm/ranges/detail/make_pred_proj.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -43,8 +44,6 @@ using std::ranges::stable_partition;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -53,14 +52,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 struct stable_partition_fn
 {
@@ -103,8 +94,6 @@ struct stable_partition_fn
 			std::move(pred), std::move(proj));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {

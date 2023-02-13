@@ -29,6 +29,7 @@ using std::ranges::copy_n;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -36,7 +37,7 @@ using std::ranges::copy_n;
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -85,17 +86,12 @@ public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_copyable<Iter, Out>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_copyable<Iter, Out>
-#endif
-	HAMON_CXX14_CONSTEXPR copy_n_result<Iter, Out>
-	operator()(Iter first, hamon::iter_difference_t<Iter> n, Out result) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Iter first, hamon::iter_difference_t<Iter> n, Out result) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		copy_n_result<Iter HAMON_PP_COMMA() Out>,
+		hamon::indirectly_copyable<Iter, Out>)
 	{
 		return impl(
 			std::move(first),

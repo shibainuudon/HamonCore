@@ -28,6 +28,7 @@ using std::ranges::mismatch;
 #else
 
 #include <hamon/algorithm/ranges/in_in_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -35,11 +36,11 @@ using std::ranges::mismatch;
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirectly_comparable.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -62,25 +63,17 @@ struct mismatch_fn
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_comparable<
-				Iter1, Iter2, Pred, Proj1, Proj2
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_comparable<
-		Iter1, Iter2, Pred, Proj1, Proj2>
-#endif
-	HAMON_CXX14_CONSTEXPR mismatch_result<Iter1, Iter2>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2,
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		mismatch_result<Iter1 HAMON_PP_COMMA() Iter2>,
+		hamon::indirectly_comparable<
+			Iter1, Iter2, Pred, Proj1, Proj2>)
 	{
 		while (first1 != last1 && first2 != last2 &&
 			(bool)hamon::invoke(pred,
@@ -100,31 +93,21 @@ struct mismatch_fn
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_comparable<
-				ranges::iterator_t<Range1>,
-				ranges::iterator_t<Range2>,
-				Pred, Proj1, Proj2
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_comparable<
-		ranges::iterator_t<Range1>,
-		ranges::iterator_t<Range2>,
-		Pred, Proj1, Proj2>
-#endif
-	HAMON_CXX14_CONSTEXPR mismatch_result<
-		ranges::iterator_t<Range1>,
-		ranges::iterator_t<Range2>>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r1,
 		Range2&& r2,
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		mismatch_result<
+			ranges::iterator_t<Range1> HAMON_PP_COMMA()
+			ranges::iterator_t<Range2>>,
+		hamon::indirectly_comparable<
+			ranges::iterator_t<Range1>,
+			ranges::iterator_t<Range2>,
+			Pred, Proj1, Proj2>)
 	{
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),

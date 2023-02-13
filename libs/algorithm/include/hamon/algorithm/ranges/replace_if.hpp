@@ -27,6 +27,7 @@ using std::ranges::replace_if;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -40,7 +41,6 @@ using std::ranges::replace_if;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -62,18 +62,13 @@ struct replace_if_fn
 			hamon::indirect_unary_predicate,
 			ProjectedIter,
 			Pred)
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<Iter, T const&>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<Iter, T const&>
-#endif
-	HAMON_CXX14_CONSTEXPR Iter operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
 		Pred pred, T const& new_value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		Iter,
+		hamon::indirectly_writable<Iter, T const&>)
 	{
 		for (; first != last; ++first)
 		{
@@ -95,17 +90,12 @@ struct replace_if_fn
 			hamon::indirect_unary_predicate,
 			ProjectedIter,
 			Pred)
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<ranges::iterator_t<Range>, T const&>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<ranges::iterator_t<Range>, T const&>
-#endif
-	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
+	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Pred pred, T const& new_value, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		ranges::borrowed_iterator_t<Range>,
+		hamon::indirectly_writable<ranges::iterator_t<Range>, T const&>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

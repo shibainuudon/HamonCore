@@ -27,6 +27,7 @@ using std::ranges::max_element;
 
 #else
 
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -39,8 +40,6 @@ using std::ranges::max_element;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -53,25 +52,15 @@ namespace ranges
 struct max_element_fn
 {
 	template <
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-		hamon::forward_iterator Iter,
-		hamon::sentinel_for<Iter> Sent,
+		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
-		hamon::indirect_strict_weak_order<
-			hamon::projected<Iter, Proj>
-		> Comp = ranges::less
-#else
-		typename Iter,
-		typename Sent,
-		typename Proj = hamon::identity,
-		typename Comp = ranges::less,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::forward_iterator<Iter>,
-			hamon::sentinel_for<Sent, Iter>,
-			hamon::indirect_strict_weak_order<Comp,
-				hamon::projected<Iter, Proj>>
-		>::value>
-#endif
+		typename ProjectedIter = hamon::projected<Iter, Proj>,
+		HAMON_CONSTRAINED_PARAM_D(
+			hamon::indirect_strict_weak_order,
+			ProjectedIter,
+			Comp,
+			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR Iter
 	operator()(
@@ -98,22 +87,14 @@ struct max_element_fn
 	}
 
 	template <
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-		ranges::forward_range Range,
+		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
-		hamon::indirect_strict_weak_order<
-			hamon::projected<ranges::iterator_t<Range>, Proj>
-		> Comp = ranges::less
-#else
-		typename Range,
-		typename Proj = hamon::identity,
-		typename Comp = ranges::less,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			ranges::forward_range<Range>,
-			hamon::indirect_strict_weak_order<Comp,
-				hamon::projected<ranges::iterator_t<Range>, Proj>>
-		>::value>
-#endif
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
+		HAMON_CONSTRAINED_PARAM_D(
+			hamon::indirect_strict_weak_order,
+			ProjectedIter,
+			Comp,
+			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
 	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const

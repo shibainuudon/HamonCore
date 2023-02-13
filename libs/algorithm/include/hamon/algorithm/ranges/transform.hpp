@@ -29,6 +29,7 @@ using std::ranges::transform;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/identity.hpp>
@@ -39,12 +40,12 @@ using std::ranges::transform;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/indirect_result_t.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -68,24 +69,14 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<Out,
-				hamon::indirect_result_t<F&,
-					hamon::projected<Iter, Proj>
-				>
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<Out,
-		hamon::indirect_result_t<F&,
-			hamon::projected<Iter, Proj>>>
-#endif
-	HAMON_CXX14_CONSTEXPR unary_transform_result<Iter, Out>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first1, Sent last1, Out result, F op, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		unary_transform_result<Iter HAMON_PP_COMMA() Out>,
+		hamon::indirectly_writable<Out,
+			hamon::indirect_result_t<F&,
+				hamon::projected<Iter, Proj>>>)
 	{
 		for (; first1 != last1; ++first1, (void)++result)
 		{
@@ -100,23 +91,15 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<Out,
-				hamon::indirect_result_t<F&,
-					hamon::projected<ranges::iterator_t<Range>, Proj>
-				>
-			>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<Out,
-		hamon::indirect_result_t<F&,
-			hamon::projected<ranges::iterator_t<Range>, Proj>>>
-#endif
-	HAMON_CXX14_CONSTEXPR unary_transform_result<ranges::borrowed_iterator_t<Range>, Out>
+	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result, F op, Proj proj = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		unary_transform_result<
+			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
+		hamon::indirectly_writable<Out,
+			hamon::indirect_result_t<F&,
+				hamon::projected<ranges::iterator_t<Range>, Proj>>>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
@@ -134,27 +117,18 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<Out,
-				hamon::indirect_result_t<F&,
-					hamon::projected<Iter1, Proj1>,
-					hamon::projected<Iter2, Proj2>>>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<Out,
-		hamon::indirect_result_t<F&,
-			hamon::projected<Iter1, Proj1>,
-			hamon::projected<Iter2, Proj2>>>
-#endif
-	HAMON_CXX14_CONSTEXPR binary_transform_result<Iter1, Iter2, Out>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2,
 		Out result, F binary_op,
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		binary_transform_result<Iter1 HAMON_PP_COMMA() Iter2 HAMON_PP_COMMA() Out>,
+		hamon::indirectly_writable<Out,
+			hamon::indirect_result_t<F&,
+				hamon::projected<Iter1, Proj1>,
+				hamon::projected<Iter2, Proj2>>>)
 	{
 		for (; first1 != last1 && first2 != last2;
 			++first1, (void)++first2, ++result)
@@ -174,29 +148,19 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			hamon::indirectly_writable<Out,
-				hamon::indirect_result_t<F&,
-					hamon::projected<ranges::iterator_t<Range1>, Proj1>,
-					hamon::projected<ranges::iterator_t<Range2>, Proj2>>>::value
-		>
 	>
-#else
-	>
-	requires hamon::indirectly_writable<Out,
-		hamon::indirect_result_t<F&,
-			hamon::projected<ranges::iterator_t<Range1>, Proj1>,
-			hamon::projected<ranges::iterator_t<Range2>, Proj2>>>
-#endif
-	HAMON_CXX14_CONSTEXPR binary_transform_result<
-		ranges::borrowed_iterator_t<Range1>,
-		ranges::borrowed_iterator_t<Range2>,
-		Out
-	>
-	operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r1, Range2&& r2, Out result, F binary_op,
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		binary_transform_result<
+			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
+			ranges::borrowed_iterator_t<Range2> HAMON_PP_COMMA()
+			Out>,
+		hamon::indirectly_writable<Out,
+			hamon::indirect_result_t<F&,
+				hamon::projected<ranges::iterator_t<Range1>, Proj1>,
+				hamon::projected<ranges::iterator_t<Range2>, Proj2>>>)
 	{
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),

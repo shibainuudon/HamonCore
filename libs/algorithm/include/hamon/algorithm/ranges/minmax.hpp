@@ -28,6 +28,7 @@ using std::ranges::minmax;
 #else
 
 #include <hamon/algorithm/ranges/min_max_result.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -42,8 +43,6 @@ using std::ranges::minmax;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
@@ -54,14 +53,6 @@ namespace hamon
 
 namespace ranges
 {
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> T requires __VA_ARGS__
-#else
-#define HAMON_RETURN_TYPE_REQUIRES_CLAUSES(T, ...)	\
-	-> hamon::enable_if_t<__VA_ARGS__::value, T>
-#endif
 
 template <typename T>
 using minmax_result = min_max_result<T>;
@@ -155,8 +146,6 @@ struct minmax_fn
 			std::move(comp), std::move(proj));
 	}
 };
-
-#undef HAMON_RETURN_TYPE_REQUIRES_CLAUSES
 
 inline namespace cpo
 {
