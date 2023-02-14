@@ -30,7 +30,7 @@
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/find_if_not.hpp>
 #include <hamon/algorithm/ranges/find_last.hpp>
-//#include <hamon/algorithm/ranges/find_last_if.hpp>
+#include <hamon/algorithm/ranges/find_last_if.hpp>
 //#include <hamon/algorithm/ranges/find_last_if_not.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/algorithm/ranges/for_each_n.hpp>
