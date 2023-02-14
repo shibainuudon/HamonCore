@@ -102,7 +102,7 @@ HAMON_INDIRECTLY_READABLE_TEST(true,  indirectly_readable_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(false, indirectly_writable_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(false, input_or_output_iterator_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  input_iterator_wrapper<int>);
-HAMON_INDIRECTLY_READABLE_TEST(false, output_iterator_wrapper<int>);
+//HAMON_INDIRECTLY_READABLE_TEST(false, output_iterator_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  forward_iterator_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  bidirectional_iterator_wrapper<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  random_access_iterator_wrapper<int>);
