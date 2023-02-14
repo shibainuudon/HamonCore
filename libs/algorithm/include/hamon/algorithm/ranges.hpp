@@ -29,7 +29,7 @@
 #include <hamon/algorithm/ranges/find_first_of.hpp>
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/find_if_not.hpp>
-//#include <hamon/algorithm/ranges/find_last.hpp>
+#include <hamon/algorithm/ranges/find_last.hpp>
 //#include <hamon/algorithm/ranges/find_last_if.hpp>
 //#include <hamon/algorithm/ranges/find_last_if_not.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
@@ -95,6 +95,8 @@
 #include <hamon/algorithm/ranges/set_intersection.hpp>
 #include <hamon/algorithm/ranges/set_symmetric_difference.hpp>
 #include <hamon/algorithm/ranges/set_union.hpp>
+//#include <hamon/algorithm/ranges/shift_left.hpp>
+//#include <hamon/algorithm/ranges/shift_right.hpp>
 #include <hamon/algorithm/ranges/shuffle.hpp>
 #include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/sort_heap.hpp>
