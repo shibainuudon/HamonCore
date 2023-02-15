@@ -187,6 +187,26 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper<T>
 operator+(std::ptrdiff_t, contiguous_iterator_wrapper<T> const&);
 
+template <typename Iter>
+HAMON_CXX11_CONSTEXPR auto base(Iter const& it)
+->decltype(it.m_ptr)
+{
+	return it.m_ptr;
+}
+
+template <typename Iter>
+HAMON_CXX11_CONSTEXPR auto base(Iter const& it)
+->decltype(it.base())
+{
+	return it.base();
+}
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T* base(T* it)
+{
+	return it;
+}
+
 }	// namespace hamon_iterator_test
 
 using namespace hamon_iterator_test;

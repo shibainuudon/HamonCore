@@ -39,6 +39,7 @@
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/iterator/move_iterator.hpp>
+#include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/iterator/next.hpp>
 //#include <hamon/iterator/normal_iterator.hpp>
 //#include <hamon/iterator/ostreambuf_iterator.hpp>

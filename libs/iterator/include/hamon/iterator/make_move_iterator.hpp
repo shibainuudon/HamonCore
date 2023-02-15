@@ -10,7 +10,7 @@
 #include <hamon/iterator/move_iterator.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_MOVE_ITERATOR)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
 #include <iterator>
 
@@ -23,6 +23,8 @@ using std::make_move_iterator;
 
 #else
 
+#include <utility>
+
 namespace hamon
 {
 
@@ -30,7 +32,7 @@ template <typename Iterator>
 inline HAMON_CXX14_CONSTEXPR hamon::move_iterator<Iterator>
 make_move_iterator(Iterator it)
 {
-    return hamon::move_iterator<Iterator>(it);
+    return hamon::move_iterator<Iterator>(std::move(it));
 }
 
 }	// namespace hamon

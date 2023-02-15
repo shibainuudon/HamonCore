@@ -78,17 +78,17 @@ operator!=(Iterator const& i, test_sentinel<Iterator> const& s) noexcept
 template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iterator)>
 HAMON_CONSTEXPR auto
 operator-(test_sentinel<Iterator> const& s, Iterator const& i) noexcept
-->decltype(s.m_it.m_ptr - i.m_ptr)
+->decltype(base(s.m_it) - base(i))
 {
-	return s.m_it.m_ptr - i.m_ptr;
+	return base(s.m_it) - base(i);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iterator)>
 HAMON_CONSTEXPR auto
 operator-(Iterator const& i, test_sentinel<Iterator> const& s) noexcept
-->decltype(i.m_ptr - s.m_it.m_ptr)
+->decltype(base(i) - base(s.m_it))
 {
-	return i.m_ptr - s.m_it.m_ptr;
+	return base(i) - base(s.m_it);
 }
 
 template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
