@@ -19,7 +19,7 @@
 #include <hamon/algorithm/ranges/copy_n.hpp>
 #include <hamon/algorithm/ranges/count.hpp>
 #include <hamon/algorithm/ranges/count_if.hpp>
-//#include <hamon/algorithm/ranges/ends_with.hpp>
+#include <hamon/algorithm/ranges/ends_with.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/algorithm/ranges/equal_range.hpp>
 #include <hamon/algorithm/ranges/fill.hpp>
@@ -102,7 +102,7 @@
 #include <hamon/algorithm/ranges/sort_heap.hpp>
 #include <hamon/algorithm/ranges/stable_partition.hpp>
 #include <hamon/algorithm/ranges/stable_sort.hpp>
-//#include <hamon/algorithm/ranges/starts_with.hpp>
+#include <hamon/algorithm/ranges/starts_with.hpp>
 #include <hamon/algorithm/ranges/swap_ranges.hpp>
 #include <hamon/algorithm/ranges/transform.hpp>
 #include <hamon/algorithm/ranges/unique.hpp>
