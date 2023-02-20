@@ -50,7 +50,8 @@ set(SUBDIRECTORIES
 	type_info
 	type_traits
 	units
-	utility)
+	utility
+	variant)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(AddSubLibrary)
