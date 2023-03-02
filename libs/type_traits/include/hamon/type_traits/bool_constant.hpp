@@ -7,6 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_BOOL_CONSTANT_HPP
 #define HAMON_TYPE_TRAITS_BOOL_CONSTANT_HPP
 
+#include <hamon/type_traits/integral_constant.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -19,9 +20,12 @@ using std::bool_constant;
 #else
 
 template <bool B>
-using bool_constant = std::integral_constant<bool, B>;
+using bool_constant = hamon::integral_constant<bool, B>;
 
 #endif
+
+using true_type  = hamon::bool_constant<true>;
+using false_type = hamon::bool_constant<false>;
 
 }	// namespace hamon
 

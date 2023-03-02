@@ -149,7 +149,7 @@ private:
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
 		std::size_t length,
-		std::true_type)
+		hamon::true_type)
 	{
 		std::basic_string<CharT1> tmp;
 		tmp.resize(length);
@@ -167,7 +167,7 @@ private:
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
 		std::size_t length,
-		std::false_type)
+		hamon::false_type)
 	{
 		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
 		s.resize(length);
