@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/accumulation.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon_type_traits_test
 {
@@ -29,10 +29,10 @@ namespace accumulation_test
 
 #endif
 
-using Zero  = std::integral_constant<int, 0>;
-using One   = std::integral_constant<int, 1>;
-using Two   = std::integral_constant<int, 2>;
-using Three = std::integral_constant<int, 3>;
+using Zero  = hamon::integral_constant<int, 0>;
+using One   = hamon::integral_constant<int, 1>;
+using Two   = hamon::integral_constant<int, 2>;
+using Three = hamon::integral_constant<int, 3>;
 
 struct Four
 {

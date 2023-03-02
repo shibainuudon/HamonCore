@@ -9,9 +9,9 @@
 
 #include <hamon/type_traits/accumulation.hpp>
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <cstddef>
 
 namespace hamon
@@ -34,7 +34,7 @@ struct vector_cat_result<Vector<Ts, Ns>...>
 {
 	using type = Vector<
 		hamon::common_type_t<Ts...>,
-		hamon::accumulation<std::integral_constant<std::size_t, Ns>...>::value>;
+		hamon::accumulation<hamon::integral_constant<std::size_t, Ns>...>::value>;
 };
 
 template <typename... Vectors>

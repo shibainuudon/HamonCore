@@ -8,8 +8,8 @@
 #define HAMON_TYPE_TRAITS_ACCUMULATION_HPP
 
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -39,12 +39,12 @@ struct accumulation_impl;
 
 template <>
 struct accumulation_impl<>
-	: public std::integral_constant<int, 0>
+	: public hamon::integral_constant<int, 0>
 {};
 
 template <typename T>
 struct accumulation_impl<T>
-	: public std::integral_constant<
+	: public hamon::integral_constant<
 		typename T::value_type,
 		T::value
 	>
@@ -52,7 +52,7 @@ struct accumulation_impl<T>
 
 template <typename T1, typename T2>
 struct accumulation_impl<T1, T2>
-	: public std::integral_constant<
+	: public hamon::integral_constant<
 		hamon::common_type_t<typename T1::value_type, typename T2::value_type>,
 		T1::value + T2::value
 	>

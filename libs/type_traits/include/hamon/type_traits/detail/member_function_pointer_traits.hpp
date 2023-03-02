@@ -8,6 +8,7 @@
 #define HAMON_TYPE_TRAITS_DETAIL_MEMBER_FUNCTION_POINTER_TRAITS_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/preprocessor/empty.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
@@ -27,7 +28,7 @@ struct memfun_traits_base
 {
 	using result_type = R;
 	using class_type = T;
-	using arity = std::integral_constant<std::size_t, sizeof...(Args)>;
+	using arity = hamon::integral_constant<std::size_t, sizeof...(Args)>;
 };
 
 template <typename F>

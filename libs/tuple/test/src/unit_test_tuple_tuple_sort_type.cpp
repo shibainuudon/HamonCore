@@ -6,6 +6,7 @@
 
 #include <hamon/tuple/tuple_sort_type.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <tuple>
@@ -34,94 +35,94 @@ void TupleSortTypeTest()
 {
 	{
 		using t = Tuple<
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 4>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 9>,
-			std::integral_constant<int, 2>,
-			std::integral_constant<int, 6>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 5>
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 4>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 9>,
+			hamon::integral_constant<int, 2>,
+			hamon::integral_constant<int, 6>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 5>
 		>;
 
 		using t2 = hamon::tuple_sort_type_t<t>;
 
 		using expected = Tuple<
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 2>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 4>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 6>,
-			std::integral_constant<int, 9>
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 2>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 4>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 6>,
+			hamon::integral_constant<int, 9>
 		>;
 
 		static_assert(std::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 4>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 9>,
-			std::integral_constant<int, 2>,
-			std::integral_constant<int, 6>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 5>
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 4>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 9>,
+			hamon::integral_constant<int, 2>,
+			hamon::integral_constant<int, 6>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 5>
 		>;
 
 		using t2 = hamon::tuple_sort_type_t<t const, value_greater>;
 
 		using expected = Tuple<
-			std::integral_constant<int, 9>,
-			std::integral_constant<int, 6>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 5>,
-			std::integral_constant<int, 4>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 3>,
-			std::integral_constant<int, 2>,
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 1>
+			hamon::integral_constant<int, 9>,
+			hamon::integral_constant<int, 6>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 5>,
+			hamon::integral_constant<int, 4>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 3>,
+			hamon::integral_constant<int, 2>,
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 1>
 		>;
 
 		static_assert(std::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 1>
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 1>
 		>;
 
 		using t2 = hamon::tuple_sort_type_t<t volatile>;
 
 		using expected = Tuple<
-			std::integral_constant<int, 1>,
-			std::integral_constant<int, 1>
+			hamon::integral_constant<int, 1>,
+			hamon::integral_constant<int, 1>
 		>;
 
 		static_assert(std::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
-			std::integral_constant<int, 3>
+			hamon::integral_constant<int, 3>
 		>;
 
 		using t2 = hamon::tuple_sort_type_t<t const volatile>;
 
 		using expected = Tuple<
-			std::integral_constant<int, 3>
+			hamon::integral_constant<int, 3>
 		>;
 
 		static_assert(std::is_same<t2, expected>::value, "");
