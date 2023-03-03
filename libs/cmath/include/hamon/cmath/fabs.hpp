@@ -8,9 +8,9 @@
 #define HAMON_CMATH_FABS_HPP
 
 #include <hamon/cmath/copysign.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -84,12 +84,7 @@ fabsl(long double arg) HAMON_NOEXCEPT
 	return detail::fabs_impl(arg);
 }
 
-template <
-	typename IntegralType,
-	typename = hamon::enable_if_t<
-		std::is_integral<IntegralType>::value
-	>
->
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
 HAMON_NODISCARD inline HAMON_CONSTEXPR double
 fabs(IntegralType arg) HAMON_NOEXCEPT
 {

@@ -6,12 +6,13 @@
 
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_integral.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 #define HAMON_MAKE_UNSIGNED_TEST_1(T)	\
-	static_assert(std::is_integral<hamon::make_unsigned<T>::type>::value, "");	\
+	static_assert(hamon::is_integral<hamon::make_unsigned<T>::type>::value, "");	\
 	static_assert(std::is_unsigned<hamon::make_unsigned<T>::type>::value, "");	\
 	static_assert(sizeof(hamon::make_unsigned<T>::type) == sizeof(T), "")
 

@@ -82,7 +82,7 @@ private:
 		using ValueType1 = hamon::iter_value_t<Iter1>;
 		using ValueType2 = hamon::iter_value_t<Iter2>;
 		constexpr bool use_memcmp
-			= ((std::is_integral<ValueType1>::value || std::is_pointer<ValueType1>::value)
+			= ((hamon::is_integral<ValueType1>::value || std::is_pointer<ValueType1>::value)
 			//&& __memcmpable<Iter1, Iter2>::__value
 			&& hamon::is_same<Pred, ranges::equal_to>::value
 			&& hamon::is_same<Proj1, hamon::identity>::value

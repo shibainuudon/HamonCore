@@ -22,8 +22,8 @@ using std::to_integer;
 #else
 
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_integral.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -31,7 +31,7 @@ namespace hamon
 enum class byte : unsigned char {};
 
 template <typename IntegerType>
-inline HAMON_CONSTEXPR hamon::enable_if_t<std::is_integral<IntegerType>::value, IntegerType>
+inline HAMON_CONSTEXPR hamon::enable_if_t<hamon::is_integral<IntegerType>::value, IntegerType>
 to_integer(byte b) HAMON_NOEXCEPT
 {
 	return IntegerType(b);
@@ -73,28 +73,28 @@ inline HAMON_CXX14_CONSTEXPR byte& operator^=(byte& lhs, byte rhs) HAMON_NOEXCEP
 }
 
 template <typename IntegerType>
-inline HAMON_CONSTEXPR hamon::enable_if_t<std::is_integral<IntegerType>::value, byte>
+inline HAMON_CONSTEXPR hamon::enable_if_t<hamon::is_integral<IntegerType>::value, byte>
 operator<<(byte lhs, IntegerType shift) HAMON_NOEXCEPT
 {
 	return byte(static_cast<unsigned char>(lhs) << shift);
 }
 
 template <typename IntegerType>
-inline HAMON_CONSTEXPR hamon::enable_if_t<std::is_integral<IntegerType>::value, byte>
+inline HAMON_CONSTEXPR hamon::enable_if_t<hamon::is_integral<IntegerType>::value, byte>
 operator>>(byte lhs, IntegerType shift) HAMON_NOEXCEPT
 {
 	return byte(static_cast<unsigned char>(lhs) >> shift);
 }
 
 template <typename IntegerType>
-inline HAMON_CXX14_CONSTEXPR hamon::enable_if_t<std::is_integral<IntegerType>::value, byte>&
+inline HAMON_CXX14_CONSTEXPR hamon::enable_if_t<hamon::is_integral<IntegerType>::value, byte>&
 operator<<=(byte& lhs, IntegerType shift) HAMON_NOEXCEPT
 {
 	return lhs = lhs << shift;
 }
 
 template <typename IntegerType>
-inline HAMON_CXX14_CONSTEXPR hamon::enable_if_t<std::is_integral<IntegerType>::value, byte>&
+inline HAMON_CXX14_CONSTEXPR hamon::enable_if_t<hamon::is_integral<IntegerType>::value, byte>&
 operator>>=(byte& lhs, IntegerType shift) HAMON_NOEXCEPT
 {
 	return lhs = lhs >> shift;

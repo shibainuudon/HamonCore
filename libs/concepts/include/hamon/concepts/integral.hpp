@@ -9,7 +9,7 @@
 
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_integral.hpp>
 
 namespace hamon
 {
@@ -21,12 +21,12 @@ using std::integral;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept integral = std::is_integral<T>::value;
+concept integral = hamon::is_integral<T>::value;
 
 #else
 
 template <typename T>
-using integral = std::is_integral<T>;
+using integral = hamon::is_integral<T>;
 
 #endif
 

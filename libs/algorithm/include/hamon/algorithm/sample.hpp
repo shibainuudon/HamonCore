@@ -26,9 +26,11 @@ using std::sample;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_integral.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <iterator>
+#include <random>
 
 namespace hamon
 {
@@ -139,7 +141,7 @@ template <
 	typename Distance,
 	typename UniformRandomBitGenerator,
 	typename = hamon::enable_if_t<
-		std::is_integral<Distance>::value
+		hamon::is_integral<Distance>::value
 	>
 >
 inline SampleIterator

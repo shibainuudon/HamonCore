@@ -7,9 +7,9 @@
 #ifndef HAMON_CMATH_ISZERO_HPP
 #define HAMON_CMATH_ISZERO_HPP
 
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -35,12 +35,7 @@ iszero(long double arg) HAMON_NOEXCEPT
 	return arg == 0.0l;
 }
 
-template <
-	typename IntegralType,
-	typename = hamon::enable_if_t<
-		std::is_integral<IntegralType>::value
-	>
->
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 iszero(IntegralType arg) HAMON_NOEXCEPT
 {

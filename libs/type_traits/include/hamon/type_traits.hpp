@@ -62,7 +62,7 @@
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_move_constructible.hpp>
-//#include <hamon/type_traits/is_integral.hpp>
+#include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_layout_compatible.hpp>

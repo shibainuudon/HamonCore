@@ -12,9 +12,9 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -108,12 +108,7 @@ ceill(long double arg) HAMON_NOEXCEPT
 	return detail::ceil_impl(arg);
 }
 
-template <
-	typename IntegralType,
-	typename = hamon::enable_if_t<
-		std::is_integral<IntegralType>::value
-	>
->
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
 HAMON_NODISCARD inline HAMON_CONSTEXPR double
 ceil(IntegralType arg) HAMON_NOEXCEPT
 {

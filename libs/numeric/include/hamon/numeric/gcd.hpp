@@ -20,11 +20,11 @@ using std::gcd;
 
 #else
 
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -42,12 +42,8 @@ namespace hamon
  *				そうでない場合、 |m| と |n| の最大公約数を返す。
  */
 template <
-	typename M,
-	typename N,
-	typename = hamon::enable_if_t<
-		std::is_integral<M>::value &&
-		std::is_integral<N>::value
-	>
+	HAMON_CONSTRAINED_PARAM(hamon::integral, M),
+	HAMON_CONSTRAINED_PARAM(hamon::integral, N)
 >
 inline HAMON_CONSTEXPR hamon::common_type_t<M, N>
 gcd(M m, N n)

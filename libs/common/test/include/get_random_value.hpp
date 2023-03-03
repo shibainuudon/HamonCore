@@ -7,10 +7,13 @@
 #ifndef UNIT_TEST_COMMON_GET_RANDOM_VALUE_HPP
 #define UNIT_TEST_COMMON_GET_RANDOM_VALUE_HPP
 
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <random>
 #include <limits>
+#include <type_traits>
 
 namespace
 {
@@ -56,7 +59,7 @@ inline T get_random_value_impl(hamon::detail::overload_priority<1>)
 		std::numeric_limits<T>::max() / 2);
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_integral<T>::value>>
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<0>)
 {
 	return get_random_value(

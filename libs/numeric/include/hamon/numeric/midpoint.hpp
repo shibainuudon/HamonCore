@@ -31,6 +31,7 @@ using std::midpoint;
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/is_integral.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 #include <type_traits>
@@ -50,7 +51,7 @@ midpoint_integral_impl(T a, U diff, U sign_bit, U bitshift) HAMON_NOEXCEPT
 	return T(a + T(U((diff / 2) + (sign_bit << bitshift) + (sign_bit & diff))));
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_integral<T>::value>>
+template <typename T, typename = hamon::enable_if_t<hamon::is_integral<T>::value>>
 inline HAMON_CXX11_CONSTEXPR T
 midpoint_impl(T a, T b, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
