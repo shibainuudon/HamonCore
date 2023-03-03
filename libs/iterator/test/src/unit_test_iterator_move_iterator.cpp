@@ -18,6 +18,7 @@
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -518,12 +519,12 @@ GTEST_TEST(MoveIteratorTest, CtorCTADTest)
 template <template <typename> class IteratorWrapper>
 inline HAMON_CXX14_CONSTEXPR bool ConvAssignTest()
 {
-	static_assert( std::is_assignable<
+	static_assert( hamon::is_assignable<
 		hamon::move_iterator<IteratorWrapper<Base>>&,
 		hamon::move_iterator<IteratorWrapper<Derived>>
 	>::value, "");
 
-	static_assert(!std::is_assignable<
+	static_assert(!hamon::is_assignable<
 		hamon::move_iterator<IteratorWrapper<Derived>>&,
 		hamon::move_iterator<IteratorWrapper<Base>>
 	>::value, "");
@@ -625,15 +626,15 @@ public:
 
 GTEST_TEST(MoveIteratorTest, AssignTest)
 {
-	static_assert( std::is_assignable<Base*&, Derived*>::value, "");
-	static_assert(!std::is_assignable<Derived*&, Base*>::value, "");
+	static_assert( hamon::is_assignable<Base*&, Derived*>::value, "");
+	static_assert(!hamon::is_assignable<Derived*&, Base*>::value, "");
 
-	static_assert( std::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*>>::value, "");
-	static_assert(!std::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*>>::value, "");
-	static_assert( std::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*> &&>::value, "");
-	static_assert(!std::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*> &&>::value, "");
-	static_assert( std::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*> const&>::value, "");
-	static_assert(!std::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*> const&>::value, "");
+	static_assert( hamon::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*>>::value, "");
+	static_assert(!hamon::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*>>::value, "");
+	static_assert( hamon::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*> &&>::value, "");
+	static_assert(!hamon::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*> &&>::value, "");
+	static_assert( hamon::is_assignable<hamon::move_iterator<Base*>&, hamon::move_iterator<Derived*> const&>::value, "");
+	static_assert(!hamon::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*> const&>::value, "");
 
 	static_assert( std::is_copy_assignable<hamon::move_iterator<int*>>::value, "");
 	static_assert( std::is_move_assignable<hamon::move_iterator<int*>>::value, "");
@@ -660,13 +661,13 @@ GTEST_TEST(MoveIteratorTest, AssignTest)
 	{
 		using Iter1 = MayThrowAssign<true, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowAssign<true, Derived, input_iterator_wrapper>;
-		static_assert( std::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 		static_assert( std::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 	}
 	{
 		using Iter1 = MayThrowAssign<false, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowAssign<false, Derived, input_iterator_wrapper>;
-		static_assert( std::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 		static_assert(!std::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 	}
 #endif

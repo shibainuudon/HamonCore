@@ -15,6 +15,7 @@
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -386,7 +387,7 @@ struct NonAssignable
 	NonAssignable& operator=(int i);
 };
 static_assert( hamon::semiregular_t<NonAssignable>::value, "");
-static_assert( std::is_assignable<NonAssignable, int>::value, "");
+static_assert( hamon::is_assignable<NonAssignable, int>::value, "");
 static_assert(!hamon::assignable_from_t<NonAssignable, int>::value, "");
 
 inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
@@ -397,7 +398,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		hamon::move_sentinel<long> m2;
 		m2 = m;
 		VERIFY(m2.base() == 42L);
-		static_assert( std::is_assignable<
+		static_assert( hamon::is_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
@@ -412,7 +413,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		hamon::move_sentinel<long> m2;
 		m2 = hamon::move_sentinel<int>(43);
 		VERIFY(m2.base() == 43L);
-		static_assert( std::is_assignable<
+		static_assert( hamon::is_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> &&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
@@ -440,7 +441,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		};
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
-		static_assert( std::is_assignable<Sent2&, Sent1 const&>::value, "");
+		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( std::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
 #endif
@@ -463,7 +464,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		};
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
-		static_assert( std::is_assignable<Sent2&, Sent1 const&>::value, "");
+		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert(!std::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
 #endif
@@ -471,10 +472,10 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 
 	// SFINAE checks.
 	{
-		static_assert( std::is_assignable<hamon::move_sentinel<int>, hamon::move_sentinel<long>>::value, "");
-		static_assert(!std::is_assignable<hamon::move_sentinel<int*>, hamon::move_sentinel<const int*>>::value, "");
-		static_assert( std::is_assignable<hamon::move_sentinel<const int*>, hamon::move_sentinel<int*>>::value, "");
-		static_assert(!std::is_assignable<hamon::move_sentinel<NonAssignable>, hamon::move_sentinel<int>>::value, "");
+		static_assert( hamon::is_assignable<hamon::move_sentinel<int>, hamon::move_sentinel<long>>::value, "");
+		static_assert(!hamon::is_assignable<hamon::move_sentinel<int*>, hamon::move_sentinel<const int*>>::value, "");
+		static_assert( hamon::is_assignable<hamon::move_sentinel<const int*>, hamon::move_sentinel<int*>>::value, "");
+		static_assert(!hamon::is_assignable<hamon::move_sentinel<NonAssignable>, hamon::move_sentinel<int>>::value, "");
 	}
 
 	return true;

@@ -7,6 +7,7 @@
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
+#include <hamon/type_traits/is_assignable.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -95,12 +96,12 @@ static_assert( std::is_nothrow_move_constructible<Bitflag2>::value, "");
 static_assert( std::is_nothrow_move_constructible<Bitflag3>::value, "");
 
 // Assignable
-static_assert(!std::is_assignable<Bitflag1, Enum1>::value, "");
-static_assert(!std::is_assignable<Bitflag1, Enum2>::value, "");
-static_assert(!std::is_assignable<Bitflag1, Enum3>::value, "");
-static_assert(!std::is_assignable<Bitflag1, int>::value, "");
-static_assert(!std::is_assignable<Bitflag1, Bitflag2>::value, "");
-static_assert(!std::is_assignable<Bitflag1, Bitflag3>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, Enum1>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, Enum2>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, Enum3>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, int>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, Bitflag2>::value, "");
+static_assert(!hamon::is_assignable<Bitflag1, Bitflag3>::value, "");
 
 // Copy Assignable
 static_assert( std::is_copy_assignable<Bitflag1>::value, "");
