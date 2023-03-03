@@ -93,7 +93,7 @@
 #include <hamon/type_traits/is_pointer_interconvertible_with_class.hpp>
 //#include <hamon/type_traits/is_polymorphic.hpp>
 //#include <hamon/type_traits/is_reference.hpp>
-//#include <hamon/type_traits/is_rvalue_reference.hpp>
+#include <hamon/type_traits/is_rvalue_reference.hpp>
 #include <hamon/type_traits/is_same.hpp>
 //#include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/type_traits/is_scoped_enum.hpp>
