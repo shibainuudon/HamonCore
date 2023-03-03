@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -25,15 +26,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector2MinusTest()
 	using vector2i = hamon::qvm::vector<int, 2>;
 	using vector2f = hamon::qvm::vector<float, 2>;
 
-	static_assert(std::is_same<decltype(std::declval<vector2&>()  -= vector2{}),  vector2&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2&>()  -= vector2i{}), vector2&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2&>()  -= vector2f{}), vector2&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2i&>() -= vector2{}),  vector2i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2i&>() -= vector2i{}), vector2i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2i&>() -= vector2f{}), vector2i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2f&>() -= vector2{}),  vector2f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2f&>() -= vector2i{}), vector2f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector2f&>() -= vector2f{}), vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  -= vector2{}),  vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  -= vector2i{}), vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  -= vector2f{}), vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() -= vector2{}),  vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() -= vector2i{}), vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() -= vector2f{}), vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() -= vector2{}),  vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() -= vector2i{}), vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() -= vector2f{}), vector2f&>::value, "");
 
 	// vector2 -= vector2
 	{
@@ -41,19 +42,19 @@ inline HAMON_CXX14_CONSTEXPR bool Vector2MinusTest()
 		VERIFY(v == vector2(0, 0));
 		{
 			auto t = (v -= vector2(2, 3));
-			static_assert(std::is_same<decltype(t), vector2>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector2>::value, "");
 			VERIFY(v == vector2(-2, -3));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector2f(3, 1));
-			static_assert(std::is_same<decltype(t), vector2>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector2>::value, "");
 			VERIFY(v == vector2(-5, -4));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector2i(4, 3));
-			static_assert(std::is_same<decltype(t), vector2>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector2>::value, "");
 			VERIFY(v == vector2(-9, -7));
 			VERIFY(v == t);
 		}
@@ -69,15 +70,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector3MinusTest()
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_same<decltype(std::declval<vector3&>()  -= vector3{}),  vector3&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3&>()  -= vector3i{}), vector3&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3&>()  -= vector3f{}), vector3&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3i&>() -= vector3{}),  vector3i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3i&>() -= vector3i{}), vector3i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3i&>() -= vector3f{}), vector3i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3f&>() -= vector3{}),  vector3f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3f&>() -= vector3i{}), vector3f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3f&>() -= vector3f{}), vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  -= vector3{}),  vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  -= vector3i{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  -= vector3f{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() -= vector3{}),  vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() -= vector3i{}), vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() -= vector3f{}), vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() -= vector3{}),  vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() -= vector3i{}), vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() -= vector3f{}), vector3f&>::value, "");
 
 	// vector3 -= vector3
 	{
@@ -85,19 +86,19 @@ inline HAMON_CXX14_CONSTEXPR bool Vector3MinusTest()
 		VERIFY(v == vector3(0, 0, 0));
 		{
 			auto t = (v -= vector3(2, 3, -4));
-			static_assert(std::is_same<decltype(t), vector3>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector3>::value, "");
 			VERIFY(v == vector3(-2, -3, 4));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector3f(3, 1, 4));
-			static_assert(std::is_same<decltype(t), vector3>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector3>::value, "");
 			VERIFY(v == vector3(-5, -4, 0));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector3i(4, 3, 2));
-			static_assert(std::is_same<decltype(t), vector3>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector3>::value, "");
 			VERIFY(v == vector3(-9, -7, -2));
 			VERIFY(v == t);
 		}
@@ -113,15 +114,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector4MinusTest()
 	using vector4i = hamon::qvm::vector<int, 4>;
 	using vector4f = hamon::qvm::vector<float, 4>;
 
-	static_assert(std::is_same<decltype(std::declval<vector4&>()  -= vector4{}),  vector4&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4&>()  -= vector4i{}), vector4&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4&>()  -= vector4f{}), vector4&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4i&>() -= vector4{}),  vector4i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4i&>() -= vector4i{}), vector4i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4i&>() -= vector4f{}), vector4i&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4f&>() -= vector4{}),  vector4f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4f&>() -= vector4i{}), vector4f&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector4f&>() -= vector4f{}), vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  -= vector4{}),  vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  -= vector4i{}), vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  -= vector4f{}), vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() -= vector4{}),  vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() -= vector4i{}), vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() -= vector4f{}), vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() -= vector4{}),  vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() -= vector4i{}), vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() -= vector4f{}), vector4f&>::value, "");
 
 	// vector4 -= vector4
 	{
@@ -129,19 +130,19 @@ inline HAMON_CXX14_CONSTEXPR bool Vector4MinusTest()
 		VERIFY(v == vector4(0, 0, 0, 0));
 		{
 			auto t = (v -= vector4(2, 3, -4, 5));
-			static_assert(std::is_same<decltype(t), vector4>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector4>::value, "");
 			VERIFY(v == vector4(-2, -3, 4, -5));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector4f(3, 1, 4, 1));
-			static_assert(std::is_same<decltype(t), vector4>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector4>::value, "");
 			VERIFY(v == vector4(-5, -4, 0, -6));
 			VERIFY(v == t);
 		}
 		{
 			auto t = (v -= vector4i(4, 3, 2, -1));
-			static_assert(std::is_same<decltype(t), vector4>::value, "");
+			static_assert(hamon::is_same<decltype(t), vector4>::value, "");
 			VERIFY(v == vector4(-9, -7, -2, -5));
 			VERIFY(v == t);
 		}
@@ -163,26 +164,26 @@ TYPED_TEST(VectorTest, MinusTest)
 	using vector4i = hamon::qvm::vector<int, 4>;
 	using vector4f = hamon::qvm::vector<float, 4>;
 
-	static_assert(std::is_same<decltype(vector2{}  - vector2{}),  vector2>::value, "");
-	static_assert(std::is_same<decltype(vector2{}  - vector2i{}), vector2>::value, "");
-	static_assert(std::is_same<decltype(vector2i{} - vector2i{}), vector2i>::value, "");
-	static_assert(std::is_same<decltype(vector2i{} - vector2f{}), vector2f>::value, "");
-	static_assert(std::is_same<decltype(vector2f{} - vector2i{}), vector2f>::value, "");
-	static_assert(std::is_same<decltype(vector2f{} - vector2f{}), vector2f>::value, "");
+	static_assert(hamon::is_same<decltype(vector2{}  - vector2{}),  vector2>::value, "");
+	static_assert(hamon::is_same<decltype(vector2{}  - vector2i{}), vector2>::value, "");
+	static_assert(hamon::is_same<decltype(vector2i{} - vector2i{}), vector2i>::value, "");
+	static_assert(hamon::is_same<decltype(vector2i{} - vector2f{}), vector2f>::value, "");
+	static_assert(hamon::is_same<decltype(vector2f{} - vector2i{}), vector2f>::value, "");
+	static_assert(hamon::is_same<decltype(vector2f{} - vector2f{}), vector2f>::value, "");
 
-	static_assert(std::is_same<decltype(vector3{}  - vector3{}),  vector3>::value, "");
-	static_assert(std::is_same<decltype(vector3{}  - vector3i{}), vector3>::value, "");
-	static_assert(std::is_same<decltype(vector3i{} - vector3i{}), vector3i>::value, "");
-	static_assert(std::is_same<decltype(vector3i{} - vector3f{}), vector3f>::value, "");
-	static_assert(std::is_same<decltype(vector3f{} - vector3i{}), vector3f>::value, "");
-	static_assert(std::is_same<decltype(vector3f{} - vector3f{}), vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3{}  - vector3{}),  vector3>::value, "");
+	static_assert(hamon::is_same<decltype(vector3{}  - vector3i{}), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(vector3i{} - vector3i{}), vector3i>::value, "");
+	static_assert(hamon::is_same<decltype(vector3i{} - vector3f{}), vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3f{} - vector3i{}), vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3f{} - vector3f{}), vector3f>::value, "");
 
-	static_assert(std::is_same<decltype(vector4{}  - vector4{}),  vector4>::value, "");
-	static_assert(std::is_same<decltype(vector4{}  - vector4i{}), vector4>::value, "");
-	static_assert(std::is_same<decltype(vector4i{} - vector4i{}), vector4i>::value, "");
-	static_assert(std::is_same<decltype(vector4i{} - vector4f{}), vector4f>::value, "");
-	static_assert(std::is_same<decltype(vector4f{} - vector4i{}), vector4f>::value, "");
-	static_assert(std::is_same<decltype(vector4f{} - vector4f{}), vector4f>::value, "");
+	static_assert(hamon::is_same<decltype(vector4{}  - vector4{}),  vector4>::value, "");
+	static_assert(hamon::is_same<decltype(vector4{}  - vector4i{}), vector4>::value, "");
+	static_assert(hamon::is_same<decltype(vector4i{} - vector4i{}), vector4i>::value, "");
+	static_assert(hamon::is_same<decltype(vector4i{} - vector4f{}), vector4f>::value, "");
+	static_assert(hamon::is_same<decltype(vector4f{} - vector4i{}), vector4f>::value, "");
+	static_assert(hamon::is_same<decltype(vector4f{} - vector4f{}), vector4f>::value, "");
 
 	// vector2 - vector2 -> vector2
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector2 ( 1, 2) - vector2 (3, 4), vector2(-2,-2));

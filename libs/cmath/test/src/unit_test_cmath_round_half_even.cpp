@@ -8,8 +8,8 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -19,10 +19,10 @@ namespace hamon_cmath_test
 namespace round_half_even_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::round_half_even(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::round_half_even(0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::round_half_even(0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::round_half_even(0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::round_half_even(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::round_half_even(0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::round_half_even(0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::round_half_even(0   ))>::value, "");
 
 template <typename T>
 void RoundHalfEvenTestUnsigned(void)

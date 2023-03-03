@@ -5,9 +5,9 @@
  */
 
 #include <hamon/cmath/islessgreater.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <limits>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -16,22 +16,22 @@ namespace hamon_cmath_test
 namespace islessgreater_test
 {
 
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0f, 0   ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0 , 0   ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0.0l, 0   ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0   , 0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0   , 0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0   , 0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::islessgreater(0   , 0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::islessgreater(0   , 0   ))>::value, "");
 
 template <typename T1, typename T2>
 void IsLessGreaterTestFloat(void)

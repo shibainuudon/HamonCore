@@ -9,6 +9,7 @@
 
 #include <hamon/base64/base64_xml_name.hpp>
 #include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <algorithm>
 #include <cstdint>
@@ -186,7 +187,7 @@ private:
 			4 +	// sign, decimal point, "e+" or "e-"
 			digits10 +
 			4;	// log10(max_exponent10)
-		const char* length_modifier = std::is_same<T, long double>::value ? "L" : "";
+		const char* length_modifier = hamon::is_same<T, long double>::value ? "L" : "";
 		std::array<char, 10> fmt{};	// フォーマット文字列。"%.9g"など。
 		std::snprintf(fmt.data(), fmt.size(), "%%.%d%sg", digits10, length_modifier);
 		std::array<char, digits + 1> buf{};

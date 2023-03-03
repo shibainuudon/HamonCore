@@ -5,8 +5,8 @@
  */
 
 #include <hamon/utility/forward_like.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 
@@ -24,54 +24,54 @@ using CT = const T;
 U u{};
 const U& cu = u;
 
-static_assert(std::is_same<decltype(hamon::forward_like<T>(U{})), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T>(CU{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T>(u)), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T>(cu)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T>(std::move(u))), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T>(std::move(cu))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(U{})), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(CU{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(u)), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(cu)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(std::move(u))), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T>(std::move(cu))), CU&&>::value, "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(U{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(CU{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(u)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(cu)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(std::move(u))), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT>(std::move(cu))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(U{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(CU{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(u)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(cu)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(std::move(u))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT>(std::move(cu))), CU&&>::value, "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(U{})), U&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(CU{})), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(u)), U&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(cu)), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(std::move(u))), U&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>(std::move(cu))), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(U{})), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(CU{})), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(u)), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(cu)), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(std::move(u))), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>(std::move(cu))), CU&>::value, "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(U{})), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(CU{})), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(u)), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(cu)), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(std::move(u))), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&>(std::move(cu))), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(U{})), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(CU{})), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(u)), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(cu)), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(std::move(u))), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&>(std::move(cu))), CU&>::value, "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(U{})), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(CU{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(u)), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(cu)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(std::move(u))), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&>(std::move(cu))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(U{})), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(CU{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(u)), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(cu)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(std::move(u))), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&>(std::move(cu))), CU&&>::value, "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(U{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(CU{})), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(u)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(cu)), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(std::move(u))), CU&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(std::move(cu))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(U{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(CU{})), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(u)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(cu)), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(std::move(u))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(std::move(cu))), CU&&>::value, "");
 
 static_assert(noexcept(hamon::forward_like<T>(u)), "");
 
-static_assert(std::is_same<decltype(hamon::forward_like<U&>(u)), U&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CU&>(cu)), CU&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<U&&>(std::move(u))), U&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CU&&>(std::move(cu))), CU&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<U&>(u)), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CU&>(cu)), CU&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<U&&>(std::move(u))), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CU&&>(std::move(cu))), CU&&>::value, "");
 
 struct NoCtorCopyMove
 {
@@ -80,10 +80,10 @@ struct NoCtorCopyMove
 	NoCtorCopyMove(NoCtorCopyMove&&) = delete;
 };
 
-static_assert(std::is_same<decltype(hamon::forward_like<CT&&>(std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<CT&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&&>::value, "");
-static_assert(std::is_same<decltype(hamon::forward_like<T&>  (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>  (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&>::value, "");
 
 static_assert(noexcept(hamon::forward_like<T>(std::declval<NoCtorCopyMove>())), "");
 
@@ -94,25 +94,25 @@ inline HAMON_CXX14_CONSTEXPR bool ForwardLikeTest()
 	{
 		int val       = 1729;
 		auto&& result = hamon::forward_like<const double&>(val);
-		static_assert(std::is_same<decltype(result), const int&>::value, "");
+		static_assert(hamon::is_same<decltype(result), const int&>::value, "");
 		VERIFY(&result == &val);
 	}
 	{
 		int val       = 1729;
 		auto&& result = hamon::forward_like<double&>(val);
-		static_assert(std::is_same<decltype(result), int&>::value, "");
+		static_assert(hamon::is_same<decltype(result), int&>::value, "");
 		VERIFY(&result == &val);
 	}
 	{
 		int val       = 1729;
 		auto&& result = hamon::forward_like<const double&&>(val);
-		static_assert(std::is_same<decltype(result), const int&&>::value, "");
+		static_assert(hamon::is_same<decltype(result), const int&&>::value, "");
 		VERIFY(&result == &val);
 	}
 	{
 		int val       = 1729;
 		auto&& result = hamon::forward_like<double&&>(val);
-		static_assert(std::is_same<decltype(result), int&&>::value, "");
+		static_assert(hamon::is_same<decltype(result), int&&>::value, "");
 		VERIFY(&result == &val);
 	}
 	return true;

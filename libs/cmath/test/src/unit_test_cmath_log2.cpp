@@ -10,8 +10,8 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -21,12 +21,12 @@ namespace hamon_cmath_test
 namespace log2_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::log2(0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::log2f(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::log2(0.0 ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::log2(0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::log2(0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::log2l(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::log2(0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::log2f(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::log2(0.0 ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::log2(0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::log2(0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::log2l(0.0l))>::value, "");
 
 template <typename T>
 double log2_error();

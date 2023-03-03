@@ -9,9 +9,10 @@
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -38,32 +39,32 @@ TYPED_TEST(MatrixTest, IteratorTest)
 	static_assert(hamon::contiguous_iterator_t<typename matrix4x4::iterator>::value, "");
 	static_assert(hamon::contiguous_iterator_t<typename matrix4x4::const_iterator>::value, "");
 
-	static_assert(std::is_same<vector3, hamon::iter_value_t<typename matrix3x3::iterator>>::value, "");
-	static_assert(std::is_same<vector3, hamon::iter_value_t<typename matrix3x3::const_iterator>>::value, "");
-	static_assert(std::is_same<vector4, hamon::iter_value_t<typename matrix3x4::iterator>>::value, "");
-	static_assert(std::is_same<vector4, hamon::iter_value_t<typename matrix3x4::const_iterator>>::value, "");
-	static_assert(std::is_same<vector3, hamon::iter_value_t<typename matrix4x3::iterator>>::value, "");
-	static_assert(std::is_same<vector3, hamon::iter_value_t<typename matrix4x3::const_iterator>>::value, "");
-	static_assert(std::is_same<vector4, hamon::iter_value_t<typename matrix4x4::iterator>>::value, "");
-	static_assert(std::is_same<vector4, hamon::iter_value_t<typename matrix4x4::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix3x3::iterator>>::value, "");
+	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix3x3::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector4, hamon::iter_value_t<typename matrix3x4::iterator>>::value, "");
+	static_assert(hamon::is_same<vector4, hamon::iter_value_t<typename matrix3x4::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix4x3::iterator>>::value, "");
+	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix4x3::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector4, hamon::iter_value_t<typename matrix4x4::iterator>>::value, "");
+	static_assert(hamon::is_same<vector4, hamon::iter_value_t<typename matrix4x4::const_iterator>>::value, "");
 
-	static_assert(std::is_same<vector3      &, hamon::iter_reference_t<typename matrix3x3::iterator>>::value, "");
-	static_assert(std::is_same<vector3 const&, hamon::iter_reference_t<typename matrix3x3::const_iterator>>::value, "");
-	static_assert(std::is_same<vector4      &, hamon::iter_reference_t<typename matrix3x4::iterator>>::value, "");
-	static_assert(std::is_same<vector4 const&, hamon::iter_reference_t<typename matrix3x4::const_iterator>>::value, "");
-	static_assert(std::is_same<vector3      &, hamon::iter_reference_t<typename matrix4x3::iterator>>::value, "");
-	static_assert(std::is_same<vector3 const&, hamon::iter_reference_t<typename matrix4x3::const_iterator>>::value, "");
-	static_assert(std::is_same<vector4      &, hamon::iter_reference_t<typename matrix4x4::iterator>>::value, "");
-	static_assert(std::is_same<vector4 const&, hamon::iter_reference_t<typename matrix4x4::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector3      &, hamon::iter_reference_t<typename matrix3x3::iterator>>::value, "");
+	static_assert(hamon::is_same<vector3 const&, hamon::iter_reference_t<typename matrix3x3::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector4      &, hamon::iter_reference_t<typename matrix3x4::iterator>>::value, "");
+	static_assert(hamon::is_same<vector4 const&, hamon::iter_reference_t<typename matrix3x4::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector3      &, hamon::iter_reference_t<typename matrix4x3::iterator>>::value, "");
+	static_assert(hamon::is_same<vector3 const&, hamon::iter_reference_t<typename matrix4x3::const_iterator>>::value, "");
+	static_assert(hamon::is_same<vector4      &, hamon::iter_reference_t<typename matrix4x4::iterator>>::value, "");
+	static_assert(hamon::is_same<vector4 const&, hamon::iter_reference_t<typename matrix4x4::const_iterator>>::value, "");
 
-	static_assert(std::is_same<typename matrix3x3::iterator,       decltype(std::declval<matrix3x3>().begin())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::iterator,       decltype(std::declval<matrix3x3>().end())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3>().cbegin())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3>().cend())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().begin())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().end())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().cbegin())>::value, "");
-	static_assert(std::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().cend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::iterator,       decltype(std::declval<matrix3x3>().begin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::iterator,       decltype(std::declval<matrix3x3>().end())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3>().cend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().begin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().end())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_iterator, decltype(std::declval<matrix3x3 const>().cend())>::value, "");
 
 	// const
 	{

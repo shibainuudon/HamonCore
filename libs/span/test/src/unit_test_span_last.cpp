@@ -6,14 +6,14 @@
 
 #include <hamon/span.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
 #define ASSERT_SAME_TYPE(...) \
-    static_assert((std::is_same<__VA_ARGS__>::value), \
+    static_assert((hamon::is_same<__VA_ARGS__>::value), \
                  "Types differ unexpectedly")
 
 namespace hamon_span_test

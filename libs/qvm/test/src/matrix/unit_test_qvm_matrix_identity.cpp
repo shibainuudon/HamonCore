@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,8 +23,8 @@ TYPED_TEST(MatrixTest, IdentityTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_same<decltype(matrix3x3::identity()), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::identity()), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::identity()), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::identity()), matrix4x4>::value, "");
 
 	{
 		HAMON_CONSTEXPR auto const m = matrix3x3::identity();

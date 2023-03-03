@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -26,9 +26,9 @@ TYPED_TEST(QuaternionTest, SwizzleTest)
 
 	HAMON_CONSTEXPR quaternion const q(1, 2, 3, 4);
 
-	static_assert(std::is_same<vector4, decltype(q.xxxx())>::value, "");
-	static_assert(std::is_same<vector3, decltype(q.xxx())>::value, "");
-	static_assert(std::is_same<vector2, decltype(q.xx())>::value, "");
+	static_assert(hamon::is_same<vector4, decltype(q.xxxx())>::value, "");
+	static_assert(hamon::is_same<vector3, decltype(q.xxx())>::value, "");
+	static_assert(hamon::is_same<vector2, decltype(q.xx())>::value, "");
 
 	{
 //		HAMON_CONSTEXPR vector4 const t(q);		// error

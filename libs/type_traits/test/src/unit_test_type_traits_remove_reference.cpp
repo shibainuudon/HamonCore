@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 HAMON_TRANSFORM_TEST(hamon::remove_reference, /**/          , /**/          );
@@ -50,8 +50,8 @@ HAMON_TRANSFORM_TEST(hamon::remove_reference,       volatile (&&)[2],       vola
 HAMON_TRANSFORM_TEST(hamon::remove_reference, const volatile (&&)[2], const volatile [2]);
 
 #define HAMON_REMOVE_REFERENCE_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::remove_reference_t<T1>, T2>::value, "");	\
-	static_assert(std::is_same<hamon::remove_reference<T1>::type, T2>::value, "")
+	static_assert(hamon::is_same<hamon::remove_reference_t<T1>, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::remove_reference<T1>::type, T2>::value, "")
 
 HAMON_REMOVE_REFERENCE_TEST(               void,                void);
 HAMON_REMOVE_REFERENCE_TEST(const          void, const          void);

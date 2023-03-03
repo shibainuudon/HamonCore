@@ -7,6 +7,7 @@
 #include <hamon/functional/not_fn.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <utility>
@@ -191,7 +192,7 @@ private:
 template <typename L, typename R>
 inline bool operator==(TypeInfo<L> const&, TypeInfo<R> const&)
 {
-	return std::is_same<L, R>::value;
+	return hamon::is_same<L, R>::value;
 }
 
 template <typename L, typename R>
@@ -437,21 +438,21 @@ void return_type_tests()
 	{
 		using T = CopyCallable<bool>;
 		auto ret = hamon::not_fn(T{false});
-		static_assert(std::is_same<decltype(ret()), bool>::value, "");
-		static_assert(std::is_same<decltype(ret("abc")), bool>::value, "");
+		static_assert(hamon::is_same<decltype(ret()), bool>::value, "");
+		static_assert(hamon::is_same<decltype(ret("abc")), bool>::value, "");
 		EXPECT_TRUE(ret());
 	}
 	{
 		using T = CopyCallable<ExplicitBool>;
 		auto ret = hamon::not_fn(T{true});
-		static_assert(std::is_same<decltype(ret()), bool>::value, "");
-		static_assert(std::is_same<decltype(ret(std::string("abc"))), bool>::value, "");
+		static_assert(hamon::is_same<decltype(ret()), bool>::value, "");
+		static_assert(hamon::is_same<decltype(ret(std::string("abc"))), bool>::value, "");
 		EXPECT_FALSE(ret());
 	}
 	{
 		using T = CopyCallable<EvilBool>;
 		auto ret = hamon::not_fn(T{false});
-		static_assert(std::is_same<decltype(ret()), EvilBool>::value, "");
+		static_assert(hamon::is_same<decltype(ret()), EvilBool>::value, "");
 		EvilBool::bang_called = 0;
 		auto value_ret = ret();
 		EXPECT_EQ(EvilBool::bang_called, 1);

@@ -7,9 +7,9 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
 #include <hamon/qvm/common/lerp.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -24,15 +24,15 @@ TYPED_TEST(VectorFloatTest, LerpTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_same<decltype(lerp(vector2{}, vector2{}, T{})),  vector2>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector2{}, vector2{}, 0.0f)), vector2>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector2{}, vector2{}, 0.0L)), hamon::qvm::vector<long double, 2>>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector3{}, vector3{}, T{})),  vector3>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector3{}, vector3{}, 0.0f)), vector3>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector3{}, vector3{}, 0.0L)), hamon::qvm::vector<long double, 3>>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector4{}, vector4{}, T{})),  vector4>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector4{}, vector4{}, 0.0f)), vector4>::value, "");
-	static_assert(std::is_same<decltype(lerp(vector4{}, vector4{}, 0.0L)), hamon::qvm::vector<long double, 4>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector2{}, vector2{}, T{})),  vector2>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector2{}, vector2{}, 0.0f)), vector2>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector2{}, vector2{}, 0.0L)), hamon::qvm::vector<long double, 2>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector3{}, vector3{}, T{})),  vector3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector3{}, vector3{}, 0.0f)), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector3{}, vector3{}, 0.0L)), hamon::qvm::vector<long double, 3>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector4{}, vector4{}, T{})),  vector4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector4{}, vector4{}, 0.0f)), vector4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(vector4{}, vector4{}, 0.0L)), hamon::qvm::vector<long double, 4>>::value, "");
 
 	// vector2
 	{

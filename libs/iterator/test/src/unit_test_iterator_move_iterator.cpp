@@ -17,6 +17,7 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -157,13 +158,13 @@ inline HAMON_CXX14_CONSTEXPR bool TypesTest()
 {
 	using MoveIter = hamon::move_iterator<Iter>;
 
-	static_assert(std::is_same<typename MoveIter::iterator_type,    Iter>::value, "");
-	static_assert(std::is_same<typename MoveIter::iterator_concept, Category>::value, "");
-	static_assert(std::is_same<typename MoveIter::iterator_category, Category>::value, "");
-	static_assert(std::is_same<typename MoveIter::value_type,       hamon::iter_value_t<Iter>>::value, "");
-	static_assert(std::is_same<typename MoveIter::difference_type,  hamon::iter_difference_t<Iter>>::value, "");
-	static_assert(std::is_same<typename MoveIter::pointer,          Iter>::value, "");
-	static_assert(std::is_same<typename MoveIter::reference,        hamon::iter_rvalue_reference_t<Iter>>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::iterator_type,    Iter>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::iterator_concept, Category>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::iterator_category, Category>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::value_type,       hamon::iter_value_t<Iter>>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::difference_type,  hamon::iter_difference_t<Iter>>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::pointer,          Iter>::value, "");
+	static_assert(hamon::is_same<typename MoveIter::reference,        hamon::iter_rvalue_reference_t<Iter>>::value, "");
 
 	return true;
 }
@@ -279,13 +280,13 @@ public:
     template <typename U,
 		typename Other = Convertible<U, IteratorWrapper>
 		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::negation<std::is_same<U, T>>,
+			hamon::negation<hamon::is_same<U, T>>,
 			hamon::convertible_to_t<decltype(base(std::declval<Other const&>())), pointer>
 		>::value>
 	>
     HAMON_CXX14_CONSTEXPR
 	Convertible(Convertible<U, IteratorWrapper> const& u)
-	//requires (!std::is_same<U, T>::value) &&
+	//requires (!hamon::is_same<U, T>::value) &&
 	//	hamon::convertible_to<decltype(base(u)), pointer>
 		: IteratorWrapper<T>{base(u)} {}
 };
@@ -509,7 +510,7 @@ GTEST_TEST(MoveIteratorTest, CtorCTADTest)
 	{
 		int* p = nullptr;
 		hamon::move_iterator it(p);
-		static_assert(std::is_same<decltype(it), hamon::move_iterator<int*>>::value, "");
+		static_assert(hamon::is_same<decltype(it), hamon::move_iterator<int*>>::value, "");
 	}
 #endif
 }
@@ -608,7 +609,7 @@ public:
     template <typename U,
 		typename Other = MayThrowAssign<Noexcept, U, IteratorWrapper>
 		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::negation<std::is_same<U, T>>,
+			hamon::negation<hamon::is_same<U, T>>,
 			hamon::convertible_to_t<decltype(base(std::declval<Other const&>())), pointer>
 		>::value>
 	>
@@ -681,7 +682,7 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 	// Non-const lvalue.
 	{
 		auto i = hamon::move_iterator<It>{It{a}};
-		static_assert(std::is_same<decltype(i.base()), const It&>::value, "");
+		static_assert(hamon::is_same<decltype(i.base()), const It&>::value, "");
 		HAMON_ASSERT_NOEXCEPT_TRUE(i.base());
 		VERIFY(i.base() == It{a});
 
@@ -692,7 +693,7 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 	// Const lvalue.
 	{
 		const auto i = hamon::move_iterator<It>{It{a}};
-		static_assert(std::is_same<decltype(i.base()), const It&>::value, "");
+		static_assert(hamon::is_same<decltype(i.base()), const It&>::value, "");
 		HAMON_ASSERT_NOEXCEPT_TRUE(i.base());
 		VERIFY(i.base() == It{a});
 	}
@@ -700,7 +701,7 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 	// Rvalue.
 	{
 		auto i = hamon::move_iterator<It>{It{a}};
-		static_assert(std::is_same<decltype(std::move(i).base()), It>::value, "");
+		static_assert(hamon::is_same<decltype(std::move(i).base()), It>::value, "");
 		VERIFY(std::move(i).base() == It{a});
 	}
 
@@ -937,7 +938,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreIncrementTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(++it), hamon::move_iterator<It>&>::value, "");
+		static_assert(hamon::is_same<decltype(++it), hamon::move_iterator<It>&>::value, "");
 		VERIFY(base(it.base()) == a);
 		auto r = ++it;
 		VERIFY(base(it.base()) == a+1);
@@ -983,7 +984,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(it++), hamon::move_iterator<It>>::value, "");
+		static_assert(hamon::is_same<decltype(it++), hamon::move_iterator<It>>::value, "");
 		VERIFY(base(it.base()) == a);
 		auto r = it++;
 		VERIFY(base(it.base()) == a+1);
@@ -1020,7 +1021,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest2()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(it++), void>::value, "");
+		static_assert(hamon::is_same<decltype(it++), void>::value, "");
 		VERIFY(base(it.base()) == a);
 		it++;
 		VERIFY(base(it.base()) == a+1);
@@ -1072,7 +1073,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreDecrementTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a+3}};
-		static_assert(std::is_same<decltype(--it), hamon::move_iterator<It>&>::value, "");
+		static_assert(hamon::is_same<decltype(--it), hamon::move_iterator<It>&>::value, "");
 		VERIFY(base(it.base()) == a+3);
 		auto r = --it;
 		VERIFY(base(it.base()) == a+2);
@@ -1117,7 +1118,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostDecrementTest()
 	using It = IteratorWrapper<int>;
 	{
 		hamon::move_iterator<It> it{It{a+3}};
-		static_assert(std::is_same<decltype(it--), hamon::move_iterator<It>>::value, "");
+		static_assert(hamon::is_same<decltype(it--), hamon::move_iterator<It>>::value, "");
 		VERIFY(base(it.base()) == a+3);
 		auto r = it--;
 		VERIFY(base(it.base()) == a+2);
@@ -1174,7 +1175,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(it + 2), hamon::move_iterator<It>>::value, "");
+		static_assert(hamon::is_same<decltype(it + 2), hamon::move_iterator<It>>::value, "");
 		VERIFY(base(it.base()) == a);
 		auto r = it + 2;
 		VERIFY(base(it.base()) == a);
@@ -1183,7 +1184,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(3 + it), hamon::move_iterator<It>>::value, "");
+		static_assert(hamon::is_same<decltype(3 + it), hamon::move_iterator<It>>::value, "");
 		VERIFY(base(it.base()) == a);
 		auto r = 3 + it;
 		VERIFY(base(it.base()) == a);
@@ -1230,7 +1231,7 @@ GTEST_TEST(MoveIteratorTest, OperatorPlusTest)
 	{
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a};
-		static_assert(std::is_same<decltype(it + 1), hamon::move_iterator<int*>>::value, "");
+		static_assert(hamon::is_same<decltype(it + 1), hamon::move_iterator<int*>>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it + 1);
 		HAMON_ASSERT_NOEXCEPT_TRUE(1 + it);
@@ -1256,7 +1257,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusAssignTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a}};
-		static_assert(std::is_same<decltype(it += 2), hamon::move_iterator<It>&>::value, "");
+		static_assert(hamon::is_same<decltype(it += 2), hamon::move_iterator<It>&>::value, "");
 		VERIFY(base(it.base()) == a);
 		auto r = (it += 2);
 		VERIFY(base(it.base()) == a+2);
@@ -1290,7 +1291,7 @@ GTEST_TEST(MoveIteratorTest, OperatorPlusAssignTest)
 	{
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a};
-		static_assert(std::is_same<decltype(it += 2), hamon::move_iterator<int*>&>::value, "");
+		static_assert(hamon::is_same<decltype(it += 2), hamon::move_iterator<int*>&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it += 1);
 #endif
@@ -1320,7 +1321,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a+3}};
-		static_assert(std::is_same<decltype(it - 2), hamon::move_iterator<It>>::value, "");
+		static_assert(hamon::is_same<decltype(it - 2), hamon::move_iterator<It>>::value, "");
 		VERIFY(base(it.base()) == a+3);
 		auto r = it - 2;
 		VERIFY(base(it.base()) == a+3);
@@ -1364,7 +1365,7 @@ GTEST_TEST(MoveIteratorTest, OperatorMinusTest)
 	int a[] = {1,2,3,4,5};
 	{
 		hamon::move_iterator<int*> it{a+3};
-		static_assert(std::is_same<decltype(it - 1), hamon::move_iterator<int*>>::value, "");
+		static_assert(hamon::is_same<decltype(it - 1), hamon::move_iterator<int*>>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it - 1);
 #endif
@@ -1394,7 +1395,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorSubtractTest()
 	{
 		hamon::move_iterator<It> it1{It{a+3}};
 		hamon::move_iterator<It> it2{It{a+1}};
-		static_assert(std::is_same<decltype(it1 - it2), Difference>::value, "");
+		static_assert(hamon::is_same<decltype(it1 - it2), Difference>::value, "");
 		auto n = it1 - it2;
 		VERIFY(n == 2);
 	}
@@ -1445,7 +1446,7 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 	{
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int*> it2{a+1};
-		static_assert(std::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
+		static_assert(hamon::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
 #endif
@@ -1455,7 +1456,7 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 	{
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int const*> it2{a+1};
-		static_assert(std::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
+		static_assert(hamon::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
 #endif
@@ -1478,7 +1479,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusAssignTest()
 	{
 		using It = IteratorWrapper<int>;
 		hamon::move_iterator<It> it{It{a+3}};
-		static_assert(std::is_same<decltype(it -= 2), hamon::move_iterator<It>&>::value, "");
+		static_assert(hamon::is_same<decltype(it -= 2), hamon::move_iterator<It>&>::value, "");
 		VERIFY(base(it.base()) == a+3);
 		auto r = (it -= 2);
 		VERIFY(base(it.base()) == a+1);
@@ -1512,7 +1513,7 @@ GTEST_TEST(MoveIteratorTest, OperatorMinusAssignTest)
 	{
 		int a[] = {1,2,3,4,5};
 		hamon::move_iterator<int*> it{a+3};
-		static_assert(std::is_same<decltype(it -= 2), hamon::move_iterator<int*>&>::value, "");
+		static_assert(hamon::is_same<decltype(it -= 2), hamon::move_iterator<int*>&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it -= 1);
 #endif
@@ -1972,7 +1973,7 @@ inline HAMON_CXX14_CONSTEXPR bool IterSwapTest()
 		VERIFY(a[1] == 2);
 		VERIFY(a[2] == 3);
 
-		static_assert(std::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
+		static_assert(hamon::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
 		iter_swap(it1, it2);
 
 		VERIFY(a[0] == 2);
@@ -1989,7 +1990,7 @@ inline HAMON_CXX14_CONSTEXPR bool IterSwapTest()
 		VERIFY(a[1] == 2);
 		VERIFY(a[2] == 3);
 
-		static_assert(std::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
+		static_assert(hamon::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
 		HAMON_ASSERT_NOEXCEPT_TRUE(iter_swap(it1, it2));
 		iter_swap(it1, it2);
 
@@ -2007,7 +2008,7 @@ inline HAMON_CXX14_CONSTEXPR bool IterSwapTest()
 		VERIFY(a[1] == 2);
 		VERIFY(a[2] == 3);
 
-		static_assert(std::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
+		static_assert(hamon::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
 		HAMON_ASSERT_NOEXCEPT_FALSE(iter_swap(it1, it2));
 		iter_swap(it1, it2);
 
@@ -2026,7 +2027,7 @@ inline HAMON_CXX14_CONSTEXPR bool IterSwapTest()
 		VERIFY(a[1] == 2);
 		VERIFY(a[2] == 3);
 
-		static_assert(std::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
+		static_assert(hamon::is_same<decltype(iter_swap(it1, it2)), void>::value, "");
 		HAMON_ASSERT_NOEXCEPT_FALSE(iter_swap(it1, it2));
 		iter_swap(it1, it2);
 

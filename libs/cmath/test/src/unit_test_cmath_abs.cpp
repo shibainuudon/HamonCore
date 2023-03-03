@@ -8,8 +8,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -20,19 +20,19 @@ namespace hamon_cmath_test
 namespace abs_test
 {
 
-static_assert(std::is_same<float,        decltype(hamon::abs(0.0f))>::value, "");
-static_assert(std::is_same<double,       decltype(hamon::abs(0.0 ))>::value, "");
-static_assert(std::is_same<long double,  decltype(hamon::abs(0.0l))>::value, "");
-static_assert(std::is_same<signed   char,      decltype(hamon::abs((signed   char)0))>::value, "");
-static_assert(std::is_same<unsigned char,      decltype(hamon::abs((unsigned char)0))>::value, "");
-static_assert(std::is_same<signed   short,     decltype(hamon::abs((signed   short)0))>::value, "");
-static_assert(std::is_same<unsigned short,     decltype(hamon::abs((unsigned short)0))>::value, "");
-static_assert(std::is_same<signed   int,       decltype(hamon::abs((signed   int)0))>::value, "");
-static_assert(std::is_same<unsigned int,       decltype(hamon::abs((unsigned int)0))>::value, "");
-static_assert(std::is_same<signed   long,      decltype(hamon::abs((signed   long)0))>::value, "");
-static_assert(std::is_same<unsigned long,      decltype(hamon::abs((unsigned long)0))>::value, "");
-static_assert(std::is_same<signed   long long, decltype(hamon::abs((signed   long long)0))>::value, "");
-static_assert(std::is_same<unsigned long long, decltype(hamon::abs((unsigned long long)0))>::value, "");
+static_assert(hamon::is_same<float,        decltype(hamon::abs(0.0f))>::value, "");
+static_assert(hamon::is_same<double,       decltype(hamon::abs(0.0 ))>::value, "");
+static_assert(hamon::is_same<long double,  decltype(hamon::abs(0.0l))>::value, "");
+static_assert(hamon::is_same<signed   char,      decltype(hamon::abs((signed   char)0))>::value, "");
+static_assert(hamon::is_same<unsigned char,      decltype(hamon::abs((unsigned char)0))>::value, "");
+static_assert(hamon::is_same<signed   short,     decltype(hamon::abs((signed   short)0))>::value, "");
+static_assert(hamon::is_same<unsigned short,     decltype(hamon::abs((unsigned short)0))>::value, "");
+static_assert(hamon::is_same<signed   int,       decltype(hamon::abs((signed   int)0))>::value, "");
+static_assert(hamon::is_same<unsigned int,       decltype(hamon::abs((unsigned int)0))>::value, "");
+static_assert(hamon::is_same<signed   long,      decltype(hamon::abs((signed   long)0))>::value, "");
+static_assert(hamon::is_same<unsigned long,      decltype(hamon::abs((unsigned long)0))>::value, "");
+static_assert(hamon::is_same<signed   long long, decltype(hamon::abs((signed   long long)0))>::value, "");
+static_assert(hamon::is_same<unsigned long long, decltype(hamon::abs((unsigned long long)0))>::value, "");
 
 template <typename T>
 void AbsTestFloat(void)

@@ -49,6 +49,7 @@ using std::move_iterator;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <iterator>
@@ -108,11 +109,11 @@ using move_iter_concept =
 template <typename U, typename Iter>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 concept move_iter_conv_constructible =
-	(!std::is_same<U, Iter>::value) &&
+	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter>;
 #else
 using move_iter_conv_constructible = hamon::conjunction<
-	hamon::negation<std::is_same<U, Iter>>,
+	hamon::negation<hamon::is_same<U, Iter>>,
 	hamon::convertible_to<U const&, Iter>
 >;
 #endif
@@ -120,12 +121,12 @@ using move_iter_conv_constructible = hamon::conjunction<
 template <typename U, typename Iter>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 concept move_iter_conv_assignable =
-	(!std::is_same<U, Iter>::value) &&
+	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter> &&
 	hamon::assignable_from<Iter&, U const&>;
 #else
 using move_iter_conv_assignable = hamon::conjunction<
-	hamon::negation<std::is_same<U, Iter>>,
+	hamon::negation<hamon::is_same<U, Iter>>,
 	hamon::convertible_to<U const&, Iter>,
 	hamon::assignable_from<Iter&, U const&>
 >;

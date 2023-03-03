@@ -5,8 +5,8 @@
  */
 
 #include <hamon/utility/unreachable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 
 namespace hamon_utility_test
 {
@@ -37,7 +37,7 @@ GTEST_TEST(UtilityTest, UnreachableTest)
 	(void)y;
 
 //	static_assert(noexcept(hamon::unreachable()), "");
-	static_assert(std::is_same<decltype(hamon::unreachable()), void>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::unreachable()), void>::value, "");
 }
 
 }	// namespace unreachable_test

@@ -11,6 +11,7 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -463,7 +464,7 @@ TYPED_TEST(QuantityTest, MulRatioTest)
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D>(2) * std::ratio<100>();
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D, std::ratio<100>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, x.value());
@@ -471,7 +472,7 @@ TYPED_TEST(QuantityTest, MulRatioTest)
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D, std::ratio<2, 5>>(3) * std::ratio<7, 3>();
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D, std::ratio<14, 15>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, x.value());
@@ -479,7 +480,7 @@ TYPED_TEST(QuantityTest, MulRatioTest)
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D, std::ratio<3, 100>>(4) * std::ratio<5>();
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D, std::ratio<3, 20>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, x.value());
@@ -502,7 +503,7 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D1>(2) *
 			hamon::units::quantity<T, D1>(3);
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D2>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, x.value());
@@ -522,7 +523,7 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D1>(2) *
 			hamon::units::quantity<T, D2>(3);
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D3>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, x.value());
@@ -538,7 +539,7 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 		using Q2 = hamon::units::quantity<T, D1, std::ratio<1000>>;
 		using Q3 = hamon::units::quantity<T, D2, std::ratio<1000>>;
 		HAMON_CONSTEXPR_OR_CONST auto x = Q1(4) * Q2(5);
-		static_assert(std::is_same<const Q3, decltype(x)>::value, "");
+		static_assert(hamon::is_same<const Q3, decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(20, x.value());
 	}
 }
@@ -578,7 +579,7 @@ TYPED_TEST(QuantityTest, DivScalarTest)
 			>
 		>;
 		using Q2 = hamon::units::quantity<T, D2>;
-		static_assert(std::is_same<const Q2, decltype(x)>::value, "");
+		static_assert(hamon::is_same<const Q2, decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, x.value());
 	}
 }
@@ -594,7 +595,7 @@ TYPED_TEST(QuantityTest, DivQuantityTest)
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D1>(9) /
 			hamon::units::quantity<T, D1>(3);
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::dimensionless<T>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, x.value());
@@ -614,7 +615,7 @@ TYPED_TEST(QuantityTest, DivQuantityTest)
 		HAMON_CONSTEXPR_OR_CONST auto x =
 			hamon::units::quantity<T, D1>(10) /
 			hamon::units::quantity<T, D2>(2);
-		static_assert(std::is_same<
+		static_assert(hamon::is_same<
 			const hamon::units::quantity<T, D3>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, x.value());
@@ -625,7 +626,7 @@ TYPED_TEST(QuantityTest, DivQuantityTest)
 		using Q2 = hamon::units::quantity<T, D1, std::ratio<1000>>;
 		using Q3 = hamon::units::dimensionless<T, std::ratio<1, 1000>>;
 		HAMON_CONSTEXPR_OR_CONST auto x = Q1(12) / Q2(3);
-		static_assert(std::is_same<const Q3, decltype(x)>::value, "");
+		static_assert(hamon::is_same<const Q3, decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(4, (double)x.value(), 0.0000000001);
 	}
 }

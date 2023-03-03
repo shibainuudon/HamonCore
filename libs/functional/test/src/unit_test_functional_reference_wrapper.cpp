@@ -5,6 +5,7 @@
  */
 
 #include <hamon/functional/reference_wrapper.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -35,18 +36,18 @@ GTEST_TEST(ReferenceWrapperTest, DeductionTest)
 	{
 		int i = 0;
 		hamon::reference_wrapper rw0(i);
-		static_assert(std::is_same<decltype(rw0), hamon::reference_wrapper<int>>::value, "");
+		static_assert(hamon::is_same<decltype(rw0), hamon::reference_wrapper<int>>::value, "");
 
 		hamon::reference_wrapper rw1(rw0);
-		static_assert(std::is_same<decltype(rw1), hamon::reference_wrapper<int>>::value, "");
+		static_assert(hamon::is_same<decltype(rw1), hamon::reference_wrapper<int>>::value, "");
 	}
 	{
 		int const i = 0;
 		hamon::reference_wrapper rw0(i);
-		static_assert(std::is_same<decltype(rw0), hamon::reference_wrapper<int const>>::value, "");
+		static_assert(hamon::is_same<decltype(rw0), hamon::reference_wrapper<int const>>::value, "");
 
 		hamon::reference_wrapper rw1(rw0);
-		static_assert(std::is_same<decltype(rw1), hamon::reference_wrapper<int const>>::value, "");
+		static_assert(hamon::is_same<decltype(rw1), hamon::reference_wrapper<int const>>::value, "");
 	}
 #endif
 }

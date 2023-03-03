@@ -7,9 +7,9 @@
 #ifndef UNIT_TEST_TYPE_TRAITS_TYPE_TRAITS_TEST_UTILITY_HPP
 #define UNIT_TEST_TYPE_TRAITS_TYPE_TRAITS_TEST_UTILITY_HPP
 
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <cstdint>
 #include <cstddef>
 
@@ -370,8 +370,8 @@ protected:
 }	// namespace
 
 #define HAMON_TRANSFORM_TEST_SUB(t, name, from_suffix, to_suffix)	\
-	static_assert(std::is_same<t to_suffix, name<t from_suffix>::type>::value, "");	\
-	static_assert(std::is_same<t to_suffix, name##_t<t from_suffix>>::value, "")
+	static_assert(hamon::is_same<t to_suffix, name<t from_suffix>::type>::value, "");	\
+	static_assert(hamon::is_same<t to_suffix, name##_t<t from_suffix>>::value, "")
 
 #define HAMON_TRANSFORM_TEST(name, from, to)	\
 	HAMON_TRANSFORM_TEST_SUB(bool, name, from, to);	\

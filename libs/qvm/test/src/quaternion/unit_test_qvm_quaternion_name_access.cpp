@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -24,10 +24,10 @@ inline HAMON_CXX14_CONSTEXPR bool NameAccessTest()
 
 	{
 		quaternion q{1, 2, 3, 4};
-		static_assert(std::is_same<decltype(q.x()), T&>::value, "");
-		static_assert(std::is_same<decltype(q.y()), T&>::value, "");
-		static_assert(std::is_same<decltype(q.z()), T&>::value, "");
-		static_assert(std::is_same<decltype(q.w()), T&>::value, "");
+		static_assert(hamon::is_same<decltype(q.x()), T&>::value, "");
+		static_assert(hamon::is_same<decltype(q.y()), T&>::value, "");
+		static_assert(hamon::is_same<decltype(q.z()), T&>::value, "");
+		static_assert(hamon::is_same<decltype(q.w()), T&>::value, "");
 		VERIFY(q.x() == 1);
 		VERIFY(q.y() == 2);
 		VERIFY(q.z() == 3);
@@ -54,10 +54,10 @@ TYPED_TEST(QuaternionTest, NameAccessTest)
 
 	{
 		HAMON_CONSTEXPR quaternion const q{5, 6, 7, 8};
-		static_assert(std::is_same<decltype(q.x()), T const&>::value, "");
-		static_assert(std::is_same<decltype(q.y()), T const&>::value, "");
-		static_assert(std::is_same<decltype(q.z()), T const&>::value, "");
-		static_assert(std::is_same<decltype(q.w()), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(q.x()), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(q.y()), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(q.z()), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(q.w()), T const&>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(q.x(), 5);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(q.y(), 6);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(q.z(), 7);

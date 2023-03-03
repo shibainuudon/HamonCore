@@ -5,12 +5,12 @@
  */
 
 #include <hamon/ranges/range_difference_t.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 #include <cstddef>
 #include "ranges_test.hpp"
 
 #define HAMON_RANGES_RANGE_DIFFERENCE_T_TEST(C, I)	\
-	static_assert(std::is_same<hamon::ranges::range_difference_t<C>, I>::value, "")
+	static_assert(hamon::is_same<hamon::ranges::range_difference_t<C>, I>::value, "")
 
 HAMON_RANGES_RANGE_DIFFERENCE_T_TEST(char      [2],                  std::ptrdiff_t);
 HAMON_RANGES_RANGE_DIFFERENCE_T_TEST(char const[2],                  std::ptrdiff_t);

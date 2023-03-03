@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/make_unsigned.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "type_traits_test_utility.hpp"
@@ -15,8 +16,8 @@
 	static_assert(sizeof(hamon::make_unsigned<T>::type) == sizeof(T), "")
 
 #define HAMON_MAKE_UNSIGNED_TEST_2(T1, T2)	\
-	static_assert(std::is_same<hamon::make_unsigned<T1>::type, T2>::value, #T1 ", " #T2);	\
-	static_assert(std::is_same<hamon::make_unsigned_t<T1>,     T2>::value, #T1 ", " #T2)
+	static_assert(hamon::is_same<hamon::make_unsigned<T1>::type, T2>::value, #T1 ", " #T2);	\
+	static_assert(hamon::is_same<hamon::make_unsigned_t<T1>,     T2>::value, #T1 ", " #T2)
 
 #define HAMON_MAKE_UNSIGNED_TEST(T1, T2)	\
 	HAMON_MAKE_UNSIGNED_TEST_1(T1);	\

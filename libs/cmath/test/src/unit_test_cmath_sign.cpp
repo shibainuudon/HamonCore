@@ -7,8 +7,8 @@
 #include <hamon/cmath/sign.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -19,10 +19,10 @@ namespace hamon_cmath_test
 namespace sign_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::sign(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::sign(0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::sign(0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::sign(0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::sign(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::sign(0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::sign(0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::sign(0   ))>::value, "");
 
 template <typename T>
 void SignTestFloat(void)

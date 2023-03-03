@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/add_cv.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 HAMON_TRANSFORM_TEST(hamon::add_cv, /**/,           const volatile);
@@ -42,8 +42,8 @@ HAMON_TRANSFORM_TEST(hamon::add_cv,       volatile (&&)[2],       volatile (&&)[
 HAMON_TRANSFORM_TEST(hamon::add_cv, const volatile (&&)[2], const volatile (&&)[2]);
 
 #define HAMON_ADD_CV_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::add_cv_t<T1>, T2>::value, "");	\
-	static_assert(std::is_same<hamon::add_cv<T1>::type, T2>::value, "")
+	static_assert(hamon::is_same<hamon::add_cv_t<T1>, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::add_cv<T1>::type, T2>::value, "")
 
 HAMON_ADD_CV_TEST(               void, const volatile void);
 HAMON_ADD_CV_TEST(const          void, const volatile void);

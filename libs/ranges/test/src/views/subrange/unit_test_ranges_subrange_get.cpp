@@ -8,11 +8,12 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <iterator>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -34,10 +35,10 @@ private:
 		typename = decltype(hamon::ranges::get<I2>(std::declval<S2>())),
 		typename = decltype(hamon::get<I2>(std::declval<S2>()))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <std::size_t I2, typename S2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<I, S>(0));
@@ -158,14 +159,14 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		using Iter = hamon::ranges::iterator_t<ForwardRange>;
 		using Sent = hamon::ranges::sentinel_t<ForwardRange>;
 		using R = ForwardSizedSubrange;
-		static_assert(std::is_same<decltype(hamon::get<0>(sr)), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(sr)), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<R&&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<R&&>(sr))), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<const R&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<const R&>(sr))), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<const R&&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<const R&&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(sr)), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(sr)), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<R&&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<R&&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<const R&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<const R&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<const R&&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<const R&&>(sr))), Sent>::value, "");
 	}
 	return true;
 }
@@ -188,14 +189,14 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 		using Iter = hamon::ranges::iterator_t<ForwardRange>;
 		using Sent = hamon::ranges::sentinel_t<ForwardRange>;
 		using R = ForwardUnsizedSubrange;
-		static_assert(std::is_same<decltype(hamon::get<0>(sr)), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(sr)), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<R&&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<R&&>(sr))), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<const R&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<const R&>(sr))), Sent>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<0>(static_cast<const R&&>(sr))), Iter>::value, "");
-		static_assert(std::is_same<decltype(hamon::get<1>(static_cast<const R&&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(sr)), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(sr)), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<R&&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<R&&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<const R&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<const R&>(sr))), Sent>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<0>(static_cast<const R&&>(sr))), Iter>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::get<1>(static_cast<const R&&>(sr))), Sent>::value, "");
 	}
 	return true;
 }

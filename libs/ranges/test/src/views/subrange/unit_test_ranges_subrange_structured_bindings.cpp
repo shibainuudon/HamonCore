@@ -8,10 +8,10 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/as_const.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -37,29 +37,29 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(hamon::ranges::sized_range_t<decltype(r)>::value, "");
 	{
 		auto [first, last] = r;
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 	}
 	{
 		auto [first, last] = std::move(r);
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 	}
 	{
 		auto [first, last] = hamon::as_const(r);
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 	}
 	{
 		auto [first, last] = std::move(hamon::as_const(r));
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 	}
@@ -73,29 +73,29 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!hamon::ranges::sized_range_t<decltype(r)>::value, "");
 	{
 		auto [first, last] = r;
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);
 		VERIFY(last != a+4);
 	}
 	{
 		auto [first, last] = std::move(r);
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);
 		VERIFY(last != a+4);
 	}
 	{
 		auto [first, last] = hamon::as_const(r);
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);
 		VERIFY(last != a+4);
 	}
 	{
 		auto [first, last] = std::move(hamon::as_const(r));
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);
 		VERIFY(last != a+4);
 	}
@@ -108,8 +108,8 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	{
 		auto r = hamon::ranges::subrange(a, a+4);
 		auto&& [first, last] = r;
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 		VERIFY(r.begin() == a);
@@ -124,8 +124,8 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	{
 		auto const r = hamon::ranges::subrange(a, a+4);
 		auto&& [first, last] = r;
-		static_assert(std::is_same<decltype(first), int*>::value, "");
-		static_assert(std::is_same<decltype(last),  int*>::value, "");
+		static_assert(hamon::is_same<decltype(first), int*>::value, "");
+		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
 		VERIFY(last == a+4);
 		VERIFY(r.begin() == a);

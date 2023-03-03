@@ -6,11 +6,12 @@
 
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/functional/reference_wrapper.hpp>
 #include <gtest/gtest.h>
 #include <memory>
 #include <string>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 namespace hamon_type_traits_test
@@ -79,15 +80,15 @@ struct S
 };
 
 template <typename, typename = hamon::void_t<>>
-struct has_type : std::false_type {};
+struct has_type : hamon::false_type {};
  
 template <typename T>
-struct has_type<T, hamon::void_t<typename T::type>> : std::true_type {};
+struct has_type<T, hamon::void_t<typename T::type>> : hamon::true_type {};
 
 #define HAMON_INVOKE_RESULT_TEST(EXPECTED, ...)	\
 	static_assert(has_type<hamon::invoke_result<__VA_ARGS__>>::value, "");	\
-	static_assert(std::is_same<EXPECTED, hamon::invoke_result<__VA_ARGS__>::type>::value, "");	\
-	static_assert(std::is_same<EXPECTED, hamon::invoke_result_t<__VA_ARGS__>>::value, "")
+	static_assert(hamon::is_same<EXPECTED, hamon::invoke_result<__VA_ARGS__>::type>::value, "");	\
+	static_assert(hamon::is_same<EXPECTED, hamon::invoke_result_t<__VA_ARGS__>>::value, "")
 
 #define HAMON_INVOKE_RESULT_TEST_HAS_RESULT(...)	\
 	static_assert(has_type<hamon::invoke_result<__VA_ARGS__>>::value, "")

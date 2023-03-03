@@ -8,7 +8,7 @@
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 namespace hamon_type_traits_test
 {
@@ -17,10 +17,10 @@ namespace common_reference_test
 {
 
 template <typename T, typename = void>
-struct has_type : std::false_type { };
+struct has_type : hamon::false_type { };
 
 template <typename T>
-struct has_type<T, hamon::void_t<typename T::type>>: std::true_type { };
+struct has_type<T, hamon::void_t<typename T::type>>: hamon::true_type { };
 
 template <typename... T>
 constexpr bool
@@ -82,7 +82,7 @@ static_assert(!has_common_ref<void*, int, int>(), "");
 static_assert(!has_common_ref<int, int, void*>(), "");
 
 #define HAMON_COMMON_REFERENCE_TEST(T, ...)	\
-	static_assert(std::is_same<T, hamon::common_reference_t<__VA_ARGS__>>::value, "")
+	static_assert(hamon::is_same<T, hamon::common_reference_t<__VA_ARGS__>>::value, "")
 
 HAMON_COMMON_REFERENCE_TEST(int               , int               );
 HAMON_COMMON_REFERENCE_TEST(int const         , int const         );

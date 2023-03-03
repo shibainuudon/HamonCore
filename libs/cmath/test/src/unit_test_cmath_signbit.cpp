@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -17,10 +17,10 @@ namespace hamon_cmath_test
 namespace signbit_test
 {
 
-static_assert(std::is_same<bool, decltype(hamon::signbit(0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::signbit(0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::signbit(0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::signbit(0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::signbit(0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::signbit(0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::signbit(0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::signbit(0   ))>::value, "");
 
 template <typename T>
 void SignbitTestFloat(void)

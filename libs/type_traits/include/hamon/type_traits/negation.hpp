@@ -7,18 +7,23 @@
 #ifndef HAMON_TYPE_TRAITS_NEGATION_HPP
 #define HAMON_TYPE_TRAITS_NEGATION_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
 #include <type_traits>
+
+#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
 
 namespace hamon
 {
 
-#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
-
 using std::negation;
 
+}	// namespace hamon
+
 #else
+
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon
+{
 
 /**
  *	@brief		コンパイル時の論理否定
@@ -30,7 +35,14 @@ using std::negation;
 template <typename B>
 struct negation : public hamon::bool_constant<!B::value> {};
 
+}	// namespace hamon
+
 #endif
+
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

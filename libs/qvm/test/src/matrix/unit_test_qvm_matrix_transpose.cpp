@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -133,10 +133,10 @@ TYPED_TEST(MatrixTest, TransposeTest)
 	using matrix4x3 = hamon::qvm::matrix<T, 4, 3>;
 	using matrix4x4 = hamon::qvm::matrix<T, 4, 4>;
 
-	static_assert(std::is_same<decltype(transpose(matrix3x3{})), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(transpose(matrix3x4{})), matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(transpose(matrix4x3{})), matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(transpose(matrix4x4{})), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(transpose(matrix3x3{})), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(transpose(matrix3x4{})), matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(transpose(matrix4x3{})), matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(transpose(matrix4x4{})), matrix4x4>::value, "");
 
 	Matrix3x3TransposeTest<T>();
 	Matrix3x4TransposeTest<T>();

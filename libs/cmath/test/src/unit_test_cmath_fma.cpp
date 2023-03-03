@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/fma.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -17,72 +17,72 @@ namespace hamon_cmath_test
 namespace fma_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::fma(0.0f, 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0f, 0   , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0 , 0   , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0   , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fma(0   , 0   , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::fma(0   , 0   , 0   ))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::fmaf(0.0f, 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::fmal(0.0l, 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::fma(0.0f, 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0f, 0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0f, 0   , 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0 , 0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0.0 , 0   , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0.0l, 0   , 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fma(0   , 0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::fma(0   , 0   , 0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::fmaf(0.0f, 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::fmal(0.0l, 0.0l, 0.0l))>::value, "");
 
 template <typename T1, typename T2, typename T3>
 void FmaTestFloat(void)

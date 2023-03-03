@@ -8,9 +8,9 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/units/degree.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,9 +23,9 @@ TYPED_TEST(QuaternionFloatTest, RotationZTest)
 	using T = TypeParam;
 	using quaternion = hamon::qvm::quaternion<T>;
 
-	static_assert(std::is_same<decltype(quaternion::rotation_z(0.0f)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation_z(0.0)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation_z(0.0L)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation_z(0.0f)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation_z(0.0)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation_z(0.0L)), quaternion>::value, "");
 
 	HAMON_CXX11_CONSTEXPR double const error = 0.0000001;
 

@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -37,7 +37,7 @@ TYPED_TEST(MatrixTest, EqualTest)
 		};
 
 		HAMON_CONSTEXPR auto const m3 = hamon::qvm::equal(m1, m2);
-		static_assert(std::is_same<decltype(m3), matrix3x3b const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][2]);
@@ -64,7 +64,7 @@ TYPED_TEST(MatrixTest, EqualTest)
 		};
 
 		HAMON_CONSTEXPR auto const m3 = hamon::qvm::equal(m1, m2);
-		static_assert(std::is_same<decltype(m3), matrix3x3b const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, m3[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][2]);
@@ -91,7 +91,7 @@ TYPED_TEST(MatrixTest, EqualTest)
 		};
 
 		HAMON_CONSTEXPR auto const m3 = hamon::qvm::equal(m1, m2);
-		static_assert(std::is_same<decltype(m3), matrix3x3b const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][2]);
@@ -118,7 +118,7 @@ TYPED_TEST(MatrixTest, EqualTest)
 		};
 
 		HAMON_CONSTEXPR auto const m3 = hamon::qvm::equal(m1, m2);
-		static_assert(std::is_same<decltype(m3), matrix3x3b const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  m3[0][2]);

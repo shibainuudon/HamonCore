@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -25,18 +25,18 @@ TYPED_TEST(MatrixFloatTest, LerpTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, T{})),  matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, 0.0f)), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, 0.0L)), hamon::qvm::matrix<long double, 3, 3>>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, T{})),  matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, 0.0f)), matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, 0.0L)), hamon::qvm::matrix<long double, 3, 4>>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, T{})),  matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, 0.0f)), matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, 0.0L)), hamon::qvm::matrix<long double, 4, 3>>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, T{})),  matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, 0.0f)), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, 0.0L)), hamon::qvm::matrix<long double, 4, 4>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, T{})),  matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, 0.0f)), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x3{}, matrix3x3{}, 0.0L)), hamon::qvm::matrix<long double, 3, 3>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, T{})),  matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, 0.0f)), matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix3x4{}, matrix3x4{}, 0.0L)), hamon::qvm::matrix<long double, 3, 4>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, T{})),  matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, 0.0f)), matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x3{}, matrix4x3{}, 0.0L)), hamon::qvm::matrix<long double, 4, 3>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, T{})),  matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, 0.0f)), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(matrix4x4{}, matrix4x4{}, 0.0L)), hamon::qvm::matrix<long double, 4, 4>>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix3x3 const m1

@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -25,12 +25,12 @@ TYPED_TEST(MatrixTest, DiagonalTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_same<decltype(matrix2x2::diagonal(T{}, T{})), matrix2x2>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::diagonal(T{}, T{}, T{})), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::diagonal(T{}, T{}, T{}, T{})), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix2x2::diagonal(vector2{})), matrix2x2>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::diagonal(vector3{})), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::diagonal(vector4{})), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix2x2::diagonal(T{}, T{})), matrix2x2>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::diagonal(T{}, T{}, T{})), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::diagonal(T{}, T{}, T{}, T{})), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix2x2::diagonal(vector2{})), matrix2x2>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::diagonal(vector3{})), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::diagonal(vector4{})), matrix4x4>::value, "");
 
 	{
 		HAMON_CONSTEXPR auto const m = matrix2x2::diagonal(1, 2);

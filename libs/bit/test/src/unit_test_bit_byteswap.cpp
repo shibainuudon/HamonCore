@@ -5,10 +5,11 @@
  */
 
 #include <hamon/bit/byteswap.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 
@@ -22,10 +23,10 @@ struct has_byteswap_impl
 {
 private:
 	template <typename U, typename = decltype(hamon::byteswap(std::declval<U>()))>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));
@@ -75,7 +76,7 @@ static_assert(!has_byteswap<long double>::value, "");
 template <typename T>
 HAMON_CXX11_CONSTEXPR bool ByteswapTest(T x, T y)
 {
-	static_assert(std::is_same<decltype(hamon::byteswap(x)), decltype(x)>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::byteswap(x)), decltype(x)>::value, "");
 	static_assert(noexcept(hamon::byteswap(x)), "");
 	return hamon::byteswap(x) == y;
 }

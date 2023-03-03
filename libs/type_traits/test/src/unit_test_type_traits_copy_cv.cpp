@@ -5,12 +5,12 @@
  */
 
 #include <hamon/type_traits/copy_cv.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 
 #define HAMON_COPY_CV_TEST(T1, T2, T3)	\
-	static_assert(std::is_same<hamon::copy_cv<T1, T2>::type, T3>::value, "");	\
-	static_assert(std::is_same<hamon::copy_cv_t<T1, T2>,     T3>::value, "")
+	static_assert(hamon::is_same<hamon::copy_cv<T1, T2>::type, T3>::value, "");	\
+	static_assert(hamon::is_same<hamon::copy_cv_t<T1, T2>,     T3>::value, "")
 
 // 基本的なテスト
 HAMON_COPY_CV_TEST(               int,                void,                int);

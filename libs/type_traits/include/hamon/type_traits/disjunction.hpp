@@ -7,17 +7,24 @@
 #ifndef HAMON_TYPE_TRAITS_DISJUNCTION_HPP
 #define HAMON_TYPE_TRAITS_DISJUNCTION_HPP
 
-#include <hamon/config.hpp>
 #include <type_traits>
+
+#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
 
 namespace hamon
 {
 
-#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
-
 using std::disjunction;
 
+}	// namespace hamon
+
 #else
+
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/conditional.hpp>
+
+namespace hamon
+{
 
 /**
  *	@brief		コンパイル時の論理OR
@@ -49,7 +56,7 @@ struct disjunction_impl;
 
 template <>
 struct disjunction_impl<>
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <typename B0>
@@ -59,7 +66,7 @@ struct disjunction_impl<B0>
 
 template <typename B0, typename... Bn>
 struct disjunction_impl<B0, Bn...>
-	: public std::conditional<
+	: public hamon::conditional<
 		static_cast<bool>(B0::value),
 		B0,
 		disjunction_impl<Bn...>
@@ -73,7 +80,14 @@ struct disjunction
 	: public detail::disjunction_impl<B...>
 {};
 
+}	// namespace hamon
+
 #endif
+
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

@@ -5,7 +5,7 @@
  */
 
 #include <hamon/iterator/iter_value_t.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -32,36 +32,36 @@ using T = int;
 using vec_iterator = std::vector<T>::iterator;
 using vec_const_iterator = std::vector<T>::const_iterator;
 
-static_assert(std::is_same<hamon::iter_value_t<T               *          >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const         *          >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T       volatile*          >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const volatile*          >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T               * const    >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const         * const    >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T       volatile* const    >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const volatile* const    >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T               * volatile >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const         * volatile >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T       volatile* volatile >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const volatile* volatile >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T[3]                       >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const[3]                 >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T[]                        >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<T const[]                  >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<vec_iterator               >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<vec_iterator const         >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<vec_const_iterator         >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<vec_const_iterator const   >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<std::vector<T>             >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<std::vector<T> const       >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_value<T      >        >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_value<T const>        >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_value<T      > const  >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_value<T const> const  >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_element<T      >      >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_element<T const>      >, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_element<T      > const>, T>::value, "");
-static_assert(std::is_same<hamon::iter_value_t<have_element<T const> const>, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T               *          >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const         *          >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T       volatile*          >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const volatile*          >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T               * const    >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const         * const    >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T       volatile* const    >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const volatile* const    >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T               * volatile >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const         * volatile >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T       volatile* volatile >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const volatile* volatile >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T[3]                       >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const[3]                 >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T[]                        >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<T const[]                  >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<vec_iterator               >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<vec_iterator const         >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<vec_const_iterator         >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<vec_const_iterator const   >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<std::vector<T>             >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<std::vector<T> const       >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_value<T      >        >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_value<T const>        >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_value<T      > const  >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_value<T const> const  >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_element<T      >      >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_element<T const>      >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_element<T      > const>, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<have_element<T const> const>, T>::value, "");
 
 }	// namespace iter_value_t_test
 

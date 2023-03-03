@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/add_pointer.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 HAMON_TRANSFORM_TEST(hamon::add_pointer, /**/,                          *);
@@ -46,8 +46,8 @@ HAMON_TRANSFORM_TEST(hamon::add_pointer,       volatile (&&)[2],       volatile 
 HAMON_TRANSFORM_TEST(hamon::add_pointer, const volatile (&&)[2], const volatile (*)[2]);
 
 #define HAMON_ADD_POINTER_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::add_pointer_t<T1>, T2>::value, "");	\
-	static_assert(std::is_same<hamon::add_pointer<T1>::type, T2>::value, "")
+	static_assert(hamon::is_same<hamon::add_pointer_t<T1>, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::add_pointer<T1>::type, T2>::value, "")
 
 HAMON_ADD_POINTER_TEST(               void,                void*);
 HAMON_ADD_POINTER_TEST(const          void, const          void*);

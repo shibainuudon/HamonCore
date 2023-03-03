@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -41,7 +41,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x3MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix3x3>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix3x3>::value, "");
 		VERIFY(vector3(-80, 256, 132) == m[0]);
 		VERIFY(vector3(-72, 592, 316) == m[1]);
 		VERIFY(vector3(-64, 928, 500) == m[2]);
@@ -63,7 +63,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x3MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix3x3i>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix3x3i>::value, "");
 		VERIFY(vector3(-80, 256, 132) == m[0]);
 		VERIFY(vector3(-72, 592, 316) == m[1]);
 		VERIFY(vector3(-64, 928, 500) == m[2]);
@@ -99,7 +99,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x4MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix3x4>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix3x4>::value, "");
 		VERIFY(vector4(248,  592,  476, -24) == m[0]);
 		VERIFY(vector4(584, 1264, 1004, 200) == m[1]);
 		VERIFY(vector4(920, 1936, 1532, 424) == m[2]);
@@ -122,7 +122,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x4MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix3x4i>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix3x4i>::value, "");
 		VERIFY(vector4(248,  592,  476, -24) == m[0]);
 		VERIFY(vector4(584, 1264, 1004, 200) == m[1]);
 		VERIFY(vector4(920, 1936, 1532, 424) == m[2]);
@@ -158,7 +158,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x3MultipliesTest()
 		};
 
 		auto t = (m1 *= m2);
-		static_assert(std::is_same<decltype(t), matrix4x3>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix4x3>::value, "");
 		VERIFY(vector3( -80,  256, 132) == m1[0]);
 		VERIFY(vector3( -72,  592, 316) == m1[1]);
 		VERIFY(vector3( -64,  928, 500) == m1[2]);
@@ -182,7 +182,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x3MultipliesTest()
 		};
 
 		auto t = (m1 *= m2);
-		static_assert(std::is_same<decltype(t), matrix4x3i>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix4x3i>::value, "");
 		VERIFY(vector3( -80,  256, 132) == m1[0]);
 		VERIFY(vector3( -72,  592, 316) == m1[1]);
 		VERIFY(vector3( -64,  928, 500) == m1[2]);
@@ -219,7 +219,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x4MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix4x4>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix4x4>::value, "");
 		VERIFY(vector4( 248,  592,  476, -24) == m[0]);
 		VERIFY(vector4( 584, 1264, 1004, 200) == m[1]);
 		VERIFY(vector4( 920, 1936, 1532, 424) == m[2]);
@@ -244,7 +244,7 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x4MultipliesTest()
 		};
 
 		auto t = (m *= m1);
-		static_assert(std::is_same<decltype(t), matrix4x4i>::value, "");
+		static_assert(hamon::is_same<decltype(t), matrix4x4i>::value, "");
 		VERIFY(vector4( 248,  592,  476, -24) == m[0]);
 		VERIFY(vector4( 584, 1264, 1004, 200) == m[1]);
 		VERIFY(vector4( 920, 1936, 1532, 424) == m[2]);
@@ -273,61 +273,61 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_same<decltype(matrix3x3{}  * matrix3x3{}),  matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3{}  * matrix3x3i{}), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3i{} * matrix3x3i{}), matrix3x3i>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3i{} * matrix3x3f{}), matrix3x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3f{} * matrix3x3i{}), matrix3x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3f{} * matrix3x3f{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3{}  * matrix3x3{}),  matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3{}  * matrix3x3i{}), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3i{} * matrix3x3i{}), matrix3x3i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3i{} * matrix3x3f{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3f{} * matrix3x3i{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3f{} * matrix3x3f{}), matrix3x3f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix3x3{}  * matrix3x4{}),  matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3{}  * matrix3x4i{}), matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3i{} * matrix3x4i{}), matrix3x4i>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3i{} * matrix3x4f{}), matrix3x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3f{} * matrix3x4i{}), matrix3x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3f{} * matrix3x4f{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3{}  * matrix3x4{}),  matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3{}  * matrix3x4i{}), matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3i{} * matrix3x4i{}), matrix3x4i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3i{} * matrix3x4f{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3f{} * matrix3x4i{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3f{} * matrix3x4f{}), matrix3x4f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix3x4{}  * matrix4x3{}),  matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4{}  * matrix4x3i{}), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4i{} * matrix4x3i{}), matrix3x3i>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4i{} * matrix4x3f{}), matrix3x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4f{} * matrix4x3i{}), matrix3x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4f{} * matrix4x3f{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4{}  * matrix4x3{}),  matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4{}  * matrix4x3i{}), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4i{} * matrix4x3i{}), matrix3x3i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4i{} * matrix4x3f{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4f{} * matrix4x3i{}), matrix3x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4f{} * matrix4x3f{}), matrix3x3f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix3x4{}  * matrix4x4{}),  matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4{}  * matrix4x4i{}), matrix3x4>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4i{} * matrix4x4i{}), matrix3x4i>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4i{} * matrix4x4f{}), matrix3x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4f{} * matrix4x4i{}), matrix3x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix3x4f{} * matrix4x4f{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4{}  * matrix4x4{}),  matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4{}  * matrix4x4i{}), matrix3x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4i{} * matrix4x4i{}), matrix3x4i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4i{} * matrix4x4f{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4f{} * matrix4x4i{}), matrix3x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x4f{} * matrix4x4f{}), matrix3x4f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix4x3{}  * matrix3x3{}),  matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3{}  * matrix3x3i{}), matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3i{} * matrix3x3i{}), matrix4x3i>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3i{} * matrix3x3f{}), matrix4x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3f{} * matrix3x3i{}), matrix4x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3f{} * matrix3x3f{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3{}  * matrix3x3{}),  matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3{}  * matrix3x3i{}), matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3i{} * matrix3x3i{}), matrix4x3i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3i{} * matrix3x3f{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3f{} * matrix3x3i{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3f{} * matrix3x3f{}), matrix4x3f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix4x3{}  * matrix3x4{}),  matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3{}  * matrix3x4i{}), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3i{} * matrix3x4i{}), matrix4x4i>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3i{} * matrix3x4f{}), matrix4x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3f{} * matrix3x4i{}), matrix4x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x3f{} * matrix3x4f{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3{}  * matrix3x4{}),  matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3{}  * matrix3x4i{}), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3i{} * matrix3x4i{}), matrix4x4i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3i{} * matrix3x4f{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3f{} * matrix3x4i{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x3f{} * matrix3x4f{}), matrix4x4f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix4x4{}  * matrix4x3{}),  matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4{}  * matrix4x3i{}), matrix4x3>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4i{} * matrix4x3i{}), matrix4x3i>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4i{} * matrix4x3f{}), matrix4x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4f{} * matrix4x3i{}), matrix4x3f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4f{} * matrix4x3f{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4{}  * matrix4x3{}),  matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4{}  * matrix4x3i{}), matrix4x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4i{} * matrix4x3i{}), matrix4x3i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4i{} * matrix4x3f{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4f{} * matrix4x3i{}), matrix4x3f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4f{} * matrix4x3f{}), matrix4x3f>::value, "");
 
-	static_assert(std::is_same<decltype(matrix4x4{}  * matrix4x4{}),  matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4{}  * matrix4x4i{}), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4i{} * matrix4x4i{}), matrix4x4i>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4i{} * matrix4x4f{}), matrix4x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4f{} * matrix4x4i{}), matrix4x4f>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4f{} * matrix4x4f{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4{}  * matrix4x4{}),  matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4{}  * matrix4x4i{}), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4i{} * matrix4x4i{}), matrix4x4i>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4i{} * matrix4x4f{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4f{} * matrix4x4i{}), matrix4x4f>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4f{} * matrix4x4f{}), matrix4x4f>::value, "");
 
 	// matrix3x3 * matrix3x3 -> matrix3x3
 	{
@@ -345,13 +345,13 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(-33, -22, 143), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(139, 166, -71), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(149, 170, -95), t1[2]);
 
 		HAMON_CONSTEXPR auto const t2 = m2 * m1;
-		static_assert(std::is_same<decltype(t2), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t2), matrix3x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 43, 29,  56), t2[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(155, 81, 128), t2[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(223,  1, -86), t2[2]);
@@ -371,13 +371,13 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(-33, -22, 143), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(139, 166, -71), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(149, 170, -95), t1[2]);
 
 		HAMON_CONSTEXPR auto const t2 = m2 * m1;
-		static_assert(std::is_same<decltype(t2), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t2), matrix3x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 43, 29,  56), t2[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(155, 81, 128), t2[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(223,  1, -86), t2[2]);
@@ -399,7 +399,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x4 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(146, 152, 158, 164), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(398, 416, 434, 452), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(650, 680, 710, 740), t1[2]);
@@ -419,7 +419,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x4 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(146, 152, 158, 164), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(398, 416, 434, 452), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(650, 680, 710, 740), t1[2]);
@@ -442,7 +442,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x4 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 370, 420, 470, 520), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 650, 740, 830, 920), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 930,1060,1190,1320), t1[2]);
@@ -463,7 +463,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x4 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 370, 420, 470, 520), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 650, 740, 830, 920), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4( 930,1060,1190,1320), t1[2]);
@@ -487,13 +487,13 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix3x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 310, 320, 330), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 726, 752, 778), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(1142,1184,1226), t1[2]);
 
 		HAMON_CONSTEXPR auto const t2 = m2 * m1;
-		static_assert(std::is_same<decltype(t2), matrix4x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(t2), matrix4x4 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(188, 224, 260, 296), t2[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(338, 404, 470, 536), t2[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector4(488, 584, 680, 776), t2[2]);
@@ -517,7 +517,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix4x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( -33, -22, 143), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 139, 166, -71), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 149, 170, -95), t1[2]);
@@ -539,7 +539,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix4x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( -33, -22, 143), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 139, 166, -71), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 149, 170, -95), t1[2]);
@@ -650,7 +650,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix4x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 310, 320, 330), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 726, 752, 778), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(1142,1184,1226), t1[2]);
@@ -673,7 +673,7 @@ TYPED_TEST(MatrixTest, MultipliesTest)
 		};
 
 		HAMON_CONSTEXPR auto const t1 = m1 * m2;
-		static_assert(std::is_same<decltype(t1), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(t1), matrix4x3 const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 310, 320, 330), t1[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3( 726, 752, 778), t1[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(vector3(1142,1184,1226), t1[2]);

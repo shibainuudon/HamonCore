@@ -6,10 +6,10 @@
 
 #include <hamon/cmath/isnormal.hpp>
 #include <hamon/cmath/exp.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <limits>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -21,10 +21,10 @@ namespace hamon_cmath_test
 namespace isnormal_test
 {
 
-static_assert(std::is_same<bool, decltype(hamon::isnormal(0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::isnormal(0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::isnormal(0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::isnormal(0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::isnormal(0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::isnormal(0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::isnormal(0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::isnormal(0   ))>::value, "");
 
 template <typename T>
 void IsNormalTestFloat(void)

@@ -7,8 +7,8 @@
 #include <hamon/cmath/cbrt.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -18,12 +18,12 @@ namespace hamon_cmath_test
 namespace cbrt_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::cbrt(0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::cbrtf(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::cbrt(0.0 ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::cbrt(0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::cbrt(0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::cbrtl(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::cbrt(0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::cbrtf(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::cbrt(0.0 ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::cbrt(0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::cbrt(0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::cbrtl(0.0l))>::value, "");
 
 template <typename T>
 double cbrt_error();

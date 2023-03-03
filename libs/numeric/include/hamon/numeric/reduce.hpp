@@ -39,7 +39,7 @@ namespace detail
 
 template <typename InputIterator, typename T, typename BinaryOperation>
 inline HAMON_CXX14_CONSTEXPR T
-reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, std::false_type)
+reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, hamon::false_type)
 {
 	for (; first != last; ++first)
 	{
@@ -51,7 +51,7 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
 
 template <typename InputIterator, typename T, typename BinaryOperation>
 inline HAMON_CXX14_CONSTEXPR T
-reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, std::true_type)
+reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, hamon::true_type)
 {
 	while ((last - first) >= 4)
 	{
@@ -67,7 +67,7 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
 		std::move(last),
 		std::move(init),
 		std::move(binary_op),
-		std::false_type{});
+		hamon::false_type{});
 }
 
 }	// namespace detail

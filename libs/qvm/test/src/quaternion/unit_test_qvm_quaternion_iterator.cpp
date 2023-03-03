@@ -10,9 +10,10 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -28,20 +29,20 @@ TYPED_TEST(QuaternionTest, IteratorTest)
 	static_assert(hamon::contiguous_iterator_t<typename quaternion::iterator>::value, "");
 	static_assert(hamon::contiguous_iterator_t<typename quaternion::const_iterator>::value, "");
 
-	static_assert(std::is_same<T, hamon::iter_value_t<typename quaternion::iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename quaternion::const_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::const_iterator>>::value, "");
 
-	static_assert(std::is_same<T      &, hamon::iter_reference_t<typename quaternion::iterator>>::value, "");
-	static_assert(std::is_same<T const&, hamon::iter_reference_t<typename quaternion::const_iterator>>::value, "");
+	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename quaternion::iterator>>::value, "");
+	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename quaternion::const_iterator>>::value, "");
 
-	static_assert(std::is_same<typename quaternion::iterator,       decltype(std::declval<quaternion>().begin())>::value, "");
-	static_assert(std::is_same<typename quaternion::iterator,       decltype(std::declval<quaternion>().end())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion>().cbegin())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion>().cend())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().begin())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().end())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().cbegin())>::value, "");
-	static_assert(std::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().cend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::iterator,       decltype(std::declval<quaternion>().begin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::iterator,       decltype(std::declval<quaternion>().end())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion>().cend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().begin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().end())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_iterator, decltype(std::declval<quaternion const>().cend())>::value, "");
 
 	// const
 	{

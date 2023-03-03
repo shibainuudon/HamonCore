@@ -7,8 +7,8 @@
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -18,12 +18,12 @@ namespace hamon_cmath_test
 namespace floor_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::floor(0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::floorf(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::floor(0.0 ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::floor(0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::floor(0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::floorl(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::floor(0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::floorf(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::floor(0.0 ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::floor(0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::floor(0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::floorl(0.0l))>::value, "");
 
 template <typename T>
 void FloorTestFloat(void)

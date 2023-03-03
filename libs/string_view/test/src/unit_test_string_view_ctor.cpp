@@ -5,9 +5,9 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "string_view_test_helper.hpp"
 
@@ -130,16 +130,16 @@ TYPED_TEST(StringViewTest, CtorDeductionTest)
 	using Helper = StringViewTestHelper<TypeParam>;
 	{
 		hamon::basic_string_view sv{Helper::abcd()};
-		static_assert(std::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
+		static_assert(hamon::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
 	}
 	{
 		hamon::basic_string_view sv{Helper::abcd(), 3};
-		static_assert(std::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
+		static_assert(hamon::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
 	}
 	{
 		auto str = Helper::abcd();
 		hamon::basic_string_view sv{str, str + 2};
-		static_assert(std::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
+		static_assert(hamon::is_same<decltype(sv), hamon::basic_string_view<TypeParam>>::value, "");
 	}
 #endif
 }

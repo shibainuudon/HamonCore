@@ -315,7 +315,7 @@ public:
 	HAMON_CXX14_CONSTEXPR subrange&
 	advance(hamon::iter_difference_t<It> n)
 	{
-		HAMON_ASSERT(hamon::bidirectional_iterator_t<It>::value || n >= 0);
+		HAMON_ASSERT(hamon::bidirectional_iterator_t<It>{} || n >= 0);
 		
 		if (n < 0)
 		{

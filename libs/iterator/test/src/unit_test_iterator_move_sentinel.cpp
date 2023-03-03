@@ -14,6 +14,8 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <utility>
@@ -48,10 +50,10 @@ private:
 	template <typename U,
 		typename = hamon::move_sentinel<U>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));
@@ -77,11 +79,11 @@ static_assert(!HasMoveSentinel<NotSemiregular>::value, "");
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 // CTAD test
-static_assert(std::is_same<
+static_assert(hamon::is_same<
 	decltype(hamon::move_sentinel(hamon::default_sentinel_t{})),
 	hamon::move_sentinel<hamon::default_sentinel_t>>::value, "");
 
-static_assert(std::is_same<
+static_assert(hamon::is_same<
 	decltype(hamon::move_sentinel(test_sentinel<int*>{})),
 	hamon::move_sentinel<test_sentinel<int*>>>::value, "");
 #endif
@@ -493,10 +495,10 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 		VERIFY(cm.base() == 42);
 		VERIFY(std::move(m).base() == 42);
 		VERIFY(std::move(cm).base() == 42);
-		static_assert(std::is_same<decltype(m.base()), int>::value, "");
-		static_assert(std::is_same<decltype(cm.base()), int>::value, "");
-		static_assert(std::is_same<decltype(std::move(m).base()), int>::value, "");
-		static_assert(std::is_same<decltype(std::move(cm).base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(m.base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(cm.base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(std::move(m).base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(std::move(cm).base()), int>::value, "");
 	}
 
 	// The sentinel type is a pointer.
@@ -508,10 +510,10 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 		VERIFY(cm.base() == a);
 		VERIFY(std::move(m).base() == a);
 		VERIFY(std::move(cm).base() == a);
-		static_assert(std::is_same<decltype(m.base()), const int*>::value, "");
-		static_assert(std::is_same<decltype(cm.base()), const int*>::value, "");
-		static_assert(std::is_same<decltype(std::move(m).base()), const int*>::value, "");
-		static_assert(std::is_same<decltype(std::move(cm).base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(m.base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(cm.base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(std::move(m).base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(std::move(cm).base()), const int*>::value, "");
 	}
 	return true;
 }
@@ -641,7 +643,7 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorTest()
 	const auto it = hamon::move_iterator<It>(It{s});
 	const auto sent1 = hamon::move_sentinel<test_sentinel<It>>(test_sentinel<It>{It{s}});
 	const auto sent2 = hamon::move_sentinel<test_sentinel<It>>(test_sentinel<It>{It{s + 1}});
-	static_assert(std::is_same<decltype(it == sent1), bool>::value ,"");
+	static_assert(hamon::is_same<decltype(it == sent1), bool>::value ,"");
 	VERIFY( (it == sent1));
 	VERIFY(!(it != sent1));
 	VERIFY(!(it == sent2));
@@ -708,8 +710,8 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusTest()
 	hamon::move_sentinel<Sent> s1{Sent{Iter{a+1}}};
 	hamon::move_sentinel<Sent> s2{Sent{Iter{a+2}}};
 
-	static_assert(std::is_same<decltype(i0 - s0), hamon::iter_difference_t<Iter>>::value, "");
-	static_assert(std::is_same<decltype(s0 - i0), hamon::iter_difference_t<Iter>>::value, "");
+	static_assert(hamon::is_same<decltype(i0 - s0), hamon::iter_difference_t<Iter>>::value, "");
+	static_assert(hamon::is_same<decltype(s0 - i0), hamon::iter_difference_t<Iter>>::value, "");
 
 	VERIFY(i0 - s0 ==  0);
 	VERIFY(i0 - s1 == -1);

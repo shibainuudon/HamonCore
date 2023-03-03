@@ -8,8 +8,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -20,24 +20,24 @@ namespace hamon_cmath_test
 namespace copysign_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::copysign(0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::copysignf(0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysignl(0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0   , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::copysign(0   , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::copysign(0   , 0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::copysign(0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::copysignf(0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysignl(0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::copysign(0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::copysign(0   , 0   ))>::value, "");
 
 template <typename T>
 void CopysignTestFloat(void)

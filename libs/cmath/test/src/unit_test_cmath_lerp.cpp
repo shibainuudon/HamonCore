@@ -7,9 +7,9 @@
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/isnan.hpp>
 //#include <hamon/cmath/isfinite.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -19,73 +19,73 @@ namespace hamon_cmath_test
 namespace lerp_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::lerp(0.0f, 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0,  0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0f, 0,    0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::lerp(0.0f, 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0,  0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0.0,  0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0f, 0,    0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0f, 0,    0   ))>::value, "");
 
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0,  0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0,    0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0,    0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0,  0,    0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0.0,  0,    0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0,  0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0.0,  0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0,    0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0,    0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0,  0,    0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0.0,  0,    0   ))>::value, "");
 
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0,  0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0.0l, 0,    0   ))>::value, "");
 
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0,  0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0,  0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0,  0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0.0,  0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0,    0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0,    0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::lerp(0,    0,    0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::lerp(0,    0,    0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0,  0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0,  0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0,  0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0.0,  0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0,    0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0,    0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::lerp(0,    0,    0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0,    0   ))>::value, "");
 
 template <typename T>
 void LerpTest(void)

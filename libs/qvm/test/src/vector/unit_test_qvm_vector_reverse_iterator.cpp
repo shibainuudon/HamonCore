@@ -10,9 +10,10 @@
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -41,28 +42,28 @@ TYPED_TEST(VectorTest, ReverseIteratorTest)
 	static_assert(hamon::random_access_iterator_t<typename vector4::reverse_iterator>::value, "");
 	static_assert(hamon::random_access_iterator_t<typename vector4::const_reverse_iterator>::value, "");
 
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector2::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector2::const_reverse_iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector3::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector3::const_reverse_iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector4::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T, hamon::iter_value_t<typename vector4::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector3::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector3::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector4::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector4::const_reverse_iterator>>::value, "");
 
-	static_assert(std::is_same<T      &, hamon::iter_reference_t<typename vector2::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T const&, hamon::iter_reference_t<typename vector2::const_reverse_iterator>>::value, "");
-	static_assert(std::is_same<T      &, hamon::iter_reference_t<typename vector3::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T const&, hamon::iter_reference_t<typename vector3::const_reverse_iterator>>::value, "");
-	static_assert(std::is_same<T      &, hamon::iter_reference_t<typename vector4::reverse_iterator>>::value, "");
-	static_assert(std::is_same<T const&, hamon::iter_reference_t<typename vector4::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename vector2::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename vector2::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename vector3::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename vector3::const_reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename vector4::reverse_iterator>>::value, "");
+	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename vector4::const_reverse_iterator>>::value, "");
 
-	static_assert(std::is_same<typename vector2::reverse_iterator,       decltype(std::declval<vector2>().rbegin())>::value, "");
-	static_assert(std::is_same<typename vector2::reverse_iterator,       decltype(std::declval<vector2>().rend())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2>().crbegin())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2>().crend())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().rbegin())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().rend())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().crbegin())>::value, "");
-	static_assert(std::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().crend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::reverse_iterator,       decltype(std::declval<vector2>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::reverse_iterator,       decltype(std::declval<vector2>().rend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2>().crend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().rend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_reverse_iterator, decltype(std::declval<vector2 const>().crend())>::value, "");
 
 	{
 		HAMON_CONSTEXPR vector2 v1 { 10, 20};

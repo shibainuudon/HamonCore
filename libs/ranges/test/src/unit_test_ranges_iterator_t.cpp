@@ -5,11 +5,11 @@
  */
 
 #include <hamon/ranges/iterator_t.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "ranges_test.hpp"
-#include <type_traits>
 
 #define HAMON_RANGES_ITERATOR_T_TEST(C, I)	\
-	static_assert(std::is_same<hamon::ranges::iterator_t<C>, I>::value, "")
+	static_assert(hamon::is_same<hamon::ranges::iterator_t<C>, I>::value, "")
 
 HAMON_RANGES_ITERATOR_T_TEST(char      [2],                  char      *);
 HAMON_RANGES_ITERATOR_T_TEST(char const[2],                  char const*);

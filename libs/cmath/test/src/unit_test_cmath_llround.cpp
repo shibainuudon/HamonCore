@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/llround.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -16,12 +16,12 @@ namespace hamon_cmath_test
 namespace llround_test
 {
 
-static_assert(std::is_same<long long, decltype(hamon::llround(0.0f))>::value, "");
-static_assert(std::is_same<long long, decltype(hamon::llroundf(0.0f))>::value, "");
-static_assert(std::is_same<long long, decltype(hamon::llround(0.0 ))>::value, "");
-static_assert(std::is_same<long long, decltype(hamon::llround(0.0l))>::value, "");
-static_assert(std::is_same<long long, decltype(hamon::llroundl(0.0l))>::value, "");
-static_assert(std::is_same<long long, decltype(hamon::llround(0   ))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llround(0.0f))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llroundf(0.0f))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llround(0.0 ))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llround(0.0l))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llroundl(0.0l))>::value, "");
+static_assert(hamon::is_same<long long, decltype(hamon::llround(0   ))>::value, "");
 
 template <typename T>
 void LLRoundTestFloat(void)

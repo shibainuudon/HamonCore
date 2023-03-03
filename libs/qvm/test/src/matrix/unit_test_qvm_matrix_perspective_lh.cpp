@@ -8,9 +8,9 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/units/degree.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,7 +23,7 @@ TYPED_TEST(MatrixFloatTest, PerspectiveLHTest)
 	using T = TypeParam;
 	using matrix4x4 = hamon::qvm::matrix<T, 4, 4>;
 
-	static_assert(std::is_same<
+	static_assert(hamon::is_same<
 		decltype(matrix4x4::perspective_lh(T{}, T{}, T{}, T{})),
 		matrix4x4
 	>::value, "");

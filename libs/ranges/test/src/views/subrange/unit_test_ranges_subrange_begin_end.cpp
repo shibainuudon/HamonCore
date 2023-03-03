@@ -7,12 +7,13 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/as_const.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <iterator>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -33,10 +34,10 @@ private:
 	template <typename S2,
 		typename = decltype(std::declval<S2>().begin())
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename S2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<S>(0));
@@ -134,7 +135,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(last != a + 0);
 		VERIFY(last != a + 1);
 		VERIFY(last != a + 2);
-		static_assert(std::is_same<decltype(last), hamon::unreachable_sentinel_t>::value, "");
+		static_assert(hamon::is_same<decltype(last), hamon::unreachable_sentinel_t>::value, "");
 
 		static_assert( HasBegin<decltype(sr)>::value, "");
 		static_assert( HasBegin<decltype(sr) &>::value, "");

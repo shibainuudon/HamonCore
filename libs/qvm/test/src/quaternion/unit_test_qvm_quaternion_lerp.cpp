@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -21,9 +21,9 @@ TYPED_TEST(QuaternionFloatTest, LerpTest)
 	using T = TypeParam;
 	using quaternion = hamon::qvm::quaternion<T>;
 
-	static_assert(std::is_same<decltype(lerp(quaternion{}, quaternion{}, T{})),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(lerp(quaternion{}, quaternion{}, 0.0f)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(lerp(quaternion{}, quaternion{}, 0.0L)), hamon::qvm::quaternion<long double>>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(quaternion{}, quaternion{}, T{})),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(quaternion{}, quaternion{}, 0.0f)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(lerp(quaternion{}, quaternion{}, 0.0L)), hamon::qvm::quaternion<long double>>::value, "");
 
 	{
 		HAMON_CONSTEXPR quaternion q1 {  0,  0,  0,  0 };

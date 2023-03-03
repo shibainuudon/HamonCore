@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/common/equal.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -30,7 +30,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector2 const v1{1, 2};
 		HAMON_CONSTEXPR vector2 const v2{1, 2};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector2b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector2b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 	}
@@ -38,7 +38,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector2 const v1{1, 2};
 		HAMON_CONSTEXPR vector2 const v2{0, 2};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector2b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector2b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 	}
@@ -46,7 +46,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector2 const v1{1, 2};
 		HAMON_CONSTEXPR vector2 const v2{1, 3};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector2b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector2b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 	}
@@ -54,7 +54,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector2 const v1{1, 2};
 		HAMON_CONSTEXPR vector2 const v2{2, 1};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector2b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector2b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 	}
@@ -62,7 +62,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector3 const v1{1, 2, 3};
 		HAMON_CONSTEXPR vector3 const v2{1, 2, 3};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector3b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[2]);
@@ -71,7 +71,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector3 const v1{0, 2, 3};
 		HAMON_CONSTEXPR vector3 const v2{1, 2, 3};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector3b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[2]);
@@ -80,7 +80,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector3 const v1{1, 2, 3};
 		HAMON_CONSTEXPR vector3 const v2{1, 3, 3};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector3b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[2]);
@@ -89,7 +89,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector3 const v1{1, 2, 3};
 		HAMON_CONSTEXPR vector3 const v2{1, 2,-3};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector3b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[2]);
@@ -98,7 +98,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector3 const v1{1, 2, 3};
 		HAMON_CONSTEXPR vector3 const v2{0, 1, 2};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector3b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[2]);
@@ -107,7 +107,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector4 const v1{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR vector4 const v2{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector4b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[2]);
@@ -117,7 +117,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector4 const v1{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR vector4 const v2{ 1,-2,-3,-4};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector4b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[2]);
@@ -127,7 +127,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector4 const v1{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR vector4 const v2{-1, 2,-3,-4};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector4b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[2]);
@@ -137,7 +137,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector4 const v1{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR vector4 const v2{-1,-2, 3,-4};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector4b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(true,  v3[2]);
@@ -147,7 +147,7 @@ TYPED_TEST(VectorTest, EqualTest)
 		HAMON_CONSTEXPR vector4 const v1{ 1, 2, 3, 4};
 		HAMON_CONSTEXPR vector4 const v2{-1,-2,-3, 4};
 		HAMON_CONSTEXPR auto const v3 = hamon::qvm::equal(v1, v2);
-		static_assert(std::is_same<decltype(v3), vector4b const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4b const>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, v3[2]);

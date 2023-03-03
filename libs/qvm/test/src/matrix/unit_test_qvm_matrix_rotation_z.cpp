@@ -8,9 +8,9 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/units/degree.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,9 +23,9 @@ TYPED_TEST(MatrixFloatTest, RotationZTest)
 	using T = TypeParam;
 	using matrix3x3 = hamon::qvm::matrix<T, 3, 3>;
 	
-	static_assert(std::is_same<decltype(matrix3x3::rotation_z(0.0f)), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::rotation_z(0.0)),  matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::rotation_z(0.0L)), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::rotation_z(0.0f)), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::rotation_z(0.0)),  matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::rotation_z(0.0L)), matrix3x3>::value, "");
 
 	{
 		HAMON_CXX11_CONSTEXPR auto const m = matrix3x3::rotation_z(hamon::degrees_to_radians(0));

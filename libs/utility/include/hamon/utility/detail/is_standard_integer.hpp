@@ -9,7 +9,7 @@
 
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 namespace hamon
 {
@@ -20,7 +20,7 @@ namespace detail
 // is_standard_signed_integer
 template <typename T, typename... Types>
 using is_standard_signed_integer_impl =
-	hamon::disjunction<std::is_same<T, Types>...>;
+	hamon::disjunction<hamon::is_same<T, Types>...>;
 
 template <typename T>
 using is_standard_signed_integer =
@@ -36,7 +36,7 @@ using is_standard_signed_integer =
 // is_standard_unsigned_integer
 template <typename T, typename... Types>
 using is_standard_unsigned_integer_impl =
-	hamon::disjunction<std::is_same<T, Types>...>;
+	hamon::disjunction<hamon::is_same<T, Types>...>;
 
 template <typename T>
 using is_standard_unsigned_integer =

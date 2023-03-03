@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -24,8 +24,8 @@ inline HAMON_CXX14_CONSTEXPR bool Vector2BracketTest()
 
 	{
 		vector2 v{1, 2};
-		static_assert(std::is_same<decltype(v[0]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T&>::value, "");
 		VERIFY(v[0] == 1);
 		VERIFY(v[1] == 2);
 
@@ -46,9 +46,9 @@ inline HAMON_CXX14_CONSTEXPR bool Vector3BracketTest()
 
 	{
 		vector3 v{1, 2, 3};
-		static_assert(std::is_same<decltype(v[0]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[2]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[2]), T&>::value, "");
 		VERIFY(v[0] == 1);
 		VERIFY(v[1] == 2);
 		VERIFY(v[2] == 3);
@@ -72,10 +72,10 @@ inline HAMON_CXX14_CONSTEXPR bool Vector4BracketTest()
 
 	{
 		vector4 v{1, 2, 3, 4};
-		static_assert(std::is_same<decltype(v[0]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[2]), T&>::value, "");
-		static_assert(std::is_same<decltype(v[3]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[2]), T&>::value, "");
+		static_assert(hamon::is_same<decltype(v[3]), T&>::value, "");
 		VERIFY(v[0] == 1);
 		VERIFY(v[1] == 2);
 		VERIFY(v[2] == 3);
@@ -104,26 +104,26 @@ TYPED_TEST(VectorTest, BracketTest)
 
 	{
 		HAMON_CONSTEXPR vector2 const v{1, 2};
-		static_assert(std::is_same<decltype(v[0]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T const&>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, v[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, v[1]);
 	}
 	{
 		HAMON_CONSTEXPR vector3 const v{3, 4, 5};
-		static_assert(std::is_same<decltype(v[0]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[2]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[2]), T const&>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, v[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, v[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, v[2]);
 	}
 	{
 		HAMON_CONSTEXPR vector4 const v{5, 6, 7, 8};
-		static_assert(std::is_same<decltype(v[0]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[1]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[2]), T const&>::value, "");
-		static_assert(std::is_same<decltype(v[3]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[0]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[1]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[2]), T const&>::value, "");
+		static_assert(hamon::is_same<decltype(v[3]), T const&>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, v[0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, v[1]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, v[2]);

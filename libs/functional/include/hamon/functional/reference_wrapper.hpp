@@ -26,6 +26,7 @@ using std::reference_wrapper;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -48,7 +49,7 @@ public:
 	template <
 		typename U,
 		typename = hamon::enable_if_t<
-			!std::is_same<reference_wrapper, hamon::remove_cvref_t<U>>::value
+			!hamon::is_same<reference_wrapper, hamon::remove_cvref_t<U>>::value
 		>,
 		typename = decltype(reference_wrapper::FUN(std::declval<U>()))
 	>

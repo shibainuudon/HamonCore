@@ -9,8 +9,8 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/signbit.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -21,12 +21,12 @@ namespace hamon_cmath_test
 namespace trunc_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::trunc(0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::truncf(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::trunc(0.0 ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::trunc(0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::trunc(0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::truncl(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::trunc(0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::truncf(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::trunc(0.0 ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::trunc(0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::trunc(0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::truncl(0.0l))>::value, "");
 
 template <typename T>
 void TruncTestFloat(void)

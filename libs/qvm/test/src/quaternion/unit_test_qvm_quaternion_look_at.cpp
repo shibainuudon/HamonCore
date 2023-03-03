@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -26,9 +26,9 @@ TYPED_TEST(QuaternionFloatTest, LookAtTest)
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_same<decltype(quaternion::look_at(vector3{}, vector3{}, vector3{})), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternioni::look_at(vector3{}, vector3{}, vector3{})), quaternioni>::value, "");
-	static_assert(std::is_same<decltype(quaternionf::look_at(vector3{}, vector3{}, vector3{})), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::look_at(vector3{}, vector3{}, vector3{})), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternioni::look_at(vector3{}, vector3{}, vector3{})), quaternioni>::value, "");
+	static_assert(hamon::is_same<decltype(quaternionf::look_at(vector3{}, vector3{}, vector3{})), quaternionf>::value, "");
 
 	HAMON_CONSTEXPR double const error = 0.000001;
 

@@ -9,11 +9,11 @@
 //#include <hamon/ranges/views/subrange.hpp>
 #include <hamon/span.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 #include "ranges_test.hpp"
 
 #define HAMON_RANGES_BORROWED_ITERATOR_T_TEST(C, I)	\
-	static_assert(std::is_same<hamon::ranges::borrowed_iterator_t<C>, I>::value, "")
+	static_assert(hamon::is_same<hamon::ranges::borrowed_iterator_t<C>, I>::value, "")
 
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(char      [2],                   hamon::ranges::dangling);
 HAMON_RANGES_BORROWED_ITERATOR_T_TEST(char const[2],                   hamon::ranges::dangling);

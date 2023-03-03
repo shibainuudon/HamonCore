@@ -8,7 +8,7 @@
 #define HAMON_CONCEPTS_SAME_AS_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
@@ -28,7 +28,7 @@ namespace detail
 {
 
 template <typename T, typename U>
-concept SameHelper = std::is_same<T, U>::value;
+concept SameHelper = hamon::is_same<T, U>::value;
 
 }	// namespace detail
 
@@ -49,8 +49,8 @@ namespace hamon
 template <typename T, typename U>
 using same_as =
 	hamon::conjunction<
-		std::is_same<T, U>,
-		std::is_same<U, T>
+		hamon::is_same<T, U>,
+		hamon::is_same<U, T>
 	>;
 
 }	// namespace hamon

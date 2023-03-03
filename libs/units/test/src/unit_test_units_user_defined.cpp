@@ -8,6 +8,8 @@
 #include <hamon/units/second.hpp>
 #include <hamon/units/acceleration.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <ratio>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -68,13 +70,13 @@ GTEST_TEST(UnitsTest, UserDefinedTest)
 	// (2)
 	{
 		HAMON_CXX11_CONSTEXPR auto x = hamon::units::metres_per_second_squared<T>(10) / hamon::units::seconds<T>(2);
-		static_assert(std::is_same<decltype(x), const meter_per_cubic_second<T>>::value, "");
+		static_assert(hamon::is_same<decltype(x), const meter_per_cubic_second<T>>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, x.value());
 	}
 	{
 		HAMON_CXX11_CONSTEXPR auto s = hamon::units::seconds<T>(10);
 		HAMON_CXX11_CONSTEXPR auto x = hamon::units::metres<T>(20000) / s / s / s;
-		static_assert(std::is_same<decltype(x), const meter_per_cubic_second<T>>::value, "");
+		static_assert(hamon::is_same<decltype(x), const meter_per_cubic_second<T>>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(20, x.value());
 	}
 

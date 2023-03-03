@@ -7,14 +7,14 @@
 #include <hamon/span.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
-#include <gtest/gtest.h>
+#include <hamon/type_traits/is_same.hpp>
 #include <cstddef>
 #include <iterator>
 #include <string>
-#include <type_traits>
+#include <gtest/gtest.h>
 
 #define ASSERT_SAME_TYPE(...) \
-    static_assert((std::is_same<__VA_ARGS__>::value), \
+    static_assert((hamon::is_same<__VA_ARGS__>::value), \
                  "Types differ unexpectedly")
 
 namespace hamon_span_test

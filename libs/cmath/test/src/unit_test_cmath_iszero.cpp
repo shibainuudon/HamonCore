@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/iszero.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -17,10 +17,10 @@ namespace hamon_cmath_test
 namespace iszero_test
 {
 
-static_assert(std::is_same<bool, decltype(hamon::iszero(0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::iszero(0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::iszero(0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::iszero(0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::iszero(0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::iszero(0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::iszero(0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::iszero(0   ))>::value, "");
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4056)	// 浮動小数点数の定数演算でオーバーフローしました。

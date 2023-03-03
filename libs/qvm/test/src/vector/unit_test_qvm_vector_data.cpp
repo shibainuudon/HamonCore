@@ -5,9 +5,10 @@
  */
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
+#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -25,14 +26,14 @@ void DataTest()
 		auto p = v.data();
 		EXPECT_TRUE(p != nullptr);
 		EXPECT_TRUE(p == &v[0]);
-		static_assert(std::is_same<decltype(p), T const*>::value, "");
+		static_assert(hamon::is_same<decltype(p), T const*>::value, "");
 	}
 	{
 		vector v;
 		auto p = v.data();
 		EXPECT_TRUE(p != nullptr);
 		EXPECT_TRUE(p == &v[0]);
-		static_assert(std::is_same<decltype(p), T*>::value, "");
+		static_assert(hamon::is_same<decltype(p), T*>::value, "");
 	}
 }
 

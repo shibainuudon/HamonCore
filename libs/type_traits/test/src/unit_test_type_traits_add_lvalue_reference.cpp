@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/add_lvalue_reference.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 HAMON_TRANSFORM_TEST(hamon::add_lvalue_reference, /**/,                          &);
@@ -46,8 +46,8 @@ HAMON_TRANSFORM_TEST(hamon::add_lvalue_reference,       volatile (&&)[2],       
 HAMON_TRANSFORM_TEST(hamon::add_lvalue_reference, const volatile (&&)[2], const volatile (&)[2]);
 
 #define HAMON_ADD_LVALUE_REFERENCE_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::add_lvalue_reference_t<T1>, T2>::value, "");	\
-	static_assert(std::is_same<hamon::add_lvalue_reference<T1>::type, T2>::value, "")
+	static_assert(hamon::is_same<hamon::add_lvalue_reference_t<T1>, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::add_lvalue_reference<T1>::type, T2>::value, "")
 
 HAMON_ADD_LVALUE_REFERENCE_TEST(void(void), void(&)(void));
 HAMON_ADD_LVALUE_REFERENCE_TEST(int(void), int(&)(void));

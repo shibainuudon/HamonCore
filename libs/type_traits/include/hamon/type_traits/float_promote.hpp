@@ -8,6 +8,8 @@
 #define HAMON_TYPE_TRAITS_FLOAT_PROMOTE_HPP
 
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -37,7 +39,7 @@ struct float_promote_impl;
 
 template <typename T>
 struct float_promote_impl<T>
-	: public std::conditional<
+	: public hamon::conditional<
 		std::is_floating_point<T>::value,
 		T,
 		double
@@ -46,16 +48,16 @@ struct float_promote_impl<T>
 
 template <typename T, typename U>
 struct float_promote_impl<T, U>
-	: public std::conditional<
-		std::is_same<T, long double>::value ||
-		std::is_same<U, long double>::value,
+	: public hamon::conditional<
+		hamon::is_same<T, long double>::value ||
+		hamon::is_same<U, long double>::value,
 		long double,
-		typename std::conditional<
-			std::is_same<T, float>::value &&
-			std::is_same<U, float>::value,
+		hamon::conditional_t<
+			hamon::is_same<T, float>::value &&
+			hamon::is_same<U, float>::value,
 			float,
 			double
-		>::type
+		>
 	>
 {};
 

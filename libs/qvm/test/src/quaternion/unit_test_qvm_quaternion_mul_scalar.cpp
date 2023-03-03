@@ -5,9 +5,10 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -24,34 +25,34 @@ inline HAMON_CXX14_CONSTEXPR bool MulScalarTest()
 	using quaternioni = hamon::qvm::quaternion<int>;
 	using quaternionf = hamon::qvm::quaternion<float>;
 
-	static_assert(std::is_same<decltype(std::declval<quaternion&>()  *= T{}),     quaternion&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternion&>()  *= int{}),   quaternion&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternion&>()  *= float{}), quaternion&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternioni&>() *= T{}),     quaternioni&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternioni&>() *= int{}),   quaternioni&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternioni&>() *= float{}), quaternioni&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternionf&>() *= T{}),     quaternionf&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternionf&>() *= int{}),   quaternionf&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<quaternionf&>() *= float{}), quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  *= T{}),     quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  *= int{}),   quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  *= float{}), quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() *= T{}),     quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() *= int{}),   quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() *= float{}), quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() *= T{}),     quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() *= int{}),   quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() *= float{}), quaternionf&>::value, "");
 
 	// quaternion *= スカラー
 	{
 		quaternion v(2, 3, 4, 5);
 		{
 			auto t = (v *= 4);
-			static_assert(std::is_same<decltype(t), quaternion>::value, "");
+			static_assert(hamon::is_same<decltype(t), quaternion>::value, "");
 			VERIFY(v == quaternion(8, 12, 16, 20));
 			VERIFY(t == v);
 		}
 		{
 			auto t = (v *= 0.5);
-			static_assert(std::is_same<decltype(t), quaternion>::value, "");
+			static_assert(hamon::is_same<decltype(t), quaternion>::value, "");
 			VERIFY(v == quaternion(4, 6, 8, 10));
 			VERIFY(t == v);
 		}
 		{
 			auto t = (v *= 0.5f);
-			static_assert(std::is_same<decltype(t), quaternion>::value, "");
+			static_assert(hamon::is_same<decltype(t), quaternion>::value, "");
 			VERIFY(v == quaternion(2, 3, 4, 5));
 			VERIFY(t == v);
 		}
@@ -67,19 +68,19 @@ TYPED_TEST(QuaternionTest, MulScalarTest)
 	using quaternioni = hamon::qvm::quaternion<int>;
 	using quaternionf = hamon::qvm::quaternion<float>;
 
-	static_assert(std::is_same<decltype(quaternion{}  * T{}),     quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion{}  * int{}),   quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternioni{} * int{}),   quaternioni>::value, "");
-	static_assert(std::is_same<decltype(quaternioni{} * float{}), quaternionf>::value, "");
-	static_assert(std::is_same<decltype(quaternionf{} * int{}),   quaternionf>::value, "");
-	static_assert(std::is_same<decltype(quaternionf{} * float{}), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion{}  * T{}),     quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion{}  * int{}),   quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternioni{} * int{}),   quaternioni>::value, "");
+	static_assert(hamon::is_same<decltype(quaternioni{} * float{}), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(quaternionf{} * int{}),   quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(quaternionf{} * float{}), quaternionf>::value, "");
 
-	static_assert(std::is_same<decltype(T{}     * quaternion{}),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(int{}   * quaternion{}),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(int{}   * quaternioni{}), quaternioni>::value, "");
-	static_assert(std::is_same<decltype(float{} * quaternioni{}), quaternionf>::value, "");
-	static_assert(std::is_same<decltype(int{}   * quaternionf{}), quaternionf>::value, "");
-	static_assert(std::is_same<decltype(float{} * quaternionf{}), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(T{}     * quaternion{}),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(int{}   * quaternion{}),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(int{}   * quaternioni{}), quaternioni>::value, "");
+	static_assert(hamon::is_same<decltype(float{} * quaternioni{}), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(int{}   * quaternionf{}), quaternionf>::value, "");
+	static_assert(hamon::is_same<decltype(float{} * quaternionf{}), quaternionf>::value, "");
 
 	// quaternion * スカラー -> quaternion
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(quaternion(-3, 42, 5, 4) * -4, quaternion(12, -168, -20, -16));

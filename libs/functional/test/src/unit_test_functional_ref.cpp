@@ -6,9 +6,9 @@
 
 #include <hamon/functional/ref.hpp>
 #include <hamon/functional/reference_wrapper.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_functional_test
@@ -21,7 +21,7 @@ GTEST_TEST(RefTest, TypeTest)
 {
 	int i = 0;
 	auto r = hamon::ref(i);
-	static_assert(std::is_same<decltype(r), hamon::reference_wrapper<int>>::value, "");
+	static_assert(hamon::is_same<decltype(r), hamon::reference_wrapper<int>>::value, "");
 }
 
 struct F

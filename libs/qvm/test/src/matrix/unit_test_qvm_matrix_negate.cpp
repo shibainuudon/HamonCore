@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -29,8 +29,8 @@ void Matrix3x3NegateTest()
 		};
 		HAMON_CONSTEXPR auto const m2 = +m1;
 		HAMON_CONSTEXPR auto const m3 = -m1;
-		static_assert(std::is_same<decltype(m2), matrix3x3 const>::value, "");
-		static_assert(std::is_same<decltype(m3), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(m2), matrix3x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x3 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, m2[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( -1, m2[0][1]);
@@ -68,8 +68,8 @@ void Matrix3x4NegateTest()
 		};
 		HAMON_CONSTEXPR auto const m2 = +m1;
 		HAMON_CONSTEXPR auto const m3 = -m1;
-		static_assert(std::is_same<decltype(m2), matrix3x4 const>::value, "");
-		static_assert(std::is_same<decltype(m3), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(m2), matrix3x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix3x4 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, m2[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( -1, m2[0][1]);
@@ -114,8 +114,8 @@ void Matrix4x3NegateTest()
 		};
 		HAMON_CONSTEXPR auto const m2 = +m1;
 		HAMON_CONSTEXPR auto const m3 = -m1;
-		static_assert(std::is_same<decltype(m2), matrix4x3 const>::value, "");
-		static_assert(std::is_same<decltype(m3), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(m2), matrix4x3 const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix4x3 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, m2[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( -1, m2[0][1]);
@@ -160,8 +160,8 @@ void Matrix4x4NegateTest()
 		};
 		HAMON_CONSTEXPR auto const m2 = +m1;
 		HAMON_CONSTEXPR auto const m3 = -m1;
-		static_assert(std::is_same<decltype(m2), matrix4x4 const>::value, "");
-		static_assert(std::is_same<decltype(m3), matrix4x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(m2), matrix4x4 const>::value, "");
+		static_assert(hamon::is_same<decltype(m3), matrix4x4 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, m2[0][0]);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( -1, m2[0][1]);

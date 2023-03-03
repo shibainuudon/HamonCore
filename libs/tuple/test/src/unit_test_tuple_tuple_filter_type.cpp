@@ -5,6 +5,7 @@
  */
 
 #include <hamon/tuple/tuple_filter_type.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <tuple>
@@ -36,8 +37,8 @@ void TupleInitTypeTest()
 		using t2 = hamon::tuple_filter_type_t<t1, IsUnsigned>;
 		using t3 = hamon::tuple_filter_type_t<t1, IsFloatingPoint>;
 
-		static_assert(std::is_same<t2, Tuple<unsigned char, unsigned int>>::value, "");
-		static_assert(std::is_same<t3, Tuple<float, double>>::value, "");
+		static_assert(hamon::is_same<t2, Tuple<unsigned char, unsigned int>>::value, "");
+		static_assert(hamon::is_same<t3, Tuple<float, double>>::value, "");
 	}
 }
 

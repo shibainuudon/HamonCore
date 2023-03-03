@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/as_const.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <type_traits>
 
 GTEST_TEST(UtilityTest, AsConstTest)
 {
@@ -20,6 +20,6 @@ GTEST_TEST(UtilityTest, AsConstTest)
 	auto iter1 = mutable_string.begin();
 	auto iter2 = hamon::as_const(mutable_string).begin();
 
-	static_assert(std::is_same<decltype(iter1), std::string::iterator>::value, "");
-	static_assert(std::is_same<decltype(iter2), std::string::const_iterator>::value, "");
+	static_assert(hamon::is_same<decltype(iter1), std::string::iterator>::value, "");
+	static_assert(hamon::is_same<decltype(iter2), std::string::const_iterator>::value, "");
 }

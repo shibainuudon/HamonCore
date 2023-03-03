@@ -7,9 +7,9 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
 #include <hamon/qvm/vector/cross.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,10 +23,10 @@ TYPED_TEST(VectorTest, CrossTest)
 	using vector3  = hamon::qvm::vector<T, 3>;
 	using vector3i = hamon::qvm::vector<int, 3>;
 
-	static_assert(std::is_same<decltype(cross(vector3 {}, vector3 {})), vector3>::value, "");
-	static_assert(std::is_same<decltype(cross(vector3i{}, vector3 {})), vector3>::value, "");
-	static_assert(std::is_same<decltype(cross(vector3 {}, vector3i{})), vector3>::value, "");
-	static_assert(std::is_same<decltype(cross(vector3i{}, vector3i{})), vector3i>::value, "");
+	static_assert(hamon::is_same<decltype(cross(vector3 {}, vector3 {})), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(cross(vector3i{}, vector3 {})), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(cross(vector3 {}, vector3i{})), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(cross(vector3i{}, vector3i{})), vector3i>::value, "");
 
 	{
 		HAMON_CONSTEXPR vector3 v { 0, 0, 0 };

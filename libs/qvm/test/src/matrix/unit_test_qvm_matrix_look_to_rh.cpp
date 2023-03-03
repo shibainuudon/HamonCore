@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -22,7 +22,7 @@ TYPED_TEST(MatrixFloatTest, LookToRHTest)
 	using matrix4x4 = hamon::qvm::matrix<T, 4, 4>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(std::is_same<
+	static_assert(hamon::is_same<
 		decltype(matrix4x4::look_to_rh(vector3{}, vector3{}, vector3{})),
 		matrix4x4
 	>::value, "");

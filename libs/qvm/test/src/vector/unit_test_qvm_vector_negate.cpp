@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -25,8 +25,8 @@ void Vector2NegateTest()
 		HAMON_CONSTEXPR vector2 const v1(1, 2);
 		HAMON_CONSTEXPR auto const v2 = +v1;
 		HAMON_CONSTEXPR auto const v3 = -v1;
-		static_assert(std::is_same<decltype(v2), vector2 const>::value, "");
-		static_assert(std::is_same<decltype(v3), vector2 const>::value, "");
+		static_assert(hamon::is_same<decltype(v2), vector2 const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector2 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[0],  1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[1],  2);
@@ -44,8 +44,8 @@ void Vector3NegateTest()
 		HAMON_CONSTEXPR vector3 const v1(-1, 2, 3);
 		HAMON_CONSTEXPR auto const v2 = +v1;
 		HAMON_CONSTEXPR auto const v3 = -v1;
-		static_assert(std::is_same<decltype(v2), vector3 const>::value, "");
-		static_assert(std::is_same<decltype(v3), vector3 const>::value, "");
+		static_assert(hamon::is_same<decltype(v2), vector3 const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector3 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[0], -1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[1],  2);
@@ -65,8 +65,8 @@ void Vector4NegateTest()
 		HAMON_CONSTEXPR vector4 const v1(-1, 2, -3, 4);
 		HAMON_CONSTEXPR auto const v2 = +v1;
 		HAMON_CONSTEXPR auto const v3 = -v1;
-		static_assert(std::is_same<decltype(v2), vector4 const>::value, "");
-		static_assert(std::is_same<decltype(v3), vector4 const>::value, "");
+		static_assert(hamon::is_same<decltype(v2), vector4 const>::value, "");
+		static_assert(hamon::is_same<decltype(v3), vector4 const>::value, "");
 
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[0], -1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2[1],  2);

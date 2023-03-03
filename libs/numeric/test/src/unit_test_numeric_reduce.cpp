@@ -8,9 +8,9 @@
 #include <hamon/functional/multiplies.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -49,11 +49,11 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 	auto res = hamon::reduce(hamon::begin(a), hamon::end(a), (short)11);
-	static_assert(std::is_same<decltype(res), short>::value, "");
+	static_assert(hamon::is_same<decltype(res), short>::value, "");
 	VERIFY(res == 66);
 
 	auto res2 = hamon::reduce(hamon::begin(a), hamon::end(a), -1l, hamon::multiplies<>{});
-	static_assert(std::is_same<decltype(res2), long>::value, "");
+	static_assert(hamon::is_same<decltype(res2), long>::value, "");
 	VERIFY(res2 == -3628800);
 
 	return true;

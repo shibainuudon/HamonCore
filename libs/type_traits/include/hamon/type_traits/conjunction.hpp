@@ -7,17 +7,24 @@
 #ifndef HAMON_TYPE_TRAITS_CONJUNCTION_HPP
 #define HAMON_TYPE_TRAITS_CONJUNCTION_HPP
 
-#include <hamon/config.hpp>
 #include <type_traits>
+
+#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
 
 namespace hamon
 {
 
-#if defined(__cpp_lib_logical_traits) && (__cpp_lib_logical_traits >= 201510)
-
 using std::conjunction;
 
+}	// namespace hamon
+
 #else
+
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/conditional.hpp>
+
+namespace hamon
+{
 
 /**
  *	@brief		コンパイル時の論理AND
@@ -49,7 +56,7 @@ struct conjunction_impl;
 
 template <>
 struct conjunction_impl<>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 template <typename B0>
@@ -59,11 +66,11 @@ struct conjunction_impl<B0>
 
 template <typename B0, typename... Bn>
 struct conjunction_impl<B0, Bn...>
-	: public std::conditional<
+	: public hamon::conditional_t<
 		static_cast<bool>(B0::value),
 		conjunction_impl<Bn...>,
 		B0
-	>::type
+	>
 {};
 
 }	// namespace detail
@@ -73,7 +80,14 @@ struct conjunction
 	: public detail::conjunction_impl<B...>
 {};
 
+}	// namespace hamon
+
 #endif
+
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

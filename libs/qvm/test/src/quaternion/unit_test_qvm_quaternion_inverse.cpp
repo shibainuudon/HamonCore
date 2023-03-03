@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -24,7 +24,7 @@ TYPED_TEST(QuaternionFloatTest, InverseTest)
 	{
 		HAMON_CONSTEXPR quaternion q1(1, 2, 3, 4);
 		HAMON_CONSTEXPR auto const q1_inv = inverse(q1);
-		static_assert(std::is_same<decltype(q1_inv), quaternion const>::value, "");
+		static_assert(hamon::is_same<decltype(q1_inv), quaternion const>::value, "");
 
 		HAMON_CONSTEXPR double error = 0.000001;
 
@@ -43,7 +43,7 @@ TYPED_TEST(QuaternionFloatTest, InverseTest)
 	{
 		HAMON_CONSTEXPR quaternion q1(9, 41, -5, 6);
 		HAMON_CONSTEXPR auto const q1_inv = inverse(q1);
-		static_assert(std::is_same<decltype(q1_inv), quaternion const>::value, "");
+		static_assert(hamon::is_same<decltype(q1_inv), quaternion const>::value, "");
 
 		HAMON_CONSTEXPR double error = 0.000001;
 

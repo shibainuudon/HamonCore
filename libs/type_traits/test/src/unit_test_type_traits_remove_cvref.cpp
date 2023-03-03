@@ -5,7 +5,7 @@
  */
 
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 namespace hamon_type_traits_test
 {
@@ -14,8 +14,8 @@ namespace remove_cvref_test
 {
 
 #define HAMON_REMOVE_CVREF_TEST_IMPL(T1, T2)	\
-	static_assert(std::is_same<hamon::remove_cvref<T1>::type, T2>::value, #T1 ", " #T2);	\
-	static_assert(std::is_same<hamon::remove_cvref_t<T1>,     T2>::value, #T1 ", " #T2)
+	static_assert(hamon::is_same<hamon::remove_cvref<T1>::type, T2>::value, #T1 ", " #T2);	\
+	static_assert(hamon::is_same<hamon::remove_cvref_t<T1>,     T2>::value, #T1 ", " #T2)
 
 #define HAMON_REMOVE_CVREF_TEST(T)	\
 	HAMON_REMOVE_CVREF_TEST_IMPL(               T, T);	\

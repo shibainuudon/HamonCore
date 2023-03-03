@@ -5,11 +5,11 @@
  */
 
 #include <hamon/type_traits/arithmetic_promote.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 #define HAMON_ARITHMETIC_PROMOTE_TEST(T, ...)	\
-	static_assert(std::is_same<T, hamon::arithmetic_promote<__VA_ARGS__>::type>::value, "");	\
-	static_assert(std::is_same<T, hamon::arithmetic_promote_t<__VA_ARGS__>>::value, "")
+	static_assert(hamon::is_same<T, hamon::arithmetic_promote<__VA_ARGS__>::type>::value, "");	\
+	static_assert(hamon::is_same<T, hamon::arithmetic_promote_t<__VA_ARGS__>>::value, "")
 
 HAMON_ARITHMETIC_PROMOTE_TEST(float,				float);
 HAMON_ARITHMETIC_PROMOTE_TEST(double,				double);

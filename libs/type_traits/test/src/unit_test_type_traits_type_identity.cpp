@@ -5,11 +5,11 @@
  */
 
 #include <hamon/type_traits/type_identity.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 #define HAMON_TYPE_IDENTITY_TEST_IMPL(T)	\
-	static_assert(std::is_same<hamon::type_identity<T>::type, T>::value, "");	\
-	static_assert(std::is_same<hamon::type_identity_t<T>, T>::value, "")	\
+	static_assert(hamon::is_same<hamon::type_identity<T>::type, T>::value, "");	\
+	static_assert(hamon::is_same<hamon::type_identity_t<T>, T>::value, "")	\
 	/**/
 
 #define HAMON_TYPE_IDENTITY_TEST_IMPL_CV(T)	\

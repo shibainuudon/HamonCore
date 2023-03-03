@@ -14,7 +14,7 @@
 #include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 
 namespace hamon
 {
@@ -63,7 +63,7 @@ struct append_dimension_impl<
 	using type =
 		hamon::conditional_t<
 			// Middle::type と DimensionHolder::type が同じ型なら
-			std::is_same<
+			hamon::is_same<
 				typename Middle::type,
 				typename DimensionHolder::type
 			>::value,

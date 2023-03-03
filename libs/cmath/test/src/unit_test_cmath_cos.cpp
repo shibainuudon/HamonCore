@@ -7,10 +7,10 @@
 #include <hamon/cmath/cos.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -20,12 +20,12 @@ namespace hamon_cmath_test
 namespace cos_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::cos(0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::cosf(0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::cos(0.0 ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::cos(0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::cos(0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::cosl(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::cos(0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::cosf(0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::cos(0.0 ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::cos(0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::cos(0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::cosl(0.0l))>::value, "");
 
 template <typename T>
 double cos_error();

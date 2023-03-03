@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/is_integer.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -16,10 +16,10 @@ namespace hamon_cmath_test
 namespace is_integer_test
 {
 
-static_assert(std::is_same<bool, decltype(hamon::is_integer(0.0f))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::is_integer(0.0 ))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::is_integer(0.0l))>::value, "");
-static_assert(std::is_same<bool, decltype(hamon::is_integer(0   ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::is_integer(0.0f))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::is_integer(0.0 ))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::is_integer(0.0l))>::value, "");
+static_assert(hamon::is_same<bool, decltype(hamon::is_integer(0   ))>::value, "");
 
 template <typename T>
 void IsIntegerTestFloat(void)

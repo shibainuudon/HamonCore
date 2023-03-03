@@ -5,9 +5,9 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -27,19 +27,19 @@ TYPED_TEST(MatrixTest, TranslationTest)
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_same<decltype(matrix3x3::translation(0,    0)),    matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(0.0f, 0.0f)), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(0.0,  0.0f)), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(0.0L, 0)),    matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(vector2{})),  matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(vector2i{})), matrix3x3>::value, "");
-	static_assert(std::is_same<decltype(matrix3x3::translation(vector2f{})), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(0,    0)),    matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(0.0f, 0.0f)), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(0.0,  0.0f)), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(0.0L, 0)),    matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(vector2{})),  matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(vector2i{})), matrix3x3>::value, "");
+	static_assert(hamon::is_same<decltype(matrix3x3::translation(vector2f{})), matrix3x3>::value, "");
 
-	static_assert(std::is_same<decltype(matrix4x4::translation(0.0f, 0.0f, 0.0f)), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::translation(0,    0.0,  0.0L)), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::translation(vector3{})),  matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::translation(vector3i{})), matrix4x4>::value, "");
-	static_assert(std::is_same<decltype(matrix4x4::translation(vector3f{})), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::translation(0.0f, 0.0f, 0.0f)), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::translation(0,    0.0,  0.0L)), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::translation(vector3{})),  matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::translation(vector3i{})), matrix4x4>::value, "");
+	static_assert(hamon::is_same<decltype(matrix4x4::translation(vector3f{})), matrix4x4>::value, "");
 
 	// matrix3x3
 	{

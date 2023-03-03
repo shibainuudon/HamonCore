@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/unwrap_reference.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/functional/reference_wrapper.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 
 namespace hamon_type_traits_test
 {
@@ -16,8 +16,8 @@ namespace unwrap_reference_test
 {
 
 #define HAMON_UNWRAP_REFERENCE_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::unwrap_reference<T1>::type, T2>::value, "");	\
-	static_assert(std::is_same<hamon::unwrap_reference_t<T1>, T2>::value, "")
+	static_assert(hamon::is_same<hamon::unwrap_reference<T1>::type, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::unwrap_reference_t<T1>, T2>::value, "")
 
 HAMON_UNWRAP_REFERENCE_TEST(int,   int);
 HAMON_UNWRAP_REFERENCE_TEST(int&,  int&);

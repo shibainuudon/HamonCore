@@ -9,8 +9,8 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <limits>
 #include "constexpr_test.hpp"
 
@@ -20,24 +20,24 @@ namespace hamon_cmath_test
 namespace pow_test
 {
 
-static_assert(std::is_same<float,       decltype(hamon::pow(0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<float,       decltype(hamon::powf(0.0f, 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0.0f, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0f, 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0.0f, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0.0 , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0.0 , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0 , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0.0 , 0   ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0l, 0.0f))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0l, 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::powl(0.0l, 0.0l))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0.0l, 0   ))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0   , 0.0f))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0   , 0.0 ))>::value, "");
-static_assert(std::is_same<long double, decltype(hamon::pow(0   , 0.0l))>::value, "");
-static_assert(std::is_same<double,      decltype(hamon::pow(0   , 0   ))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::pow(0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::powf(0.0f, 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0.0f, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0f, 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0.0f, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0.0 , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0.0 , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0 , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0.0 , 0   ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0l, 0.0f))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0l, 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::powl(0.0l, 0.0l))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0.0l, 0   ))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0   , 0.0f))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0   , 0.0 ))>::value, "");
+static_assert(hamon::is_same<long double, decltype(hamon::pow(0   , 0.0l))>::value, "");
+static_assert(hamon::is_same<double,      decltype(hamon::pow(0   , 0   ))>::value, "");
 
 template <typename T>
 double pow_error();

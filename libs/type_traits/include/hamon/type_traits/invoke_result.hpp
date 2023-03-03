@@ -53,6 +53,7 @@ struct invoke_result;
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/unwrap_reference.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -144,7 +145,7 @@ private:
 public:
 	using type = typename hamon::conditional_t<
 		hamon::disjunction<
-			std::is_same<Argval, Class>,
+			hamon::is_same<Argval, Class>,
 			std::is_base_of<Class, Argval>
 		>::value,
 		invoke_result_memobj_ref<MemPtr, Arg>,

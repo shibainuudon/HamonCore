@@ -9,9 +9,9 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/units/degree.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -27,15 +27,15 @@ TYPED_TEST(QuaternionFloatTest, RotationTest)
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3{}, 0.0f)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3{}, 0.0)),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3{}, 0.0L)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3i{}, 0.0f)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3i{}, 0.0)),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3i{}, 0.0L)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3f{}, 0.0f)), quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3f{}, 0.0)),  quaternion>::value, "");
-	static_assert(std::is_same<decltype(quaternion::rotation(vector3f{}, 0.0L)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3{}, 0.0f)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3{}, 0.0)),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3{}, 0.0L)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3i{}, 0.0f)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3i{}, 0.0)),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3i{}, 0.0L)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3f{}, 0.0f)), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3f{}, 0.0)),  quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(quaternion::rotation(vector3f{}, 0.0L)), quaternion>::value, "");
 
 	HAMON_CXX11_CONSTEXPR double const error = 0.0000001;
 

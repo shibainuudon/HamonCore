@@ -5,11 +5,11 @@
  */
 
 #include <hamon/ranges/range_reference_t.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_same.hpp>
 #include "ranges_test.hpp"
 
 #define HAMON_RANGES_RANGE_REFERENCE_T_TEST(C, I)	\
-	static_assert(std::is_same<hamon::ranges::range_reference_t<C>, I>::value, "")
+	static_assert(hamon::is_same<hamon::ranges::range_reference_t<C>, I>::value, "")
 
 HAMON_RANGES_RANGE_REFERENCE_T_TEST(char      [2],                  char      &);
 HAMON_RANGES_RANGE_REFERENCE_T_TEST(char const[2],                  char const&);

@@ -23,6 +23,7 @@ using std::not_fn;
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 #include <type_traits>
@@ -70,7 +71,7 @@ public:
 	template <
 		typename F2,
 		typename = hamon::enable_if_t<
-			!std::is_same<hamon::decay_t<F2>, not_fn_imp>::value
+			!hamon::is_same<hamon::decay_t<F2>, not_fn_imp>::value
 		>
 	>
 	explicit not_fn_imp(F2&& fn)

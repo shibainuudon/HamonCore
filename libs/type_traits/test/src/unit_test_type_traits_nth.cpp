@@ -5,12 +5,12 @@
  */
 
 #include <hamon/type_traits/nth.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 
 #define HAMON_TT_NTH_TEST(N, T, ...)	\
-	static_assert(std::is_same<T, hamon::nth<N, __VA_ARGS__>::type>::value, "");	\
-	static_assert(std::is_same<T, hamon::nth_t<N, __VA_ARGS__>>::value, "")
+	static_assert(hamon::is_same<T, hamon::nth<N, __VA_ARGS__>::type>::value, "");	\
+	static_assert(hamon::is_same<T, hamon::nth_t<N, __VA_ARGS__>>::value, "")
 
 HAMON_TT_NTH_TEST(0, char,   char, int, float, double);
 HAMON_TT_NTH_TEST(1, int,    char, int, float, double);

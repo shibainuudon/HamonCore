@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/qvm/vector.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
+#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -26,9 +27,9 @@ inline HAMON_CXX14_CONSTEXPR bool MulVector3Test()
 	using quaternionf = hamon::qvm::quaternion<float>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(std::is_same<decltype(std::declval<vector3&>() *= quaternion{}),  vector3&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3&>() *= quaternioni{}), vector3&>::value, "");
-	static_assert(std::is_same<decltype(std::declval<vector3&>() *= quaternionf{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternion{}),  vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternioni{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternionf{}), vector3&>::value, "");
 
 	// vector3 *= quaternion
 	{
@@ -63,15 +64,15 @@ TYPED_TEST(QuaternionTest, MulVectorTest)
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_same<decltype(vector3{}  * quaternion{}),  vector3>::value, "");
-	static_assert(std::is_same<decltype(vector3{}  * quaternioni{}), vector3>::value, "");
-	static_assert(std::is_same<decltype(vector3{}  * quaternionf{}), vector3>::value, "");
-	static_assert(std::is_same<decltype(vector3i{} * quaternion{}),  vector3i>::value, "");
-	static_assert(std::is_same<decltype(vector3i{} * quaternioni{}), vector3i>::value, "");
-	static_assert(std::is_same<decltype(vector3i{} * quaternionf{}), vector3i>::value, "");
-	static_assert(std::is_same<decltype(vector3f{} * quaternion{}),  vector3f>::value, "");
-	static_assert(std::is_same<decltype(vector3f{} * quaternioni{}), vector3f>::value, "");
-	static_assert(std::is_same<decltype(vector3f{} * quaternionf{}), vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3{}  * quaternion{}),  vector3>::value, "");
+	static_assert(hamon::is_same<decltype(vector3{}  * quaternioni{}), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(vector3{}  * quaternionf{}), vector3>::value, "");
+	static_assert(hamon::is_same<decltype(vector3i{} * quaternion{}),  vector3i>::value, "");
+	static_assert(hamon::is_same<decltype(vector3i{} * quaternioni{}), vector3i>::value, "");
+	static_assert(hamon::is_same<decltype(vector3i{} * quaternionf{}), vector3i>::value, "");
+	static_assert(hamon::is_same<decltype(vector3f{} * quaternion{}),  vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3f{} * quaternioni{}), vector3f>::value, "");
+	static_assert(hamon::is_same<decltype(vector3f{} * quaternionf{}), vector3f>::value, "");
 
 	// vector3 * quaternion -> vector3
 	{

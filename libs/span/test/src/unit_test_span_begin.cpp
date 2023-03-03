@@ -5,9 +5,9 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_span_test
@@ -19,14 +19,14 @@ namespace begin_test
 template <typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span s)
 {
-	static_assert(std::is_same<decltype(s.begin()), typename Span::iterator>::value, "");
+	static_assert(hamon::is_same<decltype(s.begin()), typename Span::iterator>::value, "");
 	return s.begin() == s.end();
 }
 
 template <typename Span>
 HAMON_CXX11_CONSTEXPR bool test2(Span s)
 {
-	static_assert(std::is_same<decltype(s.begin()), typename Span::iterator>::value, "");
+	static_assert(hamon::is_same<decltype(s.begin()), typename Span::iterator>::value, "");
 	return
 		( *(s.begin()) ==  s[0]) &&
 		(&*(s.begin()) == &s[0]);

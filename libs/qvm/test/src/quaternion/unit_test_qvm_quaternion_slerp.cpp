@@ -7,9 +7,9 @@
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -29,7 +29,7 @@ SlerpTest(quaternion const& q1, quaternion const& q2, T t, quaternion const& exp
 	EXPECT_TRUE(q2 == slerp(q1, q2, T( 2.0)));
 
 	auto q = slerp(q1, q2, t);
-	static_assert(std::is_same<decltype(q), quaternion>::value, "");
+	static_assert(hamon::is_same<decltype(q), quaternion>::value, "");
 	EXPECT_NEAR((double)expected[0], (double)q[0], error);
 	EXPECT_NEAR((double)expected[1], (double)q[1], error);
 	EXPECT_NEAR((double)expected[2], (double)q[2], error);

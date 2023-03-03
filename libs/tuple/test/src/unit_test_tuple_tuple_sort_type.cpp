@@ -7,8 +7,8 @@
 #include <hamon/tuple/tuple_sort_type.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <tuple>
 #include "my_tuple.hpp"
 
@@ -64,7 +64,7 @@ void TupleSortTypeTest()
 			hamon::integral_constant<int, 9>
 		>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
@@ -97,7 +97,7 @@ void TupleSortTypeTest()
 			hamon::integral_constant<int, 1>
 		>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
@@ -112,7 +112,7 @@ void TupleSortTypeTest()
 			hamon::integral_constant<int, 1>
 		>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
@@ -125,7 +125,7 @@ void TupleSortTypeTest()
 			hamon::integral_constant<int, 3>
 		>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<>;
@@ -134,7 +134,7 @@ void TupleSortTypeTest()
 
 		using expected = Tuple<>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 	{
 		using t = Tuple<
@@ -155,7 +155,7 @@ void TupleSortTypeTest()
 			char[1]
 		>;
 
-		static_assert(std::is_same<t2, expected>::value, "");
+		static_assert(hamon::is_same<t2, expected>::value, "");
 	}
 }
 

@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/to_underlying.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -20,9 +20,9 @@ enum class E1 : char { e = 1 };
 enum struct E2 : long { e = 2 };
 enum E3 : unsigned { e = 3 };
 
-static_assert(std::is_same<char, decltype(hamon::to_underlying(E1::e))>::value, "");
-static_assert(std::is_same<long, decltype(hamon::to_underlying(E2::e))>::value, "");
-static_assert(std::is_same<unsigned, decltype(hamon::to_underlying(e))>::value, "");
+static_assert(hamon::is_same<char, decltype(hamon::to_underlying(E1::e))>::value, "");
+static_assert(hamon::is_same<long, decltype(hamon::to_underlying(E2::e))>::value, "");
+static_assert(hamon::is_same<unsigned, decltype(hamon::to_underlying(e))>::value, "");
 
 GTEST_TEST(UtilityTest, ToUnderlyingTest)
 {

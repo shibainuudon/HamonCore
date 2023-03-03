@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/remove_volatile.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 HAMON_TRANSFORM_TEST(hamon::remove_volatile, /**/          , /**/);
@@ -62,8 +62,8 @@ HAMON_TRANSFORM_TEST(hamon::remove_volatile,       volatile (*)[],       volatil
 HAMON_TRANSFORM_TEST(hamon::remove_volatile, const volatile (*)[], const volatile (*)[]);
 
 #define HAMON_REMOVE_VOLATILE_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::remove_volatile_t<T1>, T2>::value, "");	\
-	static_assert(std::is_same<hamon::remove_volatile<T1>::type, T2>::value, "")
+	static_assert(hamon::is_same<hamon::remove_volatile_t<T1>, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::remove_volatile<T1>::type, T2>::value, "")
 
 HAMON_REMOVE_VOLATILE_TEST(               void,       void);
 HAMON_REMOVE_VOLATILE_TEST(const          void, const void);

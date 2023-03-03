@@ -29,6 +29,7 @@ using std::midpoint;
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 #include <type_traits>
@@ -110,8 +111,8 @@ inline HAMON_CXX11_CONSTEXPR
 hamon::enable_if_t<
 	hamon::conjunction<
 		std::is_arithmetic<T>,
-		std::is_same<hamon::remove_cv_t<T>, T>,
-		hamon::negation<std::is_same<T, bool>>
+		hamon::is_same<hamon::remove_cv_t<T>, T>,
+		hamon::negation<hamon::is_same<T, bool>>
 	>::value,
 	T
 >

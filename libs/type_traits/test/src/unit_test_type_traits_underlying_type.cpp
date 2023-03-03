@@ -5,10 +5,10 @@
  */
 
 #include <hamon/type_traits/underlying_type.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <cstddef>
-#include <type_traits>
 #include "type_traits_test_utility.hpp"
 
 namespace hamon_type_traits_test
@@ -18,8 +18,8 @@ namespace underlying_type_test
 {
 
 #define HAMON_UNDERLYING_TYPE_TEST(T1, T2)	\
-	static_assert(std::is_same<hamon::underlying_type<T1>::type, T2>::value, "");	\
-	static_assert(std::is_same<hamon::underlying_type_t<T1>, T2>::value, "")
+	static_assert(hamon::is_same<hamon::underlying_type<T1>::type, T2>::value, "");	\
+	static_assert(hamon::is_same<hamon::underlying_type_t<T1>, T2>::value, "")
 
 enum       E1 : char {};
 enum class E2 : signed char {};
