@@ -9,7 +9,9 @@
 
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <utility>
 
 namespace hamon
 {
@@ -44,15 +46,15 @@ template <typename T>
 struct arithmetic_promote_impl<T>
 	: public hamon::type_identity<T>
 {
-	static_assert(std::is_arithmetic<T>::value, "");
+	static_assert(hamon::is_arithmetic<T>::value, "");
 };
 
 template <typename T, typename U>
 struct arithmetic_promote_impl<T, U>
-	: public std::decay<decltype(std::declval<T>() + std::declval<U>())>
+	: public hamon::decay<decltype(std::declval<T>() + std::declval<U>())>
 {
-	static_assert(std::is_arithmetic<T>::value, "");
-	static_assert(std::is_arithmetic<U>::value, "");
+	static_assert(hamon::is_arithmetic<T>::value, "");
+	static_assert(hamon::is_arithmetic<U>::value, "");
 };
 
 template <typename T, typename U, typename... Tail>

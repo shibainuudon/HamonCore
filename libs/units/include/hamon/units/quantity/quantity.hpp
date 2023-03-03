@@ -17,13 +17,13 @@
 #include <hamon/units/quantity/detail/quantity_without_scale_offset.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/compare/config.hpp>
 #include <hamon/config.hpp>
 #include <ratio>
 #include <ostream>
 #include <cstdint>
 #include <utility>
-#include <type_traits>
 
 namespace hamon
 {
@@ -189,7 +189,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR quantity<T, D, S, O>
@@ -210,7 +210,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR quantity<T, D, S, O>
@@ -249,7 +249,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 inline HAMON_CXX14_CONSTEXPR quantity<T, D, S, O>&
@@ -295,7 +295,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR quantity<T, D, S, O>
@@ -316,7 +316,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -352,7 +352,7 @@ template <
 	typename T, typename D, typename S, typename O,
 	typename ArithmeticType,
 	typename = hamon::enable_if_t<
-		std::is_arithmetic<ArithmeticType>::value
+		hamon::is_arithmetic<ArithmeticType>::value
 	>
 >
 inline HAMON_CXX14_CONSTEXPR quantity<T, D, S, O>&

@@ -10,11 +10,11 @@
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
+#include <hamon/concepts/arithmetic.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <limits>
-#include <type_traits>
 
 namespace hamon
 {
@@ -62,12 +62,8 @@ round_up_impl(FloatType x, FloatType base) HAMON_NOEXCEPT
  *	base == 0　  の場合、x    を返す。
  */
 template <
-	typename Arithmetic1,
-	typename Arithmetic2,
-	typename = hamon::enable_if_t<
-		std::is_arithmetic<Arithmetic1>::value &&
-		std::is_arithmetic<Arithmetic2>::value
-	>
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic1
 round_up(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT

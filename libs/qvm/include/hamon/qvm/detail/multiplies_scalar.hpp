@@ -10,9 +10,9 @@
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ struct multiplies_scalar_fn
 template <
 	template <typename, std::size_t...> class GenType,
 	typename T1, typename T2, std::size_t... Ns,
-	typename = hamon::enable_if_t<std::is_arithmetic<T2>::value>,
+	typename = hamon::enable_if_t<hamon::is_arithmetic<T2>::value>,
 	typename T3 = hamon::arithmetic_promote_t<T1, T2>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR GenType<T3, Ns...>

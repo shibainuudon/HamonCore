@@ -14,6 +14,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -48,7 +49,7 @@ private:
 	}
 
 	// load arithmetic
-	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_arithmetic<T>::value>>
+	template <typename Archive, typename T, typename = hamon::enable_if_t<hamon::is_arithmetic<T>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<2>)
 	{
 		hamon::serialization::detail::load_arithmetic(ar, t);

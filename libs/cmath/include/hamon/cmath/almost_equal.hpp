@@ -10,11 +10,13 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/fabs.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/concepts/arithmetic.hpp>
+#include <hamon/concepts/floating_point.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/config.hpp>
 #include <limits>
-#include <type_traits>
 
 namespace hamon
 {
@@ -40,9 +42,9 @@ eps(T x, T y) HAMON_NOEXCEPT
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4056)	// 浮動小数点数の定数演算でオーバーフローしました。
 
-template <typename FloatType>
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
 inline HAMON_CONSTEXPR bool
-almost_equal_impl(FloatType x, FloatType y, std::true_type) HAMON_NOEXCEPT
+almost_equal_impl(FloatType x, FloatType y, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
 	return
 		(hamon::isnan(x) || hamon::isnan(y) ||
@@ -56,7 +58,7 @@ HAMON_WARNING_POP()
 
 template <typename IntType>
 inline HAMON_CONSTEXPR bool
-almost_equal_impl(IntType x, IntType y, std::false_type) HAMON_NOEXCEPT
+almost_equal_impl(IntType x, IntType y, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
 	return x == y;
 }
@@ -75,12 +77,8 @@ almost_equal_impl(IntType x, IntType y, std::false_type) HAMON_NOEXCEPT
  *	@return	xとyがほぼ同じ値ならtrue
  */
 template <
-	typename Arithmetic1,
-	typename Arithmetic2,
-	typename = hamon::enable_if_t<
-		std::is_arithmetic<Arithmetic1>::value &&
-		std::is_arithmetic<Arithmetic2>::value
-	>
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 almost_equal(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
@@ -88,7 +86,7 @@ almost_equal(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 	using type = hamon::arithmetic_promote_t<Arithmetic1, Arithmetic2>;
 	return detail::almost_equal_impl(
 		static_cast<type>(x), static_cast<type>(y),
-		std::is_floating_point<type>{});
+		hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

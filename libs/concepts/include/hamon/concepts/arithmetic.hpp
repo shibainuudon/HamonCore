@@ -8,8 +8,8 @@
 #define HAMON_CONCEPTS_ARITHMETIC_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -17,12 +17,12 @@ namespace hamon
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept arithmetic = std::is_arithmetic<T>::value;
+concept arithmetic = hamon::is_arithmetic<T>::value;
 
 #else
 
 template <typename T>
-using arithmetic = std::is_arithmetic<T>;
+using arithmetic = hamon::is_arithmetic<T>;
 
 #endif
 

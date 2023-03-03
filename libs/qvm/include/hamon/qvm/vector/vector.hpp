@@ -14,11 +14,12 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/accumulation.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
+#include <utility>
 
 namespace hamon
 {
@@ -29,7 +30,7 @@ namespace qvm
 namespace detail
 {
 
-template <typename T, typename = hamon::enable_if_t<std::is_arithmetic<T>::value>>
+template <typename T, typename = hamon::enable_if_t<hamon::is_arithmetic<T>::value>>
 HAMON_CONSTEXPR vector<T, 1> to_vector(T const& v)
 {
 	return vector<T, 1>{v};
