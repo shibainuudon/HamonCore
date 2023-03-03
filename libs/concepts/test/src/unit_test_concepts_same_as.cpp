@@ -5,6 +5,7 @@
  */
 
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/is_const.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -58,7 +59,7 @@ check_subsumption()
 }
 
 template <typename T, typename U>
-requires hamon::same_as<U, T>&& std::is_const<T>::value
+requires hamon::same_as<U, T> && hamon::is_const<T>::value
 constexpr int
 check_subsumption()
 {
@@ -66,7 +67,7 @@ check_subsumption()
 }
 
 template <typename T, typename U>
-requires hamon::same_as<U, T>&& std::is_volatile<T>::value
+requires hamon::same_as<U, T> && std::is_volatile<T>::value
 constexpr int
 check_subsumption()
 {

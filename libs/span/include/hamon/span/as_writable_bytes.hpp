@@ -24,13 +24,13 @@ using std::as_writable_bytes;
 #include <hamon/span/detail/as_bytes_extent.hpp>
 #include <hamon/cstddef/byte.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_const.hpp>
 #include <cstddef>
-#include <type_traits>
 
 namespace hamon
 {
 
-template <typename T, std::size_t Extent, typename = hamon::enable_if_t<!std::is_const<T>::value>>
+template <typename T, std::size_t Extent, typename = hamon::enable_if_t<!hamon::is_const<T>::value>>
 inline span<hamon::byte, detail::as_bytes_extent<T, Extent>::value>
 as_writable_bytes(span<T, Extent> s) HAMON_NOEXCEPT
 {

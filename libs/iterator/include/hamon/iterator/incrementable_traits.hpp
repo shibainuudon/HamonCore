@@ -25,9 +25,10 @@ using std::incrementable_traits;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/is_object.hpp>
+#include <hamon/type_traits/is_const.hpp>
+#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -64,7 +65,7 @@ requires requires { typename T::difference_type; }
 struct incrementable_traits<T
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, hamon::enable_if_t<
-		!std::is_const<T>::value &&
+		!hamon::is_const<T>::value &&
 		!hamon::is_pointer<T>::value &&
 		detail::has_difference_type<T>::value
 	>
@@ -98,7 +99,7 @@ requires (
 struct incrementable_traits<T
 #if !(defined(HAMON_HAS_CXX20_CONCEPTS) && !HAMON_GCC_10)
 	, hamon::enable_if_t<
-		!std::is_const<T>::value &&
+		!hamon::is_const<T>::value &&
 		!hamon::is_pointer<T>::value &&
 		!detail::has_difference_type<T>::value
 	>
@@ -108,7 +109,7 @@ struct incrementable_traits<T
 #endif
 >
 {
-	using difference_type = typename std::make_signed<decltype(std::declval<T>() - std::declval<T>())>::type;
+	using difference_type = hamon::make_signed_t<decltype(std::declval<T>() - std::declval<T>())>;
 };
 
 #undef HAMON_GCC_10

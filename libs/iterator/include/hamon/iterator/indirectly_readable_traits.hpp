@@ -28,7 +28,7 @@ using std::indirectly_readable_traits;
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_object.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_const.hpp>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ struct indirectly_readable_traits<T*>
 
 // (3) Specialization for array types
 template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && hamon::is_array<T>::value>>
+struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && hamon::is_array<T>::value>>
 {
 	using value_type = hamon::remove_cv_t<hamon::remove_extent_t<T>>;
 };
@@ -70,12 +70,12 @@ struct indirectly_readable_traits<const I>
 
 // (5) Specialization for types that define a public and accessible member type value_type
 template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && detail::has_value_type<T>::value>>
+struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && detail::has_value_type<T>::value>>
 	: public detail::cond_value_type<typename T::value_type> {};
 
 // (6) Specialization for types that define a public and accessible member type element_type
 template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && detail::has_element_type<T>::value>>
+struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && detail::has_element_type<T>::value>>
 	: public detail::cond_value_type<typename T::element_type> {};
 
 }	// namespace hamon

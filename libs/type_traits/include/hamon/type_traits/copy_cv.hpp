@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/add_volatile.hpp>
+#include <hamon/type_traits/is_const.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -75,7 +76,7 @@ struct copy_cv
 {
 	using type = typename detail::copy_cv_impl<
 		T,
-		std::is_const<U>::value,
+		hamon::is_const<U>::value,
 		std::is_volatile<U>::value
 	>::type;
 };

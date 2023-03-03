@@ -23,8 +23,8 @@ using std::forward_like;
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/is_rvalue_reference.hpp>
+#include <hamon/type_traits/is_const.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -33,7 +33,7 @@ namespace detail
 {
 
 template <typename A, typename B>
-using CopyConst = hamon::conditional_t<std::is_const<A>::value, const B, B>;
+using CopyConst = hamon::conditional_t<hamon::is_const<A>::value, const B, B>;
 
 template <typename A, typename B>
 using OverrideRef = hamon::conditional_t<hamon::is_rvalue_reference<A>::value, hamon::remove_reference_t<B>&&, B&>;
