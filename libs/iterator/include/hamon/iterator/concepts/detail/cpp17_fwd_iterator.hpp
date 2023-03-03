@@ -16,8 +16,9 @@
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -32,7 +33,7 @@ template <typename Iter>
 concept cpp17_fwd_iterator =
 	cpp17_input_iterator<Iter> &&
 	hamon::constructible_from<Iter> &&
-	std::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
+	hamon::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
 	hamon::same_as<
 		hamon::remove_cvref_t<hamon::iter_reference_t<Iter>>,
 		typename hamon::indirectly_readable_traits<Iter>::value_type
@@ -56,7 +57,7 @@ private:
 		typename = hamon::enable_if_t<cpp17_input_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::constructible_from<I2>::value>,
 		typename R = hamon::iter_reference_t<I2>,
-		typename = hamon::enable_if_t<std::is_lvalue_reference<R>::value>,
+		typename = hamon::enable_if_t<hamon::is_lvalue_reference<R>::value>,
 		typename = hamon::enable_if_t<hamon::same_as<
 			hamon::remove_cvref_t<R>,
 			typename hamon::indirectly_readable_traits<I2>::value_type
@@ -70,7 +71,7 @@ private:
 	>;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

@@ -10,8 +10,8 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ namespace detail
 
 template <typename T>
 concept maybe_borrowed_range =
-	std::is_lvalue_reference<T>::value ||
+	hamon::is_lvalue_reference<T>::value ||
 	HAMON_RANGES_ENABLE_BORROWED_RANGE(hamon::remove_cvref_t<T>);
 
 #else
@@ -34,7 +34,7 @@ concept maybe_borrowed_range =
 template <typename T>
 using maybe_borrowed_range =
 	hamon::bool_constant<
-		std::is_lvalue_reference<T>::value ||
+		hamon::is_lvalue_reference<T>::value ||
 		HAMON_RANGES_ENABLE_BORROWED_RANGE(hamon::remove_cvref_t<T>)
 	>;
 

@@ -32,8 +32,8 @@ using std::ranges::begin;
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {
@@ -58,7 +58,7 @@ private:
 	static HAMON_CONSTEXPR hamon::decay_t<T>
 	impl(T&& t, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 	{
-		static_assert(std::is_lvalue_reference<T>::value, "");
+		static_assert(hamon::is_lvalue_reference<T>::value, "");
 		return t + 0;
 	}
 

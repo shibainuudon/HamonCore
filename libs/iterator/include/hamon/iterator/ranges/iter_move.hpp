@@ -30,8 +30,8 @@ using std::ranges::iter_move;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
@@ -69,11 +69,11 @@ private:
 	// (2) otherwise, if *forward<T>(t) is well-formed and is an lvalue
 	template <typename T
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<std::is_lvalue_reference<hamon::iter_reference_t<T>>::value>
+		, typename = hamon::enable_if_t<hamon::is_lvalue_reference<hamon::iter_reference_t<T>>::value>
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires std::is_lvalue_reference<hamon::iter_reference_t<T>>::value
+	requires hamon::is_lvalue_reference<hamon::iter_reference_t<T>>::value
 #endif
 	static HAMON_CXX14_CONSTEXPR auto impl(hamon::detail::overload_priority<1>, T&& t)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(std::move(*std::forward<T>(t)))
@@ -82,7 +82,7 @@ private:
 	template <typename T
 		, typename = hamon::enable_if_t<!hamon::detail::is_void_pointer<T>::value>
 	>
-//	requires std::is_rvalue_reference<hamon::iter_reference_t<T>>::value
+//	requires hamon::is_rvalue_reference<hamon::iter_reference_t<T>>::value
 	static HAMON_CXX14_CONSTEXPR auto impl(hamon::detail::overload_priority<0>, T&& t)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(*std::forward<T>(t))
 

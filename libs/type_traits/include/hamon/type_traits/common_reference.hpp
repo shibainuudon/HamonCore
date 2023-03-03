@@ -37,6 +37,7 @@ using std::common_reference_t;
 #include <hamon/type_traits/detail/common_type_fold.hpp>
 #include <hamon/type_traits/detail/common_type_pack.hpp>
 #include <hamon/type_traits/detail/cond_res.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -56,8 +57,8 @@ template <
 	typename B,
 	typename X = hamon::remove_reference_t<A>,
 	typename Y = hamon::remove_reference_t<B>,
-	bool = std::is_lvalue_reference<A>::value,
-	bool = std::is_lvalue_reference<B>::value,
+	bool = hamon::is_lvalue_reference<A>::value,
+	bool = hamon::is_lvalue_reference<B>::value,
 	typename = hamon::void_t<>
 >
 struct common_ref_impl

@@ -31,9 +31,10 @@ using std::contiguous_iterator;
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -45,7 +46,7 @@ template <typename Iter>
 concept contiguous_iterator =
 	hamon::random_access_iterator<Iter> &&
 	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::contiguous_iterator_tag> &&
-	std::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
+	hamon::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
 	hamon::same_as<hamon::iter_value_t<Iter>, hamon::remove_cvref_t<hamon::iter_reference_t<Iter>>> &&
 	requires(Iter const& i)
 	{
@@ -73,7 +74,7 @@ private:
 		>,
 		typename R = hamon::iter_reference_t<I2>,
 		typename = hamon::enable_if_t<
-			std::is_lvalue_reference<R>::value
+			hamon::is_lvalue_reference<R>::value
 		>,
 		typename = hamon::enable_if_t<
 			hamon::same_as<
@@ -86,7 +87,7 @@ private:
 	static auto test(int) -> hamon::same_as<P1, hamon::add_pointer_t<R>>;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

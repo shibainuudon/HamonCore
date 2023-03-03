@@ -33,8 +33,9 @@ using std::ranges::viewable_range;
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <initializer_list>
 
 namespace hamon
@@ -46,10 +47,10 @@ namespace detail
 {
 
 template <typename T>
-struct is_initializer_list : std::false_type {};
+struct is_initializer_list : public hamon::false_type {};
 
 template <typename T>
-struct is_initializer_list<std::initializer_list<T>> : std::true_type {};
+struct is_initializer_list<std::initializer_list<T>> : public hamon::true_type {};
 
 } // namespace detail
 
@@ -60,7 +61,7 @@ concept viewable_range =
 	ranges::range<T> &&
 	((ranges::view<hamon::remove_cvref_t<T>> && hamon::constructible_from<hamon::remove_cvref_t<T>, T>) ||
 	 (!ranges::view<hamon::remove_cvref_t<T>> &&
-		 (std::is_lvalue_reference<T>::value ||
+		 (hamon::is_lvalue_reference<T>::value ||
 			 (hamon::movable<hamon::remove_reference_t<T>> &&
 			  !detail::is_initializer_list<hamon::remove_cvref_t<T>>::value))));
 #else
@@ -83,7 +84,7 @@ private:
 				hamon::conjunction<
 					hamon::negation<ranges::view<hamon::remove_cvref_t<U>>>,
 					hamon::disjunction<
-						std::is_lvalue_reference<U>,
+						hamon::is_lvalue_reference<U>,
 						hamon::conjunction<
 							hamon::movable<hamon::remove_reference_t<U>>,
 							hamon::negation<is_initializer_list<hamon::remove_cvref_t<U>>>
@@ -93,10 +94,10 @@ private:
 			>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

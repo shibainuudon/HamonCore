@@ -30,6 +30,7 @@ using std::ranges::swap;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -94,7 +95,7 @@ private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
 			hamon::same_as<T, U>::value &&
-			std::is_lvalue_reference<T>::value &&
+			hamon::is_lvalue_reference<T>::value &&
 			hamon::move_constructible<hamon::remove_reference_t<T>>::value &&
 			hamon::assignable_from<T, hamon::remove_reference_t<T>>::value
 		>
@@ -103,7 +104,7 @@ private:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires
 		same_as<T, U> &&
-		std::is_lvalue_reference<T>::value &&
+		hamon::is_lvalue_reference<T>::value &&
 		move_constructible<hamon::remove_reference_t<T>> &&
 		assignable_from<T, hamon::remove_reference_t<T>>
 #endif
