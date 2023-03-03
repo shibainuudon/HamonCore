@@ -34,10 +34,11 @@ using std::common_reference_t;
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/is_reference.hpp>
 #include <hamon/type_traits/detail/common_type_fold.hpp>
 #include <hamon/type_traits/detail/common_type_pack.hpp>
 #include <hamon/type_traits/detail/cond_res.hpp>
-#include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -141,7 +142,11 @@ using basic_common_ref =
 		detail::xref<T2>::template type
 	>::type;
 
-template <typename T1, typename T2, int Bullet = 1, bool = std::is_reference<T1>::value && std::is_reference<T2>::value, typename = hamon::void_t<>>
+template <typename T1, typename T2,
+	int Bullet = 1,
+	bool = hamon::is_reference<T1>::value && hamon::is_reference<T2>::value,
+	typename = hamon::void_t<>
+>
 struct common_reference_impl
 	: public common_reference_impl<T1, T2, Bullet + 1>
 {};

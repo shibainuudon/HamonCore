@@ -12,6 +12,7 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_reference.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
@@ -38,7 +39,7 @@ constexpr bool has_tuple_element_all(hamon::index_sequence<N...>)
 
 template <typename T>
 concept tuple_like =
-	!std::is_reference<T>::value &&
+	!hamon::is_reference<T>::value &&
 	requires(T t)
 	{
 		typename std::tuple_size<T>::type;
@@ -73,7 +74,7 @@ private:
 	static auto test(int) -> decltype(test_helper<U>(Seq{}));
 	
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

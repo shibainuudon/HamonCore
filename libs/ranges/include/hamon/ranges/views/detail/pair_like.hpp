@@ -13,6 +13,9 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_const.hpp>
+#include <hamon/type_traits/integral_constant.hpp>
+#include <hamon/type_traits/is_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <tuple>
@@ -27,7 +30,7 @@ namespace detail {
 
 template <typename T>
 concept pair_like =
-	!std::is_reference<T>::value &&
+	!hamon::is_reference<T>::value &&
 	requires(T t)
 	{
 		typename std::tuple_size<T>::type;
@@ -47,7 +50,7 @@ struct pair_like_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<!std::is_reference<U>::value>,
+		typename = hamon::enable_if_t<!hamon::is_reference<U>::value>,
 		typename = typename std::tuple_size<U>::type,
 		typename = hamon::enable_if_t<
 			hamon::derived_from<std::tuple_size<U>, std::integral_constant<std::size_t, 2>>::value
@@ -63,10 +66,10 @@ private:
 			hamon::convertible_to<E1, hamon::tuple_element_t<1, U> const&>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));
