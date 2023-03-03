@@ -25,9 +25,10 @@ using std::iterator_traits;
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <cstddef>
+#include <iterator>
 
 namespace hamon
 {
@@ -47,12 +48,12 @@ using enable_iterator_traits_helper = T;
 
 template <typename T>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires std::is_object<T>::value
+requires hamon::is_object<T>::value
 #endif
 struct iterator_traits<
 	detail::enable_iterator_traits_helper<
 		T*,
-		hamon::enable_if_t<std::is_object<T>::value>>>
+		hamon::enable_if_t<hamon::is_object<T>::value>>>
 {
 	using iterator_concept  = hamon::contiguous_iterator_tag;
 	using iterator_category = std::random_access_iterator_tag;
@@ -69,7 +70,7 @@ template <typename T>
 struct is_iterator_traits_specialized<
 	detail::enable_iterator_traits_helper<
 		T*,
-		hamon::enable_if_t<std::is_object<T>::value>>>
+		hamon::enable_if_t<hamon::is_object<T>::value>>>
 {
 	static const bool value = true;
 };

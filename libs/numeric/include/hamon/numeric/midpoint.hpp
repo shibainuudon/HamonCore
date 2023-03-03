@@ -32,9 +32,10 @@ using std::midpoint;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_integral.hpp>
+#include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
+#include <cstddef>
 #include <limits>
-#include <type_traits>
 
 namespace hamon
 {
@@ -139,7 +140,7 @@ midpoint(T a, T b) HAMON_NOEXCEPT
  *	除算の結果はゼロ方向に丸められる
  */
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR hamon::enable_if_t<std::is_object<T>::value, T*>
+inline HAMON_CXX11_CONSTEXPR hamon::enable_if_t<hamon::is_object<T>::value, T*>
 midpoint(T* a, T* b) HAMON_NOEXCEPT
 {
 	static_assert(sizeof(T) != 0, "type must be complete");

@@ -23,13 +23,14 @@ using std::movable;
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/swappable.hpp>
+#include <hamon/type_traits/is_object.hpp>
 
 namespace hamon
 {
 
 template <typename T>
 concept movable =
-	std::is_object<T>::value &&
+	hamon::is_object<T>::value &&
 	hamon::move_constructible<T> &&
 	hamon::assignable_from<T&, T> &&
 	hamon::swappable<T>;
@@ -42,7 +43,8 @@ concept movable =
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/swappable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_object.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -56,13 +58,13 @@ struct movable_impl
 private:
 	template <typename U>
 	static auto test(int) -> hamon::conjunction<
-		std::is_object<U>,
+		hamon::is_object<U>,
 		hamon::move_constructible<U>,
 		hamon::assignable_from<U&, U>,
 		hamon::swappable<U>>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

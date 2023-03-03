@@ -24,6 +24,7 @@ using std::incrementable_traits;
 #include <hamon/concepts/integral.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
+#include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -39,11 +40,11 @@ struct incrementable_traits {};
 // (2) Specialization for pointers
 template <typename T>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires std::is_object<T>::value
+requires hamon::is_object<T>::value
 #endif
 struct incrementable_traits<T*
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<std::is_object<T>::value>
+	, hamon::enable_if_t<hamon::is_object<T>::value>
 #endif
 >
 {

@@ -27,8 +27,8 @@ using std::reference_wrapper;
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -80,7 +80,7 @@ public:
 	operator()(Args&&... args) const
 	{
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (std::is_object<type>::value)
+		if constexpr (hamon::is_object<type>::value)
 		{
 			static_assert(sizeof(type), "type must be complete");
 		}

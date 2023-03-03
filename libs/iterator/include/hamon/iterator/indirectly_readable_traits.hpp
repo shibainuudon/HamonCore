@@ -27,6 +27,7 @@ using std::indirectly_readable_traits;
 #include <hamon/type_traits/remove_extent.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_object.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -35,7 +36,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, bool = std::is_object<T>::value>
+template <typename T, bool = hamon::is_object<T>::value>
 struct cond_value_type {};
 
 template <typename T>

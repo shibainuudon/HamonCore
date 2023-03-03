@@ -11,8 +11,9 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
+#include <hamon/type_traits/is_object.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -29,7 +30,7 @@ namespace detail
 template <typename T>
 concept pointer_to_object =
 	hamon::is_pointer<T>::value &&
-	std::is_object<hamon::remove_pointer_t<T>>::value;
+	hamon::is_object<hamon::remove_pointer_t<T>>::value;
 
 template <typename T>
 concept has_member_data =
@@ -48,11 +49,11 @@ private:
 		typename P = decltype(hamon::detail::decay_copy(std::declval<U&>().data()))>
 	static auto test(int) -> hamon::conjunction<
 		hamon::is_pointer<P>,
-		std::is_object<hamon::remove_pointer_t<P>>
+		hamon::is_object<hamon::remove_pointer_t<P>>
 	>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));
