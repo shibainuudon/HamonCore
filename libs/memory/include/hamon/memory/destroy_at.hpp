@@ -23,7 +23,9 @@ using std::destroy_at;
 #else
 
 #include <hamon/memory/addressof.hpp>
-#include <type_traits>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_array.hpp>
+#include <hamon/detail/overload_priority.hpp>
 
 namespace hamon
 {
@@ -34,14 +36,8 @@ void destroy_at(T* p);
 namespace detail
 {
 
-template <typename T>
-inline void destroy_at_impl(T* p, std::false_type)
-{
-	p->~T();
-}
-
-template <typename T>
-inline void destroy_at_impl(T* p, std::true_type)
+template <typename T, typename = hamon::enable_if_t<hamon::is_array<T>::value>>
+inline void destroy_at_impl(T* p, hamon::detail::overload_priority<1>)
 {
 	for (auto& x : *p)
 	{
@@ -49,12 +45,18 @@ inline void destroy_at_impl(T* p, std::true_type)
 	}
 }
 
+template <typename T>
+inline void destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
+{
+	p->~T();
+}
+
 }	// namespace detail
 
 template <typename T>
 inline void destroy_at(T* p)
 {
-	detail::destroy_at_impl(p, std::is_array<T>{});
+	detail::destroy_at_impl(p, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

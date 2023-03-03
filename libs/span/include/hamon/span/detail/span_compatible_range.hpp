@@ -17,6 +17,7 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/config.hpp>
 #include <array>
 #include <cstddef>
@@ -53,7 +54,7 @@ concept span_compatible_range =
 	(hamon::ranges::borrowed_range<Range> || std::is_const<ElementType>::value) &&
 	!detail::is_std_span<hamon::remove_cvref_t<Range>>::value  &&
 	!detail::is_std_array<hamon::remove_cvref_t<Range>>::value &&
-	!std::is_array<hamon::remove_cvref_t<Range>>::value &&
+	!hamon::is_array<hamon::remove_cvref_t<Range>>::value &&
 	std::is_convertible<hamon::remove_reference_t<hamon::ranges::range_reference_t<Range>>(*)[], ElementType(*)[]>::value;
 
 #else
@@ -65,7 +66,7 @@ using span_compatible_range = hamon::conjunction<
 	hamon::disjunction<hamon::ranges::borrowed_range<Range>, std::is_const<ElementType>>,
 	hamon::negation<detail::is_std_span<hamon::remove_cvref_t<Range>>>,
 	hamon::negation<detail::is_std_array<hamon::remove_cvref_t<Range>>>,
-	hamon::negation<std::is_array<hamon::remove_cvref_t<Range>>>,
+	hamon::negation<hamon::is_array<hamon::remove_cvref_t<Range>>>,
 	std::is_convertible<hamon::remove_reference_t<hamon::ranges::range_reference_t<Range>>(*)[], ElementType(*)[]>
 >;
 

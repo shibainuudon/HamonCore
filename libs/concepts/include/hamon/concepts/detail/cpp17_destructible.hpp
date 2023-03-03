@@ -10,6 +10,7 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -25,7 +26,7 @@ template <typename T>
 concept cpp17_destructible =
 	std::is_object_v<T> &&
 	std::is_destructible_v<T> &&
-	!std::is_array_v<T>;
+	!hamon::is_array_v<T>;
 
 #else
 
@@ -34,7 +35,7 @@ using cpp17_destructible =
 	hamon::conjunction<
 		std::is_object<T>,
 		std::is_destructible<T>,
-		hamon::negation<std::is_array<T>>
+		hamon::negation<hamon::is_array<T>>
 	>;
 
 #endif

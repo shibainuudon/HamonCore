@@ -31,6 +31,7 @@ using std::ranges::begin;
 #include <hamon/type_traits/remove_all_extents.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -51,7 +52,7 @@ private:
 	template <
 		typename T,
 		typename = hamon::enable_if_t<
-			std::is_array<hamon::remove_reference_t<T>>::value
+			hamon::is_array<hamon::remove_reference_t<T>>::value
 		>
 	>
 	static HAMON_CONSTEXPR hamon::decay_t<T>

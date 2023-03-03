@@ -26,6 +26,7 @@ using std::indirectly_readable_traits;
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_extent.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -56,7 +57,7 @@ struct indirectly_readable_traits<T*>
 
 // (3) Specialization for array types
 template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && std::is_array<T>::value>>
+struct indirectly_readable_traits<T, hamon::enable_if_t<!std::is_const<T>::value && hamon::is_array<T>::value>>
 {
 	using value_type = hamon::remove_cv_t<hamon::remove_extent_t<T>>;
 };

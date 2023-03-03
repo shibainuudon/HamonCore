@@ -15,6 +15,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -42,7 +43,7 @@ private:
 	}
 
 	// load array
-	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_array<T>::value>>
+	template <typename Archive, typename T, typename = hamon::enable_if_t<hamon::is_array<T>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<3>)
 	{
 		hamon::serialization::detail::load_array(ar, t);

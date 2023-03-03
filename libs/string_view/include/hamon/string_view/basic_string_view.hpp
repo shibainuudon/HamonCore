@@ -36,6 +36,7 @@ using std::basic_string_view;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_array.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <limits>
@@ -52,7 +53,7 @@ template <typename CharT, typename Traits = hamon::char_traits<CharT>>
 class basic_string_view
 {
 private:
-	static_assert(!std::is_array<CharT>::value, "");
+	static_assert(!hamon::is_array<CharT>::value, "");
 	static_assert(std::is_trivial<CharT>::value && std::is_standard_layout<CharT>::value, "");
 	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "");
 
