@@ -34,7 +34,7 @@
 //#include <hamon/type_traits/has_virtual_destructor.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
-//#include <hamon/type_traits/is_abstract.hpp>
+#include <hamon/type_traits/is_abstract.hpp>
 #include <hamon/type_traits/is_aggregate.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_array.hpp>

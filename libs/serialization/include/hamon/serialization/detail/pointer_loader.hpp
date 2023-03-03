@@ -76,7 +76,7 @@ public:
 			return;
 		}
 
-		/*if constexpr (std::is_abstract_v<T>)
+		/*if constexpr (hamon::is_abstract_v<T>)
 		{
 			return nullptr;
 		}
