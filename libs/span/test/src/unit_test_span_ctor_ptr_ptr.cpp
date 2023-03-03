@@ -21,7 +21,7 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 cv_test()
 {
-//	constexpr bool b = !std::is_class<T>::value;
+//	constexpr bool b = !hamon::is_class<T>::value;
 	static_assert(     std::is_constructible<hamon::span<T               >, T               *, T               *>::value, "");
 	static_assert(    !std::is_constructible<hamon::span<T               >, T const         *, T const         *>::value, "");
 	static_assert(    !std::is_constructible<hamon::span<T               >, T       volatile*, T       volatile*>::value, "");

@@ -25,9 +25,9 @@ using std::ranges::view_interface;
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/is_class.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
-//
+
 namespace hamon {
 namespace ranges {
 
@@ -36,14 +36,14 @@ template <
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, typename = hamon::enable_if_t<
 		hamon::conjunction<
-			std::is_class<Derived>,
+			hamon::is_class<Derived>,
 			hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
 		>::value
 	>
 #endif
 >
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires std::is_class<Derived>::value && hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
+requires hamon::is_class<Derived>::value && hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
 #endif
 class view_interface;
 

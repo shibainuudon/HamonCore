@@ -7,9 +7,9 @@
 #include <hamon/span.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/remove_volatile.hpp>
+#include <hamon/type_traits/is_class.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -33,7 +33,7 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool test2()
 {
 	using U = hamon::conditional_t<
-		std::is_class<T>::value,
+		hamon::is_class<T>::value,
 		hamon::remove_volatile_t<T>,
 		T
 	>;

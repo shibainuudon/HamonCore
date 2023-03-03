@@ -41,12 +41,13 @@ using std::ranges::view_interface;
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/type_traits/is_class.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <type_traits>
+#include <utility>
 
 namespace hamon
 {
@@ -83,7 +84,7 @@ template <
 #endif
 >
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires std::is_class<Derived>::value && hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
+requires hamon::is_class<Derived>::value && hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
 #endif
 class view_interface
 {

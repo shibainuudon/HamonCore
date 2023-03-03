@@ -16,6 +16,7 @@
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_class.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -64,7 +65,7 @@ private:
 	}
 
 	// save class
-	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_class<T>::value>>
+	template <typename Archive, typename T, typename = hamon::enable_if_t<hamon::is_class<T>::value>>
 	static void impl(Archive& ar, T const& t, hamon::detail::overload_priority<0>)
 	{
 		hamon::serialization::detail::save_class(ar, t);

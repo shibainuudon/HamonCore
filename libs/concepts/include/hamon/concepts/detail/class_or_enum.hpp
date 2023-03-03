@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_class.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -22,7 +23,7 @@ namespace detail
 
 template <typename T>
 concept class_or_enum =
-	std::is_class<T>::value ||
+	hamon::is_class<T>::value ||
 	std::is_union<T>::value ||
 	std::is_enum<T>::value;
 
@@ -30,7 +31,7 @@ concept class_or_enum =
 
 template <typename T>
 using class_or_enum = hamon::disjunction<
-	std::is_class<T>,
+	hamon::is_class<T>,
 	std::is_union<T>,
 	std::is_enum<T>
 >;
