@@ -19,6 +19,7 @@
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_enum.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/ranges/concepts/range.hpp>
@@ -195,7 +196,7 @@ private:
 	}
 
 	// (7) ポインターなら同じサイズのarrayにbit_castしてhash
-	template <typename RawT, typename T, typename = hamon::enable_if_t<std::is_pointer<RawT>::value>>
+	template <typename RawT, typename T, typename = hamon::enable_if_t<hamon::is_pointer<RawT>::value>>
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<4>)
     HAMON_NOEXCEPT_IF_EXPR(std::declval<hash_t>()(hamon::bit_cast<std::array<unsigned char, sizeof(T)>>(x)))

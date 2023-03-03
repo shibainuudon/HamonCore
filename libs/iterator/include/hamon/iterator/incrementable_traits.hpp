@@ -23,6 +23,7 @@ using std::incrementable_traits;
 #include <hamon/iterator/concepts/detail/has_difference_type.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -63,7 +64,7 @@ struct incrementable_traits<T
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, hamon::enable_if_t<
 		!std::is_const<T>::value &&
-		!std::is_pointer<T>::value &&
+		!hamon::is_pointer<T>::value &&
 		detail::has_difference_type<T>::value
 	>
 #endif
@@ -97,7 +98,7 @@ struct incrementable_traits<T
 #if !(defined(HAMON_HAS_CXX20_CONCEPTS) && !HAMON_GCC_10)
 	, hamon::enable_if_t<
 		!std::is_const<T>::value &&
-		!std::is_pointer<T>::value &&
+		!hamon::is_pointer<T>::value &&
 		!detail::has_difference_type<T>::value
 	>
 	, hamon::enable_if_t<

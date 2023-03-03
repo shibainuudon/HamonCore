@@ -11,8 +11,8 @@
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon {
 namespace ranges {
@@ -22,8 +22,8 @@ namespace detail {
 
 template <typename From, typename To>
 concept uses_nonqualification_pointer_conversion =
-	std::is_pointer<From>::value &&
-	std::is_pointer<To>::value &&
+	hamon::is_pointer<From>::value &&
+	hamon::is_pointer<To>::value &&
 	!hamon::convertible_to<
 		hamon::remove_pointer_t<From>(*)[],
 		hamon::remove_pointer_t<To>(*)[]
@@ -33,8 +33,8 @@ concept uses_nonqualification_pointer_conversion =
 
 template <typename From, typename To>
 using uses_nonqualification_pointer_conversion = hamon::conjunction<
-	std::is_pointer<From>,
-	std::is_pointer<To>,
+	hamon::is_pointer<From>,
+	hamon::is_pointer<To>,
 	hamon::negation<
 		hamon::convertible_to<
 			hamon::remove_pointer_t<From>(*)[],

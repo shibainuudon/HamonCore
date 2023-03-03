@@ -10,6 +10,7 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -27,7 +28,7 @@ namespace detail
 
 template <typename T>
 concept pointer_to_object =
-	std::is_pointer<T>::value &&
+	hamon::is_pointer<T>::value &&
 	std::is_object<hamon::remove_pointer_t<T>>::value;
 
 template <typename T>
@@ -46,7 +47,7 @@ private:
 	template <typename U,
 		typename P = decltype(hamon::detail::decay_copy(std::declval<U&>().data()))>
 	static auto test(int) -> hamon::conjunction<
-		std::is_pointer<P>,
+		hamon::is_pointer<P>,
 		std::is_object<hamon::remove_pointer_t<P>>
 	>;
 
