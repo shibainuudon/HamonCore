@@ -56,7 +56,7 @@ struct invoke_result;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/type_traits/is_member_object_pointer.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_member_function_pointer.hpp>
 #include <utility>
 
 namespace hamon
@@ -224,7 +224,7 @@ template <typename F, typename... ArgTypes>
 struct invoke_result
 	: public invoke_result_impl<
 		hamon::is_member_object_pointer<hamon::remove_reference_t<F>>::value,
-		std::is_member_function_pointer<hamon::remove_reference_t<F>>::value,
+		hamon::is_member_function_pointer<hamon::remove_reference_t<F>>::value,
 		F, ArgTypes...
 	>::type
 {};
