@@ -9,6 +9,7 @@
 
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_volatile.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -24,7 +25,7 @@ namespace detail
 template <typename T>
 struct is_nonvolatile_trivially_copyable
 	: public hamon::conjunction<
-		hamon::negation<std::is_volatile<T>>,
+		hamon::negation<hamon::is_volatile<T>>,
 		std::is_trivially_copyable<T>
 	>
 {};

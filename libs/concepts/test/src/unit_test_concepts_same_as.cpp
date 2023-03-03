@@ -6,8 +6,8 @@
 
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/is_const.hpp>
+#include <hamon/type_traits/is_volatile.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_SAME_AS_TEST(B, T1, T2)	\
@@ -67,7 +67,7 @@ check_subsumption()
 }
 
 template <typename T, typename U>
-requires hamon::same_as<U, T> && std::is_volatile<T>::value
+requires hamon::same_as<U, T> && hamon::is_volatile<T>::value
 constexpr int
 check_subsumption()
 {
