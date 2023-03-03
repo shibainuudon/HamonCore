@@ -95,7 +95,7 @@
 //#include <hamon/type_traits/is_reference.hpp>
 #include <hamon/type_traits/is_rvalue_reference.hpp>
 #include <hamon/type_traits/is_same.hpp>
-//#include <hamon/type_traits/is_scalar.hpp>
+#include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/type_traits/is_scoped_enum.hpp>
 //#include <hamon/type_traits/is_signed.hpp>
 //#include <hamon/type_traits/is_standard_layout.hpp>

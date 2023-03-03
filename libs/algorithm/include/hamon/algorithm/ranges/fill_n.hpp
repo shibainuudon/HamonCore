@@ -32,8 +32,8 @@ using std::ranges::fill_n;
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -56,7 +56,7 @@ private:
 	//}
 
 	template <typename T, typename Out, typename Difference,
-		typename = hamon::enable_if_t<std::is_scalar<T>::value>>
+		typename = hamon::enable_if_t<hamon::is_scalar<T>::value>>
 	static HAMON_CXX14_CONSTEXPR Out
 	impl(Out first, Difference n, T const& value,
 		hamon::detail::overload_priority<1>)

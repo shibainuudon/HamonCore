@@ -38,7 +38,7 @@ using std::ranges::fill;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_scalar.hpp>
 #include <utility>
 
 namespace hamon
@@ -64,7 +64,7 @@ private:
 	}
 
 	template <typename T, typename Out, typename Sent,
-		typename = hamon::enable_if_t<std::is_scalar<T>::value>>
+		typename = hamon::enable_if_t<hamon::is_scalar<T>::value>>
 	static HAMON_CXX14_CONSTEXPR Out
 	impl(Out first, Sent last, T const& value,
 		hamon::detail::overload_priority<1>)
