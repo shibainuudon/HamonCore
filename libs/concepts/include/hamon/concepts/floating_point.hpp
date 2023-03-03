@@ -9,7 +9,7 @@
 
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_floating_point.hpp>
 
 namespace hamon
 {
@@ -21,12 +21,12 @@ using std::floating_point;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept floating_point = std::is_floating_point<T>::value;
+concept floating_point = hamon::is_floating_point<T>::value;
 
 #else
 
 template <typename T>
-using floating_point = std::is_floating_point<T>;
+using floating_point = hamon::is_floating_point<T>;
 
 #endif
 

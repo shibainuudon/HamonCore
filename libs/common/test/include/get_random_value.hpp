@@ -8,6 +8,7 @@
 #define UNIT_TEST_COMMON_GET_RANDOM_VALUE_HPP
 
 #include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -24,7 +25,7 @@ inline std::mt19937& get_random_engine()
 	return mt;
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<2>)
 {
 	std::uniform_real_distribution<T> dist(min, max);
@@ -51,7 +52,7 @@ inline T get_random_value(T min, T max)
 	return get_random_value_impl<T>(min, max, hamon::detail::overload_priority<2>{});
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<1>)
 {
 	return get_random_value(

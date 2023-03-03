@@ -16,8 +16,8 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -55,7 +55,7 @@ private:
 
 	// floating_point
 	template <typename T, typename U,
-		typename = hamon::enable_if_t<std::is_floating_point<hamon::decay_t<T>>::value>>
+		typename = hamon::enable_if_t<hamon::is_floating_point<hamon::decay_t<T>>::value>>
 	static HAMON_CONSTEXPR hamon::weak_ordering
 	impl(T&& e, U&& f, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT

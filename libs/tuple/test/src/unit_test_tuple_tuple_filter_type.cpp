@@ -6,6 +6,7 @@
 
 #include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_floating_point.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <tuple>
@@ -26,7 +27,7 @@ struct IsUnsigned
 struct IsFloatingPoint
 {
 	template <typename T>
-	using type = std::is_floating_point<T>;
+	using type = hamon::is_floating_point<T>;
 };
 
 template <template <typename...> class Tuple>

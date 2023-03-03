@@ -12,6 +12,7 @@
 #include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_floating_point.hpp>
 #include <type_traits>
 #include <cstdint>
 #include <memory>
@@ -114,7 +115,7 @@ private:
 	}
 
 private:
-	template <typename T, typename = hamon::enable_if_t<std::is_floating_point<T>::value>>
+	template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
 	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<2>)
 	{
 		m_impl->load(t);

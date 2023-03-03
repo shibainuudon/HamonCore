@@ -10,7 +10,7 @@
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_floating_point.hpp>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ struct float_promote_impl;
 template <typename T>
 struct float_promote_impl<T>
 	: public hamon::conditional<
-		std::is_floating_point<T>::value,
+		hamon::is_floating_point<T>::value,
 		T,
 		double
 	>
