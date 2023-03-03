@@ -22,6 +22,7 @@ using std::invoke;
 
 #include <hamon/functional/detail/is_reference_wrapper.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/type_traits/detail/member_object_pointer_traits.hpp>
 #include <hamon/type_traits/detail/member_function_pointer_traits.hpp>
 #include <hamon/config.hpp>
@@ -85,7 +86,7 @@ struct invoke_memfun_impl<false, false>
 template <typename ClassT, typename A0>
 struct invoke_memfun
 	: public invoke_memfun_impl<
-		std::is_base_of<ClassT, A0>::value,
+		hamon::is_base_of<ClassT, A0>::value,
 		hamon::detail::is_reference_wrapper<A0>::value
 	>
 {};
@@ -124,7 +125,7 @@ struct invoke_memobj_impl<false, false>
 template <typename ClassT, typename A0>
 struct invoke_memobj
 	: public invoke_memobj_impl<
-		std::is_base_of<ClassT, A0>::value,
+		hamon::is_base_of<ClassT, A0>::value,
 		hamon::detail::is_reference_wrapper<A0>::value
 	>
 {};

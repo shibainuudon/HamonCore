@@ -7,6 +7,7 @@
 #ifndef HAMON_CONCEPTS_DERIVED_FROM_HPP
 #define HAMON_CONCEPTS_DERIVED_FROM_HPP
 
+#include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/concepts/config.hpp>
 
 #if defined(HAMON_USE_STD_CONCEPTS)
@@ -27,7 +28,7 @@ namespace hamon
 
 template <typename Derived, typename Base>
 concept derived_from =
-	std::is_base_of<Base, Derived>::value &&
+	hamon::is_base_of<Base, Derived>::value &&
 	std::is_convertible<Derived const volatile*, Base const volatile*>::value;
 
 }	// namespace hamon
@@ -45,7 +46,7 @@ namespace hamon
 template <typename Derived, typename Base>
 using derived_from =
 	hamon::conjunction<
-		std::is_base_of<Base, Derived>,
+		hamon::is_base_of<Base, Derived>,
 		std::is_convertible<
 			hamon::add_pointer_t<hamon::add_cv_t<Derived>>,
 			hamon::add_pointer_t<hamon::add_cv_t<Base>>

@@ -8,7 +8,7 @@
 #define HAMON_SERIALIZATION_BASE_OBJECT_HPP
 
 #include <hamon/type_traits/enable_if.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_base_of.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace serialization
 
 template <typename Base, typename Derived,
 	typename = hamon::enable_if_t<
-		std::is_base_of<Base, Derived>::value
+		hamon::is_base_of<Base, Derived>::value
 	>
 >
 Base& base_object(Derived& d)

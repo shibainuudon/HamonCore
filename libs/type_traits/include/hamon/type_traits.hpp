@@ -39,7 +39,7 @@
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
-//#include <hamon/type_traits/is_base_of.hpp>
+#include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 //#include <hamon/type_traits/is_class.hpp>
 //#include <hamon/type_traits/is_compound.hpp>
