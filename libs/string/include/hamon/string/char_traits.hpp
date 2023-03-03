@@ -11,13 +11,13 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
+#include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <ios>
 #include <cwchar>
 #include <cstdio>
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>	// is_void
 
 namespace hamon
 {
@@ -348,7 +348,7 @@ template <typename Traits>
 struct char_traits_cmp_cat
 {
 	using type = typename Traits::comparison_category;
-	static_assert(!std::is_void<hamon::common_comparison_category_t<type>>::value, "");
+	static_assert(!hamon::is_void<hamon::common_comparison_category_t<type>>::value, "");
 };
 
 template <typename Traits>

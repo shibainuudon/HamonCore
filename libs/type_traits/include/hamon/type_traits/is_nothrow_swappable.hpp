@@ -22,6 +22,8 @@ using std::is_nothrow_swappable;
 #else
 
 #include <hamon/type_traits/is_nothrow_swappable_with.hpp>
+#include <hamon/type_traits/is_void.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -56,7 +58,7 @@ struct is_nothrow_swappable_impl
 
 template <typename T>
 struct is_nothrow_swappable_impl<T, true>
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 }	// namespace detail
@@ -64,7 +66,7 @@ struct is_nothrow_swappable_impl<T, true>
 template <typename T>
 struct is_nothrow_swappable
 	: public detail::is_nothrow_swappable_impl<
-		T, std::is_void<T>::value
+		T, hamon::is_void<T>::value
 	>
 {};
 

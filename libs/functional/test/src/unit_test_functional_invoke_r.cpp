@@ -190,6 +190,10 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<int  >(function3, 0, 0.0f));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<char >(function3, 0, 0.0f));
 
+		hamon::invoke_r<void>(function1);
+		hamon::invoke_r<void>(function2, 0.0f);
+		hamon::invoke_r<void>(function3, 0, 0.0f);
+
 		static_assert(hamon::is_same<decltype(hamon::invoke_r<int  >(function1)), int>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::invoke_r<long >(function1)), long>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::invoke_r<void >(function1)), void>::value, "");

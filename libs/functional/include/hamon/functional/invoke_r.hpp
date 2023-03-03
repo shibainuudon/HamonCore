@@ -22,10 +22,11 @@ using std::invoke_r;
 
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
+#include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -34,9 +35,13 @@ namespace hamon
 namespace detail
 {
 
-template <typename R, typename... Args>
+template <
+	typename R,
+	typename = hamon::enable_if_t<hamon::is_void<R>::value>,
+	typename... Args
+>
 HAMON_CXX14_CONSTEXPR R
-invoke_r_impl(std::true_type, Args&&... args)
+invoke_r_impl(hamon::detail::overload_priority<1>, Args&&... args)
 HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(std::forward<Args>(args)...))
 {
 	hamon::invoke(std::forward<Args>(args)...);
@@ -44,7 +49,7 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(std::forward<Args>(args)...))
 
 template <typename R, typename... Args>
 HAMON_CXX14_CONSTEXPR R
-invoke_r_impl(std::false_type, Args&&... args)
+invoke_r_impl(hamon::detail::overload_priority<0>, Args&&... args)
 HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(std::forward<Args>(args)...))
 {
 	return hamon::invoke(std::forward<Args>(args)...);
@@ -64,7 +69,8 @@ HAMON_CXX14_CONSTEXPR R
 invoke_r(F&& f, Args&&... args)
 HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(std::forward<F>(f), std::forward<Args>(args)...))
 {
-	return hamon::detail::invoke_r_impl<R>(std::is_void<R>{},
+	return hamon::detail::invoke_r_impl<R>(
+		hamon::detail::overload_priority<1>{},
 		std::forward<F>(f), std::forward<Args>(args)...);
 }
 

@@ -10,8 +10,10 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
+#include <utility>
 
 namespace hamon
 {
@@ -64,8 +66,8 @@ template <typename From, typename To>
 struct is_nothrow_convertible :
 	hamon::disjunction<
 		hamon::conjunction<
-			std::is_void<To>,
-			std::is_void<From>
+			hamon::is_void<To>,
+			hamon::is_void<From>
 		>,
 		hamon::conjunction<
 			std::is_convertible<From, To>,

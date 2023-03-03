@@ -14,8 +14,8 @@
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/add_rvalue_reference.hpp>
 #include <hamon/type_traits/add_volatile.hpp>
-//#include <hamon/type_traits/aligned_storage.hpp>
-//#include <hamon/type_traits/aligned_union.hpp>
+//#include <hamon/type_traits/aligned_storage.hpp>	// deprecated in C++23
+//#include <hamon/type_traits/aligned_union.hpp>	// deprecated in C++23
 //#include <hamon/type_traits/alignment_of.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
@@ -114,7 +114,7 @@
 #include <hamon/type_traits/is_unbounded_array.hpp>
 //#include <hamon/type_traits/is_union.hpp>
 //#include <hamon/type_traits/is_unsigned.hpp>
-//#include <hamon/type_traits/is_void.hpp>
+#include <hamon/type_traits/is_void.hpp>
 //#include <hamon/type_traits/is_volatile.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
@@ -136,6 +136,7 @@
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/remove_volatile.hpp>
+//#include <hamon/type_traits/result_of.hpp>	// removed in C++20
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
