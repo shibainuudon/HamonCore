@@ -10,6 +10,8 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/is_function.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -31,30 +33,30 @@ namespace to_address_detail
 
 template <typename T, typename = void>
 struct has_pointer_traits_to_address
-	: std::false_type {};
+	: public hamon::false_type {};
 
 template <typename T>
 struct has_pointer_traits_to_address<T,
 	hamon::void_t<
 		decltype(std::pointer_traits<T>::to_address(std::declval<T const&>()))
 	>
-> : std::true_type {};
+> : public hamon::true_type {};
 
 template <typename T, typename = void>
 struct has_operator_arrow
-	: std::false_type {};
+	: public hamon::false_type {};
 
 template <typename T>
 struct has_operator_arrow<T,
 	hamon::void_t<
 		decltype(std::declval<T const&>().operator->())
 	>
-> : std::true_type {};
+> : public hamon::true_type {};
 
 struct to_address_fn
 {
 private:
-	template <typename T, typename = hamon::enable_if_t<!std::is_function<T>::value>>
+	template <typename T, typename = hamon::enable_if_t<!hamon::is_function<T>::value>>
 	static HAMON_CONSTEXPR T*
 	impl(T* p, hamon::detail::overload_priority<3>) HAMON_NOEXCEPT
 	{
