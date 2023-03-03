@@ -18,6 +18,7 @@
 #include <hamon/type_traits/make_uint_n.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_enum.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/ranges/concepts/range.hpp>
@@ -177,7 +178,7 @@ private:
 		hash_float<T>::impl(std::forward<T>(x)))
 
 	// (5) enum なら underlying_type_t<T> にキャストしてhash
-	template <typename RawT, typename T, typename = hamon::enable_if_t<std::is_enum<RawT>::value>>
+	template <typename RawT, typename T, typename = hamon::enable_if_t<hamon::is_enum<RawT>::value>>
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<6>)
     HAMON_NOEXCEPT_IF_EXPR(std::declval<hash_t>()(hamon::underlying_type_t<T>(x)))

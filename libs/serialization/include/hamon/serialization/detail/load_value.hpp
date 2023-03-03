@@ -17,8 +17,8 @@
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_class.hpp>
+#include <hamon/type_traits/is_enum.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ private:
 	}
 	
 	// load enum
-	template <typename Archive, typename T, typename = hamon::enable_if_t<std::is_enum<T>::value>>
+	template <typename Archive, typename T, typename = hamon::enable_if_t<hamon::is_enum<T>::value>>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<1>)
 	{
 		hamon::underlying_type_t<T> tmp;

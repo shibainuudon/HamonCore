@@ -24,6 +24,7 @@ using std::is_scoped_enum;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_enum.hpp>
 
 namespace hamon
 {
@@ -31,7 +32,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, bool = std::is_enum<T>::value>
+template <typename T, bool = hamon::is_enum<T>::value>
 struct is_scoped_enum_impl : public std::false_type {};
 
 template <typename T>

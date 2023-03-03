@@ -6,6 +6,7 @@
 
 #include <hamon/bit/endian.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
+#include <hamon/type_traits/is_enum.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <cstring>	// memcpy
@@ -16,7 +17,7 @@ HAMON_WARNING_DISABLE_MSVC(4127)	// conditional expression is constant
 
 GTEST_TEST(BitTest, EndianTest)
 {
-	static_assert(std::is_enum<hamon::endian>::value, "");
+	static_assert(hamon::is_enum<hamon::endian>::value, "");
 
 	using UT = hamon::underlying_type_t<hamon::endian>;
 	static_assert(!std::is_convertible<hamon::endian, UT>::value, "");

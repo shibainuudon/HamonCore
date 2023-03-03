@@ -9,9 +9,9 @@
 
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_enum.hpp>
 #include <hamon/bit/popcount.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <string>
 #include <cstdint>
 #include <cstddef>
@@ -68,7 +68,7 @@ template <typename E, std::size_t N = 32, bool Dense = false>
 class bitflags
 {
 private:
-	static_assert(std::is_enum<E>::value, "");
+	static_assert(hamon::is_enum<E>::value, "");
 
 	using value_type = hamon::make_uint_least_n_t<N>;
 	using size_type = std::size_t;
