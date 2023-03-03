@@ -23,6 +23,7 @@ using std::invoke;
 #include <hamon/functional/detail/is_reference_wrapper.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/is_base_of.hpp>
+#include <hamon/type_traits/is_member_object_pointer.hpp>
 #include <hamon/type_traits/detail/member_object_pointer_traits.hpp>
 #include <hamon/type_traits/detail/member_function_pointer_traits.hpp>
 #include <hamon/config.hpp>
@@ -164,7 +165,7 @@ inline HAMON_CONSTEXPR auto
 invoke(F&& f, Args&&... args)
 HAMON_INVOKE_RETURN((invoke_impl<
 		std::is_member_function_pointer<hamon::decay_t<F>>::value,
-		std::is_member_object_pointer<hamon::decay_t<F>>::value,
+		hamon::is_member_object_pointer<hamon::decay_t<F>>::value,
 		hamon::decay_t<F>,
 		hamon::decay_t<Args>...
 	>::invoke(std::forward<F>(f), std::forward<Args>(args)...)))

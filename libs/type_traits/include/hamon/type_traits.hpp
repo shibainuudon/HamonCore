@@ -69,7 +69,7 @@
 //#include <hamon/type_traits/is_literal_type.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 //#include <hamon/type_traits/is_member_function_pointer.hpp>
-//#include <hamon/type_traits/is_member_object_pointer.hpp>
+#include <hamon/type_traits/is_member_object_pointer.hpp>
 //#include <hamon/type_traits/is_member_pointer.hpp>
 //#include <hamon/type_traits/is_move_assignable.hpp>
 //#include <hamon/type_traits/is_move_constructible.hpp>
