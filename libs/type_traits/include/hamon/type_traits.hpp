@@ -98,7 +98,7 @@
 #include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/type_traits/is_scoped_enum.hpp>
 //#include <hamon/type_traits/is_signed.hpp>
-//#include <hamon/type_traits/is_standard_layout.hpp>
+#include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_swappable_with.hpp>
 #include <hamon/type_traits/is_trivial.hpp>

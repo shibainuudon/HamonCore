@@ -38,6 +38,7 @@ using std::basic_string_view;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
+#include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <limits>
@@ -45,7 +46,6 @@ using std::basic_string_view;
 #include <cstddef>
 #include <cstdlib>
 #include <stdexcept>
-#include <type_traits>
 
 namespace hamon
 {
@@ -55,7 +55,7 @@ class basic_string_view
 {
 private:
 	static_assert(!hamon::is_array<CharT>::value, "");
-	static_assert(hamon::is_trivial<CharT>::value && std::is_standard_layout<CharT>::value, "");
+	static_assert(hamon::is_trivial<CharT>::value && hamon::is_standard_layout<CharT>::value, "");
 	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "");
 
 public:
