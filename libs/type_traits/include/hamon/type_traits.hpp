@@ -104,7 +104,7 @@
 #include <hamon/type_traits/is_trivial.hpp>
 //#include <hamon/type_traits/is_trivially_assignable.hpp>
 //#include <hamon/type_traits/is_trivially_constructible.hpp>
-//#include <hamon/type_traits/is_trivially_copyable.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
 //#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 //#include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 //#include <hamon/type_traits/is_trivially_default_constructible.hpp>

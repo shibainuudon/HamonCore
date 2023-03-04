@@ -28,8 +28,8 @@ using std::bit_cast;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <cstring>	// memcpy
 
 namespace hamon
@@ -63,8 +63,8 @@ template <
 	typename = hamon::enable_if_t<
 		hamon::conjunction<
 			hamon::bool_constant<sizeof(To) == sizeof(From)>,
-			std::is_trivially_copyable<To>,
-			std::is_trivially_copyable<From>
+			hamon::is_trivially_copyable<To>,
+			hamon::is_trivially_copyable<From>
 		>::value
 	>
 >
