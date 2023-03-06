@@ -6,9 +6,11 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -21,9 +23,9 @@ void Vector2CtorCopyTest()
 {
 	using vector2 = hamon::qvm::vector<T, 2>;
 
-	static_assert( std::is_copy_constructible<vector2>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<vector2>::value, "");
-	static_assert( std::is_trivially_copy_constructible<vector2>::value, "");
+	static_assert( hamon::is_copy_constructible<vector2>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<vector2>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<vector2>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<vector2>::value, "");
 
 	{
@@ -39,9 +41,9 @@ void Vector3CtorCopyTest()
 {
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert( std::is_copy_constructible<vector3>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<vector3>::value, "");
-	static_assert( std::is_trivially_copy_constructible<vector3>::value, "");
+	static_assert( hamon::is_copy_constructible<vector3>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<vector3>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<vector3>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<vector3>::value, "");
 
 	{
@@ -58,9 +60,9 @@ void Vector4CtorCopyTest()
 {
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert( std::is_copy_constructible<vector4>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<vector4>::value, "");
-	static_assert( std::is_trivially_copy_constructible<vector4>::value, "");
+	static_assert( hamon::is_copy_constructible<vector4>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<vector4>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<vector4>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<vector4>::value, "");
 
 	{

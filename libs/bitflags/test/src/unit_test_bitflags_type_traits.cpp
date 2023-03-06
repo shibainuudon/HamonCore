@@ -13,6 +13,9 @@
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -79,15 +82,15 @@ static_assert(!hamon::is_constructible<Bitflag3, Bitflag2>::value, "");
 static_assert( hamon::is_constructible<Bitflag3, Bitflag3>::value, "");
 
 // Copy Constructible
-static_assert( std::is_copy_constructible<Bitflag1>::value, "");
-static_assert( std::is_copy_constructible<Bitflag2>::value, "");
-static_assert( std::is_copy_constructible<Bitflag3>::value, "");
-static_assert( std::is_trivially_copy_constructible<Bitflag1>::value, "");
-static_assert( std::is_trivially_copy_constructible<Bitflag2>::value, "");
-static_assert( std::is_trivially_copy_constructible<Bitflag3>::value, "");
-static_assert( std::is_nothrow_copy_constructible<Bitflag1>::value, "");
-static_assert( std::is_nothrow_copy_constructible<Bitflag2>::value, "");
-static_assert( std::is_nothrow_copy_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_copy_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_copy_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_copy_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_trivially_copy_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_trivially_copy_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_trivially_copy_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_nothrow_copy_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_nothrow_copy_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_nothrow_copy_constructible<Bitflag3>::value, "");
 
 // Move Constructible
 static_assert( std::is_move_constructible<Bitflag1>::value, "");

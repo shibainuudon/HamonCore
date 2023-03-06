@@ -6,9 +6,11 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -21,9 +23,9 @@ TYPED_TEST(QuaternionTest, CtorCopyTest)
 	using T = TypeParam;
 	using quaternion = hamon::qvm::quaternion<T>;
 
-	static_assert( std::is_copy_constructible<quaternion>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<quaternion>::value, "");
-	static_assert( std::is_trivially_copy_constructible<quaternion>::value, "");
+	static_assert( hamon::is_copy_constructible<quaternion>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<quaternion>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<quaternion>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<quaternion>::value, "");
 
 	{

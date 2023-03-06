@@ -6,9 +6,11 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -21,9 +23,9 @@ void Matrix3x3CtorCopyTest()
 {
 	using matrix3x3 = hamon::qvm::matrix<T, 3, 3>;
 
-	static_assert( std::is_copy_constructible<matrix3x3>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<matrix3x3>::value, "");
-	static_assert( std::is_trivially_copy_constructible<matrix3x3>::value, "");
+	static_assert( hamon::is_copy_constructible<matrix3x3>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<matrix3x3>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<matrix3x3>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<matrix3x3>::value, "");
 
 	{
@@ -52,9 +54,9 @@ void Matrix3x4CtorCopyTest()
 {
 	using matrix3x4 = hamon::qvm::matrix<T, 3, 4>;
 
-	static_assert( std::is_copy_constructible<matrix3x4>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<matrix3x4>::value, "");
-	static_assert( std::is_trivially_copy_constructible<matrix3x4>::value, "");
+	static_assert( hamon::is_copy_constructible<matrix3x4>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<matrix3x4>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<matrix3x4>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<matrix3x4>::value, "");
 
 	{
@@ -86,9 +88,9 @@ void Matrix4x3CtorCopyTest()
 {
 	using matrix4x3 = hamon::qvm::matrix<T, 4, 3>;
 
-	static_assert( std::is_copy_constructible<matrix4x3>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<matrix4x3>::value, "");
-	static_assert( std::is_trivially_copy_constructible<matrix4x3>::value, "");
+	static_assert( hamon::is_copy_constructible<matrix4x3>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<matrix4x3>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<matrix4x3>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<matrix4x3>::value, "");
 
 	{
@@ -121,9 +123,9 @@ void Matrix4x4CtorCopyTest()
 {
 	using matrix4x4 = hamon::qvm::matrix<T, 4, 4>;
 
-	static_assert( std::is_copy_constructible<matrix4x4>::value, "");
-	static_assert( std::is_nothrow_copy_constructible<matrix4x4>::value, "");
-	static_assert( std::is_trivially_copy_constructible<matrix4x4>::value, "");
+	static_assert( hamon::is_copy_constructible<matrix4x4>::value, "");
+	static_assert( hamon::is_nothrow_copy_constructible<matrix4x4>::value, "");
+	static_assert( hamon::is_trivially_copy_constructible<matrix4x4>::value, "");
 	static_assert( hamon::is_implicitly_copy_constructible<matrix4x4>::value, "");
 
 	{

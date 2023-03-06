@@ -8,6 +8,7 @@
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "functional_test.hpp"
@@ -41,7 +42,7 @@ GTEST_TEST(FunctionalTest, RangesMinusTest)
 	static_assert( has_is_transparent<F>::value, "");
 
 	static_assert( hamon::is_default_constructible<F>::value, "");
-	static_assert( std::is_copy_constructible<F>::value, "");
+	static_assert( hamon::is_copy_constructible<F>::value, "");
 	static_assert( std::is_move_constructible<F>::value, "");
 	static_assert( std::is_copy_assignable<F>::value, "");
 	static_assert( std::is_move_assignable<F>::value, "");

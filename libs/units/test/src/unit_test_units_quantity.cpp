@@ -16,9 +16,10 @@
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <ratio>
 #include <sstream>
 #include "constexpr_test.hpp"
@@ -147,8 +148,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 	{
 		using D = hamon::units::length_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_copy_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_copy_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q1(1);
 		HAMON_CONSTEXPR Q q2{q1};
@@ -157,8 +158,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 	{
 		using D = hamon::units::mass_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_copy_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_copy_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q1{2};
 		HAMON_CONSTEXPR Q q2(q1);
@@ -168,8 +169,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 		using D = hamon::units::length_dimension;
 		using S = std::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_copy_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_copy_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q1(3);
 		HAMON_CONSTEXPR Q q2(q1);
@@ -179,8 +180,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 		using D = hamon::units::mass_dimension;
 		using S = std::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_copy_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_copy_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q1{4};
 		HAMON_CONSTEXPR Q q2{q1};
@@ -191,8 +192,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 		using S = std::ratio<1000, 1>;
 		using O = std::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
-		static_assert(std::is_copy_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_copy_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_copy_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q1(5);
 		HAMON_CONSTEXPR Q q2(q1);

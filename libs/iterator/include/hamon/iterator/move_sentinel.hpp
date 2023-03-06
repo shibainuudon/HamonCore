@@ -27,6 +27,7 @@ using std::move_sentinel;
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -87,7 +88,7 @@ public:
 	}
 
 	constexpr Sent base() const
-	HAMON_NOEXCEPT_IF(std::is_nothrow_copy_constructible<Sent>::value)	// extension
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_copy_constructible<Sent>::value)	// extension
 	{
 		return m_last;
 	}

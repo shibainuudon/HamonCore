@@ -53,6 +53,7 @@ using std::move_iterator;
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <iterator>
@@ -228,7 +229,7 @@ private:
 	HAMON_CXX14_CONSTEXPR move_iterator
 	post_increment(std::true_type)
 	HAMON_NOEXCEPT_IF(
-		std::is_nothrow_copy_constructible<Iter>::value &&
+		hamon::is_nothrow_copy_constructible<Iter>::value &&
 		HAMON_NOEXCEPT_EXPR(++std::declval<Iter&>()))	// extension
 	{
 		move_iterator tmp(*this);
@@ -264,7 +265,7 @@ public:
 	HAMON_CXX14_CONSTEXPR move_iterator
 	operator--(int)
 	HAMON_NOEXCEPT_IF(
-		std::is_nothrow_copy_constructible<Iter>::value &&
+		hamon::is_nothrow_copy_constructible<Iter>::value &&
 		HAMON_NOEXCEPT_EXPR(--this->m_current))	// extension
 	{
 		move_iterator tmp(*this);

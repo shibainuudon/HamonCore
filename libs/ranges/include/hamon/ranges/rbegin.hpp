@@ -32,8 +32,8 @@ using std::ranges::rbegin;
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {
@@ -72,7 +72,7 @@ private:
 	impl(T&& t, hamon::detail::overload_priority<0>)
 		noexcept(
 			noexcept(ranges::end(t)) &&
-			std::is_nothrow_copy_constructible<decltype(ranges::end(t))>::value)
+			hamon::is_nothrow_copy_constructible<decltype(ranges::end(t))>::value)
 	->decltype(hamon::make_reverse_iterator(ranges::end(t)))
 	{
 		return hamon::make_reverse_iterator(ranges::end(t));
