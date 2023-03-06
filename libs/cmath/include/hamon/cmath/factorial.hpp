@@ -12,11 +12,11 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ template <> struct max_factorial_t<true,  8> { static const unsigned int value =
 template <typename T>
 HAMON_CONSTEXPR unsigned int max_factorial() HAMON_NOEXCEPT
 {
-	return max_factorial_t<std::is_unsigned<T>::value, sizeof(T)>::value;
+	return max_factorial_t<hamon::is_unsigned<T>::value, sizeof(T)>::value;
 }
 
 template <>

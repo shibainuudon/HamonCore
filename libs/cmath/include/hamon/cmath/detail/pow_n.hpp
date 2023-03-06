@@ -9,8 +9,8 @@
 
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -60,7 +60,7 @@ pow_n_impl(T const& x, IntType n) HAMON_NOEXCEPT
 
 template <
 	typename T, typename UIntType,
-	hamon::enable_if_t<std::is_unsigned<UIntType>::value>* = nullptr
+	hamon::enable_if_t<hamon::is_unsigned<UIntType>::value>* = nullptr
 >
 inline HAMON_CONSTEXPR T
 pow_n(T const& x, UIntType n) HAMON_NOEXCEPT

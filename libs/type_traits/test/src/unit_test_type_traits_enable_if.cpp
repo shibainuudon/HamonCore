@@ -6,10 +6,10 @@
 
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
-#include <type_traits>
 
 namespace hamon_type_traits_test
 {
@@ -30,13 +30,13 @@ int func1(T, typename hamon::enable_if<!hamon::is_signed<T>::value>::type* = 0)
 }
 
 template <typename T>
-int func2(T, hamon::enable_if_t<std::is_unsigned<T>::value>* = 0)
+int func2(T, hamon::enable_if_t<hamon::is_unsigned<T>::value>* = 0)
 {
 	return 0;
 }
 
 template <typename T>
-int func2(T, hamon::enable_if_t<!std::is_unsigned<T>::value>* = 0)
+int func2(T, hamon::enable_if_t<!hamon::is_unsigned<T>::value>* = 0)
 {
 	return 1;
 }

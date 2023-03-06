@@ -23,7 +23,7 @@ using std::popcount;
 #else
 
 #include <hamon/type_traits/enable_if.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <cstdint>
 
 namespace hamon
@@ -91,7 +91,7 @@ popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
 template <
 	typename T,
 	typename = hamon::enable_if_t<
-		std::is_unsigned<T>::value
+		hamon::is_unsigned<T>::value
 	>
 >
 inline HAMON_CONSTEXPR int

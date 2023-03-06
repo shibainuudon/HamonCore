@@ -25,9 +25,9 @@ using std::countl_zero;
 #include <hamon/bit/popcount.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
 
 namespace hamon
 {
@@ -86,7 +86,7 @@ struct countl_zero_impl<T, 0>
 template <
 	typename T,
 	typename = hamon::enable_if_t<
-		std::is_unsigned<T>::value
+		hamon::is_unsigned<T>::value
 	>
 >
 inline HAMON_CONSTEXPR int

@@ -13,9 +13,9 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <random>
 #include <limits>
-#include <type_traits>
 
 namespace
 {
@@ -33,7 +33,7 @@ inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<2>
 	return dist(get_random_engine());
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
+template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<1>)
 {
 	std::uniform_int_distribution<std::uintmax_t> dist(min, max);

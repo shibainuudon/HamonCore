@@ -14,7 +14,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <cstdint>
 #include <memory>
 
@@ -117,7 +117,7 @@ private:
 	{
 		m_impl->load(t);
 	}
-	template <typename T, typename = hamon::enable_if_t<std::is_unsigned<T>::value>>
+	template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<1>)
 	{
 		std::uintmax_t i;

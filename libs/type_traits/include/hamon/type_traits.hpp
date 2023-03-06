@@ -115,7 +115,7 @@
 //#include <hamon/type_traits/is_trivially_move_constructible.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/is_union.hpp>
-//#include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/is_volatile.hpp>
 #include <hamon/type_traits/make_int_fast_n.hpp>

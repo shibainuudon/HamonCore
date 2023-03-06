@@ -24,8 +24,8 @@ using std::countl_one;
 
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -42,7 +42,7 @@ namespace hamon
 template <
 	typename T,
 	typename = hamon::enable_if_t<
-		std::is_unsigned<T>::value
+		hamon::is_unsigned<T>::value
 	>
 >
 inline HAMON_CONSTEXPR int

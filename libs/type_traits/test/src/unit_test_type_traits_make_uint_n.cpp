@@ -5,12 +5,12 @@
  */
 
 #include <hamon/type_traits/make_uint_n.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_unsigned.hpp>
 
-static_assert(std::is_unsigned<hamon::make_uint_n_t< 8>>::value, "");
-static_assert(std::is_unsigned<hamon::make_uint_n_t<16>>::value, "");
-static_assert(std::is_unsigned<hamon::make_uint_n_t<32>>::value, "");
-static_assert(std::is_unsigned<hamon::make_uint_n_t<64>>::value, "");
+static_assert(hamon::is_unsigned<hamon::make_uint_n_t< 8>>::value, "");
+static_assert(hamon::is_unsigned<hamon::make_uint_n_t<16>>::value, "");
+static_assert(hamon::is_unsigned<hamon::make_uint_n_t<32>>::value, "");
+static_assert(hamon::is_unsigned<hamon::make_uint_n_t<64>>::value, "");
 
 static_assert(sizeof(hamon::make_uint_n_t< 8>) == 1, "");
 static_assert(sizeof(hamon::make_uint_n_t<16>) == 2, "");

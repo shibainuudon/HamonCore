@@ -24,9 +24,9 @@ using std::bit_floor;
 
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
 
 namespace hamon
 {
@@ -86,7 +86,7 @@ struct bit_floor_impl<T, 0>
 template <
 	typename T,
 	typename = hamon::enable_if_t<
-		std::is_unsigned<T>::value
+		hamon::is_unsigned<T>::value
 	>
 >
 inline HAMON_CONSTEXPR T

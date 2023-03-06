@@ -7,8 +7,8 @@
 #include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <tuple>
 #include "my_tuple.hpp"
 
@@ -21,7 +21,7 @@ namespace tuple_filter_type_test
 struct IsUnsigned
 {
 	template <typename T>
-	using type = std::is_unsigned<T>;
+	using type = hamon::is_unsigned<T>;
 };
 
 struct IsFloatingPoint
