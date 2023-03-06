@@ -16,6 +16,9 @@
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_trivially_copy_constructible.hpp>
+#include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/type_traits/is_trivially_move_constructible.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -93,15 +96,15 @@ static_assert( hamon::is_nothrow_copy_constructible<Bitflag2>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<Bitflag3>::value, "");
 
 // Move Constructible
-static_assert( std::is_move_constructible<Bitflag1>::value, "");
-static_assert( std::is_move_constructible<Bitflag2>::value, "");
-static_assert( std::is_move_constructible<Bitflag3>::value, "");
-static_assert( std::is_trivially_move_constructible<Bitflag1>::value, "");
-static_assert( std::is_trivially_move_constructible<Bitflag2>::value, "");
-static_assert( std::is_trivially_move_constructible<Bitflag3>::value, "");
-static_assert( std::is_nothrow_move_constructible<Bitflag1>::value, "");
-static_assert( std::is_nothrow_move_constructible<Bitflag2>::value, "");
-static_assert( std::is_nothrow_move_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_move_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_move_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_move_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_trivially_move_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_trivially_move_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_trivially_move_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_nothrow_move_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_nothrow_move_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_nothrow_move_constructible<Bitflag3>::value, "");
 
 // Assignable
 static_assert(!hamon::is_assignable<Bitflag1, Enum1>::value, "");

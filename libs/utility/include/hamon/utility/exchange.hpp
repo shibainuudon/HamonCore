@@ -26,6 +26,7 @@ using std::exchange;
 
 #else
 
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <type_traits>
 
 namespace hamon
@@ -49,7 +50,7 @@ template <typename T, typename U = T>
 inline HAMON_CXX14_CONSTEXPR T
 exchange(T& obj, U&& new_value)
 HAMON_NOEXCEPT_IF((
-    std::is_nothrow_move_constructible<T>::value &&
+    hamon::is_nothrow_move_constructible<T>::value &&
     std::is_nothrow_assignable<T&, U>::value))
 {
     T old_value = std::move(obj);

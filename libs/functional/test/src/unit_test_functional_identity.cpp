@@ -9,6 +9,7 @@
 #include <hamon/type_traits/is_nothrow_invocable_r.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <type_traits>
 
@@ -20,7 +21,7 @@ namespace identity_test
 
 static_assert( hamon::is_default_constructible<hamon::identity>::value, "");
 static_assert( hamon::is_copy_constructible<hamon::identity>::value, "");
-static_assert( std::is_move_constructible<hamon::identity>::value, "");
+static_assert( hamon::is_move_constructible<hamon::identity>::value, "");
 static_assert( std::is_copy_assignable<hamon::identity>::value, "");
 static_assert( std::is_move_assignable<hamon::identity>::value, "");
 

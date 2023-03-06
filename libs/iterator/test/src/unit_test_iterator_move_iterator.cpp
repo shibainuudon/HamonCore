@@ -24,6 +24,7 @@
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -256,11 +257,11 @@ static_assert(!hamon::is_copy_constructible<move_only_bidirectional_iterator_wra
 static_assert(!hamon::is_copy_constructible<move_only_random_access_iterator_wrapper<int>>::value, "");
 static_assert(!hamon::is_copy_constructible<move_only_contiguous_iterator_wrapper<int>>::value, "");
 
-static_assert( std::is_move_constructible<move_only_input_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_constructible<move_only_forward_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_constructible<move_only_bidirectional_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_constructible<move_only_random_access_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_constructible<move_only_contiguous_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_constructible<move_only_input_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_constructible<move_only_forward_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_constructible<move_only_bidirectional_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_constructible<move_only_random_access_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_constructible<move_only_contiguous_iterator_wrapper<int>>::value, "");
 
 static_assert(!std::is_copy_assignable<move_only_input_iterator_wrapper<int>>::value, "");
 static_assert(!std::is_copy_assignable<move_only_forward_iterator_wrapper<int>>::value, "");

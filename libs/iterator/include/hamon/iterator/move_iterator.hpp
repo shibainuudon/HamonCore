@@ -54,6 +54,7 @@ using std::move_iterator;
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <iterator>
@@ -168,7 +169,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	explicit move_iterator(Iter i)
-	HAMON_NOEXCEPT_IF(std::is_nothrow_move_constructible<Iter>::value)	// extension
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iter>::value)	// extension
 		: m_current(std::move(i)) {}
 
 	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_constructible, Iter, U)>
@@ -194,7 +195,7 @@ public:
 	
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR Iter
 	base() &&
-	HAMON_NOEXCEPT_IF(std::is_nothrow_move_constructible<Iter>::value)	// extension
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iter>::value)	// extension
 	{
 		return std::move(m_current);
 	}

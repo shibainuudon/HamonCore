@@ -31,6 +31,7 @@ using std::ranges::swap;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <type_traits>
@@ -111,7 +112,7 @@ private:
 	static HAMON_CXX14_CONSTEXPR void
 	impl(hamon::detail::overload_priority<0>, T&& t, U&& u)
 		HAMON_NOEXCEPT_IF(
-			std::is_nothrow_move_constructible<hamon::remove_reference_t<T>>::value &&
+			hamon::is_nothrow_move_constructible<hamon::remove_reference_t<T>>::value &&
 			std::is_nothrow_move_assignable<hamon::remove_reference_t<T>>::value)
 	{
 		auto tmp = static_cast<hamon::remove_reference_t<T>&&>(t);

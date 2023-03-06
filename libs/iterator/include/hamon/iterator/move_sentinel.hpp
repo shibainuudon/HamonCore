@@ -28,6 +28,7 @@ using std::move_sentinel;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <utility>
@@ -70,7 +71,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	explicit move_sentinel(Sent s)
-	HAMON_NOEXCEPT_IF(std::is_nothrow_move_constructible<Sent>::value)	// extension
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Sent>::value)	// extension
 		: m_last(std::move(s)) {}
 
 	template <HAMON_CONSTRAINED_PARAM(detail::move_sentinel_constructible_from, Sent, S2)>
