@@ -13,6 +13,7 @@
 #include <hamon/serialization/version.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_empty.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -64,7 +65,7 @@ private:
 
 	// 空のクラス
 	template <typename Archive, typename T,
-		typename = hamon::enable_if_t<std::is_empty<T>::value>>
+		typename = hamon::enable_if_t<hamon::is_empty<T>::value>>
 	static void impl(Archive&, T const&, version_t, hamon::detail::overload_priority<1>)
 	{
 		// save,load,serialize等が定義されておらず、

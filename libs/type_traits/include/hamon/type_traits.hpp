@@ -52,7 +52,7 @@
 //#include <hamon/type_traits/is_default_constructible.hpp>
 //#include <hamon/type_traits/is_destructible.hpp>
 #include <hamon/type_traits/is_detected.hpp>
-//#include <hamon/type_traits/is_empty.hpp>
+#include <hamon/type_traits/is_empty.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/type_traits/is_final.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
@@ -66,7 +66,7 @@
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_layout_compatible.hpp>
-//#include <hamon/type_traits/is_literal_type.hpp>
+//#include <hamon/type_traits/is_literal_type.hpp>	// removed in C++20
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_member_function_pointer.hpp>
 #include <hamon/type_traits/is_member_object_pointer.hpp>
@@ -88,6 +88,7 @@
 #include <hamon/type_traits/is_nothrow_swappable_with.hpp>
 #include <hamon/type_traits/is_null_pointer.hpp>
 #include <hamon/type_traits/is_object.hpp>
+//#include <hamon/type_traits/is_pod.hpp>		// deprecated in C++20
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/is_pointer_interconvertible_base_of.hpp>
 #include <hamon/type_traits/is_pointer_interconvertible_with_class.hpp>

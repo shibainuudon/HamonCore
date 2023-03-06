@@ -9,9 +9,9 @@
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_empty.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "noexcept_test.hpp"
 #include "constexpr_test.hpp"
 
@@ -33,7 +33,7 @@ using weakly_equality_comparable_with_t =
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	static_assert(std::is_empty<hamon::unreachable_sentinel_t>::value, "");
+	static_assert(hamon::is_empty<hamon::unreachable_sentinel_t>::value, "");
 	static_assert(hamon::semiregular_t<hamon::unreachable_sentinel_t>::value, "");
 
 	static_assert(hamon::same_as_t<
