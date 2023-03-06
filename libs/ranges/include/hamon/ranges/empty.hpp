@@ -30,8 +30,8 @@ using std::ranges::empty;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -78,7 +78,7 @@ public:
 	template <typename T>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(std::forward<T>(t), hamon::detail::overload_priority<2>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<2>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

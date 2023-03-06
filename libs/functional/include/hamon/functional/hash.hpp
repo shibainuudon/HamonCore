@@ -22,6 +22,7 @@
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -110,7 +111,7 @@ private:
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	hash_combine_tuple(T&& x, hamon::index_sequence<Is...>)
 	{
-		return hash_combine(0, std::get<Is>(std::forward<T>(x))...);
+		return hash_combine(0, std::get<Is>(hamon::forward<T>(x))...);
 	}
 
 	template <typename T, std::size_t N>
@@ -154,14 +155,14 @@ private:
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<10>)
 	HAMON_HASH_RETURN(
-		std::forward<T>(x).hash())
+		hamon::forward<T>(x).hash())
 
 	// (2) ADL経由でhash関数が呼び出せるならhash(x)
 	template <HAMON_CONSTRAINED_PARAM(detail::has_adl_hash, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<9>)
 	HAMON_HASH_RETURN(
-		hash(std::forward<T>(x)))
+		hash(hamon::forward<T>(x)))
 
 	// (3) integral なら static_cast
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, RawT), typename T>
@@ -175,7 +176,7 @@ private:
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<7>)
 	HAMON_HASH_RETURN(
-		hash_float<T>::impl(std::forward<T>(x)))
+		hash_float<T>::impl(hamon::forward<T>(x)))
 
 	// (5) enum なら underlying_type_t<T> にキャストしてhash
 	template <typename RawT, typename T, typename = hamon::enable_if_t<hamon::is_enum<RawT>::value>>
@@ -209,7 +210,7 @@ private:
 	impl(T&& x, hamon::detail::overload_priority<3>)
 	HAMON_HASH_RETURN(
 		hash_combine_array(
-			std::forward<T>(x),
+			hamon::forward<T>(x),
 			hamon::make_index_sequence<std::extent<RawT>::value>{}))
 
 	// (9) tuple-like なら hash_combine(get<I>(x)...)
@@ -218,7 +219,7 @@ private:
 	impl(T&& x, hamon::detail::overload_priority<2>)
 	HAMON_HASH_RETURN(
 		hash_combine_tuple(
-			std::forward<T>(x),
+			hamon::forward<T>(x),
 			hamon::make_index_sequence<std::tuple_size<RawT>::value>{}))
 
 	// (10) range なら begin(x)からend(x)までループしてhash_combine
@@ -233,14 +234,14 @@ private:
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<0>)
 	HAMON_HASH_RETURN(
-		std::hash<RawT>{}(std::forward<T>(x)))
+		std::hash<RawT>{}(hamon::forward<T>(x)))
 
 public:
 	template <typename T>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR std::size_t
 	operator()(T&& x) const
 	HAMON_HASH_RETURN(
-		impl<hamon::remove_cvref_t<T>>(std::forward<T>(x), hamon::detail::overload_priority<10>{}))
+		impl<hamon::remove_cvref_t<T>>(hamon::forward<T>(x), hamon::detail::overload_priority<10>{}))
 };
 
 #undef HAMON_HASH_RETURN

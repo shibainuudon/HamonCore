@@ -13,6 +13,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 #include <cstddef>
@@ -33,7 +34,7 @@ concept has_adl_hash =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T&& t)
 	{
-		{ decay_copy(hash(std::forward<T>(t))) } -> hamon::convertible_to<std::size_t>;
+		{ decay_copy(hash(hamon::forward<T>(t))) } -> hamon::convertible_to<std::size_t>;
 	};
 
 #else

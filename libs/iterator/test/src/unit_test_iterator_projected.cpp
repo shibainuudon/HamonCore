@@ -12,8 +12,8 @@
 #include <hamon/iterator/iter_common_reference_t.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/forward.hpp>
 #include <cstddef>
-#include <utility>
 #include <vector>
 
 namespace hamon_iterator_test
@@ -27,7 +27,7 @@ struct Identity
 	template <typename T>
 	T&& operator()(T&& t) const
 	{
-		return std::forward<T>(t);
+		return hamon::forward<T>(t);
 	}
 };
 

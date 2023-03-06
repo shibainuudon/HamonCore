@@ -27,8 +27,8 @@ using std::invoke;
 #include <hamon/type_traits/is_member_function_pointer.hpp>
 #include <hamon/type_traits/detail/member_object_pointer_traits.hpp>
 #include <hamon/type_traits/detail/member_function_pointer_traits.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
@@ -63,7 +63,7 @@ struct invoke_memfun_impl<true, IsRefWrapper>
 	template <typename F, typename A0, typename... Args>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, A0&& t, Args&&... args)
-	HAMON_INVOKE_RETURN((std::forward<A0>(t).*f)(std::forward<Args>(args)...))
+	HAMON_INVOKE_RETURN((hamon::forward<A0>(t).*f)(hamon::forward<Args>(args)...))
 };
 
 template <>
@@ -72,7 +72,7 @@ struct invoke_memfun_impl<false, true>
 	template <typename F, typename A0, typename... Args>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, A0&& t, Args&&... args)
-	HAMON_INVOKE_RETURN((t.get().*f)(std::forward<Args>(args)...))
+	HAMON_INVOKE_RETURN((t.get().*f)(hamon::forward<Args>(args)...))
 };
 
 template <>
@@ -81,7 +81,7 @@ struct invoke_memfun_impl<false, false>
 	template <typename F, typename A0, typename... Args>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, A0&& t, Args&&... args)
-	HAMON_INVOKE_RETURN(((*std::forward<A0>(t)).*f)(std::forward<Args>(args)...))
+	HAMON_INVOKE_RETURN(((*hamon::forward<A0>(t)).*f)(hamon::forward<Args>(args)...))
 };
 
 template <typename ClassT, typename A0>
@@ -102,7 +102,7 @@ struct invoke_memobj_impl<true, IsRefWrapper>
 	template <typename F, typename A0>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, A0&& t)
-	HAMON_INVOKE_RETURN(std::forward<A0>(t).*f)
+	HAMON_INVOKE_RETURN(hamon::forward<A0>(t).*f)
 };
 
 template <>
@@ -120,7 +120,7 @@ struct invoke_memobj_impl<false, false>
 	template <typename F, typename A0>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, A0&& t)
-	HAMON_INVOKE_RETURN((*std::forward<A0>(t)).*f)
+	HAMON_INVOKE_RETURN((*hamon::forward<A0>(t)).*f)
 };
 
 template <typename ClassT, typename A0>
@@ -137,7 +137,7 @@ struct invoke_other
 	template <typename F, typename... Args>
 	static HAMON_CONSTEXPR auto
 	invoke(F&& f, Args&&... args)
-	HAMON_INVOKE_RETURN(std::forward<F>(f)(std::forward<Args>(args)...))
+	HAMON_INVOKE_RETURN(hamon::forward<F>(f)(hamon::forward<Args>(args)...))
 };
 
 // invoke_impl
@@ -168,7 +168,7 @@ HAMON_INVOKE_RETURN((invoke_impl<
 		hamon::is_member_object_pointer<hamon::decay_t<F>>::value,
 		hamon::decay_t<F>,
 		hamon::decay_t<Args>...
-	>::invoke(std::forward<F>(f), std::forward<Args>(args)...)))
+	>::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...)))
 
 #undef HAMON_INVOKE_RETURN
 
@@ -192,7 +192,7 @@ template <typename F, typename... Args>
 inline HAMON_CONSTEXPR auto
 invoke(F&& f, Args&&... args)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		detail::invoke(std::forward<F>(f), std::forward<Args>(args)...))
+		detail::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...))
 
 }	// namespace hamon
 

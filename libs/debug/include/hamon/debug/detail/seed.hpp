@@ -8,8 +8,8 @@
 #define HAMON_DEBUG_DETAIL_SEED_HPP
 
 #include <hamon/debug/detail/value_expression.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -28,7 +28,7 @@ public:
 	HAMON_CONSTEXPR value_expression<T>
 	operator->*(T&& v) const
 	{
-		return value_expression<T>(std::forward<T>(v));
+		return value_expression<T>(hamon::forward<T>(v));
 	}
 };
 

@@ -20,8 +20,8 @@ using std::identity;
 
 #else
 
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -31,7 +31,7 @@ struct identity
 	template <typename T>
 	HAMON_CONSTEXPR T&& operator()(T&& t) const HAMON_NOEXCEPT
 	{
-		return std::forward<T>(t);
+		return hamon::forward<T>(t);
 	}
 
 	using is_transparent = void;

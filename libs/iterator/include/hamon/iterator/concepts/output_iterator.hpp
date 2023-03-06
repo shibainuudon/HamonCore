@@ -23,6 +23,7 @@ using std::output_iterator;
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -35,7 +36,7 @@ template <typename Iter, typename T>
 concept output_iterator =
 	hamon::input_or_output_iterator<Iter> &&
 	hamon::indirectly_writable<Iter, T> &&
-	requires(Iter i, T&& t) { *i++ = std::forward<T>(t); };
+	requires(Iter i, T&& t) { *i++ = hamon::forward<T>(t); };
 
 #else
 

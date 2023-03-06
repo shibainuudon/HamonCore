@@ -11,8 +11,8 @@
 #include <hamon/debug/detail/value_expression_fwd.hpp>
 #include <hamon/debug/detail/operators.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -34,8 +34,8 @@ public:
     operator oper(T&& rhs) const                                 \
     {                                                           \
         return binary_expression<ExprType, value_expression<T>, op::name<ValType, hamon::remove_reference_t<T>>> \
-            (std::forward<ExprType const>(*static_cast<ExprType const*>(this)),                \
-              value_expression<T>(std::forward<T>(rhs)));                           \
+            (hamon::forward<ExprType const>(*static_cast<ExprType const*>(this)),                \
+              value_expression<T>(hamon::forward<T>(rhs)));                           \
     }                                                           \
 /**/
 

@@ -28,6 +28,7 @@ using std::reference_wrapper;
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_object.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -56,7 +57,7 @@ public:
 	HAMON_CONSTEXPR
 	reference_wrapper(U&& u)
 		HAMON_NOEXCEPT_IF_EXPR(reference_wrapper::FUN(std::declval<U>()))
-		: m_ptr(reference_wrapper::FUN(std::forward<U>(u)))
+		: m_ptr(reference_wrapper::FUN(hamon::forward<U>(u)))
 	{}
 
 	HAMON_CONSTEXPR
@@ -85,7 +86,7 @@ public:
 			static_assert(sizeof(type), "type must be complete");
 		}
 #endif
-		return hamon::invoke(get(), std::forward<Args>(args)...);
+		return hamon::invoke(get(), hamon::forward<Args>(args)...);
 	}
 
 private:

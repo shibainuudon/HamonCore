@@ -22,6 +22,7 @@ using std::indirectly_writable;
 
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -34,10 +35,10 @@ template <typename Out, typename T>
 concept indirectly_writable =
 	requires(Out&& o, T&& t)
 	{
-		*o = std::forward<T>(t);
-		*std::forward<Out>(o) = std::forward<T>(t);
-		const_cast<hamon::iter_reference_t<Out> const&&>(*o) = std::forward<T>(t);
-		const_cast<hamon::iter_reference_t<Out> const&&>(*std::forward<Out>(o)) = std::forward<T>(t);
+		*o = hamon::forward<T>(t);
+		*hamon::forward<Out>(o) = hamon::forward<T>(t);
+		const_cast<hamon::iter_reference_t<Out> const&&>(*o) = hamon::forward<T>(t);
+		const_cast<hamon::iter_reference_t<Out> const&&>(*hamon::forward<Out>(o)) = hamon::forward<T>(t);
 	};
 
 #else

@@ -13,6 +13,7 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
 #include <cstddef>
@@ -32,7 +33,7 @@ class value_expression : public expression_base<value_expression<T>, hamon::remo
 {
 public:
 	HAMON_CONSTEXPR value_expression(value_expression&& ve)
-		: m_value(std::forward<T>(ve.m_value))
+		: m_value(hamon::forward<T>(ve.m_value))
 	{
 	}
 
@@ -42,7 +43,7 @@ public:
 	}
 
 	explicit HAMON_CONSTEXPR value_expression(T&& val)
-		: m_value(std::forward<T>(val))
+		: m_value(hamon::forward<T>(val))
 	{
 	}
 

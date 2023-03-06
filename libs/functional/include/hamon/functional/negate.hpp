@@ -20,8 +20,8 @@ using std::negate;
 
 #else
 
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -50,9 +50,9 @@ struct negate<void>
 
 	template <typename T>
 	HAMON_CONSTEXPR auto operator()(T&& arg) const
-	->decltype(-std::forward<T>(arg))
+	->decltype(-hamon::forward<T>(arg))
 	{
-		return -std::forward<T>(arg);
+		return -hamon::forward<T>(arg);
 	}
 };
 

@@ -33,6 +33,7 @@ using std::ranges::size;
 #include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -93,7 +94,7 @@ public:
 	template <typename T>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(std::forward<T>(t), hamon::detail::overload_priority<3>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<3>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

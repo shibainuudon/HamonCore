@@ -10,6 +10,7 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <utility>
 
 namespace hamon
@@ -114,19 +115,19 @@ public:
 	template <typename Archive, typename T, typename... Args>
 	static void serialize(Archive& ar, T& t, Args&&... args)
 	{
-		t.serialize(ar, std::forward<Args>(args)...);
+		t.serialize(ar, hamon::forward<Args>(args)...);
 	}
 
 	template <typename Archive, typename T, typename... Args>
 	static void save(Archive& ar, T const& t, Args&&... args)
 	{
-		t.save(ar, std::forward<Args>(args)...);
+		t.save(ar, hamon::forward<Args>(args)...);
 	}
 	
 	template <typename Archive, typename T, typename... Args>
 	static void load(Archive& ar, T& t, Args&&... args)
 	{
-		t.load(ar, std::forward<Args>(args)...);
+		t.load(ar, hamon::forward<Args>(args)...);
 	}
 
 	template <typename T>

@@ -14,6 +14,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -36,7 +37,7 @@ private:
 	static HAMON_CONSTEXPR auto
 	impl(T&& e, U&& f, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		detail::partial_order_t{}(std::forward<T>(e), std::forward<U>(f)))
+		detail::partial_order_t{}(hamon::forward<T>(e), hamon::forward<U>(f)))
 
 	// e == f, e < f
 	template <typename T, typename U,
@@ -49,21 +50,21 @@ private:
 			HAMON_NOEXCEPT_EXPR(bool(std::declval<T>() <  std::declval<U>())))
 	{
 		return
-			std::forward<T>(e) == std::forward<U>(f) ? hamon::partial_ordering::equivalent :
-			std::forward<T>(e) <  std::forward<U>(f) ? hamon::partial_ordering::less       :
-			std::forward<U>(f) <  std::forward<T>(e) ? hamon::partial_ordering::greater    :
+			hamon::forward<T>(e) == hamon::forward<U>(f) ? hamon::partial_ordering::equivalent :
+			hamon::forward<T>(e) <  hamon::forward<U>(f) ? hamon::partial_ordering::less       :
+			hamon::forward<U>(f) <  hamon::forward<T>(e) ? hamon::partial_ordering::greater    :
 				                                       hamon::partial_ordering::unordered;
 	}
 
 public:
 	template <typename T, typename U>
 	HAMON_CONSTEXPR auto operator()(T&& e, U&& f) const
-		HAMON_NOEXCEPT_IF_EXPR(impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<1>{}))
-	->decltype((impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<1>{})))
+		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<1>{}))
+	->decltype((impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<1>{})))
 	{
 		static_assert(hamon::same_as_t<hamon::decay_t<T>, hamon::decay_t<U>>::value, "");
 
-		return impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<1>{});
+		return impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<1>{});
 	}
 };
 

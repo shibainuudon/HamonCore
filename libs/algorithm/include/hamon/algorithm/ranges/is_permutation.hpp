@@ -46,6 +46,7 @@ using std::ranges::is_permutation;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -65,9 +66,9 @@ private:
 
 		template <typename U>
 		HAMON_CXX14_CONSTEXPR auto operator()(U&& arg) const
-		->decltype(hamon::invoke(m_pred, m_scan_proj, std::forward<U>(arg)))
+		->decltype(hamon::invoke(m_pred, m_scan_proj, hamon::forward<U>(arg)))
 		{
-			return hamon::invoke(m_pred, m_scan_proj, std::forward<U>(arg));
+			return hamon::invoke(m_pred, m_scan_proj, hamon::forward<U>(arg));
 		}
 	};
 

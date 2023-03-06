@@ -24,7 +24,7 @@ using std::assignable_from;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/cref.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
-#include <utility>
+#include <hamon/utility/forward.hpp>
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ concept assignable_from =
 	hamon::common_reference_with<detail::cref<Lhs>, detail::cref<Rhs>> &&
 	requires(Lhs lhs, Rhs&& rhs)
 	{
-		{ lhs = std::forward<Rhs>(rhs) } -> hamon::same_as<Lhs>;
+		{ lhs = hamon::forward<Rhs>(rhs) } -> hamon::same_as<Lhs>;
 	};
 
 }	// namespace hamon

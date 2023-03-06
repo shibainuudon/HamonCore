@@ -33,6 +33,7 @@ using std::ranges::swap;
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <utility>
@@ -67,7 +68,7 @@ private:
 #endif
 	static HAMON_CXX14_CONSTEXPR auto
 	impl(hamon::detail::overload_priority<2>, T&& t, U&& u)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(swap(std::forward<T>(t), std::forward<U>(u)))
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(swap(hamon::forward<T>(t), hamon::forward<U>(u)))
 
 	template <
 		typename T, typename U, std::size_t N
@@ -124,7 +125,7 @@ public:
 	template <typename T, typename U>
 	HAMON_CXX14_CONSTEXPR auto operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::detail::overload_priority<2>{}, std::forward<T>(t), std::forward<U>(u)))
+			impl(hamon::detail::overload_priority<2>{}, hamon::forward<T>(t), hamon::forward<U>(u)))
 };
 
 }	// namespace swap_detail

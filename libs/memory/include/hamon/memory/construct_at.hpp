@@ -20,7 +20,7 @@ using std::construct_at;
 
 #else
 
-#include <utility>
+#include <hamon/utility/forward.hpp>
 
 namespace hamon
 {
@@ -28,10 +28,10 @@ namespace hamon
 template <typename T, typename... Args>
 inline auto
 construct_at(T* p, Args&&... args)
-noexcept(noexcept(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(std::forward<Args>(args)...)))
-->decltype(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(std::forward<Args>(args)...))
+noexcept(noexcept(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...)))
+->decltype(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...))
 {
-	return ::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(std::forward<Args>(args)...);
+	return ::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...);
 }
 
 }	// namespace hamon

@@ -29,6 +29,7 @@ using std::ranges::not_equal_to;
 #include <hamon/functional/detail/eq_builtin_ptr_cmp.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -59,7 +60,7 @@ struct not_equal_to
 	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<U>() == std::declval<T>())
 	{
-		return !hamon::ranges::equal_to{}(std::forward<T>(t), std::forward<U>(u));
+		return !hamon::ranges::equal_to{}(hamon::forward<T>(t), hamon::forward<U>(u));
 	}
 
 	using is_transparent = void;

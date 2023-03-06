@@ -43,8 +43,8 @@ using std::ranges::remove;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -63,7 +63,7 @@ private:
 		template <typename U>
 		constexpr bool operator()(U&& arg) const
 		{
-			return std::forward<U>(arg) == m_value;
+			return hamon::forward<U>(arg) == m_value;
 		}
 	};
 

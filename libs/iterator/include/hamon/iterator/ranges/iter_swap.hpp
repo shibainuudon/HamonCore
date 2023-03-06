@@ -33,8 +33,8 @@ using std::ranges::iter_swap;
 #include <hamon/concepts/swappable_with.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
@@ -90,7 +90,7 @@ private:
 #endif
 	static HAMON_CXX14_CONSTEXPR auto
 	impl(hamon::detail::overload_priority<2>, I1&& i1, I2&& i2)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(iter_swap(std::forward<I1>(i1), std::forward<I2>(i2)))
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(iter_swap(hamon::forward<I1>(i1), hamon::forward<I2>(i2)))
 
 	template <typename I1, typename I2
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -136,8 +136,8 @@ public:
 	HAMON_CXX14_CONSTEXPR auto operator()(I1&& i1, I2&& i2) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(impl(
 			hamon::detail::overload_priority<2>{},
-			std::forward<I1>(i1),
-			std::forward<I2>(i2)))
+			hamon::forward<I1>(i1),
+			hamon::forward<I2>(i2)))
 };
 
 }	// namespace iter_swap_detail

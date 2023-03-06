@@ -47,8 +47,8 @@ using std::ranges::search_n;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// forward
 
 namespace hamon
 {
@@ -67,9 +67,9 @@ private:
 
 		template <typename R>
 		HAMON_CXX14_CONSTEXPR auto operator()(R&& arg) const
-		->decltype(hamon::invoke(m_pred, std::forward<R>(arg), m_value))
+		->decltype(hamon::invoke(m_pred, hamon::forward<R>(arg), m_value))
 		{
-			return hamon::invoke(m_pred, std::forward<R>(arg), m_value);
+			return hamon::invoke(m_pred, hamon::forward<R>(arg), m_value);
 		}
 	};
 

@@ -27,8 +27,8 @@ using std::not_fn;
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// forward
 
 namespace hamon
 {
@@ -53,22 +53,22 @@ public:
 	template <typename... Args>
 	auto operator()(Args&&... args) &
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(m_fd, std::forward<Args>(args)...))
+			!hamon::invoke(m_fd, hamon::forward<Args>(args)...))
 
 	template <typename... Args>
 	auto operator()(Args&&... args) &&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(hamon::move(m_fd), std::forward<Args>(args)...))
+			!hamon::invoke(hamon::move(m_fd), hamon::forward<Args>(args)...))
 
 	template <typename... Args>
 	auto operator()(Args&&... args) const&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(m_fd, std::forward<Args>(args)...))
+			!hamon::invoke(m_fd, hamon::forward<Args>(args)...))
 
 	template <typename... Args>
 	auto operator()(Args&&... args) const&&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(hamon::move(m_fd), std::forward<Args>(args)...))
+			!hamon::invoke(hamon::move(m_fd), hamon::forward<Args>(args)...))
 
 	template <
 		typename F2,
@@ -77,7 +77,7 @@ public:
 		>
 	>
 	explicit not_fn_imp(F2&& fn)
-		: m_fd(std::forward<F2>(fn)) {}
+		: m_fd(hamon::forward<F2>(fn)) {}
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
@@ -95,7 +95,7 @@ not_fn(F&& fn)
 HAMON_NOEXCEPT_IF((
 	hamon::is_nothrow_constructible<hamon::decay_t<F>, F&&>::value))
 {
-	return detail::not_fn_imp<F>(std::forward<F>(fn));
+	return detail::not_fn_imp<F>(hamon::forward<F>(fn));
 }
 
 }	// namespace hamon

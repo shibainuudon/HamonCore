@@ -43,8 +43,8 @@ using std::ranges::shuffle;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// forward
 
 namespace hamon
 {
@@ -68,7 +68,7 @@ struct shuffle_fn
 				hamon::remove_reference_t<Gen>>))
 	{
 		auto lasti = ranges::next(first, last);
-		hamon::shuffle(hamon::move(first), lasti, std::forward<Gen>(g));
+		hamon::shuffle(hamon::move(first), lasti, hamon::forward<Gen>(g));
 		return lasti;
 	}
 
@@ -85,7 +85,7 @@ struct shuffle_fn
 				hamon::remove_reference_t<Gen>>))
 	{
 		return (*this)(
-			ranges::begin(r), ranges::end(r), std::forward<Gen>(g));
+			ranges::begin(r), ranges::end(r), hamon::forward<Gen>(g));
 	}
 };
 

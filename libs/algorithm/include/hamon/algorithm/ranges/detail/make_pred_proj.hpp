@@ -8,8 +8,8 @@
 #define HAMON_ALGORITHM_RANGES_DETAIL_MAKE_PRED_PROJ_HPP
 
 #include <hamon/functional/invoke.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -30,7 +30,7 @@ struct PredProjT
 	HAMON_CXX14_CONSTEXPR bool operator()(T&& arg) const
 	{
 		return hamon::invoke(m_pred,
-			hamon::invoke(m_proj, std::forward<T>(arg)));
+			hamon::invoke(m_proj, hamon::forward<T>(arg)));
 	}
 };
 

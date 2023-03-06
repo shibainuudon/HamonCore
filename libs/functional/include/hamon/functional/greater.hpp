@@ -20,8 +20,8 @@ using std::greater;
 
 #else
 
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -50,9 +50,9 @@ struct greater<void>
 
 	template <typename T, typename U>
 	HAMON_CONSTEXPR auto operator()(T&& lhs, U&& rhs) const
-	->decltype(std::forward<T>(lhs) > std::forward<U>(rhs))
+	->decltype(hamon::forward<T>(lhs) > hamon::forward<U>(rhs))
 	{
-		return std::forward<T>(lhs) > std::forward<U>(rhs);
+		return hamon::forward<T>(lhs) > hamon::forward<U>(rhs);
 	}
 };
 

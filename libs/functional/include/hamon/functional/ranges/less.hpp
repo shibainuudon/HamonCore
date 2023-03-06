@@ -29,6 +29,7 @@ using std::ranges::less;
 #include <hamon/concepts/totally_ordered_with.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <cstdint>
@@ -66,9 +67,9 @@ private:
 		}
 #endif
 		auto x = reinterpret_cast<std::uintptr_t>(
-			static_cast<const volatile void*>(std::forward<T>(t)));
+			static_cast<const volatile void*>(hamon::forward<T>(t)));
 		auto y = reinterpret_cast<std::uintptr_t>(
-			static_cast<const volatile void*>(std::forward<U>(u)));
+			static_cast<const volatile void*>(hamon::forward<U>(u)));
 		return x < y;
 	}
 
@@ -85,16 +86,16 @@ private:
 	static HAMON_CONSTEXPR bool impl(hamon::detail::overload_priority<0>, T&& t, U&& u)
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() < std::declval<U>())
 	{
-		return std::forward<T>(t) < std::forward<U>(u);
+		return hamon::forward<T>(t) < hamon::forward<U>(u);
 	}
 
 public:
 	template <typename T, typename U>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t, U&& u) const
-		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t), std::forward<U>(u)))
-	->decltype(impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t), std::forward<U>(u)))
+		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::detail::overload_priority<1>{}, hamon::forward<T>(t), hamon::forward<U>(u)))
+	->decltype(impl(hamon::detail::overload_priority<1>{}, hamon::forward<T>(t), hamon::forward<U>(u)))
 	{
-		return impl(hamon::detail::overload_priority<1>{}, std::forward<T>(t), std::forward<U>(u));
+		return impl(hamon::detail::overload_priority<1>{}, hamon::forward<T>(t), hamon::forward<U>(u));
 	}
 
 	using is_transparent = void;

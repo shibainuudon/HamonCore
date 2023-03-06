@@ -49,8 +49,8 @@ using std::ranges::sample;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// forward
 
 namespace hamon
 {
@@ -84,7 +84,7 @@ struct sample_fn
 	{
 		return hamon::sample(
 			hamon::move(first), ranges::next(first, last),
-			hamon::move(out_first), n, std::forward<Gen>(g));
+			hamon::move(out_first), n, hamon::forward<Gen>(g));
 	}
 
 	template <
@@ -109,7 +109,7 @@ struct sample_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			hamon::move(out_first), n, std::forward<Gen>(g));
+			hamon::move(out_first), n, hamon::forward<Gen>(g));
 	}
 };
 

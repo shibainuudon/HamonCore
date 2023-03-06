@@ -24,8 +24,8 @@ using std::ranges::crbegin;
 
 #include <hamon/ranges/rbegin.hpp>
 #include <hamon/ranges/detail/as_const.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -42,7 +42,7 @@ struct crbegin_fn
 	template <typename T>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			ranges::rbegin(ranges::detail::as_const(std::forward<T>(t))))
+			ranges::rbegin(ranges::detail::as_const(hamon::forward<T>(t))))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

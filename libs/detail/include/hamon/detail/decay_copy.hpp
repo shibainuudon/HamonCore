@@ -9,8 +9,8 @@
 
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -23,7 +23,7 @@ inline HAMON_CONSTEXPR hamon::decay_t<T>
 decay_copy(T&& t)
 HAMON_NOEXCEPT_IF((hamon::is_nothrow_convertible<T, hamon::decay_t<T>>::value))
 {
-	return std::forward<T>(t);
+	return hamon::forward<T>(t);
 }
 
 }	// namespace detail

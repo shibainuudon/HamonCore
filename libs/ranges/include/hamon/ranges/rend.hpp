@@ -33,6 +33,7 @@ using std::ranges::rend;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -83,7 +84,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(std::forward<T>(t), hamon::detail::overload_priority<2>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<2>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

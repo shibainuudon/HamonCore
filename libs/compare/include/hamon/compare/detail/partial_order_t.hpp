@@ -13,8 +13,8 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -46,7 +46,7 @@ private:
 	static HAMON_CONSTEXPR auto
 	impl(T&& e, U&& f, hamon::detail::overload_priority<2>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		hamon::partial_ordering(partial_order(std::forward<T>(e), std::forward<U>(f))))
+		hamon::partial_ordering(partial_order(hamon::forward<T>(e), hamon::forward<U>(f))))
 
 #if defined(HAMON_HAS_STD_COMPARE) && defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	// partial_ordering(e <=> f)
@@ -54,7 +54,7 @@ private:
 	static HAMON_CONSTEXPR auto
 	impl(T&& e, U&& f, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		hamon::partial_ordering(hamon::compare_three_way()(std::forward<T>(e), std::forward<U>(f))))
+		hamon::partial_ordering(hamon::compare_three_way()(hamon::forward<T>(e), hamon::forward<U>(f))))
 #endif
 
 	// partial_ordering(weak_order(e, f))
@@ -62,17 +62,17 @@ private:
 	static HAMON_CONSTEXPR auto
 	impl(T&& e, U&& f, hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		hamon::partial_ordering(detail::weak_order_t{}(std::forward<T>(e), std::forward<U>(f))))
+		hamon::partial_ordering(detail::weak_order_t{}(hamon::forward<T>(e), hamon::forward<U>(f))))
 
 public:
 	template <typename T, typename U>
 	HAMON_CONSTEXPR auto operator()(T&& e, U&& f) const
-		HAMON_NOEXCEPT_IF_EXPR(impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<2>{}))
-	->decltype((impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<2>{})))
+		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<2>{}))
+	->decltype((impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<2>{})))
 	{
 		static_assert(hamon::same_as_t<hamon::decay_t<T>, hamon::decay_t<U>>::value, "");
 
-		return impl(std::forward<T>(e), std::forward<U>(f), hamon::detail::overload_priority<2>{});
+		return impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<2>{});
 	}
 };
 

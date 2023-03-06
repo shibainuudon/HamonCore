@@ -9,9 +9,9 @@
 
 #include <hamon/debug/detail/binary_expression_fwd.hpp>
 #include <hamon/debug/detail/expression_base.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
-#include <utility>
 
 namespace hamon
 {
@@ -35,14 +35,14 @@ public:
 	}
 
 	HAMON_CONSTEXPR binary_expression(binary_expression&& be)
-		: m_lhs(std::forward<Lhs>(be.m_lhs))
-		, m_rhs(std::forward<Rhs>(be.m_rhs))
+		: m_lhs(hamon::forward<Lhs>(be.m_lhs))
+		, m_rhs(hamon::forward<Rhs>(be.m_rhs))
 	{
 	}
 
 	HAMON_CONSTEXPR binary_expression(Lhs&& lhs, Rhs&& rhs)
-		: m_lhs(std::forward<Lhs>(lhs))
-		, m_rhs(std::forward<Rhs>(rhs))
+		: m_lhs(hamon::forward<Lhs>(lhs))
+		, m_rhs(hamon::forward<Rhs>(rhs))
 	{
 	}
 

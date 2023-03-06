@@ -12,6 +12,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -34,11 +35,11 @@ concept less_builtin_ptr_cmp =
 	(
 		!requires(T&& t, U&& u)
 		{
-			operator<(std::forward<T>(t), std::forward<U>(u));
+			operator<(hamon::forward<T>(t), hamon::forward<U>(u));
 		} &&
 		!requires(T&& t, U&& u)
 		{
-			std::forward<T>(t).operator<(std::forward<U>(u));
+			hamon::forward<T>(t).operator<(hamon::forward<U>(u));
 		}
 	);
 

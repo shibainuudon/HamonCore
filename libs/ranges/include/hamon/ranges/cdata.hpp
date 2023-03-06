@@ -23,8 +23,8 @@ using std::ranges::cdata;
 
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/detail/as_const.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -41,7 +41,7 @@ struct cdata_fn
 	template <typename T>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			ranges::data(ranges::detail::as_const(std::forward<T>(t))))
+			ranges::data(ranges::detail::as_const(hamon::forward<T>(t))))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

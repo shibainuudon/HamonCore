@@ -11,9 +11,9 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cmath/lerp.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -31,9 +31,9 @@ struct lerp_fn
 
 	template <typename U1, typename U2>
 	HAMON_CONSTEXPR auto operator()(U1&& lhs, U2&& rhs) const
-	->decltype(hamon::lerp(std::forward<U1>(lhs), std::forward<U2>(rhs), m_t))
+	->decltype(hamon::lerp(hamon::forward<U1>(lhs), hamon::forward<U2>(rhs), m_t))
 	{
-		return hamon::lerp(std::forward<U1>(lhs), std::forward<U2>(rhs), m_t);
+		return hamon::lerp(hamon::forward<U1>(lhs), hamon::forward<U2>(rhs), m_t);
 	}
 };
 

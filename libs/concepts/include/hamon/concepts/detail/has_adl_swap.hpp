@@ -11,6 +11,7 @@
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <utility>
@@ -35,7 +36,7 @@ concept has_adl_swap =
 	 hamon::detail::class_or_enum<hamon::remove_reference_t<U>>) &&
 	requires(T&& t, U&& u)
 	{
-		swap(std::forward<T>(t), std::forward<U>(u));
+		swap(hamon::forward<T>(t), hamon::forward<U>(u));
 	};
 
 #else

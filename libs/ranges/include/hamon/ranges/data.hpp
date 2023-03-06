@@ -30,6 +30,7 @@ using std::ranges::data;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -68,7 +69,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(std::forward<T>(t), hamon::detail::overload_priority<1>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<1>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN

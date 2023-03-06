@@ -29,6 +29,7 @@ using std::ranges::greater_equal;
 #include <hamon/functional/detail/less_builtin_ptr_cmp.hpp>
 #include <hamon/concepts/totally_ordered_with.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -59,7 +60,7 @@ struct greater_equal
 	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
 		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() < std::declval<U>())
 	{
-		return !hamon::ranges::less{}(std::forward<T>(t), std::forward<U>(u));
+		return !hamon::ranges::less{}(hamon::forward<T>(t), hamon::forward<U>(u));
 	}
 
 	using is_transparent = void;

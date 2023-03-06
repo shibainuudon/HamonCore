@@ -10,6 +10,7 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <utility>
@@ -26,7 +27,7 @@ template <typename T>
 concept has_member_hash =
 	requires(T&& t)
 	{
-		{ decay_copy(std::forward<T>(t).hash()) } -> hamon::convertible_to<std::size_t>;
+		{ decay_copy(hamon::forward<T>(t).hash()) } -> hamon::convertible_to<std::size_t>;
 	};
 
 #else

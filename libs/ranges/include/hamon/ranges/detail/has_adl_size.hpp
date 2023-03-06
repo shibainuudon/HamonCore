@@ -15,6 +15,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -43,7 +44,7 @@ concept has_adl_size =
 	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
 	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(size(std::forward<T>(t))) } -> detail::is_integer_like;
+		{ hamon::detail::decay_copy(size(hamon::forward<T>(t))) } -> detail::is_integer_like;
 	};
 
 #else

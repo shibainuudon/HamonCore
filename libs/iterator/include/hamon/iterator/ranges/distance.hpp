@@ -37,8 +37,8 @@ using std::ranges::distance;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -121,7 +121,7 @@ inline HAMON_CXX14_CONSTEXPR ranges::range_difference_t<Range>
 distance(Range&& r)
 {
 	return ranges::detail::distance_impl_2(
-		hamon::detail::overload_priority<1>{}, std::forward<Range>(r));
+		hamon::detail::overload_priority<1>{}, hamon::forward<Range>(r));
 }
 
 }	// namespace ranges

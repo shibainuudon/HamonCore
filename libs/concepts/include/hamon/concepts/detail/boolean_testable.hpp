@@ -10,7 +10,9 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
+#include <utility>
 
 namespace hamon
 {
@@ -28,7 +30,7 @@ concept boolean_testable =
 	boolean_testable_impl<T> &&
 	requires(T&& t)
 	{
-		{ !std::forward<T>(t) } -> boolean_testable_impl;
+		{ !hamon::forward<T>(t) } -> boolean_testable_impl;
 	};
 
 #else
