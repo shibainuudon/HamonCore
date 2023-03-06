@@ -25,6 +25,7 @@
 #include <hamon/utility/in_range.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/make_integer_sequence.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/utility/to_underlying.hpp>
 #include <hamon/utility/unreachable.hpp>
 

@@ -9,9 +9,9 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
-#include <vector>
+#include <cstddef>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -109,14 +109,14 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	const R3& c = r;
 	
 	static_assert( noexcept(hamon::ranges::size(r)), "");
-	static_assert( noexcept(hamon::ranges::size(std::move(r))), "");
+	static_assert( noexcept(hamon::ranges::size(hamon::move(r))), "");
 	static_assert(!noexcept(hamon::ranges::size(c)), "");
-	static_assert(!noexcept(hamon::ranges::size(std::move(c))), "");
+	static_assert(!noexcept(hamon::ranges::size(hamon::move(c))), "");
 
 	VERIFY(hamon::ranges::size(r) == 1);
-	VERIFY(hamon::ranges::size(std::move(r)) == 1);
+	VERIFY(hamon::ranges::size(hamon::move(r)) == 1);
 	VERIFY(hamon::ranges::size(c) == 2L);
-	VERIFY(hamon::ranges::size(std::move(c)) == 2L);
+	VERIFY(hamon::ranges::size(hamon::move(c)) == 2L);
 
 	return true;
 }

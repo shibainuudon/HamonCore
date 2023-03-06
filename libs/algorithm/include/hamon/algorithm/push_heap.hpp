@@ -25,8 +25,8 @@ using std::push_heap;
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -51,11 +51,11 @@ push_heap_impl(
 	Distance parent = (hole_index - 1) / 2;
 	while (hole_index > top_index && comp(*(first + parent), value))
 	{
-		*(first + hole_index) = std::move(*(first + parent));
+		*(first + hole_index) = hamon::move(*(first + parent));
 		hole_index = parent;
 		parent = (hole_index - 1) / 2;
 	}
-	*(first + hole_index) = std::move(value);
+	*(first + hole_index) = hamon::move(value);
 }
 
 }	// namespace detail
@@ -87,12 +87,12 @@ push_heap(
 	using value_t = hamon::iter_value_t<RandomAccessIterator>;
 	using difference_t = hamon::iter_difference_t<RandomAccessIterator>;
 
-	value_t value = std::move(*(last - 1));
+	value_t value = hamon::move(*(last - 1));
 	hamon::detail::push_heap_impl(
 		first,
 		difference_t((last - first) - 1),
 		difference_t(0),
-		std::move(value),
+		hamon::move(value),
 		comp);
 }
 

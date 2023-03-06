@@ -7,9 +7,9 @@
 #include <hamon/algorithm/for_each.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <utility>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -32,8 +32,8 @@ struct Sum
 	HAMON_CXX11_CONSTEXPR Sum() : n(0) {}
 	HAMON_CXX14_CONSTEXPR void operator()(int x) { n += x; }
 	HAMON_CXX11_CONSTEXPR int get() const { return n; }
-	HAMON_CXX11_CONSTEXPR Sum(Sum&& rhs) noexcept : n(std::move(rhs.n)) {}
-	HAMON_CXX14_CONSTEXPR Sum& operator=(Sum&& rhs) noexcept { n = std::move(rhs.n); return *this; }
+	HAMON_CXX11_CONSTEXPR Sum(Sum&& rhs) noexcept : n(hamon::move(rhs.n)) {}
+	HAMON_CXX14_CONSTEXPR Sum& operator=(Sum&& rhs) noexcept { n = hamon::move(rhs.n); return *this; }
 
 private:
 	Sum(Sum const&) = delete;

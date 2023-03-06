@@ -48,7 +48,9 @@ using std::ranges::sample;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
+#include <utility>	// forward
 
 namespace hamon
 {
@@ -81,8 +83,8 @@ struct sample_fn
 				hamon::remove_reference_t<Gen>>)))
 	{
 		return hamon::sample(
-			std::move(first), ranges::next(first, last),
-			std::move(out_first), n, std::forward<Gen>(g));
+			hamon::move(first), ranges::next(first, last),
+			hamon::move(out_first), n, std::forward<Gen>(g));
 	}
 
 	template <
@@ -107,7 +109,7 @@ struct sample_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(out_first), n, std::forward<Gen>(g));
+			hamon::move(out_first), n, std::forward<Gen>(g));
 	}
 };
 

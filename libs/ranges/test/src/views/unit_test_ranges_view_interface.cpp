@@ -12,6 +12,7 @@
 #include <hamon/type_traits/is_detected.hpp>
 //#include <hamon/type_traits/common_type.hpp>
 //#include <hamon/type_traits/make_signed.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -243,7 +244,7 @@ HAMON_CXX14_CONSTEXPR bool EmptyTest()
 	// Try calling empty on an rvalue.
 	MoveOnlyForwardRange moveOnly;
 	static_assert(!noexcept(moveOnly.empty()), "");
-	VERIFY(!std::move(moveOnly).empty());
+	VERIFY(!hamon::move(moveOnly).empty());
 
 	BoolConvertibleComparison boolConv;
 	//static_assert(noexcept(boolConv.empty()), "");
@@ -280,7 +281,7 @@ GTEST_TEST(RangesViewInterfaceTest, EmptyTest)
 		// Try calling empty on an rvalue.
 		HAMON_CXX11_CONSTEXPR MoveOnlyForwardRange const moveOnly;
 		static_assert(!noexcept(moveOnly.empty()), "");
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!std::move(moveOnly).empty());
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!hamon::move(moveOnly).empty());
 	}
 	{
 		HAMON_CXX11_CONSTEXPR BoolConvertibleComparison const boolConv;

@@ -45,11 +45,11 @@ using std::ranges::move;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <utility>	// move
-#include <cstring>	// memmove
-#include <cstddef>	// size_t
+#include <cstring>		// memmove
+#include <cstddef>		// size_t
 
 namespace hamon
 {
@@ -91,12 +91,12 @@ private:
 
 		for (auto n = last - first; n > 0; --n)
 		{
-			*result = std::move(*first);
+			*result = hamon::move(*first);
 			++first;
 			++result;
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 	template <
@@ -110,12 +110,12 @@ private:
 	{
 		while (first != last)
 		{
-			*result = std::move(*first);
+			*result = hamon::move(*first);
 			++first;
 			++result;
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 public:
@@ -131,9 +131,9 @@ public:
 		hamon::indirectly_movable<Iter, Out>)
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(result),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(result),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -149,7 +149,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result));
+			hamon::move(result));
 	}
 };
 

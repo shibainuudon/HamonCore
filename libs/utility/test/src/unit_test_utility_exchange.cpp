@@ -5,6 +5,7 @@
  */
 
 #include <hamon/utility/exchange.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <vector>
@@ -59,16 +60,16 @@ void test_noexcept()
 	}
 	{
 		TestNoexcept<true, true> x;
-		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::exchange(x, std::move(x)));
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::exchange(x, hamon::move(x)));
 		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::exchange(x, x)); // copy-assignment is not noexcept
 	}
 	{
 		TestNoexcept<true, false> x;
-		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::exchange(x, std::move(x)));
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::exchange(x, hamon::move(x)));
 	}
 	{
 		TestNoexcept<false, true> x;
-		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::exchange(x, std::move(x)));
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::exchange(x, hamon::move(x)));
 	}
 }
 

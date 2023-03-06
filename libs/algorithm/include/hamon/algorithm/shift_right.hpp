@@ -28,8 +28,8 @@ using std::shift_right;
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/utility/move.hpp>
 #include <iterator>
-#include <utility>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ shift_right_impl(
 		return last;
 	}
 
-	return hamon::move_backward(std::move(first), std::move(mid), std::move(last));
+	return hamon::move_backward(hamon::move(first), hamon::move(mid), hamon::move(last));
 }
 
 template <typename ForwardIterator, typename Difference>
@@ -74,7 +74,7 @@ shift_right_impl(
 	{
 		if (dest_tail == last)
 		{
-			hamon::move(std::move(first), std::move(dest_head), std::move(result));
+			hamon::move(hamon::move(first), hamon::move(dest_head), hamon::move(result));
 			return result;
 		}
 		++dest_head;
@@ -88,8 +88,8 @@ shift_right_impl(
 		{
 			if (dest_tail == last)
 			{
-				dest_head = hamon::move(cursor, result, std::move(dest_head));
-				hamon::move(std::move(first), std::move(cursor), std::move(dest_head));
+				dest_head = hamon::move(cursor, result, hamon::move(dest_head));
+				hamon::move(hamon::move(first), hamon::move(cursor), hamon::move(dest_head));
 				return result;
 			}
 			hamon::iter_swap(cursor, dest_head);
@@ -115,8 +115,8 @@ shift_right(ForwardIterator first, ForwardIterator last,
 	}
 
 	return detail::shift_right_impl(
-		std::move(first),
-		std::move(last),
+		hamon::move(first),
+		hamon::move(last),
 		n,
 		Category{});
 }

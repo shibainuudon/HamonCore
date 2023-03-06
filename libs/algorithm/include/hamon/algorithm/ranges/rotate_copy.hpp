@@ -41,8 +41,8 @@ using std::ranges::rotate_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -68,13 +68,13 @@ struct rotate_copy_fn
 	{
 		auto copy1 = ranges::copy(
 			middle,
-			std::move(last),
-			std::move(result));
+			hamon::move(last),
+			hamon::move(result));
 		auto copy2 = ranges::copy(
-			std::move(first),
-			std::move(middle),
-			std::move(copy1.out));
-		return { std::move(copy1.in), std::move(copy2.out) };
+			hamon::move(first),
+			hamon::move(middle),
+			hamon::move(copy1.out));
+		return { hamon::move(copy1.in), hamon::move(copy2.out) };
 	}
 
 	template <
@@ -89,9 +89,9 @@ struct rotate_copy_fn
 	{
 		return (*this)(
 			ranges::begin(r),
-			std::move(middle),
+			hamon::move(middle),
 			ranges::end(r),
-			std::move(result));
+			hamon::move(result));
 	}
 };
 

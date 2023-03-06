@@ -44,8 +44,8 @@ using std::ranges::replace_copy_if;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -89,7 +89,7 @@ struct replace_copy_if_fn
 			}
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 	template <
@@ -113,10 +113,10 @@ struct replace_copy_if_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result),
-			std::move(pred),
+			hamon::move(result),
+			hamon::move(pred),
 			new_value,
-			std::move(proj));
+			hamon::move(proj));
 	}
 };
 

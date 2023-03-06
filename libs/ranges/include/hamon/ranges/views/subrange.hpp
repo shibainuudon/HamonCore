@@ -58,6 +58,7 @@ using ranges::get;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <utility>
@@ -215,15 +216,15 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_iter_sent, It, StoreSize, It2)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(It2 i, Sent s)
-		HAMON_NOEXCEPT_IF_EXPR(ImplType(std::move(i), std::move(s)))
-		: m_impl(std::move(i), std::move(s))
+		HAMON_NOEXCEPT_IF_EXPR(ImplType(hamon::move(i), hamon::move(s)))
+		: m_impl(hamon::move(i), hamon::move(s))
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_iter_sent_size, It, Kind, It2)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(It2 i, Sent s, size_type n)
-		HAMON_NOEXCEPT_IF_EXPR(ImplType(std::move(i), std::move(s), n))
-		: m_impl(std::move(i), std::move(s), n)
+		HAMON_NOEXCEPT_IF_EXPR(ImplType(hamon::move(i), hamon::move(s), n))
+		: m_impl(hamon::move(i), hamon::move(s), n)
 	{
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (hamon::sized_sentinel_for_t<Sent, It>::value)
@@ -262,7 +263,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::not_copyable, I, It)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR It begin()
 	{
-		return std::move(m_impl.m_begin);
+		return hamon::move(m_impl.m_begin);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Sent end() const
@@ -301,7 +302,7 @@ public:
 	next(hamon::iter_difference_t<It> n = 1) &&
 	{
 		advance(n);
-		return std::move(*this);
+		return hamon::move(*this);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, It)>
@@ -380,9 +381,9 @@ requires (N < 2)
 #endif
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 get(subrange<It, Sent, Kind>&& r)
-->decltype(detail::subrange_get<N>()(std::move(r)))
+->decltype(detail::subrange_get<N>()(hamon::move(r)))
 {
-	return detail::subrange_get<N>()(std::move(r));
+	return detail::subrange_get<N>()(hamon::move(r));
 }
 
 }	// namespace ranges

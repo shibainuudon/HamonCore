@@ -24,8 +24,8 @@ using std::unique;
 
 #include <hamon/algorithm/adjacent_find.hpp>
 #include <hamon/functional/equal_to.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -74,7 +74,7 @@ unique(
 		{
 			if (!pred(*first, *i))
 			{
-				*++first = std::move(*i);
+				*++first = hamon::move(*i);
 			}
 		}
 

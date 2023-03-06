@@ -43,8 +43,8 @@ using std::ranges::unique;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -83,7 +83,7 @@ struct unique_fn
 				hamon::invoke(proj, *dest),
 				hamon::invoke(proj, *first)))
 			{
-				*++dest = std::move(*first);
+				*++dest = hamon::move(*first);
 			}
 		}
 
@@ -108,7 +108,7 @@ struct unique_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(comp), std::move(proj));
+			hamon::move(comp), hamon::move(proj));
 	}
 };
 

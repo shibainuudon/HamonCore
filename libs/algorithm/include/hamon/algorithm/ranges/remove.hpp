@@ -42,6 +42,7 @@ using std::ranges::remove;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -85,8 +86,8 @@ public:
 		auto pred = Pred<T>{value};
 		return ranges::remove_if(
 			first, last,
-			std::move(pred),
-			std::move(proj));
+			hamon::move(pred),
+			hamon::move(proj));
 	}
 
 	template <
@@ -107,7 +108,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			value, std::move(proj));
+			value, hamon::move(proj));
 	}
 };
 

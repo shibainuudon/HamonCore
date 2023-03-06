@@ -33,6 +33,7 @@ using std::rotate;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_trivially_move_assignable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 #include <utility>
@@ -49,9 +50,9 @@ rotate_left(
 	ForwardIterator first,
 	ForwardIterator last)
 {
-	auto tmp = std::move(*first);
+	auto tmp = hamon::move(*first);
 	auto lm1 = hamon::move(hamon::next(first), last, first);
-	*lm1 = std::move(tmp);
+	*lm1 = hamon::move(tmp);
 	return lm1;
 }
 
@@ -62,9 +63,9 @@ rotate_right(
 	BidirectionalIterator last)
 {
 	auto lm1 = hamon::prev(last);
-	auto tmp = std::move(*lm1);
+	auto tmp = hamon::move(*lm1);
 	auto fp1 = hamon::move_backward(first, lm1, last);
-	*first = std::move(tmp);
+	*first = hamon::move(tmp);
 	return fp1;
 }
 
@@ -145,13 +146,13 @@ rotate_gcd(
 
 	for (auto p = first + g; p != first;)
 	{
-		auto t = std::move(*--p);
+		auto t = hamon::move(*--p);
 		auto p1 = p;
 		auto p2 = p1 + m1;
 
 		do
 		{
-			*p1 = std::move(*p2);
+			*p1 = hamon::move(*p2);
 			p1 = p2;
 			auto const d = last - p2;
 
@@ -166,7 +167,7 @@ rotate_gcd(
 		}
 		while (p2 != p);
 		
-		*p1 = std::move(t);
+		*p1 = hamon::move(t);
 	}
 
 	return first + m2;

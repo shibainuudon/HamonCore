@@ -16,14 +16,25 @@
 namespace hamon
 {
 
-using std::move;
+template <
+	typename InputIterator,
+	typename OutputIterator
+>
+inline HAMON_CXX14_CONSTEXPR OutputIterator
+move(
+	InputIterator first,
+	InputIterator last,
+	OutputIterator result)
+{
+	return std::move(first, last, result);
+}
 
 }	// namespace hamon
 
 #else
 
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -60,7 +71,7 @@ move(
 {
 	while (first != last)
 	{
-		*result++ = std::move(*first++);
+		*result++ = hamon::move(*first++);
 	}
 
 	return result;

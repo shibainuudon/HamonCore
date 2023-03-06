@@ -45,8 +45,8 @@ using std::ranges::find_end;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -80,9 +80,9 @@ private:
 			hamon::reverse_iterator<Iter1>{first1},
 			hamon::reverse_iterator<Iter2>{i2},
 			hamon::reverse_iterator<Iter2>{first2},
-			std::move(pred),
-			std::move(proj1),
-			std::move(proj2));
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2));
 		auto result_first = ranges::end(rresult).base();
 		auto result_last  = ranges::begin(rresult).base();
 		if (result_last == first1)
@@ -162,11 +162,11 @@ public:
 			Iter1, Iter2, Pred, Proj1, Proj2>)
 	{
 		return impl(
-			std::move(first1), std::move(last1),
-			std::move(first2), std::move(last2),
-			std::move(pred),
-			std::move(proj1),
-			std::move(proj2),
+			hamon::move(first1), hamon::move(last1),
+			hamon::move(first2), hamon::move(last2),
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -193,9 +193,9 @@ public:
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(pred),
-			std::move(proj1),
-			std::move(proj2));
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2));
 	}
 };
 

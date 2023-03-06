@@ -40,8 +40,8 @@ using std::ranges::for_each;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -72,7 +72,7 @@ struct for_each_fn
 			hamon::invoke(f, hamon::invoke(proj, *first));
 		}
 
-		return { std::move(first), std::move(f) };
+		return { hamon::move(first), hamon::move(f) };
 	}
 
 	template <
@@ -89,7 +89,7 @@ struct for_each_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(f), std::move(proj));
+			hamon::move(f), hamon::move(proj));
 	}
 };
 

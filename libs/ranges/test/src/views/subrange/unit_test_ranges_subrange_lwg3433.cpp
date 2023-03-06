@@ -12,9 +12,9 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>	// move
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -100,7 +100,7 @@ test01_impl(Container& r, Subrange& sr, hamon::true_type /*sized*/, hamon::true_
 	}
 	VERIFY(sr.size() == 4);
 
-	sr = std::move(sr).next(2);
+	sr = hamon::move(sr).next(2);
 
 	{
 		int y[] = { 4, 5 };
@@ -158,7 +158,7 @@ test01_impl(Container& r, Subrange& sr, hamon::true_type /*sized*/, hamon::false
 	}
 	VERIFY(sr.size() == 4);
 
-	sr = std::move(sr).next(2);
+	sr = hamon::move(sr).next(2);
 
 	{
 		int y[] = { 4, 5 };
@@ -196,7 +196,7 @@ test01_impl(Container& r, Subrange& sr, hamon::false_type /*sized*/, hamon::true
 		VERIFY(ranges::equal(sr, y));
 	}
 
-	sr = std::move(sr).next(2);
+	sr = hamon::move(sr).next(2);
 
 	{
 		int y[] = { 4, 5 };
@@ -247,7 +247,7 @@ test01_impl(Container& r, Subrange& sr, hamon::false_type /*sized*/, hamon::fals
 		VERIFY(ranges::equal(sr, y));
 	}
 
-	sr = std::move(sr).next(2);
+	sr = hamon::move(sr).next(2);
 
 	{
 		int y[] = { 4, 5 };

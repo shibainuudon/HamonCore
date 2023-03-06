@@ -53,8 +53,8 @@ using std::ranges::partial_sort_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -101,8 +101,8 @@ struct partial_sort_copy_fn
 		if (result_first == result_last)
 		{
 			// TODO: Eliminating the variable lasti triggers an ICE.
-			auto lasti = ranges::next(std::move(first), std::move(last));
-			return { std::move(lasti), std::move(result_first) };
+			auto lasti = ranges::next(hamon::move(first), hamon::move(last));
+			return { hamon::move(lasti), hamon::move(result_first) };
 		}
 
 		auto result_real_last = result_first;
@@ -128,7 +128,7 @@ struct partial_sort_copy_fn
 
 		ranges::sort_heap(result_first, result_real_last, comp, proj2);
 
-		return { std::move(first), std::move(result_real_last) };
+		return { hamon::move(first), hamon::move(result_real_last) };
 	}
 
 	template <
@@ -164,9 +164,9 @@ struct partial_sort_copy_fn
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
 			ranges::begin(out), ranges::end(out),
-			std::move(comp),
-			std::move(proj1),
-			std::move(proj2));
+			hamon::move(comp),
+			hamon::move(proj1),
+			hamon::move(proj2));
 	}
 };
 

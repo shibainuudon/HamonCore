@@ -29,6 +29,7 @@
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <utility>
@@ -363,7 +364,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterTest()
 	}
 	{
 		Iter it = Iter{s};
-		hamon::move_iterator<Iter> r(std::move(it));
+		hamon::move_iterator<Iter> r(hamon::move(it));
 		VERIFY(base(r.base()) == s);
 	}
 
@@ -389,7 +390,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterMoveOnlyTest()
 	char s[] = "123";
 	{
 		Iter it = Iter(s);
-		hamon::move_iterator<Iter> r(std::move(it));
+		hamon::move_iterator<Iter> r(hamon::move(it));
 		VERIFY(base(r.base()) == s);
 	}
 
@@ -578,7 +579,7 @@ inline HAMON_CXX14_CONSTEXPR bool CopyAssignTest()
 		IteratorWrapper<char> it0{s};
 		hamon::move_iterator<IteratorWrapper<char>> it1{it0};
 		hamon::move_iterator<IteratorWrapper<char>> it2;
-		hamon::move_iterator<IteratorWrapper<char>>& r = (it2 = std::move(it1));
+		hamon::move_iterator<IteratorWrapper<char>>& r = (it2 = hamon::move(it1));
 		VERIFY(base(it2.base()) == base(it0));
 		VERIFY(&r == &it2);
 	}
@@ -597,7 +598,7 @@ inline HAMON_CXX14_CONSTEXPR bool MoveAssignTest()
 		hamon::move_iterator<IteratorWrapper<char>> it1{IteratorWrapper<char>{s}};
 		hamon::move_iterator<IteratorWrapper<char>> it2;
 		VERIFY(base(it2.base()) == nullptr);
-		hamon::move_iterator<IteratorWrapper<char>>& r = (it2 = std::move(it1));
+		hamon::move_iterator<IteratorWrapper<char>>& r = (it2 = hamon::move(it1));
 		VERIFY(base(it2.base()) == s);
 		VERIFY(&r == &it2);
 	}
@@ -711,8 +712,8 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 	// Rvalue.
 	{
 		auto i = hamon::move_iterator<It>{It{a}};
-		static_assert(hamon::is_same<decltype(std::move(i).base()), It>::value, "");
-		VERIFY(std::move(i).base() == It{a});
+		static_assert(hamon::is_same<decltype(hamon::move(i).base()), It>::value, "");
+		VERIFY(hamon::move(i).base() == It{a});
 	}
 
 	return true;
@@ -785,7 +786,7 @@ public:
 	iter_move(IterMoveOnly const& it)
 		noexcept(Noexcept)
 	{
-		return std::move(*base(it));
+		return hamon::move(*base(it));
 	}
 };
 
@@ -1906,7 +1907,7 @@ public:
 	iter_move(CustomIterMove const& it)
 		noexcept(Noexcept)
 	{
-		return std::move(*base(it));
+		return hamon::move(*base(it));
 	}
 };
 

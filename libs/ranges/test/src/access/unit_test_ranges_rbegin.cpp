@@ -9,8 +9,8 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -85,7 +85,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	// decay-copy(t.rbegin()) if it is a valid expression
 	// and its type I models input_or_output_iterator.
 	VERIFY(hamon::ranges::rbegin(r) == &r.i);
-	VERIFY(hamon::ranges::rbegin(std::move(r)) == &r.i);
+	VERIFY(hamon::ranges::rbegin(hamon::move(r)) == &r.i);
 
 	return true;
 }
@@ -96,7 +96,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	// Otherwise, decay-copy(rbegin(t)) if it is a valid expression
 	// and its type I models input_or_output_iterator [...]
 	VERIFY(hamon::ranges::rbegin(r) == hamon::make_reverse_iterator(hamon::ranges::end(r)));
-	VERIFY(hamon::ranges::rbegin(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::end(std::move(r))));
+	VERIFY(hamon::ranges::rbegin(hamon::move(r)) == hamon::make_reverse_iterator(hamon::ranges::end(hamon::move(r))));
 
 	return true;
 }

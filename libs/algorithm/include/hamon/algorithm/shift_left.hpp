@@ -25,7 +25,7 @@ using std::shift_left;
 #include <hamon/algorithm/move.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/ranges/next.hpp>
-#include <utility>
+#include <hamon/utility/move.hpp>
 
 namespace hamon
 {
@@ -46,7 +46,7 @@ shift_left(ForwardIterator first, ForwardIterator last,
 		return first;
 	}
 
-	return hamon::move(std::move(mid), std::move(last), std::move(first));
+	return hamon::move(hamon::move(mid), hamon::move(last), hamon::move(first));
 }
 
 }	// namespace hamon

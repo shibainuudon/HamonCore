@@ -46,8 +46,9 @@ using std::ranges::search_n;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
+#include <utility>	// forward
 
 namespace hamon
 {
@@ -170,10 +171,10 @@ public:
 		if (n == 1)
 		{
 			first = ranges::find_if(
-				std::move(first),
+				hamon::move(first),
 				last,
-				std::move(value_comp),
-				std::move(proj));
+				hamon::move(value_comp),
+				hamon::move(proj));
 
 			if (first == last)
 			{
@@ -187,11 +188,11 @@ public:
 		}
 
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(n),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(n),
 			value_comp,
-			std::move(proj),
+			hamon::move(proj),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -211,10 +212,10 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(n),
+			hamon::move(n),
 			value,
-			std::move(pred),
-			std::move(proj));
+			hamon::move(pred),
+			hamon::move(proj));
 	}
 };
 

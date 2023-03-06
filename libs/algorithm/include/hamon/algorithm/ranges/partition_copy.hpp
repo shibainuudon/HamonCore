@@ -45,8 +45,8 @@ using std::ranges::partition_copy;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -95,7 +95,7 @@ struct partition_copy_fn
 			}
 		}
 
-		return { std::move(first), std::move(out_true), std::move(out_false) };
+		return { hamon::move(first), hamon::move(out_true), hamon::move(out_false) };
 	}
 
 	template <
@@ -120,8 +120,8 @@ struct partition_copy_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(out_true), std::move(out_false),
-			std::move(pred), std::move(proj));
+			hamon::move(out_true), hamon::move(out_false),
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

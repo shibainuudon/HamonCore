@@ -48,8 +48,8 @@ using std::ranges::ends_with;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -126,9 +126,9 @@ struct ends_with_fn
 
 		ranges::advance(first1, n1 - n2);
 		return ranges::equal(
-			std::move(first1), std::move(last1),
-			std::move(first2), std::move(last2),
-			std::move(pred), std::move(proj1), std::move(proj2));
+			hamon::move(first1), hamon::move(last1),
+			hamon::move(first2), hamon::move(last2),
+			hamon::move(pred), hamon::move(proj1), hamon::move(proj2));
 	}
 
 	template <
@@ -151,7 +151,7 @@ struct ends_with_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(pred), std::move(proj1), std::move(proj2));
+			hamon::move(pred), hamon::move(proj1), hamon::move(proj2));
 	}
 };
 

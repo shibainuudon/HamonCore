@@ -44,8 +44,8 @@ using std::ranges::next_permutation;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -73,14 +73,14 @@ struct next_permutation_fn
 	{
 		if (first == last)
 		{
-			return { std::move(first), false };
+			return { hamon::move(first), false };
 		}
 
 		auto i = first;
 		++i;
 		if (i == last)
 		{
-			return { std::move(i), false };
+			return { hamon::move(i), false };
 		}
 
 		auto lasti = ranges::next(first, last);
@@ -105,13 +105,13 @@ struct next_permutation_fn
 
 				ranges::iter_swap(i, j);
 				ranges::reverse(ii, last);
-				return { std::move(lasti), true };
+				return { hamon::move(lasti), true };
 			}
 
 			if (i == first)
 			{
 				ranges::reverse(first, last);
-				return { std::move(lasti), false };
+				return { hamon::move(lasti), false };
 			}
 		}
 	}
@@ -129,7 +129,7 @@ struct next_permutation_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(comp), std::move(proj));
+			hamon::move(comp), hamon::move(proj));
 	}
 };
 

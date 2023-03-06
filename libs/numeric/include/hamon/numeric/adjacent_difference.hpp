@@ -23,8 +23,8 @@ using std::adjacent_difference;
 #else
 
 #include <hamon/functional/minus.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -80,8 +80,8 @@ adjacent_difference(
 	while (first != last)
 	{
 		auto val = *first;
-		*result = binary_op(val, std::move(acc));
-		acc = std::move(val);
+		*result = binary_op(val, hamon::move(acc));
+		acc = hamon::move(val);
 
 		++result;
 		++first;
@@ -104,9 +104,9 @@ adjacent_difference(
 	OutputIterator result)
 {
 	return hamon::adjacent_difference(
-		std::move(first),
-		std::move(last),
-		std::move(result),
+		hamon::move(first),
+		hamon::move(last),
+		hamon::move(result),
 		hamon::minus<>());
 }
 

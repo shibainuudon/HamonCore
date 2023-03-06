@@ -44,10 +44,10 @@ using std::ranges::equal;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
+#include <cstddef>	// size_t
 #include <cstring>	// memcmp
-#include <utility>	// move
 
 namespace hamon
 {
@@ -181,9 +181,9 @@ public:
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(pred),
-			std::move(proj1),
-			std::move(proj2));
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2));
 	}
 };
 

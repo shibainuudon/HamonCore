@@ -23,8 +23,8 @@ using std::accumulate;
 #else
 
 #include <hamon/functional/plus.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -61,7 +61,7 @@ accumulate(
 {
 	while (first != last)
 	{
-		init = binary_op(std::move(init), *first++);
+		init = binary_op(hamon::move(init), *first++);
 	}
 
 	return init;
@@ -87,9 +87,9 @@ accumulate(
 	T init)
 {
 	return hamon::accumulate(
-		std::move(first),
-		std::move(last),
-		std::move(init),
+		hamon::move(first),
+		hamon::move(last),
+		hamon::move(init),
 		hamon::plus<>());
 }
 

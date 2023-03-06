@@ -47,8 +47,8 @@ using std::ranges::equal_range;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -123,7 +123,7 @@ struct equal_range_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			value, std::move(comp), std::move(proj));
+			value, hamon::move(comp), hamon::move(proj));
 	}
 };
 

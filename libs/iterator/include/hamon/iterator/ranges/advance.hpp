@@ -35,9 +35,9 @@ using std::ranges::advance;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -110,7 +110,7 @@ requires hamon::assignable_from<It&, Sent>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl_2(hamon::detail::overload_priority<2>, It& it, Sent bound)
 {
-	it = std::move(bound);
+	it = hamon::move(bound);
 }
 
 template <

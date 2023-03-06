@@ -38,8 +38,8 @@ using std::ranges::copy_n;
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -63,10 +63,10 @@ private:
 	{
 		if (n > 0)
 		{
-			return ranges::copy(first, first + n, std::move(result));
+			return ranges::copy(first, first + n, hamon::move(result));
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 	template <typename Iter, typename Difference, typename Out>
@@ -79,7 +79,7 @@ private:
 			*result = *first;
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 public:
@@ -94,9 +94,9 @@ public:
 		hamon::indirectly_copyable<Iter, Out>)
 	{
 		return impl(
-			std::move(first),
-			std::move(n),
-			std::move(result),
+			hamon::move(first),
+			hamon::move(n),
+			hamon::move(result),
 			hamon::detail::overload_priority<1>{});
 	}
 };

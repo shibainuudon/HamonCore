@@ -29,8 +29,8 @@ using std::ranges::min_max_result;
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -71,7 +71,7 @@ struct min_max_result
 #endif
 	HAMON_CXX14_CONSTEXPR operator min_max_result<T2>() &&
 	{
-		return { std::move(min), std::move(max) };
+		return { hamon::move(min), hamon::move(max) };
 	}
 };
 

@@ -42,8 +42,8 @@ using std::ranges::count;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -95,7 +95,7 @@ struct count_fn
 			T const*>)
 	{
 		return (*this)(
-			ranges::begin(r), ranges::end(r), value, std::move(proj));
+			ranges::begin(r), ranges::end(r), value, hamon::move(proj));
 	}
 };
 

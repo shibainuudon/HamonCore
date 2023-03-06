@@ -11,8 +11,8 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -104,7 +104,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	// and its type S models sentinel_for<decltype(ranges::rbegin(E))>
 
 	VERIFY(hamon::ranges::rend(r) == &r.i + 1);
-	VERIFY(hamon::ranges::rend(std::move(r)) == &r.i + 1);
+	VERIFY(hamon::ranges::rend(hamon::move(r)) == &r.i + 1);
 
 	return true;
 }
@@ -134,7 +134,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	// of the same type I which models bidirectional_iterator.
 
 	VERIFY(hamon::ranges::rend(r) == hamon::make_reverse_iterator(hamon::ranges::begin(r)));
-	VERIFY(hamon::ranges::rend(std::move(r)) == hamon::make_reverse_iterator(hamon::ranges::begin(std::move(r))));
+	VERIFY(hamon::ranges::rend(hamon::move(r)) == hamon::make_reverse_iterator(hamon::ranges::begin(hamon::move(r))));
 
 	return true;
 }

@@ -42,8 +42,9 @@ using std::ranges::shuffle;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
+#include <utility>	// forward
 
 namespace hamon
 {
@@ -67,7 +68,7 @@ struct shuffle_fn
 				hamon::remove_reference_t<Gen>>))
 	{
 		auto lasti = ranges::next(first, last);
-		hamon::shuffle(std::move(first), lasti, std::forward<Gen>(g));
+		hamon::shuffle(hamon::move(first), lasti, std::forward<Gen>(g));
 		return lasti;
 	}
 

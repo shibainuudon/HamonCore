@@ -45,11 +45,11 @@ using std::ranges::copy_backward;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <utility>	// move
-#include <cstring>	// memmove
-#include <cstddef>	// size_t
+#include <cstring>		// memmove
+#include <cstddef>		// size_t
 
 namespace hamon
 {
@@ -99,7 +99,7 @@ private:
 			*result = *tail;
 		}
 
-		return { std::move(lasti), std::move(result) };
+		return { hamon::move(lasti), hamon::move(result) };
 	}
 
 	template <typename Iter, typename Sent, typename Out>
@@ -117,7 +117,7 @@ private:
 			*result = *tail;
 		}
 
-		return { std::move(lasti), std::move(result) };
+		return { hamon::move(lasti), hamon::move(result) };
 	}
 
 public:
@@ -133,9 +133,9 @@ public:
 		hamon::indirectly_copyable<Iter, Out>)
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(result),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(result),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -153,7 +153,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result));
+			hamon::move(result));
 	}
 };
 

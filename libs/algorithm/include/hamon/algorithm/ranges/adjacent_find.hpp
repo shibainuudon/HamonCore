@@ -40,8 +40,8 @@ using std::ranges::adjacent_find;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -101,7 +101,7 @@ struct adjacent_find_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

@@ -12,9 +12,9 @@
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include <string>
 #include "constexpr_test.hpp"
 //#include "tuple_test_utility.hpp"
@@ -359,12 +359,12 @@ void constructor_tests()
 	{
 		using T = MoveOnlyCallable<bool>;
 		T value(true);
-		using RetT = decltype(hamon::not_fn(std::move(value)));
+		using RetT = decltype(hamon::not_fn(hamon::move(value)));
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
 		static_assert(!hamon::is_move_assignable<RetT>::value, "");
 		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
-		auto ret = hamon::not_fn(std::move(value));
+		auto ret = hamon::not_fn(hamon::move(value));
 		// test it was moved from
 		EXPECT_FALSE(value.value);
 		// test that ret() negates the original value 'true'
@@ -372,7 +372,7 @@ void constructor_tests()
 		EXPECT_FALSE(ret(0, 0.0, "blah"));
 		// Move ret and test that it was moved from and that ret2 got the
 		// original value.
-		auto ret2 = std::move(ret);
+		auto ret2 = hamon::move(ret);
 		EXPECT_TRUE (ret());
 		EXPECT_FALSE(ret2());
 		EXPECT_FALSE(ret2(42));
@@ -392,7 +392,7 @@ void constructor_tests()
 		EXPECT_TRUE(ret());
 		EXPECT_TRUE(ret(42, 100));
 		// move from 'ret' and check that 'ret2' has the original value.
-		auto ret2 = std::move(ret);
+		auto ret2 = hamon::move(ret);
 		EXPECT_FALSE(ret());
 		EXPECT_TRUE(ret2());
 		EXPECT_TRUE(ret2("abc"));
@@ -420,17 +420,17 @@ void constructor_tests()
 		using T = MoveAssignableWrapper;
 		T value(true);
 		T value2(false);
-		using RetT = decltype(hamon::not_fn(std::move(value)));
+		using RetT = decltype(hamon::not_fn(hamon::move(value)));
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
 //		static_assert( hamon::is_move_assignable<RetT>::value, "");
 //		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
-		auto ret = hamon::not_fn(std::move(value));
+		auto ret = hamon::not_fn(hamon::move(value));
 		EXPECT_FALSE(ret());
-		auto ret2 = hamon::not_fn(std::move(value2));
+		auto ret2 = hamon::not_fn(hamon::move(value2));
 		EXPECT_TRUE(ret2());
 #if 0
-		ret = std::move(ret2);
+		ret = hamon::move(ret2);
 		EXPECT_TRUE(ret());
 #endif
 	}
@@ -573,18 +573,18 @@ void call_operator_sfinae_test()
 void call_operator_forwarding_test()
 {
 HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の std::move は使用しないでください。(es.56)。
+HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の hamon::move は使用しないでください。(es.56)。
 	using Fn = ForwardingCallObject;
 	auto obj = hamon::not_fn(Fn{});
 	const auto& c_obj = obj;
 	{ // test zero args
 		obj();
 		EXPECT_TRUE(Fn::check_call<>(CallType::NonConst | CallType::LValue));
-		std::move(obj)();
+		hamon::move(obj)();
 		EXPECT_TRUE(Fn::check_call<>(CallType::NonConst | CallType::RValue));
 		c_obj();
 		EXPECT_TRUE(Fn::check_call<>(CallType::Const | CallType::LValue));
-		std::move(c_obj)();
+		hamon::move(c_obj)();
 		EXPECT_TRUE(Fn::check_call<>(CallType::Const | CallType::RValue));
 	}
 	{ // test value categories
@@ -594,9 +594,9 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の std::move は使用しな�
 		EXPECT_TRUE(Fn::check_call<int&>(CallType::NonConst | CallType::LValue));
 		obj(cx);
 		EXPECT_TRUE(Fn::check_call<const int&>(CallType::NonConst | CallType::LValue));
-		obj(std::move(x));
+		obj(hamon::move(x));
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::NonConst | CallType::LValue));
-		obj(std::move(cx));
+		obj(hamon::move(cx));
 		EXPECT_TRUE(Fn::check_call<const int&&>(CallType::NonConst | CallType::LValue));
 		obj(42);
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::NonConst | CallType::LValue));
@@ -604,15 +604,15 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の std::move は使用しな�
 	{ // test value categories - rvalue
 		int x = 42;
 		const int cx = 42;
-		std::move(obj)(x);
+		hamon::move(obj)(x);
 		EXPECT_TRUE(Fn::check_call<int&>(CallType::NonConst | CallType::RValue));
-		std::move(obj)(cx);
+		hamon::move(obj)(cx);
 		EXPECT_TRUE(Fn::check_call<const int&>(CallType::NonConst | CallType::RValue));
-		std::move(obj)(std::move(x));
+		hamon::move(obj)(hamon::move(x));
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::NonConst | CallType::RValue));
-		std::move(obj)(std::move(cx));
+		hamon::move(obj)(hamon::move(cx));
 		EXPECT_TRUE(Fn::check_call<const int&&>(CallType::NonConst | CallType::RValue));
-		std::move(obj)(42);
+		hamon::move(obj)(42);
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::NonConst | CallType::RValue));
 	}
 	{ // test value categories - const call
@@ -622,9 +622,9 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の std::move は使用しな�
 		EXPECT_TRUE(Fn::check_call<int&>(CallType::Const | CallType::LValue));
 		c_obj(cx);
 		EXPECT_TRUE(Fn::check_call<const int&>(CallType::Const | CallType::LValue));
-		c_obj(std::move(x));
+		c_obj(hamon::move(x));
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::Const | CallType::LValue));
-		c_obj(std::move(cx));
+		c_obj(hamon::move(cx));
 		EXPECT_TRUE(Fn::check_call<const int&&>(CallType::Const | CallType::LValue));
 		c_obj(42);
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::Const | CallType::LValue));
@@ -632,27 +632,27 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の std::move は使用しな�
 	{ // test value categories - const call rvalue
 		int x = 42;
 		const int cx = 42;
-		std::move(c_obj)(x);
+		hamon::move(c_obj)(x);
 		EXPECT_TRUE(Fn::check_call<int&>(CallType::Const | CallType::RValue));
-		std::move(c_obj)(cx);
+		hamon::move(c_obj)(cx);
 		EXPECT_TRUE(Fn::check_call<const int&>(CallType::Const | CallType::RValue));
-		std::move(c_obj)(std::move(x));
+		hamon::move(c_obj)(hamon::move(x));
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::Const | CallType::RValue));
-		std::move(c_obj)(std::move(cx));
+		hamon::move(c_obj)(hamon::move(cx));
 		EXPECT_TRUE(Fn::check_call<const int&&>(CallType::Const | CallType::RValue));
-		std::move(c_obj)(42);
+		hamon::move(c_obj)(42);
 		EXPECT_TRUE(Fn::check_call<int&&>(CallType::Const | CallType::RValue));
 	}
 	{ // test multi arg
 		const double y = 3.14;
 		std::string s = "abc";
-		obj(42, std::move(y), s, std::string{"foo"});
+		obj(42, hamon::move(y), s, std::string{"foo"});
 		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::NonConst | CallType::LValue);
-		std::move(obj)(42, std::move(y), s, std::string{"foo"});
+		hamon::move(obj)(42, hamon::move(y), s, std::string{"foo"});
 		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::NonConst | CallType::RValue);
-		c_obj(42, std::move(y), s, std::string{"foo"});
+		c_obj(42, hamon::move(y), s, std::string{"foo"});
 		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::Const  | CallType::LValue);
-		std::move(c_obj)(42, std::move(y), s, std::string{"foo"});
+		hamon::move(c_obj)(42, hamon::move(y), s, std::string{"foo"});
 		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::Const  | CallType::RValue);
 	}
 HAMON_WARNING_POP()
@@ -706,7 +706,7 @@ void test_lwg2767()
 	{
 		Derived d;
 		Abstract &a = d;
-		bool b = hamon::not_fn(F{})(std::move(a));
+		bool b = hamon::not_fn(F{})(hamon::move(a));
 		EXPECT_TRUE(b);
 	}
 }

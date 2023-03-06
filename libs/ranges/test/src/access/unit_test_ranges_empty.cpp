@@ -6,11 +6,8 @@
 
 #include <hamon/ranges/empty.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
-#include <vector>
-#include <list>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -34,8 +31,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(!hamon::ranges::empty(r), "");
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r)), bool>::value, "");
 
-	static_assert(!hamon::ranges::empty(std::move(r)), "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(std::move(r))), bool>::value, "");
+	static_assert(!hamon::ranges::empty(hamon::move(r)), "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(hamon::move(r))), bool>::value, "");
 
 	return true;
 }

@@ -41,8 +41,8 @@ using std::ranges::replace_if;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -99,7 +99,7 @@ struct replace_if_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), new_value, std::move(proj));
+			hamon::move(pred), new_value, hamon::move(proj));
 	}
 };
 

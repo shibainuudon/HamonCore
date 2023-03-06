@@ -39,7 +39,7 @@ using std::ranges::fill;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
-#include <utility>
+#include <hamon/utility/move.hpp>
 
 namespace hamon
 {
@@ -101,8 +101,8 @@ public:
 		Out first, Sent last, T const& value) const
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
+			hamon::move(first),
+			hamon::move(last),
 			value,
 			hamon::detail::overload_priority<2>{});
 	}

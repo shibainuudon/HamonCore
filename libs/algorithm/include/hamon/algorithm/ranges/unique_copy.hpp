@@ -54,8 +54,8 @@ using std::ranges::unique_copy;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -90,7 +90,7 @@ private:
 			}
 		}
 
-		return { next_it, std::move(++result) };
+		return { next_it, hamon::move(++result) };
 	}
 
 	template <
@@ -119,7 +119,7 @@ private:
 			}
 		}
 
-		return { std::move(first), std::move(++result) };
+		return { hamon::move(first), hamon::move(++result) };
 	}
 
 	template <
@@ -146,7 +146,7 @@ private:
 			}
 		}
 
-		return { std::move(first), std::move(++result) };
+		return { hamon::move(first), hamon::move(++result) };
 	}
 
 public:
@@ -181,15 +181,15 @@ public:
 	{
 		if (first == last)
 		{
-			return { std::move(first), std::move(result) };
+			return { hamon::move(first), hamon::move(result) };
 		}
 
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(result),
-			std::move(comp),
-			std::move(proj),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(result),
+			hamon::move(comp),
+			hamon::move(proj),
 			hamon::detail::overload_priority<2>{});
 	}
 
@@ -222,9 +222,9 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result),
-			std::move(comp),
-			std::move(proj));
+			hamon::move(result),
+			hamon::move(comp),
+			hamon::move(proj));
 	}
 };
 

@@ -44,8 +44,8 @@ using std::ranges::stable_partition;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -72,8 +72,8 @@ struct stable_partition_fn
 	{
 		auto lasti = ranges::next(first, last);
 		auto middle = hamon::stable_partition(
-			std::move(first), lasti, detail::make_pred_proj(pred, proj));
-		return { std::move(middle), std::move(lasti) };
+			hamon::move(first), lasti, detail::make_pred_proj(pred, proj));
+		return { hamon::move(middle), hamon::move(lasti) };
 	}
 
 	template <
@@ -91,7 +91,7 @@ struct stable_partition_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

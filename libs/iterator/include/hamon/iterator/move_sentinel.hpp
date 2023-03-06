@@ -30,8 +30,8 @@ using std::move_sentinel;
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -72,7 +72,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	explicit move_sentinel(Sent s)
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Sent>::value)	// extension
-		: m_last(std::move(s)) {}
+		: m_last(hamon::move(s)) {}
 
 	template <HAMON_CONSTRAINED_PARAM(detail::move_sentinel_constructible_from, Sent, S2)>
 	HAMON_CXX14_CONSTEXPR move_sentinel(move_sentinel<S2> const& s)

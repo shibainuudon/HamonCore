@@ -6,6 +6,7 @@
 
 #include <hamon/functional/hash.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
@@ -75,15 +76,15 @@ GTEST_TEST(FunctionalTest, HashMemberTest)
 	HAMON_CXX11_CONSTEXPR S1 const s1_2{2};
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2u, hamon::hash(s1_1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4u, hamon::hash(s1_2));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4u, hamon::hash(std::move(s1_1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8u, hamon::hash(std::move(s1_2)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4u, hamon::hash(hamon::move(s1_1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8u, hamon::hash(hamon::move(s1_2)));
 
 	S1 s1_3{1};
 	S1 s1_4{2};
 	EXPECT_EQ(1u, hamon::hash(s1_3));
 	EXPECT_EQ(2u, hamon::hash(s1_4));
-	EXPECT_EQ(3u, hamon::hash(std::move(s1_3)));
-	EXPECT_EQ(6u, hamon::hash(std::move(s1_4)));
+	EXPECT_EQ(3u, hamon::hash(hamon::move(s1_3)));
+	EXPECT_EQ(6u, hamon::hash(hamon::move(s1_4)));
 }
 
 struct S2
@@ -126,15 +127,15 @@ GTEST_TEST(FunctionalTest, HashAdlTest)
 	HAMON_CXX11_CONSTEXPR S2 const s4_2{4};
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 6u, hamon::hash(s4_1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 8u, hamon::hash(s4_2));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12u, hamon::hash(std::move(s4_1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(16u, hamon::hash(std::move(s4_2)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12u, hamon::hash(hamon::move(s4_1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(16u, hamon::hash(hamon::move(s4_2)));
 
 	S2 s4_3{3};
 	S2 s4_4{4};
 	EXPECT_EQ( 3u, hamon::hash(s4_3));
 	EXPECT_EQ( 4u, hamon::hash(s4_4));
-	EXPECT_EQ( 9u, hamon::hash(std::move(s4_3)));
-	EXPECT_EQ(12u, hamon::hash(std::move(s4_4)));
+	EXPECT_EQ( 9u, hamon::hash(hamon::move(s4_3)));
+	EXPECT_EQ(12u, hamon::hash(hamon::move(s4_4)));
 }
 
 template <typename T>

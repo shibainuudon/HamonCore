@@ -42,8 +42,8 @@ using std::ranges::nth_element;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -68,8 +68,8 @@ struct nth_element_fn
 	{
 		auto lasti = ranges::next(first, last);
 		hamon::nth_element(
-			std::move(first),
-			std::move(nth),
+			hamon::move(first),
+			hamon::move(nth),
 			lasti,
 			detail::make_comp_proj(comp, proj));
 		return lasti;
@@ -89,10 +89,10 @@ struct nth_element_fn
 	{
 		return (*this)(
 			ranges::begin(r),
-			std::move(nth),
+			hamon::move(nth),
 			ranges::end(r),
-			std::move(comp),
-			std::move(proj));
+			hamon::move(comp),
+			hamon::move(proj));
 	}
 };
 

@@ -9,8 +9,8 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 
 namespace hamon_ranges_test
@@ -105,8 +105,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	R3 r;
 	const R3& c = r;
 	VERIFY(hamon::ranges::cdata(r) == hamon::ranges::data(c));
-	VERIFY(hamon::ranges::cdata(std::move(r)) == hamon::ranges::data(c));
-	VERIFY(hamon::ranges::cdata(std::move(c)) == hamon::ranges::begin(c));
+	VERIFY(hamon::ranges::cdata(hamon::move(r)) == hamon::ranges::data(c));
+	VERIFY(hamon::ranges::cdata(hamon::move(c)) == hamon::ranges::begin(c));
 
 	return true;
 }

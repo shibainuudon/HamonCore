@@ -49,8 +49,8 @@ using std::ranges::find_last;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -74,7 +74,7 @@ private:
 		Iter found = ranges::find(
 			hamon::reverse_iterator<Iter>{last},
 			hamon::reverse_iterator<Iter>{first},
-			value, std::move(proj)).base();
+			value, hamon::move(proj)).base();
 
 		if (found == first)
 		{
@@ -128,10 +128,10 @@ public:
 			T const*>)
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(value),
-			std::move(proj),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(value),
+			hamon::move(proj),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -149,7 +149,7 @@ public:
 			hamon::projected<ranges::iterator_t<Range>, Proj>,
 			T const*>)
 	{
-		return (*this)(ranges::begin(r), ranges::end(r), value, std::move(proj));
+		return (*this)(ranges::begin(r), ranges::end(r), value, hamon::move(proj));
 	}
 };
 

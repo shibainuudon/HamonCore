@@ -7,8 +7,8 @@
 #ifndef HAMON_SERIALIZATION_NVP_HPP
 #define HAMON_SERIALIZATION_NVP_HPP
 
+#include <hamon/utility/move.hpp>
 #include <string>
-#include <utility>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ public:
 	{}
 
 	explicit nvp(std::string name, T& t)
-		: m_name(std::move(name))
+		: m_name(hamon::move(name))
 		, m_value(t)
 	{}
 
@@ -56,14 +56,14 @@ template <typename T>
 inline nvp<T> const
 make_nvp(std::string name, T& t)
 {
-	return nvp<T>(std::move(name), t);
+	return nvp<T>(hamon::move(name), t);
 }
 
 template <typename T>
 inline nvp<T const> const
 make_nvp(std::string name, T const& t)
 {
-	return nvp<T const>(std::move(name), t);
+	return nvp<T const>(hamon::move(name), t);
 }
 
 template <typename Archive, typename T>

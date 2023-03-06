@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <utility>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -28,8 +28,8 @@ class Foo
 {
 public:
 	Foo(int value) : m_value(value) {}
-	Foo(Foo&& other) noexcept : m_value(std::move(other.m_value)) {}
-	Foo& operator=(Foo&& other) noexcept { m_value = std::move(other.m_value); return *this; }
+	Foo(Foo&& other) noexcept : m_value(hamon::move(other.m_value)) {}
+	Foo& operator=(Foo&& other) noexcept { m_value = hamon::move(other.m_value); return *this; }
 	int get() const { return m_value; }
 private:
 	int	m_value;

@@ -9,9 +9,8 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/utility/as_const.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -147,14 +146,14 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	VERIFY(hamon::ranges::end(c) == end(c));
 
 	RV v{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(std::move(v))), decltype(end(r))>::value, "");
-	static_assert(noexcept(hamon::ranges::end(std::move(v))), "");
-	VERIFY(hamon::ranges::end(std::move(v)) == end(r));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(hamon::move(v))), decltype(end(r))>::value, "");
+	static_assert(noexcept(hamon::ranges::end(hamon::move(v))), "");
+	VERIFY(hamon::ranges::end(hamon::move(v)) == end(r));
 
 	const RV cv{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(std::move(cv))), decltype(end(c))>::value, "");
-	static_assert(!noexcept(hamon::ranges::end(std::move(cv))), "");
-	VERIFY(hamon::ranges::end(std::move(cv)) == end(c));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(hamon::move(cv))), decltype(end(c))>::value, "");
+	static_assert(!noexcept(hamon::ranges::end(hamon::move(cv))), "");
+	VERIFY(hamon::ranges::end(hamon::move(cv)) == end(c));
 
 	return true;
 }
@@ -166,14 +165,14 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	VERIFY(hamon::ranges::end(r) == &r.s);
 	static_assert(noexcept(hamon::ranges::end(r)), "");
 
-	VERIFY(hamon::ranges::end(std::move(r)) == &r.s);
-	static_assert(noexcept(hamon::ranges::end(std::move(r))), "");
+	VERIFY(hamon::ranges::end(hamon::move(r)) == &r.s);
+	static_assert(noexcept(hamon::ranges::end(hamon::move(r))), "");
 
 	VERIFY(hamon::ranges::end(c) == &r.l);
 	static_assert(!noexcept(hamon::ranges::end(c)), "");
 
-	VERIFY(hamon::ranges::end(std::move(c)) == &r.l);
-	static_assert(!noexcept(hamon::ranges::end(std::move(c))), "");
+	VERIFY(hamon::ranges::end(hamon::move(c)) == &r.l);
+	static_assert(!noexcept(hamon::ranges::end(hamon::move(c))), "");
 
 	return true;
 }

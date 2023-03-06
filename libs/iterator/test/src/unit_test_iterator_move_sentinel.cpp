@@ -23,6 +23,7 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include "constexpr_test.hpp"
@@ -499,12 +500,12 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 		const auto& cm = m;
 		VERIFY(m.base() == 42);
 		VERIFY(cm.base() == 42);
-		VERIFY(std::move(m).base() == 42);
-		VERIFY(std::move(cm).base() == 42);
+		VERIFY(hamon::move(m).base() == 42);
+		VERIFY(hamon::move(cm).base() == 42);
 		static_assert(hamon::is_same<decltype(m.base()), int>::value, "");
 		static_assert(hamon::is_same<decltype(cm.base()), int>::value, "");
-		static_assert(hamon::is_same<decltype(std::move(m).base()), int>::value, "");
-		static_assert(hamon::is_same<decltype(std::move(cm).base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::move(m).base()), int>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::move(cm).base()), int>::value, "");
 	}
 
 	// The sentinel type is a pointer.
@@ -514,12 +515,12 @@ inline HAMON_CXX14_CONSTEXPR bool BaseTest()
 		const auto& cm = m;
 		VERIFY(m.base() == a);
 		VERIFY(cm.base() == a);
-		VERIFY(std::move(m).base() == a);
-		VERIFY(std::move(cm).base() == a);
+		VERIFY(hamon::move(m).base() == a);
+		VERIFY(hamon::move(cm).base() == a);
 		static_assert(hamon::is_same<decltype(m.base()), const int*>::value, "");
 		static_assert(hamon::is_same<decltype(cm.base()), const int*>::value, "");
-		static_assert(hamon::is_same<decltype(std::move(m).base()), const int*>::value, "");
-		static_assert(hamon::is_same<decltype(std::move(cm).base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::move(m).base()), const int*>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::move(cm).base()), const int*>::value, "");
 	}
 	return true;
 }

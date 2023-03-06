@@ -40,8 +40,8 @@ using std::ranges::swap_ranges;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -72,7 +72,7 @@ struct swap_ranges_fn
 			ranges::iter_swap(first1, first2);
 		}
 
-		return { std::move(first1), std::move(first2) };
+		return { hamon::move(first1), hamon::move(first2) };
 	}
 
 	template <

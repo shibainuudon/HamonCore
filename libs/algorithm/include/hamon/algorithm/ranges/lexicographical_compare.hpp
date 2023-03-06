@@ -43,8 +43,8 @@ using std::ranges::lexicographical_compare;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -83,18 +83,18 @@ struct lexicographical_compare_fn
 			same_as<Iter1, Sent1>)
 		{
 			return (*this)(first1.base(), last1.base(),
-				std::move(first2), std::move(last2),
-				std::move(comp),
-				std::move(proj1), std::move(proj2));
+				hamon::move(first2), hamon::move(last2),
+				hamon::move(comp),
+				hamon::move(proj1), hamon::move(proj2));
 		}
 		else if constexpr (
 			detail::is_normal_iterator<Iter2> &&
 			same_as<Iter2, Sent2>)
 		{
-			return (*this)(std::move(first1), std::move(last1),
+			return (*this)(hamon::move(first1), hamon::move(last1),
 				first2.base(), last2.base(),
-				std::move(comp),
-				std::move(proj1), std::move(proj2));
+				hamon::move(comp),
+				hamon::move(proj1), hamon::move(proj2));
 		}
 		else
 #endif
@@ -199,8 +199,8 @@ struct lexicographical_compare_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(comp),
-			std::move(proj1), std::move(proj2));
+			hamon::move(comp),
+			hamon::move(proj1), hamon::move(proj2));
 	}
 
 private:

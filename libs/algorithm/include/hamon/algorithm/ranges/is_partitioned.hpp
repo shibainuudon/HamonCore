@@ -39,8 +39,8 @@ using std::ranges::is_partitioned;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -64,7 +64,7 @@ struct is_partitioned_fn
 	operator()(Iter first, Sent last, Pred pred, Proj proj = {}) const
 	{
 		first = ranges::find_if_not(
-			std::move(first), last, pred, proj);
+			hamon::move(first), last, pred, proj);
 
 		if (first == last)
 		{
@@ -73,8 +73,8 @@ struct is_partitioned_fn
 
 		++first;
 		return ranges::none_of(
-			std::move(first), std::move(last),
-			std::move(pred), std::move(proj));
+			hamon::move(first), hamon::move(last),
+			hamon::move(pred), hamon::move(proj));
 	}
 
 	template <
@@ -91,7 +91,7 @@ struct is_partitioned_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

@@ -23,8 +23,8 @@ using std::remove_if;
 #else
 
 #include <hamon/algorithm/find_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -70,7 +70,7 @@ remove_if(
 	{
 		if (!pred(*first))
 		{
-			*result = std::move(*first);
+			*result = hamon::move(*first);
 			++result;
 		}
 	}

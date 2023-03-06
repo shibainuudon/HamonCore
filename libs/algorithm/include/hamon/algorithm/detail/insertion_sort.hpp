@@ -10,8 +10,8 @@
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/detail/unguarded_linear_insert.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -32,9 +32,9 @@ insertion_sort(RandomAccessIterator first, RandomAccessIterator last, Compare co
 	{
 		if (comp(*i, *first))
 		{
-			hamon::iter_value_t<RandomAccessIterator> val = std::move(*i);
+			hamon::iter_value_t<RandomAccessIterator> val = hamon::move(*i);
 			hamon::move_backward(first, i, i + 1);
-			*first = std::move(val);
+			*first = hamon::move(val);
 		}
 		else
 		{

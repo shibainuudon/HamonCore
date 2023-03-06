@@ -45,8 +45,8 @@ using std::ranges::is_permutation;
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -195,9 +195,9 @@ public:
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(pred),
-			std::move(proj1),
-			std::move(proj2));
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2));
 	}
 };
 

@@ -24,8 +24,8 @@ using std::inner_product;
 
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/multiplies.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -73,7 +73,7 @@ inner_product(
 {
 	while (first1 != last1)
 	{
-		init = binary_op1(std::move(init), binary_op2(*first1, *first2));
+		init = binary_op1(hamon::move(init), binary_op2(*first1, *first2));
 		++first1;
 		++first2;
 	}
@@ -111,10 +111,10 @@ inner_product(
 	T init)
 {
 	return hamon::inner_product(
-		std::move(first1),
-		std::move(last1),
-		std::move(first2),
-		std::move(init),
+		hamon::move(first1),
+		hamon::move(last1),
+		hamon::move(first2),
+		hamon::move(init),
 		hamon::plus<>(),
 		hamon::multiplies<>());
 }

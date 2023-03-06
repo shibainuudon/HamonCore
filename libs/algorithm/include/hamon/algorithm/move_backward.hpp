@@ -22,8 +22,8 @@ using std::move_backward;
 
 #else
 
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -60,7 +60,7 @@ move_backward(
 {
 	while (first != last)
 	{
-		*--result = std::move(*--last);
+		*--result = hamon::move(*--last);
 	}
 
 	return result;

@@ -26,8 +26,8 @@ using std::make_heap;
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -64,8 +64,8 @@ make_heap(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 	difference_t parent = (len - 2) / 2;
 	for (;;)
 	{
-		value_t value = std::move(*(first + parent));
-		hamon::detail::adjust_heap(first, parent, len, std::move(value), comp);
+		value_t value = hamon::move(*(first + parent));
+		hamon::detail::adjust_heap(first, parent, len, hamon::move(value), comp);
 
 		if (parent == 0)
 		{

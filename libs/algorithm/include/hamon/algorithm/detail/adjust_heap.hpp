@@ -8,8 +8,8 @@
 #define HAMON_ALGORITHM_DETAIL_ADJUST_HEAP_HPP
 
 #include <hamon/algorithm/push_heap.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -41,18 +41,18 @@ adjust_heap(
 			second_child--;
 		}
 
-		*(first + hole_index) = std::move(*(first + second_child));
+		*(first + hole_index) = hamon::move(*(first + second_child));
 		hole_index = second_child;
 	}
 
 	if ((len & 1) == 0 && second_child == (len - 2) / 2)
 	{
 		second_child = 2 * (second_child + 1);
-		*(first + hole_index) = std::move(*(first + (second_child - 1)));
+		*(first + hole_index) = hamon::move(*(first + (second_child - 1)));
 		hole_index = second_child - 1;
 	}
 
-	hamon::detail::push_heap_impl(first, hole_index, top_index, std::move(value), comp);
+	hamon::detail::push_heap_impl(first, hole_index, top_index, hamon::move(value), comp);
 }
 
 }	// namespace detail

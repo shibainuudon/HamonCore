@@ -41,8 +41,8 @@ using std::ranges::reverse;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -113,8 +113,8 @@ public:
 		Iter, hamon::permutable<Iter>)
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
+			hamon::move(first),
+			hamon::move(last),
 			hamon::detail::overload_priority<1>{});
 	}
 

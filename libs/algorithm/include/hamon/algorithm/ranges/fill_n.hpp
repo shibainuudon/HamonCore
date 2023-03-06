@@ -33,8 +33,8 @@ using std::ranges::fill_n;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -97,8 +97,8 @@ public:
 		}
 
 		return impl(
-			std::move(first),
-			std::move(n),
+			hamon::move(first),
+			hamon::move(n),
 			value,
 			hamon::detail::overload_priority<1>{});
 	}

@@ -46,8 +46,8 @@ using std::ranges::transform;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -83,7 +83,7 @@ struct transform_fn
 			*result = hamon::invoke(op, hamon::invoke(proj, *first1));
 		}
 
-		return { std::move(first1), std::move(result) };
+		return { hamon::move(first1), hamon::move(result) };
 	}
 
 	template <
@@ -103,9 +103,9 @@ struct transform_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result),
-			std::move(op),
-			std::move(proj));
+			hamon::move(result),
+			hamon::move(op),
+			hamon::move(proj));
 	}
 
 	template <
@@ -138,7 +138,7 @@ struct transform_fn
 				hamon::invoke(proj2, *first2));
 		}
 
-		return { std::move(first1), std::move(first2), std::move(result) };
+		return { hamon::move(first1), hamon::move(first2), hamon::move(result) };
 	}
 
 	template <
@@ -165,8 +165,8 @@ struct transform_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(result), std::move(binary_op),
-			std::move(proj1), std::move(proj2));
+			hamon::move(result), hamon::move(binary_op),
+			hamon::move(proj1), hamon::move(proj2));
 	}
 };
 

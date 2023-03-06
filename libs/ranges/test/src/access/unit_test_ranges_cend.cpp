@@ -9,9 +9,8 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/utility/as_const.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_ranges_test
@@ -111,8 +110,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	RV v{ r };
 	const RV cv{ r };
-	VERIFY(hamon::ranges::cend(std::move(v)) == hamon::ranges::end(c));
-	VERIFY(hamon::ranges::cend(std::move(cv)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(hamon::move(v)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(hamon::move(cv)) == hamon::ranges::end(c));
 
 	return true;
 }
@@ -124,8 +123,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	VERIFY(hamon::ranges::cend(r) == hamon::ranges::end(c));
 	VERIFY(hamon::ranges::cend(c) == hamon::ranges::end(c));
 
-	VERIFY(hamon::ranges::cend(std::move(r)) == hamon::ranges::end(c));
-	VERIFY(hamon::ranges::cend(std::move(c)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(hamon::move(r)) == hamon::ranges::end(c));
+	VERIFY(hamon::ranges::cend(hamon::move(c)) == hamon::ranges::end(c));
 
 	return true;
 }

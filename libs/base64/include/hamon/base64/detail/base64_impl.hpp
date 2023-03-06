@@ -7,9 +7,8 @@
 #ifndef HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 #define HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 
-#include <hamon/memory/to_address.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -19,12 +18,14 @@
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
+#include <hamon/memory/to_address.hpp>
 #include <hamon/ranges/concepts/contiguous_range.hpp>
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <cstdint>
@@ -316,7 +317,7 @@ public:
 	static HAMON_CXX14_CONSTEXPR void
 	encode(Range&& rng, OutputIterator result)
 	{
-		encode(hamon::ranges::begin(rng), hamon::ranges::end(rng), std::move(result));
+		encode(hamon::ranges::begin(rng), hamon::ranges::end(rng), hamon::move(result));
 	}
 
 	/**
@@ -373,7 +374,7 @@ public:
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	decode(Range&& rng, OutputIterator result)
 	{
-		return decode(hamon::ranges::begin(rng), hamon::ranges::end(rng), std::move(result));
+		return decode(hamon::ranges::begin(rng), hamon::ranges::end(rng), hamon::move(result));
 	}
 
 	/**

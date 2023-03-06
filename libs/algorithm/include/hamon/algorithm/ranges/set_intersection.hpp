@@ -44,8 +44,8 @@ using std::ranges::set_intersection;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -104,9 +104,9 @@ struct set_intersection_fn
 			}
 		}
 
-		auto last1i = ranges::next(std::move(first1), std::move(last1));
-		auto last2i = ranges::next(std::move(first2), std::move(last2));
-		return { std::move(last1i), std::move(last2i), std::move(result) };
+		auto last1i = ranges::next(hamon::move(first1), hamon::move(last1));
+		auto last2i = ranges::next(hamon::move(first2), hamon::move(last2));
+		return { hamon::move(last1i), hamon::move(last2i), hamon::move(result) };
 	}
 
 	template <
@@ -136,8 +136,8 @@ struct set_intersection_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(result), std::move(comp),
-			std::move(proj1), std::move(proj2));
+			hamon::move(result), hamon::move(comp),
+			hamon::move(proj1), hamon::move(proj2));
 	}
 };
 

@@ -47,8 +47,8 @@ using std::ranges::remove_copy;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -90,7 +90,7 @@ struct remove_copy_fn
 			}
 		}
 
-		return { std::move(first), std::move(result) };
+		return { hamon::move(first), hamon::move(result) };
 	}
 
 	template <
@@ -114,7 +114,7 @@ struct remove_copy_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(result), value, std::move(proj));
+			hamon::move(result), value, hamon::move(proj));
 	}
 };
 

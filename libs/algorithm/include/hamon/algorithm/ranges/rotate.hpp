@@ -46,8 +46,8 @@ using std::ranges::rotate;
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_subrange_t.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -70,7 +70,7 @@ private:
 		if (k == n - k)
 		{
 			ranges::swap_ranges(first, middle, middle, middle + k);
-			return { std::move(middle), std::move(lasti) };
+			return { hamon::move(middle), hamon::move(lasti) };
 		}
 
 		auto p = first;
@@ -86,10 +86,10 @@ private:
 				//{
 				//	if (k == 1)
 				//	{
-				//		auto t = std::move(*p);
+				//		auto t = hamon::move(*p);
 				//		ranges::move(p + 1, p + n, p);
-				//		*(p + n - 1) = std::move(t);
-				//		return { std::move(ret), std::move(lasti) };
+				//		*(p + n - 1) = hamon::move(t);
+				//		return { hamon::move(ret), hamon::move(lasti) };
 				//	}
 				//}
 
@@ -104,7 +104,7 @@ private:
 				n %= k;
 				if (n == 0)
 				{
-					return { std::move(ret), std::move(lasti) };
+					return { hamon::move(ret), hamon::move(lasti) };
 				}
 
 				ranges::swap(n, k);
@@ -119,10 +119,10 @@ private:
 				//{
 				//	if (k == 1)
 				//	{
-				//		auto t = std::move(*(p + n - 1));
+				//		auto t = hamon::move(*(p + n - 1));
 				//		ranges::move_backward(p, p + n - 1, p + n);
-				//		*p = std::move(t);
-				//		return { std::move(ret), std::move(lasti) };
+				//		*p = hamon::move(t);
+				//		return { hamon::move(ret), hamon::move(lasti) };
 				//	}
 				//}
 
@@ -138,7 +138,7 @@ private:
 				n %= k;
 				if (n == 0)
 				{
-					return { std::move(ret), std::move(lasti) };
+					return { hamon::move(ret), hamon::move(lasti) };
 				}
 
 				ranges::swap(n, k);
@@ -166,12 +166,12 @@ private:
 		if (first == middle)
 		{
 			ranges::reverse(middle, tail);
-			return { std::move(tail), std::move(lasti) };
+			return { hamon::move(tail), hamon::move(lasti) };
 		}
 		else
 		{
 			ranges::reverse(first, middle);
-			return { std::move(first), std::move(lasti) };
+			return { hamon::move(first), hamon::move(lasti) };
 		}
 	}
 
@@ -213,7 +213,7 @@ private:
 			}
 		}
 
-		return { std::move(ret), std::move(lasti) };
+		return { hamon::move(ret), hamon::move(lasti) };
 	}
 
 public:
@@ -232,13 +232,13 @@ public:
 
 		if (last == middle)
 		{
-			return { std::move(first), std::move(lasti) };
+			return { hamon::move(first), hamon::move(lasti) };
 		}
 
 		return impl(
-			std::move(first),
-			std::move(middle),
-			std::move(lasti),
+			hamon::move(first),
+			hamon::move(middle),
+			hamon::move(lasti),
 			hamon::detail::overload_priority<2>{});
 	}
 
@@ -251,7 +251,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r),
-			std::move(middle),
+			hamon::move(middle),
 			ranges::end(r));
 	}
 };

@@ -28,8 +28,8 @@ using std::reduce;
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -63,10 +63,10 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
 	}
 
 	return reduce_impl(
-		std::move(first),
-		std::move(last),
-		std::move(init),
-		std::move(binary_op),
+		hamon::move(first),
+		hamon::move(last),
+		hamon::move(init),
+		hamon::move(binary_op),
 		hamon::false_type{});
 }
 
@@ -103,10 +103,10 @@ reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_o
 	static_assert(hamon::is_convertible<value_type, T>::value, "");
 
 	return detail::reduce_impl(
-		std::move(first),
-		std::move(last),
-		std::move(init),
-		std::move(binary_op),
+		hamon::move(first),
+		hamon::move(last),
+		hamon::move(init),
+		hamon::move(binary_op),
 		hamon::random_access_iterator_t<InputIterator>{});
 }
 
@@ -118,9 +118,9 @@ inline HAMON_CXX14_CONSTEXPR T
 reduce(InputIterator first, InputIterator last, T init)
 {
 	return hamon::reduce(
-		std::move(first),
-		std::move(last),
-		std::move(init),
+		hamon::move(first),
+		hamon::move(last),
+		hamon::move(init),
 		hamon::plus<>{});
 }
 
@@ -133,8 +133,8 @@ reduce(InputIterator first, InputIterator last)
 {
 	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
 	return hamon::reduce(
-		std::move(first),
-		std::move(last),
+		hamon::move(first),
+		hamon::move(last),
 		value_type{},
 		hamon::plus<>{});
 }

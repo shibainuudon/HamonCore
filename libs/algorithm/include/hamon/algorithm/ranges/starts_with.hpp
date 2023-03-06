@@ -40,8 +40,8 @@ using std::ranges::starts_with;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -71,9 +71,9 @@ struct starts_with_fn
 		hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>)
 	{
 		return ranges::mismatch(
-			std::move(first1), last1,
-			std::move(first2), last2,
-			std::move(pred), std::move(proj1), std::move(proj2)
+			hamon::move(first1), last1,
+			hamon::move(first2), last2,
+			hamon::move(pred), hamon::move(proj1), hamon::move(proj2)
 		).in2 == last2;
 	}
 
@@ -99,7 +99,7 @@ struct starts_with_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(pred), std::move(proj1), std::move(proj2));
+			hamon::move(pred), hamon::move(proj1), hamon::move(proj2));
 	}
 };
 

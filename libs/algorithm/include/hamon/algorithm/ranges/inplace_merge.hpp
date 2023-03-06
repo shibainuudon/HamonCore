@@ -42,8 +42,8 @@ using std::ranges::inplace_merge;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -67,8 +67,8 @@ struct inplace_merge_fn
 	{
 		auto lasti = ranges::next(first, last);
 		hamon::inplace_merge(
-			std::move(first),
-			std::move(middle),
+			hamon::move(first),
+			hamon::move(middle),
 			lasti,
 			detail::make_comp_proj(comp, proj));
 		return lasti;
@@ -87,10 +87,10 @@ struct inplace_merge_fn
 	{
 		return (*this)(
 			ranges::begin(r),
-			std::move(middle),
+			hamon::move(middle),
 			ranges::end(r),
-			std::move(comp),
-			std::move(proj));
+			hamon::move(comp),
+			hamon::move(proj));
 	}
 };
 

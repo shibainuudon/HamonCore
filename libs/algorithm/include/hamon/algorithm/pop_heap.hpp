@@ -26,8 +26,8 @@ using std::pop_heap;
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -46,13 +46,13 @@ pop_heap_impl(
 	using value_t = hamon::iter_value_t<RandomAccessIterator>;
 	using difference_t = hamon::iter_difference_t<RandomAccessIterator>;
 
-	value_t value = std::move(*result);
-	*result = std::move(*first);
+	value_t value = hamon::move(*result);
+	*result = hamon::move(*first);
 	hamon::detail::adjust_heap(
 		first,
 		difference_t(0),
 		difference_t(last - first),
-		std::move(value),
+		hamon::move(value),
 		comp);
 }
 

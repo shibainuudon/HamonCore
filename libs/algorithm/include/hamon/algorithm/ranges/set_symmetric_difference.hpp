@@ -44,8 +44,8 @@ using std::ranges::set_symmetric_difference;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -107,9 +107,9 @@ struct set_symmetric_difference_fn
 			}
 		}
 
-		auto copy1 = ranges::copy(std::move(first1), std::move(last1), std::move(result));
-		auto copy2 = ranges::copy(std::move(first2), std::move(last2), std::move(copy1.out));
-		return { std::move(copy1.in), std::move(copy2.in), std::move(copy2.out) };
+		auto copy1 = ranges::copy(hamon::move(first1), hamon::move(last1), hamon::move(result));
+		auto copy2 = ranges::copy(hamon::move(first2), hamon::move(last2), hamon::move(copy1.out));
+		return { hamon::move(copy1.in), hamon::move(copy2.in), hamon::move(copy2.out) };
 	}
 
 	template <
@@ -139,8 +139,8 @@ struct set_symmetric_difference_fn
 		return (*this)(
 			ranges::begin(r1), ranges::end(r1),
 			ranges::begin(r2), ranges::end(r2),
-			std::move(result), std::move(comp),
-			std::move(proj1), std::move(proj2));
+			hamon::move(result), hamon::move(comp),
+			hamon::move(proj1), hamon::move(proj2));
 	}
 };
 

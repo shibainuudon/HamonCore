@@ -40,8 +40,8 @@ using std::ranges::binary_search;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -95,7 +95,7 @@ struct binary_search_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			value, std::move(comp), std::move(proj));
+			value, hamon::move(comp), hamon::move(proj));
 	}
 };
 

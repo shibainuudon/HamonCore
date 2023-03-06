@@ -30,8 +30,8 @@ using std::ranges::in_fun_result;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -78,7 +78,7 @@ struct in_fun_result
 #endif
 	HAMON_CXX14_CONSTEXPR operator in_fun_result<Iter2, F2>() &&
 	{
-		return { std::move(in), std::move(fun) };
+		return { hamon::move(in), hamon::move(fun) };
 	}
 };
 

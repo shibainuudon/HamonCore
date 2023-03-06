@@ -10,9 +10,9 @@
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/as_const.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -43,7 +43,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(last == a+4);
 	}
 	{
-		auto [first, last] = std::move(r);
+		auto [first, last] = hamon::move(r);
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
@@ -57,7 +57,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(last == a+4);
 	}
 	{
-		auto [first, last] = std::move(hamon::as_const(r));
+		auto [first, last] = hamon::move(hamon::as_const(r));
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  int*>::value, "");
 		VERIFY(first == a);
@@ -79,7 +79,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 		VERIFY(last != a+4);
 	}
 	{
-		auto [first, last] = std::move(r);
+		auto [first, last] = hamon::move(r);
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);
@@ -93,7 +93,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 		VERIFY(last != a+4);
 	}
 	{
-		auto [first, last] = std::move(hamon::as_const(r));
+		auto [first, last] = hamon::move(hamon::as_const(r));
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
 		static_assert(hamon::is_same<decltype(last),  hamon::unreachable_sentinel_t>::value, "");
 		VERIFY(first == a);

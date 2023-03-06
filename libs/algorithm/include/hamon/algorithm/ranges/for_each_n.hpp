@@ -38,8 +38,8 @@ using std::ranges::for_each_n;
 #include <hamon/iterator/concepts/indirectly_unary_invocable.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -64,13 +64,13 @@ private:
 	{
 		if (n <= 0)
 		{
-			return { std::move(first), std::move(f) };
+			return { hamon::move(first), hamon::move(f) };
 		}
 
 		auto last = first + n;
 		return ranges::for_each(
-			std::move(first), std::move(last),
-			std::move(f), std::move(proj));
+			hamon::move(first), hamon::move(last),
+			hamon::move(f), hamon::move(proj));
 	}
 
 	template <
@@ -88,7 +88,7 @@ private:
 			++first;
 		}
 
-		return { std::move(first), std::move(f) };
+		return { hamon::move(first), hamon::move(f) };
 	}
 
 public:

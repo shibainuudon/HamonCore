@@ -29,8 +29,8 @@ using std::ranges::in_found_result;
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -73,7 +73,7 @@ struct in_found_result
 	HAMON_CXX14_CONSTEXPR
 	operator in_found_result<Iter2>()&&
 	{
-		return { std::move(in), found };
+		return { hamon::move(in), found };
 	}
 };
 

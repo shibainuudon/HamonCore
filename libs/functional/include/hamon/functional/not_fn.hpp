@@ -26,8 +26,9 @@ using std::not_fn;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
+#include <utility>	// forward
 
 namespace hamon
 {
@@ -57,7 +58,7 @@ public:
 	template <typename... Args>
 	auto operator()(Args&&... args) &&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(std::move(m_fd), std::forward<Args>(args)...))
+			!hamon::invoke(hamon::move(m_fd), std::forward<Args>(args)...))
 
 	template <typename... Args>
 	auto operator()(Args&&... args) const&
@@ -67,7 +68,7 @@ public:
 	template <typename... Args>
 	auto operator()(Args&&... args) const&&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			!hamon::invoke(std::move(m_fd), std::forward<Args>(args)...))
+			!hamon::invoke(hamon::move(m_fd), std::forward<Args>(args)...))
 
 	template <
 		typename F2,

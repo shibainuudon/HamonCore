@@ -45,8 +45,8 @@ using std::ranges::partition;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -75,7 +75,7 @@ private:
 			{
 				if (first == tail)
 				{
-					return { std::move(first), std::move(lasti) };
+					return { hamon::move(first), hamon::move(lasti) };
 				}
 				else if (hamon::invoke(pred, hamon::invoke(proj, *first)))
 				{
@@ -93,7 +93,7 @@ private:
 			{
 				if (first == tail)
 				{
-					return { std::move(first), std::move(lasti) };
+					return { hamon::move(first), hamon::move(lasti) };
 				}
 				else if (!(bool)hamon::invoke(pred, hamon::invoke(proj, *tail)))
 				{
@@ -122,14 +122,14 @@ private:
 	{
 		if (first == last)
 		{
-			return { std::move(first), std::move(first) };
+			return { hamon::move(first), hamon::move(first) };
 		}
 
 		while (hamon::invoke(pred, hamon::invoke(proj, *first)))
 		{
 			if (++first == last)
 			{
-				return { std::move(first), std::move(first) };
+				return { hamon::move(first), hamon::move(first) };
 			}
 		}
 
@@ -143,7 +143,7 @@ private:
 			}
 		}
 
-		return { std::move(first), std::move(next_it) };
+		return { hamon::move(first), hamon::move(next_it) };
 	}
 
 public:
@@ -162,10 +162,10 @@ public:
 		Pred pred, Proj proj = {}) const
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(pred),
-			std::move(proj),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(pred),
+			hamon::move(proj),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -186,7 +186,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

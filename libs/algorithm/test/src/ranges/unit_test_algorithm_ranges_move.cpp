@@ -11,6 +11,7 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include <vector>
 #include "constexpr_test.hpp"
@@ -38,7 +39,7 @@ struct X
 	HAMON_CXX14_CONSTEXPR X(X&& other)
 		: i(other.i)
 	{
-		*this = std::move(other);
+		*this = hamon::move(other);
 	}
 
 	HAMON_CXX14_CONSTEXPR X& operator=(X&& other)
@@ -192,7 +193,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 		std::move_sentinel{ ranges::end(rx) },
 		ranges::begin(y));
 	VERIFY(ranges::equal(x, x+5, y, y+5));
-	VERIFY(std::move(res.in).base().m_ptr == x+5);
+	VERIFY(hamon::move(res.in).base().m_ptr == x+5);
 	VERIFY(res.out == y+5);
 	VERIFY(y[5].i == 2);
 	VERIFY(ranges::equal(x, z));

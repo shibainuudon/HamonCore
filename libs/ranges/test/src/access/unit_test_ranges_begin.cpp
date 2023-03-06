@@ -7,9 +7,9 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -131,14 +131,14 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	RV v{ r };
 	// enable_borrowed_range<RV> allows ranges::begin to work for rvalues,
 	// but it will call v.begin() or begin(v) on an lvalue:
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(std::move(v))), decltype(begin(v))>::value, "");
-	static_assert(!noexcept(hamon::ranges::begin(std::move(v))), "");
-	VERIFY(hamon::ranges::begin(std::move(v)) == begin(v));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(hamon::move(v))), decltype(begin(v))>::value, "");
+	static_assert(!noexcept(hamon::ranges::begin(hamon::move(v))), "");
+	VERIFY(hamon::ranges::begin(hamon::move(v)) == begin(v));
 
 	const RV cv{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(std::move(cv))), decltype(begin(cv))>::value, "");
-	static_assert(noexcept(hamon::ranges::begin(std::move(cv))), "");
-	VERIFY(hamon::ranges::begin(std::move(cv)) == begin(cv));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(hamon::move(cv))), decltype(begin(cv))>::value, "");
+	static_assert(noexcept(hamon::ranges::begin(hamon::move(cv))), "");
+	VERIFY(hamon::ranges::begin(hamon::move(cv)) == begin(cv));
 
 	return true;
 }
@@ -151,15 +151,15 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(noexcept(hamon::ranges::begin(r)), "");
 
 	// calls r.begin() on an lvalue, not rvalue
-	VERIFY(hamon::ranges::begin(std::move(r)) == hamon::ranges::begin(r));
-	static_assert(noexcept(hamon::ranges::begin(std::move(r))), "");
+	VERIFY(hamon::ranges::begin(hamon::move(r)) == hamon::ranges::begin(r));
+	static_assert(noexcept(hamon::ranges::begin(hamon::move(r))), "");
 
 	VERIFY(hamon::ranges::begin(c) == &r.l);
 	static_assert(!noexcept(hamon::ranges::begin(c)), "");
 
 	// calls r.begin() on a const lvalue, not rvalue
-	VERIFY(hamon::ranges::begin(std::move(c)) == hamon::ranges::begin(c));
-	static_assert(!noexcept(hamon::ranges::begin(std::move(c))), "");
+	VERIFY(hamon::ranges::begin(hamon::move(c)) == hamon::ranges::begin(c));
+	static_assert(!noexcept(hamon::ranges::begin(hamon::move(c))), "");
 
 	return true;
 }

@@ -7,8 +7,8 @@
 #include <hamon/algorithm/move.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include <array>
 #include <vector>
 #include <list>
@@ -34,14 +34,14 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR noncopyable(noncopyable&& rhs) noexcept
-		: value(std::move(rhs.value))
+		: value(hamon::move(rhs.value))
 	{
 		rhs.value = -1;
 	}
 	
 	HAMON_CXX14_CONSTEXPR noncopyable& operator=(noncopyable&& rhs) noexcept
 	{
-		value = std::move(rhs.value);
+		value = hamon::move(rhs.value);
 		rhs.value = -1;
 		return *this;
 	}

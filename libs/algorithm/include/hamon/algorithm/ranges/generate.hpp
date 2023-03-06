@@ -42,8 +42,8 @@ using std::ranges::generate;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -84,7 +84,7 @@ struct generate_fn
 			hamon::invocable<F&>,
 			ranges::output_range<Range HAMON_PP_COMMA() hamon::invoke_result_t<F&>>))
 	{
-		return (*this)(ranges::begin(r), ranges::end(r), std::move(gen));
+		return (*this)(ranges::begin(r), ranges::end(r), hamon::move(gen));
 	}
 };
 

@@ -43,10 +43,10 @@ using std::ranges::minmax;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
-#include <utility>
 
 namespace hamon
 {
@@ -74,7 +74,7 @@ struct minmax_fn
 		T const& a, T const& b,
 		Comp comp = {}, Proj proj = {}) const
 	{
-		if (hamon::invoke(std::move(comp),
+		if (hamon::invoke(hamon::move(comp),
 			hamon::invoke(proj, b),
 			hamon::invoke(proj, a)))
 		{
@@ -115,14 +115,14 @@ struct minmax_fn
 				hamon::invoke(proj, tmp),
 				hamon::invoke(proj, result.min)))
 			{
-				result.min = std::move(tmp);
+				result.min = hamon::move(tmp);
 			}
 
 			if (!(bool)hamon::invoke(comp,
 				hamon::invoke(proj, tmp),
 				hamon::invoke(proj, result.max)))
 			{
-				result.max = std::move(tmp);
+				result.max = hamon::move(tmp);
 			}
 		}
 
@@ -144,7 +144,7 @@ struct minmax_fn
 		Comp comp = {}, Proj proj = {}) const
 	{
 		return (*this)(ranges::subrange<T const*>(r),
-			std::move(comp), std::move(proj));
+			hamon::move(comp), hamon::move(proj));
 	}
 };
 

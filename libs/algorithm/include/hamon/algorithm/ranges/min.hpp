@@ -42,10 +42,10 @@ using std::ranges::min;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
-#include <utility>
 
 namespace hamon
 {
@@ -68,7 +68,7 @@ struct min_fn
 	HAMON_CXX14_CONSTEXPR T const& operator()(
 		T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
 	{
-		if (hamon::invoke(std::move(comp),
+		if (hamon::invoke(hamon::move(comp),
 			hamon::invoke(proj, b),
 			hamon::invoke(proj, a)))
 		{
@@ -109,7 +109,7 @@ struct min_fn
 				hamon::invoke(proj, tmp),
 				hamon::invoke(proj, result)))
 			{
-				result = std::move(tmp);
+				result = hamon::move(tmp);
 			}
 		}
 
@@ -131,7 +131,7 @@ struct min_fn
 	{
 		return (*this)(
 			ranges::subrange<T const*>(r),
-			std::move(comp), std::move(proj));
+			hamon::move(comp), hamon::move(proj));
 	}
 };
 

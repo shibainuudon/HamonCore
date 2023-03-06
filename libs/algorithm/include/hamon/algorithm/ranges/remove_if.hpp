@@ -42,8 +42,8 @@ using std::ranges::remove_if;
 #include <hamon/ranges/borrowed_subrange_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -75,7 +75,7 @@ struct remove_if_fn
 		{
 			if (!hamon::invoke(pred, hamon::invoke(proj, *first)))
 			{
-				*result = std::move(*first);
+				*result = hamon::move(*first);
 				++result;
 			}
 		}
@@ -97,7 +97,7 @@ struct remove_if_fn
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

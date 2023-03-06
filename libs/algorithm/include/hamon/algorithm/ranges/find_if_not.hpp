@@ -39,8 +39,8 @@ using std::ranges::find_if_not;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -85,7 +85,7 @@ struct find_if_not_fn
 	operator()(Range&& r, Pred pred, Proj proj = {}) const
 	{
 		return (*this)(
-			ranges::begin(r), ranges::end(r), std::move(pred), std::move(proj));
+			ranges::begin(r), ranges::end(r), hamon::move(pred), hamon::move(proj));
 	}
 };
 

@@ -31,8 +31,9 @@ using std::ranges::iter_move;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
+#include <utility>	// forward
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
@@ -76,7 +77,7 @@ private:
 	requires hamon::is_lvalue_reference<hamon::iter_reference_t<T>>::value
 #endif
 	static HAMON_CXX14_CONSTEXPR auto impl(hamon::detail::overload_priority<1>, T&& t)
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(std::move(*std::forward<T>(t)))
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::move(*std::forward<T>(t)))
 
 	// (3) otherwise, if *forward<T>(t) is well-formed and is an rvalue
 	template <typename T

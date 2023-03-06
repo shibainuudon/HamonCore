@@ -10,6 +10,7 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -149,12 +150,12 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		ForwardSizedSubrange sr(r.begin(), r.end(), 5);
 		VERIFY(hamon::ranges::get<0>(sr).m_ptr      == x);
 		VERIFY(hamon::ranges::get<1>(sr).m_it.m_ptr == x+5);
-		VERIFY(hamon::ranges::get<0>(std::move(sr)).m_ptr      == x);
-		VERIFY(hamon::ranges::get<1>(std::move(sr)).m_it.m_ptr == x+5);
+		VERIFY(hamon::ranges::get<0>(hamon::move(sr)).m_ptr      == x);
+		VERIFY(hamon::ranges::get<1>(hamon::move(sr)).m_it.m_ptr == x+5);
 		VERIFY(hamon::get<0>(sr).m_ptr      == x);
 		VERIFY(hamon::get<1>(sr).m_it.m_ptr == x+5);
-		VERIFY(hamon::get<0>(std::move(sr)).m_ptr      == x);
-		VERIFY(hamon::get<1>(std::move(sr)).m_it.m_ptr == x+5);
+		VERIFY(hamon::get<0>(hamon::move(sr)).m_ptr      == x);
+		VERIFY(hamon::get<1>(hamon::move(sr)).m_it.m_ptr == x+5);
 
 		using Iter = hamon::ranges::iterator_t<ForwardRange>;
 		using Sent = hamon::ranges::sentinel_t<ForwardRange>;
@@ -179,12 +180,12 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 		ForwardUnsizedSubrange sr(r.begin(), r.end());
 		VERIFY(hamon::ranges::get<0>(sr).m_ptr      == x);
 		VERIFY(hamon::ranges::get<1>(sr).m_it.m_ptr == x+5);
-		VERIFY(hamon::ranges::get<0>(std::move(sr)).m_ptr      == x);
-		VERIFY(hamon::ranges::get<1>(std::move(sr)).m_it.m_ptr == x+5);
+		VERIFY(hamon::ranges::get<0>(hamon::move(sr)).m_ptr      == x);
+		VERIFY(hamon::ranges::get<1>(hamon::move(sr)).m_it.m_ptr == x+5);
 		VERIFY(hamon::get<0>(sr).m_ptr      == x);
 		VERIFY(hamon::get<1>(sr).m_it.m_ptr == x+5);
-		VERIFY(hamon::get<0>(std::move(sr)).m_ptr      == x);
-		VERIFY(hamon::get<1>(std::move(sr)).m_it.m_ptr == x+5);
+		VERIFY(hamon::get<0>(hamon::move(sr)).m_ptr      == x);
+		VERIFY(hamon::get<1>(hamon::move(sr)).m_it.m_ptr == x+5);
 
 		using Iter = hamon::ranges::iterator_t<ForwardRange>;
 		using Sent = hamon::ranges::sentinel_t<ForwardRange>;
@@ -208,8 +209,8 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		MoveOnlySubrange sr(x, x+5);
 //		VERIFY(hamon::ranges::get<0>(sr).m_ptr == x);
 		VERIFY(hamon::ranges::get<1>(sr)       == x+5);
-		VERIFY(hamon::ranges::get<0>(std::move(sr)).m_ptr == x);
-		VERIFY(hamon::ranges::get<1>(std::move(sr))       == x+5);
+		VERIFY(hamon::ranges::get<0>(hamon::move(sr)).m_ptr == x);
+		VERIFY(hamon::ranges::get<1>(hamon::move(sr))       == x+5);
 	}
 	return true;
 }

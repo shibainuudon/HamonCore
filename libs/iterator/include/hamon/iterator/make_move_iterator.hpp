@@ -23,7 +23,7 @@ using std::make_move_iterator;
 
 #else
 
-#include <utility>
+#include <hamon/utility/move.hpp>
 
 namespace hamon
 {
@@ -32,7 +32,7 @@ template <typename Iterator>
 inline HAMON_CXX14_CONSTEXPR hamon::move_iterator<Iterator>
 make_move_iterator(Iterator it)
 {
-    return hamon::move_iterator<Iterator>(std::move(it));
+    return hamon::move_iterator<Iterator>(hamon::move(it));
 }
 
 }	// namespace hamon

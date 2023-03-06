@@ -46,8 +46,8 @@ using std::ranges::partial_sort;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -108,10 +108,10 @@ struct partial_sort_fn
 	{
 		return (*this)(
 			ranges::begin(r),
-			std::move(middle),
+			hamon::move(middle),
 			ranges::end(r),
-			std::move(comp),
-			std::move(proj));
+			hamon::move(comp),
+			hamon::move(proj));
 	}
 };
 

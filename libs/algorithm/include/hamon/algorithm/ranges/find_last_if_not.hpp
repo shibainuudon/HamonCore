@@ -48,8 +48,8 @@ using std::ranges::find_last_if_not;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -73,7 +73,7 @@ private:
 		Iter found = ranges::find_if_not(
 			hamon::reverse_iterator<Iter>{last},
 			hamon::reverse_iterator<Iter>{first},
-			std::move(pred), std::move(proj)).base();
+			hamon::move(pred), hamon::move(proj)).base();
 
 		if (found == first)
 		{
@@ -124,10 +124,10 @@ public:
 	operator()(Iter first, Sent last, Pred pred, Proj proj = {}) const
 	{
 		return impl(
-			std::move(first),
-			std::move(last),
-			std::move(pred),
-			std::move(proj),
+			hamon::move(first),
+			hamon::move(last),
+			hamon::move(pred),
+			hamon::move(proj),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -144,7 +144,7 @@ public:
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
-			std::move(pred), std::move(proj));
+			hamon::move(pred), hamon::move(proj));
 	}
 };
 

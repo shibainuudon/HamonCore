@@ -28,6 +28,7 @@ using std::exchange;
 
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
+#include <hamon/utility/move.hpp>
 
 namespace hamon
 {
@@ -53,7 +54,7 @@ HAMON_NOEXCEPT_IF((
     hamon::is_nothrow_move_constructible<T>::value &&
     hamon::is_nothrow_assignable<T&, U>::value))
 {
-    T old_value = std::move(obj);
+    T old_value = hamon::move(obj);
     obj = std::forward<U>(new_value);
     return old_value;
 }

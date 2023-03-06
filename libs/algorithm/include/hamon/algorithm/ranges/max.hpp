@@ -42,10 +42,10 @@ using std::ranges::max;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
-#include <utility>
 
 namespace hamon
 {
@@ -68,7 +68,7 @@ struct max_fn
 	HAMON_CXX14_CONSTEXPR T const& operator()(
 		T const& a, T const& b, Comp comp = {}, Proj proj = {}) const
 	{
-		if (hamon::invoke(std::move(comp),
+		if (hamon::invoke(hamon::move(comp),
 			hamon::invoke(proj, a),
 			hamon::invoke(proj, b)))
 		{
@@ -109,7 +109,7 @@ struct max_fn
 				hamon::invoke(proj, result),
 				hamon::invoke(proj, tmp)))
 			{
-				result = std::move(tmp);
+				result = hamon::move(tmp);
 			}
 		}
 
@@ -131,7 +131,7 @@ struct max_fn
 	{
 		return (*this)(
 			ranges::subrange<T const*>(r),
-			std::move(comp), std::move(proj));
+			hamon::move(comp), hamon::move(proj));
 	}
 };
 
