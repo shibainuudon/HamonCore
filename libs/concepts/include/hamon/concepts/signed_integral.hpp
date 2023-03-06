@@ -11,7 +11,7 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/integral.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_signed.hpp>
 #endif
 
 namespace hamon
@@ -24,14 +24,14 @@ using std::signed_integral;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept signed_integral = hamon::integral<T> && std::is_signed<T>::value;
+concept signed_integral = hamon::integral<T> && hamon::is_signed<T>::value;
 
 #else
 
 template <typename T>
 using signed_integral =
 	hamon::conjunction<
-		hamon::integral<T>, std::is_signed<T>
+		hamon::integral<T>, hamon::is_signed<T>
 	>;
 
 #endif

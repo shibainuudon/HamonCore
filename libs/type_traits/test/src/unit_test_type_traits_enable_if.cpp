@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <gtest/gtest.h>
 #include <string>
 #include <vector>
@@ -17,13 +18,13 @@ namespace enable_if_test
 {
 
 template <typename T>
-int func1(T, typename hamon::enable_if<std::is_signed<T>::value>::type* = 0)
+int func1(T, typename hamon::enable_if<hamon::is_signed<T>::value>::type* = 0)
 {
 	return 0;
 }
 
 template <typename T>
-int func1(T, typename hamon::enable_if<!std::is_signed<T>::value>::type* = 0)
+int func1(T, typename hamon::enable_if<!hamon::is_signed<T>::value>::type* = 0)
 {
 	return 1;
 }

@@ -62,6 +62,7 @@
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_move_constructible.hpp>
+//#include <hamon/type_traits/is_implicit_lifetime.hpp>	// since C++23
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
@@ -98,7 +99,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/type_traits/is_scoped_enum.hpp>
-//#include <hamon/type_traits/is_signed.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_swappable_with.hpp>

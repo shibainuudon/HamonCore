@@ -13,6 +13,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <type_traits>
 #include <cstdint>
 #include <memory>
@@ -57,7 +58,7 @@ private:
 	{
 		m_impl->save(static_cast<std::uintmax_t>(t));
 	}
-	template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
+	template <typename T, typename = hamon::enable_if_t<hamon::is_signed<T>::value>>
 	void save_arithmetic_impl(T const& t, hamon::detail::overload_priority<0>)
 	{
 		m_impl->save(static_cast<std::intmax_t>(t));

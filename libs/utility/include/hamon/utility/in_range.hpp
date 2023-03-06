@@ -21,9 +21,9 @@ using std::in_range;
 #else
 
 #include <hamon/type_traits/make_unsigned.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <limits>
 
 namespace hamon
@@ -33,8 +33,8 @@ namespace detail
 {
 
 template <typename U, typename T,
-	bool = std::is_signed<U>::value,
-	bool = std::is_signed<T>::value
+	bool = hamon::is_signed<U>::value,
+	bool = hamon::is_signed<T>::value
 >
 struct in_range_impl
 {

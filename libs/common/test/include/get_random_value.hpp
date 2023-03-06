@@ -12,6 +12,7 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <random>
 #include <limits>
 #include <type_traits>
@@ -39,7 +40,7 @@ inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<1>
 	return static_cast<T>(dist(get_random_engine()));
 }
 
-template <typename T, typename = hamon::enable_if_t<std::is_signed<T>::value>>
+template <typename T, typename = hamon::enable_if_t<hamon::is_signed<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<0>)
 {
 	std::uniform_int_distribution<std::intmax_t> dist(min, max);

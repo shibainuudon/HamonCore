@@ -8,6 +8,7 @@
 #define HAMON_CMATH_DETAIL_POW_N_HPP
 
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 
@@ -72,7 +73,7 @@ pow_n(T const& x, UIntType n) HAMON_NOEXCEPT
 
 template <
 	typename T, typename IntType,
-	hamon::enable_if_t<std::is_signed<IntType>::value>* = nullptr
+	hamon::enable_if_t<hamon::is_signed<IntType>::value>* = nullptr
 >
 inline HAMON_CONSTEXPR T
 pow_n(T const& x, IntType n) HAMON_NOEXCEPT
