@@ -25,6 +25,7 @@ using std::is_scoped_enum;
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_enum.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 
 namespace hamon
 {
@@ -38,7 +39,7 @@ struct is_scoped_enum_impl : public std::false_type {};
 template <typename T>
 struct is_scoped_enum_impl<T, true>
 	: public hamon::negation<
-		std::is_convertible<T, hamon::underlying_type_t<T>>
+		hamon::is_convertible<T, hamon::underlying_type_t<T>>
 	>
 {};
 

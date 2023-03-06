@@ -22,8 +22,8 @@
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
@@ -211,7 +211,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 	// The underlying sentinel is an integer.
 	{
 		using Sent = hamon::move_sentinel<int>;
-		static_assert(!std::is_convertible<int, Sent>::value, "");
+		static_assert(!hamon::is_convertible<int, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, int>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, int>::value, "");
@@ -223,7 +223,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 	// The underlying sentinel is a pointer.
 	{
 		using Sent = hamon::move_sentinel<int*>;
-		static_assert(!std::is_convertible<int*, Sent>::value, "");
+		static_assert(!hamon::is_convertible<int*, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, int*>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, int*>::value, "");
@@ -241,7 +241,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 			int i = 3;
 		};
 		using Sent = hamon::move_sentinel<S>;
-		static_assert(!std::is_convertible<S, Sent>::value, "");
+		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
@@ -259,7 +259,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 			S(S &&)     noexcept(true);
 		};
 		using Sent = hamon::move_sentinel<S>;
-		static_assert(!std::is_convertible<S, Sent>::value, "");
+		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
@@ -274,7 +274,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 			S(S &&) noexcept(false);
 		};
 		using Sent = hamon::move_sentinel<S>;
-		static_assert(!std::is_convertible<S, Sent>::value, "");
+		static_assert(!hamon::is_convertible<S, Sent>::value, "");
 		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		static_assert(!hamon::is_nothrow_constructible<Sent, S>::value, "");
@@ -296,7 +296,7 @@ struct NonConvertible
 	explicit NonConvertible(long i) = delete;
 };
 static_assert( hamon::semiregular_t<NonConvertible>::value, "");
-static_assert( std::is_convertible<long, NonConvertible>::value, "");
+static_assert( hamon::is_convertible<long, NonConvertible>::value, "");
 static_assert(!hamon::convertible_to_t<long, NonConvertible>::value, "");
 
 inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
@@ -373,11 +373,11 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 
 	// SFINAE checks.
 	{
-		static_assert( std::is_convertible<hamon::move_sentinel<int>, hamon::move_sentinel<long>>::value, "");
-		static_assert( std::is_convertible<hamon::move_sentinel<int*>, hamon::move_sentinel<const int*>>::value, "");
-		static_assert(!std::is_convertible<hamon::move_sentinel<const int*>, hamon::move_sentinel<int*>>::value, "");
-		static_assert( std::is_convertible<hamon::move_sentinel<int>, hamon::move_sentinel<NonConvertible>>::value, "");
-		static_assert(!std::is_convertible<hamon::move_sentinel<long>, hamon::move_sentinel<NonConvertible>>::value, "");
+		static_assert( hamon::is_convertible<hamon::move_sentinel<int>, hamon::move_sentinel<long>>::value, "");
+		static_assert( hamon::is_convertible<hamon::move_sentinel<int*>, hamon::move_sentinel<const int*>>::value, "");
+		static_assert(!hamon::is_convertible<hamon::move_sentinel<const int*>, hamon::move_sentinel<int*>>::value, "");
+		static_assert( hamon::is_convertible<hamon::move_sentinel<int>, hamon::move_sentinel<NonConvertible>>::value, "");
+		static_assert(!hamon::is_convertible<hamon::move_sentinel<long>, hamon::move_sentinel<NonConvertible>>::value, "");
 	}
 	return true;
 }

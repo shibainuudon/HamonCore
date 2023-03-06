@@ -7,8 +7,8 @@
 #ifndef HAMON_SPAN_DETAIL_SPAN_ARRAY_CONVERTIBLE_HPP
 #define HAMON_SPAN_DETAIL_SPAN_ARRAY_CONVERTIBLE_HPP
 
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -20,13 +20,13 @@ namespace detail
 
 template <typename From, typename To>
 concept span_array_convertible =
-	std::is_convertible<From(*)[], To(*)[]>::value;
+	hamon::is_convertible<From(*)[], To(*)[]>::value;
 
 #else
 
 template <typename From, typename To>
 using span_array_convertible =
-	std::is_convertible<From(*)[], To(*)[]>;
+	hamon::is_convertible<From(*)[], To(*)[]>;
 
 #endif
 

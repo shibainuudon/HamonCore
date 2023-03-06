@@ -10,7 +10,7 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/is_void.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_convertible.hpp>
 
 namespace hamon
 {
@@ -20,14 +20,14 @@ namespace detail
 
 template <typename Result, typename Ret, typename = hamon::void_t<>>
 struct is_invocable_impl
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <typename Result, typename Ret>
 struct is_invocable_impl<Result, Ret, hamon::void_t<typename Result::type>>
 	: public hamon::disjunction<
 		hamon::is_void<Ret>,
-		std::is_convertible<typename Result::type, Ret>
+		hamon::is_convertible<typename Result::type, Ret>
 	>::type
 {};
 

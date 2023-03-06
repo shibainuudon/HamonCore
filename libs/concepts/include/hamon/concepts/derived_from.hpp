@@ -21,7 +21,8 @@ using std::derived_from;
 
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
-#include <type_traits>
+#include <hamon/type_traits/is_base_of.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 
 namespace hamon
 {
@@ -29,7 +30,7 @@ namespace hamon
 template <typename Derived, typename Base>
 concept derived_from =
 	hamon::is_base_of<Base, Derived>::value &&
-	std::is_convertible<Derived const volatile*, Base const volatile*>::value;
+	hamon::is_convertible<Derived const volatile*, Base const volatile*>::value;
 
 }	// namespace hamon
 
@@ -38,7 +39,8 @@ concept derived_from =
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/add_cv.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
-#include <type_traits>
+#include <hamon/type_traits/is_base_of.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 
 namespace hamon
 {
@@ -47,7 +49,7 @@ template <typename Derived, typename Base>
 using derived_from =
 	hamon::conjunction<
 		hamon::is_base_of<Base, Derived>,
-		std::is_convertible<
+		hamon::is_convertible<
 			hamon::add_pointer_t<hamon::add_cv_t<Derived>>,
 			hamon::add_pointer_t<hamon::add_cv_t<Base>>
 		>

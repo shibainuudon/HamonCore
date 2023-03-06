@@ -10,8 +10,9 @@
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <cstddef>
 
 namespace hamon
 {
@@ -24,14 +25,14 @@ namespace detail
 template <typename Sentinel, typename It>
 concept span_compatible_sentinel_for =
 	hamon::sized_sentinel_for<Sentinel, It> &&
-	!std::is_convertible<Sentinel, std::size_t>::value;
+	!hamon::is_convertible<Sentinel, std::size_t>::value;
 
 #else
 
 template <typename Sentinel, typename It>
 using span_compatible_sentinel_for = hamon::conjunction<
 	hamon::sized_sentinel_for<Sentinel, It>,
-	hamon::negation<std::is_convertible<Sentinel, std::size_t>>
+	hamon::negation<hamon::is_convertible<Sentinel, std::size_t>>
 >;
 
 #endif

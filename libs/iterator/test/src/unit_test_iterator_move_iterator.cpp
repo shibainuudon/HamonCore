@@ -28,9 +28,9 @@
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
@@ -343,8 +343,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterTest()
 {
 	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
 	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
-	static_assert(!std::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
-	static_assert(!std::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
+	static_assert(!hamon::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
+	static_assert(!hamon::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
@@ -375,8 +375,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterMoveOnlyTest()
 {
 	static_assert(!hamon::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
 	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
-	static_assert(!std::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
-	static_assert(!std::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
+	static_assert(!hamon::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
+	static_assert(!hamon::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");

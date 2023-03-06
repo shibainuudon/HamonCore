@@ -28,8 +28,8 @@ using std::ranges::enable_view;
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -43,12 +43,12 @@ template <
 	typename O, typename Y
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, typename = hamon::enable_if_t<
-		std::is_convertible<O*, hamon::ranges::view_interface<Y>*>::value
+		hamon::is_convertible<O*, hamon::ranges::view_interface<Y>*>::value
 	>
 #endif
 >
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires std::is_convertible<O*, hamon::ranges::view_interface<Y>*>::value
+requires hamon::is_convertible<O*, hamon::ranges::view_interface<Y>*>::value
 #endif
 void is_derived_from_view_interface_fn(const O*, const hamon::ranges::view_interface<Y>*);
 

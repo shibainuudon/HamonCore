@@ -7,22 +7,29 @@
 #ifndef HAMON_TYPE_TRAITS_IS_NOTHROW_CONVERTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_NOTHROW_CONVERTIBLE_HPP
 
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
-#include <utility>
+
+#if defined(__cpp_lib_is_nothrow_convertible) && (__cpp_lib_is_nothrow_convertible >= 201806)
 
 namespace hamon
 {
 
-#if defined(__cpp_lib_is_nothrow_convertible) && (__cpp_lib_is_nothrow_convertible >= 201806)
-
 using std::is_nothrow_convertible;
 
+}	// namespace hamon
+
 #else
+
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_void.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#include <utility>
+
+namespace hamon
+{
 
 /**
  *	@brief		型Fromから型Toに例外を投げずに暗黙的に変換可能か調べる。
@@ -70,13 +77,18 @@ struct is_nothrow_convertible :
 			hamon::is_void<From>
 		>,
 		hamon::conjunction<
-			std::is_convertible<From, To>,
+			hamon::is_convertible<From, To>,
 			detail::is_nothrow_convertible_helper<From, To>
 		>
 	>
 {};
 
+}	// namespace hamon
+
 #endif
+
+namespace hamon
+{
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

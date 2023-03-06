@@ -11,6 +11,7 @@
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/serialization/access.hpp>
@@ -104,7 +105,7 @@ public:
 		typename = hamon::enable_if_t<
 			(sizeof...(Args) == N) &&
 			hamon::conjunction<
-				std::is_convertible<Args, T>...
+				hamon::is_convertible<Args, T>...
 			>::value
 		>
 	>

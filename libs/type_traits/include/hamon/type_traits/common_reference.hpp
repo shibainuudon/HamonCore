@@ -36,10 +36,10 @@ using std::common_reference_t;
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_reference.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/detail/common_type_fold.hpp>
 #include <hamon/type_traits/detail/common_type_pack.hpp>
 #include <hamon/type_traits/detail/cond_res.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -86,8 +86,8 @@ using common_ref_C = hamon::remove_reference_t<detail::common_ref<X&, Y&>>&&;
 template <typename A, typename B, typename X, typename Y>
 struct common_ref_impl<A, B, X, Y, false, false,
 	hamon::enable_if_t<
-		std::is_convertible<A, detail::common_ref_C<X, Y>>::value &&
-		std::is_convertible<B, detail::common_ref_C<X, Y>>::value
+		hamon::is_convertible<A, detail::common_ref_C<X, Y>>::value &&
+		hamon::is_convertible<B, detail::common_ref_C<X, Y>>::value
 	>
 >
 {
@@ -102,7 +102,7 @@ using common_ref_D = detail::common_ref<const X&, Y&>;
 template <typename A, typename B, typename X, typename Y>
 struct common_ref_impl<A, B, X, Y, false, true,
 	hamon::enable_if_t<
-		std::is_convertible<A, detail::common_ref_D<X, Y>>::value
+		hamon::is_convertible<A, detail::common_ref_D<X, Y>>::value
 	>
 >
 {

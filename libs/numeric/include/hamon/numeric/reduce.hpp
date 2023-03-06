@@ -26,9 +26,9 @@ using std::reduce;
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -100,7 +100,7 @@ reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_o
 {
 	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
 	static_assert(hamon::is_invocable_r<T, BinaryOperation&, T&, T&>::value, "");
-	static_assert(std::is_convertible<value_type, T>::value, "");
+	static_assert(hamon::is_convertible<value_type, T>::value, "");
 
 	return detail::reduce_impl(
 		std::move(first),
