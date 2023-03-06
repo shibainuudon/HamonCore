@@ -7,6 +7,7 @@
 #include <hamon/functional/ranges/not_equal_to.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable_r.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "functional_test.hpp"
@@ -24,7 +25,7 @@ int operator!=(X, X) { return 0; }
 GTEST_TEST(FunctionalTest, RangesNotEqualToTest)
 {
 	using F = hamon::ranges::not_equal_to;
-	static_assert( std::is_default_constructible<F>::value, "");
+	static_assert( hamon::is_default_constructible<F>::value, "");
 	static_assert( std::is_copy_constructible<F>::value, "");
 	static_assert( std::is_move_constructible<F>::value, "");
 	static_assert( std::is_copy_assignable<F>::value, "");

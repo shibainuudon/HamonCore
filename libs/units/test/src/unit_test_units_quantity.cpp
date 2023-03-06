@@ -14,6 +14,8 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -37,8 +39,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 	{
 		using D = hamon::units::length_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_default_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_default_constructible<Q>::value, "");
+		static_assert(hamon::is_default_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_default_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, q.value());
@@ -46,8 +48,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 	{
 		using D = hamon::units::mass_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_default_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_default_constructible<Q>::value, "");
+		static_assert(hamon::is_default_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_default_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q{};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, q.value());
@@ -56,8 +58,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 		using D = hamon::units::length_dimension;
 		using S = std::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_default_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_default_constructible<Q>::value, "");
+		static_assert(hamon::is_default_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_default_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q = {};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, q.value());
@@ -66,8 +68,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 		using D = hamon::units::mass_dimension;
 		using S = std::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_default_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_default_constructible<Q>::value, "");
+		static_assert(hamon::is_default_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_default_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, q.value());
@@ -77,8 +79,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 		using S = std::ratio<1000, 1>;
 		using O = std::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
-		static_assert(std::is_default_constructible<Q>::value, "");
-		static_assert(std::is_nothrow_default_constructible<Q>::value, "");
+		static_assert(hamon::is_default_constructible<Q>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
 		static_assert(hamon::is_implicitly_default_constructible<Q>::value, "");
 		HAMON_CONSTEXPR Q q;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, q.value());

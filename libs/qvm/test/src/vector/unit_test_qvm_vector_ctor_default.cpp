@@ -6,6 +6,8 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
 #include <type_traits>
@@ -34,8 +36,8 @@ void CtorDefaultTest()
 	using vector_type = hamon::qvm::vector<T, N>;
 
 	static_assert(sizeof(vector_type) == sizeof(T) * N, "");
-	static_assert(std::is_default_constructible<vector_type>::value, "");
-	static_assert(std::is_nothrow_default_constructible<vector_type>::value, "");
+	static_assert(hamon::is_default_constructible<vector_type>::value, "");
+	static_assert(hamon::is_nothrow_default_constructible<vector_type>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<vector_type>::value, "");
 	static_assert(std::is_destructible<vector_type>::value, "");
 	static_assert(std::is_nothrow_destructible<vector_type>::value, "");

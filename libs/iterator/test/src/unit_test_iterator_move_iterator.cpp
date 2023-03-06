@@ -21,6 +21,8 @@
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -193,23 +195,23 @@ struct NoDefaultCtr : public input_iterator_wrapper<int>
 	NoDefaultCtr() = delete;
 };
 
-static_assert( std::is_default_constructible<hamon::move_iterator<input_iterator_wrapper<int>>>::value, "");
-static_assert(!std::is_default_constructible<hamon::move_iterator<NoDefaultCtr>>::value, "");
+static_assert( hamon::is_default_constructible<hamon::move_iterator<input_iterator_wrapper<int>>>::value, "");
+static_assert(!hamon::is_default_constructible<hamon::move_iterator<NoDefaultCtr>>::value, "");
 
 struct ThrowDefaultCtr : public input_iterator_wrapper<int>
 {
 	ThrowDefaultCtr() {}
 };
 
-static_assert( std::is_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
-static_assert(!std::is_nothrow_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
+static_assert( hamon::is_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
+static_assert(!hamon::is_nothrow_default_constructible<hamon::move_iterator<ThrowDefaultCtr>>::value, "");
 
 #endif
 
 template <typename Iter>
 inline HAMON_CXX14_CONSTEXPR bool CtorDefaultTest()
 {
-	static_assert(std::is_nothrow_default_constructible<
+	static_assert(hamon::is_nothrow_default_constructible<
 		hamon::move_iterator<Iter>>::value, "");
 
 	hamon::move_iterator<Iter> it;

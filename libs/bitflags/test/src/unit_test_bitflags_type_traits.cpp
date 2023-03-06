@@ -10,6 +10,9 @@
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_trivially_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -19,15 +22,15 @@ namespace hamon_bitflags_test
 {
 
 // デフォルトコンストラクト可能
-static_assert( std::is_default_constructible<Bitflag1>::value, "");
-static_assert( std::is_default_constructible<Bitflag2>::value, "");
-static_assert( std::is_default_constructible<Bitflag3>::value, "");
-static_assert(!std::is_trivially_default_constructible<Bitflag1>::value, "");
-static_assert(!std::is_trivially_default_constructible<Bitflag2>::value, "");
-static_assert(!std::is_trivially_default_constructible<Bitflag3>::value, "");
-static_assert( std::is_nothrow_default_constructible<Bitflag1>::value, "");
-static_assert( std::is_nothrow_default_constructible<Bitflag2>::value, "");
-static_assert( std::is_nothrow_default_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_default_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_default_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_default_constructible<Bitflag3>::value, "");
+static_assert(!hamon::is_trivially_default_constructible<Bitflag1>::value, "");
+static_assert(!hamon::is_trivially_default_constructible<Bitflag2>::value, "");
+static_assert(!hamon::is_trivially_default_constructible<Bitflag3>::value, "");
+static_assert( hamon::is_nothrow_default_constructible<Bitflag1>::value, "");
+static_assert( hamon::is_nothrow_default_constructible<Bitflag2>::value, "");
+static_assert( hamon::is_nothrow_default_constructible<Bitflag3>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<Bitflag1>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<Bitflag2>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<Bitflag3>::value, "");

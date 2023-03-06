@@ -7,10 +7,11 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -43,7 +44,7 @@ struct NoDefaultSentinel
 	friend bool operator!=(NoDefaultSentinel const&, NoDefaultIterator const&);
 };
 
-static_assert(!std::is_default_constructible<
+static_assert(!hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		NoDefaultIterator,
 		NoDefaultSentinel,
@@ -51,7 +52,7 @@ static_assert(!std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(!std::is_default_constructible<
+static_assert(!hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		NoDefaultIterator,
 		NoDefaultSentinel,
@@ -79,7 +80,7 @@ struct ThrowDefaultSentinel
 	friend bool operator!=(ThrowDefaultSentinel const&, ThrowDefaultIterator const&);
 };
 
-static_assert( std::is_default_constructible<
+static_assert( hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		ThrowDefaultIterator,
 		ThrowDefaultSentinel,
@@ -87,7 +88,7 @@ static_assert( std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert( std::is_default_constructible<
+static_assert( hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		ThrowDefaultIterator,
 		ThrowDefaultSentinel,
@@ -95,7 +96,7 @@ static_assert( std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(!std::is_nothrow_default_constructible<
+static_assert(!hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		ThrowDefaultIterator,
 		ThrowDefaultSentinel,
@@ -103,7 +104,7 @@ static_assert(!std::is_nothrow_default_constructible<
 	>
 >::value, "");
 
-static_assert(!std::is_nothrow_default_constructible<
+static_assert(!hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		ThrowDefaultIterator,
 		ThrowDefaultSentinel,
@@ -112,7 +113,7 @@ static_assert(!std::is_nothrow_default_constructible<
 >::value, "");
 
 // int*
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		int*,
 		int*,
@@ -120,7 +121,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		int*,
 		int*,
@@ -129,7 +130,7 @@ static_assert(std::is_nothrow_default_constructible<
 >::value, "");
 
 // test_contiguous_range
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		contiguous_iterator_wrapper<int>,
 		test_sentinel<contiguous_iterator_wrapper<int>>,
@@ -137,7 +138,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		contiguous_iterator_wrapper<int>,
 		test_sentinel<contiguous_iterator_wrapper<int>>,
@@ -146,7 +147,7 @@ static_assert(std::is_nothrow_default_constructible<
 >::value, "");
 
 // test_random_access_range
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		random_access_iterator_wrapper<int>,
 		test_sentinel<random_access_iterator_wrapper<int>>,
@@ -154,7 +155,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		random_access_iterator_wrapper<int>,
 		test_sentinel<random_access_iterator_wrapper<int>>,
@@ -163,7 +164,7 @@ static_assert(std::is_nothrow_default_constructible<
 >::value, "");
 
 // test_bidirectional_range
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		bidirectional_iterator_wrapper<int>,
 		test_sentinel<bidirectional_iterator_wrapper<int>>,
@@ -171,7 +172,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		bidirectional_iterator_wrapper<int>,
 		test_sentinel<bidirectional_iterator_wrapper<int>>,
@@ -179,7 +180,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		bidirectional_iterator_wrapper<int>,
 		test_sentinel<bidirectional_iterator_wrapper<int>>,
@@ -187,7 +188,7 @@ static_assert(std::is_nothrow_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		bidirectional_iterator_wrapper<int>,
 		test_sentinel<bidirectional_iterator_wrapper<int>>,
@@ -196,7 +197,7 @@ static_assert(std::is_nothrow_default_constructible<
 >::value, "");
 
 // test_forward_range
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		forward_iterator_wrapper<int>,
 		test_sentinel<forward_iterator_wrapper<int>>,
@@ -204,7 +205,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		forward_iterator_wrapper<int>,
 		test_sentinel<forward_iterator_wrapper<int>>,
@@ -212,7 +213,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		forward_iterator_wrapper<int>,
 		test_sentinel<forward_iterator_wrapper<int>>,
@@ -220,7 +221,7 @@ static_assert(std::is_nothrow_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		forward_iterator_wrapper<int>,
 		test_sentinel<forward_iterator_wrapper<int>>,
@@ -229,7 +230,7 @@ static_assert(std::is_nothrow_default_constructible<
 >::value, "");
 
 // test_input_range
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		input_iterator_wrapper<int>,
 		test_sentinel<input_iterator_wrapper<int>>,
@@ -237,7 +238,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_default_constructible<
+static_assert(hamon::is_default_constructible<
 	hamon::ranges::subrange<
 		input_iterator_wrapper<int>,
 		test_sentinel<input_iterator_wrapper<int>>,
@@ -245,7 +246,7 @@ static_assert(std::is_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		input_iterator_wrapper<int>,
 		test_sentinel<input_iterator_wrapper<int>>,
@@ -253,7 +254,7 @@ static_assert(std::is_nothrow_default_constructible<
 	>
 >::value, "");
 
-static_assert(std::is_nothrow_default_constructible<
+static_assert(hamon::is_nothrow_default_constructible<
 	hamon::ranges::subrange<
 		input_iterator_wrapper<int>,
 		test_sentinel<input_iterator_wrapper<int>>,

@@ -10,10 +10,10 @@
 #include <hamon/serialization/detail/construct_data.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
 #include <map>
 #include <string>
 #include <functional>
-#include <type_traits>
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ public:
 	}
 
 private:
-	template <typename T, bool = std::is_default_constructible<T>::value>
+	template <typename T, bool = hamon::is_default_constructible<T>::value>
 	struct save_func
 	{
 		void operator()(Archive& oa, void const* p) const

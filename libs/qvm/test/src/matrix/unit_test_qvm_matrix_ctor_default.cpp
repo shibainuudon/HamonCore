@@ -6,6 +6,8 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
 #include <type_traits>
@@ -37,8 +39,8 @@ void CtorDefaultTest()
 	using matrix_type = hamon::qvm::matrix<T, N, M>;
 
 	static_assert(sizeof(matrix_type) == sizeof(T) * N * M, "");
-	static_assert(std::is_default_constructible<matrix_type>::value, "");
-	static_assert(std::is_nothrow_default_constructible<matrix_type>::value, "");
+	static_assert(hamon::is_default_constructible<matrix_type>::value, "");
+	static_assert(hamon::is_nothrow_default_constructible<matrix_type>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<matrix_type>::value, "");
 	static_assert(std::is_destructible<matrix_type>::value, "");
 	static_assert(std::is_nothrow_destructible<matrix_type>::value, "");

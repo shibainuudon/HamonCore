@@ -52,6 +52,7 @@ using std::move_iterator;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <iterator>
@@ -160,7 +161,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR
 	move_iterator()
-	HAMON_NOEXCEPT_IF(std::is_nothrow_default_constructible<I>::value)	// extension
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<I>::value)	// extension
 		: m_current() {}
 #endif
 

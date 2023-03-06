@@ -6,9 +6,10 @@
 
 #include <hamon/span.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_span_test
@@ -21,14 +22,14 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 test2()
 {
-	static_assert( std::is_default_constructible<hamon::span<T, hamon::dynamic_extent>>::value, "");
-	static_assert( std::is_default_constructible<hamon::span<T, 0>>::value, "");
-	static_assert(!std::is_default_constructible<hamon::span<T, 1>>::value, "");
-	static_assert(!std::is_default_constructible<hamon::span<T, 2>>::value, "");
-	static_assert( std::is_nothrow_default_constructible<hamon::span<T, hamon::dynamic_extent>>::value, "");
-	static_assert( std::is_nothrow_default_constructible<hamon::span<T, 0>>::value, "");
-	static_assert(!std::is_nothrow_default_constructible<hamon::span<T, 1>>::value, "");
-	static_assert(!std::is_nothrow_default_constructible<hamon::span<T, 2>>::value, "");
+	static_assert( hamon::is_default_constructible<hamon::span<T, hamon::dynamic_extent>>::value, "");
+	static_assert( hamon::is_default_constructible<hamon::span<T, 0>>::value, "");
+	static_assert(!hamon::is_default_constructible<hamon::span<T, 1>>::value, "");
+	static_assert(!hamon::is_default_constructible<hamon::span<T, 2>>::value, "");
+	static_assert( hamon::is_nothrow_default_constructible<hamon::span<T, hamon::dynamic_extent>>::value, "");
+	static_assert( hamon::is_nothrow_default_constructible<hamon::span<T, 0>>::value, "");
+	static_assert(!hamon::is_nothrow_default_constructible<hamon::span<T, 1>>::value, "");
+	static_assert(!hamon::is_nothrow_default_constructible<hamon::span<T, 2>>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<hamon::span<T, hamon::dynamic_extent>>::value, "");
 	static_assert( hamon::is_implicitly_default_constructible<hamon::span<T, 0>>::value, "");
 	static_assert(!hamon::is_implicitly_default_constructible<hamon::span<T, 1>>::value, "");

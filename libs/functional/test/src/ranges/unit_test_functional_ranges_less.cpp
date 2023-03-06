@@ -7,6 +7,7 @@
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable_r.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "functional_test.hpp"
@@ -34,7 +35,7 @@ struct Y
 GTEST_TEST(FunctionalTest, RangesLessTest)
 {
 	using F = hamon::ranges::less;
-	static_assert( std::is_default_constructible<F>::value, "");
+	static_assert( hamon::is_default_constructible<F>::value, "");
 	static_assert( std::is_copy_constructible<F>::value, "");
 	static_assert( std::is_move_constructible<F>::value, "");
 	static_assert( std::is_copy_assignable<F>::value, "");

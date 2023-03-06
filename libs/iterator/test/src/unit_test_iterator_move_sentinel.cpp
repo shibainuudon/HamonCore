@@ -19,6 +19,8 @@
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <utility>
@@ -162,14 +164,14 @@ inline HAMON_CXX14_CONSTEXPR bool CtorDefaultTest()
 {
 	// The underlying sentinel is an integer.
 	{
-		static_assert(std::is_nothrow_default_constructible<hamon::move_sentinel<int>>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<hamon::move_sentinel<int>>::value, "");
 		hamon::move_sentinel<int> m;
 		VERIFY(m.base() == 0);
 	}
 
 	// The underlying sentinel is a pointer.
 	{
-		static_assert(std::is_nothrow_default_constructible<hamon::move_sentinel<int*>>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<hamon::move_sentinel<int*>>::value, "");
 		hamon::move_sentinel<int*> m;
 		VERIFY(m.base() == nullptr);
 	}
@@ -181,7 +183,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorDefaultTest()
 			explicit S() = default;
 			int i = 3;
 		};
-		static_assert(std::is_nothrow_default_constructible<hamon::move_sentinel<S>>::value, "");
+		static_assert(hamon::is_nothrow_default_constructible<hamon::move_sentinel<S>>::value, "");
 		hamon::move_sentinel<S> m;
 		VERIFY(m.base().i == 3);
 	}
@@ -191,8 +193,8 @@ inline HAMON_CXX14_CONSTEXPR bool CtorDefaultTest()
 		{
 			S() noexcept(false);
 		};
-		static_assert(std::is_default_constructible<hamon::move_sentinel<S>>::value, "");
-		static_assert(!std::is_nothrow_default_constructible<hamon::move_sentinel<S>>::value, "");
+		static_assert(hamon::is_default_constructible<hamon::move_sentinel<S>>::value, "");
+		static_assert(!hamon::is_nothrow_default_constructible<hamon::move_sentinel<S>>::value, "");
 	}
 
 	return true;

@@ -57,6 +57,7 @@ using ranges::get;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
@@ -208,7 +209,7 @@ public:
 #else
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, It2, It)>
 	HAMON_CXX11_CONSTEXPR subrange()
-		HAMON_NOEXCEPT_IF(std::is_nothrow_default_constructible<It>::value)
+		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<It>::value)
 	{}
 #endif
 

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_info.hpp>
+#include <hamon/type_traits/is_default_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "constexpr_test.hpp"
@@ -12,7 +13,7 @@
 namespace hamon_type_info_test
 {
 
-static_assert(!std::is_default_constructible<hamon::type_info>::value, "");
+static_assert(!hamon::is_default_constructible<hamon::type_info>::value, "");
 static_assert( std::is_copy_constructible<hamon::type_info>::value, "");
 static_assert( std::is_move_constructible<hamon::type_info>::value, "");
 static_assert( std::is_copy_assignable<hamon::type_info>::value, "");
