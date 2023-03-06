@@ -8,7 +8,7 @@
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_HAS_ELEMENT_TYPE_HPP
 
 #include <hamon/type_traits/void_t.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -18,11 +18,11 @@ namespace detail
 
 template <typename, typename = void>
 struct has_element_type
-	: public std::false_type {};
+	: public hamon::false_type {};
  
 template <typename T>
 struct has_element_type<T, hamon::void_t<typename T::element_type>>
-	: public std::true_type {};
+	: public hamon::true_type {};
 
 }	// namespace detail
 

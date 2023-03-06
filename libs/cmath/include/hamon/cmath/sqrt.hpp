@@ -15,7 +15,7 @@
 #include <hamon/config.hpp>
 #include <cmath>
 #include <limits>
-#include <type_traits>
+#include <type_traits>	// is_constant_evaluated
 
 namespace hamon
 {

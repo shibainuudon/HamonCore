@@ -6,9 +6,9 @@
 
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -29,10 +29,10 @@ private:
 	template <typename S2,
 		typename = decltype(std::declval<S2>().next())
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename S2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<S>(0));
@@ -48,10 +48,10 @@ private:
 	template <typename S2,
 		typename = decltype(std::declval<S2>().prev())
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename S2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<S>(0));

@@ -14,7 +14,7 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/numbers/pi.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <type_traits>	// is_constant_evaluated
 #include <limits>
 #include <cmath>
 

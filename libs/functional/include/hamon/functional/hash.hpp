@@ -33,7 +33,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <functional>
-#include <type_traits>
 #include <tuple>
 #include <climits>
 #include <limits>

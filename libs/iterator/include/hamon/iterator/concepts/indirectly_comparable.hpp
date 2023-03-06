@@ -23,8 +23,8 @@ using std::indirectly_comparable;
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/functional/identity.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -55,7 +55,7 @@ private:
 		R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>>;
 
 	template <typename J1, typename J2, typename R2, typename Q1, typename Q2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<I1, I2, Rel, P1, P2>(0));

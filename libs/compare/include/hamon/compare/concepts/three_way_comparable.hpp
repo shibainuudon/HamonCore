@@ -30,8 +30,8 @@ using std::three_way_comparable;
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -71,7 +71,7 @@ private:
 	static auto test(int) -> detail::compares_as<R, C2>;
 
 	template <typename T2, typename C2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, Cat>(0));

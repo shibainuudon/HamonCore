@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/serialization/nvp.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -36,7 +37,7 @@ namespace detail
 
 template <typename T, typename U>
 struct has_class_version<std::pair<T, U>>
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 }	// namespace detail
 

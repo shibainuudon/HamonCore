@@ -7,7 +7,6 @@
 #include <hamon/qvm/matrix.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {

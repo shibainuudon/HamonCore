@@ -28,8 +28,8 @@ using std::indirectly_readable;
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -80,10 +80,10 @@ private:
 		typename = hamon::enable_if_t<hamon::common_reference_with<R&&, RR&&>::value>,
 		typename = hamon::enable_if_t<hamon::common_reference_with<RR&&, V const&>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<In>(0));

@@ -60,7 +60,6 @@ using ranges::get;
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {

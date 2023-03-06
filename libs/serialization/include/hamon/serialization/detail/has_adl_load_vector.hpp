@@ -7,7 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_HAS_ADL_LOAD_VECTOR_HPP
 #define HAMON_SERIALIZATION_DETAIL_HAS_ADL_LOAD_VECTOR_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -32,10 +32,10 @@ private:
 	template <typename... Args2>
 	static auto test(int) -> decltype(
 		load_vector(std::declval<Args2>()...),
-		std::true_type());
+		hamon::true_type());
 
 	template <typename... Args2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 	using type = decltype(test<Args...>(0));
 

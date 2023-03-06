@@ -32,7 +32,7 @@ concept swappable =
 
 #else
 
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -49,10 +49,10 @@ private:
 		typename = decltype(
 			ranges::swap(std::declval<U&>(), std::declval<U&>()))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

@@ -11,7 +11,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -24,9 +23,9 @@ template <typename T>
 struct is_member_address_op_overloaded
 {
 	template <typename U>
-	static auto test(int, hamon::type_identity<decltype(std::declval<U>().operator&())>* = nullptr) -> std::true_type;
+	static auto test(int, hamon::type_identity<decltype(std::declval<U>().operator&())>* = nullptr) -> hamon::true_type;
 	template <typename...>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 	static bool const value = hamon::type_identity<decltype(test<T>(0))>::type::value;
 };
@@ -35,9 +34,9 @@ template <typename T>
 struct is_nonmember_address_op_overloaded
 {
 	template <typename U>
-	static auto test(int, hamon::type_identity<decltype(operator&(std::declval<U>()))>* = nullptr) -> std::true_type;
+	static auto test(int, hamon::type_identity<decltype(operator&(std::declval<U>()))>* = nullptr) -> hamon::true_type;
 	template <typename...>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 	static bool const value = hamon::type_identity<decltype(test<T>(0))>::type::value;
 };

@@ -40,7 +40,7 @@ concept predicate =
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -59,7 +59,7 @@ private:
 	>;
 
 	template <typename U, typename... As>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Fn, Args...>(0));

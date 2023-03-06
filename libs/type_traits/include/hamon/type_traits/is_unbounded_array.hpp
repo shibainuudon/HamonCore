@@ -31,10 +31,10 @@ using std::is_unbounded_array;
  *	要素数の不明な配列型とは、T[N]やT*を含まないT[]形式の配列型である。
  */
 template <typename>
-struct is_unbounded_array : public std::false_type {};
+struct is_unbounded_array : public hamon::false_type {};
 
 template <typename T>
-struct is_unbounded_array<T[]> : public std::true_type {};
+struct is_unbounded_array<T[]> : public hamon::true_type {};
 
 #endif
 

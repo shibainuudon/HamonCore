@@ -6,7 +6,6 @@
 
 #include <hamon/type_info.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_type_info_test

@@ -7,8 +7,8 @@
 #ifndef HAMON_CONCEPTS_DETAIL_CAN_REFERENCE_HPP
 #define HAMON_CONCEPTS_DETAIL_CAN_REFERENCE_HPP
 
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -37,10 +37,10 @@ struct can_reference_impl
 {
 private:
 	template <typename U, typename = with_ref<U>>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

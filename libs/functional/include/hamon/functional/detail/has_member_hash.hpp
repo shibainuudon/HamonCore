@@ -9,9 +9,9 @@
 
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -41,7 +41,7 @@ private:
 	static auto test(int) -> hamon::convertible_to<B, std::size_t>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

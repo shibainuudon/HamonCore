@@ -23,8 +23,8 @@ using std::indirectly_swappable;
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -61,10 +61,10 @@ private:
 		typename = decltype(hamon::ranges::iter_swap(std::declval<J2 const>(), std::declval<J1 const>())),
 		typename = decltype(hamon::ranges::iter_swap(std::declval<J2 const>(), std::declval<J2 const>()))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename J1, typename J2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<I1, I2>(0));

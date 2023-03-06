@@ -46,9 +46,10 @@ using std::ranges::copy;
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
-#include <utility>
+#include <type_traits>	// is_constant_evaluated
+#include <utility>	// move
 #include <cstring>	// memmove
+#include <cstddef>	// size_t
 
 namespace hamon
 {

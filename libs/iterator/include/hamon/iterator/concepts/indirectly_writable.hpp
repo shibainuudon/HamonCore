@@ -21,8 +21,8 @@ using std::indirectly_writable;
 #else
 
 #include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -56,10 +56,10 @@ private:
 		typename = decltype(const_cast<R>(*std::declval<Out2&>())  = std::declval<T2&&>()),
 		typename = decltype(const_cast<R>(*std::declval<Out2&&>()) = std::declval<T2&&>())
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename Out2, typename T2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Out, T>(0));

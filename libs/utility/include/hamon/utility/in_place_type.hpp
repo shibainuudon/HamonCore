@@ -45,7 +45,7 @@ HAMON_STATIC_CONSTEXPR hamon::in_place_type_t<T> in_place_type{};
 #endif	// HAMON_CXX_STANDARD >= 17
 
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 // is_in_place_type
 
@@ -57,12 +57,12 @@ namespace detail
 
 template <typename T>
 struct is_in_place_type_impl
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <typename T>
 struct is_in_place_type_impl<hamon::in_place_type_t<T>>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 }	// namespace detail

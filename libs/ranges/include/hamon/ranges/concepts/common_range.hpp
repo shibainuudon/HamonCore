@@ -28,8 +28,8 @@ using std::ranges::common_range;
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -63,10 +63,10 @@ private:
 			>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

@@ -34,7 +34,7 @@ namespace detail
 {
 
 template <typename T, bool = hamon::is_enum<T>::value>
-struct is_scoped_enum_impl : public std::false_type {};
+struct is_scoped_enum_impl : public hamon::false_type {};
 
 template <typename T>
 struct is_scoped_enum_impl<T, true>

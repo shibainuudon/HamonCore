@@ -15,8 +15,8 @@
 #include <hamon/concepts/signed_integral.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -64,10 +64,10 @@ private:
 		typename = hamon::common_reference_t<decltype(*std::declval<I2&>()++)&&, V&>,
 		typename = hamon::enable_if_t<hamon::signed_integral<D>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

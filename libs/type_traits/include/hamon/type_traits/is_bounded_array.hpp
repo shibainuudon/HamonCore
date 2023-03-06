@@ -32,10 +32,10 @@ using std::is_bounded_array;
  *	要素数の判明している配列型とは、T[]を含まないT[N]形式の配列型である。
  */
 template <typename T>
-struct is_bounded_array : public std::false_type {};
+struct is_bounded_array : public hamon::false_type {};
 
 template <typename T, std::size_t N>
-struct is_bounded_array<T[N]> : public std::true_type {};
+struct is_bounded_array<T[N]> : public hamon::true_type {};
 
 #endif
 

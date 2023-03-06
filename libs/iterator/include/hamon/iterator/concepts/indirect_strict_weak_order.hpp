@@ -27,8 +27,8 @@ using std::indirect_strict_weak_order;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -71,10 +71,10 @@ private:
 		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, R1,  R2 >::value>,
 		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, C1,  C2 >::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename F2, typename J1, typename J2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<F, I1, I2>(0));

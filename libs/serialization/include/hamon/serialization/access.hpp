@@ -9,8 +9,8 @@
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/serialization/version.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
-#include <type_traits>
 
 namespace hamon
 {
@@ -28,10 +28,10 @@ public:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
 			std::declval<T2>().serialize(std::declval<A2>(), std::declval<Args2>()...),
-			std::true_type());
+			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
-		static auto test(...) -> std::false_type;
+		static auto test(...) -> hamon::false_type;
 
 		using type = decltype(test<Archive, T, Args...>(0));
 
@@ -46,10 +46,10 @@ public:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
 			std::declval<T2>().save(std::declval<A2>(), std::declval<Args2>()...),
-			std::true_type());
+			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
-		static auto test(...) -> std::false_type;
+		static auto test(...) -> hamon::false_type;
 
 		using type = decltype(test<Archive, T, Args...>(0));
 
@@ -64,10 +64,10 @@ public:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
 			std::declval<T2>().load(std::declval<A2>(), std::declval<Args2>()...),
-			std::true_type());
+			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
-		static auto test(...) -> std::false_type;
+		static auto test(...) -> hamon::false_type;
 
 		using type = decltype(test<Archive, T, Args...>(0));
 
@@ -85,7 +85,7 @@ public:
 		static auto test(int) -> hamon::convertible_to_t<R, version_t>;
 
 		template <typename U>
-		static auto test(...) -> std::false_type;
+		static auto test(...) -> hamon::false_type;
 
 		using type = decltype(test<T>(0));
 
@@ -103,7 +103,7 @@ public:
 		static auto test(int) -> hamon::convertible_to_t<R, const char*>;
 
 		template <typename U>
-		static auto test(...) -> std::false_type;
+		static auto test(...) -> hamon::false_type;
 
 		using type = decltype(test<T>(0));
 

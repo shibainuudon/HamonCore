@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon_type_traits_test
 {
@@ -29,8 +29,8 @@ namespace conjunction_test
 
 #endif
 
-using T = std::true_type;
-using F = std::false_type;
+using T = hamon::true_type;
+using F = hamon::false_type;
 
 HAMON_CONJUNCTION_TEST(true, /**/);
 

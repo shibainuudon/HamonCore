@@ -9,6 +9,7 @@
 
 #include <hamon/serialization/shared_ptr.hpp>
 #include <hamon/serialization/detail/has_class_version.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <memory>
 
 namespace hamon
@@ -37,7 +38,7 @@ namespace detail
 
 template <typename T>
 struct has_class_version<std::weak_ptr<T>>
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 }	// namespace detail
 

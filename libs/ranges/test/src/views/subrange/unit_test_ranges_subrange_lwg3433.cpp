@@ -11,9 +11,10 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
+#include <utility>	// move
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -81,7 +82,7 @@ struct test_sized_range_sized_sent : test_sized_range<T, Iterator>
 
 template <typename Container, typename Subrange>
 inline HAMON_CXX14_CONSTEXPR bool
-test01_impl(Container& r, Subrange& sr, std::true_type /*sized*/, std::true_type /*bidirectional*/)
+test01_impl(Container& r, Subrange& sr, hamon::true_type /*sized*/, hamon::true_type /*bidirectional*/)
 {
 	namespace ranges = hamon::ranges;
 	(void)r;
@@ -140,7 +141,7 @@ test01_impl(Container& r, Subrange& sr, std::true_type /*sized*/, std::true_type
 
 template <typename Container, typename Subrange>
 inline HAMON_CXX14_CONSTEXPR bool
-test01_impl(Container& r, Subrange& sr, std::true_type /*sized*/, std::false_type /*bidirectional*/)
+test01_impl(Container& r, Subrange& sr, hamon::true_type /*sized*/, hamon::false_type /*bidirectional*/)
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -179,7 +180,7 @@ test01_impl(Container& r, Subrange& sr, std::true_type /*sized*/, std::false_typ
 
 template <typename Container, typename Subrange>
 inline HAMON_CXX14_CONSTEXPR bool
-test01_impl(Container& r, Subrange& sr, std::false_type /*sized*/, std::true_type /*bidirectional*/)
+test01_impl(Container& r, Subrange& sr, hamon::false_type /*sized*/, hamon::true_type /*bidirectional*/)
 {
 	namespace ranges = hamon::ranges;
 	(void)r;
@@ -231,7 +232,7 @@ test01_impl(Container& r, Subrange& sr, std::false_type /*sized*/, std::true_typ
 
 template <typename Container, typename Subrange>
 inline HAMON_CXX14_CONSTEXPR bool
-test01_impl(Container& r, Subrange& sr, std::false_type /*sized*/, std::false_type /*bidirectional*/)
+test01_impl(Container& r, Subrange& sr, hamon::false_type /*sized*/, hamon::false_type /*bidirectional*/)
 {
 	namespace ranges = hamon::ranges;
 	{

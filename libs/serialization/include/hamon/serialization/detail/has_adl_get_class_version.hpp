@@ -8,7 +8,7 @@
 #define HAMON_SERIALIZATION_DETAIL_HAS_ADL_GET_CLASS_VERSION_HPP
 
 #include <hamon/concepts/convertible_to.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -36,7 +36,7 @@ private:
 	static auto test(int) -> hamon::convertible_to_t<R, version_t>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 	using type = decltype(test<T>(0));
 

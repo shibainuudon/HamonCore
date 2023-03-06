@@ -9,8 +9,8 @@
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -38,7 +38,7 @@ private:
 	static auto test(int) -> hamon::contiguous_iterator<B>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

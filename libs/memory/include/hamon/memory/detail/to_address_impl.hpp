@@ -13,7 +13,6 @@
 #include <hamon/type_traits/is_function.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 #include <memory>
 

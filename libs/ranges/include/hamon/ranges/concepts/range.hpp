@@ -26,7 +26,7 @@ using std::ranges::range;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -57,10 +57,10 @@ private:
 		typename = decltype(ranges::begin(std::declval<U&>())),
 		typename = decltype(ranges::end(std::declval<U&>()))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

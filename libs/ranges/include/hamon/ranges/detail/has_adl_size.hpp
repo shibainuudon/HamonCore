@@ -16,7 +16,6 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -66,7 +65,7 @@ private:
 	static auto test(int) -> detail::is_integer_like<S>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

@@ -12,7 +12,7 @@
 #include <cwchar>
 #include <string>
 #include <cstddef>
-#include <type_traits>
+#include <type_traits>	// is_constant_evaluated
 
 namespace hamon
 {

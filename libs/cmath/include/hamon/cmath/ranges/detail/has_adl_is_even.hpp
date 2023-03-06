@@ -9,7 +9,7 @@
 
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/concepts/detail/can_reference.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -51,7 +51,7 @@ private:
 	static auto test(int) -> hamon::detail::can_reference<S>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

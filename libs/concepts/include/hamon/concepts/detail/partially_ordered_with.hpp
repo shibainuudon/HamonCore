@@ -10,8 +10,8 @@
 #include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -70,7 +70,7 @@ private:
 	>;
 
 	template <typename T2, typename U2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U>(0));

@@ -8,6 +8,7 @@
 #define HAMON_TYPE_TRAITS_IS_DETECTED_HPP
 
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -17,12 +18,12 @@ namespace detail
 
 template <typename AlwaysVoid, template <typename...> class Op, typename... Args>
 struct is_detected_impl
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <template <typename...> class Op, typename... Args>
 struct is_detected_impl<hamon::void_t<Op<Args...>>, Op, Args...>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 }	// namespace detail

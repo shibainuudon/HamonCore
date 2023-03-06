@@ -9,11 +9,11 @@
 
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/type_traits/remove_const.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <tuple>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -42,7 +42,7 @@ private:
 	static auto test(int) -> hamon::convertible_to_t<B, hamon::tuple_element_t<M, U> const&>;
 	
 	template <typename U, std::size_t M>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, N>(0));

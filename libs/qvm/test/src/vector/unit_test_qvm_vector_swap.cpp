@@ -9,7 +9,6 @@
 #include <hamon/concepts/swap.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {

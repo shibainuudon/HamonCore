@@ -27,8 +27,8 @@ using std::indirect_unary_predicate;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/predicate.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -59,10 +59,10 @@ private:
 		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_reference_t<I2>>::value>,
 		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_common_reference_t<I2>>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename F2, typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<F, I>(0));

@@ -59,7 +59,7 @@ concept common_with =
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -96,7 +96,7 @@ private:
 	>;
 
 	template <typename T2, typename U2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U>(0));

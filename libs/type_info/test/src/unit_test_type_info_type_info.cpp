@@ -11,7 +11,7 @@
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
+#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_type_info_test

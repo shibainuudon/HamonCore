@@ -29,8 +29,8 @@ using std::indirectly_regular_unary_invocable;
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -74,10 +74,10 @@ private:
 			>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename F2, typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<F, I>(0));

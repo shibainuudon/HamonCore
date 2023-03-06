@@ -11,6 +11,7 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 
@@ -48,19 +49,19 @@ namespace eq_builtin_ptr_cmp_detail
 
 template <typename T, typename U, typename = void>
 struct has_operator_eq
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 template <typename T, typename U>
 struct has_operator_eq<T, U, hamon::void_t<decltype(operator==(std::declval<T>(), std::declval<U>()))>>
-	: public std::true_type {};
+	: public hamon::true_type {};
 
 template <typename T, typename U, typename = void>
 struct has_member_eq
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 template <typename T, typename U>
 struct has_member_eq<T, U, hamon::void_t<decltype(std::declval<T>().operator==(std::declval<U>()))>>
-	: public std::true_type {};
+	: public hamon::true_type {};
 
 template <typename T, typename U>
 struct eq_builtin_ptr_cmp_impl
@@ -75,10 +76,10 @@ private:
 			!has_member_eq<T2, U2>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U>(0));

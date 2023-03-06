@@ -12,11 +12,11 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
 #include <cstddef>
 #include <utility>
-#include <type_traits>
 
 namespace hamon
 {
@@ -56,11 +56,11 @@ private:
 
 template <typename Stream, typename Expr, typename = void>
 struct stream_outputtable_impl
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 template <typename Stream, typename Expr>
 struct stream_outputtable_impl<Stream, Expr, hamon::void_t<decltype(std::declval<Stream&>() << std::declval<Expr const&>().value())>>
-	: public std::true_type {};
+	: public hamon::true_type {};
 
 template <typename CharT, typename Traits, typename T>
 using stream_outputtable =

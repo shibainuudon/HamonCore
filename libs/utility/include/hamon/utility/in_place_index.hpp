@@ -46,7 +46,7 @@ HAMON_STATIC_CONSTEXPR hamon::in_place_index_t<I> in_place_index{};
 #endif	// HAMON_CXX_STANDARD >= 17
 
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 // is_in_place_index
 
@@ -58,12 +58,12 @@ namespace detail
 
 template <typename T>
 struct is_in_place_index_impl
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <std::size_t I>
 struct is_in_place_index_impl<hamon::in_place_index_t<I>>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 }	// namespace detail

@@ -7,8 +7,8 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_MEMBER_EMPTY_HPP
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_EMPTY_HPP
 
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -38,10 +38,10 @@ private:
 	template <typename U,
 		typename = decltype(bool(std::declval<U&>().empty()))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

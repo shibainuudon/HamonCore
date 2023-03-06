@@ -43,7 +43,7 @@ concept copyable =
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -64,7 +64,7 @@ private:
 		hamon::assignable_from<U&, const U>>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

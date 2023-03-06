@@ -24,8 +24,8 @@ using std::indirectly_copyable;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -51,10 +51,10 @@ private:
 		typename R = hamon::iter_reference_t<I>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, R>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I, typename O>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<In, Out>(0));

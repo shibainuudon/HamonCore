@@ -8,8 +8,8 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -27,10 +27,10 @@ private:
 	template <typename... Args2,
 		typename = hamon::ranges::subrange<Args2...>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename... Args2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Args...>(0));
@@ -46,10 +46,10 @@ private:
 	template <hamon::ranges::subrange_kind K2, typename... Args2,
 		typename = hamon::ranges::subrange<Args2..., K2>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <hamon::ranges::subrange_kind K2, typename... Args2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<K, Args...>(0));

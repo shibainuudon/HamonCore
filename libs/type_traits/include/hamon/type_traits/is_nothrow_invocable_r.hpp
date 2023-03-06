@@ -58,7 +58,7 @@ namespace detail
 
 template <bool, typename... Types>
 struct is_nothrow_invocable_impl_2
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <typename... Types>

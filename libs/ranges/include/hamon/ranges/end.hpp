@@ -27,13 +27,13 @@ using std::ranges::end;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#include <hamon/type_traits/decay.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {
@@ -59,7 +59,7 @@ private:
 	impl(T&& t, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 	{
 		static_assert(hamon::is_lvalue_reference<T>::value, "");
-		return t + std::extent<hamon::remove_reference_t<T>>::value;
+		return t + hamon::extent<hamon::remove_reference_t<T>>::value;
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(has_member_end, T)>

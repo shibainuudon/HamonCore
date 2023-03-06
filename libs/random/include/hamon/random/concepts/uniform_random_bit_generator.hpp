@@ -47,7 +47,7 @@ private:
 	>;
 
 	template <typename G>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Gen>(0));

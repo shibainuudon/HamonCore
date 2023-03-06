@@ -26,8 +26,8 @@ using std::sortable;
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -57,10 +57,10 @@ private:
 		typename = hamon::enable_if_t<hamon::indirect_strict_weak_order<
 			R, hamon::projected<I, P>>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I, typename R, typename P>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter, Rel, Proj>(0));

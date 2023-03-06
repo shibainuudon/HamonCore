@@ -28,8 +28,8 @@ using std::indirectly_movable_storable;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -62,10 +62,10 @@ private:
 		typename = hamon::enable_if_t<hamon::constructible_from<V, R>::value>,
 		typename = hamon::enable_if_t<hamon::assignable_from<V&, R>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I, typename O>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<In, Out>(0));

@@ -30,10 +30,10 @@ using std::ranges::size;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/is_bounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {
@@ -57,9 +57,9 @@ private:
 	>
 	static HAMON_CONSTEXPR auto
 	impl(T&&, hamon::detail::overload_priority<3>) HAMON_NOEXCEPT
-	->decltype(std::extent<hamon::remove_reference_t<T>>::value)
+	->decltype(hamon::extent<hamon::remove_reference_t<T>>::value)
 	{
-		return std::extent<hamon::remove_reference_t<T>>::value;
+		return hamon::extent<hamon::remove_reference_t<T>>::value;
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(has_member_size, T)>

@@ -47,8 +47,7 @@ using std::ranges::equal;
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <cstring>	// memcmp
-#include <utility>
-#include <type_traits>
+#include <utility>	// move
 
 namespace hamon
 {

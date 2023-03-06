@@ -7,7 +7,6 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <tuple>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"

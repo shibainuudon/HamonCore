@@ -11,6 +11,7 @@
 #include <hamon/serialization/detail/load_pointer.hpp>
 #include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/serialization/nvp.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <memory>
 
 namespace hamon
@@ -55,7 +56,7 @@ namespace detail
 
 template <typename T>
 struct has_class_version<std::unique_ptr<T>>
-	: public std::false_type {};
+	: public hamon::false_type {};
 
 }	// namespace detail
 

@@ -28,8 +28,8 @@ using std::ranges::view;
 #include <hamon/concepts/movable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -58,10 +58,10 @@ private:
 		typename = hamon::enable_if_t<hamon::movable_t<U>::value>,
 		typename = hamon::enable_if_t<HAMON_RANGES_ENABLE_VIEW(U)>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

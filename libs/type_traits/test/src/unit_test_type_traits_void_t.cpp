@@ -5,8 +5,8 @@
  */
 
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <utility>
 
 namespace hamon_type_traits_test
@@ -17,10 +17,10 @@ namespace void_t_test
 
 // 型Tが ::type メンバを持っているかを取得する、has_type_memberを定義します
 template <typename, typename = hamon::void_t<>>
-struct has_type_member : std::false_type {};
+struct has_type_member : hamon::false_type {};
  
 template <typename T>
-struct has_type_member<T, hamon::void_t<typename T::type>> : std::true_type {};
+struct has_type_member<T, hamon::void_t<typename T::type>> : hamon::true_type {};
 
 struct A
 {
@@ -46,10 +46,10 @@ struct D
 };
 
 template <typename, typename = hamon::void_t<>>
-struct has_f1_memfun : std::false_type {};
+struct has_f1_memfun : hamon::false_type {};
 
 template <typename T>
-struct has_f1_memfun<T, hamon::void_t<decltype(std::declval<T>().f1())>> : std::true_type {};
+struct has_f1_memfun<T, hamon::void_t<decltype(std::declval<T>().f1())>> : hamon::true_type {};
 
 static_assert( has_f1_memfun<C>::value, "");
 static_assert(!has_f1_memfun<D>::value, "");
@@ -66,11 +66,11 @@ struct F
 };
 
 template <typename, typename = hamon::void_t<>>
-struct has_f_memfun : std::false_type {};
+struct has_f_memfun : hamon::false_type {};
 
 template <typename T>
 struct has_f_memfun<T, hamon::void_t<
-	decltype(std::declval<T>().f(std::declval<int>(), std::declval<float>()))>> : std::true_type {};
+	decltype(std::declval<T>().f(std::declval<int>(), std::declval<float>()))>> : hamon::true_type {};
 
 static_assert(!has_f_memfun<E>::value, "");
 static_assert( has_f_memfun<F>::value, "");
@@ -87,11 +87,11 @@ struct H
 int fun(int, const G&, char);
 
 template <typename, typename = hamon::void_t<>>
-struct fun_callable : std::false_type {};
+struct fun_callable : hamon::false_type {};
 
 template <typename T>
 struct fun_callable<T, hamon::void_t<
-	decltype(fun(std::declval<int>(), std::declval<T>(), std::declval<char>()))>> : std::true_type {};
+	decltype(fun(std::declval<int>(), std::declval<T>(), std::declval<char>()))>> : hamon::true_type {};
 
 static_assert( fun_callable<G>::value, "");
 static_assert(!fun_callable<H>::value, "");

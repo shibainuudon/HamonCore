@@ -21,6 +21,7 @@ using std::is_swappable_with;
 
 #else
 
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -57,10 +58,10 @@ private:
 			swap(std::declval<T2>(), std::declval<U2>()),
 			swap(std::declval<U2>(), std::declval<T2>()))
 	>
-	static std::true_type test(int);
+	static hamon::true_type test(int);
 
 	template <typename, typename>
-	static std::false_type test(...);
+	static hamon::false_type test(...);
 
 public:
 	using type = decltype(test<T, U>(0));

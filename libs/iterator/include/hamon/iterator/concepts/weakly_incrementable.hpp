@@ -25,8 +25,8 @@ using std::weakly_incrementable;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/signed_integer_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -62,10 +62,10 @@ private:
 		typename = hamon::enable_if_t<hamon::same_as<T, I2&>::value>,
 		typename = decltype(std::declval<I2&>()++)
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

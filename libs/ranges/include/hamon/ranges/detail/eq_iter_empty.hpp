@@ -13,8 +13,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -51,10 +51,10 @@ private:
 		typename = hamon::enable_if_t<hamon::forward_iterator<B>::value>,
 		typename = decltype(bool(ranges::begin(std::declval<U&>()) == ranges::end(std::declval<U&>())))
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

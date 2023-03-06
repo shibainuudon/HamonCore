@@ -24,8 +24,8 @@ using std::sentinel_for;
 #include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -52,10 +52,10 @@ private:
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::detail::weakly_eq_cmp_with<S2, I2>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename S2, typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Sent, Iter>(0));

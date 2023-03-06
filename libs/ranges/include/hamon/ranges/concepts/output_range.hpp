@@ -27,8 +27,8 @@ using std::ranges::output_range;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -55,10 +55,10 @@ private:
 		typename = hamon::enable_if_t<ranges::range<R>::value>,
 		typename = hamon::enable_if_t<hamon::output_iterator<ranges::iterator_t<R>, U>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename R, typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Range, T>(0));

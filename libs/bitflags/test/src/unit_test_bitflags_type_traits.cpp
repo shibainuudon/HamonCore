@@ -30,7 +30,6 @@
 #include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
-#include <type_traits>
 #include "bitflags_test.hpp"
 
 namespace hamon_bitflags_test

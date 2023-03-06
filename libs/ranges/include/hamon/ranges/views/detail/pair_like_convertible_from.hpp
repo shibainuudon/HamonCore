@@ -14,8 +14,8 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon {
 namespace ranges {
@@ -46,10 +46,10 @@ private:
 		typename E1 = hamon::tuple_element_t<1, T2>,
 		typename = hamon::enable_if_t<hamon::convertible_to<V2, E1>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2, typename V2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U, V>(0));

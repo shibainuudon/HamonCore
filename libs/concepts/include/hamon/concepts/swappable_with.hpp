@@ -40,7 +40,7 @@ concept swappable_with =
 
 #else
 
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <utility>
 
 namespace hamon
@@ -63,7 +63,7 @@ private:
 	static auto test(int) -> hamon::common_reference_with<T2, U2>;
 
 	template <typename T2, typename U2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U>(0));

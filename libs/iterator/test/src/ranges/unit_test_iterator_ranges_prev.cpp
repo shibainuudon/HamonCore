@@ -6,6 +6,7 @@
 
 #include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include "constexpr_test.hpp"
@@ -102,10 +103,10 @@ private:
 		hamon::ranges::prev(std::declval<U&>()),
 		hamon::ranges::prev(std::declval<U&>(), 1),
 		hamon::ranges::prev(std::declval<U&>(), 1, std::declval<U&>()),
-		std::true_type{});
+		hamon::true_type{});
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

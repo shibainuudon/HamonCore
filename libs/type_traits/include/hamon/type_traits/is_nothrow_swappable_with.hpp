@@ -62,7 +62,7 @@ private:
 	test(int);
 
 	template <typename, typename>
-	static std::false_type test(...);
+	static hamon::false_type test(...);
 
 public:
 	using type = decltype(test<T, U>(0));
@@ -73,7 +73,7 @@ public:
 template <typename T, typename U>
 struct is_nothrow_swappable_with_impl_2
 {
-	using type = std::true_type;
+	using type = hamon::true_type;
 };
 
 #endif
@@ -85,7 +85,7 @@ struct is_nothrow_swappable_with_impl
 
 template <typename T, typename U>
 struct is_nothrow_swappable_with_impl<T, U, false>
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 }	// namespace is_nothrow_swappable_detail

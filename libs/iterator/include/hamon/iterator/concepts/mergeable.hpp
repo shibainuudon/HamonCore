@@ -28,8 +28,8 @@ using std::mergeable;
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -70,10 +70,10 @@ private:
 		typename = hamon::enable_if_t<hamon::indirect_strict_weak_order<
 			R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename J1, typename J2, typename O2, typename R2, typename Q1, typename Q2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<I1, I2, Out, Rel, P1, P2>(0));

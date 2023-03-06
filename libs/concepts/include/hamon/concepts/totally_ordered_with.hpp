@@ -46,7 +46,7 @@ concept totally_ordered_with =
 #include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -67,7 +67,7 @@ private:
 		detail::partially_ordered_with<T2, U2>>;
 
 	template <typename T2, typename U2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, U>(0));

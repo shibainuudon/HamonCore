@@ -10,7 +10,6 @@
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon

@@ -7,8 +7,8 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_WITH_NESTED_TYPES_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_WITH_NESTED_TYPES_HPP
 
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -43,10 +43,10 @@ private:
 		typename = typename I2::difference_type,
 		typename = typename I2::reference
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

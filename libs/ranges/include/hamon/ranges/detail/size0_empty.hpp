@@ -8,8 +8,8 @@
 #define HAMON_RANGES_DETAIL_SIZE0_EMPTY_HPP
 
 #include <hamon/ranges/size.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -39,10 +39,10 @@ private:
 	template <typename U,
 		typename = decltype(ranges::size(std::declval<U&>()) == 0)
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

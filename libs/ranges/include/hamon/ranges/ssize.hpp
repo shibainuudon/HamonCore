@@ -30,7 +30,6 @@ using std::ranges::ssize;
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <limits>
-#include <type_traits>
 #include <utility>
 
 namespace hamon {

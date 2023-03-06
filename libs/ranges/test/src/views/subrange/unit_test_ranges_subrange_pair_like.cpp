@@ -10,7 +10,6 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include <tuple>
 #include <utility>
 #include "constexpr_test.hpp"

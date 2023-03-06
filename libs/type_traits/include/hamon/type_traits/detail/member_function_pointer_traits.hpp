@@ -11,7 +11,6 @@
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/preprocessor/empty.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <cstddef>
 
 namespace hamon
@@ -39,13 +38,13 @@ template <typename R, typename T, typename... Args>	                 \
 struct memfun_traits_impl<R (T::* CV_OPT_1)(Args...) CV_OPT_2>       \
 : public memfun_traits_base< R, T CV_OPT_1, Args...>                 \
 {	                                                                 \
-	using vararg = std::false_type;                                \
+	using vararg = hamon::false_type;                                \
 };                                                                   \
 template <typename R, typename T, typename... Args>	                 \
 struct memfun_traits_impl< R (T::* CV_OPT_1)(Args..., ...) CV_OPT_2> \
 : public memfun_traits_base< R, T CV_OPT_1, Args...>                 \
 {	                                                                 \
-	using vararg = std::true_type;                                 \
+	using vararg = hamon::true_type;                                 \
 }
 
 #if defined(HAMON_HAS_CXX17_NOEXCEPT_FUNCTION_TYPE)

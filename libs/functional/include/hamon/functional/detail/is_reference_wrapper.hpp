@@ -8,7 +8,7 @@
 #define HAMON_FUNCTIONAL_DETAIL_IS_REFERENCE_WRAPPER_HPP
 
 #include <hamon/functional/config.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -25,12 +25,12 @@ namespace detail
 
 template <typename T>
 struct is_reference_wrapper
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 template <typename T>
 struct is_reference_wrapper<hamon::reference_wrapper<T>>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 template <typename T>

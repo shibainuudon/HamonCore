@@ -39,7 +39,7 @@ concept default_initializable =
 #else
 
 #include <hamon/concepts/constructible_from.hpp>
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ private:
 	static auto test(int) -> hamon::constructible_from<U>;
 
 	template <typename U>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T>(0));

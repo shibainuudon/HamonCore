@@ -7,7 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_HAS_CLASS_VERSION_HPP
 #define HAMON_SERIALIZATION_DETAIL_HAS_CLASS_VERSION_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {
@@ -19,7 +19,7 @@ namespace detail
 {
 
 template <typename T>
-struct has_class_version : public std::true_type {};
+struct has_class_version : public hamon::true_type {};
 
 }	// namespace detail
 

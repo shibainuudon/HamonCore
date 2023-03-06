@@ -10,8 +10,8 @@
 #include <hamon/type_info/type_info.hpp>
 #include <hamon/type_info/nameof.hpp>
 #include <hamon/type_info/detail/type_info_access.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -27,7 +27,7 @@ template <typename T>
 HAMON_NODISCARD HAMON_CONSTEXPR hamon::type_info
 type_id(T&&) HAMON_NOEXCEPT
 {
-	return type_id<typename std::decay<T>::type>();
+	return type_id<hamon::decay_t<T>>();
 }
 
 }	// namespace hamon
