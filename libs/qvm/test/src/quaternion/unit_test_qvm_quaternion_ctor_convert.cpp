@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,19 +24,19 @@ TYPED_TEST(QuaternionTest, CtorConvertTest)
 	using quaternioni = hamon::qvm::quaternion<int>;
 	using quaternionf = hamon::qvm::quaternion<float>;
 
-	static_assert(std::is_constructible<quaternion,  quaternioni const&>::value, "");
-	static_assert(std::is_constructible<quaternion,  quaternionf const&>::value, "");
-	static_assert(std::is_constructible<quaternioni, quaternion  const&>::value, "");
-	static_assert(std::is_constructible<quaternioni, quaternionf const&>::value, "");
-	static_assert(std::is_constructible<quaternionf, quaternion  const&>::value, "");
-	static_assert(std::is_constructible<quaternionf, quaternioni const&>::value, "");
+	static_assert(hamon::is_constructible<quaternion,  quaternioni const&>::value, "");
+	static_assert(hamon::is_constructible<quaternion,  quaternionf const&>::value, "");
+	static_assert(hamon::is_constructible<quaternioni, quaternion  const&>::value, "");
+	static_assert(hamon::is_constructible<quaternioni, quaternionf const&>::value, "");
+	static_assert(hamon::is_constructible<quaternionf, quaternion  const&>::value, "");
+	static_assert(hamon::is_constructible<quaternionf, quaternioni const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<quaternion,  quaternioni const&>::value, "");
-	static_assert(std::is_nothrow_constructible<quaternion,  quaternionf const&>::value, "");
-	static_assert(std::is_nothrow_constructible<quaternioni, quaternion  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<quaternioni, quaternionf const&>::value, "");
-	static_assert(std::is_nothrow_constructible<quaternionf, quaternion  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<quaternionf, quaternioni const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternion,  quaternioni const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternion,  quaternionf const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternioni, quaternion  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternioni, quaternionf const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternionf, quaternion  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<quaternionf, quaternioni const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<quaternion,  quaternioni const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<quaternion,  quaternionf const&>::value, "");

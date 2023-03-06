@@ -19,6 +19,8 @@
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -298,33 +300,33 @@ template <typename T> using convertible_bidirectional_iterator_wrapper = Convert
 template <typename T> using convertible_random_access_iterator_wrapper = Convertible<T, random_access_iterator_wrapper>;
 template <typename T> using convertible_contiguous_iterator_wrapper    = Convertible<T, contiguous_iterator_wrapper>;
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	input_iterator_wrapper<int>,
 	input_iterator_wrapper<int const> const&
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	convertible_input_iterator_wrapper<int const>,
 	convertible_input_iterator_wrapper<int> const&
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	convertible_input_iterator_wrapper<int>,
 	convertible_input_iterator_wrapper<int const> const&
 >::value, "");
 
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	input_iterator_wrapper<Base>,
 	input_iterator_wrapper<Derived> const&
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	convertible_input_iterator_wrapper<Base>,
 	convertible_input_iterator_wrapper<Derived> const&
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	convertible_input_iterator_wrapper<Derived>,
 	convertible_input_iterator_wrapper<Base> const&
 >::value, "");
@@ -332,14 +334,14 @@ static_assert(!std::is_constructible<
 template <typename Iter>
 inline HAMON_CXX14_CONSTEXPR bool CtorIterTest()
 {
-	static_assert( std::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
-	static_assert( std::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
+	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
+	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
 	static_assert(!std::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
 	static_assert(!std::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-	static_assert( std::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
 #endif
 
 	// explicitly constructible
@@ -364,13 +366,13 @@ inline HAMON_CXX14_CONSTEXPR bool CtorIterTest()
 template <typename Iter>
 inline HAMON_CXX14_CONSTEXPR bool CtorIterMoveOnlyTest()
 {
-	static_assert(!std::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
-	static_assert( std::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::move_iterator<Iter>, Iter const&>::value, "");
+	static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
 	static_assert(!std::is_convertible<Iter const&, hamon::move_iterator<Iter>>::value, "");
 	static_assert(!std::is_convertible<Iter &&,     hamon::move_iterator<Iter>>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-	static_assert( std::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter &&>::value, "");
 #endif
 
 	// explicitly constructible
@@ -420,13 +422,13 @@ GTEST_TEST(MoveIteratorTest, CtorIterTest)
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowMoveCtor<true, int, input_iterator_wrapper>;
-		static_assert( std::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
-		static_assert( std::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
+		static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
+		static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
 	}
 	{
 		using Iter = MayThrowMoveCtor<false, int, input_iterator_wrapper>;
-		static_assert( std::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
-		static_assert(!std::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
+		static_assert( hamon::is_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
+		static_assert(!hamon::is_nothrow_constructible<hamon::move_iterator<Iter>, Iter>::value, "");
 	}
 #endif
 }
@@ -434,10 +436,10 @@ GTEST_TEST(MoveIteratorTest, CtorIterTest)
 template <template <typename> class IteratorWrapper>
 inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 {
-	static_assert( std::is_constructible<
+	static_assert( hamon::is_constructible<
 		hamon::move_iterator<IteratorWrapper<Base>>,
 		hamon::move_iterator<IteratorWrapper<Derived>>>::value, "");
-	static_assert(!std::is_constructible<
+	static_assert(!hamon::is_constructible<
 		hamon::move_iterator<IteratorWrapper<Derived>>,
 		hamon::move_iterator<IteratorWrapper<Base>>>::value, "");
 	{
@@ -470,17 +472,17 @@ public:
 
 GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 {
-	static_assert( std::is_constructible<Base*, Derived*>::value, "");
-	static_assert(!std::is_constructible<Derived*, Base*>::value, "");
+	static_assert( hamon::is_constructible<Base*, Derived*>::value, "");
+	static_assert(!hamon::is_constructible<Derived*, Base*>::value, "");
 
-	static_assert( std::is_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*>>::value, "");
-	static_assert(!std::is_constructible<hamon::move_iterator<Derived*>, hamon::move_iterator<Base*>>::value, "");
+	static_assert( hamon::is_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::move_iterator<Derived*>, hamon::move_iterator<Base*>>::value, "");
 
-	static_assert( std::is_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*> const&>::value, "");
-	static_assert(!std::is_constructible<hamon::move_iterator<Derived*>, hamon::move_iterator<Base*> const&>::value, "");
+	static_assert( hamon::is_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*> const&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::move_iterator<Derived*>, hamon::move_iterator<Base*> const&>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-	static_assert( std::is_nothrow_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Base*>, hamon::move_iterator<Derived*>>::value, "");
 #endif
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorConvertTest<convertible_input_iterator_wrapper>());
@@ -493,14 +495,14 @@ GTEST_TEST(MoveIteratorTest, CtorConvertTest)
 	{
 		using Iter1 = MayThrowConvCtor<true, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowConvCtor<true, Derived, input_iterator_wrapper>;
-		static_assert( std::is_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
-		static_assert( std::is_nothrow_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_nothrow_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
 	}
 	{
 		using Iter1 = MayThrowConvCtor<false, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowConvCtor<false, Derived, input_iterator_wrapper>;
-		static_assert( std::is_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
-		static_assert(!std::is_nothrow_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
+		static_assert(!hamon::is_nothrow_constructible<hamon::move_iterator<Iter1>, hamon::move_iterator<Iter2>>::value, "");
 	}
 #endif
 }

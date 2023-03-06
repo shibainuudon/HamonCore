@@ -6,9 +6,10 @@
 
 #include <hamon/span.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_span_test
@@ -21,70 +22,70 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 cv_test()
 {
-	static_assert( std::is_constructible<hamon::span<T               >, T               (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T const         (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, T               (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, T const         (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         >, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         >, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile>, T               (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, T const         (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile>, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T               (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T const         (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T       volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T               >, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, T const volatile(&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, T               (&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         >, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         >, T const volatile(&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile>, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, T const         (&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile>, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, T const volatile(&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T               (&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T const         (&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T       volatile(&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, T const volatile(&)[3]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T               , 2>, T               (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T const         (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         , 2>, T               (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         , 2>, T const         (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile, 2>, T               (&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T const         (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile, 2>, T       volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T const volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile, 2>, T               (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile, 2>, T const         (&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile, 2>, T       volatile(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile, 2>, T const volatile(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               , 2>, T const volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const         , 2>, T const volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile, 2>, T const volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const volatile, 2>, T               (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const volatile, 2>, T const         (&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const volatile, 2>, T       volatile(&)[3]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T const volatile, 2>, T const volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T               >, T               (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T const         (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, T               (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, T const         (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         >, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         >, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile>, T               (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, T const         (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile>, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T               (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T const         (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T       volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T               >, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, T const volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, T               (&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         >, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         >, T const volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile>, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, T const         (&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile>, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, T const volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T               (&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T const         (&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T       volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, T const volatile(&)[3]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T               , 2>, T               (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T const         (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         , 2>, T               (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         , 2>, T const         (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile, 2>, T               (&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T const         (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile, 2>, T       volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T const volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile, 2>, T               (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile, 2>, T const         (&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile, 2>, T       volatile(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile, 2>, T const volatile(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               , 2>, T const volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const         , 2>, T const volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile, 2>, T const volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T               (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T const         (&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T       volatile(&)[3]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T const volatile(&)[3]>::value, "");
 
 	return true;
 }
@@ -93,14 +94,14 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 test2()
 {
-	static_assert( std::is_constructible<hamon::span<T>   , T(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T, 0>, T(&)[2]>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T, 1>, T(&)[2]>::value, "");
-	static_assert( std::is_constructible<hamon::span<T, 2>, T(&)[2]>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::span<T>   , T(&)[2]>::value, "");
-	static_assert(!std::is_nothrow_constructible<hamon::span<T, 0>, T(&)[2]>::value, "");
-	static_assert(!std::is_nothrow_constructible<hamon::span<T, 1>, T(&)[2]>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::span<T, 2>, T(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T>   , T(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T, 0>, T(&)[2]>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T, 1>, T(&)[2]>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T, 2>, T(&)[2]>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T>   , T(&)[2]>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::span<T, 0>, T(&)[2]>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<hamon::span<T, 1>, T(&)[2]>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 2>, T(&)[2]>::value, "");
 	static_assert( hamon::is_implicitly_constructible<hamon::span<T>   , T(&)[2]>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 0>, T(&)[2]>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 1>, T(&)[2]>::value, "");

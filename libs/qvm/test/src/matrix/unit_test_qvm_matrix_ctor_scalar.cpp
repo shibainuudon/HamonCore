@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -21,26 +22,26 @@ void Matrix3x3CtorScalarTest()
 {
 	using matrix3x3 = hamon::qvm::matrix<T, 3, 3>;
 
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, T, T>::value, "");
-	static_assert( std::is_constructible<matrix3x3, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix3x3, T>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix3x3, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_nothrow_constructible<matrix3x3, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x3, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x3, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix3x3, T, T, T, T, T, T, T, T, T>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<matrix3x3, T>::value, "");
@@ -84,25 +85,25 @@ void Matrix3x4CtorScalarTest()
 {
 	using matrix3x4 = hamon::qvm::matrix<T, 3, 4>;
 
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, T>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix3x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
 
@@ -134,25 +135,25 @@ void Matrix4x3CtorScalarTest()
 {
 	using matrix4x3 = hamon::qvm::matrix<T, 4, 3>;
 
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, T>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix4x3, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
 
@@ -185,26 +186,26 @@ void Matrix4x4CtorScalarTest()
 {
 	using matrix4x4 = hamon::qvm::matrix<T, 4, 4>;
 
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T, T>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, T, T>::value, "");
-	static_assert( std::is_constructible<matrix4x4, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T, T>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, T, T>::value, "");
+	static_assert( hamon::is_constructible<matrix4x4, T>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
-	static_assert( std::is_nothrow_constructible<matrix4x4, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix4x4, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix4x4, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T, T>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<matrix4x4, T>::value, "");

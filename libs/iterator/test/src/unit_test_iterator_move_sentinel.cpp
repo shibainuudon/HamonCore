@@ -13,10 +13,12 @@
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <utility>
@@ -207,9 +209,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 	{
 		using Sent = hamon::move_sentinel<int>;
 		static_assert(!std::is_convertible<int, Sent>::value, "");
-		static_assert( std::is_constructible<Sent, int>::value, "");
+		static_assert( hamon::is_constructible<Sent, int>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<Sent, int>::value, "");
+		static_assert( hamon::is_nothrow_constructible<Sent, int>::value, "");
 #endif
 		Sent m(42);
 		VERIFY(m.base() == 42);
@@ -219,9 +221,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 	{
 		using Sent = hamon::move_sentinel<int*>;
 		static_assert(!std::is_convertible<int*, Sent>::value, "");
-		static_assert( std::is_constructible<Sent, int*>::value, "");
+		static_assert( hamon::is_constructible<Sent, int*>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<Sent, int*>::value, "");
+		static_assert( hamon::is_nothrow_constructible<Sent, int*>::value, "");
 #endif
 		int i = 42;
 		Sent m(&i);
@@ -237,9 +239,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		};
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!std::is_convertible<S, Sent>::value, "");
-		static_assert( std::is_constructible<Sent, S>::value, "");
+		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<Sent, S>::value, "");
+		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
 #endif
 		Sent m(S(42));
 		VERIFY(m.base().i == 42);
@@ -255,9 +257,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		};
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!std::is_convertible<S, Sent>::value, "");
-		static_assert( std::is_constructible<Sent, S>::value, "");
+		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<Sent, S>::value, "");
+		static_assert( hamon::is_nothrow_constructible<Sent, S>::value, "");
 #endif
 	}
 	{
@@ -270,9 +272,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorSentinelTest()
 		};
 		using Sent = hamon::move_sentinel<S>;
 		static_assert(!std::is_convertible<S, Sent>::value, "");
-		static_assert( std::is_constructible<Sent, S>::value, "");
+		static_assert( hamon::is_constructible<Sent, S>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert(!std::is_nothrow_constructible<Sent, S>::value, "");
+		static_assert(!hamon::is_nothrow_constructible<Sent, S>::value, "");
 #endif
 	}
 
@@ -299,7 +301,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 	// Constructing from an lvalue.
 	{
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<
+		static_assert( hamon::is_nothrow_constructible<
 			hamon::move_sentinel<long>,
 			hamon::move_sentinel<int> const&
 		>::value, "");
@@ -312,7 +314,7 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 	// Constructing from an rvalue.
 	{
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<
+		static_assert( hamon::is_nothrow_constructible<
 			hamon::move_sentinel<long>,
 			hamon::move_sentinel<int>&&
 		>::value, "");
@@ -338,9 +340,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 		};
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
-		static_assert( std::is_constructible<Sent2, Sent1 const&>::value, "");
+		static_assert( hamon::is_constructible<Sent2, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
+		static_assert( hamon::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
 #endif
 	}
 	{
@@ -360,9 +362,9 @@ inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 		};
 		using Sent1 = hamon::move_sentinel<S1>;
 		using Sent2 = hamon::move_sentinel<S2>;
-		static_assert( std::is_constructible<Sent2, Sent1 const&>::value, "");
+		static_assert( hamon::is_constructible<Sent2, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert(!std::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
+		static_assert(!hamon::is_nothrow_constructible<Sent2, Sent1 const&>::value, "");
 #endif
 	}
 

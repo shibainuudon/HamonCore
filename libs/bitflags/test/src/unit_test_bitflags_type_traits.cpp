@@ -8,6 +8,8 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -31,26 +33,26 @@ static_assert( hamon::is_implicitly_default_constructible<Bitflag2>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<Bitflag3>::value, "");
 
 // テンプレートパラメータで指定したenum型からはコンストラクト可能
-static_assert( std::is_constructible<Bitflag1, Enum1>::value, "");
-static_assert(!std::is_constructible<Bitflag1, Enum2>::value, "");
-static_assert(!std::is_constructible<Bitflag1, Enum3>::value, "");
-static_assert(!std::is_constructible<Bitflag2, Enum1>::value, "");
-static_assert( std::is_constructible<Bitflag2, Enum2>::value, "");
-static_assert(!std::is_constructible<Bitflag2, Enum3>::value, "");
-static_assert(!std::is_constructible<Bitflag3, Enum1>::value, "");
-static_assert(!std::is_constructible<Bitflag3, Enum2>::value, "");
-static_assert( std::is_constructible<Bitflag3, Enum3>::value, "");
+static_assert( hamon::is_constructible<Bitflag1, Enum1>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, Enum2>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, Enum3>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, Enum1>::value, "");
+static_assert( hamon::is_constructible<Bitflag2, Enum2>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, Enum3>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, Enum1>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, Enum2>::value, "");
+static_assert( hamon::is_constructible<Bitflag3, Enum3>::value, "");
 
 // 整数型からはコンストラクト不可
-static_assert(!std::is_constructible<Bitflag1, int>::value, "");
-static_assert(!std::is_constructible<Bitflag2, int>::value, "");
-static_assert(!std::is_constructible<Bitflag3, int>::value, "");
-static_assert(!std::is_constructible<Bitflag1, std::uint8_t>::value, "");
-static_assert(!std::is_constructible<Bitflag2, std::uint8_t>::value, "");
-static_assert(!std::is_constructible<Bitflag3, std::uint8_t>::value, "");
-static_assert(!std::is_constructible<Bitflag1, std::uint16_t>::value, "");
-static_assert(!std::is_constructible<Bitflag2, std::uint16_t>::value, "");
-static_assert(!std::is_constructible<Bitflag3, std::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, int>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, int>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, int>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, std::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, std::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, std::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, std::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, std::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, std::uint16_t>::value, "");
 
 // コンストラクト可能なenumでもimplicitコンストラクト不可
 static_assert(!hamon::is_implicitly_constructible<Bitflag1, Enum1>::value, "");
@@ -58,20 +60,20 @@ static_assert(!hamon::is_implicitly_constructible<Bitflag2, Enum2>::value, "");
 static_assert(!hamon::is_implicitly_constructible<Bitflag3, Enum3>::value, "");
 
 // コンストラクト可能なenumでもnothrowコンストラクト不可
-static_assert(!std::is_nothrow_constructible<Bitflag1, Enum1>::value, "");
-static_assert(!std::is_nothrow_constructible<Bitflag2, Enum2>::value, "");
-static_assert(!std::is_nothrow_constructible<Bitflag3, Enum3>::value, "");
+static_assert(!hamon::is_nothrow_constructible<Bitflag1, Enum1>::value, "");
+static_assert(!hamon::is_nothrow_constructible<Bitflag2, Enum2>::value, "");
+static_assert(!hamon::is_nothrow_constructible<Bitflag3, Enum3>::value, "");
 
 // テンプレートパラメータが違うbitflag型からはコンストラクト不可
-static_assert( std::is_constructible<Bitflag1, Bitflag1>::value, "");
-static_assert(!std::is_constructible<Bitflag1, Bitflag2>::value, "");
-static_assert(!std::is_constructible<Bitflag1, Bitflag3>::value, "");
-static_assert(!std::is_constructible<Bitflag2, Bitflag1>::value, "");
-static_assert( std::is_constructible<Bitflag2, Bitflag2>::value, "");
-static_assert(!std::is_constructible<Bitflag2, Bitflag3>::value, "");
-static_assert(!std::is_constructible<Bitflag3, Bitflag1>::value, "");
-static_assert(!std::is_constructible<Bitflag3, Bitflag2>::value, "");
-static_assert( std::is_constructible<Bitflag3, Bitflag3>::value, "");
+static_assert( hamon::is_constructible<Bitflag1, Bitflag1>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, Bitflag2>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, Bitflag3>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, Bitflag1>::value, "");
+static_assert( hamon::is_constructible<Bitflag2, Bitflag2>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, Bitflag3>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, Bitflag1>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, Bitflag2>::value, "");
+static_assert( hamon::is_constructible<Bitflag3, Bitflag3>::value, "");
 
 // Copy Constructible
 static_assert( std::is_copy_constructible<Bitflag1>::value, "");

@@ -56,6 +56,7 @@ using ranges::get;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
@@ -116,8 +117,8 @@ private:
 		template <typename I2, typename S2>
 		HAMON_CXX11_CONSTEXPR Impl(I2&& begin, S2&& end)
 			HAMON_NOEXCEPT_IF((
-				std::is_nothrow_constructible<I, I2>::value &&
-				std::is_nothrow_constructible<S, S2>::value))
+				hamon::is_nothrow_constructible<I, I2>::value &&
+				hamon::is_nothrow_constructible<S, S2>::value))
 			: m_begin(std::forward<I2>(begin))
 			, m_end(std::forward<S2>(end))
 		{}
@@ -162,8 +163,8 @@ private:
 		template <typename I2, typename S2>
 		HAMON_CXX11_CONSTEXPR Impl(I2&& begin, S2&& end, size_type n)
 			HAMON_NOEXCEPT_IF((
-				std::is_nothrow_constructible<I, I2>::value &&
-				std::is_nothrow_constructible<S, S2>::value))
+				hamon::is_nothrow_constructible<I, I2>::value &&
+				hamon::is_nothrow_constructible<S, S2>::value))
 			: m_begin(std::forward<I2>(begin))
 			, m_end(std::forward<S2>(end))
 			, m_size(n)

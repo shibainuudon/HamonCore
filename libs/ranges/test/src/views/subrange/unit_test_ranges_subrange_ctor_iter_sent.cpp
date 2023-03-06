@@ -10,9 +10,11 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
+#include <cstddef>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -50,7 +52,7 @@ using RandomAccessSizedSubrange =
 	>;
 
 // subrange_kind::unsized のときはイテレータとセンチネルでコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::sentinel_t<ForwardRange>
@@ -58,7 +60,7 @@ static_assert( std::is_constructible<
 
 // subrange_kind::sized かつ sized_sentinel_for<Sent, It> == true のときは
 // イテレータとセンチネルでコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	RandomAccessSizedSubrange,
 	hamon::ranges::iterator_t<RandomAccessRange>,
 	hamon::ranges::sentinel_t<RandomAccessRange>
@@ -66,26 +68,26 @@ static_assert( std::is_constructible<
 
 // subrange_kind::sized かつ sized_sentinel_for<Sent, It> == false のときは
 // イテレータとセンチネルでコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::sentinel_t<ForwardRange>
 >::value, "");
 
 // 引数の型が違うときはコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	int*,
 	hamon::ranges::sentinel_t<ForwardRange>
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::iterator_t<ForwardRange>
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	int*
@@ -112,33 +114,33 @@ struct ConvertibleIter
 };
 
 // イテレータにスライシングを起こさずに変換可能な場合はコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	hamon::ranges::sentinel_t<ForwardRange>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, false>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, false>
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, false>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, false>
@@ -176,44 +178,44 @@ bool operator!=(ThrowIterator<B1> const&, ThrowSentinel<B2> const&);
 template <bool B1, bool B2>
 bool operator!=(ThrowSentinel<B1> const&, ThrowIterator<B2> const&);
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>>,
 	ThrowIterator<true>, ThrowSentinel<true>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<true>>,
 	ThrowIterator<false>, ThrowSentinel<true>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<false>>,
 	ThrowIterator<true>, ThrowSentinel<false>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<false>>,
 	ThrowIterator<false>, ThrowSentinel<false>
 >::value, "");
 
 #if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
-static_assert( std::is_nothrow_constructible<
+static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>>,
 	ThrowIterator<true>, ThrowSentinel<true>
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<true>>,
 	ThrowIterator<false>, ThrowSentinel<true>
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<false>>,
 	ThrowIterator<true>, ThrowSentinel<false>
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<false>>,
 	ThrowIterator<false>, ThrowSentinel<false>
 >::value, "");

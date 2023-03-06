@@ -8,9 +8,10 @@
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -25,8 +26,8 @@ TYPED_TEST(QuaternionFloatTest, ToMatrixTest)
 	using matrix3x3 = hamon::qvm::matrix<T, 3, 3>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert( std::is_constructible<matrix3x3, quaternion const&>::value, "");
-	static_assert( std::is_nothrow_constructible<matrix3x3, quaternion const&>::value, "");
+	static_assert( hamon::is_constructible<matrix3x3, quaternion const&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x3, quaternion const&>::value, "");
 //	static_assert(!hamon::is_implicitly_constructible<matrix3x3, quaternion const&>::value, "");
 
 	HAMON_CXX11_CONSTEXPR const double error = 0.000001;

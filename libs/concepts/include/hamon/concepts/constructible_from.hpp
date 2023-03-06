@@ -8,7 +8,6 @@
 #define HAMON_CONCEPTS_CONSTRUCTIBLE_FROM_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <type_traits>
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
@@ -22,6 +21,7 @@ using std::constructible_from;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 #include <hamon/concepts/destructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 
 namespace hamon
 {
@@ -29,7 +29,7 @@ namespace hamon
 template <typename T, typename... Args>
 concept constructible_from =
 	hamon::destructible<T> &&
-	std::is_constructible<T, Args...>::value;
+	hamon::is_constructible<T, Args...>::value;
 
 }	// namespace hamon
 
@@ -37,6 +37,7 @@ concept constructible_from =
 
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 
 namespace hamon
 {
@@ -45,7 +46,7 @@ template <typename T, typename... Args>
 using constructible_from =
 	hamon::conjunction<
 		hamon::destructible<T>,
-		std::is_constructible<T, Args...>
+		hamon::is_constructible<T, Args...>
 	>;
 
 }	// namespace hamon

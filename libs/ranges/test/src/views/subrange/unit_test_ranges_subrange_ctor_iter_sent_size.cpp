@@ -11,10 +11,11 @@
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -54,7 +55,7 @@ using RandomAccessSizedSubrange =
 
 // subrange_kind::unsized のときは
 // イテレータとセンチネルとサイズでコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::sentinel_t<ForwardRange>,
@@ -63,14 +64,14 @@ static_assert(!std::is_constructible<
 
 // subrange_kind::sized のときは
 // イテレータとセンチネルとサイズでコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardSizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::sentinel_t<ForwardRange>,
 	std::size_t
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	RandomAccessSizedSubrange,
 	hamon::ranges::iterator_t<RandomAccessRange>,
 	hamon::ranges::sentinel_t<RandomAccessRange>,
@@ -78,21 +79,21 @@ static_assert( std::is_constructible<
 >::value, "");
 
 // 引数の型が違うときはコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	int*,
 	hamon::ranges::sentinel_t<ForwardRange>,
 	std::size_t
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	hamon::ranges::iterator_t<ForwardRange>,
 	std::size_t
 >::value, "");
 
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	int*,
@@ -120,38 +121,38 @@ struct ConvertibleIter
 };
 
 // イテレータにスライシングを起こさずに変換可能な場合はコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardSizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	hamon::ranges::sentinel_t<ForwardRange>,
 	std::size_t
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardSizedSubrange,
 	hamon::ranges::iterator_t<ForwardRange>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>,
 	std::size_t
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardSizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>,
 	std::size_t
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, false>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, true>,
 	std::size_t
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, true>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, false>,
 	std::size_t
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ConvertibleIter<forward_iterator_wrapper<int>, false>,
 	ConvertibleIter<test_sentinel<forward_iterator_wrapper<int>>, false>,
@@ -196,44 +197,44 @@ static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<t
 static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<true>,  ThrowIterator<false>>::value, "");
 static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<false>>::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<true>, ThrowSentinel<true>, std::size_t
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<false>, ThrowSentinel<true>, std::size_t
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<true>, ThrowSentinel<false>, std::size_t
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<false>, ThrowSentinel<false>, std::size_t
 >::value, "");
 
 #if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
-static_assert( std::is_nothrow_constructible<
+static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<true>, ThrowSentinel<true>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<false>, ThrowSentinel<true>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<true>, ThrowSentinel<false>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	ThrowIterator<false>, ThrowSentinel<false>, std::size_t
 >::value, "");
@@ -264,22 +265,22 @@ static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<true>,  ThrowIterat
 static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<false>, ThrowIterator<false>>::value, "");
 
 #if !defined(HAMON_USE_STD_RANGES)
-static_assert( std::is_nothrow_constructible<
+static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSizedSentinel<true>>,
 	ThrowIterator<true>, ThrowSizedSentinel<true>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSizedSentinel<true>>,
 	ThrowIterator<false>, ThrowSizedSentinel<true>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSizedSentinel<false>>,
 	ThrowIterator<true>, ThrowSizedSentinel<false>, std::size_t
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange<ThrowIterator<false>, ThrowSizedSentinel<false>>,
 	ThrowIterator<false>, ThrowSizedSentinel<false>, std::size_t
 >::value, "");

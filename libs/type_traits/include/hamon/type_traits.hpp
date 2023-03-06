@@ -44,7 +44,7 @@
 #include <hamon/type_traits/is_class.hpp>
 #include <hamon/type_traits/is_compound.hpp>
 #include <hamon/type_traits/is_const.hpp>
-//#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 //#include <hamon/type_traits/is_convertible.hpp>
 //#include <hamon/type_traits/is_copy_assignable.hpp>
 //#include <hamon/type_traits/is_copy_constructible.hpp>
@@ -75,7 +75,7 @@
 //#include <hamon/type_traits/is_move_assignable.hpp>
 //#include <hamon/type_traits/is_move_constructible.hpp>
 //#include <hamon/type_traits/is_nothrow_assignable.hpp>
-//#include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 //#include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
 //#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -105,7 +105,7 @@
 #include <hamon/type_traits/is_swappable_with.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 //#include <hamon/type_traits/is_trivially_assignable.hpp>
-//#include <hamon/type_traits/is_trivially_constructible.hpp>
+#include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 //#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 //#include <hamon/type_traits/is_trivially_copy_constructible.hpp>

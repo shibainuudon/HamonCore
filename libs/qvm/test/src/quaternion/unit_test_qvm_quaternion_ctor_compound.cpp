@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -24,23 +25,23 @@ TYPED_TEST(QuaternionTest, CtorCompoundTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!std::is_constructible<quaternion, vector2>::value, "");
-	static_assert(!std::is_constructible<quaternion, vector2, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, vector2>::value, "");
-	static_assert(!std::is_constructible<quaternion, vector2, T, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, vector2, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, T, vector2>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector2>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector2, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, vector2>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector2, T, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, vector2, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, T, vector2>::value, "");
 
-	static_assert(!std::is_constructible<quaternion, vector3>::value, "");
-	static_assert( std::is_constructible<quaternion, vector3, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, vector3>::value, "");
-	static_assert(!std::is_constructible<quaternion, vector3, T, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, vector3, T>::value, "");
-	static_assert(!std::is_constructible<quaternion, T, T, vector3>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector3>::value, "");
+	static_assert( hamon::is_constructible<quaternion, vector3, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, vector3>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector3, T, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, vector3, T>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, T, T, vector3>::value, "");
 
-	static_assert(!std::is_constructible<quaternion, vector4>::value, "");
+	static_assert(!hamon::is_constructible<quaternion, vector4>::value, "");
 
-	static_assert( std::is_nothrow_constructible<quaternion, vector3, T>::value, "");
+	static_assert( hamon::is_nothrow_constructible<quaternion, vector3, T>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<quaternion, vector3, T>::value, "");
 

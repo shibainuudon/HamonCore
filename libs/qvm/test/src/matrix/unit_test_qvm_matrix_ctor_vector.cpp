@@ -7,9 +7,10 @@
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/qvm/vector.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -25,17 +26,17 @@ void Matrix3x3CtorVectorTest()
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!std::is_constructible<matrix3x3, vector3, vector3, vector3, vector3, vector3>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, vector3, vector3, vector3, vector3>::value, "");
-	static_assert( std::is_constructible<matrix3x3, vector3, vector3, vector3>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, vector3, vector3, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, vector3, vector3, vector3, vector3>::value, "");
+	static_assert( hamon::is_constructible<matrix3x3, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, vector3, vector3>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix3x3, vector3, vector3, vector3>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x3, vector3, vector3, vector3>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix3x3, vector3, vector3, vector3>::value, "");
 
-	static_assert(!std::is_constructible<matrix3x3, vector2, vector2, vector2>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, vector2, vector2, vector2>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, vector4, vector4, vector4>::value, "");
 
 	// vector4型を4つ受け取るコンストラクタ
 	{
@@ -81,17 +82,17 @@ void Matrix3x4CtorVectorTest()
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!std::is_constructible<matrix3x4, vector4, vector4, vector4, vector4, vector4>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, vector4, vector4, vector4, vector4>::value, "");
-	static_assert( std::is_constructible<matrix3x4, vector4, vector4, vector4>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, vector4, vector4, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, vector4, vector4, vector4, vector4>::value, "");
+	static_assert( hamon::is_constructible<matrix3x4, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, vector4, vector4>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix3x4, vector4, vector4, vector4>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix3x4, vector4, vector4, vector4>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix3x4, vector4, vector4, vector4>::value, "");
 
-	static_assert(!std::is_constructible<matrix3x4, vector2, vector2, vector2>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, vector2, vector2, vector2>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, vector3, vector3, vector3>::value, "");
 
 	// vector4型を4つ受け取るコンストラクタ
 	{
@@ -143,17 +144,17 @@ void Matrix4x3CtorVectorTest()
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!std::is_constructible<matrix4x3, vector3, vector3, vector3, vector3, vector3>::value, "");
-	static_assert( std::is_constructible<matrix4x3, vector3, vector3, vector3, vector3>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, vector3, vector3, vector3>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, vector3, vector3, vector3, vector3, vector3>::value, "");
+	static_assert( hamon::is_constructible<matrix4x3, vector3, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, vector3, vector3>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix4x3, vector3, vector3, vector3, vector3>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix4x3, vector3, vector3, vector3, vector3>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix4x3, vector3, vector3, vector3, vector3>::value, "");
 
-	static_assert(!std::is_constructible<matrix4x3, vector2, vector2, vector2, vector2>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, vector4, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, vector2, vector2, vector2, vector2>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, vector4, vector4, vector4, vector4>::value, "");
 
 	// vector4型を4つ受け取るコンストラクタ
 	{
@@ -207,17 +208,17 @@ void Matrix4x4CtorVectorTest()
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!std::is_constructible<matrix4x4, vector4, vector4, vector4, vector4, vector4>::value, "");
-	static_assert( std::is_constructible<matrix4x4, vector4, vector4, vector4, vector4>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, vector4, vector4, vector4>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, vector4, vector4, vector4, vector4, vector4>::value, "");
+	static_assert( hamon::is_constructible<matrix4x4, vector4, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, vector4, vector4, vector4>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, vector4, vector4>::value, "");
 
-	static_assert( std::is_nothrow_constructible<matrix4x4, vector4, vector4, vector4, vector4>::value, "");
+	static_assert( hamon::is_nothrow_constructible<matrix4x4, vector4, vector4, vector4, vector4>::value, "");
 
 	static_assert( hamon::is_implicitly_constructible<matrix4x4, vector4, vector4, vector4, vector4>::value, "");
 
-	static_assert(!std::is_constructible<matrix4x4, vector2, vector2, vector2, vector2>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, vector3, vector3, vector3, vector3>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, vector2, vector2, vector2, vector2>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, vector3, vector3, vector3, vector3>::value, "");
 
 	// vector4型を4つ受け取るコンストラクタ
 	{

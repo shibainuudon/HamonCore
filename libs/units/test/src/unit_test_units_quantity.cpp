@@ -12,6 +12,8 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -89,8 +91,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 	{
 		using D = hamon::units::length_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_constructible<Q, T>::value, "");
-		static_assert(std::is_nothrow_constructible<Q, T>::value, "");
+		static_assert(hamon::is_constructible<Q, T>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<Q, T>::value, "");
 		HAMON_CONSTEXPR Q q(1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, q.value());
@@ -98,8 +100,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 	{
 		using D = hamon::units::mass_dimension;
 		using Q = hamon::units::quantity<T, D>;
-		static_assert(std::is_constructible<Q, T>::value, "");
-		static_assert(std::is_nothrow_constructible<Q, T>::value, "");
+		static_assert(hamon::is_constructible<Q, T>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<Q, T>::value, "");
 		HAMON_CONSTEXPR Q q{2};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, q.value());
@@ -108,8 +110,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 		using D = hamon::units::length_dimension;
 		using S = std::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_constructible<Q, T>::value, "");
-		static_assert(std::is_nothrow_constructible<Q, T>::value, "");
+		static_assert(hamon::is_constructible<Q, T>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<Q, T>::value, "");
 		HAMON_CONSTEXPR Q q{3};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, q.value());
@@ -118,8 +120,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 		using D = hamon::units::mass_dimension;
 		using S = std::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
-		static_assert(std::is_constructible<Q, T>::value, "");
-		static_assert(std::is_nothrow_constructible<Q, T>::value, "");
+		static_assert(hamon::is_constructible<Q, T>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<Q, T>::value, "");
 		HAMON_CONSTEXPR Q q(4);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, q.value());
@@ -129,8 +131,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 		using S = std::ratio<1000, 1>;
 		using O = std::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
-		static_assert(std::is_constructible<Q, T>::value, "");
-		static_assert(std::is_nothrow_constructible<Q, T>::value, "");
+		static_assert(hamon::is_constructible<Q, T>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<Q, T>::value, "");
 		HAMON_CONSTEXPR Q q{5};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, q.value());
@@ -205,8 +207,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 		using S2 = std::ratio<1000, 1>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
-		static_assert(std::is_constructible<Q2, Q1>::value, "");
-		static_assert(std::is_nothrow_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q2, Q1>::value, "");
 		static_assert(hamon::is_implicitly_constructible<Q2, Q1>::value, "");
 		HAMON_CONSTEXPR Q1 q1(1);
 		HAMON_CONSTEXPR Q2 q2(q1);
@@ -218,8 +220,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 		using S2 = std::ratio<1, 1>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
-		static_assert(std::is_constructible<Q2, Q1>::value, "");
-		static_assert(std::is_nothrow_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q2, Q1>::value, "");
 		static_assert(hamon::is_implicitly_constructible<Q2, Q1>::value, "");
 		HAMON_CONSTEXPR Q1 q1(2);
 		HAMON_CONSTEXPR Q2 q2{q1};
@@ -231,8 +233,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 		using S2 = std::ratio<5, 7>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
-		static_assert(std::is_constructible<Q2, Q1>::value, "");
-		static_assert(std::is_nothrow_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q2, Q1>::value, "");
 		static_assert(hamon::is_implicitly_constructible<Q2, Q1>::value, "");
 		HAMON_CONSTEXPR Q1 q1{3};
 		HAMON_CONSTEXPR Q2 q2{q1};
@@ -245,8 +247,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 		using O2 = std::ratio<0, 1>;
 		using Q1 = hamon::units::quantity<T, D, S, O1>;
 		using Q2 = hamon::units::quantity<T, D, S, O2>;
-		static_assert(std::is_constructible<Q2, Q1>::value, "");
-		static_assert(std::is_nothrow_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q2, Q1>::value, "");
 		static_assert(hamon::is_implicitly_constructible<Q2, Q1>::value, "");
 		HAMON_CONSTEXPR Q1 q1(4);
 		HAMON_CONSTEXPR Q2 q2(q1);
@@ -260,8 +262,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 		using O2 = std::ratio<10, 17>;
 		using Q1 = hamon::units::quantity<T, D, S1, O1>;
 		using Q2 = hamon::units::quantity<T, D, S2, O2>;
-		static_assert(std::is_constructible<Q2, Q1>::value, "");
-		static_assert(std::is_nothrow_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
+		static_assert(hamon::is_nothrow_constructible<Q2, Q1>::value, "");
 		static_assert(hamon::is_implicitly_constructible<Q2, Q1>::value, "");
 		HAMON_CONSTEXPR Q1 q1{5};
 		HAMON_CONSTEXPR Q2 q2{q1};

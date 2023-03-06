@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -23,19 +24,19 @@ void Vector2CtorConvertTest()
 	using vector2i = hamon::qvm::vector<int, 2>;
 	using vector2f = hamon::qvm::vector<float, 2>;
 
-	static_assert(std::is_constructible<vector2,  vector2i const&>::value, "");
-	static_assert(std::is_constructible<vector2,  vector2f const&>::value, "");
-	static_assert(std::is_constructible<vector2i, vector2  const&>::value, "");
-	static_assert(std::is_constructible<vector2i, vector2f const&>::value, "");
-	static_assert(std::is_constructible<vector2f, vector2  const&>::value, "");
-	static_assert(std::is_constructible<vector2f, vector2i const&>::value, "");
+	static_assert(hamon::is_constructible<vector2,  vector2i const&>::value, "");
+	static_assert(hamon::is_constructible<vector2,  vector2f const&>::value, "");
+	static_assert(hamon::is_constructible<vector2i, vector2  const&>::value, "");
+	static_assert(hamon::is_constructible<vector2i, vector2f const&>::value, "");
+	static_assert(hamon::is_constructible<vector2f, vector2  const&>::value, "");
+	static_assert(hamon::is_constructible<vector2f, vector2i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<vector2,  vector2i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector2,  vector2f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector2i, vector2  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector2i, vector2f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector2f, vector2  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector2f, vector2i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2,  vector2i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2,  vector2f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2i, vector2  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2i, vector2f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2f, vector2  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector2f, vector2i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<vector2,  vector2i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<vector2,  vector2f const&>::value, "");
@@ -63,19 +64,19 @@ void Vector3CtorConvertTest()
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_constructible<vector3,  vector3i const&>::value, "");
-	static_assert(std::is_constructible<vector3,  vector3f const&>::value, "");
-	static_assert(std::is_constructible<vector3i, vector3  const&>::value, "");
-	static_assert(std::is_constructible<vector3i, vector3f const&>::value, "");
-	static_assert(std::is_constructible<vector3f, vector3  const&>::value, "");
-	static_assert(std::is_constructible<vector3f, vector3i const&>::value, "");
+	static_assert(hamon::is_constructible<vector3,  vector3i const&>::value, "");
+	static_assert(hamon::is_constructible<vector3,  vector3f const&>::value, "");
+	static_assert(hamon::is_constructible<vector3i, vector3  const&>::value, "");
+	static_assert(hamon::is_constructible<vector3i, vector3f const&>::value, "");
+	static_assert(hamon::is_constructible<vector3f, vector3  const&>::value, "");
+	static_assert(hamon::is_constructible<vector3f, vector3i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<vector3,  vector3i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector3,  vector3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector3i, vector3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector3i, vector3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector3f, vector3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector3f, vector3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3,  vector3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3,  vector3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3i, vector3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3i, vector3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3f, vector3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector3f, vector3i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<vector3,  vector3i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<vector3,  vector3f const&>::value, "");
@@ -105,19 +106,19 @@ void Vector4CtorConvertTest()
 	using vector4i = hamon::qvm::vector<int, 4>;
 	using vector4f = hamon::qvm::vector<float, 4>;
 
-	static_assert(std::is_constructible<vector4,  vector4i const&>::value, "");
-	static_assert(std::is_constructible<vector4,  vector4f const&>::value, "");
-	static_assert(std::is_constructible<vector4i, vector4  const&>::value, "");
-	static_assert(std::is_constructible<vector4i, vector4f const&>::value, "");
-	static_assert(std::is_constructible<vector4f, vector4  const&>::value, "");
-	static_assert(std::is_constructible<vector4f, vector4i const&>::value, "");
+	static_assert(hamon::is_constructible<vector4,  vector4i const&>::value, "");
+	static_assert(hamon::is_constructible<vector4,  vector4f const&>::value, "");
+	static_assert(hamon::is_constructible<vector4i, vector4  const&>::value, "");
+	static_assert(hamon::is_constructible<vector4i, vector4f const&>::value, "");
+	static_assert(hamon::is_constructible<vector4f, vector4  const&>::value, "");
+	static_assert(hamon::is_constructible<vector4f, vector4i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<vector4,  vector4i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector4,  vector4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector4i, vector4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector4i, vector4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector4f, vector4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<vector4f, vector4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4,  vector4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4,  vector4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4i, vector4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4i, vector4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4f, vector4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<vector4f, vector4i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<vector4,  vector4i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<vector4,  vector4f const&>::value, "");

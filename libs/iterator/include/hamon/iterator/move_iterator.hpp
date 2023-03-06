@@ -50,6 +50,8 @@ using std::move_iterator;
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
 #include <iterator>
@@ -150,11 +152,11 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	HAMON_CXX14_CONSTEXPR
 	move_iterator()
-		requires std::is_constructible<Iter>::value	// extension
+		requires hamon::is_constructible<Iter>::value	// extension
 		= default;
 #else
 	template <typename I = Iter,
-		typename = hamon::enable_if_t<std::is_constructible<I>::value>	// extension
+		typename = hamon::enable_if_t<hamon::is_constructible<I>::value>	// extension
 	>
 	HAMON_CXX14_CONSTEXPR
 	move_iterator()
@@ -170,7 +172,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_constructible, Iter, U)>
 	HAMON_CXX14_CONSTEXPR
 	move_iterator(move_iterator<U> const& u)
-	HAMON_NOEXCEPT_IF((std::is_nothrow_constructible<Iter, U const&>::value))	// extension
+	HAMON_NOEXCEPT_IF((hamon::is_nothrow_constructible<Iter, U const&>::value))	// extension
 		: m_current(u.base()) {}
 
 	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_assignable, Iter, U)>

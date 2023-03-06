@@ -7,8 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_IS_IMPLICITLY_CONSTRUCTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_IMPLICITLY_CONSTRUCTIBLE_HPP
 
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
+#include <utility>
 
 namespace hamon
 {
@@ -49,10 +51,10 @@ private:
 
 	template <typename T1, typename... Args1>
 	static auto test(int)
-		-> decltype(test_helper<T1>({std::declval<Args1>()...}), std::true_type());
+		-> decltype(test_helper<T1>({std::declval<Args1>()...}), hamon::true_type());
 
 	template <typename T1, typename... Args1>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, Args...>(0));
@@ -60,20 +62,20 @@ public:
 
 template <typename T, typename... Args>
 struct is_implicitly_constructible_impl<true, T, Args...>
-	: public std::true_type
+	: public hamon::true_type
 {};
 
 template <bool, typename T, typename... Args>
 struct is_implicitly_constructible
 	: public is_implicitly_constructible_impl<
-		std::is_trivially_constructible<T, Args...>::value,
+		hamon::is_trivially_constructible<T, Args...>::value,
 		T, Args...
 	>::type
 {};
 
 template <typename T, typename... Args>
 struct is_implicitly_constructible<false, T, Args...>
-	: public std::false_type
+	: public hamon::false_type
 {};
 
 }	// namespace detail
@@ -81,7 +83,7 @@ struct is_implicitly_constructible<false, T, Args...>
 template <typename T, typename... Args>
 struct is_implicitly_constructible
 	: public detail::is_implicitly_constructible<
-		std::is_constructible<T, Args...>::value,
+		hamon::is_constructible<T, Args...>::value,
 		T, Args...
 	>
 {};

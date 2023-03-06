@@ -6,10 +6,11 @@
 
 #include <hamon/span.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_span_test
@@ -37,31 +38,31 @@ struct MyRange
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool cv_test()
 {
-	static_assert(!std::is_constructible<hamon::span<T               >, MyRange<T>>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T>>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, MyRange<T>>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T>>::value, "");
-	static_assert( std::is_constructible<hamon::span<T               >, MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T       volatile>, MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T>&>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, MyRange<T>&&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T>&&>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, MyRange<T>&&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T>&&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T>>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T>>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T               >, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T       volatile>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T>&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T>&&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T>&&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T>&&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T>&&>::value, "");
 
-	static_assert(!std::is_constructible<hamon::span<T               >, MyRange<T> const>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T> const>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, MyRange<T> const>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T> const>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, MyRange<T> const&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T> const&>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, MyRange<T> const&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T> const&>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T               >, MyRange<T> const&&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const         >, MyRange<T> const&&>::value, "");
-	static_assert(!std::is_constructible<hamon::span<T       volatile>, MyRange<T> const&&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T const volatile>, MyRange<T> const&&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T> const>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T> const>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T> const>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T> const>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T> const&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T> const&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T> const&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T> const&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T> const&&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T> const&&>::value, "");
+	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T> const&&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T> const&&>::value, "");
 
 	return true;
 }
@@ -69,15 +70,15 @@ inline HAMON_CXX14_CONSTEXPR bool cv_test()
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool test2()
 {
-	static_assert( std::is_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T, 1>, MyRange<T>&>::value, "");
-	static_assert( std::is_constructible<hamon::span<T, 2>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T, 1>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_constructible<hamon::span<T, 2>, MyRange<T>&>::value, "");
 #if 0
-	static_assert( std::is_nothrow_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::span<T, 1>, MyRange<T>&>::value, "");
-	static_assert( std::is_nothrow_constructible<hamon::span<T, 2>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 1>, MyRange<T>&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<hamon::span<T, 2>, MyRange<T>&>::value, "");
 #endif
 	static_assert( hamon::is_implicitly_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");

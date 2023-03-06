@@ -11,10 +11,11 @@
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
-#include <type_traits>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -53,57 +54,57 @@ using RandomAccessSubrange =
 	>;
 
 // borrowed range でない range からはコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ForwardRange
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ForwardSizedRange
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ForwardRange
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ForwardSizedRange
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	RandomAccessSubrange,
 	RandomAccessRange
 >::value, "");
 
 // borrowed range である range からはコンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	ForwardBorrowdRange
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	RandomAccessSubrange,
 	RandomAccessBorrowdRange
 >::value, "");
 
 // subrange_kind::sized かつ sized_range<Range> == false のときは
 // コンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardSizedSubrange,
 	ForwardBorrowdRange
 >::value, "");
 
 // subrange_kind::sized かつ sized_range<Range> == true のときは
 // コンストラクトできる
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	ForwardSizedSubrange,
 	ForwardSizedBorrowdRange
 >::value, "");
 
 // イテレータとセンチネルの型が合わない場合はコンストラクトできない
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	ForwardUnsizedSubrange,
 	RandomAccessBorrowdRange
 >::value, "");
-static_assert(!std::is_constructible<
+static_assert(!hamon::is_constructible<
 	RandomAccessSubrange,
 	ForwardBorrowdRange
 >::value, "");
@@ -159,25 +160,25 @@ using ConvertibleSizedBorrowedRange =
 		ConvertibleIter<hamon::ranges::sentinel_t<ForwardRange>, B2>
 	>;
 
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<true,  true>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<false, true>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<true,  false>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<false, false>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<true,  true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<false, true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<true,  false>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleBorrowedRange<false, false>>::value, "");
 
-static_assert( std::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<true,  true>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<false, true>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<true,  false>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<false, false>>::value, "");
+static_assert( hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<true,  true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<false, true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<true,  false>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleBorrowedRange<false, false>>::value, "");
 
-static_assert( std::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<true,  true>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<false, true>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<true,  false>>::value, "");
-static_assert(!std::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<false, false>>::value, "");
+static_assert( hamon::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<true,  true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<false, true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<true,  false>>::value, "");
+static_assert(!hamon::is_constructible<ForwardSizedSubrange, ConvertibleSizedBorrowedRange<false, false>>::value, "");
 
-static_assert( std::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<true,  true>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<false, true>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<true,  false>>::value, "");
-static_assert(!std::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<false, false>>::value, "");
+static_assert( hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<true,  true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<false, true>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<true,  false>>::value, "");
+static_assert(!hamon::is_constructible<ForwardUnsizedSubrange, ConvertibleSizedBorrowedRange<false, false>>::value, "");
 
 template <bool NoExcept> 
 struct ThrowIterator
@@ -248,106 +249,106 @@ namespace subrange_test
 namespace ctor_range_test
 {
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert( std::is_constructible<
+static_assert( hamon::is_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
 #if !defined(HAMON_USE_STD_RANGES)
 // イテレータとセンチネルが例外を投げずにコンストラクト可能なときは例外を投げない
-static_assert( std::is_nothrow_constructible<
+static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::unsized>,
 	test_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
-static_assert( std::is_nothrow_constructible<
+static_assert( hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	test_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");
 
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<true>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<true>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<true>, ThrowSentinel<false>>
 >::value, "");
-static_assert(!std::is_nothrow_constructible<
+static_assert(!hamon::is_nothrow_constructible<
 	hamon::ranges::subrange< ThrowIterator<false>, ThrowSentinel<false>, hamon::ranges::subrange_kind::sized>,
 	throw_sized_borrowed_range<int, ThrowIterator<false>, ThrowSentinel<false>>
 >::value, "");

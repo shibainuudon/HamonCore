@@ -24,9 +24,10 @@ using std::not_fn;
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <utility>
-#include <type_traits>
 
 namespace hamon
 {
@@ -85,13 +86,13 @@ public:
 template <
 	typename F,
 	typename = hamon::enable_if_t<
-		std::is_constructible<hamon::decay_t<F>, F>::value
+		hamon::is_constructible<hamon::decay_t<F>, F>::value
 	>
 >
 inline detail::not_fn_imp<F>
 not_fn(F&& fn)
 HAMON_NOEXCEPT_IF((
-	std::is_nothrow_constructible<hamon::decay_t<F>, F&&>::value))
+	hamon::is_nothrow_constructible<hamon::decay_t<F>, F&&>::value))
 {
 	return detail::not_fn_imp<F>(std::forward<F>(fn));
 }

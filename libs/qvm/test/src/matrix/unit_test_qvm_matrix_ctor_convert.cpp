@@ -6,9 +6,10 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -27,19 +28,19 @@ void Matrix3x3CtorConvertTest()
 	using matrix3x3i = hamon::qvm::matrix<int, 3, 3>;
 	using matrix3x3f = hamon::qvm::matrix<float, 3, 3>;
 
-	static_assert(std::is_constructible<matrix3x3,  matrix3x3i const&>::value, "");
-	static_assert(std::is_constructible<matrix3x3,  matrix3x3f const&>::value, "");
-	static_assert(std::is_constructible<matrix3x3i, matrix3x3  const&>::value, "");
-	static_assert(std::is_constructible<matrix3x3i, matrix3x3f const&>::value, "");
-	static_assert(std::is_constructible<matrix3x3f, matrix3x3  const&>::value, "");
-	static_assert(std::is_constructible<matrix3x3f, matrix3x3i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3,  matrix3x3i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3,  matrix3x3f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3i, matrix3x3  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3i, matrix3x3f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3f, matrix3x3  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x3f, matrix3x3i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<matrix3x3,  matrix3x3i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x3,  matrix3x3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x3i, matrix3x3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x3i, matrix3x3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x3f, matrix3x3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x3f, matrix3x3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3,  matrix3x3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3,  matrix3x3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3i, matrix3x3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3i, matrix3x3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3f, matrix3x3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x3f, matrix3x3i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<matrix3x3,  matrix3x3i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<matrix3x3,  matrix3x3f const&>::value, "");
@@ -49,9 +50,9 @@ void Matrix3x3CtorConvertTest()
 	static_assert(hamon::is_implicitly_constructible<matrix3x3f, matrix3x3i const&>::value, "");
 
 	// 要素数が違ったらコンストラクトできない
-	static_assert(!std::is_constructible<matrix3x3, matrix3x4 const&>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, matrix4x3 const&>::value, "");
-	static_assert(!std::is_constructible<matrix3x3, matrix4x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, matrix3x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, matrix4x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x3, matrix4x4 const&>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix3x3 const m1
@@ -97,19 +98,19 @@ void Matrix3x4CtorConvertTest()
 	using matrix3x4i = hamon::qvm::matrix<int, 3, 4>;
 	using matrix3x4f = hamon::qvm::matrix<float, 3, 4>;
 
-	static_assert(std::is_constructible<matrix3x4,  matrix3x4i const&>::value, "");
-	static_assert(std::is_constructible<matrix3x4,  matrix3x4f const&>::value, "");
-	static_assert(std::is_constructible<matrix3x4i, matrix3x4  const&>::value, "");
-	static_assert(std::is_constructible<matrix3x4i, matrix3x4f const&>::value, "");
-	static_assert(std::is_constructible<matrix3x4f, matrix3x4  const&>::value, "");
-	static_assert(std::is_constructible<matrix3x4f, matrix3x4i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4,  matrix3x4i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4,  matrix3x4f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4i, matrix3x4  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4i, matrix3x4f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4f, matrix3x4  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix3x4f, matrix3x4i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<matrix3x4,  matrix3x4i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x4,  matrix3x4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x4i, matrix3x4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x4i, matrix3x4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x4f, matrix3x4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix3x4f, matrix3x4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4,  matrix3x4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4,  matrix3x4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4i, matrix3x4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4i, matrix3x4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4f, matrix3x4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix3x4f, matrix3x4i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<matrix3x4,  matrix3x4i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<matrix3x4,  matrix3x4f const&>::value, "");
@@ -119,9 +120,9 @@ void Matrix3x4CtorConvertTest()
 	static_assert(hamon::is_implicitly_constructible<matrix3x4f, matrix3x4i const&>::value, "");
 
 	// 要素数が違ったらコンストラクトできない
-	static_assert(!std::is_constructible<matrix3x4, matrix3x3 const&>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, matrix4x3 const&>::value, "");
-	static_assert(!std::is_constructible<matrix3x4, matrix4x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, matrix3x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, matrix4x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix3x4, matrix4x4 const&>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix3x4 const m1
@@ -173,19 +174,19 @@ void Matrix4x3CtorConvertTest()
 	using matrix4x3i = hamon::qvm::matrix<int, 4, 3>;
 	using matrix4x3f = hamon::qvm::matrix<float, 4, 3>;
 
-	static_assert(std::is_constructible<matrix4x3,  matrix4x3i const&>::value, "");
-	static_assert(std::is_constructible<matrix4x3,  matrix4x3f const&>::value, "");
-	static_assert(std::is_constructible<matrix4x3i, matrix4x3  const&>::value, "");
-	static_assert(std::is_constructible<matrix4x3i, matrix4x3f const&>::value, "");
-	static_assert(std::is_constructible<matrix4x3f, matrix4x3  const&>::value, "");
-	static_assert(std::is_constructible<matrix4x3f, matrix4x3i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3,  matrix4x3i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3,  matrix4x3f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3i, matrix4x3  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3i, matrix4x3f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3f, matrix4x3  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x3f, matrix4x3i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<matrix4x3,  matrix4x3i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x3,  matrix4x3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x3i, matrix4x3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x3i, matrix4x3f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x3f, matrix4x3  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x3f, matrix4x3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3,  matrix4x3i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3,  matrix4x3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3i, matrix4x3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3i, matrix4x3f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3f, matrix4x3  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x3f, matrix4x3i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<matrix4x3,  matrix4x3i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<matrix4x3,  matrix4x3f const&>::value, "");
@@ -195,9 +196,9 @@ void Matrix4x3CtorConvertTest()
 	static_assert(hamon::is_implicitly_constructible<matrix4x3f, matrix4x3i const&>::value, "");
 
 	// 要素数が違ったらコンストラクトできない
-	static_assert(!std::is_constructible<matrix4x3, matrix3x3 const&>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, matrix3x4 const&>::value, "");
-	static_assert(!std::is_constructible<matrix4x3, matrix4x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, matrix3x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, matrix3x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x3, matrix4x4 const&>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix4x3 const m1
@@ -250,19 +251,19 @@ void Matrix4x4CtorConvertTest()
 	using matrix4x4i = hamon::qvm::matrix<int, 4, 4>;
 	using matrix4x4f = hamon::qvm::matrix<float, 4, 4>;
 
-	static_assert(std::is_constructible<matrix4x4,  matrix4x4i const&>::value, "");
-	static_assert(std::is_constructible<matrix4x4,  matrix4x4f const&>::value, "");
-	static_assert(std::is_constructible<matrix4x4i, matrix4x4  const&>::value, "");
-	static_assert(std::is_constructible<matrix4x4i, matrix4x4f const&>::value, "");
-	static_assert(std::is_constructible<matrix4x4f, matrix4x4  const&>::value, "");
-	static_assert(std::is_constructible<matrix4x4f, matrix4x4i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4,  matrix4x4i const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4,  matrix4x4f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4i, matrix4x4  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4i, matrix4x4f const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4f, matrix4x4  const&>::value, "");
+	static_assert(hamon::is_constructible<matrix4x4f, matrix4x4i const&>::value, "");
 
-	static_assert(std::is_nothrow_constructible<matrix4x4,  matrix4x4i const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x4,  matrix4x4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x4i, matrix4x4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x4i, matrix4x4f const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x4f, matrix4x4  const&>::value, "");
-	static_assert(std::is_nothrow_constructible<matrix4x4f, matrix4x4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4,  matrix4x4i const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4,  matrix4x4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4i, matrix4x4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4i, matrix4x4f const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4f, matrix4x4  const&>::value, "");
+	static_assert(hamon::is_nothrow_constructible<matrix4x4f, matrix4x4i const&>::value, "");
 
 	static_assert(hamon::is_implicitly_constructible<matrix4x4,  matrix4x4i const&>::value, "");
 	static_assert(hamon::is_implicitly_constructible<matrix4x4,  matrix4x4f const&>::value, "");
@@ -272,9 +273,9 @@ void Matrix4x4CtorConvertTest()
 	static_assert(hamon::is_implicitly_constructible<matrix4x4f, matrix4x4i const&>::value, "");
 
 	// 要素数が違ったらコンストラクトできない
-	static_assert(!std::is_constructible<matrix4x4, matrix3x3 const&>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, matrix3x4 const&>::value, "");
-	static_assert(!std::is_constructible<matrix4x4, matrix4x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, matrix3x3 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, matrix3x4 const&>::value, "");
+	static_assert(!hamon::is_constructible<matrix4x4, matrix4x3 const&>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix4x4 const m1
