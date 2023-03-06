@@ -12,8 +12,8 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_object.hpp>
+#include <hamon/type_traits/is_destructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ namespace detail
 template <typename T>
 concept cpp17_destructible =
 	hamon::is_object_v<T> &&
-	std::is_destructible_v<T> &&
+	hamon::is_destructible_v<T> &&
 	!hamon::is_array_v<T>;
 
 #else
@@ -35,7 +35,7 @@ template <typename T>
 using cpp17_destructible =
 	hamon::conjunction<
 		hamon::is_object<T>,
-		std::is_destructible<T>,
+		hamon::is_destructible<T>,
 		hamon::negation<hamon::is_array<T>>
 	>;
 

@@ -8,9 +8,12 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_destructible.hpp>
+#include <hamon/type_traits/is_nothrow_destructible.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
+#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -42,9 +45,9 @@ void CtorDefaultTest()
 	static_assert(hamon::is_default_constructible<matrix_type>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<matrix_type>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<matrix_type>::value, "");
-	static_assert(std::is_destructible<matrix_type>::value, "");
-	static_assert(std::is_nothrow_destructible<matrix_type>::value, "");
-	static_assert(std::is_trivially_destructible<matrix_type>::value, "");
+	static_assert(hamon::is_destructible<matrix_type>::value, "");
+	static_assert(hamon::is_nothrow_destructible<matrix_type>::value, "");
+	static_assert(hamon::is_trivially_destructible<matrix_type>::value, "");
 
 	{
 		HAMON_CONSTEXPR matrix_type const m;

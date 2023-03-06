@@ -8,9 +8,11 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_destructible.hpp>
+#include <hamon/type_traits/is_nothrow_destructible.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -27,9 +29,9 @@ TYPED_TEST(QuaternionTest, CtorDefaultTest)
 	static_assert(hamon::is_default_constructible<quaternion>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<quaternion>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<quaternion>::value, "");
-	static_assert(std::is_destructible<quaternion>::value, "");
-	static_assert(std::is_nothrow_destructible<quaternion>::value, "");
-	static_assert(std::is_trivially_destructible<quaternion>::value, "");
+	static_assert(hamon::is_destructible<quaternion>::value, "");
+	static_assert(hamon::is_nothrow_destructible<quaternion>::value, "");
+	static_assert(hamon::is_trivially_destructible<quaternion>::value, "");
 
 	{
 		HAMON_CONSTEXPR quaternion const q;

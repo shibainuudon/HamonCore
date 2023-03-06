@@ -10,7 +10,7 @@
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
-#include <type_traits>
+#include <hamon/type_traits/is_nothrow_destructible.hpp>
 #endif
 
 namespace hamon
@@ -23,12 +23,12 @@ using std::destructible;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept destructible = std::is_nothrow_destructible<T>::value;
+concept destructible = hamon::is_nothrow_destructible<T>::value;
 
 #else
 
 template <typename T>
-using destructible = std::is_nothrow_destructible<T>;
+using destructible = hamon::is_nothrow_destructible<T>;
 
 #endif
 

@@ -8,9 +8,12 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_destructible.hpp>
+#include <hamon/type_traits/is_nothrow_destructible.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
+#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -39,9 +42,9 @@ void CtorDefaultTest()
 	static_assert(hamon::is_default_constructible<vector_type>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<vector_type>::value, "");
 	static_assert(hamon::is_implicitly_default_constructible<vector_type>::value, "");
-	static_assert(std::is_destructible<vector_type>::value, "");
-	static_assert(std::is_nothrow_destructible<vector_type>::value, "");
-	static_assert(std::is_trivially_destructible<vector_type>::value, "");
+	static_assert(hamon::is_destructible<vector_type>::value, "");
+	static_assert(hamon::is_nothrow_destructible<vector_type>::value, "");
+	static_assert(hamon::is_trivially_destructible<vector_type>::value, "");
 
 	{
 		HAMON_CONSTEXPR vector_type const v;
