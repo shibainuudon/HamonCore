@@ -28,7 +28,7 @@
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-//#include <hamon/type_traits/extent.hpp>
+#include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/has_unique_object_representations.hpp>
 #include <hamon/type_traits/has_virtual_destructor.hpp>
