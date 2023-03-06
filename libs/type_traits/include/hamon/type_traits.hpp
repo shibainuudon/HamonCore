@@ -72,7 +72,7 @@
 #include <hamon/type_traits/is_member_function_pointer.hpp>
 #include <hamon/type_traits/is_member_object_pointer.hpp>
 #include <hamon/type_traits/is_member_pointer.hpp>
-//#include <hamon/type_traits/is_move_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -83,7 +83,7 @@
 //#include <hamon/type_traits/is_nothrow_destructible.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable_r.hpp>
-//#include <hamon/type_traits/is_nothrow_move_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_nothrow_swappable_with.hpp>
@@ -111,7 +111,7 @@
 #include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
 //#include <hamon/type_traits/is_trivially_destructible.hpp>
-//#include <hamon/type_traits/is_trivially_move_assignable.hpp>
+#include <hamon/type_traits/is_trivially_move_assignable.hpp>
 #include <hamon/type_traits/is_trivially_move_constructible.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/is_union.hpp>

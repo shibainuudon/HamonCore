@@ -27,6 +27,7 @@
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -271,11 +272,11 @@ static_assert(!hamon::is_copy_assignable<move_only_bidirectional_iterator_wrappe
 static_assert(!hamon::is_copy_assignable<move_only_random_access_iterator_wrapper<int>>::value, "");
 static_assert(!hamon::is_copy_assignable<move_only_contiguous_iterator_wrapper<int>>::value, "");
 
-static_assert( std::is_move_assignable<move_only_input_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_assignable<move_only_forward_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_assignable<move_only_bidirectional_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_assignable<move_only_random_access_iterator_wrapper<int>>::value, "");
-static_assert( std::is_move_assignable<move_only_contiguous_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_assignable<move_only_input_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_assignable<move_only_forward_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_assignable<move_only_bidirectional_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_assignable<move_only_random_access_iterator_wrapper<int>>::value, "");
+static_assert( hamon::is_move_assignable<move_only_contiguous_iterator_wrapper<int>>::value, "");
 
 template <typename T, template <typename> class IteratorWrapper>
 struct Convertible : public IteratorWrapper<T>
@@ -561,7 +562,7 @@ template <template <typename> class IteratorWrapper>
 inline HAMON_CXX14_CONSTEXPR bool CopyAssignTest()
 {
 	static_assert( hamon::is_copy_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
-	static_assert( std::is_move_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
+	static_assert( hamon::is_move_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
 
 	{
 		char s[] = "123";
@@ -589,7 +590,7 @@ template <template <typename> class IteratorWrapper>
 inline HAMON_CXX14_CONSTEXPR bool MoveAssignTest()
 {
 	static_assert(!hamon::is_copy_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
-	static_assert( std::is_move_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
+	static_assert( hamon::is_move_assignable<hamon::move_iterator<IteratorWrapper<int>>>::value, "");
 
 	{
 		char s[] = "123";
@@ -645,7 +646,7 @@ GTEST_TEST(MoveIteratorTest, AssignTest)
 	static_assert(!hamon::is_assignable<hamon::move_iterator<Derived*>&, hamon::move_iterator<Base*> const&>::value, "");
 
 	static_assert( hamon::is_copy_assignable<hamon::move_iterator<int*>>::value, "");
-	static_assert( std::is_move_assignable<hamon::move_iterator<int*>>::value, "");
+	static_assert( hamon::is_move_assignable<hamon::move_iterator<int*>>::value, "");
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ConvAssignTest<convertible_input_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ConvAssignTest<convertible_forward_iterator_wrapper>());

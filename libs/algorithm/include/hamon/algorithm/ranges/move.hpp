@@ -43,6 +43,7 @@ using std::ranges::move;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
@@ -76,7 +77,7 @@ private:
 			if constexpr (hamon::detail::is_memcpyable<Out, Iter>::value)
 			{
 				using ValueTypeI = hamon::iter_value_t<Iter>;
-				static_assert(std::is_move_assignable<ValueTypeI>::value, "");
+				static_assert(hamon::is_move_assignable<ValueTypeI>::value, "");
 				auto num = last - first;
 				if (num)
 				{

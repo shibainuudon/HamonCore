@@ -11,11 +11,11 @@
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <utility>
 #include <string>
-#include <type_traits>
 #include "constexpr_test.hpp"
 //#include "tuple_test_utility.hpp"
 
@@ -362,7 +362,7 @@ void constructor_tests()
 		using RetT = decltype(hamon::not_fn(std::move(value)));
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
-		static_assert(!std::is_move_assignable<RetT>::value, "");
+		static_assert(!hamon::is_move_assignable<RetT>::value, "");
 		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(std::move(value));
 		// test it was moved from
@@ -383,7 +383,7 @@ void constructor_tests()
 		using RetT = decltype(hamon::not_fn(value));
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert( hamon::is_copy_constructible<RetT>::value, "");
-		static_assert(!std::is_move_assignable<RetT>::value, "");
+		static_assert(!hamon::is_move_assignable<RetT>::value, "");
 		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
 		// test that value is unchanged (copied not moved)
@@ -404,7 +404,7 @@ void constructor_tests()
 		using RetT = decltype(hamon::not_fn(value));
 		static_assert(hamon::is_move_constructible<RetT>::value, "");
 		static_assert(hamon::is_copy_constructible<RetT>::value, "");
-//		static_assert(std::is_move_assignable<RetT>::value, "");
+//		static_assert(hamon::is_move_assignable<RetT>::value, "");
 //		static_assert(hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
 		EXPECT_FALSE(ret());
@@ -423,7 +423,7 @@ void constructor_tests()
 		using RetT = decltype(hamon::not_fn(std::move(value)));
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
-//		static_assert( std::is_move_assignable<RetT>::value, "");
+//		static_assert( hamon::is_move_assignable<RetT>::value, "");
 //		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(std::move(value));
 		EXPECT_FALSE(ret());

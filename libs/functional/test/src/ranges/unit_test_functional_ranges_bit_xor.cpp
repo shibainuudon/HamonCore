@@ -11,8 +11,8 @@
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "functional_test.hpp"
 
 namespace hamon_functional_test
@@ -47,7 +47,7 @@ GTEST_TEST(FunctionalTest, RangesBitXorTest)
 	static_assert( hamon::is_copy_constructible<F>::value, "");
 	static_assert( hamon::is_move_constructible<F>::value, "");
 	static_assert( hamon::is_copy_assignable<F>::value, "");
-	static_assert( std::is_move_assignable<F>::value, "");
+	static_assert( hamon::is_move_assignable<F>::value, "");
 
 	static_assert(!hamon::is_invocable<F>::value, "");
 	static_assert(!hamon::is_invocable<F, int&>::value, "");

@@ -30,9 +30,11 @@ using std::rotate;
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
 #include <hamon/numeric/gcd.hpp>
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_trivially_move_assignable.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
-#include <type_traits>
 #include <utility>
 
 namespace hamon
@@ -172,24 +174,11 @@ rotate_gcd(
 
 template <typename ForwardIterator>
 inline HAMON_CXX14_CONSTEXPR ForwardIterator
-rotate_impl(
+rotate_impl_2(
 	ForwardIterator first,
 	ForwardIterator middle,
 	ForwardIterator last,
-	std::forward_iterator_tag*,
-	std::false_type)
-{
-	return rotate_forward(first, middle, last);
-}
-
-template <typename ForwardIterator>
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
-rotate_impl(
-	ForwardIterator first,
-	ForwardIterator middle,
-	ForwardIterator last,
-	std::forward_iterator_tag*,
-	std::true_type)
+	std::forward_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{
@@ -201,12 +190,11 @@ rotate_impl(
 
 template <typename BidirectionalIterator>
 inline HAMON_CXX14_CONSTEXPR BidirectionalIterator
-rotate_impl(
+rotate_impl_2(
 	BidirectionalIterator first,
 	BidirectionalIterator middle,
 	BidirectionalIterator last,
-	std::bidirectional_iterator_tag*,
-	std::true_type)
+	std::bidirectional_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{
@@ -223,12 +211,11 @@ rotate_impl(
 
 template <typename RandomAccessIterator>
 inline HAMON_CXX14_CONSTEXPR RandomAccessIterator
-rotate_impl(
+rotate_impl_2(
 	RandomAccessIterator first,
 	RandomAccessIterator middle,
 	RandomAccessIterator last,
-	std::random_access_iterator_tag*,
-	std::true_type)
+	std::random_access_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{
@@ -241,6 +228,34 @@ rotate_impl(
 	}
 
 	return rotate_gcd(first, middle, last);
+}
+
+template <typename ForwardIterator,
+	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+	typename = hamon::enable_if_t<
+		!hamon::is_trivially_move_assignable<ValueType>::value
+	>
+>
+inline HAMON_CXX14_CONSTEXPR ForwardIterator
+rotate_impl(
+	ForwardIterator first,
+	ForwardIterator middle,
+	ForwardIterator last,
+	hamon::detail::overload_priority<1>)
+{
+	return rotate_forward(first, middle, last);
+}
+
+template <typename ForwardIterator>
+inline HAMON_CXX14_CONSTEXPR ForwardIterator
+rotate_impl(
+	ForwardIterator first,
+	ForwardIterator middle,
+	ForwardIterator last,
+	hamon::detail::overload_priority<0>)
+{
+	using Category = hamon::iterator_category<ForwardIterator>*;
+	return rotate_impl_2(first, middle, last, Category{});
 }
 
 }	// namespace detail
@@ -281,12 +296,8 @@ rotate(ForwardIterator first, ForwardIterator middle, ForwardIterator last)
 		return first;
 	}
 
-	using Category = hamon::iterator_category<ForwardIterator>*;
-	using ValueType = hamon::iter_value_t<ForwardIterator>;
-
-	return hamon::detail::rotate_impl(
-		first, middle, last, Category(),
-		std::is_trivially_move_assignable<ValueType>{});
+	return hamon::detail::rotate_impl(first, middle, last,
+		hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

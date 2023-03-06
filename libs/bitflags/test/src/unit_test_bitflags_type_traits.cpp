@@ -22,6 +22,9 @@
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
 #include <hamon/type_traits/is_trivially_copy_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_move_assignable.hpp>
+#include <hamon/type_traits/is_trivially_move_assignable.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
 #include <type_traits>
@@ -129,15 +132,15 @@ static_assert( hamon::is_nothrow_copy_assignable<Bitflag2>::value, "");
 static_assert( hamon::is_nothrow_copy_assignable<Bitflag3>::value, "");
 
 // Move Assignable
-static_assert( std::is_move_assignable<Bitflag1>::value, "");
-static_assert( std::is_move_assignable<Bitflag2>::value, "");
-static_assert( std::is_move_assignable<Bitflag3>::value, "");
-static_assert( std::is_trivially_move_assignable<Bitflag1>::value, "");
-static_assert( std::is_trivially_move_assignable<Bitflag2>::value, "");
-static_assert( std::is_trivially_move_assignable<Bitflag3>::value, "");
-static_assert( std::is_nothrow_move_assignable<Bitflag1>::value, "");
-static_assert( std::is_nothrow_move_assignable<Bitflag2>::value, "");
-static_assert( std::is_nothrow_move_assignable<Bitflag3>::value, "");
+static_assert( hamon::is_move_assignable<Bitflag1>::value, "");
+static_assert( hamon::is_move_assignable<Bitflag2>::value, "");
+static_assert( hamon::is_move_assignable<Bitflag3>::value, "");
+static_assert( hamon::is_trivially_move_assignable<Bitflag1>::value, "");
+static_assert( hamon::is_trivially_move_assignable<Bitflag2>::value, "");
+static_assert( hamon::is_trivially_move_assignable<Bitflag3>::value, "");
+static_assert( hamon::is_nothrow_move_assignable<Bitflag1>::value, "");
+static_assert( hamon::is_nothrow_move_assignable<Bitflag2>::value, "");
+static_assert( hamon::is_nothrow_move_assignable<Bitflag3>::value, "");
 
 // Destructible
 static_assert( std::is_destructible<Bitflag1>::value, "");

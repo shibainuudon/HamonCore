@@ -9,6 +9,7 @@
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_move_assignable.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include "constexpr_test.hpp"
@@ -20,7 +21,7 @@ static_assert(!hamon::is_default_constructible<hamon::type_info>::value, "");
 static_assert( hamon::is_copy_constructible<hamon::type_info>::value, "");
 static_assert( hamon::is_move_constructible<hamon::type_info>::value, "");
 static_assert( hamon::is_copy_assignable<hamon::type_info>::value, "");
-static_assert( std::is_move_assignable<hamon::type_info>::value, "");
+static_assert( hamon::is_move_assignable<hamon::type_info>::value, "");
 
 struct S1
 {};
