@@ -21,6 +21,7 @@
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
 #include <utility>
@@ -406,7 +407,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_assignable<
+		static_assert( hamon::is_nothrow_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> const&>::value, "");
 #endif
@@ -421,7 +422,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> &&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_assignable<
+		static_assert( hamon::is_nothrow_assignable<
 			hamon::move_sentinel<long>&,
 			hamon::move_sentinel<int> &&>::value, "");
 #endif
@@ -447,7 +448,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert( std::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
+		static_assert( hamon::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
 #endif
 	}
 	{
@@ -470,7 +471,7 @@ inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 		using Sent2 = hamon::move_sentinel<S2>;
 		static_assert( hamon::is_assignable<Sent2&, Sent1 const&>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-		static_assert(!std::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
+		static_assert(!hamon::is_nothrow_assignable<Sent2&, Sent1 const&>::value, "");
 #endif
 	}
 

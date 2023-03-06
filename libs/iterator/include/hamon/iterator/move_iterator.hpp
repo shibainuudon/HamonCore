@@ -44,6 +44,7 @@ using std::move_iterator;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -55,8 +56,8 @@ using std::move_iterator;
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <iterator>
 #include <utility>
 
@@ -181,7 +182,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_assignable, Iter, U)>
 	HAMON_CXX14_CONSTEXPR move_iterator&
 	operator=(move_iterator<U> const& u)
-	HAMON_NOEXCEPT_IF((std::is_nothrow_assignable<Iter&, U const&>::value))	// extension
+	HAMON_NOEXCEPT_IF((hamon::is_nothrow_assignable<Iter&, U const&>::value))	// extension
 	{
 		m_current = u.base();
 		return *this;
@@ -228,7 +229,7 @@ public:
 
 private:
 	HAMON_CXX14_CONSTEXPR move_iterator
-	post_increment(std::true_type)
+	post_increment(hamon::true_type)
 	HAMON_NOEXCEPT_IF(
 		hamon::is_nothrow_copy_constructible<Iter>::value &&
 		HAMON_NOEXCEPT_EXPR(++std::declval<Iter&>()))	// extension
@@ -239,7 +240,7 @@ private:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	post_increment(std::false_type)
+	post_increment(hamon::false_type)
 	HAMON_NOEXCEPT_IF(
 		HAMON_NOEXCEPT_EXPR(++std::declval<Iter&>()))	// extension
 	{

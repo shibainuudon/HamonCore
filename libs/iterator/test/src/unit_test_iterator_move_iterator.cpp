@@ -25,6 +25,7 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
@@ -668,13 +669,13 @@ GTEST_TEST(MoveIteratorTest, AssignTest)
 		using Iter1 = MayThrowAssign<true, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowAssign<true, Derived, input_iterator_wrapper>;
 		static_assert( hamon::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
-		static_assert( std::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
+		static_assert( hamon::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 	}
 	{
 		using Iter1 = MayThrowAssign<false, Base, input_iterator_wrapper>;
 		using Iter2 = MayThrowAssign<false, Derived, input_iterator_wrapper>;
 		static_assert( hamon::is_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
-		static_assert(!std::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
+		static_assert(!hamon::is_nothrow_assignable<hamon::move_iterator<Iter1>&, hamon::move_iterator<Iter2>>::value, "");
 	}
 #endif
 }

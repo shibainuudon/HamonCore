@@ -24,9 +24,9 @@ using std::input_iterator;
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <iterator>
 
 namespace hamon
@@ -55,10 +55,10 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::derived_from<hamon::detail::iter_concept<I2>, std::input_iterator_tag>::value>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

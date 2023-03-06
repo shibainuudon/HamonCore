@@ -25,10 +25,10 @@ using std::forward_iterator;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 #include <iterator>
 
 namespace hamon
@@ -69,10 +69,10 @@ private:
 			hamon::sentinel_for<I2, I2>::value
 		>
 	>
-	static auto test(int) -> std::true_type;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
-	static auto test(...) -> std::false_type;
+	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<Iter>(0));

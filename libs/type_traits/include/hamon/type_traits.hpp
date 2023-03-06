@@ -74,7 +74,7 @@
 #include <hamon/type_traits/is_member_pointer.hpp>
 //#include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
-//#include <hamon/type_traits/is_nothrow_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 //#include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
@@ -104,7 +104,7 @@
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_swappable_with.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
-//#include <hamon/type_traits/is_trivially_assignable.hpp>
+#include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 //#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
