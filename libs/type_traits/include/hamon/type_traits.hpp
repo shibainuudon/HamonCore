@@ -16,7 +16,7 @@
 #include <hamon/type_traits/add_volatile.hpp>
 //#include <hamon/type_traits/aligned_storage.hpp>	// deprecated in C++23
 //#include <hamon/type_traits/aligned_union.hpp>	// deprecated in C++23
-//#include <hamon/type_traits/alignment_of.hpp>
+#include <hamon/type_traits/alignment_of.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
