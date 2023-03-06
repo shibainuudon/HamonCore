@@ -10,6 +10,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <utility>
@@ -362,7 +363,7 @@ void constructor_tests()
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
 		static_assert(!std::is_move_assignable<RetT>::value, "");
-		static_assert(!std::is_copy_assignable<RetT>::value, "");
+		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(std::move(value));
 		// test it was moved from
 		EXPECT_FALSE(value.value);
@@ -383,7 +384,7 @@ void constructor_tests()
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert( hamon::is_copy_constructible<RetT>::value, "");
 		static_assert(!std::is_move_assignable<RetT>::value, "");
-		static_assert(!std::is_copy_assignable<RetT>::value, "");
+		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
 		// test that value is unchanged (copied not moved)
 		EXPECT_FALSE(value.value);
@@ -404,7 +405,7 @@ void constructor_tests()
 		static_assert(hamon::is_move_constructible<RetT>::value, "");
 		static_assert(hamon::is_copy_constructible<RetT>::value, "");
 //		static_assert(std::is_move_assignable<RetT>::value, "");
-//		static_assert(std::is_copy_assignable<RetT>::value, "");
+//		static_assert(hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
 		EXPECT_FALSE(ret());
 		auto ret2 = hamon::not_fn(value2);
@@ -423,7 +424,7 @@ void constructor_tests()
 		static_assert( hamon::is_move_constructible<RetT>::value, "");
 		static_assert(!hamon::is_copy_constructible<RetT>::value, "");
 //		static_assert( std::is_move_assignable<RetT>::value, "");
-//		static_assert(!std::is_copy_assignable<RetT>::value, "");
+//		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(std::move(value));
 		EXPECT_FALSE(ret());
 		auto ret2 = hamon::not_fn(std::move(value2));

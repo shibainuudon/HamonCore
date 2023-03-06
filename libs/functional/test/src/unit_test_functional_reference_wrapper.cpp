@@ -8,9 +8,9 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
 #include "constexpr_test.hpp"
 
 namespace hamon_functional_test
@@ -29,7 +29,7 @@ struct NonTrivial
 using R = hamon::reference_wrapper<NonTrivial>;
 
 static_assert(hamon::is_copy_constructible<R>::value, "copy constructible");
-static_assert(std::is_copy_assignable<R>::value, "copy assignable");
+static_assert(hamon::is_copy_assignable<R>::value, "copy assignable");
 static_assert(hamon::is_trivially_copyable<R>::value, "trivially copyable");
 
 GTEST_TEST(ReferenceWrapperTest, DeductionTest)

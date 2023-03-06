@@ -5,9 +5,11 @@
  */
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
+#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -29,9 +31,9 @@ inline HAMON_CXX14_CONSTEXPR bool Vector2CopyAssignTest()
 	using vector2i = hamon::qvm::vector<int, 2>;
 	using vector2f = hamon::qvm::vector<float, 2>;
 
-	static_assert(std::is_copy_assignable<vector2>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<vector2>::value, "");
-	static_assert(std::is_trivially_copy_assignable<vector2>::value, "");
+	static_assert(hamon::is_copy_assignable<vector2>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<vector2>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<vector2>::value, "");
 
 	vector2 v{0, 1};
 	VERIFY(v[0] == 0);
@@ -68,9 +70,9 @@ inline HAMON_CXX14_CONSTEXPR bool Vector3CopyAssignTest()
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(std::is_copy_assignable<vector3>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<vector3>::value, "");
-	static_assert(std::is_trivially_copy_assignable<vector3>::value, "");
+	static_assert(hamon::is_copy_assignable<vector3>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<vector3>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<vector3>::value, "");
 
 	vector3 v{0, 1, 2};
 	VERIFY(v[0] == 0);
@@ -113,9 +115,9 @@ inline HAMON_CXX14_CONSTEXPR bool Vector4CopyAssignTest()
 	using vector4i = hamon::qvm::vector<int, 4>;
 	using vector4f = hamon::qvm::vector<float, 4>;
 
-	static_assert(std::is_copy_assignable<vector4>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<vector4>::value, "");
-	static_assert(std::is_trivially_copy_assignable<vector4>::value, "");
+	static_assert(hamon::is_copy_assignable<vector4>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<vector4>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<vector4>::value, "");
 
 	vector4 v{0, 1, 2, 3};
 	VERIFY(v[0] == 0);

@@ -5,9 +5,11 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
+#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -29,9 +31,9 @@ inline HAMON_CXX14_CONSTEXPR bool CopyAssignTest()
 	using quaternioni = hamon::qvm::quaternion<int>;
 	using quaternionf = hamon::qvm::quaternion<float>;
 
-	static_assert(std::is_copy_assignable<quaternion>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<quaternion>::value, "");
-	static_assert(std::is_trivially_copy_assignable<quaternion>::value, "");
+	static_assert(hamon::is_copy_assignable<quaternion>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<quaternion>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<quaternion>::value, "");
 
 	quaternion q{0, 1, 2, 3};
 	VERIFY(q[0] == 0);

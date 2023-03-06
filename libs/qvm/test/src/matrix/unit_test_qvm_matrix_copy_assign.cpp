@@ -5,9 +5,11 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
+#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <type_traits>
 
 namespace hamon_qvm_test
 {
@@ -30,9 +32,9 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x3CopyAssignTest()
 	using matrix3x3f = hamon::qvm::matrix<float, 3, 3>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(std::is_copy_assignable<matrix3x3>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<matrix3x3>::value, "");
-	static_assert(std::is_trivially_copy_assignable<matrix3x3>::value, "");
+	static_assert(hamon::is_copy_assignable<matrix3x3>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<matrix3x3>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<matrix3x3>::value, "");
 
 	matrix3x3 m1
 	{
@@ -96,9 +98,9 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x4CopyAssignTest()
 	using matrix3x4f = hamon::qvm::matrix<float, 3, 4>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_copy_assignable<matrix3x4>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<matrix3x4>::value, "");
-	static_assert(std::is_trivially_copy_assignable<matrix3x4>::value, "");
+	static_assert(hamon::is_copy_assignable<matrix3x4>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<matrix3x4>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<matrix3x4>::value, "");
 
 	matrix3x4 m1
 	{
@@ -162,9 +164,9 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x3CopyAssignTest()
 	using matrix4x3f = hamon::qvm::matrix<float, 4, 3>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(std::is_copy_assignable<matrix4x3>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<matrix4x3>::value, "");
-	static_assert(std::is_trivially_copy_assignable<matrix4x3>::value, "");
+	static_assert(hamon::is_copy_assignable<matrix4x3>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<matrix4x3>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<matrix4x3>::value, "");
 
 	matrix4x3 m1
 	{
@@ -238,9 +240,9 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x4CopyAssignTest()
 	using matrix4x4f = hamon::qvm::matrix<float, 4, 4>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(std::is_copy_assignable<matrix4x4>::value, "");
-	static_assert(std::is_nothrow_copy_assignable<matrix4x4>::value, "");
-	static_assert(std::is_trivially_copy_assignable<matrix4x4>::value, "");
+	static_assert(hamon::is_copy_assignable<matrix4x4>::value, "");
+	static_assert(hamon::is_nothrow_copy_assignable<matrix4x4>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<matrix4x4>::value, "");
 
 	matrix4x4 m1
 	{
