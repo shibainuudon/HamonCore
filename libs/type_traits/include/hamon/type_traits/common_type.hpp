@@ -27,6 +27,7 @@ using std::common_type;
 
 #else
 
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/detail/common_type_fold.hpp>
@@ -56,8 +57,8 @@ namespace detail
 // If sizeof...(T) is two, ...
 template <
 	typename T1, typename T2,
-	typename D1 = typename std::decay<T1>::type,
-	typename D2 = typename std::decay<T2>::type
+	typename D1 = hamon::decay_t<T1>,
+	typename D2 = hamon::decay_t<T2>
 >
 struct common_type_impl
 {
@@ -79,12 +80,12 @@ private:
 	// Otherwise, if decay_t<decltype(false ? declval<D1>() : declval<D2>())>
 	// denotes a valid type, let C denote that type.
 	template <typename T, typename U>
-	static auto test(int) -> hamon::type_identity<typename std::decay<cond_t<T, U>>::type>;
+	static auto test(int) -> hamon::type_identity<hamon::decay_t<cond_t<T, U>>>;
 
 	// Otherwise, if COND-RES(CREF(D1), CREF(D2)) denotes a type,
 	// let C denote the type decay_t<COND-RES(CREF(D1), CREF(D2))>.
 	template <typename T, typename U>
-	static auto test_2(int) -> hamon::type_identity<typename std::decay<cond_t<const T&, const U&>>::type>;
+	static auto test_2(int) -> hamon::type_identity<hamon::decay_t<cond_t<const T&, const U&>>>;
 
 	template <typename, typename>
 	static auto test_2(...) -> failure_type;
