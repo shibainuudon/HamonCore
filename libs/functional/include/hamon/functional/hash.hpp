@@ -15,6 +15,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
+#include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/make_uint_n.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
@@ -213,7 +214,7 @@ private:
 	HAMON_HASH_RETURN(
 		hash_combine_array(
 			hamon::forward<T>(x),
-			hamon::make_index_sequence<std::extent<RawT>::value>{}))
+			hamon::make_index_sequence<hamon::extent<RawT>::value>{}))
 
 	// (9) tuple-like なら hash_combine(get<I>(x)...)
 	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, RawT), typename T>
