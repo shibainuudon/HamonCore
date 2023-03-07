@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -17,7 +18,7 @@ namespace bit_not_test
 {
 
 template <typename T>
-using invoke_bit_not = decltype(~std::declval<T>());
+using invoke_bit_not = decltype(~hamon::declval<T>());
 
 // operator~ はDenseがtrueのときのみ定義される
 static_assert(!hamon::is_detected<invoke_bit_not, Bitflag1 const&>::value, "");

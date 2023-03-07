@@ -5,7 +5,7 @@
  */
 
 #include <hamon/type_traits/is_detected.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 #include <memory>
 #include <vector>
 
@@ -17,15 +17,15 @@ namespace is_detected_test
 
 template <typename T>
 using copy_assignable =
-	decltype(std::declval<T&>() = std::declval<T const&>());
+	decltype(hamon::declval<T&>() = hamon::declval<T const&>());
 
 template <typename T>
 using has_func =
-	decltype(std::declval<T>().func());
+	decltype(hamon::declval<T>().func());
 
 template <typename T, typename U>
 using has_func2 =
-	decltype(std::declval<T>().template func2<U>(std::declval<U>()));
+	decltype(hamon::declval<T>().template func2<U>(hamon::declval<U>()));
 
 template <typename T>
 using has_value_type = typename T::value_type;

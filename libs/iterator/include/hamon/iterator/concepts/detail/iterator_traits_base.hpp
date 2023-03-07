@@ -21,7 +21,7 @@
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 #include <iterator>
 
 namespace hamon
@@ -200,11 +200,11 @@ private:
 		, hamon::enable_if_t<
 			!hamon::detail::has_pointer<Iter>::value
 		>,
-		hamon::void_t<decltype(std::declval<Iter&>().operator->())>
+		hamon::void_t<decltype(hamon::declval<Iter&>().operator->())>
 #endif
 	>
 	{
-		using type = decltype(std::declval<Iter&>().operator->());
+		using type = decltype(hamon::declval<Iter&>().operator->());
 	};
 
 	template <typename Iter, typename = void>

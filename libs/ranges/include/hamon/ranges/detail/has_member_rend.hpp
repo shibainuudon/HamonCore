@@ -11,8 +11,8 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -40,8 +40,8 @@ struct has_member_rend_impl
 {
 private:
 	template <typename U,
-		typename E = decltype(hamon::detail::decay_copy(std::declval<U&>().rend())),
-		typename B = decltype(ranges::rbegin(std::declval<U&>()))
+		typename E = decltype(hamon::detail::decay_copy(hamon::declval<U&>().rend())),
+		typename B = decltype(ranges::rbegin(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::sentinel_for<E, B>;
 

@@ -34,8 +34,8 @@ using std::ranges::rbegin;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -53,7 +53,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_rbegin, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().rbegin()))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().rbegin()))
 	->decltype(t.rbegin())
 	{
 		return t.rbegin();
@@ -62,7 +62,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_adl_rbegin, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(rbegin(std::declval<T&>())))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(rbegin(hamon::declval<T&>())))
 	->decltype(rbegin(t))
 	{
 		return rbegin(t);

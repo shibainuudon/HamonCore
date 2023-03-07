@@ -48,7 +48,7 @@ concept assignable_from =
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -63,7 +63,7 @@ private:
 	template <typename L, typename R,
 		typename = hamon::enable_if_t<hamon::is_lvalue_reference<L>::value>,
 		typename = hamon::enable_if_t<hamon::common_reference_with<detail::cref<L>, detail::cref<R>>::value>,
-		typename T = decltype(std::declval<L&>() = std::declval<R&&>())
+		typename T = decltype(hamon::declval<L&>() = hamon::declval<R&&>())
 	>
 	static auto test(int) -> hamon::same_as<T, L>;
 

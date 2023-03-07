@@ -24,8 +24,8 @@ using std::input_or_output_iterator;
 #include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -47,7 +47,7 @@ struct input_or_output_iterator_impl
 {
 private:
 	template <typename I2,
-		typename T = decltype(*std::declval<I2&>()),
+		typename T = decltype(*hamon::declval<I2&>()),
 		typename = hamon::enable_if_t<hamon::detail::can_reference<T>::value>,
 		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>::value>
 	>

@@ -34,9 +34,9 @@ using std::ranges::swap;
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
@@ -73,7 +73,7 @@ private:
 	template <
 		typename T, typename U, std::size_t N
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = decltype(std::declval<swap_fn const&>()(std::declval<T&>(), std::declval<U&>()))
+		, typename = decltype(hamon::declval<swap_fn const&>()(hamon::declval<T&>(), hamon::declval<U&>()))
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -84,7 +84,7 @@ private:
 #endif
 	static HAMON_CXX14_CONSTEXPR void
 	impl(hamon::detail::overload_priority<1>, T (&t)[N], U (&u)[N])
-		HAMON_NOEXCEPT_IF_EXPR(std::declval<swap_fn const&>()(*t, *u))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<swap_fn const&>()(*t, *u))
 	{
 		for (std::size_t i = 0; i < N; ++i)
 		{

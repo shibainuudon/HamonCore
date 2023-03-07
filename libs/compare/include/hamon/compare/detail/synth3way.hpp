@@ -10,8 +10,8 @@
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/weak_ordering.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -76,7 +76,7 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR
 Synth3way synth3way = {};
 
 template <typename T, typename U = T>
-using synth3way_t = decltype(detail::synth3way(std::declval<T&>(), std::declval<U&>()));
+using synth3way_t = decltype(detail::synth3way(hamon::declval<T&>(), hamon::declval<U&>()));
 
 }	// namespace detail
 

@@ -10,11 +10,11 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/as_const.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <iterator>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -32,7 +32,7 @@ struct HasBeginImpl
 {
 private:
 	template <typename S2,
-		typename = decltype(std::declval<S2>().begin())
+		typename = decltype(hamon::declval<S2>().begin())
 	>
 	static auto test(int) -> hamon::true_type;
 

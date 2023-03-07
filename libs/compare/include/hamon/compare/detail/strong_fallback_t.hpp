@@ -15,8 +15,8 @@
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -46,8 +46,8 @@ private:
 	static HAMON_CONSTEXPR hamon::strong_ordering
 	impl(T&& e, U&& f, hamon::detail::overload_priority<0>)
 		HAMON_NOEXCEPT_IF(
-			HAMON_NOEXCEPT_EXPR(bool(std::declval<T>() == std::declval<U>())) &&
-			HAMON_NOEXCEPT_EXPR(bool(std::declval<T>() <  std::declval<U>())))
+			HAMON_NOEXCEPT_EXPR(bool(hamon::declval<T>() == hamon::declval<U>())) &&
+			HAMON_NOEXCEPT_EXPR(bool(hamon::declval<T>() <  hamon::declval<U>())))
 	{
 		return
 			hamon::forward<T>(e) == hamon::forward<U>(f) ? hamon::strong_ordering::equal :

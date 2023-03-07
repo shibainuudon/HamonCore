@@ -26,8 +26,8 @@ using std::weakly_incrementable;
 #include <hamon/concepts/detail/signed_integer_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -58,9 +58,9 @@ private:
 		typename = hamon::enable_if_t<hamon::movable<I2>::value>,
 		typename D = hamon::iter_difference_t<I2>,
 		typename = hamon::enable_if_t<hamon::ranges::detail::signed_integer_like<D>::value>,
-		typename T = decltype(++std::declval<I2&>()),
+		typename T = decltype(++hamon::declval<I2&>()),
 		typename = hamon::enable_if_t<hamon::same_as<T, I2&>::value>,
-		typename = decltype(std::declval<I2&>()++)
+		typename = decltype(hamon::declval<I2&>()++)
 	>
 	static auto test(int) -> hamon::true_type;
 

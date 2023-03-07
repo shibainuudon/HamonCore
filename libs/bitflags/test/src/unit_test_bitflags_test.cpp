@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -17,7 +18,7 @@ namespace test_test
 {
 
 template <typename T, typename U>
-using invoke_test = decltype(std::declval<T>().test(std::declval<U>()));
+using invoke_test = decltype(hamon::declval<T>().test(hamon::declval<U>()));
 
 static_assert( hamon::is_detected<invoke_test, Bitflag1&, Enum1>::value, "");
 static_assert(!hamon::is_detected<invoke_test, Bitflag1&, Enum2>::value, "");

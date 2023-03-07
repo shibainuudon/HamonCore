@@ -29,8 +29,8 @@ using std::reference_wrapper;
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -52,11 +52,11 @@ public:
 		typename = hamon::enable_if_t<
 			!hamon::is_same<reference_wrapper, hamon::remove_cvref_t<U>>::value
 		>,
-		typename = decltype(reference_wrapper::FUN(std::declval<U>()))
+		typename = decltype(reference_wrapper::FUN(hamon::declval<U>()))
 	>
 	HAMON_CONSTEXPR
 	reference_wrapper(U&& u)
-		HAMON_NOEXCEPT_IF_EXPR(reference_wrapper::FUN(std::declval<U>()))
+		HAMON_NOEXCEPT_IF_EXPR(reference_wrapper::FUN(hamon::declval<U>()))
 		: m_ptr(reference_wrapper::FUN(hamon::forward<U>(u)))
 	{}
 

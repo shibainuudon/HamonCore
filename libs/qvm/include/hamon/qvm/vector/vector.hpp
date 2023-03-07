@@ -17,9 +17,9 @@
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/accumulation.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -113,7 +113,7 @@ public:
 			(sizeof...(Args) != N)
 		>,
 		typename Concatnated =
-			decltype(vector_cat(detail::to_vector(std::declval<Args>())...)),
+			decltype(vector_cat(detail::to_vector(hamon::declval<Args>())...)),
 		typename = hamon::enable_if_t<
 			Concatnated::static_size == N
 		>

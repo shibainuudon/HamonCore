@@ -8,9 +8,9 @@
 #define HAMON_QVM_DETAIL_TRANSFORM_HPP
 
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-parameter")
@@ -28,7 +28,7 @@ template <
 	template <typename, std::size_t> class Vector,
 	typename T1, std::size_t N0,
 	typename F,
-	typename T2 = decltype(std::declval<F>()(std::declval<T1>())),
+	typename T2 = decltype(hamon::declval<F>()(hamon::declval<T1>())),
 	typename Result = Vector<T2, N0>,
 	std::size_t... Is
 >
@@ -42,7 +42,7 @@ template <
 	template <typename, std::size_t, std::size_t> class Matrix,
 	typename T1, std::size_t N0, std::size_t N1,
 	typename F,
-	typename T2 = decltype(std::declval<F>()(std::declval<T1>())),
+	typename T2 = decltype(hamon::declval<F>()(hamon::declval<T1>())),
 	typename Result = Matrix<T2, N0, N1>,
 	std::size_t... Is
 >
@@ -56,7 +56,7 @@ template <
 	template <typename, std::size_t> class Vector,
 	typename T1, typename T2, std::size_t N0,
 	typename F,
-	typename T3 = decltype(std::declval<F>()(std::declval<T1>(), std::declval<T2>())),
+	typename T3 = decltype(hamon::declval<F>()(hamon::declval<T1>(), hamon::declval<T2>())),
 	typename Result = Vector<T3, N0>,
 	std::size_t... Is
 >
@@ -70,7 +70,7 @@ template <
 	template <typename, std::size_t, std::size_t> class Matrix,
 	typename T1, typename T2, std::size_t N0, std::size_t N1,
 	typename F,
-	typename T3 = decltype(std::declval<F>()(std::declval<T1>(), std::declval<T2>())),
+	typename T3 = decltype(hamon::declval<F>()(hamon::declval<T1>(), hamon::declval<T2>())),
 	typename Result = Matrix<T3, N0, N1>,
 	std::size_t... Is
 >

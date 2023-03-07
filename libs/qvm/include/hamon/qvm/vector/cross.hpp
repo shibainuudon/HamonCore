@@ -8,8 +8,8 @@
 #define HAMON_QVM_VECTOR_CROSS_HPP
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -22,7 +22,7 @@ namespace qvm
  */
 template <typename T1, typename T2>
 HAMON_NODISCARD inline HAMON_CONSTEXPR
-vector<decltype(std::declval<T1>() * std::declval<T2>()), 3>
+vector<decltype(hamon::declval<T1>() * hamon::declval<T2>()), 3>
 cross(vector<T1, 3> const& v1, vector<T2, 3> const& v2) HAMON_NOEXCEPT
 {
 	return

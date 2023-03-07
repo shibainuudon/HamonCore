@@ -16,8 +16,8 @@
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -61,7 +61,7 @@ private:
 		typename D = typename hamon::incrementable_traits<I2>::difference_type,
 		typename V = typename hamon::indirectly_readable_traits<I2>::value_type,
 		typename = hamon::common_reference_t<hamon::iter_reference_t<I2>&&, V&>,
-		typename = hamon::common_reference_t<decltype(*std::declval<I2&>()++)&&, V&>,
+		typename = hamon::common_reference_t<decltype(*hamon::declval<I2&>()++)&&, V&>,
 		typename = hamon::enable_if_t<hamon::signed_integral<D>::value>
 	>
 	static auto test(int) -> hamon::true_type;

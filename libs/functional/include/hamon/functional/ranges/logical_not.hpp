@@ -8,8 +8,8 @@
 #define HAMON_FUNCTIONAL_RANGES_LOGICAL_NOT_HPP
 
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -24,7 +24,7 @@ struct logical_not
 {
 	template <typename T>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& x) const
-	HAMON_NOEXCEPT_IF_EXPR(!std::declval<T>())
+	HAMON_NOEXCEPT_IF_EXPR(!hamon::declval<T>())
 	->decltype(!hamon::forward<T>(x))
 	{
 		return !hamon::forward<T>(x);

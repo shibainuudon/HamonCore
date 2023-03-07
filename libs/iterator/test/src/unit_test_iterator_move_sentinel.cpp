@@ -24,8 +24,9 @@
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <utility>
+#include <cstddef>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -531,17 +532,17 @@ GTEST_TEST(MoveSentinelTest, BaseTest)
 }
 
 template <typename T, typename U>
-using HasEq = decltype(std::declval<T const&>() == std::declval<U const&>());
+using HasEq = decltype(hamon::declval<T const&>() == hamon::declval<U const&>());
 template <typename T, typename U>
-using HasNe = decltype(std::declval<T const&>() != std::declval<U const&>());
+using HasNe = decltype(hamon::declval<T const&>() != hamon::declval<U const&>());
 template <typename T, typename U>
-using HasLt = decltype(std::declval<T const&>() < std::declval<U const&>());
+using HasLt = decltype(hamon::declval<T const&>() < hamon::declval<U const&>());
 template <typename T, typename U>
-using HasGt = decltype(std::declval<T const&>() > std::declval<U const&>());
+using HasGt = decltype(hamon::declval<T const&>() > hamon::declval<U const&>());
 template <typename T, typename U>
-using HasLe = decltype(std::declval<T const&>() <= std::declval<U const&>());
+using HasLe = decltype(hamon::declval<T const&>() <= hamon::declval<U const&>());
 template <typename T, typename U>
-using HasGe = decltype(std::declval<T const&>() >= std::declval<U const&>());
+using HasGe = decltype(hamon::declval<T const&>() >= hamon::declval<U const&>());
 
 static_assert( hamon::is_detected<HasEq, hamon::move_iterator<int*>,       hamon::move_sentinel<int*>>::value, "");
 static_assert( hamon::is_detected<HasEq, hamon::move_iterator<int*>,       hamon::move_sentinel<int const*>>::value, "");
@@ -620,10 +621,10 @@ static_assert(!hamon::is_detected<HasGe, hamon::move_sentinel<int*>, hamon::move
 static_assert(!hamon::is_detected<HasGe, hamon::move_sentinel<int*>, hamon::move_sentinel<int*>>::value, "");
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<int*>>() == std::declval<hamon::move_sentinel<int*>>());
-HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<int*>>() != std::declval<hamon::move_sentinel<int*>>());
-HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_sentinel<int*>>() == std::declval<hamon::move_iterator<int*>>());
-HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_sentinel<int*>>() != std::declval<hamon::move_iterator<int*>>());
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() == hamon::declval<hamon::move_sentinel<int*>>());
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() != hamon::declval<hamon::move_sentinel<int*>>());
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() == hamon::declval<hamon::move_iterator<int*>>());
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() != hamon::declval<hamon::move_iterator<int*>>());
 #endif
 
 template <bool Noexcept, typename Iterator>
@@ -684,20 +685,20 @@ GTEST_TEST(MoveSentinelTest, OperatorTest)
 		using Sent = MayThrowSentinel<true, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() == std::declval<MoveSent const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() != std::declval<MoveSent const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveSent const&>() == std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveSent const&>() != std::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() == hamon::declval<MoveSent const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() != hamon::declval<MoveSent const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveSent const&>() == hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveSent const&>() != hamon::declval<MoveIter const&>());
 	}
 	{
 		using Iter = int*;
 		using Sent = MayThrowSentinel<false, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter const&>() == std::declval<MoveSent const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter const&>() != std::declval<MoveSent const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveSent const&>() == std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveSent const&>() != std::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter const&>() == hamon::declval<MoveSent const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter const&>() != hamon::declval<MoveSent const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent const&>() == hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent const&>() != hamon::declval<MoveIter const&>());
 	}
 #endif
 }
@@ -778,40 +779,40 @@ GTEST_TEST(MoveSentinelTest, OperatorMinusTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(OperatorMinusTest<int const*>());
 
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
-	HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<int*>>() - std::declval<hamon::move_sentinel<int*>>());
-	HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_sentinel<int*>>() - std::declval<hamon::move_iterator<int*>>());
+	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<int*>>() - hamon::declval<hamon::move_sentinel<int*>>());
+	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_sentinel<int*>>() - hamon::declval<hamon::move_iterator<int*>>());
 
 	{
 		using Iter = int*;
 		using Sent = MayThrowMinusSentinel<true, true, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter>() - std::declval<MoveSent>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveSent>() - std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter>() - hamon::declval<MoveSent>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveSent>() - hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = int*;
 		using Sent = MayThrowMinusSentinel<true, false, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() - std::declval<MoveSent>());
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveSent>() - std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - hamon::declval<MoveSent>());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveSent>() - hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = int*;
 		using Sent = MayThrowMinusSentinel<false, true, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter>() - std::declval<MoveSent>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveSent>() - std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter>() - hamon::declval<MoveSent>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent>() - hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = int*;
 		using Sent = MayThrowMinusSentinel<false, false, Iter>;
 		using MoveIter = hamon::move_iterator<Iter>;
 		using MoveSent = hamon::move_sentinel<Sent>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() - std::declval<MoveSent>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveSent>() - std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - hamon::declval<MoveSent>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveSent>() - hamon::declval<MoveIter>());
 	}
 #endif
 }

@@ -11,7 +11,7 @@
 #include <hamon/serialization/version.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -28,7 +28,7 @@ public:
 	private:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
-			std::declval<T2>().serialize(std::declval<A2>(), std::declval<Args2>()...),
+			hamon::declval<T2>().serialize(hamon::declval<A2>(), hamon::declval<Args2>()...),
 			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
@@ -46,7 +46,7 @@ public:
 	private:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
-			std::declval<T2>().save(std::declval<A2>(), std::declval<Args2>()...),
+			hamon::declval<T2>().save(hamon::declval<A2>(), hamon::declval<Args2>()...),
 			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
@@ -64,7 +64,7 @@ public:
 	private:
 		template <typename A2, typename T2, typename... Args2>
 		static auto test(int) -> decltype(
-			std::declval<T2>().load(std::declval<A2>(), std::declval<Args2>()...),
+			hamon::declval<T2>().load(hamon::declval<A2>(), hamon::declval<Args2>()...),
 			hamon::true_type());
 
 		template <typename A2, typename T2, typename... Args2>
@@ -81,7 +81,7 @@ public:
 	{
 	private:
 		template <typename U,
-			typename R = decltype(std::declval<U>().get_class_version())
+			typename R = decltype(hamon::declval<U>().get_class_version())
 		>
 		static auto test(int) -> hamon::convertible_to_t<R, version_t>;
 
@@ -99,7 +99,7 @@ public:
 	{
 	private:
 		template <typename U,
-			typename R = decltype(std::declval<U>().get_class_id())
+			typename R = decltype(hamon::declval<U>().get_class_id())
 		>
 		static auto test(int) -> hamon::convertible_to_t<R, const char*>;
 

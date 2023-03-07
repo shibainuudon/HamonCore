@@ -27,9 +27,9 @@ using std::bidirectional_iterator;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
-#include <utility>
 
 namespace hamon
 {
@@ -67,8 +67,8 @@ private:
 				std::bidirectional_iterator_tag
 			>::value
 		>,
-		typename T1 = decltype(--std::declval<I2&>()),
-		typename T2 = decltype(  std::declval<I2&>()--)
+		typename T1 = decltype(--hamon::declval<I2&>()),
+		typename T2 = decltype(  hamon::declval<I2&>()--)
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::same_as<T1, I2&>,

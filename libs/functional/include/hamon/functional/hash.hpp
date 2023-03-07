@@ -23,6 +23,7 @@
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -182,7 +183,7 @@ private:
 	template <typename RawT, typename T, typename = hamon::enable_if_t<hamon::is_enum<RawT>::value>>
 	static HAMON_CXX11_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<6>)
-    HAMON_NOEXCEPT_IF_EXPR(std::declval<hash_t>()(hamon::underlying_type_t<T>(x)))
+    HAMON_NOEXCEPT_IF_EXPR(hamon::declval<hash_t>()(hamon::underlying_type_t<T>(x)))
     {
 		return hash_t{}(hamon::underlying_type_t<T>(x));
 	}
@@ -199,7 +200,7 @@ private:
 	template <typename RawT, typename T, typename = hamon::enable_if_t<hamon::is_pointer<RawT>::value>>
 	static HAMON_CXX14_CONSTEXPR std::size_t
 	impl(T&& x, hamon::detail::overload_priority<4>)
-    HAMON_NOEXCEPT_IF_EXPR(std::declval<hash_t>()(hamon::bit_cast<std::array<unsigned char, sizeof(T)>>(x)))
+    HAMON_NOEXCEPT_IF_EXPR(hamon::declval<hash_t>()(hamon::bit_cast<std::array<unsigned char, sizeof(T)>>(x)))
     {
 		return hash_t{}(hamon::bit_cast<std::array<unsigned char, sizeof(T)>>(x));
 	}

@@ -32,7 +32,7 @@ using nth_t = typename nth<N, Types...>::type;
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/index_sequence_for.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -119,7 +119,7 @@ struct nth
 private:
 	using Seq = hamon::index_sequence_for<Types...>;
 	using Tmp = decltype(select<N>(
-		std::declval<type_tuple<Seq, Types...>>()));
+		hamon::declval<type_tuple<Seq, Types...>>()));
 public:
 	using type = typename Tmp::type;
 };

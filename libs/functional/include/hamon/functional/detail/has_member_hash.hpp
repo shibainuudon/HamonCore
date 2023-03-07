@@ -11,9 +11,9 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -37,7 +37,7 @@ struct has_member_hash_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(decay_copy(std::declval<U&>().hash()))
+		typename B = decltype(decay_copy(hamon::declval<U&>().hash()))
 	>
 	static auto test(int) -> hamon::convertible_to<B, std::size_t>;
 

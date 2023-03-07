@@ -57,7 +57,7 @@ struct invoke_result;
 #include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/type_traits/is_member_object_pointer.hpp>
 #include <hamon/type_traits/is_member_function_pointer.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -76,7 +76,7 @@ struct invoke_result_memfun_ref
 private:
 	template <typename UF, typename UArg0, typename... UArgs>
 	static auto test(int) -> hamon::type_identity<
-		decltype((std::declval<UArg0>().*std::declval<UF>())(std::declval<UArgs>()...))>;
+		decltype((hamon::declval<UArg0>().*hamon::declval<UF>())(hamon::declval<UArgs>()...))>;
 
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
@@ -92,7 +92,7 @@ struct invoke_result_memfun_deref
 private:
 	template <typename UF, typename UArg0, typename... UArgs>
 	static auto test(int) -> hamon::type_identity<
-		decltype(((*std::declval<UArg0>()).*std::declval<UF>())(std::declval<UArgs>()...))>;
+		decltype(((*hamon::declval<UArg0>()).*hamon::declval<UF>())(hamon::declval<UArgs>()...))>;
 
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
@@ -108,7 +108,7 @@ struct invoke_result_memobj_ref
 private:
 	template <typename F, typename T>
 	static auto test(int) -> hamon::type_identity<
-		decltype(std::declval<T>().*std::declval<F>())>;
+		decltype(hamon::declval<T>().*hamon::declval<F>())>;
 
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
@@ -124,7 +124,7 @@ struct invoke_result_memobj_deref
 private:
 	template <typename F, typename T>
 	static auto test(int) -> hamon::type_identity<
-		decltype((*std::declval<T>()).*std::declval<F>())>;
+		decltype((*hamon::declval<T>()).*hamon::declval<F>())>;
 
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;
@@ -180,7 +180,7 @@ struct invoke_result_other
 {
 private:
 	template <typename U, typename... UArgs>
-	static auto test(int) -> hamon::type_identity<decltype(std::declval<U>()(std::declval<UArgs>()...))>;
+	static auto test(int) -> hamon::type_identity<decltype(hamon::declval<U>()(hamon::declval<UArgs>()...))>;
 
 	template <typename...>
 	static auto test(...) -> invoke_result_failure;

@@ -24,8 +24,8 @@ using std::indirectly_swappable;
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -56,10 +56,10 @@ private:
 	template <typename J1, typename J2,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>::value>,
-		typename = decltype(hamon::ranges::iter_swap(std::declval<J1 const>(), std::declval<J1 const>())),
-		typename = decltype(hamon::ranges::iter_swap(std::declval<J1 const>(), std::declval<J2 const>())),
-		typename = decltype(hamon::ranges::iter_swap(std::declval<J2 const>(), std::declval<J1 const>())),
-		typename = decltype(hamon::ranges::iter_swap(std::declval<J2 const>(), std::declval<J2 const>()))
+		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J1 const>(), hamon::declval<J1 const>())),
+		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J1 const>(), hamon::declval<J2 const>())),
+		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J2 const>(), hamon::declval<J1 const>())),
+		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J2 const>(), hamon::declval<J2 const>()))
 	>
 	static auto test(int) -> hamon::true_type;
 

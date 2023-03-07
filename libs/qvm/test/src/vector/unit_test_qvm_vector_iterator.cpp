@@ -11,9 +11,9 @@
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -49,14 +49,14 @@ TYPED_TEST(VectorTest, IteratorTest)
 	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename vector4::iterator>>::value, "");
 	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename vector4::const_iterator>>::value, "");
 
-	static_assert(hamon::is_same<typename vector2::iterator,       decltype(std::declval<vector2>().begin())>::value, "");
-	static_assert(hamon::is_same<typename vector2::iterator,       decltype(std::declval<vector2>().end())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2>().cbegin())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2>().cend())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2 const>().begin())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2 const>().end())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2 const>().cbegin())>::value, "");
-	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(std::declval<vector2 const>().cend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::iterator,       decltype(hamon::declval<vector2>().begin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::iterator,       decltype(hamon::declval<vector2>().end())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2>().cend())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2 const>().begin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2 const>().end())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2 const>().cbegin())>::value, "");
+	static_assert(hamon::is_same<typename vector2::const_iterator, decltype(hamon::declval<vector2 const>().cend())>::value, "");
 
 	{
 		HAMON_CONSTEXPR vector2 v1 { 10, 20};

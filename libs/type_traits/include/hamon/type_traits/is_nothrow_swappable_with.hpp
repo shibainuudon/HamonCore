@@ -23,6 +23,7 @@ using std::is_nothrow_swappable_with;
 
 #include <hamon/type_traits/is_swappable_with.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <utility>
 
 namespace hamon
@@ -56,8 +57,8 @@ struct is_nothrow_swappable_with_impl_2
 private:
 	template <typename T2, typename U2>
 	static hamon::bool_constant<
-		HAMON_NOEXCEPT_EXPR(swap(std::declval<T2>(), std::declval<U2>())) &&
-		HAMON_NOEXCEPT_EXPR(swap(std::declval<U2>(), std::declval<T2>()))
+		HAMON_NOEXCEPT_EXPR(swap(hamon::declval<T2>(), hamon::declval<U2>())) &&
+		HAMON_NOEXCEPT_EXPR(swap(hamon::declval<U2>(), hamon::declval<T2>()))
 	>
 	test(int);
 

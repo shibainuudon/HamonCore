@@ -25,9 +25,9 @@ using std::ranges::range;
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -54,8 +54,8 @@ struct range_impl
 {
 private:
 	template <typename U,
-		typename = decltype(ranges::begin(std::declval<U&>())),
-		typename = decltype(ranges::end(std::declval<U&>()))
+		typename = decltype(ranges::begin(hamon::declval<U&>())),
+		typename = decltype(ranges::end(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::true_type;
 

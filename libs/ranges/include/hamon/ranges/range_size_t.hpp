@@ -25,14 +25,14 @@ using std::ranges::range_size_t;
 #include <hamon/ranges/size.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
 
 template <HAMON_CONSTRAINED_PARAM(ranges::sized_range, Range)>
-using range_size_t = decltype(ranges::size(std::declval<Range&>()));
+using range_size_t = decltype(ranges::size(hamon::declval<Range&>()));
 
 }	// namespace ranges
 }	// namespace hamon

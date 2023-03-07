@@ -31,9 +31,9 @@ using std::random_access_iterator;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
-#include <utility>
 
 namespace hamon
 {
@@ -77,12 +77,12 @@ private:
 		typename J2 = I2 const,
 #endif
 		typename D = hamon::iter_difference_t<I2> const,
-		typename T1 = decltype(std::declval<I2&>() += std::declval<D >()),
-		typename T2 = decltype(std::declval<J2 >() +  std::declval<D >()),
-		typename T3 = decltype(std::declval<D  >() +  std::declval<J2>()),
-		typename T4 = decltype(std::declval<I2&>() -= std::declval<D >()),
-		typename T5 = decltype(std::declval<J2 >() -  std::declval<D >()),
-		typename T6 = decltype(std::declval<J2 >()[std::declval<D>()])
+		typename T1 = decltype(hamon::declval<I2&>() += hamon::declval<D >()),
+		typename T2 = decltype(hamon::declval<J2 >() +  hamon::declval<D >()),
+		typename T3 = decltype(hamon::declval<D  >() +  hamon::declval<J2>()),
+		typename T4 = decltype(hamon::declval<I2&>() -= hamon::declval<D >()),
+		typename T5 = decltype(hamon::declval<J2 >() -  hamon::declval<D >()),
+		typename T6 = decltype(hamon::declval<J2 >()[hamon::declval<D>()])
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::same_as<T1, I2&>,

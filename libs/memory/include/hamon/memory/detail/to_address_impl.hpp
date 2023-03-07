@@ -12,8 +12,8 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_function.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 #include <memory>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
@@ -37,7 +37,7 @@ struct has_pointer_traits_to_address
 template <typename T>
 struct has_pointer_traits_to_address<T,
 	hamon::void_t<
-		decltype(std::pointer_traits<T>::to_address(std::declval<T const&>()))
+		decltype(std::pointer_traits<T>::to_address(hamon::declval<T const&>()))
 	>
 > : public hamon::true_type {};
 
@@ -48,7 +48,7 @@ struct has_operator_arrow
 template <typename T>
 struct has_operator_arrow<T,
 	hamon::void_t<
-		decltype(std::declval<T const&>().operator->())
+		decltype(hamon::declval<T const&>().operator->())
 	>
 > : public hamon::true_type {};
 

@@ -31,8 +31,8 @@ using std::three_way_comparable;
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -66,7 +66,7 @@ private:
 		>::value>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename R = decltype(
-			std::declval<A const&>() <=> std::declval<A const&>())
+			hamon::declval<A const&>() <=> hamon::declval<A const&>())
 	>
 	static auto test(int) -> detail::compares_as<R, C2>;
 

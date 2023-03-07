@@ -14,8 +14,8 @@
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -47,9 +47,9 @@ private:
 		typename = hamon::enable_if_t<
 			!hamon::is_unbounded_array<hamon::remove_reference_t<U>>::value
 		>,
-		typename B = decltype(ranges::begin(std::declval<U&>())),
+		typename B = decltype(ranges::begin(hamon::declval<U&>())),
 		typename = hamon::enable_if_t<hamon::forward_iterator<B>::value>,
-		typename = decltype(bool(ranges::begin(std::declval<U&>()) == ranges::end(std::declval<U&>())))
+		typename = decltype(bool(ranges::begin(hamon::declval<U&>()) == ranges::end(hamon::declval<U&>())))
 	>
 	static auto test(int) -> hamon::true_type;
 

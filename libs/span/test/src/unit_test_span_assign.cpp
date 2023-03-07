@@ -6,9 +6,9 @@
 
 #include <hamon/span.hpp>
 #include <hamon/iterator/size.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
-#include <utility>
 #include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -22,7 +22,7 @@ namespace assign_test
 template <typename T>
 HAMON_CXX14_CONSTEXPR bool do_assign(T lhs, T rhs)
 {
-	HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<T&>() = rhs);
+	HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<T&>() = rhs);
 	lhs = rhs;
 	return
 		lhs.data() == rhs.data() &&

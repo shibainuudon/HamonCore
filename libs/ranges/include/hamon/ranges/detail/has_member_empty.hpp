@@ -8,8 +8,8 @@
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_EMPTY_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ struct has_member_empty_impl
 {
 private:
 	template <typename U,
-		typename = decltype(bool(std::declval<U&>().empty()))
+		typename = decltype(bool(hamon::declval<U&>().empty()))
 	>
 	static auto test(int) -> hamon::true_type;
 

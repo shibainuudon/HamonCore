@@ -10,8 +10,8 @@
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/type_identity.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -23,7 +23,7 @@ template <typename T>
 struct is_member_address_op_overloaded
 {
 	template <typename U>
-	static auto test(int, hamon::type_identity<decltype(std::declval<U>().operator&())>* = nullptr) -> hamon::true_type;
+	static auto test(int, hamon::type_identity<decltype(hamon::declval<U>().operator&())>* = nullptr) -> hamon::true_type;
 	template <typename...>
 	static auto test(...) -> hamon::false_type;
 
@@ -34,7 +34,7 @@ template <typename T>
 struct is_nonmember_address_op_overloaded
 {
 	template <typename U>
-	static auto test(int, hamon::type_identity<decltype(operator&(std::declval<U>()))>* = nullptr) -> hamon::true_type;
+	static auto test(int, hamon::type_identity<decltype(operator&(hamon::declval<U>()))>* = nullptr) -> hamon::true_type;
 	template <typename...>
 	static auto test(...) -> hamon::false_type;
 

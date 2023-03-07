@@ -31,8 +31,8 @@ using std::ranges::data;
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -50,7 +50,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_data, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().data()))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().data()))
 	->decltype(t.data())
 	{
 		return t.data();
@@ -59,7 +59,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(begin_data, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<0>)
-		HAMON_NOEXCEPT_IF_EXPR(ranges::begin(std::declval<T&>()))
+		HAMON_NOEXCEPT_IF_EXPR(ranges::begin(hamon::declval<T&>()))
 	->decltype(hamon::to_address(ranges::begin(t)))
 	{
 		return hamon::to_address(ranges::begin(t));

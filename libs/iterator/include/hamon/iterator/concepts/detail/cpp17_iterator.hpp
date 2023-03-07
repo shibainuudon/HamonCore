@@ -12,8 +12,8 @@
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -43,9 +43,9 @@ struct cpp17_iterator_impl
 {
 private:
 	template <typename I2,
-		typename T1 = decltype( *std::declval<I2&>()),
-		typename T2 = decltype(++std::declval<I2&>()),
-		typename T3 = decltype( *std::declval<I2&>()++)
+		typename T1 = decltype( *hamon::declval<I2&>()),
+		typename T2 = decltype(++hamon::declval<I2&>()),
+		typename T3 = decltype( *hamon::declval<I2&>()++)
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::detail::can_reference<T1>,

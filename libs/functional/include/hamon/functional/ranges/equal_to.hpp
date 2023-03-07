@@ -29,8 +29,8 @@ using std::ranges::equal_to;
 #include <hamon/concepts/equality_comparable_with.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -56,7 +56,7 @@ struct equal_to
 	>
 #endif
 	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
-		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() == std::declval<U>())
+		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<T>() == hamon::declval<U>())
 	{
 		return hamon::forward<T>(t) == hamon::forward<U>(u);
 	}

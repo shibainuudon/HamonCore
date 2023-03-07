@@ -7,9 +7,9 @@
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/qvm/vector.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -27,9 +27,9 @@ inline HAMON_CXX14_CONSTEXPR bool MulVector3Test()
 	using quaternionf = hamon::qvm::quaternion<float>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternion{}),  vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternioni{}), vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= quaternionf{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= quaternion{}),  vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= quaternioni{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= quaternionf{}), vector3&>::value, "");
 
 	// vector3 *= quaternion
 	{

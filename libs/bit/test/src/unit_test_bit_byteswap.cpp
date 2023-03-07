@@ -7,10 +7,10 @@
 #include <hamon/bit/byteswap.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
-#include <utility>
 #include "constexpr_test.hpp"
 
 namespace hamon_bit_test
@@ -22,7 +22,7 @@ template <typename T>
 struct has_byteswap_impl
 {
 private:
-	template <typename U, typename = decltype(hamon::byteswap(std::declval<U>()))>
+	template <typename U, typename = decltype(hamon::byteswap(hamon::declval<U>()))>
 	static auto test(int) -> hamon::true_type;
 
 	template <typename>

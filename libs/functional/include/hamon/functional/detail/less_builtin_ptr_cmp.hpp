@@ -13,8 +13,8 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -53,7 +53,7 @@ struct has_operator_less
 	: public hamon::false_type {};
 
 template <typename T, typename U>
-struct has_operator_less<T, U, hamon::void_t<decltype(operator<(std::declval<T>(), std::declval<U>()))>>
+struct has_operator_less<T, U, hamon::void_t<decltype(operator<(hamon::declval<T>(), hamon::declval<U>()))>>
 	: public hamon::true_type {};
 
 template <typename T, typename U, typename = void>
@@ -61,7 +61,7 @@ struct has_member_less
 	: public hamon::false_type {};
 
 template <typename T, typename U>
-struct has_member_less<T, U, hamon::void_t<decltype(std::declval<T>().operator<(std::declval<U>()))>>
+struct has_member_less<T, U, hamon::void_t<decltype(hamon::declval<T>().operator<(hamon::declval<U>()))>>
 	: public hamon::true_type {};
 
 template <typename T, typename U>
@@ -70,7 +70,7 @@ struct less_builtin_ptr_cmp_impl
 private:
 	template <typename T2, typename U2,
 		typename = hamon::enable_if_t<
-			hamon::same_as<decltype(std::declval<T2>() < std::declval<U2>()), bool>::value &&
+			hamon::same_as<decltype(hamon::declval<T2>() < hamon::declval<U2>()), bool>::value &&
 			hamon::convertible_to<T2, const volatile void*>::value &&
 			hamon::convertible_to<U2, const volatile void*>::value &&
 			!has_operator_less<T2, U2>::value &&

@@ -8,7 +8,7 @@
 #define HAMON_SERIALIZATION_DETAIL_HAS_ADL_LOAD_STRING_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -31,7 +31,7 @@ struct has_adl_load_string
 private:
 	template <typename... Args2>
 	static auto test(int) -> decltype(
-		load_string(std::declval<Args2>()...),
+		load_string(hamon::declval<Args2>()...),
 		hamon::true_type());
 
 	template <typename... Args2>

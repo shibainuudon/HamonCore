@@ -9,8 +9,8 @@
 
 #include <hamon/ranges/size.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -37,7 +37,7 @@ struct size0_empty_impl
 {
 private:
 	template <typename U,
-		typename = decltype(ranges::size(std::declval<U&>()) == 0)
+		typename = decltype(ranges::size(hamon::declval<U&>()) == 0)
 	>
 	static auto test(int) -> hamon::true_type;
 

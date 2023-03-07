@@ -41,7 +41,7 @@ concept swappable_with =
 #else
 
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -55,10 +55,10 @@ struct swappable_with_impl
 private:
 	template <typename T2, typename U2,
 		typename = decltype(
-			ranges::swap(std::declval<T2>(), std::declval<T2>()),
-			ranges::swap(std::declval<U2>(), std::declval<U2>()),
-			ranges::swap(std::declval<T2>(), std::declval<U2>()),
-			ranges::swap(std::declval<U2>(), std::declval<T2>()))
+			ranges::swap(hamon::declval<T2>(), hamon::declval<T2>()),
+			ranges::swap(hamon::declval<U2>(), hamon::declval<U2>()),
+			ranges::swap(hamon::declval<T2>(), hamon::declval<U2>()),
+			ranges::swap(hamon::declval<U2>(), hamon::declval<T2>()))
 	>
 	static auto test(int) -> hamon::common_reference_with<T2, U2>;
 

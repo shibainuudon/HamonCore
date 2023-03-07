@@ -25,14 +25,14 @@ using std::ranges::sentinel_t;
 #include <hamon/ranges/end.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
 
 template <HAMON_CONSTRAINED_PARAM(ranges::range, Range)>
-using sentinel_t = decltype(ranges::end(std::declval<Range&>()));
+using sentinel_t = decltype(ranges::end(hamon::declval<Range&>()));
 
 }	// namespace ranges
 }	// namespace hamon

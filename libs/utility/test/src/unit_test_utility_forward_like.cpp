@@ -6,9 +6,9 @@
 
 #include <hamon/utility/forward_like.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -81,12 +81,12 @@ struct NoCtorCopyMove
 	NoCtorCopyMove(NoCtorCopyMove&&) = delete;
 };
 
-static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward_like<CT&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward_like<T&&> (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward_like<T&>  (std::declval<NoCtorCopyMove>())), NoCtorCopyMove&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&&>(hamon::declval<NoCtorCopyMove>())), NoCtorCopyMove const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<CT&> (hamon::declval<NoCtorCopyMove>())), NoCtorCopyMove const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&&> (hamon::declval<NoCtorCopyMove>())), NoCtorCopyMove&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward_like<T&>  (hamon::declval<NoCtorCopyMove>())), NoCtorCopyMove&>::value, "");
 
-static_assert(noexcept(hamon::forward_like<T>(std::declval<NoCtorCopyMove>())), "");
+static_assert(noexcept(hamon::forward_like<T>(hamon::declval<NoCtorCopyMove>())), "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

@@ -24,8 +24,8 @@ using std::output_iterator;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -50,7 +50,7 @@ private:
 	template <typename I2, typename T2,
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<I2, T2>::value>,
-		typename = decltype(*std::declval<I2&>()++ = std::declval<T2&&>())
+		typename = decltype(*hamon::declval<I2&>()++ = hamon::declval<T2&&>())
 	>
 	static auto test(int) -> hamon::true_type;
 

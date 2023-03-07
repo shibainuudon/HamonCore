@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -26,15 +26,15 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x3DivScalarTest()
 	using matrix3x3f = hamon::qvm::matrix<float, 3, 3>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3&>()  /= T{}),     matrix3x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3&>()  /= int{}),   matrix3x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3&>()  /= float{}), matrix3x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3i&>() /= T{}),     matrix3x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3i&>() /= int{}),   matrix3x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3i&>() /= float{}), matrix3x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3f&>() /= T{}),     matrix3x3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3f&>() /= int{}),   matrix3x3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x3f&>() /= float{}), matrix3x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3&>()  /= T{}),     matrix3x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3&>()  /= int{}),   matrix3x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3&>()  /= float{}), matrix3x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3i&>() /= T{}),     matrix3x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3i&>() /= int{}),   matrix3x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3i&>() /= float{}), matrix3x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3f&>() /= T{}),     matrix3x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3f&>() /= int{}),   matrix3x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x3f&>() /= float{}), matrix3x3f&>::value, "");
 
 	// matrix3x3 /= スカラー
 	{
@@ -99,15 +99,15 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix3x4DivScalarTest()
 	using matrix3x4f = hamon::qvm::matrix<float, 3, 4>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4&>()  /= T{}),     matrix3x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4&>()  /= int{}),   matrix3x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4&>()  /= float{}), matrix3x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4i&>() /= T{}),     matrix3x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4i&>() /= int{}),   matrix3x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4i&>() /= float{}), matrix3x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4f&>() /= T{}),     matrix3x4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4f&>() /= int{}),   matrix3x4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix3x4f&>() /= float{}), matrix3x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4&>()  /= T{}),     matrix3x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4&>()  /= int{}),   matrix3x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4&>()  /= float{}), matrix3x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4i&>() /= T{}),     matrix3x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4i&>() /= int{}),   matrix3x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4i&>() /= float{}), matrix3x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4f&>() /= T{}),     matrix3x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4f&>() /= int{}),   matrix3x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix3x4f&>() /= float{}), matrix3x4f&>::value, "");
 
 	// matrix3x4 /= スカラー
 	{
@@ -172,15 +172,15 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x3DivScalarTest()
 	using matrix4x3f = hamon::qvm::matrix<float, 4, 3>;
 	using vector3 = hamon::qvm::vector<T, 3>;
 
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3&>()  /= T{}),     matrix4x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3&>()  /= int{}),   matrix4x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3&>()  /= float{}), matrix4x3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3i&>() /= T{}),     matrix4x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3i&>() /= int{}),   matrix4x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3i&>() /= float{}), matrix4x3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3f&>() /= T{}),     matrix4x3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3f&>() /= int{}),   matrix4x3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x3f&>() /= float{}), matrix4x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3&>()  /= T{}),     matrix4x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3&>()  /= int{}),   matrix4x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3&>()  /= float{}), matrix4x3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3i&>() /= T{}),     matrix4x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3i&>() /= int{}),   matrix4x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3i&>() /= float{}), matrix4x3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3f&>() /= T{}),     matrix4x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3f&>() /= int{}),   matrix4x3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x3f&>() /= float{}), matrix4x3f&>::value, "");
 
 	// matrix4x3 /= スカラー
 	{
@@ -251,15 +251,15 @@ inline HAMON_CXX14_CONSTEXPR bool Matrix4x4DivScalarTest()
 	using matrix4x4f = hamon::qvm::matrix<float, 4, 4>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4&>()  /= T{}),     matrix4x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4&>()  /= int{}),   matrix4x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4&>()  /= float{}), matrix4x4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4i&>() /= T{}),     matrix4x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4i&>() /= int{}),   matrix4x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4i&>() /= float{}), matrix4x4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4f&>() /= T{}),     matrix4x4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4f&>() /= int{}),   matrix4x4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<matrix4x4f&>() /= float{}), matrix4x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4&>()  /= T{}),     matrix4x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4&>()  /= int{}),   matrix4x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4&>()  /= float{}), matrix4x4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4i&>() /= T{}),     matrix4x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4i&>() /= int{}),   matrix4x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4i&>() /= float{}), matrix4x4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4f&>() /= T{}),     matrix4x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4f&>() /= int{}),   matrix4x4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<matrix4x4f&>() /= float{}), matrix4x4f&>::value, "");
 
 	// matrix4x4 /= スカラー
 	{

@@ -7,9 +7,9 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -26,15 +26,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector2DivScalarTest()
 	using vector2i = hamon::qvm::vector<int, 2>;
 	using vector2f = hamon::qvm::vector<float, 2>;
 
-	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  /= T{}),     vector2&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  /= int{}),   vector2&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2&>()  /= float{}), vector2&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() /= T{}),     vector2i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() /= int{}),   vector2i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2i&>() /= float{}), vector2i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() /= T{}),     vector2f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() /= int{}),   vector2f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector2f&>() /= float{}), vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2&>()  /= T{}),     vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2&>()  /= int{}),   vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2&>()  /= float{}), vector2&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2i&>() /= T{}),     vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2i&>() /= int{}),   vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2i&>() /= float{}), vector2i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2f&>() /= T{}),     vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2f&>() /= int{}),   vector2f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector2f&>() /= float{}), vector2f&>::value, "");
 
 	// vector2 /= スカラー
 	{
@@ -69,15 +69,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector3DivScalarTest()
 	using vector3i = hamon::qvm::vector<int, 3>;
 	using vector3f = hamon::qvm::vector<float, 3>;
 
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  /= T{}),     vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  /= int{}),   vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>()  /= float{}), vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() /= T{}),     vector3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() /= int{}),   vector3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3i&>() /= float{}), vector3i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() /= T{}),     vector3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() /= int{}),   vector3f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3f&>() /= float{}), vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>()  /= T{}),     vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>()  /= int{}),   vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>()  /= float{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3i&>() /= T{}),     vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3i&>() /= int{}),   vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3i&>() /= float{}), vector3i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3f&>() /= T{}),     vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3f&>() /= int{}),   vector3f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3f&>() /= float{}), vector3f&>::value, "");
 
 	// vector3 /= スカラー
 	{
@@ -112,15 +112,15 @@ inline HAMON_CXX14_CONSTEXPR bool Vector4DivScalarTest()
 	using vector4i = hamon::qvm::vector<int, 4>;
 	using vector4f = hamon::qvm::vector<float, 4>;
 
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  /= T{}),     vector4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  /= int{}),   vector4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>()  /= float{}), vector4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() /= T{}),     vector4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() /= int{}),   vector4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4i&>() /= float{}), vector4i&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() /= T{}),     vector4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() /= int{}),   vector4f&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4f&>() /= float{}), vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>()  /= T{}),     vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>()  /= int{}),   vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>()  /= float{}), vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4i&>() /= T{}),     vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4i&>() /= int{}),   vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4i&>() /= float{}), vector4i&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4f&>() /= T{}),     vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4f&>() /= int{}),   vector4f&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4f&>() /= float{}), vector4f&>::value, "");
 
 	// vector4 /= スカラー
 	{

@@ -13,11 +13,11 @@
 //#include <hamon/type_traits/common_type.hpp>
 //#include <hamon/type_traits/make_signed.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <iterator>
-#include <utility>
 #include "iterator_test.hpp"
 #include "constexpr_test.hpp"
 
@@ -195,7 +195,7 @@ template <typename T>
 concept EmptyInvocable = requires (T const& obj) { obj.empty(); };
 #else
 template <typename T>
-using EmptyInvocableImpl = decltype(std::declval<T const&>().empty());
+using EmptyInvocableImpl = decltype(hamon::declval<T const&>().empty());
 template <typename T>
 using EmptyInvocable = hamon::is_detected<EmptyInvocableImpl, T>;
 #endif
@@ -205,7 +205,7 @@ template <typename T>
 concept BoolOpInvocable = requires (T const& obj) { bool(obj); };
 #else
 template <typename T>
-using BoolOpInvocableImpl = decltype(bool(std::declval<T const&>()));
+using BoolOpInvocableImpl = decltype(bool(hamon::declval<T const&>()));
 template <typename T>
 using BoolOpInvocable = hamon::is_detected<BoolOpInvocableImpl, T>;
 #endif
@@ -297,7 +297,7 @@ template <typename T>
 concept DataInvocable = requires (T const& obj) { obj.data(); };
 #else
 template <typename T>
-using DataInvocableImpl = decltype(std::declval<T const&>().data());
+using DataInvocableImpl = decltype(hamon::declval<T const&>().data());
 template <typename T>
 using DataInvocable = hamon::is_detected<DataInvocableImpl, T>;
 #endif
@@ -349,7 +349,7 @@ template <typename T>
 concept SizeInvocable = requires (T const& obj) { obj.size(); };
 #else
 template <typename T>
-using SizeInvocableImpl = decltype(std::declval<T const&>().size());
+using SizeInvocableImpl = decltype(hamon::declval<T const&>().size());
 template <typename T>
 using SizeInvocable = hamon::is_detected<SizeInvocableImpl, T>;
 #endif
@@ -367,8 +367,8 @@ HAMON_CXX14_CONSTEXPR bool SizeTest()
 	VERIFY(randomAccess.size() == 8);
 
 	VERIFY(hamon::ranges::size(randomAccess) == 8);
-	//static_assert(hamon::same_as<decltype(hamon::ranges::size(std::declval<RARange>())), std::size_t>);
-	//static_assert(hamon::same_as<decltype(hamon::ranges::ssize(std::declval<RARange>())), SignedSize>);
+	//static_assert(hamon::same_as<decltype(hamon::ranges::size(hamon::declval<RARange>())), std::size_t>);
+	//static_assert(hamon::same_as<decltype(hamon::ranges::ssize(hamon::declval<RARange>())), SignedSize>);
 
 	SizeIsTen sizeTen;
 	static_assert(noexcept(sizeTen.size()), "");
@@ -400,7 +400,7 @@ template <typename T>
 concept SubscriptInvocable = requires (T const& obj, std::size_t n) { obj[n]; };
 #else
 template <typename T>
-using SubscriptInvocableImpl = decltype(std::declval<T const&>()[std::declval<std::size_t>()]);
+using SubscriptInvocableImpl = decltype(hamon::declval<T const&>()[hamon::declval<std::size_t>()]);
 template <typename T>
 using SubscriptInvocable = hamon::is_detected<SubscriptInvocableImpl, T>;
 #endif
@@ -433,7 +433,7 @@ template <typename T>
 concept FrontInvocable = requires (T const& obj) { obj.front(); };
 #else
 template <typename T>
-using FrontInvocableImpl = decltype(std::declval<T const&>().front());
+using FrontInvocableImpl = decltype(hamon::declval<T const&>().front());
 template <typename T>
 using FrontInvocable = hamon::is_detected<FrontInvocableImpl, T>;
 #endif
@@ -443,7 +443,7 @@ template <typename T>
 concept BackInvocable = requires (T const& obj) { obj.back(); };
 #else
 template <typename T>
-using BackInvocableImpl = decltype(std::declval<T const&>().back());
+using BackInvocableImpl = decltype(hamon::declval<T const&>().back());
 template <typename T>
 using BackInvocable = hamon::is_detected<BackInvocableImpl, T>;
 #endif

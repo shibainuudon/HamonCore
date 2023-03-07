@@ -9,8 +9,8 @@
 
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ private:
 
 	template <typename T1, typename... Args1>
 	static auto test(int)
-		-> decltype(test_helper<T1>({std::declval<Args1>()...}), hamon::true_type());
+		-> decltype(test_helper<T1>({hamon::declval<Args1>()...}), hamon::true_type());
 
 	template <typename T1, typename... Args1>
 	static auto test(...) -> hamon::false_type;

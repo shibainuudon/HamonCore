@@ -13,8 +13,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -54,7 +54,7 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename B = decltype(hamon::detail::decay_copy(rbegin(std::declval<U&>())))
+		typename B = decltype(hamon::detail::decay_copy(rbegin(hamon::declval<U&>())))
 	>
 	static auto test(int) -> hamon::input_or_output_iterator<B>;
 

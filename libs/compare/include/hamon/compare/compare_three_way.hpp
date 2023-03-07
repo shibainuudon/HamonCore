@@ -26,10 +26,10 @@ using std::compare_three_way;
 
 #include <hamon/compare/detail/builtin_ptr_three_way.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <cstdint>
-#include <utility>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ struct compare_three_way
 	template <typename T, typename U>
 	requires hamon::three_way_comparable_with<T, U> || detail::builtin_ptr_three_way<T, U>
 	constexpr auto operator()(T&& t, U&& u) const
-		noexcept(noexcept(std::declval<T>() <=> std::declval<U>()))
+		noexcept(noexcept(hamon::declval<T>() <=> hamon::declval<U>()))
 	{
 		if constexpr (detail::builtin_ptr_three_way<T, U>)
 		{

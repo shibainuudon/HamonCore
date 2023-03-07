@@ -26,8 +26,8 @@ using std::sized_sentinel_for;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -57,8 +57,8 @@ private:
 		typename = hamon::enable_if_t<hamon::sentinel_for<S2, I2>::value>,
 		typename = hamon::enable_if_t<
 			!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<S2>, hamon::remove_cv_t<I2>)>,
-		typename D1 = decltype(std::declval<S2 const&>() - std::declval<I2 const&>()),
-		typename D2 = decltype(std::declval<I2 const&>() - std::declval<S2 const&>()),
+		typename D1 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>()),
+		typename D2 = decltype(hamon::declval<I2 const&>() - hamon::declval<S2 const&>()),
 		typename D3 = hamon::iter_difference_t<I2>
 	>
 	static auto test(int) -> hamon::conjunction<

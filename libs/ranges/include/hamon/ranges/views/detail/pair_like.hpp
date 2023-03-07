@@ -16,11 +16,11 @@
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/type_traits/is_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <tuple>
 #include <type_traits>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -57,8 +57,8 @@ private:
 		>,
 		typename = hamon::tuple_element_t<0, hamon::remove_const_t<U>>,
 		typename = hamon::tuple_element_t<1, hamon::remove_const_t<U>>,
-		typename E0 = decltype(get<0>(std::declval<U>())),
-		typename E1 = decltype(get<1>(std::declval<U>())),
+		typename E0 = decltype(get<0>(hamon::declval<U>())),
+		typename E1 = decltype(get<1>(hamon::declval<U>())),
 		typename = hamon::enable_if_t<
 			hamon::convertible_to<E0, hamon::tuple_element_t<0, U> const&>::value
 		>,

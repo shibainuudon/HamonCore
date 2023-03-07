@@ -10,7 +10,7 @@
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -52,9 +52,9 @@ private:
 			hamon::detail::class_or_enum<U3>::value
 		>,
 		typename S = decltype(repeat(
-			std::declval<U1 const&>(),
-			std::declval<U2 const&>(),
-			std::declval<U3 const&>()))
+			hamon::declval<U1 const&>(),
+			hamon::declval<U2 const&>(),
+			hamon::declval<U3 const&>()))
 	>
 	static auto test(int) -> hamon::detail::can_reference<S>;
 

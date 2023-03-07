@@ -23,8 +23,8 @@ using std::indirectly_writable;
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -52,10 +52,10 @@ struct indirectly_writable_impl
 private:
 	template <typename Out2, typename T2,
 		typename R = hamon::iter_reference_t<Out2> const&&,
-		typename = decltype(*std::declval<Out2&>()  = std::declval<T2&&>()),
-		typename = decltype(*std::declval<Out2&&>() = std::declval<T2&&>()),
-		typename = decltype(const_cast<R>(*std::declval<Out2&>())  = std::declval<T2&&>()),
-		typename = decltype(const_cast<R>(*std::declval<Out2&&>()) = std::declval<T2&&>())
+		typename = decltype(*hamon::declval<Out2&>()  = hamon::declval<T2&&>()),
+		typename = decltype(*hamon::declval<Out2&&>() = hamon::declval<T2&&>()),
+		typename = decltype(const_cast<R>(*hamon::declval<Out2&>())  = hamon::declval<T2&&>()),
+		typename = decltype(const_cast<R>(*hamon::declval<Out2&&>()) = hamon::declval<T2&&>())
 	>
 	static auto test(int) -> hamon::true_type;
 

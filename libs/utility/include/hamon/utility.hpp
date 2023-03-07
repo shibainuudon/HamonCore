@@ -14,6 +14,7 @@
 #include <hamon/utility/cmp_less.hpp>
 #include <hamon/utility/cmp_less_equal.hpp>
 #include <hamon/utility/cmp_not_equal.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/forward_like.hpp>

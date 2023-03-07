@@ -5,10 +5,10 @@
  */
 
 #include <hamon/utility/move_if_noexcept.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <utility>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -51,16 +51,16 @@ static_assert(!hamon::is_copy_constructible<C>::value, "");
 static_assert(!hamon::is_nothrow_move_constructible<D>::value, "");
 static_assert(!hamon::is_copy_constructible<D>::value, "");
 
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<int&>())),       int&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<int const&>())), int const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<A&>())),       A &&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<A const&>())), A const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<B&>())),       B const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<B const&>())), B const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<C&>())),       C &&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<C const&>())), C const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<D&>())),       D &&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(std::declval<D const&>())), D const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<int&>())),       int&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<int const&>())), int const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<A&>())),       A &&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<A const&>())), A const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<B&>())),       B const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<B const&>())), B const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<C&>())),       C &&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<C const&>())), C const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<D&>())),       D &&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::move_if_noexcept(hamon::declval<D const&>())), D const&&>::value, "");
 
 GTEST_TEST(UtilityTest, MoveIfNoexceptTest)
 {

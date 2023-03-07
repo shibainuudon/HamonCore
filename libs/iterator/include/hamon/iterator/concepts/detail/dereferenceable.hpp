@@ -11,8 +11,8 @@
 #include <hamon/iterator/concepts/detail/is_void_pointer.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -38,7 +38,7 @@ struct dereferenceable_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<!hamon::detail::is_void_pointer<U>::value>,
-		typename U2 = decltype(*std::declval<U&>())
+		typename U2 = decltype(*hamon::declval<U&>())
 	>
 	static auto test(int) -> detail::can_reference<U2>;
 

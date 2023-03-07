@@ -13,8 +13,8 @@
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -46,7 +46,7 @@ struct has_member_data_impl
 {
 private:
 	template <typename U,
-		typename P = decltype(hamon::detail::decay_copy(std::declval<U&>().data()))>
+		typename P = decltype(hamon::detail::decay_copy(hamon::declval<U&>().data()))>
 	static auto test(int) -> hamon::conjunction<
 		hamon::is_pointer<P>,
 		hamon::is_object<hamon::remove_pointer_t<P>>

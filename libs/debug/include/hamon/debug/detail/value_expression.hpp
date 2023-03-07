@@ -14,10 +14,10 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -60,7 +60,7 @@ struct stream_outputtable_impl
 	: public hamon::false_type {};
 
 template <typename Stream, typename Expr>
-struct stream_outputtable_impl<Stream, Expr, hamon::void_t<decltype(std::declval<Stream&>() << std::declval<Expr const&>().value())>>
+struct stream_outputtable_impl<Stream, Expr, hamon::void_t<decltype(hamon::declval<Stream&>() << hamon::declval<Expr const&>().value())>>
 	: public hamon::true_type {};
 
 template <typename CharT, typename Traits, typename T>

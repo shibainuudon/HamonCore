@@ -11,8 +11,8 @@
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -49,14 +49,14 @@ private:
 		typename T2, typename U2,
 		typename TR = detail::cref<T2>,
 		typename UR = detail::cref<U2>,
-		typename B1 = decltype(std::declval<TR>() <  std::declval<UR>()),
-		typename B2 = decltype(std::declval<TR>() >  std::declval<UR>()),
-		typename B3 = decltype(std::declval<TR>() <= std::declval<UR>()),
-		typename B4 = decltype(std::declval<TR>() >= std::declval<UR>()),
-		typename B5 = decltype(std::declval<UR>() <  std::declval<TR>()),
-		typename B6 = decltype(std::declval<UR>() >  std::declval<TR>()),
-		typename B7 = decltype(std::declval<UR>() <= std::declval<TR>()),
-		typename B8 = decltype(std::declval<UR>() >= std::declval<TR>())
+		typename B1 = decltype(hamon::declval<TR>() <  hamon::declval<UR>()),
+		typename B2 = decltype(hamon::declval<TR>() >  hamon::declval<UR>()),
+		typename B3 = decltype(hamon::declval<TR>() <= hamon::declval<UR>()),
+		typename B4 = decltype(hamon::declval<TR>() >= hamon::declval<UR>()),
+		typename B5 = decltype(hamon::declval<UR>() <  hamon::declval<TR>()),
+		typename B6 = decltype(hamon::declval<UR>() >  hamon::declval<TR>()),
+		typename B7 = decltype(hamon::declval<UR>() <= hamon::declval<TR>()),
+		typename B8 = decltype(hamon::declval<UR>() >= hamon::declval<TR>())
 	>
 	static auto test(int) -> hamon::conjunction<
 		boolean_testable<B1>,

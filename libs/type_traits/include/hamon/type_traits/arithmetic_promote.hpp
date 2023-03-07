@@ -11,7 +11,7 @@
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/decay.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ struct arithmetic_promote_impl<T>
 
 template <typename T, typename U>
 struct arithmetic_promote_impl<T, U>
-	: public hamon::decay<decltype(std::declval<T>() + std::declval<U>())>
+	: public hamon::decay<decltype(hamon::declval<T>() + hamon::declval<U>())>
 {
 	static_assert(hamon::is_arithmetic<T>::value, "");
 	static_assert(hamon::is_arithmetic<U>::value, "");

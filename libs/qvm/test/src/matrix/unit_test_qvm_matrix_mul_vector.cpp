@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/matrix.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -30,12 +30,12 @@ inline HAMON_CXX14_CONSTEXPR bool MulVectorTest()
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= matrix3x3{}),  vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= matrix3x3i{}), vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector3&>() *= matrix3x3f{}), vector3&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>() *= matrix4x4{}),  vector4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>() *= matrix4x4i{}), vector4&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<vector4&>() *= matrix4x4f{}), vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= matrix3x3{}),  vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= matrix3x3i{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector3&>() *= matrix3x3f{}), vector3&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>() *= matrix4x4{}),  vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>() *= matrix4x4i{}), vector4&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<vector4&>() *= matrix4x4f{}), vector4&>::value, "");
 
 	// vector3 *= matrix3x3
 	{

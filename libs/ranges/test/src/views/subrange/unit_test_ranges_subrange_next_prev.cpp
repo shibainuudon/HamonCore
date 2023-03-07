@@ -7,9 +7,9 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -27,7 +27,7 @@ struct HasNextImpl
 {
 private:
 	template <typename S2,
-		typename = decltype(std::declval<S2>().next())
+		typename = decltype(hamon::declval<S2>().next())
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -46,7 +46,7 @@ struct HasPrevImpl
 {
 private:
 	template <typename S2,
-		typename = decltype(std::declval<S2>().prev())
+		typename = decltype(hamon::declval<S2>().prev())
 	>
 	static auto test(int) -> hamon::true_type;
 

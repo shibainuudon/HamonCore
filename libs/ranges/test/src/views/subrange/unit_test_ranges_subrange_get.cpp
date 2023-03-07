@@ -11,11 +11,11 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
 #include <iterator>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -33,8 +33,8 @@ struct HasGetImpl
 {
 private:
 	template <std::size_t I2, typename S2,
-		typename = decltype(hamon::ranges::get<I2>(std::declval<S2>())),
-		typename = decltype(hamon::get<I2>(std::declval<S2>()))
+		typename = decltype(hamon::ranges::get<I2>(hamon::declval<S2>())),
+		typename = decltype(hamon::get<I2>(hamon::declval<S2>()))
 	>
 	static auto test(int) -> hamon::true_type;
 

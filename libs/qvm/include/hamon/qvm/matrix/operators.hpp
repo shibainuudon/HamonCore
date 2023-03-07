@@ -21,6 +21,7 @@
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/minus.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 
@@ -218,7 +219,7 @@ operator/=(matrix<T1, R, C>& lhs, T2 rhs) HAMON_NOEXCEPT
 template <
 	typename T1, typename T2,
 	std::size_t N, std::size_t M,
-	typename T3 = decltype(std::declval<T1>() * std::declval<T2>())
+	typename T3 = decltype(hamon::declval<T1>() * hamon::declval<T2>())
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR vector<T3, M>
 operator*(vector<T1, N> const& lhs, matrix<T2, N, M> const& rhs) HAMON_NOEXCEPT

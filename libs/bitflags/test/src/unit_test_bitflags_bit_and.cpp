@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -19,7 +20,7 @@ namespace bit_and_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename U>
-using invoke_bit_and = decltype(std::declval<T>() & std::declval<U>());
+using invoke_bit_and = decltype(hamon::declval<T>() & hamon::declval<U>());
 
 static_assert( hamon::is_detected<invoke_bit_and, Bitflag1 const&, Bitflag1 const&>::value, "");
 static_assert(!hamon::is_detected<invoke_bit_and, Bitflag1 const&, Bitflag2 const&>::value, "");
@@ -38,7 +39,7 @@ static_assert(!hamon::is_detected<invoke_bit_and, Bitflag3 const&, Enum3 const&>
 static_assert(!hamon::is_detected<invoke_bit_and, Bitflag3 const&, int>::value, "");
 
 template <typename T, typename U>
-using invoke_bit_and_assign = decltype(std::declval<T>() &= std::declval<U>());
+using invoke_bit_and_assign = decltype(hamon::declval<T>() &= hamon::declval<U>());
 
 static_assert( hamon::is_detected<invoke_bit_and_assign, Bitflag1&, Bitflag1 const&>::value, "");
 static_assert(!hamon::is_detected<invoke_bit_and_assign, Bitflag1&, Bitflag2 const&>::value, "");

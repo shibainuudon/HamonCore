@@ -26,8 +26,8 @@ using std::incrementable;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -52,7 +52,7 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::regular<I2>::value>,
 		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>::value>,
-		typename T = decltype(std::declval<I2&>()++)
+		typename T = decltype(hamon::declval<I2&>()++)
 	>
 	static auto test(int) -> hamon::same_as<T, I2>;
 

@@ -30,8 +30,8 @@ using std::ranges::less_equal;
 #include <hamon/concepts/totally_ordered_with.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ struct less_equal
 	>
 #endif
 	HAMON_NODISCARD HAMON_CONSTEXPR bool operator()(T&& t, U&& u) const
-		HAMON_NOEXCEPT_IF_EXPR(std::declval<U>() < std::declval<T>())
+		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<U>() < hamon::declval<T>())
 	{
 		return !hamon::ranges::less{}(hamon::forward<U>(u), hamon::forward<T>(t));
 	}

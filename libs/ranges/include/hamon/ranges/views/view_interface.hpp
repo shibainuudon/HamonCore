@@ -45,9 +45,9 @@ using std::ranges::view_interface;
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <hamon/assert.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -61,13 +61,13 @@ namespace detail
 
 template <typename T>
 concept ranges_empty_invocable =
-	requires { hamon::ranges::empty(std::declval<T>()); };
+	requires { hamon::ranges::empty(hamon::declval<T>()); };
 
 #else
 
 template <typename T>
 using ranges_empty_invocable_impl =
-	decltype(hamon::ranges::empty(std::declval<T>()));
+	decltype(hamon::ranges::empty(hamon::declval<T>()));
 
 template <typename T>
 using ranges_empty_invocable =

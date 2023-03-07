@@ -18,8 +18,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -62,8 +62,8 @@ private:
 			hamon::remove_cvref_t<R>,
 			typename hamon::indirectly_readable_traits<I2>::value_type
 		>::value>,
-		typename T1 = decltype( std::declval<I2&>()++),
-		typename T2 = decltype(*std::declval<I2&>()++)
+		typename T1 = decltype( hamon::declval<I2&>()++),
+		typename T2 = decltype(*hamon::declval<I2&>()++)
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::convertible_to<T1, I2 const&>,

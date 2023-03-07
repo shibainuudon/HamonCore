@@ -32,8 +32,8 @@ using std::ranges::contiguous_range;
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -64,7 +64,7 @@ private:
 		typename U,
 		typename = hamon::enable_if_t<ranges::random_access_range<U>::value>,
 		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<U>>::value>,
-		typename P1 = decltype(ranges::data(std::declval<U&>())),
+		typename P1 = decltype(ranges::data(hamon::declval<U&>())),
 		typename P2 = hamon::add_pointer_t<ranges::range_reference_t<U>>
 	>
 	static auto test(int) -> hamon::same_as<P1, P2>;

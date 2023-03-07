@@ -11,9 +11,9 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -67,14 +67,14 @@ TYPED_TEST(MatrixTest, ReverseIteratorTest)
 	static_assert(hamon::is_same<vector4      &, hamon::iter_reference_t<typename matrix4x4::reverse_iterator>>::value, "");
 	static_assert(hamon::is_same<vector4 const&, hamon::iter_reference_t<typename matrix4x4::const_reverse_iterator>>::value, "");
 
-	static_assert(hamon::is_same<typename matrix3x3::reverse_iterator,       decltype(std::declval<matrix3x3>().rbegin())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::reverse_iterator,       decltype(std::declval<matrix3x3>().rend())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3>().crbegin())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3>().crend())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3 const>().rbegin())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3 const>().rend())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3 const>().crbegin())>::value, "");
-	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(std::declval<matrix3x3 const>().crend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::reverse_iterator,       decltype(hamon::declval<matrix3x3>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::reverse_iterator,       decltype(hamon::declval<matrix3x3>().rend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3>().crend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3 const>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3 const>().rend())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3 const>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename matrix3x3::const_reverse_iterator, decltype(hamon::declval<matrix3x3 const>().crend())>::value, "");
 
 	// const
 	{

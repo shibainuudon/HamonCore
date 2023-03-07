@@ -30,10 +30,10 @@ using std::ranges::less;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <cstdint>
-#include <utility>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ private:
 	requires detail::less_builtin_ptr_cmp<T, U>
 #endif
 	static HAMON_CXX14_CONSTEXPR bool impl(hamon::detail::overload_priority<1>, T&& t, U&& u)
-		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() < std::declval<U>())
+		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<T>() < hamon::declval<U>())
 	{
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
 		if (std::is_constant_evaluated())
@@ -84,7 +84,7 @@ private:
 	requires hamon::totally_ordered_with<T, U>
 #endif
 	static HAMON_CONSTEXPR bool impl(hamon::detail::overload_priority<0>, T&& t, U&& u)
-		HAMON_NOEXCEPT_IF_EXPR(std::declval<T>() < std::declval<U>())
+		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<T>() < hamon::declval<U>())
 	{
 		return hamon::forward<T>(t) < hamon::forward<U>(u);
 	}

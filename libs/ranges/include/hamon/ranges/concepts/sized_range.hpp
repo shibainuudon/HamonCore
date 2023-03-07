@@ -27,8 +27,8 @@ using std::ranges::sized_range;
 #include <hamon/ranges/size.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -53,7 +53,7 @@ struct sized_range_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<ranges::range<U>::value>,
-		typename = decltype(ranges::size(std::declval<U&>()))
+		typename = decltype(ranges::size(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::true_type;
 

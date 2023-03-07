@@ -14,8 +14,8 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -46,9 +46,9 @@ struct cpp17_bidi_iterator_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<cpp17_fwd_iterator<I2>::value>,
-		typename T1 = decltype(--std::declval<I2&>()),
-		typename T2 = decltype(  std::declval<I2&>()--),
-		typename T3 = decltype( *std::declval<I2&>()--)
+		typename T1 = decltype(--hamon::declval<I2&>()),
+		typename T2 = decltype(  hamon::declval<I2&>()--),
+		typename T3 = decltype( *hamon::declval<I2&>()--)
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::same_as<T1, I2&>,

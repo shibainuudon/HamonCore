@@ -12,9 +12,9 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -46,7 +46,7 @@ struct has_adl_swap_impl
 {
 private:
 	template <typename T2, typename U2,
-		typename = decltype(swap(std::declval<T2>(), std::declval<U2>()))
+		typename = decltype(swap(hamon::declval<T2>(), hamon::declval<U2>()))
 	>
 	static auto test(int) -> hamon::disjunction<
 		hamon::detail::class_or_enum<hamon::remove_reference_t<T2>>,

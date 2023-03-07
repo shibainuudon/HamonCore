@@ -23,14 +23,14 @@ using std::iter_reference_t;
 #include <hamon/iterator/concepts/detail/dereferenceable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
 
 template <HAMON_CONSTRAINED_PARAM(detail::dereferenceable, I)>
-using iter_reference_t = decltype(*std::declval<I&>());
+using iter_reference_t = decltype(*hamon::declval<I&>());
 
 }	// namespace hamon
 

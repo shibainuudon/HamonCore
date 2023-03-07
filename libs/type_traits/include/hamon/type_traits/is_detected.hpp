@@ -39,7 +39,7 @@ struct is_detected_impl<hamon::void_t<Op<Args...>>, Op, Args...>
  *	@code
  *	// コピー代入が可能かどうか
  *	template <typename T>
- *	using copy_assignable = decltype(std::declval<T&>() = std::declval<T const&>());
+ *	using copy_assignable = decltype(hamon::declval<T&>() = hamon::declval<T const&>());
  *
  *	// value_type型を持っているかどうか
  *	template <typename T>

@@ -12,7 +12,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -43,7 +43,7 @@ private:
 	template <typename F, typename T,
 		typename = hamon::enable_if_t<hamon::is_convertible<F, T>::value>,
 		typename Func = hamon::add_rvalue_reference_t<F> (&)(),
-		typename = decltype(static_cast<T>(std::declval<Func>()()))
+		typename = decltype(static_cast<T>(hamon::declval<Func>()()))
 	>
 	static auto test(int) -> hamon::true_type;
 

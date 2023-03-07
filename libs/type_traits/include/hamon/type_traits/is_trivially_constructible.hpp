@@ -23,9 +23,9 @@ namespace hamon
  *	@require	型TおよびパラメータパックArgs...のすべての型は、完全型であるか、
  *				void(cv修飾を含む)か、要素数不明の配列型でなければならない。
  *
- *	is_trivially_constructibleは、T obj(std::declval<Args>()...);の形式の変数定義がトリビアルに可能であるならば
+ *	is_trivially_constructibleは、T obj(declval<Args>()...);の形式の変数定義がトリビアルに可能であるならば
  *	true_typeから派生し、そうでなければfalse_typeから派生する。
- *	このとき、std::declvalはトリビアルであるとみなされる。
+ *	このとき、declvalはトリビアルであるとみなされる。
  */
 template <typename T, typename... Args>
 struct is_trivially_constructible

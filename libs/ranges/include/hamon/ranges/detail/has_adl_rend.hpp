@@ -14,8 +14,8 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -55,8 +55,8 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename E = decltype(hamon::detail::decay_copy(rend(std::declval<U&>()))),
-		typename B = decltype(ranges::rbegin(std::declval<U&>()))
+		typename E = decltype(hamon::detail::decay_copy(rend(hamon::declval<U&>()))),
+		typename B = decltype(ranges::rbegin(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::sentinel_for<E, B>;
 

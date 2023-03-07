@@ -11,9 +11,9 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -38,14 +38,14 @@ TYPED_TEST(QuaternionTest, ReverseIteratorTest)
 	static_assert(hamon::is_same<T      &, hamon::iter_reference_t<typename quaternion::reverse_iterator>>::value, "");
 	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<typename quaternion::const_reverse_iterator>>::value, "");
 
-	static_assert(hamon::is_same<typename quaternion::reverse_iterator,       decltype(std::declval<quaternion>().rbegin())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::reverse_iterator,       decltype(std::declval<quaternion>().rend())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion>().crbegin())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion>().crend())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion const>().rbegin())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion const>().rend())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion const>().crbegin())>::value, "");
-	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(std::declval<quaternion const>().crend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::reverse_iterator,       decltype(hamon::declval<quaternion>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::reverse_iterator,       decltype(hamon::declval<quaternion>().rend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion>().crend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion const>().rbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion const>().rend())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion const>().crbegin())>::value, "");
+	static_assert(hamon::is_same<typename quaternion::const_reverse_iterator, decltype(hamon::declval<quaternion const>().crend())>::value, "");
 
 	// const
 	{

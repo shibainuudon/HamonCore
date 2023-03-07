@@ -10,8 +10,8 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -38,7 +38,7 @@ struct has_member_begin_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(hamon::detail::decay_copy(std::declval<U&>().begin()))
+		typename B = decltype(hamon::detail::decay_copy(hamon::declval<U&>().begin()))
 	>
 	static auto test(int) -> hamon::input_or_output_iterator<B>;
 

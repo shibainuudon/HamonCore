@@ -10,8 +10,8 @@
 #include <hamon/type_traits/copy_cv.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/void_t.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 HAMON_WARNING_PUSH()
 
@@ -28,7 +28,7 @@ namespace detail
 #if !defined(_MSC_VER)
 
 template <typename X, typename Y>
-using cond_res = decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()>()());
+using cond_res = decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()());
 
 #else
 
@@ -39,10 +39,10 @@ struct cond_res_impl_base {};
 
 template <typename X, typename Y>
 struct cond_res_impl_base<X, Y,
-	hamon::void_t<decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()>()())>>
+	hamon::void_t<decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()())>>
 {
 	using type = hamon::remove_cv_t<
-		decltype(false ? std::declval<X(&)()>()() : std::declval<Y(&)()>()())
+		decltype(false ? hamon::declval<X(&)()>()() : hamon::declval<Y(&)()>()())
 	>;
 };
 

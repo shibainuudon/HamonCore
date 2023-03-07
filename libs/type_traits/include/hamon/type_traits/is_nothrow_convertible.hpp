@@ -26,7 +26,7 @@ using std::is_nothrow_convertible;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-conversion")
 
 template <typename From, typename To>
-static hamon::bool_constant<noexcept(test_noexcept<To>(std::declval<From>()))>
+static hamon::bool_constant<noexcept(test_noexcept<To>(hamon::declval<From>()))>
 is_nothrow_convertible_test();
 
 HAMON_WARNING_POP()

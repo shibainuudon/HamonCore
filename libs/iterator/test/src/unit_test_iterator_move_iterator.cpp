@@ -30,9 +30,11 @@
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
-#include <utility>
+#include <iterator>
+#include <cstddef>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -292,7 +294,7 @@ public:
 		typename Other = Convertible<U, IteratorWrapper>
 		, typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::negation<hamon::is_same<U, T>>,
-			hamon::convertible_to_t<decltype(base(std::declval<Other const&>())), pointer>
+			hamon::convertible_to_t<decltype(base(hamon::declval<Other const&>())), pointer>
 		>::value>
 	>
     HAMON_CXX14_CONSTEXPR
@@ -621,7 +623,7 @@ public:
 		typename Other = MayThrowAssign<Noexcept, U, IteratorWrapper>
 		, typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::negation<hamon::is_same<U, T>>,
-			hamon::convertible_to_t<decltype(base(std::declval<Other const&>())), pointer>
+			hamon::convertible_to_t<decltype(base(hamon::declval<Other const&>())), pointer>
 		>::value>
 	>
     HAMON_CXX14_CONSTEXPR
@@ -731,16 +733,16 @@ GTEST_TEST(MoveIteratorTest, BaseTest)
 	{
 		using Iter = MayThrowMoveCtor<true, int, input_iterator_wrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter &>().base());
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter const&>().base());
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter &&>().base());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter &>().base());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter const&>().base());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter &&>().base());
 	}
 	{
 		using Iter = MayThrowMoveCtor<false, int, input_iterator_wrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter &>().base());
-		HAMON_ASSERT_NOEXCEPT_TRUE (std::declval<MoveIter const&>().base());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter &&>().base());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter &>().base());
+		HAMON_ASSERT_NOEXCEPT_TRUE (hamon::declval<MoveIter const&>().base());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter &&>().base());
 	}
 #endif
 }
@@ -959,19 +961,19 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreIncrementTest()
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(++std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(++hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowIncrement<true, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(++std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(++hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowIncrement<false, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(++std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(++hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(++std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(++hamon::declval<hamon::move_iterator<Iter>>());
 	}
 #endif
 
@@ -1005,19 +1007,19 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest()
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<true, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<false, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 #endif
 
@@ -1041,19 +1043,19 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostIncrementTest2()
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowIncrement<true, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<true, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<false, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 	{
 		using Iter = MayThrowIncrement<false, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()++);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()++);
 	}
 #endif
 	return true;
@@ -1094,19 +1096,19 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPreDecrementTest()
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowDecrement<true, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(--std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(--hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowDecrement<true, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(--std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(--hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowDecrement<false, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(--std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(--hamon::declval<hamon::move_iterator<Iter>>());
 	}
 	{
 		using Iter = MayThrowDecrement<false, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(--std::declval<hamon::move_iterator<Iter>>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(--hamon::declval<hamon::move_iterator<Iter>>());
 	}
 #endif
 
@@ -1139,19 +1141,19 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPostDecrementTest()
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using Iter = MayThrowDecrement<true, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<hamon::move_iterator<Iter>>()--);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<hamon::move_iterator<Iter>>()--);
 	}
 	{
 		using Iter = MayThrowDecrement<true, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()--);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()--);
 	}
 	{
 		using Iter = MayThrowDecrement<false, true, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()--);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()--);
 	}
 	{
 		using Iter = MayThrowDecrement<false, false, int, IteratorWrapper>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<hamon::move_iterator<Iter>>()--);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<hamon::move_iterator<Iter>>()--);
 	}
 #endif
 
@@ -1205,26 +1207,26 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusTest()
 	{
 		using Iter = MayThrowPlus<true, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter>() + 1);
-		HAMON_ASSERT_NOEXCEPT_TRUE(1 + std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter>() + 1);
+		HAMON_ASSERT_NOEXCEPT_TRUE(1 + hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = MayThrowPlus<true, false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() + 1);
-		HAMON_ASSERT_NOEXCEPT_FALSE(1 + std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() + 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(1 + hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = MayThrowPlus<false, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() + 1);
-		HAMON_ASSERT_NOEXCEPT_FALSE(1 + std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() + 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(1 + hamon::declval<MoveIter>());
 	}
 	{
 		using Iter = MayThrowPlus<false, false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() + 1);
-		HAMON_ASSERT_NOEXCEPT_FALSE(1 + std::declval<MoveIter>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() + 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(1 + hamon::declval<MoveIter>());
 	}
 #endif
 
@@ -1279,12 +1281,12 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorPlusAssignTest()
 	{
 		using Iter = MayThrowNext<true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter&>() += 1);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter&>() += 1);
 	}
 	{
 		using Iter = MayThrowNext<false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter&>() += 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter&>() += 1);
 	}
 #endif
 
@@ -1343,22 +1345,22 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusTest()
 	{
 		using Iter = MayThrowMinus<true, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter>() - 1);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter>() - 1);
 	}
 	{
 		using Iter = MayThrowMinus<true, false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() - 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - 1);
 	}
 	{
 		using Iter = MayThrowMinus<false, true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() - 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - 1);
 	}
 	{
 		using Iter = MayThrowMinus<false, false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter>() - 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter>() - 1);
 	}
 #endif
 
@@ -1417,28 +1419,28 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorSubtractTest()
 		using Iter2 = MayThrowSubtract<true, int, IteratorWrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1>() - std::declval<MoveIter2>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1>() - hamon::declval<MoveIter2>());
 	}
 	{
 		using Iter1 = MayThrowSubtract<true,  int, IteratorWrapper>;
 		using Iter2 = MayThrowSubtract<false, int, IteratorWrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1>() - std::declval<MoveIter2>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1>() - hamon::declval<MoveIter2>());
 	}
 	{
 		using Iter1 = MayThrowSubtract<false, int, IteratorWrapper>;
 		using Iter2 = MayThrowSubtract<true,  int, IteratorWrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1>() - std::declval<MoveIter2>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1>() - hamon::declval<MoveIter2>());
 	}
 	{
 		using Iter1 = MayThrowSubtract<false, int, IteratorWrapper>;
 		using Iter2 = MayThrowSubtract<false, int, IteratorWrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1>() - std::declval<MoveIter2>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1>() - hamon::declval<MoveIter2>());
 	}
 #endif
 
@@ -1501,12 +1503,12 @@ inline HAMON_CXX14_CONSTEXPR bool OperatorMinusAssignTest()
 	{
 		using Iter = MayThrowPrev<true, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter&>() -= 1);
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter&>() -= 1);
 	}
 	{
 		using Iter = MayThrowPrev<false, int, IteratorWrapper>;
 		using MoveIter = hamon::move_iterator<Iter>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter&>() -= 1);
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter&>() -= 1);
 	}
 #endif
 
@@ -1536,17 +1538,17 @@ GTEST_TEST(MoveIteratorTest, OperatorMinusAssignTest)
 }
 
 template <typename T, typename U>
-using HasEq = decltype(std::declval<T const&>() == std::declval<U const&>());
+using HasEq = decltype(hamon::declval<T const&>() == hamon::declval<U const&>());
 template <typename T, typename U>
-using HasNe = decltype(std::declval<T const&>() != std::declval<U const&>());
+using HasNe = decltype(hamon::declval<T const&>() != hamon::declval<U const&>());
 template <typename T, typename U>
-using HasLt = decltype(std::declval<T const&>() < std::declval<U const&>());
+using HasLt = decltype(hamon::declval<T const&>() < hamon::declval<U const&>());
 template <typename T, typename U>
-using HasGt = decltype(std::declval<T const&>() > std::declval<U const&>());
+using HasGt = decltype(hamon::declval<T const&>() > hamon::declval<U const&>());
 template <typename T, typename U>
-using HasLe = decltype(std::declval<T const&>() <= std::declval<U const&>());
+using HasLe = decltype(hamon::declval<T const&>() <= hamon::declval<U const&>());
 template <typename T, typename U>
-using HasGe = decltype(std::declval<T const&>() >= std::declval<U const&>());
+using HasGe = decltype(hamon::declval<T const&>() >= hamon::declval<U const&>());
 
 template <bool Noexcept, typename T, template <typename> class IteratorWrapper>
 struct MayThrowCompare : public IteratorWrapper<T>
@@ -1613,40 +1615,40 @@ GTEST_TEST(MoveIteratorTest, OperatorEqNeTest)
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() == std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() != std::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() == hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() != hamon::declval<MoveIter const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<true, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<true, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() == std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() != std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() == hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() != hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<true,  int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() == std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() != std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() == hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() != hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<true,  int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() == std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() != std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() == hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() != hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() == std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() != std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() == hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() != hamon::declval<MoveIter2 const&>());
 	}
 #endif
 }
@@ -1796,50 +1798,50 @@ GTEST_TEST(MoveIteratorTest, OperatorLtGtTest)
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() <  std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() >  std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() <= std::declval<MoveIter const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() >= std::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() <  hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() >  hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() <= hamon::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() >= hamon::declval<MoveIter const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<true, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<true, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() <  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() >  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() <= std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter1 const&>() >= std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() <  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() >  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() <= hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter1 const&>() >= hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<true,  int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <= std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >= std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <= hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >= hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<true,  int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <= std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >= std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <= hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >= hamon::declval<MoveIter2 const&>());
 	}
 	{
 		using Iter1 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using Iter2 = MayThrowCompare<false, int, input_iterator_wrapper>;
 		using MoveIter1 = hamon::move_iterator<Iter1>;
 		using MoveIter2 = hamon::move_iterator<Iter2>;
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >  std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() <= std::declval<MoveIter2 const&>());
-		HAMON_ASSERT_NOEXCEPT_FALSE(std::declval<MoveIter1 const&>() >= std::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >  hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() <= hamon::declval<MoveIter2 const&>());
+		HAMON_ASSERT_NOEXCEPT_FALSE(hamon::declval<MoveIter1 const&>() >= hamon::declval<MoveIter2 const&>());
 	}
 #endif
 }
@@ -1887,7 +1889,7 @@ GTEST_TEST(MoveIteratorTest, OperatorSpaceshipTest)
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 	{
 		using MoveIter = hamon::move_iterator<int*>;
-		HAMON_ASSERT_NOEXCEPT_TRUE(std::declval<MoveIter const&>() <=> std::declval<MoveIter const&>());
+		HAMON_ASSERT_NOEXCEPT_TRUE(hamon::declval<MoveIter const&>() <=> hamon::declval<MoveIter const&>());
 	}
 #endif
 #endif

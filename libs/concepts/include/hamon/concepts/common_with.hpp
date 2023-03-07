@@ -25,7 +25,7 @@ using std::common_with;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -35,8 +35,8 @@ concept common_with =
 	hamon::same_as<hamon::common_type_t<T, U>, hamon::common_type_t<U, T>> &&
 	requires
 	{
-		static_cast<hamon::common_type_t<T, U>>(std::declval<T>());
-		static_cast<hamon::common_type_t<T, U>>(std::declval<U>());
+		static_cast<hamon::common_type_t<T, U>>(hamon::declval<T>());
+		static_cast<hamon::common_type_t<T, U>>(hamon::declval<U>());
 	} &&
 	hamon::common_reference_with<
 		hamon::add_lvalue_reference_t<T const>,
@@ -60,7 +60,7 @@ concept common_with =
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -74,8 +74,8 @@ struct common_with_impl
 private:
 	template <typename T2, typename U2,
 		typename C = hamon::common_type_t<T2, U2>,
-		typename = decltype(static_cast<C>(std::declval<T2>())),
-		typename = decltype(static_cast<C>(std::declval<U2>()))
+		typename = decltype(static_cast<C>(hamon::declval<T2>())),
+		typename = decltype(static_cast<C>(hamon::declval<U2>()))
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::same_as<

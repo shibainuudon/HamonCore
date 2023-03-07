@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -19,7 +20,7 @@ namespace flip_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename... U>
-using invoke_flip = decltype(std::declval<T>().flip(std::declval<U>()...));
+using invoke_flip = decltype(hamon::declval<T>().flip(hamon::declval<U>()...));
 
 static_assert( hamon::is_detected<invoke_flip, Bitflag1&, Enum1>::value, "");
 static_assert(!hamon::is_detected<invoke_flip, Bitflag1&, Enum2>::value, "");

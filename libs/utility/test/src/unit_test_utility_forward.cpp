@@ -5,6 +5,7 @@
  */
 
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -18,89 +19,89 @@ namespace forward_test
 
 struct U {};
 
-static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U>())), U&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U>())), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U>())), U const&&>::value, "");
 
-static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U&>())), U&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U&>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U&>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U&>())), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U&>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U&>())), U const&&>::value, "");
 
-static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U&&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U&&>())), U&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U&&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U&&>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U&&>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U&&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U&&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U&&>())), U&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U&&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U&&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U&&>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U&&>())), U const&&>::value, "");
 
-//static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U const>())), U&&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U const>())), U&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U const>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U const>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U const>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U const>())), U const&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U const>())), U&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U const>())), U&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U const>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U const>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U const>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U const>())), U const&&>::value, "");
 
-//static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U const&>())), U&&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U const&>())), U&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U const&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U const&>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U const&>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U const&>())), U const&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U const&>())), U&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U const&>())), U&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U const&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U const&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U const&>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U const&>())), U const&&>::value, "");
 
-//static_assert(hamon::is_same<decltype(hamon::forward<U        >(std::declval<U const&&>())), U&&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(std::declval<U const&&>())), U&>::value, "");
-//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(std::declval<U const&&>())), U&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const  >(std::declval<U const&&>())), U const&&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const& >(std::declval<U const&&>())), U const&>::value, "");
-static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(std::declval<U const&&>())), U const&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U        >(hamon::declval<U const&&>())), U&&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &      >(hamon::declval<U const&&>())), U&>::value, "");
+//static_assert(hamon::is_same<decltype(hamon::forward<U &&     >(hamon::declval<U const&&>())), U&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const  >(hamon::declval<U const&&>())), U const&&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const& >(hamon::declval<U const&&>())), U const&>::value, "");
+static_assert(hamon::is_same<decltype(hamon::forward<U const&&>(hamon::declval<U const&&>())), U const&&>::value, "");
 
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U>()));
 
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U&>()));
 
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U&&>()));
 
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U const>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U const>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U const>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U const>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U const>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U const>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U const>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U const>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U const>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U const>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U const>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U const>()));
 
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U const&>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U const&>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U const&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U const&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U const&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U const&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U const&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U const&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U const&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U const&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U const&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U const&>()));
 
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(std::declval<U const&&>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(std::declval<U const&&>()));
-//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(std::declval<U const&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(std::declval<U const&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(std::declval<U const&&>()));
-HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(std::declval<U const&&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U        >(hamon::declval<U const&&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &      >(hamon::declval<U const&&>()));
+//HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U &&     >(hamon::declval<U const&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const  >(hamon::declval<U const&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const& >(hamon::declval<U const&&>()));
+HAMON_ASSERT_NOEXCEPT_TRUE(hamon::forward<U const&&>(hamon::declval<U const&&>()));
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

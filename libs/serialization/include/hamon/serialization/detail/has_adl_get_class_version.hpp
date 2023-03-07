@@ -9,7 +9,7 @@
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -31,7 +31,7 @@ struct has_adl_get_class_version
 {
 private:
 	template <typename U,
-		typename R = decltype(get_class_version(std::declval<U>()))
+		typename R = decltype(get_class_version(hamon::declval<U>()))
 	>
 	static auto test(int) -> hamon::convertible_to_t<R, version_t>;
 

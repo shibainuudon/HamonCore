@@ -22,6 +22,7 @@ using std::is_swappable_with;
 #else
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <utility>
 
 namespace hamon
@@ -55,8 +56,8 @@ private:
 		typename T2,
 		typename U2,
 		typename = decltype(
-			swap(std::declval<T2>(), std::declval<U2>()),
-			swap(std::declval<U2>(), std::declval<T2>()))
+			swap(hamon::declval<T2>(), hamon::declval<U2>()),
+			swap(hamon::declval<U2>(), hamon::declval<T2>()))
 	>
 	static hamon::true_type test(int);
 

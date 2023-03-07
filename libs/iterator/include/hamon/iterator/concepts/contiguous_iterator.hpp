@@ -33,9 +33,9 @@ using std::contiguous_iterator;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -82,7 +82,7 @@ private:
 				hamon::remove_cvref_t<R>
 			>::value
 		>,
-		typename P1 = decltype(hamon::to_address(std::declval<I2 const&>()))
+		typename P1 = decltype(hamon::to_address(hamon::declval<I2 const&>()))
 	>
 	static auto test(int) -> hamon::same_as<P1, hamon::add_pointer_t<R>>;
 

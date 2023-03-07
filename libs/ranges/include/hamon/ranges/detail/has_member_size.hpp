@@ -13,8 +13,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -45,7 +45,7 @@ private:
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,
-		typename S = decltype(hamon::detail::decay_copy(std::declval<U&>().size()))
+		typename S = decltype(hamon::detail::decay_copy(hamon::declval<U&>().size()))
 	>
 	static auto test(int) -> detail::is_integer_like<S>;
 

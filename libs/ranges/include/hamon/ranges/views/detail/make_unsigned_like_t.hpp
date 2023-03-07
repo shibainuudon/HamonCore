@@ -8,7 +8,7 @@
 #define HAMON_RANGES_VIEWS_DETAIL_MAKE_UNSIGNED_LIKE_T_HPP
 
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon {
 namespace ranges {
@@ -16,7 +16,7 @@ namespace detail {
 
 template <typename T>
 using make_unsigned_like_t =
-	decltype(hamon::ranges::detail::to_unsigned_like(std::declval<T>()));
+	decltype(hamon::ranges::detail::to_unsigned_like(hamon::declval<T>()));
 
 }	// namespace detail
 }	// namespace ranges

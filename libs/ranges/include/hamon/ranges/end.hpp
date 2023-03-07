@@ -34,8 +34,8 @@ using std::ranges::end;
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -66,7 +66,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_end, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().end()))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().end()))
 	->decltype(t.end())
 	{
 		return t.end();
@@ -75,7 +75,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_adl_end, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<0>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(end(std::declval<T&>())))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(end(hamon::declval<T&>())))
 	->decltype(end(t))
 	{
 		return end(t);

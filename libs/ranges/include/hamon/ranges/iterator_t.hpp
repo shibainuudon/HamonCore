@@ -22,13 +22,13 @@ using std::ranges::iterator_t;
 #else
 
 #include <hamon/ranges/begin.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon {
 namespace ranges {
 
 template <typename T>
-using iterator_t = decltype(ranges::begin(std::declval<T&>()));
+using iterator_t = decltype(ranges::begin(hamon::declval<T&>()));
 
 }	// namespace ranges
 }	// namespace hamon

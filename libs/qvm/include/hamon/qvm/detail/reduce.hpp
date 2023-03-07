@@ -9,9 +9,9 @@
 
 #include <hamon/functional/plus.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>	// size_t
-#include <utility>	// declval
 
 namespace hamon
 {
@@ -66,7 +66,7 @@ template <
 	typename T,
 	std::size_t... Ns,
 	typename F = hamon::plus<>,
-	typename U = decltype(std::declval<F>()(std::declval<T>(), std::declval<T>()))
+	typename U = decltype(hamon::declval<F>()(hamon::declval<T>(), hamon::declval<T>()))
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR U
 reduce(GenType<T, Ns...> const& v, U init = {}, F binary_op = {}) HAMON_NOEXCEPT

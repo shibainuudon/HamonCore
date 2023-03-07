@@ -7,8 +7,8 @@
 #include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -100,9 +100,9 @@ struct can_prev_impl
 private:
 	template <typename U>
 	static auto test(int) -> decltype(
-		hamon::ranges::prev(std::declval<U&>()),
-		hamon::ranges::prev(std::declval<U&>(), 1),
-		hamon::ranges::prev(std::declval<U&>(), 1, std::declval<U&>()),
+		hamon::ranges::prev(hamon::declval<U&>()),
+		hamon::ranges::prev(hamon::declval<U&>(), 1),
+		hamon::ranges::prev(hamon::declval<U&>(), 1, hamon::declval<U&>()),
 		hamon::true_type{});
 
 	template <typename U>

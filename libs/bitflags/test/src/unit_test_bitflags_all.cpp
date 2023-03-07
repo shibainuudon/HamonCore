@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -17,7 +18,7 @@ namespace all_test
 {
 
 template <typename T>
-using invoke_all = decltype(std::declval<T>().all());
+using invoke_all = decltype(hamon::declval<T>().all());
 
 // all() はDenseがtrueのときのみ定義される
 static_assert(!hamon::is_detected<invoke_all, Bitflag1 const&>::value, "");

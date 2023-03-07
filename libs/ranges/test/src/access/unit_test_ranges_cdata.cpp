@@ -10,6 +10,7 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -22,7 +23,7 @@ namespace cdata_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-using has_cdata_t = decltype(hamon::ranges::cdata(std::declval<T&&>()));
+using has_cdata_t = decltype(hamon::ranges::cdata(hamon::declval<T&&>()));
 
 template <typename T>
 using has_cdata = hamon::is_detected<has_cdata_t, T>;

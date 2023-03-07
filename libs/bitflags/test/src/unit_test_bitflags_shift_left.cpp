@@ -6,6 +6,7 @@
 
 #include <hamon/bitflags.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -19,7 +20,7 @@ namespace shift_left_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename U>
-using invoke_shift_left = decltype(std::declval<T>() << std::declval<U>());
+using invoke_shift_left = decltype(hamon::declval<T>() << hamon::declval<U>());
 
 // operator<< はDenseがtrueのときのみ定義される
 static_assert(!hamon::is_detected<invoke_shift_left, Bitflag1 const&, int>::value, "");
@@ -33,7 +34,7 @@ static_assert(!hamon::is_detected<invoke_shift_left, Bitflag2 const&, Bitflag2 c
 static_assert(!hamon::is_detected<invoke_shift_left, Bitflag2 const&, Enum2 const&>::value, "");
 
 template <typename T, typename U>
-using invoke_shift_left_assign = decltype(std::declval<T>() <<= std::declval<U>());
+using invoke_shift_left_assign = decltype(hamon::declval<T>() <<= hamon::declval<U>());
 
 static_assert(!hamon::is_detected<invoke_shift_left_assign, Bitflag1&, int>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_left_assign, Bitflag1&, std::size_t>::value, "");

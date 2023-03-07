@@ -16,8 +16,8 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -55,13 +55,13 @@ private:
 		typename = hamon::enable_if_t<cpp17_bidi_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>::value>,
 		typename D = typename hamon::incrementable_traits<I2>::difference_type,
-		typename T1 = decltype(std::declval<I2&>() += std::declval<D& >()),
-		typename T2 = decltype(std::declval<I2&>() -= std::declval<D& >()),
-		typename T3 = decltype(std::declval<I2&>() +  std::declval<D& >()),
-		typename T4 = decltype(std::declval<D& >() +  std::declval<I2&>()),
-		typename T5 = decltype(std::declval<I2&>() -  std::declval<D& >()),
-		typename T6 = decltype(std::declval<I2&>() -  std::declval<I2&>()),
-		typename T7 = decltype(std::declval<I2&>()[std::declval<D&>()])
+		typename T1 = decltype(hamon::declval<I2&>() += hamon::declval<D& >()),
+		typename T2 = decltype(hamon::declval<I2&>() -= hamon::declval<D& >()),
+		typename T3 = decltype(hamon::declval<I2&>() +  hamon::declval<D& >()),
+		typename T4 = decltype(hamon::declval<D& >() +  hamon::declval<I2&>()),
+		typename T5 = decltype(hamon::declval<I2&>() -  hamon::declval<D& >()),
+		typename T6 = decltype(hamon::declval<I2&>() -  hamon::declval<I2&>()),
+		typename T7 = decltype(hamon::declval<I2&>()[hamon::declval<D&>()])
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::same_as<T1, I2&>,

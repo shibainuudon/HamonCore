@@ -15,7 +15,7 @@
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/functional/invoke.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 #else
 #include <hamon/type_traits/is_invocable_r.hpp>
 #endif
@@ -64,7 +64,7 @@ struct is_nothrow_invocable_impl_2
 template <typename... Types>
 struct is_nothrow_invocable_impl_2<true, Types...>
 	: public hamon::bool_constant<
-		noexcept(hamon::invoke(std::declval<Types>()...))
+		noexcept(hamon::invoke(hamon::declval<Types>()...))
 	>
 {};
 

@@ -27,10 +27,10 @@ using std::ranges::ssize;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/make_signed.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
 #include <limits>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -42,7 +42,7 @@ struct ssize_fn
 public:
 	template <
 		typename T,
-		typename size_type = decltype(ranges::size(std::declval<T&>())),
+		typename size_type = decltype(ranges::size(hamon::declval<T&>())),
 		typename result_type =
 			hamon::conditional_t<
 				hamon::integral_t<size_type>::value,

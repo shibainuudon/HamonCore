@@ -34,8 +34,8 @@ using std::ranges::begin;
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon {
 namespace ranges {
@@ -66,7 +66,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_member_begin, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(std::declval<T&>().begin()))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().begin()))
 	->decltype(t.begin())
 	{
 		return t.begin();
@@ -75,7 +75,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM(has_adl_begin, T)>
 	static HAMON_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<0>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(begin(std::declval<T&>())))
+		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(begin(hamon::declval<T&>())))
 	->decltype(begin(t))
 	{
 		return begin(t);

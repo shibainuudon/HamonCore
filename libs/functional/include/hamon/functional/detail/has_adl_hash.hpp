@@ -14,8 +14,8 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 #include <cstddef>
 
 namespace hamon
@@ -49,7 +49,7 @@ private:
 				hamon::remove_reference_t<U>
 			>::value
 		>,
-		typename B = decltype(decay_copy(hash(std::declval<U&>())))
+		typename B = decltype(decay_copy(hash(hamon::declval<U&>())))
 	>
 	static auto test(int) -> hamon::convertible_to<B, std::size_t>;
 	

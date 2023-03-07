@@ -35,8 +35,8 @@ using std::three_way_comparable_with;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -89,8 +89,8 @@ private:
 		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename B = hamon::remove_reference_t<U2>,
-		typename R1 = decltype(std::declval<A const&>() <=> std::declval<B const&>()),
-		typename R2 = decltype(std::declval<B const&>() <=> std::declval<A const&>())
+		typename R1 = decltype(hamon::declval<A const&>() <=> hamon::declval<B const&>()),
+		typename R2 = decltype(hamon::declval<B const&>() <=> hamon::declval<A const&>())
 	>
 	static auto test(int) -> hamon::conjunction<
 		detail::compares_as<R1, C2>,

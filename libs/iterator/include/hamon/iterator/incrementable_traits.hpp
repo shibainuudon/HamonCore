@@ -27,9 +27,9 @@ using std::incrementable_traits;
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/make_signed.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <cstddef>
-#include <utility>
 
 namespace hamon
 {
@@ -104,12 +104,12 @@ struct incrementable_traits<T
 		!detail::has_difference_type<T>::value
 	>
 	, hamon::enable_if_t<
-		hamon::integral_t<decltype(std::declval<T>() - std::declval<T>())>::value
+		hamon::integral_t<decltype(hamon::declval<T>() - hamon::declval<T>())>::value
 	>
 #endif
 >
 {
-	using difference_type = hamon::make_signed_t<decltype(std::declval<T>() - std::declval<T>())>;
+	using difference_type = hamon::make_signed_t<decltype(hamon::declval<T>() - hamon::declval<T>())>;
 };
 
 #undef HAMON_GCC_10

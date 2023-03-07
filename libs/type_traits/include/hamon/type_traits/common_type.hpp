@@ -31,7 +31,7 @@ using std::common_type;
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/detail/common_type_fold.hpp>
 #include <hamon/type_traits/detail/common_type_pack.hpp>
-#include <utility>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon
 {
@@ -74,7 +74,7 @@ private:
 	{};
 
 	template <typename T, typename U>
-	using cond_t = decltype(false ? std::declval<T>() : std::declval<U>());
+	using cond_t = decltype(false ? hamon::declval<T>() : hamon::declval<U>());
 
 	// Otherwise, if decay_t<decltype(false ? declval<D1>() : declval<D2>())>
 	// denotes a valid type, let C denote that type.

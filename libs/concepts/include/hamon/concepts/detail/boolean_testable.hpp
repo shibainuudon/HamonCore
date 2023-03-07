@@ -11,8 +11,8 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ struct boolean_testable_impl
 {
 private:
 	template <typename U,
-		typename V = decltype(!std::declval<U&&>())
+		typename V = decltype(!hamon::declval<U&&>())
 	>
 	static auto test(int) -> hamon::conjunction<
 		hamon::convertible_to<U, bool>,

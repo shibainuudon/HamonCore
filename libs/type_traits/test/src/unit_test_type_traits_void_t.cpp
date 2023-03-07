@@ -6,8 +6,8 @@
 
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 
 namespace hamon_type_traits_test
 {
@@ -49,7 +49,7 @@ template <typename, typename = hamon::void_t<>>
 struct has_f1_memfun : hamon::false_type {};
 
 template <typename T>
-struct has_f1_memfun<T, hamon::void_t<decltype(std::declval<T>().f1())>> : hamon::true_type {};
+struct has_f1_memfun<T, hamon::void_t<decltype(hamon::declval<T>().f1())>> : hamon::true_type {};
 
 static_assert( has_f1_memfun<C>::value, "");
 static_assert(!has_f1_memfun<D>::value, "");
@@ -70,7 +70,7 @@ struct has_f_memfun : hamon::false_type {};
 
 template <typename T>
 struct has_f_memfun<T, hamon::void_t<
-	decltype(std::declval<T>().f(std::declval<int>(), std::declval<float>()))>> : hamon::true_type {};
+	decltype(hamon::declval<T>().f(hamon::declval<int>(), hamon::declval<float>()))>> : hamon::true_type {};
 
 static_assert(!has_f_memfun<E>::value, "");
 static_assert( has_f_memfun<F>::value, "");
@@ -91,7 +91,7 @@ struct fun_callable : hamon::false_type {};
 
 template <typename T>
 struct fun_callable<T, hamon::void_t<
-	decltype(fun(std::declval<int>(), std::declval<T>(), std::declval<char>()))>> : hamon::true_type {};
+	decltype(fun(hamon::declval<int>(), hamon::declval<T>(), hamon::declval<char>()))>> : hamon::true_type {};
 
 static_assert( fun_callable<G>::value, "");
 static_assert(!fun_callable<H>::value, "");

@@ -8,8 +8,8 @@
 #define HAMON_COMPARE_DETAIL_COMPARE_THREE_WAY_RESULT_IMPL_HPP
 
 #include <hamon/concepts/detail/cref.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -21,7 +21,7 @@ namespace detail
 
 template <typename T, typename U>
 using cmp3way_res_t =
-	decltype(std::declval<T>() <=> std::declval<U>());
+	decltype(hamon::declval<T>() <=> hamon::declval<U>());
 
 // Implementation of std::compare_three_way_result.
 // It is undefined for a program to add specializations of

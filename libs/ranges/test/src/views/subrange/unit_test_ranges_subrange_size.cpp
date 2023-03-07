@@ -7,9 +7,9 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <utility>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -27,7 +27,7 @@ struct HasSizeImpl
 {
 private:
 	template <typename S2,
-		typename = decltype(std::declval<const S2&>().size())
+		typename = decltype(hamon::declval<const S2&>().size())
 	>
 	static auto test(int) -> hamon::true_type;
 

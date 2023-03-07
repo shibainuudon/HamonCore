@@ -10,6 +10,7 @@
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -23,7 +24,7 @@ namespace data_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-using has_data_t = decltype(hamon::ranges::data(std::declval<T>()));
+using has_data_t = decltype(hamon::ranges::data(hamon::declval<T>()));
 
 template <typename T>
 using has_data = hamon::is_detected<has_data_t, T>;

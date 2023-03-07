@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/quaternion.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/utility/declval.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
-#include <utility>
 
 namespace hamon_qvm_test
 {
@@ -25,15 +25,15 @@ inline HAMON_CXX14_CONSTEXPR bool PlusTest()
 	using quaternioni = hamon::qvm::quaternion<int>;
 	using quaternionf = hamon::qvm::quaternion<float>;
 
-	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  += quaternion{}),  quaternion&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  += quaternioni{}), quaternion&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternion&>()  += quaternionf{}), quaternion&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() += quaternion{}),  quaternioni&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() += quaternioni{}), quaternioni&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternioni&>() += quaternionf{}), quaternioni&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() += quaternion{}),  quaternionf&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() += quaternioni{}), quaternionf&>::value, "");
-	static_assert(hamon::is_same<decltype(std::declval<quaternionf&>() += quaternionf{}), quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternion&>()  += quaternion{}),  quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternion&>()  += quaternioni{}), quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternion&>()  += quaternionf{}), quaternion&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternioni&>() += quaternion{}),  quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternioni&>() += quaternioni{}), quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternioni&>() += quaternionf{}), quaternioni&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternionf&>() += quaternion{}),  quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternionf&>() += quaternioni{}), quaternionf&>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<quaternionf&>() += quaternionf{}), quaternionf&>::value, "");
 
 	// quaternion += quaternion
 	{
