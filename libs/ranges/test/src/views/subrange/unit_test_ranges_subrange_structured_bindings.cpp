@@ -28,7 +28,7 @@ namespace structured_bindings_test
 #if defined(HAMON_HAS_CXX17_STRUCTURED_BINDINGS)
 
 // Visual Studio 2019/2022 で内部コンパイラエラーになってしまう
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1934))
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1935))
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
@@ -147,7 +147,7 @@ GTEST_TEST(RangesTest, SubrangeStructuredBindingsTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
-#endif	// !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))
+#endif	// !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1935))
 
 #endif	// defined(HAMON_HAS_CXX17_STRUCTURED_BINDINGS)
 
