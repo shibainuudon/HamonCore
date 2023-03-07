@@ -20,8 +20,8 @@ using std::begin;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ begin(Container const& c) -> decltype(c.begin())
 	return c.begin();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 inline HAMON_CONSTEXPR T*
 begin(T (&a)[N]) HAMON_NOEXCEPT
 {

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -35,12 +36,12 @@ void testIterator()
 	ASSERT_SAME_TYPE(typename ItT::difference_type,   typename S::difference_type);
 }
 
-template <typename S, typename ElementType, std::size_t Size>
+template <typename S, typename ElementType, hamon::size_t Size>
 void testSpan()
 {
 	ASSERT_SAME_TYPE(typename S::element_type,    ElementType);
 	ASSERT_SAME_TYPE(typename S::value_type,      hamon::remove_cv_t<ElementType>);
-	ASSERT_SAME_TYPE(typename S::size_type,       std::size_t);
+	ASSERT_SAME_TYPE(typename S::size_type,       hamon::size_t);
 	ASSERT_SAME_TYPE(typename S::difference_type, std::ptrdiff_t);
 	ASSERT_SAME_TYPE(typename S::pointer,         ElementType*);
 	ASSERT_SAME_TYPE(typename S::const_pointer,   const ElementType*);

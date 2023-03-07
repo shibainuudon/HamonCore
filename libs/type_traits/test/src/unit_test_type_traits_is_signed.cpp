@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_signed.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <cstdint>	// WCHAR_MIN
 #include <climits>	// CHAR_MIN
@@ -66,7 +67,7 @@ HAMON_IS_SIGNED_TEST(false, unsigned int);
 HAMON_IS_SIGNED_TEST(false, unsigned short);
 HAMON_IS_SIGNED_TEST(false, unsigned long);
 HAMON_IS_SIGNED_TEST(false, unsigned long long);
-HAMON_IS_SIGNED_TEST(false, std::size_t);
+HAMON_IS_SIGNED_TEST(false, hamon::size_t);
 HAMON_IS_SIGNED_TEST(true, float);
 HAMON_IS_SIGNED_TEST(true, double);
 HAMON_IS_SIGNED_TEST(true, long double);

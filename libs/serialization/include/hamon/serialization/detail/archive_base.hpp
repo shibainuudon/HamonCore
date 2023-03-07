@@ -7,9 +7,9 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_ARCHIVE_BASE_HPP
 #define HAMON_SERIALIZATION_DETAIL_ARCHIVE_BASE_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <memory>
 #include <vector>
-#include <cstddef>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ public:
 	template <typename T>
 	int get_shared_ptr_index(std::shared_ptr<T> const& ptr) const
 	{
-		for (std::size_t i = 0; i < m_list.size(); ++i)
+		for (hamon::size_t i = 0; i < m_list.size(); ++i)
 		{
 			if (m_list[i] == ptr)
 			{
@@ -45,7 +45,7 @@ public:
 	template <typename T>
 	std::shared_ptr<T> get_shared_ptr(int index)
 	{
-		return std::static_pointer_cast<T>(m_list[static_cast<std::size_t>(index)]);
+		return std::static_pointer_cast<T>(m_list[static_cast<hamon::size_t>(index)]);
 	}
 
 private:

@@ -9,6 +9,7 @@
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 //#include <hamon/type_traits/common_type.hpp>
 //#include <hamon/type_traits/make_signed.hpp>
@@ -125,7 +126,7 @@ struct SizeIsTen : hamon::ranges::view_interface<SizeIsTen>
 	HAMON_CXX11_CONSTEXPR ConstRAIter begin() const noexcept { return ConstRAIter{ buff }; }
 	HAMON_CXX14_CONSTEXPR RAIter      end()         noexcept { return RAIter     { buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR ConstRAIter end()   const noexcept { return ConstRAIter{ buff + 8 }; }
-	HAMON_CXX11_CONSTEXPR std::size_t size()  const noexcept { return 10; }
+	HAMON_CXX11_CONSTEXPR hamon::size_t size()  const noexcept { return 10; }
 };
 static_assert(hamon::ranges::view_t<SizeIsTen>::value, "");
 
@@ -361,13 +362,13 @@ HAMON_CXX14_CONSTEXPR bool SizeTest()
 	static_assert( SizeInvocable<RARange>::value, "");
 	static_assert( SizeInvocable<SizeIsTen>::value, "");
 
-	//using SignedSize = hamon::common_type_t<std::ptrdiff_t, hamon::make_signed_t<std::size_t>>;
+	//using SignedSize = hamon::common_type_t<std::ptrdiff_t, hamon::make_signed_t<hamon::size_t>>;
 	RARange randomAccess;
 	static_assert(!noexcept(randomAccess.size()), "");
 	VERIFY(randomAccess.size() == 8);
 
 	VERIFY(hamon::ranges::size(randomAccess) == 8);
-	//static_assert(hamon::same_as<decltype(hamon::ranges::size(hamon::declval<RARange>())), std::size_t>);
+	//static_assert(hamon::same_as<decltype(hamon::ranges::size(hamon::declval<RARange>())), hamon::size_t>);
 	//static_assert(hamon::same_as<decltype(hamon::ranges::ssize(hamon::declval<RARange>())), SignedSize>);
 
 	SizeIsTen sizeTen;
@@ -397,10 +398,10 @@ GTEST_TEST(RangesViewInterfaceTest, SizeTest)
 
 #if 0
 template <typename T>
-concept SubscriptInvocable = requires (T const& obj, std::size_t n) { obj[n]; };
+concept SubscriptInvocable = requires (T const& obj, hamon::size_t n) { obj[n]; };
 #else
 template <typename T>
-using SubscriptInvocableImpl = decltype(hamon::declval<T const&>()[hamon::declval<std::size_t>()]);
+using SubscriptInvocableImpl = decltype(hamon::declval<T const&>()[hamon::declval<hamon::size_t>()]);
 template <typename T>
 using SubscriptInvocable = hamon::is_detected<SubscriptInvocableImpl, T>;
 #endif

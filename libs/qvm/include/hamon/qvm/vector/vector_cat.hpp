@@ -7,12 +7,12 @@
 #ifndef HAMON_QVM_VECTOR_VECTOR_CAT_HPP
 #define HAMON_QVM_VECTOR_VECTOR_CAT_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/accumulation.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -27,22 +27,22 @@ template <typename... Vectors>
 struct vector_cat_result;
 
 template <
-	template <typename, std::size_t> class Vector,
-	typename... Ts, std::size_t... Ns
+	template <typename, hamon::size_t> class Vector,
+	typename... Ts, hamon::size_t... Ns
 >
 struct vector_cat_result<Vector<Ts, Ns>...>
 {
 	using type = Vector<
 		hamon::common_type_t<Ts...>,
-		hamon::accumulation<hamon::integral_constant<std::size_t, Ns>...>::value>;
+		hamon::accumulation<hamon::integral_constant<hamon::size_t, Ns>...>::value>;
 };
 
 template <typename... Vectors>
 using vector_cat_result_t = typename vector_cat_result<Vectors...>::type;
 
 template <
-	template <typename, std::size_t> class Vector,
-	typename T, std::size_t N
+	template <typename, hamon::size_t> class Vector,
+	typename T, hamon::size_t N
 >
 HAMON_CONSTEXPR Vector<T, N>
 vector_cat_impl(Vector<T, N> const& v)
@@ -50,7 +50,7 @@ vector_cat_impl(Vector<T, N> const& v)
 	return v;
 }
 
-template <typename Vec1, typename Vec2, std::size_t... Is, std::size_t... Js>
+template <typename Vec1, typename Vec2, hamon::size_t... Is, hamon::size_t... Js>
 HAMON_CONSTEXPR vector_cat_result_t<Vec1, Vec2>
 vector_cat_impl_2(
 	Vec1 const& v1,
@@ -62,9 +62,9 @@ vector_cat_impl_2(
 }
 
 template <
-	template <typename, std::size_t> class Vector,
-	typename T1, std::size_t N1,
-	typename T2, std::size_t N2
+	template <typename, hamon::size_t> class Vector,
+	typename T1, hamon::size_t N1,
+	typename T2, hamon::size_t N2
 >
 HAMON_CONSTEXPR vector_cat_result_t<Vector<T1, N1>, Vector<T2, N2>>
 vector_cat_impl(Vector<T1, N1> const& v1, Vector<T2, N2> const& v2)

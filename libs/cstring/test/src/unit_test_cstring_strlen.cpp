@@ -5,6 +5,7 @@
  */
 
 #include <hamon/cstring/strlen.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <string>
@@ -78,32 +79,32 @@ GTEST_TEST(CStringTest, StrLenTest)
 
 	// long string
 	{
-		std::size_t const length = 1024 * 1024;
+		hamon::size_t const length = 1024 * 1024;
 		std::string s(length, 42);
 		EXPECT_EQ(length, hamon::strlen(s.c_str()));
 	}
 	{
-		std::size_t const length = 1024 * 1024;
+		hamon::size_t const length = 1024 * 1024;
 		std::wstring s(length, 42);
 		EXPECT_EQ(length, hamon::strlen(s.c_str()));
 	}
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 	{
-		std::size_t const length = 1024 * 1024;
+		hamon::size_t const length = 1024 * 1024;
 		std::u8string s(length, 42);
 		EXPECT_EQ(length, hamon::strlen(s.c_str()));
 	}
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 	{
-		std::size_t const length = 1024 * 1024;
+		hamon::size_t const length = 1024 * 1024;
 		std::u16string s(length, 42);
 		EXPECT_EQ(length, hamon::strlen(s.c_str()));
 	}
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 	{
-		std::size_t const length = 1024 * 1024;
+		hamon::size_t const length = 1024 * 1024;
 		std::u32string s(length, 42);
 		EXPECT_EQ(length, hamon::strlen(s.c_str()));
 	}

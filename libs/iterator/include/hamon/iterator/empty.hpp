@@ -20,9 +20,9 @@ using std::empty;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <cstddef>
 
 namespace hamon
 {
@@ -33,7 +33,7 @@ HAMON_NODISCARD HAMON_CONSTEXPR auto empty(Container const& c) -> decltype(c.emp
 	return c.empty();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_NODISCARD HAMON_CONSTEXPR bool empty(T const (&)[N]) HAMON_NOEXCEPT
 {
 	return false;

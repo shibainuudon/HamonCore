@@ -7,7 +7,7 @@
 #ifndef HAMON_DETAIL_OVERLOAD_PRIORITY_HPP
 #define HAMON_DETAIL_OVERLOAD_PRIORITY_HPP
 
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
@@ -15,7 +15,7 @@ namespace hamon
 namespace detail
 {
 
-template <std::size_t N>
+template <hamon::size_t N>
 struct overload_priority : public overload_priority<N - 1>
 {};
 

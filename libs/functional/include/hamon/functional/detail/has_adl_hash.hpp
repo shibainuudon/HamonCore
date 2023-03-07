@@ -10,13 +10,13 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ concept has_adl_hash =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T&& t)
 	{
-		{ decay_copy(hash(hamon::forward<T>(t))) } -> hamon::convertible_to<std::size_t>;
+		{ decay_copy(hash(hamon::forward<T>(t))) } -> hamon::convertible_to<hamon::size_t>;
 	};
 
 #else
@@ -51,7 +51,7 @@ private:
 		>,
 		typename B = decltype(decay_copy(hash(hamon::declval<U&>())))
 	>
-	static auto test(int) -> hamon::convertible_to<B, std::size_t>;
+	static auto test(int) -> hamon::convertible_to<B, hamon::size_t>;
 	
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

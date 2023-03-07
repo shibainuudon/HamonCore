@@ -7,8 +7,8 @@
 #ifndef HAMON_UTILITY_IN_PLACE_INDEX_HPP
 #define HAMON_UTILITY_IN_PLACE_INDEX_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 #if HAMON_CXX_STANDARD >= 17
 
@@ -28,7 +28,7 @@ namespace hamon
 {
 
 // in_place_index_t
-template <std::size_t I>
+template <hamon::size_t I>
 struct in_place_index_t
 {
 	explicit in_place_index_t() = default;
@@ -36,7 +36,7 @@ struct in_place_index_t
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
-template <std::size_t I>
+template <hamon::size_t I>
 HAMON_STATIC_CONSTEXPR hamon::in_place_index_t<I> in_place_index{};
 
 #endif	// defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -61,7 +61,7 @@ struct is_in_place_index_impl
 	: public hamon::false_type
 {};
 
-template <std::size_t I>
+template <hamon::size_t I>
 struct is_in_place_index_impl<hamon::in_place_index_t<I>>
 	: public hamon::true_type
 {};

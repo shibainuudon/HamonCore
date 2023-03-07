@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/has_virtual_destructor.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -77,7 +78,7 @@ HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, unsigned int);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, unsigned short);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, unsigned long);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, unsigned long long);
-HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, std::size_t);
+HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, hamon::size_t);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, float);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, double);
 HAMON_HAS_VIRTUAL_DESTRUCTOR_TEST(false, long double);

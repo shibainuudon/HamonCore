@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -123,7 +124,7 @@ HAMON_IS_COPY_ASSIGNABLE_TEST(true, unsigned int);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, unsigned short);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, unsigned long);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, unsigned long long);
-HAMON_IS_COPY_ASSIGNABLE_TEST(true, std::size_t);
+HAMON_IS_COPY_ASSIGNABLE_TEST(true, hamon::size_t);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, float);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, double);
 HAMON_IS_COPY_ASSIGNABLE_TEST(true, long double);

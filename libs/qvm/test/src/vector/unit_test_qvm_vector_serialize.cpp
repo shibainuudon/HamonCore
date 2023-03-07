@@ -6,6 +6,7 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/operators.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 #include "serialize_test.hpp"
 #include "vector_test.hpp"
@@ -30,7 +31,7 @@ class VectorSerializeTest : public ::testing::Test {};
 
 TYPED_TEST_SUITE(VectorSerializeTest, VectorSerializeTestTypes);
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 void VectorSerializeTestSub()
 {
 	using namespace hamon::serialization;

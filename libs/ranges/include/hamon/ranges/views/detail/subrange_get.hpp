@@ -7,14 +7,14 @@
 #ifndef HAMON_RANGES_VIEWS_DETAIL_SUBRANGE_GET_HPP
 #define HAMON_RANGES_VIEWS_DETAIL_SUBRANGE_GET_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon {
 namespace ranges {
 namespace detail {
 
-template <std::size_t N>
+template <hamon::size_t N>
 struct subrange_get;
 
 template <>

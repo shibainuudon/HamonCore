@@ -7,9 +7,9 @@
 #ifndef HAMON_QVM_MATRIX_DETAIL_MAKE_DIAGONAL_MATRIX_HPP
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_DIAGONAL_MATRIX_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -24,20 +24,20 @@ template <typename Matrix>
 struct make_diagonal_matrix;
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
-	typename T, std::size_t N
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
+	typename T, hamon::size_t N
 >
 struct make_diagonal_matrix<Matrix<T, N, N>>
 {
 private:
-	template <template <typename, std::size_t> class Vector, std::size_t... Js>
+	template <template <typename, hamon::size_t> class Vector, hamon::size_t... Js>
 	HAMON_NODISCARD static HAMON_CONSTEXPR Vector<T, N>
-	impl_2(Vector<T, N> const& v, std::size_t I, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
+	impl_2(Vector<T, N> const& v, hamon::size_t I, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
 	{
 		return Vector<T, N>{ (I == Js ? v[I] : 0)... };
 	}
 
-	template <template <typename, std::size_t> class Vector, std::size_t... Is>
+	template <template <typename, hamon::size_t> class Vector, hamon::size_t... Is>
 	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
 	impl(Vector<T, N> const& arg, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
 	{
@@ -45,7 +45,7 @@ private:
 	}
 
 public:
-	template <template <typename, std::size_t> class Vector>
+	template <template <typename, hamon::size_t> class Vector>
 	HAMON_NODISCARD static HAMON_CONSTEXPR Matrix<T, N, N>
 	invoke(Vector<T, N> const& arg) HAMON_NOEXCEPT
 	{

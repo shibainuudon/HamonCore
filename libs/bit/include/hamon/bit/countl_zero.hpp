@@ -24,10 +24,10 @@ using std::countl_zero;
 
 #include <hamon/bit/popcount.hpp>
 #include <hamon/bit/bitsof.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -54,7 +54,7 @@ namespace detail
 //
 //	これを任意のビット数に拡張しています。
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct countl_zero_impl
 {
 	static HAMON_CONSTEXPR int invoke(T x) HAMON_NOEXCEPT

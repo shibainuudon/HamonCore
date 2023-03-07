@@ -9,8 +9,8 @@
 
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ template <typename Matrix>
 struct make_rotation_matrix;
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
 	typename T
 >
 struct make_rotation_matrix<Matrix<T, 3, 3>>

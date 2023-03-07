@@ -8,10 +8,10 @@
 #define HAMON_QVM_COMMON_EQUAL_HPP
 
 #include <hamon/qvm/detail/transform.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -23,8 +23,8 @@ namespace qvm
  *	@brief	equal
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T, std::size_t... Ns
+	template <typename, hamon::size_t...> class GenType,
+	typename T, hamon::size_t... Ns
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR GenType<bool, Ns...>
 equal(GenType<T, Ns...> const& lhs, GenType<T, Ns...> const& rhs) HAMON_NOEXCEPT
@@ -38,8 +38,8 @@ equal(GenType<T, Ns...> const& lhs, GenType<T, Ns...> const& rhs) HAMON_NOEXCEPT
  *	要素の型が違うときのオーバーロード
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T1, typename T2, std::size_t... Ns
+	template <typename, hamon::size_t...> class GenType,
+	typename T1, typename T2, hamon::size_t... Ns
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR GenType<bool, Ns...>
 equal(GenType<T1, Ns...> const& lhs, GenType<T2, Ns...> const& rhs) HAMON_NOEXCEPT

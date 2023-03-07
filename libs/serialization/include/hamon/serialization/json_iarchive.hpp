@@ -10,6 +10,7 @@
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
@@ -17,6 +18,7 @@
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace hamon
 {
@@ -159,7 +161,7 @@ private:
 	friend void load_array(json_iarchive& ia, T& t)
 	{
 		ia.m_impl->get_one_char();	// "["
-		std::size_t i = 0;
+		hamon::size_t i = 0;
 		for (auto& x : t)
 		{
 			if (i != 0)

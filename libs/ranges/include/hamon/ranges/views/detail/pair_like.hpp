@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/derived_from.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -18,7 +19,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <tuple>
 #include <type_traits>
 
@@ -34,7 +34,7 @@ concept pair_like =
 	requires(T t)
 	{
 		typename std::tuple_size<T>::type;
-		requires hamon::derived_from<std::tuple_size<T>, std::integral_constant<std::size_t, 2>>;
+		requires hamon::derived_from<std::tuple_size<T>, std::integral_constant<hamon::size_t, 2>>;
 		typename hamon::tuple_element_t<0, hamon::remove_const_t<T>>;
 		typename hamon::tuple_element_t<1, hamon::remove_const_t<T>>;
 		{ get<0>(t) } -> hamon::convertible_to<hamon::tuple_element_t<0, T> const&>;
@@ -43,7 +43,7 @@ concept pair_like =
 
 #else
 
-template <std::size_t> void get(void) = delete;
+template <hamon::size_t> void get(void) = delete;
 
 template <typename T>
 struct pair_like_impl
@@ -53,7 +53,7 @@ private:
 		typename = hamon::enable_if_t<!hamon::is_reference<U>::value>,
 		typename = typename std::tuple_size<U>::type,
 		typename = hamon::enable_if_t<
-			hamon::derived_from<std::tuple_size<U>, std::integral_constant<std::size_t, 2>>::value
+			hamon::derived_from<std::tuple_size<U>, std::integral_constant<hamon::size_t, 2>>::value
 		>,
 		typename = hamon::tuple_element_t<0, hamon::remove_const_t<U>>,
 		typename = hamon::tuple_element_t<1, hamon::remove_const_t<U>>,

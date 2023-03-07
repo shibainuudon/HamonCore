@@ -5,9 +5,9 @@
  */
 
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 #if defined(HAMON_HAS_STD_COMPARE) && defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
@@ -36,14 +36,14 @@ struct B
 
 struct S1 : B
 {
-	std::size_t s;
+	hamon::size_t s;
 
 	friend auto operator<=>(const S1&, const S1&) = default;
 };
 
 struct S2 : B
 {
-	std::size_t s;
+	hamon::size_t s;
 
 	friend auto operator<=>(const S2&, const S2&) = default;
 	friend bool operator== (const S2&, const S2&) = default;

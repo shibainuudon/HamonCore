@@ -24,6 +24,7 @@ using std::bit_width;
 
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/bit/bitsof.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
@@ -54,7 +55,7 @@ template <
 inline HAMON_CONSTEXPR T
 bit_width(T x) HAMON_NOEXCEPT
 {
-	return static_cast<T>(bitsof(x) - static_cast<std::size_t>(countl_zero(x)));
+	return static_cast<T>(bitsof(x) - static_cast<hamon::size_t>(countl_zero(x)));
 }
 
 }	// namespace hamon

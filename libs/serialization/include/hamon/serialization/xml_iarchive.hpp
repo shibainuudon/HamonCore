@@ -10,6 +10,7 @@
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/xml_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
@@ -17,6 +18,7 @@
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <cstdint>
 #include <memory>
+#include <string>
 
 namespace hamon
 {
@@ -72,7 +74,7 @@ private:
 	{
 		bool escaping = false;
 		std::basic_string<CharT> result;
-		for (std::size_t i = 0; i < str.size(); ++i)
+		for (hamon::size_t i = 0; i < str.size(); ++i)
 		{
 			auto c = str[i];
 			if (escaping)

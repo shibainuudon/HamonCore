@@ -5,8 +5,8 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -18,7 +18,7 @@ namespace size_test
 {
 
 template <typename Span>
-HAMON_CXX11_CONSTEXPR bool test(Span sp, std::size_t sz)
+HAMON_CXX11_CONSTEXPR bool test(Span sp, hamon::size_t sz)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.size());
 	return sp.size() == sz;

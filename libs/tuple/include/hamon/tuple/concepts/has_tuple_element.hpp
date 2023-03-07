@@ -9,11 +9,11 @@
 
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <tuple>
 
 namespace hamon
@@ -21,7 +21,7 @@ namespace hamon
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 concept has_tuple_element =
 	requires(T t)
 	{
@@ -31,24 +31,24 @@ concept has_tuple_element =
 
 #else
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct has_tuple_element_impl
 {
 private:
-	template <typename U, std::size_t M,
+	template <typename U, hamon::size_t M,
 		typename = hamon::tuple_element_t<M, hamon::remove_const_t<U>>,
 		typename B = decltype(std::get<M>(hamon::declval<U>()))
 	>
 	static auto test(int) -> hamon::convertible_to_t<B, hamon::tuple_element_t<M, U> const&>;
 	
-	template <typename U, std::size_t M>
+	template <typename U, hamon::size_t M>
 	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<T, N>(0));
 };
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 using has_tuple_element = typename has_tuple_element_impl<T, N>::type;
 
 #endif

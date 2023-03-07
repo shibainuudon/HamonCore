@@ -23,12 +23,12 @@ using std::as_bytes;
 #include <hamon/span/span.hpp>
 #include <hamon/span/detail/as_bytes_extent.hpp>
 #include <hamon/cstddef/byte.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
 
-template <typename T, std::size_t Extent>
+template <typename T, hamon::size_t Extent>
 inline span<hamon::byte const, detail::as_bytes_extent<T, Extent>::value>
 as_bytes(span<T, Extent> s) HAMON_NOEXCEPT
 {

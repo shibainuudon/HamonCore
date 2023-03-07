@@ -6,10 +6,10 @@
 
 #include <hamon/span.hpp>
 #include <hamon/cstddef/byte.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "noexcept_test.hpp"
 
@@ -77,7 +77,7 @@ GTEST_TEST(SpanTest, AsBytesTest)
 	test(hamon::span<int, 5>(arr + 1, 5));
 
 	std::string s;
-	test(hamon::span<std::string>(&s, static_cast<std::size_t>(0)));
+	test(hamon::span<std::string>(&s, static_cast<hamon::size_t>(0)));
 	test(hamon::span<std::string>(&s, 1));
 }
 

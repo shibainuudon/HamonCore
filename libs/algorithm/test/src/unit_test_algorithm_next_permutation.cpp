@@ -6,13 +6,13 @@
 
 #include <hamon/algorithm/next_permutation.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/size.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 
@@ -112,7 +112,7 @@ inline HAMON_CXX17_CONSTEXPR bool NextPermutationTest2()
 			{ 7, 6, 5, 4 },
 		};
 
-		std::size_t i = 0;
+		hamon::size_t i = 0;
 
 		do
 		{

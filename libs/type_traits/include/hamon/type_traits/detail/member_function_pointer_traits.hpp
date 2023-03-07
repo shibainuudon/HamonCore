@@ -9,9 +9,9 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/preprocessor/empty.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -27,7 +27,7 @@ struct memfun_traits_base
 {
 	using result_type = R;
 	using class_type = T;
-	using arity = hamon::integral_constant<std::size_t, sizeof...(Args)>;
+	using arity = hamon::integral_constant<hamon::size_t, sizeof...(Args)>;
 };
 
 template <typename F>

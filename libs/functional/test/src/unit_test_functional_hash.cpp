@@ -5,6 +5,7 @@
  */
 
 #include <hamon/functional/hash.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -44,24 +45,24 @@ private:
 public:
 	HAMON_CXX11_CONSTEXPR S1(int v) : value(v) {}
 
-	HAMON_CXX14_CONSTEXPR std::size_t hash() & HAMON_NOEXCEPT
+	HAMON_CXX14_CONSTEXPR hamon::size_t hash() & HAMON_NOEXCEPT
 	{
-		return static_cast<std::size_t>(value * 1);
+		return static_cast<hamon::size_t>(value * 1);
 	}
 
-	HAMON_CXX11_CONSTEXPR std::size_t hash() const&
+	HAMON_CXX11_CONSTEXPR hamon::size_t hash() const&
 	{
-		return static_cast<std::size_t>(value * 2);
+		return static_cast<hamon::size_t>(value * 2);
 	}
 
-	HAMON_CXX14_CONSTEXPR std::size_t hash() &&
+	HAMON_CXX14_CONSTEXPR hamon::size_t hash() &&
 	{
-		return static_cast<std::size_t>(value * 3);
+		return static_cast<hamon::size_t>(value * 3);
 	}
 
-	HAMON_CXX11_CONSTEXPR std::size_t hash() const&& HAMON_NOEXCEPT
+	HAMON_CXX11_CONSTEXPR hamon::size_t hash() const&& HAMON_NOEXCEPT
 	{
-		return static_cast<std::size_t>(value * 4);
+		return static_cast<hamon::size_t>(value * 4);
 	}
 };
 
@@ -95,24 +96,24 @@ private:
 public:
 	HAMON_CXX11_CONSTEXPR S2(int v) : value(v) {}
 
-	friend constexpr std::size_t hash(S2 & s) HAMON_NOEXCEPT
+	friend constexpr hamon::size_t hash(S2 & s) HAMON_NOEXCEPT
 	{
-		return static_cast<std::size_t>(s.value * 1);
+		return static_cast<hamon::size_t>(s.value * 1);
 	}
 
-	friend constexpr std::size_t hash(S2 const& s) HAMON_NOEXCEPT
+	friend constexpr hamon::size_t hash(S2 const& s) HAMON_NOEXCEPT
 	{
-		return static_cast<std::size_t>(s.value * 2);
+		return static_cast<hamon::size_t>(s.value * 2);
 	}
 	
-	friend constexpr std::size_t hash(S2 && s)
+	friend constexpr hamon::size_t hash(S2 && s)
 	{
-		return static_cast<std::size_t>(s.value * 3);
+		return static_cast<hamon::size_t>(s.value * 3);
 	}
 	
-	friend constexpr std::size_t hash(S2 const&& s)
+	friend constexpr hamon::size_t hash(S2 const&& s)
 	{
-		return static_cast<std::size_t>(s.value * 4);
+		return static_cast<hamon::size_t>(s.value * 4);
 	}
 };
 
@@ -478,8 +479,8 @@ GTEST_TEST(FunctionalTest, HashStringTest)
 	}
 	{
 		const std::string s = "Hello World";
-		const std::size_t expect =
-			sizeof(std::size_t) == 4 ?
+		const hamon::size_t expect =
+			sizeof(hamon::size_t) == 4 ?
 			0x30E5A5D0u :
 			0xC157F621C07CE515;
 		EXPECT_EQ(expect, hamon::hash(s));

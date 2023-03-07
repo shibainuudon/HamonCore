@@ -7,14 +7,14 @@
 #ifndef HAMON_TYPE_TRAITS_MAKE_INT_LEAST_N_HPP
 #define HAMON_TYPE_TRAITS_MAKE_INT_LEAST_N_HPP
 
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 #include <cstdint>
 #include <type_traits>
 
 namespace hamon
 {
 
-template <std::size_t N>
+template <hamon::size_t N>
 struct make_int_least_n
 {
 private:
@@ -29,7 +29,7 @@ public:
 	>::type>::type>::type>::type;
 };
 
-template <std::size_t N>
+template <hamon::size_t N>
 using make_int_least_n_t = typename make_int_least_n<N>::type;
 
 }	// namespace hamon

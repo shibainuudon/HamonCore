@@ -7,9 +7,9 @@
 #ifndef HAMON_BIT_BITSOF_HPP
 #define HAMON_BIT_BITSOF_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <climits>
-#include <cstddef>
 
 namespace hamon
 {
@@ -20,7 +20,7 @@ namespace hamon
  *	コンパイラがconstexprに対応していた場合、コンパイル時定数を得ることができます。
  */
 template <typename T>
-inline HAMON_CONSTEXPR std::size_t
+inline HAMON_CONSTEXPR hamon::size_t
 bitsof(void) HAMON_NOEXCEPT
 {
 	return sizeof(T) * CHAR_BIT;
@@ -32,7 +32,7 @@ bitsof(void) HAMON_NOEXCEPT
  *	引数から型を推測するバージョン
  */
 template <typename T>
-inline HAMON_CONSTEXPR std::size_t
+inline HAMON_CONSTEXPR hamon::size_t
 bitsof(T const&) HAMON_NOEXCEPT
 {
 	return sizeof(T) * CHAR_BIT;

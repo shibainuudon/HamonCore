@@ -8,6 +8,7 @@
 #define HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -27,7 +28,6 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <cstdint>
 #include <string>
 #include <array>
@@ -68,7 +68,7 @@ private:
 		return
 			c == Derived::get_char_table()[62] ? 62 :
 			c == Derived::get_char_table()[63] ? 63 :
-			s_char_to_index_tbl[static_cast<std::size_t>(c)];
+			s_char_to_index_tbl[static_cast<hamon::size_t>(c)];
 	}
 
 	template <
@@ -143,7 +143,7 @@ private:
 		typename T,
 		typename = hamon::enable_if_t<sizeof(T) == 1>
 	>
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	decode_impl(
 		InputIterator first,
 		InputIterator last,
@@ -154,7 +154,7 @@ private:
 
 		auto const padding = Derived::get_padding();
 
-		std::size_t count = 0;
+		hamon::size_t count = 0;
 		while (first != last)
 		{
 			std::uint8_t arr4[4] {};
@@ -195,7 +195,7 @@ private:
 	}
 
 	template <typename InputIterator, typename T>
-	static /*HAMON_CXX14_CONSTEXPR*/ std::size_t
+	static /*HAMON_CXX14_CONSTEXPR*/ hamon::size_t
 	decode_impl(
 		InputIterator first,
 		InputIterator last,
@@ -217,8 +217,8 @@ public:
 	 *
 	 *	戻り値に、NULL終端のぶんは含めません
 	 */
-	static HAMON_CONSTEXPR std::size_t
-	get_encoded_size(std::size_t bytes) HAMON_NOEXCEPT
+	static HAMON_CONSTEXPR hamon::size_t
+	get_encoded_size(hamon::size_t bytes) HAMON_NOEXCEPT
 	{
 		return Derived::get_padding() == 0 ?
 			((bytes * 4) + 2) / 3 :
@@ -229,11 +229,11 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
-	static HAMON_CONSTEXPR std::size_t
+	static HAMON_CONSTEXPR hamon::size_t
 	get_encoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
 	{
 		return get_encoded_size(
-			static_cast<std::size_t>(hamon::distance(first, last)) * sizeof(hamon::iter_value_t<Iterator>));
+			static_cast<hamon::size_t>(hamon::distance(first, last)) * sizeof(hamon::iter_value_t<Iterator>));
 	}
 
 	/**
@@ -245,8 +245,8 @@ public:
 	 *	実際のバイト数はこの関数が返す値よりも小さい場合があります。
 	 *	実際のバイト数はdecode関数の戻り値で取得できます。
 	 */
-	static HAMON_CONSTEXPR std::size_t
-	get_decoded_size(std::size_t length) HAMON_NOEXCEPT
+	static HAMON_CONSTEXPR hamon::size_t
+	get_decoded_size(hamon::size_t length) HAMON_NOEXCEPT
 	{
 		return Derived::get_padding() == 0 ?
 			((length * 3) / 4) :
@@ -257,10 +257,10 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
-	static HAMON_CONSTEXPR std::size_t
+	static HAMON_CONSTEXPR hamon::size_t
 	get_decoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
 	{
-		return get_decoded_size(static_cast<std::size_t>(hamon::distance(first, last)));
+		return get_decoded_size(static_cast<hamon::size_t>(hamon::distance(first, last)));
 	}
 
 	/**
@@ -339,7 +339,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
 #endif
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	decode(InputIterator first, Sentinel last, OutputIterator result)
 	{
 		if (first == last)
@@ -371,7 +371,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
 #endif
-	static HAMON_CXX14_CONSTEXPR std::size_t
+	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	decode(Range&& rng, OutputIterator result)
 	{
 		return decode(hamon::ranges::begin(rng), hamon::ranges::end(rng), hamon::move(result));

@@ -8,6 +8,7 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/move.hpp>
@@ -28,24 +29,24 @@ namespace get_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <std::size_t I, typename S>
+template <hamon::size_t I, typename S>
 struct HasGetImpl
 {
 private:
-	template <std::size_t I2, typename S2,
+	template <hamon::size_t I2, typename S2,
 		typename = decltype(hamon::ranges::get<I2>(hamon::declval<S2>())),
 		typename = decltype(hamon::get<I2>(hamon::declval<S2>()))
 	>
 	static auto test(int) -> hamon::true_type;
 
-	template <std::size_t I2, typename S2>
+	template <hamon::size_t I2, typename S2>
 	static auto test(...) -> hamon::false_type;
 
 public:
 	using type = decltype(test<I, S>(0));
 };
 
-template <std::size_t I, typename S>
+template <hamon::size_t I, typename S>
 using HasGet = typename HasGetImpl<I, S>::type;
 
 static_assert( HasGet<0, hamon::ranges::subrange<int*>>::value, "");

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -60,7 +61,7 @@ HAMON_IS_CONVERTIBLE_TEST(true,  int, unsigned long long);
 HAMON_IS_CONVERTIBLE_TEST(true,  int, float);
 HAMON_IS_CONVERTIBLE_TEST(true,  int, double);
 HAMON_IS_CONVERTIBLE_TEST(true,  int, long double);
-HAMON_IS_CONVERTIBLE_TEST(true,  int, std::size_t);
+HAMON_IS_CONVERTIBLE_TEST(true,  int, hamon::size_t);
 HAMON_IS_CONVERTIBLE_TEST(false, int, void*);
 HAMON_IS_CONVERTIBLE_TEST(false, int, std::nullptr_t);
 HAMON_IS_CONVERTIBLE_TEST(false, int, enum_UDT);

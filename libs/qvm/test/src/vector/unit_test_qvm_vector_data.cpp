@@ -5,10 +5,10 @@
  */
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -16,7 +16,7 @@ namespace hamon_qvm_test
 namespace vector_test
 {
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 void DataTest()
 {
 	using vector = hamon::qvm::vector<T, N>;

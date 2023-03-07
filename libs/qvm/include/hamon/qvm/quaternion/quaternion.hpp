@@ -18,8 +18,8 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -27,7 +27,7 @@ namespace hamon
 namespace qvm
 {
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 class quaternion : public hamon::qvm::detail::vector_xyzw<T, N>
 {
 private:

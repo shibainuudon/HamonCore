@@ -27,6 +27,7 @@ using std::ranges::swap;
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/has_adl_swap.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -36,7 +37,6 @@ using std::ranges::swap;
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
@@ -71,7 +71,7 @@ private:
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(swap(hamon::forward<T>(t), hamon::forward<U>(u)))
 
 	template <
-		typename T, typename U, std::size_t N
+		typename T, typename U, hamon::size_t N
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = decltype(hamon::declval<swap_fn const&>()(hamon::declval<T&>(), hamon::declval<U&>()))
 #endif
@@ -86,7 +86,7 @@ private:
 	impl(hamon::detail::overload_priority<1>, T (&t)[N], U (&u)[N])
 		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<swap_fn const&>()(*t, *u))
 	{
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			swap_fn{}(t[i], u[i]);
 		}

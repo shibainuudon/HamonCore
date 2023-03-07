@@ -9,7 +9,7 @@
 
 #include <hamon/qvm/detail/vector_base.hpp>
 #include <hamon/qvm/detail/swizzle_operator.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
@@ -20,7 +20,7 @@ namespace qvm
 namespace detail
 {
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 class vector_xyzw : public vector_base<T, N>
 {
 private:

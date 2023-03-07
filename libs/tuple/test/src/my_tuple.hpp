@@ -7,9 +7,9 @@
 #ifndef UNIT_TEST_TUPLE_MY_TUPLE_HPP
 #define UNIT_TEST_TUPLE_MY_TUPLE_HPP
 
+//#include <hamon/cstddef/size_t.hpp>
 //#include <hamon/tuple/tuple_element.hpp>
 //#include <hamon/type_traits/nth.hpp>
-//#include <cstddef>
 
 namespace hamon_tuple_test
 {
@@ -25,7 +25,7 @@ struct MyTuple
 namespace std
 {
 
-template <std::size_t I, typename... Types>
+template <hamon::size_t I, typename... Types>
 struct tuple_element<I, hamon_tuple_test::MyTuple<Types...>>
 {
 public:

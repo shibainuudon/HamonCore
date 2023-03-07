@@ -30,6 +30,7 @@ using std::ranges::equal;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -46,7 +47,6 @@ using std::ranges::equal;
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>	// size_t
 #include <cstring>	// memcmp
 
 namespace hamon
@@ -88,7 +88,7 @@ private:
 			&& hamon::is_same<Proj2, hamon::identity>::value);
 		if constexpr (use_memcmp)
 		{
-			if (const std::size_t len = (last1 - first1))
+			if (const hamon::size_t len = (last1 - first1))
 			{
 				return !std::memcmp(first1, first2, len);
 			}

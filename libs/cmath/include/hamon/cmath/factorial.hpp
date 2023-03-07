@@ -11,11 +11,11 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <limits>
-#include <cstddef>
 #include <cstdint>
 
 namespace hamon
@@ -24,7 +24,7 @@ namespace hamon
 namespace detail
 {
 
-template <bool Unsigned, std::size_t N>
+template <bool Unsigned, hamon::size_t N>
 struct max_factorial_t;
 
 template <> struct max_factorial_t<false, 1> { static const unsigned int value = 5; };

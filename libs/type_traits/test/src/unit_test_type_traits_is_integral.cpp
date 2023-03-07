@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_integral.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
@@ -49,7 +50,7 @@ HAMON_IS_INTEGRAL_TEST_CV(true, unsigned short);
 HAMON_IS_INTEGRAL_TEST_CV(true, unsigned int);
 HAMON_IS_INTEGRAL_TEST_CV(true, unsigned long);
 HAMON_IS_INTEGRAL_TEST_CV(true, unsigned long long);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::size_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::size_t);
 HAMON_IS_INTEGRAL_TEST_CV(true, std::int8_t);
 HAMON_IS_INTEGRAL_TEST_CV(true, std::int16_t);
 HAMON_IS_INTEGRAL_TEST_CV(true, std::int32_t);

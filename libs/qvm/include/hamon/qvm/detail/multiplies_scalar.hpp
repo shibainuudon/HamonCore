@@ -8,11 +8,11 @@
 #define HAMON_QVM_DETAIL_MULTIPLIES_SCALAR_HPP
 
 #include <hamon/qvm/detail/transform.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -38,8 +38,8 @@ struct multiplies_scalar_fn
  *	@brief	multiplies_scalar
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T1, typename T2, std::size_t... Ns,
+	template <typename, hamon::size_t...> class GenType,
+	typename T1, typename T2, hamon::size_t... Ns,
 	typename = hamon::enable_if_t<hamon::is_arithmetic<T2>::value>,
 	typename T3 = hamon::arithmetic_promote_t<T1, T2>
 >

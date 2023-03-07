@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -115,7 +116,7 @@ HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, unsigned int);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, unsigned short);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, unsigned long);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, unsigned long long);
-HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, std::size_t);
+HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, hamon::size_t);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, float);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, double);
 HAMON_IS_NOTHROW_DEFAULT_CONSTRUCTIBLE_TEST(true, long double);

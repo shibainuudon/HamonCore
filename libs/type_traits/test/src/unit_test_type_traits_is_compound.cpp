@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_compound.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -58,7 +59,7 @@ HAMON_IS_COMPOUND_TEST(false, unsigned int);
 HAMON_IS_COMPOUND_TEST(false, unsigned short);
 HAMON_IS_COMPOUND_TEST(false, unsigned long);
 HAMON_IS_COMPOUND_TEST(false, unsigned long long);
-HAMON_IS_COMPOUND_TEST(false, std::size_t);
+HAMON_IS_COMPOUND_TEST(false, hamon::size_t);
 HAMON_IS_COMPOUND_TEST(false, float);
 HAMON_IS_COMPOUND_TEST(false, double);
 HAMON_IS_COMPOUND_TEST(false, long double);

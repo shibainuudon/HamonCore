@@ -8,9 +8,9 @@
 #define HAMON_TYPE_TRAITS_IS_BOUNDED_ARRAY_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
-#include <cstddef>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ using std::is_bounded_array;
 template <typename T>
 struct is_bounded_array : public hamon::false_type {};
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct is_bounded_array<T[N]> : public hamon::true_type {};
 
 #endif

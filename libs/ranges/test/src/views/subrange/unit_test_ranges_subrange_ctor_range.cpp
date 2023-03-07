@@ -8,6 +8,7 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -226,9 +227,9 @@ struct throw_sized_borrowed_range : public test_range<T, Iterator, Sentinel>
 	using base_t = test_range<T, Iterator, Sentinel>;
 	using base_t::test_range;
 
-	HAMON_CONSTEXPR std::size_t size() const
+	HAMON_CONSTEXPR hamon::size_t size() const
 	{
-		return static_cast<std::size_t>(base_t::m_last - base_t::m_first);
+		return static_cast<hamon::size_t>(base_t::m_last - base_t::m_first);
 	}
 };
 

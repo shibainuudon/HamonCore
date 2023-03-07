@@ -22,13 +22,13 @@ using std::make_index_sequence;
 #else
 
 #include <hamon/utility/make_integer_sequence.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
 
-template <std::size_t N>
-using make_index_sequence = hamon::make_integer_sequence<std::size_t, N>;
+template <hamon::size_t N>
+using make_index_sequence = hamon::make_integer_sequence<hamon::size_t, N>;
 
 }	// namespace hamon
 

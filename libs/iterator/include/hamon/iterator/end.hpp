@@ -20,8 +20,8 @@ using std::end;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ end(Container const& c) -> decltype(c.end())
 	return c.end();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 inline HAMON_CONSTEXPR T*
 end(T (&a)[N]) HAMON_NOEXCEPT
 {

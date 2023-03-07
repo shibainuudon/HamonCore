@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/alignment_of.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstddef>
@@ -62,7 +63,7 @@ HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(unsigned int);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(unsigned short);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(unsigned long);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(unsigned long long);
-HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(std::size_t);
+HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(hamon::size_t);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(float);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(double);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(long double);

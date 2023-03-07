@@ -20,9 +20,9 @@ using std::data;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <cstddef>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ HAMON_NODISCARD HAMON_CONSTEXPR auto data(Container const& c) -> decltype(c.data
 	return c.data();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_NODISCARD HAMON_CONSTEXPR T* data(T (&a)[N]) HAMON_NOEXCEPT
 {
 	return a;

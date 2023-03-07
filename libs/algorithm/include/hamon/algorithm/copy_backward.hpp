@@ -38,6 +38,7 @@ using std::copy_backward;
 //#include <hamon/type_traits/remove_const.hpp>
 //#include <hamon/type_traits/is_same.hpp>
 //#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
+//#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 //#include <cstddef>
 //#include <cstring>	// memmove
@@ -73,7 +74,7 @@ hamon::enable_if_t<
 >
 copy_backward_impl(T* first, T* last, U* result)
 {
-	auto const n = static_cast<std::size_t>(last - first);
+	auto const n = static_cast<hamon::size_t>(last - first);
 
 	if (n > 0)
 	{

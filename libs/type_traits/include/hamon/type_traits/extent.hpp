@@ -8,9 +8,9 @@
 #define HAMON_TYPE_TRAITS_EXTENT_HPP
 
 #include <hamon/type_traits/integral_constant.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
-#include <cstddef>
 
 namespace hamon
 {
@@ -29,7 +29,7 @@ namespace hamon
 template <typename T, unsigned int I = 0>
 struct extent
 	: public hamon::integral_constant<
-		std::size_t, std::extent<T, I>::value
+		hamon::size_t, std::extent<T, I>::value
 	>
 {};
 
@@ -37,7 +37,7 @@ struct extent
 
 template <typename T, unsigned int I = 0>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-std::size_t extent_v = extent<T, I>::value;
+hamon::size_t extent_v = extent<T, I>::value;
 
 #endif
 

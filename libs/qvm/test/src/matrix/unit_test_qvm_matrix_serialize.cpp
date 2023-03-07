@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 #include "serialize_test.hpp"
 #include "matrix_test.hpp"
@@ -14,7 +15,7 @@ namespace hamon_qvm_test
 
 namespace matrix_test
 {
-	
+
 using MatrixSerializeTestTypes = ::testing::Types<
 	int
 	, float
@@ -29,7 +30,7 @@ class MatrixSerializeTest : public ::testing::Test {};
 
 TYPED_TEST_SUITE(MatrixSerializeTest, MatrixSerializeTestTypes);
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 void MatrixSerializeTestSub()
 {
 	using namespace hamon::serialization;

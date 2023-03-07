@@ -5,7 +5,9 @@
  */
 
 #include <hamon/base64/base64_xml_name.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 #include "get_random_value.hpp"
@@ -46,13 +48,13 @@ GTEST_TEST(Base64XmlNameTest, GetDecodedSizeTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 7u, hamon::base64_xml_name::get_decoded_size(10));
 }
 
-template <typename T, std::size_t N, typename U, std::size_t M>
+template <typename T, hamon::size_t N, typename U, hamon::size_t M>
 inline HAMON_CXX14_CONSTEXPR bool ArrayTest1(T const (&src)[N], U const (&expected)[M])
 {
 	U encoded[M] {};
 	hamon::base64_xml_name::encode(src, src + N, encoded);
 
-	for (std::size_t i = 0; i < M; ++i)
+	for (hamon::size_t i = 0; i < M; ++i)
 	{
 		VERIFY(encoded[i] == expected[i]);
 	}
@@ -60,7 +62,7 @@ inline HAMON_CXX14_CONSTEXPR bool ArrayTest1(T const (&src)[N], U const (&expect
 	T decoded[hamon::base64_xml_name::get_decoded_size(M)] {};
 	auto size = hamon::base64_xml_name::decode(encoded, encoded + M, decoded);
 	VERIFY(size == sizeof(src));
-	for (std::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		VERIFY(decoded[i] == src[i]);
 	}
@@ -68,13 +70,13 @@ inline HAMON_CXX14_CONSTEXPR bool ArrayTest1(T const (&src)[N], U const (&expect
 	return true;
 }
 
-template <typename T, std::size_t N, typename U, std::size_t M>
+template <typename T, hamon::size_t N, typename U, hamon::size_t M>
 inline HAMON_CXX14_CONSTEXPR bool ArrayTest2(T const (&src)[N], U const (&expected)[M])
 {
 	U encoded[M] {};
 	hamon::base64_xml_name::encode(src, encoded);
 
-	for (std::size_t i = 0; i < M; ++i)
+	for (hamon::size_t i = 0; i < M; ++i)
 	{
 		VERIFY(encoded[i] == expected[i]);
 	}
@@ -82,7 +84,7 @@ inline HAMON_CXX14_CONSTEXPR bool ArrayTest2(T const (&src)[N], U const (&expect
 	T decoded[hamon::base64_xml_name::get_decoded_size(M)] {};
 	auto size = hamon::base64_xml_name::decode(encoded, decoded);
 	VERIFY(size == sizeof(src));
-	for (std::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		VERIFY(decoded[i] == src[i]);
 	}
@@ -90,7 +92,7 @@ inline HAMON_CXX14_CONSTEXPR bool ArrayTest2(T const (&src)[N], U const (&expect
 	return true;
 }
 
-template <typename T, std::size_t N, typename U, std::size_t M>
+template <typename T, hamon::size_t N, typename U, hamon::size_t M>
 inline HAMON_CXX14_CONSTEXPR bool ArrayTest(T const (&src)[N], U const (&expected)[M])
 {
 	VERIFY(hamon::base64_xml_name::get_encoded_size(sizeof(src)) == M);
@@ -273,7 +275,7 @@ void Base64XmlNameVectorTest()
 	using Vector = std::vector<T>;
 	using String = std::basic_string<CharT>;
 
-	Vector vec(get_random_value<std::size_t>(0, 100));
+	Vector vec(get_random_value<hamon::size_t>(0, 100));
 	for (auto& x : vec)
 	{
 		x = get_random_value<T>();

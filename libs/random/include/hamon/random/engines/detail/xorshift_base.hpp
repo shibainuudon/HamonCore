@@ -8,17 +8,17 @@
 #define HAMON_RANDOM_ENGINES_DETAIL_XORSHIFT_BASE_HPP
 
 #include <hamon/random/engines/detail/split_mix64.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/ios/flags_saver.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 #include <istream>
 #include <ostream>
-#include <cstddef>
 
 namespace hamon
 {
 
-template <typename UIntType, std::size_t N, typename Derived>
+template <typename UIntType, hamon::size_t N, typename Derived>
 class xorshift_base
 {
 public:
@@ -44,7 +44,7 @@ public:
 	{
 		split_mix64 sm(sd);
 
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			m_state[i] = static_cast<result_type>(sm());
 		}
@@ -55,7 +55,7 @@ public:
 	{
 		typename Sseq::result_type ar[N];
 		q.generate(ar, ar + N);
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			m_state[i] = ar[i];
 		}
@@ -72,7 +72,7 @@ public:
 
 	bool operator==(xorshift_base const& rhs) const
 	{
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			if (m_state[i] != rhs.m_state[i])
 			{
@@ -93,7 +93,7 @@ protected:
 private:
 	template <
 		typename CharT, typename Traits,
-		typename U, std::size_t M, typename D
+		typename U, hamon::size_t M, typename D
 	>
 	friend std::basic_ostream<CharT, Traits>&
 	operator<<(
@@ -102,7 +102,7 @@ private:
 
 	template <
 		typename CharT, typename Traits,
-		typename U, std::size_t M, typename D
+		typename U, hamon::size_t M, typename D
 	>
 	friend std::basic_istream<CharT, Traits>&
 	operator>>(
@@ -112,7 +112,7 @@ private:
 
 template <
 	typename CharT, typename Traits,
-	typename UIntType, std::size_t N, typename Derived
+	typename UIntType, hamon::size_t N, typename Derived
 >
 inline std::basic_ostream<CharT, Traits>&
 operator<<(
@@ -127,7 +127,7 @@ operator<<(
 		std::ios_base::scientific);
 	CharT sp = os.widen(' ');
 
-	for (std::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		os << sp << e.m_state[i];
 	}
@@ -137,7 +137,7 @@ operator<<(
 
 template <
 	typename CharT, typename Traits,
-	typename UIntType, std::size_t N, typename Derived
+	typename UIntType, hamon::size_t N, typename Derived
 >
 inline std::basic_istream<CharT, Traits>&
 operator>>(
@@ -152,14 +152,14 @@ operator>>(
 		std::ios_base::scientific);
 
 	UIntType tbl[N];
-	for (std::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		is >> tbl[i];
 	}
 
 	if (!is.fail())
 	{
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			e.m_state[i] = tbl[i];
 		}

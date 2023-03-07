@@ -5,13 +5,13 @@
  */
 
 #include <hamon/type_info.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_type_info_test
@@ -55,16 +55,16 @@ GTEST_TEST(TypeInfoTest, NameTest)
 
 GTEST_TEST(TypeInfoTest, HashTest)
 {
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<S1>().hash(),       sizeof(std::size_t) == 4 ? 1956626883U :  6699969198750557557U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<S2>().hash(),       sizeof(std::size_t) == 4 ? 1956626892U :  6699969198750557556U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<TS<int>>().hash(),  sizeof(std::size_t) == 4 ?  868323736U : 10761259580242164917U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<TS<bool>>().hash(), sizeof(std::size_t) == 4 ? 2537226284U : 13014479217681382996U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<E1>().hash(),       sizeof(std::size_t) == 4 ? 1956628053U :  6699969198750516603U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<E2>().hash(),       sizeof(std::size_t) == 4 ? 1956628050U :  6699969198750516602U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<int>().hash(),      sizeof(std::size_t) == 4 ? 4216848189U :  4962777938083703864U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<float>().hash(),    sizeof(std::size_t) == 4 ? 1366422933U : 16012993614398985859U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<char>().hash(),     sizeof(std::size_t) == 4 ? 1256964356U : 15210376380126533734U);
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<bool>().hash(),     sizeof(std::size_t) == 4 ? 1256663585U : 15210376311425452431U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<S1>().hash(),       sizeof(hamon::size_t) == 4 ? 1956626883U :  6699969198750557557U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<S2>().hash(),       sizeof(hamon::size_t) == 4 ? 1956626892U :  6699969198750557556U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<TS<int>>().hash(),  sizeof(hamon::size_t) == 4 ?  868323736U : 10761259580242164917U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<TS<bool>>().hash(), sizeof(hamon::size_t) == 4 ? 2537226284U : 13014479217681382996U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<E1>().hash(),       sizeof(hamon::size_t) == 4 ? 1956628053U :  6699969198750516603U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<E2>().hash(),       sizeof(hamon::size_t) == 4 ? 1956628050U :  6699969198750516602U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<int>().hash(),      sizeof(hamon::size_t) == 4 ? 4216848189U :  4962777938083703864U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<float>().hash(),    sizeof(hamon::size_t) == 4 ? 1366422933U : 16012993614398985859U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<char>().hash(),     sizeof(hamon::size_t) == 4 ? 1256964356U : 15210376380126533734U);
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::type_id<bool>().hash(),     sizeof(hamon::size_t) == 4 ? 1256663585U : 15210376311425452431U);
 }
 
 GTEST_TEST(TypeInfoTest, CompareOperatorTest)

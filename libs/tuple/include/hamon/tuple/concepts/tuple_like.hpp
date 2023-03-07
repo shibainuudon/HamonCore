@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/concepts/has_tuple_element.hpp>
 #include <hamon/concepts/derived_from.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -16,7 +17,6 @@
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <tuple>
 #include <type_traits>
 #include <utility>
@@ -29,7 +29,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, std::size_t... N>
+template <typename T, hamon::size_t... N>
 constexpr bool has_tuple_element_all(hamon::index_sequence<N...>)
 {
 	return (has_tuple_element<T, N> && ...);
@@ -45,7 +45,7 @@ concept tuple_like =
 		typename std::tuple_size<T>::type;
 		requires hamon::derived_from<
 			std::tuple_size<T>,
-			std::integral_constant<std::size_t, std::tuple_size<T>::value>
+			std::integral_constant<hamon::size_t, std::tuple_size<T>::value>
 		>;
 	} &&
 	detail::has_tuple_element_all<T>(
@@ -57,7 +57,7 @@ template <typename T>
 struct tuple_like_impl
 {
 private:
-	template <typename U, std::size_t... N>
+	template <typename U, hamon::size_t... N>
 	static auto test_helper(hamon::index_sequence<N...>)
 		-> hamon::conjunction<has_tuple_element<U, N>...>;
 
@@ -66,7 +66,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::derived_from_t<
 				std::tuple_size<U>,
-				std::integral_constant<std::size_t, std::tuple_size<U>::value>
+				std::integral_constant<hamon::size_t, std::tuple_size<U>::value>
 			>::value
 		>,
 		typename Seq = hamon::make_index_sequence<std::tuple_size<U>::value>

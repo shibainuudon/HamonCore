@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -13,7 +14,6 @@
 #include <hamon/type_traits/is_trivially_destructible.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -23,12 +23,12 @@ namespace matrix_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 inline HAMON_CXX14_CONSTEXPR bool IsZero(hamon::qvm::matrix<T, N, M> const& m)
 {
-	for (std::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		for (std::size_t j = 0; j < M; ++j)
+		for (hamon::size_t j = 0; j < M; ++j)
 		{
 			VERIFY(m[i][j] == 0);
 		}
@@ -36,7 +36,7 @@ inline HAMON_CXX14_CONSTEXPR bool IsZero(hamon::qvm::matrix<T, N, M> const& m)
 	return true;
 }
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 void CtorDefaultTest()
 {
 	using matrix_type = hamon::qvm::matrix<T, N, M>;

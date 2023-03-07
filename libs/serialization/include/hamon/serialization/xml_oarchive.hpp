@@ -12,6 +12,7 @@
 #include <hamon/serialization/detail/save_value.hpp>
 #include <hamon/serialization/string.hpp>
 #include <hamon/serialization/nvp.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
@@ -20,6 +21,7 @@
 #include <cstdint>
 #include <memory>
 #include <stack>
+#include <string>
 
 namespace hamon
 {
@@ -116,7 +118,7 @@ private:
 		m_value_index_stack.top()++;
 	}
 
-	std::size_t get_indent_level(void) const
+	hamon::size_t get_indent_level(void) const
 	{
 		return m_value_index_stack.size();
 	}
@@ -124,7 +126,7 @@ private:
 	std::string get_indent_string(void) const
 	{
 		std::string s;
-		for (std::size_t i = 0; i < get_indent_level(); ++i)
+		for (hamon::size_t i = 0; i < get_indent_level(); ++i)
 		{
 			s += m_indent_string_element;
 		}

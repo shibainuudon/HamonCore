@@ -10,9 +10,9 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/qvm/detail/reduce.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/multiplies.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -27,7 +27,7 @@ namespace qvm
  *	@param	v2	ベクトルその２
  *	@return	v1とv2の内積
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 dot(vector<T1, N> const& v1, vector<T2, N> const& v2) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::reduce(

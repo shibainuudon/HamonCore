@@ -20,15 +20,15 @@ using std::dynamic_extent;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <limits>
 
 namespace hamon
 {
 
-HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR std::size_t
-dynamic_extent = std::numeric_limits<std::size_t>::max();
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR hamon::size_t
+dynamic_extent = std::numeric_limits<hamon::size_t>::max();
 
 }	// namespace hamon
 

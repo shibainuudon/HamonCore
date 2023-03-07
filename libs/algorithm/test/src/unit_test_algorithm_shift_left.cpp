@@ -7,6 +7,7 @@
 #include <hamon/algorithm/shift_left.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -170,13 +171,13 @@ struct X
 	}
 };
 
-template <std::size_t N, template <typename> class IterWrap>
+template <hamon::size_t N, template <typename> class IterWrap>
 inline HAMON_CXX14_CONSTEXPR bool test03()
 {
-	for (std::size_t n = 0; n < N+5; n++)
+	for (hamon::size_t n = 0; n < N+5; n++)
 	{
 		X x[N];
-		for (std::size_t i = 0; i < N; i++)
+		for (hamon::size_t i = 0; i < N; i++)
 		{
 			x[i] = X{int(i)};
 		}
@@ -186,12 +187,12 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		if (n < N)
 		{
 			VERIFY(out.m_ptr == x+(N-n));
-			for (std::size_t i = 0; i < N-n; i++)
+			for (hamon::size_t i = 0; i < N-n; i++)
 			{
 				VERIFY(x[i].a == int(n+i));
 				VERIFY(!x[i].moved_from);
 			}
-			for (std::size_t i = hamon::max(n, N-n); i < N; i++)
+			for (hamon::size_t i = hamon::max(n, N-n); i < N; i++)
 			{
 				VERIFY(x[i].moved_from);
 			}
@@ -199,7 +200,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		else
 		{
 			VERIFY(out.m_ptr == x);
-			for (std::size_t i = 0; i < N; i++)
+			for (hamon::size_t i = 0; i < N; i++)
 			{
 				VERIFY(x[i].a == int(i));
 				VERIFY(!x[i].moved_from);

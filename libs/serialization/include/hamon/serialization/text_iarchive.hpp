@@ -10,6 +10,7 @@
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
@@ -76,7 +77,7 @@ private:
 	template <typename T>
 	friend void load_string(text_iarchive& ia, T& t)
 	{
-		std::size_t length;
+		hamon::size_t length;
 		ia >> length;
 		ia.m_impl->load_string(t, length);
 	}

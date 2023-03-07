@@ -7,7 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_NTH_HPP
 #define HAMON_TYPE_TRAITS_NTH_HPP
 
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
@@ -18,13 +18,13 @@ namespace hamon
  *	@tparam		N
  *	@tparam		Types
  */
-template <std::size_t N, typename... Types>
+template <hamon::size_t N, typename... Types>
 struct nth;
 
 /**
  *	@brief	nthのエイリアステンプレート
  */
-template <std::size_t N, typename... Types>
+template <hamon::size_t N, typename... Types>
 using nth_t = typename nth<N, Types...>::type;
 
 }	// namespace hamon
@@ -46,7 +46,7 @@ struct nth<0, Head, Tail...>
 	using type = Head;
 };
 
-template <std::size_t N, typename Head, typename... Tail>
+template <hamon::size_t N, typename Head, typename... Tail>
 struct nth<N, Head, Tail...>
 	: public nth<N - 1, Tail...>
 {};
@@ -61,10 +61,10 @@ namespace nth_detail
 template <typename Seq>
 struct nth_impl;
 
-template <std::size_t... Indices>
+template <hamon::size_t... Indices>
 struct nth_impl<hamon::index_sequence<Indices...>>
 {
-	template <std::size_t>
+	template <hamon::size_t>
 	struct void_ptr
 	{
 		using type = void*;
@@ -76,7 +76,7 @@ struct nth_impl<hamon::index_sequence<Indices...>>
 
 }	// namespace nth_detail
 
-template <std::size_t I, typename... Types>
+template <hamon::size_t I, typename... Types>
 struct nth
 {
 private:
@@ -97,7 +97,7 @@ public:
 namespace nth_detail
 {
 
-template <std::size_t N, typename T>
+template <hamon::size_t N, typename T>
 struct element_holder
 	: public hamon::type_identity<T>
 {};
@@ -105,15 +105,15 @@ struct element_holder
 template <typename Sequence, typename... Types>
 struct type_tuple;
 
-template <std::size_t... Indices, typename... Types>
+template <hamon::size_t... Indices, typename... Types>
 struct type_tuple<hamon::index_sequence<Indices...>, Types...>
 	: public element_holder<Indices, Types>...
 {};
 
-template <std::size_t N, typename T>
+template <hamon::size_t N, typename T>
 static element_holder<N, T> select(element_holder<N, T>);
 
-template <bool, std::size_t N, typename... Types>
+template <bool, hamon::size_t N, typename... Types>
 struct nth
 {
 private:
@@ -124,13 +124,13 @@ public:
 	using type = typename Tmp::type;
 };
 
-template <std::size_t N, typename... Types>
+template <hamon::size_t N, typename... Types>
 struct nth<false, N, Types...>
 {};
 
 }	// namespace nth_detail
 
-template <std::size_t N, typename... Types>
+template <hamon::size_t N, typename... Types>
 struct nth : public nth_detail::nth<(N < sizeof...(Types)), N, Types...>
 {};
 #endif

@@ -19,13 +19,13 @@
 #include <hamon/qvm/detail/divides_scalar.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/minus.hpp>
 #include <hamon/functional/multiplies.hpp>
 #include <hamon/functional/divides.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ namespace qvm
 /**
  *	@brief	operator==
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 operator==(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -48,7 +48,7 @@ operator==(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	operator!=
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 operator!=(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -60,7 +60,7 @@ operator!=(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	unary operator+
  */
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR vector<T, N>
 operator+(vector<T, N> const& v) HAMON_NOEXCEPT
 {
@@ -70,7 +70,7 @@ operator+(vector<T, N> const& v) HAMON_NOEXCEPT
 /**
  *	@brief	unary operator-
  */
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(vector<T, N> const& v) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::transform(v, hamon::negate<>{}))
@@ -81,7 +81,7 @@ operator-(vector<T, N> const& v) HAMON_NOEXCEPT
 /**
  *	@brief	Vector + Vector -> Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator+(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::plus(lhs, rhs))
@@ -92,7 +92,7 @@ operator+(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector += Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator+=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -102,7 +102,7 @@ operator+=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector - Vector -> Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::minus(lhs, rhs))
@@ -113,7 +113,7 @@ operator-(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector -= Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator-=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -123,7 +123,7 @@ operator-=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector * Vector -> Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::multiplies(lhs, rhs))
@@ -134,7 +134,7 @@ operator*(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector *= Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator*=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -144,7 +144,7 @@ operator*=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector / Vector -> Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator/(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::divides(lhs, rhs))
@@ -155,7 +155,7 @@ operator/(vector<T1, N> const& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector /= Vector
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator/=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
 {
@@ -166,7 +166,7 @@ operator/=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
  *	@brief	Vector * スカラー -> Vector
  */
 template <
-	typename T1, std::size_t N,
+	typename T1, hamon::size_t N,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -180,7 +180,7 @@ operator*(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	スカラー * Vector -> Vector
  */
 template <
-	typename T1, std::size_t N,
+	typename T1, hamon::size_t N,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -194,7 +194,7 @@ operator*(T2 lhs, vector<T1, N> const& rhs) HAMON_NOEXCEPT
  *	@brief	Vector *= スカラー
  */
 template <
-	typename T1, std::size_t N,
+	typename T1, hamon::size_t N,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
@@ -207,7 +207,7 @@ operator*=(vector<T1, N>& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	Vector / スカラー -> Vector
  */
 template <
-	typename T1, std::size_t N,
+	typename T1, hamon::size_t N,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -221,7 +221,7 @@ operator/(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	Vector /= スカラー
  */
 template <
-	typename T1, std::size_t N,
+	typename T1, hamon::size_t N,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&

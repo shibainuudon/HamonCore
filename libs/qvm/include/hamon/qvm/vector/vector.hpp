@@ -10,6 +10,7 @@
 #include <hamon/qvm/vector/vector_fwd.hpp>
 #include <hamon/qvm/vector/vector_cat.hpp>
 #include <hamon/qvm/detail/vector_xyzw.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
@@ -19,7 +20,6 @@
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ HAMON_CONSTEXPR vector<T, 1> to_vector(T const& v)
 	return vector<T, 1>{v};
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_CONSTEXPR vector<T, N> to_vector(vector<T, N> const& v)
 {
 	return v;
@@ -44,7 +44,7 @@ HAMON_CONSTEXPR vector<T, N> to_vector(vector<T, N> const& v)
 
 }	// namespace detail
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 class vector : public hamon::qvm::detail::vector_xyzw<T, N>
 {
 private:
@@ -138,14 +138,14 @@ public:
 	{}
 
 private:
-	template <std::size_t I>
+	template <hamon::size_t I>
 	static HAMON_CONSTEXPR T const&
 	swallow(T const& v) HAMON_NOEXCEPT
 	{
 		return v;
 	}
 
-	template <std::size_t... Is>
+	template <hamon::size_t... Is>
 	HAMON_CONSTEXPR
 	vector(T const& v, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
 		: base_type{ swallow<Is>(v)... }

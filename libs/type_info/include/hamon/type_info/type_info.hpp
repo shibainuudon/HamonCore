@@ -8,6 +8,7 @@
 #define HAMON_TYPE_INFO_TYPE_INFO_HPP
 
 #include <hamon/type_info/detail/type_info_access_fwd.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/string_view/string_view.hpp>
 #include <hamon/functional/hash.hpp>
 #include <hamon/config.hpp>
@@ -31,7 +32,7 @@ public:
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR
-	std::size_t hash() const HAMON_NOEXCEPT
+	hamon::size_t hash() const HAMON_NOEXCEPT
 	{
 		return hamon::hash(m_name);
 	}

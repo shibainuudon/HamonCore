@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/in_place_type.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -18,7 +18,7 @@ namespace in_place_type_test
 
 struct Foo
 {
-	HAMON_CXX11_CONSTEXPR Foo(std::size_t i)
+	HAMON_CXX11_CONSTEXPR Foo(hamon::size_t i)
 		: m_in_place_initialized(false)
 		, m_value(i)
 	{}
@@ -29,8 +29,8 @@ struct Foo
 		, m_value(sizeof(T))
 	{}
 
-	bool         m_in_place_initialized;
-	std::size_t  m_value;
+	bool           m_in_place_initialized;
+	hamon::size_t  m_value;
 };
 
 GTEST_TEST(UtilityTest, InPlaceTypeTest)

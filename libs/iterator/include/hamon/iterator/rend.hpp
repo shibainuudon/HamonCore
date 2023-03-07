@@ -20,9 +20,9 @@ using std::rend;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -41,7 +41,7 @@ rend(Container const& c) -> decltype(c.rend())
 	return c.rend();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 inline HAMON_CONSTEXPR hamon::reverse_iterator<T*>
 rend(T (&a)[N]) HAMON_NOEXCEPT
 {

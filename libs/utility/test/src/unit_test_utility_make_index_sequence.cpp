@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -20,22 +20,22 @@ void MakeIndexSequenceTestSub(void)
 {
 }
 
-void MakeIndexSequenceTestSub(std::size_t a)
+void MakeIndexSequenceTestSub(hamon::size_t a)
 {
 	EXPECT_EQ(0u, a);
 }
 
 void MakeIndexSequenceTestSub(
-	std::size_t a,
-	std::size_t b,
-	std::size_t c,
-	std::size_t d,
-	std::size_t e,
-	std::size_t f,
-	std::size_t g,
-	std::size_t h,
-	std::size_t i,
-	std::size_t j)
+	hamon::size_t a,
+	hamon::size_t b,
+	hamon::size_t c,
+	hamon::size_t d,
+	hamon::size_t e,
+	hamon::size_t f,
+	hamon::size_t g,
+	hamon::size_t h,
+	hamon::size_t i,
+	hamon::size_t j)
 {
 	EXPECT_EQ(0u, a);
 	EXPECT_EQ(1u, b);
@@ -49,7 +49,7 @@ void MakeIndexSequenceTestSub(
 	EXPECT_EQ(9u, j);
 }
 
-template <std::size_t ... Seq>
+template <hamon::size_t ... Seq>
 void MakeIndexSequenceTest(hamon::index_sequence<Seq ...>)
 {
 	MakeIndexSequenceTestSub(Seq...);

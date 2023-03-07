@@ -8,13 +8,13 @@
 #define HAMON_CONCEPTS_DETAIL_HAS_ADL_SWAP_HPP
 
 #include <hamon/concepts/detail/class_or_enum.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ namespace swap_detail
 {
 
 template <typename T> void swap(T&, T&) = delete;
-template <typename T, std::size_t N> void swap(T(&)[N], T(&)[N]) = delete;
+template <typename T, hamon::size_t N> void swap(T(&)[N], T(&)[N]) = delete;
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 

@@ -21,12 +21,12 @@ using std::span;
 #else
 
 #include <hamon/span/dynamic_extent.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
 
-template <typename T, std::size_t Extent = hamon::dynamic_extent>
+template <typename T, hamon::size_t Extent = hamon::dynamic_extent>
 class span;
 
 }	// namespace hamon

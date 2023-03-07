@@ -7,11 +7,11 @@
 #ifndef HAMON_CSTRING_STRLEN_HPP
 #define HAMON_CSTRING_STRLEN_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <cstring>
 #include <cwchar>
 #include <string>
-#include <cstddef>
 #include <type_traits>	// is_constant_evaluated
 
 namespace hamon
@@ -41,8 +41,8 @@ namespace detail
 #if HAMON_CXX_STANDARD < 14
 
 template <typename InputIterator>
-inline HAMON_CXX11_CONSTEXPR std::size_t
-strlen_ct_impl_2(InputIterator first, std::size_t n) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR hamon::size_t
+strlen_ct_impl_2(InputIterator first, hamon::size_t n) HAMON_NOEXCEPT
 {
 	return *first ?
 		strlen_ct_impl_2(first + 1, n + 1) :
@@ -50,7 +50,7 @@ strlen_ct_impl_2(InputIterator first, std::size_t n) HAMON_NOEXCEPT
 }
 
 template <typename InputIterator>
-inline HAMON_CXX11_CONSTEXPR std::size_t
+inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen_ct_impl(InputIterator first) HAMON_NOEXCEPT
 {
 	return strlen_ct_impl_2(first, 0);
@@ -59,10 +59,10 @@ strlen_ct_impl(InputIterator first) HAMON_NOEXCEPT
 #else
 
 template <typename InputIterator>
-inline HAMON_CXX11_CONSTEXPR std::size_t
+inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen_ct_impl(InputIterator first) HAMON_NOEXCEPT
 {
-	std::size_t n = 0;
+	hamon::size_t n = 0;
 	
 	while (*first++)
 	{
@@ -74,20 +74,20 @@ strlen_ct_impl(InputIterator first) HAMON_NOEXCEPT
 
 #endif
 
-inline std::size_t
+inline hamon::size_t
 strlen_rt_impl(const char* str) HAMON_NOEXCEPT
 {
 	return std::strlen(str);
 }
 
-inline std::size_t
+inline hamon::size_t
 strlen_rt_impl(const wchar_t* str) HAMON_NOEXCEPT
 {
 	return std::wcslen(str);
 }
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-inline std::size_t
+inline hamon::size_t
 strlen_rt_impl(char8_t const* str) HAMON_NOEXCEPT
 {
 	return std::char_traits<char8_t>::length(str);
@@ -95,7 +95,7 @@ strlen_rt_impl(char8_t const* str) HAMON_NOEXCEPT
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-inline std::size_t
+inline hamon::size_t
 strlen_rt_impl(char16_t const* str) HAMON_NOEXCEPT
 {
 	return std::char_traits<char16_t>::length(str);
@@ -103,7 +103,7 @@ strlen_rt_impl(char16_t const* str) HAMON_NOEXCEPT
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-inline std::size_t
+inline hamon::size_t
 strlen_rt_impl(char32_t const* str) HAMON_NOEXCEPT
 {
 	return std::char_traits<char32_t>::length(str);
@@ -122,7 +122,7 @@ namespace ct
  *
  *	@return		文字列 str の長さ
  */
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen(char const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -137,7 +137,7 @@ strlen(char const* str) HAMON_NOEXCEPT
 /**
  *	@overload
  */
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen(wchar_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -153,7 +153,7 @@ strlen(wchar_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen(char8_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -170,7 +170,7 @@ strlen(char8_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen(char16_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -187,7 +187,7 @@ strlen(char16_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::size_t
 strlen(char32_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -202,7 +202,7 @@ strlen(char32_t const* str) HAMON_NOEXCEPT
 
 }	// namespace ct
 
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::size_t
 strlen(char const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -217,7 +217,7 @@ strlen(char const* str) HAMON_NOEXCEPT
 /**
  *	@overload
  */
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::size_t
 strlen(wchar_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -233,7 +233,7 @@ strlen(wchar_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::size_t
 strlen(char8_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -250,7 +250,7 @@ strlen(char8_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::size_t
 strlen(char16_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -267,7 +267,7 @@ strlen(char16_t const* str) HAMON_NOEXCEPT
  *	@overload
  */
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR std::size_t
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::size_t
 strlen(char32_t const* str) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811

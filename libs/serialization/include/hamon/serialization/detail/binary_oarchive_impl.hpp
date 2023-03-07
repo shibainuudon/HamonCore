@@ -7,8 +7,8 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_BINARY_OARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_BINARY_OARCHIVE_IMPL_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <ostream>	// basic_ostream
-#include <cstddef>
 #include <vector>
 #include <cstring>	// memcpy
 
@@ -22,7 +22,7 @@ namespace detail
 {
 
 template <typename CharT, typename Traits>
-void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, std::size_t size)
+void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, hamon::size_t size)
 {
 	auto pbuf = os.rdbuf();
 	auto const count = (size + (sizeof(CharT) - 1)) / sizeof(CharT);
@@ -46,7 +46,7 @@ public:
 	virtual ~binary_oarchive_impl_base()
 	{}
 
-	virtual void save(void const* src, std::size_t size) = 0;
+	virtual void save(void const* src, hamon::size_t size) = 0;
 };
 
 template <typename OStream>
@@ -58,7 +58,7 @@ public:
 		: m_os(os)
 	{}
 
-	void save(void const* src, std::size_t size) override
+	void save(void const* src, hamon::size_t size) override
 	{
 		save_binary(m_os, src, size);
 	}

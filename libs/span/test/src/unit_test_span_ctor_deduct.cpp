@@ -6,13 +6,13 @@
 
 #include <hamon/span.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <cstddef>
 
 #define ASSERT_SAME_TYPE(...) \
     static_assert((hamon::is_same<__VA_ARGS__>::value), \
@@ -28,7 +28,7 @@ template <typename T>
 struct MyRange
 {
 	HAMON_CXX14_CONSTEXPR MyRange() : m_value{} {}
-	HAMON_CXX14_CONSTEXPR std::size_t size() const noexcept { return 1; }
+	HAMON_CXX14_CONSTEXPR hamon::size_t size() const noexcept { return 1; }
 	HAMON_CXX14_CONSTEXPR T      * data()        noexcept { return &m_value; }
 	HAMON_CXX14_CONSTEXPR T const* data()  const noexcept { return &m_value; }
 	HAMON_CXX14_CONSTEXPR T      * begin()       noexcept { return &m_value; }
@@ -71,7 +71,7 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		hamon::span s{ r };
 		using S = decltype(s);
 		ASSERT_SAME_TYPE(S, hamon::span<int>);
-		EXPECT_TRUE(static_cast<std::size_t>(s.size()) == r.size());
+		EXPECT_TRUE(static_cast<hamon::size_t>(s.size()) == r.size());
 		EXPECT_TRUE((hamon::equal(hamon::begin(r), hamon::end(r), s.begin(), s.end())));
 	}
 
@@ -80,7 +80,7 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		hamon::span s{ r };
 		using S = decltype(s);
 		ASSERT_SAME_TYPE(S, hamon::span<char const>);
-		EXPECT_TRUE(static_cast<std::size_t>(s.size()) == r.size());
+		EXPECT_TRUE(static_cast<hamon::size_t>(s.size()) == r.size());
 		EXPECT_TRUE((hamon::equal(hamon::begin(r), hamon::end(r), s.begin(), s.end())));
 	}
 #endif

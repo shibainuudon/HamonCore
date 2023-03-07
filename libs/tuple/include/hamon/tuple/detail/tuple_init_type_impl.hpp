@@ -7,9 +7,9 @@
 #ifndef HAMON_TUPLE_DETAIL_TUPLE_INIT_TYPE_IMPL_HPP
 #define HAMON_TUPLE_DETAIL_TUPLE_INIT_TYPE_IMPL_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/nth.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -24,7 +24,7 @@ struct tuple_init_type_impl_2;
 template <
 	template <typename...> class Tuple,
 	typename... Types,
-	std::size_t... Indices>
+	hamon::size_t... Indices>
 struct tuple_init_type_impl_2<
 	Tuple<Types...>,
 	hamon::index_sequence<Indices...>>
@@ -34,7 +34,7 @@ struct tuple_init_type_impl_2<
 };
 
 // tuple_init_type_impl_1
-template <typename Tuple, std::size_t N>
+template <typename Tuple, hamon::size_t N>
 struct tuple_init_type_impl_1
 	: public tuple_init_type_impl_2<
 		Tuple, hamon::make_index_sequence<N - 1>

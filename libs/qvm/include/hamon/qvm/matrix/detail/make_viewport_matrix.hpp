@@ -7,8 +7,8 @@
 #ifndef HAMON_QVM_MATRIX_DETAIL_MAKE_VIEWPORT_MATRIX_HPP
 #define HAMON_QVM_MATRIX_DETAIL_MAKE_VIEWPORT_MATRIX_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -24,7 +24,7 @@ template <typename Matrix>
 struct make_viewport_matrix;
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
 	typename T
 >
 struct make_viewport_matrix<Matrix<T, 4, 4>>

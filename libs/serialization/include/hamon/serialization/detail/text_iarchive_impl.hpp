@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <cstdint>
@@ -44,16 +45,16 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-	virtual void load_string(std::string&, std::size_t length) = 0;
-	virtual void load_string(std::wstring&, std::size_t length) = 0;
+	virtual void load_string(std::string&, hamon::size_t length) = 0;
+	virtual void load_string(std::wstring&, hamon::size_t length) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_string(std::u8string&, std::size_t length) = 0;
+	virtual void load_string(std::u8string&, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_string(std::u16string&, std::size_t length) = 0;
+	virtual void load_string(std::u16string&, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_string(std::u32string&, std::size_t length) = 0;
+	virtual void load_string(std::u32string&, hamon::size_t length) = 0;
 #endif
 
 public:
@@ -148,7 +149,7 @@ private:
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
-		std::size_t length,
+		hamon::size_t length,
 		hamon::true_type)
 	{
 		std::basic_string<CharT1> tmp;
@@ -166,7 +167,7 @@ private:
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
-		std::size_t length,
+		hamon::size_t length,
 		hamon::false_type)
 	{
 		auto const count = (length * sizeof(CharT2)) / sizeof(CharT1);
@@ -181,7 +182,7 @@ private:
 	static void load_string_impl(
 		std::basic_istream<CharT1, Traits1>& is,
 		std::basic_string<CharT2, Traits2>& s,
-		std::size_t length,
+		hamon::size_t length,
 		bool skip_whitespace)
 	{
 		using istream_type = std::basic_istream<CharT1, Traits1>;
@@ -286,32 +287,32 @@ public:
 #endif
 
 public:
-	void load_string(std::string& str, std::size_t length) override
+	void load_string(std::string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
-	void load_string(std::wstring& str, std::size_t length) override
+	void load_string(std::wstring& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_string(std::u8string& str, std::size_t length) override
+	void load_string(std::u8string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_string(std::u16string& str, std::size_t length) override
+	void load_string(std::u16string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_string(std::u32string& str, std::size_t length) override
+	void load_string(std::u32string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}

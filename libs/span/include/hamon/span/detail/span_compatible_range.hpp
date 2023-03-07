@@ -8,6 +8,7 @@
 #define HAMON_SPAN_DETAIL_SPAN_COMPATIBLE_RANGE_HPP
 
 #include <hamon/span/span_fwd.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/ranges/concepts/contiguous_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
@@ -23,7 +24,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 #include <array>
-#include <cstddef>
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ template <typename T>
 struct is_std_array
 	: public hamon::false_type {};
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct is_std_array<std::array<T, N>>
 	: public hamon::true_type {};
 
@@ -43,7 +43,7 @@ template <typename T>
 struct is_std_span
 	: public hamon::false_type {};
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct is_std_span<hamon::span<T, N>>
 	: public hamon::true_type {};
 

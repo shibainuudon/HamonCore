@@ -8,5 +8,6 @@
 #define HAMON_CSTDDEF_HPP
 
 #include <hamon/cstddef/byte.hpp>
+#include <hamon/cstddef/size_t.hpp>
 
 #endif // HAMON_CSTDDEF_HPP

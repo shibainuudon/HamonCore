@@ -5,11 +5,11 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 
@@ -23,7 +23,7 @@ template <typename T>
 struct MyRange
 {
 	HAMON_CXX14_CONSTEXPR MyRange() : m_value{} {}
-	HAMON_CXX14_CONSTEXPR std::size_t size() const noexcept { return 1; }
+	HAMON_CXX14_CONSTEXPR hamon::size_t size() const noexcept { return 1; }
 	HAMON_CXX14_CONSTEXPR T      * data()        noexcept { return &m_value; }
 	HAMON_CXX14_CONSTEXPR T const* data()  const noexcept { return &m_value; }
 	HAMON_CXX14_CONSTEXPR T      * begin()       noexcept { return &m_value; }

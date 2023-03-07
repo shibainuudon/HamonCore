@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/index_sequence_for.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -16,7 +16,7 @@ namespace hamon_utility_test
 namespace index_sequence_for_test
 {
 
-template <std::size_t N, typename... Types>
+template <hamon::size_t N, typename... Types>
 void IndexSequenceForTest(Types...)
 {
 	using seq = hamon::index_sequence_for<Types...>;

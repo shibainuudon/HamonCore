@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
 
@@ -14,7 +15,7 @@ namespace hamon_qvm_test
 namespace matrix_test
 {
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 void MaxSizeTest()
 {
 	using matrix_type = hamon::qvm::matrix<T, N, M>;

@@ -5,9 +5,9 @@
  */
 
 #include <hamon/utility/in_place_index.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
@@ -18,19 +18,19 @@ namespace in_place_index_test
 
 struct Foo
 {
-	HAMON_CXX11_CONSTEXPR Foo(std::size_t i)
+	HAMON_CXX11_CONSTEXPR Foo(hamon::size_t i)
 		: m_in_place_initialized(false)
 		, m_value(i)
 	{}
 
-	template <std::size_t I>
+	template <hamon::size_t I>
 	HAMON_CXX11_CONSTEXPR Foo(hamon::in_place_index_t<I>)
 		: m_in_place_initialized(true)
 		, m_value(I)
 	{}
 
-	bool         m_in_place_initialized;
-	std::size_t  m_value;
+	bool           m_in_place_initialized;
+	hamon::size_t  m_value;
 };
 
 GTEST_TEST(UtilityTest, InPlaceIndexTest)

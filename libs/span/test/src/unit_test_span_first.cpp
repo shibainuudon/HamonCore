@@ -6,9 +6,9 @@
 
 #include <hamon/span.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -22,7 +22,7 @@ namespace hamon_span_test
 namespace first_test
 {
 
-template <std::size_t Count, typename Span, typename S1, typename S2>
+template <hamon::size_t Count, typename Span, typename S1, typename S2>
 HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 {
 	ASSERT_SAME_TYPE(typename Span::value_type, typename S1::value_type);
@@ -34,7 +34,7 @@ HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 		s1.size() == s2.size();
 }
 
-template <std::size_t Count, typename Span>
+template <hamon::size_t Count, typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.template first<Count>());
@@ -50,7 +50,7 @@ HAMON_CXX14_CONSTEXPR bool test2_sub(Span sp, S1 s1, S2 s2)
 		hamon::equal(s2.begin(), s2.end(), sp.begin());
 }
 
-template <std::size_t Count, typename Span>
+template <hamon::size_t Count, typename Span>
 HAMON_CXX14_CONSTEXPR bool test2(Span sp)
 {
 	return test2_sub(sp, sp.template first<Count>(), sp.first(Count));

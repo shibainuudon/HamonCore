@@ -6,8 +6,8 @@
 
 #include <hamon/span.hpp>
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <cstddef>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -22,7 +22,7 @@ namespace hamon_span_test
 namespace subspan_test
 {
 
-template <std::size_t Offset, std::size_t Count, typename Span, typename S1, typename S2>
+template <hamon::size_t Offset, hamon::size_t Count, typename Span, typename S1, typename S2>
 HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 {
 	ASSERT_SAME_TYPE(typename Span::value_type, typename S1::value_type);
@@ -34,7 +34,7 @@ HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 		s1.size() == s2.size();
 }
 
-template <std::size_t Offset, std::size_t Count, typename Span>
+template <hamon::size_t Offset, hamon::size_t Count, typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.template subspan<Offset, Count>());
@@ -42,7 +42,7 @@ HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 	return test1_sub<Offset, Count, Span>(sp.template subspan<Offset, Count>(), sp.subspan(Offset, Count));
 }
 
-template <std::size_t Offset, std::size_t Count, typename Span>
+template <hamon::size_t Offset, hamon::size_t Count, typename Span>
 HAMON_CXX14_CONSTEXPR bool test2(Span sp)
 {
 	auto s1 = sp.template subspan<Offset, Count>();
@@ -52,7 +52,7 @@ HAMON_CXX14_CONSTEXPR bool test2(Span sp)
 		hamon::equal(s2.begin(), s2.end(), sp.begin() + Offset);
 }
 
-template <std::size_t Offset, typename Span, typename S1, typename S2>
+template <hamon::size_t Offset, typename Span, typename S1, typename S2>
 HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 {
 	ASSERT_SAME_TYPE(typename Span::value_type, typename S1::value_type);
@@ -64,7 +64,7 @@ HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 		s1.size() == s2.size();
 }
 
-template <std::size_t Offset, typename Span>
+template <hamon::size_t Offset, typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.template subspan<Offset>());
@@ -72,7 +72,7 @@ HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 	return test1_sub<Offset, Span>(sp.template subspan<Offset>(), sp.subspan(Offset));
 }
 
-template <std::size_t Offset, typename Span>
+template <hamon::size_t Offset, typename Span>
 HAMON_CXX14_CONSTEXPR bool test2(Span sp)
 {
 	auto s1 = sp.template subspan<Offset>();

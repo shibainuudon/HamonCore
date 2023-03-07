@@ -18,12 +18,12 @@
 #include <hamon/qvm/detail/divides_scalar.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/minus.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ namespace qvm
 /**
  *	@brief	operator==
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 operator==(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 {
@@ -46,7 +46,7 @@ operator==(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXC
 /**
  *	@brief	operator!=
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
 operator!=(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 {
@@ -58,7 +58,7 @@ operator!=(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXC
 /**
  *	@brief	unary operator+
  */
-template <typename T, std::size_t R, std::size_t C>
+template <typename T, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR matrix<T, R, C>
 operator+(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 {
@@ -68,7 +68,7 @@ operator+(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 /**
  *	@brief	unary operator-
  */
-template <typename T, std::size_t R, std::size_t C>
+template <typename T, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::transform(v, hamon::negate<>{}))
@@ -79,7 +79,7 @@ operator-(matrix<T, R, C> const& v) HAMON_NOEXCEPT
 /**
  *	@brief	Matrix + Matrix -> Matrix
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator+(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::plus(lhs, rhs))
@@ -90,7 +90,7 @@ operator+(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCE
 /**
  *	@brief	Matrix += Matrix
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 inline HAMON_CXX14_CONSTEXPR matrix<T1, R, C>&
 operator+=(matrix<T1, R, C>& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 {
@@ -100,7 +100,7 @@ operator+=(matrix<T1, R, C>& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Matrix - Matrix -> Matrix
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator-(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 ->decltype(hamon::qvm::detail::minus(lhs, rhs))
@@ -111,7 +111,7 @@ operator-(matrix<T1, R, C> const& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCE
 /**
  *	@brief	Matrix -= Matrix
  */
-template <typename T1, typename T2, std::size_t R, std::size_t C>
+template <typename T1, typename T2, hamon::size_t R, hamon::size_t C>
 inline HAMON_CXX14_CONSTEXPR matrix<T1, R, C>&
 operator-=(matrix<T1, R, C>& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
 {
@@ -123,7 +123,7 @@ operator-=(matrix<T1, R, C>& lhs, matrix<T2, R, C> const& rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, typename T2,
-	std::size_t N, std::size_t M, std::size_t L
+	hamon::size_t N, hamon::size_t M, hamon::size_t L
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(matrix<T1, N, L> const& lhs, matrix<T2, L, M> const& rhs) HAMON_NOEXCEPT
@@ -137,7 +137,7 @@ operator*(matrix<T1, N, L> const& lhs, matrix<T2, L, M> const& rhs) HAMON_NOEXCE
  */
 template <
 	typename T1, typename T2,
-	std::size_t N, std::size_t M
+	hamon::size_t N, hamon::size_t M
 >
 inline HAMON_CXX14_CONSTEXPR matrix<T1, N, M>&
 operator*=(matrix<T1, N, M>& lhs, matrix<T2, M, M> const& rhs) HAMON_NOEXCEPT
@@ -149,7 +149,7 @@ operator*=(matrix<T1, N, M>& lhs, matrix<T2, M, M> const& rhs) HAMON_NOEXCEPT
  *	@brief	Matrix * スカラー -> Matrix
  */
 template <
-	typename T1, std::size_t R, std::size_t C,
+	typename T1, hamon::size_t R, hamon::size_t C,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -163,7 +163,7 @@ operator*(matrix<T1, R, C> const& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	スカラー * Matrix -> Matrix
  */
 template <
-	typename T1, std::size_t R, std::size_t C,
+	typename T1, hamon::size_t R, hamon::size_t C,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -177,7 +177,7 @@ operator*(T2 lhs, matrix<T1, R, C> const& rhs) HAMON_NOEXCEPT
  *	@brief	Matrix *= スカラー
  */
 template <
-	typename T1, std::size_t R, std::size_t C,
+	typename T1, hamon::size_t R, hamon::size_t C,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR matrix<T1, R, C>&
@@ -190,7 +190,7 @@ operator*=(matrix<T1, R, C>& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	Matrix / スカラー -> Matrix
  */
 template <
-	typename T1, std::size_t R, std::size_t C,
+	typename T1, hamon::size_t R, hamon::size_t C,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -204,7 +204,7 @@ operator/(matrix<T1, R, C> const& lhs, T2 rhs) HAMON_NOEXCEPT
  *	@brief	Matrix /= スカラー
  */
 template <
-	typename T1, std::size_t R, std::size_t C,
+	typename T1, hamon::size_t R, hamon::size_t C,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR matrix<T1, R, C>&
@@ -218,7 +218,7 @@ operator/=(matrix<T1, R, C>& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, typename T2,
-	std::size_t N, std::size_t M,
+	hamon::size_t N, hamon::size_t M,
 	typename T3 = decltype(hamon::declval<T1>() * hamon::declval<T2>())
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR vector<T3, M>
@@ -230,7 +230,7 @@ operator*(vector<T1, N> const& lhs, matrix<T2, N, M> const& rhs) HAMON_NOEXCEPT
 /**
  *	@brief	Vector *= Matrix
  */
-template <typename T1, typename T2, std::size_t N>
+template <typename T1, typename T2, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator*=(vector<T1, N>& lhs, matrix<T2, N, N> const& rhs) HAMON_NOEXCEPT
 {

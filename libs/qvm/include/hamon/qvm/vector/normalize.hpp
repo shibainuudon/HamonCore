@@ -10,8 +10,8 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/vector/length_sq.hpp>
 #include <hamon/qvm/vector/length.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -28,7 +28,7 @@ namespace qvm
  *	@param	v	対象となるベクトル
  *	@return	vを正規化したベクトル
  */
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 HAMON_NODISCARD inline HAMON_CONSTEXPR vector<T, N>
 normalize(vector<T, N> const& v)
 {

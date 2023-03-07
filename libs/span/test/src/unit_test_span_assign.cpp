@@ -5,10 +5,10 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/size.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -43,23 +43,23 @@ test1()
 		hamon::span<const int> spans[] =
 		{
 			{},
-			{carr1, static_cast<std::size_t>(0)},
+			{carr1, static_cast<hamon::size_t>(0)},
 			{carr1, 1U},
 			{carr1, 2U},
 			{carr1, 3U},
 			{carr1, 4U},
-			{carr2, static_cast<std::size_t>(0)},
+			{carr2, static_cast<hamon::size_t>(0)},
 			{carr2, 1U},
 			{carr2, 2U},
 			{carr2, 3U},
-			{carr3, static_cast<std::size_t>(0)},
+			{carr3, static_cast<hamon::size_t>(0)},
 			{carr3, 1U},
 			{carr3, 2U},
 		};
 
-		for (std::size_t i = 0; i < hamon::size(spans); ++i)
+		for (hamon::size_t i = 0; i < hamon::size(spans); ++i)
 		{
-			for (std::size_t j = i; j < hamon::size(spans); ++j)
+			for (hamon::size_t j = i; j < hamon::size(spans); ++j)
 			{
 				VERIFY(do_assign(spans[i], spans[j]));
 			}
@@ -79,9 +79,9 @@ test1()
 			spanType{carr3, 2},
 		};
 
-		for (std::size_t i = 0; i < hamon::size(spans); ++i)
+		for (hamon::size_t i = 0; i < hamon::size(spans); ++i)
 		{
-			for (std::size_t j = i; j < hamon::size(spans); ++j)
+			for (hamon::size_t j = i; j < hamon::size(spans); ++j)
 			{
 				VERIFY(do_assign(spans[i], spans[j]));
 			}
@@ -111,9 +111,9 @@ inline bool test2()
 			{strs + 3, strs + 3},
 		};
 
-		for (std::size_t i = 0; i < hamon::size(spans); ++i)
+		for (hamon::size_t i = 0; i < hamon::size(spans); ++i)
 		{
-			for (std::size_t j = i; j < hamon::size(spans); ++j)
+			for (hamon::size_t j = i; j < hamon::size(spans); ++j)
 			{
 				VERIFY((do_assign(spans[i], spans[j])));
 			}
@@ -130,9 +130,9 @@ inline bool test2()
 			spanType{strs + 2, strs + 3},
 		};
 
-		for (std::size_t i = 0; i < hamon::size(spans); ++i)
+		for (hamon::size_t i = 0; i < hamon::size(spans); ++i)
 		{
-			for (std::size_t j = i; j < hamon::size(spans); ++j)
+			for (hamon::size_t j = i; j < hamon::size(spans); ++j)
 			{
 				VERIFY((do_assign(spans[i], spans[j])));
 			}

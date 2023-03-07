@@ -24,10 +24,10 @@ using std::byteswap;
 
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <cstdint>
-#include <cstddef>
 #include <stdlib.h>
 
 namespace hamon
@@ -96,7 +96,7 @@ byteswap_impl_uint64(std::uint64_t value) HAMON_NOEXCEPT
 #endif
 }
 
-template <typename T, std::size_t = sizeof(T)>
+template <typename T, hamon::size_t = sizeof(T)>
 struct byteswap_impl;
 
 template <typename T>

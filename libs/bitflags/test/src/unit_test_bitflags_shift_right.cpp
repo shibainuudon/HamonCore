@@ -5,6 +5,7 @@
  */
 
 #include <hamon/bitflags.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -24,11 +25,11 @@ using invoke_shift_right = decltype(hamon::declval<T>() >> hamon::declval<U>());
 
 // operator>> はDenseがtrueのときのみ定義される
 static_assert(!hamon::is_detected<invoke_shift_right, Bitflag1 const&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right, Bitflag1 const&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right, Bitflag1 const&, hamon::size_t>::value, "");
 static_assert( hamon::is_detected<invoke_shift_right, Bitflag2 const&, int>::value, "");
-static_assert( hamon::is_detected<invoke_shift_right, Bitflag2 const&, std::size_t>::value, "");
+static_assert( hamon::is_detected<invoke_shift_right, Bitflag2 const&, hamon::size_t>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_right, Bitflag3 const&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right, Bitflag3 const&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right, Bitflag3 const&, hamon::size_t>::value, "");
 
 static_assert(!hamon::is_detected<invoke_shift_right, Bitflag2 const&, Bitflag2 const&>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_right, Bitflag2 const&, Enum2 const&>::value, "");
@@ -37,18 +38,18 @@ template <typename T, typename U>
 using invoke_shift_right_assign = decltype(hamon::declval<T>() >>= hamon::declval<U>());
 
 static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1&, hamon::size_t>::value, "");
 static_assert( hamon::is_detected<invoke_shift_right_assign, Bitflag2&, int>::value, "");
-static_assert( hamon::is_detected<invoke_shift_right_assign, Bitflag2&, std::size_t>::value, "");
+static_assert( hamon::is_detected<invoke_shift_right_assign, Bitflag2&, hamon::size_t>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3&, hamon::size_t>::value, "");
 
 static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1 const&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1 const&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag1 const&, hamon::size_t>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag2 const&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag2 const&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag2 const&, hamon::size_t>::value, "");
 static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3 const&, int>::value, "");
-static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3 const&, std::size_t>::value, "");
+static_assert(!hamon::is_detected<invoke_shift_right_assign, Bitflag3 const&, hamon::size_t>::value, "");
 
 inline HAMON_CXX14_CONSTEXPR bool ShiftRightAssignTest()
 {

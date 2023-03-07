@@ -46,6 +46,7 @@ using ranges::get;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
@@ -62,7 +63,6 @@ using ranges::get;
 #include <hamon/utility/forward.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon {
 
@@ -365,7 +365,7 @@ subrange(Rng&&, detail::make_unsigned_like_t<hamon::ranges::range_difference_t<R
 
 #endif	// defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
-template <std::size_t N, typename It, typename Sent, ranges::subrange_kind Kind>
+template <hamon::size_t N, typename It, typename Sent, ranges::subrange_kind Kind>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires (N < 2)
 #endif
@@ -376,7 +376,7 @@ get(subrange<It, Sent, Kind> const& r)
 	return detail::subrange_get<N>()(r);
 }
 
-template <std::size_t N, typename It, typename Sent, ranges::subrange_kind Kind>
+template <hamon::size_t N, typename It, typename Sent, ranges::subrange_kind Kind>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires (N < 2)
 #endif
@@ -402,15 +402,15 @@ HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::subrange<It, 
 
 HAMON_RANGES_END_NAMESPACE
 
+#include <hamon/cstddef/size_t.hpp>
 #include <tuple>
-#include <cstddef>
 
 namespace std
 {
 
 template <typename Iter, typename Sent, hamon::ranges::subrange_kind Kind>
 struct tuple_size<hamon::ranges::subrange<Iter, Sent, Kind>>
-	: std::integral_constant<std::size_t, 2>
+	: std::integral_constant<hamon::size_t, 2>
 {};
 
 template <typename Iter, typename Sent, hamon::ranges::subrange_kind Kind>

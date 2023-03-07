@@ -9,9 +9,9 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -51,7 +51,7 @@ using A = Incomplete[2]; // bounded array of incomplete type
 extern A& f();
 
 // gcc10 だと以下の部分でコンパイルエラーになる
-static_assert(hamon::same_as_t<decltype(hamon::ranges::size(f())), std::size_t>::value, "");
+static_assert(hamon::same_as_t<decltype(hamon::ranges::size(f())), hamon::size_t>::value, "");
 #endif
 
 }	// namespace size_test

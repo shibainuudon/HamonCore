@@ -7,10 +7,10 @@
 #ifndef HAMON_QVM_DETAIL_TRANSFORM_HPP
 #define HAMON_QVM_DETAIL_TRANSFORM_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-parameter")
@@ -25,12 +25,12 @@ namespace detail
 {
 
 template <
-	template <typename, std::size_t> class Vector,
-	typename T1, std::size_t N0,
+	template <typename, hamon::size_t> class Vector,
+	typename T1, hamon::size_t N0,
 	typename F,
 	typename T2 = decltype(hamon::declval<F>()(hamon::declval<T1>())),
 	typename Result = Vector<T2, N0>,
-	std::size_t... Is
+	hamon::size_t... Is
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Vector<T1, N0> const& v, F unary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
@@ -39,12 +39,12 @@ transform_impl(Vector<T1, N0> const& v, F unary_op, hamon::index_sequence<Is...>
 }
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
-	typename T1, std::size_t N0, std::size_t N1,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
+	typename T1, hamon::size_t N0, hamon::size_t N1,
 	typename F,
 	typename T2 = decltype(hamon::declval<F>()(hamon::declval<T1>())),
 	typename Result = Matrix<T2, N0, N1>,
-	std::size_t... Is
+	hamon::size_t... Is
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Matrix<T1, N0, N1> const& m, F unary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
@@ -53,12 +53,12 @@ transform_impl(Matrix<T1, N0, N1> const& m, F unary_op, hamon::index_sequence<Is
 }
 
 template <
-	template <typename, std::size_t> class Vector,
-	typename T1, typename T2, std::size_t N0,
+	template <typename, hamon::size_t> class Vector,
+	typename T1, typename T2, hamon::size_t N0,
 	typename F,
 	typename T3 = decltype(hamon::declval<F>()(hamon::declval<T1>(), hamon::declval<T2>())),
 	typename Result = Vector<T3, N0>,
-	std::size_t... Is
+	hamon::size_t... Is
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Vector<T1, N0> const& lhs, Vector<T2, N0> const& rhs, F binary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
@@ -67,12 +67,12 @@ transform_impl(Vector<T1, N0> const& lhs, Vector<T2, N0> const& rhs, F binary_op
 }
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
-	typename T1, typename T2, std::size_t N0, std::size_t N1,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
+	typename T1, typename T2, hamon::size_t N0, hamon::size_t N1,
 	typename F,
 	typename T3 = decltype(hamon::declval<F>()(hamon::declval<T1>(), hamon::declval<T2>())),
 	typename Result = Matrix<T3, N0, N1>,
-	std::size_t... Is
+	hamon::size_t... Is
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR Result
 transform_impl(Matrix<T1, N0, N1> const& lhs, Matrix<T2, N0, N1> const& rhs, F binary_op, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
@@ -84,8 +84,8 @@ transform_impl(Matrix<T1, N0, N1> const& lhs, Matrix<T2, N0, N1> const& rhs, F b
  *	@brief	transform (Unary operation)
  */
 template <
-	template <typename, std::size_t> class Vector,
-	typename T, std::size_t N0,
+	template <typename, hamon::size_t> class Vector,
+	typename T, hamon::size_t N0,
 	typename F
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -96,8 +96,8 @@ transform(Vector<T, N0> const& v, F unary_op) HAMON_NOEXCEPT
 }
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
-	typename T, std::size_t N0, std::size_t N1,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
+	typename T, hamon::size_t N0, hamon::size_t N1,
 	typename F
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -111,8 +111,8 @@ transform(Matrix<T, N0, N1> const& v, F unary_op) HAMON_NOEXCEPT
  *	@brief	transform (Binary operation)
  */
 template <
-	template <typename, std::size_t> class Vector,
-	typename T1, typename T2, std::size_t N0,
+	template <typename, hamon::size_t> class Vector,
+	typename T1, typename T2, hamon::size_t N0,
 	typename F
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
@@ -123,8 +123,8 @@ transform(Vector<T1, N0> const& lhs, Vector<T2, N0> const& rhs, F binary_op) HAM
 }
 
 template <
-	template <typename, std::size_t, std::size_t> class Matrix,
-	typename T1, typename T2, std::size_t N0, std::size_t N1,
+	template <typename, hamon::size_t, hamon::size_t> class Matrix,
+	typename T1, typename T2, hamon::size_t N0, hamon::size_t N1,
 	typename F
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto

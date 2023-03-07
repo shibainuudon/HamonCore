@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 namespace hamon_type_traits_test
@@ -33,7 +33,7 @@ enum       E9 : unsigned int {};
 enum class E10 : unsigned short {};
 enum       E11 : unsigned long {};
 enum class E12 : unsigned long long {};
-enum       E13 : std::size_t {};
+enum       E13 : hamon::size_t {};
 
 //HAMON_UNDERLYING_TYPE_TEST(enum_UDT, unsigned int);	// 実装依存
 HAMON_UNDERLYING_TYPE_TEST(enum_uint32_t_UDT, std::uint32_t);
@@ -62,7 +62,7 @@ HAMON_UNDERLYING_TYPE_TEST(E9, unsigned int);
 HAMON_UNDERLYING_TYPE_TEST(E10, unsigned short);
 HAMON_UNDERLYING_TYPE_TEST(E11, unsigned long);
 HAMON_UNDERLYING_TYPE_TEST(E12, unsigned long long);
-HAMON_UNDERLYING_TYPE_TEST(E13, std::size_t);
+HAMON_UNDERLYING_TYPE_TEST(E13, hamon::size_t);
 
 #undef HAMON_UNDERLYING_TYPE_TEST
 

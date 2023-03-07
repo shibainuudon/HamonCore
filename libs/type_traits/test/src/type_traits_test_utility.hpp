@@ -8,10 +8,10 @@
 #define UNIT_TEST_TYPE_TRAITS_TYPE_TRAITS_TEST_UTILITY_HPP
 
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <cstdint>
-#include <cstddef>
 
 namespace
 {
@@ -385,7 +385,7 @@ protected:
 	HAMON_TRANSFORM_TEST_SUB(unsigned int, name, from, to);	\
 	HAMON_TRANSFORM_TEST_SUB(long, name, from, to);	\
 	HAMON_TRANSFORM_TEST_SUB(unsigned long, name, from, to);	\
-	HAMON_TRANSFORM_TEST_SUB(std::size_t, name, from, to);	\
+	HAMON_TRANSFORM_TEST_SUB(hamon::size_t, name, from, to);	\
 	HAMON_TRANSFORM_TEST_SUB(float, name, from, to);	\
 	HAMON_TRANSFORM_TEST_SUB(double, name, from, to);	\
 	HAMON_TRANSFORM_TEST_SUB(long double, name, from, to);	\

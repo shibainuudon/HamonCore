@@ -26,18 +26,19 @@ using std::span;
 #include <hamon/span/detail/span_compatible_sentinel_for.hpp>
 #include <hamon/span/detail/span_array_convertible.hpp>
 #include <hamon/span/detail/span_compatible_range.hpp>
-#include <hamon/ranges/concepts/contiguous_range.hpp>
-#include <hamon/ranges/range_reference_t.hpp>
-#include <hamon/ranges/data.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/memory/to_address.hpp>
+#include <hamon/ranges/concepts/contiguous_range.hpp>
+#include <hamon/ranges/range_reference_t.hpp>
+#include <hamon/ranges/data.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/type_identity.hpp>
-#include <hamon/memory/to_address.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <array>
@@ -46,14 +47,14 @@ using std::span;
 namespace hamon
 {
 
-template <typename T, std::size_t Extent>
+template <typename T, hamon::size_t Extent>
 class span
 {
 public:
 	// constants and types
 	using element_type     = T;
 	using value_type       = hamon::remove_cv_t<T>;
-	using size_type        = std::size_t;
+	using size_type        = hamon::size_t;
 	using difference_type  = std::ptrdiff_t;
 	using pointer          = T *;
 	using const_pointer    = T const*;
@@ -67,7 +68,7 @@ public:
 	// constructors, copy, and assignment
 
 	// (1)
-	template <std::size_t N = Extent, typename = hamon::enable_if_t<N == 0>>
+	template <hamon::size_t N = Extent, typename = hamon::enable_if_t<N == 0>>
 	HAMON_CXX11_CONSTEXPR
 	span() HAMON_NOEXCEPT
 		: m_data{ nullptr }
@@ -98,7 +99,7 @@ public:
 	{}
 
 	// (4)
-	template <std::size_t N, typename = hamon::enable_if_t<N == Extent>>
+	template <hamon::size_t N, typename = hamon::enable_if_t<N == Extent>>
 	HAMON_CXX11_CONSTEXPR
 	span(hamon::type_identity_t<element_type>(&arr)[N]) HAMON_NOEXCEPT
 		: m_data{ arr }
@@ -161,7 +162,7 @@ public:
 	HAMON_CXX14_CONSTEXPR span& operator=(span const&) HAMON_NOEXCEPT = default;
 
 	// subviews
-	template <std::size_t Count>
+	template <hamon::size_t Count>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR span<element_type, Count>
 	first() const HAMON_NOEXCEPT
 	{
@@ -169,7 +170,7 @@ public:
 		return span<element_type, Count>{data(), Count};
 	}
 
-	template <std::size_t Count>
+	template <hamon::size_t Count>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR span<element_type, Count>
 	last() const HAMON_NOEXCEPT
 	{
@@ -177,7 +178,7 @@ public:
 		return span<element_type, Count>{data() + size() - Count, Count};
 	}
 
-	template <std::size_t Offset, std::size_t Count = hamon::dynamic_extent>
+	template <hamon::size_t Offset, hamon::size_t Count = hamon::dynamic_extent>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	subspan() const HAMON_NOEXCEPT
 	-> span<element_type, Count != hamon::dynamic_extent ? Count : Extent - Offset>
@@ -303,7 +304,7 @@ public:
 	// constants and types
 	using element_type     = T;
 	using value_type       = hamon::remove_cv_t<T>;
-	using size_type        = std::size_t;
+	using size_type        = hamon::size_t;
 	using difference_type  = std::ptrdiff_t;
 	using pointer          = T *;
 	using const_pointer    = T const*;
@@ -345,7 +346,7 @@ public:
 	{}
 
 	// (4)
-	template <std::size_t N>
+	template <hamon::size_t N>
 	HAMON_CXX11_CONSTEXPR
 	span(hamon::type_identity_t<element_type>(&arr)[N]) HAMON_NOEXCEPT
 		: m_data{ arr }
@@ -353,7 +354,7 @@ public:
 	{}
 
 	// (5)
-	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), std::size_t N>
+	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), hamon::size_t N>
 	HAMON_CXX11_CONSTEXPR
 	span(std::array<U, N>& arr) HAMON_NOEXCEPT
 		: m_data{ arr.data() }
@@ -361,7 +362,7 @@ public:
 	{}
 
 	// (6)
-	template <typename U, std::size_t N
+	template <typename U, hamon::size_t N
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<detail::span_array_convertible<U const, element_type>::value>
 #endif
@@ -387,7 +388,7 @@ public:
 	{}
 
 	// (8)
-	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), std::size_t N>
+	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), hamon::size_t N>
 	HAMON_CXX11_CONSTEXPR
 	span(span<U, N> const& other)  HAMON_NOEXCEPT
 		: m_data{ other.data() }
@@ -402,7 +403,7 @@ public:
 	HAMON_CXX14_CONSTEXPR span& operator=(span const&) HAMON_NOEXCEPT = default;
 
 	// subviews
-	template <std::size_t Count>
+	template <hamon::size_t Count>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR span<element_type, Count>
 	first() const HAMON_NOEXCEPT
 	{
@@ -411,7 +412,7 @@ public:
 			span<element_type, Count>{data(), Count};
 	}
 
-	template <std::size_t Count>
+	template <hamon::size_t Count>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR span<element_type, Count>
 	last() const HAMON_NOEXCEPT
 	{
@@ -420,7 +421,7 @@ public:
 			span<element_type, Count>{data() + size() - Count, Count};
 	}
 
-	template <std::size_t Offset, std::size_t Count = hamon::dynamic_extent>
+	template <hamon::size_t Offset, hamon::size_t Count = hamon::dynamic_extent>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR span<element_type, Count>
 	subspan() const HAMON_NOEXCEPT
 	{
@@ -545,15 +546,15 @@ template <HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It), typename EndO
 span(It, EndOrSize)
 -> span<hamon::remove_reference_t<hamon::iter_reference_t<It>>>;
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 span(T(&)[N])
 -> span<T, N>;
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 span(std::array<T, N>&)
 -> span<T, N>;
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 span(std::array<T, N> const&)
 -> span<T const, N>;
 
@@ -573,14 +574,14 @@ span(Range&&)
 
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 HAMON_RANGES_START_NAMESPACE
 
-template <typename T, std::size_t Extent>
+template <typename T, hamon::size_t Extent>
 HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::span<T, Extent>);
 
-template <typename T, std::size_t Extent>
+template <typename T, hamon::size_t Extent>
 HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true, hamon::span<T, Extent>);
 
 HAMON_RANGES_END_NAMESPACE

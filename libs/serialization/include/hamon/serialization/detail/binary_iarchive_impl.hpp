@@ -7,8 +7,8 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_BINARY_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_BINARY_IARCHIVE_IMPL_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <istream>	// basic_istream
-#include <cstddef>
 #include <vector>
 #include <cstring>	// memcpy
 
@@ -21,9 +21,8 @@ namespace serialization
 namespace detail
 {
 
-
 template <typename CharT, typename Traits>
-void load_binary(std::basic_istream<CharT, Traits>& is, void* p, std::size_t size)
+void load_binary(std::basic_istream<CharT, Traits>& is, void* p, hamon::size_t size)
 {
 	auto pbuf = is.rdbuf();
 
@@ -53,7 +52,7 @@ public:
 	{
 	}
 
-	virtual void load(void* dst, std::size_t size) = 0;
+	virtual void load(void* dst, hamon::size_t size) = 0;
 };
 
 template <typename IStream>
@@ -65,7 +64,7 @@ public:
 		: m_is(is)
 	{}
 
-	void load(void* dst, std::size_t size) override
+	void load(void* dst, hamon::size_t size) override
 	{
 		load_binary(m_is, dst, size);
 	}

@@ -20,8 +20,8 @@ using std::size;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -33,8 +33,8 @@ size(Container const& c) -> decltype(c.size())
 	return c.size();
 }
 
-template <typename T, std::size_t N>
-HAMON_NODISCARD HAMON_CONSTEXPR std::size_t
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CONSTEXPR hamon::size_t
 size(T const (&)[N]) HAMON_NOEXCEPT
 {
 	return N;

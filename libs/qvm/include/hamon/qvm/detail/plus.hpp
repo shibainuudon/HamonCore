@@ -8,10 +8,10 @@
 #define HAMON_QVM_DETAIL_PLUS_HPP
 
 #include <hamon/qvm/detail/transform.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -26,8 +26,8 @@ namespace detail
  *	@brief	plus
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T, std::size_t... Ns
+	template <typename, hamon::size_t...> class GenType,
+	typename T, hamon::size_t... Ns
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR GenType<T, Ns...>
 plus(GenType<T, Ns...> const& lhs, GenType<T, Ns...> const& rhs) HAMON_NOEXCEPT
@@ -41,8 +41,8 @@ plus(GenType<T, Ns...> const& lhs, GenType<T, Ns...> const& rhs) HAMON_NOEXCEPT
  *	要素の型が違うときのオーバーロード
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T1, typename T2, std::size_t... Ns,
+	template <typename, hamon::size_t...> class GenType,
+	typename T1, typename T2, hamon::size_t... Ns,
 	typename T3 = hamon::arithmetic_promote_t<T1, T2>
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR GenType<T3, Ns...>

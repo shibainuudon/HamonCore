@@ -7,14 +7,14 @@
 #ifndef HAMON_TYPE_TRAITS_MAKE_UINT_FAST_N_HPP
 #define HAMON_TYPE_TRAITS_MAKE_UINT_FAST_N_HPP
 
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 #include <cstdint>
 #include <type_traits>
 
 namespace hamon
 {
 
-template <std::size_t N>
+template <hamon::size_t N>
 struct make_uint_fast_n
 {
 private:
@@ -29,7 +29,7 @@ public:
 	>::type>::type>::type>::type;
 };
 
-template <std::size_t N>
+template <hamon::size_t N>
 using make_uint_fast_n_t = typename make_uint_fast_n<N>::type;
 
 }	// namespace hamon

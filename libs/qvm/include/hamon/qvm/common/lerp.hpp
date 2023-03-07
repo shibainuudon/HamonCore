@@ -10,10 +10,10 @@
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -43,8 +43,8 @@ struct lerp_fn
  *	@brief	lerp
  */
 template <
-	template <typename, std::size_t...> class GenType,
-	typename T1, std::size_t... Ns,
+	template <typename, hamon::size_t...> class GenType,
+	typename T1, hamon::size_t... Ns,
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto

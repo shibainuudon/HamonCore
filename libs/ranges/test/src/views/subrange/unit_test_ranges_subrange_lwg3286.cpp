@@ -11,6 +11,7 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -45,7 +46,7 @@ struct my_range : public test_input_range<int>
 		return base_type::end();
 	}
 
-	HAMON_CXX14_CONSTEXPR std::size_t size()
+	HAMON_CXX14_CONSTEXPR hamon::size_t size()
 	{
 		if (called_begin)
 		{

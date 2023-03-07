@@ -5,10 +5,10 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
-#include <cstddef>
 
 namespace hamon_qvm_test
 {
@@ -16,7 +16,7 @@ namespace hamon_qvm_test
 namespace matrix_test
 {
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 void DataTest()
 {
 	using matrix = hamon::qvm::matrix<T, N, M>;

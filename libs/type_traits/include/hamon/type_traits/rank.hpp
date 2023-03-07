@@ -8,9 +8,9 @@
 #define HAMON_TYPE_TRAITS_RANK_HPP
 
 #include <hamon/type_traits/integral_constant.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>
-#include <cstddef>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ namespace hamon
 template <typename T>
 struct rank
 	: public hamon::integral_constant<
-		std::size_t, std::rank<T>::value
+		hamon::size_t, std::rank<T>::value
 	>
 {};
 
@@ -34,7 +34,7 @@ struct rank
 
 template <typename T>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-std::size_t rank_v = rank<T>::value;
+hamon::size_t rank_v = rank<T>::value;
 
 #endif
 

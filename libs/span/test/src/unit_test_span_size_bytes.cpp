@@ -5,8 +5,8 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -18,10 +18,10 @@ namespace size_bytes_test
 {
 
 template <typename Span>
-HAMON_CXX11_CONSTEXPR bool test(Span sp, std::size_t sz)
+HAMON_CXX11_CONSTEXPR bool test(Span sp, hamon::size_t sz)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.size_bytes());
-	return (std::size_t)sp.size_bytes() == sz * sizeof(typename Span::element_type);
+	return (hamon::size_t)sp.size_bytes() == sz * sizeof(typename Span::element_type);
 }
 
 struct A {};

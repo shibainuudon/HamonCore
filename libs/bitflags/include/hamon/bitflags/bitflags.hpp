@@ -7,14 +7,13 @@
 #ifndef HAMON_BITFLAGS_BITFLAGS_HPP
 #define HAMON_BITFLAGS_BITFLAGS_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/bit/popcount.hpp>
 #include <hamon/config.hpp>
 #include <string>
-#include <cstdint>
-#include <cstddef>
 #include <ostream>
 #include <cstdlib>		// std::abort
 #include <stdexcept>	// std::out_of_range
@@ -64,14 +63,14 @@ namespace hamon
  *
  *	・bitflags<Enum1> と bitflags<Enum2>は違う型として区別される(型安全)
  */
-template <typename E, std::size_t N = 32, bool Dense = false>
+template <typename E, hamon::size_t N = 32, bool Dense = false>
 class bitflags
 {
 private:
 	static_assert(hamon::is_enum<E>::value, "");
 
 	using value_type = hamon::make_uint_least_n_t<N>;
-	using size_type = std::size_t;
+	using size_type = hamon::size_t;
 
 public:
 	/**
@@ -428,7 +427,7 @@ public:
 		std::basic_string<CharT, Traits, Allocator> result;
 		auto value = m_value;
 		auto const mask = static_cast<value_type>(1) << (N - 1);
-		for (std::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			if (value & mask)
 			{
@@ -525,7 +524,7 @@ private:
 /**
  *	@brief	ストリームへの出力
  */
-template <typename CharT, typename Traits, typename E, std::size_t N, bool Dense>
+template <typename CharT, typename Traits, typename E, hamon::size_t N, bool Dense>
 std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& os, bitflags<E, N, Dense> const& rhs)
 {

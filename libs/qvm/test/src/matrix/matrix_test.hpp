@@ -8,6 +8,7 @@
 #define UNIT_TEST_QVM_MATRIX_MATRIX_TEST_HPP
 
 #include <hamon/qvm/matrix/matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
 
@@ -25,7 +26,7 @@ class MatrixFloatTest : public ::testing::Test {};
 TYPED_TEST_SUITE(MatrixTest,      MatrixTestTypes);
 TYPED_TEST_SUITE(MatrixFloatTest, MatrixTestFloatTypes);
 
-template <typename T, std::size_t N, std::size_t M>
+template <typename T, hamon::size_t N, hamon::size_t M>
 hamon::qvm::matrix<T, N, M> make_random_matrix()
 {
 	hamon::qvm::matrix<T, N, M> result;

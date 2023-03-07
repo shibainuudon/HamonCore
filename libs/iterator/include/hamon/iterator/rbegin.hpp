@@ -20,9 +20,9 @@ using std::rbegin;
 
 #else
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -41,7 +41,7 @@ rbegin(Container const& c) -> decltype(c.rbegin())
 	return c.rbegin();
 }
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 inline HAMON_CONSTEXPR hamon::reverse_iterator<T*>
 rbegin(T (&a)[N]) HAMON_NOEXCEPT
 {

@@ -9,10 +9,10 @@
 
 #include <hamon/serialization/detail/has_adl_load_vector.hpp>
 #include <hamon/serialization/detail/load_array.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ private:
 	template <typename Archive, typename T>
 	static void impl(Archive& ar, T& t, hamon::detail::overload_priority<0>)
 	{
-		std::size_t size;
+		hamon::size_t size;
 		ar >> size;
 
 		t.resize(size);

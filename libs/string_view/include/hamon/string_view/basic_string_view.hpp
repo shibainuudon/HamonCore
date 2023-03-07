@@ -25,6 +25,7 @@ using std::basic_string_view;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
@@ -69,7 +70,7 @@ public:
 	using iterator		            = const_iterator;
 	using const_reverse_iterator    = hamon::reverse_iterator<const_iterator>;
 	using reverse_iterator	        = const_reverse_iterator;
-	using size_type		            = std::size_t;
+	using size_type		            = hamon::size_t;
 	using difference_type	        = std::ptrdiff_t;
 
 	HAMON_STATIC_CONSTEXPR size_type npos = size_type(-1);
@@ -1042,7 +1043,7 @@ namespace HAMON_HASH_NAMESPACE
 template <typename CharT, typename Traits>
 struct hash<hamon::basic_string_view<CharT, Traits>>
 {
-	HAMON_CXX14_CONSTEXPR std::size_t
+	HAMON_CXX14_CONSTEXPR hamon::size_t
 	operator()(hamon::basic_string_view<CharT, Traits> const& sv) const HAMON_NOEXCEPT
 	{
 		return hamon::murmur_hash_3{}(sv.data(), sv.data() + sv.length());
@@ -1083,34 +1084,34 @@ inline namespace string_view_literals
 {
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char>
-operator"" _sv(char const* str, std::size_t len) HAMON_NOEXCEPT
+operator"" _sv(char const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char>{str, len};
 }
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<wchar_t>
-operator"" _sv(wchar_t const* str, std::size_t len) HAMON_NOEXCEPT
+operator"" _sv(wchar_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<wchar_t>{str, len};
 }
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char8_t>
-operator"" _sv(char8_t const* str, std::size_t len) HAMON_NOEXCEPT
+operator"" _sv(char8_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char8_t>{str, len};
 }
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char16_t>
-operator"" _sv(char16_t const* str, std::size_t len) HAMON_NOEXCEPT
+operator"" _sv(char16_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char16_t>{str, len};
 }
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char32_t>
-operator"" _sv(char32_t const* str, std::size_t len) HAMON_NOEXCEPT
+operator"" _sv(char32_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 {
 	return hamon::basic_string_view<char32_t>{str, len};
 }

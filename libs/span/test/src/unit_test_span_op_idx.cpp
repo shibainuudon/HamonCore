@@ -5,8 +5,8 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <cstddef>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
@@ -18,7 +18,7 @@ namespace op_idx_test
 {
 
 template <typename Span>
-HAMON_CXX11_CONSTEXPR bool test(Span sp, std::size_t idx)
+HAMON_CXX11_CONSTEXPR bool test(Span sp, hamon::size_t idx)
 {
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp[idx]);
 	static_assert(hamon::is_same<decltype(sp[idx]), typename Span::reference>::value, "");

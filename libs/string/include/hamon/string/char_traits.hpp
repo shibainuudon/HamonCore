@@ -11,6 +11,7 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <ios>
@@ -109,7 +110,7 @@ struct char_traits_base
 private:
 #if HAMON_CXX_STANDARD < 14
 	static HAMON_CONSTEXPR int
-	compare_impl(char_type const* s1, char_type const* s2, std::size_t i, std::size_t n)
+	compare_impl(char_type const* s1, char_type const* s2, hamon::size_t i, hamon::size_t n)
 	{
 		return
 			i == n ? 0 :
@@ -118,8 +119,8 @@ private:
 			compare_impl(s1, s2, i + 1, n);
 	}
 
-	static HAMON_CONSTEXPR std::size_t
-	length_impl(char_type const* s, std::size_t i)
+	static HAMON_CONSTEXPR hamon::size_t
+	length_impl(char_type const* s, hamon::size_t i)
 	{
 		return
 			Derived::eq(s[i], char_type()) ?
@@ -128,7 +129,7 @@ private:
 	}
 
 	static HAMON_CONSTEXPR char_type const*
-	find_impl(char_type const* s, std::size_t i, std::size_t n, char_type const& a)
+	find_impl(char_type const* s, hamon::size_t i, hamon::size_t n, char_type const& a)
 	{
 		return
 			i == n ? 0 :
@@ -139,12 +140,12 @@ private:
 
 public:
 	static HAMON_CONSTEXPR int
-	compare(char_type const* s1, char_type const* s2, std::size_t n)
+	compare(char_type const* s1, char_type const* s2, hamon::size_t n)
 	{
 #if HAMON_CXX_STANDARD < 14
 		return compare_impl(s1, s2, 0, n);
 #else
-		for (std::size_t i = 0; i < n; ++i)
+		for (hamon::size_t i = 0; i < n; ++i)
 		{
 			if (Derived::lt(s1[i], s2[i]))
 			{
@@ -160,13 +161,13 @@ public:
 #endif
 	}
 
-	static HAMON_CONSTEXPR std::size_t
+	static HAMON_CONSTEXPR hamon::size_t
 	length(char_type const* s)
 	{
 #if HAMON_CXX_STANDARD < 14
 		return length_impl(s, 0);
 #else
-		std::size_t i = 0;
+		hamon::size_t i = 0;
 		while (!Derived::eq(s[i], char_type()))
 		{
 			++i;
@@ -177,12 +178,12 @@ public:
 	}
 
 	static HAMON_CONSTEXPR char_type const*
-	find(char_type const* s, std::size_t n, char_type const& a)
+	find(char_type const* s, hamon::size_t n, char_type const& a)
 	{
 #if HAMON_CXX_STANDARD < 14
 		return find_impl(s, 0, n, a);
 #else
-		for (std::size_t i = 0; i < n; ++i)
+		for (hamon::size_t i = 0; i < n; ++i)
 		{
 			if (Derived::eq(s[i], a))
 			{
@@ -195,7 +196,7 @@ public:
 	}
 
 	static HAMON_CXX14_CONSTEXPR char_type*
-	move(char_type* s1, char_type const* s2, std::size_t n)
+	move(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
 		if (n == 0)
 		{
@@ -215,16 +216,16 @@ public:
 	}
 
 	static HAMON_CXX14_CONSTEXPR char_type*
-	copy(char_type* s1, char_type const* s2, std::size_t n)
+	copy(char_type* s1, char_type const* s2, hamon::size_t n)
 	{
 		hamon::copy_n(s2, n, s1);
 		return s1;
 	}
 
 	static HAMON_CXX14_CONSTEXPR char_type*
-	assign(char_type* s, std::size_t n, char_type a)
+	assign(char_type* s, hamon::size_t n, char_type a)
 	{
-		for (std::size_t i = 0; i < n; ++i)
+		for (hamon::size_t i = 0; i < n; ++i)
 		{
 			Derived::assign(s[i], a);
 		}

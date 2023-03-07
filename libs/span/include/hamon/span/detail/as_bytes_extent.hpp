@@ -8,7 +8,7 @@
 #define HAMON_SPAN_DETAIL_AS_BYTES_EXTENT_HPP
 
 #include <hamon/span/dynamic_extent.hpp>
-#include <cstddef>
+#include <hamon/cstddef/size_t.hpp>
 
 namespace hamon
 {
@@ -16,16 +16,16 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, std::size_t Extent>
+template <typename T, hamon::size_t Extent>
 struct as_bytes_extent
 {
-	static const std::size_t value = Extent * sizeof(T);
+	static const hamon::size_t value = Extent * sizeof(T);
 };
 
 template <typename T>
 struct as_bytes_extent<T, hamon::dynamic_extent>
 {
-	static const std::size_t value = hamon::dynamic_extent;
+	static const hamon::size_t value = hamon::dynamic_extent;
 };
 
 }	// namespace detail

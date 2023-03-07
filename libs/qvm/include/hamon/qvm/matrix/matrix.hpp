@@ -23,12 +23,12 @@
 #include <hamon/qvm/matrix/detail/make_orthographic_matrix.hpp>
 #include <hamon/qvm/matrix/detail/make_look_to_matrix.hpp>
 #include <hamon/qvm/matrix/detail/make_viewport_matrix.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ namespace hamon
 namespace qvm
 {
 
-template <typename T, std::size_t Row, std::size_t Col>
+template <typename T, hamon::size_t Row, hamon::size_t Col>
 class matrix : public hamon::qvm::detail::vector_base<qvm::vector<T, Col>, Row>
 {
 private:
@@ -83,10 +83,10 @@ public:
 	{}
 
 private:
-	template <std::size_t Col2, std::size_t N, std::size_t... Js>
+	template <hamon::size_t Col2, hamon::size_t N, hamon::size_t... Js>
 	static HAMON_CONSTEXPR
 	qvm::vector<T, Col2>
-	vector_chunk_impl_helper(qvm::vector<T, N> const& v, std::size_t i, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
+	vector_chunk_impl_helper(qvm::vector<T, N> const& v, hamon::size_t i, hamon::index_sequence<Js...>) HAMON_NOEXCEPT
 	{
 		return
 		{
@@ -94,7 +94,7 @@ private:
 		};
 	}
 
-	template <std::size_t Row2, std::size_t Col2, std::size_t N, std::size_t... Is>
+	template <hamon::size_t Row2, hamon::size_t Col2, hamon::size_t N, hamon::size_t... Is>
 	static HAMON_CONSTEXPR
 	qvm::vector<qvm::vector<T, Col2>, Row2>
 	vector_chunk_impl(qvm::vector<T, N> const& v, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
@@ -105,7 +105,7 @@ private:
 		};
 	}
 
-	template <std::size_t Row2, std::size_t Col2, std::size_t N>
+	template <hamon::size_t Row2, hamon::size_t Col2, hamon::size_t N>
 	static HAMON_CONSTEXPR
 	qvm::vector<qvm::vector<T, Col2>, Row2>
 	vector_chunk(qvm::vector<T, N> const& v) HAMON_NOEXCEPT
@@ -183,7 +183,7 @@ public:
 	/**
 	 *	@brief	対角行列を作成します
 	 */
-	template <typename U, std::size_t N,
+	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N == Row) && (N == Col)) &&
 			hamon::is_implicitly_constructible<T, U>::value
@@ -275,7 +275,7 @@ public:
 	/**
 	 *	@brief	平行移動行列を作成します
 	 */
-	template <typename U, std::size_t N,
+	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N+1 == Row) && (N+1 == Col)) &&
 			hamon::is_implicitly_constructible<T, U>::value
@@ -298,7 +298,7 @@ public:
 	/**
 	 *	@brief	スケーリング行列を作成します
 	 */
-	template <typename U, std::size_t N,
+	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N+1 == Row) && (N+1 == Col)) &&
 			hamon::is_implicitly_constructible<T, U>::value
@@ -425,7 +425,7 @@ public:
 	 *	@param	dir		視点の向き(正規化していなくても可)
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <template <typename, std::size_t> class Vector>
+	template <template <typename, hamon::size_t> class Vector>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	look_to_lh(
 		Vector<T, 3> const& eye,
@@ -442,7 +442,7 @@ public:
 	 *	@param	dir		視点の向き(正規化していなくても可)
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <template <typename, std::size_t> class Vector>
+	template <template <typename, hamon::size_t> class Vector>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	look_to_rh(
 		Vector<T, 3> const& eye,
@@ -459,7 +459,7 @@ public:
 	 *	@param	at		注視点
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <template <typename, std::size_t> class Vector>
+	template <template <typename, hamon::size_t> class Vector>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	look_at_lh(
 		Vector<T, 3> const& eye,
@@ -476,7 +476,7 @@ public:
 	 *	@param	at		注視点
 	 *	@param	up		上方を定義するベクトル(正規化していなくても可)
 	 */
-	template <template <typename, std::size_t> class Vector>
+	template <template <typename, hamon::size_t> class Vector>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
 	look_at_rh(
 		Vector<T, 3> const& eye,

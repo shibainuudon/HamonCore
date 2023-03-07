@@ -8,6 +8,7 @@
 #define HAMON_QVM_DETAIL_VECTOR_BASE_HPP
 
 #include <hamon/algorithm/swap_ranges.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
@@ -30,13 +31,13 @@ namespace qvm
 namespace detail
 {
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct array_traits
 {
 	using type = T[N];
 
 	static HAMON_CONSTEXPR T&
-	ref(type const& t, std::size_t n) HAMON_NOEXCEPT
+	ref(type const& t, hamon::size_t n) HAMON_NOEXCEPT
 	{
 		return const_cast<T&>(t[n]);
 	}
@@ -54,7 +55,7 @@ struct array_traits<T, 0>
 	struct type {};
 
 	static HAMON_CONSTEXPR T&
-	ref(type const&, std::size_t) HAMON_NOEXCEPT
+	ref(type const&, hamon::size_t) HAMON_NOEXCEPT
 	{
 		return *static_cast<T*>(nullptr);
 	}
@@ -66,7 +67,7 @@ struct array_traits<T, 0>
 	}
 };
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 class vector_base
 {
 public:
@@ -75,7 +76,7 @@ public:
 	using const_pointer          = value_type const*;
 	using reference              = value_type&;
 	using const_reference        = value_type const&;
-	using size_type              = std::size_t;
+	using size_type              = hamon::size_t;
 	using difference_type        = std::ptrdiff_t;
 	using iterator               = pointer;
 	using const_iterator         = const_pointer;
@@ -124,7 +125,7 @@ public:
 	{}
 
 private:
-	template <typename U, std::size_t... Is>
+	template <typename U, hamon::size_t... Is>
 	HAMON_CONSTEXPR
 	vector_base(vector_base<U, N> const& v, hamon::index_sequence<Is...>) HAMON_NOEXCEPT
 		: vector_base{ v[Is]... }
@@ -365,7 +366,7 @@ private:
 /**
  *	@brief	swap
  */
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR void
 swap(vector_base<T, N>& lhs, vector_base<T, N>& rhs)
 HAMON_NOEXCEPT_IF_EXPR(lhs.swap(rhs))
