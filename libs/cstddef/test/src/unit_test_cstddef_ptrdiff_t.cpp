@@ -9,6 +9,7 @@
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
+#include <climits>	// CHAR_BIT
 
 // ptrdiff_t は符号付き整数型
 static_assert(hamon::is_integral<hamon::ptrdiff_t>::value, "");

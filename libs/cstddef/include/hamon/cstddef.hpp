@@ -8,6 +8,7 @@
 #define HAMON_CSTDDEF_HPP
 
 #include <hamon/cstddef/byte.hpp>
+#include <hamon/cstddef/max_align_t.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
