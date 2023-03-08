@@ -27,6 +27,7 @@ set(SUBDIRECTORIES
 	concepts
 	config
 	cstddef
+	cstdint
 	cstring
 	debug
 	functional

@@ -7,7 +7,7 @@
 #ifndef HAMON_RANDOM_ENGINES_DETAIL_SPLIT_MIX64_HPP
 #define HAMON_RANDOM_ENGINES_DETAIL_SPLIT_MIX64_HPP
 
-#include <cstdint>
+#include <hamon/cstdint/uint64_t.hpp>
 
 namespace hamon
 {
@@ -15,7 +15,7 @@ namespace hamon
 class split_mix64
 {
 public:
-	using result_type = std::uint64_t;
+	using result_type = hamon::uint64_t;
 
 	explicit split_mix64(result_type sd)
 		: m_state(sd)

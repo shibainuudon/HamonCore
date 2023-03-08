@@ -12,9 +12,8 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/config.hpp>
-#include <cstdint>
-#include <limits>
 
 namespace hamon
 {
@@ -49,8 +48,8 @@ inline HAMON_CONSTEXPR T
 trunc_unchecked(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
-		-static_cast<T>(static_cast<std::uintmax_t>(-x)) :
-		 static_cast<T>(static_cast<std::uintmax_t>( x));
+		-static_cast<T>(static_cast<hamon::uintmax_t>(-x)) :
+		 static_cast<T>(static_cast<hamon::uintmax_t>( x));
 }
 
 #endif

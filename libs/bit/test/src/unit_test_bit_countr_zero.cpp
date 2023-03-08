@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/countr_zero.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -232,10 +232,10 @@ void CountrZeroTestU64(void)
 
 GTEST_TEST(BitTest, CountrZeroTest)
 {
-	CountrZeroTestU8<std::uint8_t>();
-	CountrZeroTestU16<std::uint16_t>();
-	CountrZeroTestU32<std::uint32_t>();
-	CountrZeroTestU64<std::uint64_t>();
+	CountrZeroTestU8<hamon::uint8_t>();
+	CountrZeroTestU16<hamon::uint16_t>();
+	CountrZeroTestU32<hamon::uint32_t>();
+	CountrZeroTestU64<hamon::uint64_t>();
 }
 
 }	// namespace countr_zero_test

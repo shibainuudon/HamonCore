@@ -5,9 +5,9 @@
  */
 
 #include <hamon/cmath/factorial.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
 #include <limits>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -19,125 +19,125 @@ namespace factorial_test
 GTEST_TEST(CMathTest, FactorialTest)
 {
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1, hamon::factorial<std::int8_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1, hamon::factorial<std::int8_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  2, hamon::factorial<std::int8_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  6, hamon::factorial<std::int8_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 24, hamon::factorial<std::int8_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(120, hamon::factorial<std::int8_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, hamon::factorial<std::int8_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1, hamon::factorial<hamon::int8_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1, hamon::factorial<hamon::int8_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  2, hamon::factorial<hamon::int8_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  6, hamon::factorial<hamon::int8_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 24, hamon::factorial<hamon::int8_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(120, hamon::factorial<hamon::int8_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0, hamon::factorial<hamon::int8_t>( 6));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1U, hamon::factorial<std::uint8_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1U, hamon::factorial<std::uint8_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  2U, hamon::factorial<std::uint8_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  6U, hamon::factorial<std::uint8_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 24U, hamon::factorial<std::uint8_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(120U, hamon::factorial<std::uint8_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0U, hamon::factorial<std::uint8_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1U, hamon::factorial<hamon::uint8_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  1U, hamon::factorial<hamon::uint8_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  2U, hamon::factorial<hamon::uint8_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  6U, hamon::factorial<hamon::uint8_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 24U, hamon::factorial<hamon::uint8_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(120U, hamon::factorial<hamon::uint8_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  0U, hamon::factorial<hamon::uint8_t>( 6));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   1, hamon::factorial<std::int16_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   1, hamon::factorial<std::int16_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   2, hamon::factorial<std::int16_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6, hamon::factorial<std::int16_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  24, hamon::factorial<std::int16_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 120, hamon::factorial<std::int16_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 720, hamon::factorial<std::int16_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5040, hamon::factorial<std::int16_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   0, hamon::factorial<std::int16_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   1, hamon::factorial<hamon::int16_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   1, hamon::factorial<hamon::int16_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   2, hamon::factorial<hamon::int16_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6, hamon::factorial<hamon::int16_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  24, hamon::factorial<hamon::int16_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 120, hamon::factorial<hamon::int16_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 720, hamon::factorial<hamon::int16_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5040, hamon::factorial<hamon::int16_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   0, hamon::factorial<hamon::int16_t>( 8));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    1U, hamon::factorial<std::uint16_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    1U, hamon::factorial<std::uint16_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    2U, hamon::factorial<std::uint16_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    6U, hamon::factorial<std::uint16_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   24U, hamon::factorial<std::uint16_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  120U, hamon::factorial<std::uint16_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  720U, hamon::factorial<std::uint16_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 5040U, hamon::factorial<std::uint16_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(40320U, hamon::factorial<std::uint16_t>( 8));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    0U, hamon::factorial<std::uint16_t>( 9));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    1U, hamon::factorial<hamon::uint16_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    1U, hamon::factorial<hamon::uint16_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    2U, hamon::factorial<hamon::uint16_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    6U, hamon::factorial<hamon::uint16_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   24U, hamon::factorial<hamon::uint16_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  120U, hamon::factorial<hamon::uint16_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  720U, hamon::factorial<hamon::uint16_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 5040U, hamon::factorial<hamon::uint16_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(40320U, hamon::factorial<hamon::uint16_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    0U, hamon::factorial<hamon::uint16_t>( 9));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1, hamon::factorial<std::int32_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1, hamon::factorial<std::int32_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        2, hamon::factorial<std::int32_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        6, hamon::factorial<std::int32_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(       24, hamon::factorial<std::int32_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      120, hamon::factorial<std::int32_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      720, hamon::factorial<std::int32_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     5040, hamon::factorial<std::int32_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    40320, hamon::factorial<std::int32_t>( 8));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   362880, hamon::factorial<std::int32_t>( 9));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  3628800, hamon::factorial<std::int32_t>(10));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 39916800, hamon::factorial<std::int32_t>(11));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(479001600, hamon::factorial<std::int32_t>(12));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        0, hamon::factorial<std::int32_t>(13));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1, hamon::factorial<hamon::int32_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1, hamon::factorial<hamon::int32_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        2, hamon::factorial<hamon::int32_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        6, hamon::factorial<hamon::int32_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(       24, hamon::factorial<hamon::int32_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      120, hamon::factorial<hamon::int32_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      720, hamon::factorial<hamon::int32_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     5040, hamon::factorial<hamon::int32_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    40320, hamon::factorial<hamon::int32_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   362880, hamon::factorial<hamon::int32_t>( 9));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  3628800, hamon::factorial<hamon::int32_t>(10));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 39916800, hamon::factorial<hamon::int32_t>(11));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(479001600, hamon::factorial<hamon::int32_t>(12));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        0, hamon::factorial<hamon::int32_t>(13));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1U, hamon::factorial<std::uint32_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1U, hamon::factorial<std::uint32_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        2U, hamon::factorial<std::uint32_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        6U, hamon::factorial<std::uint32_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(       24U, hamon::factorial<std::uint32_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      120U, hamon::factorial<std::uint32_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      720U, hamon::factorial<std::uint32_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     5040U, hamon::factorial<std::uint32_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    40320U, hamon::factorial<std::uint32_t>( 8));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   362880U, hamon::factorial<std::uint32_t>( 9));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  3628800U, hamon::factorial<std::uint32_t>(10));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 39916800U, hamon::factorial<std::uint32_t>(11));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(479001600U, hamon::factorial<std::uint32_t>(12));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        0U, hamon::factorial<std::uint32_t>(13));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1U, hamon::factorial<hamon::uint32_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        1U, hamon::factorial<hamon::uint32_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        2U, hamon::factorial<hamon::uint32_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        6U, hamon::factorial<hamon::uint32_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(       24U, hamon::factorial<hamon::uint32_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      120U, hamon::factorial<hamon::uint32_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      720U, hamon::factorial<hamon::uint32_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     5040U, hamon::factorial<hamon::uint32_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    40320U, hamon::factorial<hamon::uint32_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   362880U, hamon::factorial<hamon::uint32_t>( 9));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(  3628800U, hamon::factorial<hamon::uint32_t>(10));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 39916800U, hamon::factorial<hamon::uint32_t>(11));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(479001600U, hamon::factorial<hamon::uint32_t>(12));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        0U, hamon::factorial<hamon::uint32_t>(13));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1LL, hamon::factorial<std::int64_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1LL, hamon::factorial<std::int64_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  2LL, hamon::factorial<std::int64_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  6LL, hamon::factorial<std::int64_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                 24LL, hamon::factorial<std::int64_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                120LL, hamon::factorial<std::int64_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                720LL, hamon::factorial<std::int64_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(               5040LL, hamon::factorial<std::int64_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(              40320LL, hamon::factorial<std::int64_t>( 8));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(             362880LL, hamon::factorial<std::int64_t>( 9));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(            3628800LL, hamon::factorial<std::int64_t>(10));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(           39916800LL, hamon::factorial<std::int64_t>(11));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(          479001600LL, hamon::factorial<std::int64_t>(12));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(         6227020800LL, hamon::factorial<std::int64_t>(13));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        87178291200LL, hamon::factorial<std::int64_t>(14));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      1307674368000LL, hamon::factorial<std::int64_t>(15));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     20922789888000LL, hamon::factorial<std::int64_t>(16));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    355687428096000LL, hamon::factorial<std::int64_t>(17));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6402373705728000LL, hamon::factorial<std::int64_t>(18));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 121645100408832000LL, hamon::factorial<std::int64_t>(19));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2432902008176640000LL, hamon::factorial<std::int64_t>(20));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  0LL, hamon::factorial<std::int64_t>(21));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1LL, hamon::factorial<hamon::int64_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1LL, hamon::factorial<hamon::int64_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  2LL, hamon::factorial<hamon::int64_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  6LL, hamon::factorial<hamon::int64_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                 24LL, hamon::factorial<hamon::int64_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                120LL, hamon::factorial<hamon::int64_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                720LL, hamon::factorial<hamon::int64_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(               5040LL, hamon::factorial<hamon::int64_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(              40320LL, hamon::factorial<hamon::int64_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(             362880LL, hamon::factorial<hamon::int64_t>( 9));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(            3628800LL, hamon::factorial<hamon::int64_t>(10));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(           39916800LL, hamon::factorial<hamon::int64_t>(11));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(          479001600LL, hamon::factorial<hamon::int64_t>(12));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(         6227020800LL, hamon::factorial<hamon::int64_t>(13));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        87178291200LL, hamon::factorial<hamon::int64_t>(14));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      1307674368000LL, hamon::factorial<hamon::int64_t>(15));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     20922789888000LL, hamon::factorial<hamon::int64_t>(16));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    355687428096000LL, hamon::factorial<hamon::int64_t>(17));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6402373705728000LL, hamon::factorial<hamon::int64_t>(18));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 121645100408832000LL, hamon::factorial<hamon::int64_t>(19));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2432902008176640000LL, hamon::factorial<hamon::int64_t>(20));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  0LL, hamon::factorial<hamon::int64_t>(21));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1ULL, hamon::factorial<std::uint64_t>( 0));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1ULL, hamon::factorial<std::uint64_t>( 1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  2ULL, hamon::factorial<std::uint64_t>( 2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  6ULL, hamon::factorial<std::uint64_t>( 3));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                 24ULL, hamon::factorial<std::uint64_t>( 4));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                120ULL, hamon::factorial<std::uint64_t>( 5));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                720ULL, hamon::factorial<std::uint64_t>( 6));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(               5040ULL, hamon::factorial<std::uint64_t>( 7));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(              40320ULL, hamon::factorial<std::uint64_t>( 8));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(             362880ULL, hamon::factorial<std::uint64_t>( 9));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(            3628800ULL, hamon::factorial<std::uint64_t>(10));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(           39916800ULL, hamon::factorial<std::uint64_t>(11));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(          479001600ULL, hamon::factorial<std::uint64_t>(12));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(         6227020800ULL, hamon::factorial<std::uint64_t>(13));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        87178291200ULL, hamon::factorial<std::uint64_t>(14));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      1307674368000ULL, hamon::factorial<std::uint64_t>(15));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     20922789888000ULL, hamon::factorial<std::uint64_t>(16));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    355687428096000ULL, hamon::factorial<std::uint64_t>(17));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6402373705728000ULL, hamon::factorial<std::uint64_t>(18));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 121645100408832000ULL, hamon::factorial<std::uint64_t>(19));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2432902008176640000ULL, hamon::factorial<std::uint64_t>(20));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  0ULL, hamon::factorial<std::uint64_t>(21));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1ULL, hamon::factorial<hamon::uint64_t>( 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  1ULL, hamon::factorial<hamon::uint64_t>( 1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  2ULL, hamon::factorial<hamon::uint64_t>( 2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  6ULL, hamon::factorial<hamon::uint64_t>( 3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                 24ULL, hamon::factorial<hamon::uint64_t>( 4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                120ULL, hamon::factorial<hamon::uint64_t>( 5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                720ULL, hamon::factorial<hamon::uint64_t>( 6));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(               5040ULL, hamon::factorial<hamon::uint64_t>( 7));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(              40320ULL, hamon::factorial<hamon::uint64_t>( 8));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(             362880ULL, hamon::factorial<hamon::uint64_t>( 9));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(            3628800ULL, hamon::factorial<hamon::uint64_t>(10));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(           39916800ULL, hamon::factorial<hamon::uint64_t>(11));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(          479001600ULL, hamon::factorial<hamon::uint64_t>(12));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(         6227020800ULL, hamon::factorial<hamon::uint64_t>(13));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(        87178291200ULL, hamon::factorial<hamon::uint64_t>(14));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(      1307674368000ULL, hamon::factorial<hamon::uint64_t>(15));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(     20922789888000ULL, hamon::factorial<hamon::uint64_t>(16));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(    355687428096000ULL, hamon::factorial<hamon::uint64_t>(17));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(   6402373705728000ULL, hamon::factorial<hamon::uint64_t>(18));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 121645100408832000ULL, hamon::factorial<hamon::uint64_t>(19));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2432902008176640000ULL, hamon::factorial<hamon::uint64_t>(20));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(                  0ULL, hamon::factorial<hamon::uint64_t>(21));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1.0f, hamon::factorial<float>(0));

@@ -5,6 +5,8 @@
  */
 
 #include <hamon/config.hpp>
+#include <hamon/cstdint/uint8_t.hpp>
+#include <hamon/cstdint/int64_t.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
@@ -24,7 +26,7 @@ enum Enum1
 	Value3,
 };
 
-enum Enum2 : std::uint8_t
+enum Enum2 : hamon::uint8_t
 {
 	Red   = 1 << 0,
 	Green = 1 << 1,
@@ -32,7 +34,7 @@ enum Enum2 : std::uint8_t
 	All   = Red | Green | Blue
 };
 
-enum class Enum3 : std::int64_t
+enum class Enum3 : hamon::int64_t
 {
 	Value1,
 	Value2,

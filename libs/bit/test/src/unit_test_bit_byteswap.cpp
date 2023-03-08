@@ -8,9 +8,9 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 namespace hamon_bit_test
@@ -83,23 +83,23 @@ HAMON_CXX11_CONSTEXPR bool ByteswapTest(T x, T y)
 
 GTEST_TEST(BitTest, ByteswapTest)
 {
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint8_t>(0x12, 0x12)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint8_t>(0xAB, 0xAB)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint16_t>(0x1234, 0x3412)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint16_t>(0xABCD, 0xCDAB)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint32_t>(0x12345678, 0x78563412)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint32_t>(0x01234567, 0x67452301)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint64_t>(0x123456789ABCDEF0, 0xF0DEBC9A78563412)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::uint64_t>(0x0123456789ABCDEF, 0xEFCDAB8967452301)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint8_t>(0x12, 0x12)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint8_t>(0xAB, 0xAB)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint16_t>(0x1234, 0x3412)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint16_t>(0xABCD, 0xCDAB)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint32_t>(0x12345678, 0x78563412)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint32_t>(0x01234567, 0x67452301)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint64_t>(0x123456789ABCDEF0, 0xF0DEBC9A78563412)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::uint64_t>(0x0123456789ABCDEF, 0xEFCDAB8967452301)));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int8_t>(0x12, 0x12)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int8_t>(0x34, 0x34)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int16_t>(0x1234, 0x3412)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int16_t>(0x7654, 0x5476)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int32_t>(0x12345678, 0x78563412)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int32_t>(0x01234567, 0x67452301)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int64_t>(std::int64_t(0x123456789ABCDEF0), std::int64_t(0xF0DEBC9A78563412))));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<std::int64_t>(std::int64_t(0x0123456789ABCDEF), std::int64_t(0xEFCDAB8967452301))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int8_t>(0x12, 0x12)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int8_t>(0x34, 0x34)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int16_t>(0x1234, 0x3412)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int16_t>(0x7654, 0x5476)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int32_t>(0x12345678, 0x78563412)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int32_t>(0x01234567, 0x67452301)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int64_t>(hamon::int64_t(0x123456789ABCDEF0), hamon::int64_t(0xF0DEBC9A78563412))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<hamon::int64_t>(hamon::int64_t(0x0123456789ABCDEF), hamon::int64_t(0xEFCDAB8967452301))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<bool>(true,  true)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((ByteswapTest<bool>(false, false)));

@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint8_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/distance.hpp>
@@ -28,9 +29,6 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <cstdint>
-#include <string>
-#include <array>
 
 namespace hamon
 {
@@ -92,19 +90,19 @@ private:
 		// 3.4文字に足りない分は = 記号を後ろに追加する。
 		while (first != last)
 		{
-			std::uint8_t arr3[3] {};
+			hamon::uint8_t arr3[3] {};
 			int i = 0;
 			while (i < 3 && first != last)
 			{
-				arr3[i++] = static_cast<std::uint8_t>(*first++);
+				arr3[i++] = static_cast<hamon::uint8_t>(*first++);
 			}
 
-			std::uint8_t const arr4[4]
+			hamon::uint8_t const arr4[4]
 			{
-				static_cast<std::uint8_t>( (arr3[0] & 0xfc) >> 2),
-				static_cast<std::uint8_t>(((arr3[0] & 0x03) << 4) + ((arr3[1] & 0xf0) >> 4)),
-				static_cast<std::uint8_t>(((arr3[1] & 0x0f) << 2) + ((arr3[2] & 0xc0) >> 6)),
-				static_cast<std::uint8_t>(  arr3[2] & 0x3f),
+				static_cast<hamon::uint8_t>( (arr3[0] & 0xfc) >> 2),
+				static_cast<hamon::uint8_t>(((arr3[0] & 0x03) << 4) + ((arr3[1] & 0xf0) >> 4)),
+				static_cast<hamon::uint8_t>(((arr3[1] & 0x0f) << 2) + ((arr3[2] & 0xc0) >> 6)),
+				static_cast<hamon::uint8_t>(  arr3[2] & 0x3f),
 			};
 
 			for (int j = 0; j < 4; ++j)
@@ -132,8 +130,8 @@ private:
 		hamon::detail::overload_priority<0>)
 	{
 		encode_impl(
-			reinterpret_cast<std::uint8_t const*>(first),
-			reinterpret_cast<std::uint8_t const*>(last),
+			reinterpret_cast<hamon::uint8_t const*>(first),
+			reinterpret_cast<hamon::uint8_t const*>(last),
 			result,
 			hamon::detail::overload_priority<1>{});
 	}
@@ -157,7 +155,7 @@ private:
 		hamon::size_t count = 0;
 		while (first != last)
 		{
-			std::uint8_t arr4[4] {};
+			hamon::uint8_t arr4[4] {};
 			int i = 0;
 			while (i < 4)
 			{
@@ -173,15 +171,15 @@ private:
 					first = last;
 					break;
 				}
-				arr4[i++] = static_cast<std::uint8_t>(index);
+				arr4[i++] = static_cast<hamon::uint8_t>(index);
 				++first;
 			}
 
-			std::uint8_t const arr3[3]
+			hamon::uint8_t const arr3[3]
 			{
-				static_cast<std::uint8_t>(( arr4[0]        << 2) + ((arr4[1] & 0x30) >> 4)),
-				static_cast<std::uint8_t>(((arr4[1] & 0xf) << 4) + ((arr4[2] & 0x3c) >> 2)),
-				static_cast<std::uint8_t>(((arr4[2] & 0x3) << 6) +   arr4[3]),
+				static_cast<hamon::uint8_t>(( arr4[0]        << 2) + ((arr4[1] & 0x30) >> 4)),
+				static_cast<hamon::uint8_t>(((arr4[1] & 0xf) << 4) + ((arr4[2] & 0x3c) >> 2)),
+				static_cast<hamon::uint8_t>(((arr4[2] & 0x3) << 6) +   arr4[3]),
 			};
 
 			for (int j = 0; j < (i - 1); ++j)
@@ -205,7 +203,7 @@ private:
 		return decode_impl(
 			first,
 			last,
-			reinterpret_cast<std::uint8_t*>(result),
+			reinterpret_cast<hamon::uint8_t*>(result),
 			hamon::detail::overload_priority<1>{});
 	}
 
@@ -280,7 +278,7 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
+	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
 #endif
 	static HAMON_CXX14_CONSTEXPR void
 	encode(InputIterator first, Sentinel last, OutputIterator result)
@@ -312,7 +310,7 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
+	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
 #endif
 	static HAMON_CXX14_CONSTEXPR void
 	encode(Range&& rng, OutputIterator result)
@@ -337,7 +335,7 @@ public:
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
+	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
 #endif
 	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	decode(InputIterator first, Sentinel last, OutputIterator result)
@@ -369,7 +367,7 @@ public:
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires hamon::indirectly_writable<OutputIterator, std::uint8_t>
+	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
 #endif
 	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	decode(Range&& rng, OutputIterator result)

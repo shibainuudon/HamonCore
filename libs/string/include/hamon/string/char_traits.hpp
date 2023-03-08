@@ -12,12 +12,13 @@
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint_least16_t.hpp>
+#include <hamon/cstdint/uint_least32_t.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <ios>
 #include <cwchar>
 #include <cstdio>
-#include <cstdint>
 
 namespace hamon
 {
@@ -59,7 +60,7 @@ struct char_traits_types<char8_t>
 template <>
 struct char_traits_types<char16_t>
 {
-	using int_type   = std::uint_least16_t;
+	using int_type   = hamon::uint_least16_t;
 	using pos_type   = std::u16streampos;
 };
 #endif
@@ -68,7 +69,7 @@ struct char_traits_types<char16_t>
 template <>
 struct char_traits_types<char32_t>
 {
-	using int_type   = std::uint_least32_t;
+	using int_type   = hamon::uint_least32_t;
 	using pos_type   = std::u32streampos;
 };
 #endif

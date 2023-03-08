@@ -15,6 +15,7 @@
 #include <hamon/units/quantity/detail/quantity_divide_result.hpp>
 #include <hamon/units/quantity/detail/quantity_without_offset.hpp>
 #include <hamon/units/quantity/detail/quantity_without_scale_offset.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
@@ -22,7 +23,6 @@
 #include <hamon/config.hpp>
 #include <ratio>
 #include <ostream>
-#include <cstdint>
 #include <utility>
 
 namespace hamon
@@ -226,7 +226,7 @@ operator*(
  */
 template <
 	typename T, typename D, typename S, typename O,
-	std::intmax_t Num, std::intmax_t Den
+	hamon::intmax_t Num, hamon::intmax_t Den
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(

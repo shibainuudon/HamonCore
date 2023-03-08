@@ -5,11 +5,12 @@
  */
 
 #include <hamon/bit/endian.hpp>
+#include <hamon/cstdint/uint8_t.hpp>
+#include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include <cstring>	// memcpy
 
 HAMON_WARNING_PUSH()
@@ -35,8 +36,8 @@ GTEST_TEST(BitTest, EndianTest)
 
 	//  Try to check at runtime
 	{
-		std::uint32_t i = 0x01020304;
-		std::uint8_t c[4];
+		hamon::uint32_t i = 0x01020304;
+		hamon::uint8_t c[4];
 		std::memcpy(c, &i, sizeof(c));
 
 		if (hamon::endian::native == hamon::endian::big)

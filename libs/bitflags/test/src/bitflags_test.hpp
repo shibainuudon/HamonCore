@@ -8,7 +8,8 @@
 #define UNIT_TEST_BITFLAGS_BITFLAGS_TEST_HPP
 
 #include <hamon/bitflags.hpp>
-#include <cstdint>
+#include <hamon/cstdint/uint8_t.hpp>
+#include <hamon/cstdint/uint16_t.hpp>
 
 namespace hamon_bitflags_test
 {
@@ -20,7 +21,7 @@ enum Enum1
 	kOption3,
 };
 
-enum class Enum2 : std::uint8_t
+enum class Enum2 : hamon::uint8_t
 {
 	kOption4,
 	kOption5,
@@ -29,7 +30,7 @@ enum class Enum2 : std::uint8_t
 	kOption8,
 };
 
-enum class Enum3 : std::uint16_t
+enum class Enum3 : hamon::uint16_t
 {
 	kOption7 = 1,
 	kOption8 = 4,

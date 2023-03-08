@@ -7,7 +7,7 @@
 #ifndef HAMON_SERIALIZATION_VERSION_HPP
 #define HAMON_SERIALIZATION_VERSION_HPP
 
-#include <cstdint>
+#include <hamon/cstdint/uint32_t.hpp>
 
 namespace hamon
 {
@@ -15,7 +15,7 @@ namespace hamon
 namespace serialization
 {
 
-using version_t = std::uint32_t;
+using version_t = hamon::uint32_t;
 
 }	// namespace serialization
 

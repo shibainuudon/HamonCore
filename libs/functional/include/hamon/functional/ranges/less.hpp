@@ -27,13 +27,13 @@ using std::ranges::less;
 
 #include <hamon/functional/detail/less_builtin_ptr_cmp.hpp>
 #include <hamon/concepts/totally_ordered_with.hpp>
+#include <hamon/cstdint/uintptr_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <cstdint>
 
 namespace hamon
 {
@@ -66,9 +66,9 @@ private:
 			return t < u;
 		}
 #endif
-		auto x = reinterpret_cast<std::uintptr_t>(
+		auto x = reinterpret_cast<hamon::uintptr_t>(
 			static_cast<const volatile void*>(hamon::forward<T>(t)));
-		auto y = reinterpret_cast<std::uintptr_t>(
+		auto y = reinterpret_cast<hamon::uintptr_t>(
 			static_cast<const volatile void*>(hamon::forward<U>(u)));
 		return x < y;
 	}

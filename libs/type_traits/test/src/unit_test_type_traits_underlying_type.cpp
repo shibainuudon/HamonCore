@@ -7,8 +7,8 @@
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "type_traits_test_utility.hpp"
 
 namespace hamon_type_traits_test
@@ -36,19 +36,19 @@ enum class E12 : unsigned long long {};
 enum       E13 : hamon::size_t {};
 
 //HAMON_UNDERLYING_TYPE_TEST(enum_UDT, unsigned int);	// 実装依存
-HAMON_UNDERLYING_TYPE_TEST(enum_uint32_t_UDT, std::uint32_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_uint16_t_UDT, std::uint16_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_uint8_t_UDT,  std::uint8_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_int32_t_UDT,  std::int32_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_int16_t_UDT,  std::int16_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_int8_t_UDT,   std::int8_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_uint32_t_UDT, hamon::uint32_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_uint16_t_UDT, hamon::uint16_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_uint8_t_UDT,  hamon::uint8_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_int32_t_UDT,  hamon::int32_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_int16_t_UDT,  hamon::int16_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_int8_t_UDT,   hamon::int8_t);
 HAMON_UNDERLYING_TYPE_TEST(enum_class_UDT, int);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_uint32_t_UDT, std::uint32_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_uint16_t_UDT, std::uint16_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_uint8_t_UDT,  std::uint8_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_int32_t_UDT,  std::int32_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_int16_t_UDT,  std::int16_t);
-HAMON_UNDERLYING_TYPE_TEST(enum_class_int8_t_UDT,   std::int8_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_uint32_t_UDT, hamon::uint32_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_uint16_t_UDT, hamon::uint16_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_uint8_t_UDT,  hamon::uint8_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_int32_t_UDT,  hamon::int32_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_int16_t_UDT,  hamon::int16_t);
+HAMON_UNDERLYING_TYPE_TEST(enum_class_int8_t_UDT,   hamon::int8_t);
 
 HAMON_UNDERLYING_TYPE_TEST(E1, char);
 HAMON_UNDERLYING_TYPE_TEST(E2, signed char);

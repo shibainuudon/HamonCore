@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/popcount.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -189,19 +189,19 @@ void PopCountTestU64(void)
 
 GTEST_TEST(BitTest, PopCountTest)
 {
-	PopCountTestU8<std::uint8_t>();
-	PopCountTestU8<std::uint16_t>();
-	PopCountTestU8<std::uint32_t>();
-	PopCountTestU8<std::uint64_t>();
+	PopCountTestU8<hamon::uint8_t>();
+	PopCountTestU8<hamon::uint16_t>();
+	PopCountTestU8<hamon::uint32_t>();
+	PopCountTestU8<hamon::uint64_t>();
 
-	PopCountTestU16<std::uint16_t>();
-	PopCountTestU16<std::uint32_t>();
-	PopCountTestU16<std::uint64_t>();
+	PopCountTestU16<hamon::uint16_t>();
+	PopCountTestU16<hamon::uint32_t>();
+	PopCountTestU16<hamon::uint64_t>();
 
-	PopCountTestU32<std::uint32_t>();
-	PopCountTestU32<std::uint64_t>();
+	PopCountTestU32<hamon::uint32_t>();
+	PopCountTestU32<hamon::uint64_t>();
 
-	PopCountTestU64<std::uint64_t>();
+	PopCountTestU64<hamon::uint64_t>();
 }
 
 }	// namespace popcount_test

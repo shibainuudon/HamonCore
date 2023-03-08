@@ -8,9 +8,10 @@
 #define HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <cstdint>
 #include <cstdlib>	// strtold
 #include <string>
 #include <istream>	// basic_istream
@@ -39,8 +40,8 @@ public:
 	virtual void seekg(std::streampos pos) = 0;
 
 	virtual void load(bool&) = 0;
-	virtual void load(std::intmax_t&) = 0;
-	virtual void load(std::uintmax_t&) = 0;
+	virtual void load(hamon::intmax_t&) = 0;
+	virtual void load(hamon::uintmax_t&) = 0;
 	virtual void load(float&) = 0;
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
@@ -116,12 +117,12 @@ public:
 		m_is.flags(old_flags);
 	}
 
-	void load(std::intmax_t& t) override
+	void load(hamon::intmax_t& t) override
 	{
 		m_is >> t;
 	}
 
-	void load(std::uintmax_t& t) override
+	void load(hamon::uintmax_t& t) override
 	{
 		m_is >> t;
 	}

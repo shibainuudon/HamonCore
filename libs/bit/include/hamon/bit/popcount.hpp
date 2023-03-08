@@ -24,7 +24,7 @@ using std::popcount;
 
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <cstdint>
+#include <hamon/cstdint/uint64_t.hpp>
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX14_CONSTEXPR)
 
 inline constexpr int
-popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
+popcount_impl(hamon::uint64_t x) HAMON_NOEXCEPT
 {
 	x = (x - ((x >> 1) & UINT64_C(0x5555555555555555)));
 	x = ((x & UINT64_C(0x3333333333333333)) + ((x >> 2) & UINT64_C(0x3333333333333333)));
@@ -52,25 +52,25 @@ popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
 #else
 
 inline HAMON_CONSTEXPR int
-popcount_impl_4(std::uint64_t x) HAMON_NOEXCEPT
+popcount_impl_4(hamon::uint64_t x) HAMON_NOEXCEPT
 {
 	return static_cast<int>((x * UINT64_C(0x0101010101010101)) >> 56);
 }
 
 inline HAMON_CONSTEXPR int
-popcount_impl_3(std::uint64_t x) HAMON_NOEXCEPT
+popcount_impl_3(hamon::uint64_t x) HAMON_NOEXCEPT
 {
 	return popcount_impl_4((x + (x >> 4)) & UINT64_C(0x0f0f0f0f0f0f0f0f));
 }
 
 inline HAMON_CONSTEXPR int
-popcount_impl_2(std::uint64_t x) HAMON_NOEXCEPT
+popcount_impl_2(hamon::uint64_t x) HAMON_NOEXCEPT
 {
 	return popcount_impl_3((x & UINT64_C(0x3333333333333333)) + ((x >> 2) & UINT64_C(0x3333333333333333)));
 }
 
 inline HAMON_CONSTEXPR int
-popcount_impl(std::uint64_t x) HAMON_NOEXCEPT
+popcount_impl(hamon::uint64_t x) HAMON_NOEXCEPT
 {
 	return popcount_impl_2(x - ((x >> 1) & UINT64_C(0x5555555555555555)));
 }

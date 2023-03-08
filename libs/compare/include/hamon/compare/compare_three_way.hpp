@@ -26,10 +26,10 @@ using std::compare_three_way;
 
 #include <hamon/compare/detail/builtin_ptr_three_way.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
+#include <hamon/cstdint/uintptr_t.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <cstdint>
 
 namespace hamon
 {
@@ -52,8 +52,8 @@ struct compare_three_way
 				return pt <=> pu;
 			}
 #endif
-			auto it = reinterpret_cast<std::uintptr_t>(pt);
-			auto iu = reinterpret_cast<std::uintptr_t>(pu);
+			auto it = reinterpret_cast<hamon::uintptr_t>(pt);
+			auto iu = reinterpret_cast<hamon::uintptr_t>(pu);
 			return it <=> iu;
 		}
 		else

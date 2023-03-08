@@ -7,9 +7,9 @@
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
+#include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -51,14 +51,14 @@ HAMON_IS_INTEGRAL_TEST_CV(true, unsigned int);
 HAMON_IS_INTEGRAL_TEST_CV(true, unsigned long);
 HAMON_IS_INTEGRAL_TEST_CV(true, unsigned long long);
 HAMON_IS_INTEGRAL_TEST_CV(true, hamon::size_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::int8_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::int16_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::int32_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::int64_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::uint8_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::uint16_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::uint32_t);
-HAMON_IS_INTEGRAL_TEST_CV(true, std::uint64_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::int8_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::int16_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::int32_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::int64_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::uint8_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::uint16_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::uint32_t);
+HAMON_IS_INTEGRAL_TEST_CV(true, hamon::uint64_t);
 
 HAMON_IS_INTEGRAL_TEST_CV(false, float);
 HAMON_IS_INTEGRAL_TEST_CV(false, double);

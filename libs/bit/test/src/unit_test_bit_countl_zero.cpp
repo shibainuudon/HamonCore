@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/countl_zero.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -280,10 +280,10 @@ void CountlZeroTestU64(void)
 
 GTEST_TEST(BitTest, CountlZeroTest)
 {
-	CountlZeroTestU8<std::uint8_t>();
-	CountlZeroTestU16<std::uint16_t>();
-	CountlZeroTestU32<std::uint32_t>();
-	CountlZeroTestU64<std::uint64_t>();
+	CountlZeroTestU8<hamon::uint8_t>();
+	CountlZeroTestU16<hamon::uint16_t>();
+	CountlZeroTestU32<hamon::uint32_t>();
+	CountlZeroTestU64<hamon::uint64_t>();
 }
 
 }	// namespace countl_zero_test

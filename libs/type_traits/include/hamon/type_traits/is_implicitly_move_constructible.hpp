@@ -7,9 +7,9 @@
 #ifndef HAMON_TYPE_TRAITS_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_HPP
 
+#include <hamon/type_traits/add_rvalue_reference.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -28,7 +28,7 @@ template <typename T>
 struct is_implicitly_move_constructible
 	: public hamon::is_implicitly_constructible<
 		T,
-		typename std::add_rvalue_reference<T>::type
+		hamon::add_rvalue_reference_t<T>
 	>
 {};
 

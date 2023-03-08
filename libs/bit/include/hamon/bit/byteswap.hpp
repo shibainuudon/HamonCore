@@ -25,9 +25,11 @@ using std::byteswap;
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint16_t.hpp>
+#include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <cstdint>
 #include <stdlib.h>
 
 namespace hamon
@@ -36,8 +38,8 @@ namespace hamon
 namespace detail
 {
 
-inline HAMON_CXX11_CONSTEXPR std::uint16_t
-byteswap_impl_uint16(std::uint16_t value) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
+byteswap_impl_uint16(hamon::uint16_t value) HAMON_NOEXCEPT
 {
 #if HAMON_HAS_BUILTIN(__builtin_bswap16)
 	return __builtin_bswap16(value);
@@ -48,12 +50,12 @@ byteswap_impl_uint16(std::uint16_t value) HAMON_NOEXCEPT
 		return _byteswap_ushort(value);
 	}
 #endif
-	return static_cast<std::uint16_t>((value << 8) | (value >> 8));
+	return static_cast<hamon::uint16_t>((value << 8) | (value >> 8));
 #endif
 }
 
-inline HAMON_CXX11_CONSTEXPR std::uint32_t
-byteswap_impl_uint32(std::uint32_t value) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR hamon::uint32_t
+byteswap_impl_uint32(hamon::uint32_t value) HAMON_NOEXCEPT
 {
 #if HAMON_HAS_BUILTIN(__builtin_bswap32)
 	return __builtin_bswap32(value);
@@ -72,8 +74,8 @@ byteswap_impl_uint32(std::uint32_t value) HAMON_NOEXCEPT
 #endif
 }
 
-inline HAMON_CXX11_CONSTEXPR std::uint64_t
-byteswap_impl_uint64(std::uint64_t value) HAMON_NOEXCEPT
+inline HAMON_CXX11_CONSTEXPR hamon::uint64_t
+byteswap_impl_uint64(hamon::uint64_t value) HAMON_NOEXCEPT
 {
 #if HAMON_HAS_BUILTIN(__builtin_bswap64)
 	return __builtin_bswap64(value);
@@ -113,7 +115,7 @@ struct byteswap_impl<T, 2>
 {
 	static HAMON_CXX11_CONSTEXPR T invoke(T value) HAMON_NOEXCEPT
 	{
-		return static_cast<T>(byteswap_impl_uint16(static_cast<std::uint16_t>(value)));
+		return static_cast<T>(byteswap_impl_uint16(static_cast<hamon::uint16_t>(value)));
 	}
 };
 
@@ -122,7 +124,7 @@ struct byteswap_impl<T, 4>
 {
 	static HAMON_CXX11_CONSTEXPR T invoke(T value) HAMON_NOEXCEPT
 	{
-		return static_cast<T>(byteswap_impl_uint32(static_cast<std::uint32_t>(value)));
+		return static_cast<T>(byteswap_impl_uint32(static_cast<hamon::uint32_t>(value)));
 	}
 };
 
@@ -131,7 +133,7 @@ struct byteswap_impl<T, 8>
 {
 	static HAMON_CXX11_CONSTEXPR T invoke(T value) HAMON_NOEXCEPT
 	{
-		return static_cast<T>(byteswap_impl_uint64(static_cast<std::uint64_t>(value)));
+		return static_cast<T>(byteswap_impl_uint64(static_cast<hamon::uint64_t>(value)));
 	}
 };
 

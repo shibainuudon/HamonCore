@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/has_single_bit.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 namespace hamon_bit_test
@@ -156,19 +156,19 @@ void HasSingleBitTestU64(void)
 
 GTEST_TEST(BitTest, HasSingleBitTest)
 {
-	HasSingleBitTestU8<std::uint8_t>();
-	HasSingleBitTestU8<std::uint16_t>();
-	HasSingleBitTestU8<std::uint32_t>();
-	HasSingleBitTestU8<std::uint64_t>();
+	HasSingleBitTestU8<hamon::uint8_t>();
+	HasSingleBitTestU8<hamon::uint16_t>();
+	HasSingleBitTestU8<hamon::uint32_t>();
+	HasSingleBitTestU8<hamon::uint64_t>();
 
-	HasSingleBitTestU16<std::uint16_t>();
-	HasSingleBitTestU16<std::uint32_t>();
-	HasSingleBitTestU16<std::uint64_t>();
+	HasSingleBitTestU16<hamon::uint16_t>();
+	HasSingleBitTestU16<hamon::uint32_t>();
+	HasSingleBitTestU16<hamon::uint64_t>();
 
-	HasSingleBitTestU32<std::uint32_t>();
-	HasSingleBitTestU32<std::uint64_t>();
+	HasSingleBitTestU32<hamon::uint32_t>();
+	HasSingleBitTestU32<hamon::uint64_t>();
 
-	HasSingleBitTestU64<std::uint64_t>();
+	HasSingleBitTestU64<hamon::uint64_t>();
 }
 
 }	// namespace has_single_bit_test

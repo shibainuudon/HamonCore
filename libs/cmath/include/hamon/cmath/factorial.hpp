@@ -12,11 +12,11 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <limits>
-#include <cstdint>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ inline HAMON_CONSTEXPR unsigned int max_factorial<long double>() HAMON_NOEXCEPT
 	return 170;
 }
 
-static HAMON_CONSTEXPR std::uintmax_t s_factorial_tbl_int[] =
+static HAMON_CONSTEXPR hamon::uintmax_t s_factorial_tbl_int[] =
 {
 	1,                      //  0!
 	1,                      //  1!

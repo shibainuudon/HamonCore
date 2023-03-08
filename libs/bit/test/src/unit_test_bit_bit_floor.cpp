@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/bit_floor.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 namespace hamon_bit_test
@@ -231,19 +231,19 @@ void BitFloorTestU64(void)
 
 GTEST_TEST(BitTest, BitFloorTest)
 {
-	BitFloorTestU8<std::uint8_t>();
-	BitFloorTestU8<std::uint16_t>();
-	BitFloorTestU8<std::uint32_t>();
-	BitFloorTestU8<std::uint64_t>();
+	BitFloorTestU8<hamon::uint8_t>();
+	BitFloorTestU8<hamon::uint16_t>();
+	BitFloorTestU8<hamon::uint32_t>();
+	BitFloorTestU8<hamon::uint64_t>();
 
-	BitFloorTestU16<std::uint16_t>();
-	BitFloorTestU16<std::uint32_t>();
-	BitFloorTestU16<std::uint64_t>();
+	BitFloorTestU16<hamon::uint16_t>();
+	BitFloorTestU16<hamon::uint32_t>();
+	BitFloorTestU16<hamon::uint64_t>();
 
-	BitFloorTestU32<std::uint32_t>();
-	BitFloorTestU32<std::uint64_t>();
+	BitFloorTestU32<hamon::uint32_t>();
+	BitFloorTestU32<hamon::uint64_t>();
 
-	BitFloorTestU64<std::uint64_t>();
+	BitFloorTestU64<hamon::uint64_t>();
 }
 
 }	// namespace bit_floor_test

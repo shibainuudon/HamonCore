@@ -8,11 +8,12 @@
 #define HAMON_SERIALIZATION_DETAIL_XML_OARCHIVE_IMPL_HPP
 
 #include <hamon/base64/base64_xml_name.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <algorithm>
-#include <cstdint>
 #include <string>
 #include <array>
 #include <limits>
@@ -38,8 +39,8 @@ public:
 	virtual ~xml_oarchive_impl_base() {}
 
 	virtual void save(bool) = 0;
-	virtual void save(std::intmax_t) = 0;
-	virtual void save(std::uintmax_t) = 0;
+	virtual void save(hamon::intmax_t) = 0;
+	virtual void save(hamon::uintmax_t) = 0;
 	virtual void save(float) = 0;
 	virtual void save(double) = 0;
 	virtual void save(long double) = 0;
@@ -76,12 +77,12 @@ public:
 		m_os.flags(old_flags);
 	}
 
-	void save(std::intmax_t t) override
+	void save(hamon::intmax_t t) override
 	{
 		m_os << t;
 	}
 
-	void save(std::uintmax_t t) override
+	void save(hamon::uintmax_t t) override
 	{
 		m_os << t;
 	}

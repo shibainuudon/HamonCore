@@ -8,7 +8,8 @@
 #define HAMON_RANDOM_ENGINES_XORSHIFT_HPP
 
 #include <hamon/random/engines/detail/xorshift_base.hpp>
-#include <cstdint>
+#include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/cstdint/uint64_t.hpp>
 
 namespace hamon
 {
@@ -16,9 +17,9 @@ namespace hamon
 /**
  *	@brief	xorshift32
  */
-class xorshift32 : public xorshift_base<std::uint32_t, 1, xorshift32>
+class xorshift32 : public xorshift_base<hamon::uint32_t, 1, xorshift32>
 {
-	using base_type = xorshift_base<std::uint32_t, 1, xorshift32>;
+	using base_type = xorshift_base<hamon::uint32_t, 1, xorshift32>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -41,9 +42,9 @@ public:
 /**
  *	@brief	xorshift64
  */
-class xorshift64 : public xorshift_base<std::uint64_t, 1, xorshift64>
+class xorshift64 : public xorshift_base<hamon::uint64_t, 1, xorshift64>
 {
-	using base_type = xorshift_base<std::uint64_t, 1, xorshift64>;
+	using base_type = xorshift_base<hamon::uint64_t, 1, xorshift64>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -66,9 +67,9 @@ public:
 /**
  *	@brief	xorshift128
  */
-class xorshift128 : public xorshift_base<std::uint32_t, 4, xorshift128>
+class xorshift128 : public xorshift_base<hamon::uint32_t, 4, xorshift128>
 {
-	using base_type = xorshift_base<std::uint32_t, 4, xorshift128>;
+	using base_type = xorshift_base<hamon::uint32_t, 4, xorshift128>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -96,9 +97,9 @@ public:
 /**
  *	@brief	xorwow
  */
-class xorwow : public xorshift_base<std::uint32_t, 5, xorwow>
+class xorwow : public xorshift_base<hamon::uint32_t, 5, xorwow>
 {
-	using base_type = xorshift_base<std::uint32_t, 5, xorwow>;
+	using base_type = xorshift_base<hamon::uint32_t, 5, xorwow>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -127,9 +128,9 @@ public:
 /**
  *	@brief	xorshift64star
  */
-class xorshift64star : public xorshift_base<std::uint64_t, 1, xorshift64star>
+class xorshift64star : public xorshift_base<hamon::uint64_t, 1, xorshift64star>
 {
-	using base_type = xorshift_base<std::uint64_t, 1, xorshift64star>;
+	using base_type = xorshift_base<hamon::uint64_t, 1, xorshift64star>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -153,9 +154,9 @@ public:
 /**
  *	@brief	xorshift1024star
  */
-class xorshift1024star : public xorshift_base<std::uint64_t, 16, xorshift1024star>
+class xorshift1024star : public xorshift_base<hamon::uint64_t, 16, xorshift1024star>
 {
-	using base_type = xorshift_base<std::uint64_t, 16, xorshift1024star>;
+	using base_type = xorshift_base<hamon::uint64_t, 16, xorshift1024star>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -184,9 +185,9 @@ private:
 /**
  *	@brief	xorshift128plus
  */
-class xorshift128plus : public xorshift_base<std::uint64_t, 2, xorshift128plus>
+class xorshift128plus : public xorshift_base<hamon::uint64_t, 2, xorshift128plus>
 {
-	using base_type = xorshift_base<std::uint64_t, 2, xorshift128plus>;
+	using base_type = xorshift_base<hamon::uint64_t, 2, xorshift128plus>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;

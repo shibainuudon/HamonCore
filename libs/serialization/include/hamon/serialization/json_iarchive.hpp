@@ -11,12 +11,13 @@
 #include <hamon/serialization/detail/text_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <cstdint>
 #include <memory>
 #include <string>
 
@@ -126,14 +127,14 @@ private:
 	template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<1>)
 	{
-		std::uintmax_t i;
+		hamon::uintmax_t i;
 		m_impl->load(i);
 		t = static_cast<T>(i);
 	}
 	template <typename T, typename = hamon::enable_if_t<hamon::is_signed<T>::value>>
 	void load_arithmetic_impl(T& t, hamon::detail::overload_priority<0>)
 	{
-		std::intmax_t i;
+		hamon::intmax_t i;
 		m_impl->load(i);
 		t = static_cast<T>(i);
 	}

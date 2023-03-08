@@ -9,7 +9,7 @@
 
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <cstdint>
+#include <hamon/cstdint.hpp>
 
 namespace hamon
 {
@@ -21,10 +21,10 @@ private:
 	struct incomplete;
 public:
 	using type =
-		hamon::conditional_t<N <=  8, std::int_least8_t,
-		hamon::conditional_t<N <= 16, std::int_least16_t,
-		hamon::conditional_t<N <= 32, std::int_least32_t,
-		hamon::conditional_t<N <= 64, std::int_least64_t,
+		hamon::conditional_t<N <=  8, hamon::int_least8_t,
+		hamon::conditional_t<N <= 16, hamon::int_least16_t,
+		hamon::conditional_t<N <= 32, hamon::int_least32_t,
+		hamon::conditional_t<N <= 64, hamon::int_least64_t,
 		incomplete
 	>>>>;
 };

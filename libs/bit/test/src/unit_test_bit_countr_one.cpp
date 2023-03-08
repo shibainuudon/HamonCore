@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/countr_one.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -218,10 +218,10 @@ void CountrOneTestU64(void)
 
 GTEST_TEST(BitTest, CountrOneTest)
 {
-	CountrOneTestU8<std::uint8_t>();
-	CountrOneTestU16<std::uint16_t>();
-	CountrOneTestU32<std::uint32_t>();
-	CountrOneTestU64<std::uint64_t>();
+	CountrOneTestU8<hamon::uint8_t>();
+	CountrOneTestU16<hamon::uint16_t>();
+	CountrOneTestU32<hamon::uint32_t>();
+	CountrOneTestU64<hamon::uint64_t>();
 }
 
 }	// namespace countr_one_test

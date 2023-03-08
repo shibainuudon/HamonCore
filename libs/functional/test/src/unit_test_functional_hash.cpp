@@ -7,12 +7,13 @@
 #include <hamon/functional/hash.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
+#include <hamon/cstdint/int64_t.hpp>
+#include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <cstdint>
 #include <vector>
 #include <list>
 #include <string>
@@ -201,48 +202,48 @@ GTEST_TEST(FunctionalTest, HashIntegralTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12u, hamon::hash((long)12));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(13u, hamon::hash((unsigned long)13));
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t( 0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t( 1)), hamon::hash(std::int64_t( 1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::int64_t(-1)), hamon::hash(std::int64_t(-1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t( 1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 0)), hamon::hash(std::int64_t(-1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::int64_t( 1)), hamon::hash(std::int64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::int64_t( 0)), hamon::hash(hamon::int64_t( 0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::int64_t( 1)), hamon::hash(hamon::int64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::int64_t(-1)), hamon::hash(hamon::int64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::int64_t( 0)), hamon::hash(hamon::int64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::int64_t( 0)), hamon::hash(hamon::int64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::int64_t( 1)), hamon::hash(hamon::int64_t(-1)));
 
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFE);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t a = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFE);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::int64_t a = INT64_C(0x3FFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t a = INT64_C(0x3FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::int64_t b = INT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t( 0)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t( 1)), hamon::hash(std::uint64_t( 1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(std::uint64_t(-1)), hamon::hash(std::uint64_t(-1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t( 1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 0)), hamon::hash(std::uint64_t(-1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(std::uint64_t( 1)), hamon::hash(std::uint64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::uint64_t( 0)), hamon::hash(hamon::uint64_t( 0)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::uint64_t( 1)), hamon::hash(hamon::uint64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(hamon::uint64_t(-1)), hamon::hash(hamon::uint64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::uint64_t( 0)), hamon::hash(hamon::uint64_t( 1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::uint64_t( 0)), hamon::hash(hamon::uint64_t(-1)));
+	HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(hamon::uint64_t( 1)), hamon::hash(hamon::uint64_t(-1)));
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFE);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t b = UINT64_C(0xFFFFFFFFFFFFFFFE);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
-		HAMON_CXX11_CONSTEXPR std::uint64_t b = UINT64_C(0x7FFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t a = UINT64_C(0xFFFFFFFFFFFFFFFF);
+		HAMON_CXX11_CONSTEXPR hamon::uint64_t b = UINT64_C(0x7FFFFFFFFFFFFFFF);
 		HAMON_CXX11_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(b));
 	}
 

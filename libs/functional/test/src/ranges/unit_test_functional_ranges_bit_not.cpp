@@ -5,6 +5,7 @@
  */
 
 #include <hamon/functional/ranges/bit_not.hpp>
+#include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
@@ -13,7 +14,6 @@
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "functional_test.hpp"
 
 namespace hamon_functional_test
@@ -24,13 +24,13 @@ namespace ranges_bit_not_test
 
 struct A
 {
-	std::uint32_t value = 0;
+	hamon::uint32_t value = 0;
 };
 
 struct B
 {
-	std::uint32_t value = 0;
-	constexpr B(std::uint32_t v) : value(v) {}
+	hamon::uint32_t value = 0;
+	constexpr B(hamon::uint32_t v) : value(v) {}
 };
 
 constexpr B operator~(B const& x)
@@ -62,12 +62,12 @@ GTEST_TEST(FunctionalTest, RangesBitNotTest)
 
 	static_assert( hamon::is_nothrow_invocable<F, int>::value, "");
 
-	static_assert(F{}(std::uint32_t(0xFA)) == std::uint32_t(0xFFFFFF05), "");
+	static_assert(F{}(hamon::uint32_t(0xFA)) == hamon::uint32_t(0xFFFFFF05), "");
 
 	static_assert(!hamon::is_invocable<F, A>::value, "");
 	static_assert( hamon::is_invocable<F, B>::value, "");
 
-	static_assert(F{}(B{0x1234}).value == std::uint32_t(0xFFFFEDCB), "");
+	static_assert(F{}(B{0x1234}).value == hamon::uint32_t(0xFFFFEDCB), "");
 }
 
 }	// namespace ranges_bit_not_test

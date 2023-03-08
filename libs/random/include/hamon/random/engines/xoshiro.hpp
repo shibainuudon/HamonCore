@@ -9,7 +9,8 @@
 
 #include <hamon/random/engines/detail/xorshift_base.hpp>
 #include <hamon/bit/rotl.hpp>
-#include <cstdint>
+#include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/cstdint/uint64_t.hpp>
 
 namespace hamon
 {
@@ -17,9 +18,9 @@ namespace hamon
 /**
  *	@brief	xoshiro256** (XOR/shift/rotate)
  */
-class xoshiro256starstar : public xorshift_base<std::uint64_t, 4, xoshiro256starstar>
+class xoshiro256starstar : public xorshift_base<hamon::uint64_t, 4, xoshiro256starstar>
 {
-	using base_type = xorshift_base<std::uint64_t, 4, xoshiro256starstar>;
+	using base_type = xorshift_base<hamon::uint64_t, 4, xoshiro256starstar>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -47,9 +48,9 @@ public:
 /**
  *	@brief	xoshiro256+
  */
-class xoshiro256plus : public xorshift_base<std::uint64_t, 4, xoshiro256plus>
+class xoshiro256plus : public xorshift_base<hamon::uint64_t, 4, xoshiro256plus>
 {
-	using base_type = xorshift_base<std::uint64_t, 4, xoshiro256plus>;
+	using base_type = xorshift_base<hamon::uint64_t, 4, xoshiro256plus>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -74,9 +75,9 @@ public:
 /**
  *	@brief	xoshiro128**
  */
-class xoshiro128starstar : public xorshift_base<std::uint32_t, 4, xoshiro128starstar>
+class xoshiro128starstar : public xorshift_base<hamon::uint32_t, 4, xoshiro128starstar>
 {
-	using base_type = xorshift_base<std::uint32_t, 4, xoshiro128starstar>;
+	using base_type = xorshift_base<hamon::uint32_t, 4, xoshiro128starstar>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -104,9 +105,9 @@ public:
 /**
  *	@brief	xoshiro128+
  */
-class xoshiro128plus : public xorshift_base<std::uint32_t, 4, xoshiro128plus>
+class xoshiro128plus : public xorshift_base<hamon::uint32_t, 4, xoshiro128plus>
 {
-	using base_type = xorshift_base<std::uint32_t, 4, xoshiro128plus>;
+	using base_type = xorshift_base<hamon::uint32_t, 4, xoshiro128plus>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -131,9 +132,9 @@ public:
 /**
  *	@brief	xoshiro512**
  */
-class xoshiro512starstar : public xorshift_base<std::uint64_t, 8, xoshiro512starstar>
+class xoshiro512starstar : public xorshift_base<hamon::uint64_t, 8, xoshiro512starstar>
 {
-	using base_type = xorshift_base<std::uint64_t, 8, xoshiro512starstar>;
+	using base_type = xorshift_base<hamon::uint64_t, 8, xoshiro512starstar>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;
@@ -165,9 +166,9 @@ public:
 /**
  *	@brief	xoshiro512+
  */
-class xoshiro512plus : public xorshift_base<std::uint64_t, 8, xoshiro512plus>
+class xoshiro512plus : public xorshift_base<hamon::uint64_t, 8, xoshiro512plus>
 {
-	using base_type = xorshift_base<std::uint64_t, 8, xoshiro512plus>;
+	using base_type = xorshift_base<hamon::uint64_t, 8, xoshiro512plus>;
 public:
 	// 継承コンストラクタ
 	using base_type::base_type;

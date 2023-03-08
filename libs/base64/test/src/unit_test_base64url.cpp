@@ -6,8 +6,9 @@
 
 #include <hamon/base64/base64url.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint16_t.hpp>
+#include <hamon/cstdint/uint32_t.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include <string>
 #include <vector>
 #include "get_random_value.hpp"
@@ -167,32 +168,32 @@ inline HAMON_CXX14_CONSTEXPR bool ArrayConstexprTest()
 inline bool ArrayNonConstexprTest()
 {
 	{
-		std::uint16_t const src[] { 1 };
+		hamon::uint16_t const src[] { 1 };
 		char const expected[] {'A', 'Q', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}
 	{
-		std::uint16_t const src[] { 1, 2 };
+		hamon::uint16_t const src[] { 1, 2 };
 		char const expected[] {'A', 'Q', 'A', 'C', 'A', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}
 	{
-		std::uint16_t const src[] { 1, 2, 3 };
+		hamon::uint16_t const src[] { 1, 2, 3 };
 		char const expected[] {'A', 'Q', 'A', 'C', 'A', 'A', 'M', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}
 	{
-		std::uint32_t const src[] { 1 };
+		hamon::uint32_t const src[] { 1 };
 		char const expected[] {'A', 'Q', 'A', 'A', 'A', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}
 	{
-		std::uint32_t const src[] { 1, 2 };
+		hamon::uint32_t const src[] { 1, 2 };
 		char const expected[] {'A', 'Q', 'A', 'A', 'A', 'A', 'I', 'A', 'A', 'A', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}
 	{
-		std::uint32_t const src[] { 1, 2, 3 };
+		hamon::uint32_t const src[] { 1, 2, 3 };
 		char const expected[] {'A', 'Q', 'A', 'A', 'A', 'A', 'I', 'A', 'A', 'A', 'A', 'D', 'A', 'A', 'A', 'A'};
 		VERIFY(ArrayTest(src, expected));
 	}

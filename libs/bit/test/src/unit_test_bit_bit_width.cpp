@@ -5,8 +5,8 @@
  */
 
 #include <hamon/bit/bit_width.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -170,19 +170,19 @@ void BitWidthTestU64(void)
 
 GTEST_TEST(BitTest, BitWidthTest)
 {
-	BitWidthTestU8<std::uint8_t>();
-	BitWidthTestU8<std::uint16_t>();
-	BitWidthTestU8<std::uint32_t>();
-	BitWidthTestU8<std::uint64_t>();
+	BitWidthTestU8<hamon::uint8_t>();
+	BitWidthTestU8<hamon::uint16_t>();
+	BitWidthTestU8<hamon::uint32_t>();
+	BitWidthTestU8<hamon::uint64_t>();
 
-	BitWidthTestU16<std::uint16_t>();
-	BitWidthTestU16<std::uint32_t>();
-	BitWidthTestU16<std::uint64_t>();
+	BitWidthTestU16<hamon::uint16_t>();
+	BitWidthTestU16<hamon::uint32_t>();
+	BitWidthTestU16<hamon::uint64_t>();
 
-	BitWidthTestU32<std::uint32_t>();
-	BitWidthTestU32<std::uint64_t>();
+	BitWidthTestU32<hamon::uint32_t>();
+	BitWidthTestU32<hamon::uint64_t>();
 
-	BitWidthTestU64<std::uint64_t>();
+	BitWidthTestU64<hamon::uint64_t>();
 }
 
 }	// namespace bit_width_test

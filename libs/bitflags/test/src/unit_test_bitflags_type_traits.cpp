@@ -28,8 +28,9 @@
 #include <hamon/type_traits/is_destructible.hpp>
 #include <hamon/type_traits/is_nothrow_destructible.hpp>
 #include <hamon/type_traits/is_trivially_destructible.hpp>
+#include <hamon/cstdint/uint8_t.hpp>
+#include <hamon/cstdint/uint16_t.hpp>
 #include <gtest/gtest.h>
-#include <cstdint>
 #include "bitflags_test.hpp"
 
 namespace hamon_bitflags_test
@@ -64,12 +65,12 @@ static_assert( hamon::is_constructible<Bitflag3, Enum3>::value, "");
 static_assert(!hamon::is_constructible<Bitflag1, int>::value, "");
 static_assert(!hamon::is_constructible<Bitflag2, int>::value, "");
 static_assert(!hamon::is_constructible<Bitflag3, int>::value, "");
-static_assert(!hamon::is_constructible<Bitflag1, std::uint8_t>::value, "");
-static_assert(!hamon::is_constructible<Bitflag2, std::uint8_t>::value, "");
-static_assert(!hamon::is_constructible<Bitflag3, std::uint8_t>::value, "");
-static_assert(!hamon::is_constructible<Bitflag1, std::uint16_t>::value, "");
-static_assert(!hamon::is_constructible<Bitflag2, std::uint16_t>::value, "");
-static_assert(!hamon::is_constructible<Bitflag3, std::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, hamon::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, hamon::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, hamon::uint8_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag1, hamon::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag2, hamon::uint16_t>::value, "");
+static_assert(!hamon::is_constructible<Bitflag3, hamon::uint16_t>::value, "");
 
 // コンストラクト可能なenumでもimplicitコンストラクト不可
 static_assert(!hamon::is_implicitly_constructible<Bitflag1, Enum1>::value, "");

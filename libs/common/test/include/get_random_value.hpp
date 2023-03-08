@@ -10,6 +10,8 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
@@ -36,14 +38,14 @@ inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<2>
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<1>)
 {
-	std::uniform_int_distribution<std::uintmax_t> dist(min, max);
+	std::uniform_int_distribution<hamon::uintmax_t> dist(min, max);
 	return static_cast<T>(dist(get_random_engine()));
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_signed<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<0>)
 {
-	std::uniform_int_distribution<std::intmax_t> dist(min, max);
+	std::uniform_int_distribution<hamon::intmax_t> dist(min, max);
 	return static_cast<T>(dist(get_random_engine()));
 }
 
