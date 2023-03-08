@@ -4,6 +4,7 @@
  *	@brief	浮動小数点型のシリアライズのテスト
  */
 
+#include <hamon/cmath/isnan.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -77,8 +78,8 @@ void FloatTest()
 		EXPECT_EQ(h, low);
 		EXPECT_EQ(i, inf);
 		EXPECT_EQ(j, inf2);
-		EXPECT_TRUE(std::isnan(k));
-		EXPECT_TRUE(std::isnan(l));
+		EXPECT_TRUE(hamon::isnan(k));
+		EXPECT_TRUE(hamon::isnan(l));
 	}
 }
 
