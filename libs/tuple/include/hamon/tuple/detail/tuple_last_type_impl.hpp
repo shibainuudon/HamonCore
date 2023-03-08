@@ -8,7 +8,6 @@
 #define HAMON_TUPLE_DETAIL_TUPLE_LAST_TYPE_IMPL_HPP
 
 #include <hamon/type_traits/nth.hpp>
-#include <cstddef>
 
 namespace hamon
 {

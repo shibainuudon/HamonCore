@@ -23,7 +23,7 @@ using std::is_null_pointer;
 
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <cstddef>
+#include <hamon/cstddef/nullptr_t.hpp>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ namespace hamon
 template <typename T>
 struct is_null_pointer
 	: public hamon::is_same<
-		hamon::remove_cv_t<T>, std::nullptr_t
+		hamon::remove_cv_t<T>, hamon::nullptr_t
 	>
 {};
 

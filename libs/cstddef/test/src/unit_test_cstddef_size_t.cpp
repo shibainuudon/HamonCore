@@ -8,9 +8,6 @@
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/utility/declval.hpp>
-#include <gtest/gtest.h>
-#include "constexpr_test.hpp"
 
 // size_t は符号なし整数型
 static_assert(hamon::is_integral<hamon::size_t>::value, "");

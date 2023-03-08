@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/rank.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -50,7 +50,7 @@ HAMON_RANK_TEST(int);
 HAMON_RANK_TEST(float);
 HAMON_RANK_TEST(double);
 HAMON_RANK_TEST(void*);
-HAMON_RANK_TEST(std::nullptr_t);
+HAMON_RANK_TEST(hamon::nullptr_t);
 HAMON_RANK_TEST(decltype(nullptr));
 HAMON_RANK_TEST(enum_UDT);
 HAMON_RANK_TEST(enum_class_UDT);

@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -71,7 +71,7 @@ HAMON_IS_ENUM_TEST(false, float);
 HAMON_IS_ENUM_TEST(false, double);
 HAMON_IS_ENUM_TEST(false, long double);
 HAMON_IS_ENUM_TEST(false, void*);
-HAMON_IS_ENUM_TEST(false, std::nullptr_t);
+HAMON_IS_ENUM_TEST(false, hamon::nullptr_t);
 HAMON_IS_ENUM_TEST(false, decltype(nullptr));
 HAMON_IS_ENUM_TEST(true,  enum_uint32_t_UDT);
 HAMON_IS_ENUM_TEST(true,  enum_uint16_t_UDT);

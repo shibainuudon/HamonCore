@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -98,7 +98,7 @@ HAMON_IS_STANDARD_LAYOUT_TEST(true, float);
 HAMON_IS_STANDARD_LAYOUT_TEST(true, double);
 HAMON_IS_STANDARD_LAYOUT_TEST(true, long double);
 HAMON_IS_STANDARD_LAYOUT_TEST(true, void*);
-HAMON_IS_STANDARD_LAYOUT_TEST(true, std::nullptr_t);
+HAMON_IS_STANDARD_LAYOUT_TEST(true, hamon::nullptr_t);
 HAMON_IS_STANDARD_LAYOUT_TEST(true, decltype(nullptr));
 HAMON_IS_STANDARD_LAYOUT_TEST(true, enum_UDT);
 HAMON_IS_STANDARD_LAYOUT_TEST(true, enum_uint32_t_UDT);

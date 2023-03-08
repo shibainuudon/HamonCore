@@ -9,6 +9,7 @@
 
 #include <hamon/debug/detail/value_expression_fwd.hpp>
 #include <hamon/debug/detail/expression_base.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
-#include <cstddef>
 
 namespace hamon
 {
@@ -83,7 +83,7 @@ operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<T> const& /*r
 
 template <typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>&
-operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<std::nullptr_t> const& /*rhs*/)
+operator<<(std::basic_ostream<CharT, Traits>& os, value_expression<hamon::nullptr_t> const& /*rhs*/)
 {
 	return os << "nullptr";
 }

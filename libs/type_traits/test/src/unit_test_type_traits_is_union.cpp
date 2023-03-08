@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_union.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -69,7 +69,7 @@ HAMON_IS_UNION_TEST(false, char);
 HAMON_IS_UNION_TEST(false, int);
 HAMON_IS_UNION_TEST(false, float);
 HAMON_IS_UNION_TEST(false, void*);
-HAMON_IS_UNION_TEST(false, std::nullptr_t);
+HAMON_IS_UNION_TEST(false, hamon::nullptr_t);
 HAMON_IS_UNION_TEST(false, decltype(nullptr));
 HAMON_IS_UNION_TEST(false, enum_UDT);
 HAMON_IS_UNION_TEST(false, enum_uint32_t_UDT);

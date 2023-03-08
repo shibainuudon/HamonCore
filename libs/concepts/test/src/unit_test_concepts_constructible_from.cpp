@@ -5,8 +5,8 @@
  */
 
 #include <hamon/concepts/constructible_from.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_CONSTRUCTIBLE_FROM_TEST(B, ...)	\
@@ -49,7 +49,7 @@ HAMON_CONSTRUCTIBLE_FROM_TEST(false, int[]);
 HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int[2]);
 HAMON_CONSTRUCTIBLE_FROM_TEST(false, int());
 HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int(*)());
-HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int(*)(), std::nullptr_t);
+HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int(*)(), hamon::nullptr_t);
 #if defined(HAMON_HAS_CXX17_NOEXCEPT_FUNCTION_TYPE)
 HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int(*)(), int(*)() noexcept);
 HAMON_CONSTRUCTIBLE_FROM_TEST(true,  int(*)(), int(&)() noexcept);
@@ -85,7 +85,7 @@ struct C
 };
 HAMON_CONSTRUCTIBLE_FROM_TEST(false, C);
 HAMON_CONSTRUCTIBLE_FROM_TEST(false, C, void*);
-HAMON_CONSTRUCTIBLE_FROM_TEST(false, C, std::nullptr_t);
+HAMON_CONSTRUCTIBLE_FROM_TEST(false, C, hamon::nullptr_t);
 
 class D
 {

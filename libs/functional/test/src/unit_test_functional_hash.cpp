@@ -6,11 +6,13 @@
 
 #include <hamon/functional/hash.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
+#include <cstdint>
 #include <vector>
 #include <list>
 #include <string>
@@ -321,7 +323,7 @@ GTEST_TEST(FunctionalTest, HashPointerTest)
 {
 //	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), int*>::value, "");
 //	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), void*>::value, "");
-	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), std::nullptr_t>::value, "");
+	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), hamon::nullptr_t>::value, "");
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::hash(nullptr));
 

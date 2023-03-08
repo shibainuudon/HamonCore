@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -67,7 +67,7 @@ HAMON_IS_SCALAR_TEST(true,  hamon::size_t);
 HAMON_IS_SCALAR_TEST(true,  float);
 HAMON_IS_SCALAR_TEST(true,  double);
 HAMON_IS_SCALAR_TEST(true,  long double);
-HAMON_IS_SCALAR_TEST(true,  std::nullptr_t);
+HAMON_IS_SCALAR_TEST(true,  hamon::nullptr_t);
 HAMON_IS_SCALAR_TEST(true,  decltype(nullptr));
 HAMON_IS_SCALAR_TEST(true,  void*);
 HAMON_IS_SCALAR_TEST(true,  enum_UDT);

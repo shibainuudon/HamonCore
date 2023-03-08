@@ -8,7 +8,6 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <string>
 #include "constexpr_test.hpp"
 

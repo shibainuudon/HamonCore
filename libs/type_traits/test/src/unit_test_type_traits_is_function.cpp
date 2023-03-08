@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_function.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 namespace hamon_type_traits_test
@@ -129,7 +129,7 @@ HAMON_IS_FUNCTION_TEST(false, bool);
 HAMON_IS_FUNCTION_TEST(false, char);
 HAMON_IS_FUNCTION_TEST(false, float);
 HAMON_IS_FUNCTION_TEST(false, void*);
-HAMON_IS_FUNCTION_TEST(false, std::nullptr_t);
+HAMON_IS_FUNCTION_TEST(false, hamon::nullptr_t);
 HAMON_IS_FUNCTION_TEST(false, decltype(nullptr));
 HAMON_IS_FUNCTION_TEST(false, enum_UDT);
 HAMON_IS_FUNCTION_TEST(false, enum_class_UDT);

@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_null_pointer.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -26,21 +26,21 @@
 
 #endif
 
-HAMON_IS_NULL_POINTER_TEST(true,                 std::nullptr_t);
-HAMON_IS_NULL_POINTER_TEST(true,  const          std::nullptr_t);
-HAMON_IS_NULL_POINTER_TEST(true,        volatile std::nullptr_t);
-HAMON_IS_NULL_POINTER_TEST(true,  const volatile std::nullptr_t);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t*);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t&);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t&&);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t[2]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t[]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(*)[2]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(*)[]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(&)[2]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(&)[]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(&&)[2]);
-HAMON_IS_NULL_POINTER_TEST(false, std::nullptr_t(&&)[]);
+HAMON_IS_NULL_POINTER_TEST(true,                 hamon::nullptr_t);
+HAMON_IS_NULL_POINTER_TEST(true,  const          hamon::nullptr_t);
+HAMON_IS_NULL_POINTER_TEST(true,        volatile hamon::nullptr_t);
+HAMON_IS_NULL_POINTER_TEST(true,  const volatile hamon::nullptr_t);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t*);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t&);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t&&);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t[2]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t[]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(*)[2]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(*)[]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(&)[2]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(&)[]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(&&)[2]);
+HAMON_IS_NULL_POINTER_TEST(false, hamon::nullptr_t(&&)[]);
 
 HAMON_IS_NULL_POINTER_TEST(true,  decltype(nullptr));
 

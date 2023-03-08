@@ -11,6 +11,7 @@
 #include <hamon/functional/detail/has_member_hash.hpp>
 #include <hamon/bit/bit_cast.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/next.hpp>
@@ -34,8 +35,6 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
-#include <cstdint>
 #include <functional>
 #include <tuple>
 #include <climits>
@@ -191,7 +190,7 @@ private:
 	}
 
 	// (6) nullptr_tなら0
-	template <HAMON_CONSTRAINED_PARAM(hamon::same_as, std::nullptr_t, RawT), typename T>
+	template <HAMON_CONSTRAINED_PARAM(hamon::same_as, hamon::nullptr_t, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&&, hamon::detail::overload_priority<5>) HAMON_NOEXCEPT
 	{

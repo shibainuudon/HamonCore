@@ -9,7 +9,6 @@
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <cstddef>
 #include <iterator>
 #include <string>
 #include <gtest/gtest.h>

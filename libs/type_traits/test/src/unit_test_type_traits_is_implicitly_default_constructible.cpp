@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -205,7 +206,7 @@ HAMON_IS_IMPLICITLY_DEFAULT_CONSTRUCTIBLE_TEST(false, volatile void);
 HAMON_IS_IMPLICITLY_DEFAULT_CONSTRUCTIBLE_TEST(false, const volatile void);
 
 HAMON_IS_IMPLICITLY_DEFAULT_CONSTRUCTIBLE_TEST(true,  void*);
-HAMON_IS_IMPLICITLY_DEFAULT_CONSTRUCTIBLE_TEST(true,  std::nullptr_t);
+HAMON_IS_IMPLICITLY_DEFAULT_CONSTRUCTIBLE_TEST(true,  hamon::nullptr_t);
 
 }	// namespace is_implicitly_default_constructible_test
 

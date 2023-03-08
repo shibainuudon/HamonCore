@@ -17,7 +17,6 @@
 #include <ios>
 #include <cwchar>
 #include <cstdio>
-#include <cstddef>
 #include <cstdint>
 
 namespace hamon

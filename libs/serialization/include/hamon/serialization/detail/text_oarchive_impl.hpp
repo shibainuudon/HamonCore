@@ -12,7 +12,6 @@
 #include <hamon/config.hpp>
 #include <algorithm>
 #include <cstdint>
-#include <cstddef>
 #include <string>
 #include <array>
 #include <limits>

@@ -44,7 +44,6 @@ using std::basic_string_view;
 #include <hamon/config.hpp>
 #include <limits>
 #include <ostream>
-#include <cstddef>
 #include <cstdlib>
 #include <stdexcept>
 
@@ -1035,7 +1034,6 @@ operator<<(
 #include <hamon/functional/hash.hpp>
 #include <hamon/hash_functions/murmur_hash_3.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace HAMON_HASH_NAMESPACE
 {
@@ -1073,8 +1071,6 @@ HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true, hamon::basic_string_view<CharT, Traits
 HAMON_RANGES_END_NAMESPACE
 
 #endif	// !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_RANGES)
-
-#include <cstddef>
 
 namespace hamon
 {

@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/alignment_of.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 namespace type_traits_test
@@ -69,7 +69,7 @@ HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(double);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(long double);
 //HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(void);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(void*);
-//HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(std::nullptr_t);
+//HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(hamon::nullptr_t);
 //HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(decltype(nullptr));
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(enum_UDT);
 HAMON_ALIGNMENT_OF_TEST_PRIMITIVE(enum_uint32_t_UDT);

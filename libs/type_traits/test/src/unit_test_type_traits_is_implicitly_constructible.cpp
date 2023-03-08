@@ -5,6 +5,7 @@
  */
 
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -174,10 +175,10 @@ HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  void*, void*);
 HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, void*, void const*);
 HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  void*, int*);
 HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, int*,  void*);
-HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  std::nullptr_t);
-HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  std::nullptr_t, std::nullptr_t);
-HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, std::nullptr_t, void*);
-HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, std::nullptr_t, int);
+HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  hamon::nullptr_t);
+HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(true,  hamon::nullptr_t, hamon::nullptr_t);
+HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, hamon::nullptr_t, void*);
+HAMON_IS_IMPLICITLY_CONSTRUCTIBLE_TEST(false, hamon::nullptr_t, int);
 
 }	// namespace is_implicitly_constructible_test
 

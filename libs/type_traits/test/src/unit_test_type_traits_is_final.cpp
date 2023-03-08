@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_final.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_IS_FINAL)
@@ -52,7 +52,7 @@ HAMON_IS_FINAL_TEST(false, const          void);
 HAMON_IS_FINAL_TEST(false,       volatile void);
 HAMON_IS_FINAL_TEST(false, const volatile void);
 HAMON_IS_FINAL_TEST(false, void*);
-HAMON_IS_FINAL_TEST(false, std::nullptr_t);
+HAMON_IS_FINAL_TEST(false, hamon::nullptr_t);
 HAMON_IS_FINAL_TEST(false, decltype(nullptr));
 HAMON_IS_FINAL_TEST(false, enum_UDT);
 HAMON_IS_FINAL_TEST(false, enum_uint32_t_UDT);

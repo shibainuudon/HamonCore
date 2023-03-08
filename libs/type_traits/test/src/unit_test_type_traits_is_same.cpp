@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -169,7 +169,7 @@ HAMON_IS_SAME_TEST(false, const volatile void, const          void);
 HAMON_IS_SAME_TEST(false, const volatile void,       volatile void);
 HAMON_IS_SAME_TEST(true,  const volatile void, const volatile void);
 
-HAMON_IS_SAME_TEST(true, decltype(nullptr), std::nullptr_t);
+HAMON_IS_SAME_TEST(true, decltype(nullptr), hamon::nullptr_t);
 HAMON_IS_SAME_TEST(false, int, char);
 HAMON_IS_SAME_TEST(false, int, unsigned int);
 HAMON_IS_SAME_TEST(false, int[2], int[3]);

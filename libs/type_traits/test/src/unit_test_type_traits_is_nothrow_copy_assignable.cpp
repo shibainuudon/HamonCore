@@ -6,9 +6,9 @@
 
 #include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -252,7 +252,7 @@ HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, float);
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, double);
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, long double);
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, void*);
-HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, std::nullptr_t);
+HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, hamon::nullptr_t);
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, decltype(nullptr));
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, enum_UDT);
 HAMON_IS_NOTHROW_COPY_ASSIGNABLE_TEST(true, enum_uint32_t_UDT);

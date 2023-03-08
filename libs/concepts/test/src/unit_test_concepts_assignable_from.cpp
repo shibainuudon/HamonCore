@@ -5,8 +5,8 @@
  */
 
 #include <hamon/concepts/assignable_from.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_ASSIGNABLE_FROM_TEST(B, T1, T2)	\
@@ -47,12 +47,12 @@ HAMON_ASSIGNABLE_FROM_TEST(false, int(&)[2], int(&)[2]);
 HAMON_ASSIGNABLE_FROM_TEST(false, int(), int());
 HAMON_ASSIGNABLE_FROM_TEST(false, int(*)(), int(*)());
 HAMON_ASSIGNABLE_FROM_TEST(true,  int(*&)(), int(*)());
-HAMON_ASSIGNABLE_FROM_TEST(true,  int(*&)(), std::nullptr_t);
+HAMON_ASSIGNABLE_FROM_TEST(true,  int(*&)(), hamon::nullptr_t);
 #if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1920))
 HAMON_ASSIGNABLE_FROM_TEST(true,  int(*&)(), int(*)() noexcept);
 #endif
 HAMON_ASSIGNABLE_FROM_TEST(true,  int(*&)(), int(&)() noexcept);
-HAMON_ASSIGNABLE_FROM_TEST(false, int(&)(), std::nullptr_t);
+HAMON_ASSIGNABLE_FROM_TEST(false, int(&)(), hamon::nullptr_t);
 #if !defined(HAMON_MSVC)
 HAMON_ASSIGNABLE_FROM_TEST(false, int(&)(), int(&)() noexcept);
 #endif
@@ -91,7 +91,7 @@ HAMON_ASSIGNABLE_FROM_TEST(true,  C&, C);
 HAMON_ASSIGNABLE_FROM_TEST(true,  C&, const C&);
 HAMON_ASSIGNABLE_FROM_TEST(true,  C&, int);
 HAMON_ASSIGNABLE_FROM_TEST(false, C&, void*);
-HAMON_ASSIGNABLE_FROM_TEST(false, C&, std::nullptr_t);
+HAMON_ASSIGNABLE_FROM_TEST(false, C&, hamon::nullptr_t);
 
 }	// namespace assignable_from_test
 
