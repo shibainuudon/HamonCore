@@ -6,7 +6,7 @@
 
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/isnan.hpp>
-//#include <hamon/cmath/isfinite.hpp>
+#include <hamon/cmath/isfinite.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -133,9 +133,9 @@ void LerpTest(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(max, hamon::lerp(min, max, T(1.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(max, hamon::lerp(max, min, T(0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(min, hamon::lerp(max, min, T(1.0)));
-	/*HAMON_CONSTEXPR_*/EXPECT_TRUE(std::isfinite(hamon::lerp(min, max, T(0.1))));
-	/*HAMON_CONSTEXPR_*/EXPECT_TRUE(std::isfinite(hamon::lerp(min, max, T(0.5))));
-	/*HAMON_CONSTEXPR_*/EXPECT_TRUE(std::isfinite(hamon::lerp(min, max, T(0.9))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(hamon::lerp(min, max, T(0.1))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(hamon::lerp(min, max, T(0.5))));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(hamon::lerp(min, max, T(0.9))));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::lerp(T( 0.0), T( 0.0), min));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::lerp(T( 0.0), T( 0.0), max));
