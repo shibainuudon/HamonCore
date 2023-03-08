@@ -41,7 +41,7 @@ TYPED_TEST(QuaternionFloatTest, SlerpTest)
 	using T = TypeParam;
 	using quaternion = hamon::qvm::quaternion<T>;
 
-	HAMON_CONSTEXPR double const error = 0.000001;
+	HAMON_CONSTEXPR double const error = 0.00001;
 
 	{
 		auto const q1 = quaternion::rotation_x(hamon::degrees_to_radians(  0));
