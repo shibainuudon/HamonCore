@@ -22,11 +22,13 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		compare
 		concepts
 		config
+		cstddef
 		debug
 		detail
 		functional
 		iterator
 		numeric
+		preprocessor
 		ranges
 		type_traits
 		utility
