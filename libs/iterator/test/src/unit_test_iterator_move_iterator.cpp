@@ -12,6 +12,7 @@
 #include <hamon/iterator/concepts.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -34,7 +35,6 @@
 #include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -1459,7 +1459,7 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 	{
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int*> it2{a+1};
-		static_assert(hamon::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
+		static_assert(hamon::is_same<decltype(it1 - it2), hamon::ptrdiff_t>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
 #endif
@@ -1469,7 +1469,7 @@ GTEST_TEST(MoveIteratorTest, OperatorSubtractTest)
 	{
 		hamon::move_iterator<int*> it1{a+3};
 		hamon::move_iterator<int const*> it2{a+1};
-		static_assert(hamon::is_same<decltype(it1 - it2), std::ptrdiff_t>::value, "");
+		static_assert(hamon::is_same<decltype(it1 - it2), hamon::ptrdiff_t>::value, "");
 #if !defined(HAMON_USE_STD_MOVE_ITERATOR)
 		HAMON_ASSERT_NOEXCEPT_TRUE(it1 - it2);
 #endif

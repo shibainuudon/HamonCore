@@ -8,6 +8,7 @@
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -183,7 +184,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		}
 
 		test_container<X, IterWrap<X>> cx(x);
-		auto out = hamon::shift_left(cx.begin(), cx.end(), static_cast<std::ptrdiff_t>(n));
+		auto out = hamon::shift_left(cx.begin(), cx.end(), static_cast<hamon::ptrdiff_t>(n));
 		if (n < N)
 		{
 			VERIFY(out.m_ptr == x+(N-n));

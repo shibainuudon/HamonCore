@@ -33,7 +33,7 @@ HAMON_CXX11_CONSTEXPR bool test2(Span s)
 	static_assert(hamon::is_same<decltype(s.end()), typename Span::iterator>::value, "");
 	return
 		(s.end() != s.begin()) &&
-		(&*(s.end()-1) == &*(s.begin() + std::ptrdiff_t(s.size()) - 1)) &&
+		(&*(s.end()-1) == &*(s.begin() + hamon::ptrdiff_t(s.size()) - 1)) &&
 		(static_cast<hamon::size_t>(s.end() - s.begin()) == s.size());
 }
 

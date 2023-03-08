@@ -13,6 +13,7 @@
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -26,7 +27,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 #include "ranges_test.hpp"
@@ -761,10 +761,10 @@ struct MayThrowMinusSentinel
 	operator!=(MayThrowMinusSentinel const&, It const&) noexcept;
 	
 	template <typename It>
-	friend HAMON_CONSTEXPR std::ptrdiff_t
+	friend HAMON_CONSTEXPR hamon::ptrdiff_t
 	operator-(MayThrowMinusSentinel const&, It const&) noexcept(B1);
 	template <typename It>
-	friend HAMON_CONSTEXPR std::ptrdiff_t
+	friend HAMON_CONSTEXPR hamon::ptrdiff_t
 	operator-(It const&, MayThrowMinusSentinel const&) noexcept(B2);
 };
 

@@ -42,7 +42,7 @@ void testSpan()
 	ASSERT_SAME_TYPE(typename S::element_type,    ElementType);
 	ASSERT_SAME_TYPE(typename S::value_type,      hamon::remove_cv_t<ElementType>);
 	ASSERT_SAME_TYPE(typename S::size_type,       hamon::size_t);
-	ASSERT_SAME_TYPE(typename S::difference_type, std::ptrdiff_t);
+	ASSERT_SAME_TYPE(typename S::difference_type, hamon::ptrdiff_t);
 	ASSERT_SAME_TYPE(typename S::pointer,         ElementType*);
 	ASSERT_SAME_TYPE(typename S::const_pointer,   const ElementType*);
 	ASSERT_SAME_TYPE(typename S::reference,       ElementType&);

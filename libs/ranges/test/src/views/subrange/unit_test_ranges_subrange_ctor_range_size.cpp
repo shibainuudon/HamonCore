@@ -9,6 +9,7 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -16,7 +17,6 @@
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -124,7 +124,7 @@ struct ConvertibleIter
 		return m_base;
 	}
 
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	ConvertibleIter& operator++();
 	void operator++(int);
 	int& operator*() const;
@@ -171,7 +171,7 @@ static_assert(!hamon::is_constructible<
 template <bool NoExcept> 
 struct ThrowIterator
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	ThrowIterator() {}
 	ThrowIterator(ThrowIterator const&) noexcept(NoExcept) {}
 	ThrowIterator(int*) {}

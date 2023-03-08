@@ -23,6 +23,7 @@ using std::midpoint;
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cmath/abs.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -34,7 +35,6 @@ using std::midpoint;
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <limits>
 
 namespace hamon
@@ -144,7 +144,7 @@ inline HAMON_CXX11_CONSTEXPR hamon::enable_if_t<hamon::is_object<T>::value, T*>
 midpoint(T* a, T* b) HAMON_NOEXCEPT
 {
 	static_assert(sizeof(T) != 0, "type must be complete");
-	return a + hamon::midpoint(std::ptrdiff_t(0), b - a);
+	return a + hamon::midpoint(hamon::ptrdiff_t(0), b - a);
 }
 
 }	// namespace hamon

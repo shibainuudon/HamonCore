@@ -9,6 +9,7 @@
 
 #include <hamon/algorithm/swap_ranges.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
@@ -18,7 +19,6 @@
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <cstdlib>		// std::abort
 #include <stdexcept>	// std::out_of_range
 
@@ -77,7 +77,7 @@ public:
 	using reference              = value_type&;
 	using const_reference        = value_type const&;
 	using size_type              = hamon::size_t;
-	using difference_type        = std::ptrdiff_t;
+	using difference_type        = hamon::ptrdiff_t;
 	using iterator               = pointer;
 	using const_iterator         = const_pointer;
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;

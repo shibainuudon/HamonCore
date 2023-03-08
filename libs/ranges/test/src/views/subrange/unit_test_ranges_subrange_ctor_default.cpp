@@ -6,12 +6,12 @@
 
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -26,7 +26,7 @@ namespace ctor_default_test
 
 struct NoDefaultIterator
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	NoDefaultIterator() = delete;
 	NoDefaultIterator& operator++();
 	void operator++(int);
@@ -62,7 +62,7 @@ static_assert(!hamon::is_default_constructible<
 
 struct ThrowDefaultIterator
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	ThrowDefaultIterator();
 	ThrowDefaultIterator& operator++();
 	void operator++(int);

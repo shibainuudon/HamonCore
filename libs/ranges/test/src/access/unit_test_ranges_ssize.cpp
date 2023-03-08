@@ -11,10 +11,9 @@
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/signed_integral.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/make_signed.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -53,7 +52,7 @@ namespace ssize_test
 HAMON_CXX14_CONSTEXPR bool test01()
 {
 	constexpr int a[10]{ };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::ssize(a)), std::ptrdiff_t>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::ssize(a)), hamon::ptrdiff_t>::value, "");
 	static_assert(hamon::ranges::ssize(a) == 10, "");
 #if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 	// MSVSの実装だとnoexcept指定されていない
@@ -61,7 +60,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 #endif
 
 	int a2[2]{};
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::ssize(a2)), std::ptrdiff_t>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::ssize(a2)), hamon::ptrdiff_t>::value, "");
 	VERIFY(hamon::ranges::ssize(a2) == 2);
 #if !(defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_USE_STD_RANGES))
 	static_assert(noexcept(hamon::ranges::ssize(a2)), "");

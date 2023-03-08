@@ -23,11 +23,11 @@ using std::iterator_traits;
 #include <hamon/iterator/concepts/detail/iterator_traits_base.hpp>
 #include <hamon/iterator/concepts/detail/is_iterator_traits_specialized.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <iterator>
 
 namespace hamon
@@ -58,7 +58,7 @@ struct iterator_traits<
 	using iterator_concept  = hamon::contiguous_iterator_tag;
 	using iterator_category = std::random_access_iterator_tag;
 	using value_type	    = hamon::remove_cv_t<T>;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer	        = T*;
 	using reference	        = T&;
 };

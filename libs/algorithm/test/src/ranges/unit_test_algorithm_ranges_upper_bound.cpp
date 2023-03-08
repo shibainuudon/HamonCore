@@ -5,6 +5,7 @@
  */
 
 #include <hamon/algorithm/ranges/upper_bound.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <gtest/gtest.h>
@@ -28,14 +29,14 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		int x[] = {0,1,2,3,4,5,6,7};
 		test_forward_range<int> r(x);
 		auto res = ranges::upper_bound(r, i);
-		VERIFY(res == ranges::next(r.begin(), std::ptrdiff_t(i) + 1));
+		VERIFY(res == ranges::next(r.begin(), hamon::ptrdiff_t(i) + 1));
 	}
 	for (int i = 0; i < 8; ++i)
 	{
 		int x[] = {7,6,5,4,3,2,1,0};
 		test_forward_range<int> r(x);
 		auto res = ranges::upper_bound(r, i, ranges::greater{});
-		VERIFY(res == ranges::next(r.begin(), std::ptrdiff_t(7) - i + 1));
+		VERIFY(res == ranges::next(r.begin(), hamon::ptrdiff_t(7) - i + 1));
 	}
 	{
 		int x[] = {0,0,1,1,1,2,2,2,2};

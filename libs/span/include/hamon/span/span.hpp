@@ -28,6 +28,7 @@ using std::span;
 #include <hamon/span/detail/span_compatible_range.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -42,7 +43,6 @@ using std::span;
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <array>
-#include <cstddef>
 
 namespace hamon
 {
@@ -55,7 +55,7 @@ public:
 	using element_type     = T;
 	using value_type       = hamon::remove_cv_t<T>;
 	using size_type        = hamon::size_t;
-	using difference_type  = std::ptrdiff_t;
+	using difference_type  = hamon::ptrdiff_t;
 	using pointer          = T *;
 	using const_pointer    = T const*;
 	using reference        = T &;
@@ -305,7 +305,7 @@ public:
 	using element_type     = T;
 	using value_type       = hamon::remove_cv_t<T>;
 	using size_type        = hamon::size_t;
-	using difference_type  = std::ptrdiff_t;
+	using difference_type  = hamon::ptrdiff_t;
 	using pointer          = T *;
 	using const_pointer    = T const*;
 	using reference        = T &;

@@ -9,13 +9,13 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <iterator>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -80,7 +80,7 @@ struct MoveOnlyForwardIterator
 	T*	m_ptr;
 	using iterator_category = std::forward_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR MoveOnlyForwardIterator& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR MoveOnlyForwardIterator  operator++(int) { auto t = *this; ++m_ptr; return t; }

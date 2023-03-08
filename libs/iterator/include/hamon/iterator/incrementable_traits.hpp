@@ -22,6 +22,7 @@ using std::incrementable_traits;
 
 #include <hamon/iterator/concepts/detail/has_difference_type.hpp>
 #include <hamon/concepts/integral.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/is_object.hpp>
@@ -29,7 +30,6 @@ using std::incrementable_traits;
 #include <hamon/type_traits/make_signed.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -49,7 +49,7 @@ struct incrementable_traits<T*
 #endif
 >
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 };
 
 // (3) Specialization for const-qualified types

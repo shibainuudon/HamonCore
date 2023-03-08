@@ -71,7 +71,7 @@ public:
 	using const_reverse_iterator    = hamon::reverse_iterator<const_iterator>;
 	using reverse_iterator	        = const_reverse_iterator;
 	using size_type		            = hamon::size_t;
-	using difference_type	        = std::ptrdiff_t;
+	using difference_type	        = hamon::ptrdiff_t;
 
 	HAMON_STATIC_CONSTEXPR size_type npos = size_type(-1);
 

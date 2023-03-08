@@ -10,6 +10,7 @@
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 //#include <hamon/type_traits/common_type.hpp>
 //#include <hamon/type_traits/make_signed.hpp>
@@ -17,7 +18,6 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <cstddef>
 #include <iterator>
 #include "iterator_test.hpp"
 #include "constexpr_test.hpp"
@@ -58,7 +58,7 @@ struct InputRange : hamon::ranges::view_interface<InputRange>
 struct NotSizedSentinel
 {
 	using value_type = int;
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	using iterator_concept = std::forward_iterator_tag;
 
 	explicit NotSizedSentinel() = default;
@@ -362,7 +362,7 @@ HAMON_CXX14_CONSTEXPR bool SizeTest()
 	static_assert( SizeInvocable<RARange>::value, "");
 	static_assert( SizeInvocable<SizeIsTen>::value, "");
 
-	//using SignedSize = hamon::common_type_t<std::ptrdiff_t, hamon::make_signed_t<hamon::size_t>>;
+	//using SignedSize = hamon::common_type_t<hamon::ptrdiff_t, hamon::make_signed_t<hamon::size_t>>;
 	RARange randomAccess;
 	static_assert(!noexcept(randomAccess.size()), "");
 	VERIFY(randomAccess.size() == 8);

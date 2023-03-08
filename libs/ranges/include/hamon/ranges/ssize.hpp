@@ -23,13 +23,13 @@ using std::ranges::ssize;
 
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/detail/max_diff_type.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/make_signed.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 #include <limits>
 
 namespace hamon {
@@ -47,8 +47,8 @@ public:
 			hamon::conditional_t<
 				hamon::integral_t<size_type>::value,
 				hamon::conditional_t<
-					(std::numeric_limits<size_type>::digits < std::numeric_limits<std::ptrdiff_t>::digits),
-					std::ptrdiff_t,
+					(std::numeric_limits<size_type>::digits < std::numeric_limits<hamon::ptrdiff_t>::digits),
+					hamon::ptrdiff_t,
 					hamon::make_signed_t<size_type>
 				>,
 				hamon::detail::max_diff_type

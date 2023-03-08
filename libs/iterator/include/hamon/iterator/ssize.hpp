@@ -20,10 +20,10 @@ using std::ssize;
 
 #else
 
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/make_signed.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
 
 namespace hamon
 {
@@ -31,17 +31,17 @@ namespace hamon
 template <typename C>
 HAMON_CONSTEXPR auto ssize(C const& c)
 -> hamon::common_type_t<
-	std::ptrdiff_t,
+	hamon::ptrdiff_t,
 	hamon::make_signed_t<decltype(c.size())>>
 {
 	using R = hamon::common_type_t<
-		std::ptrdiff_t,
+		hamon::ptrdiff_t,
 		hamon::make_signed_t<decltype(c.size())>>;
 	return static_cast<R>(c.size());
 }
 
-template <typename T, std::ptrdiff_t N>
-HAMON_CONSTEXPR std::ptrdiff_t
+template <typename T, hamon::ptrdiff_t N>
+HAMON_CONSTEXPR hamon::ptrdiff_t
 ssize(T const(&)[N]) HAMON_NOEXCEPT
 {
 	return N;

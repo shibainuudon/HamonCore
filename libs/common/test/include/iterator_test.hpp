@@ -8,8 +8,9 @@
 #define UNIT_TEST_COMMON_ITERATOR_TEST_HPP
 
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/config.hpp>
-#include <cstddef>
+#include <iterator>
 
 namespace hamon_iterator_test
 {
@@ -17,7 +18,7 @@ namespace hamon_iterator_test
 template <typename T>
 struct weakly_incrementable_wrapper
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	HAMON_CXX14_CONSTEXPR weakly_incrementable_wrapper& operator++();
 	HAMON_CXX14_CONSTEXPR void                          operator++(int);
 };
@@ -25,7 +26,7 @@ struct weakly_incrementable_wrapper
 template <typename T>
 struct incrementable_wrapper
 {
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	HAMON_CXX14_CONSTEXPR incrementable_wrapper& operator++();
 	HAMON_CXX14_CONSTEXPR incrementable_wrapper  operator++(int);
 	HAMON_CXX11_CONSTEXPR bool operator==(const incrementable_wrapper&) const;
@@ -51,7 +52,7 @@ template <typename T>
 struct input_or_output_iterator_wrapper
 {
 	T*	m_ptr;
-	using difference_type = std::ptrdiff_t;
+	using difference_type = hamon::ptrdiff_t;
 	HAMON_CXX14_CONSTEXPR input_or_output_iterator_wrapper& operator++();
 	HAMON_CXX14_CONSTEXPR void                              operator++(int);
 	HAMON_CXX14_CONSTEXPR T                                 operator*();
@@ -63,7 +64,7 @@ struct input_iterator_wrapper
 	T*	m_ptr;
 	using iterator_category = std::input_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR input_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -79,7 +80,7 @@ struct output_iterator_wrapper
 	T*	m_ptr;
 	using iterator_category = std::output_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR output_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -93,7 +94,7 @@ struct forward_iterator_wrapper
 	T*	m_ptr;
 	using iterator_category = std::forward_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR forward_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -109,7 +110,7 @@ struct bidirectional_iterator_wrapper
 	T*	m_ptr;
 	using iterator_category = std::bidirectional_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR bidirectional_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -127,7 +128,7 @@ struct random_access_iterator_wrapper
 	T*	m_ptr;
 	using iterator_category = std::random_access_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -151,7 +152,7 @@ struct random_access_iterator_wrapper
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR random_access_iterator_wrapper<T>
-operator+(std::ptrdiff_t, random_access_iterator_wrapper<T> const&);
+operator+(hamon::ptrdiff_t, random_access_iterator_wrapper<T> const&);
 
 template <typename T>
 struct contiguous_iterator_wrapper
@@ -160,7 +161,7 @@ struct contiguous_iterator_wrapper
 	using iterator_concept  = hamon::contiguous_iterator_tag;
 	using iterator_category = std::random_access_iterator_tag;
 	using value_type        = T;
-	using difference_type   = std::ptrdiff_t;
+	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper& operator++() { ++m_ptr; return *this; }
@@ -185,7 +186,7 @@ struct contiguous_iterator_wrapper
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR contiguous_iterator_wrapper<T>
-operator+(std::ptrdiff_t, contiguous_iterator_wrapper<T> const&);
+operator+(hamon::ptrdiff_t, contiguous_iterator_wrapper<T> const&);
 
 template <typename Iter>
 HAMON_CXX11_CONSTEXPR auto base(Iter const& it)
