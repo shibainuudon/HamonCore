@@ -26,6 +26,7 @@ using std::basic_string_view;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
