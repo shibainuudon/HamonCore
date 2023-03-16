@@ -37,7 +37,12 @@ private:
 
 public:
 	template <typename T, typename U>
-	HAMON_CXX14_CONSTEXPR hamon::weak_ordering
+	HAMON_CXX14_CONSTEXPR
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	auto
+#else
+	hamon::weak_ordering
+#endif
 	operator()(T const& t, U const& u) const
 		HAMON_NOEXCEPT_IF((s_noexcept<T, U>()))
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
