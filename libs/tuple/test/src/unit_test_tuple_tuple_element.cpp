@@ -6,21 +6,39 @@
 
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <tuple>
 #include <gtest/gtest.h>
-#include "constexpr_test.hpp"
+#include <tuple>
+#include "my_tuple.hpp"
 
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<int>               >, int               >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<int> const         >, int const         >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<int>       volatile>, int       volatile>::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<int> const volatile>, int const volatile>::value, "");
+namespace hamon_tuple_test
+{
 
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<float, int>               >, float               >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<float, int> const         >, float const         >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<float, int>       volatile>, float       volatile>::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<0, std::tuple<float, int> const volatile>, float const volatile>::value, "");
+namespace tuple_element_test
+{
 
-static_assert(hamon::is_same<hamon::tuple_element_t<1, std::tuple<float, int>               >, int               >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<1, std::tuple<float, int> const         >, int const         >::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<1, std::tuple<float, int>       volatile>, int       volatile>::value, "");
-static_assert(hamon::is_same<hamon::tuple_element_t<1, std::tuple<float, int> const volatile>, int const volatile>::value, "");
+template <template <typename...> class Tuple>
+void TupleElementTest()
+{
+	static_assert(hamon::is_same<hamon::tuple_element_t<0, Tuple<int>      >, int      >::value, "");
+	static_assert(hamon::is_same<hamon::tuple_element_t<0, Tuple<int> const>, int const>::value, "");
+
+	static_assert(hamon::is_same<hamon::tuple_element_t<0, Tuple<float, int>      >, float      >::value, "");
+	static_assert(hamon::is_same<hamon::tuple_element_t<0, Tuple<float, int> const>, float const>::value, "");
+
+	static_assert(hamon::is_same<hamon::tuple_element_t<1, Tuple<float, int>      >, int      >::value, "");
+	static_assert(hamon::is_same<hamon::tuple_element_t<1, Tuple<float, int> const>, int const>::value, "");
+
+	static_assert(hamon::is_same<hamon::tuple_element_t<0, Tuple<char, void*, long>>, char>::value, "");
+	static_assert(hamon::is_same<hamon::tuple_element_t<1, Tuple<char, void*, long>>, void*>::value, "");
+	static_assert(hamon::is_same<hamon::tuple_element_t<2, Tuple<char, void*, long>>, long>::value, "");
+}
+
+GTEST_TEST(TupleTest, TupleElementTest)
+{
+	TupleElementTest<std::tuple>();
+	TupleElementTest<MyTuple>();
+}
+
+}	// namespace tuple_element_test
+
+}	// namespace hamon_tuple_test

@@ -13,10 +13,8 @@
 namespace hamon
 {
 
-using std::tuple_element;
-
 template <hamon::size_t I, typename T>
-using tuple_element_t = typename hamon::tuple_element<I, T>::type;
+using tuple_element_t = typename std::tuple_element<I, T>::type;
 
 }	// namespace hamon
 
