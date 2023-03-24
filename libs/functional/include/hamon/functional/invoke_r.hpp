@@ -48,7 +48,7 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(hamon::forward<Args>(args)...))
 }
 
 template <typename R, typename... Args>
-HAMON_CXX14_CONSTEXPR R
+HAMON_CXX11_CONSTEXPR R
 invoke_r_impl(hamon::detail::overload_priority<0>, Args&&... args)
 HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(hamon::forward<Args>(args)...))
 {
@@ -65,7 +65,7 @@ template <typename R, typename F, typename... Args
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires hamon::is_invocable_r<R, F, Args...>::value
 #endif
-HAMON_CXX14_CONSTEXPR R
+HAMON_CXX11_CONSTEXPR R
 invoke_r(F&& f, Args&&... args)
 HAMON_NOEXCEPT_IF_EXPR(hamon::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...))
 {

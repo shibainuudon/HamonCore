@@ -183,12 +183,12 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		static_assert(hamon::is_same<decltype(hamon::invoke_r<void>(&Bar::x, hamon::cref(bar))), void>::value, "");
 	}
 	{
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0, hamon::invoke_r<int  >(function1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0, hamon::invoke_r<long >(function1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, hamon::invoke_r<int  >(function2, 0.0f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, hamon::invoke_r<short>(function2, 0.0f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<int  >(function3, 0, 0.0f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<char >(function3, 0, 0.0f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::invoke_r<int  >(function1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::invoke_r<long >(function1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::invoke_r<int  >(function2, 0.0f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::invoke_r<short>(function2, 0.0f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<int  >(function3, 0, 0.0f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::invoke_r<char >(function3, 0, 0.0f));
 
 		hamon::invoke_r<void>(function1);
 		hamon::invoke_r<void>(function2, 0.0f);
@@ -209,19 +209,19 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		HAMON_CONSTEXPR Base b{};
 		HAMON_CONSTEXPR Derived d{};
 
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(3, hamon::invoke_r<int>(f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, &f));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, hamon::ref(f)));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, hamon::cref(f)));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, b, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, &b, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::ref(b), 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::cref(b), 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, d, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, hamon::invoke_r<int>(f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, &f));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, hamon::ref(f)));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::invoke_r<int>(&Foo::member_func, hamon::cref(f)));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, b, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, &b, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::ref(b), 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::cref(b), 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, d, 0));
 		                      EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, &d, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::ref(d), 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::cref(d), 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::ref(d), 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::invoke_r<int>(&Base::nonvirtual_func, hamon::cref(d), 0));
 		                      EXPECT_EQ(6, hamon::invoke_r<int>(&Base::virtual_func, b));
 		                      EXPECT_EQ(6, hamon::invoke_r<int>(&Base::virtual_func, &b));
 		                      EXPECT_EQ(6, hamon::invoke_r<int>(&Base::virtual_func, hamon::ref(b)));
@@ -230,10 +230,10 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Base::virtual_func, &d));
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Base::virtual_func, hamon::ref(d)));
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Base::virtual_func, hamon::cref(d)));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, d, 0, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, &d, 0, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, hamon::ref(d), 0, 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, hamon::cref(d), 0, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, d, 0, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, &d, 0, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, hamon::ref(d), 0, 0));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::invoke_r<int>(&Derived::nonvirtual_func, hamon::cref(d), 0, 0));
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Derived::virtual_func, d));
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Derived::virtual_func, &d));
 		                      EXPECT_EQ(8, hamon::invoke_r<int>(&Derived::virtual_func, hamon::ref(d)));

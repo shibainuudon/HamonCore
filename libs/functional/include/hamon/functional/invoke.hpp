@@ -170,33 +170,19 @@ HAMON_INVOKE_RETURN((invoke_impl<
 		hamon::decay_t<Args>...
 	>::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...)))
 
-#undef HAMON_INVOKE_RETURN
-
 }	// namespace detail
-
-}	// namespace hamon
-
-HAMON_WARNING_POP()
-
-#include <utility>
-
-#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
-	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
-	-> decltype(__VA_ARGS__)                \
-	{ return __VA_ARGS__; }
-
-namespace hamon
-{
 
 template <typename F, typename... Args>
 inline HAMON_CONSTEXPR auto
 invoke(F&& f, Args&&... args)
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		detail::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...))
+HAMON_INVOKE_RETURN(
+	detail::invoke(hamon::forward<F>(f), hamon::forward<Args>(args)...))
+
+#undef HAMON_INVOKE_RETURN
 
 }	// namespace hamon
 
-#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+HAMON_WARNING_POP()
 
 #endif
 
