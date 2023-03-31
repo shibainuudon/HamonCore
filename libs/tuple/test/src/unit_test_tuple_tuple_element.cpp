@@ -2,6 +2,8 @@
  *	@file	unit_test_tuple_tuple_element.cpp
  *
  *	@brief	tuple_element のテスト
+ *
+ *	template<size_t I, class T> struct tuple_element;
  */
 
 #include <hamon/tuple/tuple_element.hpp>

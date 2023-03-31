@@ -2,6 +2,8 @@
  *	@file	unit_test_tuple_tuple_size.cpp
  *
  *	@brief	tuple_size のテスト
+ *
+ *	template<class T> struct tuple_size;
  */
 
 #include <gtest/gtest.h>

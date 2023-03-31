@@ -21,6 +21,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		concepts
 		config
+		pair
 		type_traits
 		utility
 		common)

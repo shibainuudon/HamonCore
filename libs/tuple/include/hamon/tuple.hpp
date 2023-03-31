@@ -8,6 +8,8 @@
 #define HAMON_TUPLE_HPP
 
 #include <hamon/tuple/concepts.hpp>
+#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/tuple/tuple_init_type.hpp>
