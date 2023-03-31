@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::variant&lt;*&gt;">
+		<Intrinsic Name="index" Expression="(short)m_index"/>
+		<Intrinsic Name="Value00" Optional="true" Expression="m_union"/>
+		<Intrinsic Name="Value01" Optional="true" Expression="Value00().m_tail"/>
+		<Intrinsic Name="Value02" Optional="true" Expression="Value01().m_tail"/>
+		<Intrinsic Name="Value03" Optional="true" Expression="Value02().m_tail"/>
+		<Intrinsic Name="Value04" Optional="true" Expression="Value03().m_tail"/>
+		<Intrinsic Name="Value05" Optional="true" Expression="Value04().m_tail"/>
+		<Intrinsic Name="Value06" Optional="true" Expression="Value05().m_tail"/>
+		<Intrinsic Name="Value07" Optional="true" Expression="Value06().m_tail"/>
+		<Intrinsic Name="Value08" Optional="true" Expression="Value07().m_tail"/>
+		<Intrinsic Name="Value09" Optional="true" Expression="Value08().m_tail"/>
+		<Intrinsic Name="Value10" Optional="true" Expression="Value09().m_tail"/>
+		<Intrinsic Name="Value11" Optional="true" Expression="Value10().m_tail"/>
+		<Intrinsic Name="Value12" Optional="true" Expression="Value11().m_tail"/>
+		<Intrinsic Name="Value13" Optional="true" Expression="Value12().m_tail"/>
+		<Intrinsic Name="Value14" Optional="true" Expression="Value13().m_tail"/>
+		<Intrinsic Name="Value15" Optional="true" Expression="Value14().m_tail"/>
+		<Intrinsic Name="Value16" Optional="true" Expression="Value15().m_tail"/>
+		<Intrinsic Name="Value17" Optional="true" Expression="Value16().m_tail"/>
+		<Intrinsic Name="Value18" Optional="true" Expression="Value17().m_tail"/>
+		<Intrinsic Name="Value19" Optional="true" Expression="Value18().m_tail"/>
+		<DisplayString Condition="index() &lt; 0">[valueless_by_exception]</DisplayString>
+		<Expand>
+			<Item Name="index">index()</Item>
+			<Item Name="[value]" Condition="index() ==  0" Optional="true">Value00().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  1" Optional="true">Value01().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  2" Optional="true">Value02().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  3" Optional="true">Value03().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  4" Optional="true">Value04().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  5" Optional="true">Value05().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  6" Optional="true">Value06().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  7" Optional="true">Value07().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  8" Optional="true">Value08().m_head</Item>
+			<Item Name="[value]" Condition="index() ==  9" Optional="true">Value09().m_head</Item>
+			<Item Name="[value]" Condition="index() == 10" Optional="true">Value10().m_head</Item>
+			<Item Name="[value]" Condition="index() == 11" Optional="true">Value11().m_head</Item>
+			<Item Name="[value]" Condition="index() == 12" Optional="true">Value12().m_head</Item>
+			<Item Name="[value]" Condition="index() == 13" Optional="true">Value13().m_head</Item>
+			<Item Name="[value]" Condition="index() == 14" Optional="true">Value14().m_head</Item>
+			<Item Name="[value]" Condition="index() == 15" Optional="true">Value15().m_head</Item>
+			<Item Name="[value]" Condition="index() == 16" Optional="true">Value16().m_head</Item>
+			<Item Name="[value]" Condition="index() == 17" Optional="true">Value17().m_head</Item>
+			<Item Name="[value]" Condition="index() == 18" Optional="true">Value18().m_head</Item>
+			<Item Name="[value]" Condition="index() == 19" Optional="true">Value19().m_head</Item>
+		</Expand>
+	</Type>
+</AutoVisualizer>
