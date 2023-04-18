@@ -408,6 +408,20 @@ operator>=(array<T, N> const& lhs, array<T, N> const& rhs)
 
 }	// namespace hamon
 
+#include <hamon/concepts/detail/is_specialization_of_array.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_array の特殊化
+template <typename T, hamon::size_t N>
+struct is_specialization_of_array<hamon::array<T, N>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #include <hamon/type_traits/integral_constant.hpp>
 #include <tuple>
 

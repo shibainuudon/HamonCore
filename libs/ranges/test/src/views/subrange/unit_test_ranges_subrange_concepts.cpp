@@ -9,6 +9,7 @@
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -88,6 +89,8 @@ static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<forward_it
 static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, const int*, hamon::ranges::subrange_kind::sized>>::value, "");
 static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::sized>>::value, "");
 static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::unsized>>::value, "");
+
+static_assert(hamon::detail::is_specialization_of_subrange<hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
 
 }	// namespace concepts_test
 }	// namespace subrange_test

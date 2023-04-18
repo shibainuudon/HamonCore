@@ -439,6 +439,20 @@ struct tuple_element<1, hamon::ranges::subrange<Iter, Sent, Kind> const>
 
 }	// namespace std
 
+#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_subrange の特殊化
+template <typename Iter, typename Sent, hamon::ranges::subrange_kind Kind>
+struct is_specialization_of_subrange<hamon::ranges::subrange<Iter, Sent, Kind>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif
 
 #endif // HAMON_RANGES_VIEWS_SUBRANGE_HPP

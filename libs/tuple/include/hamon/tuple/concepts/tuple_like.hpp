@@ -1,89 +1,55 @@
 ﻿/**
  *	@file	tuple_like.hpp
  *
- *	@brief	tuple_like
+ *	@brief	tuple_like の定義
  */
 
 #ifndef HAMON_TUPLE_CONCEPTS_TUPLE_LIKE_HPP
 #define HAMON_TUPLE_CONCEPTS_TUPLE_LIKE_HPP
 
-#include <hamon/tuple/concepts/has_tuple_element.hpp>
-#include <hamon/concepts/derived_from.hpp>
-#include <hamon/cstddef/size_t.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/is_reference.hpp>
-#include <hamon/utility/index_sequence.hpp>
-#include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/concepts/detail/is_specialization_of_array.hpp>
+#include <hamon/concepts/detail/is_specialization_of_pair.hpp>
+#include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
+#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
-#include <tuple>
-#include <type_traits>
-#include <utility>
-
-namespace hamon
-{
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-namespace detail
-{
+namespace hamon {
 
-template <typename T, hamon::size_t... N>
-constexpr bool has_tuple_element_all(hamon::index_sequence<N...>)
-{
-	return (has_tuple_element<T, N> && ...);
-}
-
-}	// namespace detail
-
+// [tuple.like], concept tuple-like
 template <typename T>
 concept tuple_like =
-	!hamon::is_reference<T>::value &&
-	requires(T t)
-	{
-		typename std::tuple_size<T>::type;
-		requires hamon::derived_from<
-			std::tuple_size<T>,
-			std::integral_constant<hamon::size_t, std::tuple_size<T>::value>
-		>;
-	} &&
-	detail::has_tuple_element_all<T>(
-		hamon::make_index_sequence<std::tuple_size<T>::value>{});
+	hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<T>>::value ||
+	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>::value ||
+	hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>::value ||
+	hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<T>>::value;
+
+}	// namespace hamon
 
 #else
 
+#include <hamon/type_traits/disjunction.hpp>
+
+namespace hamon {
+
+// [tuple.like], concept tuple-like
 template <typename T>
-struct tuple_like_impl
-{
-private:
-	template <typename U, hamon::size_t... N>
-	static auto test_helper(hamon::index_sequence<N...>)
-		-> hamon::conjunction<has_tuple_element<U, N>...>;
+using tuple_like = hamon::disjunction<
+	hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<T>>,
+	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>,
+	hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>,
+	hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<T>>
+>;
 
-	template <typename U,
-		typename = typename std::tuple_size<U>::type,
-		typename = hamon::enable_if_t<
-			hamon::derived_from_t<
-				std::tuple_size<U>,
-				std::integral_constant<hamon::size_t, std::tuple_size<U>::value>
-			>::value
-		>,
-		typename Seq = hamon::make_index_sequence<std::tuple_size<U>::value>
-	>
-	static auto test(int) -> decltype(test_helper<U>(Seq{}));
-	
-	template <typename U>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<T>(0));
-};
-
-template <typename T>
-using tuple_like = typename tuple_like_impl<T>::type;
+}	// namespace hamon
 
 #endif
+
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
 
 template <typename T>
 using tuple_like_t =

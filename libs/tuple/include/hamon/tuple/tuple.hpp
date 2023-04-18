@@ -1582,6 +1582,20 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 
 }	// namespace hamon
 
+#include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_tuple の特殊化
+template <typename... Types>
+struct is_specialization_of_tuple<hamon::tuple<Types...>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif
 
 #endif // HAMON_TUPLE_TUPLE_HPP
