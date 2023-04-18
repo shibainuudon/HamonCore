@@ -10,6 +10,7 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -40,6 +41,14 @@ using different_from =
 		>
 	>;
 
+#endif
+
+template <typename T, typename U>
+using different_from_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::ranges::detail::different_from<T, U>>;
+#else
+	hamon::ranges::detail::different_from<T, U>;
 #endif
 
 }	// namespace detail

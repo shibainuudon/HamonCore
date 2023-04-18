@@ -26,10 +26,14 @@ using std::ignore;
 
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/detail/synth3way.hpp>
+#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/pair/pair.hpp>
+#include <hamon/ranges/detail/different_from.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -124,15 +128,11 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 		: tuple_leaf<Is, Types>(hamon::forward<UTypes>(args))...
 	{}
 
-#define FWD(u)	static_cast<decltype(u)>(u)
-
 	template <typename UTuple>
 	HAMON_CXX11_CONSTEXPR
 	tuple_impl(hamon::integral_constant<int, 1>, UTuple&& u)
-		: tuple_leaf<Is, Types>(get<Is>(FWD(u)))...
+		: tuple_leaf<Is, Types>(get<Is>(hamon::forward<UTuple>(u)))...
 	{}
-
-#undef FWD
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR
@@ -307,8 +307,6 @@ public:
 		UTypes...
 	>{};
 
-#define FWD(u)	static_cast<decltype(u)>(u)
-
 private:
 	template <bool, typename IndexSequence, typename UTuple, typename... UTypes>
 	struct UTupleCtorImpl;
@@ -325,7 +323,7 @@ private:
 			hamon::conjunction<
 				// [tuple.cnstr]/21.2
 				hamon::is_constructible<
-					Types, decltype(get<Is>(FWD(hamon::declval<UTuple>())))
+					Types, decltype(get<Is>(hamon::declval<UTuple>()))
 				>...,
 				// [tuple.cnstr]/21.3
 				hamon::disjunction<
@@ -342,7 +340,7 @@ private:
 		static const bool implicitly =
 			hamon::conjunction<
 				hamon::is_convertible<
-					decltype(get<Is>(FWD(hamon::declval<UTuple>()))), Types
+					decltype(get<Is>(hamon::declval<UTuple>())), Types
 				>...
 			>::value;
 
@@ -350,7 +348,7 @@ private:
 		static const bool nothrow =
 			hamon::conjunction<
 				hamon::is_nothrow_constructible<
-					Types, decltype(get<Is>(FWD(hamon::declval<UTuple>())))
+					Types, decltype(get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 	};
@@ -373,6 +371,64 @@ public:
 	>{};
 
 private:
+	template <bool, typename IndexSequence, typename UTuple>
+	struct TupleLikeCtorImpl;
+
+	template <hamon::size_t... Is, typename UTuple>
+	struct TupleLikeCtorImpl<true, hamon::index_sequence<Is...>, UTuple>
+	{
+		static const bool constructible =
+			hamon::conjunction<
+				// [tuple.cnstr]/29.4
+				hamon::is_constructible<
+					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...,
+				// [tuple.cnstr]/29.5
+				hamon::disjunction<
+					hamon::bool_constant<sizeof...(Types) != 1>,
+					hamon::conjunction<
+						hamon::negation<hamon::is_convertible<UTuple, Types>>...,
+						hamon::negation<hamon::is_constructible<Types, UTuple>>...
+					>
+				>
+			>::value;
+
+		// [tuple.cnstr]/31
+		static const bool implicitly =
+			hamon::conjunction<
+				hamon::is_convertible<
+					decltype(get<Is>(hamon::declval<UTuple>())), Types
+				>...
+			>::value;
+
+		// [tuple.cnstr]/2
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::is_nothrow_constructible<
+					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+	};
+
+	template <typename IndexSequence, typename UTuple>
+	struct TupleLikeCtorImpl<false, IndexSequence, UTuple>
+	{
+		static const bool constructible = false;
+		static const bool implicitly = false;
+		static const bool nothrow = false;
+	};
+
+public:
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+	struct TupleLikeCtor : public TupleLikeCtorImpl<
+		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/29.1
+		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/29.2
+		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/29.3
+		hamon::make_index_sequence<sizeof...(Types)>,
+		UTuple
+	>{};
+
+private:
 	template <bool, typename Pair>
 	struct PairCtorImpl
 	{
@@ -380,8 +436,8 @@ private:
 		using T0 = hamon::nth_t<0, Types...>;
 		using T1 = hamon::nth_t<1, Types...>;
 
-		using U0 = decltype(get<0>(FWD(hamon::declval<Pair>())));
-		using U1 = decltype(get<1>(FWD(hamon::declval<Pair>())));
+		using U0 = decltype(get<0>(hamon::declval<Pair>()));
+		using U1 = decltype(get<1>(hamon::declval<Pair>()));
 
 	public:
 		// [tuple.cnstr]/25
@@ -425,8 +481,6 @@ public:
 		sizeof...(Types) == 2,		// [tuple.cnstr]/25.1
 		Pair
 	>{};
-
-#undef FWD
 };
 
 struct access;
@@ -464,6 +518,9 @@ private:
 
 	template <typename UTuple, typename... UTypes>
 	using UTupleCtor = typename constraint_type::template UTupleCtor<UTuple, UTypes...>;
+
+	template <typename UTuple>
+	using TupleLikeCtor = typename constraint_type::template TupleLikeCtor<UTuple>;
 
 	template <typename Pair>
 	using PairCtor = typename constraint_type::template PairCtor<Pair>;
@@ -586,11 +643,16 @@ public:
 		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
 	{}
 
-#if 0	// TODO
-	template <tuple-like UTuple>
-	constexpr explicit/*(see below)*/
-	tuple(UTuple&&);
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = TupleLikeCtor<UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
+	{}
 
+#if 0	// TODO
 	// allocator-extended constructors
 	template <typename Alloc>
 	constexpr explicit/*(see below)*/
@@ -872,6 +934,26 @@ public:
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+	{}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = TupleLikeCtor<UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
+	{}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = TupleLikeCtor<UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
 	{}
 
 #endif
