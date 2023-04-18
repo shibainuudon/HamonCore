@@ -12,8 +12,10 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
-#include <hamon/type_traits.hpp>
+#include <hamon/array.hpp>
+#include <hamon/compare/is_eq.hpp>
+#include <hamon/compare/is_lt.hpp>
+#include <hamon/compare/is_gt.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -26,7 +28,65 @@ namespace rel_op_tuple_like_test
 
 GTEST_TEST(TupleTest, RelOpTupleLikeTest)
 {
-	// TODO
+	{
+		HAMON_CXX11_CONSTEXPR hamon::tuple<int, int> t1{1, 2};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> t2{1, 2};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> t3{0, 2};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> t4{2, 1};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> t5{1, 1};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> t6{1, 3};
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 == t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 == t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 == t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 == t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 == t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 == t6));
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 != t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 != t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 != t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 != t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 != t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 != t6));
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 < t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 < t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 < t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 < t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 < t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 < t6));
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 > t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 > t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 > t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 > t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 > t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 > t6));
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 <= t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 <= t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 <= t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 <= t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 <= t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 <= t6));
+
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 >= t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 >= t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 >= t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 >= t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( (t1 >= t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!(t1 >= t6));
+
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_eq(t1 <=> t1));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_eq(t1 <=> t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_gt(t1 <=> t3));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_lt(t1 <=> t4));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_gt(t1 <=> t5));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::is_lt(t1 <=> t6));
+#endif
+	}
 }
 
 }	// namespace rel_op_tuple_like_test

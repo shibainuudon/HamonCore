@@ -1392,7 +1392,7 @@ struct ignore_t
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 tuple_detail::ignore_t ignore{};
 
-#if 0
+#if 0	// TODO
 template <tuple-like... Tuples>
 constexpr tuple<CTypes...>
 tuple_cat(Tuples&&... tpls);
@@ -1599,7 +1599,8 @@ struct tuple_compare
 	static HAMON_CXX11_CONSTEXPR bool
 	equal(T const& t, U const& u)
 	{
-		return bool(hamon::get<I>(t) == hamon::get<I>(u)) &&
+		using std::get;
+		return bool(get<I>(t) == get<I>(u)) &&
 			tuple_compare<N, I + 1>::equal(t, u);
 	}
 
@@ -1607,9 +1608,10 @@ struct tuple_compare
 	static HAMON_CXX11_CONSTEXPR bool
 	less(T const& t, U const& u)
 	{
+		using std::get;
 		return
-			  bool(hamon::get<I>(t) < hamon::get<I>(u)) ||
-			(!bool(hamon::get<I>(u) < hamon::get<I>(t)) &&
+			  bool(get<I>(t) < get<I>(u)) ||
+			(!bool(get<I>(u) < get<I>(t)) &&
 			tuple_compare<N, I + 1>::less(t, u));
 	}
 
@@ -1617,7 +1619,8 @@ struct tuple_compare
 	static HAMON_CXX14_CONSTEXPR Result
 	three_way(T const& t, U const& u)
 	{
-		auto c = hamon::detail::synth3way(hamon::get<I>(t), hamon::get<I>(u));
+		using std::get;
+		auto c = hamon::detail::synth3way(get<I>(t), get<I>(u));
 		if (c != 0)
 		{
 			return c;
@@ -1651,39 +1654,75 @@ struct tuple_compare<N, N>
 	}
 };
 
-}	// namespace tuple_detail
+template <typename... TTypes, typename UTuple>
+inline HAMON_CXX11_CONSTEXPR bool
+tuple_eq(tuple<TTypes...> const& t, UTuple const& u)
+{
+	static_assert(sizeof...(TTypes) == std::tuple_size<UTuple>::value, "[tuple.rel]/2");
+	return tuple_detail::tuple_compare<sizeof...(TTypes)>::equal(t, u);
+}
 
+template <typename TTuple, typename UTuple>
+inline HAMON_CXX11_CONSTEXPR bool
+tuple_less(TTuple const& t, UTuple const& u)
+{
+	static_assert(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value, "");
+	return tuple_detail::tuple_compare<std::tuple_size<TTuple>::value>::less(t, u);
+}
+
+template <typename... TTypes, typename UTuple, hamon::size_t... Is,
+	typename Result = hamon::common_comparison_category_t<
+		hamon::detail::synth3way_t<TTypes, hamon::tuple_element_t<Is, UTuple>>...
+	>
+>
+inline HAMON_CXX11_CONSTEXPR Result
+tuple_3way_impl(tuple<TTypes...> const& t, UTuple const& u, hamon::index_sequence<Is...>)
+{
+	return tuple_detail::tuple_compare<sizeof...(TTypes)>::template three_way<Result>(t, u);
+}
+
+template <typename... TTypes, typename UTuple>
+inline HAMON_CXX11_CONSTEXPR auto
+tuple_3way(tuple<TTypes...> const& t, UTuple const& u)
+->decltype(tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{}))
+{
+	return tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{});
+}
+
+}	// namespace tuple_detail
 
 // Relational operators	[tuple.rel]
 template <typename... TTypes, typename... UTypes>
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
-	static_assert(sizeof...(TTypes) == sizeof...(UTypes), "[tuple.rel]/2");
-	return tuple_detail::tuple_compare<sizeof...(TTypes)>::equal(t, u);
+	return tuple_detail::tuple_eq(t, u);
 }
 
-#if 0	// TODO
-template <typename... TTypes, tuple-like UTuple>
-constexpr bool operator==(tuple<TTypes...> const& t, UTuple const& u);
-#endif
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(tuple<TTypes...> const& t, UTuple const& u)
+{
+	return tuple_detail::tuple_eq(t, u);
+}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename... TTypes, typename... UTypes>
-inline HAMON_CXX11_CONSTEXPR
-hamon::common_comparison_category_t<hamon::detail::synth3way_t<TTypes, UTypes>...>
+inline HAMON_CXX11_CONSTEXPR auto
 operator<=>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
+->decltype(tuple_detail::tuple_3way(t, u))
 {
-	using result_t = hamon::common_comparison_category_t<hamon::detail::synth3way_t<TTypes, UTypes>...>;
-	return tuple_detail::tuple_compare<sizeof...(TTypes)>::template three_way<result_t>(t, u);
+	return tuple_detail::tuple_3way(t, u);
 }
 
-#if 0	// TODO
-template <typename... TTypes, tuple-like UTuple>
-constexpr hamon::common_comparison_category_t<hamon::detail::synth3way_t<TTypes, Elems>...>
-operator<=>(tuple<TTypes...> const& t, UTuple const& u);
-#endif
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR auto
+operator<=>(tuple<TTypes...> const& t, UTuple const& u)
+->decltype(tuple_detail::tuple_3way(t, u))
+{
+	return tuple_detail::tuple_3way(t, u);
+}
 
 #else
 
@@ -1691,8 +1730,7 @@ template <typename... TTypes, typename... UTypes>
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
-	static_assert(sizeof...(TTypes) == sizeof...(UTypes), "");
-	return tuple_detail::tuple_compare<sizeof...(TTypes)>::less(t, u);
+	return tuple_detail::tuple_less(t, u);
 }
 
 template <typename... TTypes, typename... UTypes>
@@ -1719,6 +1757,41 @@ operator<=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 template <typename... TTypes, typename... UTypes>
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
+{
+	return !(t < u);
+}
+
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(tuple<TTypes...> const& t, UTuple const& u)
+{
+	return tuple_detail::tuple_less(t, u);
+}
+
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(tuple<TTypes...> const& t, UTuple const& u)
+{
+	return !(t == u);
+}
+
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator>(tuple<TTypes...> const& t, UTuple const& u)
+{
+	return tuple_detail::tuple_less(u, t);
+}
+
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator<=(tuple<TTypes...> const& t, UTuple const& u)
+{
+	return !(t > u);
+}
+
+template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+inline HAMON_CXX11_CONSTEXPR bool
+operator>=(tuple<TTypes...> const& t, UTuple const& u)
 {
 	return !(t < u);
 }
