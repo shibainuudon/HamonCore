@@ -140,21 +140,21 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 
 	template <typename TTuple, typename... UTypes>
 	HAMON_CXX14_CONSTEXPR
-	static void copy_assign(TTuple& lhs, tuple<UTypes...> const& rhs)
+	static void assign(TTuple& lhs, tuple<UTypes...> const& rhs)
 	{
 		swallow(((get<Is>(lhs) = get<Is>(rhs)), 0)...);
 	}
 
 	template <typename TTuple, typename... UTypes>
 	HAMON_CXX14_CONSTEXPR
-	static void forward_assign(TTuple& lhs, tuple<UTypes...>&& rhs)
+	static void assign(TTuple& lhs, tuple<UTypes...>&& rhs)
 	{
 		swallow(((get<Is>(lhs) = hamon::forward<UTypes>(get<Is>(rhs))), 0)...);
 	}
 
 	template <typename TTuple, typename U1, typename U2>
 	HAMON_CXX14_CONSTEXPR
-	static void copy_assign(TTuple& lhs, pair<U1, U2> const& rhs)
+	static void assign(TTuple& lhs, pair<U1, U2> const& rhs)
 	{
 		get<0>(lhs) = rhs.first;
 		get<1>(lhs) = rhs.second;
@@ -162,10 +162,17 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 
 	template <typename TTuple, typename U1, typename U2>
 	HAMON_CXX14_CONSTEXPR
-	static void forward_assign(TTuple& lhs, pair<U1, U2>&& rhs)
+	static void assign(TTuple& lhs, pair<U1, U2>&& rhs)
 	{
 		get<0>(lhs) = hamon::forward<U1>(rhs.first);
 		get<1>(lhs) = hamon::forward<U2>(rhs.second);
+	}
+	
+	template <typename TTuple, typename UTuple>
+	HAMON_CXX14_CONSTEXPR
+	static void assign(TTuple& lhs, UTuple&& rhs)
+	{
+		swallow(((get<Is>(lhs) = get<Is>(hamon::forward<UTuple>(rhs))), 0)...);
 	}
 
 	template <typename TTuple, typename UTuple>
@@ -481,6 +488,88 @@ public:
 		sizeof...(Types) == 2,		// [tuple.cnstr]/25.1
 		Pair
 	>{};
+
+private:
+	template <bool, typename IndexSequence, typename UTuple>
+	struct TupleLikeAssignImpl;
+
+	template <hamon::size_t... Is, typename UTuple>
+	struct TupleLikeAssignImpl<true, hamon::index_sequence<Is...>, UTuple>
+	{
+		static const bool assignable =
+			hamon::conjunction<
+				// [tuple.cnstr]/39.4
+				hamon::is_assignable<
+					Types&, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+
+		// [tuple.cnstr]/2
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::is_nothrow_assignable<
+					Types&, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+	};
+
+	template <typename IndexSequence, typename UTuple>
+	struct TupleLikeAssignImpl<false, IndexSequence, UTuple>
+	{
+		static const bool assignable = false;
+		static const bool nothrow = false;
+	};
+
+public:
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+	struct TupleLikeAssign : public TupleLikeAssignImpl<
+		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/39.1
+		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/39.2
+		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/39.3
+		hamon::make_index_sequence<sizeof...(Types)>,
+		UTuple
+	>{};
+
+private:
+	template <bool, typename IndexSequence, typename UTuple>
+	struct TupleLikeAssignConstImpl;
+
+	template <hamon::size_t... Is, typename UTuple>
+	struct TupleLikeAssignConstImpl<true, hamon::index_sequence<Is...>, UTuple>
+	{
+		static const bool assignable =
+			hamon::conjunction<
+				// [tuple.cnstr]/42.4
+				hamon::is_assignable<
+					Types const&, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+
+		// [tuple.cnstr]/2
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::is_nothrow_assignable<
+					Types const&, decltype(get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+	};
+
+	template <typename IndexSequence, typename UTuple>
+	struct TupleLikeAssignConstImpl<false, IndexSequence, UTuple>
+	{
+		static const bool assignable = false;
+		static const bool nothrow = false;
+	};
+
+public:
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+	struct TupleLikeAssignConst : public TupleLikeAssignConstImpl<
+		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/42.1
+		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/42.2
+		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/42.3
+		hamon::make_index_sequence<sizeof...(Types)>,
+		UTuple
+	>{};
 };
 
 struct access;
@@ -524,6 +613,12 @@ private:
 
 	template <typename Pair>
 	using PairCtor = typename constraint_type::template PairCtor<Pair>;
+
+	template <typename UTuple>
+	using TupleLikeAssign = typename constraint_type::template TupleLikeAssign<UTuple>;
+
+	template <typename UTuple>
+	using TupleLikeAssignConst = typename constraint_type::template TupleLikeAssignConst<UTuple>;
 
 	struct nat;
 
@@ -974,8 +1069,8 @@ public:
 		hamon::is_nothrow_copy_assignable<Types>...
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/2
-		return *this;							// [tuple.assign]/3
+		impl_type::assign(*this, u);		// [tuple.assign]/2
+		return *this;						// [tuple.assign]/3
 	}
 
 	// operator=(tuple const& u) const
@@ -990,8 +1085,8 @@ public:
 		hamon::is_nothrow_copy_assignable<Types const>...
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/6
-		return *this;							// [tuple.assign]/7
+		impl_type::assign(*this, u);		// [tuple.assign]/6
+		return *this;						// [tuple.assign]/7
 	}
 
 	// operator=(tuple&& u)
@@ -1006,8 +1101,8 @@ public:
 		hamon::is_nothrow_move_assignable<Types>...
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/9
-		return *this;										// [tuple.assign]/10
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/9
+		return *this;								// [tuple.assign]/10
 	}
 
 	// operator=(tuple&& u) const
@@ -1022,8 +1117,8 @@ public:
 		hamon::is_nothrow_assignable<Types const&, Types>...
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/13
-		return *this;										// [tuple.assign]/14
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/13
+		return *this;								// [tuple.assign]/14
 	}
 
 	// operator=(tuple<UTypes...> const& u)
@@ -1039,8 +1134,8 @@ public:
 		hamon::is_nothrow_assignable<Types&, UTypes const&>...
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/16
-		return *this;							// [tuple.assign]/17
+		impl_type::assign(*this, u);		// [tuple.assign]/16
+		return *this;						// [tuple.assign]/17
 	}
 
 	// operator=(tuple<UTypes...> const& u) const
@@ -1057,8 +1152,8 @@ public:
 		hamon::is_nothrow_assignable<Types const&, UTypes const&>...
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/19
-		return *this;							// [tuple.assign]/20
+		impl_type::assign(*this, u);		// [tuple.assign]/19
+		return *this;						// [tuple.assign]/20
 	}
 
 	// operator=(tuple<UTypes...>&& u)
@@ -1075,8 +1170,8 @@ public:
 		hamon::is_nothrow_assignable<Types&, UTypes>...
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/22
-		return *this;										// [tuple.assign]/23
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/22
+		return *this;								// [tuple.assign]/23
 	}
 
 	// operator=(tuple<UTypes...>&& u) const
@@ -1093,8 +1188,8 @@ public:
 		hamon::is_nothrow_assignable<Types const&, UTypes>...
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/25
-		return *this;										// [tuple.assign]/26
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/25
+		return *this;								// [tuple.assign]/26
 	}
 
 	// operator=(pair<U1, U2> const& u)
@@ -1114,8 +1209,8 @@ public:
 		hamon::is_nothrow_assignable<typename T1::type&, U2 const&>
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/28
-		return *this;							// [tuple.assign]/29
+		impl_type::assign(*this, u);		// [tuple.assign]/28
+		return *this;						// [tuple.assign]/29
 	}
 
 	// operator=(pair<U1, U2> const&) const
@@ -1135,8 +1230,8 @@ public:
 		hamon::is_nothrow_assignable<typename T1::type const&, U2 const&>
 	>::value))
 	{
-		impl_type::copy_assign(*this, u);		// [tuple.assign]/31
-		return *this;							// [tuple.assign]/32
+		impl_type::assign(*this, u);		// [tuple.assign]/31
+		return *this;						// [tuple.assign]/32
 	}
 
 	// operator=(pair<U1, U2>&&)
@@ -1156,8 +1251,8 @@ public:
 		hamon::is_nothrow_assignable<typename T1::type&, U2>
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/34
-		return *this;										// [tuple.assign]/35
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/34
+		return *this;								// [tuple.assign]/35
 	}
 
 	// operator=(pair<U1, U2>&&) const
@@ -1177,17 +1272,33 @@ public:
 		hamon::is_nothrow_assignable<typename T1::type const&, U2>
 	>::value))
 	{
-		impl_type::forward_assign(*this, hamon::move(u));	// [tuple.assign]/37
-		return *this;										// [tuple.assign]/38
+		impl_type::assign(*this, hamon::move(u));	// [tuple.assign]/37
+		return *this;								// [tuple.assign]/38
 	}
 
-#if 0	// TODO
-	template <tuple-like UTuple>
-	constexpr tuple& operator=(UTuple&&);
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = TupleLikeAssign<UTuple>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr
+	>
+	HAMON_CXX14_CONSTEXPR tuple&
+	operator=(UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+	{
+		impl_type::assign(*this, hamon::forward<UTuple>(u));	// [tuple.assign]/40
+		return *this;											// [tuple.assign]/41
+	}
 
-	template <tuple-like UTuple>
-	constexpr tuple const& operator=(UTuple&&) const;
-#endif
+	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = TupleLikeAssignConst<UTuple>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr
+	>
+	HAMON_CXX14_CONSTEXPR tuple const&
+	operator=(UTuple&& u) const
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+	{
+		impl_type::assign(*this, hamon::forward<UTuple>(u));	// [tuple.assign]/43
+		return *this;											// [tuple.assign]/44
+	}
 
 	// [tuple.swap], tuple swap
 	HAMON_CXX14_CONSTEXPR void
