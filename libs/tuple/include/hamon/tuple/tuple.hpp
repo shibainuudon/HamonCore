@@ -32,6 +32,7 @@ using std::ignore;
 #include <hamon/compare/detail/synth3way.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/functional/invoke.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/ranges/detail/different_from.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -1498,12 +1499,35 @@ tuple_cat(Tuples&&... tpls)
 		hamon::forward<Tuples>(tpls)...);
 }
 
-#if 0	// TODO
-// Calling a function with a tuple of arguments	[tuple.apply]
-template <typename F, tuple-like Tuple>
-constexpr decltype(auto)
-apply(F&& f, Tuple&& t) noexcept(see below);
+namespace tuple_detail
+{
 
+#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
+	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
+	-> decltype(__VA_ARGS__)                \
+	{ return __VA_ARGS__; }
+
+template <typename F, typename Tuple, hamon::size_t... I>
+HAMON_CXX11_CONSTEXPR auto
+apply_impl(F&& f, Tuple&& t, hamon::index_sequence<I...>)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	hamon::invoke(hamon::forward<F>(f), get<I>(hamon::forward<Tuple>(t))...))
+
+}	// namespace tuple_detail
+
+// Calling a function with a tuple of arguments	[tuple.apply]
+template <typename F, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
+HAMON_CXX11_CONSTEXPR auto
+apply(F&& f, Tuple&& t)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	tuple_detail::apply_impl(
+		hamon::forward<F>(f),
+		hamon::forward<Tuple>(t),
+		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
+
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+
+#if 0	// TODO
 template <typename T, tuple-like Tuple>
 constexpr T
 make_from_tuple(Tuple&& t);
