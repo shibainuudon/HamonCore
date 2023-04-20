@@ -1527,11 +1527,37 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
 
-#if 0	// TODO
-template <typename T, tuple-like Tuple>
-constexpr T
-make_from_tuple(Tuple&& t);
+#define HAMON_NOEXCEPT_RETURN(...) noexcept(noexcept(__VA_ARGS__)) { return __VA_ARGS__; }
+
+namespace tuple_detail
+{
+
+// [tuple.apply]/4
+template <typename T, typename Tuple, hamon::size_t... I>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+requires hamon::is_constructible<T, decltype(get<I>(hamon::declval<Tuple>()))...>::value
 #endif
+inline HAMON_CXX11_CONSTEXPR T
+make_from_tuple_impl(Tuple&& t, hamon::index_sequence<I...>)
+HAMON_NOEXCEPT_RETURN(
+	T(get<I>(hamon::forward<Tuple>(t))...))
+
+}	// namespace tuple_detail
+
+// TODO [tuple.apply]/3
+// If tuple_size_v<remove_reference_t<Tuple>> is 1, then
+// reference_constructs_from_temporary_v<T, decltype(get<0>(declval<Tuple>()))> is false.
+
+// [tuple.apply]/4
+template <typename T, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
+inline HAMON_CXX11_CONSTEXPR T
+make_from_tuple(Tuple&& t)
+HAMON_NOEXCEPT_RETURN(
+	tuple_detail::make_from_tuple_impl<T>(
+		hamon::forward<Tuple>(t),
+		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
+
+#undef HAMON_NOEXCEPT_RETURN
 
 }	// namespace hamon
 
