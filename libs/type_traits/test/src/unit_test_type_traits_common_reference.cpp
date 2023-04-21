@@ -80,9 +80,13 @@ static_assert(!has_common_ref<void*, int>(), "");
 static_assert( has_common_ref<int, int, int>(), "");
 static_assert(!has_common_ref<void*, int, int>(), "");
 static_assert(!has_common_ref<int, int, void*>(), "");
+static_assert(!has_common_ref<char(*)(), int(*)(), int>(), "");
+static_assert( has_common_ref<int, long, const int>(), "");
+static_assert(!has_common_ref<int*, int, long, const int>(), "");
+static_assert(!has_common_ref<int, long, void, const int>(), "");
 
-#define HAMON_COMMON_REFERENCE_TEST(T, ...)	\
-	static_assert(hamon::is_same<T, hamon::common_reference_t<__VA_ARGS__>>::value, "")
+#define HAMON_COMMON_REFERENCE_TEST(Expected, ...)	\
+	static_assert(hamon::is_same<Expected, hamon::common_reference_t<__VA_ARGS__>>::value, "")
 
 HAMON_COMMON_REFERENCE_TEST(int               , int               );
 HAMON_COMMON_REFERENCE_TEST(int const         , int const         );
@@ -260,7 +264,40 @@ HAMON_COMMON_REFERENCE_TEST(int const volatile&&, int const volatile&&, int cons
 HAMON_COMMON_REFERENCE_TEST(int const volatile&&, int const volatile&&, int       volatile&&);
 HAMON_COMMON_REFERENCE_TEST(int const volatile&&, int const volatile&&, int const volatile&&);
 
-HAMON_COMMON_REFERENCE_TEST(void, void, const void);
+HAMON_COMMON_REFERENCE_TEST(void, void,                void               );
+HAMON_COMMON_REFERENCE_TEST(void, void,                void const         );
+HAMON_COMMON_REFERENCE_TEST(void, void,                void       volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void,                void const volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void const,          void               );
+HAMON_COMMON_REFERENCE_TEST(void, void const,          void const         );
+HAMON_COMMON_REFERENCE_TEST(void, void const,          void       volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void const,          void const volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void       volatile, void               );
+HAMON_COMMON_REFERENCE_TEST(void, void       volatile, void const         );
+HAMON_COMMON_REFERENCE_TEST(void, void       volatile, void       volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void       volatile, void const volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void const volatile, void               );
+HAMON_COMMON_REFERENCE_TEST(void, void const volatile, void const         );
+HAMON_COMMON_REFERENCE_TEST(void, void const volatile, void       volatile);
+HAMON_COMMON_REFERENCE_TEST(void, void const volatile, void const volatile);
+
+HAMON_COMMON_REFERENCE_TEST(int, int, short);
+HAMON_COMMON_REFERENCE_TEST(int, int, short const);
+HAMON_COMMON_REFERENCE_TEST(int, int, short &);
+HAMON_COMMON_REFERENCE_TEST(int, int, short const&);
+HAMON_COMMON_REFERENCE_TEST(int, int, short &&);
+HAMON_COMMON_REFERENCE_TEST(int, int, short const&&);
+HAMON_COMMON_REFERENCE_TEST(long, int, long);
+HAMON_COMMON_REFERENCE_TEST(long, int, long const);
+HAMON_COMMON_REFERENCE_TEST(long, int, long &);
+HAMON_COMMON_REFERENCE_TEST(long, int, long const&);
+HAMON_COMMON_REFERENCE_TEST(long, int, long &&);
+HAMON_COMMON_REFERENCE_TEST(long, int, long const&&);
+
+HAMON_COMMON_REFERENCE_TEST(int(&)[10], int(&)[10], int(&)[10]);
+HAMON_COMMON_REFERENCE_TEST(int*,       int(&)[10], int(&)[11]);
+HAMON_COMMON_REFERENCE_TEST(int const*, int(&)[10], int const(&)[11]);
+
 HAMON_COMMON_REFERENCE_TEST(void(*)(), void(*)(), void(* const)());
 
 HAMON_COMMON_REFERENCE_TEST(int, char&, int&);
@@ -285,6 +322,29 @@ HAMON_COMMON_REFERENCE_TEST(const C&&, const A, B&&);
 HAMON_COMMON_REFERENCE_TEST(F, D, E);
 HAMON_COMMON_REFERENCE_TEST(F, D&, E);
 HAMON_COMMON_REFERENCE_TEST(F, D&, E&&);
+
+struct Base {};
+struct Derived : public Base {};
+
+HAMON_COMMON_REFERENCE_TEST(Base&,       Base&, Derived &);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base&, Derived const&);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base&, Derived &&);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base&, Derived const&&);
+
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base const&, Derived &);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base const&, Derived const&);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base const&, Derived &&);
+HAMON_COMMON_REFERENCE_TEST(Base const&, Base const&, Derived const&&);
+
+HAMON_COMMON_REFERENCE_TEST(Base const&,  Base&&, Derived &);
+HAMON_COMMON_REFERENCE_TEST(Base const&,  Base&&, Derived const&);
+HAMON_COMMON_REFERENCE_TEST(Base &&,      Base&&, Derived &&);
+HAMON_COMMON_REFERENCE_TEST(Base const&&, Base&&, Derived const&&);
+
+HAMON_COMMON_REFERENCE_TEST(Base const&,  Base const&&, Derived &);
+HAMON_COMMON_REFERENCE_TEST(Base const&,  Base const&&, Derived const&);
+HAMON_COMMON_REFERENCE_TEST(Base const&&, Base const&&, Derived &&);
+HAMON_COMMON_REFERENCE_TEST(Base const&&, Base const&&, Derived const&&);
 
 #undef HAMON_COMMON_REFERENCE_TEST
 

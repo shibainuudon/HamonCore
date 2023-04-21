@@ -10,8 +10,9 @@
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/config.hpp>
 
-#if defined(HAMON_USE_STD_CONCEPTS)
+#if defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_COMMON_REFERENCE)
 
 namespace hamon
 {
