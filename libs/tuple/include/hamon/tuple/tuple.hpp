@@ -2014,39 +2014,42 @@ struct is_specialization_of_tuple<hamon::tuple<Types...>>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 
+// basic_common_referenceの特殊化
+
 namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
 {
 
-template <
-	hamon::tuple_like TTuple,
-	hamon::tuple_like UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual,
-    typename Indices = hamon::make_index_sequence<std::tuple_size_v<TTuple>>>
-struct _Tuple_like_common_reference;
+namespace detail
+{
 
 template <
 	typename TTuple,
 	typename UTuple,
 	template <typename> class TQual,
 	template <typename> class UQual,
-    hamon::size_t... Indices>
-requires requires
-{
-	typename hamon::tuple<hamon::common_reference_t<
-		TQual<hamon::tuple_element_t<Indices, TTuple>>,
-		UQual<hamon::tuple_element_t<Indices, UTuple>>
-	>...>;
-}
-struct _Tuple_like_common_reference<TTuple, UTuple, TQual, UQual, hamon::index_sequence<Indices...>>
+    typename Indices = hamon::make_index_sequence<std::tuple_size<TTuple>::value>>
+struct tuple_like_common_reference;
+
+template <
+	typename TTuple,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual,
+    hamon::size_t... I>
+struct tuple_like_common_reference<TTuple, UTuple, TQual, UQual, hamon::index_sequence<I...>>
 {
     using type = hamon::tuple<hamon::common_reference_t<
-		TQual<hamon::tuple_element_t<Indices, TTuple>>,
-		UQual<hamon::tuple_element_t<Indices, UTuple>>
+		TQual<hamon::tuple_element_t<I, TTuple>>,
+		UQual<hamon::tuple_element_t<I, UTuple>>
 	>...>;
 };
 
+}	// namespace detail
+
 // common_reference related specializations	[tuple.common.ref]
+
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+
 template <
 	hamon::tuple_like TTuple,
 	hamon::tuple_like UTuple,
@@ -2058,11 +2061,101 @@ requires
 	hamon::is_same_v<TTuple, hamon::decay_t<TTuple>> &&		// [tuple.common.ref]2.2
 	hamon::is_same_v<UTuple, hamon::decay_t<UTuple>> &&		// [tuple.common.ref]2.3
 	(std::tuple_size_v<TTuple> == std::tuple_size_v<UTuple>) &&	// [tuple.common.ref]2.4
-	requires { typename _Tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type; }	// [tuple.common.ref]2.5
+	requires { typename detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type; }	// [tuple.common.ref]2.5
 struct basic_common_reference<TTuple, UTuple, TQual, UQual>
 {
-	using type = typename _Tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type;
+	using type = typename detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type;
 };
+
+#else
+
+namespace detail
+{
+
+template <
+	typename TTuple,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual,
+	typename = void,
+	typename = void
+>
+struct tuple_basic_common_reference_impl
+{};
+
+template <
+	typename TTuple,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual
+>
+struct tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual,
+	hamon::enable_if_t<
+		hamon::is_same<TTuple, hamon::decay_t<TTuple>>::value &&		// [tuple.common.ref]2.2
+		hamon::is_same<UTuple, hamon::decay_t<UTuple>>::value &&		// [tuple.common.ref]2.3
+		(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value)	// [tuple.common.ref]2.4
+	>,
+	hamon::void_t<typename tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type>	// [tuple.common.ref]2.5
+>
+{
+	using type = typename tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type;
+};
+
+template <
+	typename TTuple,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual,
+	typename = void
+>
+struct tuple_basic_common_reference
+{};
+
+template <
+	typename TTuple,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual
+>
+struct tuple_basic_common_reference<TTuple, UTuple, TQual, UQual,
+	hamon::enable_if_t<hamon::conjunction<
+		hamon::tuple_like_t<TTuple>,
+		hamon::tuple_like_t<UTuple>
+	>::value>
+>
+	: public tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual>
+{};
+
+}	// namespace detail
+
+template <
+	typename... TTypes,
+	typename UTuple,
+	template <typename> class TQual,
+	template <typename> class UQual>
+struct basic_common_reference<hamon::tuple<TTypes...>, UTuple, TQual, UQual>
+	: public detail::tuple_basic_common_reference<hamon::tuple<TTypes...>, UTuple, TQual, UQual>
+{};
+
+template <
+	typename TTuple,
+	typename... UTypes,
+	template <typename> class TQual,
+	template <typename> class UQual>
+struct basic_common_reference<TTuple, hamon::tuple<UTypes...>, TQual, UQual>
+	: public detail::tuple_basic_common_reference<TTuple, hamon::tuple<UTypes...>, TQual, UQual>
+{};
+
+template <
+	typename... TTypes,
+	typename... UTypes,
+	template <typename> class TQual,
+	template <typename> class UQual>
+struct basic_common_reference<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>, TQual, UQual>
+	: public detail::tuple_basic_common_reference<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>, TQual, UQual>
+{};
+
+#endif
 
 }	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
 
