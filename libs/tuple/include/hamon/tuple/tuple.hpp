@@ -108,8 +108,8 @@ public:
 
 	HAMON_CXX14_CONSTEXPR T &       get() &       { return m_value; }
 	HAMON_CXX11_CONSTEXPR T const&  get() const&  { return m_value; }
-	HAMON_CXX14_CONSTEXPR T &&      get() &&      { return hamon::move(m_value); }
-	HAMON_CXX11_CONSTEXPR T const&& get() const&& { return hamon::move(m_value); }
+	HAMON_CXX14_CONSTEXPR T &&      get() &&      { return hamon::forward<T>(m_value); }
+	HAMON_CXX11_CONSTEXPR T const&& get() const&& { return hamon::forward<T const>(m_value); }
 };
 
 template <typename IndexSequence, typename... Types>
