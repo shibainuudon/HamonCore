@@ -1950,12 +1950,6 @@ operator>=(tuple<TTypes...> const& t, UTuple const& u)
 
 #endif
 
-#if 0	// TODO
-// Tuple traits	[tuple.traits]
-template <typename... Types, typename Alloc>
-struct uses_allocator<tuple<Types...>, Alloc> : true_type {};
-#endif
-
 // Tuple specialized algorithms	[tuple.special]
 template <typename... Types,
 	typename = hamon::enable_if_t<hamon::conjunction<
@@ -2277,6 +2271,16 @@ struct common_type<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>>
 #endif
 
 }	// namespace HAMON_COMMON_TYPE_NAMESPACE
+
+
+namespace std
+{
+
+// Tuple traits	[tuple.traits]
+template <typename... Types, typename Alloc>
+struct uses_allocator<hamon::tuple<Types...>, Alloc> : std::true_type {};
+
+}	// namespace std
 
 #endif
 
