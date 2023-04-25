@@ -15,6 +15,7 @@
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/type_traits/extent.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
@@ -113,7 +114,7 @@ private:
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash_combine_tuple(T&& x, hamon::index_sequence<Is...>)
 	{
-		return hash_combine(0, std::get<Is>(hamon::forward<T>(x))...);
+		return hash_combine(0, hamon::adl_get<Is>(hamon::forward<T>(x))...);
 	}
 
 	template <typename T, hamon::size_t N>

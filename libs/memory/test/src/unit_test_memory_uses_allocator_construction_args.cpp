@@ -6,6 +6,7 @@
 
 #include <hamon/memory/uses_allocator_construction_args.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
@@ -61,8 +62,6 @@ struct DefaultConstructible
 
 GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 {
-	using std::get;
-
 	// non-pair overload
 
 	// uses_allocator_construction_args(const Alloc&, Args&&...)
@@ -71,28 +70,28 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 		auto t = hamon::uses_allocator_construction_args<int>(MyAlloc{}, i);
 		static_assert(hamon::is_same<decltype(t),
 			hamon::tuple<int&>>::value, "");
-		EXPECT_EQ(10, get<0>(t));
+		EXPECT_EQ(10, hamon::adl_get<0>(t));
 	}
 	{
 		int i = 11;
 		auto t = hamon::uses_allocator_construction_args<MyContainer0>(MyAlloc{}, hamon::move(i));
 		static_assert(hamon::is_same<decltype(t),
 			hamon::tuple<int&&>>::value, "");
-		EXPECT_EQ(11, get<0>(t));
+		EXPECT_EQ(11, hamon::adl_get<0>(t));
 	}
 	{
 		int const i = 12;
 		auto t = hamon::uses_allocator_construction_args<MyContainer1>(MyAlloc{}, i);
 		static_assert(hamon::is_same<decltype(t),
 			hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&>>::value, "");
-		EXPECT_EQ(12, get<2>(t));
+		EXPECT_EQ(12, hamon::adl_get<2>(t));
 	}
 	{
 		int const i = 13;
 		auto t = hamon::uses_allocator_construction_args<MyContainer2>(MyAlloc{}, hamon::move(i));
 		static_assert(hamon::is_same<decltype(t),
 			hamon::tuple<int const&&, MyAlloc const&>>::value, "");
-		EXPECT_EQ(13, get<0>(t));
+		EXPECT_EQ(13, hamon::adl_get<0>(t));
 	}
 	{
 		auto t = hamon::uses_allocator_construction_args<MyContainer3>(MyAlloc{});
@@ -121,7 +120,7 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(41, get<0>(get<1>(t)));
+		EXPECT_EQ(41, hamon::adl_get<0>(hamon::adl_get<1>(t)));
 	}
 	{
 		int i = 42;
@@ -136,7 +135,7 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<>,
 				hamon::tuple<int&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(42, get<0>(get<2>(t)));
+		EXPECT_EQ(42, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 	// uses_allocator_construction_args(const Alloc&)
@@ -170,8 +169,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&&>>>::value, "");
-		EXPECT_EQ(14, get<0>(get<1>(t)));
-		EXPECT_EQ(15, get<2>(get<2>(t)));
+		EXPECT_EQ(14, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(15, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		int const i = 16;
@@ -183,8 +182,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&&>,
 				hamon::tuple<int const&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(16, get<2>(get<1>(t)));
-		EXPECT_EQ(17, get<0>(get<2>(t)));
+		EXPECT_EQ(16, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(17, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 	// uses_allocator_construction_args(const Alloc&, pair<U, V>&)
@@ -197,8 +196,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&>>>::value, "");
-		EXPECT_EQ(18, get<0>(get<1>(t)));
-		EXPECT_EQ(19, get<2>(get<2>(t)));
+		EXPECT_EQ(18, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(19, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::pair<int, int> p{20, 21};
@@ -209,8 +208,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&>,
 				hamon::tuple<int&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(20, get<2>(get<1>(t)));
-		EXPECT_EQ(21, get<0>(get<2>(t)));
+		EXPECT_EQ(20, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(21, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 	// uses_allocator_construction_args(const Alloc&, const pair<U, V>&)
@@ -223,8 +222,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int const&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&>>>::value, "");
-		EXPECT_EQ(22, get<0>(get<1>(t)));
-		EXPECT_EQ(23, get<2>(get<2>(t)));
+		EXPECT_EQ(22, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(23, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::pair<int, int> const p{24, 25};
@@ -235,8 +234,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&>,
 				hamon::tuple<int const&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(24, get<2>(get<1>(t)));
-		EXPECT_EQ(25, get<0>(get<2>(t)));
+		EXPECT_EQ(24, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(25, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 	// uses_allocator_construction_args(const Alloc&, pair<U, V>&&)
@@ -249,8 +248,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&&>>>::value, "");
-		EXPECT_EQ(26, get<0>(get<1>(t)));
-		EXPECT_EQ(27, get<2>(get<2>(t)));
+		EXPECT_EQ(26, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(27, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::pair<int, int> p{28, 29};
@@ -261,8 +260,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&&>,
 				hamon::tuple<int&&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(28, get<2>(get<1>(t)));
-		EXPECT_EQ(29, get<0>(get<2>(t)));
+		EXPECT_EQ(28, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(29, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 	// uses_allocator_construction_args(const Alloc&, const pair<U, V>&&)
@@ -275,8 +274,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int const&&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&&>>>::value, "");
-		EXPECT_EQ(30, get<0>(get<1>(t)));
-		EXPECT_EQ(31, get<2>(get<2>(t)));
+		EXPECT_EQ(30, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(31, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::pair<int, int> const p{32, 33};
@@ -287,8 +286,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&&>,
 				hamon::tuple<int const&&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(32, get<2>(get<1>(t)));
-		EXPECT_EQ(33, get<0>(get<2>(t)));
+		EXPECT_EQ(32, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(33, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
 #if 0	// TODO
@@ -302,8 +301,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&>>>::value, "");
-		EXPECT_EQ(14, get<0>(get<1>(t)));
-		EXPECT_EQ(15, get<2>(get<2>(t)));
+		EXPECT_EQ(14, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(15, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::array<int, 2> const p{16, 17};
@@ -314,8 +313,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&>,
 				hamon::tuple<int const&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(16, get<2>(get<1>(t)));
-		EXPECT_EQ(17, get<0>(get<2>(t)));
+		EXPECT_EQ(16, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(17, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::array<int, 2> p{18, 19};
@@ -326,8 +325,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<int&&>,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int&&>>>::value, "");
-		EXPECT_EQ(18, get<0>(get<1>(t)));
-		EXPECT_EQ(19, get<2>(get<2>(t)));
+		EXPECT_EQ(18, hamon::adl_get<0>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(19, hamon::adl_get<2>(hamon::adl_get<2>(t)));
 	}
 	{
 		hamon::tuple<int, int> const p{20, 21};
@@ -338,8 +337,8 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 				hamon::piecewise_construct_t,
 				hamon::tuple<hamon::allocator_arg_t, MyAlloc const&, int const&&>,
 				hamon::tuple<int const&&, MyAlloc const&>>>::value, "");
-		EXPECT_EQ(20, get<2>(get<1>(t)));
-		EXPECT_EQ(21, get<0>(get<2>(t)));
+		EXPECT_EQ(20, hamon::adl_get<2>(hamon::adl_get<1>(t)));
+		EXPECT_EQ(21, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 #endif
 

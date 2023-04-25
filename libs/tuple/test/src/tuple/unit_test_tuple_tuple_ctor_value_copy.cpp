@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -110,82 +110,81 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow, Implicit, I
 
 GTEST_TEST(TupleTest, CtorValueCopyTest)
 {
-	using std::get;
 	{
 		std::string const s = "hello";
 		hamon::tuple<std::string> t{s};
-		EXPECT_TRUE(get<0>(t) == "hello");
+		EXPECT_TRUE(hamon::adl_get<0>(t) == "hello");
 	}
 	{
 		int const n = 42;
 		std::string const s = "world";
 		float const f = 2.5f;
 		hamon::tuple<int, std::string, float> t{n, s, f};
-		EXPECT_TRUE(get<0>(t) == 42);
-		EXPECT_TRUE(get<1>(t) == "world");
-		EXPECT_TRUE(get<2>(t) == 2.5f);
+		EXPECT_TRUE(hamon::adl_get<0>(t) == 42);
+		EXPECT_TRUE(hamon::adl_get<1>(t) == "world");
+		EXPECT_TRUE(hamon::adl_get<2>(t) == 2.5f);
 	}
 	{
 		Explicit const x1(8);
 		Implicit const x2(9);
 		hamon::tuple<Explicit, Implicit, Explicit> t {x1, x2, x1};
-		EXPECT_TRUE(get<0>(t).n == 8);
-		EXPECT_TRUE(get<1>(t).n == 9);
-		EXPECT_TRUE(get<2>(t).n == 8);
+		EXPECT_TRUE(hamon::adl_get<0>(t).n == 8);
+		EXPECT_TRUE(hamon::adl_get<1>(t).n == 9);
+		EXPECT_TRUE(hamon::adl_get<2>(t).n == 8);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR int x1 = 1;
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int> t(x1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 1);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR int   x1 = 2;
 		HAMON_CXX11_CONSTEXPR float x2 = 2.5f;
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, float> t = {x1, x2};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t) == 2.5f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t) == 2.5f);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR int    x1 = 3;
 		HAMON_CXX11_CONSTEXPR char   x2 = 'b';
 		HAMON_CXX11_CONSTEXPR double x3 = 4.5;
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, char, double> t = {x1, x2, x3};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 3);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t) == 'b');
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t) == 4.5);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 3);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t) == 'b');
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t) == 4.5);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR Explicit x1(5);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Explicit> t{x1};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 5);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 5);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR Implicit x1(6);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit> t = {x1};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 6);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 6);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR Implicit x1(7);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Implicit> t = {x1, x1};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 7);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 7);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 7);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 7);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR Explicit x1(8);
 		HAMON_CXX11_CONSTEXPR Implicit x2(9);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Explicit, Implicit, Explicit> t {x1, x2, x1};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 8);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 9);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t).n == 8);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 8);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 9);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t).n == 8);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR Implicit x1(1);
 		HAMON_CXX11_CONSTEXPR Implicit x2(2);
 		HAMON_CXX11_CONSTEXPR Implicit x3(3);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Implicit, Implicit> t = {x1, x2, x3};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t).n == 3);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t).n == 3);
 	}
 }
 

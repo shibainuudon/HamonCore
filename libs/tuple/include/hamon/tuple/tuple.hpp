@@ -26,6 +26,7 @@ using std::ignore;
 
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/strong_ordering.hpp>
@@ -70,10 +71,6 @@ using std::ignore;
 
 namespace hamon
 {
-
-// TODO
-template <typename T>
-void get(T const&);
 
 namespace tuple_detail
 {
@@ -132,7 +129,7 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 	template <typename UTuple>
 	HAMON_CXX11_CONSTEXPR
 	tuple_impl(hamon::integral_constant<int, 1>, UTuple&& u)
-		: tuple_leaf<Is, Types>(get<Is>(hamon::forward<UTuple>(u)))...
+		: tuple_leaf<Is, Types>(hamon::adl_get<Is>(hamon::forward<UTuple>(u)))...
 	{}
 
 	template <typename... Args>
@@ -143,37 +140,37 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 	HAMON_CXX14_CONSTEXPR
 	static void assign(TTuple& lhs, tuple<UTypes...> const& rhs)
 	{
-		swallow(((get<Is>(lhs) = get<Is>(rhs)), 0)...);
+		swallow(((hamon::adl_get<Is>(lhs) = hamon::adl_get<Is>(rhs)), 0)...);
 	}
 
 	template <typename TTuple, typename... UTypes>
 	HAMON_CXX14_CONSTEXPR
 	static void assign(TTuple& lhs, tuple<UTypes...>&& rhs)
 	{
-		swallow(((get<Is>(lhs) = hamon::forward<UTypes>(get<Is>(rhs))), 0)...);
+		swallow(((hamon::adl_get<Is>(lhs) = hamon::forward<UTypes>(hamon::adl_get<Is>(rhs))), 0)...);
 	}
 
 	template <typename TTuple, typename U1, typename U2>
 	HAMON_CXX14_CONSTEXPR
 	static void assign(TTuple& lhs, pair<U1, U2> const& rhs)
 	{
-		get<0>(lhs) = rhs.first;
-		get<1>(lhs) = rhs.second;
+		hamon::adl_get<0>(lhs) = rhs.first;
+		hamon::adl_get<1>(lhs) = rhs.second;
 	}
 
 	template <typename TTuple, typename U1, typename U2>
 	HAMON_CXX14_CONSTEXPR
 	static void assign(TTuple& lhs, pair<U1, U2>&& rhs)
 	{
-		get<0>(lhs) = hamon::forward<U1>(rhs.first);
-		get<1>(lhs) = hamon::forward<U2>(rhs.second);
+		hamon::adl_get<0>(lhs) = hamon::forward<U1>(rhs.first);
+		hamon::adl_get<1>(lhs) = hamon::forward<U2>(rhs.second);
 	}
 	
 	template <typename TTuple, typename UTuple>
 	HAMON_CXX14_CONSTEXPR
 	static void assign(TTuple& lhs, UTuple&& rhs)
 	{
-		swallow(((get<Is>(lhs) = get<Is>(hamon::forward<UTuple>(rhs))), 0)...);
+		swallow(((hamon::adl_get<Is>(lhs) = hamon::adl_get<Is>(hamon::forward<UTuple>(rhs))), 0)...);
 	}
 
 	template <typename TTuple, typename UTuple>
@@ -181,7 +178,7 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 	static void swap(TTuple& lhs, UTuple& rhs)
 	{
 		using std::swap;
-		swallow((swap(get<Is>(lhs), get<Is>(rhs)), 0)...);
+		swallow((swap(hamon::adl_get<Is>(lhs), hamon::adl_get<Is>(rhs)), 0)...);
 	}
 };
 
@@ -331,7 +328,7 @@ private:
 			hamon::conjunction<
 				// [tuple.cnstr]/21.2
 				hamon::is_constructible<
-					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...,
 				// [tuple.cnstr]/21.3
 				hamon::disjunction<
@@ -348,7 +345,7 @@ private:
 		static const bool implicitly =
 			hamon::conjunction<
 				hamon::is_convertible<
-					decltype(get<Is>(hamon::declval<UTuple>())), Types
+					decltype(hamon::adl_get<Is>(hamon::declval<UTuple>())), Types
 				>...
 			>::value;
 
@@ -356,7 +353,7 @@ private:
 		static const bool nothrow =
 			hamon::conjunction<
 				hamon::is_nothrow_constructible<
-					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 	};
@@ -389,7 +386,7 @@ private:
 			hamon::conjunction<
 				// [tuple.cnstr]/29.4
 				hamon::is_constructible<
-					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...,
 				// [tuple.cnstr]/29.5
 				hamon::disjunction<
@@ -405,7 +402,7 @@ private:
 		static const bool implicitly =
 			hamon::conjunction<
 				hamon::is_convertible<
-					decltype(get<Is>(hamon::declval<UTuple>())), Types
+					decltype(hamon::adl_get<Is>(hamon::declval<UTuple>())), Types
 				>...
 			>::value;
 
@@ -413,7 +410,7 @@ private:
 		static const bool nothrow =
 			hamon::conjunction<
 				hamon::is_nothrow_constructible<
-					Types, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 	};
@@ -444,8 +441,8 @@ private:
 		using T0 = hamon::nth_t<0, Types...>;
 		using T1 = hamon::nth_t<1, Types...>;
 
-		using U0 = decltype(get<0>(hamon::declval<Pair>()));
-		using U1 = decltype(get<1>(hamon::declval<Pair>()));
+		using U0 = decltype(hamon::adl_get<0>(hamon::declval<Pair>()));
+		using U1 = decltype(hamon::adl_get<1>(hamon::declval<Pair>()));
 
 	public:
 		// [tuple.cnstr]/25
@@ -501,7 +498,7 @@ private:
 			hamon::conjunction<
 				// [tuple.cnstr]/39.4
 				hamon::is_assignable<
-					Types&, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types&, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 
@@ -509,7 +506,7 @@ private:
 		static const bool nothrow =
 			hamon::conjunction<
 				hamon::is_nothrow_assignable<
-					Types&, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types&, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 	};
@@ -542,7 +539,7 @@ private:
 			hamon::conjunction<
 				// [tuple.cnstr]/42.4
 				hamon::is_assignable<
-					Types const&, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types const&, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 
@@ -550,7 +547,7 @@ private:
 		static const bool nothrow =
 			hamon::conjunction<
 				hamon::is_nothrow_assignable<
-					Types const&, decltype(get<Is>(hamon::declval<UTuple>()))
+					Types const&, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
 				>...
 			>::value;
 	};
@@ -1450,7 +1447,7 @@ private:
 		return tuple_cat_impl<R, Tuples...>::invoke(
 			hamon::forward<Tuples>(tpls)...,
 			hamon::forward<CTypes>(celems)...,
-			get<K>(hamon::forward<T>(tp))...);		// [tuple.creation]/7.6
+			hamon::adl_get<K>(hamon::forward<T>(tp))...);		// [tuple.creation]/7.6
 	}
 
 public:
@@ -1511,7 +1508,7 @@ template <typename F, typename Tuple, hamon::size_t... I>
 HAMON_CXX11_CONSTEXPR auto
 apply_impl(F&& f, Tuple&& t, hamon::index_sequence<I...>)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	hamon::invoke(hamon::forward<F>(f), get<I>(hamon::forward<Tuple>(t))...))
+	hamon::invoke(hamon::forward<F>(f), hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
 
 }	// namespace tuple_detail
 
@@ -1535,12 +1532,12 @@ namespace tuple_detail
 // [tuple.apply]/4
 template <typename T, typename Tuple, hamon::size_t... I>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires hamon::is_constructible<T, decltype(get<I>(hamon::declval<Tuple>()))...>::value
+requires hamon::is_constructible<T, decltype(hamon::adl_get<I>(hamon::declval<Tuple>()))...>::value
 #endif
 inline HAMON_CXX11_CONSTEXPR T
 make_from_tuple_impl(Tuple&& t, hamon::index_sequence<I...>)
 HAMON_NOEXCEPT_RETURN(
-	T(get<I>(hamon::forward<Tuple>(t))...))
+	T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
 
 }	// namespace tuple_detail
 
@@ -1751,8 +1748,7 @@ struct tuple_compare
 	static HAMON_CXX11_CONSTEXPR bool
 	equal(T const& t, U const& u)
 	{
-		using std::get;
-		return bool(get<I>(t) == get<I>(u)) &&
+		return bool(hamon::adl_get<I>(t) == hamon::adl_get<I>(u)) &&
 			tuple_compare<N, I + 1>::equal(t, u);
 	}
 
@@ -1760,10 +1756,9 @@ struct tuple_compare
 	static HAMON_CXX11_CONSTEXPR bool
 	less(T const& t, U const& u)
 	{
-		using std::get;
 		return
-			  bool(get<I>(t) < get<I>(u)) ||
-			(!bool(get<I>(u) < get<I>(t)) &&
+			  bool(hamon::adl_get<I>(t) < hamon::adl_get<I>(u)) ||
+			(!bool(hamon::adl_get<I>(u) < hamon::adl_get<I>(t)) &&
 			tuple_compare<N, I + 1>::less(t, u));
 	}
 
@@ -1771,8 +1766,7 @@ struct tuple_compare
 	static HAMON_CXX14_CONSTEXPR Result
 	three_way(T const& t, U const& u)
 	{
-		using std::get;
-		auto c = hamon::detail::synth3way(get<I>(t), get<I>(u));
+		auto c = hamon::detail::synth3way(hamon::adl_get<I>(t), hamon::adl_get<I>(u));
 		if (c != 0)
 		{
 			return c;

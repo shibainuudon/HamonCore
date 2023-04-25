@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
@@ -80,36 +80,35 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow>, 
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		hamon::pair<short, float> t1((short)1, 2.0f);
 		hamon::tuple<int, double> t2(t1);
-		VERIFY(get<0>(t2) == 1);
-		VERIFY(get<1>(t2) == 2);
+		VERIFY(hamon::adl_get<0>(t2) == 1);
+		VERIFY(hamon::adl_get<1>(t2) == 2);
 	}
 	{
 		hamon::pair<int, int> t1(3, 4);
 		hamon::tuple<Explicit, Explicit> t2(t1);
-		VERIFY(get<0>(t2).n == 3);
-		VERIFY(get<1>(t2).n == 4);
+		VERIFY(hamon::adl_get<0>(t2).n == 3);
+		VERIFY(hamon::adl_get<1>(t2).n == 4);
 	}
 	{
 		hamon::pair<int, int> t1(5, 6);
 		hamon::tuple<Explicit, Implicit> t2(t1);
-		VERIFY(get<0>(t2).n == 5);
-		VERIFY(get<1>(t2).n == 6);
+		VERIFY(hamon::adl_get<0>(t2).n == 5);
+		VERIFY(hamon::adl_get<1>(t2).n == 6);
 	}
 	{
 		hamon::pair<int, int> t1(7, 8);
 		hamon::tuple<Implicit, Explicit> t2 {t1};
-		VERIFY(get<0>(t2).n == 7);
-		VERIFY(get<1>(t2).n == 8);
+		VERIFY(hamon::adl_get<0>(t2).n == 7);
+		VERIFY(hamon::adl_get<1>(t2).n == 8);
 	}
 	{
 		hamon::pair<int, int> t1(9, 10);
 		hamon::tuple<Implicit, Implicit> t2 = {t1};
-		VERIFY(get<0>(t2).n == 9);
-		VERIFY(get<1>(t2).n == 10);
+		VERIFY(hamon::adl_get<0>(t2).n == 9);
+		VERIFY(hamon::adl_get<1>(t2).n == 10);
 	}
 	return true;
 }

@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -137,27 +137,25 @@ static_assert(!hamon::is_trivially_default_constructible<hamon::tuple<int, float
 
 GTEST_TEST(TupleTest, CtorDefaultTest)
 {
-	using std::get;
-
 	{
 		hamon::tuple<> t{};
 		(void)t;
 	}
 	{
 		hamon::tuple<std::string> t{};
-		EXPECT_TRUE(get<0>(t) == "");
+		EXPECT_TRUE(hamon::adl_get<0>(t) == "");
 	}
 	{
 		hamon::tuple<int, std::string, float> t{};
-		EXPECT_TRUE(get<0>(t) == 0);
-		EXPECT_TRUE(get<1>(t) == "");
-		EXPECT_TRUE(get<2>(t) == 0.0f);
+		EXPECT_TRUE(hamon::adl_get<0>(t) == 0);
+		EXPECT_TRUE(hamon::adl_get<1>(t) == "");
+		EXPECT_TRUE(hamon::adl_get<2>(t) == 0.0f);
 	}
 	{
 		hamon::tuple<Implicit, Explicit, Implicit> t{};
-		EXPECT_TRUE(get<0>(t).n == 2);
-		EXPECT_TRUE(get<1>(t).n == 1);
-		EXPECT_TRUE(get<2>(t).n == 2);
+		EXPECT_TRUE(hamon::adl_get<0>(t).n == 2);
+		EXPECT_TRUE(hamon::adl_get<1>(t).n == 1);
+		EXPECT_TRUE(hamon::adl_get<2>(t).n == 2);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<> t;
@@ -165,36 +163,36 @@ GTEST_TEST(TupleTest, CtorDefaultTest)
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int> t{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 0);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 0);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<float, int> t = {};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 0.0f);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t) == 0);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 0.0f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t) == 0);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<float, char, int> t{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t) == 0.0f);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t) == 0);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t) == 0);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 0.0f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t) == 0);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t) == 0);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Explicit, Explicit, Explicit> t;
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t).n == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t).n == 1);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Explicit, Implicit> t{};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t).n == 2);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Implicit, Implicit> t = {};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t).n == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t).n == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t).n == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t).n == 2);
 	}
 }
 

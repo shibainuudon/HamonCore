@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -255,7 +256,6 @@ void MakeEmpty(Variant& v)
 
 inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 {
-	using std::get;
 	using std::swap;
 
 	// same index
@@ -263,21 +263,21 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 		hamon::variant<int> v1(42);
 		hamon::variant<int> v2(43);
 		v1.swap(v2);
-		VERIFY(get<0>(v1) == 43);
-		VERIFY(get<0>(v2) == 42);
+		VERIFY(hamon::adl_get<0>(v1) == 43);
+		VERIFY(hamon::adl_get<0>(v2) == 42);
 		swap(v1, v2);
-		VERIFY(get<0>(v1) == 42);
-		VERIFY(get<0>(v2) == 43);
+		VERIFY(hamon::adl_get<0>(v1) == 42);
+		VERIFY(hamon::adl_get<0>(v2) == 43);
 	}
 	{
 		hamon::variant<int, float> v1(0.5f);
 		hamon::variant<int, float> v2(1.5f);
 		v1.swap(v2);
-		VERIFY(get<1>(v1) == 1.5f);
-		VERIFY(get<1>(v2) == 0.5f);
+		VERIFY(hamon::adl_get<1>(v1) == 1.5f);
+		VERIFY(hamon::adl_get<1>(v2) == 0.5f);
 		swap(v1, v2);
-		VERIFY(get<1>(v1) == 0.5f);
-		VERIFY(get<1>(v2) == 1.5f);
+		VERIFY(hamon::adl_get<1>(v1) == 0.5f);
+		VERIFY(hamon::adl_get<1>(v2) == 1.5f);
 	}
 
 	// different index
@@ -285,11 +285,11 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 		hamon::variant<int, float> v1(42);
 		hamon::variant<int, float> v2(1.5f);
 		v1.swap(v2);
-		VERIFY(get<1>(v1) == 1.5f);
-		VERIFY(get<0>(v2) == 42);
+		VERIFY(hamon::adl_get<1>(v1) == 1.5f);
+		VERIFY(hamon::adl_get<0>(v2) == 42);
 		swap(v1, v2);
-		VERIFY(get<0>(v1) == 42);
-		VERIFY(get<1>(v2) == 1.5f);
+		VERIFY(hamon::adl_get<0>(v1) == 42);
+		VERIFY(hamon::adl_get<1>(v2) == 1.5f);
 	}
 
 	return true;
@@ -304,7 +304,6 @@ GTEST_TEST(VariantTest, SwapTest)
 #endif
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-	using std::get;
 	using std::swap;
 
 	// same index
@@ -312,22 +311,22 @@ GTEST_TEST(VariantTest, SwapTest)
 		hamon::variant<ThrowOnMoveCtor, int> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<ThrowOnMoveCtor, int> v2(hamon::in_place_index_t<0>{}, 43);
 		v1.swap(v2);
-		EXPECT_EQ(43, get<0>(v1).value);
-		EXPECT_EQ(42, get<0>(v2).value);
+		EXPECT_EQ(43, hamon::adl_get<0>(v1).value);
+		EXPECT_EQ(42, hamon::adl_get<0>(v2).value);
 	}
 	{
 		hamon::variant<ThrowOnMoveAssign, int> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<ThrowOnMoveAssign, int> v2(hamon::in_place_index_t<0>{}, 43);
 		v1.swap(v2);
-		EXPECT_EQ(43, get<0>(v1).value);
-		EXPECT_EQ(42, get<0>(v2).value);
+		EXPECT_EQ(43, hamon::adl_get<0>(v1).value);
+		EXPECT_EQ(42, hamon::adl_get<0>(v2).value);
 	}
 	{
 		hamon::variant<ThrowOnSwap, int> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<ThrowOnSwap, int> v2(hamon::in_place_index_t<0>{}, 43);
 		EXPECT_THROW(v1.swap(v2), int);
-		EXPECT_EQ(42, get<0>(v1).value);
-		EXPECT_EQ(43, get<0>(v2).value);
+		EXPECT_EQ(42, hamon::adl_get<0>(v1).value);
+		EXPECT_EQ(43, hamon::adl_get<0>(v2).value);
 	}
 
 	// different index
@@ -339,43 +338,43 @@ GTEST_TEST(VariantTest, SwapTest)
 		
 		if (!v1.valueless_by_exception())
 		{
-			EXPECT_EQ(42, get<0>(v1).value);
+			EXPECT_EQ(42, hamon::adl_get<0>(v1).value);
 		}
 		if (!v2.valueless_by_exception())
 		{
-			EXPECT_EQ(43, get<1>(v2));
+			EXPECT_EQ(43, hamon::adl_get<1>(v2));
 		}
 		
 		EXPECT_THROW(v2.swap(v1), int);
 
 		if (!v1.valueless_by_exception())
 		{
-			EXPECT_EQ(42, get<0>(v1).value);
+			EXPECT_EQ(42, hamon::adl_get<0>(v1).value);
 		}
 		if (!v2.valueless_by_exception())
 		{
-			EXPECT_EQ(43, get<1>(v2));
+			EXPECT_EQ(43, hamon::adl_get<1>(v2));
 		}
 	}
 	{
 		hamon::variant<ThrowOnMoveAssign, int> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<ThrowOnMoveAssign, int> v2(hamon::in_place_index_t<1>{}, 43);
 		v1.swap(v2);
-		EXPECT_EQ(43, get<1>(v1));
-		EXPECT_EQ(42, get<0>(v2).value);
+		EXPECT_EQ(43, hamon::adl_get<1>(v1));
+		EXPECT_EQ(42, hamon::adl_get<0>(v2).value);
 		v1.swap(v2);
-		EXPECT_EQ(42, get<0>(v1).value);
-		EXPECT_EQ(43, get<1>(v2));
+		EXPECT_EQ(42, hamon::adl_get<0>(v1).value);
+		EXPECT_EQ(43, hamon::adl_get<1>(v2));
 	}
 	{
 		hamon::variant<ThrowOnSwap, int> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<ThrowOnSwap, int> v2(hamon::in_place_index_t<1>{}, 43);
 		v1.swap(v2);
-		EXPECT_EQ(43, get<1>(v1));
-		EXPECT_EQ(42, get<0>(v2).value);
+		EXPECT_EQ(43, hamon::adl_get<1>(v1));
+		EXPECT_EQ(42, hamon::adl_get<0>(v2).value);
 		v1.swap(v2);
-		EXPECT_EQ(42, get<0>(v1).value);
-		EXPECT_EQ(43, get<1>(v2));
+		EXPECT_EQ(42, hamon::adl_get<0>(v1).value);
+		EXPECT_EQ(43, hamon::adl_get<1>(v2));
 	}
 
 	// both empty

@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/move.hpp>
@@ -79,48 +79,47 @@ static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow>, 
 
 GTEST_TEST(TupleTest, CtorPairCRRefTest)
 {
-	using std::get;
 	{
 		hamon::pair<short, float> const t1((short)1, 2.0f);
 		hamon::tuple<int, double> const t2(hamon::move(t1));
-		EXPECT_EQ(1, get<0>(t2));
-		EXPECT_EQ(2, get<1>(t2));
+		EXPECT_EQ(1, hamon::adl_get<0>(t2));
+		EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
 	{
 		hamon::pair<int, int> const t1(5, 6);
 		hamon::tuple<Explicit, Implicit> const t2(hamon::move(t1));
-		EXPECT_EQ(5, get<0>(t2).n);
-		EXPECT_EQ(6, get<1>(t2).n);
+		EXPECT_EQ(5, hamon::adl_get<0>(t2).n);
+		EXPECT_EQ(6, hamon::adl_get<1>(t2).n);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<short, float> t1((short)1, 2.0f);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, double> t2(hamon::move(t1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, get<0>(t2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, get<1>(t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::adl_get<0>(t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<int, int> t1(3, 4);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Explicit, Explicit> t2(hamon::move(t1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, get<0>(t2).n);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, get<1>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, hamon::adl_get<0>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::adl_get<1>(t2).n);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<int, int> t1(5, 6);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Explicit, Implicit> t2(hamon::move(t1));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, get<0>(t2).n);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, get<1>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::adl_get<0>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(6, hamon::adl_get<1>(t2).n);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<int, int> t1(7, 8);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Explicit> t2 {hamon::move(t1)};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, get<0>(t2).n);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8, get<1>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(7, hamon::adl_get<0>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(8, hamon::adl_get<1>(t2).n);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<int, int> t1(9, 10);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<Implicit, Implicit> t2 = {hamon::move(t1)};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 9, get<0>(t2).n);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(10, get<1>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 9, hamon::adl_get<0>(t2).n);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(10, hamon::adl_get<1>(t2).n);
 	}
 }
 

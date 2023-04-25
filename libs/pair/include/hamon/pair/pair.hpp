@@ -25,6 +25,7 @@ using std::make_pair;
 
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/detail/synth3way.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -69,10 +70,6 @@ HAMON_WARNING_DISABLE_CLANG("-Wimplicit-float-conversion")
 HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-float-conversion")
 HAMON_WARNING_DISABLE_GCC("-Wconversion")
 HAMON_WARNING_DISABLE_GCC("-Wfloat-conversion")
-
-// TODO
-template <typename T>
-void get(T const&);
 
 // Class template pair	[pairs.pair]
 template <typename T1, typename T2>
@@ -167,8 +164,8 @@ private:
 	template <typename Pair>
 	struct ConstructibleFromPairBase
 	{
-		using V1 = decltype(get<0>(FWD(hamon::declval<Pair>())));
-		using V2 = decltype(get<1>(FWD(hamon::declval<Pair>())));
+		using V1 = decltype(hamon::adl_get<0>(FWD(hamon::declval<Pair>())));
+		using V2 = decltype(hamon::adl_get<1>(FWD(hamon::declval<Pair>())));
 	};
 
 	// [pairs.pair]/15
@@ -274,8 +271,8 @@ public:
 	explicit(!ImplicitlyConstructibleFromPair<P>::value)
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2> const& p)
@@ -288,8 +285,8 @@ public:
 	explicit(!ImplicitlyConstructibleFromPair<P>::value)
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2>&& p)
@@ -302,8 +299,8 @@ public:
 	explicit(!ImplicitlyConstructibleFromPair<P>::value)
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2> const&& p)
@@ -316,8 +313,8 @@ public:
 	explicit(!ImplicitlyConstructibleFromPair<P>::value)
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 #else
@@ -401,8 +398,8 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	template <
@@ -414,8 +411,8 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2> const& p)
@@ -428,8 +425,8 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	template <
@@ -441,8 +438,8 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2>&& p)
@@ -455,8 +452,8 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	template <
@@ -468,8 +465,8 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	// pair(pair<U1, U2> const&& p)
@@ -482,8 +479,8 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 	template <
@@ -495,8 +492,8 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((NothrowConstructibleFromPair<P>::value))
-		: first (get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(get<1>(FWD(p)))
+		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
+		, second(hamon::adl_get<1>(FWD(p)))
 	{}
 
 #endif

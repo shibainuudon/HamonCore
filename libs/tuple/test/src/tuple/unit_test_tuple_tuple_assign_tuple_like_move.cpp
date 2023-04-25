@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
@@ -68,20 +68,19 @@ static_assert(!hamon::is_nothrow_assignable<hamon::tuple<MovableInt,        Mova
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		hamon::tuple<short, float> t((short)1, 2.0f);
 
-		VERIFY(get<0>(t) == 1);
-		VERIFY(get<1>(t) == 2);
+		VERIFY(hamon::adl_get<0>(t) == 1);
+		VERIFY(hamon::adl_get<1>(t) == 2);
 
 		hamon::array<int, 2> a { 3, 4 };
 		auto&& r = (t = hamon::move(a));
 		static_assert(hamon::is_same<decltype(r), hamon::tuple<short, float>&>::value, "");
 		VERIFY(&r == &t);
 
-		VERIFY(get<0>(t) == 3);
-		VERIFY(get<1>(t) == 4);
+		VERIFY(hamon::adl_get<0>(t) == 3);
+		VERIFY(hamon::adl_get<1>(t) == 4);
 	}
 
 	return true;

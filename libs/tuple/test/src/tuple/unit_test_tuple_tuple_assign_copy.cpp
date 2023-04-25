@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -64,24 +64,23 @@ static_assert(!hamon::is_nothrow_copy_assignable<hamon::tuple<CopyAssignable,   
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		hamon::tuple<int, double> p1(1, 2);
 		hamon::tuple<int, double> const p2(3, 4);
 
-		VERIFY(get<0>(p1) == 1);
-		VERIFY(get<1>(p1) == 2);
-		VERIFY(get<0>(p2) == 3);
-		VERIFY(get<1>(p2) == 4);
+		VERIFY(hamon::adl_get<0>(p1) == 1);
+		VERIFY(hamon::adl_get<1>(p1) == 2);
+		VERIFY(hamon::adl_get<0>(p2) == 3);
+		VERIFY(hamon::adl_get<1>(p2) == 4);
 
 		auto&& r = (p1 = p2);
 		static_assert(hamon::is_same<decltype(r), hamon::tuple<int, double>&>::value, "");
 		VERIFY(&r == &p1);
 
-		VERIFY(get<0>(p1) == 3);
-		VERIFY(get<1>(p1) == 4);
-		VERIFY(get<0>(p2) == 3);
-		VERIFY(get<1>(p2) == 4);
+		VERIFY(hamon::adl_get<0>(p1) == 3);
+		VERIFY(hamon::adl_get<1>(p1) == 4);
+		VERIFY(hamon::adl_get<0>(p2) == 3);
+		VERIFY(hamon::adl_get<1>(p2) == 4);
 	}
 
 	return true;

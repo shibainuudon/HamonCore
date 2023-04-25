@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -276,15 +277,13 @@ void MakeEmpty(Variant& v)
 
 inline HAMON_CXX14_CONSTEXPR bool SameIndexConstexprTest()
 {
-	using std::get;
-
 	{
 		hamon::variant<int> v1(42);
 		hamon::variant<int> const v2(43);
 		hamon::variant<int>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 0u);
-		VERIFY(get<0>(v1) == 43);
+		VERIFY(hamon::adl_get<0>(v1) == 43);
 	}
 	{
 		hamon::variant<int, long, float> v1(13L);
@@ -292,7 +291,7 @@ inline HAMON_CXX14_CONSTEXPR bool SameIndexConstexprTest()
 		hamon::variant<int, long, float>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 1u);
-		VERIFY(get<1>(v1) == 77);
+		VERIFY(hamon::adl_get<1>(v1) == 77);
 	}
 	{
 		hamon::variant<CopyOnlyTrivial> v1(
@@ -302,7 +301,7 @@ inline HAMON_CXX14_CONSTEXPR bool SameIndexConstexprTest()
 		hamon::variant<CopyOnlyTrivial>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 0u);
-		VERIFY(get<0>(v1).value == 43);
+		VERIFY(hamon::adl_get<0>(v1).value == 43);
 	}
 	{
 		hamon::variant<int, float, CopyOnlyTrivial> v1(
@@ -312,7 +311,7 @@ inline HAMON_CXX14_CONSTEXPR bool SameIndexConstexprTest()
 		hamon::variant<int, float, CopyOnlyTrivial>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 2u);
-		VERIFY(get<2>(v1).value == 43);
+		VERIFY(hamon::adl_get<2>(v1).value == 43);
 	}
 
 	return true;
@@ -320,28 +319,26 @@ inline HAMON_CXX14_CONSTEXPR bool SameIndexConstexprTest()
 
 inline HAMON_CXX14_CONSTEXPR bool DifferentIndexConstexprTest()
 {
-	using std::get;
-
 	{
 		hamon::variant<int, long, float> v1(42);
 		VERIFY(v1.index() == 0u);
-		VERIFY(get<0>(v1) == 42);
+		VERIFY(hamon::adl_get<0>(v1) == 42);
 		hamon::variant<int, long, float> const v2(77L);
 		hamon::variant<int, long, float>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 1u);
-		VERIFY(get<1>(v1) == 77);
+		VERIFY(hamon::adl_get<1>(v1) == 77);
 	}
 	{
 		hamon::variant<int, float, CopyOnlyTrivial> v1(0.5f);
 		VERIFY(v1.index() == 1u);
-		VERIFY(get<1>(v1) == 0.5f);
+		VERIFY(hamon::adl_get<1>(v1) == 0.5f);
 		hamon::variant<int, float, CopyOnlyTrivial> const v2(
 			hamon::in_place_index_t<2>{}, 43);
 		hamon::variant<int, float, CopyOnlyTrivial>& ref = (v1 = v2);
 		VERIFY(&ref == &v1);
 		VERIFY(v1.index() == 2u);
-		VERIFY(get<2>(v1).value == 43);
+		VERIFY(hamon::adl_get<2>(v1).value == 43);
 	}
 
 	return true;
@@ -352,8 +349,6 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SameIndexConstexprTest());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(DifferentIndexConstexprTest());
 
-	using std::get;
-
 	// Same index
 	{
 		hamon::variant<CopyOnlyNonTrivial> v1(
@@ -363,7 +358,7 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 		hamon::variant<CopyOnlyNonTrivial>& ref = (v1 = v2);
 		EXPECT_TRUE(&ref == &v1);
 		EXPECT_TRUE(v1.index() == 0u);
-		EXPECT_TRUE(get<0>(v1).value == 43);
+		EXPECT_TRUE(hamon::adl_get<0>(v1).value == 43);
 	}
 	{
 		hamon::variant<int, float, CopyOnlyNonTrivial> v1(
@@ -373,20 +368,20 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 		hamon::variant<int, float, CopyOnlyNonTrivial>& ref = (v1 = v2);
 		EXPECT_TRUE(&ref == &v1);
 		EXPECT_TRUE(v1.index() == 2u);
-		EXPECT_TRUE(get<2>(v1).value == 43);
+		EXPECT_TRUE(hamon::adl_get<2>(v1).value == 43);
 	}
 
 	// Different index
 	{
 		hamon::variant<int, float, CopyOnlyNonTrivial> v1(0.5f);
 		EXPECT_TRUE(v1.index() == 1u);
-		EXPECT_TRUE(get<1>(v1) == 0.5f);
+		EXPECT_TRUE(hamon::adl_get<1>(v1) == 0.5f);
 		hamon::variant<int, float, CopyOnlyNonTrivial> const v2(
 			hamon::in_place_index_t<2>{}, 43);
 		hamon::variant<int, float, CopyOnlyNonTrivial>& ref = (v1 = v2);
 		EXPECT_TRUE(&ref == &v1);
 		EXPECT_TRUE(v1.index() == 2u);
-		EXPECT_TRUE(get<2>(v1).value == 43);
+		EXPECT_TRUE(hamon::adl_get<2>(v1).value == 43);
 	}
 
 #if !defined(HAMON_NO_EXCEPTIONS)
@@ -396,14 +391,14 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 		hamon::variant<int, ThrowOnCopy> v2(hamon::in_place_index_t<1>{}, 43);
 		EXPECT_THROW(v1 = v2, int);
 		EXPECT_EQ(v1.index(), 1u);
-		EXPECT_EQ(get<1>(v1).value, 42);
+		EXPECT_EQ(hamon::adl_get<1>(v1).value, 42);
 	}
 	{
 		hamon::variant<int, ThrowOnMove> v1(hamon::in_place_index_t<1>{}, 42);
 		hamon::variant<int, ThrowOnMove> v2(hamon::in_place_index_t<1>{}, 43);
 		EXPECT_NO_THROW(v1 = v2);
 		EXPECT_EQ(v1.index(), 1u);
-		EXPECT_EQ(get<1>(v1).value, 43);
+		EXPECT_EQ(hamon::adl_get<1>(v1).value, 43);
 	}
 
 	// Different index
@@ -412,14 +407,14 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 		hamon::variant<int, ThrowOnCopy> v2(hamon::in_place_index_t<1>{}, 43);
 		EXPECT_THROW(v1 = v2, int);
 		EXPECT_EQ(v1.index(), 0u);
-		EXPECT_EQ(get<0>(v1), 42);
+		EXPECT_EQ(hamon::adl_get<0>(v1), 42);
 	}
 	{
 		hamon::variant<int, ThrowOnCopy> v1(hamon::in_place_index_t<1>{}, 42);
 		hamon::variant<int, ThrowOnCopy> v2(hamon::in_place_index_t<0>{}, 43);
 		EXPECT_NO_THROW(v1 = v2);
 		EXPECT_EQ(v1.index(), 0u);
-		EXPECT_EQ(get<0>(v1), 43);
+		EXPECT_EQ(hamon::adl_get<0>(v1), 43);
 	}
 
 	// Empty = Empty
@@ -463,7 +458,7 @@ GTEST_TEST(VariantTest, AssignCopyTest)
 		EXPECT_TRUE(&ref == &v1);
 		EXPECT_TRUE(!v1.valueless_by_exception());
 		EXPECT_EQ(v1.index(), 0u);
-		EXPECT_EQ(get<0>(v1), 43);
+		EXPECT_EQ(hamon::adl_get<0>(v1), 43);
 	}
 #endif
 }

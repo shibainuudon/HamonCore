@@ -8,7 +8,8 @@
  *	apply(F&& f, Tuple&& t) noexcept(see below);
  */
 
-#include <hamon/tuple.hpp>
+#include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <gtest/gtest.h>
@@ -67,17 +68,16 @@ nothrow(int x) HAMON_NOEXCEPT
 
 GTEST_TEST(TupleTest, ApplyTest)
 {
-	using std::get;
 #if 0	// TODO hamon::invokeのnoexcept指定が正しくない
 	{
 		hamon::tuple<int> t {1};
-		static_assert(!noexcept(throwable(get<0>(t))), "");
+		static_assert(!noexcept(throwable(hamon::adl_get<0>(t))), "");
 		static_assert(!noexcept(hamon::apply(throwable, t)), "");
 	}
 	{
 		hamon::tuple<int> t {1};
-		static_assert(noexcept(nothrow(get<0>(t))), "");
-		static_assert(noexcept(hamon::invoke(nothrow, get<0>(t))), "");
+		static_assert(noexcept(nothrow(hamon::adl_get<0>(t))), "");
+		static_assert(noexcept(hamon::invoke(nothrow, hamon::adl_get<0>(t))), "");
 		static_assert(noexcept(hamon::apply(nothrow, t)), "");
 	}
 #endif

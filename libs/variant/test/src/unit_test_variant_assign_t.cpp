@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -166,21 +167,20 @@ struct ThrowOnAssign
 
 inline HAMON_CXX20_CONSTEXPR bool AssignTTest()
 {
-	using std::get;
 	{
 		hamon::variant<int> v(43);
 		v = 42;
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 42);
+		VERIFY(hamon::adl_get<0>(v) == 42);
 	}
 	{
 		hamon::variant<int, long> v(43L);
 		v = 42;
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 42);
+		VERIFY(hamon::adl_get<0>(v) == 42);
 		v = 43L;
 		VERIFY(v.index() == 1u);
-		VERIFY(get<1>(v) == 43);
+		VERIFY(hamon::adl_get<1>(v) == 43);
 	}
 	return true;
 }
@@ -193,15 +193,14 @@ GTEST_TEST(VariantTest, AssignTTest)
 	EXPECT_TRUE(AssignTTest());
 #endif
 
-	using std::get;
 	{
 		hamon::variant<float, std::string> v = 0.5f;
 		v = "foo";
 		EXPECT_EQ(v.index(), 1u);
-		EXPECT_EQ(get<1>(v), "foo");
+		EXPECT_EQ(hamon::adl_get<1>(v), "foo");
 		v = 2.5f;
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), 2.5f);
+		EXPECT_EQ(hamon::adl_get<0>(v), 2.5f);
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -212,7 +211,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		EXPECT_THROW(v = 42, int);
 		
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), "hoge");
+		EXPECT_EQ(hamon::adl_get<0>(v), "hoge");
 	}
 	{
 		hamon::variant<std::string, ThrowOnAssign> v(
@@ -222,7 +221,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		v = 42;
 
 		EXPECT_EQ(v.index(), 1u);
-		EXPECT_EQ(get<1>(v).value, 42);
+		EXPECT_EQ(hamon::adl_get<1>(v).value, 42);
 	}
 	{
 		hamon::variant<ThrowOnCtor, std::string> v;
@@ -231,7 +230,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		v = 42;
 
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v).value, 42);
+		EXPECT_EQ(hamon::adl_get<0>(v).value, 42);
 	}
 	{
 		hamon::variant<ThrowOnAssign, std::string> v;
@@ -240,7 +239,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		EXPECT_THROW(v = 42, int);
 
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v).value, 0);
+		EXPECT_EQ(hamon::adl_get<0>(v).value, 0);
 	}
 #endif
 }

@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
@@ -55,14 +55,13 @@ static_assert(!hamon::is_nothrow_assignable<hamon::tuple<AssignableInt,        A
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		int i = 13;
 		float f = 14;
 		hamon::tuple<int&, float&> const t(i, f);
 
-		VERIFY(get<0>(t) == 13);
-		VERIFY(get<1>(t) == 14);
+		VERIFY(hamon::adl_get<0>(t) == 13);
+		VERIFY(hamon::adl_get<1>(t) == 14);
 		VERIFY(i == 13);
 		VERIFY(f == 14);
 
@@ -72,8 +71,8 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(r), hamon::tuple<int&, float&> const&>::value, "");
 		VERIFY(&r == &t);
 
-		VERIFY(get<0>(t) == 15);
-		VERIFY(get<1>(t) == 16);
+		VERIFY(hamon::adl_get<0>(t) == 15);
+		VERIFY(hamon::adl_get<1>(t) == 16);
 		VERIFY(i == 15);
 		VERIFY(f == 16);
 	}

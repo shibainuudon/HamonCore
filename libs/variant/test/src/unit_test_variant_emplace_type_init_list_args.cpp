@@ -9,6 +9,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -43,21 +44,19 @@ struct Y
 
 inline HAMON_CXX20_CONSTEXPR bool EmplaceTypeInitListArgsTest()
 {
-	using std::get;
-
 	{
 		hamon::variant<int, X, Y> v;
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 0);
+		VERIFY(hamon::adl_get<0>(v) == 0);
 		auto& ref1 = v.emplace<X>({1,2,3});
 		VERIFY(v.index() == 1u);
-		VERIFY(get<1>(v).m_size == 3u);
-		VERIFY(&ref1 == &get<1>(v));
+		VERIFY(hamon::adl_get<1>(v).m_size == 3u);
+		VERIFY(&ref1 == &hamon::adl_get<1>(v));
 		auto& ref2 = v.emplace<Y>({1,2,3,4},42);
 		VERIFY(v.index() == 2u);
-		VERIFY(get<2>(v).m_size == 4u);
-		VERIFY(get<2>(v).m_value == 42);
-		VERIFY(&ref2 == &get<2>(v));
+		VERIFY(hamon::adl_get<2>(v).m_size == 4u);
+		VERIFY(hamon::adl_get<2>(v).m_value == 42);
+		VERIFY(&ref2 == &hamon::adl_get<2>(v));
 	}
 
 	return true;

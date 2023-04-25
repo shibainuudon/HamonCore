@@ -8,6 +8,7 @@
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -56,8 +57,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 		ForwardRange r{x};
 		ForwardUnsizedSubrange sr(r.begin(), r.end());
 		std::tuple<ForwardIter, ForwardSent> t = sr;
-		VERIFY(std::get<0>(t).m_ptr == x);
-		VERIFY(std::get<1>(t).m_it.m_ptr == x+5);
+		VERIFY(hamon::adl_get<0>(t).m_ptr == x);
+		VERIFY(hamon::adl_get<1>(t).m_it.m_ptr == x+5);
 	}
 	return true;
 }

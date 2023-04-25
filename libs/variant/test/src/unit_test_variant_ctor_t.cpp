@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
@@ -81,41 +82,40 @@ struct RValueConvertibleFrom { constexpr RValueConvertibleFrom(T&&) {} };
 
 GTEST_TEST(VariantTest, CtorTTest)
 {
-	using std::get;
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int> v(42);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), 42);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 42);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<float> v{2.5f};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), 2.5f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 2.5f);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v{43};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), 43);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 43);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v{3.5f};
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 1u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<1>(v), 3.5f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<1>(v), 3.5f);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<bool const, int> v = true;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), true);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), true);
 	}
 	{
 		hamon::variant<std::string, int const> v("foo");
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), "foo");
+		EXPECT_EQ(hamon::adl_get<0>(v), "foo");
 	}
 	{
 		hamon::variant<float, std::unique_ptr<int>> v(nullptr);
 		EXPECT_EQ(v.index(), 1u);
-		EXPECT_EQ(get<1>(v), nullptr);
+		EXPECT_EQ(hamon::adl_get<1>(v), nullptr);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<RValueConvertibleFrom<int>> v(42);

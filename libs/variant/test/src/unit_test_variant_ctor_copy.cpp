@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -130,31 +131,30 @@ void MakeEmpty(Variant& v)
 
 GTEST_TEST(VariantTest, CtorCopyTest)
 {
-	using std::get;
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int> v1(42);
 		HAMON_CXX11_CONSTEXPR hamon::variant<int> v2 = v1;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v2), 42);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v2), 42);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v1(41);
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v2 = v1;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v2), 41);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v2), 41);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v1(4.5f);
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, float> v2 = v1;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2.index(), 1u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<1>(v2), 4.5f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<1>(v2), 4.5f);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<CopyOnlyTrivial> v1(
 			hamon::in_place_index_t<0>{}, 42);
 		HAMON_CXX11_CONSTEXPR hamon::variant<CopyOnlyTrivial> v2 = v1;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v2).value, 42);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v2).value, 42);
 	}
 #if 1//defined(HAMON_USE_STD_VARIANT)
 	{
@@ -162,7 +162,7 @@ GTEST_TEST(VariantTest, CtorCopyTest)
 			hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<CopyOnlyNonTrivial> v2 = v1;
 		EXPECT_EQ(v2.index(), 0u);
-		EXPECT_EQ(get<0>(v2).value, 42);
+		EXPECT_EQ(hamon::adl_get<0>(v2).value, 42);
 	}
 #else
 	{
@@ -170,26 +170,26 @@ GTEST_TEST(VariantTest, CtorCopyTest)
 			hamon::in_place_index_t<0>{}, 42);
 		HAMON_CXX20_CONSTEXPR hamon::variant<CopyOnlyNonTrivial> v2 = v1;
 		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(v2.index(), 0u);
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(get<0>(v2).value, 42);
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v2).value, 42);
 	}
 #endif
 	{
 		hamon::variant<int, std::string, float> v1 = 13;
 		hamon::variant<int, std::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 0u);
-		EXPECT_EQ(get<0>(v2), 13);
+		EXPECT_EQ(hamon::adl_get<0>(v2), 13);
 	}
 	{
 		hamon::variant<int, std::string, float> v1 = "hello";
 		hamon::variant<int, std::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 1u);
-		EXPECT_EQ(get<1>(v2), "hello");
+		EXPECT_EQ(hamon::adl_get<1>(v2), "hello");
 	}
 	{
 		hamon::variant<int, std::string, float> v1 = 1.5f;
 		hamon::variant<int, std::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 2u);
-		EXPECT_EQ(get<2>(v2), 1.5f);
+		EXPECT_EQ(hamon::adl_get<2>(v2), 1.5f);
 	}
 
 #if !defined(HAMON_NO_EXCEPTIONS)

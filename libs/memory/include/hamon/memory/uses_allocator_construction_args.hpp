@@ -25,6 +25,7 @@ using std::uses_allocator_construction_args;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
@@ -186,8 +187,8 @@ HAMON_DECLTYPE_RETURN(
 	hamon::uses_allocator_construction_args<T>(
 		alloc,
 		hamon::piecewise_construct,
-		hamon::forward_as_tuple(get<0>(hamon::move(pr))),
-		hamon::forward_as_tuple(get<1>(hamon::move(pr)))))
+		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::move(pr))),
+		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::move(pr)))))
 
 template <typename T, typename Alloc, typename U, typename V,
 	typename = hamon::enable_if_t<
@@ -199,8 +200,8 @@ HAMON_DECLTYPE_RETURN(
 	hamon::uses_allocator_construction_args<T>(
 		alloc,
 		hamon::piecewise_construct,
-		hamon::forward_as_tuple(get<0>(hamon::move(pr))),
-		hamon::forward_as_tuple(get<1>(hamon::move(pr)))))
+		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::move(pr))),
+		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::move(pr)))))
 
 #if 0	// TODO
 template <typename T, typename Alloc, pair-like P>

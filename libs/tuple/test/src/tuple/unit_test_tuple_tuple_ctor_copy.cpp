@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -79,18 +79,17 @@ static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyab
 
 GTEST_TEST(TupleTest, CtorCopyTest)
 {
-	using std::get;
 	{
 		hamon::tuple<int, double> t1(1, 2);
 		hamon::tuple<int, double> t2(t1);
-		EXPECT_EQ(1, get<0>(t2));
-		EXPECT_EQ(2, get<1>(t2));
+		EXPECT_EQ(1, hamon::adl_get<0>(t2));
+		EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, double> t1(1, 2);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, double> t2(t1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, get<0>(t2));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, get<1>(t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::adl_get<0>(t2));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
 }
 

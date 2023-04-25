@@ -11,6 +11,7 @@
 #include <hamon/variant/variant.hpp>
 #include <hamon/variant/get.hpp>
 #include <hamon/variant/bad_variant_access.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -271,17 +272,16 @@ struct Doubling
 
 inline void RuntimeTest()
 {
-	using hamon::get;
 	{
 		hamon::variant<int, std::string> v = 2;
-		EXPECT_EQ(2, get<int>(v));
+		EXPECT_EQ(2, hamon::adl_get<int>(v));
 		hamon::visit(Doubling{}, v);
-		EXPECT_EQ(4, get<int>(v));
+		EXPECT_EQ(4, hamon::adl_get<int>(v));
 
 		v = "Hello";
-		EXPECT_EQ(std::string("Hello"), get<std::string>(v));
+		EXPECT_EQ(std::string("Hello"), hamon::adl_get<std::string>(v));
 		hamon::visit(Doubling{}, v);
-		EXPECT_EQ(std::string("HelloHello"), get<std::string>(v));
+		EXPECT_EQ(std::string("HelloHello"), hamon::adl_get<std::string>(v));
 	}
 #if defined(HAMON_HAS_CXX14_GENERIC_LAMBDAS)
 	{
@@ -386,17 +386,16 @@ struct MyVariant : public hamon::variant<int, std::string>
 
 inline void DerivedFromVariantTest()
 {
-	using hamon::get;
 	{
 		auto v = MyVariant(hamon::in_place_index_t<0>{}, 2);
-		EXPECT_EQ(2, get<int>(v));
+		EXPECT_EQ(2, hamon::adl_get<int>(v));
 		hamon::visit(Doubling{}, v);
-		EXPECT_EQ(4, get<int>(v));
+		EXPECT_EQ(4, hamon::adl_get<int>(v));
 
 		v = "Hello";
-		EXPECT_EQ(std::string("Hello"), get<std::string>(v));
+		EXPECT_EQ(std::string("Hello"), hamon::adl_get<std::string>(v));
 		hamon::visit(Doubling{}, v);
-		EXPECT_EQ(std::string("HelloHello"), get<std::string>(v));
+		EXPECT_EQ(std::string("HelloHello"), hamon::adl_get<std::string>(v));
 	}
 }
 

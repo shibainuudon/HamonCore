@@ -7,6 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
@@ -72,19 +73,18 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, Implicit, 
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		hamon::array<int, 2> a = {1, 2};
 		hamon::tuple<float, double> t(a);
-		VERIFY(1 == get<0>(t));
-		VERIFY(2 == get<1>(t));
+		VERIFY(1 == hamon::adl_get<0>(t));
+		VERIFY(2 == hamon::adl_get<1>(t));
 	}
 	{
 		hamon::array<int, 3> a = {3, 4, 5};
 		hamon::tuple<Explicit, Implicit, NoThrow> t(a);
-		VERIFY(3 == get<0>(t).n);
-		VERIFY(4 == get<1>(t).n);
-		VERIFY(5 == get<2>(t).n);
+		VERIFY(3 == hamon::adl_get<0>(t).n);
+		VERIFY(4 == hamon::adl_get<1>(t).n);
+		VERIFY(5 == hamon::adl_get<2>(t).n);
 	}
 	return true;
 }

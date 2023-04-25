@@ -7,7 +7,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -66,7 +66,6 @@ static_assert( hamon::is_nothrow_copy_assignable<hamon::tuple<NothrowCopyAssigna
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		int i1 = 10;
 		int i2 = 11;
@@ -75,19 +74,19 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		hamon::tuple<int&, double&> const p1(i1, d1);
 		hamon::tuple<int&, double&> const p2(i2, d2);
 
-		VERIFY(get<0>(p1) == i1);
-		VERIFY(get<1>(p1) == d1);
-		VERIFY(get<0>(p2) == i2);
-		VERIFY(get<1>(p2) == d2);
+		VERIFY(hamon::adl_get<0>(p1) == i1);
+		VERIFY(hamon::adl_get<1>(p1) == d1);
+		VERIFY(hamon::adl_get<0>(p2) == i2);
+		VERIFY(hamon::adl_get<1>(p2) == d2);
 
 		auto&& r = (p1 = p2);
 		static_assert(hamon::is_same<decltype(r), hamon::tuple<int&, double&> const&>::value, "");
 		VERIFY(&r == &p1);
 
-		VERIFY(get<0>(p1) == i2);
-		VERIFY(get<1>(p1) == d2);
-		VERIFY(get<0>(p2) == i1);
-		VERIFY(get<1>(p2) == d1);
+		VERIFY(hamon::adl_get<0>(p1) == i2);
+		VERIFY(hamon::adl_get<1>(p1) == d2);
+		VERIFY(hamon::adl_get<0>(p2) == i1);
+		VERIFY(hamon::adl_get<1>(p2) == d1);
 
 		VERIFY(i1 == 11);
 		VERIFY(i2 == 11);

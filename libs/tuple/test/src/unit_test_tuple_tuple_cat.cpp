@@ -7,7 +7,8 @@
  *	constexpr tuple<CTypes...> tuple_cat(Tuples&&... tpls);
  */
 
-#include <hamon/tuple.hpp>
+#include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
@@ -175,7 +176,6 @@ static_assert(hamon::is_same<
 
 GTEST_TEST(TupleTest, TupleCatTest)
 {
-	using std::get;
 	{
 		hamon::tuple<> t1;
 		auto t2 = hamon::tuple_cat(t1);
@@ -186,9 +186,9 @@ GTEST_TEST(TupleTest, TupleCatTest)
 		hamon::tuple<char, double> t2('a', 3.5);
 		auto t3 = hamon::tuple_cat(t1, t2);
 		static_assert(hamon::is_same<decltype(t3), hamon::tuple<int, char, double>>::value, "");
-		EXPECT_TRUE(get<0>(t3) == 1);
-		EXPECT_TRUE(get<1>(t3) == 'a');
-		EXPECT_TRUE(get<2>(t3) == 3.5);
+		EXPECT_TRUE(hamon::adl_get<0>(t3) == 1);
+		EXPECT_TRUE(hamon::adl_get<1>(t3) == 'a');
+		EXPECT_TRUE(hamon::adl_get<2>(t3) == 3.5);
 	}
 	{
 		hamon::array<int, 3> a {{1,2,3}};
@@ -197,14 +197,14 @@ GTEST_TEST(TupleTest, TupleCatTest)
 		auto t2 = hamon::tuple_cat(a, hamon::move(p), t);
 		static_assert(hamon::is_same<decltype(t2),
 			hamon::tuple<int, int, int, float, char, double, short, long>>::value, "");
-		EXPECT_TRUE(get<0>(t2) == 1);
-		EXPECT_TRUE(get<1>(t2) == 2);
-		EXPECT_TRUE(get<2>(t2) == 3);
-		EXPECT_TRUE(get<3>(t2) == 0.5f);
-		EXPECT_TRUE(get<4>(t2) == 'b');
-		EXPECT_TRUE(get<5>(t2) == 1.5);
-		EXPECT_TRUE(get<6>(t2) == 4);
-		EXPECT_TRUE(get<7>(t2) == 5);
+		EXPECT_TRUE(hamon::adl_get<0>(t2) == 1);
+		EXPECT_TRUE(hamon::adl_get<1>(t2) == 2);
+		EXPECT_TRUE(hamon::adl_get<2>(t2) == 3);
+		EXPECT_TRUE(hamon::adl_get<3>(t2) == 0.5f);
+		EXPECT_TRUE(hamon::adl_get<4>(t2) == 'b');
+		EXPECT_TRUE(hamon::adl_get<5>(t2) == 1.5);
+		EXPECT_TRUE(hamon::adl_get<6>(t2) == 4);
+		EXPECT_TRUE(hamon::adl_get<7>(t2) == 5);
 	}
 
 	{
@@ -217,9 +217,9 @@ GTEST_TEST(TupleTest, TupleCatTest)
 		HAMON_CXX11_CONSTEXPR hamon::tuple<char, double> t2('a', 3.5);
 		HAMON_CXX11_CONSTEXPR auto t3 = hamon::tuple_cat(t1, t2);
 		static_assert(hamon::is_same<decltype(t3), hamon::tuple<int, char, double> const>::value, "");
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t3) == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t3) == 'a');
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t3) == 3.5);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t3) == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t3) == 'a');
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t3) == 3.5);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::array<int, 3> a {{1,2,3}};
@@ -228,14 +228,14 @@ GTEST_TEST(TupleTest, TupleCatTest)
 		HAMON_CXX11_CONSTEXPR auto t2 = hamon::tuple_cat(a, hamon::move(p), t);
 		static_assert(hamon::is_same<decltype(t2),
 			hamon::tuple<int, int, int, float, char, double, short, long> const>::value, "");
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<0>(t2) == 1);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<1>(t2) == 2);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<2>(t2) == 3);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<3>(t2) == 0.5f);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<4>(t2) == 'b');
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<5>(t2) == 1.5);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<6>(t2) == 4);
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(get<7>(t2) == 5);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t2) == 1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t2) == 2);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<2>(t2) == 3);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<3>(t2) == 0.5f);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<4>(t2) == 'b');
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<5>(t2) == 1.5);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<6>(t2) == 4);
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<7>(t2) == 5);
 	}
 }
 

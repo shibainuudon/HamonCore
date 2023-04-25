@@ -5,6 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_type.hpp>
@@ -60,54 +61,53 @@ static_assert( hamon::is_nothrow_constructible<hamon::variant<int, NotNoexcept>,
 
 GTEST_TEST(VariantTest, CtorInPlaceTypeArgsTest)
 {
-	using std::get;
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int> v(
 			hamon::in_place_type_t<int>{}, 42);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), 42);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 42);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, const int, long> v(
 			hamon::in_place_type_t<int>{}, 45);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 0u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<0>(v), 45);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 45);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, const int, long> v(
 			hamon::in_place_type_t<const int>{}, 46);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 1u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<1>(v), 46);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<1>(v), 46);
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::variant<int, const int, long> v(
 			hamon::in_place_type_t<long>{}, 47);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v.index(), 2u);
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(get<2>(v), 47);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<2>(v), 47);
 	}
 	{
 		hamon::variant<std::string> v(
 			hamon::in_place_type_t<std::string>{}, 3u, 'a');
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), "aaa");
+		EXPECT_EQ(hamon::adl_get<0>(v), "aaa");
 	}
 	{
 		hamon::variant<int, char, std::string> v(
 			hamon::in_place_type_t<int>{}, 4);
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), 4);
+		EXPECT_EQ(hamon::adl_get<0>(v), 4);
 	}
 	{
 		hamon::variant<int, char, std::string> v(
 			hamon::in_place_type_t<char>{}, 'a');
 		EXPECT_EQ(v.index(), 1u);
-		EXPECT_EQ(get<1>(v), 'a');
+		EXPECT_EQ(hamon::adl_get<1>(v), 'a');
 	}
 	{
 		hamon::variant<int, char, std::string> v(
 			hamon::in_place_type_t<std::string>{}, 4u, 'b');
 		EXPECT_EQ(v.index(), 2u);
-		EXPECT_EQ(get<2>(v), "bbbb");
+		EXPECT_EQ(hamon::adl_get<2>(v), "bbbb");
 	}
 }
 

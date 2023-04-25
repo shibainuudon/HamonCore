@@ -9,6 +9,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -37,42 +38,40 @@ struct Vec2
 
 inline HAMON_CXX20_CONSTEXPR bool EmplaceTypeArgsTest()
 {
-	using std::get;
-
 	{
 		hamon::variant<int> v(42);
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 42);
+		VERIFY(hamon::adl_get<0>(v) == 42);
 		auto& ref1 = v.emplace<int>();
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 0);
-		VERIFY(&ref1 == &get<0>(v));
+		VERIFY(hamon::adl_get<0>(v) == 0);
+		VERIFY(&ref1 == &hamon::adl_get<0>(v));
 		auto& ref2 = v.emplace<int>(43);
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 43);
-		VERIFY(&ref2 == &get<0>(v));
+		VERIFY(hamon::adl_get<0>(v) == 43);
+		VERIFY(&ref2 == &hamon::adl_get<0>(v));
 	}
 	{
 		hamon::variant<int, float, long, Vec2> v;
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 0);
+		VERIFY(hamon::adl_get<0>(v) == 0);
 		auto& ref1 = v.emplace<float>(0.5f);
 		VERIFY(v.index() == 1u);
-		VERIFY(get<1>(v) == 0.5f);
-		VERIFY(&ref1 == &get<1>(v));
+		VERIFY(hamon::adl_get<1>(v) == 0.5f);
+		VERIFY(&ref1 == &hamon::adl_get<1>(v));
 		auto& ref2 = v.emplace<long>(42);
 		VERIFY(v.index() == 2u);
-		VERIFY(get<2>(v) == 42);
-		VERIFY(&ref2 == &get<2>(v));
+		VERIFY(hamon::adl_get<2>(v) == 42);
+		VERIFY(&ref2 == &hamon::adl_get<2>(v));
 		auto& ref3 = v.emplace<int>();
 		VERIFY(v.index() == 0u);
-		VERIFY(get<0>(v) == 0);
-		VERIFY(&ref3 == &get<0>(v));
+		VERIFY(hamon::adl_get<0>(v) == 0);
+		VERIFY(&ref3 == &hamon::adl_get<0>(v));
 		auto& ref4 = v.emplace<Vec2>(41.0f, 42.0f);
 		VERIFY(v.index() == 3u);
-		VERIFY(get<3>(v).x == 41);
-		VERIFY(get<3>(v).y == 42);
-		VERIFY(&ref4 == &get<3>(v));
+		VERIFY(hamon::adl_get<3>(v).x == 41);
+		VERIFY(hamon::adl_get<3>(v).y == 42);
+		VERIFY(&ref4 == &hamon::adl_get<3>(v));
 	}
 
 	return true;

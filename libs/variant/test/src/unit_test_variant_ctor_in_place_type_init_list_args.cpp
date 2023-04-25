@@ -6,6 +6,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_type.hpp>
@@ -93,37 +94,36 @@ static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, h
 
 GTEST_TEST(VariantTest, CtorInPlaceTypeInitListArgsTest)
 {
-	using std::get;
 	{
 		HAMON_CXX14_CONSTEXPR hamon::variant<int, X, Y> v(hamon::in_place_type_t<X>{}, {1,2,3});
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(v.index(), 1u);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(get<1>(v).m_size, 3u);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::adl_get<1>(v).m_size, 3u);
 	}
 	{
 		HAMON_CXX14_CONSTEXPR hamon::variant<int, X, Y> v(hamon::in_place_type_t<Y>{}, {1,2,3}, 42);
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(v.index(), 2u);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(get<2>(v).m_size, 3u);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(get<2>(v).m_value, 42);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::adl_get<2>(v).m_size, 3u);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::adl_get<2>(v).m_value, 42);
 	}
 	{
 		hamon::variant<std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'});
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), "Hello");
+		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
 		hamon::variant<std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 0u);
-		EXPECT_EQ(get<0>(v), "Hello");
+		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
 		hamon::variant<int, std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'});
 		EXPECT_EQ(v.index(), 1u);
-		EXPECT_EQ(get<1>(v), "Hello");
+		EXPECT_EQ(hamon::adl_get<1>(v), "Hello");
 	}
 	{
 		hamon::variant<int, char, std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 2u);
-		EXPECT_EQ(get<2>(v), "Hello");
+		EXPECT_EQ(hamon::adl_get<2>(v), "Hello");
 	}
 }
 

@@ -10,7 +10,7 @@
  */
 
 #include <hamon/tuple/tuple.hpp>
-#include <hamon/tuple/get.hpp>
+#include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -63,7 +63,6 @@ static_assert(!hamon::is_nothrow_swappable<hamon::tuple<Swappable,        Swappa
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	using std::swap;
 	{
 		int i1 = 10;
@@ -74,20 +73,20 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		hamon::tuple<int&, float&> const t2(i2, f2);
 
 		t1.swap(t2);
-		VERIFY(get<0>(t1) == i1);
-		VERIFY(get<1>(t1) == f1);
-		VERIFY(get<0>(t2) == i2);
-		VERIFY(get<1>(t2) == f2);
+		VERIFY(hamon::adl_get<0>(t1) == i1);
+		VERIFY(hamon::adl_get<1>(t1) == f1);
+		VERIFY(hamon::adl_get<0>(t2) == i2);
+		VERIFY(hamon::adl_get<1>(t2) == f2);
 		VERIFY(i1 == 11);
 		VERIFY(i2 == 10);
 		VERIFY(f1 == 13);
 		VERIFY(f2 == 12);
 
 		swap(t1, t2);
-		VERIFY(get<0>(t1) == i1);
-		VERIFY(get<1>(t1) == f1);
-		VERIFY(get<0>(t2) == i2);
-		VERIFY(get<1>(t2) == f2);
+		VERIFY(hamon::adl_get<0>(t1) == i1);
+		VERIFY(hamon::adl_get<1>(t1) == f1);
+		VERIFY(hamon::adl_get<0>(t2) == i2);
+		VERIFY(hamon::adl_get<1>(t2) == f2);
 		VERIFY(i1 == 10);
 		VERIFY(i2 == 11);
 		VERIFY(f1 == 12);

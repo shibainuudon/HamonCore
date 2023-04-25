@@ -22,7 +22,6 @@ namespace tie_test
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::get;
 	{
 		int i {};
 		float f {};
