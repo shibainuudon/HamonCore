@@ -7,7 +7,7 @@
  *	constexpr T make_from_tuple(Tuple&& t);
  */
 
-#include <hamon/tuple.hpp>
+#include <hamon/tuple/make_from_tuple.hpp>
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>

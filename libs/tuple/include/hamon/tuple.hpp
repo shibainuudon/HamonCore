@@ -13,6 +13,7 @@
 #include <hamon/tuple/config.hpp>
 #include <hamon/tuple/forward_as_tuple.hpp>
 #include <hamon/tuple/get.hpp>
+#include <hamon/tuple/make_from_tuple.hpp>
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/tuple/tie.hpp>
 #include <hamon/tuple/tuple.hpp>
