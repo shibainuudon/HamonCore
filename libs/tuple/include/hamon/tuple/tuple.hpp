@@ -15,10 +15,6 @@ namespace hamon
 {
 
 using std::tuple;
-using std::make_tuple;
-using std::forward_as_tuple;
-using std::tie;
-using std::ignore;
 
 }	// namespace hamon
 
@@ -1345,50 +1341,6 @@ tuple(std::allocator_arg_t, Alloc, tuple<UTypes...>) -> tuple<UTypes...>;
 #endif
 
 #endif
-
-// Tuple creation functions	[tuple.creation]
-
-template <typename... TTypes>
-inline HAMON_CXX11_CONSTEXPR tuple<hamon::unwrap_ref_decay_t<TTypes>...>
-make_tuple(TTypes&&... t)
-{
-	// [tuple.creation]/1
-	return tuple<hamon::unwrap_ref_decay_t<TTypes>...>(hamon::forward<TTypes>(t)...);
-}
-
-template <typename... TTypes>
-inline HAMON_CXX11_CONSTEXPR tuple<TTypes&&...>
-forward_as_tuple(TTypes&&... t) HAMON_NOEXCEPT
-{
-	// [tuple.creation]/4
-	return tuple<TTypes&&...>(hamon::forward<TTypes>(t)...);
-}
-
-template <typename... TTypes>
-inline HAMON_CXX11_CONSTEXPR tuple<TTypes&...>
-tie(TTypes&... t) HAMON_NOEXCEPT
-{
-	// [tuple.creation]/5
-	return tuple<TTypes&...>(t...);
-}
-
-namespace tuple_detail
-{
-
-struct ignore_t
-{
-	template <typename T>
-	HAMON_CXX11_CONSTEXPR ignore_t const&
-	operator=(T const&) const HAMON_NOEXCEPT
-	{
-		return *this;
-	}
-};
-
-}	// namespace tuple_detail
-
-HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
-tuple_detail::ignore_t ignore{};
 
 namespace tuple_detail
 {

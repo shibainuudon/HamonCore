@@ -8,6 +8,7 @@
  */
 
 #include <hamon/tuple.hpp>
+#include <hamon/tuple/make_tuple.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <gtest/gtest.h>

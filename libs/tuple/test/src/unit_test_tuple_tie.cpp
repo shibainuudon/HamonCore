@@ -7,7 +7,8 @@
  *	constexpr tuple<TTypes&...> tie(TTypes&... t) noexcept;
  */
 
-#include <hamon/tuple.hpp>
+#include <hamon/tuple/tie.hpp>
+#include <hamon/tuple/make_tuple.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
