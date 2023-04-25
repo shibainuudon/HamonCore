@@ -1365,99 +1365,12 @@ struct tuple_element<I, hamon::tuple<Types...>>
 
 }	// namespace std
 
+#include <hamon/tuple/detail/access.hpp>
+#include <hamon/tuple/detail/exactly_once.hpp>
+#include <hamon/tuple/detail/find_index.hpp>
+
 namespace hamon
 {
-
-namespace tuple_detail
-{
-
-struct access
-{
-	template <hamon::size_t I, typename... Types>
-	static HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>>&
-	get(tuple<Types...>& t) HAMON_NOEXCEPT
-	{
-		using type = tuple_element_t<I, tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type>&>(t.m_impl).get();
-	}
-
-	template <hamon::size_t I, typename... Types>
-	static HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>>&&
-	get(tuple<Types...>&& t) HAMON_NOEXCEPT
-	{
-		using type = tuple_element_t<I, tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type>&&>(t.m_impl).get();
-	}
-
-	template <hamon::size_t I, typename... Types>
-	static HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>> const&
-	get(tuple<Types...> const& t) HAMON_NOEXCEPT
-	{
-		using type = tuple_element_t<I, tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&>(t.m_impl).get();
-	}
-
-	template <hamon::size_t I, typename... Types>
-	static HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>> const&&
-	get(tuple<Types...> const&& t) HAMON_NOEXCEPT
-	{
-		using type = tuple_element_t<I, tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&&>(t.m_impl).get();
-	}
-};
-
-template <typename T, typename... Types>
-struct exactly_once
-{
-private:
-	template <typename U, typename... UTypes>
-	struct count_same_type;
-
-	template <typename U>
-	struct count_same_type<U>
-		: public hamon::integral_constant<hamon::size_t, 0>
-	{};
-
-	template <typename U, typename Head, typename... Tail>
-	struct count_same_type<U, Head, Tail...>
-		: public hamon::integral_constant<hamon::size_t,
-			(hamon::is_same<U, Head>::value ? 1 : 0) +
-			count_same_type<U, Tail...>::value
-		>
-	{};
-
-public:
-	static const bool value = (count_same_type<T, Types...>::value == 1);
-};
-
-template <typename T, typename... Types>
-struct find_index
-{
-private:
-	template <hamon::size_t I, typename U, typename... UTypes>
-	struct find_index_impl;
-
-	template <hamon::size_t I, typename U>
-	struct find_index_impl<I, U>
-	{
-		static const hamon::size_t value = static_cast<hamon::size_t>(-1);
-	};
-
-	template <hamon::size_t I, typename U, typename Head, typename... Tail>
-	struct find_index_impl<I, U, Head, Tail...>
-	{
-		static const hamon::size_t value =
-			hamon::is_same<U, Head>::value ?
-			I :
-			find_index_impl<I+1, U, Tail...>::value;
-	};
-
-public:
-	static const hamon::size_t value =
-		find_index_impl<0, T, Types...>::value;
-};
-
-}	// namespace tuple_detail
 
 // Element access	[tuple.elem]
 template <hamon::size_t I, typename... Types>
@@ -1524,104 +1437,12 @@ get(tuple<Types...> const&& t) HAMON_NOEXCEPT
 	return hamon::get<tuple_detail::find_index<T, Types...>::value>(hamon::move(t));
 }
 
-namespace tuple_detail
+}	// namespace hamon
+
+#include <hamon/tuple/detail/tuple_compare.hpp>
+
+namespace hamon
 {
-
-template <hamon::size_t N, hamon::size_t I = 0>
-struct tuple_compare
-{
-	template <typename T, typename U>
-	static HAMON_CXX11_CONSTEXPR bool
-	equal(T const& t, U const& u)
-	{
-		return bool(hamon::adl_get<I>(t) == hamon::adl_get<I>(u)) &&
-			tuple_compare<N, I + 1>::equal(t, u);
-	}
-
-	template <typename T, typename U>
-	static HAMON_CXX11_CONSTEXPR bool
-	less(T const& t, U const& u)
-	{
-		return
-			  bool(hamon::adl_get<I>(t) < hamon::adl_get<I>(u)) ||
-			(!bool(hamon::adl_get<I>(u) < hamon::adl_get<I>(t)) &&
-			tuple_compare<N, I + 1>::less(t, u));
-	}
-
-	template <typename Result, typename T, typename U>
-	static HAMON_CXX14_CONSTEXPR Result
-	three_way(T const& t, U const& u)
-	{
-		auto c = hamon::detail::synth3way(hamon::adl_get<I>(t), hamon::adl_get<I>(u));
-		if (c != 0)
-		{
-			return c;
-		}
-		return tuple_compare<N, I + 1>::template three_way<Result>(t, u);
-	}
-};
-
-template <hamon::size_t N>
-struct tuple_compare<N, N>
-{
-	template <typename T, typename U>
-	static HAMON_CXX11_CONSTEXPR bool
-	equal(T const&, U const&)
-	{
-		return true;
-	}
-
-	template <typename T, typename U>
-	static HAMON_CXX11_CONSTEXPR bool
-	less(T const&, U const&)
-	{
-		return false;
-	}
-
-	template <typename Result, typename T, typename U>
-	static HAMON_CXX14_CONSTEXPR Result
-	three_way(T const&, U const&)
-	{
-		return hamon::strong_ordering::equal;
-	}
-};
-
-template <typename... TTypes, typename UTuple>
-inline HAMON_CXX11_CONSTEXPR bool
-tuple_eq(tuple<TTypes...> const& t, UTuple const& u)
-{
-	static_assert(sizeof...(TTypes) == std::tuple_size<UTuple>::value, "[tuple.rel]/2");
-	return tuple_detail::tuple_compare<sizeof...(TTypes)>::equal(t, u);
-}
-
-template <typename TTuple, typename UTuple>
-inline HAMON_CXX11_CONSTEXPR bool
-tuple_less(TTuple const& t, UTuple const& u)
-{
-	static_assert(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value, "");
-	return tuple_detail::tuple_compare<std::tuple_size<TTuple>::value>::less(t, u);
-}
-
-template <typename... TTypes, typename UTuple, hamon::size_t... Is,
-	typename Result = hamon::common_comparison_category_t<
-		hamon::detail::synth3way_t<TTypes, hamon::tuple_element_t<Is, UTuple>>...
-	>
->
-inline HAMON_CXX11_CONSTEXPR Result
-tuple_3way_impl(tuple<TTypes...> const& t, UTuple const& u, hamon::index_sequence<Is...>)
-{
-	return tuple_detail::tuple_compare<sizeof...(TTypes)>::template three_way<Result>(t, u);
-}
-
-template <typename... TTypes, typename UTuple>
-inline HAMON_CXX11_CONSTEXPR auto
-tuple_3way(tuple<TTypes...> const& t, UTuple const& u)
-->decltype(tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{}))
-{
-	return tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{});
-}
-
-}	// namespace tuple_detail
 
 // Relational operators	[tuple.rel]
 template <typename... TTypes, typename... UTypes>
@@ -1757,13 +1578,13 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 
 }	// namespace hamon
 
+// is_specialization_of_tuple の特殊化
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
 namespace detail {
 
-// is_specialization_of_tuple の特殊化
 template <typename... Types>
 struct is_specialization_of_tuple<hamon::tuple<Types...>>
 	: public hamon::true_type {};
@@ -1771,287 +1592,14 @@ struct is_specialization_of_tuple<hamon::tuple<Types...>>
 }	// namespace detail
 }	// namespace hamon
 
-#include <hamon/type_traits/basic_common_reference.hpp>
-#include <hamon/type_traits/is_same.hpp>
-#include <hamon/type_traits/decay.hpp>
-#include <hamon/type_traits/common_reference.hpp>
-#include <hamon/utility/make_index_sequence.hpp>
+// basic_common_reference の特殊化
+#include <hamon/tuple/detail/basic_common_reference.hpp>
 
-// basic_common_referenceの特殊化
+// common_type の特殊化
+#include <hamon/tuple/detail/common_type.hpp>
 
-namespace hamon {
-namespace detail {
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual,
-    typename Indices = hamon::make_index_sequence<std::tuple_size<TTuple>::value>,
-	typename = void>
-struct tuple_like_common_reference;
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual,
-    hamon::size_t... I>
-struct tuple_like_common_reference<TTuple, UTuple, TQual, UQual,
-	hamon::index_sequence<I...>,
-	hamon::void_t<hamon::tuple<hamon::common_reference_t<
-		TQual<hamon::tuple_element_t<I, TTuple>>,
-		UQual<hamon::tuple_element_t<I, UTuple>>
-	>...>>
->
-{
-    using type = hamon::tuple<hamon::common_reference_t<
-		TQual<hamon::tuple_element_t<I, TTuple>>,
-		UQual<hamon::tuple_element_t<I, UTuple>>
-	>...>;
-};
-
-}	// namespace detail
-}	// namespace hamon
-
-namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-{
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-// common_reference related specializations	[tuple.common.ref]
-template <
-	hamon::tuple_like TTuple,
-	hamon::tuple_like UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual>
-requires
-	(hamon::detail::is_specialization_of_tuple<TTuple>::value ||
-	 hamon::detail::is_specialization_of_tuple<UTuple>::value) &&	// [tuple.common.ref]/2.1
-	hamon::is_same_v<TTuple, hamon::decay_t<TTuple>> &&		// [tuple.common.ref]2.2
-	hamon::is_same_v<UTuple, hamon::decay_t<UTuple>> &&		// [tuple.common.ref]2.3
-	(std::tuple_size_v<TTuple> == std::tuple_size_v<UTuple>) &&	// [tuple.common.ref]2.4
-	requires { typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type; }	// [tuple.common.ref]2.5
-struct basic_common_reference<TTuple, UTuple, TQual, UQual>
-{
-	using type = typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type;
-};
-
-#else
-
-namespace detail
-{
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual,
-	typename = void,
-	typename = void
->
-struct tuple_basic_common_reference_impl
-{};
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual
->
-struct tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual,
-	hamon::enable_if_t<
-		hamon::is_same<TTuple, hamon::decay_t<TTuple>>::value &&		// [tuple.common.ref]2.2
-		hamon::is_same<UTuple, hamon::decay_t<UTuple>>::value &&		// [tuple.common.ref]2.3
-		(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value)	// [tuple.common.ref]2.4
-	>,
-	hamon::void_t<typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type>	// [tuple.common.ref]2.5
->
-{
-	using type = typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type;
-};
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual,
-	typename = void
->
-struct tuple_basic_common_reference
-{};
-
-template <
-	typename TTuple,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual
->
-struct tuple_basic_common_reference<TTuple, UTuple, TQual, UQual,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::tuple_like_t<TTuple>,
-		hamon::tuple_like_t<UTuple>
-	>::value>
->
-	: public tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual>
-{};
-
-}	// namespace detail
-
-template <
-	typename... TTypes,
-	typename UTuple,
-	template <typename> class TQual,
-	template <typename> class UQual>
-struct basic_common_reference<hamon::tuple<TTypes...>, UTuple, TQual, UQual>
-	: public detail::tuple_basic_common_reference<hamon::tuple<TTypes...>, UTuple, TQual, UQual>
-{};
-
-template <
-	typename TTuple,
-	typename... UTypes,
-	template <typename> class TQual,
-	template <typename> class UQual>
-struct basic_common_reference<TTuple, hamon::tuple<UTypes...>, TQual, UQual>
-	: public detail::tuple_basic_common_reference<TTuple, hamon::tuple<UTypes...>, TQual, UQual>
-{};
-
-template <
-	typename... TTypes,
-	typename... UTypes,
-	template <typename> class TQual,
-	template <typename> class UQual>
-struct basic_common_reference<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>, TQual, UQual>
-	: public detail::tuple_basic_common_reference<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>, TQual, UQual>
-{};
-
-#endif
-
-}	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
-
-#include <hamon/type_traits/common_type.hpp>
-#include <hamon/utility/make_index_sequence.hpp>
-
-namespace hamon
-{
-
-namespace detail
-{
-
-template <typename TTuple, typename UTuple,
-    typename Indices = hamon::make_index_sequence<std::tuple_size<TTuple>::value>,
-	typename = void>
-struct tuple_like_common_type;
-
-template <typename TTuple, typename UTuple, hamon::size_t... I>
-struct tuple_like_common_type<TTuple, UTuple,
-	hamon::index_sequence<I...>,
-	hamon::void_t<hamon::tuple<hamon::common_type_t<
-		hamon::tuple_element_t<I, TTuple>,
-		hamon::tuple_element_t<I, UTuple>
-	>...>>>
-{
-    using type = hamon::tuple<hamon::common_type_t<
-		hamon::tuple_element_t<I, TTuple>,
-		hamon::tuple_element_t<I, UTuple>
-	>...>;
-};
-
-}	// namespace detail
-
-}	// namespace hamon
-
-namespace HAMON_COMMON_TYPE_NAMESPACE
-{
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-// common_reference related specializations	[tuple.common.ref]
-template <hamon::tuple_like TTuple, hamon::tuple_like UTuple>
-requires
-	(hamon::detail::is_specialization_of_tuple<TTuple>::value ||	// [tuple.common.ref]/3.1
-	 hamon::detail::is_specialization_of_tuple<UTuple>::value) &&
-	hamon::is_same_v<TTuple, hamon::decay_t<TTuple>> &&				// [tuple.common.ref]3.2
-	hamon::is_same_v<UTuple, hamon::decay_t<UTuple>> &&				// [tuple.common.ref]3.3
-	(std::tuple_size_v<TTuple> == std::tuple_size_v<UTuple>) &&		// [tuple.common.ref]3.4
-	requires { typename hamon::detail::tuple_like_common_type<TTuple, UTuple>::type; }	// [tuple.common.ref]3.5
-struct common_type<TTuple, UTuple>
-{
-	using type = typename hamon::detail::tuple_like_common_type<TTuple, UTuple>::type;
-};
-
-#else
-
-namespace detail
-{
-
-template <
-	typename TTuple,
-	typename UTuple,
-	typename = void,
-	typename = void
->
-struct tuple_common_type_impl
-{};
-
-template <
-	typename TTuple,
-	typename UTuple
->
-struct tuple_common_type_impl<TTuple, UTuple,
-	hamon::enable_if_t<
-		hamon::is_same<TTuple, hamon::decay_t<TTuple>>::value &&			// [tuple.common.ref]3.2
-		hamon::is_same<UTuple, hamon::decay_t<UTuple>>::value &&			// [tuple.common.ref]3.3
-		(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value)	// [tuple.common.ref]3.4
-	>,
-	hamon::void_t<typename hamon::detail::tuple_like_common_type<TTuple, UTuple>::type>	// [tuple.common.ref]3.5
->
-{
-	using type = typename hamon::detail::tuple_like_common_type<TTuple, UTuple>::type;
-};
-
-template <
-	typename TTuple,
-	typename UTuple,
-	typename = void
->
-struct tuple_common_type
-{};
-
-template <
-	typename TTuple,
-	typename UTuple
->
-struct tuple_common_type<TTuple, UTuple,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::tuple_like_t<hamon::decay_t<TTuple>>,
-		hamon::tuple_like_t<hamon::decay_t<UTuple>>
-	>::value>
->
-	: public tuple_common_type_impl<hamon::decay_t<TTuple>, hamon::decay_t<UTuple>>
-{};
-
-}	// namespace detail
-
-template <typename... TTypes, typename UTuple>
-struct common_type<hamon::tuple<TTypes...>, UTuple>
-	: public detail::tuple_common_type<hamon::tuple<TTypes...>, UTuple>
-{};
-
-template <typename TTuple, typename... UTypes>
-struct common_type<TTuple, hamon::tuple<UTypes...>>
-	: public detail::tuple_common_type<TTuple, hamon::tuple<UTypes...>>
-{};
-
-template <typename... TTypes, typename... UTypes>
-struct common_type<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>>
-	: public detail::tuple_common_type<hamon::tuple<TTypes...>, hamon::tuple<UTypes...>>
-{};
-
-#endif
-
-}	// namespace HAMON_COMMON_TYPE_NAMESPACE
-
+// uses_allocator の特殊化
+#include <memory>
 
 namespace std
 {
