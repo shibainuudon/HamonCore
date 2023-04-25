@@ -7,7 +7,7 @@
  *	constexpr tuple<CTypes...> tuple_cat(Tuples&&... tpls);
  */
 
-#include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/tuple_cat.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>

@@ -15,6 +15,7 @@
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/tuple/tie.hpp>
 #include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/tuple_cat.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/tuple_filter_type.hpp>
 #include <hamon/tuple/tuple_fwd.hpp>
