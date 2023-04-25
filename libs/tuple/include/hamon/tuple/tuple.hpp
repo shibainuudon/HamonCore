@@ -1342,35 +1342,9 @@ tuple(std::allocator_arg_t, Alloc, tuple<UTypes...>) -> tuple<UTypes...>;
 
 #endif
 
-namespace tuple_detail
-{
-
-#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
-	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
-	-> decltype(__VA_ARGS__)                \
+#define HAMON_NOEXCEPT_RETURN(...)		\
+	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)	\
 	{ return __VA_ARGS__; }
-
-template <typename F, typename Tuple, hamon::size_t... I>
-HAMON_CXX11_CONSTEXPR auto
-apply_impl(F&& f, Tuple&& t, hamon::index_sequence<I...>)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	hamon::invoke(hamon::forward<F>(f), hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
-
-}	// namespace tuple_detail
-
-// Calling a function with a tuple of arguments	[tuple.apply]
-template <typename F, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
-HAMON_CXX11_CONSTEXPR auto
-apply(F&& f, Tuple&& t)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	tuple_detail::apply_impl(
-		hamon::forward<F>(f),
-		hamon::forward<Tuple>(t),
-		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
-
-#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
-
-#define HAMON_NOEXCEPT_RETURN(...) noexcept(noexcept(__VA_ARGS__)) { return __VA_ARGS__; }
 
 namespace tuple_detail
 {

@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_HPP
 
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/apply.hpp>
 #include <hamon/tuple/concepts.hpp>
 #include <hamon/tuple/config.hpp>
 #include <hamon/tuple/forward_as_tuple.hpp>

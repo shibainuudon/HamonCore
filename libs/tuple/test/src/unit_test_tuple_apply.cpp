@@ -8,8 +8,9 @@
  *	apply(F&& f, Tuple&& t) noexcept(see below);
  */
 
-#include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/apply.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <gtest/gtest.h>
