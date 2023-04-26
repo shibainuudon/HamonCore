@@ -13,9 +13,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4244)
-
 namespace hamon_tuple_test
 {
 
@@ -133,5 +130,3 @@ GTEST_TEST(TupleTest, CtorTupleCRefTest)
 }	// namespace ctor_tuple_cref_test
 
 }	// namespace hamon_tuple_test
-
-HAMON_WARNING_POP()

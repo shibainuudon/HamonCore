@@ -30,6 +30,11 @@ using std::tuple;
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/memory/detail/uses_allocator_construction_type.hpp>
+#include <hamon/memory/detail/is_uses_allocator_constructible.hpp>
+#include <hamon/memory/detail/is_implicitly_uses_allocator_constructible.hpp>
+#include <hamon/memory/detail/is_nothrow_uses_allocator_constructible.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/ranges/detail/different_from.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -63,13 +68,15 @@ using std::tuple;
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <memory>	// allocator_arg_t
 
 namespace hamon
 {
 
 namespace tuple_detail
 {
+
+struct ctor_from_elems_tag {};
+struct ctor_from_tuple_tag {};
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)
@@ -92,13 +99,37 @@ public:
 
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<T, U>::value
-		>
-	>
+			hamon::is_constructible<T, U>::value>>
 	HAMON_CXX11_CONSTEXPR
 	tuple_leaf(U&& u)
 		: m_value(hamon::forward<U>(u)) {}
 
+	template <typename Alloc, typename... Args>
+	HAMON_CXX11_CONSTEXPR
+	tuple_leaf(hamon::allocator_arg_t, Alloc const& alloc, Args&&... args)
+		: tuple_leaf(
+			hamon::detail::uses_allocator_construction_type_t<T, Alloc, Args...>{},
+			alloc,
+			hamon::forward<Args>(args)...)
+	{}
+
+private:
+	template <typename Alloc, typename... Args>
+	HAMON_CXX11_CONSTEXPR
+	tuple_leaf(hamon::detail::uses_allocator_construction_type::NoAlloc, Alloc const&, Args&&... args) noexcept
+		: m_value(hamon::forward<Args>(args)...) {}
+
+	template <typename Alloc, typename... Args>
+	HAMON_CXX11_CONSTEXPR
+	tuple_leaf(hamon::detail::uses_allocator_construction_type::FirstAlloc, Alloc const& alloc, Args&&... args) noexcept
+		: m_value(hamon::allocator_arg_t{}, alloc, hamon::forward<Args>(args)...) {}
+
+	template <typename Alloc, typename... Args>
+	HAMON_CXX11_CONSTEXPR
+	tuple_leaf(hamon::detail::uses_allocator_construction_type::LastAlloc, Alloc const& alloc, Args&&... args) noexcept
+		: m_value(hamon::forward<Args>(args)..., alloc) {}
+
+public:
 	HAMON_CXX14_CONSTEXPR T &       get() &       { return m_value; }
 	HAMON_CXX11_CONSTEXPR T const&  get() const&  { return m_value; }
 	HAMON_CXX14_CONSTEXPR T &&      get() &&      { return hamon::forward<T>(m_value); }
@@ -118,14 +149,32 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 
 	template <typename... UTypes>
 	HAMON_CXX11_CONSTEXPR
-	tuple_impl(hamon::integral_constant<int, 0>, UTypes&&... args)
+	tuple_impl(ctor_from_elems_tag, UTypes&&... args)
 		: tuple_leaf<Is, Types>(hamon::forward<UTypes>(args))...
 	{}
 
 	template <typename UTuple>
 	HAMON_CXX11_CONSTEXPR
-	tuple_impl(hamon::integral_constant<int, 1>, UTuple&& u)
+	tuple_impl(ctor_from_tuple_tag, UTuple&& u)
 		: tuple_leaf<Is, Types>(hamon::adl_get<Is>(hamon::forward<UTuple>(u)))...
+	{}
+
+	template <typename Alloc>
+	HAMON_CXX11_CONSTEXPR
+	tuple_impl(hamon::allocator_arg_t, Alloc const& a)
+		: tuple_leaf<Is, Types>(hamon::allocator_arg_t{}, a)...
+	{}
+
+	template <typename Alloc, typename... UTypes>
+	HAMON_CXX11_CONSTEXPR
+	tuple_impl(hamon::allocator_arg_t, Alloc const& a, ctor_from_elems_tag, UTypes&&... args)
+		: tuple_leaf<Is, Types>(hamon::allocator_arg_t{}, a, hamon::forward<UTypes>(args))...
+	{}
+
+	template <typename Alloc, typename UTuple>
+	HAMON_CXX11_CONSTEXPR
+	tuple_impl(hamon::allocator_arg_t, Alloc const& a, ctor_from_tuple_tag, UTuple&& u)
+		: tuple_leaf<Is, Types>(hamon::allocator_arg_t{}, a, hamon::adl_get<Is>(hamon::forward<UTuple>(u)))...
 	{}
 
 	template <typename... Args>
@@ -180,8 +229,11 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 
 HAMON_WARNING_POP()
 
-template <typename... Types>
-struct tuple_constraint
+template <typename IndexSequence, typename... Types>
+struct tuple_constraint;
+
+template <hamon::size_t... Is, typename... Types>
+struct tuple_constraint<hamon::index_sequence<Is...>, Types...>
 {
 private:
 	template <typename>
@@ -254,8 +306,8 @@ private:
 	template <typename T0, typename U0>
 	struct disambiguating_constraint<T0, U0, 2>
 		: public hamon::bool_constant<
-			!hamon::is_same<hamon::remove_cvref_t<U0>, std::allocator_arg_t>::value ||
-			 hamon::is_same<hamon::remove_cvref_t<T0>, std::allocator_arg_t>::value> {};
+			!hamon::is_same<hamon::remove_cvref_t<U0>, hamon::allocator_arg_t>::value ||
+			 hamon::is_same<hamon::remove_cvref_t<T0>, hamon::allocator_arg_t>::value> {};
 	// [tuple.cnstr]/12.2
 	template <typename T0, typename U0>
 	struct disambiguating_constraint<T0, U0, 3>
@@ -309,11 +361,8 @@ public:
 	>{};
 
 private:
-	template <bool, typename IndexSequence, typename UTuple, typename... UTypes>
-	struct UTupleCtorImpl;
-
-	template <hamon::size_t... Is, typename UTuple, typename... UTypes>
-	struct UTupleCtorImpl<true, hamon::index_sequence<Is...>, UTuple, UTypes...>
+	template <bool, typename UTuple, typename... UTypes>
+	struct UTupleCtorImpl
 	{
 		// [tuple.cnstr]/21
 		// TODO [tuple.cnstr]/23
@@ -354,8 +403,8 @@ private:
 			>::value;
 	};
 
-	template <typename IndexSequence, typename UTuple, typename... UTypes>
-	struct UTupleCtorImpl<false, IndexSequence, UTuple, UTypes...>
+	template <typename UTuple, typename... UTypes>
+	struct UTupleCtorImpl<false, UTuple, UTypes...>
 	{
 		static const bool constructible = false;
 		static const bool implicitly = false;
@@ -366,17 +415,13 @@ public:
 	template <typename UTuple, typename... UTypes>
 	struct UTupleCtor : public UTupleCtorImpl<
 		sizeof...(Types) == sizeof...(UTypes),	// [tuple.cnstr]/21.1
-		hamon::make_index_sequence<sizeof...(Types)>,
 		UTuple,
 		UTypes...
 	>{};
 
 private:
-	template <bool, typename IndexSequence, typename UTuple>
-	struct TupleLikeCtorImpl;
-
-	template <hamon::size_t... Is, typename UTuple>
-	struct TupleLikeCtorImpl<true, hamon::index_sequence<Is...>, UTuple>
+	template <bool, typename UTuple>
+	struct TupleLikeCtorImpl
 	{
 		static const bool constructible =
 			hamon::conjunction<
@@ -411,8 +456,8 @@ private:
 			>::value;
 	};
 
-	template <typename IndexSequence, typename UTuple>
-	struct TupleLikeCtorImpl<false, IndexSequence, UTuple>
+	template <typename UTuple>
+	struct TupleLikeCtorImpl<false, UTuple>
 	{
 		static const bool constructible = false;
 		static const bool implicitly = false;
@@ -425,7 +470,6 @@ public:
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/29.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/29.2
 		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/29.3
-		hamon::make_index_sequence<sizeof...(Types)>,
 		UTuple
 	>{};
 
@@ -484,11 +528,8 @@ public:
 	>{};
 
 private:
-	template <bool, typename IndexSequence, typename UTuple>
-	struct TupleLikeAssignImpl;
-
-	template <hamon::size_t... Is, typename UTuple>
-	struct TupleLikeAssignImpl<true, hamon::index_sequence<Is...>, UTuple>
+	template <bool, typename UTuple>
+	struct TupleLikeAssignImpl
 	{
 		static const bool assignable =
 			hamon::conjunction<
@@ -507,8 +548,8 @@ private:
 			>::value;
 	};
 
-	template <typename IndexSequence, typename UTuple>
-	struct TupleLikeAssignImpl<false, IndexSequence, UTuple>
+	template <typename UTuple>
+	struct TupleLikeAssignImpl<false, UTuple>
 	{
 		static const bool assignable = false;
 		static const bool nothrow = false;
@@ -520,16 +561,12 @@ public:
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/39.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/39.2
 		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/39.3
-		hamon::make_index_sequence<sizeof...(Types)>,
 		UTuple
 	>{};
 
 private:
-	template <bool, typename IndexSequence, typename UTuple>
-	struct TupleLikeAssignConstImpl;
-
-	template <hamon::size_t... Is, typename UTuple>
-	struct TupleLikeAssignConstImpl<true, hamon::index_sequence<Is...>, UTuple>
+	template <bool, typename UTuple>
+	struct TupleLikeAssignConstImpl
 	{
 		static const bool assignable =
 			hamon::conjunction<
@@ -548,8 +585,8 @@ private:
 			>::value;
 	};
 
-	template <typename IndexSequence, typename UTuple>
-	struct TupleLikeAssignConstImpl<false, IndexSequence, UTuple>
+	template <typename UTuple>
+	struct TupleLikeAssignConstImpl<false, UTuple>
 	{
 		static const bool assignable = false;
 		static const bool nothrow = false;
@@ -561,7 +598,104 @@ public:
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/42.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/42.2
 		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/42.3
-		hamon::make_index_sequence<sizeof...(Types)>,
+		UTuple
+	>{};
+
+	template <typename Alloc>
+	struct AllocDefaultCtor
+	{
+		static const bool constructible =
+			hamon::conjunction<
+				hamon::detail::is_uses_allocator_constructible<Types, Alloc>...
+			>::value;
+
+		static const bool implicitly =
+			hamon::conjunction<
+				hamon::detail::is_implicitly_uses_allocator_constructible<Types, Alloc>...
+			>::value;
+
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::detail::is_nothrow_uses_allocator_constructible<Types, Alloc>...
+			>::value;
+	};
+
+private:
+	template <bool, typename Alloc, typename... UTypes>
+	struct AllocUTypesCtorImpl
+	{
+		static const bool constructible =
+			hamon::conjunction<
+				hamon::detail::is_uses_allocator_constructible<Types, Alloc, UTypes>...
+			>::value;
+
+		static const bool implicitly =
+			hamon::conjunction<
+				hamon::detail::is_implicitly_uses_allocator_constructible<Types, Alloc, UTypes>...
+			>::value;
+
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::detail::is_nothrow_uses_allocator_constructible<Types, Alloc, UTypes>...
+			>::value;
+	};
+	
+	template <typename Alloc, typename... UTypes>
+	struct AllocUTypesCtorImpl<false, Alloc, UTypes...>
+	{
+		static const bool constructible = false;
+		static const bool implicitly = false;
+		static const bool nothrow = false;
+	};
+
+public:
+	template <typename Alloc, typename... UTypes>
+	struct AllocUTypesCtor : public AllocUTypesCtorImpl<
+		sizeof...(Types) == sizeof...(UTypes),
+		Alloc,
+		UTypes...
+	>{};
+
+private:
+	template <bool, typename Alloc, typename UTuple>
+	struct AllocUTupleCtorImpl
+	{
+		static const bool constructible =
+			hamon::conjunction<
+				hamon::detail::is_uses_allocator_constructible<
+					Types, Alloc, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+
+		static const bool implicitly =
+			hamon::conjunction<
+				hamon::detail::is_implicitly_uses_allocator_constructible<
+					Types, Alloc, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+
+		static const bool nothrow =
+			hamon::conjunction<
+				hamon::detail::is_nothrow_uses_allocator_constructible<
+					Types, Alloc, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+	};
+
+	template <typename Alloc, typename UTuple>
+	struct AllocUTupleCtorImpl<false, Alloc, UTuple>
+	{
+		static const bool constructible = false;
+		static const bool implicitly = false;
+		static const bool nothrow = false;
+	};
+
+public:
+	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+	struct AllocUTupleCtor : public AllocUTupleCtorImpl<
+		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&
+		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,
+		Alloc,
 		UTuple
 	>{};
 };
@@ -580,7 +714,10 @@ private:
 		Types...
 	>;
 
-	using constraint_type = tuple_detail::tuple_constraint<Types...>;
+	using constraint_type = tuple_detail::tuple_constraint<
+		hamon::make_index_sequence<sizeof...(Types)>,
+		Types...
+	>;
 
 	impl_type	m_impl;
 
@@ -614,6 +751,15 @@ private:
 	template <typename UTuple>
 	using TupleLikeAssignConst = typename constraint_type::template TupleLikeAssignConst<UTuple>;
 
+	template <typename Alloc>
+	using AllocDefaultCtor = typename constraint_type::template AllocDefaultCtor<Alloc>;
+
+	template <typename Alloc, typename... UTypes>
+	using AllocUTypesCtor = typename constraint_type::template AllocUTypesCtor<Alloc, UTypes...>;
+
+	template <typename Alloc, typename UTuple>
+	using AllocUTupleCtor = typename constraint_type::template AllocUTupleCtor<Alloc, UTuple>;
+
 	struct nat;
 
 public:
@@ -640,7 +786,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!ElementCtor<Dummy>::implicitly)
 	tuple(Types const&... args)
 	HAMON_NOEXCEPT_IF((ElementCtor<Dummy>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, args...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, args...)
 	{}
 
 	// tuple(UTypes&&... args)
@@ -649,7 +795,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!UTypesCtor<UTypes...>::implicitly)
 	tuple(UTypes&&... args)
 	HAMON_NOEXCEPT_IF((UTypesCtor<UTypes...>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, hamon::forward<UTypes>(args)...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
 	{}
 
 	// tuple(tuple<UTypes...>& u)
@@ -659,7 +805,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(tuple<UTypes...> const& u)
@@ -669,7 +815,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(tuple<UTypes...>&& u)
@@ -679,7 +825,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(tuple<UTypes...> const&& u)
@@ -689,7 +835,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(pair<U1, U2>& u)
@@ -699,7 +845,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(pair<U1, U2> const& u)
@@ -709,7 +855,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(pair<U1, U2>&& u)
@@ -719,7 +865,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(pair<U1, U2> const&& u)
@@ -729,76 +875,160 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	// tuple(UTuple&& u)
 	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(UTuple&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
 	{}
 
-#if 0	// TODO
 	// allocator-extended constructors
-	template <typename Alloc>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a);
 
-	template <typename Alloc>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, Types const&...);
+	// tuple(allocator_arg_t, Alloc const& a)
+	template <typename Alloc,
+		typename Constraint = AllocDefaultCtor<Alloc>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a)
+	{}
 
-	template <typename Alloc, typename... UTypes>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, UTypes&&...);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, Types const&... args);
+	template <typename Alloc,
+		typename Constraint = AllocUTypesCtor<Alloc, Types const&...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, Types const&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, args...)
+	{}
 
-	template <typename Alloc>
-	constexpr
-	tuple(std::allocator_arg_t, Alloc const& a, tuple const&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, UTypes&&... args);
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTypesCtor<Alloc, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTypes&&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
+	{}
 
-	template <typename Alloc>
-	constexpr
-	tuple(std::allocator_arg_t, Alloc const& a, tuple&&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple const& u)
+	template <typename Alloc,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
 
-	template <typename Alloc, typename... UTypes>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, tuple<UTypes...>&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple&& u)
+	template <typename Alloc,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
 
-	template <typename Alloc, typename... UTypes>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
 
-	template <typename Alloc, typename... UTypes>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, tuple<UTypes...>&&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
 
-	template <typename Alloc, typename... UTypes>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>&& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
 
-	template <typename Alloc, typename U1, typename U2>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, pair<U1, U2>&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
 
-	template <typename Alloc, typename U1, typename U2>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, pair<U1, U2> const&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
 
-	template <typename Alloc, typename U1, typename U2>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, pair<U1, U2>&&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
 
-	template <typename Alloc, typename U1, typename U2>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, pair<U1, U2> const&&);
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>&& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
 
-	template <typename Alloc, tuple-like UTuple>
-	constexpr explicit/*(see below)*/
-	tuple(std::allocator_arg_t, Alloc const& a, UTuple&&);
-#endif
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const&& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
+	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
+	{}
 
 #else
 
@@ -826,7 +1056,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(Types const&... args)
 	HAMON_NOEXCEPT_IF((ElementCtor<Dummy>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, args...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, args...)
 	{}
 
 	template <typename Dummy = void,
@@ -835,7 +1065,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(Types const&... args)
 	HAMON_NOEXCEPT_IF((ElementCtor<Dummy>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, args...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, args...)
 	{}
 
 	// tuple(UTypes&&... args)
@@ -845,7 +1075,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(UTypes&&... args)
 	HAMON_NOEXCEPT_IF((UTypesCtor<UTypes...>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, hamon::forward<UTypes>(args)...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
 	{}
 
 	template <typename... UTypes,
@@ -854,7 +1084,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(UTypes&&... args)
 	HAMON_NOEXCEPT_IF((UTypesCtor<UTypes...>::nothrow))
-		: m_impl(hamon::integral_constant<int, 0>{}, hamon::forward<UTypes>(args)...)
+		: m_impl(tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
 	{}
 
 	// tuple(tuple<UTypes...>& u)
@@ -865,7 +1095,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	template <typename... UTypes,
@@ -875,7 +1105,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(tuple<UTypes...> const& u)
@@ -886,7 +1116,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	template <typename... UTypes,
@@ -896,7 +1126,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(tuple<UTypes...>&& u)
@@ -907,7 +1137,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	template <typename... UTypes,
@@ -917,7 +1147,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(tuple<UTypes...> const&& u)
@@ -928,7 +1158,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	template <typename... UTypes,
@@ -938,7 +1168,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(pair<U1, U2>& u)
@@ -949,7 +1179,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	template <typename U1, typename U2,
@@ -959,7 +1189,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(pair<U1, U2> const& u)
@@ -970,7 +1200,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	template <typename U1, typename U2,
@@ -980,7 +1210,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, u)
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
 	// tuple(pair<U1, U2>&& u)
@@ -991,7 +1221,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	template <typename U1, typename U2,
@@ -1001,7 +1231,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	// tuple(pair<U1, U2> const&& u)
@@ -1012,7 +1242,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
 	template <typename U1, typename U2,
@@ -1022,9 +1252,10 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::move(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	// 	tuple(UTuple&& u)
 	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
@@ -1032,7 +1263,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(UTuple&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
@@ -1042,7 +1273,281 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	tuple(UTuple&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: m_impl(hamon::integral_constant<int, 1>{}, hamon::forward<UTuple>(u))
+		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
+	{}
+	
+	// allocator-extended constructors
+
+	// tuple(allocator_arg_t, Alloc const& a)
+	template <typename Alloc,
+		typename Constraint = AllocDefaultCtor<Alloc>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a)
+	{}
+
+	template <typename Alloc,
+		typename Constraint = AllocDefaultCtor<Alloc>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, Types const&... args);
+	template <typename Alloc,
+		typename Constraint = AllocUTypesCtor<Alloc, Types const&...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, Types const&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, args...)
+	{}
+
+	template <typename Alloc,
+		typename Constraint = AllocUTypesCtor<Alloc, Types const&...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, Types const&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, args...)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, UTypes&&... args);
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTypesCtor<Alloc, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTypes&&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
+	{}
+
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTypesCtor<Alloc, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTypes&&... args)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple const& u)
+	template <typename Alloc,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple&& u)
+	template <typename Alloc,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>&& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&& u)
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	template <typename Alloc, typename... UTypes,
+		typename Constraint = AllocUTupleCtor<Alloc, tuple<UTypes...> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, tuple<UTypes...> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, u)
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>&& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2>&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const&& u)
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	template <typename Alloc, typename U1, typename U2,
+		typename Constraint = AllocUTupleCtor<Alloc, pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, pair<U1, U2> const&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
+	{}
+
+	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
+	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
+	explicit HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
+	{}
+
+	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
 	{}
 
 #endif
@@ -1318,8 +1823,39 @@ class tuple<>
 public:
 	// [tuple.cnstr]/5
 	HAMON_CXX11_CONSTEXPR tuple() = default;
-};
 
+	template <typename Alloc>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const&) HAMON_NOEXCEPT
+	{}
+
+	template <typename Alloc>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const&, tuple const&) HAMON_NOEXCEPT
+	{}
+
+	template <typename Alloc>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const&, tuple&&) HAMON_NOEXCEPT
+	{}
+
+#if 0
+	template <typename Alloc, tuple-like UTuple,
+		typename = hamon::enable_if_t<
+			std::tuple_size<UTuple>::value == 0>>
+	HAMON_CXX11_CONSTEXPR
+	tuple(hamon::allocator_arg_t, Alloc const&, UTuple&&) HAMON_NOEXCEPT
+	{}
+#endif
+
+	HAMON_CXX14_CONSTEXPR void
+	swap(tuple&) HAMON_NOEXCEPT
+	{}
+
+	HAMON_CXX14_CONSTEXPR void
+	swap(tuple const&) const HAMON_NOEXCEPT
+	{}
+};
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
@@ -1329,16 +1865,14 @@ tuple(UTypes...) -> tuple<UTypes...>;
 template <typename T1, typename T2>
 tuple(pair<T1, T2>) -> tuple<T1, T2>;
 
-#if 0	// TODO
 template <typename Alloc, typename... UTypes>
-tuple(std::allocator_arg_t, Alloc, UTypes...) -> tuple<UTypes...>;
+tuple(hamon::allocator_arg_t, Alloc, UTypes...) -> tuple<UTypes...>;
 
 template <typename Alloc, typename T1, typename T2>
-tuple(std::allocator_arg_t, Alloc, pair<T1, T2>) -> tuple<T1, T2>;
+tuple(hamon::allocator_arg_t, Alloc, pair<T1, T2>) -> tuple<T1, T2>;
 
 template <typename Alloc, typename... UTypes>
-tuple(std::allocator_arg_t, Alloc, tuple<UTypes...>) -> tuple<UTypes...>;
-#endif
+tuple(hamon::allocator_arg_t, Alloc, tuple<UTypes...>) -> tuple<UTypes...>;
 
 #endif
 
