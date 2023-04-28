@@ -112,6 +112,8 @@ struct NoMove
 	HAMON_CXX11_CONSTEXPR NoMove(NoMove&&) = delete;
 };
 
+static_assert( hamon::is_constructible<hamon::tuple<>,                  hamon::allocator_arg_t, MyAlloc, hamon::tuple<>&&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<>,                  hamon::allocator_arg_t, MyAlloc, hamon::tuple<int>&&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<int>,               hamon::allocator_arg_t, MyAlloc, hamon::tuple<int>&&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<FirstAlloc>,        hamon::allocator_arg_t, MyAlloc, hamon::tuple<FirstAlloc>&&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<LastAlloc>,         hamon::allocator_arg_t, MyAlloc, hamon::tuple<LastAlloc>&&>::value, "");
@@ -133,6 +135,7 @@ static_assert(!hamon::is_constructible<
 	hamon::tuple<FirstAlloc, LastAlloc, NoMove>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<FirstAlloc, LastAlloc, NoMove>&&>::value, "");
 
+static_assert( hamon::is_nothrow_constructible<hamon::tuple<>,                  hamon::allocator_arg_t, MyAlloc, hamon::tuple<>&&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<int>,               hamon::allocator_arg_t, MyAlloc, hamon::tuple<int>&&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<FirstAlloc>,        hamon::allocator_arg_t, MyAlloc, hamon::tuple<FirstAlloc>&&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<LastAlloc>,         hamon::allocator_arg_t, MyAlloc, hamon::tuple<LastAlloc>&&>::value, "");
@@ -157,6 +160,11 @@ static_assert(!hamon::is_nothrow_constructible<
 GTEST_TEST(TupleTest, CtorAllocMoveTest)
 {
 	HAMON_CXX11_CONSTEXPR MyAlloc a{};
+	{
+		hamon::tuple<> t1{};
+		hamon::tuple<> t2(hamon::allocator_arg, a, hamon::move(t1));
+		(void)t2;
+	}
 	{
 		hamon::tuple<int> t1(42);
 		hamon::tuple<int> t2(hamon::allocator_arg, a, hamon::move(t1));
@@ -191,6 +199,11 @@ GTEST_TEST(TupleTest, CtorAllocMoveTest)
 		EXPECT_TRUE(hamon::adl_get<0>(t2).b == true);
 		EXPECT_TRUE(hamon::adl_get<1>(t2).b == true);
 		EXPECT_TRUE(hamon::adl_get<2>(t2).b == true);
+	}
+	{
+		HAMON_CXX11_CONSTEXPR hamon::tuple<> t1{};
+		HAMON_CXX11_CONSTEXPR hamon::tuple<> t2(hamon::allocator_arg, a, hamon::move(t1));
+		(void)t2;
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int> t1(42);

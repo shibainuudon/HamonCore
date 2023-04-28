@@ -191,6 +191,8 @@ struct NoCtor
 	HAMON_CXX11_CONSTEXPR NoCtor(int) = delete;
 };
 
+static_assert( hamon::is_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 0> const&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 1> const&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<int>,           hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<int, int>,      hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<int, int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&>::value, "");
@@ -204,12 +206,14 @@ static_assert(!hamon::is_constructible<hamon::tuple<NoCtor,             Implicit
 static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc, NoCtor,            ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, NoCtor         >, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 
+static_assert( hamon::is_implicitly_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 0> const&>::value, "");
 static_assert( hamon::is_implicitly_constructible<hamon::tuple<int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&>::value, "");
 static_assert( hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ExplicitFirstAlloc, ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ExplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, ExplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 
+static_assert( hamon::is_nothrow_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 0> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowFirstAlloc,  NoThrowLastAlloc,  NoThrowNoAlloc>,  hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<ExplicitFirstAlloc, NoThrowLastAlloc,  NoThrowNoAlloc>,  hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&>::value, "");
@@ -220,8 +224,13 @@ GTEST_TEST(TupleTest, CtorAllocTupleLikeCRefTest)
 {
 	HAMON_CXX11_CONSTEXPR MyAlloc a{};
 	{
+		hamon::array<int, 0> const t1{};
+		hamon::tuple<> const t2(hamon::allocator_arg, a, t1);
+		(void)t2;
+	}
+	{
 		hamon::array<int, 2> const t1{1, 2};
-		hamon::tuple<int, double>  const t2(hamon::allocator_arg, a, t1);
+		hamon::tuple<int, double> const t2(hamon::allocator_arg, a, t1);
 		EXPECT_EQ(1, hamon::adl_get<0>(t2));
 		EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
@@ -241,8 +250,13 @@ GTEST_TEST(TupleTest, CtorAllocTupleLikeCRefTest)
 		EXPECT_EQ(6, hamon::adl_get<3>(t2).n);
 	}
 	{
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 0> const t1{};
+		HAMON_CXX11_CONSTEXPR hamon::tuple<> const t2(hamon::allocator_arg, a, t1);
+		(void)t2;
+	}
+	{
 		HAMON_CXX11_CONSTEXPR hamon::array<int, 2> const t1{1, 2};
-		HAMON_CXX11_CONSTEXPR hamon::tuple<int, double>  const t2(hamon::allocator_arg, a, t1);
+		HAMON_CXX11_CONSTEXPR hamon::tuple<int, double> const t2(hamon::allocator_arg, a, t1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::adl_get<0>(t2));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}

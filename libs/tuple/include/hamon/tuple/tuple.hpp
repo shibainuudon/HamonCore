@@ -1839,14 +1839,12 @@ public:
 	tuple(hamon::allocator_arg_t, Alloc const&, tuple&&) HAMON_NOEXCEPT
 	{}
 
-#if 0
-	template <typename Alloc, tuple-like UTuple,
+	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
 		typename = hamon::enable_if_t<
-			std::tuple_size<UTuple>::value == 0>>
+			std::tuple_size<hamon::remove_cvref_t<UTuple>>::value == 0>>
 	HAMON_CXX11_CONSTEXPR
 	tuple(hamon::allocator_arg_t, Alloc const&, UTuple&&) HAMON_NOEXCEPT
 	{}
-#endif
 
 	HAMON_CXX14_CONSTEXPR void
 	swap(tuple&) HAMON_NOEXCEPT

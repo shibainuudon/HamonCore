@@ -44,6 +44,13 @@ static_assert(!hamon::is_nothrow_swappable<NonSwappable const>::value, "");
 static_assert(!hamon::is_nothrow_swappable<Swappable const>::value, "");
 static_assert( hamon::is_nothrow_swappable<NothrowSwappable const>::value, "");
 
+static_assert( hamon::is_swappable<hamon::tuple<> const>::value, "");
+static_assert(!hamon::is_swappable<hamon::tuple<int> const>::value, "");
+static_assert( hamon::is_swappable<hamon::tuple<int&> const>::value, "");
+static_assert(!hamon::is_swappable<hamon::tuple<NonMovable> const>::value, "");
+static_assert(!hamon::is_swappable<hamon::tuple<NonSwappable> const>::value, "");
+static_assert( hamon::is_swappable<hamon::tuple<Swappable> const>::value, "");
+static_assert( hamon::is_swappable<hamon::tuple<NothrowSwappable> const>::value, "");
 static_assert(!hamon::is_swappable<hamon::tuple<NonMovable,   NonMovable> const>::value, "");
 static_assert(!hamon::is_swappable<hamon::tuple<int&,         NonMovable> const>::value, "");
 static_assert(!hamon::is_swappable<hamon::tuple<NonMovable,   int&> const>::value, "");
@@ -53,6 +60,8 @@ static_assert(!hamon::is_swappable<hamon::tuple<Swappable,    NonSwappable> cons
 static_assert(!hamon::is_swappable<hamon::tuple<NonSwappable, Swappable> const>::value, "");
 static_assert( hamon::is_swappable<hamon::tuple<Swappable,    Swappable> const>::value, "");
 
+static_assert( hamon::is_nothrow_swappable<hamon::tuple<> const>::value, "");
+static_assert( hamon::is_nothrow_swappable<hamon::tuple<int&> const>::value, "");
 static_assert( hamon::is_nothrow_swappable<hamon::tuple<NothrowSwappable, NothrowSwappable> const>::value, "");
 static_assert(!hamon::is_nothrow_swappable<hamon::tuple<Swappable,        NothrowSwappable> const>::value, "");
 static_assert(!hamon::is_nothrow_swappable<hamon::tuple<NothrowSwappable, Swappable> const>::value, "");
@@ -91,6 +100,14 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(i2 == 11);
 		VERIFY(f1 == 12);
 		VERIFY(f2 == 13);
+	}
+	{
+		hamon::tuple<> const t1{};
+		hamon::tuple<> const t2{};
+
+		t1.swap(t2);
+
+		swap(t1, t2);
 	}
 	return true;
 }
