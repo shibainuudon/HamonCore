@@ -130,6 +130,7 @@
 #include <hamon/type_traits/nth.hpp>
 #include <hamon/type_traits/rank.hpp>
 #include <hamon/type_traits/reference_constructs_from_temporary.hpp>
+#include <hamon/type_traits/reference_converts_from_temporary.hpp>
 #include <hamon/type_traits/remove_all_extents.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 //#include <hamon/type_traits/remove_constref.hpp>
