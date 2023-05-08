@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::tuple&lt;&gt;">
+		<DisplayString IncludeView="noparens"></DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand/>
+	</Type>
+	<Type Name="hamon::tuple&lt;*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+			<Item Name="[5]">Value05()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value06" Expression="((hamon::tuple_detail::tuple_leaf&lt;6,$T7&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}, {Value06()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+			<Item Name="[5]">Value05()</Item>
+			<Item Name="[6]">Value06()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value06" Expression="((hamon::tuple_detail::tuple_leaf&lt;6,$T7&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value07" Expression="((hamon::tuple_detail::tuple_leaf&lt;7,$T8&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}, {Value06()}, {Value07()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+			<Item Name="[5]">Value05()</Item>
+			<Item Name="[6]">Value06()</Item>
+			<Item Name="[7]">Value07()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value06" Expression="((hamon::tuple_detail::tuple_leaf&lt;6,$T7&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value07" Expression="((hamon::tuple_detail::tuple_leaf&lt;7,$T8&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value08" Expression="((hamon::tuple_detail::tuple_leaf&lt;8,$T9&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}, {Value06()}, {Value07()}, {Value08()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+			<Item Name="[5]">Value05()</Item>
+			<Item Name="[6]">Value06()</Item>
+			<Item Name="[7]">Value07()</Item>
+			<Item Name="[8]">Value08()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value06" Expression="((hamon::tuple_detail::tuple_leaf&lt;6,$T7&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value07" Expression="((hamon::tuple_detail::tuple_leaf&lt;7,$T8&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value08" Expression="((hamon::tuple_detail::tuple_leaf&lt;8,$T9&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value09" Expression="((hamon::tuple_detail::tuple_leaf&lt;9,$T10&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}, {Value06()}, {Value07()}, {Value08()}, {Value09()}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="[0]">Value00()</Item>
+			<Item Name="[1]">Value01()</Item>
+			<Item Name="[2]">Value02()</Item>
+			<Item Name="[3]">Value03()</Item>
+			<Item Name="[4]">Value04()</Item>
+			<Item Name="[5]">Value05()</Item>
+			<Item Name="[6]">Value06()</Item>
+			<Item Name="[7]">Value07()</Item>
+			<Item Name="[8]">Value08()</Item>
+			<Item Name="[9]">Value09()</Item>
+		</Expand>
+	</Type>
+	<Type Name="hamon::tuple&lt;*,*,*,*,*,*,*,*,*,*,*&gt;">
+		<Intrinsic Name="Value00" Expression="((hamon::tuple_detail::tuple_leaf&lt;0,$T1&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value01" Expression="((hamon::tuple_detail::tuple_leaf&lt;1,$T2&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value02" Expression="((hamon::tuple_detail::tuple_leaf&lt;2,$T3&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value03" Expression="((hamon::tuple_detail::tuple_leaf&lt;3,$T4&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value04" Expression="((hamon::tuple_detail::tuple_leaf&lt;4,$T5&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value05" Expression="((hamon::tuple_detail::tuple_leaf&lt;5,$T6&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value06" Expression="((hamon::tuple_detail::tuple_leaf&lt;6,$T7&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value07" Expression="((hamon::tuple_detail::tuple_leaf&lt;7,$T8&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value08" Expression="((hamon::tuple_detail::tuple_leaf&lt;8,$T9&gt;*)&amp;m_impl)->m_value"/>
+		<Intrinsic Name="Value09" Expression="((hamon::tuple_detail::tuple_leaf&lt;9,$T10&gt;*)&amp;m_impl)->m_value"/>
+		<DisplayString IncludeView="noparens">{Value00()}, {Value01()}, {Value02()}, {Value03()}, {Value04()}, {Value05()}, {Value06()}, {Value07()}, {Value08()}, {Value09()}, ...</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<ExpandedItem>m_impl</ExpandedItem>
+		</Expand>
+	</Type>
+</AutoVisualizer>
