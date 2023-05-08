@@ -323,13 +323,12 @@ private:
 		// is true.
 		static const bool constructible =
 			hamon::conjunction<
-				hamon::bool_constant<(sizeof...(Types) >= 1)>,					// [tuple.cnstr]/13.2
-				disambiguating_constraint<										// [tuple.cnstr]/13.3
+				disambiguating_constraint<					// [tuple.cnstr]/13.3
 					hamon::nth_t<0, Types...>,
 					hamon::nth_t<0, UTypes...>,
 					sizeof...(Types)
 				>,
-				hamon::is_constructible<Types, UTypes>...						// [tuple.cnstr]/13.3
+				hamon::is_constructible<Types, UTypes>...	// [tuple.cnstr]/13.3
 			>::value;
 
 		// [tuple.cnstr]/15
@@ -356,7 +355,8 @@ private:
 public:
 	template <typename... UTypes>
 	struct UTypesCtor : public UTypesCtorImpl<
-		sizeof...(Types) == sizeof...(UTypes), // [tuple.cnstr]/13.1
+		sizeof...(Types) == sizeof...(UTypes) &&	// [tuple.cnstr]/13.1
+		(sizeof...(Types) >= 1),					// [tuple.cnstr]/13.2
 		UTypes...
 	>{};
 
@@ -879,7 +879,8 @@ public:
 	{}
 
 	// tuple(UTuple&& u)
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
@@ -1021,7 +1022,8 @@ public:
 	{}
 
 	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
-	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename Alloc, typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
@@ -1256,7 +1258,8 @@ public:
 	{}
 
 	// 	tuple(UTuple&& u)
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
@@ -1266,7 +1269,8 @@ public:
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
@@ -1530,7 +1534,8 @@ public:
 	{}
 
 	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
-	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename Alloc, typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
@@ -1540,7 +1545,8 @@ public:
 		: m_impl(hamon::allocator_arg_t{}, a, tuple_detail::ctor_from_tuple_tag{}, hamon::forward<UTuple>(u))
 	{}
 
-	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename Alloc, typename UTuple,
+		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
@@ -1862,6 +1868,10 @@ tuple(UTypes...) -> tuple<UTypes...>;
 
 template <typename T1, typename T2>
 tuple(pair<T1, T2>) -> tuple<T1, T2>;
+
+// for clang
+template <typename Alloc>
+tuple(hamon::allocator_arg_t, Alloc) -> tuple<>;
 
 template <typename Alloc, typename... UTypes>
 tuple(hamon::allocator_arg_t, Alloc, UTypes...) -> tuple<UTypes...>;
