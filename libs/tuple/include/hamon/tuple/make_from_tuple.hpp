@@ -26,6 +26,7 @@ using std::make_from_tuple;
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/reference_constructs_from_temporary.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/index_sequence.hpp>
@@ -49,16 +50,23 @@ requires hamon::is_constructible<T, decltype(hamon::adl_get<I>(hamon::declval<Tu
 #endif
 inline HAMON_CXX11_CONSTEXPR T
 make_from_tuple_impl(Tuple&& t, hamon::index_sequence<I...>)
-HAMON_NOEXCEPT_RETURN(
-	T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
+HAMON_NOEXCEPT_IF_EXPR(T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
+{
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+	// [tuple.apply]/3
+	if constexpr (std::tuple_size<hamon::remove_reference_t<Tuple>>::value == 1)
+	{
+		using E = decltype(hamon::adl_get<0>(hamon::declval<Tuple>()));
+		static_assert(!hamon::reference_constructs_from_temporary<T, E>::value);
+	}
+#endif
+
+	return T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...);
+}
 
 }	// namespace tuple_detail
 
 // Calling a function with a tuple of arguments	[tuple.make_from_tuple]
-
-// TODO [tuple.apply]/3
-// If tuple_size_v<remove_reference_t<Tuple>> is 1, then
-// reference_constructs_from_temporary_v<T, decltype(get<0>(declval<Tuple>()))> is false.
 
 // [tuple.apply]/4
 template <typename T, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>

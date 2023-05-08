@@ -96,6 +96,14 @@ GTEST_TEST(TupleTest, MakeFromTupleTest)
 		HAMON_CXX11_CONSTEXPR auto s = hamon::make_from_tuple<S2>(t);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5u, s.arity);
 	}
+#if 0
+	// ダングリング参照が発生するケース
+	// reference_constructs_from_temporary が定義されている場合はコンパイルエラーになる。
+	{
+		auto s = hamon::make_from_tuple<std::string const&>(hamon::make_tuple("Hello"));
+		(void)s;
+	}
+#endif
 }
 
 }	// namespace make_from_tuple_test
