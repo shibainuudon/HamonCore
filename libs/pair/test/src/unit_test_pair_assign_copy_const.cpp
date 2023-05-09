@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_pair_assign_copy_const.cpp
  *
- *	@brief	コピー代入のテスト
+ *	@brief	コピー代入(プロキシ参照版)のテスト
  * 
  *	constexpr const pair& operator=(const pair& p) const;
  */

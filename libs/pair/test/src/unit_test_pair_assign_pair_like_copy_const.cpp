@@ -1,11 +1,8 @@
 ﻿/**
- *	@file	unit_test_pair_assign_pair_like.cpp
+ *	@file	unit_test_pair_assign_pair_like_copy_const.cpp
  *
- *	@brief	pair-likeなオブジェクトからの代入のテスト
+ *	@brief	pair-likeなオブジェクトからのコピー代入(プロキシ参照版)のテスト
  * 
- *	template<pair-like P>
- *	constexpr pair& operator=(P&& p);
- *
  *	template<pair-like P>
  *	constexpr const pair& operator=(P&& p) const;
  */
@@ -18,14 +15,14 @@
 namespace hamon_pair_test
 {
 
-namespace assign_pair_like_test
+namespace assign_pair_like_copy_const_test
 {
 
-GTEST_TEST(PairTest, AssignPairLikeTest)
+GTEST_TEST(PairTest, AssignPairLikeCopyConstTest)
 {
 	// TODO
 }
 
-}	// namespace assign_pair_like_test
+}	// namespace assign_pair_like_copy_const_test
 
 }	// namespace hamon_pair_test

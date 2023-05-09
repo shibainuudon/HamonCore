@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_pair_ctor_pair_like.cpp
+ *	@file	unit_test_pair_ctor_pair_like_rref.cpp
  *
  *	@brief	pair-likeなオブジェクトからのコンストラクタのテスト
  * 
@@ -15,14 +15,14 @@
 namespace hamon_pair_test
 {
 
-namespace ctor_pair_test
+namespace ctor_pair_like_rref_test
 {
 
-GTEST_TEST(PairTest, CtorPairLikeTest)
+GTEST_TEST(PairTest, CtorPairLikeRRefTest)
 {
 	// TODO
 }
 
-}	// namespace ctor_pair_test
+}	// namespace ctor_pair_like_rref_test
 
 }	// namespace hamon_pair_test

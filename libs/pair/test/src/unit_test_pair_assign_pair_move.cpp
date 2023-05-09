@@ -1,7 +1,7 @@
 ﻿/**
- *	@file	unit_test_pair_assign_move_pair.cpp
+ *	@file	unit_test_pair_assign_pair_move.cpp
  *
- *	@brief	ムーブ代入のテスト
+ *	@brief	pair<U1, U2>からのムーブ代入のテスト
  * 
  *	template<class U1, class U2>
  *	constexpr pair& operator=(pair<U1, U2>&& p);
@@ -16,7 +16,7 @@
 namespace hamon_pair_test
 {
 
-namespace assign_move_pair_test
+namespace assign_pair_move_test
 {
 
 struct MoveAssignable
@@ -91,11 +91,11 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 #undef VERIFY
 
-GTEST_TEST(PairTest, AssignMovePairTest)
+GTEST_TEST(PairTest, AssignPairMoveTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 }
 
-}	// namespace assign_move_pair_test
+}	// namespace assign_pair_move_test
 
 }	// namespace hamon_pair_test

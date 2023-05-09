@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_pair_ctor_pair_const_move.cpp
+ *	@file	unit_test_pair_ctor_pair_crref.cpp
  *
  *	@brief	変換可能な他のpairオブジェクトからのコンストラクタのテスト
  * 
@@ -16,7 +16,7 @@
 namespace hamon_pair_test
 {
 
-namespace ctor_pair_const_move_test
+namespace ctor_pair_crref_test
 {
 
 struct Explicit
@@ -75,7 +75,7 @@ static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> &&>::value, "");
 
-GTEST_TEST(PairTest, CtorPairTest)
+GTEST_TEST(PairTest, CtorPairCRRefTest)
 {
 	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<short, float> p1(1, 2);
@@ -109,6 +109,6 @@ GTEST_TEST(PairTest, CtorPairTest)
 	}
 }
 
-}	// namespace ctor_pair_const_move_test
+}	// namespace ctor_pair_crref_test
 
 }	// namespace hamon_pair_test

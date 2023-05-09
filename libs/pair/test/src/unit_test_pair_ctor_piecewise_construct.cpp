@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_pair_piecewise_construct.cpp
+ *	@file	unit_test_pair_ctor_piecewise_construct.cpp
  *
  *	@brief	piecewise_construct のテスト
  * 
@@ -16,7 +16,7 @@
 namespace hamon_pair_test
 {
 
-namespace piecewise_construct_test
+namespace ctor_piecewise_construct_test
 {
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
@@ -100,11 +100,11 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 #undef VERIFY
 
-GTEST_TEST(PairTest, PiecewiseConstructTest)
+GTEST_TEST(PairTest, CtorPiecewiseConstructTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test01()));
 }
 
-}	// namespace piecewise_construct_test
+}	// namespace ctor_piecewise_construct_test
 
 }	// namespace hamon_pair_test

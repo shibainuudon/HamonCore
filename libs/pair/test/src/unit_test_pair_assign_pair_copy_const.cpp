@@ -1,7 +1,7 @@
 ﻿/**
- *	@file	unit_test_pair_assign_copy_pair_const.cpp
+ *	@file	unit_test_pair_assign_pair_copy_const.cpp
  *
- *	@brief	コピー代入のテスト
+ *	@brief	pair<U1, U2>からのコピー代入(プロキシ参照版)のテスト
  * 
  *	template<class U1, class U2>
  *	constexpr const pair& operator=(const pair<U1, U2>& p) const;
@@ -15,7 +15,7 @@
 namespace hamon_pair_test
 {
 
-namespace assign_copy_pair_const_test
+namespace assign_pair_copy_const_test
 {
 
 struct AssignableInt
@@ -80,11 +80,11 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 #undef VERIFY
 
-GTEST_TEST(PairTest, AssignCopyPairConstTest)
+GTEST_TEST(PairTest, AssignPairCopyConstTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 }
 
-}	// namespace assign_copy_pair_const_test
+}	// namespace assign_pair_copy_const_test
 
 }	// namespace hamon_pair_test

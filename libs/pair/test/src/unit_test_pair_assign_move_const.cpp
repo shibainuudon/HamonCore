@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	unit_test_pair_assign_move_const.cpp
  *
- *	@brief	ムーブ代入のテスト
+ *	@brief	ムーブ代入(プロキシ参照版)のテスト
  * 
  *	constexpr const pair& operator=(pair&& p) const;
  */

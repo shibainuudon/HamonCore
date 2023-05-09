@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_pair_ctor_pair_move.cpp
+ *	@file	unit_test_pair_ctor_pair_rref.cpp
  *
  *	@brief	変換可能な他のpairオブジェクトからのコンストラクタのテスト
  * 
@@ -16,7 +16,7 @@
 namespace hamon_pair_test
 {
 
-namespace ctor_pair_move_test
+namespace ctor_pair_rref_test
 {
 
 struct Explicit
@@ -114,11 +114,11 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 #undef VERIFY
 
-GTEST_TEST(PairTest, CtorPairMoveTest)
+GTEST_TEST(PairTest, CtorPairRRefTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 }
 
-}	// namespace ctor_pair_move_test
+}	// namespace ctor_pair_rref_test
 
 }	// namespace hamon_pair_test
