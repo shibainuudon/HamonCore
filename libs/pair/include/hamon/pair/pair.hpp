@@ -33,6 +33,7 @@ using std::make_pair;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
@@ -50,6 +51,7 @@ using std::make_pair;
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/reference_constructs_from_temporary.hpp>
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -144,18 +146,24 @@ private:
 	template <typename U1, typename U2>
 	struct UTypesCtor
 	{
-		// TODO
 		// [pairs.pair]/13
-		// This constructor is defined as deleted if
-		// reference_constructs_from_temporary_v<first_type, U1&&> is true or
-		// reference_constructs_from_temporary_v<second_type, U2&&> is true.
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+		static const bool reference_from_temporary =
+			hamon::disjunction<
+				hamon::reference_constructs_from_temporary<T1, U1&&>,
+				hamon::reference_constructs_from_temporary<T2, U2&&>
+			>::value;
+#else
+		static const bool reference_from_temporary = false;
+#endif
 
 		// [pairs.pair]/11
 		static const bool constructible =
 			hamon::conjunction<
 				hamon::is_constructible<T1, U1>,		// [pairs.pair]/11.1
 				hamon::is_constructible<T2, U2>			// [pairs.pair]/11.2
-			>::value;
+			>::value
+			&& !reference_from_temporary;				// [pairs.pair]/13
 
 		// [pairs.pair]/13
 		static const bool implicitly =
@@ -178,19 +186,24 @@ private:
 		using V1 = decltype(hamon::adl_get<0>(hamon::declval<UPair>()));
 		using V2 = decltype(hamon::adl_get<1>(hamon::declval<UPair>()));
 
+		// [pairs.pair]/17
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+		static const bool reference_from_temporary =
+			hamon::disjunction<
+				hamon::reference_constructs_from_temporary<T1, V1>,
+				hamon::reference_constructs_from_temporary<T2, V2>
+			>::value;
+#else
+		static const bool reference_from_temporary = false;
+#endif
+
 		// [pairs.pair]/15
 		static const bool constructible =
 			hamon::conjunction<
 				hamon::is_constructible<T1, V1>,	// [pairs.pair]/15.2
 				hamon::is_constructible<T2, V2>		// [pairs.pair]/15.3
-			>::value;
-
-		// TODO
-		// [pairs.pair]/17
-		// The constructor is defined as deleted if
-		// reference_constructs_from_temporary_v<first_type, decltype(get<0>(FWD(p)))> ||
-		// reference_constructs_from_temporary_v<second_type, decltype(get<1>(FWD(p)))>
-		// is true.
+			>::value
+			&& !reference_from_temporary;			// [pairs.pair]/17
 
 		// [pairs.pair]/17
 		static const bool implicitly =
