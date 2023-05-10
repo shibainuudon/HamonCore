@@ -26,6 +26,7 @@ using std::make_pair;
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/detail/synth3way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/ranges/detail/different_from.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
@@ -705,13 +706,55 @@ public:
 		return *this;
 	}
 
-	// TODO
-	//template <pair-like P>
-	//HAMON_CXX14_CONSTEXPR pair& operator=(P&& p);
+	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+		typename U1 = decltype(hamon::adl_get<0>(hamon::declval<P>())),
+		typename U2 = decltype(hamon::adl_get<1>(hamon::declval<P>())),
+		hamon::enable_if_t<hamon::conjunction<
+			hamon::ranges::detail::different_from_t<P, pair>,	// [pairs.pair]/42.1
+			hamon::negation<									// [pairs.pair]/42.2
+				hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<P>>>,
+			hamon::is_assignable<T1&, U1>,						// [pairs.pair]/42.3
+			hamon::is_assignable<T2&, U2>						// [pairs.pair]/42.4
+		>::value>* = nullptr
+	>
+	HAMON_CXX14_CONSTEXPR pair&
+	operator=(P&& p)
+	HAMON_NOEXCEPT_IF((hamon::conjunction<
+		hamon::is_nothrow_assignable<T1&, U1>,
+		hamon::is_nothrow_assignable<T2&, U2>
+	>::value))
+	{
+		// [pairs.pair]/43
+		first  = hamon::adl_get<0>(hamon::forward<P>(p));
+		second = hamon::adl_get<1>(hamon::forward<P>(p));
+		// [pairs.pair]/44
+		return *this;
+	}
 
-	// TODO
-	//template <pair-like P>
-	//HAMON_CXX14_CONSTEXPR pair const& operator=(P&& p) const;
+	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+		typename U1 = decltype(hamon::adl_get<0>(hamon::declval<P>())),
+		typename U2 = decltype(hamon::adl_get<1>(hamon::declval<P>())),
+		hamon::enable_if_t<hamon::conjunction<
+			hamon::ranges::detail::different_from_t<P, pair>,	// [pairs.pair]/45.1
+			hamon::negation<									// [pairs.pair]/45.2
+				hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<P>>>,
+			hamon::is_assignable<T1 const&, U1>,				// [pairs.pair]/45.3
+			hamon::is_assignable<T2 const&, U2>					// [pairs.pair]/45.4
+		>::value>* = nullptr
+	>
+	HAMON_CXX14_CONSTEXPR pair const&
+	operator=(P&& p) const
+	HAMON_NOEXCEPT_IF((hamon::conjunction<
+		hamon::is_nothrow_assignable<T1 const&, U1>,
+		hamon::is_nothrow_assignable<T2 const&, U2>
+	>::value))
+	{
+		// [pairs.pair]/46
+		first  = hamon::adl_get<0>(hamon::forward<P>(p));
+		second = hamon::adl_get<1>(hamon::forward<P>(p));
+		// [pairs.pair]/47
+		return *this;
+	}
 
 	template <
 		typename Dummy = void,
