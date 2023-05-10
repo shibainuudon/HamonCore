@@ -78,6 +78,24 @@ static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  
 GTEST_TEST(PairTest, CtorPairCRRefTest)
 {
 	{
+		hamon::pair<short, float> p1(1, 2);
+		hamon::pair<int, double>  p2(hamon::move(p1));
+		EXPECT_EQ(1, p2.first);
+		EXPECT_EQ(2, p2.second);
+	}
+	{
+		hamon::pair<int, int>           p1(3, 4);
+		hamon::pair<Explicit, Explicit> p2(hamon::move(p1));
+		EXPECT_EQ(3, p2.first.n);
+		EXPECT_EQ(4, p2.second.n);
+	}
+	{
+		hamon::pair<int, int>           p1(9, 10);
+		hamon::pair<Implicit, Implicit> p2 = {hamon::move(p1)};
+		EXPECT_EQ( 9, p2.first.n);
+		EXPECT_EQ(10, p2.second.n);
+	}
+	{
 		HAMON_CXX11_CONSTEXPR hamon::pair<short, float> p1(1, 2);
 		HAMON_CXX11_CONSTEXPR hamon::pair<int, double>  p2(hamon::move(p1));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, p2.first);
