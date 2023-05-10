@@ -27,6 +27,7 @@ using std::make_pair;
 #include <hamon/compare/detail/synth3way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -51,8 +52,10 @@ using std::make_pair;
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/index_sequence.hpp>
+#include <hamon/utility/index_sequence_for.hpp>
 #include <hamon/config.hpp>
-#include <utility>
+#include <utility>	// std::swap
 
 namespace hamon
 {
@@ -168,14 +171,11 @@ private:
 			>::value;
 	};
 
-	// [pairs.pair]/14
-	#define FWD(u) static_cast<decltype(u)>(u)
-
 	template <typename UPair>
 	struct UPairCtor
 	{
-		using V1 = decltype(hamon::adl_get<0>(FWD(hamon::declval<UPair>())));
-		using V2 = decltype(hamon::adl_get<1>(FWD(hamon::declval<UPair>())));
+		using V1 = decltype(hamon::adl_get<0>(hamon::declval<UPair>()));
+		using V2 = decltype(hamon::adl_get<1>(hamon::declval<UPair>()));
 
 		// [pairs.pair]/15
 		static const bool constructible =
@@ -205,7 +205,7 @@ private:
 				hamon::is_nothrow_constructible<T2, V2>
 			>::value;
 	};
-
+	
 	template <typename PairLike>
 	struct PairLikeCtor
 	{
@@ -225,6 +225,8 @@ private:
 	};
 
 	struct nat;
+
+	struct ctor_from_pair_tag{};
 
 public:
 	using first_type  = T1;
@@ -285,8 +287,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	// pair(pair<U1, U2> const& p)
@@ -296,8 +297,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	// pair(pair<U1, U2>&& p)
@@ -307,8 +307,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	// pair(pair<U1, U2> const&& p)
@@ -318,8 +317,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	// pair(PairLike&& p)
@@ -329,8 +327,7 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(P&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::forward<P>(p))
 	{}
 
 #else
@@ -408,8 +405,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	template <typename U1, typename U2,
@@ -419,8 +415,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	// pair(pair<U1, U2> const& p)
@@ -431,8 +426,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	template <typename U1, typename U2,
@@ -442,8 +436,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, p)
 	{}
 
 	// pair(pair<U1, U2>&& p)
@@ -454,8 +447,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	template <typename U1, typename U2,
@@ -465,8 +457,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	// pair(pair<U1, U2> const&& p)
@@ -477,8 +468,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	template <typename U1, typename U2,
@@ -488,8 +478,7 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))			// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
 	// pair(PairLike&& p)
@@ -500,8 +489,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(P&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::forward<P>(p))
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
@@ -511,17 +499,40 @@ public:
 	HAMON_CXX11_CONSTEXPR
 	pair(P&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
-		: first (hamon::adl_get<0>(FWD(p)))	// [pairs.pair]/16
-		, second(hamon::adl_get<1>(FWD(p)))
+		: pair(ctor_from_pair_tag{}, hamon::forward<P>(p))
 	{}
 #endif
 
-	#undef FWD
+	// pair(piecewise_construct_t, hamon::tuple<Args1...> first_args, hamon::tuple<Args2...> second_args)
+	template <typename... Args1, typename... Args2>
+	HAMON_CXX11_CONSTEXPR
+	pair(hamon::piecewise_construct_t, hamon::tuple<Args1...> first_args, hamon::tuple<Args2...> second_args)
+		: pair(first_args, second_args,
+			hamon::index_sequence_for<Args1...>{},
+			hamon::index_sequence_for<Args2...>{})
+	{}
 
-	// TODO
-	//template <typename... Args1, typename... Args2>
-	//HAMON_CXX11_CONSTEXPR pair(piecewise_construct_t, tuple<Args1...> first_args, tuple<Args2...> second_args);
+private:
+	// [pairs.pair]/16
+	template <typename Pair>
+	HAMON_CXX11_CONSTEXPR
+	pair(ctor_from_pair_tag, Pair&& p)
+		: first (hamon::adl_get<0>(hamon::forward<Pair>(p)))
+		, second(hamon::adl_get<1>(hamon::forward<Pair>(p)))
+	{}
 
+	// [pairs.pair]/19
+	template <typename... Args1, typename... Args2, hamon::size_t... I, hamon::size_t... J>
+	HAMON_CXX11_CONSTEXPR pair(
+		hamon::tuple<Args1...>& t1,
+		hamon::tuple<Args2...>& t2,
+		hamon::index_sequence<I...>,
+		hamon::index_sequence<J...>)
+		: first (hamon::forward<Args1>(hamon::adl_get<I>(t1))...)
+		, second(hamon::forward<Args2>(hamon::adl_get<J>(t2))...)
+	{}
+
+public:
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(
 		hamon::conditional_t<

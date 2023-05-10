@@ -10,6 +10,7 @@
  */
 
 #include <hamon/pair.hpp>
+#include <hamon/tuple.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -72,7 +73,6 @@ private:
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
-#if 0
 	hamon::pair<type_one, type_zero> pp0(hamon::piecewise_construct,
 		hamon::forward_as_tuple(-3),
 		hamon::forward_as_tuple());
@@ -93,7 +93,6 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(pp2.first.get2() == 1);
 	VERIFY(pp2.second.get1() == -1);
 	VERIFY(pp2.second.get2() == -3);
-#endif
 
 	return true;
 }
