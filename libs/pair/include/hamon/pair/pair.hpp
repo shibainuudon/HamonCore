@@ -220,7 +220,7 @@ private:
 			>::value;
 	};
 	
-	template <typename PairLike>
+	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, PairLike)>
 	struct PairLikeCtor
 	{
 		// [pairs.pair]/15
@@ -1137,6 +1137,12 @@ struct is_specialization_of_pair<hamon::pair<T1, T2>>
 
 }	// namespace detail
 }	// namespace hamon
+
+// basic_common_reference の特殊化
+#include <hamon/pair/detail/basic_common_reference.hpp>
+
+// common_type の特殊化
+#include <hamon/pair/detail/common_type.hpp>
 
 #endif
 
