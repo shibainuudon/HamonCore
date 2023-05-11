@@ -8,6 +8,8 @@
 #define HAMON_PAIR_PAIR_HPP
 
 #include <hamon/pair/config.hpp>
+#include <hamon/pair/piecewise_construct.hpp>
+#include <hamon/pair/pair_fwd.hpp>
 
 #if defined(HAMON_USE_STD_PAIR)
 
@@ -17,42 +19,24 @@ namespace hamon
 {
 
 using std::pair;
-using std::make_pair;
 
 }	// namespace hamon
 
 #else
 
+#include <hamon/pair/detail/pair_constraint.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/detail/synth3way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/ranges/detail/different_from.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_assignable.hpp>
-#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
-#include <hamon/type_traits/is_copy_constructible.hpp>
-#include <hamon/type_traits/is_default_constructible.hpp>
-#include <hamon/type_traits/is_implicitly_default_constructible.hpp>
-#include <hamon/type_traits/is_move_assignable.hpp>
-#include <hamon/type_traits/is_nothrow_assignable.hpp>
-#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_assignable.hpp>
-#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
-#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
-#include <hamon/type_traits/is_nothrow_move_assignable.hpp>
-#include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
-#include <hamon/type_traits/negation.hpp>
-#include <hamon/type_traits/reference_constructs_from_temporary.hpp>
-#include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/index_sequence.hpp>
@@ -62,14 +46,6 @@ using std::make_pair;
 
 namespace hamon
 {
-
-// Piecewise construction	[pair.piecewise]
-struct piecewise_construct_t
-{
-	explicit piecewise_construct_t() = default;
-};
-
-HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR piecewise_construct_t piecewise_construct{};
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)
@@ -84,159 +60,40 @@ template <typename T1, typename T2>
 struct pair
 {
 private:
-	template <typename>
-	struct always_true : public hamon::true_type{};
+	using constraint_type = pair_detail::pair_constraint<T1, T2>;
 
 	template <typename Dummy>
-	struct DefaultCtor
-	{
-		// [pairs.pair]/5
-		static const bool constructible =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_default_constructible<T1>,
-				hamon::is_default_constructible<T2>
-			>::value;
-
-		// [pairs.pair]/7
-		static const bool implicitly =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_implicitly_default_constructible<T1>,
-				hamon::is_implicitly_default_constructible<T2>
-			>::value;
-
-		// [pairs.pair]/1
-		static const bool nothrow =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_nothrow_default_constructible<T1>,
-				hamon::is_nothrow_default_constructible<T2>
-			>::value;
-	};
-
+	using DefaultCtor = typename constraint_type::template DefaultCtor<Dummy>;
 	template <typename Dummy>
-	struct ElementCtor
-	{
-		// [pairs.pair]/8
-		static const bool constructible =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_copy_constructible<T1>,
-				hamon::is_copy_constructible<T2>
-			>::value;
-
-		// [pairs.pair]/10
-		static const bool implicitly =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_convertible<T1 const&, T1>,
-				hamon::is_convertible<T2 const&, T2>
-			>::value;
-
-		// [pairs.pair]/1
-		static const bool nothrow =
-			hamon::conjunction<
-				always_true<Dummy>,
-				hamon::is_nothrow_copy_constructible<T1>,
-				hamon::is_nothrow_copy_constructible<T2>
-			>::value;
-	};
-
+	using ElementCtor = typename constraint_type::template ElementCtor<Dummy>;
 	template <typename U1, typename U2>
-	struct UTypesCtor
-	{
-		// [pairs.pair]/13
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-		static const bool reference_from_temporary =
-			hamon::disjunction<
-				hamon::reference_constructs_from_temporary<T1, U1&&>,
-				hamon::reference_constructs_from_temporary<T2, U2&&>
-			>::value;
-#else
-		static const bool reference_from_temporary = false;
-#endif
-
-		// [pairs.pair]/11
-		static const bool constructible =
-			hamon::conjunction<
-				hamon::is_constructible<T1, U1>,		// [pairs.pair]/11.1
-				hamon::is_constructible<T2, U2>			// [pairs.pair]/11.2
-			>::value
-			&& !reference_from_temporary;				// [pairs.pair]/13
-
-		// [pairs.pair]/13
-		static const bool implicitly =
-			hamon::conjunction<
-				hamon::is_convertible<U1, T1>,
-				hamon::is_convertible<U2, T2>
-			>::value;
-
-		// [pairs.pair]/1
-		static const bool nothrow =
-			hamon::conjunction<
-				hamon::is_nothrow_constructible<T1, U1>,
-				hamon::is_nothrow_constructible<T2, U2>
-			>::value;
-	};
-
+	using UTypesCtor = typename constraint_type::template UTypesCtor<U1, U2>;
 	template <typename UPair>
-	struct UPairCtor
-	{
-		using V1 = decltype(hamon::adl_get<0>(hamon::declval<UPair>()));
-		using V2 = decltype(hamon::adl_get<1>(hamon::declval<UPair>()));
-
-		// [pairs.pair]/17
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-		static const bool reference_from_temporary =
-			hamon::disjunction<
-				hamon::reference_constructs_from_temporary<T1, V1>,
-				hamon::reference_constructs_from_temporary<T2, V2>
-			>::value;
-#else
-		static const bool reference_from_temporary = false;
-#endif
-
-		// [pairs.pair]/15
-		static const bool constructible =
-			hamon::conjunction<
-				hamon::is_constructible<T1, V1>,	// [pairs.pair]/15.2
-				hamon::is_constructible<T2, V2>		// [pairs.pair]/15.3
-			>::value
-			&& !reference_from_temporary;			// [pairs.pair]/17
-
-		// [pairs.pair]/17
-		static const bool implicitly =
-			hamon::conjunction<
-				hamon::is_convertible<V1, T1>,
-				hamon::is_convertible<V2, T2>
-			>::value;
-
-		// [pairs.pair]/1
-		static const bool nothrow =
-			hamon::conjunction<
-				hamon::is_nothrow_constructible<T1, V1>,
-				hamon::is_nothrow_constructible<T2, V2>
-			>::value;
-	};
-	
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, PairLike)>
-	struct PairLikeCtor
-	{
-		// [pairs.pair]/15
-		static const bool constructible =
-			UPairCtor<PairLike>::constructible &&
-			// [pairs.pair]/15.1
-			!hamon::detail::is_specialization_of_subrange<
-				hamon::remove_cvref_t<PairLike>
-			>::value;
-
-		// [pairs.pair]/17
-		static const bool implicitly = UPairCtor<PairLike>::implicitly;
-
-		// [pairs.pair]/1
-		static const bool nothrow = UPairCtor<PairLike>::nothrow;
-	};
+	using UPairCtor = typename constraint_type::template UPairCtor<UPair>;
+	template <typename UPair>
+	using PairLikeCtor = typename constraint_type::template PairLikeCtor<UPair>;
+	template <typename Dummy>
+	using CopyAssignConst = typename constraint_type::template CopyAssignConst<Dummy>;
+	template <typename Dummy>
+	using MoveAssign = typename constraint_type::template MoveAssign<Dummy>;
+	template <typename Dummy>
+	using MoveAssignConst = typename constraint_type::template MoveAssignConst<Dummy>;
+	template <typename U1, typename U2>
+	using UPairCopyAssign = typename constraint_type::template UPairCopyAssign<U1, U2>;
+	template <typename U1, typename U2>
+	using UPairCopyAssignConst = typename constraint_type::template UPairCopyAssignConst<U1, U2>;
+	template <typename U1, typename U2>
+	using UPairMoveAssign = typename constraint_type::template UPairMoveAssign<U1, U2>;
+	template <typename U1, typename U2>
+	using UPairMoveAssignConst = typename constraint_type::template UPairMoveAssignConst<U1, U2>;
+	template <typename UPair>
+	using PairLikeAssign = typename constraint_type::template PairLikeAssign<UPair>;
+	template <typename UPair>
+	using PairLikeAssignConst = typename constraint_type::template PairLikeAssignConst<UPair>;
+	template <typename Dummy>
+	using Swap = typename constraint_type::template Swap<Dummy>;
+	template <typename Dummy>
+	using SwapConst = typename constraint_type::template SwapConst<Dummy>;
 
 	struct nat;
 
@@ -547,6 +404,7 @@ private:
 	{}
 
 public:
+	// operator=(pair const&)
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(
 		hamon::conditional_t<
@@ -569,20 +427,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename Dummy = void,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/23
-			always_true<Dummy>,
-			hamon::is_copy_assignable<T1 const>,
-			hamon::is_copy_assignable<T2 const>
-		>::value>* = nullptr
-	>
+	// operator=(pair const&) const
+	template <typename Dummy = void,
+		typename Constraint = CopyAssignConst<Dummy>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&
 	operator=(pair const& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/1
-		hamon::is_nothrow_copy_assignable<T1 const>,
-		hamon::is_nothrow_copy_assignable<T2 const>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/24
 		first  = p.first;
@@ -591,19 +442,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename U1, typename U2,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/26
-			hamon::is_assignable<T1&, U1 const&>,
-			hamon::is_assignable<T2&, U2 const&>
-		>::value>* = nullptr
-	>
+	// operator=(pair<U1, U2> const&)
+	template <typename U1, typename U2,
+		typename Constraint = UPairCopyAssign<U1, U2>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(pair<U1, U2> const& p)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/1
-		hamon::is_nothrow_assignable<T1&, U1 const&>,
-		hamon::is_nothrow_assignable<T2&, U2 const&>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/27
 		first  = p.first;
@@ -612,19 +457,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename U1, typename U2,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/29
-			hamon::is_assignable<T1 const&, U1 const&>,
-			hamon::is_assignable<T2 const&, U2 const&>
-		>::value>* = nullptr
-	>
+	// operator=(pair<U1, U2> const&) const
+	template <typename U1, typename U2,
+		typename Constraint = UPairCopyAssignConst<U1, U2>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&
 	operator=(pair<U1, U2> const& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/1
-		hamon::is_nothrow_assignable<T1 const&, U1 const&>,
-		hamon::is_nothrow_assignable<T2 const&, U2 const&>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/30
 		first  = p.first;
@@ -633,20 +472,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename Dummy = void,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/32
-			always_true<Dummy>,
-			hamon::is_move_assignable<T1>,
-			hamon::is_move_assignable<T2>
-		>::value>* = nullptr
-	>
+	// operator=(pair&&)
+	template <typename Dummy = void,
+		typename Constraint = MoveAssign<Dummy>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(pair&& p)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/35
-		hamon::is_nothrow_move_assignable<T1>,
-		hamon::is_nothrow_move_assignable<T2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/33
 		first  = hamon::forward<T1>(p.first);
@@ -655,20 +487,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename Dummy = void,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/36
-			always_true<Dummy>,
-			hamon::is_assignable<T1 const&, T1>,
-			hamon::is_assignable<T2 const&, T2>
-		>::value>* = nullptr
-	>
+	// operator=(pair&&) const
+	template <typename Dummy = void,
+		typename Constraint = MoveAssignConst<Dummy>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&
 	operator=(pair&& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
-		hamon::is_nothrow_assignable<T1 const&, T1>,
-		hamon::is_nothrow_assignable<T2 const&, T2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/37
 		first  = hamon::forward<T1>(p.first);
@@ -677,19 +502,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename U1, typename U2,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/39
-			hamon::is_assignable<T1&, U1>,
-			hamon::is_assignable<T2&, U2>
-		>::value>* = nullptr
-	>
+	// operator=(pair<U1, U2>&&)
+	template <typename U1, typename U2,
+		typename Constraint = UPairMoveAssign<U1, U2>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(pair<U1, U2>&& p)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
-		hamon::is_nothrow_assignable<T1&, U1>,
-		hamon::is_nothrow_assignable<T2&, U2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/40
 		first  = hamon::forward<U1>(p.first);
@@ -698,19 +517,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename U1, typename U2,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/48
-			hamon::is_assignable<T1 const&, U1>,
-			hamon::is_assignable<T2 const&, U2>
-		>::value>* = nullptr
-	>
+	// operator=(pair<U1, U2>&&) const
+	template <typename U1, typename U2,
+		typename Constraint = UPairMoveAssignConst<U1, U2>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&
 	operator=(pair<U1, U2>&& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
-		hamon::is_nothrow_assignable<T1 const&, U1>,
-		hamon::is_nothrow_assignable<T2 const&, U2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/49
 		first  = hamon::forward<U1>(p.first);
@@ -719,23 +532,13 @@ public:
 		return *this;
 	}
 
+	// operator=(P&&)
 	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
-		typename U1 = decltype(hamon::adl_get<0>(hamon::declval<P>())),
-		typename U2 = decltype(hamon::adl_get<1>(hamon::declval<P>())),
-		hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::detail::different_from_t<P, pair>,	// [pairs.pair]/42.1
-			hamon::negation<									// [pairs.pair]/42.2
-				hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<P>>>,
-			hamon::is_assignable<T1&, U1>,						// [pairs.pair]/42.3
-			hamon::is_assignable<T2&, U2>						// [pairs.pair]/42.4
-		>::value>* = nullptr
-	>
+		typename Constraint = PairLikeAssign<P>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair&
 	operator=(P&& p)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
-		hamon::is_nothrow_assignable<T1&, U1>,
-		hamon::is_nothrow_assignable<T2&, U2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/43
 		first  = hamon::adl_get<0>(hamon::forward<P>(p));
@@ -744,23 +547,13 @@ public:
 		return *this;
 	}
 
+	// operator=(P&&) const
 	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
-		typename U1 = decltype(hamon::adl_get<0>(hamon::declval<P>())),
-		typename U2 = decltype(hamon::adl_get<1>(hamon::declval<P>())),
-		hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::detail::different_from_t<P, pair>,	// [pairs.pair]/45.1
-			hamon::negation<									// [pairs.pair]/45.2
-				hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<P>>>,
-			hamon::is_assignable<T1 const&, U1>,				// [pairs.pair]/45.3
-			hamon::is_assignable<T2 const&, U2>					// [pairs.pair]/45.4
-		>::value>* = nullptr
-	>
+		typename Constraint = PairLikeAssignConst<P>,
+		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&
 	operator=(P&& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
-		hamon::is_nothrow_assignable<T1 const&, U1>,
-		hamon::is_nothrow_assignable<T2 const&, U2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/46
 		first  = hamon::adl_get<0>(hamon::forward<P>(p));
@@ -769,20 +562,13 @@ public:
 		return *this;
 	}
 
-	template <
-		typename Dummy = void,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/51.1
-			always_true<Dummy>,
-			hamon::is_swappable<T1>,
-			hamon::is_swappable<T2>
-		>::value>* = nullptr
-	>
+	// swap(pair&)
+	template <typename Dummy = void,
+		typename Constraint = Swap<Dummy>,
+		hamon::enable_if_t<Constraint::swappable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR void
 	swap(pair& p)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/54.1
-		hamon::is_nothrow_swappable<T1>,
-		hamon::is_nothrow_swappable<T2>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/53
 		using std::swap;
@@ -790,20 +576,13 @@ public:
 		swap(second, p.second);
 	}
 
-	template <
-		typename Dummy = void,
-		hamon::enable_if_t<hamon::conjunction<		// [pairs.pair]/51.2
-			always_true<Dummy>,
-			hamon::is_swappable<T1 const>,
-			hamon::is_swappable<T2 const>
-		>::value>* = nullptr
-	>
+	// swap(pair const&) const
+	template <typename Dummy = void,
+		typename Constraint = SwapConst<Dummy>,
+		hamon::enable_if_t<Constraint::swappable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR void
 	swap(pair const& p) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<			// [pairs.pair]/54.2
-		hamon::is_nothrow_swappable<T1 const>,
-		hamon::is_nothrow_swappable<T2 const>
-	>::value))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/53
 		using std::swap;
@@ -918,16 +697,6 @@ swap(pair<T1, T2> const& x, pair<T1, T2> const& y)
 	x.swap(y);
 }
 
-template <typename T1, typename T2>
-inline HAMON_CXX11_CONSTEXPR
-pair<hamon::unwrap_ref_decay_t<T1>, hamon::unwrap_ref_decay_t<T2>>
-make_pair(T1&& x, T2&& y)
-{
-	// [pairs.spec]/6
-	return pair<hamon::unwrap_ref_decay_t<T1>, hamon::unwrap_ref_decay_t<T2>>(
-		hamon::forward<T1>(x), hamon::forward<T2>(y));
-}
-
 }	// namespace hamon
 
 // Tuple-like access to pair	[pair.astuple]
@@ -957,111 +726,38 @@ struct tuple_element<1, hamon::pair<T1, T2>>
 
 }	// namespace std
 
+#include <hamon/pair/detail/pair_get.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 
 namespace hamon
 {
 
-namespace detail
-{
-
-template <hamon::size_t I>
-struct pair_get;
-
-// [pair.astuple]/4.1
-template <>
-struct pair_get<0>
-{
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T1&
-    get(pair<T1, T2>& p) HAMON_NOEXCEPT
-	{
-		return p.first;
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T1 const&
-    get(pair<T1, T2> const& p) HAMON_NOEXCEPT
-	{
-		return p.first;
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T1&&
-    get(pair<T1, T2>&& p) HAMON_NOEXCEPT
-	{
-		return hamon::forward<T1>(p.first);
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T1 const&&
-    get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
-	{
-		return hamon::forward<T1 const>(p.first);
-	}
-};
-
-// [pair.astuple]/4.2
-template <>
-struct pair_get<1>
-{
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T2&
-    get(pair<T1, T2>& p) HAMON_NOEXCEPT
-	{
-		return p.second;
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T2 const&
-    get(pair<T1, T2> const& p) HAMON_NOEXCEPT
-	{
-		return p.second;
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T2&&
-    get(pair<T1, T2>&& p) HAMON_NOEXCEPT
-	{
-		return hamon::forward<T2>(p.second);
-	}
-
-    template <typename T1, typename T2>
-    static HAMON_CXX11_CONSTEXPR T2 const&&
-    get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
-	{
-		return hamon::forward<T2 const>(p.second);
-	}
-};
-
-}	// namespace detail
-
 template <hamon::size_t I, typename T1, typename T2>
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>>&
 get(pair<T1, T2>& p) HAMON_NOEXCEPT
 {
-	return detail::pair_get<I>::get(p);
+	return pair_detail::pair_get<I>::get(p);
 }
 
 template <hamon::size_t I, typename T1, typename T2>
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>> const&
 get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 {
-	return detail::pair_get<I>::get(p);
+	return pair_detail::pair_get<I>::get(p);
 }
 
 template <hamon::size_t I, typename T1, typename T2>
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>>&&
 get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 {
-	return detail::pair_get<I>::get(hamon::move(p));
+	return pair_detail::pair_get<I>::get(hamon::move(p));
 }
 
 template <hamon::size_t I, typename T1, typename T2>
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>> const&&
 get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 {
-	return detail::pair_get<I>::get(hamon::move(p));
+	return pair_detail::pair_get<I>::get(hamon::move(p));
 }
 
 // [pair.astuple]/6

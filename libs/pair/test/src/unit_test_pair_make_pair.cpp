@@ -8,7 +8,7 @@
  *	make_pair(T1&& x, T2&& y);
  */
 
-#include <hamon/pair.hpp>
+#include <hamon/pair/make_pair.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/functional.hpp>
 #include <gtest/gtest.h>
