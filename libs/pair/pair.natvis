@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::pair&lt;*&gt;">
+		<DisplayString IncludeView="noparens">{first}, {second}</DisplayString>
+		<DisplayString ExcludeView="noparens">({*this,view(noparens)})</DisplayString>
+		<Expand>
+			<Item Name="first">first</Item>
+			<Item Name="second">second</Item>
+		</Expand>
+	</Type>
+</AutoVisualizer>
