@@ -456,7 +456,6 @@
 #    define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_CAST					// P1327R1
 #    define HAMON_HAS_CXX20_CONSTEXPR_TRIVIAL_DEFAULT_INIT			// P1331R2
 #    define HAMON_HAS_CXX20_CONSTEXPR_ASM							// P1668R1
-#    define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
 #    define HAMON_HAS_CXX20_ABBREVIATED_FUNCTION_TEMPLATE			// P1141R2
 #    define HAMON_HAS_CXX20_STRONGER_UNICODE_REQUIREMENTS			// P1041R4,P1139R2
 #    define HAMON_HAS_CXX20_STRUCTURED_BINDING_EXTENSIONS			// P1091R3,P1381R1
@@ -468,6 +467,9 @@
 #    endif
 #    if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
 #      define HAMON_HAS_CXX20_CONCEPTS								// P0734R0
+#    endif
+#    if defined(__cpp_concepts) && (__cpp_concepts >= 202002)
+#      define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
 #    endif
 #    if defined(__cpp_constexpr_dynamic_alloc) && (__cpp_constexpr_dynamic_alloc >= 201907)
 #      define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC				// P0784R7
