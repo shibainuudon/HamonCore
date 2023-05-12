@@ -45,7 +45,7 @@ lexicographical_compare_three_way(
 	{
 		if (first2 == last2)
 		{
-			return hamon::strong_ordering::greater;
+			return std::strong_ordering::greater;
 		}
 
 		if (auto cmp = comp(*first1, *first2); cmp != 0)
