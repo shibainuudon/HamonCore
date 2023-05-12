@@ -290,7 +290,6 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 		EXPECT_EQ(33, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
-#if 0	// TODO
 	// uses_allocator_construction_args(const Alloc&, PairLike&&)
 	{
 		hamon::tuple<int, int> p{14, 15};
@@ -340,7 +339,6 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 		EXPECT_EQ(20, hamon::adl_get<2>(hamon::adl_get<1>(t)));
 		EXPECT_EQ(21, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
-#endif
 
 	// TODO
 	// uses_allocator_construction_args(const Alloc&, U&&)

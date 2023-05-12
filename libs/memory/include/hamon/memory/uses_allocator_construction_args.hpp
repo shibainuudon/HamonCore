@@ -23,14 +23,18 @@ using std::uses_allocator_construction_args;
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/detail/uses_allocator_construction_type.hpp>
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
+#include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/apply.hpp>
 #include <hamon/tuple/forward_as_tuple.hpp>
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/concepts/pair_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -211,9 +215,23 @@ HAMON_DECLTYPE_RETURN(
 		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::move(pr))),
 		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::move(pr)))))
 
+template <typename T, typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	typename = hamon::enable_if_t<
+		hamon::detail::is_cv_pair<T>::value>,		// [allocator.uses.construction]/17
+	typename = hamon::enable_if_t<
+		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<P>>::value>		// [allocator.uses.construction]/17
+>
+HAMON_CXX11_CONSTEXPR auto
+uses_allocator_construction_args(Alloc const& alloc, P&& p) HAMON_NOEXCEPT
+HAMON_DECLTYPE_RETURN(
+	// [allocator.uses.construction]/18
+	hamon::uses_allocator_construction_args<T>(
+		alloc,
+		hamon::piecewise_construct,
+		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::forward<P>(p))),
+		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::forward<P>(p)))))
+
 #if 0	// TODO
-template <typename T, typename Alloc, pair-like P>
-HAMON_CXX11_CONSTEXPR auto uses_allocator_construction_args(Alloc const& alloc, P&& p) HAMON_NOEXCEPT;
 template <typename T, typename Alloc, typename U>
 HAMON_CXX11_CONSTEXPR auto uses_allocator_construction_args(Alloc const& alloc, U&& u) HAMON_NOEXCEPT;
 #endif
