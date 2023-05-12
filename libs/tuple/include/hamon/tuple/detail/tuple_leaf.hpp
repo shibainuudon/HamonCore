@@ -32,7 +32,7 @@ HAMON_WARNING_DISABLE_GCC("-Wfloat-conversion")
 template <hamon::size_t I, typename T>
 struct tuple_leaf
 {
-private:
+public:
 	T	m_value;
 
 public:
@@ -71,12 +71,6 @@ private:
 	HAMON_CXX11_CONSTEXPR
 	tuple_leaf(hamon::detail::uses_allocator_construction_type::LastAlloc, Alloc const& alloc, Args&&... args) noexcept
 		: m_value(hamon::forward<Args>(args)..., alloc) {}
-
-public:
-	HAMON_CXX14_CONSTEXPR T &       get() &       { return m_value; }
-	HAMON_CXX11_CONSTEXPR T const&  get() const&  { return m_value; }
-	HAMON_CXX14_CONSTEXPR T &&      get() &&      { return hamon::forward<T>(m_value); }
-	HAMON_CXX11_CONSTEXPR T const&& get() const&& { return hamon::forward<T const>(m_value); }
 };
 
 HAMON_WARNING_POP()

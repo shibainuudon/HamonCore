@@ -22,7 +22,7 @@ struct access
 	get(hamon::tuple<Types...>& t) HAMON_NOEXCEPT
 	{
 		using type = hamon::tuple_element_t<I, hamon::tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type>&>(t.m_impl).get();
+		return static_cast<hamon::tuple_detail::tuple_leaf<I, type>&>(t.m_impl).m_value;
 	}
 
 	template <hamon::size_t I, typename... Types>
@@ -30,7 +30,8 @@ struct access
 	get(hamon::tuple<Types...>&& t) HAMON_NOEXCEPT
 	{
 		using type = hamon::tuple_element_t<I, hamon::tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type>&&>(t.m_impl).get();
+		return hamon::forward<type>(
+			static_cast<hamon::tuple_detail::tuple_leaf<I, type>&&>(t.m_impl).m_value);
 	}
 
 	template <hamon::size_t I, typename... Types>
@@ -38,7 +39,7 @@ struct access
 	get(hamon::tuple<Types...> const& t) HAMON_NOEXCEPT
 	{
 		using type = hamon::tuple_element_t<I, hamon::tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&>(t.m_impl).get();
+		return static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&>(t.m_impl).m_value;
 	}
 
 	template <hamon::size_t I, typename... Types>
@@ -46,7 +47,8 @@ struct access
 	get(hamon::tuple<Types...> const&& t) HAMON_NOEXCEPT
 	{
 		using type = hamon::tuple_element_t<I, hamon::tuple<Types...>>;
-		return static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&&>(t.m_impl).get();
+		return hamon::forward<type const>(
+			static_cast<hamon::tuple_detail::tuple_leaf<I, type> const&&>(t.m_impl).m_value);
 	}
 };
 
