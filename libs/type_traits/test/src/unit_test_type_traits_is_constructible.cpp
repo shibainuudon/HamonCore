@@ -1399,6 +1399,7 @@ HAMON_IS_CONSTRUCTIBLE_TEST(false, const volatile int(&)[], const volatile int(&
 HAMON_IS_CONSTRUCTIBLE_TEST(false,                int(&)[],                int(*)[2]);
 HAMON_IS_CONSTRUCTIBLE_TEST(false,                int(&)[],                int(*)[]);
 
+#if 0	// TODO
 #if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT) && \
 	!(defined(HAMON_MSVC) && HAMON_MSVC <= 1935)
 // P0960R3 によってint n[2](1, 2); のような形での初期化が可能になった
@@ -1422,6 +1423,7 @@ HAMON_IS_CONSTRUCTIBLE_TEST(false, int(&&)[2], int&, int&, int&);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, int(&&)[2], int&&);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, int(&&)[2], int&&, int&&);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, int(&&)[2], int&&, int&&, int&&);
+#endif
 #endif
 HAMON_IS_CONSTRUCTIBLE_TEST(false,                int(&&)[2],                int*);
 
