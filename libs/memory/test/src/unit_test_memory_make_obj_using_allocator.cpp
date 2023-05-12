@@ -147,6 +147,11 @@ struct NoAlloc
 	RefType	ref_type = RefType::None;
 };
 
+struct ConvertibleToPair
+{
+	HAMON_CXX11_CONSTEXPR operator hamon::pair<int, int>() const { return {1, 2}; }
+};
+
 GTEST_TEST(MemoryTest, MakeObjUsingAllocatorTest)
 {
 	// non-pair overload
@@ -357,8 +362,31 @@ GTEST_TEST(MemoryTest, MakeObjUsingAllocatorTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(t.second.ref_type, RefType::ConstRValue);
 	}
 
-	// TODO
 	// (const Alloc&, U&&)
+	{
+		ConvertibleToPair ctp;
+		auto t = hamon::make_obj_using_allocator<hamon::pair<int, int>>(MyAlloc{}, ctp);
+		EXPECT_EQ(t.first,  1);
+		EXPECT_EQ(t.second, 2);
+	}
+	{
+		HAMON_CXX11_CONSTEXPR ConvertibleToPair ctp;
+		HAMON_CXX11_CONSTEXPR auto t = hamon::make_obj_using_allocator<hamon::pair<int, int>>(MyAlloc{}, ctp);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(t.first,  1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(t.second, 2);
+	}
+	{
+		ConvertibleToPair ctp;
+		auto t = hamon::make_obj_using_allocator<hamon::pair<int, int>>(MyAlloc{}, hamon::move(ctp));
+		EXPECT_EQ(t.first,  1);
+		EXPECT_EQ(t.second, 2);
+	}
+	{
+		HAMON_CXX11_CONSTEXPR ConvertibleToPair ctp;
+		HAMON_CXX11_CONSTEXPR auto t = hamon::make_obj_using_allocator<hamon::pair<int, int>>(MyAlloc{}, hamon::move(ctp));
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(t.first,  1);
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(t.second, 2);
+	}
 }
 
 }	// namespace make_obj_using_allocator_test

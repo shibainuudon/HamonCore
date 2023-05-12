@@ -33,20 +33,22 @@ using std::uses_allocator_construction_args;
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-
-#define HAMON_DECLTYPE_RETURN(...)	\
-	-> decltype(__VA_ARGS__)		\
-	{ return __VA_ARGS__; }
 
 namespace hamon
 {
 
 namespace detail
 {
+
+#define HAMON_DECLTYPE_RETURN(...)	\
+	-> decltype(__VA_ARGS__)		\
+	{ return __VA_ARGS__; }
 
 template <typename T>
 struct uses_allocator_construction_args_impl
@@ -231,14 +233,77 @@ HAMON_DECLTYPE_RETURN(
 		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::forward<P>(p))),
 		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::forward<P>(p)))))
 
-#if 0	// TODO
+// pair_constructorのための前方宣言
+template <typename T, typename Alloc, typename... Args>
+HAMON_CXX11_CONSTEXPR T
+make_obj_using_allocator(Alloc const& alloc, Args&&... args);
+
+namespace uses_allocator_detail
+{
+
+// [allocator.uses.construction]/19
+template <typename A, typename B>
+void FUN(hamon::pair<A, B> const&);
+
+template <typename T>
+using call_FUN = decltype(FUN(hamon::declval<T>()));
+
+template <typename T>
+using convertible_to_const_pair_ref =
+	hamon::is_detected<call_FUN, T>;
+
+// [allocator.uses.construction]/21
 template <typename T, typename Alloc, typename U>
-HAMON_CXX11_CONSTEXPR auto uses_allocator_construction_args(Alloc const& alloc, U&& u) HAMON_NOEXCEPT;
-#endif
+struct pair_constructor
+{
+	using pair_type = hamon::remove_cv_t<T>;
+
+	HAMON_CXX11_CONSTEXPR pair_type do_construct(pair_type const& p) const
+	{
+		return hamon::make_obj_using_allocator<pair_type>(m_alloc, p);
+	}
+
+	HAMON_CXX11_CONSTEXPR pair_type do_construct(pair_type&& p) const
+	{
+		return hamon::make_obj_using_allocator<pair_type>(m_alloc, hamon::move(p));
+	}
+
+	Alloc const& m_alloc;
+	U& m_u;
+
+	HAMON_CXX11_CONSTEXPR operator pair_type() const
+	{
+		return do_construct(hamon::forward<U>(m_u));
+	}
+};
+
+}	// namespace uses_allocator_detail
+
+template <typename T, typename Alloc, typename U,
+	typename = hamon::enable_if_t<
+		// [allocator.uses.construction]/20
+		hamon::detail::is_cv_pair<T>::value>,
+	typename = hamon::enable_if_t<hamon::disjunction<
+		// [allocator.uses.construction]/20.1
+		hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<U>>,
+		// [allocator.uses.construction]/20.2
+		hamon::conjunction<
+			hamon::negation<hamon::pair_like_t<U>>,
+			hamon::negation<uses_allocator_detail::convertible_to_const_pair_ref<U>>
+		>
+	>::value>
+>
+HAMON_CXX11_CONSTEXPR auto
+uses_allocator_construction_args(Alloc const& alloc, U&& u) HAMON_NOEXCEPT
+HAMON_DECLTYPE_RETURN(
+	// [allocator.uses.construction]/22
+	hamon::make_tuple(uses_allocator_detail::pair_constructor<T, Alloc, U>{alloc, u}))
+
+#undef HAMON_DECLTYPE_RETURN
 
 }	// namespace hamon
 
-#undef HAMON_DECLTYPE_RETURN
+#include <hamon/memory/make_obj_using_allocator.hpp>
 
 #endif
 

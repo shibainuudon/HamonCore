@@ -60,6 +60,11 @@ struct DefaultConstructible
 	DefaultConstructible();
 };
 
+struct ConvertibleToPair
+{
+	HAMON_CXX11_CONSTEXPR operator hamon::pair<int, int>() const { return {1, 2}; }
+};
+
 GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 {
 	// non-pair overload
@@ -340,8 +345,23 @@ GTEST_TEST(MemoryTest, UsesAllocatorConstructionArgsTest)
 		EXPECT_EQ(21, hamon::adl_get<0>(hamon::adl_get<2>(t)));
 	}
 
-	// TODO
 	// uses_allocator_construction_args(const Alloc&, U&&)
+	{
+		ConvertibleToPair ctp {};
+		auto t = hamon::uses_allocator_construction_args<
+			hamon::pair<int, int>>(MyAlloc{}, ctp);
+		hamon::pair<int, int> p = hamon::adl_get<0>(t);
+		EXPECT_EQ(1, hamon::adl_get<0>(p));
+		EXPECT_EQ(2, hamon::adl_get<1>(p));
+	}
+	{
+		ConvertibleToPair ctp {};
+		auto t = hamon::uses_allocator_construction_args<
+			hamon::pair<int, int>>(MyAlloc{}, hamon::move(ctp));
+		hamon::pair<int, int> p = hamon::adl_get<0>(t);
+		EXPECT_EQ(1, hamon::adl_get<0>(p));
+		EXPECT_EQ(2, hamon::adl_get<1>(p));
+	}
 }
 
 }	// namespace uses_allocator_construction_args_test
