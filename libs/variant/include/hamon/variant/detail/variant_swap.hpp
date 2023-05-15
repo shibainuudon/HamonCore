@@ -10,8 +10,8 @@
 #include <hamon/variant/detail/variant_move_assign.hpp>
 #include <hamon/variant/detail/visit_at.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// swap
 
 namespace hamon
 {
@@ -24,8 +24,7 @@ struct swap_visitor
 	template <typename T>
 	HAMON_CXX14_CONSTEXPR void operator()(T& v1, T& v2) const
 	{
-		using std::swap;
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 	}
 };
 

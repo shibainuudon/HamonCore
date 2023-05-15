@@ -194,8 +194,7 @@ struct ThrowOnMoveCtor
 
 void swap(ThrowOnMoveCtor& lhs, ThrowOnMoveCtor& rhs)
 {
-	using std::swap;
-	swap(lhs.value, rhs.value);
+	hamon::adl_swap(lhs.value, rhs.value);
 }
 
 struct ThrowOnMoveAssign
@@ -210,8 +209,7 @@ struct ThrowOnMoveAssign
 
 void swap(ThrowOnMoveAssign& lhs, ThrowOnMoveAssign& rhs)
 {
-	using std::swap;
-	swap(lhs.value, rhs.value);
+	hamon::adl_swap(lhs.value, rhs.value);
 }
 
 struct ThrowOnSwap
@@ -256,8 +254,6 @@ void MakeEmpty(Variant& v)
 
 inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 {
-	using std::swap;
-
 	// same index
 	{
 		hamon::variant<int> v1(42);
@@ -265,7 +261,7 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 		v1.swap(v2);
 		VERIFY(hamon::adl_get<0>(v1) == 43);
 		VERIFY(hamon::adl_get<0>(v2) == 42);
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		VERIFY(hamon::adl_get<0>(v1) == 42);
 		VERIFY(hamon::adl_get<0>(v2) == 43);
 	}
@@ -275,7 +271,7 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 		v1.swap(v2);
 		VERIFY(hamon::adl_get<1>(v1) == 1.5f);
 		VERIFY(hamon::adl_get<1>(v2) == 0.5f);
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		VERIFY(hamon::adl_get<1>(v1) == 0.5f);
 		VERIFY(hamon::adl_get<1>(v2) == 1.5f);
 	}
@@ -287,7 +283,7 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 		v1.swap(v2);
 		VERIFY(hamon::adl_get<1>(v1) == 1.5f);
 		VERIFY(hamon::adl_get<0>(v2) == 42);
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		VERIFY(hamon::adl_get<0>(v1) == 42);
 		VERIFY(hamon::adl_get<1>(v2) == 1.5f);
 	}
@@ -304,8 +300,6 @@ GTEST_TEST(VariantTest, SwapTest)
 #endif
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-	using std::swap;
-
 	// same index
 	{
 		hamon::variant<ThrowOnMoveCtor, int> v1(hamon::in_place_index_t<0>{}, 42);
@@ -390,7 +384,7 @@ GTEST_TEST(VariantTest, SwapTest)
 		EXPECT_TRUE( v1.valueless_by_exception());
 		EXPECT_TRUE( v2.valueless_by_exception());
 
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		EXPECT_TRUE( v1.valueless_by_exception());
 		EXPECT_TRUE( v2.valueless_by_exception());
 	}
@@ -412,11 +406,11 @@ GTEST_TEST(VariantTest, SwapTest)
 		EXPECT_TRUE( v1.valueless_by_exception());
 		EXPECT_TRUE(!v2.valueless_by_exception());
 
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		EXPECT_TRUE(!v1.valueless_by_exception());
 		EXPECT_TRUE( v2.valueless_by_exception());
 
-		swap(v1, v2);
+		hamon::adl_swap(v1, v2);
 		EXPECT_TRUE( v1.valueless_by_exception());
 		EXPECT_TRUE(!v2.valueless_by_exception());
 #endif

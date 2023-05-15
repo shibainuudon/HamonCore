@@ -7,6 +7,7 @@
 #ifndef HAMON_UTILITY_HPP
 #define HAMON_UTILITY_HPP
 
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/utility/as_const.hpp>
 #include <hamon/utility/cmp_equal.hpp>
 #include <hamon/utility/cmp_greater.hpp>

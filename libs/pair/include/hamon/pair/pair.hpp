@@ -41,8 +41,8 @@ using std::pair;
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/index_sequence_for.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
-#include <utility>	// std::swap
 
 namespace hamon
 {
@@ -571,9 +571,8 @@ public:
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/53
-		using std::swap;
-		swap(first,  p.first);
-		swap(second, p.second);
+		hamon::adl_swap(first,  p.first);
+		hamon::adl_swap(second, p.second);
 	}
 
 	// swap(pair const&) const
@@ -585,9 +584,8 @@ public:
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 	{
 		// [pairs.pair]/53
-		using std::swap;
-		swap(first,  p.first);
-		swap(second, p.second);
+		hamon::adl_swap(first,  p.first);
+		hamon::adl_swap(second, p.second);
 	}
 };
 

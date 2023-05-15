@@ -12,6 +12,7 @@
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -72,7 +73,6 @@ static_assert(!hamon::is_nothrow_swappable<hamon::tuple<Swappable,        Swappa
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::swap;
 	{
 		hamon::tuple<int> t1(10);
 		hamon::tuple<int> t2(20);
@@ -81,7 +81,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(hamon::adl_get<0>(t1) == 20);
 		VERIFY(hamon::adl_get<0>(t2) == 10);
 
-		swap(t1, t2);
+		hamon::adl_swap(t1, t2);
 		VERIFY(hamon::adl_get<0>(t1) == 10);
 		VERIFY(hamon::adl_get<0>(t2) == 20);
 	}
@@ -95,7 +95,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(hamon::adl_get<0>(t2) == 1);
 		VERIFY(hamon::adl_get<1>(t2) == 0.5f);
 
-		swap(t1, t2);
+		hamon::adl_swap(t1, t2);
 		VERIFY(hamon::adl_get<0>(t1) == 1);
 		VERIFY(hamon::adl_get<1>(t1) == 0.5f);
 		VERIFY(hamon::adl_get<0>(t2) == 2);
@@ -107,7 +107,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 		t1.swap(t2);
 
-		swap(t1, t2);
+		hamon::adl_swap(t1, t2);
 	}
 	return true;
 }
@@ -116,8 +116,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(TupleTest, SwapTest)
 {
-	// TODO	std::swapがconstexprでない
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE((test()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 }
 
 }	// namespace swap_test

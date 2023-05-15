@@ -24,9 +24,9 @@ using std::shuffle;
 
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
-#include <random>
-#include <utility>
+#include <random>	// uniform_int_distribution
 
 namespace hamon
 {
@@ -73,8 +73,7 @@ shuffle(
 
 			if (i != difference_type(0))
 			{
-				using std::swap;
-				swap(*first, *(first + i));
+				hamon::adl_swap(*first, *(first + i));
 			}
 		}
 	}

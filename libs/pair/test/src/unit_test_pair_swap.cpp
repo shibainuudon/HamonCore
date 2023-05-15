@@ -11,6 +11,7 @@
 
 #include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -72,7 +73,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(p2.first  == 1);
 		VERIFY(p2.second == 0.5f);
 
-		swap(p1, p2);
+		hamon::adl_swap(p1, p2);
 		VERIFY(p1.first  == 1);
 		VERIFY(p1.second == 0.5f);
 		VERIFY(p2.first  == 2);

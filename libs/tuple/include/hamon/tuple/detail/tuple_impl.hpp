@@ -16,6 +16,7 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -115,8 +116,7 @@ struct tuple_impl<hamon::index_sequence<Is...>, Types...>
 	HAMON_CXX14_CONSTEXPR
 	static void swap(TTuple& lhs, UTuple& rhs)
 	{
-		using std::swap;
-		swallow((swap(hamon::adl_get<Is>(lhs), hamon::adl_get<Is>(rhs)), 0)...);
+		swallow((hamon::adl_swap(hamon::adl_get<Is>(lhs), hamon::adl_get<Is>(rhs)), 0)...);
 	}
 };
 

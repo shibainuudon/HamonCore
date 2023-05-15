@@ -33,10 +33,10 @@ using std::rotate;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_trivially_move_assignable.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
-#include <utility>
+#include <iterator>	// *_iterator_tag
 
 namespace hamon
 {
@@ -76,13 +76,11 @@ rotate_forward(
 	ForwardIterator middle,
 	ForwardIterator last)
 {
-	using std::swap;
-
 	auto i = middle;
 
 	for (;;)
 	{
-		swap(*first, *i);
+		hamon::adl_swap(*first, *i);
 		++first;
 
 		if (++i == last)
@@ -104,7 +102,7 @@ rotate_forward(
 
 		for (;;)
 		{
-			swap(*first, *i);
+			hamon::adl_swap(*first, *i);
 			++first;
 
 			if (++i == last)

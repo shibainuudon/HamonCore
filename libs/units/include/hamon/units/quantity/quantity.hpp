@@ -19,11 +19,11 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/compare/config.hpp>
 #include <hamon/config.hpp>
 #include <ratio>
 #include <ostream>
-#include <utility>
 
 namespace hamon
 {
@@ -71,8 +71,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void swap(quantity& other)
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_swappable<T>::value)
 	{
-		using std::swap;
-		swap(m_value, other.m_value);
+		hamon::adl_swap(m_value, other.m_value);
 	}
 
 private:

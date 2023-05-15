@@ -12,6 +12,7 @@
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -72,7 +73,6 @@ static_assert(!hamon::is_nothrow_swappable<hamon::tuple<Swappable,        Swappa
 
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
-	using std::swap;
 	{
 		int i1 = 10;
 		int i2 = 11;
@@ -91,7 +91,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(f1 == 13);
 		VERIFY(f2 == 12);
 
-		swap(t1, t2);
+		hamon::adl_swap(t1, t2);
 		VERIFY(hamon::adl_get<0>(t1) == i1);
 		VERIFY(hamon::adl_get<1>(t1) == f1);
 		VERIFY(hamon::adl_get<0>(t2) == i2);
@@ -107,7 +107,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 		t1.swap(t2);
 
-		swap(t1, t2);
+		hamon::adl_swap(t1, t2);
 	}
 	return true;
 }
@@ -116,7 +116,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(TupleTest, SwapConstTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE((test()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 }
 
 }	// namespace swap_const_test
