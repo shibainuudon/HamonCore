@@ -21,9 +21,7 @@ using std::is_swappable_with;
 
 #else
 
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/declval.hpp>
-#include <utility>
+#include <hamon/utility/detail/is_swappable.hpp>
 
 namespace hamon
 {
@@ -41,38 +39,8 @@ namespace hamon
  *	型TとUは参照でなければswapできないのでTとUが参照でない場合、結果はfalseとなる。
  */
 template <typename T, typename U>
-struct is_swappable_with;
-
-namespace is_swappable_detail
-{
-
-using std::swap;
-
-template <typename T, typename U>
-struct is_swappable_with_impl
-{
-private:
-	template <
-		typename T2,
-		typename U2,
-		typename = decltype(
-			swap(hamon::declval<T2>(), hamon::declval<U2>()),
-			swap(hamon::declval<U2>(), hamon::declval<T2>()))
-	>
-	static hamon::true_type test(int);
-
-	template <typename, typename>
-	static hamon::false_type test(...);
-
-public:
-	using type = decltype(test<T, U>(0));
-};
-
-}	// namespace is_swappable_detail
-
-template <typename T, typename U>
 struct is_swappable_with
-	: public is_swappable_detail::is_swappable_with_impl<T, U>::type
+	: public hamon::detail::is_swappable_with<T, U>
 {};
 
 }	// namespace hamon

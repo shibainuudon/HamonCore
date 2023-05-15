@@ -21,9 +21,7 @@ using std::is_swappable;
 
 #else
 
-#include <hamon/type_traits/is_swappable_with.hpp>
-#include <hamon/type_traits/is_void.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/utility/detail/is_swappable.hpp>
 
 namespace hamon
 {
@@ -45,26 +43,8 @@ namespace hamon
  *	・参照修飾されている型
  */
 template <typename T>
-struct is_swappable;
-
-namespace detail
-{
-
-template <typename T, bool = hamon::is_void<T>::value>
-struct is_swappable_impl
-	: public hamon::is_swappable_with<T&, T&>
-{};
-
-template <typename T>
-struct is_swappable_impl<T, true>
-	: public hamon::false_type
-{};
-
-}	// namespace detail
-
-template <typename T>
 struct is_swappable
-	: public detail::is_swappable_impl<T>
+	: public hamon::detail::is_swappable<T>
 {};
 
 }	// namespace hamon

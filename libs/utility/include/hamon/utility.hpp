@@ -29,6 +29,7 @@
 #include <hamon/utility/make_integer_sequence.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/move_if_noexcept.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/utility/to_underlying.hpp>
 #include <hamon/utility/unreachable.hpp>
 
