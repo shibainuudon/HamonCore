@@ -46,6 +46,9 @@ struct is_nothrow_swappable;
 
 // 22.2.2 swap[utility.swap]
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 template <typename T,
 	// [utility.swap]/1
 	typename = hamon::enable_if_t<hamon::conjunction<
@@ -65,6 +68,8 @@ HAMON_NOEXCEPT_IF((hamon::conjunction<	// [utility.swap]/4
 	a = hamon::move(b);
 	b = hamon::move(t);
 }
+
+HAMON_WARNING_POP()
 
 template <typename T, hamon::size_t N,
 	// [utility.swap]/5
