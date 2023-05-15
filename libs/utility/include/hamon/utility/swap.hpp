@@ -9,7 +9,10 @@
 
 #include <hamon/config.hpp>
 
-#if (HAMON_CXX_STANDARD >= 20)
+#if (HAMON_CXX_STANDARD >= 20) &&	\
+	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)) && \
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 130000)) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1926))
 
 #include <utility>
 
