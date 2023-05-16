@@ -37,6 +37,7 @@ set(SUBDIRECTORIES
 	memory
 	numbers
 	numeric
+	optional
 	pair
 	preprocessor
 	qvm
