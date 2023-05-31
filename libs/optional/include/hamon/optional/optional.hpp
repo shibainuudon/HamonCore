@@ -28,9 +28,11 @@ using std::make_optional;
 
 #include <hamon/compare.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
+#include <hamon/concepts/detail/cpp17_hash.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/functional/detail/disabled_hash.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -1587,13 +1589,40 @@ make_optional(std::initializer_list<U> il, Args&&... args)
 	return optional<T>(hamon::in_place, il, hamon::forward<Args>(args)...);
 }
 
-#if 0	// TODO
-// [optional.hash], hash support
-template <typename T> struct hash;
-template <typename T> struct hash<optional<T>>;
-#endif
+namespace optional_detail
+{
+
+template <typename T, typename U, typename = void>
+struct hash_impl : public hamon::detail::disabled_hash
+{};
+
+template <typename T, typename U>
+struct hash_impl<T, U,
+	hamon::enable_if_t<hamon::detail::cpp17_hash_t<std::hash<U>, U>::value>>
+{
+	std::size_t operator()(hamon::optional<T> const& opt) const
+	HAMON_NOEXCEPT_IF_EXPR((std::hash<U>{}(*opt)))
+	{
+		return opt.has_value() ? std::hash<U>{}(*opt) : 0;
+	}
+};
+
+}	// namespace optional_detail
 
 }	// namespace hamon
+
+#include <functional>
+
+namespace std
+{
+
+// [optional.hash], hash support
+template <typename T>
+struct hash<hamon::optional<T>>
+	: public hamon::optional_detail::hash_impl<T, hamon::remove_const_t<T>>
+{};
+
+}	// namespace std
 
 HAMON_WARNING_POP()
 
