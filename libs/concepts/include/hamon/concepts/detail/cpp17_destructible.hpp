@@ -7,12 +7,11 @@
 #ifndef HAMON_CONCEPTS_DETAIL_CPP17_DESTRUCTIBLE_HPP
 #define HAMON_CONCEPTS_DETAIL_CPP17_DESTRUCTIBLE_HPP
 
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_object.hpp>
-#include <hamon/type_traits/is_destructible.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -26,18 +25,35 @@ namespace detail
 template <typename T>
 concept cpp17_destructible =
 	hamon::is_object_v<T> &&
-	hamon::is_destructible_v<T> &&
-	!hamon::is_array_v<T>;
+	!hamon::is_array_v<T> &&
+	requires(T u)
+	{
+		{ u.~T() };
+	};
 
 #else
 
 template <typename T>
+struct cpp17_destructible_impl
+{
+private:
+	template <typename U,
+		typename = hamon::enable_if_t<hamon::is_object<U>::value>,
+		typename = hamon::enable_if_t<!hamon::is_array<U>::value>,
+		typename = decltype(hamon::declval<U>().~U())
+	>
+	static auto test(int) -> hamon::true_type;
+
+	template <typename U>
+	static auto test(...) -> hamon::false_type;
+
+public:
+	using type = decltype(test<T>(0));
+};
+
+template <typename T>
 using cpp17_destructible =
-	hamon::conjunction<
-		hamon::is_object<T>,
-		hamon::is_destructible<T>,
-		hamon::negation<hamon::is_array<T>>
-	>;
+	typename cpp17_destructible_impl<T>::type;
 
 #endif
 
