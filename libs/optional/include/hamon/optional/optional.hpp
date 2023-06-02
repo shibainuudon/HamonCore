@@ -17,539 +17,59 @@ namespace hamon
 {
 
 using std::optional;
-using std::nullopt_t;
-using std::nullopt;
-using std::bad_optional_access;
-using std::make_optional;
 
 }	// namespace hamon
 
 #else
 
-#include <hamon/compare.hpp>
+#include <hamon/optional/optional_fwd.hpp>
+#include <hamon/optional/nullopt.hpp>
+#include <hamon/optional/bad_optional_access.hpp>
+#include <hamon/optional/detail/is_specialization_of_optional.hpp>
+#include <hamon/optional/detail/converts_from_any_cvref.hpp>
+#include <hamon/optional/detail/optional_base.hpp>
+#include <hamon/optional/detail/optional_constraint.hpp>
+#include <hamon/optional/detail/transform_impl.hpp>
+#include <hamon/optional/detail/construct_from_invoke_tag.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
-#include <hamon/concepts/detail/cpp17_hash.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/concepts.hpp>
+#include <hamon/concepts/invocable.hpp>
 #include <hamon/functional/invoke.hpp>
-#include <hamon/functional/detail/disabled_hash.hpp>
-#include <hamon/memory.hpp>
-#include <hamon/type_traits.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/invoke_result.hpp>
+#include <hamon/type_traits/is_assignable.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
+#include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_scalar.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/utility/adl_swap.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
+#include <hamon/config.hpp>
 #include <initializer_list>
-#include <exception>
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 namespace hamon
 {
 
-template <typename T>
-class optional;
-
-// [optional.nullopt], no-value state indicator
-struct nullopt_t
-{
-	// [optional.nullopt]/1
-	// [optional.nullopt]/2
-	struct CtorTag {};
-	explicit HAMON_CXX11_CONSTEXPR nullopt_t(CtorTag) HAMON_NOEXCEPT {}
-};
-
-HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
-nullopt_t nullopt{nullopt_t::CtorTag{}};
-
-// [optional.bad.access], class bad_optional_access
-class bad_optional_access : public std::exception
-{
-public:
-	bad_optional_access() = default;
-	virtual ~bad_optional_access() = default;
-
-	char const* what() const HAMON_NOEXCEPT override
-	{
-		// [optional.bad.access]/2
-		return "bad optional access";
-	}
-};
-
-namespace optional_detail
-{
-
-template <typename T>
-struct is_specialization_of_optional
-	: public hamon::false_type {};
-
-template <typename T>
-struct is_specialization_of_optional<hamon::optional<T>>
-	: public hamon::true_type {};
-
-// [optional.ctor]/1
-template <typename T, typename W>
-using converts_from_any_cvref = hamon::disjunction<
-	hamon::is_constructible<T, W&>, hamon::is_convertible<W&, T>,
-	hamon::is_constructible<T, W>,  hamon::is_convertible<W,  T>,
-	hamon::is_constructible<T, W const&>, hamon::is_convertible<W const&, T>,
-	hamon::is_constructible<T, W const>,  hamon::is_convertible<W const,  T>
->;
-
-struct construct_from_invoke_tag{};
-
-template <typename T, bool = hamon::is_trivially_destructible<T>::value>
-struct optional_dtor
-{
-	union
-	{
-		char	m_empty;
-		T		m_value;
-	};
-
-	bool	m_has_value;
-
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor() HAMON_NOEXCEPT
-		: m_empty()
-		, m_has_value(false)
-	{}
-
-	template <typename... Args>
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor(hamon::in_place_t, Args&&... args)
-		: m_value(hamon::forward<Args>(args)...)
-		, m_has_value(true)
-	{}
-	
-	template <typename F, typename Arg>
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor(optional_detail::construct_from_invoke_tag, F&& f, Arg&& arg)
-		: m_value(hamon::invoke(hamon::forward<F>(f), hamon::forward<Arg>(arg)))
-		, m_has_value(true)
-	{}
-
-	HAMON_CXX14_CONSTEXPR
-	void reset()
-	{
-		m_has_value = false;
-	}
-};
-
-template <typename T>
-struct optional_dtor<T, false>
-{
-	union
-	{
-		char	m_empty;
-		T		m_value;
-	};
-
-	bool	m_has_value;
-
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor() HAMON_NOEXCEPT
-		: m_empty()
-		, m_has_value(false)
-	{}
-
-	template <typename... Args>
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor(hamon::in_place_t, Args&&... args)
-		: m_value(hamon::forward<Args>(args)...)
-		, m_has_value(true)
-	{}
-
-	template <typename F, typename Arg>
-	HAMON_CXX11_CONSTEXPR
-	optional_dtor(optional_detail::construct_from_invoke_tag, F&& f, Arg&& arg)
-		: m_value(hamon::invoke(hamon::forward<F>(f), hamon::forward<Arg>(arg)))
-		, m_has_value(true)
-	{}
-
-	HAMON_CXX20_CONSTEXPR
-	~optional_dtor()
-	{
-		reset();
-	}
-
-	HAMON_CXX20_CONSTEXPR
-	void reset()
-	{
-		if (m_has_value)
-		{
-			m_value.~T();
-		}
-
-		m_has_value = false;
-	}
-};
-
-template <typename T>
-struct optional_impl
-	: public optional_detail::optional_dtor<T>
-{
-	using base_type = optional_detail::optional_dtor<T>;
-	using base_type::base_type;
-
-	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR void
-	construct(Args&&... args)
-	{
-		hamon::construct_at(
-			hamon::addressof(this->m_value),
-			hamon::forward<Args>(args)...);
-		this->m_has_value = true;
-	}
-
-	template <typename Optional>
-	HAMON_CXX14_CONSTEXPR void
-	construct_from(Optional&& rhs)
-	{
-		if (rhs.has_value())
-		{
-			construct(*hamon::forward<Optional>(rhs));
-		}
-	}
-
-	template <typename U>
-	HAMON_CXX14_CONSTEXPR void
-	assign(U&& v)
-	{
-		if (this->has_value())
-		{
-			this->m_value = hamon::forward<U>(v);
-		}
-		else
-		{
-			construct(hamon::forward<U>(v));
-		}
-	}
-
-	template <typename Optional>
-	HAMON_CXX14_CONSTEXPR void
-	assign_from(Optional&& rhs)
-	{
-		if (rhs.has_value())
-		{
-			assign(*hamon::forward<Optional>(rhs));
-		}
-		else
-		{
-			this->reset();
-		}
-	}
-
-	HAMON_CXX11_CONSTEXPR bool
-	has_value() const HAMON_NOEXCEPT
-	{
-		return this->m_has_value;
-	}
-
-	HAMON_CXX14_CONSTEXPR T&
-	operator*() & HAMON_NOEXCEPT
-	{
-		return this->m_value;
-	}
-
-	HAMON_CXX11_CONSTEXPR T const&
-	operator*() const& HAMON_NOEXCEPT
-	{
-		return this->m_value;
-	}
-
-	HAMON_CXX14_CONSTEXPR T&&
-	operator*() && HAMON_NOEXCEPT
-	{
-		return hamon::move(this->m_value);
-	}
-
-	HAMON_CXX11_CONSTEXPR T const&&
-	operator*() const&& HAMON_NOEXCEPT
-	{
-		return hamon::move(this->m_value);
-	}
-};
-
-template <typename T,
-	bool = hamon::is_copy_constructible<T>::value,
-	bool = hamon::is_trivially_copy_constructible<T>::value>
-struct optional_ctor_copy
-	: public optional_detail::optional_impl<T>
-{
-	using base_type = optional_detail::optional_impl<T>;
-	using base_type::base_type;
-
-	optional_ctor_copy()                                     = default;
-	optional_ctor_copy(optional_ctor_copy &&)                = default;
-	optional_ctor_copy& operator=(optional_ctor_copy &&)     = default;
-	optional_ctor_copy& operator=(optional_ctor_copy const&) = default;
-
-	// [optional.ctor]/7
-	// This constructor is defined as deleted unless is_copy_constructible_v<T> is true.
-	optional_ctor_copy(optional_ctor_copy const&) = delete;
-};
-
-template <typename T>
-struct optional_ctor_copy<T, true, true>
-	: public optional_detail::optional_impl<T>
-{
-	using base_type = optional_detail::optional_impl<T>;
-	using base_type::base_type;
-
-	optional_ctor_copy()                                     = default;
-	optional_ctor_copy(optional_ctor_copy &&)                = default;
-	optional_ctor_copy& operator=(optional_ctor_copy &&)     = default;
-	optional_ctor_copy& operator=(optional_ctor_copy const&) = default;
-
-	// [optional.ctor]/7
-	// If is_trivially_copy_constructible_v<T> is true, this constructor is trivial.
-	optional_ctor_copy(optional_ctor_copy const&) = default;
-};
-
-template <typename T>
-struct optional_ctor_copy<T, true, false>
-	: public optional_detail::optional_impl<T>
-{
-	using base_type = optional_detail::optional_impl<T>;
-	using base_type::base_type;
-
-	optional_ctor_copy()                                     = default;
-	optional_ctor_copy(optional_ctor_copy &&)                = default;
-	optional_ctor_copy& operator=(optional_ctor_copy &&)     = default;
-	optional_ctor_copy& operator=(optional_ctor_copy const&) = default;
-
-	// [optional.ctor]/4
-	// If rhs contains a value, direct-non-list-initializes the contained value with *rhs.
-	HAMON_CXX14_CONSTEXPR
-	optional_ctor_copy(optional_ctor_copy const& rhs)
-		HAMON_NOEXCEPT_IF((hamon::is_nothrow_copy_constructible<T>::value))
-		: base_type()
-	{
-		base_type::construct_from(rhs);
-	}
-};
-
-template <typename T,
-	bool = hamon::is_move_constructible<T>::value,
-	bool = hamon::is_trivially_move_constructible<T>::value>
-struct optional_ctor_move
-	: public optional_detail::optional_ctor_copy<T>
-{
-	using base_type = optional_detail::optional_ctor_copy<T>;
-	using base_type::base_type;
-
-	optional_ctor_move()                                     = default;
-	optional_ctor_move(optional_ctor_move const&)            = default;
-	optional_ctor_move& operator=(optional_ctor_move &&)     = default;
-	optional_ctor_move& operator=(optional_ctor_move const&) = default;
-
-	// [optional.ctor]/8
-	// Constraints: is_move_constructible_v<T> is true.
-	optional_ctor_move(optional_ctor_move &&) = delete;
-};
-
-template <typename T>
-struct optional_ctor_move<T, true, true>
-	: public optional_detail::optional_ctor_copy<T>
-{
-	using base_type = optional_detail::optional_ctor_copy<T>;
-	using base_type::base_type;
-
-	optional_ctor_move()                                     = default;
-	optional_ctor_move(optional_ctor_move const&)            = default;
-	optional_ctor_move& operator=(optional_ctor_move &&)     = default;
-	optional_ctor_move& operator=(optional_ctor_move const&) = default;
-
-	// [optional.ctor]/12
-	// If is_trivially_move_constructible_v<T> is true, this constructor is trivial.
-	optional_ctor_move(optional_ctor_move &&) = default;
-};
-
-template <typename T>
-struct optional_ctor_move<T, true, false>
-	: public optional_detail::optional_ctor_copy<T>
-{
-	using base_type = optional_detail::optional_ctor_copy<T>;
-	using base_type::base_type;
-
-	optional_ctor_move()                                     = default;
-	optional_ctor_move(optional_ctor_move const&)            = default;
-	optional_ctor_move& operator=(optional_ctor_move &&)     = default;
-	optional_ctor_move& operator=(optional_ctor_move const&) = default;
-
-	// [optional.ctor]/9
-	// If rhs contains a value, direct-non-list-initializes the contained value with std​::​move(*rhs).
-	// rhs.has_value() is unchanged.
-	HAMON_CXX14_CONSTEXPR
-	optional_ctor_move(optional_ctor_move && rhs)
-		// [optional.ctor]/12
-		// The exception specification is equivalent to is_nothrow_move_constructible_v<T>.
-		HAMON_NOEXCEPT_IF((hamon::is_nothrow_move_constructible<T>::value))
-		: base_type()
-	{
-		base_type::construct_from(hamon::move(rhs));
-	}
-};
-
-template <typename T,
-	bool = hamon::is_copy_constructible<T>::value &&
-		hamon::is_copy_assignable<T>::value,
-	bool = hamon::is_trivially_copy_constructible<T>::value &&
-		hamon::is_trivially_copy_assignable<T>::value &&
-		hamon::is_trivially_destructible<T>::value
->
-struct optional_assign_copy
-	: public optional_detail::optional_ctor_move<T>
-{
-	using base_type = optional_detail::optional_ctor_move<T>;
-	using base_type::base_type;
-
-	optional_assign_copy()                                       = default;
-	optional_assign_copy(optional_assign_copy &&)                = default;
-	optional_assign_copy(optional_assign_copy const&)            = default;
-	optional_assign_copy& operator=(optional_assign_copy &&)     = default;
-
-	// [optional.assign]/7
-	// This operator is defined as deleted unless is_copy_constructible_v<T> is true and
-	// is_copy_assignable_v<T> is true.
-	optional_assign_copy& operator=(optional_assign_copy const&) = delete;
-};
-
-template <typename T>
-struct optional_assign_copy<T, true, true>
-	: public optional_detail::optional_ctor_move<T>
-{
-	using base_type = optional_detail::optional_ctor_move<T>;
-	using base_type::base_type;
-
-	optional_assign_copy()                                       = default;
-	optional_assign_copy(optional_assign_copy &&)                = default;
-	optional_assign_copy(optional_assign_copy const&)            = default;
-	optional_assign_copy& operator=(optional_assign_copy &&)     = default;
-
-	// [optional.assign]/7
-	// If is_trivially_copy_constructible_v<T> && is_trivially_copy_assignable_v<T> &&
-	// is_trivially_destructible_v<T> is true, this assignment operator is trivial.
-	optional_assign_copy& operator=(optional_assign_copy const&) = default;
-};
-
-template <typename T>
-struct optional_assign_copy<T, true, false>
-	: public optional_detail::optional_ctor_move<T>
-{
-	using base_type = optional_detail::optional_ctor_move<T>;
-	using base_type::base_type;
-
-	optional_assign_copy()                                       = default;
-	optional_assign_copy(optional_assign_copy &&)                = default;
-	optional_assign_copy(optional_assign_copy const&)            = default;
-	optional_assign_copy& operator=(optional_assign_copy &&)     = default;
-
-	HAMON_CXX14_CONSTEXPR optional_assign_copy& operator=(optional_assign_copy const& rhs)
-		HAMON_NOEXCEPT_IF((
-			hamon::is_nothrow_copy_assignable<T>::value &&
-			hamon::is_nothrow_copy_constructible<T>::value))
-	{
-		this->assign_from(rhs);
-		return *this;
-	}
-};
-
-template <typename T,
-	bool = hamon::is_move_constructible<T>::value &&
-		hamon::is_move_assignable<T>::value,
-	bool = hamon::is_trivially_move_constructible<T>::value &&
-		hamon::is_trivially_move_assignable<T>::value &&
-		hamon::is_trivially_destructible<T>::value
->
-struct optional_assign_move
-	: public optional_detail::optional_assign_copy<T>
-{
-	using base_type = optional_detail::optional_assign_copy<T>;
-	using base_type::base_type;
-
-	optional_assign_move()                                       = default;
-	optional_assign_move(optional_assign_move &&)                = default;
-	optional_assign_move(optional_assign_move const&)            = default;
-	optional_assign_move& operator=(optional_assign_move const&) = default;
-
-	optional_assign_move& operator=(optional_assign_move &&)     = delete;
-};
-
-template <typename T>
-struct optional_assign_move<T, true, true>
-	: public optional_detail::optional_assign_copy<T>
-{
-	using base_type = optional_detail::optional_assign_copy<T>;
-	using base_type::base_type;
-
-	optional_assign_move()                                       = default;
-	optional_assign_move(optional_assign_move &&)                = default;
-	optional_assign_move(optional_assign_move const&)            = default;
-	optional_assign_move& operator=(optional_assign_move const&) = default;
-
-	optional_assign_move& operator=(optional_assign_move &&)     = default;
-};
-
-template <typename T>
-struct optional_assign_move<T, true, false>
-	: public optional_detail::optional_assign_copy<T>
-{
-	using base_type = optional_detail::optional_assign_copy<T>;
-	using base_type::base_type;
-
-	optional_assign_move()                                       = default;
-	optional_assign_move(optional_assign_move &&)                = default;
-	optional_assign_move(optional_assign_move const&)            = default;
-	optional_assign_move& operator=(optional_assign_move const&) = default;
-
-	HAMON_CXX14_CONSTEXPR optional_assign_move& operator=(optional_assign_move && rhs)
-		// [optional.assign]/12
-		HAMON_NOEXCEPT_IF((
-			hamon::is_nothrow_move_assignable<T>::value &&
-			hamon::is_nothrow_move_constructible<T>::value))
-	{
-		this->assign_from(hamon::move(rhs));
-		return *this;
-	}
-};
-
-template <typename T>
-using optional_base = optional_assign_move<T>;
-
-struct transform_impl
-{
-	template <typename F, typename Optional>
-	HAMON_CXX11_CONSTEXPR auto operator()(F&& f, Optional&& opt) const
-	-> optional<hamon::remove_cv_t<hamon::invoke_result_t<F, decltype(hamon::forward<Optional>(opt).value())>>>
-	{
-		// [optional.monadic]/7
-		using U = hamon::remove_cv_t<hamon::invoke_result_t<F, decltype(hamon::forward<Optional>(opt).value())>>;
-
-		// [optional.monadic]/8
-		static_assert(!hamon::is_array<U>::value, "");
-		static_assert(!hamon::is_same<U, hamon::in_place_t>::value, "");
-		static_assert(!hamon::is_same<U, hamon::nullopt_t>::value, "");
-
-		// TODO
-		// The declaration
-		// U u(invoke(std::forward<F>(f), value()));
-		// is well-formed for some invented variable u.
-
-		// [optional.monadic]/9
-		return hamon::forward<Optional>(opt).has_value() ?
-			optional<U>(optional_detail::construct_from_invoke_tag{},
-				hamon::forward<F>(f), hamon::forward<Optional>(opt).value()) :
-			optional<U>();
-	}
-};
-
-}	// namespace optional_detail
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 // [optional.optional], class template optional
 template <typename T>
-class optional
-	: private optional_detail::optional_base<T>
+class optional : private optional_detail::optional_base<T>
 {
 private:
 	using base_type = optional_detail::optional_base<T>;
@@ -561,66 +81,13 @@ private:
 	static_assert(!hamon::is_same<hamon::remove_cv_t<T>, hamon::nullopt_t>::value, "");
 	static_assert(hamon::detail::cpp17_destructible_t<T>::value, "");
 
+	using constraint_type = optional_detail::optional_constraint<T>;
+
 	template <typename U>
-	struct UTypeCtor
-	{
-		using V = hamon::remove_cvref_t<U>;
-
-		// [optional.ctor]/23
-		static const bool constructible = hamon::conjunction<
-			hamon::is_constructible<T, U>,							// [optional.ctor]/23.1
-			hamon::negation<hamon::is_same<V, hamon::in_place_t>>,	// [optional.ctor]/23.2
-			hamon::negation<hamon::is_same<V, optional>>,			// [optional.ctor]/23.3
-			hamon::negation<hamon::conjunction<						// [optional.ctor]/23.4
-				hamon::is_same<hamon::remove_cv_t<T>, bool>,
-				optional_detail::is_specialization_of_optional<V>
-			>>
-		>::value;
-
-		// [optional.ctor]/27
-		static const bool implicitly = hamon::is_convertible<U, T>::value;
-
-		static const bool nothrow = hamon::is_nothrow_constructible<T, U>::value;
-	};
+	using UTypeCtor = typename constraint_type::template UTypeCtor<U>;
 
 	template <typename UOptional>
-	struct UOptionalCtor;
-
-	template <typename U>
-	struct UOptionalCtor<optional<U> const&>
-	{
-		// [optional.ctor]/28
-		static const bool constructible = hamon::conjunction<
-			hamon::is_constructible<T, U const&>,		// [optional.ctor]/28.1
-			hamon::negation<hamon::conjunction<			// [optional.ctor]/28.2
-				hamon::negation<hamon::is_same<hamon::remove_cv_t<T>, bool>>,
-				optional_detail::converts_from_any_cvref<T, optional<U>>
-			>>
-		>::value;
-
-		// [optional.ctor]/32
-		static const bool implicitly = hamon::is_convertible<U const&, T>::value;
-
-		static const bool nothrow = hamon::is_nothrow_constructible<T, U const&>::value;
-	};
-
-	template <typename U>
-	struct UOptionalCtor<optional<U>&&>
-	{
-		// [optional.ctor]/33
-		static const bool constructible = hamon::conjunction<
-			hamon::is_constructible<T, U>,				// [optional.ctor]/33.1
-			hamon::negation<hamon::conjunction<			// [optional.ctor]/33.2
-				hamon::negation<hamon::is_same<hamon::remove_cv_t<T>, bool>>,
-				optional_detail::converts_from_any_cvref<T, optional<U>>
-			>>
-		>::value;
-
-		// [optional.ctor]/37
-		static const bool implicitly = hamon::is_convertible<U, T>::value;
-
-		static const bool nothrow = hamon::is_nothrow_constructible<T, U>::value;
-	};
+	using UOptionalCtor = typename constraint_type::template UOptionalCtor<UOptional>;
 
 public:
 	using value_type = T;
@@ -1016,78 +483,55 @@ public:
 			this->m_value :
 			static_cast<T>(hamon::forward<U>(v));
 	}
-
-	// [optional.monadic], monadic operations
-	template <typename F>
-	HAMON_CXX14_CONSTEXPR auto and_then(F&& f) &
-	-> hamon::remove_cvref_t<hamon::invoke_result_t<F, decltype(value())>>
+	
+private:
+	template <typename F, typename Optional>
+	static HAMON_CXX11_CONSTEXPR auto
+	and_then_impl(F&& f, Optional&& opt)
+	-> hamon::remove_cvref_t<hamon::invoke_result_t<F, decltype(hamon::forward<Optional>(opt).value())>>
 	{
-		// [optional.monadic]/1
-		using U = hamon::invoke_result_t<F, decltype(value())>;
+		// [optional.monadic]/1,4
+		using U = hamon::invoke_result_t<F, decltype(hamon::forward<Optional>(opt).value())>;
 
 		using V = hamon::remove_cvref_t<U>;
 
-		// [optional.monadic]/2
+		// [optional.monadic]/2,5
 		static_assert(optional_detail::is_specialization_of_optional<V>::value, "");
 
-		// [optional.monadic]/3
-		return *this ?
-			hamon::invoke(hamon::forward<F>(f), value()) :
+		// [optional.monadic]/3,6
+		return hamon::forward<Optional>(opt).has_value() ?
+			hamon::invoke(hamon::forward<F>(f), hamon::forward<Optional>(opt).value()) :
 			V();
+	}
+
+public:
+	// [optional.monadic], monadic operations
+	template <typename F>
+	HAMON_CXX14_CONSTEXPR auto and_then(F&& f) &
+	->decltype(and_then_impl(hamon::forward<F>(f), *this))
+	{
+		return and_then_impl(hamon::forward<F>(f), *this);
 	}
 
 	template <typename F>
 	HAMON_CXX14_CONSTEXPR auto and_then(F&& f) &&
-	-> hamon::remove_cvref_t<hamon::invoke_result_t<F, decltype(hamon::move(value()))>>
+	->decltype(and_then_impl(hamon::forward<F>(f), hamon::move(*this)))
 	{
-		// [optional.monadic]/4
-		using U = hamon::invoke_result_t<F, decltype(hamon::move(value()))>;
-
-		using V = hamon::remove_cvref_t<U>;
-
-		// [optional.monadic]/5
-		static_assert(optional_detail::is_specialization_of_optional<V>::value, "");
-
-		// [optional.monadic]/6
-		return *this ?
-			hamon::invoke(hamon::forward<F>(f), hamon::move(value())) :
-			V();
+		return and_then_impl(hamon::forward<F>(f), hamon::move(*this));
 	}
 
 	template <typename F>
 	HAMON_CXX11_CONSTEXPR auto and_then(F&& f) const&
-	-> hamon::remove_cvref_t<hamon::invoke_result_t<F, decltype(value())>>
+	->decltype(and_then_impl(hamon::forward<F>(f), *this))
 	{
-		// [optional.monadic]/1
-		using U = hamon::invoke_result_t<F, decltype(value())>;
-
-		using V = hamon::remove_cvref_t<U>;
-
-		// [optional.monadic]/2
-		static_assert(optional_detail::is_specialization_of_optional<V>::value, "");
-
-		// [optional.monadic]/3
-		return *this ?
-			hamon::invoke(hamon::forward<F>(f), value()) :
-			V();
+		return and_then_impl(hamon::forward<F>(f), *this);
 	}
 
 	template <typename F>
 	HAMON_CXX11_CONSTEXPR auto and_then(F&& f) const&&
-	-> hamon::remove_cvref_t<hamon::invoke_result_t<F, decltype(hamon::move(value()))>>
+	->decltype(and_then_impl(hamon::forward<F>(f), hamon::move(*this)))
 	{
-		// [optional.monadic]/4
-		using U = hamon::invoke_result_t<F, decltype(hamon::move(value()))>;
-
-		using V = hamon::remove_cvref_t<U>;
-
-		// [optional.monadic]/5
-		static_assert(optional_detail::is_specialization_of_optional<V>::value, "");
-
-		// [optional.monadic]/6
-		return *this ?
-			hamon::invoke(hamon::forward<F>(f), hamon::move(value())) :
-			V();
+		return and_then_impl(hamon::forward<F>(f), hamon::move(*this));
 	}
 
 private:
@@ -1170,12 +614,27 @@ private:
 	}
 };
 
+HAMON_WARNING_POP()
+
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <typename T>
 optional(T) -> optional<T>;
 
 #endif
+
+}	// namespace hamon
+
+#include <hamon/compare/concepts/three_way_comparable_with.hpp>
+#include <hamon/compare/compare_three_way_result.hpp>
+#include <hamon/compare/strong_ordering.hpp>
+#include <hamon/concepts/convertible_to.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/declval.hpp>
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 
 // [optional.relops], relational operators
 template <typename T, typename U,
@@ -1553,6 +1012,16 @@ operator<=>(optional<T> const& x, U const& v)
 
 #endif
 
+}	// namespace hamon
+
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_move_constructible.hpp>
+#include <hamon/type_traits/is_swappable.hpp>
+
+namespace hamon
+{
+
 // [optional.specalg], specialized algorithms
 template <typename T,
 	typename = hamon::enable_if_t<hamon::conjunction<	// [optional.specalg]/1
@@ -1568,49 +1037,10 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 	x.swap(y);
 }
 
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR optional<hamon::decay_t<T>>
-make_optional(T&& v)
-{
-	return optional<hamon::decay_t<T>>(hamon::forward<T>(v));
-}
-
-template <typename T, typename... Args>
-inline HAMON_CXX11_CONSTEXPR optional<T>
-make_optional(Args&&... args)
-{
-	return optional<T>(hamon::in_place, hamon::forward<Args>(args)...);
-}
-
-template <typename T, typename U, typename... Args>
-inline HAMON_CXX14_CONSTEXPR optional<T>
-make_optional(std::initializer_list<U> il, Args&&... args)
-{
-	return optional<T>(hamon::in_place, il, hamon::forward<Args>(args)...);
-}
-
-namespace optional_detail
-{
-
-template <typename T, typename U, typename = void>
-struct hash_impl : public hamon::detail::disabled_hash
-{};
-
-template <typename T, typename U>
-struct hash_impl<T, U,
-	hamon::enable_if_t<hamon::detail::cpp17_hash_t<std::hash<U>, U>::value>>
-{
-	std::size_t operator()(hamon::optional<T> const& opt) const
-	HAMON_NOEXCEPT_IF_EXPR((std::hash<U>{}(*opt)))
-	{
-		return opt.has_value() ? std::hash<U>{}(*opt) : 0;
-	}
-};
-
-}	// namespace optional_detail
-
 }	// namespace hamon
 
+#include <hamon/optional/detail/hash_impl.hpp>
+#include <hamon/type_traits/remove_const.hpp>
 #include <functional>
 
 namespace std
@@ -1623,8 +1053,6 @@ struct hash<hamon::optional<T>>
 {};
 
 }	// namespace std
-
-HAMON_WARNING_POP()
 
 #endif
 
