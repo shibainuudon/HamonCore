@@ -29,6 +29,7 @@ template <typename T, typename U>
 struct hash_impl<T, U,
 	hamon::enable_if_t<hamon::detail::cpp17_hash_t<std::hash<U>, U>::value>>
 {
+	HAMON_NODISCARD	// extension
 	std::size_t operator()(hamon::optional<T> const& opt) const
 	HAMON_NOEXCEPT_IF_EXPR((std::hash<U>{}(*opt)))
 	{

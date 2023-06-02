@@ -33,6 +33,7 @@ namespace hamon
 {
 
 template <typename T>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::optional<hamon::decay_t<T>>
 make_optional(T&& v)
 {
@@ -40,6 +41,7 @@ make_optional(T&& v)
 }
 
 template <typename T, typename... Args>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::optional<T>
 make_optional(Args&&... args)
 {
@@ -47,6 +49,7 @@ make_optional(Args&&... args)
 }
 
 template <typename T, typename U, typename... Args>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX14_CONSTEXPR hamon::optional<T>
 make_optional(std::initializer_list<U> il, Args&&... args)
 {
