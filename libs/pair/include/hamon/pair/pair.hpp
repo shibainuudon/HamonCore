@@ -601,6 +601,7 @@ pair(T1, T2) -> pair<T1, T2>;
 // Specialized algorithms	[pairs.sprc]
 
 template <typename T1, typename T2, typename U1, typename U2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
@@ -611,6 +612,7 @@ operator==(pair<T1, T2> const& x, pair<U1, U2> const& y)
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename T1, typename T2, typename U1, typename U2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR
 hamon::common_comparison_category_t<
 	hamon::detail::synth3way_t<T1, U1>,
@@ -628,6 +630,7 @@ operator<=>(pair<T1, T2> const& x, pair<U1, U2> const& y)
 #else
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(pair<T1, T2> const& x, pair<T1, T2> const& y)
 {
@@ -636,6 +639,7 @@ operator<(pair<T1, T2> const& x, pair<T1, T2> const& y)
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(pair<T1, T2> const& x, pair<T1, T2> const& y)
 {
@@ -643,6 +647,7 @@ operator!=(pair<T1, T2> const& x, pair<T1, T2> const& y)
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(pair<T1, T2> const& x, pair<T1, T2> const& y)
 {
@@ -650,6 +655,7 @@ operator>(pair<T1, T2> const& x, pair<T1, T2> const& y)
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(pair<T1, T2> const& x, pair<T1, T2> const& y)
 {
@@ -657,6 +663,7 @@ operator<=(pair<T1, T2> const& x, pair<T1, T2> const& y)
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(pair<T1, T2> const& x, pair<T1, T2> const& y)
 {
@@ -731,6 +738,7 @@ namespace hamon
 {
 
 template <hamon::size_t I, typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>>&
 get(pair<T1, T2>& p) HAMON_NOEXCEPT
 {
@@ -738,6 +746,7 @@ get(pair<T1, T2>& p) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>> const&
 get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 {
@@ -745,6 +754,7 @@ get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>>&&
 get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 {
@@ -752,6 +762,7 @@ get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple_element_t<I, pair<T1, T2>> const&&
 get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 {
@@ -760,6 +771,7 @@ get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 
 // [pair.astuple]/6
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T1&
 get(pair<T1, T2>& p) HAMON_NOEXCEPT
 {
@@ -767,6 +779,7 @@ get(pair<T1, T2>& p) HAMON_NOEXCEPT
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T1 const&
 get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 {
@@ -774,6 +787,7 @@ get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T1&&
 get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 {
@@ -781,6 +795,7 @@ get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 }
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T1 const&&
 get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 {
@@ -789,6 +804,7 @@ get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 
 // [pair.astuple]/8
 template <typename T2, typename T1>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T2&
 get(pair<T1, T2>& p) HAMON_NOEXCEPT
 {
@@ -796,6 +812,7 @@ get(pair<T1, T2>& p) HAMON_NOEXCEPT
 }
 
 template <typename T2, typename T1>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T2 const&
 get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 {
@@ -803,6 +820,7 @@ get(pair<T1, T2> const& p) HAMON_NOEXCEPT
 }
 
 template <typename T2, typename T1>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T2&&
 get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 {
@@ -810,6 +828,7 @@ get(pair<T1, T2>&& p) HAMON_NOEXCEPT
 }
 
 template <typename T2, typename T1>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T2 const&&
 get(pair<T1, T2> const&& p) HAMON_NOEXCEPT
 {

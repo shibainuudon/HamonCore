@@ -31,6 +31,7 @@ namespace hamon
 {
 
 template <typename T1, typename T2>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR
 hamon::pair<hamon::unwrap_ref_decay_t<T1>, hamon::unwrap_ref_decay_t<T2>>
 make_pair(T1&& x, T2&& y)
