@@ -56,4 +56,8 @@ GTEST_TEST(VariantTest, MonostateTest)
 		HAMON_ASSERT_NOEXCEPT_TRUE(m1 <=> m2);
 	}
 #endif
+
+	EXPECT_EQ(
+		std::hash<hamon::monostate>{}(m1),
+		std::hash<hamon::monostate>{}(m2));
 }

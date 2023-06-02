@@ -47,11 +47,25 @@ HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool operator!=(monostate, monostat
 
 #endif
 
-// [variant.hash] hash support
-// TODO hash support
-//template<> struct hash<monostate>;
-
 }	// namespace hamon
+
+#include <functional>
+
+namespace std
+{
+
+// [variant.hash] hash support
+template <>
+struct hash<hamon::monostate>
+{
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR std::size_t
+	operator()(hamon::monostate const&) const HAMON_NOEXCEPT
+	{
+		return 0x4bb9b849;
+	}
+};
+
+}	// namespace std
 
 #endif
 

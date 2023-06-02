@@ -419,11 +419,21 @@ swap(variant<Types...>& lhs, variant<Types...>& rhs)
 	lhs.swap(rhs);
 }
 
-// [variant.hash] hash support
-//template <typename T> struct hash;
-//template <typename... Types> struct hash<variant<Types...>>;
-
 }	// namespace hamon
+
+#include <hamon/variant/detail/hash_impl.hpp>
+#include <functional>
+
+namespace std
+{
+
+// [variant.hash] hash support
+template <typename... Types>
+struct hash<hamon::variant<Types...>>
+	: public hamon::variant_detail::hash_impl<hamon::variant<Types...>>
+{};
+
+}	// namespace std
 
 #endif
 
