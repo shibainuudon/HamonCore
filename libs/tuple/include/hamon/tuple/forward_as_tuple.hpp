@@ -30,6 +30,7 @@ namespace hamon
 // Tuple creation functions	[tuple.creation]
 
 template <typename... TTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple<TTypes&&...>
 forward_as_tuple(TTypes&&... t) HAMON_NOEXCEPT
 {

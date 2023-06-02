@@ -32,6 +32,7 @@ namespace hamon
 // Tuple creation functions	[tuple.creation]
 
 template <typename... TTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::tuple<TTypes&...>
 tie(TTypes&... t) HAMON_NOEXCEPT
 {

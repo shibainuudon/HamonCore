@@ -70,6 +70,7 @@ HAMON_NOEXCEPT_IF_EXPR(T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
 
 // [tuple.apply]/4
 template <typename T, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T
 make_from_tuple(Tuple&& t)
 HAMON_NOEXCEPT_RETURN(

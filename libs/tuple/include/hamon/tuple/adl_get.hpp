@@ -45,14 +45,14 @@ void get(T) = delete;
 	{ return __VA_ARGS__; }
 
 template <hamon::size_t I, typename T>
-inline HAMON_CXX11_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR auto
 adl_get(T&& t)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	// 名前空間修飾無しで呼び出す
 	get<I>(hamon::forward<T>(t)))
 
 template <typename U, typename T>
-inline HAMON_CXX11_CONSTEXPR auto
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR auto
 adl_get(T&& t)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	// 名前空間修飾無しで呼び出す

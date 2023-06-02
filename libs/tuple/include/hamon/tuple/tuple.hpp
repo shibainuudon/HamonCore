@@ -1259,6 +1259,7 @@ namespace hamon
 
 // Element access	[tuple.elem]
 template <hamon::size_t I, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>>&
 get(tuple<Types...>& t) HAMON_NOEXCEPT
 {
@@ -1267,6 +1268,7 @@ get(tuple<Types...>& t) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>>&&
 get(tuple<Types...>&& t) HAMON_NOEXCEPT
 {
@@ -1275,6 +1277,7 @@ get(tuple<Types...>&& t) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>> const&
 get(tuple<Types...> const& t) HAMON_NOEXCEPT
 {
@@ -1283,6 +1286,7 @@ get(tuple<Types...> const& t) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t I, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR tuple_element_t<I, tuple<Types...>> const&&
 get(tuple<Types...> const&& t) HAMON_NOEXCEPT
 {
@@ -1291,6 +1295,7 @@ get(tuple<Types...> const&& t) HAMON_NOEXCEPT
 }
 
 template <typename T, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T&
 get(tuple<Types...>& t) HAMON_NOEXCEPT
 {
@@ -1299,6 +1304,7 @@ get(tuple<Types...>& t) HAMON_NOEXCEPT
 }
 
 template <typename T, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T&&
 get(tuple<Types...>&& t) HAMON_NOEXCEPT
 {
@@ -1307,6 +1313,7 @@ get(tuple<Types...>&& t) HAMON_NOEXCEPT
 }
 
 template <typename T, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T const&
 get(tuple<Types...> const& t) HAMON_NOEXCEPT
 {
@@ -1315,6 +1322,7 @@ get(tuple<Types...> const& t) HAMON_NOEXCEPT
 }
 
 template <typename T, typename... Types>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T const&&
 get(tuple<Types...> const&& t) HAMON_NOEXCEPT
 {
@@ -1331,6 +1339,7 @@ namespace hamon
 
 // Relational operators	[tuple.rel]
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1338,6 +1347,7 @@ operator==(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(tuple<TTypes...> const& t, UTuple const& u)
 {
@@ -1347,6 +1357,7 @@ operator==(tuple<TTypes...> const& t, UTuple const& u)
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR auto
 operator<=>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 ->decltype(tuple_detail::tuple_3way(t, u))
@@ -1355,6 +1366,7 @@ operator<=>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR auto
 operator<=>(tuple<TTypes...> const& t, UTuple const& u)
 ->decltype(tuple_detail::tuple_3way(t, u))
@@ -1365,6 +1377,7 @@ operator<=>(tuple<TTypes...> const& t, UTuple const& u)
 #else
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1372,6 +1385,7 @@ operator<(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1379,6 +1393,7 @@ operator!=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1386,6 +1401,7 @@ operator>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1393,6 +1409,7 @@ operator<=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, typename... UTypes>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 {
@@ -1400,6 +1417,7 @@ operator>=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(tuple<TTypes...> const& t, UTuple const& u)
 {
@@ -1407,6 +1425,7 @@ operator<(tuple<TTypes...> const& t, UTuple const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(tuple<TTypes...> const& t, UTuple const& u)
 {
@@ -1414,6 +1433,7 @@ operator!=(tuple<TTypes...> const& t, UTuple const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(tuple<TTypes...> const& t, UTuple const& u)
 {
@@ -1421,6 +1441,7 @@ operator>(tuple<TTypes...> const& t, UTuple const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(tuple<TTypes...> const& t, UTuple const& u)
 {
@@ -1428,6 +1449,7 @@ operator<=(tuple<TTypes...> const& t, UTuple const& u)
 }
 
 template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(tuple<TTypes...> const& t, UTuple const& u)
 {

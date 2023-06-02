@@ -136,6 +136,7 @@ template <
 	>::value>
 #endif
 >
+HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR auto
 tuple_cat(Tuples&&... tpls)
 -> tuple_detail::tuple_cat_result_t<Tuples...>
