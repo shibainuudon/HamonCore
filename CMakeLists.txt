@@ -25,6 +25,7 @@ set(SUBDIRECTORIES
 	bitflags
 	cmath
 	compare
+	complex
 	concepts
 	config
 	cstddef
