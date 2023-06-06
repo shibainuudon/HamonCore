@@ -85,7 +85,7 @@
 #include <hamon/cmath/log10.hpp>
 #include <hamon/cmath/log1p.hpp>
 #include <hamon/cmath/log2.hpp>
-//#include <hamon/cmath/logb.hpp>
+#include <hamon/cmath/logb.hpp>
 //#include <hamon/cmath/lrint.hpp>
 #include <hamon/cmath/lround.hpp>
 //#include <hamon/cmath/modf.hpp>
