@@ -48,8 +48,8 @@
 //#include <hamon/cmath/fdim.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/fma.hpp>
-//#include <hamon/cmath/fmax.hpp>
-//#include <hamon/cmath/fmin.hpp>
+#include <hamon/cmath/fmax.hpp>
+#include <hamon/cmath/fmin.hpp>
 #include <hamon/cmath/fmod.hpp>
 //#include <hamon/cmath/fpclassify.hpp>
 #include <hamon/cmath/frac.hpp>
