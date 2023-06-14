@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::complex&lt;*&gt;">
+		<Intrinsic Name="Real" Expression="m_real"/>
+		<Intrinsic Name="Imag" Expression="m_imag"/>
+		<DisplayString Condition="(Imag() &lt; 0) &amp;&amp; (Real() == 0)">-i*{-Imag()}</DisplayString>
+		<DisplayString Condition="(Imag() &lt; 0) &amp;&amp; (Real() != 0)">{Real()}-i*{-Imag()}</DisplayString>
+		<DisplayString Condition="Imag() == 0">{Real()}</DisplayString>
+		<DisplayString Condition="(Imag() &gt; 0) &amp;&amp; (Real() == 0)">i*{Imag()}</DisplayString>
+		<DisplayString Condition="(Imag() &gt; 0) &amp;&amp; (Real() != 0)">{Real()}+i*{Imag()}</DisplayString>
+		<Expand>
+			<Item Name="real">Real()</Item>
+			<Item Name="imag">Imag()</Item>
+		</Expand>
+	</Type>
+</AutoVisualizer>
