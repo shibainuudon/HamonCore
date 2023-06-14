@@ -45,7 +45,7 @@
 #include <hamon/cmath/expm1.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/factorial.hpp>
-//#include <hamon/cmath/fdim.hpp>
+#include <hamon/cmath/fdim.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/fma.hpp>
 #include <hamon/cmath/fmax.hpp>
