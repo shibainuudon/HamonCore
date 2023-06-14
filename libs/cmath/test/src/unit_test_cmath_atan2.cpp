@@ -41,22 +41,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::atan2(0   , 0.0l))>::v
 static_assert(hamon::is_same<double,      decltype(hamon::atan2(0   , 0   ))>::value, "");
 
 template <typename T>
-double atan2_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double atan2_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double atan2_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.000000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double atan2_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.000000000001;
 }
@@ -75,7 +75,7 @@ void Atan2TestFloat()
 	HAMON_CXX11_CONSTEXPR auto three_quarters_pi = hamon::numbers::pi_fn<R>() * 3 / 4;
 	HAMON_CXX11_CONSTEXPR auto quarter_pi        = hamon::numbers::pi_fn<R>() / 4;
 
-	HAMON_CXX11_CONSTEXPR double error = atan2_error<R>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<R>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)pi *  0.00, (double)hamon::atan2(T1( 0.0), T2( 1.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR((double)pi *  0.00, (double)hamon::atan2(T1( 0.0), T2( 2.0)), error);

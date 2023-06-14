@@ -27,22 +27,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::acos(0.0l))>::value, "
 static_assert(hamon::is_same<long double, decltype(hamon::acosl(0.0l))>::value, "");
 
 template <typename T>
-double acos_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double acos_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double acos_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.000000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double acos_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.000000000001;
 }
@@ -54,7 +54,7 @@ void AcosTestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
 
-	HAMON_CXX11_CONSTEXPR double error = acos_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(3.141592653590, (double)hamon::acos(T(-1.00)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(2.418858405776, (double)hamon::acos(T(-0.75)), error);

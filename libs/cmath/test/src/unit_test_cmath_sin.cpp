@@ -28,22 +28,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::sin(0.0l))>::value, ""
 static_assert(hamon::is_same<long double, decltype(hamon::sinl(0.0l))>::value, "");
 
 template <typename T>
-double sin_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double sin_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.00001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double sin_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.00000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double sin_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.00000000001;
 }
@@ -54,7 +54,7 @@ void SinTestFloat()
 	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
 
-	HAMON_CXX11_CONSTEXPR double error = sin_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.35078322768961985, (double)hamon::sin(T(-3.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.14112000805986722, (double)hamon::sin(T(-3.0)), error);

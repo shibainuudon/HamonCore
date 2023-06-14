@@ -40,22 +40,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::pow(0   , 0.0l))>::val
 static_assert(hamon::is_same<double,      decltype(hamon::pow(0   , 0   ))>::value, "");
 
 template <typename T>
-double pow_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double pow_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.0001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double pow_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.00000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double pow_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.00000000001;
 }
@@ -64,7 +64,7 @@ template <typename T1, typename T2>
 void PowTestFloat()
 {
 	using Promoted = hamon::float_promote_t<T1, T2>;
-	HAMON_CXX11_CONSTEXPR double error = pow_error<Promoted>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<Promoted>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(8.0,               (double)hamon::pow(T1(2.0), T2( 3.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(4.0,               (double)hamon::pow(T1(2.0), T2( 2.0)), error);

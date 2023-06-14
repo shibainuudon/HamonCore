@@ -30,22 +30,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::log(0.0l))>::value, ""
 static_assert(hamon::is_same<long double, decltype(hamon::logl(0.0l))>::value, "");
 
 template <typename T>
-double log_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double log_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double log_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.000000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double log_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.000000000001;
 }
@@ -57,7 +57,7 @@ void LogTestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
 
-	HAMON_CXX11_CONSTEXPR double error = log_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.38629436111989, (double)hamon::log(T(0.25)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.69314718055995, (double)hamon::log(T(0.50)), error);

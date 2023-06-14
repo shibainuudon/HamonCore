@@ -42,7 +42,7 @@
 #include <hamon/cmath/exp.hpp>
 #include <hamon/cmath/exp2.hpp>
 //#include <hamon/cmath/expint.hpp>
-//#include <hamon/cmath/expm1.hpp>
+#include <hamon/cmath/expm1.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/factorial.hpp>
 //#include <hamon/cmath/fdim.hpp>

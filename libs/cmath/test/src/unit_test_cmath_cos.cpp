@@ -28,22 +28,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::cos(0.0l))>::value, ""
 static_assert(hamon::is_same<long double, decltype(hamon::cosl(0.0l))>::value, "");
 
 template <typename T>
-double cos_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double cos_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double cos_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.00000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double cos_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.00000000001;
 }
@@ -54,7 +54,7 @@ void CosTestFloat()
 	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
 
-	HAMON_CXX11_CONSTEXPR double error = cos_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.93645668729, (double)hamon::cos(T(-3.5)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.98999249660, (double)hamon::cos(T(-3.0)), error);

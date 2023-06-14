@@ -29,22 +29,22 @@ static_assert(hamon::is_same<long double, decltype(hamon::tan(0.0l))>::value, ""
 static_assert(hamon::is_same<long double, decltype(hamon::tanl(0.0l))>::value, "");
 
 template <typename T>
-double tan_error();
+double get_error();
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double tan_error<float>()
+inline HAMON_CXX11_CONSTEXPR double get_error<float>()
 {
 	return 0.0001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double tan_error<double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<double>()
 {
 	return 0.0000000001;
 }
 
 template <>
-inline HAMON_CXX11_CONSTEXPR double tan_error<long double>()
+inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 {
 	return 0.0000000001;
 }
@@ -55,7 +55,7 @@ void TanTestFloat()
 	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
 
-	HAMON_CXX11_CONSTEXPR double error = tan_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::tan(T( 0.0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.10033467208, (double)hamon::tan(T( 0.1)), error);
