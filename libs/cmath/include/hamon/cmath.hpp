@@ -26,7 +26,7 @@
 //#include <hamon/cmath/comp_ellint_3.hpp>
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/cos.hpp>
-//#include <hamon/cmath/cosh.hpp>
+#include <hamon/cmath/cosh.hpp>
 //#include <hamon/cmath/cyl_bessel_i.hpp>
 //#include <hamon/cmath/cyl_bessel_j.hpp>
 //#include <hamon/cmath/cyl_bessel_k.hpp>
@@ -112,7 +112,7 @@
 #include <hamon/cmath/sign.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/sin.hpp>
-//#include <hamon/cmath/sinh.hpp>
+#include <hamon/cmath/sinh.hpp>
 #include <hamon/cmath/smoothstep.hpp>
 //#include <hamon/cmath/sph_bessel.hpp>
 //#include <hamon/cmath/sph_legendre.hpp>
@@ -120,7 +120,7 @@
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/cmath/step.hpp>
 #include <hamon/cmath/tan.hpp>
-//#include <hamon/cmath/tanh.hpp>
+#include <hamon/cmath/tanh.hpp>
 //#include <hamon/cmath/tgamma.hpp>
 #include <hamon/cmath/trunc.hpp>
 
