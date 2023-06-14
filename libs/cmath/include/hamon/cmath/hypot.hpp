@@ -175,19 +175,19 @@ hypot_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	上記を満たさずに、x と y のどちらか一方でもNaNの場合、NaNを返す
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 hypot(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y);
 }
 
-inline HAMON_CXX11_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 hypotf(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y);
 }
 
-inline HAMON_CXX11_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 hypotl(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y);
@@ -208,7 +208,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 hypot(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;
@@ -231,7 +231,7 @@ hypot(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
  *	上記を満たさずに、引数のどれか1個でも NaN の場合、NaN を返す
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 hypot(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {
 	return detail::hypot_impl(x, y, z);
@@ -249,7 +249,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 hypot(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

@@ -90,10 +90,10 @@ static_assert(hamon::is_same<double,      decltype(hamon::lerp(0,    0,    0   )
 template <typename T>
 void LerpTest(void)
 {
-	//HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	//HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::lowest();
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	//HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	//HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
 
 	// When isfinite(a) && isfinite(b):
 	// ・If t == 0, the result is equal to a.

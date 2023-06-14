@@ -31,9 +31,9 @@ static_assert(hamon::is_same<long double, decltype(hamon::truncl(0.0l))>::value,
 template <typename T>
 void TruncTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon() * 2;
+	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon() * 2;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::trunc(T( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::trunc(T( 0.1)));

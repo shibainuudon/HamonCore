@@ -30,9 +30,9 @@ static_assert(hamon::is_same<double,      decltype(hamon::radians_to_degrees(0  
 template <typename T>
 void RadiansToDegreesTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto pi  = hamon::numbers::pi_fn<T>();
+	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto pi  = hamon::numbers::pi_fn<T>();
 	
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(   0.0), hamon::radians_to_degrees(pi * T( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(  90.0), hamon::radians_to_degrees(pi * T( 0.5)));
@@ -63,7 +63,7 @@ void RadiansToDegreesTestFloat(void)
 template <typename T>
 void RadiansToDegreesTestSignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.00000000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.00000000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(   0.000000000000, hamon::radians_to_degrees(T( 0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(  57.295779513082, hamon::radians_to_degrees(T( 1)), error);
@@ -89,7 +89,7 @@ void RadiansToDegreesTestSignedInt(void)
 template <typename T>
 void RadiansToDegreesTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.00000000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.00000000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(  0.000000000000, hamon::radians_to_degrees(T( 0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 57.295779513082, hamon::radians_to_degrees(T( 1)), error);

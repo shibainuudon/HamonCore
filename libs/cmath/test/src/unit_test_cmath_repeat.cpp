@@ -215,9 +215,9 @@ void RepeatTestSignedInt(void)
 template <typename T>
 void RepeatTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR double error = 0.0001;
+	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR double error = 0.0001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::repeat(nan,  T(0), T(0))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::repeat(T(0), nan,  T(0))));

@@ -11,8 +11,9 @@
 #include <hamon/cmath/issubnormal.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
-#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -22,7 +23,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 isnormal_impl(FloatType x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -55,29 +56,12 @@ isnormal_impl(FloatType x) HAMON_NOEXCEPT
  *
  *	@note	ArithmeticTypeが整数型のときはdoubleにキャストしてから調べる。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isnormal(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+isnormal(Arithmetic arg) HAMON_NOEXCEPT
 {
-	return detail::isnormal_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isnormal(double arg) HAMON_NOEXCEPT
-{
-	return detail::isnormal_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isnormal(long double arg) HAMON_NOEXCEPT
-{
-	return detail::isnormal_impl(arg);
-}
-
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isnormal(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::isnormal_impl(static_cast<double>(arg));
+	using type = hamon::float_promote_t<Arithmetic>;
+	return detail::isnormal_impl(static_cast<type>(arg));
 }
 
 }	// namespace hamon

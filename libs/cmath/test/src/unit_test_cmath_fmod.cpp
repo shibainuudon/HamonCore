@@ -41,10 +41,10 @@ static_assert(hamon::is_same<double,      decltype(hamon::fmod(0   , 0   ))>::va
 template <typename T1, typename T2>
 void FmodTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
 
 	using R = hamon::float_promote_t<T1, T2>;
 

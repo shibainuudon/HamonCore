@@ -21,7 +21,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 is_odd_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return hamon::fmod(hamon::fabs(x), FloatType(2)) == FloatType(1);
@@ -41,7 +41,7 @@ is_odd_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN または ±∞ の場合、falseを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 is_odd(Arithmetic x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

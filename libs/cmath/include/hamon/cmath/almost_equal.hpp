@@ -25,14 +25,14 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 tmax(T a, T b) HAMON_NOEXCEPT
 {
 	return b < a ? a : b;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 eps(T x, T y) HAMON_NOEXCEPT
 {
 	return std::numeric_limits<T>::epsilon() *
@@ -43,7 +43,7 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4056)	// 浮動小数点数の定数演算でオーバーフローしました。
 
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 almost_equal_impl(FloatType x, FloatType y, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
 	return
@@ -57,7 +57,7 @@ almost_equal_impl(FloatType x, FloatType y, hamon::detail::overload_priority<1>)
 HAMON_WARNING_POP()
 
 template <typename IntType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 almost_equal_impl(IntType x, IntType y, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
 	return x == y;
@@ -80,7 +80,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 almost_equal(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::arithmetic_promote_t<Arithmetic1, Arithmetic2>;

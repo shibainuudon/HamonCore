@@ -31,18 +31,18 @@ struct is_odd_fn
 {
 private:
 	template <HAMON_CONSTRAINED_PARAM(has_adl_is_odd, T)>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(is_odd(x))
 
 	template <typename T>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<0>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::is_odd(x))
 
 public:
 	template <typename T>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(T const& x) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(x, hamon::detail::overload_priority<1>{}))
@@ -56,7 +56,7 @@ inline namespace cpo
 {
 
 // Customization point object
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 is_odd_detail::is_odd_fn is_odd{};
 
 }	// inline namespace cpo

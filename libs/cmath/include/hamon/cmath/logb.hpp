@@ -186,26 +186,26 @@ logb_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 logb(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::logb_impl(arg);
 }
 
-inline HAMON_CXX11_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 logbf(float arg) HAMON_NOEXCEPT
 {
 	return detail::logb_impl(arg);
 }
 
-inline HAMON_CXX11_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 logbl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::logb_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 logb(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::logb_impl(static_cast<double>(arg));

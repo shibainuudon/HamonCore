@@ -86,14 +86,14 @@ static_assert(hamon::is_same<double,      decltype(hamon::smoothstep(0   , 0   ,
 template <typename T1, typename T2, typename T3>
 void SmoothStepTestFloat(void)
 {
-	HAMON_CONSTEXPR double error = 0.0000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.0000001;
 
-	HAMON_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CONSTEXPR auto nan3 = std::numeric_limits<T3>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
-	HAMON_CONSTEXPR auto inf3 = std::numeric_limits<T3>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan3 = std::numeric_limits<T3>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf3 = std::numeric_limits<T3>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.00000, (double)hamon::smoothstep(T1(  0.0), T2( 1.0), -inf3), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.00000, (double)hamon::smoothstep(T1(  0.0), T2( 1.0), T3( -1.00)), error);
@@ -190,7 +190,7 @@ void SmoothStepTestFloat(void)
 template <typename T1, typename T2, typename T3>
 void SmoothStepTestInteger(void)
 {
-	HAMON_CONSTEXPR double error = 0.000000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.000000000000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.00000, (double)hamon::smoothstep(T1(-10), T2(10), T3(-99)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.00000, (double)hamon::smoothstep(T1(-10), T2(10), T3(-11)), error);

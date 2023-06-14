@@ -103,7 +103,7 @@ void TanTestFloat()
 template <typename T>
 void TanTestSignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.00000000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.00000000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, hamon::tan(T( 0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.55740772465, hamon::tan(T( 1)), error);
@@ -117,7 +117,7 @@ void TanTestSignedInt(void)
 template <typename T>
 void TanTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.00000000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.00000000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, hamon::tan(T(0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.55740772465, hamon::tan(T(1)), error);

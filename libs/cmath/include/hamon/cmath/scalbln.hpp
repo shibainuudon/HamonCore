@@ -95,26 +95,26 @@ scalbln_impl(FloatType x, long exp) HAMON_NOEXCEPT
  *	x が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 scalbln(FloatType x, long exp) HAMON_NOEXCEPT
 {
 	return detail::scalbln_impl(x, exp);
 }
 
-inline HAMON_CXX11_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 scalblnf(float x, long exp) HAMON_NOEXCEPT
 {
 	return detail::scalbln_impl(x, exp);
 }
 
-inline HAMON_CXX11_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 scalblnl(long double x, long exp) HAMON_NOEXCEPT
 {
 	return detail::scalbln_impl(x, exp);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CXX11_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 scalbln(IntegralType x, long exp) HAMON_NOEXCEPT
 {
 	return detail::scalbln_impl(static_cast<double>(x), exp);

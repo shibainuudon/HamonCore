@@ -42,11 +42,11 @@ static_assert(hamon::is_same<double,      decltype(hamon::copysign(0   , 0   ))>
 template <typename T>
 void CopysignTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 1.0), hamon::copysign(T( 1.0), T(+2.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-1.0), hamon::copysign(T( 1.0), T(-2.0)));
@@ -114,9 +114,9 @@ void CopysignTestFloat(void)
 template <typename T>
 void CopysignTestSignedInt(void)
 {
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 1), hamon::copysign(T(1), T(+2)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(-1), hamon::copysign(T(1), T(-2)));
@@ -133,9 +133,9 @@ void CopysignTestSignedInt(void)
 template <typename T>
 void CopysignTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1.0, hamon::copysign(T(1), T(+2)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-1.0, hamon::copysign(T(1), -2.0));

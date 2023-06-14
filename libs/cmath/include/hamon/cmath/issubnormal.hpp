@@ -27,7 +27,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 issubnormal_or_zero(T x) HAMON_NOEXCEPT
 {
 	return
@@ -37,7 +37,7 @@ issubnormal_or_zero(T x) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 issubnormal_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -60,7 +60,7 @@ issubnormal_impl(FloatType x) HAMON_NOEXCEPT
  *	@note	xが整数型のときはdoubleにキャストしてから調べる。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 issubnormal(Arithmetic x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

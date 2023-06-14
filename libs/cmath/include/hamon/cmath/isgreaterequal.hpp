@@ -8,6 +8,7 @@
 #define HAMON_CMATH_ISGREATEREQUAL_HPP
 
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -20,7 +21,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 isgreaterequal_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -46,20 +47,9 @@ isgreaterequal_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	@note	isgreaterequal(x, y)の値は、常に x >= y と等しい。
  *			ただし、isgreaterequalはxとyが順序付けられていない場合に浮動小数点例外を生成しない。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isgreaterequal(float x, float y) HAMON_NOEXCEPT
-{
-	return detail::isgreaterequal_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isgreaterequal(double x, double y) HAMON_NOEXCEPT
-{
-	return detail::isgreaterequal_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isgreaterequal(long double x, long double y) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+isgreaterequal(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::isgreaterequal_impl(x, y);
 }
@@ -68,7 +58,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 isgreaterequal(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

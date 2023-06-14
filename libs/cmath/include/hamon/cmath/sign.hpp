@@ -8,8 +8,9 @@
 #define HAMON_CMATH_SIGN_HPP
 
 #include <hamon/cmath/isnan.hpp>
-#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -19,7 +20,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 sign_unchecked(T x) HAMON_NOEXCEPT
 {
 	return
@@ -29,7 +30,7 @@ sign_unchecked(T x) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 sign_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -52,29 +53,12 @@ sign_impl(FloatType x) HAMON_NOEXCEPT
  *	x == 0 の場合、 0を返す。
  *	x >  0 の場合、 1を返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-sign(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
+sign(Arithmetic arg) HAMON_NOEXCEPT
 {
-	return detail::sign_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-sign(double arg) HAMON_NOEXCEPT
-{
-	return detail::sign_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-sign(long double arg) HAMON_NOEXCEPT
-{
-	return detail::sign_impl(arg);
-}
-
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-sign(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::sign_impl(static_cast<double>(arg));
+	using type = hamon::float_promote_t<Arithmetic>;
+	return detail::sign_impl(static_cast<type>(arg));
 }
 
 }	// namespace hamon

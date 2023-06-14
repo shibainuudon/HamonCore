@@ -14,6 +14,7 @@
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/numbers/sqrt2.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -29,19 +30,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 log_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_logf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 log_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_log(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 log_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_logl(x);
@@ -50,7 +51,7 @@ log_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 log_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
@@ -59,7 +60,7 @@ log_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 		log_unchecked_ct_2(x, n + (last - n) / 2, last);
 }
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 log_unchecked_ct_1(T x) HAMON_NOEXCEPT
 {
 	return !(x > hamon::numbers::sqrt2_fn<T>()) ?
@@ -67,7 +68,7 @@ log_unchecked_ct_1(T x) HAMON_NOEXCEPT
 		T(2) * log_unchecked_ct_1(hamon::sqrt(x));
 }
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 log_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 1 ?
@@ -76,7 +77,7 @@ log_unchecked_ct(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 log_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -91,7 +92,7 @@ log_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 log_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -123,38 +124,27 @@ log_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が +∞ だった場合、+∞ を返す。
  *	arg が NaN だった場合、NaN を返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-log(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+log(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::log_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 logf(float arg) HAMON_NOEXCEPT
 {
 	return detail::log_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-log(double arg) HAMON_NOEXCEPT
-{
-	return detail::log_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-log(long double arg) HAMON_NOEXCEPT
-{
-	return detail::log_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 logl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::log_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 log(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::log_impl(static_cast<double>(arg));

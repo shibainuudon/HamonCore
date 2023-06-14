@@ -19,35 +19,35 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow2(T const& x) HAMON_NOEXCEPT
 {
 	return x * x;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow3(T const& x) HAMON_NOEXCEPT
 {
 	return x * x * x;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow4(T const& x) HAMON_NOEXCEPT
 {
 	return x * x * x * x;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow5(T const& x) HAMON_NOEXCEPT
 {
 	return x * x * x * x * x;
 }
 
 template <typename T, typename IntType>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_n_impl(T const& x, IntType n) HAMON_NOEXCEPT
 {
 	return
@@ -62,7 +62,7 @@ template <
 	typename T, typename UIntType,
 	hamon::enable_if_t<hamon::is_unsigned<UIntType>::value>* = nullptr
 >
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_n(T const& x, UIntType n) HAMON_NOEXCEPT
 {
 	return
@@ -75,7 +75,7 @@ template <
 	typename T, typename IntType,
 	hamon::enable_if_t<hamon::is_signed<IntType>::value>* = nullptr
 >
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_n(T const& x, IntType n) HAMON_NOEXCEPT
 {
 	return

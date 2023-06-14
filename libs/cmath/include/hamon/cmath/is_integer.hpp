@@ -23,21 +23,21 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatingPoint)>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 is_integer_impl_1(FloatingPoint x, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
 	return hamon::isfinite(x) && (hamon::trunc(x) == x);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 is_integer_impl_1(Integral, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
 	return true;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 is_integer_impl(T x) HAMON_NOEXCEPT
 {
 	return is_integer_impl_1(x, hamon::detail::overload_priority<1>{});
@@ -57,7 +57,7 @@ is_integer_impl(T x) HAMON_NOEXCEPT
  *	x が NaN または ±∞ の場合、falseを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 is_integer(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::is_integer_impl(x);

@@ -62,7 +62,7 @@ struct almost_equal_eps<Real<T>>
 template <typename T>
 void RangesAlmostEqualTest(void)
 {
-	HAMON_CONSTEXPR auto eps = almost_equal_eps<T>::value;
+	HAMON_CXX11_CONSTEXPR auto eps = almost_equal_eps<T>::value;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::almost_equal(T{0.0 + (eps * 0)}, T{0.0}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::almost_equal(T{0.0 + (eps * 1)}, T{0.0}));
@@ -75,7 +75,7 @@ void RangesAlmostEqualTest(void)
 template <typename T>
 void RangesAlmostEqualTest2(void)
 {
-	HAMON_CONSTEXPR auto eps = almost_equal_eps<T>::value;
+	HAMON_CXX11_CONSTEXPR auto eps = almost_equal_eps<T>::value;
 	{
 		HAMON_CXX11_CONSTEXPR Vector3<T> v1
 		{

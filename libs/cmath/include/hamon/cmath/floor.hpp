@@ -12,6 +12,7 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/trunc.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -24,19 +25,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 floor_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_floorf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 floor_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_floor(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 floor_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_floorl(x);
@@ -45,7 +46,7 @@ floor_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 {
 	return
@@ -55,7 +56,7 @@ floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 floor_unchecked(T x) HAMON_NOEXCEPT
 {
 	return floor_unchecked_1(x, trunc_unchecked(x));
@@ -64,7 +65,7 @@ floor_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 floor_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -86,38 +87,27 @@ floor_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±0  の場合、argをそのまま返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-floor(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+floor(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 floorf(float arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-floor(double arg) HAMON_NOEXCEPT
-{
-	return detail::floor_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-floor(long double arg) HAMON_NOEXCEPT
-{
-	return detail::floor_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 floorl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 floor(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(static_cast<double>(arg));

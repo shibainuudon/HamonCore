@@ -21,7 +21,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 saturate_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -48,7 +48,7 @@ saturate_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 saturate(Arithmetic x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;

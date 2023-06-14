@@ -7,8 +7,9 @@
 #ifndef HAMON_CMATH_ISINF_HPP
 #define HAMON_CMATH_ISINF_HPP
 
-#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 
@@ -19,7 +20,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 isinf_impl(FloatType x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -36,29 +37,12 @@ isinf_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::isinf のconstexpr版
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isinf(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+isinf(Arithmetic arg) HAMON_NOEXCEPT
 {
-	return detail::isinf_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isinf(double arg) HAMON_NOEXCEPT
-{
-	return detail::isinf_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isinf(long double arg) HAMON_NOEXCEPT
-{
-	return detail::isinf_impl(arg);
-}
-
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isinf(IntegralType) HAMON_NOEXCEPT
-{
-	return false;
+	using type = hamon::float_promote_t<Arithmetic>;
+	return detail::isinf_impl(static_cast<type>(arg));
 }
 
 }	// namespace hamon

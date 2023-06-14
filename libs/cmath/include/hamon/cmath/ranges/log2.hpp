@@ -31,18 +31,18 @@ struct log2_fn
 {
 private:
 	template <HAMON_CONSTRAINED_PARAM(has_adl_log2, T)>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(log2(x))
 
 	template <typename T>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<0>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::log2(x))
 
 public:
 	template <typename T>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(T const& x) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(x, hamon::detail::overload_priority<1>{}))
@@ -56,7 +56,7 @@ inline namespace cpo
 {
 
 // Customization point object
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 log2_detail::log2_fn log2{};
 
 }	// inline namespace cpo

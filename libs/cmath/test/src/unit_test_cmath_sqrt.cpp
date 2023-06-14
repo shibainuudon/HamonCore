@@ -30,11 +30,11 @@ static_assert(hamon::is_same<long double, decltype(hamon::sqrtl(0.0l))>::value, 
 template <typename T>
 void SqrtTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
 
-	HAMON_CONSTEXPR double error = 0.0000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.0000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, (double)hamon::sqrt(T(  0.00)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.50000000000, (double)hamon::sqrt(T(  0.25)), error);
@@ -61,7 +61,7 @@ void SqrtTestFloat(void)
 template <typename T>
 void SqrtTestSignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.0000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.0000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, hamon::sqrt(T(  0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, hamon::sqrt(T(  1)), error);
@@ -76,7 +76,7 @@ void SqrtTestSignedInt(void)
 template <typename T>
 void SqrtTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR double error = 0.0000001;
+	HAMON_CXX11_CONSTEXPR double error = 0.0000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000, hamon::sqrt(T(  0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.00000000000, hamon::sqrt(T(  1)), error);

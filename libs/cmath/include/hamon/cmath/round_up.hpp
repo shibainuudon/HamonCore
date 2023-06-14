@@ -23,7 +23,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 round_up_impl(FloatType x, FloatType base) HAMON_NOEXCEPT
 {
 	return
@@ -65,7 +65,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic1
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR Arithmetic1
 round_up(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

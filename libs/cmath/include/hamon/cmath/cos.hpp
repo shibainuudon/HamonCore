@@ -14,6 +14,7 @@
 #include <hamon/cmath/fmod.hpp>
 #include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/numbers/pi.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -29,19 +30,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 cos_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_cosf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 cos_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_cos(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 cos_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_cosl(x);
@@ -50,7 +51,7 @@ cos_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return
@@ -61,7 +62,7 @@ cos_unchecked_ct_1(T x2, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 cos_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return T(1) + cos_unchecked_ct_1(
@@ -70,7 +71,7 @@ cos_unchecked_ct(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 cos_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -85,7 +86,7 @@ cos_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 cos_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -109,38 +110,27 @@ cos_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞ の場合、NaNを返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-cos(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+cos(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 cosf(float arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-cos(double arg) HAMON_NOEXCEPT
-{
-	return detail::cos_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-cos(long double arg) HAMON_NOEXCEPT
-{
-	return detail::cos_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 cosl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 cos(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::cos_impl(static_cast<double>(arg));

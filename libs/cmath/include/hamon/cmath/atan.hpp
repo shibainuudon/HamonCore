@@ -13,6 +13,7 @@
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/factorial.hpp>
 #include <hamon/cmath/detail/pow_n.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/numbers/pi.hpp>
@@ -30,19 +31,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 atan_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_atanf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 atan_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_atan(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 atan_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_atanl(x);
@@ -51,7 +52,7 @@ atan_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
@@ -61,7 +62,7 @@ atan_unchecked_ct_2(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last) HAMON_NOEXCEPT
 {
 	return
@@ -73,7 +74,7 @@ atan_unchecked_ct_1(T x, T sqrt2, T pi, unsigned int last) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 atan_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
@@ -86,7 +87,7 @@ atan_unchecked_ct(T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 atan_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -101,7 +102,7 @@ atan_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 atan_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -128,38 +129,27 @@ atan_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が -∞ の場合、-π/2 を返す。
  *	arg が NaN の場合、NaN を返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-atan(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+atan(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 atanf(float arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-atan(double arg) HAMON_NOEXCEPT
-{
-	return detail::atan_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-atan(long double arg) HAMON_NOEXCEPT
-{
-	return detail::atan_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 atanl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 atan(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::atan_impl(static_cast<double>(arg));

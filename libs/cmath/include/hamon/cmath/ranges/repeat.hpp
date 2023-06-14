@@ -39,18 +39,18 @@ private:
 #endif
 		>
 	>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& x, T2 const& y, T3 const& z, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(repeat(x, y, z))
 
 	template <typename T1, typename T2, typename T3>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& x, T2 const& y, T3 const& z, hamon::detail::overload_priority<0>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::repeat(x, y, z))
 
 public:
 	template <typename T1, typename T2, typename T3>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(T1 const& x, T2 const& y, T3 const& z) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(x, y, z, hamon::detail::overload_priority<1>{}))
@@ -64,7 +64,7 @@ inline namespace cpo
 {
 
 // Customization point object
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 repeat_detail::repeat_fn repeat{};
 
 }	// inline namespace cpo

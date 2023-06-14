@@ -37,12 +37,12 @@ static_assert(hamon::is_same<bool, decltype(hamon::almost_equal(0   , 0   ))>::v
 template <typename T>
 void AlmostEqualTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
-	HAMON_CONSTEXPR auto eps    = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto eps    = std::numeric_limits<T>::epsilon();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::almost_equal(T(0.0) + (eps * T(0)), T(0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::almost_equal(T(0.0) + (eps * T(1)), T(0.0)));
@@ -200,8 +200,8 @@ void AlmostEqualTestFloat(void)
 template <typename T>
 void AlmostEqualTestSignedInt(void)
 {
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::almost_equal(T(0), T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::almost_equal(T(0), T(1)));
@@ -237,8 +237,8 @@ void AlmostEqualTestSignedInt(void)
 template <typename T>
 void AlmostEqualTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::almost_equal(T(0), T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::almost_equal(T(0), T(1)));

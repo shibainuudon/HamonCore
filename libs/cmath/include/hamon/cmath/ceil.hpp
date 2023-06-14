@@ -12,6 +12,7 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -24,19 +25,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 ceil_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_ceilf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 ceil_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_ceil(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 ceil_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_ceill(x);
@@ -45,7 +46,7 @@ ceil_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 ceil_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 {
 	return
@@ -55,7 +56,7 @@ ceil_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 ceil_unchecked(T x) HAMON_NOEXCEPT
 {
 	return ceil_unchecked_1(x, trunc_unchecked(x));
@@ -64,7 +65,7 @@ ceil_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 ceil_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -78,38 +79,27 @@ ceil_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::ceil のconstexpr版
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-ceil(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+ceil(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 ceilf(float arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-ceil(double arg) HAMON_NOEXCEPT
-{
-	return detail::ceil_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-ceil(long double arg) HAMON_NOEXCEPT
-{
-	return detail::ceil_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 ceill(long double arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 ceil(IntegralType arg) HAMON_NOEXCEPT
 {
 	return static_cast<double>(arg);

@@ -23,21 +23,21 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 repeat_unchecked(T t, T length) HAMON_NOEXCEPT
 {
 	return t - hamon::floor(t / length) * length;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 repeat_unchecked(T x, T min, T max) HAMON_NOEXCEPT
 {
 	return min + repeat_unchecked(x - min, max - min);
 }
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 repeat_impl(FloatType x, FloatType min, FloatType max) HAMON_NOEXCEPT
 {
 	return
@@ -75,7 +75,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 repeat(Arithmetic1 x, Arithmetic2 min, Arithmetic3 max) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

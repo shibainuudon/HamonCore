@@ -17,6 +17,7 @@
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/exp.hpp>
 #include <hamon/cmath/log.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -33,19 +34,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 pow_unchecked(float x, float y) HAMON_NOEXCEPT
 {
 	return __builtin_powf(x, y);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 pow_unchecked(double x, double y) HAMON_NOEXCEPT
 {
 	return __builtin_pow(x, y);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 pow_unchecked(long double x, long double y) HAMON_NOEXCEPT
 {
 	return __builtin_powl(x, y);
@@ -54,7 +55,7 @@ pow_unchecked(long double x, long double y) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 {
 	return
@@ -66,7 +67,7 @@ pow_unchecked_ct(T x, T y) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_unchecked(T x, T y) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -81,7 +82,7 @@ pow_unchecked(T x, T y) HAMON_NOEXCEPT
 #endif
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 pow_impl_2(T x, T y, T inf, T nan) HAMON_NOEXCEPT
 {
 	//pow(+0, exp), where exp is a negative odd integer, returns +∞ and raises FE_DIVBYZERO
@@ -150,7 +151,7 @@ pow_impl_2(T x, T y, T inf, T nan) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return pow_impl_2(x, y,
@@ -189,31 +190,20 @@ pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	x が +∞ かつ、y が正の値の場合、+∞ を返す。
  *	上記以外で、xかyの少なくともどちらかがNaNの場合、NaNを返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-pow(float x, float y) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+pow(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 powf(float x, float y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-pow(double x, double y) HAMON_NOEXCEPT
-{
-	return detail::pow_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-pow(long double x, long double y) HAMON_NOEXCEPT
-{
-	return detail::pow_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 powl(long double x, long double y) HAMON_NOEXCEPT
 {
 	return detail::pow_impl(x, y);
@@ -223,7 +213,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 pow(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

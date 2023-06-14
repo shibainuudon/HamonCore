@@ -28,11 +28,11 @@ static_assert(hamon::is_same<bool, decltype(hamon::isfinite(0   ))>::value, "");
 template <typename T>
 void IsFiniteTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
 	T zero = 0;	// MSVCでのエラーを避けるために変数にする
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isfinite(inf));
@@ -62,8 +62,8 @@ void IsFiniteTestFloat(void)
 template <typename T>
 void IsFiniteTestSignedInt(void)
 {
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(T(-1)));
@@ -75,8 +75,8 @@ void IsFiniteTestSignedInt(void)
 template <typename T>
 void IsFiniteTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isfinite(T(1)));

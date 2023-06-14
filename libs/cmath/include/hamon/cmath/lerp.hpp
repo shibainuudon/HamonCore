@@ -22,6 +22,9 @@ using std::lerp;
 
 #else
 
+#include <hamon/concepts/floating_point.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+
 namespace hamon
 {
 
@@ -29,7 +32,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 lerp_impl_2(T a, T b, T t, T x) HAMON_NOEXCEPT
 {
 	return (t > 1) == (b > a) ?
@@ -38,7 +41,7 @@ lerp_impl_2(T a, T b, T t, T x) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 lerp_impl(T a, T b, T t) HAMON_NOEXCEPT
 {
 	return
@@ -71,20 +74,9 @@ lerp_impl(T a, T b, T t) HAMON_NOEXCEPT
  *	比較関数CMP(x, y)を、x > yであれば1、x < yであれば-1、そうでなければ0を返すものであるとして、
  *	あらゆる時間値t1とt2についてCMP(lerp(a,b,t2), lerp(a,b,t1))、CMP(t2, t1)、CMP(b,a)はいずれも非負となる
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-lerp(float a, float b, float t) HAMON_NOEXCEPT
-{
-	return detail::lerp_impl(a, b, t);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-lerp(double a, double b, double t) HAMON_NOEXCEPT
-{
-	return detail::lerp_impl(a, b, t);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-lerp(long double a, long double b, long double t) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
 {
 	return detail::lerp_impl(a, b, t);
 }
@@ -111,7 +103,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 lerp(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

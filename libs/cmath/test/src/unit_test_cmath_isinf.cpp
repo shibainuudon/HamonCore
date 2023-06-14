@@ -29,11 +29,11 @@ HAMON_WARNING_DISABLE_MSVC(4723)	// 除算の 2 番目のオペランドは、�
 template <typename T>
 void IsInfTestFloat(void)
 {
-	HAMON_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
 	T zero = 0;	// MSVCでのエラーを避けるために変数にする
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isinf(inf));
@@ -63,8 +63,8 @@ HAMON_WARNING_POP()
 template <typename T>
 void IsInfTestSignedInt(void)
 {
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isinf(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isinf(T(-1)));
@@ -76,8 +76,8 @@ void IsInfTestSignedInt(void)
 template <typename T>
 void IsInfTestUnsignedInt(void)
 {
-	HAMON_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isinf(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isinf(T(1)));

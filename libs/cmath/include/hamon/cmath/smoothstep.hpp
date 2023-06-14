@@ -23,21 +23,21 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 smoothstep_uncheck_1(T t) HAMON_NOEXCEPT
 {
 	return t * t * (T(3) - (T(2) * t));
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 smoothstep_uncheck(T from, T to, T x) HAMON_NOEXCEPT
 {
 	return smoothstep_uncheck_1(hamon::saturate((x - from) / (to - from)));
 }
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 smoothstep_impl(FloatType from, FloatType to, FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -87,7 +87,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 smoothstep(Arithmetic1 from, Arithmetic2 to, Arithmetic3 x) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;

@@ -12,6 +12,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/sin.hpp>
 #include <hamon/cmath/cos.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -27,19 +28,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 tan_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_tanf(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 tan_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_tan(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 tan_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_tanl(x);
@@ -48,7 +49,7 @@ tan_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 tan_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -63,7 +64,7 @@ tan_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 tan_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -87,38 +88,27 @@ tan_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞ の場合、NaNを返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-tan(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+tan(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 tanf(float arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-tan(double arg) HAMON_NOEXCEPT
-{
-	return detail::tan_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-tan(long double arg) HAMON_NOEXCEPT
-{
-	return detail::tan_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 tanl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 tan(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::tan_impl(static_cast<double>(arg));

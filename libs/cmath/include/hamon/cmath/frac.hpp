@@ -25,14 +25,14 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 frac_unchecked(T x) HAMON_NOEXCEPT
 {
 	return x - hamon::floor(x);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatingPoint)>
-inline HAMON_CONSTEXPR FloatingPoint
+inline HAMON_CXX11_CONSTEXPR FloatingPoint
 frac_impl(FloatingPoint x) HAMON_NOEXCEPT
 {
 	return
@@ -47,7 +47,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::integral, Integral),
 	typename Promoted = hamon::float_promote_t<Integral>
 >
-inline HAMON_CONSTEXPR Promoted
+inline HAMON_CXX11_CONSTEXPR Promoted
 frac_impl(Integral) HAMON_NOEXCEPT
 {
 	return Promoted(0);
@@ -68,7 +68,7 @@ frac_impl(Integral) HAMON_NOEXCEPT
  *	x が NaN の場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::float_promote_t<Arithmetic>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 frac(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::frac_impl(x);

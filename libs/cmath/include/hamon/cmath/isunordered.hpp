@@ -8,6 +8,7 @@
 #define HAMON_CMATH_ISUNORDERED_HPP
 
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -20,7 +21,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 isunordered_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -45,20 +46,9 @@ isunordered_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *
  *	x と y が unordered かどうか、つまり x と y の少なくとも一方が NaN かどうか を判定する。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isunordered(float x, float y) HAMON_NOEXCEPT
-{
-	return detail::isunordered_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isunordered(double x, double y) HAMON_NOEXCEPT
-{
-	return detail::isunordered_impl(x, y);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
-isunordered(long double x, long double y) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+isunordered(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::isunordered_impl(x, y);
 }
@@ -67,7 +57,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 isunordered(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;

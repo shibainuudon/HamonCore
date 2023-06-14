@@ -22,28 +22,28 @@ namespace detail
 {
 
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 {
 	return hamon::fabs(x);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, T)>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {
 	return x;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
 	return x < 0 ? -x : x;
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 abs_impl(T x) HAMON_NOEXCEPT
 {
 	return abs_impl_2(x, hamon::detail::overload_priority<2>{});
@@ -79,7 +79,7 @@ abs_impl(T x) HAMON_NOEXCEPT
  *	・hamon::absは全ての算術型に対応している。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR Arithmetic
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR Arithmetic
 abs(Arithmetic x) HAMON_NOEXCEPT
 {
 	return detail::abs_impl(x);

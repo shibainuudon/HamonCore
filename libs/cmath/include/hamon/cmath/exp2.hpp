@@ -12,6 +12,7 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/exp.hpp>
+#include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/numbers/ln2.hpp>
@@ -27,19 +28,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR float
+inline HAMON_CXX11_CONSTEXPR float
 exp2_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_exp2f(x);
 }
 
-inline HAMON_CONSTEXPR double
+inline HAMON_CXX11_CONSTEXPR double
 exp2_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_exp2(x);
 }
 
-inline HAMON_CONSTEXPR long double
+inline HAMON_CXX11_CONSTEXPR long double
 exp2_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_exp2l(x);
@@ -48,14 +49,14 @@ exp2_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 exp2_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return hamon::exp(x * hamon::numbers::ln2_fn<T>());
 }
 
 template <typename T>
-inline HAMON_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 exp2_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -70,7 +71,7 @@ exp2_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR FloatType
+inline HAMON_CXX11_CONSTEXPR FloatType
 exp2_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -101,38 +102,27 @@ exp2_impl(FloatType x) HAMON_NOEXCEPT
  *	x が +∞  の場合、+∞ を返す。
  *	x が NaN  の場合、NaN を返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
-exp2(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+exp2(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::exp2_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR float
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
 exp2f(float arg) HAMON_NOEXCEPT
 {
 	return detail::exp2_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
-exp2(double arg) HAMON_NOEXCEPT
-{
-	return detail::exp2_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
-exp2(long double arg) HAMON_NOEXCEPT
-{
-	return detail::exp2_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 exp2l(long double arg) HAMON_NOEXCEPT
 {
 	return detail::exp2_impl(arg);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR double
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 exp2(IntegralType arg) HAMON_NOEXCEPT
 {
 	return detail::exp2_impl(static_cast<double>(arg));

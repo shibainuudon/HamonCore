@@ -39,18 +39,18 @@ private:
 #endif
 		>
 	>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& y, T2 const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(atan2(y, x))
 
 	template <typename T1, typename T2>
-	static HAMON_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& y, T2 const& x, hamon::detail::overload_priority<0>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::atan2(y, x))
 
 public:
 	template <typename T1, typename T2>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(T1 const& y, T2 const& x) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(y, x, hamon::detail::overload_priority<1>{}))
@@ -64,7 +64,7 @@ inline namespace cpo
 {
 
 // Customization point object
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 atan2_detail::atan2_fn atan2{};
 
 }	// inline namespace cpo

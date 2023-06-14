@@ -11,8 +11,9 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
-#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <limits>
@@ -26,19 +27,19 @@ namespace detail
 
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
 
-inline HAMON_CONSTEXPR long
+inline HAMON_CXX11_CONSTEXPR long
 lround_unchecked(float x) HAMON_NOEXCEPT
 {
 	return __builtin_lroundf(x);
 }
 
-inline HAMON_CONSTEXPR long
+inline HAMON_CXX11_CONSTEXPR long
 lround_unchecked(double x) HAMON_NOEXCEPT
 {
 	return __builtin_lround(x);
 }
 
-inline HAMON_CONSTEXPR long
+inline HAMON_CXX11_CONSTEXPR long
 lround_unchecked(long double x) HAMON_NOEXCEPT
 {
 	return __builtin_lroundl(x);
@@ -47,7 +48,7 @@ lround_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CONSTEXPR long
+inline HAMON_CXX11_CONSTEXPR long
 lround_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
@@ -62,7 +63,7 @@ lround_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CONSTEXPR long
+inline HAMON_CXX11_CONSTEXPR long
 lround_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -91,41 +92,24 @@ lround_impl(FloatType x) HAMON_NOEXCEPT
  *	x が numeric_limits<long>::max() より大きい場合、numeric_limits<long>::max() を返す。
  *	x が NaN の場合、numeric_limits<long>::min() を返す。
  */
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
-lround(float arg) HAMON_NOEXCEPT
+template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long
+lround(Arithmetic arg) HAMON_NOEXCEPT
 {
-	return detail::lround_impl(arg);
+	using type = hamon::float_promote_t<Arithmetic>;
+	return detail::lround_impl(static_cast<type>(arg));
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long
 lroundf(float arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
 }
 
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
-lround(double arg) HAMON_NOEXCEPT
-{
-	return detail::lround_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
-lround(long double arg) HAMON_NOEXCEPT
-{
-	return detail::lround_impl(arg);
-}
-
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long
 lroundl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::lround_impl(arg);
-}
-
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CONSTEXPR long
-lround(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::lround_impl(static_cast<double>(arg));
 }
 
 }	// namespace hamon
