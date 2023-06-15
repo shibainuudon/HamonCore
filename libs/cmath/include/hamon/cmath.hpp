@@ -51,7 +51,7 @@
 #include <hamon/cmath/fmax.hpp>
 #include <hamon/cmath/fmin.hpp>
 #include <hamon/cmath/fmod.hpp>
-//#include <hamon/cmath/fpclassify.hpp>
+#include <hamon/cmath/fpclassify.hpp>
 #include <hamon/cmath/frac.hpp>
 //#include <hamon/cmath/frexp.hpp>
 //#include <hamon/cmath/hermite.hpp>
