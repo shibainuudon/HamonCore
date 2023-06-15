@@ -56,7 +56,7 @@
 #include <hamon/cmath/frexp.hpp>
 //#include <hamon/cmath/hermite.hpp>
 #include <hamon/cmath/hypot.hpp>
-//#include <hamon/cmath/ilogb.hpp>
+#include <hamon/cmath/ilogb.hpp>
 #include <hamon/cmath/isfinite.hpp>
 #include <hamon/cmath/isgreater.hpp>
 #include <hamon/cmath/isgreaterequal.hpp>
