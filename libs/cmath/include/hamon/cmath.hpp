@@ -53,7 +53,7 @@
 #include <hamon/cmath/fmod.hpp>
 #include <hamon/cmath/fpclassify.hpp>
 #include <hamon/cmath/frac.hpp>
-//#include <hamon/cmath/frexp.hpp>
+#include <hamon/cmath/frexp.hpp>
 //#include <hamon/cmath/hermite.hpp>
 #include <hamon/cmath/hypot.hpp>
 //#include <hamon/cmath/ilogb.hpp>
