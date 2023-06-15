@@ -71,9 +71,9 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/is_even.hpp>
 #include <hamon/cmath/is_integer.hpp>
-//#include <hamon/cmath/is_negative.hpp>
+#include <hamon/cmath/is_negative.hpp>
 #include <hamon/cmath/is_odd.hpp>
-//#include <hamon/cmath/is_positive.hpp>
+#include <hamon/cmath/is_positive.hpp>
 //#include <hamon/cmath/laguerre.hpp>
 //#include <hamon/cmath/ldexp.hpp>
 //#include <hamon/cmath/legendre.hpp>
