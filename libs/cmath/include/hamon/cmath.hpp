@@ -38,7 +38,7 @@
 //#include <hamon/cmath/ellint_2.hpp>
 //#include <hamon/cmath/ellint_3.hpp>
 #include <hamon/cmath/erf.hpp>
-//#include <hamon/cmath/erfc.hpp>
+#include <hamon/cmath/erfc.hpp>
 #include <hamon/cmath/exp.hpp>
 #include <hamon/cmath/exp2.hpp>
 //#include <hamon/cmath/expint.hpp>
