@@ -109,12 +109,15 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 hypot_unchecked(T x, T y, T z) HAMON_NOEXCEPT
 {
+// Apple Clang の std::hypot はオーバーフローを避けるように実装されていないので使わない
+#if !defined(HAMON_APPLE_CLANG)
 #if defined(__cpp_lib_hypot) && (__cpp_lib_hypot >= 201603)
 #if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
 	if (!std::is_constant_evaluated())
 	{
 		return std::hypot(x, y, z);
 	}
+#endif
 #endif
 #endif
 	return hypot_unchecked_ct(x, y, z);
