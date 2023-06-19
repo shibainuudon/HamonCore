@@ -19,6 +19,7 @@ add_library(${TARGET_ALIAS_NAME}_test ALIAS ${TARGET_NAME}_test)
 
 set(SUBDIRECTORIES
 	algorithm
+	any
 	array
 	base64
 	bit
