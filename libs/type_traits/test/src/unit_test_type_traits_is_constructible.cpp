@@ -1200,7 +1200,7 @@ HAMON_IS_CONSTRUCTIBLE_TEST(false,                int&&,                int(*)[]
 //HAMON_IS_CONSTRUCTIBLE_TEST(false, const volatile int&&, const volatile int(*)[]);
 
 #if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT) && \
-	!(defined(HAMON_MSVC) && HAMON_MSVC <= 1935)
+	!defined(HAMON_MSVC)
 // P0960R3 によってint n[2](1, 2); のような形での初期化が可能になった
 // ただし、MSVCの__is_constructibleはfalseを返してくる
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  int[2], int);
