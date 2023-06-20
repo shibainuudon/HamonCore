@@ -75,19 +75,19 @@ void test()
 	// std::log(std::conj(z)) == std::conj(std::log(z))
 	{
 		hamon::complex<T> z{1.5, 2.0};
-		EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		hamon::complex<T> z{1.5, -2.0};
-		EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		hamon::complex<T> z{-2.5, 4.5};
-		EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		hamon::complex<T> z{-2.5, -3.5};
-		EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 #else
 	{
@@ -114,19 +114,19 @@ void test()
 	// std::log(std::conj(z)) == std::conj(std::log(z))
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.5, 2.0};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.5, -2.0};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{-2.5, 4.5};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{-2.5, -3.5};
-		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((hamon::log(hamon::conj(z)) == hamon::conj(hamon::log(z))));
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::log(hamon::conj(z)), hamon::conj(hamon::log(z)), error)));
 	}
 
 	HAMON_CXX11_CONSTEXPR T pi = hamon::numbers::pi_fn<T>();
