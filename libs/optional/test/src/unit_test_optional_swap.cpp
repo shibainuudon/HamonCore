@@ -247,6 +247,7 @@ void InvokeCountTest()
 	}
 }
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnSwap
 {
 };
@@ -331,6 +332,7 @@ void ThrowOnMoveTest()
 		EXPECT_NO_THROW(o1.swap(o2));
 	}
 }
+#endif
 
 GTEST_TEST(OptionalTest, SwapTest)
 {
@@ -340,8 +342,10 @@ GTEST_TEST(OptionalTest, SwapTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test4()));
 
 	InvokeCountTest();
+#if !defined(HAMON_NO_EXCEPTIONS)
 	ThrowOnSwapTest();
 	ThrowOnMoveTest();
+#endif
 }
 
 }	// namespace swap_test

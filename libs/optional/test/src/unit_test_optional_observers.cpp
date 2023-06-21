@@ -83,8 +83,10 @@ GTEST_TEST(OptionalTest, ObserversTest)
 	{
 		hamon::optional<S> o;
 		EXPECT_TRUE(!o);
+#if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW((void)o.value(), hamon::bad_optional_access);
 		EXPECT_THROW((void)hamon::move(o).value(), hamon::bad_optional_access);
+#endif
 		S fallback{ 3 };
 		EXPECT_TRUE(o.value_or(fallback).i == 3);
 		EXPECT_TRUE(hamon::move(o).value_or(fallback).i == 3);
@@ -92,8 +94,10 @@ GTEST_TEST(OptionalTest, ObserversTest)
 	{
 		HAMON_CXX11_CONSTEXPR hamon::optional<S> o;
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!o);
+#if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW((void)o.value(), hamon::bad_optional_access);
 		EXPECT_THROW((void)hamon::move(o).value(), hamon::bad_optional_access);
+#endif
 		HAMON_CXX11_CONSTEXPR S fallback{ 3 };
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(o.value_or(fallback).i == 3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::move(o).value_or(fallback).i == 3);

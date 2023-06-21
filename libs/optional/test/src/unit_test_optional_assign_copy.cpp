@@ -293,6 +293,7 @@ void InvokeCountTest()
 	}
 }
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnCopy1
 {
 	int value = -1;
@@ -407,12 +408,15 @@ void ThrowOnCopyTest()
 		EXPECT_TRUE(!o2.has_value());
 	}
 }
+#endif
 
 GTEST_TEST(OptionalTest, AssignCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 	InvokeCountTest();
+#if !defined(HAMON_NO_EXCEPTIONS)
 	ThrowOnCopyTest();
+#endif
 }
 
 }	// namespace assign_copy_test

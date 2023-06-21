@@ -208,6 +208,7 @@ void InvokeCountTest()
 	}
 }
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnAssign1
 {
 	int value;
@@ -334,13 +335,16 @@ void ThrowOnAssignTest()
 		EXPECT_TRUE(!o.has_value());
 	}
 }
+#endif
 
 GTEST_TEST(OptionalTest, AssignValueTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
 	InvokeCountTest();
+#if !defined(HAMON_NO_EXCEPTIONS)
 	ThrowOnAssignTest();
+#endif
 }
 
 }	// namespace assign_value_test

@@ -292,6 +292,7 @@ void InvokeCountTest()
 	}
 }
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnMove1
 {
 	int value = -1;
@@ -406,12 +407,15 @@ void ThrowOnMoveTest()
 		EXPECT_TRUE(!o2.has_value());
 	}
 }
+#endif
 
 GTEST_TEST(OptionalTest, AssignMoveTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test()));
 	InvokeCountTest();
+#if !defined(HAMON_NO_EXCEPTIONS)
 	ThrowOnMoveTest();
+#endif
 }
 
 }	// namespace assign_move_test

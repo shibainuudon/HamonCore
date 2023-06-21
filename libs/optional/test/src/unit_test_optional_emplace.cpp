@@ -157,6 +157,7 @@ void PerfectForwardTest()
 	}
 }
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 static bool s_dtor_invoked = false;
 
 struct ThrowOnCtor
@@ -198,6 +199,7 @@ void ThrowOnCtorTest()
 		EXPECT_TRUE(!s_dtor_invoked);
 	}
 }
+#endif
 
 GTEST_TEST(OptionalTest, EmplaceTest)
 {
@@ -251,7 +253,9 @@ GTEST_TEST(OptionalTest, EmplaceTest)
 	}
 
 	PerfectForwardTest();
+#if !defined(HAMON_NO_EXCEPTIONS)
 	ThrowOnCtorTest();
+#endif
 }
 
 }	// namespace emplace_test
