@@ -1051,7 +1051,7 @@ inline HAMON_CXX11_CONSTEXPR hamon::compare_three_way_result_t<T, U>
 operator<=>(optional<T> const& x, U const& v)
 {
 	// [optional.comp.with.t]/25
-	return x.has_value() ? *x <=> v : hamon::strong_ordering::less;
+	return x.has_value() ? *x <=> v : std::strong_ordering::less;
 }
 
 #endif
