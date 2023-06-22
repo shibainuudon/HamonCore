@@ -24,6 +24,7 @@ set(SUBDIRECTORIES
 	base64
 	bit
 	bitflags
+	bitset
 	cmath
 	compare
 	complex
