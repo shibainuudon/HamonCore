@@ -23,6 +23,7 @@ using std::accumulate;
 #else
 
 #include <hamon/functional/plus.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -52,19 +53,21 @@ template <
 	typename T,
 	typename BinaryOperation
 >
-HAMON_CXX14_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 accumulate(
 	InputIterator first,
 	InputIterator last,
 	T init,
 	BinaryOperation binary_op)
 {
-	while (first != last)
-	{
-		init = binary_op(hamon::move(init), *first++);
-	}
-
-	return init;
+	return
+		first == last ?
+			init:
+		hamon::accumulate(
+			hamon::next(first),
+			last,
+			binary_op(hamon::move(init), *first),
+			binary_op);
 }
 
 /**
@@ -80,7 +83,7 @@ accumulate(
  *	@return	集計結果の値
  */
 template <typename InputIterator, typename T>
-HAMON_CXX14_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 accumulate(
 	InputIterator first,
 	InputIterator last,
