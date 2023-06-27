@@ -25,6 +25,7 @@ using std::equal;
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -38,12 +39,13 @@ template <
 	typename InputIterator2,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR bool
-equal_impl(
+inline HAMON_CXX11_CONSTEXPR bool
+equal_impl_1(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2,
 	BinaryPredicate pred)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
 	for (; first1 != last1; ++first1, ++first2)
 	{
 		if (!pred(*first1, *first2))
@@ -53,6 +55,11 @@ equal_impl(
 	}
 
 	return true;
+#else
+	return first1 == last1 ||
+		(pred(*first1, *first2) &&
+		 equal_impl_1(hamon::next(first1), last1, hamon::next(first2), pred));
+#endif
 }
 
 template <
@@ -60,14 +67,13 @@ template <
 	typename InputIterator2,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR bool
-equal_impl(
+inline HAMON_CXX11_CONSTEXPR bool
+equal_impl_1(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
-	BinaryPredicate pred,
-	std::input_iterator_tag*,
-	std::input_iterator_tag*)
+	BinaryPredicate pred)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
 	for (; first1 != last1 && first2 != last2; ++first1, ++first2)
 	{
 		if (!pred(*first1, *first2))
@@ -77,6 +83,29 @@ equal_impl(
 	}
 
 	return first1 == last1 && first2 == last2;
+#else
+	return
+		first1 != last1 && first2 != last2 ?
+			pred(*first1, *first2) &&
+			equal_impl_1(hamon::next(first1), last1, hamon::next(first2), last2, pred) :
+		first1 == last1 && first2 == last2;
+#endif
+}
+
+template <
+	typename InputIterator1,
+	typename InputIterator2,
+	typename BinaryPredicate
+>
+inline HAMON_CXX11_CONSTEXPR bool
+equal_impl_2(
+	InputIterator1 first1, InputIterator1 last1,
+	InputIterator2 first2, InputIterator2 last2,
+	BinaryPredicate pred,
+	std::input_iterator_tag*,
+	std::input_iterator_tag*)
+{
+	return equal_impl_1(first1, last1, first2, last2, pred);
 }
 
 template <
@@ -84,20 +113,17 @@ template <
 	typename RandomAccessIterator2,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR bool
-equal_impl(
+inline HAMON_CXX11_CONSTEXPR bool
+equal_impl_2(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
 	std::random_access_iterator_tag*,
 	std::random_access_iterator_tag*)
 {
-	if (hamon::distance(first1, last1) != hamon::distance(first2, last2))
-	{
-		return false;
-	}
-
-	return hamon::detail::equal_impl(first1, last1, first2, pred);
+	return
+		hamon::distance(first1, last1) == hamon::distance(first2, last2) &&
+		hamon::detail::equal_impl_1(first1, last1, first2, pred);
 }
 
 }	// namespace detail
@@ -119,13 +145,13 @@ template <
 	typename InputIterator2,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 equal(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2,
 	BinaryPredicate pred)
 {
-	return hamon::detail::equal_impl(
+	return hamon::detail::equal_impl_1(
 		first1, last1, first2, pred);
 }
 
@@ -143,7 +169,7 @@ template <
 	typename InputIterator1,
 	typename InputIterator2
 >
-inline HAMON_CXX14_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 equal(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2)
@@ -179,7 +205,7 @@ template <
 	typename InputIterator2,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 equal(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
@@ -187,7 +213,7 @@ equal(
 {
 	using Category1 = hamon::iterator_category<InputIterator1>*;
 	using Category2 = hamon::iterator_category<InputIterator2>*;
-	return hamon::detail::equal_impl(
+	return hamon::detail::equal_impl_2(
 		first1, last1, first2, last2, pred, Category1(), Category2());
 }
 
@@ -215,7 +241,7 @@ template <
 	typename InputIterator1,
 	typename InputIterator2
 >
-inline HAMON_CXX14_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 equal(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2)
