@@ -24,10 +24,12 @@ using std::reduce;
 
 #include <hamon/functional/plus.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -37,37 +39,78 @@ namespace hamon
 namespace detail
 {
 
-template <typename InputIterator, typename T, typename BinaryOperation>
-inline HAMON_CXX14_CONSTEXPR T
-reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, hamon::false_type)
+template <typename InputIterator, typename T, typename BinaryOperation,
+	hamon::enable_if_t<!hamon::random_access_iterator_t<InputIterator>::value>* = nullptr>
+inline HAMON_CXX11_CONSTEXPR T
+reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
-	for (; first != last; ++first)
-	{
-		init = static_cast<T>(binary_op(init, *first));
-	}
-
-	return init;
+	return
+		first == last ?
+			init:
+		reduce_impl(
+			hamon::next(first),
+			last,
+			static_cast<T>(binary_op(init, *first)),
+			binary_op);
 }
 
-template <typename InputIterator, typename T, typename BinaryOperation>
-inline HAMON_CXX14_CONSTEXPR T
-reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op, hamon::true_type)
+template <typename InputIterator, typename T, typename BinaryOperation,
+	hamon::enable_if_t<hamon::random_access_iterator_t<InputIterator>::value>* = nullptr>
+inline HAMON_CXX11_CONSTEXPR T
+reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
-	while ((last - first) >= 4)
-	{
-		T v1 = static_cast<T>(binary_op(first[0], first[1]));
-		T v2 = static_cast<T>(binary_op(first[2], first[3]));
-		T v3 = static_cast<T>(binary_op(v1, v2));
-		init = static_cast<T>(binary_op(init, v3));
-		first += 4;
-	}
-
-	return reduce_impl(
-		hamon::move(first),
-		hamon::move(last),
-		hamon::move(init),
-		hamon::move(binary_op),
-		hamon::false_type{});
+	return
+		(last - first) == 0 ?
+			init :
+		(last - first) == 1 ?
+			static_cast<T>(binary_op(init, first[0])) :
+		(last - first) == 2 ?
+			static_cast<T>(binary_op(
+				init,
+				static_cast<T>(binary_op(first[0], first[1])))) :
+		(last - first) == 3 ?
+			static_cast<T>(binary_op(
+				static_cast<T>(binary_op(init, first[0])),
+				static_cast<T>(binary_op(first[1], first[2])))) :
+		(last - first) == 4 ?
+			static_cast<T>(binary_op(
+				init,
+				static_cast<T>(binary_op(
+					static_cast<T>(binary_op(first[0], first[1])),
+					static_cast<T>(binary_op(first[2], first[3])))))) :
+		(last - first) == 5 ?
+			static_cast<T>(binary_op(
+				static_cast<T>(binary_op(
+					init,
+					first[0])),
+				static_cast<T>(binary_op(
+					static_cast<T>(binary_op(first[1], first[2])),
+					static_cast<T>(binary_op(first[3], first[4])))))) :
+		(last - first) == 6 ?
+			static_cast<T>(binary_op(
+				static_cast<T>(binary_op(
+					init,
+					static_cast<T>(binary_op(first[0], first[1])))),
+				static_cast<T>(binary_op(
+					static_cast<T>(binary_op(first[2], first[3])),
+					static_cast<T>(binary_op(first[4], first[5])))))) :
+		(last - first) == 7 ?
+			static_cast<T>(binary_op(
+				static_cast<T>(binary_op(
+					static_cast<T>(binary_op(init,     first[0])),
+					static_cast<T>(binary_op(first[1], first[2])))),
+				static_cast<T>(binary_op(
+					static_cast<T>(binary_op(first[3], first[4])),
+					static_cast<T>(binary_op(first[5], first[6])))))) :
+		reduce_impl(
+			first,
+			first + (last - first) / 2,
+			reduce_impl(
+				first + (last - first) / 2,
+				last,
+				init,
+				binary_op),
+			binary_op);
 }
 
 }	// namespace detail
@@ -95,7 +138,7 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
  *	@complexity	関数オブジェクトbinary_opをO(last - first)回だけ適用する
  */
 template <typename InputIterator, typename T, typename BinaryOperation>
-inline HAMON_CXX14_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
 	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
@@ -106,15 +149,14 @@ reduce(InputIterator first, InputIterator last, T init, BinaryOperation binary_o
 		hamon::move(first),
 		hamon::move(last),
 		hamon::move(init),
-		hamon::move(binary_op),
-		hamon::random_access_iterator_t<InputIterator>{});
+		hamon::move(binary_op));
 }
 
 /**
  *	@overload
  */
 template <typename InputIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR T
+inline HAMON_CXX11_CONSTEXPR T
 reduce(InputIterator first, InputIterator last, T init)
 {
 	return hamon::reduce(
@@ -128,7 +170,7 @@ reduce(InputIterator first, InputIterator last, T init)
  *	@overload
  */
 template <typename InputIterator>
-inline HAMON_CXX14_CONSTEXPR typename hamon::iterator_traits<InputIterator>::value_type
+inline HAMON_CXX11_CONSTEXPR typename hamon::iterator_traits<InputIterator>::value_type
 reduce(InputIterator first, InputIterator last)
 {
 	using value_type = typename hamon::iterator_traits<InputIterator>::value_type;
