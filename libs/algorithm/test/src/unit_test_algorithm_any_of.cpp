@@ -7,8 +7,8 @@
 #include <hamon/algorithm/any_of.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -46,17 +46,17 @@ struct pred4
 
 GTEST_TEST(AlgorithmTest, AnyOfTest)
 {
-	HAMON_STATIC_CONSTEXPR int a1[] {0,1,2};
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred1));
-	HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::any_of(hamon::begin(a1), hamon::end(a1), pred2));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred3()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred4()));
+	HAMON_CXX11_CONSTEXPR int a1[] {0,1,2};
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::any_of(hamon::begin(a1), hamon::end(a1), pred2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred3()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a1), hamon::end(a1), pred4()));
 
-	HAMON_STATIC_CONSTEXPR std::array<int, 8> a2{{3, 4, 4, 5, 5, 5, 3, 6}};
-	HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::any_of(hamon::begin(a2), hamon::end(a2), pred1));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred2));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred3()));
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred4()));
+	HAMON_CXX11_CONSTEXPR hamon::array<int, 8> a2{{3, 4, 4, 5, 5, 5, 3, 6}};
+	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::any_of(hamon::begin(a2), hamon::end(a2), pred1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred2));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred3()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred4()));
 
 	const std::vector<int> v1 {7, 8, 9};
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v1), hamon::end(v1), pred1));

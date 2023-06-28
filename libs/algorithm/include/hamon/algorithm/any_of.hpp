@@ -22,6 +22,7 @@ using std::any_of;
 
 #else
 
+#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -44,13 +45,11 @@ namespace hamon
  *
  *	@complexity	最大で last - first 回 pred を実行する。
  */
-template <
-	typename InputIterator,
-	typename Predicate
->
-inline HAMON_CXX14_CONSTEXPR bool
+template <typename InputIterator, typename Predicate>
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 any_of(InputIterator first, InputIterator last, Predicate pred)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
 	for (; first != last; ++first)
 	{
 		if (pred(*first))
@@ -60,6 +59,10 @@ any_of(InputIterator first, InputIterator last, Predicate pred)
 	}
 
 	return false;
+#else
+	return first != last &&
+		(pred(*first) || hamon::any_of(hamon::next(first), last, pred));
+#endif
 }
 
 }	// namespace hamon
