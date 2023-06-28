@@ -22,6 +22,7 @@ using std::none_of;
 
 #else
 
+#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -43,12 +44,10 @@ namespace hamon
  *	@complexity	最大で last - first 回 pred を実行する。
  */
 template <typename InputIterator, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR bool
-none_of(
-	InputIterator first,
-	InputIterator last,
-	Predicate pred)
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+none_of(InputIterator first, InputIterator last, Predicate pred)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
 	for (; first != last; ++first)
 	{
 		if (pred(*first))
@@ -58,6 +57,10 @@ none_of(
 	}
 
 	return true;
+#else
+	return first == last ||
+		(!pred(*first) && hamon::none_of(hamon::next(first), last, pred));
+#endif
 }
 
 }	// namespace hamon
