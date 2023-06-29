@@ -674,13 +674,15 @@ public:
 		}
 
 		// flips the bit
-		HAMON_CXX11_CONSTEXPR bool operator~() const HAMON_NOEXCEPT
+		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+		operator~() const HAMON_NOEXCEPT
 		{
 			return !this->operator bool();
 		}
 
 		// for x = b[i];
-		HAMON_CXX11_CONSTEXPR operator bool() const HAMON_NOEXCEPT
+		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+		operator bool() const HAMON_NOEXCEPT
 		{
 			return (*m_word & m_mask) != 0;
 		}
@@ -821,7 +823,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX11_CONSTEXPR bitset
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset
 	operator<<(hamon::size_t pos) const HAMON_NOEXCEPT
 	{
 		return
@@ -830,7 +832,7 @@ public:
 			bitset{m_impl << pos};
 	}
 
-	HAMON_CXX11_CONSTEXPR bitset
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset
 	operator>>(hamon::size_t pos) const HAMON_NOEXCEPT
 	{
 		return
@@ -898,7 +900,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX11_CONSTEXPR bitset
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset
 	operator~() const HAMON_NOEXCEPT
 	{
 		return bitset{~m_impl};
@@ -938,25 +940,25 @@ public:
 	}
 
 	// element access
-	HAMON_CXX11_CONSTEXPR bool
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 	operator[](hamon::size_t pos) const
 	{
 		return unchecked_test(pos);
 	}
 
-	HAMON_CXX14_CONSTEXPR reference
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR reference
 	operator[](hamon::size_t pos)
 	{
 		return reference(&m_impl.get_word(pos), m_impl.get_bit(pos));
 	}
 
-	HAMON_CXX11_CONSTEXPR unsigned long
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR unsigned long
 	to_ulong() const
 	{
 		return m_impl.to_ulong();
 	}
 
-	HAMON_CXX11_CONSTEXPR unsigned long long
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR unsigned long long
 	to_ullong() const
 	{
 		return m_impl.to_ullong();
@@ -966,7 +968,7 @@ public:
 		typename CharT = char,
 		typename Traits = std::char_traits<CharT>,
 		typename Allocator = std::allocator<CharT>>
-	HAMON_CXX14_CONSTEXPR std::basic_string<CharT, Traits, Allocator>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR std::basic_string<CharT, Traits, Allocator>
 	to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const
 	{
 		std::basic_string<CharT, Traits, Allocator> s(N, zero);
@@ -981,58 +983,67 @@ public:
 	}
 
 	// observers
-	HAMON_CXX11_CONSTEXPR hamon::size_t count() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::size_t
+	count() const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/43
 		return m_impl.count();
 	}
 
-	HAMON_CXX11_CONSTEXPR hamon::size_t size() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::size_t
+	size() const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/44
 		return N;
 	}
 
-	HAMON_CXX11_CONSTEXPR bool operator==(bitset const& rhs) const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	operator==(bitset const& rhs) const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/45
 		return m_impl == rhs.m_impl;
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	HAMON_CXX11_CONSTEXPR bool operator!=(bitset const& rhs) const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	operator!=(bitset const& rhs) const HAMON_NOEXCEPT
 	{
 		return !(*this == rhs);
 	}
 #endif
 
-	HAMON_CXX11_CONSTEXPR bool test(hamon::size_t pos) const
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	test(hamon::size_t pos) const
 	{
 		return pos >= N ?			// [bitset.members]/47
 			(bitset_detail::throw_out_of_range("bitset::test"), false) :
 			unchecked_test(pos);	// [bitset.members]/46
 	}
 
-	HAMON_CXX11_CONSTEXPR bool all() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	all() const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/48
 		return count() == size();
 	}
 
-	HAMON_CXX11_CONSTEXPR bool any() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	any() const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/49
 		return count() != 0;
 	}
 
-	HAMON_CXX11_CONSTEXPR bool none() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+	none() const HAMON_NOEXCEPT
 	{
 		// [bitset.members]/50
 		return count() == 0;
 	}
 
 	// extension
-	HAMON_CXX11_CONSTEXPR std::size_t hash() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR std::size_t
+	hash() const HAMON_NOEXCEPT
 	{
 		return m_impl.hash();
 	}
@@ -1076,7 +1087,7 @@ private:
 
 // [bitset.operators], bitset operators
 template <hamon::size_t N>
-HAMON_CXX11_CONSTEXPR bitset<N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset<N>
 operator&(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 {
 	// [bitset.operators]/1
@@ -1084,7 +1095,7 @@ operator&(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t N>
-HAMON_CXX11_CONSTEXPR bitset<N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset<N>
 operator|(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 {
 	// [bitset.operators]/2
@@ -1092,7 +1103,7 @@ operator|(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 }
 
 template <hamon::size_t N>
-HAMON_CXX11_CONSTEXPR bitset<N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bitset<N>
 operator^(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 {
 	// [bitset.operators]/3
