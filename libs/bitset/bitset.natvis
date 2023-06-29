@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::bitset_detail::bitset_impl&lt;*,*,*&gt;">
+		<DisplayString>{{ size={$T2} }}</DisplayString>
+		<Expand>
+			<IndexListItems>
+				<Size>$T2</Size>
+				<ValueNode>(m_value[$i / BitsPerWord] &gt;&gt; ($i % BitsPerWord)) &amp; 1</ValueNode>
+			</IndexListItems>
+		</Expand>
+	</Type>
+	<Type Name="hamon::bitset_detail::bitset_impl&lt;*,*,1&gt;">
+		<DisplayString>{{ size={$T2} }}</DisplayString>
+		<Expand>
+			<IndexListItems>
+				<Size>$T2</Size>
+				<ValueNode>(m_value &gt;&gt; $i) &amp; 1</ValueNode>
+			</IndexListItems>
+		</Expand>
+	</Type>
+	<Type Name="hamon::bitset_detail::bitset_impl&lt;*,0,0&gt;">
+		<DisplayString>[empty]</DisplayString>
+	</Type>
+	<Type Name="hamon::bitset&lt;*&gt;">
+		<DisplayString>{m_impl}</DisplayString>
+		<Expand>
+			<ExpandedItem>m_impl</ExpandedItem>
+		</Expand>
+	</Type>
+</AutoVisualizer>
