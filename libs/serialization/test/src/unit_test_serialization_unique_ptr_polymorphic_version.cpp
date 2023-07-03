@@ -7,7 +7,7 @@
 #include <hamon/serialization/unique_ptr.hpp>
 #include <hamon/serialization/base_object.hpp>
 #include <hamon/serialization/class_id.hpp>
-#include <hamon/serialization/export_class.hpp>
+#include <hamon/serialization/register_polymorphic_class.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -93,7 +93,7 @@ public:
 
 int Derived::instance_count = 0;
 
-HAMON_SERIALIZATION_EXPORT_CLASS(Derived);
+HAMON_SERIALIZATION_REGISTER_POLYMORPHIC_CLASS(Derived)
 
 template <typename Stream, typename OArchive, typename IArchive>
 void UniquePtrPolymorphicVersionTest()

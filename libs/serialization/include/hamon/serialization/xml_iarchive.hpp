@@ -199,4 +199,7 @@ private:
 
 }	// namespace hamon
 
+#include <hamon/serialization/register_archive.hpp>
+HAMON_SERIALIZATION_REGISTER_IARCHIVE(hamon::serialization::xml_iarchive)
+
 #endif // HAMON_SERIALIZATION_XML_IARCHIVE_HPP

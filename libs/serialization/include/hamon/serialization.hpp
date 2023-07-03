@@ -13,7 +13,6 @@
 #include <hamon/serialization/binary_iarchive.hpp>
 #include <hamon/serialization/binary_oarchive.hpp>
 #include <hamon/serialization/class_id.hpp>
-#include <hamon/serialization/export_class.hpp>
 #include <hamon/serialization/json_iarchive.hpp>
 #include <hamon/serialization/json_oarchive.hpp>
 #include <hamon/serialization/list.hpp>

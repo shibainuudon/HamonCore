@@ -54,4 +54,7 @@ private:
 
 }	// namespace hamon
 
+#include <hamon/serialization/register_archive.hpp>
+HAMON_SERIALIZATION_REGISTER_IARCHIVE(hamon::serialization::binary_iarchive)
+
 #endif // HAMON_SERIALIZATION_BINARY_IARCHIVE_HPP
