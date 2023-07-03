@@ -971,6 +971,10 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR std::basic_string<CharT, Traits, Allocator>
 	to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const
 	{
+HAMON_WARNING_PUSH()
+#if defined(HAMON_GCC_VERSION) && (100000 <= HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000)
+HAMON_WARNING_DISABLE_GCC("-Wtype-limits")	// GCC10 だと不要な警告が出る
+#endif
 		std::basic_string<CharT, Traits, Allocator> s(N, zero);
 		for (hamon::size_t i = 0; i < N; ++i)
 		{
@@ -980,6 +984,7 @@ public:
 			}
 		}
 		return s;
+HAMON_WARNING_POP()
 	}
 
 	// observers
