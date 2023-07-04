@@ -31,7 +31,7 @@
 
 ```cpp
 #include <hamon/serialization/access.hpp>
-#include <hamon/serialization/string.hpp>
+#include <hamon/serialization/types/string.hpp>
 
 class Student
 {
@@ -50,8 +50,8 @@ private:
 };
 
 #include <fstream>
-#include <hamon/serialization/text_oarchive.hpp>
-#include <hamon/serialization/text_iarchive.hpp>
+#include <hamon/serialization/archives/text_oarchive.hpp>
+#include <hamon/serialization/archives/text_iarchive.hpp>
 
 int main()
 {

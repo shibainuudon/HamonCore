@@ -4,11 +4,11 @@
  *	@brief	JSONシリアライズのテスト
  */
 
-#include <hamon/serialization/json_iarchive.hpp>
-#include <hamon/serialization/json_oarchive.hpp>
-#include <hamon/serialization/string.hpp>
-#include <hamon/serialization/vector.hpp>
-#include <hamon/serialization/array.hpp>
+#include <hamon/serialization/archives/json_iarchive.hpp>
+#include <hamon/serialization/archives/json_oarchive.hpp>
+#include <hamon/serialization/types/string.hpp>
+#include <hamon/serialization/types/vector.hpp>
+#include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/config.hpp>

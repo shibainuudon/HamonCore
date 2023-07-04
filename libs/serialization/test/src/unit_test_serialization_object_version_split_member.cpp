@@ -4,7 +4,7 @@
  *	@brief	メンバー関数save/load(バージョンあり)のテスト
  */
 
-#include <hamon/serialization/vector.hpp>
+#include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/config.hpp>

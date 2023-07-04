@@ -4,10 +4,10 @@
  *	@brief	std::weak_ptr のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_WEAK_PTR_HPP
-#define HAMON_SERIALIZATION_WEAK_PTR_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_WEAK_PTR_HPP
+#define HAMON_SERIALIZATION_TYPES_WEAK_PTR_HPP
 
-#include <hamon/serialization/shared_ptr.hpp>
+#include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <memory>
@@ -46,4 +46,4 @@ struct has_class_version<std::weak_ptr<T>>
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_WEAK_PTR_HPP
+#endif // HAMON_SERIALIZATION_TYPES_WEAK_PTR_HPP

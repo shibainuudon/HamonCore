@@ -1,14 +1,14 @@
 ﻿/**
- *	@file	xml_iarchive.hpp
+ *	@file	json_iarchive.hpp
  *
- *	@brief	xml_iarchiveの定義
+ *	@brief	json_iarchiveの定義
  */
 
-#ifndef HAMON_SERIALIZATION_XML_IARCHIVE_HPP
-#define HAMON_SERIALIZATION_XML_IARCHIVE_HPP
+#ifndef HAMON_SERIALIZATION_ARCHIVES_JSON_IARCHIVE_HPP
+#define HAMON_SERIALIZATION_ARCHIVES_JSON_IARCHIVE_HPP
 
 #include <hamon/serialization/detail/archive_base.hpp>
-#include <hamon/serialization/detail/xml_iarchive_impl.hpp>
+#include <hamon/serialization/detail/text_iarchive_impl.hpp>
 #include <hamon/serialization/detail/load_value.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
@@ -27,47 +27,59 @@ namespace hamon
 namespace serialization
 {
 
-class xml_iarchive : public detail::archive_base
+class json_iarchive : public detail::archive_base
 {
 public:
 	template <typename IStream>
-	explicit xml_iarchive(IStream& is)
-		: m_impl(new detail::xml_iarchive_impl<IStream>(is))
+	explicit json_iarchive(IStream& is)
+		: m_impl(new detail::text_iarchive_impl<IStream>(is))
 	{
-		read_tag();	// <?xml version=\"1.0\"?>
-		read_tag();	// <serialization>
+		start_object();
 	}
 
-	~xml_iarchive()
+	~json_iarchive()
 	{
-		read_tag();	// </serialization>
+		end_object();
 	}
 
 	template <typename T>
-	xml_iarchive& operator>>(nvp<T> const& t)
+	json_iarchive& operator>>(nvp<T> const& t)
 	{
-		read_tag();
+		if (!m_first_value)
+		{
+			m_impl->get_one_char();	// ","
+		}
+		m_first_value = false;
+
+		std::string name;
+		hamon::serialization::detail::load_value(*this, name);
+		m_impl->get_one_char();		// ":"
 		hamon::serialization::detail::load_value(*this, t.value());
-		read_tag();
 		return *this;
 	}
 
 	template <typename T>
-	xml_iarchive& operator>>(T& t)
+	json_iarchive& operator>>(T& t)
 	{
 		return *this >> make_nvp("", t);
 	}
 
 	template <typename T>
-	xml_iarchive& operator&(T& t)
+	json_iarchive& operator&(T& t)
 	{
 		return *this >> t;
 	}
 
 private:
-	std::string read_tag(void)
+	void start_object(void)
 	{
-		return m_impl->read_tag();
+		m_impl->get_one_char();	// "{"
+		m_first_value = true;
+	}
+
+	void end_object(void)
+	{
+		m_impl->get_one_char();	// "}"
 	}
 
 	template <typename CharT>
@@ -75,34 +87,26 @@ private:
 	{
 		bool escaping = false;
 		std::basic_string<CharT> result;
-		for (hamon::size_t i = 0; i < str.size(); ++i)
+		for (auto c : str)
 		{
-			auto c = str[i];
 			if (escaping)
 			{
 				switch (c)
 				{
-				case 'q': c = '"'; i+=4; break;
-				case 'a':
-					if (str[i+1] == 'p')
-					{
-						c = '\'';
-						i+=4;
-					}
-					else
-					{
-						c = '&';
-						i+=3;
-					}
-					break;
-				case 'l': c = '<'; i+=2; break;
-				case 'g': c = '>'; i+=2; break;
+				case '"':  c = '"';  break;
+				case '\\': c = '\\'; break;
+				case '/':  c = '/';  break;
+				case 'b':  c = '\b'; break;
+				case 'f':  c = '\f'; break;
+				case 'n':  c = '\n'; break;
+				case 'r':  c = '\r'; break;
+				case 't':  c = '\t'; break;
 				}
 				escaping = false;
 			}
 			else
 			{
-				if (c == '&')
+				if (c == '\\')
 				{
 					escaping = true;
 					continue;
@@ -135,64 +139,80 @@ private:
 		t = static_cast<T>(i);
 	}
 
-	friend void load_arithmetic(xml_iarchive& ia, bool& t)
+	friend void load_arithmetic(json_iarchive& ia, bool& t)
 	{
 		ia.m_impl->load(t);
 	}
 
 	template <typename T>
-	friend void load_arithmetic(xml_iarchive& ia, T& t)
+	friend void load_arithmetic(json_iarchive& ia, T& t)
 	{
 		ia.load_arithmetic_impl(t, hamon::detail::overload_priority<2>{});
 	}
 
 	template <typename T>
-	friend void load_string(xml_iarchive& ia, T& t)
+	friend void load_string(json_iarchive& ia, T& t)
 	{
 		T tmp;
-		ia.m_impl->load_string_until(tmp, '<');	// 次のタグ開始まで読む
-		ia.m_impl->unget_one_char();			// 1文字戻す
+		ia.m_impl->load_quoted_string(tmp);
 		t = unescape(tmp);
 	}
 
-	//template <typename T>
-	//friend void load_array(xml_iarchive& ia, T& t)
-	//{
-	//}
-
 	template <typename T>
-	friend void load_vector(xml_iarchive& ia, T& t)
+	friend void load_array(json_iarchive& ia, T& t)
+	{
+		ia.m_impl->get_one_char();	// "["
+		hamon::size_t i = 0;
+		for (auto& x : t)
+		{
+			if (i != 0)
+			{
+				ia.m_impl->get_one_char();	// ","
+			}
+			hamon::serialization::detail::load_value(ia, x);
+			++i;
+		}
+		ia.m_impl->get_one_char();	// "]"
+	}
+	
+	template <typename T>
+	friend void load_vector(json_iarchive& ia, T& t)
 	{
 		using element_type = typename T::value_type;
 
+		ia.m_impl->get_one_char();	// "["
 		for (;;)
 		{
-			auto const pos = ia.m_impl->tellg();
-			auto const tag = ia.read_tag();
-			if (tag[0] == '<' && tag[1] == '/')
+			auto const c = ia.m_impl->get_one_char();
+			if (c == ']')
 			{
-				ia.m_impl->seekg(pos);
 				break;
+			}
+
+			if (c != ',')
+			{
+				ia.m_impl->unget_one_char();
 			}
 
 			element_type e;
 			hamon::serialization::detail::load_value(ia, e);
 			t.push_back(e);
-
-			ia.read_tag();
 		}
 	}
 
-	//friend void start_load_class(xml_iarchive& ia)
-	//{
-	//}
+	friend void start_load_class(json_iarchive& ia)
+	{
+		ia.start_object();
+	}
 
-	//friend void end_load_class(xml_iarchive& ia)
-	//{
-	//}
+	friend void end_load_class(json_iarchive& ia)
+	{
+		ia.end_object();
+	}
 
 private:
-	std::unique_ptr<detail::xml_iarchive_impl_base>	m_impl;
+	std::unique_ptr<detail::text_iarchive_impl_base>	m_impl;
+	bool	m_first_value = true;
 };
 
 }	// namespace serialization
@@ -200,6 +220,6 @@ private:
 }	// namespace hamon
 
 #include <hamon/serialization/register_archive.hpp>
-HAMON_SERIALIZATION_REGISTER_IARCHIVE(hamon::serialization::xml_iarchive)
+HAMON_SERIALIZATION_REGISTER_IARCHIVE(hamon::serialization::json_iarchive)
 
-#endif // HAMON_SERIALIZATION_XML_IARCHIVE_HPP
+#endif // HAMON_SERIALIZATION_ARCHIVES_JSON_IARCHIVE_HPP

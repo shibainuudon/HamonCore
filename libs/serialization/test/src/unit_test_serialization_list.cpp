@@ -4,9 +4,9 @@
  *	@brief	std::listのシリアライズのテスト
  */
 
-#include <hamon/serialization/list.hpp>
-#include <hamon/serialization/vector.hpp>
-#include <hamon/serialization/string.hpp>
+#include <hamon/serialization/types/list.hpp>
+#include <hamon/serialization/types/vector.hpp>
+#include <hamon/serialization/types/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>

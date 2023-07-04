@@ -4,7 +4,7 @@
  *	@brief	std::unique_ptr のシリアライズのテスト
  */
 
-#include <hamon/serialization/unique_ptr.hpp>
+#include <hamon/serialization/types/unique_ptr.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>

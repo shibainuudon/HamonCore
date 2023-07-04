@@ -4,8 +4,8 @@
  *	@brief	std::arrayのシリアライズのテスト
  */
 
-#include <hamon/serialization/array.hpp>
-#include <hamon/serialization/string.hpp>
+#include <hamon/serialization/types/array.hpp>
+#include <hamon/serialization/types/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>

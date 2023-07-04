@@ -4,7 +4,7 @@
  *	@brief	std::unique_ptr のシリアライズのテスト
  */
 
-#include <hamon/serialization/unique_ptr.hpp>
+#include <hamon/serialization/types/unique_ptr.hpp>
 #include <hamon/serialization/base_object.hpp>
 #include <hamon/serialization/class_id.hpp>
 #include <hamon/serialization/register_polymorphic_class.hpp>

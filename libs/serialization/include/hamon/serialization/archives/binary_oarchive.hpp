@@ -4,8 +4,8 @@
  *	@brief	binary_oarchiveの定義
  */
 
-#ifndef HAMON_SERIALIZATION_BINARY_OARCHIVE_HPP
-#define HAMON_SERIALIZATION_BINARY_OARCHIVE_HPP
+#ifndef HAMON_SERIALIZATION_ARCHIVES_BINARY_OARCHIVE_HPP
+#define HAMON_SERIALIZATION_ARCHIVES_BINARY_OARCHIVE_HPP
 
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/binary_oarchive_impl.hpp>
@@ -57,4 +57,4 @@ private:
 #include <hamon/serialization/register_archive.hpp>
 HAMON_SERIALIZATION_REGISTER_OARCHIVE(hamon::serialization::binary_oarchive)
 
-#endif // HAMON_SERIALIZATION_BINARY_OARCHIVE_HPP
+#endif // HAMON_SERIALIZATION_ARCHIVES_BINARY_OARCHIVE_HPP

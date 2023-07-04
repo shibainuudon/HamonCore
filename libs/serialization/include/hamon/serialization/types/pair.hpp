@@ -4,8 +4,8 @@
  *	@brief	std::pair のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_PAIR_HPP
-#define HAMON_SERIALIZATION_PAIR_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_PAIR_HPP
+#define HAMON_SERIALIZATION_TYPES_PAIR_HPP
 
 #include <hamon/serialization/detail/has_class_version.hpp>
 #include <hamon/serialization/nvp.hpp>
@@ -45,4 +45,4 @@ struct has_class_version<std::pair<T, U>>
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_PAIR_HPP
+#endif // HAMON_SERIALIZATION_TYPES_PAIR_HPP

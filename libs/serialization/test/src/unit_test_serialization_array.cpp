@@ -4,7 +4,7 @@
  *	@brief	配列のシリアライズのテスト
  */
 
-#include <hamon/serialization/string.hpp>
+#include <hamon/serialization/types/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>

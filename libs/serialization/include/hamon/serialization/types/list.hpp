@@ -4,8 +4,8 @@
  *	@brief	std::list のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_LIST_HPP
-#define HAMON_SERIALIZATION_LIST_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_LIST_HPP
+#define HAMON_SERIALIZATION_TYPES_LIST_HPP
 
 #include <hamon/serialization/detail/save_vector.hpp>
 #include <hamon/serialization/detail/load_vector.hpp>
@@ -34,4 +34,4 @@ void load_value(Archive& ia, std::list<T>& t)
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_LIST_HPP
+#endif // HAMON_SERIALIZATION_TYPES_LIST_HPP

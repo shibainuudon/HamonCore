@@ -4,8 +4,8 @@
  *	@brief	std::array のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_ARRAY_HPP
-#define HAMON_SERIALIZATION_ARRAY_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_ARRAY_HPP
+#define HAMON_SERIALIZATION_TYPES_ARRAY_HPP
 
 #include <hamon/serialization/detail/save_array.hpp>
 #include <hamon/serialization/detail/load_array.hpp>
@@ -34,4 +34,4 @@ void load_value(Archive& ia, std::array<T, N>& t)
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_ARRAY_HPP
+#endif // HAMON_SERIALIZATION_TYPES_ARRAY_HPP

@@ -4,8 +4,8 @@
  *	@brief	std::unique_ptr のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_UNIQUE_PTR_HPP
-#define HAMON_SERIALIZATION_UNIQUE_PTR_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_UNIQUE_PTR_HPP
+#define HAMON_SERIALIZATION_TYPES_UNIQUE_PTR_HPP
 
 #include <hamon/serialization/detail/save_pointer.hpp>
 #include <hamon/serialization/detail/load_pointer.hpp>
@@ -64,4 +64,4 @@ struct has_class_version<std::unique_ptr<T>>
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_UNIQUE_PTR_HPP
+#endif // HAMON_SERIALIZATION_TYPES_UNIQUE_PTR_HPP

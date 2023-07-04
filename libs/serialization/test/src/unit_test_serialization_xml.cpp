@@ -4,11 +4,11 @@
  *	@brief	XMLシリアライズのテスト
  */
 
-#include <hamon/serialization/xml_iarchive.hpp>
-#include <hamon/serialization/xml_oarchive.hpp>
-#include <hamon/serialization/array.hpp>
-#include <hamon/serialization/string.hpp>
-#include <hamon/serialization/vector.hpp>
+#include <hamon/serialization/archives/xml_iarchive.hpp>
+#include <hamon/serialization/archives/xml_oarchive.hpp>
+#include <hamon/serialization/types/array.hpp>
+#include <hamon/serialization/types/string.hpp>
+#include <hamon/serialization/types/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"

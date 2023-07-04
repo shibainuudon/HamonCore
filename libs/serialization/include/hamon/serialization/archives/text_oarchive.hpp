@@ -4,8 +4,8 @@
  *	@brief	text_oarchiveの定義
  */
 
-#ifndef HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
-#define HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
+#ifndef HAMON_SERIALIZATION_ARCHIVES_TEXT_OARCHIVE_HPP
+#define HAMON_SERIALIZATION_ARCHIVES_TEXT_OARCHIVE_HPP
 
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/text_oarchive_impl.hpp>
@@ -89,4 +89,4 @@ private:
 #include <hamon/serialization/register_archive.hpp>
 HAMON_SERIALIZATION_REGISTER_OARCHIVE(hamon::serialization::text_oarchive)
 
-#endif // HAMON_SERIALIZATION_TEXT_OARCHIVE_HPP
+#endif // HAMON_SERIALIZATION_ARCHIVES_TEXT_OARCHIVE_HPP

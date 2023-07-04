@@ -4,8 +4,8 @@
  *	@brief	std::string のシリアライズの定義
  */
 
-#ifndef HAMON_SERIALIZATION_STRING_HPP
-#define HAMON_SERIALIZATION_STRING_HPP
+#ifndef HAMON_SERIALIZATION_TYPES_STRING_HPP
+#define HAMON_SERIALIZATION_TYPES_STRING_HPP
 
 #include <hamon/serialization/detail/save_string.hpp>
 #include <hamon/serialization/detail/load_string.hpp>
@@ -34,4 +34,4 @@ void load_value(Archive& ia, std::basic_string<CharT>& t)
 
 }	// namespace hamon
 
-#endif // HAMON_SERIALIZATION_STRING_HPP
+#endif // HAMON_SERIALIZATION_TYPES_STRING_HPP

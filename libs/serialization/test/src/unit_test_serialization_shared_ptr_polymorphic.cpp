@@ -4,7 +4,7 @@
  *	@brief	std::shared_ptr のシリアライズのテスト
  */
 
-#include <hamon/serialization/shared_ptr.hpp>
+#include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/serialization/base_object.hpp>
 #include <hamon/serialization/class_id.hpp>
 #include <hamon/serialization/register_polymorphic_class.hpp>

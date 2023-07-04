@@ -4,8 +4,8 @@
  *	@brief	std::weak_ptr のシリアライズのテスト
  */
 
-#include <hamon/serialization/weak_ptr.hpp>
-#include <hamon/serialization/shared_ptr.hpp>
+#include <hamon/serialization/types/weak_ptr.hpp>
+#include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>

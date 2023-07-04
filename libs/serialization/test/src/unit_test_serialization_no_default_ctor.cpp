@@ -4,9 +4,9 @@
  *	@brief	デフォルトコンストラクタを持たないクラスのシリアライズのテスト
  */
 
-#include <hamon/serialization/unique_ptr.hpp>
-#include <hamon/serialization/shared_ptr.hpp>
-#include <hamon/serialization/weak_ptr.hpp>
+#include <hamon/serialization/types/unique_ptr.hpp>
+#include <hamon/serialization/types/shared_ptr.hpp>
+#include <hamon/serialization/types/weak_ptr.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>

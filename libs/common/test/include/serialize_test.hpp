@@ -8,14 +8,14 @@
 #define UNIT_TEST_COMMON_SERIALIZE_TEST_HPP
 
 #include <hamon/serialization/nvp.hpp>
-#include <hamon/serialization/binary_iarchive.hpp>
-#include <hamon/serialization/binary_oarchive.hpp>
-#include <hamon/serialization/json_iarchive.hpp>
-#include <hamon/serialization/json_oarchive.hpp>
-#include <hamon/serialization/text_iarchive.hpp>
-#include <hamon/serialization/text_oarchive.hpp>
-#include <hamon/serialization/xml_iarchive.hpp>
-#include <hamon/serialization/xml_oarchive.hpp>
+#include <hamon/serialization/archives/binary_iarchive.hpp>
+#include <hamon/serialization/archives/binary_oarchive.hpp>
+#include <hamon/serialization/archives/json_iarchive.hpp>
+#include <hamon/serialization/archives/json_oarchive.hpp>
+#include <hamon/serialization/archives/text_iarchive.hpp>
+#include <hamon/serialization/archives/text_oarchive.hpp>
+#include <hamon/serialization/archives/xml_iarchive.hpp>
+#include <hamon/serialization/archives/xml_oarchive.hpp>
 
 namespace
 {

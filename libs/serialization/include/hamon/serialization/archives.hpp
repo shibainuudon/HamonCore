@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	serialization_test_archives.hpp
+ *	@file	archives.hpp
  *
  *	@brief
  */
 
-#ifndef UNIT_TEST_SERIALIZATION_SERIALIZATION_TEST_ARCHIVES_HPP
-#define UNIT_TEST_SERIALIZATION_SERIALIZATION_TEST_ARCHIVES_HPP
+#ifndef HAMON_SERIALIZATION_ARCHIVES_HPP
+#define HAMON_SERIALIZATION_ARCHIVES_HPP
 
 #include <hamon/serialization/archives/binary_iarchive.hpp>
 #include <hamon/serialization/archives/binary_oarchive.hpp>
@@ -16,4 +16,4 @@
 #include <hamon/serialization/archives/xml_iarchive.hpp>
 #include <hamon/serialization/archives/xml_oarchive.hpp>
 
-#endif // UNIT_TEST_SERIALIZATION_SERIALIZATION_TEST_ARCHIVES_HPP
+#endif // HAMON_SERIALIZATION_ARCHIVES_HPP

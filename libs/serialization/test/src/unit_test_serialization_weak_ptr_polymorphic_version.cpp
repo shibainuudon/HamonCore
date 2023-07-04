@@ -4,8 +4,8 @@
  *	@brief	std::weak_ptr のシリアライズ(バージョンあり)のテスト
  */
 
-#include <hamon/serialization/weak_ptr.hpp>
-#include <hamon/serialization/shared_ptr.hpp>
+#include <hamon/serialization/types/weak_ptr.hpp>
+#include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/serialization/base_object.hpp>
 #include <hamon/serialization/class_id.hpp>
 #include <hamon/serialization/register_polymorphic_class.hpp>
