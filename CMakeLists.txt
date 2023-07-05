@@ -22,6 +22,7 @@ set(SUBDIRECTORIES
 	any
 	array
 	base64
+	bigint
 	bit
 	bitflags
 	bitset
