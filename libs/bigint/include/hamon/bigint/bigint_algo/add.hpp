@@ -7,6 +7,7 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 
+#include <hamon/bigint/bigint_algo/detail/get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -58,8 +59,8 @@ add(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		T const l = i < lhs.size() ? lhs[i] : T{};
-		T const r = i < rhs.size() ? rhs[i] : T{};
+		T const l = bigint_algo::get(lhs, i);
+		T const r = bigint_algo::get(rhs, i);
 		T const a = static_cast<T>(r + carry);
 		T const b = static_cast<T>(l + a);
 		T const c1 = a < r ? 1 : 0;
