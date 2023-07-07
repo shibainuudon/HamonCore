@@ -23,6 +23,7 @@ using std::lexicographical_compare;
 #else
 
 #include <hamon/functional/less.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -56,12 +57,13 @@ template <
 	typename InputIterator2,
 	typename Compare
 >
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 lexicographical_compare(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
 	Compare comp)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
 	for (; first2 != last2; ++first1, (void) ++first2)
 	{
 		if (first1 == last1 || comp(*first1, *first2))
@@ -76,6 +78,19 @@ lexicographical_compare(
 	}
 
 	return false;
+#else
+	return
+		first2 == last2 ?
+			false :
+		(first1 == last1 || comp(*first1, *first2)) ?
+			true :
+		(comp(*first2, *first1)) ?
+			false :
+		hamon::lexicographical_compare(
+			hamon::next(first1), last1,
+			hamon::next(first2), last2,
+			comp);
+#endif
 }
 
 /**
@@ -103,7 +118,7 @@ template <
 	typename InputIterator1,
 	typename InputIterator2
 >
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 lexicographical_compare(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2)
