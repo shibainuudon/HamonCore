@@ -341,7 +341,7 @@ HAMON_NOEXCEPT_IF_EXPR((
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator==(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -351,7 +351,7 @@ operator==(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR hamon::detail::synth3way_t<T>
+inline HAMON_CXX11_CONSTEXPR hamon::detail::synth3way_t<T>
 operator<=>(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::lexicographical_compare_three_way(
@@ -364,7 +364,7 @@ operator<=>(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator!=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs == rhs);
@@ -372,7 +372,7 @@ operator!=(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator<(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::lexicographical_compare(
@@ -382,7 +382,7 @@ operator<(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator>(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return rhs < lhs;
@@ -390,7 +390,7 @@ operator>(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator<=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs > rhs);
@@ -398,7 +398,7 @@ operator<=(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// extension
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX11_CONSTEXPR bool
 operator>=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs < rhs);
