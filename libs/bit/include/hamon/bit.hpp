@@ -23,5 +23,6 @@
 #include <hamon/bit/popcount.hpp>
 #include <hamon/bit/rotl.hpp>
 #include <hamon/bit/rotr.hpp>
+#include <hamon/bit/shl.hpp>
 
 #endif // HAMON_BIT_HPP
