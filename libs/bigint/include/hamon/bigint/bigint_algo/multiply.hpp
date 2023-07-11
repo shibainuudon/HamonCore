@@ -116,18 +116,28 @@ multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	return result;
 }
 
-template <hamon::size_t N, typename T, hamon::size_t M, hamon::size_t... Is>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-resized_impl(hamon::array<T, M> const& a, hamon::index_sequence<Is...>)
+template <typename T>
+inline std::vector<T>
+multiply(std::vector<T> const& lhs, T rhs)
 {
-	return hamon::array<T, N>{a[Is]...};
+	auto const NA = lhs.size();
+
+	std::vector<T> result{0};
+
+	for (hamon::size_t i = 0; i < NA; ++i)
+	{
+		auto tmp = multiply1<std::vector<T>>(lhs[i], rhs);
+		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>()));
+	}
+
+	return result;
 }
 
-template <hamon::size_t N, typename T, hamon::size_t M>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-resized(hamon::array<T, M> const& a)
+template <typename T>
+inline HAMON_CXX11_CONSTEXPR hamon::array<T, 1>
+multiply(hamon::array<T, 1> const& lhs, hamon::array<T, 1> const& rhs)
 {
-	return resized_impl<N>(a, hamon::make_index_sequence<(N < M) ? N : M>{});
+	return hamon::array<T, 1>{static_cast<T>(lhs[0] * rhs[0])};
 }
 
 #if defined(HAMON_HAS_CXX14_CONSTEXPR)
@@ -142,9 +152,24 @@ multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 	{
 		for (hamon::size_t j = 0; j < N; ++j)
 		{
-			auto tmp = resized<N>(multiply1<hamon::array<T, 2>>(lhs[i], rhs[j]));
+			auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs[j]);
 			result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>()));
 		}
+	}
+
+	return result;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
+multiply(hamon::array<T, N> const& lhs, T rhs)
+{
+	hamon::array<T, N> result{0};
+
+	for (hamon::size_t i = 0; i < N; ++i)
+	{
+		auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs);
+		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>()));
 	}
 
 	return result;
@@ -154,26 +179,26 @@ multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-multiply_impl_2(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs,
+multiply_impl_1_2(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs,
 	hamon::array<T, N> const& result, hamon::size_t i, hamon::size_t j)
 {
 	return j >= N ? result :
-		multiply_impl_2(lhs, rhs,
+		multiply_impl_1_2(lhs, rhs,
 			bigint_algo::add(result,
 				bigint_algo::bit_shift_left(
-					resized<N>(multiply1<hamon::array<T, 2>>(lhs[i], rhs[j])),
+					multiply1<hamon::array<T, N>>(lhs[i], rhs[j]),
 					(i+j) * hamon::bitsof<T>())),
 			i, j+1);
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-multiply_impl_1(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs,
+multiply_impl_1_1(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs,
 	hamon::array<T, N> const& result, hamon::size_t i)
 {
 	return i >= N ? result :
-		multiply_impl_1(lhs, rhs,
-			multiply_impl_2(lhs, rhs, result, i, 0),
+		multiply_impl_1_1(lhs, rhs,
+			multiply_impl_1_2(lhs, rhs, result, i, 0),
 			i+1);
 }
 
@@ -181,7 +206,28 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
 multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
-	return multiply_impl_1(lhs, rhs, hamon::array<T, N>{}, 0);
+	return multiply_impl_1_1(lhs, rhs, hamon::array<T, N>{}, 0);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+multiply_impl_2_1(hamon::array<T, N> const& lhs, T rhs,
+	hamon::array<T, N> const& result, hamon::size_t i)
+{
+	return i >= N ? result :
+		multiply_impl_2_1(lhs, rhs,
+			bigint_algo::add(result,
+				bigint_algo::bit_shift_left(
+					multiply1<hamon::array<T, N>>(lhs[i], rhs),
+					i * hamon::bitsof<T>())),
+			i+1);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+multiply(hamon::array<T, N> const& lhs, T rhs)
+{
+	return multiply_impl_2_1(lhs, rhs, hamon::array<T, N>{}, 0);
 }
 
 #endif

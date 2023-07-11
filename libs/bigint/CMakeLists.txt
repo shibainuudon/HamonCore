@@ -23,6 +23,8 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		bit
 		config
 		cstddef
+		pair
+		ranges
 		type_traits
 		utility
 		common)

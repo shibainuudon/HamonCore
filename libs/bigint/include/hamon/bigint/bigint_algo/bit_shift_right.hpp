@@ -39,11 +39,22 @@ bit_shift_right(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 
 	hamon::size_t const N = lhs.size() - quo;
 	std::vector<T> result(N);
-	for (hamon::size_t i = 0; i < N; ++i)
+
+	if (rem == 0)
 	{
-		result[i] = static_cast<T>(
-			hamon::shl(bigint_algo::get(lhs, i + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-			hamon::shr(bigint_algo::get(lhs, i + quo), rem));
+		for (hamon::size_t i = 0; i < N; ++i)
+		{
+			result[i] = bigint_algo::get(lhs, i + quo);
+		}
+	}
+	else
+	{
+		for (hamon::size_t i = 0; i < N; ++i)
+		{
+			result[i] = static_cast<T>(
+				hamon::shl(bigint_algo::get(lhs, i + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
+				hamon::shr(bigint_algo::get(lhs, i + quo), rem));
+		}
 	}
 
 	return bigint_algo::normalize(result);
@@ -56,11 +67,12 @@ bit_shift_right_impl(hamon::array<T, N> const& lhs,
 	hamon::index_sequence<Is...>)
 {
 	return
-	{
-		static_cast<T>(
+		rem == 0 ?
+		hamon::array<T, N> { bigint_algo::get(lhs, Is + quo)... } :
+		hamon::array<T, N> { static_cast<T>(
 			hamon::shl(bigint_algo::get(lhs, Is + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
 			hamon::shr(bigint_algo::get(lhs, Is + quo), rem))...
-	};
+		};
 }
 
 template <typename T, hamon::size_t N>
