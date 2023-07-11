@@ -9,6 +9,8 @@
 
 #include <hamon/bigint/bigint_algo/add.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
+#include <hamon/bigint/bigint_algo/detail/hi.hpp>
+#include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -23,70 +25,45 @@ namespace detail
 namespace bigint_algo
 {
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint8_t hi(hamon::uint16_t x)
+inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
+mul(hamon::uint8_t lhs, hamon::uint8_t rhs)
 {
-	return static_cast<hamon::uint8_t>(x >> 8);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t hi(hamon::uint32_t x)
-{
-	return static_cast<hamon::uint16_t>(x >> 16);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t hi(hamon::uint64_t x)
-{
-	return static_cast<hamon::uint32_t>(x >> 32);
+	return static_cast<hamon::uint16_t>(
+		static_cast<hamon::uint16_t>(lhs) *
+		static_cast<hamon::uint16_t>(rhs));
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint8_t lo(hamon::uint16_t x)
+inline HAMON_CXX11_CONSTEXPR hamon::uint32_t
+mul(hamon::uint16_t lhs, hamon::uint16_t rhs)
 {
-	return static_cast<hamon::uint8_t>(x);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t lo(hamon::uint32_t x)
-{
-	return static_cast<hamon::uint16_t>(x);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t lo(hamon::uint64_t x)
-{
-	return static_cast<hamon::uint32_t>(x);
+	return static_cast<hamon::uint32_t>(
+		static_cast<hamon::uint32_t>(lhs) *
+		static_cast<hamon::uint32_t>(rhs));
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t mul(hamon::uint8_t lhs, hamon::uint8_t rhs)
+inline HAMON_CXX11_CONSTEXPR hamon::uint64_t
+mul(hamon::uint32_t lhs, hamon::uint32_t rhs)
 {
-	return static_cast<hamon::uint16_t>(lhs) * static_cast<hamon::uint16_t>(rhs);
+	return static_cast<hamon::uint64_t>(
+		static_cast<hamon::uint64_t>(lhs) *
+		static_cast<hamon::uint64_t>(rhs));
 }
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t mul(hamon::uint16_t lhs, hamon::uint16_t rhs)
-{
-	return static_cast<hamon::uint32_t>(lhs) * static_cast<hamon::uint32_t>(rhs);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t mul(hamon::uint32_t lhs, hamon::uint32_t rhs)
-{
-	return static_cast<hamon::uint64_t>(lhs) * static_cast<hamon::uint64_t>(rhs);
-}
+
 #if defined(__SIZEOF_INT128__)
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t hi(__uint128_t x)
-{
-	return static_cast<hamon::uint64_t>(x >> 64);
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t lo(__uint128_t x)
-{
-	return static_cast<hamon::uint64_t>(x);
-}
-inline HAMON_CXX11_CONSTEXPR __uint128_t mul(hamon::uint64_t lhs, hamon::uint64_t rhs)
-{
-	return static_cast<__uint128_t>(lhs) * static_cast<__uint128_t>(rhs);
-}
-#else
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t hi(hamon::array<hamon::uint64_t, 2> const& x)
-{
-	return x[1];
-}
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t lo(hamon::array<hamon::uint64_t, 2> const& x)
-{
-	return x[0];
-}
-inline HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint64_t, 2>
+inline HAMON_CXX11_CONSTEXPR __uint128_t
 mul(hamon::uint64_t lhs, hamon::uint64_t rhs)
 {
-	using ResultType = hamon::array<hamon::uint64_t, 2>;
+	return static_cast<__uint128_t>(
+		static_cast<__uint128_t>(lhs) *
+		static_cast<__uint128_t>(rhs));
+}
+#endif
+
+template <typename T>
+inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
+mul(T lhs, T rhs)
+{
+	using ResultType = hamon::array<T, 2>;
 
 	auto const h  = mul(hi(lhs), hi(rhs));
 	auto const m1 = mul(hi(lhs), lo(rhs));
@@ -103,7 +80,6 @@ mul(hamon::uint64_t lhs, hamon::uint64_t rhs)
 		bigint_algo::add(a2,
 		bigint_algo::add(a3, a4)));
 }
-#endif
 
 template <typename ResultType, typename T>
 inline HAMON_CXX11_CONSTEXPR ResultType
