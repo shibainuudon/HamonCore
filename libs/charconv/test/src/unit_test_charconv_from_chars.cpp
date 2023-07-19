@@ -10,4 +10,6 @@
 
 GTEST_TEST(CharConvTest, FromCharsTest)
 {
+	{
+	}
 }
