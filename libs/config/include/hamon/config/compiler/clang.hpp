@@ -413,6 +413,9 @@
 #      define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC						// P0784R7
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 140000)
+#    define HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS				// P2085R0
+#  endif
 #  if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201711L)
 #    define HAMON_HAS_CXX20_THREE_WAY_COMPARISON							// P0515R3 P1185R2 P1186R3 P1630R1
 #  endif

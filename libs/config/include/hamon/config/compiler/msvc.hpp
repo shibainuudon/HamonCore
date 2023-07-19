@@ -544,6 +544,7 @@
 #  define HAMON_HAS_CXX20_NESTED_INLINE_NAMESPACES			// P1094R2
 #  define HAMON_HAS_CXX20_CONVERSIONS_TO_UNBOUNDED_ARRAY	// P0388R4
 #  define HAMON_HAS_CXX20_DEPRECATE_VOLATILE				// P1152R4
+#  define HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS	// P2085R0
 # endif
 // Defect report
 # define HAMON_HAS_CXX20_ARRAY_SIZE_DEDUCTION_NEW			// P1009R2
@@ -1176,6 +1177,7 @@
 #define HAMON_HAS_CXX20_IMPLICIT_MOVE						// P1825R0	Implicit move for more local objects and rvalue references
 #define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR					// P0593R6 Pseudo-destructors end object lifetimes
 #define HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING			// P1957R2 Converting from T* to bool should be considered narrowing
+#define HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS	// P2085R0 Consistent defaulted comparisons
 
 // C++20 libary features
 // P0528R3	Atomic Compare-and-Exchange with Padding Bits

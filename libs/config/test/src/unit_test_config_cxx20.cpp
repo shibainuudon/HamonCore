@@ -1859,6 +1859,19 @@ void f()
 }	// namespace optional_typename_test
 #endif
 
+#if defined(HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS)
+namespace consistent_defaulted_comparisons_test
+{
+
+struct S1
+{
+	int i;
+	friend bool operator==(const S1&, const S1&) = default;
+};
+
+}	// namespace consistent_defaulted_comparisons_test
+#endif
+
 }	// namespace hamon_config_cxx20_test
 
 HAMON_WARNING_POP()

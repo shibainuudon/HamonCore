@@ -492,6 +492,9 @@
 #      define HAMON_HAS_CXX20_NODISCARD_CTOR						// P1771R1
 #    endif
 #  endif
+#  if (HAMON_GCC_VERSION >= 100200)	//10.2
+#    define HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS		// P2085R0
+#  endif
 #  if (HAMON_GCC_VERSION >= 110000)
 #    if defined(__cpp_deduction_guides) && (__cpp_deduction_guides >= 201907)
 #      define HAMON_HAS_CXX20_CTAD_AGGREGATE						// P1816R0, P2082R1
