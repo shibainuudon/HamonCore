@@ -23,6 +23,7 @@ using std::to_chars;
 
 #else
 
+#include <hamon/charconv/detail/negate_unsigned.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
@@ -58,7 +59,7 @@ struct to_chars_result
 #endif
 };
 
-namespace detail
+namespace charconv_detail
 {
 
 template <typename T>
@@ -116,18 +117,18 @@ to_chars_integral(char* first, char* last, T value, int base, hamon::detail::ove
 	if (value < 0 && first != last)
 	{
 		*first++ = '-';
-		x = static_cast<UT>(~x + 1);
+		x = negate_unsigned(x);
 	}
 	return to_chars_unsigned_integral(first, last, x, static_cast<UT>(base));
 }
 
-}	// namespace detail
+}	// namespace charconv_detail
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_integral<T>::value>>
 inline HAMON_CXX14_CONSTEXPR to_chars_result
 to_chars(char* first, char* last, T value, int base = 10)
 {
-	return hamon::detail::to_chars_integral(
+	return hamon::charconv_detail::to_chars_integral(
 		first, last, value, base, hamon::detail::overload_priority<1>{});
 }
 
