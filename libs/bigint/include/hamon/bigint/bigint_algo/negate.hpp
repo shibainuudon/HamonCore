@@ -24,7 +24,7 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
 negate(hamon::array<T, N> const& lhs)
 {
-	return bigint_algo::add(bigint_algo::bit_not(lhs), hamon::array<T, N>{1});
+	return bigint_algo::add(bigint_algo::bit_not(lhs), hamon::array<T, N>{1}).value;
 }
 
 }	// namespace bigint_algo

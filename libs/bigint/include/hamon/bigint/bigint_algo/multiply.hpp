@@ -78,7 +78,7 @@ mul(T lhs, T rhs)
 	return
 		bigint_algo::add(a1,
 		bigint_algo::add(a2,
-		bigint_algo::add(a3, a4)));
+		bigint_algo::add(a3, a4).value).value).value;
 }
 
 template <typename ResultType, typename T>
@@ -109,7 +109,7 @@ multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
 		for (hamon::size_t j = 0; j < NB; ++j)
 		{
 			auto tmp = multiply1<std::vector<T>>(lhs[i], rhs[j]);
-			result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>()));
+			result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>())).value;
 		}
 	}
 
@@ -127,7 +127,7 @@ multiply(std::vector<T> const& lhs, T rhs)
 	for (hamon::size_t i = 0; i < NA; ++i)
 	{
 		auto tmp = multiply1<std::vector<T>>(lhs[i], rhs);
-		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>()));
+		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>())).value;
 	}
 
 	return result;
@@ -153,7 +153,7 @@ multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 		for (hamon::size_t j = 0; j < N; ++j)
 		{
 			auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs[j]);
-			result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>()));
+			result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>())).value;
 		}
 	}
 
@@ -169,7 +169,7 @@ multiply(hamon::array<T, N> const& lhs, T rhs)
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs);
-		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>()));
+		result = bigint_algo::add(result, bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>())).value;
 	}
 
 	return result;
@@ -187,7 +187,7 @@ multiply_impl_1_2(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs,
 			bigint_algo::add(result,
 				bigint_algo::bit_shift_left(
 					multiply1<hamon::array<T, N>>(lhs[i], rhs[j]),
-					(i+j) * hamon::bitsof<T>())),
+					(i+j) * hamon::bitsof<T>())).value,
 			i, j+1);
 }
 
@@ -219,7 +219,7 @@ multiply_impl_2_1(hamon::array<T, N> const& lhs, T rhs,
 			bigint_algo::add(result,
 				bigint_algo::bit_shift_left(
 					multiply1<hamon::array<T, N>>(lhs[i], rhs),
-					i * hamon::bitsof<T>())),
+					i * hamon::bitsof<T>())).value,
 			i+1);
 }
 

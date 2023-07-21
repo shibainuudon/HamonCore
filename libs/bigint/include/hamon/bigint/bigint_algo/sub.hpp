@@ -101,7 +101,7 @@ inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
 sub(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
 	// 固定長のときは、negateしてadd
-	return bigint_algo::add(lhs, bigint_algo::negate(rhs));
+	return bigint_algo::add(lhs, bigint_algo::negate(rhs)).value;
 }
 
 }	// namespace bigint_algo

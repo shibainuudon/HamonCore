@@ -7,6 +7,7 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 
+#include <hamon/bigint/bigint_algo/detail/addc.hpp>
 #include <hamon/bigint/bigint_algo/detail/get.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
@@ -52,62 +53,20 @@ namespace bigint_algo
 // * 出力は自動的に正規化する。
 // * 入力は正規化されていると想定する。正規化されていない値を渡されたときの動作は未規定。
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
-addc(hamon::uint8_t lhs, hamon::uint8_t rhs, hamon::uint8_t carry)
+template <typename VectorType>
+struct add_result
 {
-	return static_cast<hamon::uint16_t>(
-		static_cast<hamon::uint16_t>(lhs) +
-		static_cast<hamon::uint16_t>(rhs) +
-		static_cast<hamon::uint16_t>(carry));
-}
-
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t
-addc(hamon::uint16_t lhs, hamon::uint16_t rhs, hamon::uint16_t carry)
-{
-	return static_cast<hamon::uint32_t>(
-		static_cast<hamon::uint32_t>(lhs) +
-		static_cast<hamon::uint32_t>(rhs) +
-		static_cast<hamon::uint32_t>(carry));
-}
-
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t
-addc(hamon::uint32_t lhs, hamon::uint32_t rhs, hamon::uint32_t carry)
-{
-	return static_cast<hamon::uint64_t>(
-		static_cast<hamon::uint64_t>(lhs) +
-		static_cast<hamon::uint64_t>(rhs) +
-		static_cast<hamon::uint64_t>(carry));
-}
-
-#if defined(__SIZEOF_INT128__)
-inline HAMON_CXX11_CONSTEXPR __uint128_t
-addc(hamon::uint64_t lhs, hamon::uint64_t rhs, hamon::uint64_t carry)
-{
-	return static_cast<__uint128_t>(
-		static_cast<__uint128_t>(lhs) +
-		static_cast<__uint128_t>(rhs) +
-		static_cast<__uint128_t>(carry));
-}
-#endif
-
-// 上記以外の汎用的な実装(主に__uint128_tが使えない環境向け)
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
-addc(T lhs, T rhs, T carry)
-{
-	T const a = static_cast<T>(rhs + carry);
-	T const b = static_cast<T>(lhs + a);
-	T const c1 = a < rhs ? 1 : 0;
-	T const c2 = b < lhs ? 1 : 0;
-	return {b, static_cast<T>(c1 + c2)};
-}
+	bool		overflow;
+	VectorType	value;
+};
 
 template <typename T>
-inline std::vector<T>
+inline add_result<std::vector<T>>
 add(std::vector<T> const& lhs, std::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());
-	std::vector<T> result(N);
+	add_result<std::vector<T>> result;
+	result.value.resize(N);
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
@@ -115,32 +74,34 @@ add(std::vector<T> const& lhs, std::vector<T> const& rhs)
 			bigint_algo::get(lhs, i),
 			bigint_algo::get(rhs, i),
 			carry);
-		result[i] = bigint_algo::lo(x);
-		carry     = bigint_algo::hi(x);
+		result.value[i] = bigint_algo::lo(x);
+		carry           = bigint_algo::hi(x);
 	}
 
 	if (carry != 0)
 	{
-		result.push_back(carry);
+		result.value.push_back(carry);
 	}
 
+	result.overflow = false;
 	return result;
 }
 
 #if defined(HAMON_HAS_CXX14_CONSTEXPR)
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
+inline HAMON_CXX14_CONSTEXPR add_result<hamon::array<T, N>>
 add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
-	hamon::array<T, N> result{};
+	add_result<hamon::array<T, N>> result{};
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		auto const x = bigint_algo::addc(lhs[i], rhs[i], carry);
-		result[i] = bigint_algo::lo(x);
-		carry     = bigint_algo::hi(x);
+		result.value[i] = bigint_algo::lo(x);
+		carry           = bigint_algo::hi(x);
 	}
+	result.overflow = (carry != 0);
 	return result;
 }
 
@@ -151,7 +112,7 @@ struct add_impl
 {
 private:
 	template <typename U, hamon::size_t... Js>
-	static HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
 	invoke_impl(
 		hamon::array<T, N> const& lhs,
 		hamon::array<T, N> const& rhs,
@@ -167,7 +128,7 @@ private:
 	}
 
 public:
-	static HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
 	invoke(
 		hamon::array<T, N> const& lhs,
 		hamon::array<T, N> const& rhs,
@@ -186,19 +147,19 @@ public:
 template <typename T, hamon::size_t N>
 struct add_impl<T, N, N>
 {
-	static HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
 	invoke(
 		hamon::array<T, N> const&,
 		hamon::array<T, N> const&,
 		hamon::array<T, N> const& result,
-		T)
+		T carry)
 	{
-		return result;
+		return {carry != 0, result};
 	}
 };
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+inline HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
 add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
 	return add_impl<T, N, 0>::invoke(lhs, rhs, hamon::array<T, N>{}, T{});
