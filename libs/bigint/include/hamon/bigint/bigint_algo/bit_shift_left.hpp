@@ -8,6 +8,7 @@
 #define HAMON_BIGINT_BIGINT_ALGO_BIT_SHIFT_LEFT_HPP
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
+#include <hamon/bigint/bigint_algo/countl_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
@@ -25,8 +26,15 @@ namespace detail
 namespace bigint_algo
 {
 
+template <typename VectorType>
+struct bit_shift_left_result
+{
+	bool		overflow;
+	VectorType	value;
+};
+
 template <typename T>
-inline std::vector<T>
+inline bit_shift_left_result<std::vector<T>>
 bit_shift_left(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 {
 	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
@@ -52,7 +60,7 @@ bit_shift_left(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 		}
 	}
 
-	return bigint_algo::normalize(result);
+	return {false, bigint_algo::normalize(result)};
 }
 
 template <typename T, hamon::size_t N, hamon::size_t... Is>
@@ -71,13 +79,17 @@ bit_shift_left_impl(hamon::array<T, N> const& lhs,
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
+inline HAMON_CXX11_CONSTEXPR bit_shift_left_result<hamon::array<T, N>>
 bit_shift_left(hamon::array<T, N> const& lhs, hamon::uintmax_t rhs)
 {
-	return bit_shift_left_impl(lhs,
-		static_cast<unsigned int>(rhs % hamon::bitsof<T>()),
-		static_cast<unsigned int>(rhs / hamon::bitsof<T>()),
-		hamon::make_index_sequence<N>{});
+	return
+	{
+		rhs > bigint_algo::countl_zero(lhs),
+		bit_shift_left_impl(lhs,
+			static_cast<unsigned int>(rhs % hamon::bitsof<T>()),
+			static_cast<unsigned int>(rhs / hamon::bitsof<T>()),
+			hamon::make_index_sequence<N>{})
+	};
 }
 
 }	// namespace bigint_algo
