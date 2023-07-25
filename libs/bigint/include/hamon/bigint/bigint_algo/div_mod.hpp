@@ -61,19 +61,18 @@ div1(VectorType const& lhs, VectorType const& rhs)
 	for (;;)
 	{
 		w /= 2;
-		x = bigint_algo::multiply(rhs, q);
-		auto c1 = bigint_algo::compare(x, rhs);
+		auto t = bigint_algo::multiply(rhs, q);
+		x = t.value;
 
-		// x と lhs を比較する。ただし、
-		// x < rhs の場合は乗算の結果がオーバーフローしているので、
+		// x と lhs を比較する。ただし、乗算の結果がオーバーフローしている場合は
 		// 必ず x > lhs。
-		auto c2 = c1 < 0 ? 1 : bigint_algo::compare(x, lhs);
+		auto c = t.overflow ? 1 : bigint_algo::compare(x, lhs);
 
-		if (c2 == 0)
+		if (c == 0)
 		{
 			break;
 		}
-		else if (c2 > 0)
+		else if (c > 0)
 		{
 			q = static_cast<T>(q - w);
 		}
@@ -84,7 +83,7 @@ div1(VectorType const& lhs, VectorType const& rhs)
 
 		if (w == 0)
 		{
-			if (c2 > 0)
+			if (c > 0)
 			{
 				q = static_cast<T>(q - 1);
 			}
