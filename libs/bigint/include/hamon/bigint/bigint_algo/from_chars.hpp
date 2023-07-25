@@ -22,8 +22,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -82,7 +80,6 @@ from_chars(char const* first, char const* last, VectorType& value, int base = 10
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP

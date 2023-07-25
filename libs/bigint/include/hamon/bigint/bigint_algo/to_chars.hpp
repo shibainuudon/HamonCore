@@ -16,8 +16,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -62,7 +60,6 @@ to_chars(char* first, char* last, VectorType const& value, int base = 10)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_to_chars_HPP

@@ -13,8 +13,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -46,7 +44,6 @@ normalize(std::vector<T> const& vec)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP

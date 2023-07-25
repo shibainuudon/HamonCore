@@ -14,8 +14,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -90,7 +88,6 @@ compare(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 #endif
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_COMPARE_HPP

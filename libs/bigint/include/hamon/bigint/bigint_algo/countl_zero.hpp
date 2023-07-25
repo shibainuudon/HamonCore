@@ -16,8 +16,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -65,7 +63,6 @@ countl_zero(hamon::array<T, N> const& vec)
 #endif
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_COUNTL_ZERO_HPP

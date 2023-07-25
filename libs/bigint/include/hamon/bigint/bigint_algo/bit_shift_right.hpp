@@ -20,8 +20,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -44,7 +42,7 @@ bit_shift_right(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 	{
 		for (hamon::size_t i = 0; i < N; ++i)
 		{
-			result[i] = bigint_algo::get(lhs, i + quo);
+			result[i] = detail::get(lhs, i + quo);
 		}
 	}
 	else
@@ -52,8 +50,8 @@ bit_shift_right(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			result[i] = static_cast<T>(
-				hamon::shl(bigint_algo::get(lhs, i + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-				hamon::shr(bigint_algo::get(lhs, i + quo), rem));
+				hamon::shl(detail::get(lhs, i + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
+				hamon::shr(detail::get(lhs, i + quo), rem));
 		}
 	}
 
@@ -68,10 +66,10 @@ bit_shift_right_impl(hamon::array<T, N> const& lhs,
 {
 	return
 		rem == 0 ?
-		hamon::array<T, N> { bigint_algo::get(lhs, Is + quo)... } :
+		hamon::array<T, N> { detail::get(lhs, Is + quo)... } :
 		hamon::array<T, N> { static_cast<T>(
-			hamon::shl(bigint_algo::get(lhs, Is + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-			hamon::shr(bigint_algo::get(lhs, Is + quo), rem))...
+			hamon::shl(detail::get(lhs, Is + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
+			hamon::shr(detail::get(lhs, Is + quo), rem))...
 		};
 }
 
@@ -86,7 +84,6 @@ bit_shift_right(hamon::array<T, N> const& lhs, hamon::uintmax_t rhs)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_BIT_SHIFT_RIGHT_HPP

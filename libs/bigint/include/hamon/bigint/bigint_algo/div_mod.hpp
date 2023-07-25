@@ -10,7 +10,6 @@
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
-#include <hamon/bigint/bigint_algo/add.hpp>
 #include <hamon/bigint/bigint_algo/sub.hpp>
 #include <hamon/bigint/bigint_algo/multiply.hpp>
 #include <hamon/bit/shl.hpp>
@@ -21,8 +20,6 @@
 #include <vector>
 
 namespace hamon
-{
-namespace detail
 {
 namespace bigint_algo
 {
@@ -141,7 +138,6 @@ div_mod(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_DIV_MOD_HPP

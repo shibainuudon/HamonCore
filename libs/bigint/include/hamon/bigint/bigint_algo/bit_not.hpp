@@ -14,8 +14,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -34,7 +32,6 @@ bit_not(hamon::array<T, N> const& lhs)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_BIT_NOT_HPP

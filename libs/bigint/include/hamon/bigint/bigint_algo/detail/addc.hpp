@@ -13,9 +13,9 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
+{
+namespace detail
 {
 
 inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
@@ -68,8 +68,8 @@ addc(T lhs, T rhs, T carry)
 	return {b, static_cast<T>(c1 + c2)};
 }
 
-}	// namespace bigint_algo
 }	// namespace detail
+}	// namespace bigint_algo
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_DETAIL_ADDC_HPP

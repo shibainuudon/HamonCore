@@ -13,9 +13,9 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
+{
+namespace detail
 {
 
 inline HAMON_CXX11_CONSTEXPR hamon::uint8_t lo(hamon::uint16_t x)
@@ -46,8 +46,8 @@ inline HAMON_CXX11_CONSTEXPR hamon::uint64_t lo(__uint128_t x)
 }
 #endif
 
-}	// namespace bigint_algo
 }	// namespace detail
+}	// namespace bigint_algo
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_DETAIL_LO_HPP

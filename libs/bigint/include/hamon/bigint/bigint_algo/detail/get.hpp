@@ -13,9 +13,9 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
+{
+namespace detail
 {
 
 template <typename T>
@@ -31,8 +31,8 @@ get(hamon::array<T, N> const& arr, hamon::size_t i)
 	return i < arr.size() ? arr[i] : T{};
 }
 
-}	// namespace bigint_algo
 }	// namespace detail
+}	// namespace bigint_algo
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_DETAIL_GET_HPP

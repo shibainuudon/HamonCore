@@ -20,8 +20,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -70,12 +68,12 @@ add(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		auto const x = bigint_algo::addc(
-			bigint_algo::get(lhs, i),
-			bigint_algo::get(rhs, i),
+		auto const x = detail::addc(
+			detail::get(lhs, i),
+			detail::get(rhs, i),
 			carry);
-		result.value[i] = bigint_algo::lo(x);
-		carry           = bigint_algo::hi(x);
+		result.value[i] = detail::lo(x);
+		carry           = detail::hi(x);
 	}
 
 	if (carry != 0)
@@ -97,9 +95,9 @@ add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		auto const x = bigint_algo::addc(lhs[i], rhs[i], carry);
-		result.value[i] = bigint_algo::lo(x);
-		carry           = bigint_algo::hi(x);
+		auto const x = detail::addc(lhs[i], rhs[i], carry);
+		result.value[i] = detail::lo(x);
+		carry           = detail::hi(x);
 	}
 	result.overflow = (carry != 0);
 	return result;
@@ -123,8 +121,8 @@ private:
 		return add_impl<T, N, I + 1>::invoke(
 			lhs,
 			rhs,
-			hamon::array<T, N>{result[Js]..., bigint_algo::lo(x)},
-			bigint_algo::hi(x));
+			hamon::array<T, N>{result[Js]..., detail::lo(x)},
+			detail::hi(x));
 	}
 
 public:
@@ -139,7 +137,7 @@ public:
 			lhs,
 			rhs,
 			result,
-			bigint_algo::addc(lhs[I], rhs[I], carry),
+			detail::addc(lhs[I], rhs[I], carry),
 			hamon::make_index_sequence<I>{});
 	}
 };
@@ -168,7 +166,6 @@ add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 #endif
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_ADD_HPP

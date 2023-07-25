@@ -12,7 +12,7 @@
 
 GTEST_TEST(BigIntAlgoTest, CountlZeroTest)
 {
-	using hamon::detail::bigint_algo::countl_zero;
+	using hamon::bigint_algo::countl_zero;
 	{
 		using Vector = hamon::array<hamon::uint8_t, 4>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0u, countl_zero(Vector{0xFF, 0xFF, 0xFF, 0xFF}));

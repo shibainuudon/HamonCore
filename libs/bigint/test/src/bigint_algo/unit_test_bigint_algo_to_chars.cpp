@@ -25,7 +25,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 ToCharsTest(T const& val, int base, const char* expected)
 {
 	char buf[128]{};
-	auto ret = hamon::detail::bigint_algo::to_chars(buf, buf+sizeof(buf), val, base);
+	auto ret = hamon::bigint_algo::to_chars(buf, buf+sizeof(buf), val, base);
 	//if (hamon::string_view(buf, ret.ptr) != expected)
 	//{
 	//	std::cout << hamon::string_view(buf, ret.ptr) << std::endl;

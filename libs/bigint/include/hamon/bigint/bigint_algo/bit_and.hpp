@@ -18,8 +18,6 @@
 
 namespace hamon
 {
-namespace detail
-{
 namespace bigint_algo
 {
 
@@ -32,8 +30,8 @@ bit_and(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		result[i] = static_cast<T>(
-			bigint_algo::get(lhs, i) &
-			bigint_algo::get(rhs, i));
+			detail::get(lhs, i) &
+			detail::get(rhs, i));
 	}
 	return bigint_algo::normalize(result);
 }
@@ -53,7 +51,6 @@ bit_and(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 }
 
 }	// namespace bigint_algo
-}	// namespace detail
 }	// namespace hamon
 
 #endif // HAMON_BIGINT_BIGINT_ALGO_BIT_AND_HPP

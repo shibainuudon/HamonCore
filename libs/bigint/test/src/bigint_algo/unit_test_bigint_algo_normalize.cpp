@@ -22,85 +22,85 @@ void test()
 {
 	{
 		std::vector<T> const a{};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0, 1};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0, 1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 1};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1, 1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0, 0, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 0, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0, 1, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0, 1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{0, 0, 1};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{0, 0, 1};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 2, 3};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1, 2, 3};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 2, 3, 4, 0, 0, 0, 0};
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1, 2, 3, 4};
 		EXPECT_EQ(c, expected);
 	}
 	{
 		std::vector<T> const a{1, 0, 2, 0, 0, 3, 4, 0 };
-		auto const c = hamon::detail::bigint_algo::normalize(a);
+		auto const c = hamon::bigint_algo::normalize(a);
 		std::vector<T> const expected{1, 0, 2, 0, 0, 3, 4};
 		EXPECT_EQ(c, expected);
 	}
