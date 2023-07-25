@@ -33,7 +33,8 @@ bit_or(std::vector<T> const& lhs, std::vector<T> const& rhs)
 			detail::get(lhs, i) |
 			detail::get(rhs, i));
 	}
-	return bigint_algo::normalize(result);
+	bigint_algo::normalize(result);
+	return result;
 }
 
 template <typename T, hamon::size_t N, hamon::size_t... Is>

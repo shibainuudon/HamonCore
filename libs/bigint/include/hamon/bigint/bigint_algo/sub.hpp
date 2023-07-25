@@ -41,7 +41,8 @@ sub(std::vector<T> const& lhs, std::vector<T> const& rhs)
 		carry     = detail::hi(x);
 	}
 
-	return bigint_algo::normalize(result);
+	bigint_algo::normalize(result);
+	return result;
 }
 
 template <typename T, hamon::size_t N>

@@ -7,7 +7,6 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP
 
-#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 #include <vector>
 
@@ -22,25 +21,27 @@ namespace bigint_algo
  *  ・空の場合は {0} を返す
  */
 template <typename T>
-inline std::vector<T>
-normalize(std::vector<T> const& vec)
+inline void
+normalize(std::vector<T>& vec)
 {
-	auto n = static_cast<typename std::vector<T>::difference_type>(vec.size());
-	for (auto i = vec.rbegin(); i != vec.rend(); ++i)
+	auto n = vec.size();
+	if (n == 0)
 	{
-		if (*i != 0)
+		vec.resize(1);
+		vec[0] = 0;
+		return;
+	}
+
+	auto p = &vec[0];
+	for (; n > 1; --n)
+	{
+		if (p[n - 1] != 0)
 		{
 			break;
 		}
-		--n;
 	}
 	
-	if (n == 0)
-	{
-		return std::vector<T>{0};
-	}
-
-	return std::vector<T>(vec.begin(), hamon::next(vec.begin(), n));
+	vec.resize(n);
 }
 
 }	// namespace bigint_algo

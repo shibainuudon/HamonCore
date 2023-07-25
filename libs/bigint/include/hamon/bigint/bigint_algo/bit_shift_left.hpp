@@ -57,8 +57,10 @@ bit_shift_left(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 				hamon::shl(detail::get(lhs, i - quo), rem));
 		}
 	}
+	
+	bigint_algo::normalize(result);
 
-	return {false, bigint_algo::normalize(result)};
+	return {false, result};
 }
 
 template <typename T, hamon::size_t N, hamon::size_t... Is>
