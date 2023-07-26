@@ -11,76 +11,59 @@
 #include <vector>
 #include "constexpr_test.hpp"
 
+namespace hamon_bigint_test
+{
+
+namespace bigint_algo_negate_test
+{
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <typename VectorType>
+inline HAMON_CXX14_CONSTEXPR bool
+NegateTest(VectorType a, VectorType const& expected)
+{
+	hamon::bigint_algo::negate(a);
+	VERIFY(a == expected);
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(BigIntAlgoTest, NegateTest)
 {
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x00};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[2]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[3]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x01};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFu, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFu, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFu, b[2]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFu, b[3]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0xFF, 0xFF, 0xFF, 0xFF};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x01u, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[2]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00u, b[3]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xEEu, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xCBu, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xA9u, b[2]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x87u, b[3]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint16_t, 3> const a{0x0002};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFFEu, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFFFu, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFFFu, b[2]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint16_t, 2> const a{0xFFFF, 0xFFFF};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x0001u, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x0000u, b[1]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint16_t, 3> const a{0x1234, 0x5678, 0x9ABC};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xEDCCu, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xA987u, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x6543u, b[2]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint32_t, 1> const a{0};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x00000000u, b[0]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint32_t, 3> const a{0x12345678, 0x9ABCDEF0};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xEDCBA988u, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0x6543210Fu, b[1]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFFFFFFFu, b[2]);
-	}
-	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint64_t, 2> const a{0x123456789ABCDEF0};
-		HAMON_CXX14_CONSTEXPR auto const b = hamon::bigint_algo::negate(a);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xEDCBA98765432110u, b[0]);
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(0xFFFFFFFFFFFFFFFFu, b[1]);
-	}
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint8_t, 4>{0x00, 0x00, 0x00, 0x00},
+		hamon::array<hamon::uint8_t, 4>{0x00, 0x00, 0x00, 0x00}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint8_t, 4>{0x01, 0x00, 0x00, 0x00},
+		hamon::array<hamon::uint8_t, 4>{0xFF, 0xFF, 0xFF, 0xFF}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint8_t, 4>{0xFF, 0xFF, 0xFF, 0xFF},
+		hamon::array<hamon::uint8_t, 4>{0x01, 0x00, 0x00, 0x00}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},
+		hamon::array<hamon::uint8_t, 4>{0xEE, 0xCB, 0xA9, 0x87}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint16_t, 3>{0x0002, 0x0000, 0x0000},
+		hamon::array<hamon::uint16_t, 3>{0xFFFE, 0xFFFF, 0xFFFF}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint16_t, 2>{0xFFFF, 0xFFFF},
+		hamon::array<hamon::uint16_t, 2>{0x0001, 0x0000}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint16_t, 3>{0x1234, 0x5678, 0x9ABC},
+		hamon::array<hamon::uint16_t, 3>{0xEDCC, 0xA987, 0x6543}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint32_t, 1>{0x00000000},
+		hamon::array<hamon::uint32_t, 1>{0x00000000}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint32_t, 3>{0x12345678, 0x9ABCDEF0, 0x00000000},
+		hamon::array<hamon::uint32_t, 3>{0xEDCBA988, 0x6543210F, 0xFFFFFFFF}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NegateTest(
+		hamon::array<hamon::uint64_t, 2>{0x123456789ABCDEF0, 0x0000000000000000},
+		hamon::array<hamon::uint64_t, 2>{0xEDCBA98765432110, 0xFFFFFFFFFFFFFFFF}));
 }
+
+}	// namespace bigint_algo_negate_test
+
+}	// namespace hamon_bigint_test

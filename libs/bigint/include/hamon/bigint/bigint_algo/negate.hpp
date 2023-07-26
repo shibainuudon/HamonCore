@@ -19,13 +19,11 @@ namespace bigint_algo
 {
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
-negate(hamon::array<T, N> const& lhs)
+inline HAMON_CXX14_CONSTEXPR void
+negate(hamon::array<T, N>& lhs)
 {
-	auto t = lhs;
-	bigint_algo::bit_not(t);
-	bigint_algo::add(t, hamon::array<T, N>{1});
-	return t;
+	bigint_algo::bit_not(lhs);
+	bigint_algo::add(lhs, hamon::array<T, N>{1});
 }
 
 }	// namespace bigint_algo
