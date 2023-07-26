@@ -12,6 +12,7 @@
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/mul.hpp>
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -24,129 +25,77 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename ResultType, typename T>
-inline HAMON_CXX11_CONSTEXPR ResultType
-multiply1_impl(T const& x)
-{
-	return ResultType { detail::lo(x), detail::hi(x) };
-}
-
-template <typename ResultType, typename T>
-inline HAMON_CXX11_CONSTEXPR ResultType
-multiply1(T lhs, T rhs)
-{
-	return multiply1_impl<ResultType>(detail::mul(lhs, rhs));
-}
-
-template <typename VectorType>
-struct multiply_result
-{
-	bool		overflow;
-	VectorType	value;
-};
+// 乗算はin-placeに行うことができないので、左辺(lhs)を出力にするパターンは使えない
+// 繰り返し乗算を行う場合に、その都度メモリ確保することを避けるため(とくにstd::vector)、出力変数を外から与える
+// out と lhs, out と rhs が、同じオブジェクトや同じ領域の場合の動作は未規定
 
 template <typename T>
-inline multiply_result<std::vector<T>>
-multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
+inline bool
+multiply(std::vector<T>& out, std::vector<T> const& lhs, T rhs)
 {
-	auto const NA = lhs.size();
-	auto const NB = rhs.size();
-
-	std::vector<T> result{0};
-
-	for (hamon::size_t i = 0; i < NA; ++i)
+	detail::zero(out);
+	bool overflow = false;
+	for (hamon::size_t i = lhs.size(); i > 0; --i)
 	{
-		for (hamon::size_t j = 0; j < NB; ++j)
-		{
-			auto tmp = multiply1<std::vector<T>>(lhs[i], rhs[j]);
-			bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>());
-			bigint_algo::add(result, tmp);
-		}
+		auto const t = detail::mul(lhs[i-1], rhs);
+		auto const f1 = bigint_algo::add(out, detail::hi(t));
+		auto const f2 = bigint_algo::bit_shift_left(out, hamon::bitsof<T>());
+		out[0] = detail::lo(t);
+		overflow = overflow || f1 || f2;
 	}
 
-	return {false, result};
+	return overflow;
 }
 
 template <typename T>
-inline multiply_result<std::vector<T>>
-multiply(std::vector<T> const& lhs, T rhs)
+inline bool
+multiply(std::vector<T>& out, std::vector<T> const& lhs, std::vector<T> const& rhs)
 {
-	auto const NA = lhs.size();
-
-	std::vector<T> result{0};
-
-	for (hamon::size_t i = 0; i < NA; ++i)
+	detail::zero(out);
+	std::vector<T> tmp{0};
+	bool overflow = false;
+	for (hamon::size_t i = rhs.size(); i > 0; --i)
 	{
-		auto tmp = multiply1<std::vector<T>>(lhs[i], rhs);
-		bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>());
-		bigint_algo::add(result, tmp);
+		auto const f1 = bigint_algo::multiply(tmp, lhs, rhs[i-1]);
+		auto const f2 = bigint_algo::bit_shift_left(out, hamon::bitsof<T>());
+		auto const f3 = bigint_algo::add(out, tmp);
+		overflow = overflow || f1 || f2 || f3;
 	}
-
-	return {false, result};
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR multiply_result<hamon::array<T, 1>>
-multiply_helper(hamon::array<T, 2> const& t)
-{
-	return
-	{
-		t[1] != 0,
-		hamon::array<T, 1>{t[0]}
-	};
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR multiply_result<hamon::array<T, 1>>
-multiply(hamon::array<T, 1> const& lhs, hamon::array<T, 1> const& rhs)
-{
-	return multiply_helper(multiply1<hamon::array<T, 2>>(lhs[0], rhs[0]));
-}
-
-template <typename T>
-inline HAMON_CXX11_CONSTEXPR multiply_result<hamon::array<T, 1>>
-multiply(hamon::array<T, 1> const& lhs, T rhs)
-{
-	return multiply_helper(multiply1<hamon::array<T, 2>>(lhs[0], rhs));
+	return overflow;
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR multiply_result<hamon::array<T, N>>
-multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+inline HAMON_CXX14_CONSTEXPR bool
+multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
 {
-	multiply_result<hamon::array<T, N>> result{};
-
-	for (hamon::size_t i = 0; i < N; ++i)
+	detail::zero(out);
+	bool overflow = false;
+	for (hamon::size_t i = lhs.size(); i > 0; --i)
 	{
-		for (hamon::size_t j = 0; j < N; ++j)
-		{
-			auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs[j]);
-			auto f1 = bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>());
-			result.overflow = result.overflow || f1;
-			auto f2 = bigint_algo::add(result.value, tmp);
-			result.overflow = result.overflow || f2;
-		}
+		auto const t = detail::mul(lhs[i-1], rhs);
+		auto const f1 = bigint_algo::add(out, detail::hi(t));
+		auto const f2 = bigint_algo::bit_shift_left(out, hamon::bitsof<T>());
+		out[0] = detail::lo(t);
+		overflow = overflow || f1 || f2;
 	}
-
-	return result;
+	return overflow;
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR multiply_result<hamon::array<T, N>>
-multiply(hamon::array<T, N> const& lhs, T rhs)
+inline HAMON_CXX14_CONSTEXPR bool
+multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
-	multiply_result<hamon::array<T, N>> result{};
-
-	for (hamon::size_t i = 0; i < N; ++i)
+	detail::zero(out);
+	hamon::array<T, N> tmp{0};
+	bool overflow = false;
+	for (hamon::size_t i = rhs.size(); i > 0; --i)
 	{
-		auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs);
-		auto f1 = bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>());
-		result.overflow = result.overflow || f1;
-		auto f2 = bigint_algo::add(result.value, tmp);
-		result.overflow = result.overflow || f2;
+		auto const f1 = bigint_algo::multiply(tmp, lhs, rhs[i-1]);
+		auto const f2 = bigint_algo::bit_shift_left(out, hamon::bitsof<T>());
+		auto const f3 = bigint_algo::add(out, tmp);
+		overflow = overflow || f1 || f2 || f3;
 	}
-
-	return result;
+	return overflow;
 }
 
 }	// namespace bigint_algo

@@ -7,6 +7,7 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP
 
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/config.hpp>
 #include <vector>
 
@@ -27,8 +28,7 @@ normalize(std::vector<T>& vec)
 	auto n = vec.size();
 	if (n == 0)
 	{
-		vec.resize(1);
-		vec[0] = 0;
+		detail::zero(vec);
 		return;
 	}
 

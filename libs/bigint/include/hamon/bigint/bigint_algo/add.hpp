@@ -51,28 +51,55 @@ namespace bigint_algo
 // * 出力は自動的に正規化する。
 // * 入力は正規化されていると想定する。正規化されていない値を渡されたときの動作は未規定。
 
+namespace add_detail
+{
+
+template <typename T>
+inline HAMON_CXX14_CONSTEXPR T
+add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
+{
+	T carry = 0;
+	hamon::size_t i = 0;
+	for (; i < n2; ++i)
+	{
+		auto const x = detail::addc(p1[i], p2[i], carry);
+		p1[i] = detail::lo(x);
+		carry = detail::hi(x);
+	}
+	for (; carry != 0 && i < n1; ++i)
+	{
+		auto const x = detail::addc(p1[i], T{0}, carry);
+		p1[i] = detail::lo(x);
+		carry = detail::hi(x);
+	}
+	return carry;
+}
+
+}	// namespace add_detail
+
 template <typename T>
 inline bool
 add(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());
 	lhs.resize(N);
-	T carry = 0;
-	for (hamon::size_t i = 0; i < N; ++i)
-	{
-		auto const x = detail::addc(
-			detail::get(lhs, i),
-			detail::get(rhs, i),
-			carry);
-		lhs[i] = detail::lo(x);
-		carry  = detail::hi(x);
-	}
-
+	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs[0], rhs.size());
 	if (carry != 0)
 	{
 		lhs.push_back(carry);
 	}
+	return false;
+}
 
+template <typename T>
+inline bool
+add(std::vector<T>& lhs, T rhs)
+{
+	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs, 1);
+	if (carry != 0)
+	{
+		lhs.push_back(carry);
+	}
 	return false;
 }
 
@@ -80,13 +107,15 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	T carry = 0;
-	for (hamon::size_t i = 0; i < N; ++i)
-	{
-		auto const x = detail::addc(lhs[i], rhs[i], carry);
-		lhs[i] = detail::lo(x);
-		carry  = detail::hi(x);
-	}
+	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs[0], rhs.size());
+	return carry != 0;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::array<T, N>& lhs, T rhs)
+{
+	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs, 1);
 	return carry != 0;
 }
 

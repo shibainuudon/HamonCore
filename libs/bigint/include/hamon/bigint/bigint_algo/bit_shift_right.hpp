@@ -29,33 +29,22 @@ bit_shift_right(std::vector<T>& lhs, hamon::uintmax_t rhs)
 	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 
-	if (quo >= lhs.size())
-	{
-		lhs.resize(1);
-		lhs[0] = 0;
-		return;
-	}
-
-	hamon::size_t const N = lhs.size() - quo;
-
 	if (rem == 0)
 	{
-		for (hamon::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < lhs.size(); ++i)
 		{
 			lhs[i] = detail::get(lhs, i + quo);
 		}
 	}
 	else
 	{
-		for (hamon::size_t i = 0; i < N; ++i)
+		for (hamon::size_t i = 0; i < lhs.size(); ++i)
 		{
 			lhs[i] = static_cast<T>(
 				hamon::shl(detail::get(lhs, i + quo + 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
 				hamon::shr(detail::get(lhs, i + quo), rem));
 		}
 	}
-
-	lhs.resize(N);
 
 	bigint_algo::normalize(lhs);
 }

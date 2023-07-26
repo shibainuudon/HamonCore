@@ -24,13 +24,6 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename T>
-struct div_mod_result
-{
-	T	quo;	// 商
-	T	rem;	// あまり
-};
-
 template <typename VectorType, typename T = hamon::ranges::range_value_t<VectorType>>
 inline HAMON_CXX14_CONSTEXPR hamon::pair<T, VectorType>
 div1(VectorType const& lhs, VectorType const& rhs)
@@ -58,12 +51,11 @@ div1(VectorType const& lhs, VectorType const& rhs)
 	for (;;)
 	{
 		w /= 2;
-		auto t = bigint_algo::multiply(rhs, q);
-		x = t.value;
+		auto f = bigint_algo::multiply(x, rhs, q);
 
 		// x と lhs を比較する。ただし、乗算の結果がオーバーフローしている場合は
 		// 必ず x > lhs。
-		auto c = t.overflow ? 1 : bigint_algo::compare(x, lhs);
+		auto c = f ? 1 : bigint_algo::compare(x, lhs);
 
 		if (c == 0)
 		{
@@ -92,6 +84,13 @@ div1(VectorType const& lhs, VectorType const& rhs)
 	}
 	return hamon::make_pair(q, x);
 }
+
+template <typename T>
+struct div_mod_result
+{
+	T	quo;	// 商
+	T	rem;	// あまり
+};
 
 template <typename T>
 inline div_mod_result<std::vector<T>>

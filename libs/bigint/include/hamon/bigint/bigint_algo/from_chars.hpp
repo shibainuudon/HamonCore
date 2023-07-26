@@ -17,6 +17,7 @@
 //#include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
 
@@ -34,6 +35,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base = 10
 	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(std::numeric_limits<T>::digits / hamon::log2(base)));
 
 	VectorType x{0};
+	VectorType tmp{0};
 
 	bool overflowed = false;
 	auto p = first;
@@ -52,14 +54,14 @@ from_chars(char const* first, char const* last, VectorType& value, int base = 10
 		// x *= pow(base, n)
 		for (decltype(n) j = 0; j < n; ++j)
 		{
-			auto tt = bigint_algo::multiply(x, T(base));
-			x = tt.value;
-			overflowed = overflowed || tt.overflow;
+			auto f = bigint_algo::multiply(tmp, x, static_cast<T>(base));
+			x = hamon::move(tmp);
+			overflowed = overflowed || f;
 		}
 
 		{
-			auto of = bigint_algo::add(x, VectorType{t});
-			overflowed = overflowed || of;
+			auto f = bigint_algo::add(x, VectorType{t});
+			overflowed = overflowed || f;
 		}
 	};
 

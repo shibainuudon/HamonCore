@@ -31,7 +31,7 @@ bit_shift_left(std::vector<T>& lhs, hamon::uintmax_t rhs)
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 
 	hamon::size_t const N = lhs.size() + quo + 1;
-	std::vector<T> result(N);
+	std::vector<T> result(N);	// TODO 一時変数を作らない形に修正する
 
 	if (rem == 0)
 	{
