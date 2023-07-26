@@ -9,7 +9,6 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -17,18 +16,14 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename T, hamon::size_t N, hamon::size_t... Is>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-bit_not_impl(hamon::array<T, N> const& lhs, hamon::index_sequence<Is...>)
-{
-	return hamon::array<T, N>{ static_cast<T>(~lhs[Is])... };
-}
-
 template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-bit_not(hamon::array<T, N> const& lhs)
+inline HAMON_CXX14_CONSTEXPR void
+bit_not(hamon::array<T, N>& lhs)
 {
-	return bit_not_impl(lhs, hamon::make_index_sequence<N>{});
+	for (hamon::size_t i = 0; i < N; ++i)
+	{
+		lhs[i] = static_cast<T>(~lhs[i]);
+	}
 }
 
 }	// namespace bigint_algo
