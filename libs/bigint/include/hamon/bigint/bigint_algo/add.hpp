@@ -27,7 +27,7 @@ namespace bigint_algo
 // * vector<T> または array<T, N> を対象
 // * T は 符号なし整数型
 // * 数値の格納の仕方はリトルエンディアン。つまり下位の桁を前方に格納する。
-// * arrayを引数にとるものはC++11でconstexpr
+// * arrayを引数にとるものはC++14でconstexpr
 // * vectorを引数にとるものはC++20でconstexpr (TODO)
 // * 引数を複数取る場合、
 //   arrayは要素数が同じ
@@ -51,20 +51,12 @@ namespace bigint_algo
 // * 出力は自動的に正規化する。
 // * 入力は正規化されていると想定する。正規化されていない値を渡されたときの動作は未規定。
 
-template <typename VectorType>
-struct add_result
-{
-	bool		overflow;
-	VectorType	value;
-};
-
 template <typename T>
-inline add_result<std::vector<T>>
-add(std::vector<T> const& lhs, std::vector<T> const& rhs)
+inline bool
+add(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());
-	add_result<std::vector<T>> result;
-	result.value.resize(N);
+	lhs.resize(N);
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
@@ -72,98 +64,31 @@ add(std::vector<T> const& lhs, std::vector<T> const& rhs)
 			detail::get(lhs, i),
 			detail::get(rhs, i),
 			carry);
-		result.value[i] = detail::lo(x);
-		carry           = detail::hi(x);
+		lhs[i] = detail::lo(x);
+		carry  = detail::hi(x);
 	}
 
 	if (carry != 0)
 	{
-		result.value.push_back(carry);
+		lhs.push_back(carry);
 	}
 
-	result.overflow = false;
-	return result;
+	return false;
 }
 
-#if defined(HAMON_HAS_CXX14_CONSTEXPR)
-
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR add_result<hamon::array<T, N>>
-add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	add_result<hamon::array<T, N>> result{};
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		auto const x = detail::addc(lhs[i], rhs[i], carry);
-		result.value[i] = detail::lo(x);
-		carry           = detail::hi(x);
+		lhs[i] = detail::lo(x);
+		carry  = detail::hi(x);
 	}
-	result.overflow = (carry != 0);
-	return result;
+	return carry != 0;
 }
-
-#else
-
-template <typename T, hamon::size_t N, hamon::size_t I>
-struct add_impl
-{
-private:
-	template <typename U, hamon::size_t... Js>
-	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
-	invoke_impl(
-		hamon::array<T, N> const& lhs,
-		hamon::array<T, N> const& rhs,
-		hamon::array<T, N> const& result,
-		U x,
-		hamon::index_sequence<Js...>)
-	{
-		return add_impl<T, N, I + 1>::invoke(
-			lhs,
-			rhs,
-			hamon::array<T, N>{result[Js]..., detail::lo(x)},
-			detail::hi(x));
-	}
-
-public:
-	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
-	invoke(
-		hamon::array<T, N> const& lhs,
-		hamon::array<T, N> const& rhs,
-		hamon::array<T, N> const& result,
-		T carry)
-	{
-		return invoke_impl(
-			lhs,
-			rhs,
-			result,
-			detail::addc(lhs[I], rhs[I], carry),
-			hamon::make_index_sequence<I>{});
-	}
-};
-
-template <typename T, hamon::size_t N>
-struct add_impl<T, N, N>
-{
-	static HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
-	invoke(
-		hamon::array<T, N> const&,
-		hamon::array<T, N> const&,
-		hamon::array<T, N> const& result,
-		T carry)
-	{
-		return {carry != 0, result};
-	}
-};
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR add_result<hamon::array<T, N>>
-add(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-{
-	return add_impl<T, N, 0>::invoke(lhs, rhs, hamon::array<T, N>{}, T{});
-}
-
-#endif
 
 }	// namespace bigint_algo
 }	// namespace hamon

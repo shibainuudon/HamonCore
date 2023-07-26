@@ -25,11 +25,11 @@ namespace bigint_algo
 {
 
 template <typename T>
-inline std::vector<T>
-sub(std::vector<T> const& lhs, std::vector<T> const& rhs)
+inline void
+sub(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());
-	std::vector<T> result(N);
+	lhs.resize(N);
 	T carry = 0;
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
@@ -37,20 +37,24 @@ sub(std::vector<T> const& lhs, std::vector<T> const& rhs)
 			detail::get(lhs, i),
 			detail::get(rhs, i),
 			carry);
-		result[i] = detail::lo(x);
-		carry     = detail::hi(x);
+		lhs[i] = detail::lo(x);
+		carry  = detail::hi(x);
 	}
 
-	bigint_algo::normalize(result);
-	return result;
+	bigint_algo::normalize(lhs);
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-sub(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+inline HAMON_CXX14_CONSTEXPR void
+sub(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	// 固定長のときは、negateしてadd
-	return bigint_algo::add(lhs, bigint_algo::negate(rhs)).value;
+	T carry = 0;
+	for (hamon::size_t i = 0; i < N; ++i)
+	{
+		auto const x = detail::subc(lhs[i], rhs[i], carry);
+		lhs[i] = detail::lo(x);
+		carry  = detail::hi(x);
+	}
 }
 
 }	// namespace bigint_algo

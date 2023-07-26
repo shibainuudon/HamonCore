@@ -58,9 +58,8 @@ from_chars(char const* first, char const* last, VectorType& value, int base = 10
 		}
 
 		{
-			auto tt = bigint_algo::add(x, VectorType{t});
-			x = tt.value;
-			overflowed = overflowed || tt.overflow;
+			auto of = bigint_algo::add(x, VectorType{t});
+			overflowed = overflowed || of;
 		}
 	};
 

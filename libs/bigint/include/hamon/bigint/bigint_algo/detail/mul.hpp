@@ -72,10 +72,12 @@ mul(T lhs, T rhs)
 	auto const a3 = bigint_algo::bit_shift_left(ResultType{m2}, 32).value;
 	auto const a4 = ResultType{0, h};
 
-	return
-		bigint_algo::add(a1,
-		bigint_algo::add(a2,
-		bigint_algo::add(a3, a4).value).value).value;
+	ResultType result{0};
+	bigint_algo::add(result, a1);
+	bigint_algo::add(result, a2);
+	bigint_algo::add(result, a3);
+	bigint_algo::add(result, a4);
+	return result;
 }
 
 }	// namespace detail
