@@ -67,16 +67,15 @@ mul(T lhs, T rhs)
 	auto const m2 = mul(detail::lo(lhs), detail::hi(rhs));
 	auto const l  = mul(detail::lo(lhs), detail::lo(rhs));
 
-	auto const a1 = ResultType{l};
-	auto const a2 = bigint_algo::bit_shift_left(ResultType{m1}, 32).value;
-	auto const a3 = bigint_algo::bit_shift_left(ResultType{m2}, 32).value;
-	auto const a4 = ResultType{0, h};
+	ResultType a1{m1};
+	bigint_algo::bit_shift_left(a1, 32);
+	ResultType a2{m2};
+	bigint_algo::bit_shift_left(a2, 32);
 
-	ResultType result{0};
+	ResultType result{l};
 	bigint_algo::add(result, a1);
 	bigint_algo::add(result, a2);
-	bigint_algo::add(result, a3);
-	bigint_algo::add(result, a4);
+	bigint_algo::add(result, ResultType{0, h});
 	return result;
 }
 

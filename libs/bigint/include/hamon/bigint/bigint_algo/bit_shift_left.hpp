@@ -15,7 +15,6 @@
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
-#include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
 #include <vector>
 
@@ -24,16 +23,9 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename VectorType>
-struct bit_shift_left_result
-{
-	bool		overflow;
-	VectorType	value;
-};
-
 template <typename T>
-inline bit_shift_left_result<std::vector<T>>
-bit_shift_left(std::vector<T> const& lhs, hamon::uintmax_t rhs)
+inline bool
+bit_shift_left(std::vector<T>& lhs, hamon::uintmax_t rhs)
 {
 	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
@@ -59,37 +51,40 @@ bit_shift_left(std::vector<T> const& lhs, hamon::uintmax_t rhs)
 	}
 	
 	bigint_algo::normalize(result);
+	lhs = result;
 
-	return {false, result};
-}
-
-template <typename T, hamon::size_t N, hamon::size_t... Is>
-inline HAMON_CXX11_CONSTEXPR hamon::array<T, N>
-bit_shift_left_impl(hamon::array<T, N> const& lhs,
-	unsigned int rem, unsigned int quo,
-	hamon::index_sequence<Is...>)
-{
-	return
-		rem == 0 ?
-		hamon::array<T, N> { detail::get(lhs, Is - quo)... } :
-		hamon::array<T, N> { static_cast<T>(
-			hamon::shr(detail::get(lhs, Is - quo - 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-			hamon::shl(detail::get(lhs, Is - quo), rem))...
-		};
+	return false;
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR bit_shift_left_result<hamon::array<T, N>>
-bit_shift_left(hamon::array<T, N> const& lhs, hamon::uintmax_t rhs)
+inline HAMON_CXX14_CONSTEXPR bool
+bit_shift_left(hamon::array<T, N>& lhs, hamon::uintmax_t rhs)
 {
-	return
+	bool const overflow = (rhs > bigint_algo::countl_zero(lhs));
+
+	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
+	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
+
+	hamon::array<T, N> result{};
+
+	if (rem == 0)
 	{
-		rhs > bigint_algo::countl_zero(lhs),
-		bit_shift_left_impl(lhs,
-			static_cast<unsigned int>(rhs % hamon::bitsof<T>()),
-			static_cast<unsigned int>(rhs / hamon::bitsof<T>()),
-			hamon::make_index_sequence<N>{})
-	};
+		for (hamon::size_t i = 0; i < N; ++i)
+		{
+			result[i] = detail::get(lhs, i - quo);
+		}
+	}
+	else
+	{
+		for (hamon::size_t i = 0; i < N; ++i)
+		{
+			result[i] = static_cast<T>(
+				hamon::shr(detail::get(lhs, i - quo - 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
+				hamon::shl(detail::get(lhs, i - quo), rem));
+		}
+	}
+	lhs = result;
+	return overflow;
 }
 
 }	// namespace bigint_algo

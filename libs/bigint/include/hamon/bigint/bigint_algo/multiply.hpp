@@ -59,8 +59,8 @@ multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
 		for (hamon::size_t j = 0; j < NB; ++j)
 		{
 			auto tmp = multiply1<std::vector<T>>(lhs[i], rhs[j]);
-			auto t = bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>()).value;
-			bigint_algo::add(result, t);
+			bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>());
+			bigint_algo::add(result, tmp);
 		}
 	}
 
@@ -78,8 +78,8 @@ multiply(std::vector<T> const& lhs, T rhs)
 	for (hamon::size_t i = 0; i < NA; ++i)
 	{
 		auto tmp = multiply1<std::vector<T>>(lhs[i], rhs);
-		auto t = bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>()).value;
-		bigint_algo::add(result, t);
+		bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>());
+		bigint_algo::add(result, tmp);
 	}
 
 	return {false, result};
@@ -121,9 +121,9 @@ multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 		for (hamon::size_t j = 0; j < N; ++j)
 		{
 			auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs[j]);
-			auto t1 = bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>());
-			result.overflow = result.overflow || t1.overflow;
-			auto f2 = bigint_algo::add(result.value, t1.value);
+			auto f1 = bigint_algo::bit_shift_left(tmp, (i+j) * hamon::bitsof<T>());
+			result.overflow = result.overflow || f1;
+			auto f2 = bigint_algo::add(result.value, tmp);
 			result.overflow = result.overflow || f2;
 		}
 	}
@@ -140,9 +140,9 @@ multiply(hamon::array<T, N> const& lhs, T rhs)
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
 		auto tmp = multiply1<hamon::array<T, N>>(lhs[i], rhs);
-		auto t1 = bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>());
-		result.overflow = result.overflow || t1.overflow;
-		auto f2 = bigint_algo::add(result.value, t1.value);
+		auto f1 = bigint_algo::bit_shift_left(tmp, i * hamon::bitsof<T>());
+		result.overflow = result.overflow || f1;
+		auto f2 = bigint_algo::add(result.value, tmp);
 		result.overflow = result.overflow || f2;
 	}
 

@@ -103,11 +103,11 @@ div_mod(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	VectorType quo{0};
 	for (auto it = lhs.rbegin(); it != lhs.rend(); ++it)
 	{
-		rem = bigint_algo::bit_shift_left(rem, hamon::bitsof<T>()).value;
+		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
 		rem[0] = *it;
 
 		auto const q = div1(rem, rhs);
-		quo = bigint_algo::bit_shift_left(quo, hamon::bitsof<T>()).value;
+		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
 		quo[0] = q.first;
 
 		bigint_algo::sub(rem, q.second);
@@ -125,11 +125,11 @@ div_mod(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 	VectorType quo{0};
 	for (auto it = lhs.rbegin(); it != lhs.rend(); ++it)
 	{
-		rem = bigint_algo::bit_shift_left(rem, hamon::bitsof<T>()).value;
+		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
 		rem[0] = *it;
 
 		auto const q = div1(rem, rhs);
-		quo = bigint_algo::bit_shift_left(quo, hamon::bitsof<T>()).value;
+		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
 		quo[0] = q.first;
 
 		bigint_algo::sub(rem, q.second);
