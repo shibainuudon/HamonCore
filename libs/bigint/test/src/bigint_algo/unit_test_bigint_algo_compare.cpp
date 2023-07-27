@@ -45,33 +45,33 @@ GTEST_TEST(BigIntAlgoTest, CompareTest)
 	}
 
 	{
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0};
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(a, b));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(b, a));
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(a, b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(b, a));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0xFF, 0xFF, 0xFF, 0xFF};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(a, b));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(b, a));
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0xFF, 0xFF, 0xFF, 0xFF};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(a, b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(b, a));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0xFF, 0xFF, 0xFF, 0x00};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(a, b));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(b, a));
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0xFF, 0xFF, 0xFF, 0x00};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(a, b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(b, a));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0x13, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(a, b));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(b, a));
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0x13, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(a, b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(b, a));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0x12, 0x34, 0x56, 0x78};
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(a, b));
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(b, a));
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0x12, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const b{0x12, 0x34, 0x56, 0x78};
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(a, b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(b, a));
 	}
 }

@@ -36,8 +36,6 @@ compare(std::vector<T> const& lhs, std::vector<T> const& rhs)
 	return 0;
 }
 
-#if defined(HAMON_HAS_CXX14_CONSTEXPR)
-
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR int
 compare(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
@@ -50,42 +48,6 @@ compare(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 
 	return 0;
 }
-
-#else
-
-template <hamon::size_t I>
-struct compare_impl
-{
-	template <typename T, hamon::size_t N>
-	static HAMON_CXX11_CONSTEXPR int
-	invoke(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-	{
-		return
-			lhs[I - 1] > rhs[I - 1] ?  1 :
-			lhs[I - 1] < rhs[I - 1] ? -1 :
-			compare_impl<I - 1>::invoke(lhs, rhs);
-	}
-};
-
-template <>
-struct compare_impl<0>
-{
-	template <typename T, hamon::size_t N>
-	static HAMON_CXX11_CONSTEXPR int
-	invoke(hamon::array<T, N> const&, hamon::array<T, N> const&)
-	{
-		return 0;
-	}
-};
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX11_CONSTEXPR int
-compare(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-{
-	return compare_impl<N>::invoke(lhs, rhs);
-}
-
-#endif
 
 }	// namespace bigint_algo
 }	// namespace hamon
