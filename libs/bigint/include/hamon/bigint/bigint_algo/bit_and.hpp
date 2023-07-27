@@ -19,16 +19,28 @@ namespace hamon
 namespace bigint_algo
 {
 
+namespace bit_and_detail
+{
+
+template <typename T>
+inline HAMON_CXX14_CONSTEXPR void
+bit_and_impl(T* lhs, T const* rhs, hamon::size_t n)
+{
+	for (hamon::size_t i = 0; i < n; ++i)
+	{
+		lhs[i] = static_cast<T>(lhs[i] & rhs[i]);
+	}
+}
+
+}	// namespace bit_and_detail
+
 template <typename T>
 inline void
 bit_and(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
 	auto const N = hamon::min(lhs.size(), rhs.size());
 	lhs.resize(N);
-	for (hamon::size_t i = 0; i < N; ++i)
-	{
-		lhs[i] = static_cast<T>(lhs[i] & rhs[i]);
-	}
+	bit_and_detail::bit_and_impl(lhs.data(), rhs.data(), N);
 	bigint_algo::normalize(lhs);
 }
 
@@ -36,10 +48,7 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR void
 bit_and(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	for (hamon::size_t i = 0; i < N; ++i)
-	{
-		lhs[i] = static_cast<T>(lhs[i] & rhs[i]);
-	}
+	bit_and_detail::bit_and_impl(lhs.data(), rhs.data(), N);
 }
 
 }	// namespace bigint_algo

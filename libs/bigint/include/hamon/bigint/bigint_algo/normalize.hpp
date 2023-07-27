@@ -32,7 +32,7 @@ normalize(std::vector<T>& vec)
 		return;
 	}
 
-	auto p = &vec[0];
+	auto p = vec.data();
 	for (; n > 1; --n)
 	{
 		if (p[n - 1] != 0)

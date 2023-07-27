@@ -32,6 +32,16 @@ BitNotTest(VectorType a, VectorType const& expected)
 
 GTEST_TEST(BigIntAlgoTest, BitNotTest)
 {
+#if 0
+	{
+		hamon::array<hamon::uint8_t, 8> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		for (hamon::size_t i = 0; i < 10000000; ++i)
+		{
+			hamon::bigint_algo::bit_not(a);
+		}
+	}
+#endif
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitNotTest(
 		hamon::array<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},
 		hamon::array<hamon::uint8_t, 4>{0xED, 0xCB, 0xA9, 0x87}));

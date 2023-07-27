@@ -8,7 +8,6 @@
 #define HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 
 #include <hamon/bigint/bigint_algo/detail/addc.hpp>
-#include <hamon/bigint/bigint_algo/detail/get.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/array.hpp>
@@ -81,9 +80,8 @@ template <typename T>
 inline bool
 add(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
-	auto const N = hamon::max(lhs.size(), rhs.size());
-	lhs.resize(N);
-	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs[0], rhs.size());
+	lhs.resize(hamon::max(lhs.size(), rhs.size()));
+	T carry = add_detail::add_impl(lhs.data(), lhs.size(), rhs.data(), rhs.size());
 	if (carry != 0)
 	{
 		lhs.push_back(carry);
@@ -95,7 +93,7 @@ template <typename T>
 inline bool
 add(std::vector<T>& lhs, T rhs)
 {
-	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs, 1);
+	T carry = add_detail::add_impl(lhs.data(), lhs.size(), &rhs, 1);
 	if (carry != 0)
 	{
 		lhs.push_back(carry);
@@ -107,7 +105,7 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs[0], rhs.size());
+	T carry = add_detail::add_impl(lhs.data(), lhs.size(), rhs.data(), rhs.size());
 	return carry != 0;
 }
 
@@ -115,7 +113,7 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::array<T, N>& lhs, T rhs)
 {
-	T carry = add_detail::add_impl(&lhs[0], lhs.size(), &rhs, 1);
+	T carry = add_detail::add_impl(lhs.data(), lhs.size(), &rhs, 1);
 	return carry != 0;
 }
 
