@@ -32,6 +32,26 @@ BitShiftRightTest(VectorType a, hamon::uintmax_t b, VectorType const& expected)
 
 GTEST_TEST(BigIntAlgoTest, BitShiftRightTest)
 {
+#if 0
+	for (hamon::size_t j = 0; j < 100000; ++j)
+	{
+		{
+			std::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+			for (hamon::size_t i = 0; i < 64; ++i)
+			{
+				hamon::bigint_algo::bit_shift_right(a, i);
+			}
+		}
+		{
+			hamon::array<hamon::uint8_t, 8> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+			for (hamon::size_t i = 0; i < 64; ++i)
+			{
+				hamon::bigint_algo::bit_shift_right(a, i);
+			}
+		}
+	}
+#endif
+
 	{
 		std::vector<hamon::uint8_t> const a{0};
 		EXPECT_TRUE(BitShiftRightTest(a, 0, std::vector<hamon::uint8_t>{0}));
