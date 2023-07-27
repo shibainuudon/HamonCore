@@ -13,6 +13,18 @@
 GTEST_TEST(BigIntAlgoTest, CountlZeroTest)
 {
 	using hamon::bigint_algo::countl_zero;
+#if 0
+	{
+		hamon::array<hamon::uint8_t, 8> const a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		hamon::array<hamon::uint8_t, 8> const b{0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+		for (hamon::size_t i = 0; i < 10000000; ++i)
+		{
+			countl_zero(a);
+			countl_zero(b);
+		}
+	}
+#endif
+
 	{
 		using Vector = hamon::array<hamon::uint8_t, 4>;
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0u, countl_zero(Vector{0xFF, 0xFF, 0xFF, 0xFF}));

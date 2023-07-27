@@ -19,14 +19,17 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename T, hamon::size_t N>
+namespace countl_zero_detail
+{
+
+template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::uintmax_t
-countl_zero(hamon::array<T, N> const& vec)
+countl_zero_impl(T const* vec, hamon::size_t n)
 {
 	hamon::uintmax_t result = 0;
-	for (hamon::size_t i = 0; i < N; ++i)
+	for (hamon::size_t i = n; i > 0; --i)
 	{
-		auto const v = vec[N - i - 1];
+		auto const v = vec[i - 1];
 		if (v != 0)
 		{
 			return result +
@@ -35,6 +38,15 @@ countl_zero(hamon::array<T, N> const& vec)
 		result += hamon::bitsof<T>();
 	}
 	return result;
+}
+
+}	// namespace countl_zero_detail
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::uintmax_t
+countl_zero(hamon::array<T, N> const& vec)
+{
+	return countl_zero_detail::countl_zero_impl(vec.data(), N);
 }
 
 }	// namespace bigint_algo
