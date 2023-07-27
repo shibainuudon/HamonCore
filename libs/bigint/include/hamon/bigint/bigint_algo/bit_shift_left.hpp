@@ -9,7 +9,6 @@
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/countl_zero.hpp>
-#include <hamon/bigint/bigint_algo/detail/get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
@@ -23,35 +22,59 @@ namespace hamon
 namespace bigint_algo
 {
 
+namespace bit_shift_left_detail
+{
+
 template <typename T>
-inline bool
-bit_shift_left(std::vector<T>& lhs, hamon::uintmax_t rhs)
+inline HAMON_CXX14_CONSTEXPR void
+bit_shift_left_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 {
 	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 
-	hamon::size_t const N = lhs.size() + quo + 1;
-	std::vector<T> result(N);	// TODO 一時変数を作らない形に修正する
+	hamon::size_t i = n;
 
 	if (rem == 0)
 	{
-		for (hamon::size_t i = 0; i < N; ++i)
+		for (; i > quo; --i)
 		{
-			result[i] = detail::get(lhs, i - quo);
+			lhs[i - 1] = lhs[i - quo - 1];
 		}
 	}
 	else
 	{
-		for (hamon::size_t i = 0; i < N; ++i)
+		auto const rem2 = static_cast<unsigned int>(hamon::bitsof<T>() - rem);
+
+		for (; i > quo + 1; --i)
 		{
-			result[i] = static_cast<T>(
-				hamon::shr(detail::get(lhs, i - quo - 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-				hamon::shl(detail::get(lhs, i - quo), rem));
+			lhs[i - 1] = static_cast<T>(
+				hamon::shr(lhs[i - quo - 2], rem2) +
+				hamon::shl(lhs[i - quo - 1], rem));
+		}
+		for (; i > quo; --i)
+		{
+			lhs[i - 1] = static_cast<T>(
+				hamon::shl(lhs[i - quo - 1], rem));
 		}
 	}
-	
-	bigint_algo::normalize(result);
-	lhs = result;
+
+	for (; i > 0; --i)
+	{
+		lhs[i - 1] = 0;
+	}
+}
+
+}	// namespace bit_shift_left_detail
+
+template <typename T>
+inline bool
+bit_shift_left(std::vector<T>& lhs, hamon::uintmax_t rhs)
+{
+	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
+	hamon::size_t const N = lhs.size() + quo + 1;
+	lhs.resize(N);
+	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), N, rhs);
+	bigint_algo::normalize(lhs);
 
 	return false;
 }
@@ -61,29 +84,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::array<T, N>& lhs, hamon::uintmax_t rhs)
 {
 	bool const overflow = (rhs > bigint_algo::countl_zero(lhs));
-
-	auto const rem = static_cast<unsigned int>(rhs % hamon::bitsof<T>());
-	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
-
-	hamon::array<T, N> result{};
-
-	if (rem == 0)
-	{
-		for (hamon::size_t i = 0; i < N; ++i)
-		{
-			result[i] = detail::get(lhs, i - quo);
-		}
-	}
-	else
-	{
-		for (hamon::size_t i = 0; i < N; ++i)
-		{
-			result[i] = static_cast<T>(
-				hamon::shr(detail::get(lhs, i - quo - 1), static_cast<unsigned int>(hamon::bitsof<T>() - rem)) +
-				hamon::shl(detail::get(lhs, i - quo), rem));
-		}
-	}
-	lhs = result;
+	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), N, rhs);
 	return overflow;
 }
 
