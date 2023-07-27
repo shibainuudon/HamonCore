@@ -26,9 +26,12 @@ namespace hamon
 namespace bigint_algo
 {
 
+namespace from_chars_detail
+{
+
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, VectorType& value, int base = 10)
+from_chars(char const* first, char const* last, VectorType& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
 
@@ -78,6 +81,22 @@ from_chars(char const* first, char const* last, VectorType& value, int base = 10
 	value = x;
 
 	return {p, std::errc{}};
+}
+
+}	// namespace from_chars_detail
+
+template <typename T>
+inline hamon::from_chars_result
+from_chars(char const* first, char const* last, std::vector<T>& value, int base = 10)
+{
+	return from_chars_detail::from_chars(first, last, value, base);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+from_chars(char const* first, char const* last, hamon::array<T, N>& value, int base = 10)
+{
+	return from_chars_detail::from_chars(first, last, value, base);
 }
 
 }	// namespace bigint_algo
