@@ -24,14 +24,18 @@ namespace to_chars_detail
 
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, VectorType value, VectorType const& base)
+to_chars(char* first, char* last, VectorType value, int base)
 {
+	using T = hamon::ranges::range_value_t<VectorType>;
+
+	auto const base2 = VectorType{static_cast<T>(base)};
+
 	auto p = first;
 	while (p != last)
 	{
-		auto r = bigint_algo::div_mod(value, base);
+		auto r = bigint_algo::div_mod(value, base2);
 		value = r.quo;
-		p = hamon::to_chars(p, p+1, r.rem[0], static_cast<int>(base[0])).ptr;
+		p = hamon::to_chars(p, p+1, r.rem[0], base).ptr;
 
 		if (bigint_algo::compare(value, VectorType{0}) == 0)
 		{
@@ -51,12 +55,18 @@ to_chars(char* first, char* last, VectorType value, VectorType const& base)
 
 }	// namespace to_chars_detail
 
-template <typename VectorType>
-inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, VectorType const& value, int base = 10)
+template <typename T>
+inline hamon::to_chars_result
+to_chars(char* first, char* last, std::vector<T> const& value, int base = 10)
 {
-	using T = hamon::ranges::range_value_t<VectorType>;
-	return to_chars_detail::to_chars(first, last, value, VectorType{static_cast<T>(base)});
+	return to_chars_detail::to_chars(first, last, value, base);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
+to_chars(char* first, char* last, hamon::array<T, N> const& value, int base = 10)
+{
+	return to_chars_detail::to_chars(first, last, value, base);
 }
 
 }	// namespace bigint_algo
