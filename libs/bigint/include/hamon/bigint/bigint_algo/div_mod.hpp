@@ -12,10 +12,10 @@
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
 #include <hamon/bigint/bigint_algo/sub.hpp>
 #include <hamon/bigint/bigint_algo/multiply.hpp>
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/array.hpp>
-#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
 #include <vector>
 
@@ -24,9 +24,19 @@ namespace hamon
 namespace bigint_algo
 {
 
+template <typename T>
+struct div_mod_result
+{
+	T	quo;	// 商
+	T	rem;	// あまり
+};
+
+namespace div_mod_detail
+{
+
 template <typename VectorType, typename T = hamon::ranges::range_value_t<VectorType>>
-inline HAMON_CXX14_CONSTEXPR hamon::pair<T, VectorType>
-div1(VectorType const& lhs, VectorType const& rhs)
+inline HAMON_CXX14_CONSTEXPR T
+div1(VectorType const& lhs, VectorType const& rhs, VectorType& x)
 {
 	{
 		auto const c = bigint_algo::compare(lhs, rhs);
@@ -34,20 +44,21 @@ div1(VectorType const& lhs, VectorType const& rhs)
 		// lhs < rhs
 		if (c < 0)
 		{
-			return hamon::make_pair(T{0}, VectorType{0});
+			detail::zero(x);
+			return 0;
 		}
 
 		// lhs == rhs
 		if (c == 0)
 		{
-			return hamon::make_pair(T{1}, rhs);
+			x = rhs;
+			return 1;
 		}
 	}
 
 	// 割り算の答えをバイナリサーチで探す
 	T w = hamon::shl(T{1}, static_cast<unsigned int>(hamon::bitsof<T>() - 1));
 	T q = w;
-	VectorType x{0};
 	for (;;)
 	{
 		w /= 2;
@@ -82,58 +93,45 @@ div1(VectorType const& lhs, VectorType const& rhs)
 			}
 		}
 	}
-	return hamon::make_pair(q, x);
+	return q;
 }
 
-template <typename T>
-struct div_mod_result
+template <typename VectorType>
+inline HAMON_CXX14_CONSTEXPR div_mod_result<VectorType>
+div_mod_impl(VectorType const& lhs, VectorType const& rhs)
 {
-	T	quo;	// 商
-	T	rem;	// あまり
-};
+	using T = hamon::ranges::range_value_t<VectorType>;
+	VectorType rem{0};
+	VectorType quo{0};
+	VectorType tmp{0};
+	for (hamon::size_t i = lhs.size(); i > 0; --i)
+	{
+		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
+		rem[0] = lhs[i-1];
+
+		auto const q = div1(rem, rhs, tmp);
+		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
+		quo[0] = q;
+
+		bigint_algo::sub(rem, tmp);
+	}
+	return { quo, rem };
+}
+
+}	// namespace div_mod_detail
 
 template <typename T>
 inline div_mod_result<std::vector<T>>
 div_mod(std::vector<T> const& lhs, std::vector<T> const& rhs)
 {
-	using VectorType = std::vector<T>;
-
-	VectorType rem{0};
-	VectorType quo{0};
-	for (auto it = lhs.rbegin(); it != lhs.rend(); ++it)
-	{
-		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = *it;
-
-		auto const q = div1(rem, rhs);
-		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
-		quo[0] = q.first;
-
-		bigint_algo::sub(rem, q.second);
-	}
-	return { quo, rem };
+	return div_mod_detail::div_mod_impl(lhs, rhs);
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR div_mod_result<hamon::array<T, N>>
 div_mod(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
-	using VectorType = hamon::array<T, N>;
-
-	VectorType rem{0};
-	VectorType quo{0};
-	for (auto it = lhs.rbegin(); it != lhs.rend(); ++it)
-	{
-		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = *it;
-
-		auto const q = div1(rem, rhs);
-		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
-		quo[0] = q.first;
-
-		bigint_algo::sub(rem, q.second);
-	}
-	return { quo, rem };
+	return div_mod_detail::div_mod_impl(lhs, rhs);
 }
 
 }	// namespace bigint_algo

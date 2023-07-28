@@ -13,6 +13,25 @@
 
 GTEST_TEST(BigIntAlgoTest, DivModTest)
 {
+#if 0
+	{
+		std::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		std::vector<hamon::uint8_t> b{0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54};
+		for (hamon::size_t i = 0; i < 10000; ++i)
+		{
+			hamon::bigint_algo::div_mod(a, b);
+		}
+	}
+	{
+		hamon::array<hamon::uint8_t, 8> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		hamon::array<hamon::uint8_t, 8> b{0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54};
+		for (hamon::size_t i = 0; i < 10000; ++i)
+		{
+			hamon::bigint_algo::div_mod(a, b);
+		}
+	}
+#endif
+
 	{
 		std::vector<hamon::uint8_t> const a{2};
 		std::vector<hamon::uint8_t> const b{3};
