@@ -40,7 +40,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 	VectorType x{0};
 	VectorType tmp{0};
 
-	bool overflowed = false;
+	bool overflow = false;
 	auto p = first;
 	while (p != last)
 	{
@@ -54,17 +54,17 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		auto n = r.ptr - p;
 		p = r.ptr;
 
-		// x *= pow(base, n)
+		// x *= pow_n(base, n)
 		for (decltype(n) j = 0; j < n; ++j)
 		{
 			auto f = bigint_algo::multiply(tmp, x, static_cast<T>(base));
 			x = hamon::move(tmp);
-			overflowed = overflowed || f;
+			overflow = overflow || f;
 		}
 
 		{
 			auto f = bigint_algo::add(x, VectorType{t});
-			overflowed = overflowed || f;
+			overflow = overflow || f;
 		}
 	};
 
@@ -73,7 +73,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		return {first, std::errc::invalid_argument};
 	}
 	
-	if (overflowed)
+	if (overflow)
 	{
 		return {p, std::errc::result_out_of_range};
 	}

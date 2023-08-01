@@ -9,12 +9,14 @@
 
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/div_mod.hpp>
+#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/algorithm/reverse.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/charconv/to_chars.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 
@@ -62,13 +64,8 @@ to_chars(char* first, char* last, VectorType value, int base)
 	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(std::numeric_limits<T>::digits / hamon::log2(base)));
 
 	// base2 = pow_n(base, digits)
-	auto base2 = VectorType{1};
-	VectorType tmp;
-	for (int i = 0; i < digits; ++i)
-	{
-		bigint_algo::multiply(tmp, base2, static_cast<T>(base));
-		base2 = tmp;
-	}
+	VectorType base2{};
+	bigint_algo::pow_n(base2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(digits));
 
 	auto p = first;
 	while (p != last)
@@ -79,7 +76,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 		to_chars_reverse(p, p2, r.rem[0], base);
 		p = p2;
 
-		if (bigint_algo::compare(value, VectorType{0}) == 0)
+		if (bigint_algo::compare(value, VectorType{0}) == 0)	// TODO 一時変数を作らない
 		{
 			break;
 		}
