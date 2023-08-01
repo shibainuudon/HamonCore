@@ -58,6 +58,7 @@ multiply_impl(VectorType& out, T const* lhs, hamon::size_t n1, T const* rhs, ham
 // 乗算はin-placeに行うことができないので、左辺(lhs)を出力にするパターンは使えない
 // 繰り返し乗算を行う場合に、その都度メモリ確保することを避けるため(とくにstd::vector)、出力変数を外から与える
 // out と lhs, out と rhs が、同じオブジェクトや同じ領域の場合の動作は未規定
+// オーバーフローフラグを戻り値で返す
 
 template <typename T>
 inline bool
@@ -85,6 +86,25 @@ inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
 	return multiply_detail::multiply_impl(out, lhs.data(), lhs.size(), rhs.data(), rhs.size());
+}
+
+// 利便性のために、結果を戻り値で返すバージョン(オーバーフローの情報は得られない)
+template <typename T>
+inline std::vector<T>
+multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
+{
+	std::vector<T> result;
+	bigint_algo::multiply(result, lhs, rhs);
+	return result;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
+multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+{
+	hamon::array<T, N> result{};
+	bigint_algo::multiply(result, lhs, rhs);
+	return result;
 }
 
 }	// namespace bigint_algo

@@ -23,8 +23,11 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		array
 		bit
 		charconv
+		compare
+		concepts
 		config
 		cstddef
+		memory
 		pair
 		ranges
 		type_traits
