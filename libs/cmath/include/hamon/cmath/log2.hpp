@@ -11,10 +11,13 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/log.hpp>
+#include <hamon/bit/has_single_bit.hpp>
+#include <hamon/bit/countr_zero.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/numbers/ln2.hpp>
+#include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
 #include <limits>
@@ -88,6 +91,23 @@ log2_impl(FloatType x) HAMON_NOEXCEPT
 		log2_unchecked(x);
 }
 
+template <typename IntegralType>
+inline HAMON_CXX11_CONSTEXPR double
+log2_integral(IntegralType x) HAMON_NOEXCEPT
+{
+	using UT = hamon::make_unsigned_t<IntegralType>;
+	return
+		x == 0 ?
+			-std::numeric_limits<double>::infinity() :
+		x == 1 ?
+			0.0 :
+		x < 0 ?
+			std::numeric_limits<double>::quiet_NaN() :
+		hamon::has_single_bit(static_cast<UT>(x)) ?	// ２のべき乗のときは、正確に計算できる
+			static_cast<double>(hamon::countr_zero(static_cast<UT>(x))) :
+		log2_unchecked(static_cast<double>(x));
+}
+
 }	// namespace detail
 
 /**
@@ -126,7 +146,7 @@ template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 log2(IntegralType arg) HAMON_NOEXCEPT
 {
-	return detail::log2_impl(static_cast<double>(arg));
+	return detail::log2_integral(arg);
 }
 
 }	// namespace hamon
