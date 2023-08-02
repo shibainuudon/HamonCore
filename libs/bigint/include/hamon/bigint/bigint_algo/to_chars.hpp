@@ -7,9 +7,9 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_TO_CHARS_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_TO_CHARS_HPP
 
-#include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/div_mod.hpp>
 #include <hamon/bigint/bigint_algo/pow_n.hpp>
+#include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/algorithm/reverse.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cmath/log2.hpp>
@@ -76,7 +76,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 		to_chars_reverse(p, p2, r.rem[0], base);
 		p = p2;
 
-		if (bigint_algo::compare(value, VectorType{0}) == 0)	// TODO 一時変数を作らない
+		if (bigint_algo::is_zero(value))
 		{
 			break;
 		}
