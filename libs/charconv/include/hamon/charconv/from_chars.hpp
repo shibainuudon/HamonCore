@@ -78,28 +78,13 @@ char_to_uint(char c)
 		return static_cast<T>(c - 'a' + 10);
 	}
 
+	if ('A' <= c && c <= 'Z')
+	{
+		return static_cast<T>(c - 'A' + 10);
+	}
+
 	// パターンにマッチしないときはとにかく大きな値を返す
 	return static_cast<T>(-1);
-}
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool
-overflowed_multiply(T& out, T lhs, T rhs)
-{
-	static_assert(hamon::is_unsigned<T>::value, "");
-
-	out = static_cast<T>(lhs * rhs);
-	return out < lhs;
-}
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool
-overflowed_add(T& out, T lhs, T rhs)
-{
-	static_assert(hamon::is_unsigned<T>::value, "");
-
-	out = static_cast<T>(lhs + rhs);
-	return out < lhs;
 }
 
 template <typename T>
@@ -108,28 +93,29 @@ from_chars_unsigned_integral(char const* first, char const* last, T& value, T ba
 {
 	static_assert(hamon::is_unsigned<T>::value, "");
 
-	bool overflowed = false;
+	const T uint_max  = static_cast<T>(-1);
+	const T max_value = static_cast<T>(uint_max / base);
+	const T max_digit = static_cast<T>(uint_max % base);
+
+	bool overflow = false;
 	auto p = first;
 	while (p != last)
 	{
-		auto n = char_to_uint<T>(*p);
-		if (n >= base)
+		auto digit = char_to_uint<T>(*p);
+		if (digit >= base)
 		{
 			// パターンにマッチしなかった
 			break;
 		}
 		++p;
 
-		// value *= base
-		if (overflowed_multiply(value, value, base))
+		if (value > max_value || (value == max_value && digit > max_digit))
 		{
-			overflowed = true;
+			overflow = true;
+			// オーバーフローしても処理は続ける
 		}
-		// value += n
-		if (overflowed_add(value, value, n))
-		{
-			overflowed = true;
-		}
+
+		value = static_cast<T>(value * base + digit);
 	}
 
 	if (p == first)
@@ -137,7 +123,7 @@ from_chars_unsigned_integral(char const* first, char const* last, T& value, T ba
 		return {first, std::errc::invalid_argument};
 	}
 	
-	if (overflowed)
+	if (overflow)
 	{
 		return {p, std::errc::result_out_of_range};
 	}
