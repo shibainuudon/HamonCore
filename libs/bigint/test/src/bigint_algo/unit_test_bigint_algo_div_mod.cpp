@@ -403,8 +403,6 @@ GTEST_TEST(BigIntAlgoTest, DivModTest)
 		EXPECT_EQ(rem, c.rem);
 	}
 
-	// TODO CXX11_CONSTEXPR
-
 	{
 		using VectorType = hamon::array<hamon::uint32_t, 2>;
 		HAMON_CXX14_CONSTEXPR VectorType a{0xA2294246, 0x2B992DDF};

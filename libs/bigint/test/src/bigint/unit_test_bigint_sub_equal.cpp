@@ -4,47 +4,106 @@
  *	@brief	operator-=のテスト
  */
 
-#include <hamon/bigint/bigint.hpp>
+#include <hamon/bigint.hpp>
+#include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
+#include "constexpr_test.hpp"
+
+namespace hamon_bigint_test
+{
+
+namespace bigint_sub_equal_test
+{
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <typename BigInt>
+inline HAMON_CXX14_CONSTEXPR bool
+SubEqualTest()
+{
+	BigInt x = 9630;
+	VERIFY(x == BigInt(9630));
+
+	x -= 0;
+	VERIFY(x == BigInt(9630));
+
+	x -= 5248;
+	VERIFY(x == BigInt(4382));
+
+	x -= BigInt{3758};
+	VERIFY(x == BigInt(624));
+
+	x -= 623;
+	VERIFY(x == BigInt(1));
+
+	x -= 2;
+	VERIFY(x == BigInt(-1));
+
+	x -= BigInt{12};
+	VERIFY(x == BigInt(-13));
+
+	x -= BigInt(-30);
+	VERIFY(x == BigInt(17));
+
+	x -= BigInt(45);
+	VERIFY(x == BigInt(-28));
+
+	return true;
+}
+
+template <typename BigInt>
+inline HAMON_CXX14_CONSTEXPR bool
+SubEqualTest2()
+{
+	auto x = BigInt("8427663852327746832635939785432364562824");
+
+	x -= BigInt{"7567723894568827633575594573939298395955"};
+	VERIFY(x == BigInt{"859939957758919199060345211493066166869"});
+
+	x -= BigInt{"192487981375987101002310154809111942081094"};
+	VERIFY(x == BigInt{"-191628041418228181803249809597618875914225"});
+
+	return true;
+}
 
 GTEST_TEST(BigIntTest, SubEqualTest)
 {
-	hamon::bigint x = 9630;
-	EXPECT_EQ(x, 9630);
+	EXPECT_TRUE(SubEqualTest<hamon::bigint>());
 
-	x -= 0;
-	EXPECT_EQ(x, 9630);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int32_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int64_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int128_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int256_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int2048_t>());
 
-	x -= 5248;
-	EXPECT_EQ(x, 4382);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint32_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint64_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint128_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint256_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint2048_t>());
 
-	x -= hamon::bigint{3758};
-	EXPECT_EQ(x, 624);
+	EXPECT_TRUE(SubEqualTest2<hamon::bigint>());
 
-	x -= 623;
-	EXPECT_EQ(x, 1);
+	EXPECT_TRUE(SubEqualTest2<hamon::int128_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::int256_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::int512_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::int1024_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::int2048_t>());
 
-	x -= 2;
-	EXPECT_EQ(x, -1);
-
-	x -= hamon::bigint{12};
-	EXPECT_EQ(x, -13);
-
-	x -= -30;
-	EXPECT_EQ(x, 17);
-
-	x -= hamon::bigint(45);
-	EXPECT_EQ(x, -28);
-
-	x -= 0xffffffffffffffff;
-	EXPECT_EQ(x.to_string(), "-18446744073709551643");
-
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_CLANG("-Wself-assign-overloaded")
-	x -= x;
-	EXPECT_EQ(x, 0);
-HAMON_WARNING_POP()
-
-	x -= 3;
-	EXPECT_EQ(x, -3);
+	EXPECT_TRUE(SubEqualTest2<hamon::uint128_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::uint256_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::uint512_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::uint1024_t>());
+	EXPECT_TRUE(SubEqualTest2<hamon::uint2048_t>());
 }
+
+#undef VERIFY
+
+}	// namespace bigint_sub_equal_test
+
+}	// namespace hamon_bigint_test
+
