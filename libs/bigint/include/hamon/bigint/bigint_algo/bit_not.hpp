@@ -38,6 +38,15 @@ bit_not(hamon::array<T, N>& lhs)
 	bit_not_detail::bit_not_impl(lhs.data(), N);
 }
 
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
+bit_not(hamon::array<T, N> const& lhs)
+{
+	hamon::array<T, N> result{lhs};
+	bigint_algo::bit_not(result);
+	return result;
+}
+
 }	// namespace bigint_algo
 }	// namespace hamon
 

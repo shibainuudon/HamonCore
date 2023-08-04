@@ -128,7 +128,10 @@ public:
 		return {-m_sign, m_magnitude};
 	}
 
-//	HAMON_NODISCARD bigint operator~() const HAMON_NOEXCEPT;
+	HAMON_NODISCARD bigint operator~() const HAMON_NOEXCEPT
+	{
+		return -(bigint{*this} += 1);
+	}
 
 private:
 	void add(bigint const& rhs) HAMON_NOEXCEPT
