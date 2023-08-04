@@ -314,24 +314,15 @@ public:
 		return result;
 	}
 
-	HAMON_NODISCARD bool operator==(bigint const& rhs) const HAMON_NOEXCEPT
+	HAMON_NODISCARD int compare(bigint const& rhs) const HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
 		{
-			return false;
+			return m_sign;
 		}
-		return bigint_algo::compare(m_magnitude, rhs.m_magnitude) == 0;
-	}
 
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	HAMON_NODISCARD hamon::strong_ordering operator<=>(bigint const& rhs) const HAMON_NOEXCEPT;
-#else
-	HAMON_NODISCARD bool operator!=(bigint const& rhs) const HAMON_NOEXCEPT;
-	HAMON_NODISCARD bool operator< (bigint const& rhs) const HAMON_NOEXCEPT;
-	HAMON_NODISCARD bool operator> (bigint const& rhs) const HAMON_NOEXCEPT;
-	HAMON_NODISCARD bool operator<=(bigint const& rhs) const HAMON_NOEXCEPT;
-	HAMON_NODISCARD bool operator>=(bigint const& rhs) const HAMON_NOEXCEPT;
-#endif
+		return bigint_algo::compare(m_magnitude, rhs.m_magnitude) * m_sign;
+	}
 
 private:
 	int				m_sign = 1;	// m_magnitude >= 0 なら 1、m_magnitude < 0 なら -1
@@ -397,6 +388,50 @@ operator>>(bigint const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
 {
 	return bigint(lhs) >>= pos;
 }
+
+HAMON_NODISCARD inline bool
+operator==(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) == 0;
+}
+
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+HAMON_NODISCARD inline hamon::strong_ordering
+operator<=>(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) <=> 0;
+}
+#else
+HAMON_NODISCARD inline bool
+operator!=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs == rhs);
+}
+
+HAMON_NODISCARD inline bool
+operator<(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) < 0;
+}
+
+HAMON_NODISCARD inline bool
+operator>(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return rhs < lhs;
+}
+
+HAMON_NODISCARD inline bool
+operator<=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs > rhs);
+}
+
+HAMON_NODISCARD inline bool
+operator>=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs < rhs);
+}
+#endif
 
 //template <typename CharT, typename Traits>
 //inline std::basic_istream<CharT, Traits>&
