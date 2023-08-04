@@ -9,8 +9,8 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4146);	// 符号付きの値を代入する変数は、符号付き型にキャストしなければなりません。
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4146)	// 符号付きの値を代入する変数は、符号付き型にキャストしなければなりません。
 
 namespace hamon_bigint_test
 {
@@ -113,4 +113,4 @@ GTEST_TEST(BigIntTest, AddEqualTest)
 
 }	// namespace hamon_bigint_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()

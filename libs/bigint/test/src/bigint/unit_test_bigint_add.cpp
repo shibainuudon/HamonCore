@@ -9,8 +9,8 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4310);	// キャストによって定数値が切り捨てられました。
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4310)	// キャストによって定数値が切り捨てられました。
 
 namespace hamon_bigint_test
 {
@@ -153,4 +153,4 @@ GTEST_TEST(BigIntTest, AddTest)
 
 }	// namespace hamon_bigint_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()

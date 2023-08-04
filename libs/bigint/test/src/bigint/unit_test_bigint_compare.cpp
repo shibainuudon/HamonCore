@@ -9,8 +9,8 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH();
-HAMON_WARNING_DISABLE_MSVC(4127);	// 条件式が定数です。
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4127)	// 条件式が定数です。
 
 namespace hamon_bigint_test
 {
@@ -284,4 +284,4 @@ GTEST_TEST(BigIntTest, CompareTest)
 
 }	// namespace hamon_bigint_test
 
-HAMON_WARNING_POP();
+HAMON_WARNING_POP()
