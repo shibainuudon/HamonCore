@@ -182,66 +182,19 @@ public:
 		return *this;
 	}
 
-private:
-	static HAMON_CXX14_CONSTEXPR vector_type
-	divide(vector_type const& lhs, vector_type const& rhs, hamon::true_type) HAMON_NOEXCEPT
-	{
-		auto const s1 = bigint_algo::signbit(lhs);
-		auto const s2 = bigint_algo::signbit(rhs);
-		auto const d1 = s1 ? bigint_algo::negate(lhs) : lhs;
-		auto const d2 = s2 ? bigint_algo::negate(rhs) : rhs;
-		auto ret = bigint_algo::div_mod(d1, d2);
-		if (s1 != s2)
-		{
-			bigint_algo::negate(ret.quo);
-		}
-		return ret.quo;
-	}
-
-	static HAMON_CXX14_CONSTEXPR vector_type
-	divide(vector_type const& lhs, vector_type const& rhs, hamon::false_type) HAMON_NOEXCEPT
-	{
-		auto ret = bigint_algo::div_mod(lhs, rhs);
-		return ret.quo;
-	}
-
-	static HAMON_CXX14_CONSTEXPR vector_type
-	modulus(vector_type const& lhs, vector_type const& rhs, hamon::true_type) HAMON_NOEXCEPT
-	{
-		auto const s1 = bigint_algo::signbit(lhs);
-		auto const s2 = bigint_algo::signbit(rhs);
-		auto const d1 = s1 ? bigint_algo::negate(lhs) : lhs;
-		auto const d2 = s2 ? bigint_algo::negate(rhs) : rhs;
-		auto ret = bigint_algo::div_mod(d1, d2);
-		if (s1)
-		{
-			bigint_algo::negate(ret.rem);
-		}
-		return ret.rem;
-	}
-
-	static HAMON_CXX14_CONSTEXPR vector_type
-	modulus(vector_type const& lhs, vector_type const& rhs, hamon::false_type) HAMON_NOEXCEPT
-	{
-		auto ret = bigint_algo::div_mod(lhs, rhs);
-		return ret.rem;
-	}
-
-public:
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
 	operator/=(fixed_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		m_data = divide(m_data, rhs.m_data, hamon::bool_constant<Signed>{});
+		m_data = divide(m_data, rhs.m_data);
 		return *this;
 	}
 
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
 	operator%=(fixed_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		m_data = modulus(m_data, rhs.m_data, hamon::bool_constant<Signed>{});
+		m_data = modulus(m_data, rhs.m_data);
 		return *this;
 	}
-
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
 	operator+(fixed_bigint const& rhs) const HAMON_NOEXCEPT
@@ -385,11 +338,14 @@ public:
 		auto first = hamon::to_address(result.begin());
 		auto last = first + len;
 		auto p = first;
-		//if (m_sign < 0)
-		//{
-		//	*p++ = '-';
-		//}
-		auto ret = bigint_algo::to_chars(p, last, m_data, base);
+		if (Signed)
+		{
+			if (bigint_algo::signbit(m_data))
+			{
+				*p++ = '-';
+			}
+		}
+		auto ret = bigint_algo::to_chars(p, last, abs(m_data), base);
 		result.resize(static_cast<hamon::size_t>(ret.ptr - first));
 		return result;
 	}
@@ -452,6 +408,59 @@ public:
 		return !(*this < rhs);
 	}
 #endif
+
+private:
+	static HAMON_CXX14_CONSTEXPR vector_type
+	abs(vector_type const& v) HAMON_NOEXCEPT
+	{
+		if (Signed)
+		{
+			return bigint_algo::signbit(v) ? bigint_algo::negate(v) : v;
+		}
+		else
+		{
+			return v;
+		}
+	}
+
+	static HAMON_CXX14_CONSTEXPR vector_type
+	divide(vector_type const& lhs, vector_type const& rhs) HAMON_NOEXCEPT
+	{
+		if (Signed)
+		{
+			auto ret = bigint_algo::div_mod(abs(lhs), abs(rhs));
+			if (bigint_algo::signbit(lhs) !=
+				bigint_algo::signbit(rhs))
+			{
+				bigint_algo::negate(ret.quo);
+			}
+			return ret.quo;
+		}
+		else
+		{
+			auto ret = bigint_algo::div_mod(lhs, rhs);
+			return ret.quo;
+		}
+	}
+
+	static HAMON_CXX14_CONSTEXPR vector_type
+	modulus(vector_type const& lhs, vector_type const& rhs) HAMON_NOEXCEPT
+	{
+		if (Signed)
+		{
+			auto ret = bigint_algo::div_mod(abs(lhs), abs(rhs));
+			if (bigint_algo::signbit(lhs))
+			{
+				bigint_algo::negate(ret.rem);
+			}
+			return ret.rem;
+		}
+		else
+		{
+			auto ret = bigint_algo::div_mod(lhs, rhs);
+			return ret.rem;
+		}
+	}
 
 private:
 	vector_type	m_data;
