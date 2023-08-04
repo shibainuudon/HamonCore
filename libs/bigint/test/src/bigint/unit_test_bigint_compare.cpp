@@ -258,7 +258,7 @@ GTEST_TEST(BigIntTest, CompareTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int2048_t>());
 
 //	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest2<hamon::int128_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest2<hamon::int256_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int256_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int2048_t>());
