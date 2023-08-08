@@ -13,6 +13,7 @@
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/mul.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -64,28 +65,37 @@ template <typename T>
 inline bool
 multiply(std::vector<T>& out, std::vector<T> const& lhs, T rhs)
 {
-	return multiply_detail::multiply_impl(out, lhs.data(), lhs.size(), &rhs, 1);
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), lhs.size(),
+		&rhs, 1);
 }
 
 template <typename T>
 inline bool
 multiply(std::vector<T>& out, std::vector<T> const& lhs, std::vector<T> const& rhs)
 {
-	return multiply_detail::multiply_impl(out, lhs.data(), lhs.size(), rhs.data(), rhs.size());
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), lhs.size(),
+		rhs.data(), rhs.size());
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
 {
-	return multiply_detail::multiply_impl(out, lhs.data(), lhs.size(), &rhs, 1);
+
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), detail::actual_size(lhs),
+		&rhs, 1);
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
 {
-	return multiply_detail::multiply_impl(out, lhs.data(), lhs.size(), rhs.data(), rhs.size());
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), detail::actual_size(lhs),
+		rhs.data(), detail::actual_size(rhs));
 }
 
 // 利便性のために、結果を戻り値で返すバージョン(オーバーフローの情報は得られない)

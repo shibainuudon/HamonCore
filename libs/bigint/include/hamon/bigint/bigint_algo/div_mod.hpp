@@ -101,21 +101,24 @@ inline HAMON_CXX14_CONSTEXPR div_mod_result<VectorType>
 div_mod_impl(VectorType const& lhs, VectorType const& rhs)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
-	VectorType rem{0};
-	VectorType quo{0};
+	div_mod_result<VectorType> result
+	{
+		{0},
+		{0},
+	};
 	VectorType tmp{0};
 	for (hamon::size_t i = lhs.size(); i > 0; --i)
 	{
-		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = lhs[i-1];
+		bigint_algo::bit_shift_left(result.rem, hamon::bitsof<T>());
+		result.rem[0] = lhs[i-1];
 
-		auto const q = div1(rem, rhs, tmp);
-		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
-		quo[0] = q;
+		auto const q = div1(result.rem, rhs, tmp);
+		bigint_algo::bit_shift_left(result.quo, hamon::bitsof<T>());
+		result.quo[0] = q;
 
-		bigint_algo::sub(rem, tmp);
+		bigint_algo::sub(result.rem, tmp);
 	}
-	return { quo, rem };
+	return result;
 }
 
 }	// namespace div_mod_detail

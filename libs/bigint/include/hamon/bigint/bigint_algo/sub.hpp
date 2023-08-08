@@ -11,6 +11,7 @@
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/subc.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
@@ -51,7 +52,9 @@ inline void
 sub(std::vector<T>& lhs, std::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
-	sub_detail::sub_impl(lhs.data(), lhs.size(), rhs.data(), rhs.size());
+	sub_detail::sub_impl(
+		lhs.data(), lhs.size(),
+		rhs.data(), rhs.size());
 	bigint_algo::normalize(lhs);
 }
 
@@ -59,7 +62,9 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR void
 sub(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
-	sub_detail::sub_impl(lhs.data(), lhs.size(), rhs.data(), rhs.size());
+	sub_detail::sub_impl(
+		lhs.data(), lhs.size(),
+		rhs.data(), detail::actual_size(rhs));
 }
 
 }	// namespace bigint_algo
