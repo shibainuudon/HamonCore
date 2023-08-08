@@ -60,8 +60,11 @@ using uint1024_t = hamon::fixed_bigint<1024, false>;
 using uint2048_t = hamon::fixed_bigint<2048, false>;
 
 template <hamon::size_t B, bool S>
-HAMON_CXX14_CONSTEXPR to_chars_result
+HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
+
+template <hamon::size_t B, bool S>
+std::string to_string(fixed_bigint<B, S> const& value);
 
 template <hamon::size_t Bits, bool Signed>
 class fixed_bigint
@@ -326,34 +329,6 @@ public:
 	//HAMON_NODISCARD unsigned long to_ulong() const;
 	//HAMON_NODISCARD unsigned long long to_ullong() const;
 
-	template <
-		typename CharT = char,
-		typename Traits = std::char_traits<CharT>,
-		typename Allocator = std::allocator<CharT>>
-	HAMON_NODISCARD std::basic_string<CharT, Traits, Allocator>
-	to_string() const
-	{
-		int base = 10;
-		hamon::size_t len =
-			bigint_algo::to_chars_length(m_data, base) +
-			2;
-		std::basic_string<CharT, Traits, Allocator> result;
-		result.resize(len);
-		auto first = hamon::to_address(result.begin());
-		auto last = first + len;
-		auto p = first;
-		if (Signed)
-		{
-			if (bigint_algo::signbit(m_data))
-			{
-				*p++ = '-';
-			}
-		}
-		auto ret = bigint_algo::to_chars(p, last, abs(m_data), base);
-		result.resize(static_cast<hamon::size_t>(ret.ptr - first));
-		return result;
-	}
-
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR int
 	compare(fixed_bigint const& rhs) const HAMON_NOEXCEPT
 	{
@@ -471,12 +446,15 @@ private:
 
 private:
 	template <hamon::size_t B, bool S>
-	friend HAMON_CXX14_CONSTEXPR to_chars_result
+	friend HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
+
+	template <hamon::size_t B, bool S>
+	friend std::string to_string(fixed_bigint<B, S> const& value);
 };
 
 template <hamon::size_t Bits, bool Signed>
-inline HAMON_CXX14_CONSTEXPR to_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int base)
 {
 	if (Signed)
@@ -490,6 +468,23 @@ to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int b
 	return bigint_algo::to_chars(first, last, value.m_data, base);
 }
 
+template <hamon::size_t Bits, bool Signed>
+inline std::string
+to_string(fixed_bigint<Bits, Signed> const& value)
+{
+	int base = 10;
+	hamon::size_t len =
+		bigint_algo::to_chars_length(value.m_data, base) +
+		(Signed ? 1 : 0) +	// '-' 
+		1;	// '\0'
+	std::string result;
+	result.resize(len);
+	auto first = hamon::to_address(result.begin());
+	auto ret = to_chars(first, first + len, value, base);
+	result.resize(static_cast<hamon::size_t>(ret.ptr - first));
+	return result;
+}
+
 //template <typename CharT, typename Traits>
 //inline std::basic_istream<CharT, Traits>&
 //operator>>(std::basic_istream<CharT, Traits>& is, fixed_bigint& x);
@@ -498,7 +493,7 @@ template <typename CharT, typename Traits, hamon::size_t B, bool S>
 inline std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& os, fixed_bigint<B, S> const& x)
 {
-	return os << x.to_string();
+	return os << to_string(x);
 }
 
 }	// namespace hamon

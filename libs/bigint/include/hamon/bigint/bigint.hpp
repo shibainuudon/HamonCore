@@ -43,6 +43,8 @@ class bigint;
 hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base = 10);
 
+std::string to_string(bigint const& value);
+
 class bigint
 {
 private:
@@ -294,31 +296,6 @@ public:
 	//HAMON_NODISCARD unsigned long to_ulong() const;
 	//HAMON_NODISCARD unsigned long long to_ullong() const;
 
-	template <
-		typename CharT = char,
-		typename Traits = std::char_traits<CharT>,
-		typename Allocator = std::allocator<CharT>>
-	HAMON_NODISCARD std::basic_string<CharT, Traits, Allocator>
-	to_string() const
-	{
-		int base = 10;
-		hamon::size_t len =
-			bigint_algo::to_chars_length(m_magnitude, base) +
-			2;
-		std::basic_string<CharT, Traits, Allocator> result;
-		result.resize(len);
-		auto first = hamon::to_address(result.begin());
-		auto last = first + len;
-		auto p = first;
-		if (m_sign < 0)
-		{
-			*p++ = '-';
-		}
-		auto ret = bigint_algo::to_chars(p, last, m_magnitude, base);
-		result.resize(static_cast<hamon::size_t>(ret.ptr - first));
-		return result;
-	}
-
 	HAMON_NODISCARD int compare(bigint const& rhs) const HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
@@ -336,6 +313,8 @@ private:
 private:
 	friend hamon::to_chars_result
 	to_chars(char* first, char* last, bigint const& value, int base);
+
+	friend std::string to_string(bigint const& value);
 };
 
 HAMON_NODISCARD inline bigint
@@ -452,6 +431,22 @@ to_chars(char* first, char* last, bigint const& value, int base)
 	return bigint_algo::to_chars(first, last, value.m_magnitude, base);
 }
 
+inline std::string
+to_string(bigint const& value)
+{
+	int base = 10;
+	hamon::size_t len =
+		bigint_algo::to_chars_length(value.m_magnitude, base) +
+		1 +	// '-' 
+		1;	// '\0'
+	std::string result;
+	result.resize(len);
+	auto first = hamon::to_address(result.begin());
+	auto ret = hamon::to_chars(first, first + len, value, base);
+	result.resize(static_cast<hamon::size_t>(ret.ptr - first));
+	return result;
+}
+
 //template <typename CharT, typename Traits>
 //inline std::basic_istream<CharT, Traits>&
 //operator>>(std::basic_istream<CharT, Traits>& is, bigint& x);
@@ -460,7 +455,7 @@ template <typename CharT, typename Traits>
 inline std::basic_ostream<CharT, Traits>&
 operator<<(std::basic_ostream<CharT, Traits>& os, bigint const& x)
 {
-	return os << x.to_string();
+	return os << to_string(x);
 }
 
 }	// namespace hamon
