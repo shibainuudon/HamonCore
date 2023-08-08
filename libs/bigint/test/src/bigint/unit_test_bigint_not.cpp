@@ -15,7 +15,7 @@
 namespace hamon_bigint_test
 {
 
-namespace bigint_or_test
+namespace bigint_not_test
 {
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
@@ -107,6 +107,6 @@ GTEST_TEST(BigIntTest, NotTest)
 
 #undef VERIFY
 
-}	// namespace bigint_or_test
+}	// namespace bigint_not_test
 
 }	// namespace hamon_bigint_test

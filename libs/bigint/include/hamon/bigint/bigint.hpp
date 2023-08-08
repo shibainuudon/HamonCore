@@ -38,6 +38,11 @@
 namespace hamon
 {
 
+class bigint;
+
+hamon::to_chars_result
+to_chars(char* first, char* last, bigint const& value, int base = 10);
+
 class bigint
 {
 private:
@@ -327,6 +332,10 @@ public:
 private:
 	int				m_sign = 1;	// m_magnitude >= 0 なら 1、m_magnitude < 0 なら -1
 	MagnitudeType	m_magnitude;
+
+private:
+	friend hamon::to_chars_result
+	to_chars(char* first, char* last, bigint const& value, int base);
 };
 
 HAMON_NODISCARD inline bigint
@@ -432,6 +441,16 @@ operator>=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 	return !(lhs < rhs);
 }
 #endif
+
+inline hamon::to_chars_result
+to_chars(char* first, char* last, bigint const& value, int base)
+{
+	if (value.m_sign < 0 && first != last)
+	{
+		*first++ = '-';
+	}
+	return bigint_algo::to_chars(first, last, value.m_magnitude, base);
+}
 
 //template <typename CharT, typename Traits>
 //inline std::basic_istream<CharT, Traits>&

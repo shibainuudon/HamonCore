@@ -12,7 +12,7 @@
 namespace hamon_bigint_test
 {
 
-namespace bigint_add_equal_test
+namespace bigint_ctor_default_test
 {
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
@@ -55,6 +55,6 @@ GTEST_TEST(BigIntTest, CtorDefaultTest)
 
 #undef VERIFY
 
-}	// namespace bigint_add_equal_test
+}	// namespace bigint_ctor_default_test
 
 }	// namespace hamon_bigint_test

@@ -59,6 +59,10 @@ using uint512_t  = hamon::fixed_bigint< 512, false>;
 using uint1024_t = hamon::fixed_bigint<1024, false>;
 using uint2048_t = hamon::fixed_bigint<2048, false>;
 
+template <hamon::size_t B, bool S>
+HAMON_CXX14_CONSTEXPR to_chars_result
+to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
+
 template <hamon::size_t Bits, bool Signed>
 class fixed_bigint
 {
@@ -464,7 +468,27 @@ private:
 
 private:
 	vector_type	m_data;
+
+private:
+	template <hamon::size_t B, bool S>
+	friend HAMON_CXX14_CONSTEXPR to_chars_result
+	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
 };
+
+template <hamon::size_t Bits, bool Signed>
+inline HAMON_CXX14_CONSTEXPR to_chars_result
+to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int base)
+{
+	if (Signed)
+	{
+		if (bigint_algo::signbit(value.m_data) && first != last)
+		{
+			*first++ = '-';
+			return bigint_algo::to_chars(first, last, bigint_algo::negate(value.m_data), base);
+		}
+	}
+	return bigint_algo::to_chars(first, last, value.m_data, base);
+}
 
 //template <typename CharT, typename Traits>
 //inline std::basic_istream<CharT, Traits>&
