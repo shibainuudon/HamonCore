@@ -21,14 +21,14 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::size_t
 actual_size_impl(T const* p, hamon::size_t n)
 {
-	for (hamon::size_t i = n; i > 1; --i)
+	for (hamon::size_t i = n; i > 0; --i)
 	{
 		if (p[i - 1] != 0)
 		{
 			return i;
 		}
 	}
-	return 1;
+	return 0;
 }
 
 template <typename T, hamon::size_t N>

@@ -10,6 +10,7 @@
 #include <hamon/bigint/bigint_algo/add.hpp>
 #include <hamon/bigint/bigint_algo/multiply.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
+#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/charconv/from_chars.hpp>
 #include <hamon/cmath/log2.hpp>
@@ -37,6 +38,9 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 
 	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(std::numeric_limits<T>::digits / hamon::log2(base)));
 
+	VectorType base2{0};
+	bigint_algo::pow_n(base2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(digits));
+
 	VectorType x{0};
 	VectorType tmp{0};
 
@@ -52,20 +56,30 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 			break;
 		}
 		auto n = r.ptr - p;
-		p = r.ptr;
 
 		// x *= pow_n(base, n)
-		for (decltype(n) j = 0; j < n; ++j)
+		if (n == digits)
 		{
-			auto f = bigint_algo::multiply(tmp, x, static_cast<T>(base));
+			auto f = bigint_algo::multiply(tmp, x, base2);
+			x = hamon::move(tmp);
+			overflow = overflow || f;
+		}
+		else
+		{
+			VectorType tmp2{0};
+			bigint_algo::pow_n(tmp2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(n));
+			auto f = bigint_algo::multiply(tmp, x, tmp2);
 			x = hamon::move(tmp);
 			overflow = overflow || f;
 		}
 
+		// x += t
 		{
-			auto f = bigint_algo::add(x, VectorType{t});
+			auto f = bigint_algo::add(x, t);
 			overflow = overflow || f;
 		}
+
+		p = r.ptr;
 	};
 
 	if (p == first)

@@ -23,7 +23,7 @@ inline HAMON_CXX14_CONSTEXPR void
 negate(hamon::array<T, N>& lhs)
 {
 	bigint_algo::bit_not(lhs);
-	bigint_algo::add(lhs, hamon::array<T, N>{1});
+	bigint_algo::add(lhs, T{1});
 }
 
 template <typename T, hamon::size_t N>
