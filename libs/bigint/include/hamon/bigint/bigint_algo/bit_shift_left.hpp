@@ -9,6 +9,8 @@
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/countl_zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/algorithm/min.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
@@ -84,7 +86,9 @@ inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::array<T, N>& lhs, hamon::uintmax_t rhs)
 {
 	bool const overflow = (rhs > bigint_algo::countl_zero(lhs));
-	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), N, rhs);
+	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
+	hamon::size_t const n = hamon::min(detail::actual_size(lhs) + quo + 1, N);
+	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), n, rhs);
 	return overflow;
 }
 

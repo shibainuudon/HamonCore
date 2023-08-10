@@ -98,25 +98,25 @@ GTEST_TEST(BigIntTest, DivEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::int512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::int1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::int2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int2048_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint2048_t>());
 
 	EXPECT_TRUE(SignedDivEqualTest<hamon::bigint>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivEqualTest<hamon::int512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivEqualTest<hamon::int1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivEqualTest<hamon::int2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int2048_t>());
 }
 
 #undef VERIFY

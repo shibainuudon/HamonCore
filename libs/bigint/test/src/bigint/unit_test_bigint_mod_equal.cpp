@@ -80,25 +80,25 @@ GTEST_TEST(BigIntTest, ModEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::int512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::int1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::int2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int2048_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::uint512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::uint1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::uint2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::uint2048_t>());
 
 	EXPECT_TRUE(SignedModEqualTest<hamon::bigint>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int256_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModEqualTest<hamon::int512_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModEqualTest<hamon::int1024_t>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModEqualTest<hamon::int2048_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int512_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int1024_t>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int2048_t>());
 }
 
 #undef VERIFY

@@ -26,18 +26,16 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::uintmax_t
 countl_zero_impl(T const* vec, hamon::size_t n)
 {
-	hamon::uintmax_t result = 0;
 	for (hamon::size_t i = n; i > 0; --i)
 	{
 		auto const v = vec[i - 1];
 		if (v != 0)
 		{
-			return result +
+			return (n - i) * hamon::bitsof<T>() +
 				static_cast<hamon::uintmax_t>(hamon::countl_zero(v));
 		}
-		result += hamon::bitsof<T>();
 	}
-	return result;
+	return n * hamon::bitsof<T>();
 }
 
 }	// namespace countl_zero_detail
