@@ -60,6 +60,10 @@ using uint1024_t = hamon::fixed_bigint<1024, false>;
 using uint2048_t = hamon::fixed_bigint<2048, false>;
 
 template <hamon::size_t B, bool S>
+HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+from_chars(char const* first, char const* last, fixed_bigint<B, S>& value, int base = 10);
+
+template <hamon::size_t B, bool S>
 HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
 
@@ -452,12 +456,35 @@ private:
 
 private:
 	template <hamon::size_t B, bool S>
+	friend HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+	from_chars(char const* first, char const* last, fixed_bigint<B, S>& value, int base);
+	
+	template <hamon::size_t B, bool S>
 	friend HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
 
 	template <hamon::size_t B, bool S>
 	friend std::string to_string(fixed_bigint<B, S> const& value);
 };
+
+template <hamon::size_t Bits, bool Signed>
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+from_chars(char const* first, char const* last, fixed_bigint<Bits, Signed>& value, int base)
+{
+	bool minus = false;
+	if (first != last && *first == '-')
+	{
+		minus = true;
+		++first;
+	}
+
+	auto ret = bigint_algo::from_chars(first, last, value.m_data, base);
+	if (minus)
+	{
+		bigint_algo::negate(value.m_data);
+	}
+	return ret;
+}
 
 template <hamon::size_t Bits, bool Signed>
 inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result

@@ -41,6 +41,9 @@ namespace hamon
 
 class bigint;
 
+hamon::from_chars_result
+from_chars(char const* first, char const* last, bigint& value, int base = 10);
+
 hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base = 10);
 
@@ -318,6 +321,9 @@ private:
 	MagnitudeType	m_magnitude;
 
 private:
+	friend hamon::from_chars_result
+	from_chars(char const* first, char const* last, bigint& value, int base);
+
 	friend hamon::to_chars_result
 	to_chars(char* first, char* last, bigint const& value, int base);
 
@@ -427,6 +433,18 @@ operator>=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 	return !(lhs < rhs);
 }
 #endif
+
+inline hamon::from_chars_result
+from_chars(char const* first, char const* last, bigint& value, int base)
+{
+	value.m_sign = 1;
+	if (first != last && *first == '-')
+	{
+		value.m_sign = -1;
+		++first;
+	}
+	return bigint_algo::from_chars(first, last, value.m_magnitude, base);
+}
 
 inline hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base)
