@@ -326,8 +326,14 @@ public:
 		return tmp;
 	}
 
-	//HAMON_NODISCARD unsigned long to_ulong() const;
-	//HAMON_NODISCARD unsigned long long to_ullong() const;
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	explicit HAMON_CXX14_CONSTEXPR operator Integral() const HAMON_NOEXCEPT
+	{
+		using UT = hamon::make_unsigned_t<Integral>;
+		UT result{};
+		bigint_algo::to_uint(result, m_data);
+		return static_cast<Integral>(result);
+	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR int
 	compare(fixed_bigint const& rhs) const HAMON_NOEXCEPT

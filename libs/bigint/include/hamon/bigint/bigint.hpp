@@ -28,6 +28,7 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
@@ -293,8 +294,14 @@ public:
 		return tmp;
 	}
 
-	//HAMON_NODISCARD unsigned long to_ulong() const;
-	//HAMON_NODISCARD unsigned long long to_ullong() const;
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	explicit operator Integral() const HAMON_NOEXCEPT
+	{
+		using UT = hamon::make_unsigned_t<Integral>;
+		UT result{};
+		bigint_algo::to_uint(result, m_magnitude);
+		return static_cast<Integral>(result * static_cast<UT>(m_sign));
+	}
 
 	HAMON_NODISCARD int compare(bigint const& rhs) const HAMON_NOEXCEPT
 	{

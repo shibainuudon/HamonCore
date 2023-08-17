@@ -34,12 +34,13 @@ template <typename UInt, typename T>
 inline HAMON_CXX14_CONSTEXPR to_uint_result
 to_uint(UInt& dst, T const* src, hamon::size_t size)
 {
+	bool overflow = false;
 	dst = 0;
 	for (hamon::size_t i = 0; i < size; ++i)
 	{
 		if (src[i] > std::numeric_limits<UInt>::max())
 		{
-			return {std::errc::value_too_large};
+			overflow = true;
 		}
 
 		auto const v = static_cast<UInt>(src[i]);
@@ -47,10 +48,15 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 
 		if (v != 0 && shift > static_cast<unsigned int>(hamon::countl_zero(v)))
 		{
-			return {std::errc::value_too_large};
+			overflow = true;
 		}
 
 		dst = static_cast<UInt>(dst | hamon::shl(v, shift));
+	}
+
+	if (overflow)
+	{
+		return {std::errc::value_too_large};
 	}
 	return {std::errc{}};
 }
