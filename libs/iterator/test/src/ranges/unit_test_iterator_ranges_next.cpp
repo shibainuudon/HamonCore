@@ -17,95 +17,89 @@ namespace ranges_next_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-HAMON_CXX14_CONSTEXPR bool test01()
+void test01()
 {
-	int a[10] ={0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	test_random_access_range<int> r(a);
-	auto begin = r.begin();
-	auto end = r.end();
-	auto endi = hamon::ranges::next(begin, end);
-	VERIFY(*hamon::ranges::next(begin) == 1);
-	VERIFY( hamon::ranges::next(begin, 0) == begin);
-	VERIFY(*hamon::ranges::next(begin, 1) == 1);
-	VERIFY(*hamon::ranges::next(begin, 3) == 3);
-	VERIFY(*hamon::ranges::next(endi, -4) == 6);
-	VERIFY( hamon::ranges::next(begin, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, end) == end);
-	VERIFY( hamon::ranges::next(endi, end) == end);
-	VERIFY( hamon::ranges::next(endi, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 0, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 5, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, -5, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 0, end) == begin);
-	VERIFY(*hamon::ranges::next(begin, 5, end) == 5);
-	VERIFY( hamon::ranges::next(begin, 55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, end) == end);
-	VERIFY( hamon::ranges::next(endi, -5, end) == end);
-	VERIFY( hamon::ranges::next(endi, -55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, begin) == end);
-	VERIFY(*hamon::ranges::next(endi, -5, begin) == 5);
-	VERIFY( hamon::ranges::next(endi, -55, begin) == begin);
-
-	return true;
+	static HAMON_CXX11_CONSTEXPR int a[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	HAMON_CXX11_CONSTEXPR test_random_access_range<int const> r(a);
+	HAMON_CXX11_CONSTEXPR auto begin = r.begin();
+	HAMON_CXX11_CONSTEXPR auto end = r.end();
+	HAMON_CXX11_CONSTEXPR auto endi = hamon::ranges::next(begin, end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin) == 1);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 1) == 1);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 3) == 3);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(endi, -4) == 6);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, begin) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, begin) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, begin) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 5, begin) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, -5, begin) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, end) == begin);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 5, end) == 5);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 55, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -5, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -55, end) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, begin) == end);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(endi, -5, begin) == 5);
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -55, begin) == begin);
 }
 
-HAMON_CXX14_CONSTEXPR bool test02()
+void test02()
 {
-	int a[10] ={0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	test_bidirectional_range<int> r(a);
-	auto begin = r.begin();
-	auto end = r.end();
-	auto endi = hamon::ranges::next(begin, end);
-	VERIFY(*hamon::ranges::next(begin) == 1);
-	VERIFY( hamon::ranges::next(begin, 0) == begin);
-	VERIFY(*hamon::ranges::next(begin, 1) == 1);
-	VERIFY(*hamon::ranges::next(begin, 3) == 3);
-	VERIFY(*hamon::ranges::next(endi, -4) == 6);
-	VERIFY( hamon::ranges::next(begin, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, end) == end);
-	VERIFY( hamon::ranges::next(endi, end) == end);
-	VERIFY( hamon::ranges::next(endi, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 0, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 5, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, -5, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 0, end) == begin);
-	VERIFY(*hamon::ranges::next(begin, 5, end) == 5);
-	VERIFY( hamon::ranges::next(begin, 55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, end) == end);
-	VERIFY( hamon::ranges::next(endi, -5, end) == end);
-	VERIFY( hamon::ranges::next(endi, -55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, begin) == end);
-	VERIFY(*hamon::ranges::next(endi, -5, begin) == 5);
-	VERIFY( hamon::ranges::next(endi, -55, begin) == begin);
-
-	return true;
+	static HAMON_CXX14_CONSTEXPR int a[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	HAMON_CXX14_CONSTEXPR test_bidirectional_range<int const> r(a);
+	HAMON_CXX14_CONSTEXPR auto begin = r.begin();
+	HAMON_CXX14_CONSTEXPR auto end = r.end();
+	HAMON_CXX14_CONSTEXPR auto endi = hamon::ranges::next(begin, end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin) == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 1) == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 3) == 3);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(endi, -4) == 6);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 5, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, -5, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, end) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 5, end) == 5);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 55, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -5, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -55, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, begin) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(endi, -5, begin) == 5);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, -55, begin) == begin);
 }
 
-HAMON_CXX14_CONSTEXPR bool test03()
+void test03()
 {
-	int a[10] ={0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-	test_forward_range<int> r(a);
-	auto begin = r.begin();
-	auto end = r.end();
-	auto endi = hamon::ranges::next(begin, end);
-	VERIFY(*hamon::ranges::next(begin) == 1);
-	VERIFY( hamon::ranges::next(begin, 0) == begin);
-	VERIFY(*hamon::ranges::next(begin, 1) == 1);
-	VERIFY(*hamon::ranges::next(begin, 3) == 3);
-	VERIFY( hamon::ranges::next(begin, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, end) == end);
-	VERIFY( hamon::ranges::next(endi, end) == end);
-	VERIFY( hamon::ranges::next(begin, 0, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 5, begin) == begin);
-	VERIFY( hamon::ranges::next(begin, 0, end) == begin);
-	VERIFY(*hamon::ranges::next(begin, 5, end) == 5);
-	VERIFY( hamon::ranges::next(begin, 55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, end) == end);
-	VERIFY( hamon::ranges::next(endi, 5, end) == end);
-	VERIFY( hamon::ranges::next(endi, 55, end) == end);
-	VERIFY( hamon::ranges::next(endi, 0, begin) == end);
-
-	return true;
+	static HAMON_CXX14_CONSTEXPR int a[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	HAMON_CXX14_CONSTEXPR test_forward_range<int const> r(a);
+	HAMON_CXX14_CONSTEXPR auto begin = r.begin();
+	HAMON_CXX14_CONSTEXPR auto end = r.end();
+	HAMON_CXX14_CONSTEXPR auto endi = hamon::ranges::next(begin, end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin) == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 1) == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 3) == 3);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 5, begin) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 0, end) == begin);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*hamon::ranges::next(begin, 5, end) == 5);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(begin, 55, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 5, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 55, end) == end);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE( hamon::ranges::next(endi, 0, begin) == end);
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
@@ -200,9 +194,9 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 GTEST_TEST(IteratorTest, RangesNextTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	test01();
+	test02();
+	test03();
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }

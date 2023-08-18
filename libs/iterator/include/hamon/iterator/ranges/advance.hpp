@@ -29,11 +29,11 @@ using std::ranges::advance;
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
+#include <hamon/cmath/abs.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
@@ -48,36 +48,40 @@ namespace ranges
 namespace detail
 {
 
+// advance(it, n) の実装
+
 template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, It)>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_1(hamon::detail::overload_priority<2>, It& it, hamon::iter_difference_t<It> n)
+advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<2>)
 {
 	it += n;
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It)>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_1(hamon::detail::overload_priority<1>, It& it, hamon::iter_difference_t<It> n)
+advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<1>)
 {
 	if (n > 0)
 	{
 		do
 		{
 			++it;
-		} while (--n);
+		}
+		while (--n);
 	}
 	else if (n < 0)
 	{
 		do
 		{
 			--it;
-		} while (++n);
+		}
+		while (++n);
 	}
 }
 
 template <typename It>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_1(hamon::detail::overload_priority<0>, It& it, hamon::iter_difference_t<It> n)
+advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<0>)
 {
 	HAMON_ASSERT(n >= 0);
 	while (n-- > 0)
@@ -86,51 +90,35 @@ advance_impl_1(hamon::detail::overload_priority<0>, It& it, hamon::iter_differen
 	}
 }
 
-}	// namespace detail
-
-template <HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It)>
+template <typename It>
 inline HAMON_CXX14_CONSTEXPR void
-advance(It& it, hamon::iter_difference_t<It> n)
+advance_impl(It& it, hamon::iter_difference_t<It> n)
 {
-	ranges::detail::advance_impl_1(hamon::detail::overload_priority<2>{}, it, n);
+	advance_impl(it, n, hamon::detail::overload_priority<2>{});
 }
 
-namespace detail
-{
+// advance(it, bound) の実装
 
 template <
-	typename It, typename Sent
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, typename = hamon::enable_if_t<hamon::assignable_from<It&, Sent>::value>
-#endif
+	typename It, typename Sent,
+	typename = hamon::enable_if_t<hamon::assignable_from_t<It&, Sent>::value>
 >
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires hamon::assignable_from<It&, Sent>
-#endif
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_2(hamon::detail::overload_priority<2>, It& it, Sent bound)
+advance_impl(It& it, Sent bound, hamon::detail::overload_priority<2>)
 {
 	it = hamon::move(bound);
 }
 
-template <
-	typename It,
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::sized_sentinel_for<It> Sent
-#else
-	typename Sent,
-	typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, It>::value>
-#endif
->
+template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_2(hamon::detail::overload_priority<1>, It& it, Sent bound)
+advance_impl(It& it, Sent bound, hamon::detail::overload_priority<1>)
 {
-	ranges::advance(it, bound - it);
+	advance_impl(it, bound - it);
 }
 
-template <typename It, typename Sent>
+template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl_2(hamon::detail::overload_priority<0>, It& it, Sent bound)
+advance_impl(It& it, Sent bound, hamon::detail::overload_priority<0>)
 {
 	while (it != bound)
 	{
@@ -138,93 +126,66 @@ advance_impl_2(hamon::detail::overload_priority<0>, It& it, Sent bound)
 	}
 }
 
-}	// namespace detail
-
-template <
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::input_or_output_iterator It, hamon::sentinel_for<It> Sent
-#else
-	typename It, typename Sent,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::input_or_output_iterator<It>,
-		hamon::sentinel_for<Sent, It>
-	>::value>
-#endif
->
+template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR void
-advance(It& it, Sent bound)
+advance_impl(It& it, Sent bound)
 {
-	ranges::detail::advance_impl_2(hamon::detail::overload_priority<2>{}, it, bound);
+	advance_impl(it, bound, hamon::detail::overload_priority<2>{});
 }
 
-namespace detail
-{
+// advance(it, n, bound) の実装
 
 template <
-	typename It, typename Difference,
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::sized_sentinel_for<It> Sent
-#else
+	HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It),
 	typename Sent,
-	typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, It>::value>
-#endif
->
-inline HAMON_CXX14_CONSTEXPR Difference
-advance_impl_3(hamon::detail::overload_priority<1>, It& it, Difference n, Sent bound)
-{
-	const auto diff = bound - it;
-	// n and bound must not lead in opposite directions:
-	HAMON_ASSERT(n == 0 || diff == 0 || ((n < 0) == (diff < 0)));
-	const auto absdiff = diff < 0 ? -diff : diff;
-	const auto absn = n < 0 ? -n : n;;
-	if (absn >= absdiff)
-	{
-		ranges::advance(it, bound);
-		return n - diff;
-	}
-	else
-	{
-		ranges::advance(it, n);
-		return 0;
-	}
-}
-
-template <
-	typename It, typename Difference, typename Sent
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, typename = hamon::enable_if_t<
-		hamon::bidirectional_iterator<It>::value &&
-		hamon::same_as<It, Sent>::value
+	typename = hamon::enable_if_t<
+		hamon::same_as_t<It, Sent>::value
 	>
-#endif
 >
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires hamon::bidirectional_iterator<It> && hamon::same_as<It, Sent>
-#endif
-inline HAMON_CXX14_CONSTEXPR Difference
-advance_impl_4(hamon::detail::overload_priority<1>, It& it, Difference n, Sent bound)
+inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
+advance_impl_2(It& it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<1>)
 {
 	hamon::iter_difference_t<It> m = 0;
 	do
 	{
 		--it;
 		--m;
-	} while (m != n && it != bound);
+	}
+	while (m != n && it != bound);
 
 	return n - m;
 }
 
-template <typename It, typename Difference, typename Sent>
-inline HAMON_CXX14_CONSTEXPR Difference
-advance_impl_4(hamon::detail::overload_priority<0>, It& /*it*/, Difference n, Sent /*bound*/)
+template <typename It, typename Sent>
+inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
+advance_impl_2(It& /*it*/, hamon::iter_difference_t<It> n, Sent /*bound*/, hamon::detail::overload_priority<0>)
 {
 	HAMON_ASSERT(n >= 0);
 	return n;
 }
 
-template <typename It, typename Difference, typename Sent>
-inline HAMON_CXX14_CONSTEXPR Difference
-advance_impl_3(hamon::detail::overload_priority<0>, It& it, Difference n, Sent bound)
+template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
+inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
+advance_impl(It& it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<1>)
+{
+	auto const diff = bound - it;
+	// n and bound must not lead in opposite directions:
+	HAMON_ASSERT(n == 0 || diff == 0 || ((n < 0) == (diff < 0)));
+	if (hamon::abs(n) >= hamon::abs(diff))
+	{
+		advance_impl(it, bound);
+		return n - diff;
+	}
+	else
+	{
+		advance_impl(it, n);
+		return 0;
+	}
+}
+
+template <typename It, typename Sent>
+inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
+advance_impl(It& it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<0>)
 {
 	if (it == bound || n == 0)
 	{
@@ -237,35 +198,51 @@ advance_impl_3(hamon::detail::overload_priority<0>, It& it, Difference n, Sent b
 		{
 			++it;
 			++m;
-		} while (m != n && it != bound);
+		}
+		while (m != n && it != bound);
 
 		return n - m;
 	}
 	else
 	{
-		return advance_impl_4(
-			hamon::detail::overload_priority<1>{}, it, n, bound);
+		return advance_impl_2(it, n, bound, hamon::detail::overload_priority<1>{});
 	}
+}
+
+template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
+inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
+advance_impl(It& it, hamon::iter_difference_t<It> n, Sent bound)
+{
+	return advance_impl(it, n, bound, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace detail
 
+template <HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It)>
+inline HAMON_CXX14_CONSTEXPR void
+advance(It& it, hamon::iter_difference_t<It> n)
+{
+	hamon::ranges::detail::advance_impl(it, n);
+}
+
 template <
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::input_or_output_iterator It, hamon::sentinel_for<It> Sent
-#else
-	typename It, typename Sent,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::input_or_output_iterator<It>,
-		hamon::sentinel_for<Sent, It>
-	>::value>
-#endif
+	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
+>
+inline HAMON_CXX14_CONSTEXPR void
+advance(It& it, Sent bound)
+{
+	hamon::ranges::detail::advance_impl(it, bound);
+}
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
 advance(It& it, hamon::iter_difference_t<It> n, Sent bound)
 {
-	return ranges::detail::advance_impl_3(
-		hamon::detail::overload_priority<1>{}, it, n, bound);
+	return hamon::ranges::detail::advance_impl(it, n, bound);
 }
 
 }	// namespace ranges

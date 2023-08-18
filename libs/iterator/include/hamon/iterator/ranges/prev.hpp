@@ -23,7 +23,7 @@ using std::ranges::prev;
 
 #else
 
-#include <hamon/iterator/ranges/advance.hpp>
+#include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -36,27 +36,24 @@ namespace ranges
 {
 
 template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It)>
-inline HAMON_CXX14_CONSTEXPR It
-prev(It x)
+inline HAMON_CXX11_CONSTEXPR It
+prev(It it)
 {
-	--x;
-	return x;
+	return hamon::ranges::next(it, -1);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It)>
-inline HAMON_CXX14_CONSTEXPR It
-prev(It x, hamon::iter_difference_t<It> n)
+inline HAMON_CXX11_CONSTEXPR It
+prev(It it, hamon::iter_difference_t<It> n)
 {
-	ranges::advance(x, -n);
-	return x;
+	return hamon::ranges::next(it, -n);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It)>
-inline HAMON_CXX14_CONSTEXPR It
-prev(It x, hamon::iter_difference_t<It> n, It bound)
+inline HAMON_CXX11_CONSTEXPR It
+prev(It it, hamon::iter_difference_t<It> n, It bound)
 {
-	ranges::advance(x, -n, bound);
-	return x;
+	return hamon::ranges::next(it, -n, bound);
 }
 
 }	// namespace ranges
