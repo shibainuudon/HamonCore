@@ -62,10 +62,10 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
 subc(T lhs, T rhs, T carry)
 {
-	T const a = static_cast<T>(rhs + static_cast<hamon::make_signed_t<T>>(carry));
+	T const a = static_cast<T>(rhs + static_cast<T>(static_cast<hamon::make_signed_t<T>>(carry)));
 	T const b = static_cast<T>(lhs - a);
-	T const c1 = a > rhs ? -1 : 0;
-	T const c2 = b > lhs ? -1 : 0;
+	T const c1 = a > rhs ? T(-1) : 0;
+	T const c2 = b > lhs ? T(-1) : 0;
 	return {b, static_cast<T>(c1 + c2)};
 }
 

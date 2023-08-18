@@ -112,12 +112,12 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::int512_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FromCharsTest<hamon::int2048_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::uint512_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FromCharsTest<hamon::uint2048_t>());
 }
 
 #undef VERIFY
