@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::bigint">
+		<DisplayString>{{ sign = {m_sign} }}, {{ magnitude = {m_magnitude} }}</DisplayString>
+		<Expand>
+			<Item Name="sign">m_sign</Item>
+			<Item Name="magnitude">m_magnitude</Item>
+		</Expand>
+	</Type>
+	
+	<Type Name="hamon::fixed_bigint&lt;*,*&gt;">
+		<DisplayString>{m_data}</DisplayString>
+		<Expand>
+			<ExpandedItem>m_data</ExpandedItem>
+		</Expand>
+	</Type>
+</AutoVisualizer>
