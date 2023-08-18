@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::units::quantity&lt;*,*,*,*&gt;">
+		<DisplayString>{m_value}</DisplayString>
+		<Expand>
+			<Item Name="value">m_value</Item>
+		</Expand>
+	</Type>
+</AutoVisualizer>
