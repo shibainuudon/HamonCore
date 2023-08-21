@@ -15,6 +15,7 @@
 //#include <hamon/memory/destroy_n.hpp>
 //#include <hamon/memory/make_shared.hpp>
 #include <hamon/memory/make_unique.hpp>
+#include <hamon/memory/make_unique_for_overwrite.hpp>
 //#include <hamon/memory/pointer_traits.hpp>
 //#include <hamon/memory/shared_ptr.hpp>
 #include <hamon/memory/make_obj_using_allocator.hpp>
