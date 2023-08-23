@@ -23,30 +23,6 @@
 // pragma once
 #define HAMON_HAS_PRAGMA_ONCE
 
-#if _MSC_FULL_VER < 180020827
-#  define HAMON_NO_FENV_H
-#endif
-
-#if _MSC_VER < 1400
-// although a conforming signature for swprint exists in VC7.1
-// it appears not to actually work:
-#  define HAMON_NO_SWPRINTF
-#endif
-
-#if _MSC_VER < 1500  // 140X == VC++ 8.0
-#  define HAMON_NO_MEMBER_TEMPLATE_FRIENDS
-#endif
-
-#if _MSC_VER < 1600  // 150X == VC++ 9.0
-   // A bug in VC9:
-#  define HAMON_NO_ADL_BARRIER
-#endif
-
-// intrinsic wchar_t
-#if !defined(_NATIVE_WCHAR_T_DEFINED)
-#  define HAMON_NO_INTRINSIC_WCHAR_T
-#endif
-
 //
 // check for exception handling support:
 #if !defined(_CPPUNWIND) && !defined(HAMON_NO_EXCEPTIONS)
@@ -57,26 +33,21 @@
 #   define HAMON_HAS_NRVO
 #endif
 
-#if _MSC_VER >= 1600  // 160X == VC++ 10.0
-#  define HAMON_HAS_PRAGMA_DETECT_MISMATCH
-#endif
-
-//
-// disable Win32 API's if compiler extensions are
-// turned off:
-//
-#if !defined(_MSC_EXTENSIONS) && !defined(HAMON_DISABLE_WIN32)
-#  define HAMON_DISABLE_WIN32
-#endif
-
 // RTTI support
 #if !defined(_CPPRTTI) && !defined(HAMON_NO_RTTI)
 #  define HAMON_NO_RTTI
 #endif
 
 // HAMON_CXX_STANDARD
+// ※MSVCでは、`/Zc:__cplusplus`オプションを指定しない限り、
+//   __cplusplus の値は 199711L で固定。
+//   _MSVC_LANG マクロは、`/std:`オプションの設定が反映される。
 #if !defined(HAMON_CXX_STANDARD)
-#  if _MSVC_LANG > 201703L
+#  if _MSVC_LANG > 202002L && (_MSC_VER >= 1930)
+   // CMakeで CMAKE_CXX_STANDARD=20 を指定したとき、Visual Studio 2019 のオプションとして`/std:c++latest`が渡されるようだ。
+   // その時、_MSVC_LANG は 202002L より大きな値になるが、C++23が使えるわけではない
+#    define HAMON_CXX_STANDARD 23
+#  elif _MSVC_LANG >= 202002L
 #    define HAMON_CXX_STANDARD 20
 #  elif _MSVC_LANG >= 201703L
 #    define HAMON_CXX_STANDARD 17

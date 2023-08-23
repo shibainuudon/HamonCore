@@ -18,13 +18,15 @@
 
 // HAMON_CXX_STANDARD
 #if !defined(HAMON_CXX_STANDARD)
-#  if __cplusplus > 201703L
+#  if __cplusplus > 202002L
+#    define HAMON_CXX_STANDARD 23
+#  elif __cplusplus > 201703L
 #    define HAMON_CXX_STANDARD 20
-#  elif __cplusplus >= 201703L
+#  elif __cplusplus > 201402L
 #    define HAMON_CXX_STANDARD 17
-#  elif __cplusplus >= 201402L
+#  elif __cplusplus > 201103L
 #    define HAMON_CXX_STANDARD 14
-#  elif  __cplusplus >= 201103L
+#  elif  __cplusplus > 199711L
 #    define HAMON_CXX_STANDARD 11
 #  else
 #    define HAMON_CXX_STANDARD  3

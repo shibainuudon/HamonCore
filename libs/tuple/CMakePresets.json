@@ -173,6 +173,13 @@
 				"CMAKE_CXX_STANDARD": "20"
 			}
 		},
+		{
+			"name": "c++23",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_CXX_STANDARD": "23"
+			}
+		},
 
 		// CMAKE_BUILD_TYPE
 		{
@@ -215,6 +222,14 @@
 			"name": "win-msvc-x64-c++20-release",
 			"inherits": [ "windows", "msvc", "x64", "c++20", "release" ]
 		},
+		{
+			"name": "win-msvc-x64-c++23-debug",
+			"inherits": [ "windows", "msvc", "x64", "c++23", "debug" ]
+		},
+		{
+			"name": "win-msvc-x64-c++23-release",
+			"inherits": [ "windows", "msvc", "x64", "c++23", "release" ]
+		},
 
 		// Windows MSVC x86
 		{
@@ -241,6 +256,14 @@
 			"name": "win-msvc-x86-c++20-release",
 			"inherits": [ "windows", "msvc", "x86", "c++20", "release" ]
 		},
+		{
+			"name": "win-msvc-x86-c++23-debug",
+			"inherits": [ "windows", "msvc", "x86", "c++23", "debug" ]
+		},
+		{
+			"name": "win-msvc-x86-c++23-release",
+			"inherits": [ "windows", "msvc", "x86", "c++23", "release" ]
+		},
 
 		// Windows Clang x64
 		{
@@ -266,6 +289,14 @@
 		{
 			"name": "win-clang-x64-c++20-release",
 			"inherits": [ "windows", "clang-cl", "x64", "c++20", "release" ]
+		},
+		{
+			"name": "win-clang-x64-c++23-debug",
+			"inherits": [ "windows", "clang-cl", "x64", "c++23", "debug" ]
+		},
+		{
+			"name": "win-clang-x64-c++23-release",
+			"inherits": [ "windows", "clang-cl", "x64", "c++23", "release" ]
 		},
 
 		// Windows Emscripten
@@ -301,6 +332,14 @@
 			"name": "win-emscripten-c++20-release",
 			"inherits": [ "windows", "emscripten", "c++20", "release" ]
 		},
+		{
+			"name": "win-emscripten-c++23-debug",
+			"inherits": [ "windows", "emscripten", "c++23", "debug" ]
+		},
+		{
+			"name": "win-emscripten-c++23-release",
+			"inherits": [ "windows", "emscripten", "c++23", "release" ]
+		},
 
 		// Linux GCC
 		{
@@ -334,6 +373,14 @@
 		{
 			"name": "linux-gcc-c++20-release",
 			"inherits": [ "linux", "gcc", "c++20", "release" ]
+		},
+		{
+			"name": "linux-gcc-c++23-debug",
+			"inherits": [ "linux", "gcc", "c++23", "debug" ]
+		},
+		{
+			"name": "linux-gcc-c++23-release",
+			"inherits": [ "linux", "gcc", "c++23", "release" ]
 		},
 
 		// Linux Clang
@@ -369,6 +416,14 @@
 			"name": "linux-clang-c++20-release",
 			"inherits": [ "linux", "clang", "c++20", "release" ]
 		},
+		{
+			"name": "linux-clang-c++23-debug",
+			"inherits": [ "linux", "clang", "c++23", "debug" ]
+		},
+		{
+			"name": "linux-clang-c++23-release",
+			"inherits": [ "linux", "clang", "c++23", "release" ]
+		},
 
 		// Linux Emscripten
 		{
@@ -403,6 +458,14 @@
 			"name": "linux-emscripten-c++20-release",
 			"inherits": [ "linux", "emscripten", "c++20", "release" ]
 		},
+		{
+			"name": "linux-emscripten-c++23-debug",
+			"inherits": [ "linux", "emscripten", "c++23", "debug" ]
+		},
+		{
+			"name": "linux-emscripten-c++23-release",
+			"inherits": [ "linux", "emscripten", "c++23", "release" ]
+		},
 
 		// Android
 		{
@@ -436,6 +499,14 @@
 		{
 			"name": "android-c++20-release",
 			"inherits": [ "android", "c++20", "release" ]
+		},
+		{
+			"name": "android-c++23-debug",
+			"inherits": [ "android", "c++23", "debug" ]
+		},
+		{
+			"name": "android-c++23-release",
+			"inherits": [ "android", "c++23", "release" ]
 		}
 	]
 }
