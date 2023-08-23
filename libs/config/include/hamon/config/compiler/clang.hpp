@@ -413,8 +413,28 @@
 #      define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC						// P0784R7
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 130000)
+#    if defined(__cpp_using_enum) && (__cpp_using_enum >= 201907)
+#      define HAMON_HAS_CXX20_USING_ENUM									// P1099R5
+#    endif
+#  endif
 #  if (HAMON_CLANG_VERSION >= 140000)
 #    define HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS				// P2085R0
+#    define HAMON_HAS_CXX20_ACCESS_CHECKING_ON_SPECIALIZATIONS				// P0692R1
+#    define HAMON_HAS_CXX20_CONVERSIONS_TO_UNBOUNDED_ARRAY					// P0388R4
+#  endif
+#  if (HAMON_CLANG_VERSION >= 160000)
+#    define HAMON_HAS_CXX20_OPTIONAL_TYPENAME								// P0634R3
+#    define HAMON_HAS_CXX20_STRUCTURED_BINDING_EXTENSIONS					// P1091R3,P1381R1
+#    if defined(__cpp_aggregate_paren_init) && (__cpp_aggregate_paren_init >= 201902)
+#      define HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT							// P0960R3
+#    endif
+#  endif
+#  if (HAMON_CLANG_VERSION >= 170000)
+#    define HAMON_HAS_CXX20_LAMBDAS_IN_UNEVALUATED_CONTEXTS					// P0315R4
+#    if defined(__cpp_consteval) && (__cpp_consteval >= 201811)
+#      define HAMON_HAS_CXX20_CONSTEVAL										// P1073R3
+#    endif
 #  endif
 #  if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201711L)
 #    define HAMON_HAS_CXX20_THREE_WAY_COMPARISON							// P0515R3 P1185R2 P1186R3 P1630R1
@@ -428,17 +448,8 @@
 #  if defined(__cpp_impl_coroutine) && (__cpp_impl_coroutine >= 201902)
 #    define HAMON_HAS_CXX20_COROUTINES										// P0912R5
 #  endif
-#  if defined(__cpp_consteval) && (__cpp_consteval >= 201811)
-#    define HAMON_HAS_CXX20_CONSTEVAL										// P1073R3
-#  endif
 #  if defined(__cpp_deduction_guides) && (__cpp_deduction_guides >= 201907)
 #    define HAMON_HAS_CXX20_DEDUCTION_GUIDES								// P1021R4 P1816R0 P1814R0
-#  endif
-#  if defined(__cpp_using_enum) && (__cpp_using_enum >= 201907)
-#    define HAMON_HAS_CXX20_USING_ENUM										// P1099R5
-#  endif
-#  if defined(__cpp_aggregate_paren_init) && (__cpp_aggregate_paren_init >= 201902)
-#    define HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT							// P0960R3
 #  endif
 #  if defined(__cpp_modules) && (__cpp_modules >= 201907)
 #    define HAMON_HAS_CXX20_MODULES											// P1103R3
@@ -447,13 +458,9 @@
 #    define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
 #  endif
 
-//#  define HAMON_HAS_CXX20_STRUCTURED_BINDING_EXTENSIONS					// P1091R3,P1381R1
-//#  define HAMON_HAS_CXX20_ACCESS_CHECKING_ON_SPECIALIZATIONS				// P0692R1
-//#  define HAMON_HAS_CXX20_CONVERSIONS_TO_UNBOUNDED_ARRAY					// P0388R4
-//#  define HAMON_HAS_CXX20_LAMBDAS_IN_UNEVALUATED_CONTEXTS					// P0315R4
-//#  define HAMON_HAS_CXX20_OPTIONAL_TYPENAME								// P0634R3
-
 #endif	// C++20
+
+// Defect reports (DR)
 
 #if (HAMON_CLANG_VERSION >= 60000)
 #  if (HAMON_CXX_STANDARD >= 17)	// Defect report としてC++17に適用される

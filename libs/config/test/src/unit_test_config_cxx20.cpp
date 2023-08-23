@@ -1854,6 +1854,8 @@ void f()
 	// ブロックスコープ
 	void (*pf)(T::X); // T::Xで初期化されるvoid*型の変数pf
 //	void g(T::X);     // エラー: void型の変数宣言
+
+	(void)pf;
 }
 
 }	// namespace optional_typename_test
