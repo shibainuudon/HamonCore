@@ -462,6 +462,15 @@
 
 #endif	// C++20
 
+// C++23
+#if (HAMON_CXX_STANDARD >= 23)
+#  if (HAMON_CLANG_VERSION >= 130000)
+#    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
+#      define HAMON_HAS_CXX23_SIZE_T_SUFFIX					// P0330R8	Literal Suffix for (signed) size_t
+#    endif
+#  endif
+#endif	// C++23
+
 // Defect reports (DR)
 
 #if (HAMON_CLANG_VERSION >= 60000)

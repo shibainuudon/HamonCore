@@ -518,6 +518,18 @@
 #    define HAMON_HAS_CXX20_CONSTEXPR
 #  endif
 
+#endif	// C++20
+
+// C++23
+#if (HAMON_CXX_STANDARD >= 23)
+#  if (HAMON_GCC_VERSION >= 110000)
+#    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
+#      define HAMON_HAS_CXX23_SIZE_T_SUFFIX					// P0330R8	Literal Suffix for (signed) size_t
+#    endif
+#  endif
+#endif	// C++23
+
+// Defect reports (DR)
 
 #if (HAMON_GCC_VERSION >= 80000)
 #  define HAMON_HAS_CXX20_RELAXING_STRUCTURED_BINDINGS				// P0961R1
@@ -539,8 +551,6 @@
 #endif
 
 //#define HAMON_HAS_CXX20_MODULES								// P1103R3
-
-#endif
 
 #if defined(__MINGW32__)
 // Currently (June 2017) thread_local is broken on mingw for all current compiler releases, see
