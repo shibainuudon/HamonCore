@@ -532,6 +532,11 @@
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL					// P1938R3	if consteval
 #    endif
 #  endif
+#  if (HAMON_GCC_VERSION >= 130000)
+#    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
+#      define HAMON_HAS_CXX23_IMPLICIT_MOVE					// P2266R3	Simpler implicit move
+#    endif
+#  endif
 #endif	// C++23
 
 // Defect reports (DR)

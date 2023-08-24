@@ -47,4 +47,63 @@ consteval int h(int i) {
 }	// namespace if_consteval_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
+namespace implicit_move_test
+{
+
+struct Widget {
+	Widget(Widget&&){}
+};
+
+struct RRefTaker {
+	RRefTaker(Widget&&){}
+};
+
+Widget one(Widget w) {
+	return w;  // OK since C++11
+}
+
+RRefTaker two(Widget w) {
+	return w;  // OK since C++11 + CWG1579
+}
+
+RRefTaker three(Widget&& w) {
+	return w;  // OK since C++20 because P0527
+}
+
+Widget&& four(Widget&& w) {
+	return w;  // Error
+}
+
+struct Mutt {
+	int i;
+	operator int*() && { return &i; }
+};
+
+struct Jeff {
+	int i;
+	operator int&() && { return i; }
+};
+
+int* five(Mutt x) {
+	return x;  // OK since C++20 because P1155
+}
+
+int& six(Jeff x) {
+	return x;  // Error
+}
+
+template<class T>
+T&& seven(T&& x) { return x; }
+
+void test_seven(Widget w) {
+	Widget& r = seven(w);               // OK
+	Widget&& rr = seven(std::move(w));  // Error
+	(void)r;
+	(void)rr;
+}
+
+}	// namespace implicit_move_test
+#endif
+
 }	// namespace hamon_config_cxx23_test
