@@ -469,6 +469,11 @@
 #      define HAMON_HAS_CXX23_SIZE_T_SUFFIX					// P0330R8	Literal Suffix for (signed) size_t
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 140000)
+#    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
+#      define HAMON_HAS_CXX23_IF_CONSTEVAL					// P1938R3	if consteval
+#    endif
+#  endif
 #endif	// C++23
 
 // Defect reports (DR)
