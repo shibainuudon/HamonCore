@@ -106,4 +106,18 @@ void test_seven(Widget w) {
 }	// namespace implicit_move_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT)
+namespace multidimensional_subscript_test
+{
+
+struct MDArray
+{
+	int& operator[](std::size_t);
+	int& operator[](std::size_t, std::size_t);
+	int& operator[](std::size_t, std::size_t, std::size_t);
+};
+
+}	// namespace multidimensional_subscript_test
+#endif
+
 }	// namespace hamon_config_cxx23_test

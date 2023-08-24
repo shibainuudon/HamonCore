@@ -421,6 +421,11 @@
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL							// P1938R3	if consteval
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 140003)	// 14.0.3
+#    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
+#      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
+#    endif
+#  endif
 #endif	// C++23
 
 // Defect reports

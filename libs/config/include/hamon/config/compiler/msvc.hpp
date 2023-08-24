@@ -1162,6 +1162,8 @@
 // P0528R3	Atomic Compare-and-Exchange with Padding Bits
 // P0466R5	Layout-Compatibility and Pointer-Interconvertibility Traits
 
+// C++23
+
 #define HAMON_HAS_CXX23_SIZE_T_SUFFIX				// P0330R8	Literal Suffix for (signed) size_t										__cpp_size_t_suffix >= 202006L
 #define HAMON_HAS_CXX23_							// P1102R2	Make () more optional for lambdas
 #define HAMON_HAS_CXX23_							// P1787R6	DR: Declarations and where to find them
@@ -1205,7 +1207,7 @@
 #define HAMON_HAS_CXX23_							// P2513R3	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
 #define HAMON_HAS_CXX23_							// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
 #define HAMON_HAS_CXX23_							// P2590R2	Explicit lifetime management
-#define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT	// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
+#define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR	// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
 #define HAMON_HAS_CXX23_							// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
 #define HAMON_HAS_CXX23_							// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #define HAMON_HAS_CXX23_							// P2615R1	DR20: Meaningful exports
