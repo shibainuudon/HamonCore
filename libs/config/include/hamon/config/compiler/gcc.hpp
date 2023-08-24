@@ -539,6 +539,9 @@
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
 #      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT	// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif
+#    if defined(__cpp_named_character_escapes) && (__cpp_named_character_escapes >= 202207L)
+#      define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES		// P2071R2	Named universal character escapes
+#    endif
 #  endif
 #endif	// C++23
 

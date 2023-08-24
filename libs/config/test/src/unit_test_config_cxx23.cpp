@@ -120,4 +120,18 @@ struct MDArray
 }	// namespace multidimensional_subscript_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
+namespace named_character_escapes_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23NamedCharacterEscapesTest)
+{
+	EXPECT_EQ(U'\u0100', U'\N{LATIN CAPITAL LETTER A WITH MACRON}');
+	EXPECT_EQ(U'\u0300', U'\N{COMBINING GRAVE ACCENT}');
+	EXPECT_EQ(U'\u200B', U'\N{ZERO WIDTH SPACE}');
+}
+
+}	// namespace named_character_escapes_test
+#endif
+
 }	// namespace hamon_config_cxx23_test
