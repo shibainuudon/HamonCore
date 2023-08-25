@@ -485,6 +485,11 @@
 #      define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES		// P2071R2	Named universal character escapes
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 160000)
+#    if defined(__cpp_static_call_operator) && (__cpp_static_call_operator >= 202207L)
+#      define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR			// P1169R4	static operator()
+#    endif
+#  endif
 #endif	// C++23
 
 // Defect reports (DR)
