@@ -110,6 +110,20 @@ namespace identifier_syntax_uax31_test
 }	// namespace identifier_syntax_uax31_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES)
+namespace duplicate_attributes_test
+{
+
+#if defined(HAMON_HAS_CXX11_NORETURN)
+[[noreturn, noreturn]] void func1();
+#endif
+#if defined(HAMON_HAS_CXX14_DEPRECATED)
+[[deprecated, deprecated]] void func2();
+#endif
+
+}	// namespace duplicate_attributes_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {
