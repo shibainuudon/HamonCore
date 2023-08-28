@@ -523,6 +523,7 @@
 // C++23
 #if (HAMON_CXX_STANDARD >= 23)
 #  if (HAMON_GCC_VERSION >= 110000)
+#    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN			// P1102R2	Make () more optional for lambdas
 #    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
 #      define HAMON_HAS_CXX23_SIZE_T_SUFFIX					// P0330R8	Literal Suffix for (signed) size_t
 #    endif
@@ -564,12 +565,14 @@
 #endif
 #if (HAMON_GCC_VERSION >= 100000)
 #  define HAMON_HAS_CXX20_EXCEPTION_SPEC_DEFAULTED_FUNCTION			// P1286R2
-#  define HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING				// P1957R2
 #endif
 #if (HAMON_GCC_VERSION >= 110000)
+#  define HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING				// P1957R2
 #  define HAMON_HAS_CXX20_ARRAY_SIZE_DEDUCTION_NEW					// P1009R2
-#  define HAMON_HAS_CXX20_IMPLICIT_MOVE								// P1825R0
 #  define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR							// P0593R6
+#  if (HAMON_CXX_STANDARD >= 20)	// C++20 mode のときのみ適用される
+#    define HAMON_HAS_CXX20_IMPLICIT_MOVE							// P1825R0
+#endif
 #endif
 
 //#define HAMON_HAS_CXX20_MODULES								// P1103R3

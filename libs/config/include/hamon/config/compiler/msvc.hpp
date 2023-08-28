@@ -1165,7 +1165,7 @@
 // C++23
 
 #define HAMON_HAS_CXX23_SIZE_T_SUFFIX				// P0330R8	Literal Suffix for (signed) size_t										__cpp_size_t_suffix >= 202006L
-#define HAMON_HAS_CXX23_							// P1102R2	Make () more optional for lambdas
+#define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN		// P1102R2	Make () more optional for lambdas
 #define HAMON_HAS_CXX23_							// P1787R6	DR: Declarations and where to find them
 #define HAMON_HAS_CXX23_IF_CONSTEVAL				// P1938R3	if consteval															__cpp_if_consteval >= 202106L
 #define HAMON_HAS_CXX23_							// P1949R7	DR: C++ Identifier Syntax using Unicode Standard Annex 31

@@ -7,6 +7,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <type_traits>
+#include <iostream>
 
 namespace hamon_config_cxx23_test
 {
@@ -24,6 +25,41 @@ static_assert(std::is_same<std::size_t, decltype(0zU)>::value, "");
 static_assert(std::is_same<std::size_t, decltype(0Zu)>::value, "");
 static_assert(std::is_same<std::size_t, decltype(0ZU)>::value, "");
 
+#endif
+
+#if defined(HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN)
+namespace lambda_without_paren_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23LambdaWithoutParenTest)
+{
+	{
+		std::string s1 = "abc";
+		auto withParen = [s1 = std::move(s1)] () {
+			std::cout << s1 << '\n';
+		};
+
+		std::string s2 = "abc";
+		auto noSean = [s2 = std::move(s2)] { // Note no syntax error.
+			std::cout << s2 << '\n';
+		};
+	}
+	{
+		std::string s1 = "abc";
+		auto withParen = [s1 = std::move(s1)] () mutable {
+			s1 += "d";
+			std::cout << s1 << '\n';
+		};
+
+		std::string s2 = "abc";
+		auto noSean = [s2 = std::move(s2)] mutable { // Currently a syntax error.
+			s2 += "d";
+			std::cout << s2 << '\n';
+		};
+	}
+}
+
+}	// namespace lambda_without_paren_test
 #endif
 
 #if defined(HAMON_HAS_CXX23_IF_CONSTEVAL)
