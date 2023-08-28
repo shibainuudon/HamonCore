@@ -1168,7 +1168,7 @@
 #define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN		// P1102R2	Make () more optional for lambdas
 #define HAMON_HAS_CXX23_							// P1787R6	DR: Declarations and where to find them
 #define HAMON_HAS_CXX23_IF_CONSTEVAL				// P1938R3	if consteval															__cpp_if_consteval >= 202106L
-#define HAMON_HAS_CXX23_							// P1949R7	DR: C++ Identifier Syntax using Unicode Standard Annex 31
+#define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31		// P1949R7	DR: C++ Identifier Syntax using Unicode Standard Annex 31
 #define HAMON_HAS_CXX23_							// P2156R1	DR11: Allow Duplicate Attributes
 #define HAMON_HAS_CXX23_							// P1401R5	Narrowing contextual conversions to bool
 #define HAMON_HAS_CXX23_							// P2223R2	Trimming whitespaces before line splicing

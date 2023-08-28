@@ -83,6 +83,33 @@ consteval int h(int i) {
 }	// namespace if_consteval_test
 #endif
 
+#if !defined(HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31)
+namespace identifier_syntax_uax31_test
+{
+
+// gccだと #if 0 で囲んでもコンパイルエラーになるのでテストできない
+
+////bool 👷 = true; //  Construction Worker
+////bool 👷‍♀ = false; // Woman Construction Worker ({Construction Worker}{ZWJ}{Female Sign})
+//
+////int ⏰ = 0; //not valid
+//int 🕐 = 0;
+//
+////int ☠ = 0; //not valid
+//int 💀 = 0;
+//
+////int ✋ = 0; //not valid
+//int 👊 = 0;
+//
+////int ✈ = 0; //not valid
+//int 🚀 = 0;
+//
+////int ☹ = 0; //not valid
+//int 😀 = 0;
+
+}	// namespace identifier_syntax_uax31_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {

@@ -572,7 +572,10 @@
 #  define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR							// P0593R6
 #  if (HAMON_CXX_STANDARD >= 20)	// C++20 mode のときのみ適用される
 #    define HAMON_HAS_CXX20_IMPLICIT_MOVE							// P1825R0
+#  endif
 #endif
+#if (HAMON_GCC_VERSION >= 120000)
+#  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31					// P1949R7
 #endif
 
 //#define HAMON_HAS_CXX20_MODULES								// P1103R3
