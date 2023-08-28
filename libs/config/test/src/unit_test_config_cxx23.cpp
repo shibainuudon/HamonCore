@@ -124,6 +124,36 @@ namespace duplicate_attributes_test
 }	// namespace duplicate_attributes_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL)
+namespace narrowing_conversions_to_bool_test
+{
+
+enum Flags { Write = 1, Read = 2, Exec = 4 };
+
+template <Flags flags>
+int f() {
+	if constexpr (flags & Flags::Exec) // fails to compile due to narrowing
+		return 0;
+	else
+		return 1;
+}
+
+int test() {
+	return f<Flags::Exec>(); // when instantiated like this
+}
+
+template <std::size_t N>
+class Array
+{
+	static_assert(N, "no 0-size Arrays");
+	// ...
+};
+
+Array<16> a; // fails to compile in pure C++
+
+}	// namespace narrowing_conversions_to_bool_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {

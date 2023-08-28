@@ -418,6 +418,7 @@
 #    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 140000)	// 14.0.0
+#    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL			// P1401R5	Narrowing contextual conversions to bool
 #    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL							// P1938R3	if consteval
 #    endif

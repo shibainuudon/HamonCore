@@ -522,6 +522,9 @@
 
 // C++23
 #if (HAMON_CXX_STANDARD >= 23)
+#  if (HAMON_GCC_VERSION >= 90000)
+#    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL	// P1401R5	Narrowing contextual conversions to bool
+#  endif
 #  if (HAMON_GCC_VERSION >= 110000)
 #    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN			// P1102R2	Make () more optional for lambdas
 #    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
