@@ -495,6 +495,9 @@
 #      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR		// P2589R1	static operator[]
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 170000)
+#    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	Change scope of lambda trailing-return-type
+#  endif
 #endif	// C++23
 
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing

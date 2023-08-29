@@ -1178,7 +1178,7 @@
 #define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
 #define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
-#define HAMON_HAS_CXX23_											// P2036R3, P2579R0	Change scope of lambda trailing-return-type
+#define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	Change scope of lambda trailing-return-type
 #define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT					// P2128R6, CWG2507	Multidimensional subscript operator								__cpp_multidimensional_subscript >= 202110L
 #define HAMON_HAS_CXX23_											// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
 #define HAMON_HAS_CXX23_											// P2246R1	Character encoding of diagnostic text

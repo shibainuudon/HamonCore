@@ -204,6 +204,22 @@ GTEST_TEST(ConfigTest, Cxx23MixedStringLiteralConcatenationTest)
 }	// namespace mixed_string_literal_concatenation_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE)
+namespace lambda_trailing_return_type_scope_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23LambdaTrailingReturnTypeScopeTest)
+{
+	auto counter = [i=0]() mutable -> decltype(i) {  // ok: returns int
+		return i++;
+	};
+	auto n = counter();
+	static_assert(std::is_same<decltype(n), int>::value, "");
+}
+
+}	// namespace lambda_trailing_return_type_scope_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {
