@@ -920,6 +920,7 @@
 //#define HAMON_HAS_CXX11_PRAGMA_OPERATOR				// Pragma演算子
 #define HAMON_HAS_CXX20_TWOS_COMPLEMENT_SIGNED_INTEGERS		// P1236R1
 #define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR					// P0593R6
+#define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 
 #if 0
 
@@ -1172,7 +1173,7 @@
 #define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1	DR11: Allow Duplicate Attributes
 #define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL				// P1401R5	Narrowing contextual conversions to bool
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
-#define HAMON_HAS_CXX23_											// P2201R1	Mixed string literal concatenation
+#define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 #define HAMON_HAS_CXX23_											// P1847R4	Make declaration order layout mandated
 #define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L

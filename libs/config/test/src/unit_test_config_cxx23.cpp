@@ -178,6 +178,32 @@ HAMON_WARNING_POP()
 }	// namespace trimming_whitespaces_before_line_splicing_test
 #endif
 
+#if !defined(HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION)
+namespace mixed_string_literal_concatenation_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23MixedStringLiteralConcatenationTest)
+{
+	{ auto a = L"" u""; }
+	{ auto a = L"" u8""; }
+	{ auto a = L"" U""; }
+
+	{ auto a = u8"" L""; }
+	{ auto a = u8"" u""; }
+	{ auto a = u8"" U""; }
+
+	{ auto a = u"" L""; }
+	{ auto a = u"" u8""; }
+	{ auto a = u"" U""; }
+
+	{ auto a = U"" L""; }
+	{ auto a = U"" u""; }
+	{ auto a = U"" u8""; }
+}
+
+}	// namespace mixed_string_literal_concatenation_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {
