@@ -1164,57 +1164,57 @@
 
 // C++23
 
-#define HAMON_HAS_CXX23_SIZE_T_SUFFIX					// P0330R8	Literal Suffix for (signed) size_t										__cpp_size_t_suffix >= 202006L
-#define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN			// P1102R2	Make () more optional for lambdas
-#define HAMON_HAS_CXX23_								// P1787R6	DR: Declarations and where to find them
-#define HAMON_HAS_CXX23_IF_CONSTEVAL					// P1938R3	if consteval															__cpp_if_consteval >= 202106L
-#define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31			// P1949R7	DR: C++ Identifier Syntax using Unicode Standard Annex 31
-#define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES			// P2156R1	DR11: Allow Duplicate Attributes
-#define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL	// P1401R5	Narrowing contextual conversions to bool
-#define HAMON_HAS_CXX23_								// P2223R2	Trimming whitespaces before line splicing
-#define HAMON_HAS_CXX23_								// P2201R1	Mixed string literal concatenation
-#define HAMON_HAS_CXX23_								// P1847R4	Make declaration order layout mandated
-#define HAMON_HAS_CXX23_								// P2186R2	Removing Garbage Collection Support
-#define HAMON_HAS_CXX23_IMPLICIT_MOVE					// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
-#define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER			// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
-#define HAMON_HAS_CXX23_								// P2036R3, P2579R0	Change scope of lambda trailing-return-type
-#define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT		// P2128R6, CWG2507	Multidimensional subscript operator								__cpp_multidimensional_subscript >= 202110L
-#define HAMON_HAS_CXX23_								// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
-#define HAMON_HAS_CXX23_								// P2246R1	Character encoding of diagnostic text
-#define HAMON_HAS_CXX23_								// P2314R4	Character sets and encodings
-#define HAMON_HAS_CXX23_								// P2316R2	Consistent character literal encoding
-#define HAMON_HAS_CXX23_								// P2334R1	Add support for preprocessing directives elifdef and elifndef
-#define HAMON_HAS_CXX23_								// P2360R0	Extend init-statement to allow alias-declaration
-#define HAMON_HAS_CXX23_								// P0849R8	auto(x): decay-copy in the language
-#define HAMON_HAS_CXX23_								// P2324R2	Labels at the end of compound statements
-#define HAMON_HAS_CXX23_								// CWG2397	auto specifier for pointers and references to arrays
-#define HAMON_HAS_CXX23_								// CWG2481	Cv-qualification of temporary to which a reference is bound
-#define HAMON_HAS_CXX23_								// P2173R1	Attributes on lambda-expressions
-#define HAMON_HAS_CXX23_								// P2255R2	A type trait to detect reference binding to temporary
-#define HAMON_HAS_CXX23_								// P2468R2	DR20: The Equality Operator You Are Looking For
-#define HAMON_HAS_CXX23_								// P2327R1	De-deprecating volatile compound operations
-#define HAMON_HAS_CXX23_								// P2437R1	Support for #warning
-#define HAMON_HAS_CXX23_								// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
-#define HAMON_HAS_CXX23_								// P2290R3	Delimited escape sequences
-#define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES			// P2071R2	Named universal character escapes										__cpp_named_character_escapes >= 202207L
-#define HAMON_HAS_CXX23_								// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
-#define HAMON_HAS_CXX23_								// P2280R4	DR: Using unknown references in constant expressions
-#define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR			// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
-#define HAMON_HAS_CXX23_								// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
-#define HAMON_HAS_CXX23_								// P2582R1	Class template argument deduction from inherited constructors
-#define HAMON_HAS_CXX23_								// P1774R8	Portable assumptions
-#define HAMON_HAS_CXX23_								// P2295R6	Support for UTF-8 as a portable source file encoding
-#define HAMON_HAS_CXX23_								// P2513R3	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
-#define HAMON_HAS_CXX23_								// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
-#define HAMON_HAS_CXX23_								// P2590R2	Explicit lifetime management
-#define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR		// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
-#define HAMON_HAS_CXX23_								// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
-#define HAMON_HAS_CXX23_								// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
-#define HAMON_HAS_CXX23_								// P2615R1	DR20: Meaningful exports
-#define HAMON_HAS_CXX23_								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
-#define HAMON_HAS_CXX23_								// P2736R2	Referencing The Unicode Standard
-#define HAMON_HAS_CXX23_								// P2493R0	DR20: Missing feature test macros for C++20 core papers
-#define HAMON_HAS_CXX23_								// CWG2518	DR: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
+#define HAMON_HAS_CXX23_SIZE_T_SUFFIX								// P0330R8	Literal Suffix for (signed) size_t										__cpp_size_t_suffix >= 202006L
+#define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN						// P1102R2	Make () more optional for lambdas
+#define HAMON_HAS_CXX23_											// P1787R6	DR: Declarations and where to find them
+#define HAMON_HAS_CXX23_IF_CONSTEVAL								// P1938R3	if consteval															__cpp_if_consteval >= 202106L
+#define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31						// P1949R7	DR: C++ Identifier Syntax using Unicode Standard Annex 31
+#define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1	DR11: Allow Duplicate Attributes
+#define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL				// P1401R5	Narrowing contextual conversions to bool
+#define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
+#define HAMON_HAS_CXX23_											// P2201R1	Mixed string literal concatenation
+#define HAMON_HAS_CXX23_											// P1847R4	Make declaration order layout mandated
+#define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
+#define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
+#define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
+#define HAMON_HAS_CXX23_											// P2036R3, P2579R0	Change scope of lambda trailing-return-type
+#define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT					// P2128R6, CWG2507	Multidimensional subscript operator								__cpp_multidimensional_subscript >= 202110L
+#define HAMON_HAS_CXX23_											// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
+#define HAMON_HAS_CXX23_											// P2246R1	Character encoding of diagnostic text
+#define HAMON_HAS_CXX23_											// P2314R4	Character sets and encodings
+#define HAMON_HAS_CXX23_											// P2316R2	Consistent character literal encoding
+#define HAMON_HAS_CXX23_											// P2334R1	Add support for preprocessing directives elifdef and elifndef
+#define HAMON_HAS_CXX23_											// P2360R0	Extend init-statement to allow alias-declaration
+#define HAMON_HAS_CXX23_											// P0849R8	auto(x): decay-copy in the language
+#define HAMON_HAS_CXX23_											// P2324R2	Labels at the end of compound statements
+#define HAMON_HAS_CXX23_											// CWG2397	auto specifier for pointers and references to arrays
+#define HAMON_HAS_CXX23_											// CWG2481	Cv-qualification of temporary to which a reference is bound
+#define HAMON_HAS_CXX23_											// P2173R1	Attributes on lambda-expressions
+#define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
+#define HAMON_HAS_CXX23_											// P2468R2	DR20: The Equality Operator You Are Looking For
+#define HAMON_HAS_CXX23_											// P2327R1	De-deprecating volatile compound operations
+#define HAMON_HAS_CXX23_											// P2437R1	Support for #warning
+#define HAMON_HAS_CXX23_											// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
+#define HAMON_HAS_CXX23_											// P2290R3	Delimited escape sequences
+#define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES						// P2071R2	Named universal character escapes										__cpp_named_character_escapes >= 202207L
+#define HAMON_HAS_CXX23_											// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
+#define HAMON_HAS_CXX23_											// P2280R4	DR: Using unknown references in constant expressions
+#define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
+#define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
+#define HAMON_HAS_CXX23_											// P2582R1	Class template argument deduction from inherited constructors
+#define HAMON_HAS_CXX23_											// P1774R8	Portable assumptions
+#define HAMON_HAS_CXX23_											// P2295R6	Support for UTF-8 as a portable source file encoding
+#define HAMON_HAS_CXX23_											// P2513R3	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
+#define HAMON_HAS_CXX23_											// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
+#define HAMON_HAS_CXX23_											// P2590R2	Explicit lifetime management
+#define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
+#define HAMON_HAS_CXX23_											// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
+#define HAMON_HAS_CXX23_											// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
+#define HAMON_HAS_CXX23_											// P2615R1	DR20: Meaningful exports
+#define HAMON_HAS_CXX23_											// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#define HAMON_HAS_CXX23_											// P2736R2	Referencing The Unicode Standard
+#define HAMON_HAS_CXX23_											// P2493R0	DR20: Missing feature test macros for C++20 core papers
+#define HAMON_HAS_CXX23_											// CWG2518	DR: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
 
 #endif
 

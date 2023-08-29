@@ -154,6 +154,30 @@ Array<16> a; // fails to compile in pure C++
 }	// namespace narrowing_conversions_to_bool_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING)
+namespace trimming_whitespaces_before_line_splicing_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4010)	// 単一行コメント (//) に、行連結文字があります。
+HAMON_WARNING_DISABLE_CLANG("-Wbackslash-newline-escape")
+HAMON_WARNING_DISABLE_CLANG("-Wcomment")
+HAMON_WARNING_DISABLE_GCC("-Wcomment")
+
+GTEST_TEST(ConfigTest, Cxx23TrimmingWhitespacesBeforeLineSplicingTest)
+{
+	int i = 1
+	// \ 
+	+ 42
+	;
+	EXPECT_EQ(1, i);
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace trimming_whitespaces_before_line_splicing_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_IMPLICIT_MOVE)
 namespace implicit_move_test
 {

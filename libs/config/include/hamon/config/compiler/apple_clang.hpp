@@ -430,6 +430,9 @@
 #  endif
 #endif	// C++23
 
+#define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
+
+
 // Defect reports
 #if (HAMON_CLANG_VERSION >= 100001)
 #  define HAMON_HAS_CXX20_RELAXING_STRUCTURED_BINDINGS				// P0961R1
