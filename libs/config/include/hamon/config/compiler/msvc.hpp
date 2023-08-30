@@ -1187,7 +1187,7 @@
 #define HAMON_HAS_CXX23_ELIFDEF										// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT			// P2360R0	Extend init-statement to allow alias-declaration
 #define HAMON_HAS_CXX23_DECAY_COPY									// P0849R8	auto(x): decay-copy in the language
-#define HAMON_HAS_CXX23_											// P2324R2	Labels at the end of compound statements
+#define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT			// P2324R2	Labels at the end of compound statements
 #define HAMON_HAS_CXX23_											// CWG2397	auto specifier for pointers and references to arrays
 #define HAMON_HAS_CXX23_											// CWG2481	Cv-qualification of temporary to which a reference is bound
 #define HAMON_HAS_CXX23_											// P2173R1	Attributes on lambda-expressions

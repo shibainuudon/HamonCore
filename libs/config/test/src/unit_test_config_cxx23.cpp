@@ -339,6 +339,30 @@ void pop_front_alike(Container& x) {
 }	// namespace decay_copy_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT)
+namespace label_at_end_of_compound_statement_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wunused-label")
+HAMON_WARNING_DISABLE_CLANG("-Wunused-but-set-variable")
+HAMON_WARNING_DISABLE_GCC("-Wunused-label")
+HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-variable")
+
+void foo(void)
+{
+first: // allowed in C++, now also allowed in C
+	int x;
+second: // allowed in both C++ and C
+	x = 1;
+last: // not allowed in C++, but now allowed in C
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace label_at_end_of_compound_statement_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

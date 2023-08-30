@@ -494,6 +494,7 @@
 #    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 160000)
+#    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT	// P2324R2	Labels at the end of compound statements
 #    if defined(__cpp_static_call_operator) && (__cpp_static_call_operator >= 202207L)
 #      define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR				// P1169R4	static operator()
 #    endif
