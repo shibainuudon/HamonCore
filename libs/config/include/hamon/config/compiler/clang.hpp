@@ -486,6 +486,9 @@
 #    if defined(__cpp_named_character_escapes) && (__cpp_named_character_escapes >= 202207L)
 #      define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES		// P2071R2	Named universal character escapes
 #    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
+#      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES	// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
+#    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 160000)
 #    if defined(__cpp_static_call_operator) && (__cpp_static_call_operator >= 202207L)

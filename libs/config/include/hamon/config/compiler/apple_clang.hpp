@@ -427,6 +427,9 @@
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
 #      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
+#      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES		// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
+#    endif
 #  endif
 #endif	// C++23
 

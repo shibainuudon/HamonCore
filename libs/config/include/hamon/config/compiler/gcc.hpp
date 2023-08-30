@@ -535,6 +535,9 @@
 #    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL					// P1938R3	if consteval
 #    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
+#      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES	// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
+#    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 130000)
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)

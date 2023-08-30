@@ -284,6 +284,26 @@ struct MDArray
 }	// namespace multidimensional_subscript_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES)
+namespace constexpr_non_literal_variables_test
+{
+
+template<typename T> constexpr bool f() {
+	if (std::is_constant_evaluated()) {
+		// ...
+		return true;
+	} else {
+		T t;
+		// ...
+		return true;
+	}
+}
+struct nonliteral { nonliteral(); };
+static_assert(f<nonliteral>());
+
+}	// namespace constexpr_non_literal_variables_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {
