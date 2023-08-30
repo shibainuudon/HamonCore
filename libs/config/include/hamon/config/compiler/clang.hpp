@@ -482,6 +482,7 @@
 #    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 150000)
+#    define HAMON_HAS_CXX23_DECAY_COPY							// P0849R8	auto(x): decay-copy in the language
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
 #      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT		// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif

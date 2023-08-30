@@ -326,6 +326,19 @@ GTEST_TEST(ConfigTest, Cxx23AliasDeclarationInInitStatementTest)
 }	// namespace alias_declaration_in_init_statement_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_DECAY_COPY)
+namespace decay_copy_test
+{
+
+template <typename Container>
+void pop_front_alike(Container& x) {
+	std::erase(x.begin(), x.end(), auto(x.front()));
+	std::erase(x.begin(), x.end(), auto{x.front()});
+}
+
+}	// namespace decay_copy_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {
