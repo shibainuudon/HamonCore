@@ -413,6 +413,7 @@
 #if (HAMON_CXX_STANDARD >= 23)
 #  if (HAMON_CLANG_VERSION >= 130106)	// 13.1.6
 #    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN					// P1102R2	Make () more optional for lambdas
+#    define HAMON_HAS_CXX23_ELIFDEF									// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
 #      define HAMON_HAS_CXX23_SIZE_T_SUFFIX							// P0330R8	Literal Suffix for (signed) size_t
 #    endif

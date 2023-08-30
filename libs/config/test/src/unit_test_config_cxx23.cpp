@@ -304,6 +304,15 @@ static_assert(f<nonliteral>());
 }	// namespace constexpr_non_literal_variables_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_ELIFDEF)
+
+//#ifdef M1
+//#elifdef M2
+//#elifndef M3
+//#endif
+
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

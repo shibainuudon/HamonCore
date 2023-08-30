@@ -532,6 +532,7 @@
 #    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 120000)
+#    define HAMON_HAS_CXX23_ELIFDEF							// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL					// P1938R3	if consteval
 #    endif
