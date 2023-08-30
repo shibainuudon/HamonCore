@@ -158,22 +158,13 @@ Array<16> a; // fails to compile in pure C++
 namespace trimming_whitespaces_before_line_splicing_test
 {
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4010)	// 単一行コメント (//) に、行連結文字があります。
-HAMON_WARNING_DISABLE_CLANG("-Wbackslash-newline-escape")
-HAMON_WARNING_DISABLE_CLANG("-Wcomment")
-HAMON_WARNING_DISABLE_GCC("-Wcomment")
-
-GTEST_TEST(ConfigTest, Cxx23TrimmingWhitespacesBeforeLineSplicingTest)
-{
-	int i = 1
-	// \ 
-	+ 42
-	;
-	EXPECT_EQ(1, i);
-}
-
-HAMON_WARNING_POP()
+// gcc12までだと、multi-line comment があると警告(エラー)になってしまう
+// * pragma で抑制できない
+// * #if 0 で囲ってもダメ
+// なのでテストできない。
+// また、テストの内容をコメントで残すこともできない。
+// どんなテストをしようとしていたかは以下を参照
+// https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2223r2.pdf
 
 }	// namespace trimming_whitespaces_before_line_splicing_test
 #endif
