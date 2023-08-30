@@ -313,6 +313,19 @@ static_assert(f<nonliteral>());
 
 #endif
 
+#if defined(HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT)
+namespace alias_declaration_in_init_statement_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23AliasDeclarationInInitStatementTest)
+{
+	std::vector<int> v;
+	for (using T = int; T e : v) { (void)e; }
+}
+
+}	// namespace alias_declaration_in_init_statement_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

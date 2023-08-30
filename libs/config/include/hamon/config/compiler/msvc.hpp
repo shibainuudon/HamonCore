@@ -1185,7 +1185,7 @@
 #define HAMON_HAS_CXX23_											// P2314R4	Character sets and encodings
 #define HAMON_HAS_CXX23_											// P2316R2	Consistent character literal encoding
 #define HAMON_HAS_CXX23_ELIFDEF										// P2334R1	Add support for preprocessing directives elifdef and elifndef
-#define HAMON_HAS_CXX23_											// P2360R0	Extend init-statement to allow alias-declaration
+#define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT			// P2360R0	Extend init-statement to allow alias-declaration
 #define HAMON_HAS_CXX23_											// P0849R8	auto(x): decay-copy in the language
 #define HAMON_HAS_CXX23_											// P2324R2	Labels at the end of compound statements
 #define HAMON_HAS_CXX23_											// CWG2397	auto specifier for pointers and references to arrays
