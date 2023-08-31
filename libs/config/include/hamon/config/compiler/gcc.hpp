@@ -524,6 +524,7 @@
 #if (HAMON_CXX_STANDARD >= 23)
 #  if (HAMON_GCC_VERSION >= 90000)
 #    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL		// P1401R5	Narrowing contextual conversions to bool
+#    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS				// P2173R1	Attributes on lambda-expressions
 #  endif
 #  if (HAMON_GCC_VERSION >= 110000)
 #    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN				// P1102R2	Make () more optional for lambdas

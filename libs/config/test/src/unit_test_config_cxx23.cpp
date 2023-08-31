@@ -363,6 +363,19 @@ HAMON_WARNING_POP()
 }	// namespace label_at_end_of_compound_statement_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS)
+namespace attributes_on_lambdas_test
+{
+
+GTEST_TEST(ConfigTest, Cxx23AttributesOnLambdasTest)
+{
+	auto lm = [][[nodiscard]]()->int { return 42; };
+	EXPECT_EQ(42, lm());
+}
+
+}	// namespace attributes_on_lambdas_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

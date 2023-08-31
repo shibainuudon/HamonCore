@@ -1190,8 +1190,7 @@
 #define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT			// P2324R2	Labels at the end of compound statements
 #define HAMON_HAS_CXX23_											// CWG2397	auto specifier for pointers and references to arrays
 #define HAMON_HAS_CXX23_											// CWG2481	Cv-qualification of temporary to which a reference is bound
-#define HAMON_HAS_CXX23_											// P2173R1	Attributes on lambda-expressions
-#define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
+#define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS						// P2173R1	Attributes on lambda-expressions
 #define HAMON_HAS_CXX23_											// P2468R2	DR20: The Equality Operator You Are Looking For
 #define HAMON_HAS_CXX23_											// P2327R1	De-deprecating volatile compound operations
 #define HAMON_HAS_CXX23_											// P2437R1	Support for #warning
@@ -1216,6 +1215,9 @@
 #define HAMON_HAS_CXX23_											// P2736R2	Referencing The Unicode Standard
 #define HAMON_HAS_CXX23_											// P2493R0	DR20: Missing feature test macros for C++20 core papers
 #define HAMON_HAS_CXX23_											// CWG2518	DR: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
+
+// C++23 libary features
+#define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
 
 #endif
 
