@@ -376,6 +376,26 @@ GTEST_TEST(ConfigTest, Cxx23AttributesOnLambdasTest)
 }	// namespace attributes_on_lambdas_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE)
+namespace de_deprecate_volatile
+{
+
+struct ADC {
+	volatile uint8_t CTRL;
+	volatile uint8_t VALUE;
+};
+
+#define ADC_CTRL_ENABLE ( 1 << 3 )
+
+void test(ADC* ADC1)
+{
+	ADC1->CTRL |= ADC_CTRL_ENABLE;
+	ADC1->CTRL &= ~ADC_CTRL_ENABLE;
+}
+
+}	// namespace de_deprecate_volatile
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

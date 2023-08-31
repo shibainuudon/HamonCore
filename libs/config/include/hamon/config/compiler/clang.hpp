@@ -539,6 +539,11 @@
 #if (HAMON_CLANG_VERSION >= 140000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31							// P1949R7
 #endif
+#if (HAMON_CLANG_VERSION >= 150000)
+#  if (HAMON_CXX_STANDARD >= 20)	// DR20
+#    define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE							// P2327R1	De-deprecating volatile compound operations
+#  endif
+#endif
 
 //#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE				// P0588R1
 

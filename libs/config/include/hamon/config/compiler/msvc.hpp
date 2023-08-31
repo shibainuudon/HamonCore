@@ -1192,7 +1192,7 @@
 #define HAMON_HAS_CXX23_											// CWG2481	Cv-qualification of temporary to which a reference is bound
 #define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS						// P2173R1	Attributes on lambda-expressions
 #define HAMON_HAS_CXX23_											// P2468R2	DR20: The Equality Operator You Are Looking For
-#define HAMON_HAS_CXX23_											// P2327R1	De-deprecating volatile compound operations
+#define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE						// P2327R1	De-deprecating volatile compound operations
 #define HAMON_HAS_CXX23_											// P2437R1	Support for #warning
 #define HAMON_HAS_CXX23_											// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
 #define HAMON_HAS_CXX23_											// P2290R3	Delimited escape sequences
