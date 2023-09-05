@@ -545,6 +545,7 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 130000)
 #    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT	// P2324R2	Labels at the end of compound statements
+#    define HAMON_HAS_CXX23_WARNING								// P2437R1	Support for #warning
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
 #      define HAMON_HAS_CXX23_IMPLICIT_MOVE						// P2266R3	Simpler implicit move
 #    endif

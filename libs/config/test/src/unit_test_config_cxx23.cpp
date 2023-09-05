@@ -396,6 +396,21 @@ void test(ADC* ADC1)
 }	// namespace de_deprecate_volatile
 #endif
 
+#if defined(HAMON_HAS_CXX23_WARNING)
+namespace warning_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-W#warnings")
+HAMON_WARNING_DISABLE_GCC("-Wcpp")
+
+#warning This library currently has no thread support.
+
+HAMON_WARNING_POP()
+
+}	// namespace warning_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {
