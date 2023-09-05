@@ -1200,9 +1200,8 @@
 #define HAMON_HAS_CXX23_											// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
 #define HAMON_HAS_CXX23_											// P2280R4	DR: Using unknown references in constant expressions
 #define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
-#define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
 #define HAMON_HAS_CXX23_											// P2582R1	Class template argument deduction from inherited constructors
-#define HAMON_HAS_CXX23_											// P1774R8	Portable assumptions
+#define HAMON_HAS_CXX23_ASSUME										// P1774R8	Portable assumptions
 #define HAMON_HAS_CXX23_											// P2295R6	Support for UTF-8 as a portable source file encoding
 #define HAMON_HAS_CXX23_											// P2513R3	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
 #define HAMON_HAS_CXX23_											// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
@@ -1218,6 +1217,7 @@
 
 // C++23 libary features
 #define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
+#define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
 
 #endif
 

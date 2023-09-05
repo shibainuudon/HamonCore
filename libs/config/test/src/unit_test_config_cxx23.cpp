@@ -465,6 +465,18 @@ struct less {
 }	// namespace static_call_operator_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_ASSUME)
+namespace assume_test
+{
+
+int divide_by_32(int x) {
+	[[assume(x >= 0)]];
+	return x/32;
+}
+
+}	// namespace assume_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR)
 namespace static_subscript_operator_test
 {
