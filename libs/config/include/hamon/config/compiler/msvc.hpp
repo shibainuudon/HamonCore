@@ -1194,7 +1194,7 @@
 #define HAMON_HAS_CXX23_											// P2468R2	DR20: The Equality Operator You Are Looking For
 #define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE						// P2327R1	De-deprecating volatile compound operations
 #define HAMON_HAS_CXX23_WARNING										// P2437R1	Support for #warning
-#define HAMON_HAS_CXX23_											// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
+#define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS		// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
 #define HAMON_HAS_CXX23_											// P2290R3	Delimited escape sequences
 #define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES						// P2071R2	Named universal character escapes										__cpp_named_character_escapes >= 202207L
 #define HAMON_HAS_CXX23_											// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L

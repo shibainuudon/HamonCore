@@ -523,43 +523,44 @@
 // C++23
 #if (HAMON_CXX_STANDARD >= 23)
 #  if (HAMON_GCC_VERSION >= 90000)
-#    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL		// P1401R5	Narrowing contextual conversions to bool
-#    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS				// P2173R1	Attributes on lambda-expressions
+#    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL			// P1401R5	Narrowing contextual conversions to bool
+#    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS					// P2173R1	Attributes on lambda-expressions
 #  endif
 #  if (HAMON_GCC_VERSION >= 110000)
-#    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN				// P1102R2	Make () more optional for lambdas
+#    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN					// P1102R2	Make () more optional for lambdas
 #    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
-#      define HAMON_HAS_CXX23_SIZE_T_SUFFIX						// P0330R8	Literal Suffix for (signed) size_t
+#      define HAMON_HAS_CXX23_SIZE_T_SUFFIX							// P0330R8	Literal Suffix for (signed) size_t
 #    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 120000)
-#    define HAMON_HAS_CXX23_ELIFDEF								// P2334R1	Add support for preprocessing directives elifdef and elifndef
-#    define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT	// P2360R0	Extend init-statement to allow alias-declaration
-#    define HAMON_HAS_CXX23_DECAY_COPY							// P0849R8	auto(x): decay-copy in the language
+#    define HAMON_HAS_CXX23_ELIFDEF									// P2334R1	Add support for preprocessing directives elifdef and elifndef
+#    define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT		// P2360R0	Extend init-statement to allow alias-declaration
+#    define HAMON_HAS_CXX23_DECAY_COPY								// P0849R8	auto(x): decay-copy in the language
 #    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
-#      define HAMON_HAS_CXX23_IF_CONSTEVAL						// P1938R3	if consteval
+#      define HAMON_HAS_CXX23_IF_CONSTEVAL							// P1938R3	if consteval
 #    endif
 #    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
-#      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES	// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
+#      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES		// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
 #    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 130000)
-#    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT	// P2324R2	Labels at the end of compound statements
-#    define HAMON_HAS_CXX23_WARNING								// P2437R1	Support for #warning
+#    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT		// P2324R2	Labels at the end of compound statements
+#    define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
+#    define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS	// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
-#      define HAMON_HAS_CXX23_IMPLICIT_MOVE						// P2266R3	Simpler implicit move
+#      define HAMON_HAS_CXX23_IMPLICIT_MOVE							// P2266R3	Simpler implicit move
 #    endif
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
-#      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT		// P2128R6, CWG2507	Multidimensional subscript operator
+#      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202211L)
-#      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR			// P2589R1	static operator[]
+#      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR				// P2589R1	static operator[]
 #    endif
 #    if defined(__cpp_named_character_escapes) && (__cpp_named_character_escapes >= 202207L)
-#      define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES			// P2071R2	Named universal character escapes
+#      define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES				// P2071R2	Named universal character escapes
 #    endif
 #    if defined(__cpp_static_call_operator) && (__cpp_static_call_operator >= 202207L)
-#      define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR				// P1169R4	static operator()
+#      define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR					// P1169R4	static operator()
 #    endif
 #  endif
 #endif	// C++23

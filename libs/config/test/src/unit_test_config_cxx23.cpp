@@ -411,6 +411,22 @@ HAMON_WARNING_POP()
 }	// namespace warning_test
 #endif
 
+#if 0//!defined(HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS)
+namespace non_encodable_wide_character_literals_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4066)	// ワイド文字定数の文字列は無視されます。
+
+wchar_t a = L'🤦';  // \U0001f926
+wchar_t b = L'ab';  // multi character literal
+wchar_t c = L'é́';   // \u0065\u0301
+
+HAMON_WARNING_POP()
+
+}	// namespace non_encodable_wide_character_literals_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {
