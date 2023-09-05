@@ -427,6 +427,17 @@ HAMON_WARNING_POP()
 }	// namespace non_encodable_wide_character_literals_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES)
+namespace delimited_escape_sequences_test
+{
+
+auto a = "\o{17}";
+auto b = "\x{ab}c";
+auto c = "\u{1F1F8}";
+
+}	// namespace delimited_escape_sequences_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES)
 namespace named_character_escapes_test
 {

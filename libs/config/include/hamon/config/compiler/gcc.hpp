@@ -547,6 +547,7 @@
 #    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT		// P2324R2	Labels at the end of compound statements
 #    define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
 #    define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS	// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
+#    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES				// P2290R3	Delimited escape sequences
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
 #      define HAMON_HAS_CXX23_IMPLICIT_MOVE							// P2266R3	Simpler implicit move
 #    endif
