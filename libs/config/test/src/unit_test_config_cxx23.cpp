@@ -326,6 +326,23 @@ HAMON_WARNING_POP()
 }	// namespace character_sets_and_encodings_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR)
+namespace character_literals_in_preprocessor_test
+{
+
+#if 'A' == '\x41'
+#define CONSISTENT	1
+#else
+#define CONSISTENT	0
+#endif
+
+static_assert(CONSISTENT == 1, "");
+
+#undef CONSISTENT
+
+}	// namespace character_literals_in_preprocessor_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_ELIFDEF)
 
 //#ifdef M1

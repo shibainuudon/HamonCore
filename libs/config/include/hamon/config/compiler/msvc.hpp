@@ -917,6 +917,9 @@
 
 #if (HAMON_CXX_STANDARD >= 23)
 #  define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
+#  if (_MSC_VER >= 1930)
+#    define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR		// P2316R2	Consistent character literal encoding
+#  endif
 #endif
 
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
@@ -1186,7 +1189,7 @@
 #define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES				// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
 #define HAMON_HAS_CXX23_											// P2246R1	Character encoding of diagnostic text
 #define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS				// P2314R4	Character sets and encodings
-#define HAMON_HAS_CXX23_											// P2316R2	Consistent character literal encoding
+#define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR			// P2316R2	Consistent character literal encoding
 #define HAMON_HAS_CXX23_ELIFDEF										// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT			// P2360R0	Extend init-statement to allow alias-declaration
 #define HAMON_HAS_CXX23_DECAY_COPY									// P0849R8	auto(x): decay-copy in the language
