@@ -557,6 +557,9 @@
 #  if (HAMON_CLANG_VERSION >= 150000)
 #    define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE							// P2327R1	De-deprecating volatile compound operations
 #  endif
+#  if (HAMON_CLANG_VERSION >= 160000)
+#    define HAMON_HAS_CXX23_EQUALITY_OPERATOR								// P2468R2	DR20: The Equality Operator You Are Looking For
+#  endif
 #  if (HAMON_CLANG_VERSION >= 170000)
 #    if defined(__cpp_consteval) && (__cpp_consteval >= 202211L)
 #      define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP						// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L

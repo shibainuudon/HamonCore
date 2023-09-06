@@ -415,6 +415,39 @@ GTEST_TEST(ConfigTest, Cxx23AttributesOnLambdasTest)
 }	// namespace attributes_on_lambdas_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_EQUALITY_OPERATOR)
+namespace equality_operator_test
+{
+
+struct A {};
+template<typename T> bool operator==(A, T) { return false; }  // #1
+bool a1 = 0 == A();  // OK, calls reversed #1
+template<typename T> bool operator!=(A, T) { return false; }
+//bool a2 = 0 == A();  // error, #1 is not a rewrite target
+
+struct B {
+	bool operator==(const B&) { return false; }  // #2
+};
+struct C : B {
+	C() {}
+	C(B) {}
+	bool operator!=(const B&) { return false; }  // #3
+};
+bool c1 = B() == C();  // OK, calls #2; reversed #2 is not a candidate because search for operator!= in C finds #3
+//bool c2 = C() == B();  // error, ambiguous between #2 found when searching C and reversed #2 found when searching B
+
+//struct D {};
+//template <typename T>
+//bool operator==(D, T) { return false; } // #4
+//inline namespace N {
+//template <typename T>
+//bool operator!=(D, T) { return false; } // #5
+//}
+//bool d1 = 0 == D(); // OK, calls reversed #4; #5 does not forbid #4 as a rewrite target
+
+}	// namespace equality_operator_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE)
 namespace de_deprecate_volatile
 {
