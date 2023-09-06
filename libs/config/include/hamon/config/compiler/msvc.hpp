@@ -1179,14 +1179,13 @@
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 #define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
-#define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
 #define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
 #define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	Change scope of lambda trailing-return-type
 #define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT					// P2128R6, CWG2507	Multidimensional subscript operator								__cpp_multidimensional_subscript >= 202110L
 #define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES				// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
 #define HAMON_HAS_CXX23_											// P2246R1	Character encoding of diagnostic text
-#define HAMON_HAS_CXX23_											// P2314R4	Character sets and encodings
+#define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS				// P2314R4	Character sets and encodings
 #define HAMON_HAS_CXX23_											// P2316R2	Consistent character literal encoding
 #define HAMON_HAS_CXX23_ELIFDEF										// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT			// P2360R0	Extend init-statement to allow alias-declaration
@@ -1219,6 +1218,7 @@
 #define HAMON_HAS_CXX23_											// CWG2518	DR: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
 
 // C++23 libary features
+#define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
 #define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
 #define HAMON_HAS_CXX23_											// P2590R2	Explicit lifetime management

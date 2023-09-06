@@ -304,6 +304,28 @@ static_assert(f<nonliteral>());
 }	// namespace constexpr_non_literal_variables_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS)
+namespace character_sets_and_encodings_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4566)	// ユニバーサル文字名 '\u00F6' によって表示されている文字は、現在のコード ページ (932) で表示できません
+
+GTEST_TEST(ConfigTest, Cxx23CharacterSetsAndEncodingsTest)
+{
+#define S(x) # x
+	const char * s1 = S(Köppe);       // "Köppe"
+	const char * s2 = S(K\u00f6ppe);  // "Köppe"
+#undef S
+	EXPECT_STREQ(s1, "Köppe");
+	EXPECT_STREQ(s2, "Köppe");
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace character_sets_and_encodings_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_ELIFDEF)
 
 //#ifdef M1
