@@ -915,6 +915,10 @@
 #  endif
 #endif
 
+#if (HAMON_CXX_STANDARD >= 23)
+#  define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
+#endif
+
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
 #define HAMON_NO_TWO_PHASE_NAME_LOOKUP					// Two-phase name lookup
 //#define HAMON_HAS_CXX11_PRAGMA_OPERATOR				// Pragma演算子
@@ -1174,7 +1178,7 @@
 #define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL				// P1401R5	Narrowing contextual conversions to bool
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
-#define HAMON_HAS_CXX23_											// P1847R4	Make declaration order layout mandated
+#define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
 #define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
 #define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
