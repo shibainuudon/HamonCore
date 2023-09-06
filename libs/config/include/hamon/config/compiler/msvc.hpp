@@ -1205,9 +1205,8 @@
 #define HAMON_HAS_CXX23_											// P2295R6	Support for UTF-8 as a portable source file encoding
 #define HAMON_HAS_CXX23_											// P2513R3	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
 #define HAMON_HAS_CXX23_											// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
-#define HAMON_HAS_CXX23_											// P2590R2	Explicit lifetime management
 #define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
-#define HAMON_HAS_CXX23_											// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
+#define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION		// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
 #define HAMON_HAS_CXX23_											// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #define HAMON_HAS_CXX23_											// P2615R1	DR20: Meaningful exports
 #define HAMON_HAS_CXX23_											// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
@@ -1218,6 +1217,7 @@
 // C++23 libary features
 #define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
 #define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
+#define HAMON_HAS_CXX23_											// P2590R2	Explicit lifetime management
 
 #endif
 

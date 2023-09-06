@@ -491,4 +491,16 @@ struct MDArray
 }	// namespace static_subscript_operator_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION)
+namespace static_variable_in_constexpr_function_test
+{
+
+constexpr char xdigit(int n) {
+	static constexpr char digits[] = "0123456789abcdef";
+	return digits[n];
+}
+
+}	// namespace static_variable_in_constexpr_function_test
+#endif
+
 }	// namespace hamon_config_cxx23_test
