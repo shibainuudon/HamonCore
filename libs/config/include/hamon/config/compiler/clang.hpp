@@ -511,6 +511,9 @@
 #  endif
 #  if (HAMON_CLANG_VERSION >= 170000)
 #    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	Change scope of lambda trailing-return-type
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202207L)
+#      define HAMON_HAS_CXX23_RELAXING_CONSTEXPR					// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
+#    endif
 #  endif
 #endif	// C++23
 

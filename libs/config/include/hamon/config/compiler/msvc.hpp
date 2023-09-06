@@ -1203,7 +1203,7 @@
 #define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS		// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
 #define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES					// P2290R3	Delimited escape sequences
 #define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES						// P2071R2	Named universal character escapes										__cpp_named_character_escapes >= 202207L
-#define HAMON_HAS_CXX23_											// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
+#define HAMON_HAS_CXX23_RELAXING_CONSTEXPR							// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
 #define HAMON_HAS_CXX23_											// P2280R4	DR: Using unknown references in constant expressions
 #define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
 #define HAMON_HAS_CXX23_											// P2582R1	Class template argument deduction from inherited constructors

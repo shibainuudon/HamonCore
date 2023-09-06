@@ -524,6 +524,21 @@ GTEST_TEST(ConfigTest, Cxx23NamedCharacterEscapesTest)
 }	// namespace named_character_escapes_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_RELAXING_CONSTEXPR)
+namespace relaxing_constexpr_test
+{
+
+void f(int& i) {
+	i = 0;
+}
+
+constexpr void g(int& i) {
+	f(i);
+}
+
+}	// namespace relaxing_constexpr_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_STATIC_CALL_OPERATOR)
 namespace static_call_operator_test
 {

@@ -569,6 +569,9 @@
 #    if defined(__cpp_static_call_operator) && (__cpp_static_call_operator >= 202207L)
 #      define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR					// P1169R4	static operator()
 #    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202207L)
+#      define HAMON_HAS_CXX23_RELAXING_CONSTEXPR					// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
+#    endif
 #    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202211L)
 #      define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION	// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
 #    endif
