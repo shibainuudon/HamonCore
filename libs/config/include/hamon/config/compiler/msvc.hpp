@@ -1207,7 +1207,7 @@
 #define HAMON_HAS_CXX23_											// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
 #define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
 #define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION		// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
-#define HAMON_HAS_CXX23_											// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
+#define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP						// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #define HAMON_HAS_CXX23_											// P2615R1	DR20: Meaningful exports
 #define HAMON_HAS_CXX23_											// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
 #define HAMON_HAS_CXX23_											// P2736R2	Referencing The Unicode Standard

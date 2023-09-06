@@ -505,9 +505,6 @@
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202211L)
 #      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR				// P2589R1	static operator[]
 #    endif
-#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202211L)
-#      define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION	// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
-#    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 170000)
 #    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	Change scope of lambda trailing-return-type
@@ -520,11 +517,6 @@
 
 // Defect reports (DR)
 
-#if (HAMON_CLANG_VERSION >= 60000)
-#  if (HAMON_CXX_STANDARD >= 17)	// Defect report としてC++17に適用される
-#    define HAMON_HAS_CXX20_INITIALIZER_LIST_CTAD							// P0702R1
-#  endif
-#endif
 #if (HAMON_CLANG_VERSION >= 80000)
 #  define HAMON_HAS_CXX20_RELAXING_STRUCTURED_BINDINGS						// P0961R1
 #  define HAMON_HAS_CXX20_RELAXING_RANGE_FOR								// P0962R1
@@ -545,12 +537,28 @@
 #if (HAMON_CLANG_VERSION >= 140000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31							// P1949R7
 #endif
-#if (HAMON_CLANG_VERSION >= 150000)
-#  if (HAMON_CXX_STANDARD >= 20)	// DR20
-#    define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE							// P2327R1	De-deprecating volatile compound operations
+
+//#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE				// P0588R1
+
+// DR17
+
+#if (HAMON_CXX_STANDARD >= 17)
+#  if (HAMON_CLANG_VERSION >= 60000)
+#    define HAMON_HAS_CXX20_INITIALIZER_LIST_CTAD							// P0702R1
 #  endif
 #endif
 
-//#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE				// P0588R1
+// DR20
+
+#if (HAMON_CXX_STANDARD >= 20)
+#  if (HAMON_CLANG_VERSION >= 150000)
+#    define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE							// P2327R1	De-deprecating volatile compound operations
+#  endif
+#  if (HAMON_CLANG_VERSION >= 170000)
+#    if defined(__cpp_consteval) && (__cpp_consteval >= 202211L)
+#      define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP						// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
+#    endif
+#  endif
+#endif
 
 #endif // HAMON_CONFIG_COMPILER_CLANG_HPP
