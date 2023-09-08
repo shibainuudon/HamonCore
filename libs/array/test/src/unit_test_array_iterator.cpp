@@ -13,6 +13,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -38,7 +39,7 @@ void IteratorTest()
 
 	{
 		using Traits = hamon::iterator_traits<Iterator>;
-		static_assert((hamon::is_same<typename Traits::iterator_category, std::random_access_iterator_tag>::value), "");
+		static_assert((hamon::is_same<typename Traits::iterator_category, hamon::random_access_iterator_tag>::value), "");
 		static_assert((hamon::is_same<typename Traits::value_type,      typename Array::value_type>::value), "");
 		static_assert((hamon::is_same<typename Traits::reference,       typename Array::reference>::value), "");
 		static_assert((hamon::is_same<typename Traits::pointer,         typename Array::pointer>::value), "");
@@ -46,7 +47,7 @@ void IteratorTest()
 	}
 	{
 		using Traits = hamon::iterator_traits<ConstIterator>;
-		static_assert((hamon::is_same<typename Traits::iterator_category, std::random_access_iterator_tag>::value), "");
+		static_assert((hamon::is_same<typename Traits::iterator_category, hamon::random_access_iterator_tag>::value), "");
 		static_assert((hamon::is_same<typename Traits::value_type,      typename Array::value_type>::value), "");
 		static_assert((hamon::is_same<typename Traits::reference,       typename Array::const_reference>::value), "");
 		static_assert((hamon::is_same<typename Traits::pointer,         typename Array::const_pointer>::value), "");

@@ -24,6 +24,7 @@ using std::next;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -42,7 +43,7 @@ next_impl(InputIterator it, Distance n, hamon::input_iterator_tag*)
 
 template <typename RandomAccessIterator, typename Distance>
 inline HAMON_CONSTEXPR RandomAccessIterator
-next_impl(RandomAccessIterator const& it, Distance n, std::random_access_iterator_tag*)
+next_impl(RandomAccessIterator const& it, Distance n, hamon::random_access_iterator_tag*)
 {
 	return it + n;
 }

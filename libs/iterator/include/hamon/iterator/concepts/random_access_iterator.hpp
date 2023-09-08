@@ -25,6 +25,7 @@ using std::random_access_iterator;
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -43,7 +44,7 @@ namespace hamon
 template <typename Iter>
 concept random_access_iterator =
 	hamon::bidirectional_iterator<Iter> &&
-	hamon::derived_from<hamon::detail::iter_concept<Iter>, std::random_access_iterator_tag> &&
+	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::random_access_iterator_tag> &&
 	hamon::totally_ordered<Iter> &&
 	hamon::sized_sentinel_for<Iter, Iter> &&
 	requires(Iter i, Iter const j, hamon::iter_difference_t<Iter> const n)
@@ -68,7 +69,7 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::bidirectional_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::derived_from<
-			hamon::detail::iter_concept<I2>, std::random_access_iterator_tag>::value>,
+			hamon::detail::iter_concept<I2>, hamon::random_access_iterator_tag>::value>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>::value>,
 		typename = hamon::enable_if_t<hamon::sized_sentinel_for<I2, I2>::value>,
 #if defined(HAMON_MSVC) && (HAMON_MSVC < 1920)

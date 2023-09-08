@@ -32,6 +32,7 @@ using std::move_iterator;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
@@ -89,8 +90,8 @@ struct move_iter_category_base<Iter
 >
 {
 	using iterator_category = hamon::conditional_t<
-		hamon::derived_from_t<typename hamon::iterator_traits<Iter>::iterator_category, std::random_access_iterator_tag>::value,
-		std::random_access_iterator_tag,
+		hamon::derived_from_t<typename hamon::iterator_traits<Iter>::iterator_category, hamon::random_access_iterator_tag>::value,
+		hamon::random_access_iterator_tag,
 		typename hamon::iterator_traits<Iter>::iterator_category
 	>;
 };
@@ -106,7 +107,7 @@ template <typename Iter>
 using move_iter_concept =
 	hamon::conditional_t<
 		hamon::random_access_iterator_t<Iter>::value,
-		std::random_access_iterator_tag,
+		hamon::random_access_iterator_tag,
 	hamon::conditional_t<
 		hamon::bidirectional_iterator_t<Iter>::value,
 		hamon::bidirectional_iterator_tag,

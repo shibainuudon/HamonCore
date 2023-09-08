@@ -37,6 +37,7 @@ using std::copy_n;
 #include <hamon/algorithm/copy.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -75,7 +76,7 @@ copy_n_impl(
 	RandomAccessIterator first,
 	Size n,
 	OutputIterator result,
-	std::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag*)
 {
 	return hamon::copy(first, first + n, result);
 }

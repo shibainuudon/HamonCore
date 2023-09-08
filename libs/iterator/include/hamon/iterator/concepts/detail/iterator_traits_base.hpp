@@ -23,6 +23,7 @@
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -126,7 +127,7 @@ private:
 #endif
 	>
 	{
-		using type = std::random_access_iterator_tag;
+		using type = hamon::random_access_iterator_tag;
 	};
 
 	template <typename Iter>

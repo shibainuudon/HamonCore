@@ -25,6 +25,7 @@ using std::search;
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -102,8 +103,8 @@ search_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	std::random_access_iterator_tag*,
-	std::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag*,
+	hamon::random_access_iterator_tag*)
 {
 	auto const len2 = last2 - first2;
 	if (len2 == 0)

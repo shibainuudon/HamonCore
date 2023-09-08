@@ -13,6 +13,7 @@
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/concepts.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -190,10 +191,10 @@ GTEST_TEST(MoveIteratorTest, TypesTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<input_iterator_wrapper<int>,         hamon::input_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<forward_iterator_wrapper<int>,       hamon::forward_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<bidirectional_iterator_wrapper<int>, hamon::bidirectional_iterator_tag>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<random_access_iterator_wrapper<int>, std::random_access_iterator_tag>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<contiguous_iterator_wrapper<int>,    std::random_access_iterator_tag>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<int*,       std::random_access_iterator_tag>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<int const*, std::random_access_iterator_tag>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<random_access_iterator_wrapper<int>, hamon::random_access_iterator_tag>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<contiguous_iterator_wrapper<int>,    hamon::random_access_iterator_tag>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<int*,       hamon::random_access_iterator_tag>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<int const*, hamon::random_access_iterator_tag>()));
 }
 
 struct Base {};

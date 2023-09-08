@@ -24,6 +24,7 @@ using std::prev;
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -42,7 +43,7 @@ prev_impl(BidirectionalIterator it, Distance n, hamon::bidirectional_iterator_ta
 
 template <typename RandomAccessIterator, typename Distance>
 inline HAMON_CONSTEXPR RandomAccessIterator
-prev_impl(RandomAccessIterator const& it, Distance n, std::random_access_iterator_tag*)
+prev_impl(RandomAccessIterator const& it, Distance n, hamon::random_access_iterator_tag*)
 {
 	return it - n;
 }

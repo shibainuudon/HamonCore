@@ -10,6 +10,7 @@
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <utility>	// pair
@@ -27,28 +28,28 @@ namespace iterator_traits_test
 {
 
 static_assert(hamon::is_same<hamon::iterator_traits<int               *>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<int               *>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<int               *>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int               *>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int               *>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int               *>::pointer,           int*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int               *>::reference,         int&>::value, "");
 
 static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::pointer,           int const*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const         *>::reference,         int const&>::value, "");
 
 static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::pointer,           int volatile*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int       volatile*>::reference,         int volatile&>::value, "");
 
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::pointer,           int const volatile*>::value, "");
@@ -56,7 +57,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::refere
 
 using it1 = std::vector<float>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it1>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it1>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it1>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::value_type,        float>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::pointer,           float*>::value, "");
@@ -64,7 +65,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it1>::reference,         flo
 
 using it2 = std::vector<float>::const_iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it2>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it2>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it2>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it2>::value_type,        float>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it2>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it2>::pointer,           float const*>::value, "");
@@ -72,7 +73,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it2>::reference,         flo
 
 using it3 = std::string::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it3>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it3>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it3>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it3>::value_type,        char>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it3>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it3>::pointer,           char*>::value, "");
@@ -96,7 +97,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it5>::reference,         int
 
 using it6 = std::reverse_iterator<int*>;
 //static_assert(hamon::is_same<hamon::iterator_traits<it6>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it6>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it6>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::pointer,           int*>::value, "");
@@ -229,7 +230,7 @@ struct MyIterator6
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::pointer,           int*>::value, "");
@@ -237,7 +238,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<MyIterator6>::reference,    
 
 struct MyIterator7
 {
-	using iterator_category = std::random_access_iterator_tag;
+	using iterator_category = hamon::random_access_iterator_tag;
 	using value_type        = int;
 	using difference_type   = long;
 
@@ -249,7 +250,7 @@ struct MyIterator7
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::iterator_category, std::random_access_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::difference_type,   long>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator7>::pointer,           void>::value, "");

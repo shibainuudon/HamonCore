@@ -31,6 +31,7 @@ using std::rotate;
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/numeric/gcd.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -216,7 +217,7 @@ rotate_impl_2(
 	RandomAccessIterator first,
 	RandomAccessIterator middle,
 	RandomAccessIterator last,
-	std::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{

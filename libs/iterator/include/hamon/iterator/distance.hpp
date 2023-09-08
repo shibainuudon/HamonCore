@@ -23,6 +23,7 @@ using std::distance;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 
@@ -46,7 +47,7 @@ distance_impl(InputIterator first, InputIterator last, hamon::input_iterator_tag
 
 template <typename Distance, typename RandomAccessIterator>
 inline HAMON_CONSTEXPR Distance
-distance_impl(RandomAccessIterator first, RandomAccessIterator last, std::random_access_iterator_tag*)
+distance_impl(RandomAccessIterator first, RandomAccessIterator last, hamon::random_access_iterator_tag*)
 {
 	return last - first;
 }

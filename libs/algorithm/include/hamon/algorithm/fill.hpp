@@ -25,6 +25,7 @@ using std::fill;
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -53,7 +54,7 @@ fill_impl(
 	RandomAccessIterator first,
 	RandomAccessIterator last,
 	T const& value,
-	std::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag*)
 {
 	hamon::fill_n(first, last - first, value);
 }

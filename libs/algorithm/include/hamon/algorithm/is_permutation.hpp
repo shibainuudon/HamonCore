@@ -28,6 +28,7 @@ using std::is_permutation;
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 
@@ -191,8 +192,8 @@ is_permutation_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator2 last1,
 	RandomAccessIterator1 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	std::random_access_iterator_tag*,
-	std::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag*,
+	hamon::random_access_iterator_tag*)
 {
 	if (hamon::distance(first1, last1) != hamon::distance(first2, last2))
 	{

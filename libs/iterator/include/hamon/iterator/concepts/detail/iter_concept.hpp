@@ -7,6 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_CONCEPT_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_CONCEPT_HPP
 
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/concepts/detail/iter_traits.hpp>
 #include <hamon/iterator/concepts/detail/primary_traits_iter.hpp>
 #include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
@@ -81,7 +82,7 @@ struct iter_concept_impl<Iter
 #endif
 >
 {
-	using type = std::random_access_iterator_tag;
+	using type = hamon::random_access_iterator_tag;
 };
 
 // Otherwise, there is no ITER_CONCEPT(I) type.

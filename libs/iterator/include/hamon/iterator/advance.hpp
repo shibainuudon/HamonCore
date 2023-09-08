@@ -24,6 +24,7 @@ using std::advance;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
@@ -66,7 +67,7 @@ advance_impl(BidirectionalIterator& it, Distance n, hamon::bidirectional_iterato
 
 template <typename RandomAccessIterator, typename Distance>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl(RandomAccessIterator& it, Distance n, std::random_access_iterator_tag*)
+advance_impl(RandomAccessIterator& it, Distance n, hamon::random_access_iterator_tag*)
 {
 	it += n;
 }

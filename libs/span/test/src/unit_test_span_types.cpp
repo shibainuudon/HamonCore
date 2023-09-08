@@ -8,6 +8,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <iterator>
@@ -29,7 +30,7 @@ void testIterator()
 {
 	typedef hamon::iterator_traits<Iter> ItT;
 
-	ASSERT_SAME_TYPE(typename ItT::iterator_category, std::random_access_iterator_tag);
+	ASSERT_SAME_TYPE(typename ItT::iterator_category, hamon::random_access_iterator_tag);
 	ASSERT_SAME_TYPE(typename ItT::value_type,        typename S::value_type);
 	ASSERT_SAME_TYPE(typename ItT::reference,         typename S::reference);
 	ASSERT_SAME_TYPE(typename ItT::pointer,           typename S::pointer);
