@@ -23,6 +23,7 @@ using std::equal;
 #else
 
 #include <hamon/functional/equal_to.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/next.hpp>
@@ -102,8 +103,8 @@ equal_impl_2(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
 	BinaryPredicate pred,
-	std::input_iterator_tag*,
-	std::input_iterator_tag*)
+	hamon::input_iterator_tag*,
+	hamon::input_iterator_tag*)
 {
 	return equal_impl_1(first1, last1, first2, last2, pred);
 }

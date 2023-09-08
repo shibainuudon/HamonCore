@@ -20,6 +20,7 @@ using std::input_iterator;
 
 #else
 
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
@@ -39,7 +40,7 @@ concept input_iterator =
 	hamon::input_or_output_iterator<Iter> &&
 	hamon::indirectly_readable<Iter> &&
 	requires { typename hamon::detail::iter_concept<Iter>; } &&
-	hamon::derived_from<hamon::detail::iter_concept<Iter>, std::input_iterator_tag>;
+	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::input_iterator_tag>;
 
 #else
 
@@ -53,7 +54,7 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
-		typename = hamon::enable_if_t<hamon::derived_from<hamon::detail::iter_concept<I2>, std::input_iterator_tag>::value>
+		typename = hamon::enable_if_t<hamon::derived_from<hamon::detail::iter_concept<I2>, hamon::input_iterator_tag>::value>
 	>
 	static auto test(int) -> hamon::true_type;
 

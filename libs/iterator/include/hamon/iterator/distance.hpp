@@ -20,6 +20,7 @@ using std::distance;
 
 #else
 
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/config.hpp>
@@ -33,7 +34,7 @@ namespace detail
 
 template <typename Distance, typename InputIterator>
 inline HAMON_CXX14_CONSTEXPR Distance
-distance_impl(InputIterator first, InputIterator last, std::input_iterator_tag*)
+distance_impl(InputIterator first, InputIterator last, hamon::input_iterator_tag*)
 {
 	Distance n = 0;
 	for (; first != last; ++first)

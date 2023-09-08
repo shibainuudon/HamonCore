@@ -35,6 +35,7 @@ using std::copy_n;
 #else
 
 #include <hamon/algorithm/copy.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/config.hpp>
 
@@ -54,7 +55,7 @@ copy_n_impl(
 	InputIterator first,
 	Size n,
 	OutputIterator result,
-	std::input_iterator_tag*)
+	hamon::input_iterator_tag*)
 {
 	for (Size i = 0; i < n; i++)
 	{

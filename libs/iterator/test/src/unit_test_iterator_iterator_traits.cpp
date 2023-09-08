@@ -4,6 +4,7 @@
  *	@brief	iterator_traits のテスト
  */
 
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -193,7 +194,7 @@ struct MyIterator5
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::iterator_category, std::input_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::iterator_category, hamon::input_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::difference_type,   long>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator5>::pointer,           int*>::value, "");

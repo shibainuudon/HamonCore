@@ -21,6 +21,7 @@ using std::next;
 #else
 
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/config.hpp>
@@ -33,7 +34,7 @@ namespace detail
 
 template <typename InputIterator, typename Distance>
 inline HAMON_CXX14_CONSTEXPR InputIterator
-next_impl(InputIterator it, Distance n, std::input_iterator_tag*)
+next_impl(InputIterator it, Distance n, hamon::input_iterator_tag*)
 {
 	hamon::advance(it, n);
 	return it;

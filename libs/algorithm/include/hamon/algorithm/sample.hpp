@@ -22,6 +22,7 @@ using std::sample;
 
 #include <hamon/algorithm/min.hpp>
 #include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -51,7 +52,7 @@ sample(
 	SampleIterator out,
 	Distance n,
 	UniformRandomBitGenerator& g,
-	std::input_iterator_tag*)
+	hamon::input_iterator_tag*)
 {
 	using Distribution = std::uniform_int_distribution<Distance>;
 

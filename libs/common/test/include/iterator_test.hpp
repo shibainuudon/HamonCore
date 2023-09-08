@@ -7,6 +7,7 @@
 #ifndef UNIT_TEST_COMMON_ITERATOR_TEST_HPP
 #define UNIT_TEST_COMMON_ITERATOR_TEST_HPP
 
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/config.hpp>
@@ -62,7 +63,7 @@ template <typename T>
 struct input_iterator_wrapper
 {
 	T*	m_ptr;
-	using iterator_category = std::input_iterator_tag;
+	using iterator_category = hamon::input_iterator_tag;
 	using value_type        = T;
 	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;

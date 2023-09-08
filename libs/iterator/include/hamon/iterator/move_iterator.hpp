@@ -25,6 +25,7 @@ using std::move_iterator;
 #else
 
 #include <hamon/iterator/move_sentinel.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
@@ -110,7 +111,7 @@ using move_iter_concept =
 	hamon::conditional_t<
 		hamon::forward_iterator_t<Iter>::value,
 		std::forward_iterator_tag,
-		std::input_iterator_tag
+		hamon::input_iterator_tag
 	>>>;
 
 template <typename U, typename Iter>
