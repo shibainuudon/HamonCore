@@ -8,6 +8,7 @@
 #include <hamon/utility/in_place_type.hpp>
 #include <hamon/utility/in_place_index.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_variant_test
@@ -52,7 +53,7 @@ namespace std
 template <>
 struct hash<hamon_variant_test::hash_test::MakeEmptyT>
 {
-	std::size_t operator()(hamon_variant_test::hash_test::MakeEmptyT const&) const
+	hamon::size_t operator()(hamon_variant_test::hash_test::MakeEmptyT const&) const
 	{
 		return 0;
 	}

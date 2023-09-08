@@ -11,6 +11,7 @@
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -34,8 +35,8 @@ concept cpp17_hash =
 	hamon::detail::cpp17_destructible<T> &&
 	requires(T h, Key k, Key& u)
 	{
-		{ h(k) } -> hamon::same_as<std::size_t>;
-		{ h(u) } -> hamon::same_as<std::size_t>;
+		{ h(k) } -> hamon::same_as<hamon::size_t>;
+		{ h(u) } -> hamon::same_as<hamon::size_t>;
 	};
 
 #else
@@ -54,8 +55,8 @@ private:
 		typename R2 = decltype(hamon::declval<U>()(hamon::declval<UKey&>()))
 	>
 	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<R1, std::size_t>,
-		hamon::same_as<R2, std::size_t>
+		hamon::same_as<R1, hamon::size_t>,
+		hamon::same_as<R2, hamon::size_t>
 	>;
 
 	template <typename U, typename UKey>

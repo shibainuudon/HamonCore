@@ -1073,6 +1073,8 @@ HAMON_RANGES_END_NAMESPACE
 
 #endif	// !defined(HAMON_USE_STD_STRING_VIEW) || !defined(HAMON_USE_STD_RANGES)
 
+#include <hamon/cstddef/size_t.hpp>
+
 namespace hamon
 {
 inline namespace literals

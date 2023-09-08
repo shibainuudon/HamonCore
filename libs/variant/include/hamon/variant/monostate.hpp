@@ -21,6 +21,7 @@ using std::monostate;
 #else
 
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -58,7 +59,7 @@ namespace std
 template <>
 struct hash<hamon::monostate>
 {
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR std::size_t
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::size_t
 	operator()(hamon::monostate const&) const HAMON_NOEXCEPT
 	{
 		return 0x4bb9b849;

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/concepts/detail/cpp17_hash.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <functional>
 
@@ -29,14 +30,14 @@ HAMON_CPP17_HASH_TEST(false, int, int);
 
 struct H1
 {
-	std::size_t operator()(int);
+	hamon::size_t operator()(int);
 };
 HAMON_CPP17_HASH_TEST(true,  H1, int);
 HAMON_CPP17_HASH_TEST(false, H1, int*);
 
 struct H2
 {
-	std::size_t operator()(int*);
+	hamon::size_t operator()(int*);
 };
 HAMON_CPP17_HASH_TEST(false, H2, int);
 HAMON_CPP17_HASH_TEST(true,  H2, int*);

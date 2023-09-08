@@ -7,6 +7,7 @@
 #ifndef HAMON_CONCEPTS_DETAIL_IS_SPECIALIZATION_OF_ARRAY_HPP
 #define HAMON_CONCEPTS_DETAIL_IS_SPECIALIZATION_OF_ARRAY_HPP
 
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <array>
 
@@ -20,7 +21,7 @@ template <typename T>
 struct is_specialization_of_array
 	: public hamon::false_type {};
 
-template <typename T, std::size_t N>
+template <typename T, hamon::size_t N>
 struct is_specialization_of_array<std::array<T, N>>
 	: public hamon::true_type {};
 

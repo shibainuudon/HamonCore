@@ -8,6 +8,7 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -34,7 +35,7 @@ namespace std
 template <>
 struct hash<hamon_optional_test::hash_test::S1>
 {
-	std::size_t operator()(hamon_optional_test::hash_test::S1 const&) const
+	hamon::size_t operator()(hamon_optional_test::hash_test::S1 const&) const
 	{
 		return 42;
 	}

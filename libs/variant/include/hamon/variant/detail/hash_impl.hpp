@@ -9,12 +9,12 @@
 
 #include <hamon/variant/detail/visit_at.hpp>
 #include <hamon/concepts/detail/cpp17_hash.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/detail/disabled_hash.hpp>
 #include <hamon/functional/hash_combine.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/remove_const.hpp>
-#include <cstddef>
 #include <functional>
 
 namespace hamon
@@ -26,7 +26,7 @@ namespace variant_detail
 struct hash_visitor
 {
 	template <typename T>
-	std::size_t operator()(T const& v) const
+	hamon::size_t operator()(T const& v) const
 	{
 		return std::hash<T>{}(v);
 	}
@@ -45,7 +45,7 @@ struct hash_impl<hamon::variant<Types...>,
 	>::value>
 >
 {
-	HAMON_NODISCARD std::size_t
+	HAMON_NODISCARD hamon::size_t
 	operator()(hamon::variant<Types...> const& var) const
 	{
 		if (var.valueless_by_exception())
@@ -54,7 +54,7 @@ struct hash_impl<hamon::variant<Types...>,
 		}
 
 		return hamon::hash_combine(
-			variant_detail::visit_at::invoke<std::size_t>(
+			variant_detail::visit_at::invoke<hamon::size_t>(
 				var.index(), hash_visitor{}, var),
 			var.index()
 		);

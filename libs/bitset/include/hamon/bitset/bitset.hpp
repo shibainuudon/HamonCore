@@ -414,7 +414,7 @@ public:
 		return to_integer<unsigned long long>();
 	}
 
-	HAMON_CXX11_CONSTEXPR std::size_t
+	HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash() const HAMON_NOEXCEPT
 	{
 		return hamon::hash(m_value);
@@ -565,10 +565,10 @@ public:
 		return static_cast<unsigned long long>(m_value);
 	}
 
-	HAMON_CXX11_CONSTEXPR std::size_t
+	HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash() const HAMON_NOEXCEPT
 	{
-		return static_cast<std::size_t>(m_value);
+		return static_cast<hamon::size_t>(m_value);
 	}
 };
 
@@ -600,7 +600,7 @@ struct bitset_impl<T, NBits, 0>
 	HAMON_CXX11_CONSTEXPR T get_bit(hamon::size_t) const HAMON_NOEXCEPT { return 0; }
 	HAMON_CXX11_CONSTEXPR unsigned long to_ulong() const HAMON_NOEXCEPT { return 0; }
 	HAMON_CXX11_CONSTEXPR unsigned long long to_ullong() const HAMON_NOEXCEPT { return 0; }
-	HAMON_CXX11_CONSTEXPR std::size_t hash() const HAMON_NOEXCEPT { return 0; }
+	HAMON_CXX11_CONSTEXPR hamon::size_t hash() const HAMON_NOEXCEPT { return 0; }
 };
 
 }	// namespace bitset_detail
@@ -1047,7 +1047,7 @@ HAMON_WARNING_POP()
 	}
 
 	// extension
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR std::size_t
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash() const HAMON_NOEXCEPT
 	{
 		return m_impl.hash();
