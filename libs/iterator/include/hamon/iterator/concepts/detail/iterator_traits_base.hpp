@@ -20,6 +20,7 @@
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
+#include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -272,7 +273,7 @@ private:
 	};
 
 public:
-	using iterator_category = std::output_iterator_tag;
+	using iterator_category = hamon::output_iterator_tag;
 	using value_type	    = void;
 	using difference_type   = typename diff<Iterator>::type;
 	using pointer	        = void;

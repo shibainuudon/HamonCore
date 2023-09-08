@@ -7,6 +7,7 @@
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
+#include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <utility>	// pair
@@ -263,7 +264,7 @@ struct MyIterator8
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::iterator_category, std::output_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::iterator_category, hamon::output_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::value_type,        void>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::difference_type,   long>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator8>::pointer,           void>::value, "");
@@ -279,7 +280,7 @@ struct MyIterator9
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::iterator_category, std::output_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::iterator_category, hamon::output_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::value_type,        void>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::difference_type,   void>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator9>::pointer,           void>::value, "");
