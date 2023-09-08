@@ -24,6 +24,7 @@ using std::fill;
 
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -38,7 +39,7 @@ fill_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	T const& value,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	while (first != last)
 	{

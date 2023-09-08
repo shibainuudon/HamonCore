@@ -10,6 +10,7 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/move.hpp>
@@ -78,7 +79,7 @@ template <typename T>
 struct MoveOnlyForwardIterator
 {
 	T*	m_ptr;
-	using iterator_category = std::forward_iterator_tag;
+	using iterator_category = hamon::forward_iterator_tag;
 	using value_type        = T;
 	using difference_type   = hamon::ptrdiff_t;
 	using reference         = T&;

@@ -21,6 +21,7 @@
 #include <hamon/iterator/indirectly_readable_traits.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -166,7 +167,7 @@ private:
 #endif
 	>
 	{
-		using type = std::forward_iterator_tag;
+		using type = hamon::forward_iterator_tag;
 	};
 
 	template <typename Iter, typename = void, typename = void>

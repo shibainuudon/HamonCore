@@ -25,6 +25,7 @@ using std::sample;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
@@ -88,7 +89,7 @@ sample(
 	SampleIterator out,
 	Distance n,
 	UniformRandomBitGenerator& g,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	using Distribution = std::uniform_int_distribution<Distance>;
 

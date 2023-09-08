@@ -10,6 +10,7 @@
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
@@ -94,7 +95,7 @@ template <typename T>
 struct forward_iterator_wrapper
 {
 	T*	m_ptr;
-	using iterator_category = std::forward_iterator_tag;
+	using iterator_category = hamon::forward_iterator_tag;
 	using value_type        = T;
 	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;

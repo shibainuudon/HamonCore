@@ -6,6 +6,7 @@
 
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -50,7 +51,7 @@ template <typename T>
 struct MoveOnlyForwardIterator
 {
 	T*	m_ptr;
-	using iterator_category = std::forward_iterator_tag;
+	using iterator_category = hamon::forward_iterator_tag;
 	using value_type        = T;
 	using difference_type   = hamon::ptrdiff_t;
 	using reference         = T&;

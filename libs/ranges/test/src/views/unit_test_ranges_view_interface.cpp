@@ -11,6 +11,7 @@
 #include <hamon/ranges/size.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 //#include <hamon/type_traits/common_type.hpp>
 //#include <hamon/type_traits/make_signed.hpp>
@@ -59,7 +60,7 @@ struct NotSizedSentinel
 {
 	using value_type = int;
 	using difference_type = hamon::ptrdiff_t;
-	using iterator_concept = std::forward_iterator_tag;
+	using iterator_concept = hamon::forward_iterator_tag;
 
 	explicit NotSizedSentinel() = default;
 	explicit NotSizedSentinel(int*);

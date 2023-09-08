@@ -24,6 +24,7 @@ using std::partition;
 
 #include <hamon/concepts/swap.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 
@@ -39,7 +40,7 @@ partition_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	Predicate pred,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	for (;;)
 	{

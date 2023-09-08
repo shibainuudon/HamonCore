@@ -27,6 +27,7 @@ using std::shift_right;
 #include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <iterator>
@@ -60,7 +61,7 @@ shift_right_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	Difference n,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	auto result = ranges::next(first, n, last);
 	if (result == last)

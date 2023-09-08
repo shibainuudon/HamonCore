@@ -4,6 +4,7 @@
  *	@brief	iterator_traits のテスト
  */
 
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
@@ -86,7 +87,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it4>::reference,         int
 
 using it5 = std::forward_list<int>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it5>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it5>::iterator_category, std::forward_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it5>::iterator_category, hamon::forward_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it5>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it5>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it5>::pointer,           int*>::value, "");
@@ -110,7 +111,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it7>::reference,         std
 
 struct MyIterator1
 {
-	using iterator_category = std::forward_iterator_tag;
+	using iterator_category = hamon::forward_iterator_tag;
 	using value_type        = char;
 	using difference_type   = short;
 	using pointer           = int;
@@ -118,7 +119,7 @@ struct MyIterator1
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::iterator_category, std::forward_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::iterator_category, hamon::forward_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::value_type,        char>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::difference_type,   short>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::pointer,           int>::value, "");
@@ -152,7 +153,7 @@ struct MyIterator3
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::iterator_category, std::forward_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::iterator_category, hamon::forward_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::difference_type,   long>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator3>::pointer,           void>::value, "");

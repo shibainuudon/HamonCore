@@ -24,6 +24,7 @@ using std::search;
 
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -42,8 +43,8 @@ search_impl(
 	ForwardIterator1 first1, ForwardIterator1 last1,
 	ForwardIterator2 first2, ForwardIterator2 last2,
 	BinaryPredicate pred,
-	std::forward_iterator_tag*,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*,
+	hamon::forward_iterator_tag*)
 {
 	if (first2 == last2)
 	{

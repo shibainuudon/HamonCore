@@ -24,6 +24,7 @@ using std::search_n;
 
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -45,7 +46,7 @@ search_n_impl(
 	Size count,
 	T const& value,
 	BinaryPredicate pred,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	if (count <= 0)
 	{

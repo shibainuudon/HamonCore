@@ -29,6 +29,7 @@ using std::rotate;
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/numeric/gcd.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -177,7 +178,7 @@ rotate_impl_2(
 	ForwardIterator first,
 	ForwardIterator middle,
 	ForwardIterator last,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{

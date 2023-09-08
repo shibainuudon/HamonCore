@@ -27,6 +27,7 @@ using std::is_permutation;
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 
@@ -148,8 +149,8 @@ is_permutation_impl(
 	ForwardIterator1 first1, ForwardIterator1 last1,
 	ForwardIterator2 first2, ForwardIterator2 last2,
 	BinaryPredicate pred,
-	std::forward_iterator_tag*,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*,
+	hamon::forward_iterator_tag*)
 {
 	//  shorten sequences as much as possible by lopping of any equal prefix
 	for (; first1 != last1 && first2 != last2; ++first1, ++first2)

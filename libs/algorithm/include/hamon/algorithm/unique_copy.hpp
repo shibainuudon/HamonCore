@@ -27,6 +27,7 @@ using std::unique_copy;
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -80,7 +81,7 @@ unique_copy_impl(
 	ForwardIterator last,
 	OutputIterator result,
 	BinaryPredicate pred,
-	std::forward_iterator_tag*,
+	hamon::forward_iterator_tag*,
 	hamon::output_iterator_tag*)
 {
 	if (first != last)
@@ -115,7 +116,7 @@ unique_copy_impl(
 	ForwardIterator result,
 	BinaryPredicate pred,
 	hamon::input_iterator_tag*,
-	std::forward_iterator_tag*)
+	hamon::forward_iterator_tag*)
 {
 	if (first != last)
 	{

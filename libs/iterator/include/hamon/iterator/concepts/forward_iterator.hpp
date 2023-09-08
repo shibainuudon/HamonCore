@@ -20,6 +20,7 @@ using std::forward_iterator;
 
 #else
 
+#include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/incrementable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -39,7 +40,7 @@ namespace hamon
 template <typename Iter>
 concept forward_iterator =
 	hamon::input_iterator<Iter> &&
-	hamon::derived_from<hamon::detail::iter_concept<Iter>, std::forward_iterator_tag> &&
+	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::forward_iterator_tag> &&
 	hamon::incrementable<Iter> &&
 	hamon::sentinel_for<Iter, Iter>;
 
@@ -59,7 +60,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::derived_from<
 				hamon::detail::iter_concept<I2>,
-				std::forward_iterator_tag
+				hamon::forward_iterator_tag
 			>::value
 		>,
 		typename = hamon::enable_if_t<
