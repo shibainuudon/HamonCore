@@ -7,6 +7,7 @@
 #ifndef UNIT_TEST_COMMON_ITERATOR_TEST_HPP
 #define UNIT_TEST_COMMON_ITERATOR_TEST_HPP
 
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
@@ -111,7 +112,7 @@ template <typename T>
 struct bidirectional_iterator_wrapper
 {
 	T*	m_ptr;
-	using iterator_category = std::bidirectional_iterator_tag;
+	using iterator_category = hamon::bidirectional_iterator_tag;
 	using value_type        = T;
 	using difference_type   = hamon::ptrdiff_t;
 	using pointer           = T*;

@@ -21,6 +21,7 @@ using std::prev;
 #else
 
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/config.hpp>
@@ -33,7 +34,7 @@ namespace detail
 
 template <typename BidirectionalIterator, typename Distance>
 inline HAMON_CXX14_CONSTEXPR BidirectionalIterator
-prev_impl(BidirectionalIterator it, Distance n, std::bidirectional_iterator_tag*)
+prev_impl(BidirectionalIterator it, Distance n, hamon::bidirectional_iterator_tag*)
 {
 	hamon::advance(it, -n);
 	return it;

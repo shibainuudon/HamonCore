@@ -25,6 +25,7 @@ using std::rotate;
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/next.hpp>
@@ -194,7 +195,7 @@ rotate_impl_2(
 	BidirectionalIterator first,
 	BidirectionalIterator middle,
 	BidirectionalIterator last,
-	std::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag*)
 {
 	if (hamon::next(first) == middle)
 	{

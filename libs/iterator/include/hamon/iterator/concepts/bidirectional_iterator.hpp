@@ -20,6 +20,7 @@ using std::bidirectional_iterator;
 
 #else
 
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
@@ -41,7 +42,7 @@ concept bidirectional_iterator =
 	hamon::forward_iterator<Iter> &&
 	hamon::derived_from<
 		hamon::detail::iter_concept<Iter>,
-		std::bidirectional_iterator_tag> &&
+		hamon::bidirectional_iterator_tag> &&
 	requires(Iter i)
 	{
 		{ --i } -> hamon::same_as<Iter&>;
@@ -64,7 +65,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::derived_from<
 				hamon::detail::iter_concept<I2>,
-				std::bidirectional_iterator_tag
+				hamon::bidirectional_iterator_tag
 			>::value
 		>,
 		typename T1 = decltype(--hamon::declval<I2&>()),

@@ -4,9 +4,10 @@
  *	@brief	iterator_traits のテスト
  */
 
+#include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
-#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -79,7 +80,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it3>::reference,         cha
 
 using it4 = std::list<int>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it4>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it4>::iterator_category, std::bidirectional_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it4>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it4>::value_type,        int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it4>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it4>::pointer,           int*>::value, "");
@@ -103,7 +104,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it6>::reference,         int
 
 using it7 = std::map<int, float>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_category, std::bidirectional_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::value_type,        std::pair<int const, float>>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::difference_type,   hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::pointer,           std::pair<int const, float>*>::value, "");
@@ -127,14 +128,14 @@ static_assert(hamon::is_same<hamon::iterator_traits<MyIterator1>::reference,    
 
 struct MyIterator2
 {
-	using iterator_category = std::bidirectional_iterator_tag;
+	using iterator_category = hamon::bidirectional_iterator_tag;
 	using value_type        = float;
 	using difference_type   = double;
 	using reference         = long double;
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::iterator_category, std::bidirectional_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::value_type,        float>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::difference_type,   double>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator2>::pointer,           void>::value, "");
@@ -176,7 +177,7 @@ struct MyIterator4
 };
 
 //static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::iterator_category, std::bidirectional_iterator_tag>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::value_type,        float>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::difference_type,   int>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<MyIterator4>::pointer,           float*>::value, "");

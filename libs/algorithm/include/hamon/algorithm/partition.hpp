@@ -23,6 +23,7 @@ using std::partition;
 #else
 
 #include <hamon/concepts/swap.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
@@ -75,7 +76,7 @@ partition_impl(
 	BidirectionalIterator first,
 	BidirectionalIterator last,
 	Predicate pred,
-	std::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag*)
 {
 	for (;;)
 	{

@@ -23,6 +23,7 @@ using std::find_end;
 #else
 
 #include <hamon/functional/equal_to.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
@@ -113,8 +114,8 @@ find_end_impl(
 	BidirectionalIterator1 first1, BidirectionalIterator1 last1,
 	BidirectionalIterator2 first2, BidirectionalIterator2 last2,
 	BinaryPredicate pred,
-	std::bidirectional_iterator_tag*,
-	std::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag*,
+	hamon::bidirectional_iterator_tag*)
 {
 	// modeled after search algorithm (in reverse)
 	if (first2 == last2)

@@ -6,6 +6,7 @@
 
 #include <hamon/iterator/move_iterator.hpp>
 #include <hamon/iterator/move_sentinel.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -188,7 +189,7 @@ GTEST_TEST(MoveIteratorTest, TypesTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<input_iterator_wrapper<int>,         hamon::input_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<forward_iterator_wrapper<int>,       hamon::forward_iterator_tag>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<bidirectional_iterator_wrapper<int>, std::bidirectional_iterator_tag>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<bidirectional_iterator_wrapper<int>, hamon::bidirectional_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<random_access_iterator_wrapper<int>, std::random_access_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<contiguous_iterator_wrapper<int>,    std::random_access_iterator_tag>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((TypesTest<int*,       std::random_access_iterator_tag>()));

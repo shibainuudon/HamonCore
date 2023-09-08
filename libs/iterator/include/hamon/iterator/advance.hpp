@@ -20,6 +20,7 @@ using std::advance;
 
 #else
 
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iterator_category.hpp>
@@ -45,7 +46,7 @@ advance_impl(InputIterator& it, Distance n, hamon::input_iterator_tag*)
 
 template <typename BidirectionalIterator, typename Distance>
 inline HAMON_CXX14_CONSTEXPR void
-advance_impl(BidirectionalIterator& it, Distance n, std::bidirectional_iterator_tag*)
+advance_impl(BidirectionalIterator& it, Distance n, hamon::bidirectional_iterator_tag*)
 {
 	if (n > 0)
 	{

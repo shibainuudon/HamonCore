@@ -24,6 +24,7 @@ using std::move_iterator;
 
 #else
 
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
@@ -108,7 +109,7 @@ using move_iter_concept =
 		std::random_access_iterator_tag,
 	hamon::conditional_t<
 		hamon::bidirectional_iterator_t<Iter>::value,
-		std::bidirectional_iterator_tag,
+		hamon::bidirectional_iterator_tag,
 	hamon::conditional_t<
 		hamon::forward_iterator_t<Iter>::value,
 		hamon::forward_iterator_tag,

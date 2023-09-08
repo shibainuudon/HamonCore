@@ -10,6 +10,7 @@
 #include <hamon/iterator/advance.hpp>
 //#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/iterator/begin.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/cbegin.hpp>
 #include <hamon/iterator/cend.hpp>
 //#include <hamon/iterator/common_iterator.hpp>

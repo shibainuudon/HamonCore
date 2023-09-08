@@ -16,6 +16,7 @@
 #include <hamon/iterator/concepts/detail/cpp17_iterator.hpp>
 #include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
 #include <hamon/iterator/concepts/detail/has_pointer.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
@@ -146,7 +147,7 @@ private:
 #endif
 	>
 	{
-		using type = std::bidirectional_iterator_tag;
+		using type = hamon::bidirectional_iterator_tag;
 	};
 
 	template <typename Iter>

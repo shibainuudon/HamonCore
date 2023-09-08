@@ -25,6 +25,7 @@ using std::shift_right;
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
@@ -44,7 +45,7 @@ shift_right_impl(
 	BidirectionalIterator first,
 	BidirectionalIterator last,
 	Difference n,
-	std::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag*)
 {
 	auto mid = ranges::next(last, -n, first);
 	if (mid == first)
