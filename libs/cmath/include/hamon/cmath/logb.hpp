@@ -16,6 +16,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/numbers/ln2.hpp>
 #include <hamon/numbers/ln10.hpp>
 #include <hamon/config.hpp>
@@ -131,7 +132,7 @@ inline HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_1(T x, T exp, T radix = std::numeric_limits<T>::radix)
 {
 	return logb_unchecked_ct_2(
-		x, hamon::detail::pow_n(radix, /*hamon::itrunc*/static_cast<std::intmax_t>(exp)), exp);
+		x, hamon::detail::pow_n(radix, /*hamon::itrunc*/static_cast<hamon::intmax_t>(exp)), exp);
 }
 
 template <typename T>
