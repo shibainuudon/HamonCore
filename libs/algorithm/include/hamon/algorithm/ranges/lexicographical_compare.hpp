@@ -28,6 +28,7 @@ using std::ranges::lexicographical_compare;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstring/memcmp.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -126,7 +127,7 @@ struct lexicographical_compare_fn
 
 					if (const auto len = std::min(d1, d2))
 					{
-						const auto c = std::memcmp(first1, first2, len);
+						const auto c = hamon::memcmp(first1, first2, len);
 						if constexpr (is_same_v<Comp, ranges::less>)
 						{
 							if (c < 0)

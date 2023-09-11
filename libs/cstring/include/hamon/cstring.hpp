@@ -7,6 +7,7 @@
 #ifndef HAMON_CSTRING_HPP
 #define HAMON_CSTRING_HPP
 
+#include <hamon/cstring/memcmp.hpp>
 #include <hamon/cstring/strlen.hpp>
 
 #endif // HAMON_CSTRING_HPP
