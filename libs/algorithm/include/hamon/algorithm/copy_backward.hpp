@@ -39,9 +39,9 @@ using std::copy_backward;
 //#include <hamon/type_traits/is_same.hpp>
 //#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 //#include <hamon/cstddef/size_t.hpp>
+//#include <hamon/cstring/memmove.hpp>
 #include <hamon/config.hpp>
 //#include <cstddef>
-//#include <cstring>	// memmove
 
 namespace hamon
 {
@@ -79,7 +79,7 @@ copy_backward_impl(T* first, T* last, U* result)
 	if (n > 0)
 	{
 		result -= n;
-		std::memmove(result, first, n * sizeof(U));
+		hamon::memmove(result, first, n * sizeof(U));
 	}
 
 	return result;

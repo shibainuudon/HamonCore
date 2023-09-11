@@ -31,6 +31,7 @@ using std::ranges::copy;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstring/memmove.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -49,7 +50,6 @@ using std::ranges::copy;
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <cstring>	// memmove
 
 namespace hamon
 {
@@ -82,7 +82,7 @@ private:
 				auto num = last - first;
 				if (num)
 				{
-					std::memmove(result, first, sizeof(ValueTypeI) * static_cast<hamon::size_t>(num));
+					hamon::memmove(result, first, sizeof(ValueTypeI) * static_cast<hamon::size_t>(num));
 				}
 				return { first + num, result + num };
 			}
