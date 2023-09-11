@@ -10,6 +10,7 @@
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/cstring/memcpy.hpp>
 #include <hamon/cstring/memmove.hpp>
+#include <hamon/cstring/memset.hpp>
 #include <hamon/cstring/strlen.hpp>
 
 #endif // HAMON_CSTRING_HPP
