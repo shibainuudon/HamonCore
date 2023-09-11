@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		base64
 		concepts
 		config
+		cstring
 		detail
 		preprocessor
 		type_traits

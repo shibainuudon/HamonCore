@@ -8,9 +8,9 @@
 #define HAMON_SERIALIZATION_DETAIL_BINARY_IARCHIVE_IMPL_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstring/memcpy.hpp>
 #include <istream>	// basic_istream
 #include <vector>
-#include <cstring>	// memcpy
 
 namespace hamon
 {
@@ -37,7 +37,7 @@ void load_binary(std::basic_istream<CharT, Traits>& is, void* p, hamon::size_t s
 		// そうでないときは、一時バッファに読み込んでからコピーする
 		std::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
 		pbuf->sgetn(buf.data(), static_cast<std::streamsize>(count));
-		std::memcpy(p, buf.data(), size);
+		hamon::memcpy(p, buf.data(), size);
 	}
 
 	// データにEOF(-1)が含まれていた場合にeofビットが立って、

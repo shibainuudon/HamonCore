@@ -8,9 +8,9 @@
 #define HAMON_SERIALIZATION_DETAIL_BINARY_OARCHIVE_IMPL_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstring/memcpy.hpp>
 #include <ostream>	// basic_ostream
 #include <vector>
-#include <cstring>	// memcpy
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, hamon::si
 	{
 		// そうでないときは、一時バッファにコピーしてから書き込む
 		std::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
-		std::memcpy(buf.data(), p, size);
+		hamon::memcpy(buf.data(), p, size);
 		pbuf->sputn(buf.data(), static_cast<std::streamsize>(count));
 	}
 }

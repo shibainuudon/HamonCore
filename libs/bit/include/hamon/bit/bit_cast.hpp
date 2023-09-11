@@ -25,12 +25,12 @@ using std::bit_cast;
 
 #else
 
+#include <hamon/cstring/memcpy.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/config.hpp>
-#include <cstring>	// memcpy
 
 namespace hamon
 {
@@ -81,7 +81,7 @@ bit_cast(From const& src) HAMON_NOEXCEPT
 #else
 
 	To dst;
-	std::memcpy(&dst, &src, sizeof(To));
+	hamon::memcpy(&dst, &src, sizeof(To));
 	return dst;
 #endif
 }
