@@ -13,6 +13,7 @@
 #include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -171,8 +172,8 @@ static_assert(hamon::is_same<
 		hamon::declval<hamon::tuple<double>>(),
 		hamon::declval<hamon::tuple<>>(),
 		hamon::declval<hamon::tuple<unsigned&>>(),
-		hamon::declval<hamon::pair<bool, std::nullptr_t>>())),
-	hamon::tuple<wchar_t, wchar_t, wchar_t, double, unsigned&, bool, std::nullptr_t>>::value, "");
+		hamon::declval<hamon::pair<bool, hamon::nullptr_t>>())),
+	hamon::tuple<wchar_t, wchar_t, wchar_t, double, unsigned&, bool, hamon::nullptr_t>>::value, "");
 
 GTEST_TEST(TupleTest, TupleCatTest)
 {
