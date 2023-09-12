@@ -14,8 +14,8 @@ HAMON_WARNING_DISABLE_MSVC(4308) // 負の整数定数が符号なしの型に�
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -123,7 +123,7 @@ GTEST_TEST(IteratorTest, NextTest)
 		EXPECT_TRUE(it == hamon::end(l));
 	}
 	{
-		const std::array<float, 4> a{{1, 2, 3, 4}};
+		const hamon::array<float, 4> a{{1, 2, 3, 4}};
 
 		auto it = hamon::begin(a);
 		EXPECT_EQ(1, *it);
@@ -137,7 +137,7 @@ GTEST_TEST(IteratorTest, NextTest)
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		std::array<float, 4> a{{1, 2, 3, 4}};
+		hamon::array<float, 4> a{{1, 2, 3, 4}};
 
 		auto it = hamon::begin(a);
 		EXPECT_EQ(1, *it);
@@ -149,21 +149,21 @@ GTEST_TEST(IteratorTest, NextTest)
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<float, 4> a{{1, 2, 3, 4}};
+		HAMON_STATIC_CONSTEXPR hamon::array<float, 4> a{{1, 2, 3, 4}};
 
-		HAMON_CXX17_CONSTEXPR auto it1 = hamon::begin(a);
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(1, *it1);
-		HAMON_CXX17_CONSTEXPR auto it2 = hamon::next(it1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(2, *it2);
-		HAMON_CXX17_CONSTEXPR auto it3 = hamon::next(it2, 2);
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(4, *it3);
-		HAMON_CXX17_CONSTEXPR auto it4 = hamon::next(it3, -1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(3, *it4);
-		HAMON_CXX17_CONSTEXPR auto it5 = hamon::next(it4, 2);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it5 == hamon::end(a));
+		HAMON_CXX14_CONSTEXPR auto it1 = hamon::begin(a);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, *it1);
+		HAMON_CXX14_CONSTEXPR auto it2 = hamon::next(it1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, *it2);
+		HAMON_CXX14_CONSTEXPR auto it3 = hamon::next(it2, 2);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, *it3);
+		HAMON_CXX14_CONSTEXPR auto it4 = hamon::next(it3, -1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(3, *it4);
+		HAMON_CXX14_CONSTEXPR auto it5 = hamon::next(it4, 2);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it5 == hamon::end(a));
 
-		HAMON_CXX17_CONSTEXPR auto d = hamon::end(a) - hamon::begin(a);
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(4, d);
+		HAMON_CXX14_CONSTEXPR auto d = hamon::end(a) - hamon::begin(a);
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, d);
 	}
 }
 

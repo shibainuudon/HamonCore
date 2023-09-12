@@ -7,9 +7,9 @@
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -52,17 +52,17 @@ GTEST_TEST(IteratorTest, DistanceTest)
 		EXPECT_EQ(4, hamon::distance(hamon::begin(l), hamon::end(l)));
 	}
 	{
-		std::array<float, 2> a{{1, 2}};
+		hamon::array<float, 2> a{{1, 2}};
 		EXPECT_EQ(2, hamon::distance(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		const std::array<float, 3> a{{1, 2, 3}};
+		const hamon::array<float, 3> a{{1, 2, 3}};
 		EXPECT_EQ(3, hamon::distance(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_CONSTEXPR std::array<float, 4> a{{1, 2, 3, 4}};
-		HAMON_CXX17_CONSTEXPR auto d = hamon::distance(hamon::begin(a), hamon::end(a));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(4, d);
+		HAMON_CONSTEXPR hamon::array<float, 4> a{{1, 2, 3, 4}};
+		HAMON_CXX14_CONSTEXPR auto d = hamon::distance(hamon::begin(a), hamon::end(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(4, d);
 	}
 }
 

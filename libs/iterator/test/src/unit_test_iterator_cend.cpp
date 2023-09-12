@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/cend.hpp>
 #include <hamon/iterator/cbegin.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -15,7 +15,7 @@ GTEST_TEST(IteratorTest, CEndTest)
 {
 	HAMON_STATIC_CONSTEXPR int a[] = {0,1,2};
 	std::vector<float> v {3,1,4,1,5};
-	std::array<float, 2> a2{{0.5f, 1.5f}};
+	hamon::array<float, 2> a2{{0.5f, 1.5f}};
 
 	{
 		HAMON_CONSTEXPR auto it = hamon::cend(a);

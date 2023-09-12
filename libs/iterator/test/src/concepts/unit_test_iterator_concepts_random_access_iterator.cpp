@@ -5,10 +5,10 @@
  */
 
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <string>
 //#include <string_view>
-#include <array>
 #include <vector>
 #include <list>
 #include <deque>
@@ -68,8 +68,8 @@ HAMON_RANDOM_ACCESS_ITERATOR_TEST(false, void(A::*)());
 #endif
 HAMON_RANDOM_ACCESS_ITERATOR_TEST(false, int A::*);
 
-HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  std::array<int, 1>::iterator);
-HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  std::array<A, 1>::const_iterator);
+HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  hamon::array<int, 1>::iterator);
+HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  hamon::array<A, 1>::const_iterator);
 HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  std::deque<int>::iterator);
 HAMON_RANDOM_ACCESS_ITERATOR_TEST(true,  std::deque<A>::const_iterator);
 HAMON_RANDOM_ACCESS_ITERATOR_TEST(false, std::list<int>::iterator);

@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/concepts/sortable.hpp>
 //#include <hamon/string_view.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
-#include <array>
 #include <deque>
 #include <forward_list>
 #include <iterator>
@@ -68,8 +68,8 @@ HAMON_SORTABLE_TEST(false, void const         ** const);
 HAMON_SORTABLE_TEST(false, void       volatile** const);
 HAMON_SORTABLE_TEST(false, void const volatile** const);
 
-HAMON_SORTABLE_TEST(true,  std::array<int, 1>::iterator);
-HAMON_SORTABLE_TEST(false, std::array<int, 1>::const_iterator);
+HAMON_SORTABLE_TEST(true,  hamon::array<int, 1>::iterator);
+HAMON_SORTABLE_TEST(false, hamon::array<int, 1>::const_iterator);
 HAMON_SORTABLE_TEST(true,  std::deque<int>::iterator);
 HAMON_SORTABLE_TEST(false, std::deque<int>::const_iterator);
 HAMON_SORTABLE_TEST(true,  std::forward_list<int>::iterator);

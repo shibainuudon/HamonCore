@@ -5,8 +5,8 @@
  */
 
 #include <hamon/iterator/concepts/input_iterator.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -79,8 +79,8 @@ HAMON_INPUT_ITERATOR_TEST(false, void(A::*)());
 #endif
 HAMON_INPUT_ITERATOR_TEST(false, int A::*);
 
-HAMON_INPUT_ITERATOR_TEST(true,  std::array<int, 1>::iterator);
-HAMON_INPUT_ITERATOR_TEST(true,  std::array<A, 1>::const_iterator);
+HAMON_INPUT_ITERATOR_TEST(true,  hamon::array<int, 1>::iterator);
+HAMON_INPUT_ITERATOR_TEST(true,  hamon::array<A, 1>::const_iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::deque<int>::iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::deque<A>::const_iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::forward_list<int>::iterator);

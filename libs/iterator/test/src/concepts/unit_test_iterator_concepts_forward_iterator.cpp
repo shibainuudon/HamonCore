@@ -5,10 +5,10 @@
  */
 
 #include <hamon/iterator/concepts/forward_iterator.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <string>
 //#include <string_view>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -69,8 +69,8 @@ HAMON_FORWARD_ITERATOR_TEST(false, void(A::*)());
 #endif
 HAMON_FORWARD_ITERATOR_TEST(false, int A::*);
 
-HAMON_FORWARD_ITERATOR_TEST(true,  std::array<int, 1>::iterator);
-HAMON_FORWARD_ITERATOR_TEST(true,  std::array<A, 1>::const_iterator);
+HAMON_FORWARD_ITERATOR_TEST(true,  hamon::array<int, 1>::iterator);
+HAMON_FORWARD_ITERATOR_TEST(true,  hamon::array<A, 1>::const_iterator);
 HAMON_FORWARD_ITERATOR_TEST(true,  std::deque<int>::iterator);
 HAMON_FORWARD_ITERATOR_TEST(true,  std::deque<A>::const_iterator);
 HAMON_FORWARD_ITERATOR_TEST(true,  std::forward_list<int>::iterator);
