@@ -6,9 +6,9 @@
 
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/array.hpp>
+#include <hamon/string_view.hpp>
 #include <hamon/config.hpp>
 #include <string>
-//#include <string_view>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -79,8 +79,8 @@ HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, std::forward_list<int>::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, std::forward_list<A>::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::const_iterator);
-//HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string_view::iterator);
-//HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string_view::const_iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::string_view::iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::string_view::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::vector<int>::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::vector<A>::const_iterator);
 
