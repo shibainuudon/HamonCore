@@ -11,8 +11,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/size.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <string>
 #include "constexpr_test.hpp"
 
@@ -81,10 +81,10 @@ inline HAMON_CXX14_CONSTEXPR bool PrevPermutationTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PrevPermutationTest2()
+inline HAMON_CXX14_CONSTEXPR bool PrevPermutationTest2()
 {
 	{
-		std::array<int, 4> a {{7,6,5,4}};
+		hamon::array<int, 4> a {{7,6,5,4}};
 
 		const int expected[][4]
 		{
@@ -134,7 +134,7 @@ inline HAMON_CXX17_CONSTEXPR bool PrevPermutationTest2()
 GTEST_TEST(AlgorithmTest, PrevPermutationTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PrevPermutationTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PrevPermutationTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PrevPermutationTest2());
 
 	{
 		std::string a = "abb";

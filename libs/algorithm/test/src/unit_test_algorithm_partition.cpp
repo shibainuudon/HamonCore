@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -78,10 +78,10 @@ inline HAMON_CXX14_CONSTEXPR bool PartitionTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartitionTest4()
+inline HAMON_CXX14_CONSTEXPR bool PartitionTest4()
 {
 	{
-		std::array<int, 5> a {{1,2,3,4,5}};
+		hamon::array<int, 5> a {{1,2,3,4,5}};
 		auto ret = hamon::partition(hamon::begin(a), hamon::end(a), pred2());
 		VERIFY(ret == hamon::next(hamon::begin(a), 3));
 		VERIFY( pred2()(a[0]));
@@ -98,7 +98,7 @@ GTEST_TEST(AlgorithmTest, PartitionTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionTest2());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartitionTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionTest4());
 
 	{
 		std::vector<int> a {1,2,3,4,5};

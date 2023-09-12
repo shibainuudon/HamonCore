@@ -8,8 +8,8 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 
 namespace hamon_algorithm_test
@@ -35,7 +35,7 @@ GTEST_TEST(AlgorithmTest, SortTest)
 		EXPECT_EQ(1, a[2]);
 	}
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::sort(hamon::begin(a), hamon::end(a));
 		EXPECT_EQ(1, a[0]);
 		EXPECT_EQ(1, a[1]);
@@ -45,7 +45,7 @@ GTEST_TEST(AlgorithmTest, SortTest)
 		EXPECT_EQ(9, a[5]);
 	}
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::sort(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		EXPECT_EQ(9, a[0]);
 		EXPECT_EQ(5, a[1]);

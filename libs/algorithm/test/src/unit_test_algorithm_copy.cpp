@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -100,12 +100,12 @@ inline HAMON_CXX14_CONSTEXPR bool CopyTestArray()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
+inline HAMON_CXX14_CONSTEXPR bool CopyTestStdArray()
 {
 	// copy(first, last, result)
 	{
 		const int a[] { 1, 2, 3 };
-		std::array<int, 3> b {{}};
+		hamon::array<int, 3> b {{}};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		VERIFY(ret == hamon::end(b));
@@ -115,8 +115,8 @@ inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
 		VERIFY(3 == b[2]);
 	}
 	{
-		const std::array<int, 3> a {{ 1, 2, 3 }};
-		std::array<int, 4> b {{}};
+		const hamon::array<int, 3> a {{ 1, 2, 3 }};
+		hamon::array<int, 4> b {{}};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		VERIFY(ret == hamon::next(hamon::begin(b), 3));
@@ -129,7 +129,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
 
 	// copy(first, last, result_first, result_last)
 	{
-		const std::array<int, 3> a {{ 1, 2, 3 }};
+		const hamon::array<int, 3> a {{ 1, 2, 3 }};
 		int b[3] {};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
@@ -141,7 +141,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
 	}
 	{
 		const int a[] { 1, 2, 3 };
-		std::array<int, 5> b {{}};
+		hamon::array<int, 5> b {{}};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		VERIFY(ret == hamon::next(hamon::begin(b), 3));
@@ -154,7 +154,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
 	}
 	{
 		const int a[] { 1, 2, 3 };
-		std::array<int, 2> b {{}};
+		hamon::array<int, 2> b {{}};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		VERIFY(ret == hamon::end(b));
@@ -169,10 +169,10 @@ inline HAMON_CXX17_CONSTEXPR bool CopyTestStdArray()
 GTEST_TEST(AlgorithmTest, CopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyTestArray());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(CopyTestStdArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyTestStdArray());
 
 	{
-		const std::array<int, 4> a {{ 4, 5, 6, 7 }};
+		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
 		std::vector<int> b(5);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
@@ -185,7 +185,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_EQ(0, b[4]);
 	}
 	{
-		const std::array<int, 4> a {{ 4, 5, 6, 7 }};
+		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
 		std::vector<int> b(5);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
@@ -198,7 +198,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_EQ(0, b[4]);
 	}
 	{
-		const std::array<int, 4> a {{ 4, 5, 6, 7 }};
+		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
 		std::vector<int> b(3);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));

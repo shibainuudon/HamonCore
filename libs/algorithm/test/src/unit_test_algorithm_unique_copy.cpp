@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -61,11 +61,11 @@ inline HAMON_CXX14_CONSTEXPR bool UniqueCopyTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool UniqueCopyTest2()
+inline HAMON_CXX14_CONSTEXPR bool UniqueCopyTest2()
 {
 	{
 		const int a[] { 2,5,3,3,1,2,4,2,1,1,4,4,3,3,3 };
-		std::array<int, 12> b {{}};
+		hamon::array<int, 12> b {{}};
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		VERIFY(ret == hamon::next(hamon::begin(b), 10));
 
@@ -88,10 +88,10 @@ inline HAMON_CXX17_CONSTEXPR bool UniqueCopyTest2()
 GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueCopyTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(UniqueCopyTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueCopyTest2());
 
 	{
-		const std::array<int, 10> a {{ 1,1,2,2,2,3,4,4,5,5 }};
+		const hamon::array<int, 10> a {{ 1,1,2,2,2,3,4,4,5,5 }};
 		std::vector<int> b(10);
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 5));

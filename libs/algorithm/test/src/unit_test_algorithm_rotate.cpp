@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -98,10 +98,10 @@ inline HAMON_CXX14_CONSTEXPR bool RotateTest5()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RotateTest6()
+inline HAMON_CXX14_CONSTEXPR bool RotateTest6()
 {
 	{
-		std::array<int, 4> a {{ 1,2,3,4 }};
+		hamon::array<int, 4> a {{ 1,2,3,4 }};
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 2), hamon::end(a));
 		VERIFY(ret == hamon::next(hamon::begin(a), 2));
 		VERIFY(3 == a[0]);
@@ -112,10 +112,10 @@ inline HAMON_CXX17_CONSTEXPR bool RotateTest6()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RotateTest7()
+inline HAMON_CXX14_CONSTEXPR bool RotateTest7()
 {
 	{
-		std::array<int, 4> a {{ 1,2,3,4 }};
+		hamon::array<int, 4> a {{ 1,2,3,4 }};
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 4), hamon::end(a));
 		VERIFY(ret == hamon::next(hamon::begin(a), 0));
 		VERIFY(1 == a[0]);
@@ -133,8 +133,8 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateTest3());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateTest4());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateTest5());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RotateTest6());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RotateTest7());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateTest6());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateTest7());
 
 	{
 		Foo a[] { Foo(1), Foo(2), Foo(3), Foo(4) };

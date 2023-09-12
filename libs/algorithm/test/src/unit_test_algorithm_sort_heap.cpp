@@ -9,8 +9,8 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -43,10 +43,10 @@ inline HAMON_CXX14_CONSTEXPR bool SortHeapTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool SortHeapTest2()
+inline HAMON_CXX14_CONSTEXPR bool SortHeapTest2()
 {
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::make_heap(hamon::begin(a), hamon::end(a));
 		hamon::sort_heap(hamon::begin(a), hamon::end(a));
 		VERIFY(1 == a[0]);
@@ -57,7 +57,7 @@ inline HAMON_CXX17_CONSTEXPR bool SortHeapTest2()
 		VERIFY(9 == a[5]);
 	}
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::make_heap(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		hamon::sort_heap(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		VERIFY(9 == a[0]);
@@ -73,7 +73,7 @@ inline HAMON_CXX17_CONSTEXPR bool SortHeapTest2()
 GTEST_TEST(AlgorithmTest, SortHeapTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SortHeapTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(SortHeapTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SortHeapTest2());
 
 	{
 		std::vector<int> a { 5, 4, 1, 1, 3 };

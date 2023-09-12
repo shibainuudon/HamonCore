@@ -7,8 +7,8 @@
 #include <hamon/algorithm/binary_search.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -53,20 +53,20 @@ GTEST_TEST(AlgorithmTest, BinarySearchTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int,5> a {{ 3,1,4,6,5 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6));
+		HAMON_STATIC_CONSTEXPR hamon::array<int,5> a {{ 3,1,4,6,5 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int,5> a {{ 5,4,3,2,1 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred2()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred2()));
+		HAMON_STATIC_CONSTEXPR hamon::array<int,5> a {{ 5,4,3,2,1 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred2()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred2()));
 	}
 	{
 		const std::vector<int> a { 1,2,3,4,5 };

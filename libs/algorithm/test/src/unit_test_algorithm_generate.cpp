@@ -7,8 +7,8 @@
 #include <hamon/algorithm/generate.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -61,10 +61,10 @@ inline HAMON_CXX14_CONSTEXPR bool GenerateArrayTest()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool GenerateStdArrayTest()
+inline HAMON_CXX14_CONSTEXPR bool GenerateStdArrayTest()
 {
 	{
-		std::array<int, 6> a {{}};
+		hamon::array<int, 6> a {{}};
 		hamon::generate(hamon::begin(a), hamon::end(a), pred2());
 		VERIFY( 3 == a[0]);
 		VERIFY( 5 == a[1]);
@@ -79,7 +79,7 @@ inline HAMON_CXX17_CONSTEXPR bool GenerateStdArrayTest()
 GTEST_TEST(AlgorithmTest, GenerateTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(GenerateArrayTest());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(GenerateStdArrayTest());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(GenerateStdArrayTest());
 
 	{
 		std::vector<int> a(3);

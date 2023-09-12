@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -68,16 +68,16 @@ GTEST_TEST(AlgorithmTest, MismatchTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(p.second == hamon::next(hamon::begin(a2), 4));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 6> a1 ={{ 1,2,3,4,5,6 }};
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 6> a1 ={{ 1,2,3,4,5,6 }};
 		HAMON_STATIC_CONSTEXPR int a2[]              = { 1,2,3,1,5 };
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto p =
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto p =
 			hamon::mismatch(hamon::begin(a1), hamon::end(a1), hamon::begin(a2));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(p.first  == hamon::next(hamon::begin(a1), 3));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(p.second == hamon::next(hamon::begin(a2), 3));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(p.first  == hamon::next(hamon::begin(a1), 3));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(p.second == hamon::next(hamon::begin(a2), 3));
 	}
 	{
 		const std::vector<int>   v = { 1,2,3,4,3,2 };
-		const std::array<int, 6> a ={{ 1,2,4,3,2,1 }};
+		const hamon::array<int, 6> a ={{ 1,2,4,3,2,1 }};
 		auto const p = hamon::mismatch(hamon::begin(v), hamon::end(v), hamon::begin(a));
 		EXPECT_TRUE(p.first  == hamon::next(hamon::begin(v), 2));
 		EXPECT_TRUE(p.second == hamon::next(hamon::begin(a), 2));

@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -56,14 +56,14 @@ GTEST_TEST(AlgorithmTest, UpperBoundTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 5));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{ 3,1,4,6,5 }};
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto ret = hamon::upper_bound(hamon::begin(a), hamon::end(a), 3);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 2));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{ 3,1,4,6,5 }};
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto ret = hamon::upper_bound(hamon::begin(a), hamon::end(a), 3);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 3> a {{ 10,20,30 }};
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto ret = hamon::upper_bound(hamon::begin(a), hamon::end(a), 10, pred2());
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 3> a {{ 10,20,30 }};
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto ret = hamon::upper_bound(hamon::begin(a), hamon::end(a), 10, pred2());
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 	}
 	{
 		const std::vector<int> a { 1,3,5,8,13,17,25 };

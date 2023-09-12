@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -29,10 +29,10 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
-		HAMON_CXX17_CONSTEXPR const auto it =
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
+		HAMON_CXX14_CONSTEXPR const auto it =
 			hamon::search_n(hamon::begin(a), hamon::end(a), 1, 3);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
 		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,2,1,3,3,2,3,3,1 };
@@ -41,10 +41,10 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 5));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
-		HAMON_CXX17_CONSTEXPR const auto it =
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
+		HAMON_CXX14_CONSTEXPR const auto it =
 			hamon::search_n(hamon::begin(a), hamon::end(a), 3, 3);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
 		const std::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };

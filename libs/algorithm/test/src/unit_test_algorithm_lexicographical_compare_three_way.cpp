@@ -5,9 +5,9 @@
  */
 
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -169,8 +169,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 		}
 	}
 	{
-		std::array<unsigned char, 8> c1 = { 0, 1, 2, 3, 4, 5, 6, 7 };
-		std::array<unsigned char, 8> c2 = { 0, 1, 2, 3, 4, 5, 6, 77 };
+		hamon::array<unsigned char, 8> c1 = { 0, 1, 2, 3, 4, 5, 6, 7 };
+		hamon::array<unsigned char, 8> c2 = { 0, 1, 2, 3, 4, 5, 6, 77 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c1.begin(), c1.end(),
@@ -186,7 +186,7 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 			c2.begin(), c2.end(),
 			c1.begin(), c1.end()) > 0);
 
-		std::array<unsigned char, 7> c3 = { 0, 1, 2, 3, 4, 5, 6 };
+		hamon::array<unsigned char, 7> c3 = { 0, 1, 2, 3, 4, 5, 6 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c3.begin(), c3.end(),

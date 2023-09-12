@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -64,21 +64,21 @@ GTEST_TEST(AlgorithmTest, EqualRangeTest)
 		}
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 9> a {{ 5,5,4,2,2,2,1,0,0 }};
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 9> a {{ 5,5,4,2,2,2,1,0,0 }};
 		{
-			HAMON_CXX17_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 2, pred2());
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 3));
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 6));
+			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 2, pred2());
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 3));
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 6));
 		}
 		{
-			HAMON_CXX17_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), -1, pred2());
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::end(a));
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::end(a));
+			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), -1, pred2());
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::end(a));
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::end(a));
 		}
 		{
-			HAMON_CXX17_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 6, pred2());
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::begin(a));
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::begin(a));
+			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 6, pred2());
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::begin(a));
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::begin(a));
 		}
 	}
 	{

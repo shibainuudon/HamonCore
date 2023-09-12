@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -100,10 +100,10 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveIfTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RemoveIfTest4()
+inline HAMON_CXX14_CONSTEXPR bool RemoveIfTest4()
 {
 	{
-		std::array<int, 7> a = {{1,2,3,1,3,1,2}};
+		hamon::array<int, 7> a = {{1,2,3,1,3,1,2}};
 		auto ret = hamon::remove_if(hamon::begin(a), hamon::end(a), pred2());
 		VERIFY(ret == hamon::next(hamon::begin(a), 3));
 		VERIFY(1 == a[0]);
@@ -114,10 +114,10 @@ inline HAMON_CXX17_CONSTEXPR bool RemoveIfTest4()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RemoveIfTest5()
+inline HAMON_CXX14_CONSTEXPR bool RemoveIfTest5()
 {
 	{
-		std::array<int, 4> a = {{1,1,1,1}};
+		hamon::array<int, 4> a = {{1,1,1,1}};
 		auto ret = hamon::remove_if(hamon::begin(a), hamon::end(a), pred1);
 		VERIFY(ret == hamon::begin(a));
 		VERIFY(4u == a.size());	// remove_ifしてもコンテナのサイズは変わらない
@@ -130,8 +130,8 @@ GTEST_TEST(AlgorithmTest, RemoveIfTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveIfTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveIfTest2());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveIfTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RemoveIfTest4());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RemoveIfTest5());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveIfTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveIfTest5());
 
 	{
 		using T = movable_int;

@@ -7,8 +7,8 @@
 #include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -38,10 +38,10 @@ inline HAMON_CXX14_CONSTEXPR bool IterSwapTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool IterSwapTest2()
+inline HAMON_CXX14_CONSTEXPR bool IterSwapTest2()
 {
-	std::array<int, 3> a1 {{ 7, 8, 9}};
-	std::array<int, 3> a2 {{10,11,12}};
+	hamon::array<int, 3> a1 {{ 7, 8, 9}};
+	hamon::array<int, 3> a2 {{10,11,12}};
 
 	hamon::iter_swap(hamon::begin(a1), hamon::begin(a2) + 2);
 
@@ -58,7 +58,7 @@ inline HAMON_CXX17_CONSTEXPR bool IterSwapTest2()
 GTEST_TEST(AlgorithmTest, IterSwapTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IterSwapTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(IterSwapTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IterSwapTest2());
 
 
 	{

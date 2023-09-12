@@ -7,8 +7,8 @@
 #include <hamon/algorithm/replace_if.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -48,10 +48,10 @@ inline HAMON_CXX14_CONSTEXPR bool ReplaceIfTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool ReplaceIfTest2()
+inline HAMON_CXX14_CONSTEXPR bool ReplaceIfTest2()
 {
 	{
-		std::array<int, 6> a {{ 3,1,2,1,2,3 }};
+		hamon::array<int, 6> a {{ 3,1,2,1,2,3 }};
 		hamon::replace_if(hamon::begin(a), hamon::end(a), pred2(), 5);
 		VERIFY(3 == a[0]);
 		VERIFY(1 == a[1]);
@@ -66,7 +66,7 @@ inline HAMON_CXX17_CONSTEXPR bool ReplaceIfTest2()
 GTEST_TEST(AlgorithmTest, ReplaceIfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceIfTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ReplaceIfTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceIfTest2());
 
 	{
 		std::vector<int> a { 3,1,4,1,5,9,2 };

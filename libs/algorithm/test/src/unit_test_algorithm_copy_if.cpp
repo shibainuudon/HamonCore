@@ -7,8 +7,8 @@
 #include <hamon/algorithm/copy_if.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -47,9 +47,9 @@ inline HAMON_CXX14_CONSTEXPR bool CopyIfArrayTest()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool CopyIfStdArrayTest()
+inline HAMON_CXX14_CONSTEXPR bool CopyIfStdArrayTest()
 {
-	const std::array<int, 4> a1 {{ 4, 5, 6, 7 }};
+	const hamon::array<int, 4> a1 {{ 4, 5, 6, 7 }};
 	int a2[5] {{}};
 
 	auto it = hamon::copy_if(hamon::begin(a1), hamon::end(a1), hamon::begin(a2), pred2);
@@ -67,7 +67,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyIfStdArrayTest()
 GTEST_TEST(AlgorithmTest, CopyIfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyIfArrayTest());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(CopyIfStdArrayTest());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyIfStdArrayTest());
 
 	{
 		const std::vector<int> v { 5, 6, 7, 8, 9 };

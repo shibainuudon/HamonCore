@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -61,10 +61,10 @@ inline HAMON_CXX14_CONSTEXPR bool ForEachArrayTest()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool ForEachStdArrayTest()
+inline HAMON_CXX14_CONSTEXPR bool ForEachStdArrayTest()
 {
 	{
-		const std::array<int, 5> a {{ 3, 1, 4, 1, 5 }};
+		const hamon::array<int, 5> a {{ 3, 1, 4, 1, 5 }};
 		auto s = hamon::for_each(hamon::begin(a), hamon::end(a), Sum());
 		VERIFY(14 == s.get());
 	}
@@ -75,7 +75,7 @@ inline HAMON_CXX17_CONSTEXPR bool ForEachStdArrayTest()
 GTEST_TEST(AlgorithmTest, ForEachTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ForEachArrayTest());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ForEachStdArrayTest());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ForEachStdArrayTest());
 
 	{
 		std::vector<int> v { 1, 2, 3 };

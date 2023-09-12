@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -53,19 +53,19 @@ GTEST_TEST(AlgorithmTest, IsHeapUntilTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 7));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> a {{ 1, 2, 3 }};
-		HAMON_CXX17_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> a {{ 1, 2, 3 }};
+		HAMON_CXX14_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> a {{ 3, 2, 1 }};
-		HAMON_CXX17_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> a {{ 3, 2, 1 }};
+		HAMON_CXX14_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 8> a {{ 9, 5, 4, 1, 1, 3, 2, 6 }};
-		HAMON_CXX17_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 7));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 8> a {{ 9, 5, 4, 1, 1, 3, 2, 6 }};
+		HAMON_CXX14_CONSTEXPR const auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), pred1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 7));
 	}
 	{
 		const std::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };

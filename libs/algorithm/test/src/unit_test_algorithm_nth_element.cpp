@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -85,22 +85,22 @@ inline HAMON_CXX14_CONSTEXPR bool NthElementTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool NthElementTest3()
+inline HAMON_CXX14_CONSTEXPR bool NthElementTest3()
 {
 	{
 		const int nth = 5;
-		std::array<int, 10> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 }};
+		hamon::array<int, 10> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 }};
 		hamon::nth_element(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a));
 		VERIFY(NthElementTest(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a)));
 	}
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool NthElementTest4()
+inline HAMON_CXX14_CONSTEXPR bool NthElementTest4()
 {
 	{
 		const int nth = 7;
-		std::array<int, 10> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 }};
+		hamon::array<int, 10> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 }};
 		hamon::nth_element(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a), hamon::greater<>());
 		VERIFY(NthElementTest(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a), hamon::greater<>()));
 	}
@@ -111,8 +111,8 @@ GTEST_TEST(AlgorithmTest, NthElementTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NthElementTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NthElementTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(NthElementTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(NthElementTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NthElementTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NthElementTest4());
 
 	{
 		const int nth = 6;

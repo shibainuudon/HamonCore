@@ -8,8 +8,8 @@
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <string>
@@ -44,17 +44,17 @@ GTEST_TEST(AlgorithmTest, IsPermutationTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(f), pred1));
 	}
 	{
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 4> a {{ 4, 5, 6, 7 }};
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 4> b {{ 6, 4, 5, 7 }};
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 4> c {{ 6, 4, 7, 5 }};
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 4> d {{ 6, 4, 5, 4 }};
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 4> e {{ 4, 5, 6, 8 }};
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 4> b {{ 6, 4, 5, 7 }};
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 4> c {{ 6, 4, 7, 5 }};
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 4> d {{ 6, 4, 5, 4 }};
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 4> e {{ 4, 5, 6, 8 }};
 
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(a), hamon::end(a)));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::equal_to<>()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c)));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(d), hamon::end(d), pred1));
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(e), hamon::end(e), hamon::equal_to<>()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(a), hamon::end(a)));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::equal_to<>()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c)));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(d), hamon::end(d), pred1));
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(e), hamon::end(e), hamon::equal_to<>()));
 	}
 	{
 		const std::vector<int> a { 1, 2, 3 };

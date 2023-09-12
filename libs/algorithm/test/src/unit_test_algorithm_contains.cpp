@@ -7,8 +7,8 @@
 #include <hamon/algorithm/contains.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -37,10 +37,10 @@ inline HAMON_CXX14_CONSTEXPR bool testRawArray()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool testArray()
+inline HAMON_CXX14_CONSTEXPR bool testArray()
 {
 	{
-		std::array<int, 5> x = { 3,1,4,1,5 };
+		hamon::array<int, 5> x = { 3,1,4,1,5 };
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 1));
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 2));
@@ -108,7 +108,7 @@ inline bool testForwardList()
 GTEST_TEST(AlgorithmTest, ContainsTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(testRawArray());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(testArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(testArray());
 	EXPECT_TRUE(testVector());
 	EXPECT_TRUE(testList());
 	EXPECT_TRUE(testForwardList());

@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -51,9 +51,9 @@ GTEST_TEST(AlgorithmTest, PartitionPointTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::end(a));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 5> a {{ 5,3,4,1,2 }};
-		HAMON_CXX17_CONSTEXPR auto ret = hamon::partition_point(hamon::begin(a), hamon::end(a), pred2());
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 5> a {{ 5,3,4,1,2 }};
+		HAMON_CXX14_CONSTEXPR auto ret = hamon::partition_point(hamon::begin(a), hamon::end(a), pred2());
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
 	}
 	{
 		const std::vector<int> a { 5,3,1,4,2 };

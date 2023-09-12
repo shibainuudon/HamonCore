@@ -7,8 +7,8 @@
 #include <hamon/algorithm/reverse.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -43,10 +43,10 @@ inline HAMON_CXX14_CONSTEXPR bool ReverseTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool ReverseTest3()
+inline HAMON_CXX14_CONSTEXPR bool ReverseTest3()
 {
 	{
-		std::array<int, 4> a {{ 1,2,3,4 }};
+		hamon::array<int, 4> a {{ 1,2,3,4 }};
 		hamon::reverse(hamon::begin(a), hamon::end(a));
 		VERIFY(4 == a[0]);
 		VERIFY(3 == a[1]);
@@ -60,7 +60,7 @@ GTEST_TEST(AlgorithmTest, ReverseTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ReverseTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseTest3());
 
 	{
 		std::vector<int> a { 1,2,3,4,5 };

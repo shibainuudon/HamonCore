@@ -7,8 +7,8 @@
 #include <hamon/algorithm/count_if.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -55,11 +55,11 @@ GTEST_TEST(AlgorithmTest, CountIfTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(7, hamon::count_if(hamon::begin(a), hamon::end(a), pred4()));
 	}
 	{
-		HAMON_CONSTEXPR_OR_CONST std::array<int, 21> a{ { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6 } };
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ( 2, hamon::count_if(hamon::begin(a), hamon::end(a), pred1));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ( 8, hamon::count_if(hamon::begin(a), hamon::end(a), pred2));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(17, hamon::count_if(hamon::begin(a), hamon::end(a), pred3()));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ( 4, hamon::count_if(hamon::begin(a), hamon::end(a), pred4()));
+		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 21> a{ { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 2, 3, 8, 4, 6 } };
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 2, hamon::count_if(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 8, hamon::count_if(hamon::begin(a), hamon::end(a), pred2));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(17, hamon::count_if(hamon::begin(a), hamon::end(a), pred3()));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 4, hamon::count_if(hamon::begin(a), hamon::end(a), pred4()));
 	}
 	{
 		const std::vector<int> v{10, 20, 10, 30, 10, 20};

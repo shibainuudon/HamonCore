@@ -7,8 +7,8 @@
 #include <hamon/algorithm/find_if.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -64,22 +64,22 @@ GTEST_TEST(AlgorithmTest, FindIfTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a1) + 1);
 	}
 
-	HAMON_STATIC_CONSTEXPR std::array<int, 8> a2{{3, 4, 4, 5, 5, 5, 3, 6}};
+	HAMON_STATIC_CONSTEXPR hamon::array<int, 8> a2{{3, 4, 4, 5, 5, 5, 3, 6}};
 	{
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a2));
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a2));
 	}
 	{
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred2);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2));
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred2);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2));
 	}
 	{
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred3());
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2) + 1);
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred3());
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2) + 1);
 	}
 	{
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred4());
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2));
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_if(hamon::begin(a2), hamon::end(a2), pred4());
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a2));
 	}
 
 	int a3[] {0,1,2};

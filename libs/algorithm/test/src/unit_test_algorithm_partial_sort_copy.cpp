@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -35,11 +35,11 @@ inline HAMON_CXX14_CONSTEXPR bool PartialSortCopyTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest2()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortCopyTest2()
 {
 	{
 		const int a[] { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
-		std::array<int, 2> b {};
+		hamon::array<int, 2> b {};
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::greater<>());
 		VERIFY(ret == hamon::end(b));
 		VERIFY(9 == b[0]);
@@ -48,11 +48,11 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest3()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortCopyTest3()
 {
 	{
-		const std::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
-		std::array<int, 3> b {};
+		const hamon::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
+		hamon::array<int, 3> b {};
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		VERIFY(ret == hamon::end(b));
 		VERIFY(1 == b[0]);
@@ -62,10 +62,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest4()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortCopyTest4()
 {
 	{
-		const std::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
+		const hamon::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
 		int b[4] {};
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::greater<>());
 		VERIFY(ret == hamon::end(b));
@@ -77,11 +77,11 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest4()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest5()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortCopyTest5()
 {
 	{
-		const std::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
-		std::array<int, 10> b {};
+		const hamon::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
+		hamon::array<int, 10> b {};
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		VERIFY(ret == hamon::end(b));
 		VERIFY(0 == b[0]);
@@ -101,10 +101,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortCopyTest5()
 GTEST_TEST(AlgorithmTest, PartialSortCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest4());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest5());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortCopyTest5());
 
 	{
 		const int a[] { 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 };
@@ -129,7 +129,7 @@ GTEST_TEST(AlgorithmTest, PartialSortCopyTest)
 		EXPECT_EQ(5, b[4]);
 	}
 	{
-		const std::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
+		const hamon::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
 		std::vector<int> b(10);
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::greater<>());
 		EXPECT_TRUE(ret == hamon::end(b));
@@ -157,7 +157,7 @@ GTEST_TEST(AlgorithmTest, PartialSortCopyTest)
 	}
 	{
 		const std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
-		std::array<int, 6> b;
+		hamon::array<int, 6> b;
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::greater<>());
 		EXPECT_TRUE(ret == hamon::end(b));
 		EXPECT_EQ(9, b[0]);
@@ -202,7 +202,7 @@ GTEST_TEST(AlgorithmTest, PartialSortCopyTest)
 	}
 	{
 		const std::list<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
-		std::array<int, 6> b;
+		hamon::array<int, 6> b;
 		auto ret = hamon::partial_sort_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::greater<>());
 		EXPECT_TRUE(ret == hamon::end(b));
 		EXPECT_EQ(9, b[0]);

@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -37,15 +37,15 @@ GTEST_TEST(AlgorithmTest, FindEndTest)
 	}
 	{
 		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,4,1,2,3,1,2,1 };
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> b = {{ 1,2,3 }};
-		HAMON_CXX17_CONSTEXPR const auto it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> b = {{ 1,2,3 }};
+		HAMON_CXX14_CONSTEXPR const auto it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
 		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,4,1,2,3,1,2,1 };
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> b = {{ 1,2,3 }};
-		HAMON_CXX17_CONSTEXPR const auto it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::begin(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> b = {{ 1,2,3 }};
+		HAMON_CXX14_CONSTEXPR const auto it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::begin(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
 		const std::vector<int> a = { 1,2,3,4,1,2,3,1,2,1 };
@@ -60,7 +60,7 @@ GTEST_TEST(AlgorithmTest, FindEndTest)
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::array<int, 10> a = {{ 1,2,3,4,1,2,3,1,2,1 }};
+		const hamon::array<int, 10> a = {{ 1,2,3,4,1,2,3,1,2,1 }};
 		const std::list<int> b = { 1,2,3 };
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), [](int x, int y){return x == y; });
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
@@ -91,7 +91,7 @@ GTEST_TEST(AlgorithmTest, FindEndTest)
 	}
 	{
 		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
-		const std::array<int, 3> b = {{ 1,2,3 }};
+		const hamon::array<int, 3> b = {{ 1,2,3 }};
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}

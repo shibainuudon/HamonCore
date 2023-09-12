@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -42,16 +42,16 @@ GTEST_TEST(AlgorithmTest, IsHeapTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> a {{ 1, 2, 3 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> a {{ 1, 2, 3 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> a {{ 3, 2, 1 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> a {{ 3, 2, 1 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const std::array<int, 8> a {{ 9, 5, 4, 1, 1, 3, 2, 6 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 8> a {{ 9, 5, 4, 1, 1, 3, 2, 6 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
 		const std::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };

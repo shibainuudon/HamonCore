@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -64,24 +64,24 @@ GTEST_TEST(AlgorithmTest, IsSortedTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{1,2,3,5,4}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{1,2,3,5,4}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{1,1,3,4,2}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{1,1,3,4,2}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 6> a {{3,5,6,8,10,13}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 6> a {{3,5,6,8,10,13}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 6> a {{13,10,8,6,4,1}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred2()));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 6> a {{13,10,8,6,4,1}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 1> a {{3}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 1> a {{3}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
 		const std::vector<int> a {3,4,5};

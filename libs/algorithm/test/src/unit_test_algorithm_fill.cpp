@@ -7,8 +7,8 @@
 #include <hamon/algorithm/fill.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -43,10 +43,10 @@ inline HAMON_CXX14_CONSTEXPR bool FillTestArray()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool FillTestStdArray()
+inline HAMON_CXX14_CONSTEXPR bool FillTestStdArray()
 {
 	{
-		std::array<int, 4> a{ { 1, 2, 3, 4 } };
+		hamon::array<int, 4> a{ { 1, 2, 3, 4 } };
 		hamon::fill(hamon::begin(a), hamon::end(a), -1);
 		VERIFY(-1 == a[0]);
 		VERIFY(-1 == a[1]);
@@ -60,7 +60,7 @@ inline HAMON_CXX17_CONSTEXPR bool FillTestStdArray()
 GTEST_TEST(AlgorithmTest, FillTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FillTestArray());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(FillTestStdArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FillTestStdArray());
 
 	{
 		std::vector<int> a(5);

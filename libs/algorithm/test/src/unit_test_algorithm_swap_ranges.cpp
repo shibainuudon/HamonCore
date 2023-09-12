@@ -7,8 +7,8 @@
 #include <hamon/algorithm/swap_ranges.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -40,10 +40,10 @@ inline HAMON_CXX14_CONSTEXPR bool SwapRangesTestArray()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool SwapRangesTestStdArray()
+inline HAMON_CXX14_CONSTEXPR bool SwapRangesTestStdArray()
 {
-	std::array<int, 3> a3 {{ 7, 8, 9}};
-	std::array<int, 3> a4 {{10,11,12}};
+	hamon::array<int, 3> a3 {{ 7, 8, 9}};
+	hamon::array<int, 3> a4 {{10,11,12}};
 
 	{
 		auto it = hamon::swap_ranges(hamon::begin(a3), hamon::end(a3), hamon::begin(a4));
@@ -62,12 +62,12 @@ inline HAMON_CXX17_CONSTEXPR bool SwapRangesTestStdArray()
 GTEST_TEST(AlgorithmTest, SwapRangesTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SwapRangesTestArray());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(SwapRangesTestStdArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SwapRangesTestStdArray());
 
 	int a1[] = {1, 2, 3};
 	int a2[] = {4, 5, 6};
-	std::array<int, 3> a3 {{ 7, 8, 9}};
-	std::array<int, 3> a4 {{10,11,12}};
+	hamon::array<int, 3> a3 {{ 7, 8, 9}};
+	hamon::array<int, 3> a4 {{10,11,12}};
 	std::vector<int> v1{13,14,15};
 	std::vector<int> v2{16,17,18};
 	std::list<int> l1{19,20,21};

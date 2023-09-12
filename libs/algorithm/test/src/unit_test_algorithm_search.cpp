@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -42,21 +42,21 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 	}
 	{
 		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,4,1,2,3,1,2,1 };
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> b = {{ 1,2,3 }};
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> b = {{ 1,2,3 }};
 
-		HAMON_CXX17_CONSTEXPR const auto it = hamon::search(
+		HAMON_CXX14_CONSTEXPR const auto it = hamon::search(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 0));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 0));
 	}
 	{
 		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,4,1,2,3,1,2,1 };
-		HAMON_STATIC_CONSTEXPR const std::array<int, 3> b = {{ 1,2,3 }};
+		HAMON_STATIC_CONSTEXPR const hamon::array<int, 3> b = {{ 1,2,3 }};
 		
-		HAMON_CXX17_CONSTEXPR const auto it = hamon::search(
+		HAMON_CXX14_CONSTEXPR const auto it = hamon::search(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::begin(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
 	}
 	{
 		const std::vector<int> a = { 1,2,3,4,1,2,3,1,2,1 };
@@ -78,7 +78,7 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::array<int, 10> a = {{ 1,2,3,4,1,2,3,1,2,1 }};
+		const hamon::array<int, 10> a = {{ 1,2,3,4,1,2,3,1,2,1 }};
 		const std::list<int> b = { 3,1,2 };
 
 		auto const it = hamon::search(

@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/cmath/abs.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -53,19 +53,19 @@ GTEST_TEST(AlgorithmTest, MinElementTest)
 		}
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 8> a {{ 2, -6, 5, -3, -5, 8, 9, 7 }};
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 8> a {{ 2, -6, 5, -3, -5, 8, 9, 7 }};
 
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a));
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a));
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a), pred1);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 6));
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a), pred1);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 6));
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a), pred2());
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto ret = hamon::min_element(hamon::begin(a), hamon::end(a), pred2());
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 		}
 	}
 	{

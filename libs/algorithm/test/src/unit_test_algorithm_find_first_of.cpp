@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -58,16 +58,16 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 	}
 	{
 		HAMON_STATIC_CONSTEXPR int a[] { 1, 3, 7, 4, 2 };
-		HAMON_STATIC_CONSTEXPR std::array<int, 2> b {{ 6, 8 }};
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(it, hamon::end(a));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 2> b {{ 6, 8 }};
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(it, hamon::end(a));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{ 1, 3, 5, 7, 9 }};
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{ 1, 3, 5, 7, 9 }};
 		HAMON_STATIC_CONSTEXPR int b[] { 3, 1 };
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(it, hamon::next(hamon::begin(a), 0));
-		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(1, *it);
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(it, hamon::next(hamon::begin(a), 0));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, *it);
 	}
 	{
 		const std::vector<int> a { 1, 3, 7, 4, 2 };

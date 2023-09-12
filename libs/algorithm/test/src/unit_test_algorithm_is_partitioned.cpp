@@ -7,8 +7,8 @@
 #include <hamon/algorithm/is_partitioned.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -51,16 +51,16 @@ GTEST_TEST(AlgorithmTest, IsPartitionedTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{4,2,3,1,5}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred1));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{4,2,3,1,5}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{4,2,3,1,5}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{4,2,3,1,5}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 3> a {{1,2,3}};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 3> a {{1,2,3}};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
 		const std::vector<int> a {1,2,3};

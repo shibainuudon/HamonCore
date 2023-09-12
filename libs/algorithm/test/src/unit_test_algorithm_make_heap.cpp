@@ -9,8 +9,8 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -44,10 +44,10 @@ inline HAMON_CXX14_CONSTEXPR bool MakeHeapTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool MakeHeapTest3()
+inline HAMON_CXX14_CONSTEXPR bool MakeHeapTest3()
 {
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::make_heap(hamon::begin(a), hamon::end(a));
 		VERIFY( hamon::is_heap(hamon::begin(a), hamon::end(a)));
 		VERIFY(!hamon::is_heap(hamon::begin(a), hamon::end(a), hamon::greater<>()));
@@ -55,10 +55,10 @@ inline HAMON_CXX17_CONSTEXPR bool MakeHeapTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool MakeHeapTest4()
+inline HAMON_CXX14_CONSTEXPR bool MakeHeapTest4()
 {
 	{
-		std::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
+		hamon::array<int, 6> a {{ 3, 1, 4, 1, 5, 9 }};
 		hamon::make_heap(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		VERIFY(!hamon::is_heap(hamon::begin(a), hamon::end(a)));
 		VERIFY( hamon::is_heap(hamon::begin(a), hamon::end(a), hamon::greater<>()));
@@ -70,8 +70,8 @@ GTEST_TEST(AlgorithmTest, MakeHeapTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MakeHeapTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MakeHeapTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(MakeHeapTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(MakeHeapTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MakeHeapTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MakeHeapTest4());
 
 	{
 		std::vector<int> a { 5, 4, 1, 1, 3 };

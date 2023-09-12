@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/functional/greater.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -42,9 +42,9 @@ GTEST_TEST(AlgorithmTest, AdjacentFindTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 3> a {{ 1,1,1 }};
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::adjacent_find(hamon::begin(a), hamon::end(a));
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 0));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 3> a {{ 1,1,1 }};
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::adjacent_find(hamon::begin(a), hamon::end(a));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 0));
 	}
 	{
 		HAMON_STATIC_CONSTEXPR int a[] { 1,4,3,5,3,1,2 };
@@ -52,9 +52,9 @@ GTEST_TEST(AlgorithmTest, AdjacentFindTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 9> a {{ 9,8,5,3,2,1,3,4,5 }};
-		HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::adjacent_find(hamon::begin(a), hamon::end(a), pred1);
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 5));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 9> a {{ 9,8,5,3,2,1,3,4,5 }};
+		HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::adjacent_find(hamon::begin(a), hamon::end(a), pred1);
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 5));
 	}
 	{
 		HAMON_STATIC_CONSTEXPR int a[] { 1,2,3,4,3,2,5 };

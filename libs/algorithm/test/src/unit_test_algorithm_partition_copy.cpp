@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -61,12 +61,12 @@ inline HAMON_CXX14_CONSTEXPR bool PartitionCopyTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartitionCopyTest2()
+inline HAMON_CXX14_CONSTEXPR bool PartitionCopyTest2()
 {
 	{
-		const std::array<int, 5> a {{1,2,3,4,5}};
-		std::array<int, 5> b {};
-		std::array<int, 5> c {};
+		const hamon::array<int, 5> a {{1,2,3,4,5}};
+		hamon::array<int, 5> b {};
+		hamon::array<int, 5> c {};
 		auto ret = hamon::partition_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::begin(c), pred2());
 		VERIFY(ret.first  == hamon::next(hamon::begin(b), 3));
 		VERIFY(ret.second == hamon::next(hamon::begin(c), 2));
@@ -89,10 +89,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartitionCopyTest2()
 GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionCopyTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartitionCopyTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartitionCopyTest2());
 
 	{
-		const std::array<int, 5> a {{1,2,3,4,5}};
+		const hamon::array<int, 5> a {{1,2,3,4,5}};
 		std::vector<int> b(5);
 		std::list<int> c(5);
 		auto ret = hamon::partition_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::begin(c), pred2());
@@ -115,7 +115,7 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 	{
 		const std::list<int> a {1,2,3,4,5};
 		std::vector<int> b;
-		std::array<int, 5> c{{}};
+		hamon::array<int, 5> c{{}};
 		auto ret = hamon::partition_copy(
 			hamon::begin(a),
 			hamon::end(a),

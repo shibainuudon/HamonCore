@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -59,11 +59,11 @@ inline HAMON_CXX14_CONSTEXPR bool RotateCopyTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RotateCopyTest3()
+inline HAMON_CXX14_CONSTEXPR bool RotateCopyTest3()
 {
 	{
 		const int a[] { 1,2,3 };
-		std::array<int, 5> b {{}};
+		hamon::array<int, 5> b {{}};
 		auto it = hamon::rotate_copy(
 			hamon::begin(a),
 			hamon::next(hamon::begin(a), 2),
@@ -79,10 +79,10 @@ inline HAMON_CXX17_CONSTEXPR bool RotateCopyTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool RotateCopyTest4()
+inline HAMON_CXX14_CONSTEXPR bool RotateCopyTest4()
 {
 	{
-		const std::array<int, 4> a {{ 1,2,3,4 }};
+		const hamon::array<int, 4> a {{ 1,2,3,4 }};
 		int b[4] {};
 		auto it = hamon::rotate_copy(
 			hamon::begin(a),
@@ -102,11 +102,11 @@ GTEST_TEST(AlgorithmTest, RotateCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateCopyTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateCopyTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RotateCopyTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(RotateCopyTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateCopyTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RotateCopyTest4());
 
 	{
-		const std::array<int, 4> a {{ 1,2,3,4 }};
+		const hamon::array<int, 4> a {{ 1,2,3,4 }};
 		std::list<int> b;
 		hamon::rotate_copy(
 			hamon::begin(a),
@@ -173,7 +173,7 @@ GTEST_TEST(AlgorithmTest, RotateCopyTest)
 	}
 	{
 		const std::list<int> a { 1,2,3 };
-		std::array<int, 4> b {{}};
+		hamon::array<int, 4> b {{}};
 		auto it = hamon::rotate_copy(
 			hamon::begin(a),
 			hamon::next(hamon::begin(a), 2),

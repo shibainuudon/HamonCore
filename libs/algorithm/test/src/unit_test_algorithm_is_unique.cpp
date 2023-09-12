@@ -7,8 +7,8 @@
 #include <hamon/algorithm/is_unique.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -38,20 +38,20 @@ GTEST_TEST(AlgorithmTest, IsUniqueTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 15> a {{ 2,5,3,3,1,2,4,2,1,1,4,4,3,3,3 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 15> a {{ 2,5,3,3,1,2,4,2,1,1,4,4,3,3,3 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 10> a {{ 2,5,3,1,2,4,2,1,4,3 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 10> a {{ 2,5,3,1,2,4,2,1,4,3 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 10> a {{ 1,1,2,2,2,3,3,4,4,5 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 10> a {{ 1,1,2,2,2,3,3,4,4,5 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<int, 5> a {{ 1,2,3,4,5 }};
-		HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
+		HAMON_STATIC_CONSTEXPR hamon::array<int, 5> a {{ 1,2,3,4,5 }};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
 		std::vector<int> a;

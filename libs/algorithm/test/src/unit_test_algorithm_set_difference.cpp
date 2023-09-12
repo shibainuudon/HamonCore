@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -43,11 +43,11 @@ inline HAMON_CXX14_CONSTEXPR bool SetDifferenceTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool SetDifferenceTest2()
+inline HAMON_CXX14_CONSTEXPR bool SetDifferenceTest2()
 {
 	{
 		const int a[] { 1, 2, 3, 4 };
-		const std::array<int, 4> b {{ 0, 4, 5, 6 }};
+		const hamon::array<int, 4> b {{ 0, 4, 5, 6 }};
 		int c[3]{};
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
@@ -66,10 +66,10 @@ inline HAMON_CXX17_CONSTEXPR bool SetDifferenceTest2()
 GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SetDifferenceTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(SetDifferenceTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SetDifferenceTest2());
 
 	{
-		const std::array<int, 4> a {{ 6, 5, 2, 1 }};
+		const hamon::array<int, 4> a {{ 6, 5, 2, 1 }};
 		const std::vector<int> b { 5, 3, 1 };
 		std::list<int> c;
 		auto ret = hamon::set_difference(

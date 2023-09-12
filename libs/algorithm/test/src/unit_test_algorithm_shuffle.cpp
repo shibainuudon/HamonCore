@@ -11,8 +11,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/random/engines/xorshift.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 
 namespace hamon_algorithm_test
@@ -42,7 +42,7 @@ GTEST_TEST(AlgorithmTest, ShuffleTest)
 		EXPECT_FALSE(hamon::equal(hamon::begin(a1), hamon::end(a1), hamon::begin(a2), hamon::end(a2)));
 	}
 	{
-		std::array<int, 11> a{ { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
+		hamon::array<int, 11> a{ { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 } };
 		EXPECT_TRUE (hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 		EXPECT_TRUE (hamon::is_unique(hamon::begin(a), hamon::end(a)));
 		hamon::shuffle(hamon::begin(a), hamon::end(a), g);

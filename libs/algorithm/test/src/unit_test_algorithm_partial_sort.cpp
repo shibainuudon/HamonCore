@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include "constexpr_test.hpp"
 
@@ -71,10 +71,10 @@ inline HAMON_CXX14_CONSTEXPR bool PartialSortTest4()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortTest5()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortTest5()
 {
 	{
-		std::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
+		hamon::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 3), hamon::end(a));
 		VERIFY(1 == a[0]);
 		VERIFY(1 == a[1]);
@@ -83,10 +83,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortTest5()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortTest6()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortTest6()
 {
 	{
-		std::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
+		hamon::array<int, 11> a {{ 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 }};
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 4), hamon::end(a), hamon::greater<>());
 		VERIFY(9 == a[0]);
 		VERIFY(6 == a[1]);
@@ -96,10 +96,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortTest6()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortTest7()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortTest7()
 {
 	{
-		std::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
+		hamon::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 10), hamon::end(a));
 		VERIFY(0 == a[0]);
 		VERIFY(1 == a[1]);
@@ -115,10 +115,10 @@ inline HAMON_CXX17_CONSTEXPR bool PartialSortTest7()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool PartialSortTest8()
+inline HAMON_CXX14_CONSTEXPR bool PartialSortTest8()
 {
 	{
-		std::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
+		hamon::array<int, 10> a {{ 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 }};
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 10), hamon::end(a), hamon::greater<>());
 		VERIFY(9 == a[0]);
 		VERIFY(8 == a[1]);
@@ -140,10 +140,10 @@ GTEST_TEST(AlgorithmTest, PartialSortTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest2());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest3());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest4());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortTest5());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortTest6());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortTest7());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(PartialSortTest8());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest5());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest6());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest7());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest8());
 
 	{
 		std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };

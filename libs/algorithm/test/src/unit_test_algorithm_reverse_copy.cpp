@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -51,11 +51,11 @@ inline HAMON_CXX14_CONSTEXPR bool ReverseCopyTest2()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool ReverseCopyTest3()
+inline HAMON_CXX14_CONSTEXPR bool ReverseCopyTest3()
 {
 	{
 		const int a[] { 1,2,3 };
-		std::array<int, 5> b {{}};
+		hamon::array<int, 5> b {{}};
 		auto it = hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		VERIFY(it == hamon::next(hamon::begin(b), 3));
 		VERIFY(3 == b[0]);
@@ -67,10 +67,10 @@ inline HAMON_CXX17_CONSTEXPR bool ReverseCopyTest3()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool ReverseCopyTest4()
+inline HAMON_CXX14_CONSTEXPR bool ReverseCopyTest4()
 {
 	{
-		const std::array<int, 4> a {{ 1,2,3,4 }};
+		const hamon::array<int, 4> a {{ 1,2,3,4 }};
 		int b[4] {};
 		auto it = hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		VERIFY(it == hamon::next(hamon::begin(b), 4));
@@ -86,11 +86,11 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest1());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest2());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest3());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReverseCopyTest4());
 
 	{
-		const std::array<int, 4> a {{ 1,2,3,4 }};
+		const hamon::array<int, 4> a {{ 1,2,3,4 }};
 		std::list<int> b;
 		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
 		auto it = b.begin();
@@ -137,7 +137,7 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 	}
 	{
 		const std::list<int> a { 1,2,3 };
-		std::array<int, 4> b {{}};
+		hamon::array<int, 4> b {{}};
 		auto it = hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(b), 3));
 		EXPECT_EQ(3, b[0]);

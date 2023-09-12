@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <memory>
@@ -57,10 +57,10 @@ inline HAMON_CXX14_CONSTEXPR bool UniqueTest1()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool UniqueTest2()
+inline HAMON_CXX14_CONSTEXPR bool UniqueTest2()
 {
 	{
-		std::array<int, 10> a = {{ 1,1,2,2,2,3,4,4,5,5 }};
+		hamon::array<int, 10> a = {{ 1,1,2,2,2,3,4,4,5,5 }};
 		auto ret = hamon::unique(hamon::begin(a), hamon::end(a));
 		VERIFY(ret == hamon::next(hamon::begin(a), 5));
 
@@ -76,7 +76,7 @@ inline HAMON_CXX17_CONSTEXPR bool UniqueTest2()
 GTEST_TEST(AlgorithmTest, UniqueTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueTest1());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(UniqueTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueTest2());
 
 	{
 		std::vector<std::shared_ptr<int>> a;

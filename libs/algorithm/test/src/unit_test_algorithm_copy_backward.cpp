@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -69,11 +69,11 @@ inline HAMON_CXX14_CONSTEXPR bool CopyBackwardArrayTest()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool CopyBackwardStdArrayTest()
+inline HAMON_CXX14_CONSTEXPR bool CopyBackwardStdArrayTest()
 {
 	{
 		const int a1[] { 1, 2, 3 };
-		std::array<int, 5> a2{{}};
+		hamon::array<int, 5> a2{{}};
 
 		auto it = hamon::copy_backward(hamon::begin(a1), hamon::end(a1), hamon::end(a2));
 
@@ -91,7 +91,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyBackwardStdArrayTest()
 GTEST_TEST(AlgorithmTest, CopyBackwardTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyBackwardArrayTest());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(CopyBackwardStdArrayTest());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyBackwardStdArrayTest());
 
 	{
 		std::vector<int> v{ 1, 2, 3, 4, 5 };

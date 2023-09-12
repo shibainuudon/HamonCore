@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -99,7 +99,7 @@ GTEST_TEST(AlgorithmTest, MoveTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(move_test());
 
 	{
-		std::array<noncopyable, 4> a1 =
+		hamon::array<noncopyable, 4> a1 =
 		{{
 			noncopyable(4),
 			noncopyable(5),

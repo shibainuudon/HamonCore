@@ -8,8 +8,8 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 
 namespace hamon_algorithm_test
@@ -63,7 +63,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(1, a[2]);
 	}
 	{
-		std::array<int, 10> a {{ 1,2,5,7,  2,2,3,3,5,6 }};
+		hamon::array<int, 10> a {{ 1,2,5,7,  2,2,3,3,5,6 }};
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 4, hamon::end(a));
 
@@ -79,7 +79,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(7, a[9]);
 	}
 	{
-		std::array<int, 10> a {{ 7,5,2,1,  6,5,3,3,2,2 }};
+		hamon::array<int, 10> a {{ 7,5,2,1,  6,5,3,3,2,2 }};
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 4, hamon::end(a), hamon::greater<>());
 
@@ -95,7 +95,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(1, a[9]);
 	}
 	{
-		std::array<int, 2> a {{ 3, 1 }};
+		hamon::array<int, 2> a {{ 3, 1 }};
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 1, hamon::end(a));
 
@@ -103,7 +103,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(3, a[1]);
 	}
 	{
-		std::array<int, 2> a {{ 1, 3 }};
+		hamon::array<int, 2> a {{ 1, 3 }};
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 1, hamon::end(a), hamon::greater<>());
 

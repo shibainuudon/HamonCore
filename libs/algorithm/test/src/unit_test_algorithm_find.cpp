@@ -7,8 +7,8 @@
 #include <hamon/algorithm/find.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -41,26 +41,26 @@ GTEST_TEST(AlgorithmTest, FindTest)
 		}
 	}
 	{
-		HAMON_STATIC_CONSTEXPR std::array<float, 8> a{{3, 4, 4, 5, 5, 5, 3, 6}};
+		HAMON_STATIC_CONSTEXPR hamon::array<float, 8> a{{3, 4, 4, 5, 5, 5, 3, 6}};
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 3.0f);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 3.0f);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 4.0f);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 1);
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 4.0f);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 1);
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 5.0f);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 3);
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 5.0f);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 3);
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 6.0f);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 7);
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 6.0f);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 7);
 		}
 		{
-			HAMON_CXX17_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 0.0f);
-			HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
+			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 0.0f);
+			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 		}
 	}
 	{

@@ -7,8 +7,8 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include <iterator>
@@ -60,10 +60,10 @@ inline HAMON_CXX14_CONSTEXPR bool CopyNArrayTest()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool CopyNStdArrayTest()
+inline HAMON_CXX14_CONSTEXPR bool CopyNStdArrayTest()
 {
 	{
-		const std::array<int, 4> a1 {{ 4, 5, 6, 7 }};
+		const hamon::array<int, 4> a1 {{ 4, 5, 6, 7 }};
 		int a2[5] {{}};
 
 		auto it = hamon::copy_n(hamon::begin(a1), 4, hamon::begin(a2));
@@ -76,7 +76,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyNStdArrayTest()
 		VERIFY(it == hamon::begin(a2) + 4);
 	}
 	{
-		const std::array<int, 4> a1 {{ 4, 5, 6, 7 }};
+		const hamon::array<int, 4> a1 {{ 4, 5, 6, 7 }};
 		int a2[3] {{}};
 
 		auto it = hamon::copy_n(hamon::begin(a1), 1, hamon::begin(a2));
@@ -93,7 +93,7 @@ inline HAMON_CXX17_CONSTEXPR bool CopyNStdArrayTest()
 GTEST_TEST(AlgorithmTest, CopyNTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyNArrayTest());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(CopyNStdArrayTest());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyNStdArrayTest());
 
 	{
 		const std::vector<int> v { 5, 6, 7, 8, 9 };
