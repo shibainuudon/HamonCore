@@ -8,8 +8,8 @@
 #define HAMON_UNITS_QUANTITY_DETAIL_QUANTITY_CAST_HPP
 
 #include <hamon/units/quantity/quantity_fwd.hpp>
+#include <hamon/ratio/ratio_divide.hpp>
 #include <hamon/config.hpp>
-#include <ratio>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ quantity_cast(quantity<T, D, S, O> const& q) HAMON_NOEXCEPT
 	using T1 = typename ToQuantity::value_type;
 	using S1 = typename ToQuantity::scale_type;
 	using O1 = typename ToQuantity::offset_type;
-	using S2 = std::ratio_divide<S, S1>;
+	using S2 = hamon::ratio_divide<S, S1>;
 	return ToQuantity(static_cast<T1>(
 		(q.value() + ratio_to_float<O>()) * S2::num / S2::den - ratio_to_float<O1>()));
 }
