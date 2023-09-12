@@ -7,8 +7,8 @@
 #include <hamon/numeric/iota.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/array.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <vector>
 #include <list>
 #include "constexpr_test.hpp"
@@ -35,10 +35,10 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	return true;
 }
 
-inline HAMON_CXX17_CONSTEXPR bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
-		std::array<int, 4> a{};
+		hamon::array<int, 4> a{};
 		hamon::iota(hamon::begin(a), hamon::end(a), -2);
 		VERIFY(-2 == a[0]);
 		VERIFY(-1 == a[1]);
@@ -51,7 +51,7 @@ inline HAMON_CXX17_CONSTEXPR bool test02()
 GTEST_TEST(NumericTest, IotaTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 
 	{
 		std::vector<int> a(6);
