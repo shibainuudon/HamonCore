@@ -22,8 +22,8 @@ using std::partition_copy;
 
 #else
 
+#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -63,7 +63,7 @@ template <
 	typename Predicate
 >
 inline HAMON_CXX14_CONSTEXPR
-std::pair<OutputIterator1, OutputIterator2>
+hamon::pair<OutputIterator1, OutputIterator2>
 partition_copy(
 	InputIterator first,
 	InputIterator last,
@@ -83,7 +83,7 @@ partition_copy(
 		}
 	}
 
-	return std::make_pair(out_true, out_false);
+	return hamon::make_pair(out_true, out_false);
 }
 
 }	// namespace hamon

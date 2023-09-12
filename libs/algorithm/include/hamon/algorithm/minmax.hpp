@@ -24,8 +24,8 @@ using std::minmax;
 
 #include <hamon/algorithm/minmax_element.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 #include <initializer_list>
 
 namespace hamon
@@ -46,12 +46,12 @@ namespace hamon
  *	@complexity	正確に1回の述語適用
  */
 template <typename T, typename Compare>
-inline HAMON_CXX14_CONSTEXPR std::pair<T const&, T const&>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<T const&, T const&>
 minmax(T const& a, T const& b, Compare comp)
 {
 	return comp(a, b) ?
-		std::pair<T const&, T const&>(a, b) :
-		std::pair<T const&, T const&>(b, a);
+		hamon::pair<T const&, T const&>(a, b) :
+		hamon::pair<T const&, T const&>(b, a);
 }
 
 /**
@@ -69,7 +69,7 @@ minmax(T const& a, T const& b, Compare comp)
  *	@complexity	正確に1回の比較
  */
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR std::pair<T const&, T const&>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<T const&, T const&>
 minmax(T const& a, T const& b)
 {
 	return hamon::minmax(a, b, hamon::less<>());
@@ -92,11 +92,11 @@ minmax(T const& a, T const& b)
  *	@complexity	高々(3/2) * t.size()回の述語適用
  */
 template <typename T, typename Compare>
-inline HAMON_CXX14_CONSTEXPR std::pair<T, T>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<T, T>
 minmax(std::initializer_list<T> t, Compare comp)
 {
 	auto const p = hamon::minmax_element(t.begin(), t.end(), comp);
-	return std::pair<T, T>(*p.first, *p.second);
+	return hamon::pair<T, T>(*p.first, *p.second);
 }
 
 /**
@@ -115,7 +115,7 @@ minmax(std::initializer_list<T> t, Compare comp)
  *	@complexity	高々(3/2) * t.size()回の比較
  */
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR std::pair<T, T>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<T, T>
 minmax(std::initializer_list<T> t)
 {
 	return hamon::minmax(t, hamon::less<>());

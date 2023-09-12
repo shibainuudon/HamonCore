@@ -27,8 +27,8 @@ using std::equal_range;
 #include <hamon/iterator/advance.hpp>
 #include <hamon/iterator/distance.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -54,7 +54,7 @@ namespace hamon
  */
 template <typename ForwardIterator, typename T, typename Compare>
 inline HAMON_CXX14_CONSTEXPR
-std::pair<ForwardIterator, ForwardIterator>
+hamon::pair<ForwardIterator, ForwardIterator>
 equal_range(
 	ForwardIterator first,
 	ForwardIterator last,
@@ -82,13 +82,13 @@ equal_range(
 		else
 		{
 			auto mp1 = m;
-			return std::make_pair(
+			return hamon::make_pair(
 				hamon::lower_bound(first, m, value, comp),
 				hamon::upper_bound(++mp1, last, value, comp));
 		}
 	}
 
-	return std::make_pair(first, first);
+	return hamon::make_pair(first, first);
 }
 
 /**
@@ -110,7 +110,7 @@ equal_range(
  */
 template <typename ForwardIterator, typename T>
 inline HAMON_CXX14_CONSTEXPR
-std::pair<ForwardIterator, ForwardIterator>
+hamon::pair<ForwardIterator, ForwardIterator>
 equal_range(
 	ForwardIterator first,
 	ForwardIterator last,

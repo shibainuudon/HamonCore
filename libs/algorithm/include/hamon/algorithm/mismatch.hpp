@@ -23,8 +23,8 @@ using std::mismatch;
 #else
 
 #include <hamon/functional/equal_to.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -53,7 +53,7 @@ namespace hamon
  *	@complexity	最大で last1 - first1 回の対応する比較もしくは述語が適用される。
  */
 template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-inline HAMON_CXX14_CONSTEXPR std::pair<InputIterator1, InputIterator2>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<InputIterator1, InputIterator2>
 mismatch(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2,
@@ -64,14 +64,14 @@ mismatch(
 		++first1, ++first2;
 	}
 
-	return std::make_pair(first1, first2);
+	return hamon::make_pair(first1, first2);
 }
 
 /**
  *	@overload
  */
 template <typename InputIterator1, typename InputIterator2>
-inline HAMON_CXX14_CONSTEXPR std::pair<InputIterator1, InputIterator2>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<InputIterator1, InputIterator2>
 mismatch(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2)
@@ -84,7 +84,7 @@ mismatch(
  *	@overload
  */
 template <typename InputIterator1, typename InputIterator2, typename BinaryPredicate>
-inline HAMON_CXX14_CONSTEXPR std::pair<InputIterator1, InputIterator2>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<InputIterator1, InputIterator2>
 mismatch(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
@@ -95,14 +95,14 @@ mismatch(
 		++first1, ++first2;
 	}
 
-	return std::make_pair(first1, first2);
+	return hamon::make_pair(first1, first2);
 }
 
 /**
  *	@overload
  */
 template <typename InputIterator1, typename InputIterator2>
-inline HAMON_CXX14_CONSTEXPR std::pair<InputIterator1, InputIterator2>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<InputIterator1, InputIterator2>
 mismatch(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2)

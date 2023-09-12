@@ -23,8 +23,8 @@ using std::minmax_element;
 #else
 
 #include <hamon/functional/less.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
@@ -61,10 +61,10 @@ namespace hamon
  *				注意する必要がある。
  */
 template <typename ForwardIterator, typename Compare>
-inline HAMON_CXX14_CONSTEXPR std::pair<ForwardIterator, ForwardIterator>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<ForwardIterator, ForwardIterator>
 minmax_element(ForwardIterator first, ForwardIterator last, Compare comp)
 {
-	std::pair<ForwardIterator, ForwardIterator> result(first, first);
+	hamon::pair<ForwardIterator, ForwardIterator> result(first, first);
 
 	if (first == last)
 	{
@@ -159,7 +159,7 @@ minmax_element(ForwardIterator first, ForwardIterator last, Compare comp)
  *				注意する必要がある。
  */
 template <typename ForwardIterator>
-inline HAMON_CXX14_CONSTEXPR std::pair<ForwardIterator, ForwardIterator>
+inline HAMON_CXX14_CONSTEXPR hamon::pair<ForwardIterator, ForwardIterator>
 minmax_element(ForwardIterator first, ForwardIterator last)
 {
 	return hamon::minmax_element(first, last, hamon::less<>());
