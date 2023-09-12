@@ -10,7 +10,7 @@
 #include <hamon/units/quantity/quantity_fwd.hpp>
 #include <hamon/units/detail/dimension_multiply.hpp>
 #include <hamon/type_traits/common_type.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio_multiply.hpp>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ struct quantity_multiply_result<
 	using type = quantity<
 		hamon::common_type_t<T1, T2>,
 		dimension_multiply<D1, D2>,
-		std::ratio_multiply<S1, S2>
+		hamon::ratio_multiply<S1, S2>
 	>;
 };
 
