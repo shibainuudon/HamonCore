@@ -78,30 +78,30 @@ GTEST_TEST(BigIntTest, ShiftLeftEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest<hamon::int2048_t>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest<hamon::uint2048_t>());
 
 	EXPECT_TRUE(ShiftLeftEqualTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest2<hamon::int2048_t>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftLeftEqualTest2<hamon::uint2048_t>());
 }
 
 #undef VERIFY

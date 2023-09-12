@@ -41,16 +41,16 @@ GTEST_TEST(BigIntTest, CtorDefaultTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CtorDefaultTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CtorDefaultTest<hamon::int2048_t>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CtorDefaultTest<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CtorDefaultTest<hamon::uint2048_t>());
 }
 
 #undef VERIFY

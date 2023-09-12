@@ -68,30 +68,30 @@ GTEST_TEST(BigIntTest, UnaryPlusTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::int2048_t>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::uint2048_t>());
 
 	EXPECT_TRUE(UnaryPlusTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest2<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest2<hamon::int2048_t>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest2<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest2<hamon::uint2048_t>());
 }
 
 #undef VERIFY

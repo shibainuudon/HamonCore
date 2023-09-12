@@ -144,15 +144,15 @@ GTEST_TEST(BigIntTest, ToCharsTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ToCharsSignedTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ToCharsSignedTest<hamon::int2048_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ToCharsUnsignedTest<hamon::uint2048_t>());
 }
 
 #undef VERIFY

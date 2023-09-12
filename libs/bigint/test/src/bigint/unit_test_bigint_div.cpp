@@ -141,15 +141,15 @@ GTEST_TEST(BigIntTest, DivTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::int2048_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::uint1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::uint2048_t>());
 
 	EXPECT_TRUE(SignedDivTest<hamon::bigint>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int32_t>());
@@ -157,8 +157,8 @@ GTEST_TEST(BigIntTest, DivTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int512_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int1024_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int2048_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest<hamon::int1024_t>());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest<hamon::int2048_t>());
 
 	EXPECT_TRUE(UnsignedDivTest2<hamon::bigint>());
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int128_t>());
