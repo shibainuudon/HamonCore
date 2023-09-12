@@ -5,7 +5,7 @@
  */
 
 #include <hamon/ranges/concepts/contiguous_range.hpp>
-#include <array>
+#include <hamon/array.hpp>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -39,7 +39,7 @@ HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, int      *);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, int const*);
 
 #if 0
-HAMON_RANGES_CONTIGUOUS_RANGE_TEST(true,  std::array<int, 2>);
+HAMON_RANGES_CONTIGUOUS_RANGE_TEST(true,  hamon::array<int, 2>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(true,  std::vector<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::deque<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::list<int>);

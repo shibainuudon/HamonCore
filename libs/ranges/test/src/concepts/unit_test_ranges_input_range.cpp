@@ -5,8 +5,8 @@
  */
 
 #include <hamon/ranges/concepts/input_range.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -39,7 +39,7 @@ HAMON_RANGES_INPUT_RANGE_TEST(false, int const(*)[2]);
 HAMON_RANGES_INPUT_RANGE_TEST(false, int      *);
 HAMON_RANGES_INPUT_RANGE_TEST(false, int const*);
 
-HAMON_RANGES_INPUT_RANGE_TEST(true,  std::array<int, 2>);
+HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::array<int, 2>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::vector<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::deque<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::list<int>);

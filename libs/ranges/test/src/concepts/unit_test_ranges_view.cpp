@@ -12,8 +12,8 @@
 #include <hamon/concepts/default_initializable.hpp>
 //#include <hamon/string_view.hpp>
 #include <hamon/span.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
-#include <array>
 #include <vector>
 #include <list>
 #include <forward_list>
@@ -190,7 +190,7 @@ HAMON_RANGES_VIEW_TEST(false, int const(*)[2]);
 HAMON_RANGES_VIEW_TEST(false, int      *);
 HAMON_RANGES_VIEW_TEST(false, int const*);
 
-HAMON_RANGES_VIEW_TEST(false, std::array<int, 2>);
+HAMON_RANGES_VIEW_TEST(false, hamon::array<int, 2>);
 HAMON_RANGES_VIEW_TEST(false, std::vector<int>);
 HAMON_RANGES_VIEW_TEST(false, std::deque<int>);
 HAMON_RANGES_VIEW_TEST(false, std::list<int>);
