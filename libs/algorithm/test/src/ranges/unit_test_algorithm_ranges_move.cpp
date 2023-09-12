@@ -11,6 +11,8 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
+#include <hamon/iterator/move_iterator.hpp>
+#include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include <vector>
@@ -183,14 +185,14 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
 
-#if 0	// TODO move_sentinel を追加する
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	X x[] = { {2}, {2}, {6}, {8}, {10} };
 	X y[] = { {2}, {6}, {8}, {10}, {11}, {2} };
 	X z[] = { {2}, {2}, {6}, {8}, {10} };
 	test_input_range<X> rx(x);
 	auto res = ranges::move(
-		std::move_iterator{ ranges::begin(rx) },
-		std::move_sentinel{ ranges::end(rx) },
+		hamon::move_iterator{ ranges::begin(rx) },
+		hamon::move_sentinel{ ranges::end(rx) },
 		ranges::begin(y));
 	VERIFY(ranges::equal(x, x+5, y, y+5));
 	VERIFY(hamon::move(res.in).base().m_ptr == x+5);
@@ -291,9 +293,9 @@ inline void test07()
 GTEST_TEST(AlgorithmTest, RangesMoveTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
-	                      EXPECT_TRUE(test03());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	EXPECT_TRUE(test02());
+	EXPECT_TRUE(test03());
+	EXPECT_TRUE(test04());
 
 	test05();
 	test06();
