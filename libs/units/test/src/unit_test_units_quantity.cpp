@@ -19,8 +19,8 @@
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/ratio/ratio.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include <sstream>
 #include "constexpr_test.hpp"
 
@@ -57,7 +57,7 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
+		using S = hamon::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_default_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
@@ -67,7 +67,7 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 	}
 	{
 		using D = hamon::units::mass_dimension;
-		using S = std::ratio<1, 1000>;
+		using S = hamon::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_default_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
@@ -77,8 +77,8 @@ TYPED_TEST(QuantityTest, DefaultConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
-		using O = std::ratio<100, 3>;
+		using S = hamon::ratio<1000, 1>;
+		using O = hamon::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
 		static_assert(hamon::is_default_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_default_constructible<Q>::value, "");
@@ -111,7 +111,7 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
+		using S = hamon::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_constructible<Q, T>::value, "");
 		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
@@ -121,7 +121,7 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 	}
 	{
 		using D = hamon::units::mass_dimension;
-		using S = std::ratio<1, 1000>;
+		using S = hamon::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_constructible<Q, T>::value, "");
 		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
@@ -131,8 +131,8 @@ TYPED_TEST(QuantityTest, ValueConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
-		using O = std::ratio<100, 3>;
+		using S = hamon::ratio<1000, 1>;
+		using O = hamon::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
 		static_assert(hamon::is_constructible<Q, T>::value, "");
 		static_assert(hamon::is_nothrow_constructible<Q, T>::value, "");
@@ -167,7 +167,7 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
+		using S = hamon::ratio<1000, 1>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
@@ -178,7 +178,7 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 	}
 	{
 		using D = hamon::units::mass_dimension;
-		using S = std::ratio<1, 1000>;
+		using S = hamon::ratio<1, 1000>;
 		using Q = hamon::units::quantity<T, D, S>;
 		static_assert(hamon::is_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
@@ -189,8 +189,8 @@ TYPED_TEST(QuantityTest, CopyConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1000, 1>;
-		using O = std::ratio<100, 3>;
+		using S = hamon::ratio<1000, 1>;
+		using O = hamon::ratio<100, 3>;
 		using Q = hamon::units::quantity<T, D, S, O>;
 		static_assert(hamon::is_copy_constructible<Q>::value, "");
 		static_assert(hamon::is_nothrow_copy_constructible<Q>::value, "");
@@ -206,8 +206,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 	using T = TypeParam;
 	{
 		using D = hamon::units::length_dimension;
-		using S1 = std::ratio<   1, 1>;
-		using S2 = std::ratio<1000, 1>;
+		using S1 = hamon::ratio<   1, 1>;
+		using S2 = hamon::ratio<1000, 1>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
 		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
@@ -219,8 +219,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 	}
 	{
 		using D = hamon::units::mass_dimension;
-		using S1 = std::ratio<100, 1>;
-		using S2 = std::ratio<1, 1>;
+		using S1 = hamon::ratio<100, 1>;
+		using S2 = hamon::ratio<1, 1>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
 		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
@@ -232,8 +232,8 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 	}
 	{
 		using D = hamon::units::time_dimension;
-		using S1 = std::ratio<2, 3>;
-		using S2 = std::ratio<5, 7>;
+		using S1 = hamon::ratio<2, 3>;
+		using S2 = hamon::ratio<5, 7>;
 		using Q1 = hamon::units::quantity<T, D, S1>;
 		using Q2 = hamon::units::quantity<T, D, S2>;
 		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
@@ -245,9 +245,9 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 	}
 	{
 		using D = hamon::units::length_dimension;
-		using S = std::ratio<1, 1>;
-		using O1 = std::ratio<100, 1>;
-		using O2 = std::ratio<0, 1>;
+		using S = hamon::ratio<1, 1>;
+		using O1 = hamon::ratio<100, 1>;
+		using O2 = hamon::ratio<0, 1>;
 		using Q1 = hamon::units::quantity<T, D, S, O1>;
 		using Q2 = hamon::units::quantity<T, D, S, O2>;
 		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
@@ -259,10 +259,10 @@ TYPED_TEST(QuantityTest, ConvertConstructTest)
 	}
 	{
 		using D = hamon::units::mass_dimension;
-		using S1 = std::ratio<314, 100>;
-		using S2 = std::ratio<11, 1000>;
-		using O1 = std::ratio<25, 13>;
-		using O2 = std::ratio<10, 17>;
+		using S1 = hamon::ratio<314, 100>;
+		using S2 = hamon::ratio<11, 1000>;
+		using O1 = hamon::ratio<25, 13>;
+		using O2 = hamon::ratio<10, 17>;
 		using Q1 = hamon::units::quantity<T, D, S1, O1>;
 		using Q2 = hamon::units::quantity<T, D, S2, O2>;
 		static_assert(hamon::is_constructible<Q2, Q1>::value, "");
@@ -292,10 +292,10 @@ TYPED_TEST(QuantityTest, AssignTest)
 	EXPECT_EQ(3, x.value());
 
 	// 変換代入
-	x = hamon::units::quantity<T, D, std::ratio<100>>(4);
+	x = hamon::units::quantity<T, D, hamon::ratio<100>>(4);
 	EXPECT_EQ(400, x.value());
 
-	x = hamon::units::quantity<T, D, std::ratio<100>, std::ratio<30>>(4);
+	x = hamon::units::quantity<T, D, hamon::ratio<100>, hamon::ratio<30>>(4);
 	EXPECT_EQ(3400, x.value());
 
 	// 自己代入
@@ -303,7 +303,7 @@ TYPED_TEST(QuantityTest, AssignTest)
 	EXPECT_EQ(3400, x.value());
 
 	// 多重代入
-	hamon::units::quantity<T, D, std::ratio<1, 1000>> y;
+	hamon::units::quantity<T, D, hamon::ratio<1, 1000>> y;
 	x = y = hamon::units::quantity<T, D>(5);
 	EXPECT_EQ(5, x.value());
 	EXPECT_EQ(5000, y.value());
@@ -336,7 +336,7 @@ TYPED_TEST(QuantityTest, PlusMinusTest)
 	using T = TypeParam;
 	using D = hamon::units::length_dimension;
 	using Q1 = hamon::units::quantity<T, D>;
-	using Q2 = hamon::units::quantity<T, D, std::ratio<1, 10>>;
+	using Q2 = hamon::units::quantity<T, D, hamon::ratio<1, 10>>;
 
 	HAMON_CONSTEXPR Q1 x(5);
 
@@ -356,7 +356,7 @@ TYPED_TEST(QuantityTest, AddTest)
 	using T = TypeParam;
 	using D = hamon::units::length_dimension;
 	using Q1 = hamon::units::quantity<T, D>;
-	using Q2 = hamon::units::quantity<T, D, std::ratio<1000>>;
+	using Q2 = hamon::units::quantity<T, D, hamon::ratio<1000>>;
 
 	// quantity += quantity
 	{
@@ -392,7 +392,7 @@ TYPED_TEST(QuantityTest, SubTest)
 	using T = TypeParam;
 	using D = hamon::units::length_dimension;
 	using Q1 = hamon::units::quantity<T, D>;
-	using Q2 = hamon::units::quantity<T, D, std::ratio<1000>>;
+	using Q2 = hamon::units::quantity<T, D, hamon::ratio<1000>>;
 
 	// quantity -= quantity
 	{
@@ -468,25 +468,25 @@ TYPED_TEST(QuantityTest, MulRatioTest)
 	// quantity * ratio
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
-			hamon::units::quantity<T, D>(2) * std::ratio<100>();
+			hamon::units::quantity<T, D>(2) * hamon::ratio<100>();
 		static_assert(hamon::is_same<
-			const hamon::units::quantity<T, D, std::ratio<100>>,
+			const hamon::units::quantity<T, D, hamon::ratio<100>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, x.value());
 	}
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
-			hamon::units::quantity<T, D, std::ratio<2, 5>>(3) * std::ratio<7, 3>();
+			hamon::units::quantity<T, D, hamon::ratio<2, 5>>(3) * hamon::ratio<7, 3>();
 		static_assert(hamon::is_same<
-			const hamon::units::quantity<T, D, std::ratio<14, 15>>,
+			const hamon::units::quantity<T, D, hamon::ratio<14, 15>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(3, x.value());
 	}
 	{
 		HAMON_CONSTEXPR_OR_CONST auto x =
-			hamon::units::quantity<T, D, std::ratio<3, 100>>(4) * std::ratio<5>();
+			hamon::units::quantity<T, D, hamon::ratio<3, 100>>(4) * hamon::ratio<5>();
 		static_assert(hamon::is_same<
-			const hamon::units::quantity<T, D, std::ratio<3, 20>>,
+			const hamon::units::quantity<T, D, hamon::ratio<3, 20>>,
 			decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, x.value());
 	}
@@ -541,8 +541,8 @@ TYPED_TEST(QuantityTest, MulQuantityTest)
 			>
 		>;
 		using Q1 = hamon::units::quantity<T, D1>;
-		using Q2 = hamon::units::quantity<T, D1, std::ratio<1000>>;
-		using Q3 = hamon::units::quantity<T, D2, std::ratio<1000>>;
+		using Q2 = hamon::units::quantity<T, D1, hamon::ratio<1000>>;
+		using Q3 = hamon::units::quantity<T, D2, hamon::ratio<1000>>;
 		HAMON_CONSTEXPR_OR_CONST auto x = Q1(4) * Q2(5);
 		static_assert(hamon::is_same<const Q3, decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(20, x.value());
@@ -628,8 +628,8 @@ TYPED_TEST(QuantityTest, DivQuantityTest)
 	{
 		using D1 = hamon::units::length_dimension;
 		using Q1 = hamon::units::quantity<T, D1>;
-		using Q2 = hamon::units::quantity<T, D1, std::ratio<1000>>;
-		using Q3 = hamon::units::dimensionless<T, std::ratio<1, 1000>>;
+		using Q2 = hamon::units::quantity<T, D1, hamon::ratio<1000>>;
+		using Q3 = hamon::units::dimensionless<T, hamon::ratio<1, 1000>>;
 		HAMON_CONSTEXPR_OR_CONST auto x = Q1(12) / Q2(3);
 		static_assert(hamon::is_same<const Q3, decltype(x)>::value, "");
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(4, (double)x.value(), 0.0000000001);
@@ -641,7 +641,7 @@ TYPED_TEST(QuantityTest, CompareTest)
 	using T = TypeParam;
 	using D = hamon::units::length_dimension;
 	using Q1 = hamon::units::quantity<T, D>;
-	using Q2 = hamon::units::quantity<T, D, std::ratio<1, 1000>>;
+	using Q2 = hamon::units::quantity<T, D, hamon::ratio<1, 1000>>;
 
 	HAMON_CONSTEXPR Q1 x1(4);
 	HAMON_CONSTEXPR Q1 x2(4);
@@ -698,7 +698,7 @@ TYPED_TEST(QuantityTest, OutputStreamTest)
 	using T = TypeParam;
 	using D = hamon::units::length_dimension;
 	using Q1 = hamon::units::quantity<T, D>;
-	using Q2 = hamon::units::quantity<T, D, std::ratio<1, 1000>>;
+	using Q2 = hamon::units::quantity<T, D, hamon::ratio<1, 1000>>;
 
 	{
 		const Q1 x(321);

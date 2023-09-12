@@ -10,7 +10,7 @@
 #include <hamon/units/base_dimensions/angle.hpp>
 #include <hamon/units/quantity.hpp>
 #include <hamon/units/radian.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -19,7 +19,7 @@ namespace units
 {
 
 // 度数法
-template <typename T> using degree  = quantity<T, angle_dimension, std::ratio<2646693125139304345LL / 180, 842468587426513207LL>>;
+template <typename T> using degree  = quantity<T, angle_dimension, hamon::ratio<2646693125139304345LL / 180, 842468587426513207LL>>;
 template <typename T> using degrees = degree<T>;
 
 /**

@@ -9,7 +9,7 @@
 
 #include <hamon/units/metre.hpp>
 #include <hamon/units/second.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // ノット
-template <typename T> using knot  = decltype(metre<T>() / second<T>() * std::ratio<1852, 3600>());
+template <typename T> using knot  = decltype(metre<T>() / second<T>() * hamon::ratio<1852, 3600>());
 template <typename T> using knots = knot<T>;
 
 }	// namespace units

@@ -9,7 +9,7 @@
 
 #include <hamon/units/quantity/quantity_fwd.hpp>
 #include <hamon/units/detail/derived_dimension.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // dimensionless
-template <typename T, typename Scale = std::ratio<1>>
+template <typename T, typename Scale = hamon::ratio<1>>
 using dimensionless = quantity<T, derived_dimension<>, Scale>;
 
 }	// namespace units

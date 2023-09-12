@@ -9,7 +9,7 @@
 
 #include <hamon/units/volt.hpp>
 #include <hamon/units/second.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // マクスウェル(磁束の単位)
-template <typename T> using maxwell  = decltype(volt<T>() * second<T>() * std::ratio<1, 100000000>());
+template <typename T> using maxwell  = decltype(volt<T>() * second<T>() * hamon::ratio<1, 100000000>());
 template <typename T> using maxwells = maxwell<T>;
 
 }	// namespace units

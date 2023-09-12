@@ -9,7 +9,7 @@
 #include <hamon/units/acceleration.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -22,7 +22,7 @@ namespace user_defined_test
 // (1)既存の単位とスケールの組み合わせ
 // 尺(10/33 m)
 template <typename T>
-using shaku = decltype(hamon::units::metre<T>() * std::ratio<10, 33>());
+using shaku = decltype(hamon::units::metre<T>() * hamon::ratio<10, 33>());
 
 // (2)既存の単位の乗算で新たな次元の単位を作る
 // 躍度(jerk) - メートル毎秒毎秒毎秒
@@ -43,11 +43,11 @@ using dollar = hamon::units::quantity<T, currency_dimension>;
 // 円
 #if 1
 template <typename T>
-using yen = decltype(dollar<T>() * std::ratio<1, 134>());
+using yen = decltype(dollar<T>() * hamon::ratio<1, 134>());
 #else
 // こう書いても同じ
 template <typename T>
-using yen = hamon::units::quantity<T, currency_dimension, std::ratio<1, 134>>;
+using yen = hamon::units::quantity<T, currency_dimension, hamon::ratio<1, 134>>;
 #endif
 
 GTEST_TEST(UnitsTest, UserDefinedTest)

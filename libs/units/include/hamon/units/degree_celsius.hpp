@@ -9,7 +9,7 @@
 
 #include <hamon/units/base_dimensions/temperature.hpp>
 #include <hamon/units/quantity.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // セルシウス度
-template <typename T> using degree_celsius  = quantity<T, temperature_dimension, std::ratio<1>, std::ratio<27315, 100>>;
+template <typename T> using degree_celsius  = quantity<T, temperature_dimension, hamon::ratio<1>, hamon::ratio<27315, 100>>;
 template <typename T> using degrees_celsius = degree_celsius<T>;
 
 }	// namespace units

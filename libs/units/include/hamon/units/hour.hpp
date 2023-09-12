@@ -8,7 +8,7 @@
 #define HAMON_UNITS_HOUR_HPP
 
 #include <hamon/units/minute.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -17,7 +17,7 @@ namespace units
 {
 
 // 時
-template <typename T> using hour  = decltype(minute<T>() * std::ratio<60>());
+template <typename T> using hour  = decltype(minute<T>() * hamon::ratio<60>());
 template <typename T> using hours = hour<T>;
 
 }	// namespace units

@@ -8,7 +8,7 @@
 #define HAMON_UNITS_FURLONG_HPP
 
 #include <hamon/units/foot.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -17,7 +17,7 @@ namespace units
 {
 
 // 国際ハロン = 660フィート (正確に201.168m)
-template <typename T> using furlong  = decltype(foot<T>() * std::ratio<660>());
+template <typename T> using furlong  = decltype(foot<T>() * hamon::ratio<660>());
 template <typename T> using furlongs = furlong<T>;
 
 }	// namespace units

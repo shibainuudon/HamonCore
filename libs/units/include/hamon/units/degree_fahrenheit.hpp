@@ -9,7 +9,7 @@
 
 #include <hamon/units/base_dimensions/temperature.hpp>
 #include <hamon/units/quantity.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // ファーレンハイト度
-template <typename T> using degree_fahrenheit  = quantity<T, temperature_dimension, std::ratio<5, 9>, std::ratio<45967, 100>>;
+template <typename T> using degree_fahrenheit  = quantity<T, temperature_dimension, hamon::ratio<5, 9>, hamon::ratio<45967, 100>>;
 template <typename T> using degrees_fahrenheit = degree_fahrenheit<T>;
 
 }	// namespace units

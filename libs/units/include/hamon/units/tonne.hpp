@@ -8,7 +8,7 @@
 #define HAMON_UNITS_TONNE_HPP
 
 #include <hamon/units/gram.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -17,7 +17,7 @@ namespace units
 {
 
 // トン(メトリックトン) = 1000kg
-template <typename T> using tonne  = decltype(kilogram<T>() * std::ratio<1000>());
+template <typename T> using tonne  = decltype(kilogram<T>() * hamon::ratio<1000>());
 template <typename T> using tonnes = tonne<T>;
 
 }	// namespace units

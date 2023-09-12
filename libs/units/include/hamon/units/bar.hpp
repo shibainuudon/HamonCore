@@ -9,7 +9,7 @@
 
 #include <hamon/units/detail/si_prefix.hpp>
 #include <hamon/units/pascal.hpp>
-#include <ratio>
+#include <hamon/ratio/ratio.hpp>
 
 namespace hamon
 {
@@ -18,7 +18,7 @@ namespace units
 {
 
 // バール = 100000 パスカル
-template <typename T> using bar  = decltype(pascals<T>() * std::ratio<100000>());
+template <typename T> using bar  = decltype(pascals<T>() * hamon::ratio<100000>());
 template <typename T> using bars = bar<T>;
 HAMON_UNITS_SI_PREFIX(bar);
 HAMON_UNITS_SI_PREFIX(bars);

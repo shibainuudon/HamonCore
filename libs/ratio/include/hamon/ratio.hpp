@@ -7,6 +7,7 @@
 #ifndef HAMON_RATIO_HPP
 #define HAMON_RATIO_HPP
 
+#include <hamon/ratio/ratio.hpp>
 #include <hamon/ratio/ratio_gcd.hpp>
 
 #endif // HAMON_RATIO_HPP
