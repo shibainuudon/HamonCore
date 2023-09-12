@@ -12,6 +12,7 @@
 #include <hamon/ratio/ratio_divide.hpp>
 #include <hamon/ratio/ratio_equal.hpp>
 #include <hamon/ratio/ratio_gcd.hpp>
+#include <hamon/ratio/ratio_greater.hpp>
 #include <hamon/ratio/ratio_less.hpp>
 #include <hamon/ratio/ratio_less_equal.hpp>
 #include <hamon/ratio/ratio_multiply.hpp>
