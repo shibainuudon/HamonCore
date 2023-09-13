@@ -19,4 +19,5 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		array
 		type_traits
+		vector
 		utility)

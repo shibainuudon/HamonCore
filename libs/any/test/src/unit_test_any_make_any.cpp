@@ -11,9 +11,9 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <string>
-#include <vector>
 
 GTEST_TEST(AnyTest, MakeAnyTest)
 {
@@ -27,8 +27,8 @@ GTEST_TEST(AnyTest, MakeAnyTest)
 	}
 	{
 		std::allocator<int> alloc;
-		hamon::any a = hamon::make_any<std::vector<int>>({3, 1, 4}, alloc);
-		auto const& vec = hamon::any_cast<std::vector<int> const&>(a);
+		hamon::any a = hamon::make_any<hamon::vector<int>>({3, 1, 4}, alloc);
+		auto const& vec = hamon::any_cast<hamon::vector<int> const&>(a);
 		EXPECT_EQ(3, vec[0]);
 		EXPECT_EQ(1, vec[1]);
 		EXPECT_EQ(4, vec[2]);

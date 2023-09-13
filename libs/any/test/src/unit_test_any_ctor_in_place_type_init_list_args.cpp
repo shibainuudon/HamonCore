@@ -9,16 +9,16 @@
 
 #include <hamon/any.hpp>
 #include <hamon/utility/in_place_type.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 GTEST_TEST(AnyTest, CtorInPlaceTypeInitListArgsTest)
 {
 	{
 		std::allocator<int> alloc;
-		hamon::any a { hamon::in_place_type_t<std::vector<int>>{}, {3, 1, 4}, alloc};
+		hamon::any a { hamon::in_place_type_t<hamon::vector<int>>{}, {3, 1, 4}, alloc};
 		EXPECT_TRUE(a.has_value());
-		auto const& vec = hamon::any_cast<std::vector<int> const&>(a);
+		auto const& vec = hamon::any_cast<hamon::vector<int> const&>(a);
 		EXPECT_EQ(3, vec[0]);
 		EXPECT_EQ(1, vec[1]);
 		EXPECT_EQ(4, vec[2]);
