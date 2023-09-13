@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_XML_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_XML_IARCHIVE_IMPL_HPP
 
+#include <hamon/algorithm/transform.hpp>
 #include <hamon/base64/base64_xml_name.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
@@ -20,7 +21,6 @@
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
-#include <algorithm>
 
 namespace hamon
 {
@@ -238,7 +238,7 @@ private:
 			String1 tmp;
 			std::getline(is, tmp, CharT1(delim));
 			result.resize(tmp.size());
-			std::transform(tmp.begin(), tmp.end(), result.begin(),
+			hamon::transform(tmp.begin(), tmp.end(), result.begin(),
 				[](CharT1 c){return static_cast<CharT2>(c);});
 			result += delim;
 		}
@@ -266,7 +266,7 @@ private:
 		m_is >> tmp;
 		std::string s;
 		s.resize(tmp.size());
-		std::transform(tmp.begin(), tmp.end(), s.begin(),
+		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](char_type c){return static_cast<char>(c);});
 		auto first = s.data();
 		auto last  = s.data() + s.length();

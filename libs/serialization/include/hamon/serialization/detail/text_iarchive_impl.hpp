@@ -7,6 +7,7 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_TEXT_IARCHIVE_IMPL_HPP
 
+#include <hamon/algorithm/transform.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
@@ -20,7 +21,6 @@
 #if HAMON_HAS_INCLUDE(<charconv>) && (HAMON_CXX_STANDARD >= 17)
 #include <charconv>
 #endif
-#include <algorithm>
 
 namespace hamon
 {
@@ -157,7 +157,7 @@ private:
 		tmp.resize(length);
 		is.read(&tmp[0], static_cast<std::streamsize>(tmp.size()));
 		s.resize(length);
-		std::transform(tmp.begin(), tmp.end(), s.begin(),
+		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](CharT1 c){return static_cast<CharT2>(c);});
 	}
 
@@ -353,7 +353,7 @@ private:
 		m_is >> tmp;
 		std::string s;
 		s.resize(tmp.size());
-		std::transform(tmp.begin(), tmp.end(), s.begin(),
+		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](char_type c){return static_cast<char>(c);});
 		auto first = s.data();
 		auto last  = s.data() + s.length();

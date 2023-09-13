@@ -7,12 +7,12 @@
 #ifndef HAMON_SERIALIZATION_DETAIL_TEXT_OARCHIVE_IMPL_HPP
 #define HAMON_SERIALIZATION_DETAIL_TEXT_OARCHIVE_IMPL_HPP
 
+#include <hamon/algorithm/transform.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
-#include <algorithm>
 #include <string>
 #include <array>
 #include <limits>
@@ -113,7 +113,7 @@ private:
 	{
 		std::basic_string<CharT1> tmp;
 		tmp.resize(s.size());
-		std::transform(s.begin(), s.end(), tmp.begin(),
+		hamon::transform(s.begin(), s.end(), tmp.begin(),
 			[](CharT2 c){return static_cast<CharT1>(c);});
 		os.write(tmp.c_str(), static_cast<std::streamsize>(tmp.size()));
 	}
