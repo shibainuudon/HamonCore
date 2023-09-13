@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/set_difference.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -99,7 +99,7 @@ inline bool test02()
 		VERIFY(ranges::equal(z, a, {}, &X::i));
 	}
 	{
-		std::vector<int> const x;
+		hamon::vector<int> const x;
 		std::forward_list<int> const y;
 		int z[1];
 		auto res = ranges::set_difference(x, y, z);

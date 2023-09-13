@@ -10,8 +10,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -68,27 +68,27 @@ GTEST_TEST(AlgorithmTest, IsHeapUntilTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 7));
 	}
 	{
-		const std::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };
+		const hamon::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };
 		auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 7));
 	}
 	{
-		const std::vector<int> a { 9, 7, 7, 8, 4, 3, 2 };
+		const hamon::vector<int> a { 9, 7, 7, 8, 4, 3, 2 };
 		auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::vector<int> a { 3, 2, 1 };
+		const hamon::vector<int> a { 3, 2, 1 };
 		auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), [](int x, int y){return x < y;});
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::vector<int> a { 1, 2, 3 };
+		const hamon::vector<int> a { 1, 2, 3 };
 		auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), [](int x, int y){return x < y;});
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 	}
 	{
-		const std::vector<int> a { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		const hamon::vector<int> a { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		auto ret = hamon::is_heap_until(hamon::begin(a), hamon::end(a), [](int x, int y){return x < y;});
 		EXPECT_TRUE(ret == hamon::end(a));
 	}

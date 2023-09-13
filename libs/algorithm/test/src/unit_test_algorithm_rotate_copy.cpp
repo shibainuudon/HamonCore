@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -121,8 +121,8 @@ GTEST_TEST(AlgorithmTest, RotateCopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::vector<int> a { 1,2,3,4,5 };
-		std::vector<int> b;
+		const hamon::vector<int> a { 1,2,3,4,5 };
+		hamon::vector<int> b;
 		hamon::rotate_copy(
 			hamon::begin(a),
 			hamon::next(hamon::begin(a), 3),
@@ -135,7 +135,7 @@ GTEST_TEST(AlgorithmTest, RotateCopyTest)
 		EXPECT_EQ(3, b[4]);
 	}
 	{
-		const std::vector<int> a { 1,2,3,4 };
+		const hamon::vector<int> a { 1,2,3,4 };
 		int b[4] {};
 		auto it = hamon::rotate_copy(
 			hamon::begin(a),
@@ -149,8 +149,8 @@ GTEST_TEST(AlgorithmTest, RotateCopyTest)
 		EXPECT_EQ(1, b[3]);
 	}
 	{
-		const std::vector<int> a;
-		std::vector<int> b;
+		const hamon::vector<int> a;
+		hamon::vector<int> b;
 		hamon::rotate_copy(
 			hamon::begin(a),
 			hamon::next(hamon::begin(a), 0),

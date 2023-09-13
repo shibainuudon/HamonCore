@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -93,7 +93,7 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 
 	{
 		const hamon::array<int, 5> a {{1,2,3,4,5}};
-		std::vector<int> b(5);
+		hamon::vector<int> b(5);
 		std::list<int> c(5);
 		auto ret = hamon::partition_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::begin(c), pred2());
 		EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(b), 3));
@@ -114,7 +114,7 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 	}
 	{
 		const std::list<int> a {1,2,3,4,5};
-		std::vector<int> b;
+		hamon::vector<int> b;
 		hamon::array<int, 5> c{{}};
 		auto ret = hamon::partition_copy(
 			hamon::begin(a),
@@ -136,8 +136,8 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 		EXPECT_EQ(0, c[4]);
 	}
 	{
-		const std::vector<int> a;
-		std::vector<int> b;
+		const hamon::vector<int> a;
+		hamon::vector<int> b;
 		std::list<int> c;
 		auto ret = hamon::partition_copy(
 			hamon::begin(a),

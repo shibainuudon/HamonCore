@@ -10,8 +10,8 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -182,7 +182,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_EQ(4, a[3].get());
 	}
 	{
-		std::vector<int> a { 1,2,3,4,5 };
+		hamon::vector<int> a { 1,2,3,4,5 };
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 4), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 		EXPECT_EQ(5, a[0]);
@@ -192,7 +192,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_EQ(4, a[4]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 0), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 		EXPECT_TRUE(a.empty());

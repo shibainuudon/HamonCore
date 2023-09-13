@@ -8,8 +8,8 @@
 #include <hamon/algorithm/ranges/none_of.hpp>
 #include <hamon/algorithm/ranges/all_of.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -98,7 +98,7 @@ inline bool test02()
 		VERIFY(ranges::none_of(z, pred, proj));
 	}
 	{
-		std::vector<int> x {};
+		hamon::vector<int> x {};
 		int y[1] = {};
 		int z[1] = {};
 		auto res = ranges::partition_copy(x, y, z, [](int a) { return a%2==0; });

@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -63,19 +63,19 @@ GTEST_TEST(AlgorithmTest, IsPartitionedTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
-		const std::vector<int> a {1,2,3};
+		const hamon::vector<int> a {1,2,3};
 		EXPECT_FALSE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred1));
 	}
 	{
-		const std::vector<int> a {1,3,2};
+		const hamon::vector<int> a {1,3,2};
 		EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), [](int x) { return (x % 2) == 1; }));
 	}
 	{
-		const std::vector<int> a {1,2,3};
+		const hamon::vector<int> a {1,2,3};
 		EXPECT_TRUE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), pred2()));
 	}
 	{
-		const std::vector<int> a {1,3,2};
+		const hamon::vector<int> a {1,3,2};
 		EXPECT_FALSE(hamon::is_partitioned(hamon::begin(a), hamon::end(a), [](int x) { return x > 2; }));
 	}
 	{

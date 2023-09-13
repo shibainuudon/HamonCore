@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -92,7 +92,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 
 	{
 		const hamon::array<int, 10> a {{ 1,1,2,2,2,3,4,4,5,5 }};
-		std::vector<int> b(10);
+		hamon::vector<int> b(10);
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 5));
 
@@ -108,7 +108,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_EQ(0, b[9]);
 	}
 	{
-		const std::vector<int> a { 1,4,4,2,1,1,3,3,3 };
+		const hamon::vector<int> a { 1,4,4,2,1,1,3,3,3 };
 		std::list<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), pred1);
 		(void)ret;
@@ -122,7 +122,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		int b[3] {};
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), [](int, int){ return true; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 0));
@@ -132,7 +132,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 	}
 	{
 		const std::list<int> a { 1,1,1,4,4,2,3,3,2 };
-		std::vector<int> b;
+		hamon::vector<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), pred2());
 		(void)ret;
 
@@ -144,7 +144,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 	}
 	{
 		const std::list<int> a;
-		std::vector<int> b;
+		hamon::vector<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), [](int, int){ return false; });
 		(void)ret;
 		EXPECT_TRUE(b.empty());
@@ -153,7 +153,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		std::stringstream ss("1 1 1 2 2 3 33");
 		std::istream_iterator<int> ii_first(ss);
 		std::istream_iterator<int> ii_last;
-		std::vector<int> b;
+		hamon::vector<int> b;
 		auto ret = hamon::unique_copy(ii_first, ii_last, std::back_inserter(b));
 		(void)ret;
 		EXPECT_EQ( 4u, b.size());

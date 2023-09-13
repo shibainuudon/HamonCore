@@ -10,8 +10,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -74,19 +74,19 @@ GTEST_TEST(AlgorithmTest, MakeHeapTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MakeHeapTest4());
 
 	{
-		std::vector<int> a { 5, 4, 1, 1, 3 };
+		hamon::vector<int> a { 5, 4, 1, 1, 3 };
 		hamon::make_heap(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE (hamon::is_heap(hamon::begin(a), hamon::end(a)));
 		EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a), hamon::greater<>()));
 	}
 	{
-		std::vector<int> a { 5, 4, 1, 1, 3 };
+		hamon::vector<int> a { 5, 4, 1, 1, 3 };
 		hamon::make_heap(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		EXPECT_FALSE(hamon::is_heap(hamon::begin(a), hamon::end(a)));
 		EXPECT_TRUE (hamon::is_heap(hamon::begin(a), hamon::end(a), hamon::greater<>()));
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		hamon::make_heap(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(a.empty());
 	}

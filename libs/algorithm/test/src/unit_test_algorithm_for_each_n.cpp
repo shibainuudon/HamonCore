@@ -10,8 +10,8 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -92,7 +92,7 @@ GTEST_TEST(AlgorithmTest, ForEachNTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ForEachNStdArrayTest());
 
 	{
-		std::vector<int> v { 1, 2, 3 };
+		hamon::vector<int> v { 1, 2, 3 };
 		auto i = hamon::for_each_n(hamon::begin(v), v.size(), [](int& x) { x *= 2; });
 		EXPECT_EQ(2, v[0]);
 		EXPECT_EQ(4, v[1]);
@@ -100,7 +100,7 @@ GTEST_TEST(AlgorithmTest, ForEachNTest)
 		EXPECT_TRUE(i == hamon::end(v));
 	}
 	{
-		std::vector<int> v { 1, 2, 3 };
+		hamon::vector<int> v { 1, 2, 3 };
 		auto i = hamon::for_each_n(hamon::begin(v), 1, [](int& x) { x *= 2; });
 		EXPECT_EQ(2, v[0]);
 		EXPECT_EQ(2, v[1]);

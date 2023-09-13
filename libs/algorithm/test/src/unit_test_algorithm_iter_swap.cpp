@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -62,8 +62,8 @@ GTEST_TEST(AlgorithmTest, IterSwapTest)
 
 
 	{
-		std::vector<int> v1{13,14,15};
-		std::vector<int> v2{16,17,18};
+		hamon::vector<int> v1{13,14,15};
+		hamon::vector<int> v2{16,17,18};
 		hamon::iter_swap(hamon::begin(v1), hamon::begin(v2));
 		EXPECT_EQ(16, v1[0]);
 		EXPECT_EQ(14, v1[1]);

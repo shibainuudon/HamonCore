@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/push_heap.hpp>
 #include <hamon/algorithm/ranges/make_heap.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -83,7 +83,7 @@ inline bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> a { 3, 1, 4 };
+		hamon::vector<int> a { 3, 1, 4 };
 
 		auto it = ranges::make_heap(a);
 		VERIFY(it == a.end());
@@ -130,7 +130,7 @@ inline bool test02()
 		VERIFY(3 == a[6]);
 	}
 	{
-		std::vector<int> a { 3, 2, 1 };
+		hamon::vector<int> a { 3, 2, 1 };
 		auto pred = ranges::greater{};
 
 		auto it = ranges::make_heap(a, pred);

@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -136,7 +136,7 @@ GTEST_TEST(AlgorithmTest, RemoveTest)
 		EXPECT_EQ(T(2), a[6]);
 	}
 	{
-		std::vector<int> a = {1,2,3,1,3,1,2,2};
+		hamon::vector<int> a = {1,2,3,1,3,1,2,2};
 		auto ret = hamon::remove(hamon::begin(a), hamon::end(a), 2);
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 5));
 		EXPECT_EQ(1, a[0]);
@@ -147,7 +147,7 @@ GTEST_TEST(AlgorithmTest, RemoveTest)
 		EXPECT_EQ(8u, a.size());	// removeしてもコンテナのサイズは変わらない
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		auto ret = hamon::remove(hamon::begin(a), hamon::end(a), 2);
 		EXPECT_TRUE(ret == hamon::end(a));
 		EXPECT_EQ(0u, a.size());

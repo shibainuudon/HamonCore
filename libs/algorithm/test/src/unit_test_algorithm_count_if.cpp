@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -62,7 +62,7 @@ GTEST_TEST(AlgorithmTest, CountIfTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 4, hamon::count_if(hamon::begin(a), hamon::end(a), pred4()));
 	}
 	{
-		const std::vector<int> v{10, 20, 10, 30, 10, 20};
+		const hamon::vector<int> v{10, 20, 10, 30, 10, 20};
 		EXPECT_EQ(0, hamon::count_if(hamon::begin(v), hamon::end(v), pred1));
 		EXPECT_EQ(6, hamon::count_if(hamon::begin(v), hamon::end(v), pred2));
 		EXPECT_EQ(6, hamon::count_if(hamon::begin(v), hamon::end(v), pred3()));
@@ -71,7 +71,7 @@ GTEST_TEST(AlgorithmTest, CountIfTest)
 		EXPECT_EQ(4, hamon::count_if(hamon::begin(v), hamon::end(v), [](int x) { return x != 20;}));
 	}
 	{
-		const std::vector<int> v;
+		const hamon::vector<int> v;
 		EXPECT_EQ(0, hamon::count_if(hamon::begin(v), hamon::end(v), pred1));
 		EXPECT_EQ(0, hamon::count_if(hamon::begin(v), hamon::end(v), pred2));
 		EXPECT_EQ(0, hamon::count_if(hamon::begin(v), hamon::end(v), pred3()));

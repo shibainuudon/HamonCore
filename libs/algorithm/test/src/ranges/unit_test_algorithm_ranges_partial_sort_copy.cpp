@@ -8,8 +8,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -112,8 +112,8 @@ inline bool test02()
 		VERIFY(ranges::equal(w, y, {}, &X::i, &X::i));
 	}
 	{
-		std::vector<int> x = { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
-		std::vector<int> w = {};
+		hamon::vector<int> x = { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
+		hamon::vector<int> w = {};
 		auto res = ranges::partial_sort_copy(x, w);
 		VERIFY(res.in  == x.end());
 		VERIFY(res.out == w.end());

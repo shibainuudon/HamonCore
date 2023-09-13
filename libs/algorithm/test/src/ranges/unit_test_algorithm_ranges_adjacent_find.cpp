@@ -8,8 +8,8 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -71,15 +71,15 @@ inline bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x{};
+		hamon::vector<int> x{};
 		VERIFY(ranges::adjacent_find(x) == x.end());
 	}
 	{
-		std::vector<int> x{1,2,3};
+		hamon::vector<int> x{1,2,3};
 		VERIFY(ranges::adjacent_find(x) == x.end());
 	}
 	{
-		std::vector<int> x{1,2,2,3,3,3};
+		hamon::vector<int> x{1,2,2,3,3,3};
 		VERIFY(ranges::adjacent_find(x) == x.begin()+1);
 	}
 	{

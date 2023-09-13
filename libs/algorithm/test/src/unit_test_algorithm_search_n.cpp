@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -47,7 +47,7 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
+		const hamon::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
 		auto const it = hamon::search_n(hamon::begin(a), hamon::end(a), 1, 2);
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 1));
 	}
@@ -57,7 +57,7 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
+		const hamon::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
 		auto const it = hamon::search_n(hamon::begin(a), hamon::end(a), 3, 2);
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 6));
 	}
@@ -67,7 +67,7 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
+		const hamon::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
 		auto const it = hamon::search_n(hamon::begin(a), hamon::end(a), 3, 2, [](int x, int y) { return x >= y; });
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 1));
 	}
@@ -77,7 +77,7 @@ GTEST_TEST(AlgorithmTest, SearchNTest)
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 0));
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		auto const it = hamon::search_n(hamon::begin(a), hamon::end(a), 2, 3);
 		EXPECT_TRUE(it == hamon::end(a));
 	}

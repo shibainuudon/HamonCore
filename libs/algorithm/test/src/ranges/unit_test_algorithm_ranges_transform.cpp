@@ -8,8 +8,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -112,7 +112,7 @@ inline bool test06()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x {1,2,3,4,5};
+		hamon::vector<int> x {1,2,3,4,5};
 		auto res = ranges::transform(x, x.begin(), [](int a) { return a+1; });
 		VERIFY(res.in  == x.end());
 		VERIFY(res.out == x.end());
@@ -143,7 +143,7 @@ inline bool test08()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x {1,2,3,4};
+		hamon::vector<int> x {1,2,3,4};
 		auto res = ranges::transform(x, x, x.begin(), [](int a, int b) { return a*b; });
 		VERIFY(res.in1 == x.end());
 		VERIFY(res.in2 == x.end());

@@ -10,8 +10,8 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -75,7 +75,7 @@ GTEST_TEST(AlgorithmTest, MinmaxElementTest)
 		}
 	}
 	{
-		const std::vector<int> a { 9, 3, 2, 3, 8, 4, 6 };
+		const hamon::vector<int> a { 9, 3, 2, 3, 8, 4, 6 };
 
 		{
 			auto ret = hamon::minmax_element(hamon::begin(a), hamon::end(a));

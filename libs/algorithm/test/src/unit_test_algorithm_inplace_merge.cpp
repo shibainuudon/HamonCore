@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 namespace hamon_algorithm_test
 {
@@ -111,7 +111,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(1, a[1]);
 	}
 	{
-		std::vector<int> a { 1,2,4,5,6,  3 };
+		hamon::vector<int> a { 1,2,4,5,6,  3 };
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 5, hamon::end(a));
 
@@ -123,7 +123,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(6, a[5]);
 	}
 	{
-		std::vector<int> a { 6,5,4,2,1,  3 };
+		hamon::vector<int> a { 6,5,4,2,1,  3 };
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a) + 5, hamon::end(a), hamon::greater<>());
 
@@ -135,7 +135,7 @@ GTEST_TEST(AlgorithmTest, InplaceMergeTest)
 		EXPECT_EQ(1, a[5]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 
 		hamon::inplace_merge(hamon::begin(a), hamon::begin(a), hamon::end(a));
 

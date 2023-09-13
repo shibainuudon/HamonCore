@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -61,10 +61,10 @@ GTEST_TEST(AlgorithmTest, IncludesTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::includes(hamon::begin(a), hamon::end(a), hamon::begin(e), hamon::end(e)));
 	}
 	{
-		const std::vector<int>     a   {9,8,7,6,5};
+		const hamon::vector<int>   a   {9,8,7,6,5};
 		const int                  b[] {9,7,5};
 		const hamon::array<int, 3> c {{10,9,8}};
-		const std::vector<int>     d   {9,5,4};
+		const hamon::vector<int>   d   {9,5,4};
 		const std::list<int>       e   {8,7,6};
 		EXPECT_TRUE (hamon::includes(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), pred2()));
 		EXPECT_FALSE(hamon::includes(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c), pred2()));
@@ -75,7 +75,7 @@ GTEST_TEST(AlgorithmTest, IncludesTest)
 		const std::list<int>       a   {90,80,70,60,50};
 		const int                  b[] {90,70,50};
 		const hamon::array<int, 3> c  {{91,90,88}};
-		const std::vector<int>     d   {80,75,70};
+		const hamon::vector<int>   d   {80,75,70};
 		const std::list<int>       e   {80,70,50};
 		EXPECT_TRUE (hamon::includes(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), [](int x, int y){ return x > y; }));
 		EXPECT_FALSE(hamon::includes(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c), [](int x, int y){ return x > y; }));

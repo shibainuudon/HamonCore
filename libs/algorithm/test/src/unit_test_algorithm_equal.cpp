@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -33,9 +33,9 @@ GTEST_TEST(AlgorithmTest, EqualTest)
 	HAMON_CXX11_CONSTEXPR hamon::array<int, 2> a9{{0, 1}};
 	HAMON_CXX11_CONSTEXPR hamon::array<int, 4> a10{{0, 1, 2, 3}};
 
-	const std::vector<int> v1 {0,1,2};
-	const std::vector<int> v2 {0,1,2,3};
-	const std::vector<int> v3 {0,1,2,3};
+	const hamon::vector<int> v1 {0,1,2};
+	const hamon::vector<int> v2 {0,1,2,3};
+	const hamon::vector<int> v3 {0,1,2,3};
 
 	const std::list<int> l1 {0,1,2};
 	const std::list<int> l2 {0,1,2,3};

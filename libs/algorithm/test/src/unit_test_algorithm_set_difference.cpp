@@ -10,8 +10,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -70,7 +70,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 
 	{
 		const hamon::array<int, 4> a {{ 6, 5, 2, 1 }};
-		const std::vector<int> b { 5, 3, 1 };
+		const hamon::vector<int> b { 5, 3, 1 };
 		std::list<int> c;
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
@@ -88,7 +88,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 	{
 		const int a[] { 1, 2, 3 };
 		const std::list<int> b { 1, 2, 3 };
-		std::vector<int> c;
+		hamon::vector<int> c;
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
@@ -101,7 +101,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 	{
 		const std::list<int> a { 5, 6, 7 };
 		const int b[] { 1, 2, 3 };
-		std::vector<int> c;
+		hamon::vector<int> c;
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
@@ -115,9 +115,9 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 		EXPECT_EQ(7, c[2]);
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		const std::list<int> b;
-		std::vector<int> c;
+		hamon::vector<int> c;
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),

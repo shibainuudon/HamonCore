@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -55,11 +55,11 @@ inline HAMON_CXX14_CONSTEXPR bool testArray()
 inline bool testVector()
 {
 	{
-		std::vector<int> x;
+		hamon::vector<int> x;
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 	}
 	{
-		std::vector<int> x{0, 2, 4};
+		hamon::vector<int> x{0, 2, 4};
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 0));
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 1));
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 2));

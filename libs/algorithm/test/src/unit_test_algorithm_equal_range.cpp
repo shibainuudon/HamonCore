@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -83,7 +83,7 @@ GTEST_TEST(AlgorithmTest, EqualRangeTest)
 	}
 	{
 		// ソートされていなくても区分化されていれば良い
-		const std::vector<int> a { 2,1,2,3,3,4,7,5,5 };
+		const hamon::vector<int> a { 2,1,2,3,3,4,7,5,5 };
 		{
 			auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 3);
 			EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 3));
@@ -99,7 +99,7 @@ GTEST_TEST(AlgorithmTest, EqualRangeTest)
 		}
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		{
 			auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 0);
 			EXPECT_TRUE(ret.first  == hamon::begin(a));

@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -70,7 +70,7 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, *it);
 	}
 	{
-		const std::vector<int> a { 1, 3, 7, 4, 2 };
+		const hamon::vector<int> a { 1, 3, 7, 4, 2 };
 		const std::list<int> b { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::next(hamon::begin(a), 3));
@@ -85,7 +85,7 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 	}
 	{
 		const int a[] { 1, 3, 7, 4, 2 };
-		const std::vector<int> b { 2, 4, 6, 8 };
+		const hamon::vector<int> b { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), pred2());
 		EXPECT_EQ(it, hamon::next(hamon::begin(a), 1));
 		EXPECT_EQ(3, *it);
@@ -99,12 +99,12 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 	}
 	{
 		const std::list<int> a { 1, 3, 7, 4, 2 };
-		const std::vector<int> b;
+		const hamon::vector<int> b;
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::end(a));
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		const std::list<int> b { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::end(a));

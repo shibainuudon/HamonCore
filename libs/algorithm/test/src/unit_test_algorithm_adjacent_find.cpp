@@ -10,8 +10,8 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -62,12 +62,12 @@ GTEST_TEST(AlgorithmTest, AdjacentFindTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		auto const it = hamon::adjacent_find(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::vector<int> a {1,1,2,2,3,3};
+		const hamon::vector<int> a {1,1,2,2,3,3};
 		auto const it = hamon::adjacent_find(hamon::begin(a), hamon::end(a), [](int x, int y) { return x != y; });
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 1));
 	}

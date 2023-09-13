@@ -8,8 +8,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -89,7 +89,7 @@ inline bool test02()
 		VERIFY(res.out == z);
 	}
 	{
-		std::vector<int> const x;
+		hamon::vector<int> const x;
 		std::forward_list<int> const y;
 		int z[1];
 		auto res = ranges::set_intersection(x, y, z);

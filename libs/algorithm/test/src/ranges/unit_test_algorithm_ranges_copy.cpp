@@ -6,8 +6,8 @@
 
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -77,8 +77,8 @@ inline bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x = { 1, 2, 3, 4, 5, 6, 7 };
-		std::vector<int> w(x.size());
+		hamon::vector<int> x = { 1, 2, 3, 4, 5, 6, 7 };
+		hamon::vector<int> w(x.size());
 		auto res = ranges::copy(x.rbegin(), x.rend(), w.begin());
 		VERIFY(res.in  == x.rend());
 		VERIFY(res.out == w.end());
@@ -104,8 +104,8 @@ inline bool test04()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x = { 1, 2, 3, 4, 5, 6 };
-		std::vector<int> w(x.size());
+		hamon::vector<int> x = { 1, 2, 3, 4, 5, 6 };
+		hamon::vector<int> w(x.size());
 		auto res = ranges::copy(x, w.rbegin());
 		VERIFY(res.in  == x.end());
 		VERIFY(res.out == w.rend());

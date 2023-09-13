@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -96,22 +96,22 @@ GTEST_TEST(AlgorithmTest, IsSortedUntilTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::vector<int> a {3,4,5};
+		const hamon::vector<int> a {3,4,5};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::vector<int> a {3,3,4,4,5,5};
+		const hamon::vector<int> a {3,3,4,4,5,5};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x < y; });
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::vector<int> a {3,3,4,4,5,5};
+		const hamon::vector<int> a {3,3,4,4,5,5};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x > y; });
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(it == hamon::end(a));
 	}

@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -84,7 +84,7 @@ GTEST_TEST(AlgorithmTest, FindTest)
 		EXPECT_EQ(20, a[2]);
 	}
 	{
-		const std::vector<int> a {7, 8, 9};
+		const hamon::vector<int> a {7, 8, 9};
 		{
 			auto it = hamon::find(hamon::begin(a), hamon::end(a), 7);
 			EXPECT_TRUE(it == hamon::begin(a));

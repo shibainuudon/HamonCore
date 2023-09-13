@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <memory>
 #include "constexpr_test.hpp"
@@ -79,7 +79,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UniqueTest2());
 
 	{
-		std::vector<std::shared_ptr<int>> a;
+		hamon::vector<std::shared_ptr<int>> a;
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(4));
 		a.emplace_back(new int(4));
@@ -99,7 +99,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 		EXPECT_EQ(3, *a[4]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		auto ret = hamon::unique(hamon::begin(a), hamon::end(a), [](int, int){ return true; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 		EXPECT_TRUE(a.empty());

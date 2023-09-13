@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -173,7 +173,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 
 	{
 		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
-		std::vector<int> b(5);
+		hamon::vector<int> b(5);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 4));
@@ -186,7 +186,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
-		std::vector<int> b(5);
+		hamon::vector<int> b(5);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 4));
@@ -199,7 +199,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::array<int, 4> a {{ 4, 5, 6, 7 }};
-		std::vector<int> b(3);
+		hamon::vector<int> b(3);
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(ret == hamon::end(b));
@@ -209,7 +209,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_EQ(6, b[2]);
 	}
 	{
-		const std::vector<int> a { 5, 6, 7, 8, 9 };
+		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
 		std::list<int> b;
 
 		hamon::copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
@@ -223,7 +223,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::vector<int> a { 5, 6, 7, 8, 9 };
+		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
 		std::list<int> b { 1, 2, 3 };
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
@@ -236,7 +236,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::vector<int> a { 5, 6, 7, 8, 9 };
+		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
 		std::list<int> b { 1, 2, 3, 4, 5, 6, 7 };
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
@@ -277,7 +277,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_EQ(3, b[2]);
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		std::list<int> b;
 
 		hamon::copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));

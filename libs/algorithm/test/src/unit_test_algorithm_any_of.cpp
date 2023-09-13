@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -58,13 +58,13 @@ GTEST_TEST(AlgorithmTest, AnyOfTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred3()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::any_of(hamon::begin(a2), hamon::end(a2), pred4()));
 
-	const std::vector<int> v1 {7, 8, 9};
+	const hamon::vector<int> v1 {7, 8, 9};
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v1), hamon::end(v1), pred1));
 	EXPECT_TRUE (hamon::any_of(hamon::begin(v1), hamon::end(v1), [](int x) { return x == 7; }));
 	EXPECT_TRUE (hamon::any_of(hamon::begin(v1), hamon::end(v1), [](int x) { return x > 8; }));
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v1), hamon::end(v1), [](int x) { return x == 10; }));
 
-	const std::vector<int> v2;
+	const hamon::vector<int> v2;
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v2), hamon::end(v2), pred1));
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v2), hamon::end(v2), [](int) { return true; }));
 

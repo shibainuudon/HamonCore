@@ -6,8 +6,8 @@
 
 #include <hamon/algorithm/ranges/includes.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -78,8 +78,8 @@ inline bool test02()
 		VERIFY(!ranges::includes(y, x, {}, &X::i, &X::i));
 	}
 	{
-		std::vector<int> x = {};
-		std::vector<int> y = {};
+		hamon::vector<int> x = {};
+		hamon::vector<int> y = {};
 		VERIFY( ranges::includes(x, y));
 		VERIFY( ranges::includes(y, x));
 	}

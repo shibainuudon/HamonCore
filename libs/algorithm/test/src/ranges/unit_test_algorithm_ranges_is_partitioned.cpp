@@ -5,8 +5,8 @@
  */
 
 #include <hamon/algorithm/ranges/is_partitioned.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -79,7 +79,7 @@ inline bool test02()
 		VERIFY( ranges::is_partitioned(rx, [](int a) { return a%2==1; }, [](int a) { return a+1; }));
 	}
 	{
-		std::vector<int> x {};
+		hamon::vector<int> x {};
 		VERIFY(ranges::is_partitioned(x, [](int a) { return a%2==0; }));
 	}
 	return true;

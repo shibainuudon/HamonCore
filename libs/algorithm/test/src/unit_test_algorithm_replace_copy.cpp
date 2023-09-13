@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -64,7 +64,7 @@ GTEST_TEST(AlgorithmTest, ReplaceCopyTest)
 
 	{
 		const int a[] { 3,1,2,1,2 };
-		std::vector<int> b;
+		hamon::vector<int> b;
 		auto ret = hamon::replace_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), 2, 5);
 		(void)ret;
 		EXPECT_EQ(5u, b.size());
@@ -89,7 +89,7 @@ GTEST_TEST(AlgorithmTest, ReplaceCopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::vector<int> a { 3,1,4,1,5,9,2 };
+		const hamon::vector<int> a { 3,1,4,1,5,9,2 };
 		hamon::array<int, 7> b{{}};
 		auto ret = hamon::replace_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), 2, 0);
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 7));
@@ -102,7 +102,7 @@ GTEST_TEST(AlgorithmTest, ReplaceCopyTest)
 		EXPECT_EQ(0, b[6]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		int b[5] {};
 		auto ret = hamon::replace_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), 0, 10);
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 0));
@@ -129,7 +129,7 @@ GTEST_TEST(AlgorithmTest, ReplaceCopyTest)
 	}
 	{
 		std::list<int> a;
-		std::vector<int> b;
+		hamon::vector<int> b;
 		auto ret = hamon::replace_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), 0, 1);
 		(void)ret;
 		EXPECT_TRUE(a.empty());

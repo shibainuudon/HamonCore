@@ -14,8 +14,8 @@
 #include <hamon/iterator/move_iterator.hpp>
 #include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -108,8 +108,8 @@ inline bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<char> x = { 1, 2, 3 };
-		std::vector<int> y(3);
+		hamon::vector<char> x = { 1, 2, 3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::move(x, ranges::begin(y));
 		VERIFY(res.in == x.begin()+3);
@@ -118,8 +118,8 @@ inline bool test02()
 		VERIFY(ranges::equal(y, z));
 	}
 	{
-		std::vector<int> x = { 1, 2, 3 };
-		std::vector<int> y(3);
+		hamon::vector<int> x = { 1, 2, 3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::move(x, ranges::begin(y));
 		VERIFY(res.in == x.begin()+3);
@@ -128,8 +128,8 @@ inline bool test02()
 		VERIFY(ranges::equal(y, z));
 	}
 	{
-		std::vector<int> x = { 1, 2, 3 };
-		std::vector<int> y(3);
+		hamon::vector<int> x = { 1, 2, 3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::move(
 			hamon::make_reverse_iterator(x.end()),
@@ -144,8 +144,8 @@ inline bool test02()
 		VERIFY(ranges::equal(y, z));
 	}
 	{
-		std::vector<char> x = { 1, 2, 3 };
-		std::vector<int> y(3);
+		hamon::vector<char> x = { 1, 2, 3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::move(
 			hamon::make_reverse_iterator(x.end()),
@@ -258,9 +258,9 @@ struct sentinel
 
 inline void test06()
 {
-	std::vector<int> v = { 1,2,3,4,5 };
-	std::vector<int> w = { 0,0,0,0,0 };
-	using Iter = std::vector<int>::iterator;
+	hamon::vector<int> v = { 1,2,3,4,5 };
+	hamon::vector<int> w = { 0,0,0,0,0 };
+	using Iter = hamon::vector<int>::iterator;
 	using Sent = sentinel<Iter>;
 	hamon::ranges::subrange<Iter, Sent> sr =
 	{
@@ -274,9 +274,9 @@ inline void test06()
 
 inline void test07()
 {
-	std::vector<int> v = { 1,2,3,4,5 };
-	std::vector<int> w = { 0,0,0,0,0 };
-	using Iter = hamon::reverse_iterator<std::vector<int>::iterator>;
+	hamon::vector<int> v = { 1,2,3,4,5 };
+	hamon::vector<int> w = { 0,0,0,0,0 };
+	using Iter = hamon::reverse_iterator<hamon::vector<int>::iterator>;
 	using Sent = sentinel<Iter>;
 	hamon::ranges::subrange<Iter, Sent> sr =
 	{

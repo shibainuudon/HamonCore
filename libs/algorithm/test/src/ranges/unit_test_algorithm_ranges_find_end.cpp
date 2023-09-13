@@ -8,8 +8,8 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -137,28 +137,28 @@ inline bool test05()
 	namespace ranges = hamon::ranges;
 
 	{
-		std::vector<int> x { 1,2,3,4,2,3 };
+		hamon::vector<int> x { 1,2,3,4,2,3 };
 		std::list<int>   y { 2,3 };
 		auto res = ranges::find_end(x, y);
 		VERIFY(res.begin() == x.begin() + 4);
 		VERIFY(res.end()   == x.begin() + 6);
 	}
 	{
-		std::vector<int> x { 1,2,3,4,2,3 };
+		hamon::vector<int> x { 1,2,3,4,2,3 };
 		std::list<int>   y { };
 		auto res = ranges::find_end(x, y);
 		VERIFY(res.begin() == x.end());
 		VERIFY(res.end()   == x.end());
 	}
 	{
-		std::vector<int> x { 1,2,3,4,2,3 };
+		hamon::vector<int> x { 1,2,3,4,2,3 };
 		std::forward_list<int> y { 2,3 };
 		auto res = ranges::find_end(x, y);
 		VERIFY(res.begin() == x.begin() + 4);
 		VERIFY(res.end()   == x.begin() + 6);
 	}
 	{
-		std::vector<int> x { 1,2,3,4,2,3 };
+		hamon::vector<int> x { 1,2,3,4,2,3 };
 		std::forward_list<int> y { };
 		auto res = ranges::find_end(x, y);
 		VERIFY(res.begin() == x.end());

@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 namespace hamon_algorithm_test
 {
@@ -69,7 +69,7 @@ GTEST_TEST(AlgorithmTest, StableSortTest)
 		EXPECT_EQ(4.5, a[4].value);
 	}
 	{
-		std::vector<Foo> a
+		hamon::vector<Foo> a
 		{
 			{ 3, 0.5f },
 			{ 1, 1.5f },
@@ -129,7 +129,7 @@ GTEST_TEST(AlgorithmTest, StableSortTest)
 		EXPECT_EQ(3.5, a[4].value);
 	}
 	{
-		std::vector<Foo> a
+		hamon::vector<Foo> a
 		{
 			{ 3, 0.5f },
 			{ 1, 1.5f },

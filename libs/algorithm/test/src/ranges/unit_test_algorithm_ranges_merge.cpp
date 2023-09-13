@@ -8,8 +8,8 @@
 //#include <hamon/algorithm/ranges/sort.hpp>	// TODO
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -78,7 +78,7 @@ inline bool test02()
 				VERIFY(res.in2 == ry.end());
 				VERIFY(res.out == rz.end());
 
-				std::vector<int> v(x, x+i);
+				hamon::vector<int> v(x, x+i);
 				v.insert(v.end(), x, x+j);
 				//ranges::sort(v);	// TODO
 				std::sort(v.begin(), v.end());
@@ -99,8 +99,8 @@ inline bool test02()
 		VERIFY(ranges::equal(z, a, {}, &X::i, {}));
 	}
 	{
-		std::vector<int> x;
-		std::vector<int> y;
+		hamon::vector<int> x;
+		hamon::vector<int> y;
 		int z[1] = {};
 		auto res = ranges::merge(x, y, z);
 		VERIFY(res.in1 == x.begin());

@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -59,7 +59,7 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
 	}
 	{
-		const std::vector<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::vector<int> a = { 1,2,3,4,1,2,3,1,2,1 };
 		const int b[] = { 2,3 };
 
 		auto const it = hamon::search(
@@ -89,7 +89,7 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 	}
 	{
 		const std::list<int> a {1,2,3};
-		const std::vector<int> b;
+		const hamon::vector<int> b;
 
 		auto const it = hamon::search(
 			hamon::begin(a), hamon::end(a),
@@ -98,7 +98,7 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 	}
 	{
 		const std::list<int> a;
-		const std::vector<int> b {1,2,3};
+		const hamon::vector<int> b {1,2,3};
 
 		auto const it = hamon::search(
 			hamon::begin(a), hamon::end(a),
@@ -107,7 +107,7 @@ GTEST_TEST(AlgorithmTest, SearchTest)
 	}
 	{
 		const std::list<int> a;
-		const std::vector<int> b;
+		const hamon::vector<int> b;
 
 		auto const it = hamon::search(
 			hamon::begin(a), hamon::end(a),

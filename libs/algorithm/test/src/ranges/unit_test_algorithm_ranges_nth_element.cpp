@@ -12,8 +12,8 @@
 #include <hamon/functional/identity.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -107,7 +107,7 @@ inline bool test02()
 	}
 
 	{
-		std::vector<int> a = {};
+		hamon::vector<int> a = {};
 		auto it = ranges::nth_element(a, a.begin());
 		VERIFY(it == a.end());
 	}

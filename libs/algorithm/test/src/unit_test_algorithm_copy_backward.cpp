@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -94,7 +94,7 @@ GTEST_TEST(AlgorithmTest, CopyBackwardTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyBackwardStdArrayTest());
 
 	{
-		std::vector<int> v{ 1, 2, 3, 4, 5 };
+		hamon::vector<int> v{ 1, 2, 3, 4, 5 };
 
 		auto it = hamon::copy_backward(hamon::begin(v), hamon::begin(v) + 3, hamon::end(v));
 
@@ -106,7 +106,7 @@ GTEST_TEST(AlgorithmTest, CopyBackwardTest)
 		EXPECT_TRUE(it == hamon::begin(v) + 2);
 	}
 	{
-		const std::vector<int> v{ 1, 2, 3, 4, 5 };
+		const hamon::vector<int> v{ 1, 2, 3, 4, 5 };
 		std::list<int> l{ 6, 7, 8, 9 };
 
 		{

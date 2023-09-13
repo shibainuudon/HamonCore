@@ -6,9 +6,9 @@
 
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
@@ -199,8 +199,8 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 			c1.begin(), c1.end()) < 0);
 	}
 	{
-		std::vector<int> c1 = { 1, 2, 3, 4, 5, 6, 7 };
-		std::vector<int> c2 = { 1, 2, 3, 4, 5, 6, 77 };
+		hamon::vector<int> c1 = { 1, 2, 3, 4, 5, 6, 7 };
+		hamon::vector<int> c2 = { 1, 2, 3, 4, 5, 6, 77 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c1.begin(), c1.end(),
@@ -216,7 +216,7 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 			c2.begin(), c2.end(),
 			c1.begin(), c1.end()) > 0);
 
-		std::vector<int> c3 = { 1, 2, 3, 4, 5, 6 };
+		hamon::vector<int> c3 = { 1, 2, 3, 4, 5, 6 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c3.begin(), c3.end(),
@@ -230,7 +230,7 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 	}
 	{
 		std::list<int>   c1 = { 0, 1, 2, 3, 4, 5, 6, 7 };
-		std::vector<int> c2 = { 0, 1, 2, 3, 4, 5, 6, 77 };
+		hamon::vector<int> c2 = { 0, 1, 2, 3, 4, 5, 6, 77 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c1.begin(), c1.end(),

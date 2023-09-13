@@ -9,8 +9,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -118,7 +118,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	// vector => array
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
 		hamon::array<int, 3> a1;
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1), hamon::begin(a1), Doubling());
@@ -131,7 +131,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	// vector => int[4]
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
 		int a1[4]{};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1), hamon::begin(a1), Doubling());
@@ -145,8 +145,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	// vector => vector
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		std::vector<int> v2 { 10, 11, 12, 13, 14 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		hamon::vector<int> v2 { 10, 11, 12, 13, 14 };
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1), hamon::begin(v2), Doubling());
 
@@ -160,8 +160,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	// vector => vector (back_inserter)
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		std::vector<int> v2;
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		hamon::vector<int> v2;
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1), std::back_inserter(v2), Doubling());
 
@@ -174,7 +174,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	// vector => list (back_inserter)
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
 		std::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1), std::back_inserter(l1), Doubling());
@@ -188,7 +188,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// float[] => vector<int> (back_inserter)
 	{
 		const float a1[] {1.5, 2.5};
-		std::vector<int> v1;
+		hamon::vector<int> v1;
 		auto const it = hamon::transform(
 			hamon::begin(a1), hamon::end(a1), std::back_inserter(v1), to_int);
 
@@ -216,9 +216,9 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, vector => vector
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6 };
-		std::vector<int> v3 (3);
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6 };
+		hamon::vector<int> v3 (3);
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2),
@@ -231,9 +231,9 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == hamon::end(v3));
 	}
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6 };
-		std::vector<int> v3 (3);
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6 };
+		hamon::vector<int> v3 (3);
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2), hamon::end(v2),
@@ -248,8 +248,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, vector => vector (self assign)
 	{
-		std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6 };
+		hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6 };
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2),
@@ -262,8 +262,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == hamon::end(v1));
 	}
 	{
-		std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6 };
+		hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6 };
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2), hamon::end(v2),
@@ -278,8 +278,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, vector => array
 	{
-		const std::vector<int> v1 { 1, 2, 3, 4 };
-		const std::vector<int> v2 { 4, 5, 6 };
+		const hamon::vector<int> v1 { 1, 2, 3, 4 };
+		const hamon::vector<int> v2 { 4, 5, 6 };
 		hamon::array<int, 4> a1{{}};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -296,8 +296,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, vector => int[]
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6, 7 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6, 7 };
 		int a1[5] {};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -313,8 +313,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == hamon::begin(a1) + 3);
 	}
 	{
-		const std::vector<int> v1 { 1, 2, 3 };
-		const std::vector<int> v2 { 4, 5, 6, 7 };
+		const hamon::vector<int> v1 { 1, 2, 3 };
+		const hamon::vector<int> v2 { 4, 5, 6, 7 };
 		int a1[5] {};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -332,8 +332,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, vector => list
 	{
-		const std::vector<int> v1 { 1, 2, 3, 4 };
-		const std::vector<int> v2 { 4, 5, 6, 7 };
+		const hamon::vector<int> v1 { 1, 2, 3, 4 };
+		const hamon::vector<int> v2 { 4, 5, 6, 7 };
 		std::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -349,8 +349,8 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == l1.end());
 	}
 	{
-		const std::vector<int> v1 { 1, 2, 3, 4 };
-		const std::vector<int> v2 { 4, 5, 6, 7 };
+		const hamon::vector<int> v1 { 1, 2, 3, 4 };
+		const hamon::vector<int> v2 { 4, 5, 6, 7 };
 		std::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -368,7 +368,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, array  => int[]
 	{
-		const std::vector<int> v1 { 1, 2, 3, 4 };
+		const hamon::vector<int> v1 { 1, 2, 3, 4 };
 		const hamon::array<int, 3> a1 {{ 4, 5, 6 }};
 		int a2[3];
 		auto const it = hamon::transform(
@@ -386,7 +386,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// list, vector => array
 	{
 		const std::list<int>   l1 { 10, 11, 12 };
-		const std::vector<int> v1 { 13, 14, 15, 16 };
+		const hamon::vector<int> v1 { 13, 14, 15, 16 };
 		hamon::array<int, 3> a1;
 		auto const it = hamon::transform(
 			hamon::begin(l1), hamon::end(l1),
@@ -401,7 +401,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	{
 		const std::list<int>   l1 { 10, 11, 12 };
-		const std::vector<int> v1 { 13, 14, 15, 16 };
+		const hamon::vector<int> v1 { 13, 14, 15, 16 };
 		hamon::array<int, 3> a1;
 		auto const it = hamon::transform(
 			hamon::begin(l1), hamon::end(l1),
@@ -418,7 +418,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// int[], vector => list
 	{
 		const int a1[] = { 17, 18, 19 };
-		const std::vector<int> v1 { 20, 21, 22 };
+		const hamon::vector<int> v1 { 20, 21, 22 };
 		std::list<int> l1;
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
@@ -434,7 +434,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	}
 	{
 		const int a1[] = { 17, 18, 19 };
-		const std::vector<int> v1 { 20, 21, 22 };
+		const hamon::vector<int> v1 { 20, 21, 22 };
 		std::list<int> l1;
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
@@ -452,7 +452,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// int[], vector => int[] (self assign)
 	{
 		int a1[] = { 17, 18, 19, 20 };
-		const std::vector<int> v1 { 20, 21, 22 };
+		const hamon::vector<int> v1 { 20, 21, 22 };
 		auto const it = hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
 			hamon::begin(v1), hamon::end(v1),
@@ -468,7 +468,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// vector, array  => array (self assign)
 	{
-		const std::vector<int> v1 { 20, 21, 22 };
+		const hamon::vector<int> v1 { 20, 21, 22 };
 		hamon::array<int, 3> a1 {{23, 24, 25}};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
@@ -482,7 +482,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == hamon::end(a1));
 	}
 	{
-		const std::vector<int> v1 { 20, 21, 22 };
+		const hamon::vector<int> v1 { 20, 21, 22 };
 		hamon::array<int, 3> a1 {{23, 24, 25}};
 		auto const it = hamon::transform(
 			hamon::begin(v1), hamon::end(v1),

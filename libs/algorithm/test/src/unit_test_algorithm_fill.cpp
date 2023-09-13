@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -63,7 +63,7 @@ GTEST_TEST(AlgorithmTest, FillTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FillTestStdArray());
 
 	{
-		std::vector<int> a(5);
+		hamon::vector<int> a(5);
 		hamon::fill(hamon::begin(a), hamon::end(a), 3);
 		EXPECT_EQ(3, a[0]);
 		EXPECT_EQ(3, a[1]);
@@ -72,7 +72,7 @@ GTEST_TEST(AlgorithmTest, FillTest)
 		EXPECT_EQ(3, a[4]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		hamon::fill(hamon::begin(a), hamon::end(a), 3);
 		EXPECT_TRUE(a.empty());
 	}

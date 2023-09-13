@@ -6,8 +6,8 @@
 
 #include <hamon/algorithm/ranges/partition.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -100,7 +100,7 @@ inline bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> x {};
+		hamon::vector<int> x {};
 		auto res = ranges::partition(x, [](int a) { return a%2==0; });
 		VERIFY(res.begin() == x.begin());
 		VERIFY(res.end()   == x.end());

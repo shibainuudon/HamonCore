@@ -10,8 +10,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -116,13 +116,13 @@ GTEST_TEST(AlgorithmTest, NthElementTest)
 
 	{
 		const int nth = 6;
-		std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 };
+		hamon::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 };
 		hamon::nth_element(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a));
 		EXPECT_TRUE(NthElementTest(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a)));
 	}
 	{
 		const int nth = 8;
-		std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 };
+		hamon::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3 };
 		hamon::nth_element(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a), hamon::greater<>());
 		EXPECT_TRUE(NthElementTest(hamon::begin(a), hamon::next(hamon::begin(a), nth), hamon::end(a), hamon::greater<>()));
 	}

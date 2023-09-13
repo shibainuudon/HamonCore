@@ -10,8 +10,8 @@
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/views/subrange.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -78,9 +78,9 @@ inline bool test02()
 {
 	namespace ranges = hamon::ranges;
 
-	std::vector<int> v = { 1,2,3,4,5 };
-	std::vector<int> w = { 0,0,0,0,0 };
-	using Iter = std::vector<int>::iterator;
+	hamon::vector<int> v = { 1,2,3,4,5 };
+	hamon::vector<int> w = { 0,0,0,0,0 };
+	using Iter = hamon::vector<int>::iterator;
 	using Sent = sentinel<Iter>;
 	ranges::subrange<Iter, Sent> sr = { v.begin(), Sent{v.end()} };
 	ranges::copy_backward(sr, w.end());
@@ -95,9 +95,9 @@ inline bool test03()
 {
 	namespace ranges = hamon::ranges;
 
-	std::vector<int> v = { 1,2,3,4,5 };
-	std::vector<int> w = { 0,0,0,0,0 };
-	using Iter = hamon::reverse_iterator<std::vector<int>::iterator>;
+	hamon::vector<int> v = { 1,2,3,4,5 };
+	hamon::vector<int> w = { 0,0,0,0,0 };
+	using Iter = hamon::reverse_iterator<hamon::vector<int>::iterator>;
 	using Sent = sentinel<Iter>;
 	ranges::subrange<Iter, Sent> sr = { Iter{v.end()}, Sent{Iter{v.begin()}} };
 	ranges::copy_backward(sr, Iter{ w.begin() });
@@ -159,8 +159,8 @@ inline bool test06()
 	namespace ranges = hamon::ranges;
 
 	{
-		std::vector<char> x = { 1,2,3 };
-		std::vector<int> y(3);
+		hamon::vector<char> x = { 1,2,3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::copy_backward(x, ranges::end(y));
 		VERIFY(res.in == x.begin() + 3);
@@ -169,8 +169,8 @@ inline bool test06()
 		VERIFY(ranges::equal(x, z));
 	}
 	{
-		std::vector<int> x = { 1,2,3 };
-		std::vector<int> y(3);
+		hamon::vector<int> x = { 1,2,3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::copy_backward(x, ranges::end(y));
 		VERIFY(res.in == x.begin() + 3);
@@ -179,8 +179,8 @@ inline bool test06()
 		VERIFY(ranges::equal(x, z));
 	}
 	{
-		std::vector<int> x = { 1,2,3 };
-		std::vector<int> y(3);
+		hamon::vector<int> x = { 1,2,3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::copy_backward(
 			hamon::make_reverse_iterator(x.end()),
@@ -192,8 +192,8 @@ inline bool test06()
 		VERIFY(ranges::equal(x, z));
 	}
 	{
-		std::vector<char> x = { 1,2,3 };
-		std::vector<int> y(3);
+		hamon::vector<char> x = { 1,2,3 };
+		hamon::vector<int> y(3);
 		const int z[3] = { 1, 2, 3 };
 		auto res = ranges::copy_backward(
 			hamon::make_reverse_iterator(x.end()),

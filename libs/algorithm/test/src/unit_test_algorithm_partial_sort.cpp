@@ -10,8 +10,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -146,7 +146,7 @@ GTEST_TEST(AlgorithmTest, PartialSortTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PartialSortTest8());
 
 	{
-		std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
+		hamon::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 5), hamon::end(a));
 		EXPECT_EQ(1, a[0]);
 		EXPECT_EQ(1, a[1]);
@@ -155,7 +155,7 @@ GTEST_TEST(AlgorithmTest, PartialSortTest)
 		EXPECT_EQ(3, a[4]);
 	}
 	{
-		std::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
+		hamon::vector<int> a { 3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5 };
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 6), hamon::end(a), hamon::greater<>());
 		EXPECT_EQ(9, a[0]);
 		EXPECT_EQ(6, a[1]);
@@ -165,17 +165,17 @@ GTEST_TEST(AlgorithmTest, PartialSortTest)
 		EXPECT_EQ(4, a[5]);
 	}
 	{
-		std::vector<int> a { 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 };
+		hamon::vector<int> a { 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 };
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 1), hamon::end(a));
 		EXPECT_EQ(0, a[0]);
 	}
 	{
-		std::vector<int> a { 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 };
+		hamon::vector<int> a { 5, 7, 4, 2, 8, 6, 1, 9, 0, 3 };
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 1), hamon::end(a), hamon::greater<>());
 		EXPECT_EQ(9, a[0]);
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		hamon::partial_sort(hamon::begin(a), hamon::next(hamon::begin(a), 0), hamon::end(a));
 		EXPECT_TRUE(a.empty());
 	}

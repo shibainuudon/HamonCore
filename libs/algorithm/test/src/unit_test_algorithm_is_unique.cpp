@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -54,51 +54,51 @@ GTEST_TEST(AlgorithmTest, IsUniqueTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a;
+		hamon::vector<int> a;
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1 };
+		hamon::vector<int> a { 1 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 1 };
+		hamon::vector<int> a { 1, 1 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2 };
+		hamon::vector<int> a { 1, 2 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2, 1 };
+		hamon::vector<int> a { 1, 2, 1 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 1, 2 };
+		hamon::vector<int> a { 1, 1, 2 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2, 2 };
+		hamon::vector<int> a { 1, 2, 2 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2, 3, 4 };
+		hamon::vector<int> a { 1, 2, 3, 4 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2, 3, 3 };
+		hamon::vector<int> a { 1, 2, 3, 3 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 1, 2, 3, 1 };
+		hamon::vector<int> a { 1, 2, 3, 1 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
+		hamon::vector<int> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::vector<int> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
+		hamon::vector<int> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a), [](int x, int y){return x == y; }));
 	}
 	{

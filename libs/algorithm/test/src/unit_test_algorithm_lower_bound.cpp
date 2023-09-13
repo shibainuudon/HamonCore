@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -66,12 +66,12 @@ GTEST_TEST(AlgorithmTest, LowerBoundTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}
 	{
-		const std::vector<int> a { 1,3,5,8,13,17,25 };
+		const hamon::vector<int> a { 1,3,5,8,13,17,25 };
 		auto ret = hamon::lower_bound(hamon::begin(a), hamon::end(a), 10);
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::vector<int> a { 1,3,5,8,13,17,25 };
+		const hamon::vector<int> a { 1,3,5,8,13,17,25 };
 		auto ret = hamon::lower_bound(hamon::begin(a), hamon::end(a), 1, [](int x, int y) { return x < y; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}
@@ -81,7 +81,7 @@ GTEST_TEST(AlgorithmTest, LowerBoundTest)
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		auto ret = hamon::lower_bound(hamon::begin(a), hamon::end(a), 0);
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}

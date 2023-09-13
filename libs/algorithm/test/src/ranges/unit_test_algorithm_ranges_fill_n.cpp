@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -64,7 +64,7 @@ inline bool test02()
 		VERIFY(ranges::equal(x, y, {}, &X::i, {}));
 	}
 	{
-		std::vector<int> x(5);
+		hamon::vector<int> x(5);
 		auto res = ranges::fill_n(x.begin(), 2, 42);
 		VERIFY(res == ranges::next(x.begin(), 2));
 		int const y[] = { 42, 42, 0, 0, 0 };

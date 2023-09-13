@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
@@ -70,7 +70,7 @@ GTEST_TEST(AlgorithmTest, CopyIfTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CopyIfStdArrayTest());
 
 	{
-		const std::vector<int> v { 5, 6, 7, 8, 9 };
+		const hamon::vector<int> v { 5, 6, 7, 8, 9 };
 		std::list<int> l;
 
 		hamon::copy_if(hamon::begin(v), hamon::end(v), std::back_inserter(l), [](int x) { return (x % 2) == 1; });

@@ -10,8 +10,8 @@
 #include <hamon/functional/greater.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -81,7 +81,7 @@ GTEST_TEST(AlgorithmTest, PopHeapTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(PopHeapTest1());
 
 	{
-		std::vector<int> a { 3, 1, 4, 1, 5, 9 };
+		hamon::vector<int> a { 3, 1, 4, 1, 5, 9 };
 
 		hamon::make_heap(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(hamon::is_heap(hamon::begin(a), hamon::end(a)));
@@ -128,7 +128,7 @@ GTEST_TEST(AlgorithmTest, PopHeapTest)
 		EXPECT_EQ(1, a[1]);
 	}
 	{
-		std::vector<int> a { 1, 1, 2, 2, 2, 3, 5, 9 };
+		hamon::vector<int> a { 1, 1, 2, 2, 2, 3, 5, 9 };
 
 		hamon::make_heap(hamon::begin(a), hamon::end(a), hamon::greater<>());
 		EXPECT_TRUE(hamon::is_heap(hamon::begin(a), hamon::end(a), hamon::greater<>()));

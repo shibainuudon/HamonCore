@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/functional/ranges/less.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -151,9 +151,9 @@ bool test04()
 
 bool test05()
 {
-	std::vector<int> x = {2, 2, 6, 8, 10, 11};
-	std::vector<int> y = {2, 2, 6, 8, 10, 11};
-	std::vector<int> z = {2, 2, 6, 8, 10, 12};
+	hamon::vector<int> x = {2, 2, 6, 8, 10, 11};
+	hamon::vector<int> y = {2, 2, 6, 8, 10, 11};
+	hamon::vector<int> z = {2, 2, 6, 8, 10, 12};
 	VERIFY( hamon::ranges::equal(x, y));
 	VERIFY(!hamon::ranges::equal(x, z));
 

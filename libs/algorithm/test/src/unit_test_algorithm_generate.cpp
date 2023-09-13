@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -82,7 +82,7 @@ GTEST_TEST(AlgorithmTest, GenerateTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(GenerateStdArrayTest());
 
 	{
-		std::vector<int> a(3);
+		hamon::vector<int> a(3);
 		hamon::generate(hamon::begin(a), hamon::end(a), pred3);
 		EXPECT_EQ(42, a[0]);
 		EXPECT_EQ(42, a[1]);

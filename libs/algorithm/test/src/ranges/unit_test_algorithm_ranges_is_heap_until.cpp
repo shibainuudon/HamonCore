@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/is_heap_until.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -56,27 +56,27 @@ inline bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
-		std::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };
+		hamon::vector<int> a { 9, 9, 7, 3, 4, 3, 2 };
 		auto ret = ranges::is_heap_until(a.begin(), a.end());
 		VERIFY(ret == ranges::next(a.begin(), 7));
 	}
 	{
-		std::vector<int> a { 9, 7, 7, 8, 4, 3, 2 };
+		hamon::vector<int> a { 9, 7, 7, 8, 4, 3, 2 };
 		auto ret = ranges::is_heap_until(a.begin(), a.end());
 		VERIFY(ret == ranges::next(a.begin(), 3));
 	}
 	{
-		std::vector<int> a { 3, 2, 1 };
+		hamon::vector<int> a { 3, 2, 1 };
 		auto ret = ranges::is_heap_until(a, [](int x, int y){return x < y;});
 		VERIFY(ret == ranges::next(a.begin(), 3));
 	}
 	{
-		std::vector<int> a { 1, 2, 3 };
+		hamon::vector<int> a { 1, 2, 3 };
 		auto ret = ranges::is_heap_until(a, [](int x, int y){return x < y;});
 		VERIFY(ret == ranges::next(a.begin(), 1));
 	}
 	{
-		std::vector<int> a { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		hamon::vector<int> a { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		auto ret = ranges::is_heap_until(a, [](int x, int y){return x < y;});
 		VERIFY(ret == a.end());
 	}
