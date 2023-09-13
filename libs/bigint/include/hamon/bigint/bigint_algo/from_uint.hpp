@@ -14,9 +14,9 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
-#include <vector>
 
 namespace hamon
 {
@@ -55,7 +55,7 @@ template <typename UInt, typename T,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
 inline from_uint_result
-from_uint(UInt n, std::vector<T>& value)
+from_uint(UInt n, hamon::vector<T>& value)
 {
 	value.resize(sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1);
 	auto ret = from_uint_detail::from_uint(n, value.data(), value.size());

@@ -14,8 +14,8 @@
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -49,7 +49,7 @@ sub_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 
 template <typename T>
 inline void
-sub(std::vector<T>& lhs, std::vector<T> const& rhs)
+sub(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
 	sub_detail::sub_impl(

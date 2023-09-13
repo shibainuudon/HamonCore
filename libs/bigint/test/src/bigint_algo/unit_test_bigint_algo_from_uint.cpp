@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/from_uint.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -33,7 +33,7 @@ FromUIntTest(UInt n, T const& expected, std::errc ec = {})
 GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 {
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x00},                Vector{0x00}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x12},                Vector{0x12}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint16_t{0x0000},             Vector{0x00}));
@@ -45,7 +45,7 @@ GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 		EXPECT_TRUE(FromUIntTest(hamon::uint64_t{0x0000000000000123}, Vector{0x23, 0x01}));
 	}
 	{
-		using Vector = std::vector<hamon::uint16_t>;
+		using Vector = hamon::vector<hamon::uint16_t>;
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x00},                Vector{0x0000}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x12},                Vector{0x0012}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint16_t{0x0000},             Vector{0x0000}));
@@ -57,7 +57,7 @@ GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 		EXPECT_TRUE(FromUIntTest(hamon::uint64_t{0x0000000000000123}, Vector{0x0123}));
 	}
 	{
-		using Vector = std::vector<hamon::uint32_t>;
+		using Vector = hamon::vector<hamon::uint32_t>;
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x00},                Vector{0x00000000}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x12},                Vector{0x00000012}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint16_t{0x0000},             Vector{0x00000000}));
@@ -68,7 +68,7 @@ GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 		EXPECT_TRUE(FromUIntTest(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x9ABCDEF0, 0x12345678}));
 	}
 	{
-		using Vector = std::vector<hamon::uint64_t>;
+		using Vector = hamon::vector<hamon::uint64_t>;
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x00},                Vector{0x0000000000000000}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint8_t{0x12},                Vector{0x0000000000000012}));
 		EXPECT_TRUE(FromUIntTest(hamon::uint16_t{0x0000},             Vector{0x0000000000000000}));

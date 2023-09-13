@@ -15,8 +15,8 @@
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -79,7 +79,7 @@ add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 
 template <typename T>
 inline bool
-add(std::vector<T>& lhs, std::vector<T> const& rhs)
+add(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
 	T const carry = add_detail::add_impl(
@@ -93,7 +93,7 @@ add(std::vector<T>& lhs, std::vector<T> const& rhs)
 
 template <typename T>
 inline bool
-add(std::vector<T>& lhs, T rhs)
+add(hamon::vector<T>& lhs, T rhs)
 {
 	T const carry = add_detail::add_impl(
 		lhs.data(), lhs.size(), &rhs, 1);

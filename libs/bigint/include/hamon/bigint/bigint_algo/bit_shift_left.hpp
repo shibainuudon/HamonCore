@@ -16,8 +16,8 @@
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -70,7 +70,7 @@ bit_shift_left_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 
 template <typename T>
 inline bool
-bit_shift_left(std::vector<T>& lhs, hamon::uintmax_t rhs)
+bit_shift_left(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
 {
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 	hamon::size_t const N = lhs.size() + quo + 1;

@@ -32,6 +32,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		ranges
 		type_traits
 		utility
+		vector
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)

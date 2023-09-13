@@ -8,7 +8,6 @@
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test

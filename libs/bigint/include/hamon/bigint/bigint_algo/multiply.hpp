@@ -18,8 +18,8 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -57,13 +57,13 @@ multiply_impl(VectorType& out, T const* lhs, hamon::size_t n1, T const* rhs, ham
 }	// namespace multiply_detail
 
 // 乗算はin-placeに行うことができないので、左辺(lhs)を出力にするパターンは使えない
-// 繰り返し乗算を行う場合に、その都度メモリ確保することを避けるため(とくにstd::vector)、出力変数を外から与える
+// 繰り返し乗算を行う場合に、その都度メモリ確保することを避けるため(とくに vector)、出力変数を外から与える
 // out と lhs, out と rhs が、同じオブジェクトや同じ領域の場合の動作は未規定
 // オーバーフローフラグを戻り値で返す
 
 template <typename T>
 inline bool
-multiply(std::vector<T>& out, std::vector<T> const& lhs, T rhs)
+multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
 {
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), lhs.size(),
@@ -72,7 +72,7 @@ multiply(std::vector<T>& out, std::vector<T> const& lhs, T rhs)
 
 template <typename T>
 inline bool
-multiply(std::vector<T>& out, std::vector<T> const& lhs, std::vector<T> const& rhs)
+multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), lhs.size(),
@@ -100,10 +100,10 @@ multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T,
 
 // 利便性のために、結果を戻り値で返すバージョン(オーバーフローの情報は得られない)
 template <typename T>
-inline std::vector<T>
-multiply(std::vector<T> const& lhs, std::vector<T> const& rhs)
+inline hamon::vector<T>
+multiply(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
-	std::vector<T> result;
+	hamon::vector<T> result;
 	bigint_algo::multiply(result, lhs, rhs);
 	return result;
 }

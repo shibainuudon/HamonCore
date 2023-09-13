@@ -8,8 +8,8 @@
 #define HAMON_BIGINT_BIGINT_ALGO_NORMALIZE_HPP
 
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -23,7 +23,7 @@ namespace bigint_algo
  */
 template <typename T>
 inline void
-normalize(std::vector<T>& vec)
+normalize(hamon::vector<T>& vec)
 {
 	auto n = vec.size();
 	if (n == 0)

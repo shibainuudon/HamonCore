@@ -7,14 +7,14 @@
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(BigIntAlgoTest, IsZeroTest)
 {
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x01}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00, 0x01}));
@@ -22,7 +22,7 @@ GTEST_TEST(BigIntAlgoTest, IsZeroTest)
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFF, 0xFF, 0xFF}));
 	}
 	{
-		using VectorType = std::vector<hamon::uint16_t>;
+		using VectorType = hamon::vector<hamon::uint16_t>;
 		EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x0000}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0001}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0000, 0x0001}));
@@ -30,7 +30,7 @@ GTEST_TEST(BigIntAlgoTest, IsZeroTest)
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF}));
 	}
 	{
-		using VectorType = std::vector<hamon::uint32_t>;
+		using VectorType = hamon::vector<hamon::uint32_t>;
 		EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00000000}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000002}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000000, 0xFFFFFFFF}));
@@ -38,7 +38,7 @@ GTEST_TEST(BigIntAlgoTest, IsZeroTest)
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}));
 	}
 	{
-		using VectorType = std::vector<hamon::uint64_t>;
+		using VectorType = hamon::vector<hamon::uint64_t>;
 		EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{1}));
 		EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0, 1}));

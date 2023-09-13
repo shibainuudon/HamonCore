@@ -11,8 +11,8 @@
 #include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ bit_or_impl(T* lhs, T const* rhs, hamon::size_t n)
 
 template <typename T>
 inline void
-bit_or(std::vector<T>& lhs, std::vector<T> const& rhs)
+bit_or(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());
 	lhs.resize(N);

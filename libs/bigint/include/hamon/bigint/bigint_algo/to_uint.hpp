@@ -13,9 +13,9 @@
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
-#include <vector>
 
 namespace hamon
 {
@@ -67,7 +67,7 @@ template <typename UInt, typename T,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
 inline to_uint_result
-to_uint(UInt& dst, std::vector<T> const& value)
+to_uint(UInt& dst, hamon::vector<T> const& value)
 {
 	return to_uint_detail::to_uint(dst, value.data(), value.size());
 }

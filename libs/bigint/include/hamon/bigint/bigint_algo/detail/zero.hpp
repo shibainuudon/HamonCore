@@ -9,8 +9,8 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -21,7 +21,7 @@ namespace detail
 
 template <typename T>
 inline void
-zero(std::vector<T>& v)
+zero(hamon::vector<T>& v)
 {
 	v.resize(1);
 	v[0] = 0;

@@ -9,8 +9,8 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -19,7 +19,7 @@ namespace bigint_algo
 
 template <typename T>
 inline bool
-is_zero(std::vector<T> const& vec)
+is_zero(hamon::vector<T> const& vec)
 {
 	return vec.size() == 1 && vec[0] == 0;
 }

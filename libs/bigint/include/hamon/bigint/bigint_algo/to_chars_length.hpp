@@ -14,9 +14,9 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <limits>
-#include <vector>
 
 namespace hamon
 {
@@ -42,7 +42,7 @@ to_chars_length(VectorType const& value, int base)
 
 template <typename T>
 inline hamon::size_t
-to_chars_length(std::vector<T> const& value, int base = 10)
+to_chars_length(hamon::vector<T> const& value, int base = 10)
 {
 	return to_chars_length_detail::to_chars_length(value, base);
 }

@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/to_uint.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -43,7 +43,7 @@ ToUIntErrorCodeTest(VectorType const& vec, std::errc ec)
 GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 {
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		EXPECT_TRUE(ToUIntTest(Vector{0x00},                                           hamon::uint8_t{0x00}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x12},                                           hamon::uint8_t{0x12}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x00},                                           hamon::uint16_t{0x0000}));
@@ -55,7 +55,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntTest(Vector{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}, hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
 	}
 	{
-		using Vector = std::vector<hamon::uint16_t>;
+		using Vector = hamon::vector<hamon::uint16_t>;
 		EXPECT_TRUE(ToUIntTest(Vector{0x0000},                         hamon::uint8_t{0x00}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x0012},                         hamon::uint8_t{0x12}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x0000},                         hamon::uint16_t{0x0000}));
@@ -67,7 +67,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntTest(Vector{0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF}, hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
 	}
 	{
-		using Vector = std::vector<hamon::uint32_t>;
+		using Vector = hamon::vector<hamon::uint32_t>;
 		EXPECT_TRUE(ToUIntTest(Vector{0x00000000},             hamon::uint8_t{0x00}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x00000012},             hamon::uint8_t{0x12}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x00000000},             hamon::uint16_t{0x0000}));
@@ -79,7 +79,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntTest(Vector{0xFFFFFFFF, 0xFFFFFFFF}, hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
 	}
 	{
-		using Vector = std::vector<hamon::uint64_t>;
+		using Vector = hamon::vector<hamon::uint64_t>;
 		EXPECT_TRUE(ToUIntTest(Vector{0x0000000000000000}, hamon::uint8_t{0x00}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x0000000000000012}, hamon::uint8_t{0x12}));
 		EXPECT_TRUE(ToUIntTest(Vector{0x0000000000000000}, hamon::uint16_t{0x0000}));
@@ -137,7 +137,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 	}
 
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0xFF}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00, 0x01}, std::errc::value_too_large));
@@ -152,7 +152,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint64_t>(Vector{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}, std::errc::value_too_large));
 	}
 	{
-		using Vector = std::vector<hamon::uint16_t>;
+		using Vector = hamon::vector<hamon::uint16_t>;
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x0000}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00FF}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x0100}, std::errc::value_too_large));
@@ -167,7 +167,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint64_t>(Vector{0x0000, 0x0000, 0x0000, 0x0000, 0x0001}, std::errc::value_too_large));
 	}
 	{
-		using Vector = std::vector<hamon::uint32_t>;
+		using Vector = hamon::vector<hamon::uint32_t>;
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00000000}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x000000FF}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00000100}, std::errc::value_too_large));
@@ -182,7 +182,7 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint64_t>(Vector{0x00000000, 0x00000000, 0x00000001}, std::errc::value_too_large));
 	}
 	{
-		using Vector = std::vector<hamon::uint64_t>;
+		using Vector = hamon::vector<hamon::uint64_t>;
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x0000000000000000}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x00000000000000FF}, std::errc{}));
 		EXPECT_TRUE(ToUIntErrorCodeTest<hamon::uint8_t>(Vector{0x0000000000000100}, std::errc::value_too_large));

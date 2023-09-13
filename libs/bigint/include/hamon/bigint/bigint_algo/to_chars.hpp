@@ -17,6 +17,7 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <limits>
 
@@ -98,7 +99,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 
 template <typename T>
 inline hamon::to_chars_result
-to_chars(char* first, char* last, std::vector<T> const& value, int base = 10)
+to_chars(char* first, char* last, hamon::vector<T> const& value, int base = 10)
 {
 	return to_chars_detail::to_chars(first, last, value, base);
 }

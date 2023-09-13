@@ -9,8 +9,8 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -37,7 +37,7 @@ compare_impl(T const* lhs, T const* rhs, hamon::size_t n)
 
 template <typename T>
 inline int
-compare(std::vector<T> const& lhs, std::vector<T> const& rhs)
+compare(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	auto const NA = lhs.size();
 	auto const NB = rhs.size();

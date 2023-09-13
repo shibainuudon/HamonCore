@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/multiply.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -46,9 +46,9 @@ GTEST_TEST(BigIntAlgoTest, MultiplyTest)
 {
 #if 0
 	{
-		std::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
-		std::vector<hamon::uint8_t> b{0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54};
-		std::vector<hamon::uint8_t> c{};
+		hamon::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		hamon::vector<hamon::uint8_t> b{0xFE, 0xDC, 0xBA, 0x98, 0x76, 0x54};
+		hamon::vector<hamon::uint8_t> c{};
 		for (hamon::size_t i = 0; i < 100000; ++i)
 		{
 			hamon::bigint_algo::multiply(c, a, b);
@@ -66,69 +66,69 @@ GTEST_TEST(BigIntAlgoTest, MultiplyTest)
 #endif
 
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{2},
-		std::vector<hamon::uint8_t>{3},
-		std::vector<hamon::uint8_t>{6},
+		hamon::vector<hamon::uint8_t>{2},
+		hamon::vector<hamon::uint8_t>{3},
+		hamon::vector<hamon::uint8_t>{6},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{123},
-		std::vector<hamon::uint8_t>{45},
-		std::vector<hamon::uint8_t>{0x9F, 0x15},	// 5535
+		hamon::vector<hamon::uint8_t>{123},
+		hamon::vector<hamon::uint8_t>{45},
+		hamon::vector<hamon::uint8_t>{0x9F, 0x15},	// 5535
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0x20, 0x10},
-		std::vector<hamon::uint8_t>{0x40, 0x30},
-		std::vector<hamon::uint8_t>{0x00, 0x08, 0x0A, 0x03},
+		hamon::vector<hamon::uint8_t>{0x20, 0x10},
+		hamon::vector<hamon::uint8_t>{0x40, 0x30},
+		hamon::vector<hamon::uint8_t>{0x00, 0x08, 0x0A, 0x03},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0xB1, 0x68, 0xDE, 0x3A},	// 987654321
-		std::vector<hamon::uint8_t>{0x03},
-		std::vector<hamon::uint8_t>{0x13, 0x3A, 0x9B, 0xB0},	// 2962962963
+		hamon::vector<hamon::uint8_t>{0xB1, 0x68, 0xDE, 0x3A},	// 987654321
+		hamon::vector<hamon::uint8_t>{0x03},
+		hamon::vector<hamon::uint8_t>{0x13, 0x3A, 0x9B, 0xB0},	// 2962962963
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0x00},
-		std::vector<hamon::uint8_t>{0x10, 0x20, 0x30},
-		std::vector<hamon::uint8_t>{0x00},
+		hamon::vector<hamon::uint8_t>{0x00},
+		hamon::vector<hamon::uint8_t>{0x10, 0x20, 0x30},
+		hamon::vector<hamon::uint8_t>{0x00},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF, 0xFF},
-		std::vector<hamon::uint8_t>{0x02},
-		std::vector<hamon::uint8_t>{0xFE, 0xFF, 0xFF, 0xFF, 0x01},
+		hamon::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF, 0xFF},
+		hamon::vector<hamon::uint8_t>{0x02},
+		hamon::vector<hamon::uint8_t>{0xFE, 0xFF, 0xFF, 0xFF, 0x01},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint8_t>{0x07, 0xFF, 0x88, 0x50, 0x07},	// 31415926535
-		std::vector<hamon::uint8_t>{0xEC, 0xE3, 0x38, 0x54, 0x06},	// 27182818284
-		std::vector<hamon::uint8_t>{0x74, 0x4F, 0xF6, 0xCD, 0xF7, 0x0E, 0x43, 0x4B, 0x2E},	// 853973422224398765940
+		hamon::vector<hamon::uint8_t>{0x07, 0xFF, 0x88, 0x50, 0x07},	// 31415926535
+		hamon::vector<hamon::uint8_t>{0xEC, 0xE3, 0x38, 0x54, 0x06},	// 27182818284
+		hamon::vector<hamon::uint8_t>{0x74, 0x4F, 0xF6, 0xCD, 0xF7, 0x0E, 0x43, 0x4B, 0x2E},	// 853973422224398765940
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint16_t>{0xFF07, 0x5088, 0x0007},	// 31415926535
-		std::vector<hamon::uint16_t>{0xE3EC, 0x5438, 0x0006},	// 27182818284
-		std::vector<hamon::uint16_t>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43, 0x002E},	// 853973422224398765940
+		hamon::vector<hamon::uint16_t>{0xFF07, 0x5088, 0x0007},	// 31415926535
+		hamon::vector<hamon::uint16_t>{0xE3EC, 0x5438, 0x0006},	// 27182818284
+		hamon::vector<hamon::uint16_t>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43, 0x002E},	// 853973422224398765940
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint32_t>{0x5088FF07, 0x00000007},	// 31415926535
-		std::vector<hamon::uint32_t>{0x5438E3EC, 0x00000006},	// 27182818284
-		std::vector<hamon::uint32_t>{0xCDF64F74, 0x4B430EF7, 0x0000002E},	// 853973422224398765940
+		hamon::vector<hamon::uint32_t>{0x5088FF07, 0x00000007},	// 31415926535
+		hamon::vector<hamon::uint32_t>{0x5438E3EC, 0x00000006},	// 27182818284
+		hamon::vector<hamon::uint32_t>{0xCDF64F74, 0x4B430EF7, 0x0000002E},	// 853973422224398765940
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint64_t>{0x000000075088FF07},	// 31415926535
-		std::vector<hamon::uint64_t>{0x000000065438E3EC},	// 27182818284
-		std::vector<hamon::uint64_t>{0x4B430EF7CDF64F74, 0x000000000000002E},	// 853973422224398765940
+		hamon::vector<hamon::uint64_t>{0x000000075088FF07},	// 31415926535
+		hamon::vector<hamon::uint64_t>{0x000000065438E3EC},	// 27182818284
+		hamon::vector<hamon::uint64_t>{0x4B430EF7CDF64F74, 0x000000000000002E},	// 853973422224398765940
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint64_t>{0x07D5EB5B5BA4D7C6, 0x11},
-		std::vector<hamon::uint64_t>{0x000000065438E3EC},
-		std::vector<hamon::uint64_t>{0x84D22BFBD29B7C88, 0x6BC95E95CF},
+		hamon::vector<hamon::uint64_t>{0x07D5EB5B5BA4D7C6, 0x11},
+		hamon::vector<hamon::uint64_t>{0x000000065438E3EC},
+		hamon::vector<hamon::uint64_t>{0x84D22BFBD29B7C88, 0x6BC95E95CF},
 		false));
 	EXPECT_TRUE(MultiplyTest(
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
-		std::vector<hamon::uint64_t>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF},
 		false));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MultiplyTest(

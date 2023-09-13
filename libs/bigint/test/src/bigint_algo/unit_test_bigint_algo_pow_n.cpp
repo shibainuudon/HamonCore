@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -38,7 +38,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 {
 #if 0
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType a{2};
 		VectorType c{};
 		hamon::bigint_algo::pow_n(c, a, 10000);
@@ -51,7 +51,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 	}
 	for (int i = 0; i < 100000; ++i)
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType a{13};
 		VectorType c{};
 		hamon::bigint_algo::pow_n(c, a, 19);
@@ -66,7 +66,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 #endif
 
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType const a{0};
 		EXPECT_TRUE(PowNTest(a,   0, VectorType{1}, false));
 		EXPECT_TRUE(PowNTest(a,   1, VectorType{0}, false));
@@ -75,7 +75,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 100, VectorType{0}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType const a{1};
 		EXPECT_TRUE(PowNTest(a,   0, VectorType{1}, false));
 		EXPECT_TRUE(PowNTest(a,   1, VectorType{1}, false));
@@ -84,7 +84,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 100, VectorType{1}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType const a{2};
 		EXPECT_TRUE(PowNTest(a,  0, VectorType{0x01}, false));
 		EXPECT_TRUE(PowNTest(a,  1, VectorType{0x02}, false));
@@ -116,7 +116,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 48, VectorType{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType const a{3};
 		EXPECT_TRUE(PowNTest(a,  0, VectorType{0x01}, false));
 		EXPECT_TRUE(PowNTest(a,  1, VectorType{0x03}, false));
@@ -131,7 +131,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 10, VectorType{0xA9, 0xE6}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint8_t>;
+		using VectorType = hamon::vector<hamon::uint8_t>;
 		VectorType const a{0x34, 0x12};
 		EXPECT_TRUE(PowNTest(a, 0, VectorType{0x01}, false));
 		EXPECT_TRUE(PowNTest(a, 1, VectorType{0x34, 0x12}, false));
@@ -142,7 +142,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 6, VectorType{0x00, 0x90, 0x5B, 0xD3, 0xA0, 0x22, 0xA2, 0x21, 0x2B, 0x02}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint16_t>;
+		using VectorType = hamon::vector<hamon::uint16_t>;
 		VectorType const a{0x0ABC};
 		EXPECT_TRUE(PowNTest(a, 0, VectorType{0x0001}, false));
 		EXPECT_TRUE(PowNTest(a, 1, VectorType{0x0ABC}, false));
@@ -153,7 +153,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 6, VectorType{0x1000, 0x386E, 0x4FF7, 0x5823, 0x0017}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint32_t>;
+		using VectorType = hamon::vector<hamon::uint32_t>;
 		VectorType const a{0x00012345};
 		EXPECT_TRUE(PowNTest(a, 0, VectorType{0x00000001}, false));
 		EXPECT_TRUE(PowNTest(a, 1, VectorType{0x00012345}, false));
@@ -166,7 +166,7 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		EXPECT_TRUE(PowNTest(a, 8, VectorType{0x935F47E1, 0x0C993B10, 0x69D3D2A2, 0xCEEB9377, 0x00000002}, false));
 	}
 	{
-		using VectorType = std::vector<hamon::uint64_t>;
+		using VectorType = hamon::vector<hamon::uint64_t>;
 		VectorType const a{0x00012345};
 		EXPECT_TRUE(PowNTest(a, 0, VectorType{0x0000000000000001}, false));
 		EXPECT_TRUE(PowNTest(a, 1, VectorType{0x0000000000012345}, false));

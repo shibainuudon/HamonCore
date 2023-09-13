@@ -30,9 +30,9 @@
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 #include <istream>
 #include <ostream>
 
@@ -52,7 +52,7 @@ std::string to_string(bigint const& value);
 class bigint
 {
 private:
-	using MagnitudeType = std::vector<hamon::uint32_t>;
+	using MagnitudeType = hamon::vector<hamon::uint32_t>;
 
 public:
 	bigint() HAMON_NOEXCEPT

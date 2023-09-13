@@ -7,14 +7,14 @@
 #include <hamon/bigint/bigint_algo/to_chars_length.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 {
 	{
-		std::vector<hamon::uint8_t> const a{0};
+		hamon::vector<hamon::uint8_t> const a{0};
 		EXPECT_EQ(8u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(6u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ(4u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -52,7 +52,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		EXPECT_EQ(2u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		std::vector<hamon::uint8_t> const a{0xFF, 0xFF};
+		hamon::vector<hamon::uint8_t> const a{0xFF, 0xFF};
 		EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(11u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ( 8u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -90,7 +90,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		std::vector<hamon::uint16_t> const a{0xFFFF};
+		hamon::vector<hamon::uint16_t> const a{0xFFFF};
 		EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(11u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ( 8u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -128,7 +128,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		std::vector<hamon::uint16_t> const a{0xFFFF, 0xFFFF};
+		hamon::vector<hamon::uint16_t> const a{0xFFFF, 0xFFFF};
 		EXPECT_EQ(32u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -166,7 +166,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		EXPECT_EQ( 7u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		std::vector<hamon::uint32_t> const a{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+		hamon::vector<hamon::uint32_t> const a{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
 		EXPECT_EQ(96u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(61u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ(48u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -204,7 +204,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		EXPECT_EQ(19u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		std::vector<hamon::uint64_t> const a{0, 0, 0, 1};
+		hamon::vector<hamon::uint64_t> const a{0, 0, 0, 1};
 		EXPECT_EQ(256u, hamon::bigint_algo::to_chars_length(a,  2));
 		EXPECT_EQ(162u, hamon::bigint_algo::to_chars_length(a,  3));
 		EXPECT_EQ(128u, hamon::bigint_algo::to_chars_length(a,  4));

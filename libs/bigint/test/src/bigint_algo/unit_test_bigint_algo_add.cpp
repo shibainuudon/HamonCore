@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/add.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -45,94 +45,94 @@ AddTest(VectorType const& a, VectorType const& b, VectorType const& expected, bo
 GTEST_TEST(BigIntAlgoTest, AddTest)
 {
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{2},
-		std::vector<hamon::uint8_t>{3},
-		std::vector<hamon::uint8_t>{5},
+		hamon::vector<hamon::uint8_t>{2},
+		hamon::vector<hamon::uint8_t>{3},
+		hamon::vector<hamon::uint8_t>{5},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0xFF},
-		std::vector<hamon::uint8_t>{0x03},
-		std::vector<hamon::uint8_t>{0x02, 0x01},
+		hamon::vector<hamon::uint8_t>{0xFF},
+		hamon::vector<hamon::uint8_t>{0x03},
+		hamon::vector<hamon::uint8_t>{0x02, 0x01},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0x04},
-		std::vector<hamon::uint8_t>{0xFE},
-		std::vector<hamon::uint8_t>{0x02, 0x01},
+		hamon::vector<hamon::uint8_t>{0x04},
+		hamon::vector<hamon::uint8_t>{0xFE},
+		hamon::vector<hamon::uint8_t>{0x02, 0x01},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
-		std::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
-		std::vector<hamon::uint8_t>{0xFE, 0xFF, 0xFF, 0x01},
+		hamon::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
+		hamon::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
+		hamon::vector<hamon::uint8_t>{0xFE, 0xFF, 0xFF, 0x01},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0x07, 0xFF, 0x88, 0x50, 0x07},
-		std::vector<hamon::uint8_t>{0x6B, 0x08, 0x39, 0xE6, 0x78, 0x02},
-		std::vector<hamon::uint8_t>{0x72, 0x07, 0xC2, 0x36, 0x80, 0x02},
+		hamon::vector<hamon::uint8_t>{0x07, 0xFF, 0x88, 0x50, 0x07},
+		hamon::vector<hamon::uint8_t>{0x6B, 0x08, 0x39, 0xE6, 0x78, 0x02},
+		hamon::vector<hamon::uint8_t>{0x72, 0x07, 0xC2, 0x36, 0x80, 0x02},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF, 0xFF, 0xFF},
-		std::vector<hamon::uint8_t>{0x01},
-		std::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x00, 0x00, 0x01},
+		hamon::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF, 0xFF, 0xFF},
+		hamon::vector<hamon::uint8_t>{0x01},
+		hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x00, 0x00, 0x01},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{0},
-		std::vector<hamon::uint16_t>{0},
-		std::vector<hamon::uint16_t>{0},
+		hamon::vector<hamon::uint16_t>{0},
+		hamon::vector<hamon::uint16_t>{0},
+		hamon::vector<hamon::uint16_t>{0},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{2},
-		std::vector<hamon::uint16_t>{3},
-		std::vector<hamon::uint16_t>{5},
+		hamon::vector<hamon::uint16_t>{2},
+		hamon::vector<hamon::uint16_t>{3},
+		hamon::vector<hamon::uint16_t>{5},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{0xFF},
-		std::vector<hamon::uint16_t>{0x03},
-		std::vector<hamon::uint16_t>{0x0102},
+		hamon::vector<hamon::uint16_t>{0xFF},
+		hamon::vector<hamon::uint16_t>{0x03},
+		hamon::vector<hamon::uint16_t>{0x0102},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{0xFFFF},
-		std::vector<hamon::uint16_t>{0x0001},
-		std::vector<hamon::uint16_t>{0x0000, 0x0001},
+		hamon::vector<hamon::uint16_t>{0xFFFF},
+		hamon::vector<hamon::uint16_t>{0x0001},
+		hamon::vector<hamon::uint16_t>{0x0000, 0x0001},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{0xFFFF, 0xFFFF},
-		std::vector<hamon::uint16_t>{0xFFFF, 0xFFFF},
-		std::vector<hamon::uint16_t>{0xFFFE, 0xFFFF, 0x0001},
+		hamon::vector<hamon::uint16_t>{0xFFFF, 0xFFFF},
+		hamon::vector<hamon::uint16_t>{0xFFFF, 0xFFFF},
+		hamon::vector<hamon::uint16_t>{0xFFFE, 0xFFFF, 0x0001},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint16_t>{0xFF07, 0x5088},
-		std::vector<hamon::uint16_t>{0x086B, 0xE639, 0x0278},
-		std::vector<hamon::uint16_t>{0x0772, 0x36C2, 0x0279},
+		hamon::vector<hamon::uint16_t>{0xFF07, 0x5088},
+		hamon::vector<hamon::uint16_t>{0x086B, 0xE639, 0x0278},
+		hamon::vector<hamon::uint16_t>{0x0772, 0x36C2, 0x0279},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint32_t>{0x5088FF07, 0x00000007},
-		std::vector<hamon::uint32_t>{0xE639086B, 0x00000278},
-		std::vector<hamon::uint32_t>{0x36C20772, 0x00000280},
+		hamon::vector<hamon::uint32_t>{0x5088FF07, 0x00000007},
+		hamon::vector<hamon::uint32_t>{0xE639086B, 0x00000278},
+		hamon::vector<hamon::uint32_t>{0x36C20772, 0x00000280},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
-		std::vector<hamon::uint32_t>{0x01},
-		std::vector<hamon::uint32_t>{0x00000000, 0x00000000, 0x00000000, 0x00000001},
+		hamon::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+		hamon::vector<hamon::uint32_t>{0x01},
+		hamon::vector<hamon::uint32_t>{0x00000000, 0x00000000, 0x00000000, 0x00000001},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
-		std::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
-		std::vector<hamon::uint32_t>{0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000001},
+		hamon::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+		hamon::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+		hamon::vector<hamon::uint32_t>{0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF, 0x00000001},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
-		std::vector<hamon::uint64_t>{1},
-		std::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{1},
+		hamon::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001},
 		false));
 	EXPECT_TRUE(AddTest(
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
-		std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x0000000000000001},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x0000000000000001},
 		false));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddTest(

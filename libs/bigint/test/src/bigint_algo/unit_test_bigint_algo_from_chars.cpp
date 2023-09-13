@@ -8,8 +8,8 @@
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -41,7 +41,7 @@ FromCharsTest(hamon::string_view sv, int base, T const& expected, hamon::size_t 
 GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 {
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		EXPECT_TRUE(FromCharsTest("0",                             10, Vector{0x00}));
 		EXPECT_TRUE(FromCharsTest("1",                             10, Vector{0x01}));
 		EXPECT_TRUE(FromCharsTest("12",                            10, Vector{0x0C}));
@@ -74,7 +74,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("12345678901234567890123456789", 10, Vector{0x15, 0x81, 0x39, 0x6E, 0xB1, 0xC9, 0xBE, 0x46, 0x32, 0x1B, 0xE4, 0x27}));
 	}
 	{
-		using Vector = std::vector<hamon::uint16_t>;
+		using Vector = hamon::vector<hamon::uint16_t>;
 		EXPECT_TRUE(FromCharsTest("0",                             10, Vector{0x0000}));
 		EXPECT_TRUE(FromCharsTest("1",                             10, Vector{0x0001}));
 		EXPECT_TRUE(FromCharsTest("12",                            10, Vector{0x000C}));
@@ -107,7 +107,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("12345678901234567890123456789", 10, Vector{0x8115, 0x6E39, 0xC9B1, 0x46BE, 0x1B32, 0x27E4}));
 	}
 	{
-		using Vector = std::vector<hamon::uint32_t>;
+		using Vector = hamon::vector<hamon::uint32_t>;
 		EXPECT_TRUE(FromCharsTest("0",                             10, Vector{0x00000000}));
 		EXPECT_TRUE(FromCharsTest("1",                             10, Vector{0x00000001}));
 		EXPECT_TRUE(FromCharsTest("12",                            10, Vector{0x0000000C}));
@@ -140,7 +140,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("12345678901234567890123456789", 10, Vector{0x6E398115, 0x46BEC9B1, 0x27E41B32}));
 	}
 	{
-		using Vector = std::vector<hamon::uint64_t>;
+		using Vector = hamon::vector<hamon::uint64_t>;
 		EXPECT_TRUE(FromCharsTest("0",                             10, Vector{0x0000000000000000}));
 		EXPECT_TRUE(FromCharsTest("1",                             10, Vector{0x0000000000000001}));
 		EXPECT_TRUE(FromCharsTest("12",                            10, Vector{0x000000000000000C}));
@@ -173,7 +173,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("12345678901234567890123456789", 10, Vector{0x46BEC9B16E398115, 0x0000000027E41B32}));
 	}
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		EXPECT_TRUE(FromCharsTest("0123456789abcdefghijklmnopqrstuvwxyz",  2, Vector{0x01}, 2));
 		EXPECT_TRUE(FromCharsTest("0123456789abcdefghijklmnopqrstuvwxyz",  3, Vector{0x05}, 3));
 		EXPECT_TRUE(FromCharsTest("0123456789abcdefghijklmnopqrstuvwxyz",  4, Vector{0x1B}, 4));
@@ -211,7 +211,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("0123456789abcdefghijklmnopqrstuvwxyz", 36, Vector{0xFB, 0xFA, 0x57, 0x03, 0x70, 0xA8, 0x0A, 0xE5, 0xF8, 0x2A, 0x61, 0x11, 0xC6, 0x72, 0xE2, 0xCC, 0xFA, 0xD9, 0x11, 0x02, 0x1F, 0xE8}, 36));
 	}
 	{
-		using Vector = std::vector<hamon::uint8_t>;
+		using Vector = hamon::vector<hamon::uint8_t>;
 		Vector const expected {0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12}; 
 		EXPECT_TRUE(FromCharsTest("1001000110100010101100111100010011010101111001101111011110000", 2, expected));
 		EXPECT_TRUE(FromCharsTest("22201222011201200202210002220221122120",                        3, expected));
@@ -250,7 +250,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("9ys742pps3qo",                                                 36, expected));
 	}
 	{
-		using Vector = std::vector<hamon::uint32_t>;
+		using Vector = hamon::vector<hamon::uint32_t>;
 		Vector const expected {0x9ABCDEF0, 0x12345678}; 
 		EXPECT_TRUE(FromCharsTest("1001000110100010101100111100010011010101111001101111011110000", 2, expected));
 		EXPECT_TRUE(FromCharsTest("22201222011201200202210002220221122120",                        3, expected));
@@ -289,7 +289,7 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		EXPECT_TRUE(FromCharsTest("9ys742pps3qo",                                                 36, expected));
 	}
 	{
-		using Vector = std::vector<hamon::uint64_t>;
+		using Vector = hamon::vector<hamon::uint64_t>;
 		Vector const expected {0x123456789ABCDEF0}; 
 		EXPECT_TRUE(FromCharsTest("1001000110100010101100111100010011010101111001101111011110000", 2, expected));
 		EXPECT_TRUE(FromCharsTest("22201222011201200202210002220221122120",                        3, expected));

@@ -35,7 +35,6 @@
 #include <hamon/string_view.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 #include <istream>
 #include <ostream>
 

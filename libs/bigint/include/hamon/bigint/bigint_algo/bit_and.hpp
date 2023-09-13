@@ -11,8 +11,8 @@
 #include <hamon/array.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -36,7 +36,7 @@ bit_and_impl(T* lhs, T const* rhs, hamon::size_t n)
 
 template <typename T>
 inline void
-bit_and(std::vector<T>& lhs, std::vector<T> const& rhs)
+bit_and(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	auto const N = hamon::min(lhs.size(), rhs.size());
 	lhs.resize(N);

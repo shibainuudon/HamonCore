@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/bit_xor.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -44,8 +44,8 @@ GTEST_TEST(BigIntAlgoTest, BitXOrTest)
 {
 #if 0
 	{
-		std::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
-		std::vector<hamon::uint8_t> b{0xFE, 0xDC, 0xBA};
+		hamon::vector<hamon::uint8_t> a{0x12, 0x34, 0x56, 0x78, 0x9A, 0xBC, 0xDE, 0xF0};
+		hamon::vector<hamon::uint8_t> b{0xFE, 0xDC, 0xBA};
 		for (hamon::size_t i = 0; i < 10000000; ++i)
 		{
 			hamon::bigint_algo::bit_xor(a, b);
@@ -62,41 +62,41 @@ GTEST_TEST(BigIntAlgoTest, BitXOrTest)
 #endif
 
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0},
-		std::vector<hamon::uint8_t>{0}));
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0},
+		hamon::vector<hamon::uint8_t>{0}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint8_t>{0x12, 0x34, 0x56, 0x78},
-		std::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
-		std::vector<hamon::uint8_t>{0xED, 0xCB, 0xA9, 0x78}));
+		hamon::vector<hamon::uint8_t>{0x12, 0x34, 0x56, 0x78},
+		hamon::vector<hamon::uint8_t>{0xFF, 0xFF, 0xFF},
+		hamon::vector<hamon::uint8_t>{0xED, 0xCB, 0xA9, 0x78}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint8_t>{0x12, 0x34, 0x56, 0x78},
-		std::vector<hamon::uint8_t>{0xFF, 0x0F, 0xF0, 0xFF},
-		std::vector<hamon::uint8_t>{0xED, 0x3B, 0xA6, 0x87}));
+		hamon::vector<hamon::uint8_t>{0x12, 0x34, 0x56, 0x78},
+		hamon::vector<hamon::uint8_t>{0xFF, 0x0F, 0xF0, 0xFF},
+		hamon::vector<hamon::uint8_t>{0xED, 0x3B, 0xA6, 0x87}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint16_t>{0x4996, 0x02D2, 0xFFFF, 0x1234},
-		std::vector<hamon::uint16_t>{0x0000},
-		std::vector<hamon::uint16_t>{0x4996, 0x02D2, 0xFFFF, 0x1234}));
+		hamon::vector<hamon::uint16_t>{0x4996, 0x02D2, 0xFFFF, 0x1234},
+		hamon::vector<hamon::uint16_t>{0x0000},
+		hamon::vector<hamon::uint16_t>{0x4996, 0x02D2, 0xFFFF, 0x1234}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint16_t>{0xFFFF, 0xFF00, 0x0000},
-		std::vector<hamon::uint16_t>{0x0000, 0x00FF, 0x0F0F},
-		std::vector<hamon::uint16_t>{0xFFFF, 0xFFFF, 0x0F0F}));
+		hamon::vector<hamon::uint16_t>{0xFFFF, 0xFF00, 0x0000},
+		hamon::vector<hamon::uint16_t>{0x0000, 0x00FF, 0x0F0F},
+		hamon::vector<hamon::uint16_t>{0xFFFF, 0xFFFF, 0x0F0F}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint16_t>{0x1234, 0x5678, 0x9ABC},
-		std::vector<hamon::uint16_t>{0x1234, 0x5678, 0x9ABC},
-		std::vector<hamon::uint16_t>{0}));
+		hamon::vector<hamon::uint16_t>{0x1234, 0x5678, 0x9ABC},
+		hamon::vector<hamon::uint16_t>{0x1234, 0x5678, 0x9ABC},
+		hamon::vector<hamon::uint16_t>{0}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint32_t>{0},
-		std::vector<hamon::uint32_t>{0},
-		std::vector<hamon::uint32_t>{0}));
+		hamon::vector<hamon::uint32_t>{0},
+		hamon::vector<hamon::uint32_t>{0},
+		hamon::vector<hamon::uint32_t>{0}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
-		std::vector<hamon::uint32_t>{0xFFFF0000, 0xFF00FF00, 0xF0F0F0F0},
-		std::vector<hamon::uint32_t>{0x0000FFFF, 0x00FF00FF, 0x0F0F0F0F}));
+		hamon::vector<hamon::uint32_t>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+		hamon::vector<hamon::uint32_t>{0xFFFF0000, 0xFF00FF00, 0xF0F0F0F0},
+		hamon::vector<hamon::uint32_t>{0x0000FFFF, 0x00FF00FF, 0x0F0F0F0F}));
 	EXPECT_TRUE(BitXOrTest(
-		std::vector<hamon::uint64_t>{0x0123456789ABCDEF, 0x1122334455667788},
-		std::vector<hamon::uint64_t>{0xFFFF0000FF00FF00, 0xFFFFFFFF00000000},
-		std::vector<hamon::uint64_t>{0xFEDC456776AB32EF, 0xEEDDCCBB55667788}));
+		hamon::vector<hamon::uint64_t>{0x0123456789ABCDEF, 0x1122334455667788},
+		hamon::vector<hamon::uint64_t>{0xFFFF0000FF00FF00, 0xFFFFFFFF00000000},
+		hamon::vector<hamon::uint64_t>{0xFEDC456776AB32EF, 0xEEDDCCBB55667788}));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitXOrTest(
 		hamon::array<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},

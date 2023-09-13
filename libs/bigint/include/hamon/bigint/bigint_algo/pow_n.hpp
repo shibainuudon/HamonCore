@@ -12,8 +12,8 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 namespace hamon
 {
@@ -84,7 +84,7 @@ pow_n_impl(VectorType& out, VectorType const& x, hamon::uintmax_t y)
 
 template <typename T>
 inline bool
-pow_n(std::vector<T>& out, std::vector<T> const& x, hamon::uintmax_t y)
+pow_n(hamon::vector<T>& out, hamon::vector<T> const& x, hamon::uintmax_t y)
 {
 	return pow_n_detail::pow_n_impl(out, x, y);
 }

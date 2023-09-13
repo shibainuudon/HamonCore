@@ -7,8 +7,8 @@
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -37,7 +37,7 @@ GTEST_TEST(BigIntAlgoTest, BitShiftLeftTest)
 	for (hamon::size_t j = 0; j < 10000; ++j)
 	{
 		{
-			std::vector<hamon::uint8_t> a{0x01};
+			hamon::vector<hamon::uint8_t> a{0x01};
 			for (hamon::size_t i = 0; i < 64; ++i)
 			{
 				hamon::bigint_algo::bit_shift_left(a, i);
@@ -54,55 +54,55 @@ GTEST_TEST(BigIntAlgoTest, BitShiftLeftTest)
 #endif
 
 	{
-		std::vector<hamon::uint8_t> const a{0};
-		EXPECT_TRUE(BitShiftLeftTest(a, 0, std::vector<hamon::uint8_t>{0}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 1, std::vector<hamon::uint8_t>{0}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 2, std::vector<hamon::uint8_t>{0}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 8, std::vector<hamon::uint8_t>{0}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 100, std::vector<hamon::uint8_t>{0}, false));
+		hamon::vector<hamon::uint8_t> const a{0};
+		EXPECT_TRUE(BitShiftLeftTest(a, 0, hamon::vector<hamon::uint8_t>{0}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 1, hamon::vector<hamon::uint8_t>{0}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 2, hamon::vector<hamon::uint8_t>{0}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 8, hamon::vector<hamon::uint8_t>{0}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 100, hamon::vector<hamon::uint8_t>{0}, false));
 	}
 	{
-		std::vector<hamon::uint8_t> const a{1};
-		EXPECT_TRUE(BitShiftLeftTest(a,  0, std::vector<hamon::uint8_t>{0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  1, std::vector<hamon::uint8_t>{0x02}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  2, std::vector<hamon::uint8_t>{0x04}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  3, std::vector<hamon::uint8_t>{0x08}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  7, std::vector<hamon::uint8_t>{0x80}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  8, std::vector<hamon::uint8_t>{0x00, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  9, std::vector<hamon::uint8_t>{0x00, 0x02}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 15, std::vector<hamon::uint8_t>{0x00, 0x80}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 16, std::vector<hamon::uint8_t>{0x00, 0x00, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 17, std::vector<hamon::uint8_t>{0x00, 0x00, 0x02}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 23, std::vector<hamon::uint8_t>{0x00, 0x00, 0x80}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 24, std::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 25, std::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x02}, false));
+		hamon::vector<hamon::uint8_t> const a{1};
+		EXPECT_TRUE(BitShiftLeftTest(a,  0, hamon::vector<hamon::uint8_t>{0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  1, hamon::vector<hamon::uint8_t>{0x02}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  2, hamon::vector<hamon::uint8_t>{0x04}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  3, hamon::vector<hamon::uint8_t>{0x08}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  7, hamon::vector<hamon::uint8_t>{0x80}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  8, hamon::vector<hamon::uint8_t>{0x00, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  9, hamon::vector<hamon::uint8_t>{0x00, 0x02}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 15, hamon::vector<hamon::uint8_t>{0x00, 0x80}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 16, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 17, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x02}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 23, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x80}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 24, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 25, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0x02}, false));
 	}
 	{
-		std::vector<hamon::uint8_t> const a{0xFF, 0xFF};
-		EXPECT_TRUE(BitShiftLeftTest(a,  0, std::vector<hamon::uint8_t>{0xFF, 0xFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  1, std::vector<hamon::uint8_t>{0xFE, 0xFF, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  2, std::vector<hamon::uint8_t>{0xFC, 0xFF, 0x03}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  3, std::vector<hamon::uint8_t>{0xF8, 0xFF, 0x07}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  7, std::vector<hamon::uint8_t>{0x80, 0xFF, 0x7F}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  8, std::vector<hamon::uint8_t>{0x00, 0xFF, 0xFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  9, std::vector<hamon::uint8_t>{0x00, 0xFE, 0xFF, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 15, std::vector<hamon::uint8_t>{0x00, 0x80, 0xFF, 0x7F}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 16, std::vector<hamon::uint8_t>{0x00, 0x00, 0xFF, 0xFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 17, std::vector<hamon::uint8_t>{0x00, 0x00, 0xFE, 0xFF, 0x01}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 23, std::vector<hamon::uint8_t>{0x00, 0x00, 0x80, 0xFF, 0x7F}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 24, std::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0xFF, 0xFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 25, std::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0xFE, 0xFF, 0x01}, false));
+		hamon::vector<hamon::uint8_t> const a{0xFF, 0xFF};
+		EXPECT_TRUE(BitShiftLeftTest(a,  0, hamon::vector<hamon::uint8_t>{0xFF, 0xFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  1, hamon::vector<hamon::uint8_t>{0xFE, 0xFF, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  2, hamon::vector<hamon::uint8_t>{0xFC, 0xFF, 0x03}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  3, hamon::vector<hamon::uint8_t>{0xF8, 0xFF, 0x07}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  7, hamon::vector<hamon::uint8_t>{0x80, 0xFF, 0x7F}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  8, hamon::vector<hamon::uint8_t>{0x00, 0xFF, 0xFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  9, hamon::vector<hamon::uint8_t>{0x00, 0xFE, 0xFF, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 15, hamon::vector<hamon::uint8_t>{0x00, 0x80, 0xFF, 0x7F}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 16, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0xFF, 0xFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 17, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0xFE, 0xFF, 0x01}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 23, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x80, 0xFF, 0x7F}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 24, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0xFF, 0xFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 25, hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x00, 0xFE, 0xFF, 0x01}, false));
 	}
 	{
-		std::vector<hamon::uint64_t> const a{0xFFFFFFFFFFFFFFFF};
-		EXPECT_TRUE(BitShiftLeftTest(a,   0, std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,   1, std::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  63, std::vector<hamon::uint64_t>{0x8000000000000000, 0x7FFFFFFFFFFFFFFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  64, std::vector<hamon::uint64_t>{0x0000000000000000, 0xFFFFFFFFFFFFFFFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a,  65, std::vector<hamon::uint64_t>{0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 127, std::vector<hamon::uint64_t>{0x0000000000000000, 0x8000000000000000, 0x7FFFFFFFFFFFFFFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 128, std::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0xFFFFFFFFFFFFFFFF}, false));
-		EXPECT_TRUE(BitShiftLeftTest(a, 129, std::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
+		hamon::vector<hamon::uint64_t> const a{0xFFFFFFFFFFFFFFFF};
+		EXPECT_TRUE(BitShiftLeftTest(a,   0, hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,   1, hamon::vector<hamon::uint64_t>{0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  63, hamon::vector<hamon::uint64_t>{0x8000000000000000, 0x7FFFFFFFFFFFFFFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  64, hamon::vector<hamon::uint64_t>{0x0000000000000000, 0xFFFFFFFFFFFFFFFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a,  65, hamon::vector<hamon::uint64_t>{0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 127, hamon::vector<hamon::uint64_t>{0x0000000000000000, 0x8000000000000000, 0x7FFFFFFFFFFFFFFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 128, hamon::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0xFFFFFFFFFFFFFFFF}, false));
+		EXPECT_TRUE(BitShiftLeftTest(a, 129, hamon::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x0000000000000001}, false));
 	}
 	{
 		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 3> const a{0xFF, 0x7F, 0x00};
