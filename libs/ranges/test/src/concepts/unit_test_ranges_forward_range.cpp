@@ -6,7 +6,7 @@
 
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/array.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 #include <list>
 #include <forward_list>
 #include <deque>
@@ -39,7 +39,7 @@ HAMON_RANGES_FORWARD_RANGE_TEST(false, int      *);
 HAMON_RANGES_FORWARD_RANGE_TEST(false, int const*);
 
 HAMON_RANGES_FORWARD_RANGE_TEST(true,  hamon::array<int, 2>);
-HAMON_RANGES_FORWARD_RANGE_TEST(true,  std::vector<int>);
+HAMON_RANGES_FORWARD_RANGE_TEST(true,  hamon::vector<int>);
 HAMON_RANGES_FORWARD_RANGE_TEST(true,  std::deque<int>);
 HAMON_RANGES_FORWARD_RANGE_TEST(true,  std::list<int>);
 HAMON_RANGES_FORWARD_RANGE_TEST(true,  std::forward_list<int>);

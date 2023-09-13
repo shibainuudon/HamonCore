@@ -9,10 +9,10 @@
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <forward_list>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -83,7 +83,7 @@ inline bool test01_2()
 		VERIFY(sr.end() == fwl.end());
 	}
 	{
-		const std::vector vec = {1, 2, 3, 4, 5};
+		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec.begin(), vec.end());
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == vec.begin());
@@ -152,7 +152,7 @@ inline bool test02_2()
 		VERIFY(sr.size() == 4);
 	}
 	{
-		const std::vector vec = {1, 2, 3, 4, 5};
+		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec.begin(), vec.end(), 5);
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == vec.begin());
@@ -210,7 +210,7 @@ inline bool test03_2()
 		VERIFY(sr.end() == fwl.end());
 	}
 	{
-		const std::vector vec = {1, 2, 3, 4, 5};
+		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec);
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == vec.begin());
@@ -270,7 +270,7 @@ inline bool test04_2()
 		VERIFY(sr.size() == 4);
 	}
 	{
-		const std::vector vec = {1, 2, 3, 4, 5};
+		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec, 5);
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == vec.begin());

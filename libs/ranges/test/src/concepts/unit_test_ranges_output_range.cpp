@@ -6,7 +6,7 @@
 
 #include <hamon/ranges/concepts/output_range.hpp>
 #include <hamon/array.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 #include <list>
 #include <forward_list>
 #include <deque>
@@ -39,7 +39,7 @@ HAMON_RANGES_OUTPUT_RANGE_TEST(false, int      *,       int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(false, int const*,       int);
 
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  hamon::array<int, 2>,         int);
-HAMON_RANGES_OUTPUT_RANGE_TEST(true,  std::vector<int>,             int);
+HAMON_RANGES_OUTPUT_RANGE_TEST(true,  hamon::vector<int>,           int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  std::deque<int>,              int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  std::list<int>,               int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  std::forward_list<int>,       int);

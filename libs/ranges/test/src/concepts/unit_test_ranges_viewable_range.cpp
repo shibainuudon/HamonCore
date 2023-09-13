@@ -12,7 +12,7 @@
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 #include "ranges_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -198,8 +198,8 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(false, Holder<Incomplete>* const(&&)[10]);
 
 // Verify P2415R2 "What is a view?" changes.
 // In particular, rvalue non-view non-borrowed ranges are now viewable.
-HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  std::vector<int>&&);
-HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::vector<int> const&&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  hamon::vector<int>&&);
+HAMON_RANGES_VIEWABLE_RANGE_TEST(false, hamon::vector<int> const&&);
 
 }	// namespace viewable_range_test
 
