@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/indirectly_readable_traits.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_iterator_test
@@ -30,8 +30,8 @@ struct have_element
 
 using T = int;
 
-using vec_iterator = std::vector<T>::iterator;
-using vec_const_iterator = std::vector<T>::const_iterator;
+using vec_iterator = hamon::vector<T>::iterator;
+using vec_const_iterator = hamon::vector<T>::const_iterator;
 
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<T      *                   >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<T const*                   >::value_type, T>::value, "");
@@ -45,8 +45,8 @@ static_assert(hamon::is_same<hamon::indirectly_readable_traits<vec_iterator     
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<vec_iterator const         >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<vec_const_iterator         >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<vec_const_iterator const   >::value_type, T>::value, "");
-static_assert(hamon::is_same<hamon::indirectly_readable_traits<std::vector<T>             >::value_type, T>::value, "");
-static_assert(hamon::is_same<hamon::indirectly_readable_traits<std::vector<T> const       >::value_type, T>::value, "");
+static_assert(hamon::is_same<hamon::indirectly_readable_traits<hamon::vector<T>           >::value_type, T>::value, "");
+static_assert(hamon::is_same<hamon::indirectly_readable_traits<hamon::vector<T> const     >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<have_value<T      >        >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<have_value<T const>        >::value_type, T>::value, "");
 static_assert(hamon::is_same<hamon::indirectly_readable_traits<have_value<T      > const  >::value_type, T>::value, "");

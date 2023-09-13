@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/size.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, SizeTest)
@@ -21,7 +21,7 @@ GTEST_TEST(IteratorTest, SizeTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4u, hamon::size(a));
 	}
 	{
-		std::vector<int> a{};
+		hamon::vector<int> a{};
 		EXPECT_EQ(0u, hamon::size(a));
 		a.push_back(10);
 		EXPECT_EQ(1u, hamon::size(a));

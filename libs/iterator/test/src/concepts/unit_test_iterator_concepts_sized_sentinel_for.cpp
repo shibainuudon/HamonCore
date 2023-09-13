@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 #include <memory>
 #include <iterator>
 
@@ -36,10 +36,10 @@ HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               int con
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               void*);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::unique_ptr<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::shared_ptr<int>);
-HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::vector<int>::iterator);
-HAMON_SIZED_SENTINEL_FOR_TEST(true,  std::vector<int>::iterator,         std::vector<int>::iterator);
-HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::vector<int>::const_iterator);
-HAMON_SIZED_SENTINEL_FOR_TEST(true,  std::vector<int>::const_iterator,   std::vector<int>::const_iterator);
+HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::iterator);
+HAMON_SIZED_SENTINEL_FOR_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
+HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::const_iterator);
+HAMON_SIZED_SENTINEL_FOR_TEST(true,  hamon::vector<int>::const_iterator, hamon::vector<int>::const_iterator);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::istream_iterator<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, std::istream_iterator<int>,         std::istream_iterator<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::ostream_iterator<int>);

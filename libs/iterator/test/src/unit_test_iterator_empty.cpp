@@ -6,8 +6,8 @@
 
 #include <hamon/iterator/empty.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, EmptyTest)
@@ -21,7 +21,7 @@ GTEST_TEST(IteratorTest, EmptyTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(false, hamon::empty(a));
 	}
 	{
-		std::vector<int> a{};
+		hamon::vector<int> a{};
 		EXPECT_EQ(true, hamon::empty(a));
 		a.push_back(10);
 		EXPECT_EQ(false, hamon::empty(a));

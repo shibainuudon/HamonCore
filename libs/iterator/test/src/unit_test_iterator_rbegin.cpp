@@ -6,15 +6,15 @@
 
 #include <hamon/iterator/rbegin.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, RBeginTest)
 {
 	{
-		std::vector<float> v;
+		hamon::vector<float> v;
 		{
 			auto it = hamon::rbegin(v);
 			(void)it;
@@ -30,7 +30,7 @@ GTEST_TEST(IteratorTest, RBeginTest)
 
 	HAMON_STATIC_CONSTEXPR int a[] = {0,1,2};
 	HAMON_STATIC_CONSTEXPR hamon::array<float, 2> a2{{0.5f, 1.5f}};
-	std::vector<float> v {3, 1, 4, 1, 5};
+	hamon::vector<float> v {3, 1, 4, 1, 5};
 	std::list<int> l {6, 7, 8};
 
 	EXPECT_TRUE(&*hamon::rbegin(a) == &a[2]);

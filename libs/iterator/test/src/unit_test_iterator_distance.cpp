@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -36,11 +36,11 @@ GTEST_TEST(IteratorTest, DistanceTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(3, d);
 	}
 	{
-		std::vector<float> v {3,1,4,1,5};
+		hamon::vector<float> v {3,1,4,1,5};
 		EXPECT_EQ(5, hamon::distance(hamon::begin(v), hamon::end(v)));
 	}
 	{
-		const std::vector<float> v {3,1,4,1,5};
+		const hamon::vector<float> v {3,1,4,1,5};
 		EXPECT_EQ(5, hamon::distance(hamon::begin(v), hamon::end(v)));
 	}
 	{

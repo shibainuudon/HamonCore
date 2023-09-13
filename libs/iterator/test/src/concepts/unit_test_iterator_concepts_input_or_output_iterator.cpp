@@ -5,9 +5,9 @@
  */
 
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
-#include <vector>
 #include "iterator_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -55,9 +55,9 @@ HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, void const volatile** const);
 
 HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, std::unique_ptr<int>);
 HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, std::shared_ptr<int>);
-HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, std::vector<int>);
-HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(true,  std::vector<int>::iterator);
-HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(true,  std::vector<int>::const_iterator);
+HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, hamon::vector<int>);
+HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(true,  hamon::vector<int>::iterator);
+HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(true,  hamon::vector<int>::const_iterator);
 
 HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, int[]);
 HAMON_INPUT_OR_OUTPUT_ITERATOR_TEST(false, int[2]);

@@ -7,9 +7,9 @@
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/array.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <string>
-#include <vector>
 #include <list>
 #include <forward_list>
 #include <deque>
@@ -81,8 +81,8 @@ HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::string_view::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::string_view::const_iterator);
-HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::vector<int>::iterator);
-HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::vector<A>::const_iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::vector<int>::iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::vector<A>::const_iterator);
 
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, weakly_incrementable_wrapper<int>);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, incrementable_wrapper<int>);

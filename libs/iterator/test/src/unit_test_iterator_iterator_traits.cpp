@@ -13,8 +13,8 @@
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/vector.hpp>
 #include <utility>	// pair
-#include <vector>
 #include <list>
 #include <forward_list>
 #include <map>
@@ -55,7 +55,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::differ
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::pointer,           int const volatile*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<int const volatile*>::reference,         int const volatile&>::value, "");
 
-using it1 = std::vector<float>::iterator;
+using it1 = hamon::vector<float>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it1>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::value_type,        float>::value, "");
@@ -63,7 +63,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it1>::difference_type,   ham
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::pointer,           float*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it1>::reference,         float&>::value, "");
 
-using it2 = std::vector<float>::const_iterator;
+using it2 = hamon::vector<float>::const_iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it2>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it2>::iterator_category, hamon::random_access_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it2>::value_type,        float>::value, "");

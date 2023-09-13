@@ -5,8 +5,8 @@
  */
 
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 #include <memory>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -58,8 +58,8 @@ HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int), int[]);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int), int[3]);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), std::unique_ptr<int>);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), std::shared_ptr<int>);
-HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), std::vector<int>::iterator);
-HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), std::vector<int>::const_iterator);
+HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::vector<int>::iterator);
+HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  bool(*)(int), hamon::vector<int>::const_iterator);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, void(*)(int), int*);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(), int*);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int, int), int*);

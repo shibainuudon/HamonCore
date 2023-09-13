@@ -7,7 +7,7 @@
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 
 namespace hamon_iterator_test
 {
@@ -31,8 +31,8 @@ struct can_difference
 
 using T = int;
 
-using vec_iterator = std::vector<T>::iterator;
-using vec_const_iterator = std::vector<T>::const_iterator;
+using vec_iterator = hamon::vector<T>::iterator;
+using vec_const_iterator = hamon::vector<T>::const_iterator;
 
 static_assert(hamon::is_same<hamon::iter_difference_t<T      *                   >, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<T const*                   >, hamon::ptrdiff_t>::value, "");
@@ -46,8 +46,8 @@ static_assert(hamon::is_same<hamon::iter_difference_t<vec_iterator              
 static_assert(hamon::is_same<hamon::iter_difference_t<vec_iterator const         >, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<vec_const_iterator         >, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<vec_const_iterator const   >, hamon::ptrdiff_t>::value, "");
-static_assert(hamon::is_same<hamon::iter_difference_t<std::vector<T>             >, hamon::ptrdiff_t>::value, "");
-static_assert(hamon::is_same<hamon::iter_difference_t<std::vector<T> const       >, hamon::ptrdiff_t>::value, "");
+static_assert(hamon::is_same<hamon::iter_difference_t<hamon::vector<T>           >, hamon::ptrdiff_t>::value, "");
+static_assert(hamon::is_same<hamon::iter_difference_t<hamon::vector<T> const     >, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<have_difference <T      >      >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<have_difference <T const>      >, T const>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<have_difference <T      > const>, T>::value, "");

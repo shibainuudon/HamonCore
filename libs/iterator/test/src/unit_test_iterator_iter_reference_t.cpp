@@ -6,7 +6,7 @@
 
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 
 namespace hamon_iterator_test
 {
@@ -16,8 +16,8 @@ namespace iter_reference_t_test
 
 using T = int;
 
-using vec_iterator = std::vector<T>::iterator;
-using vec_const_iterator = std::vector<T>::const_iterator;
+using vec_iterator = hamon::vector<T>::iterator;
+using vec_const_iterator = hamon::vector<T>::const_iterator;
 
 static_assert(hamon::is_same<hamon::iter_reference_t<T               *          >, T               &>::value, "");
 static_assert(hamon::is_same<hamon::iter_reference_t<T const         *          >, T const         &>::value, "");

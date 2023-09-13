@@ -5,8 +5,8 @@
  */
 
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 #include <memory>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -68,12 +68,12 @@ HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int[2]);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, void*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, std::unique_ptr<int>);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, std::shared_ptr<int>);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::iterator,       int*);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::iterator,       std::vector<int>::iterator);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::iterator,       std::vector<int>::const_iterator);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::const_iterator, int*);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::const_iterator, std::vector<int>::iterator);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, std::vector<int>::const_iterator, std::vector<int>::const_iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       int*);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       hamon::vector<int>::const_iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::const_iterator, int*);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::const_iterator, hamon::vector<int>::iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::const_iterator, hamon::vector<int>::const_iterator);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, X, X);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, X, int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, Y, Y);
@@ -81,10 +81,10 @@ HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, Y, int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, Z, Z);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, Z, int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred2, int*, int*);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred2, std::vector<int>::iterator, std::vector<int>::iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred2, hamon::vector<int>::iterator, hamon::vector<int>::iterator);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred2, X, X);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, int*, int*);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, std::vector<int>::iterator, std::vector<int>::iterator);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, hamon::vector<int>::iterator, hamon::vector<int>::iterator);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, X, X);
 
 }	// namespace indirect_binary_predicate_test

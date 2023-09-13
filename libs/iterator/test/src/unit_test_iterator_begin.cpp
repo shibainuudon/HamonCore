@@ -6,14 +6,14 @@
 
 #include <hamon/iterator/begin.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, BeginTest)
 {
 	HAMON_STATIC_CONSTEXPR int a[] = {0,1,2};
-	std::vector<float> v {3,1,4,1,5};
+	hamon::vector<float> v {3,1,4,1,5};
 	hamon::array<float, 2> a2{{0.5f, 1.5f}};
 
 	{

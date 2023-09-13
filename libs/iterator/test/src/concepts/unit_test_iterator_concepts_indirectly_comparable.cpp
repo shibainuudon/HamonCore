@@ -5,9 +5,9 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_comparable.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
-#include <vector>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_INDIRECTLY_COMPARABLE_TEST(B, ...)	\
@@ -55,8 +55,8 @@ HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int[],                            
 HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int[2],                           bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, std::unique_ptr<int>,             bool(*)(int, int));
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, std::shared_ptr<int>,             bool(*)(int, int));
-HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, std::vector<int>::iterator,       bool(*)(int, int));
-HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, std::vector<int>::const_iterator, bool(*)(int, int));
+HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::vector<int>::iterator,       bool(*)(int, int));
+HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, hamon::vector<int>::const_iterator, bool(*)(int, int));
 
 HAMON_INDIRECTLY_COMPARABLE_TEST(true,  int*, int*, Pred1);
 HAMON_INDIRECTLY_COMPARABLE_TEST(false, int*, int*, Pred2);

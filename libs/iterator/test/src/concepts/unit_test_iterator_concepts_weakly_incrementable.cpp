@@ -5,9 +5,9 @@
  */
 
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
-#include <vector>
 #include "iterator_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -64,9 +64,9 @@ HAMON_WEAKLY_INCREMENTABLE_TEST(false, void const volatile** const);
 
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, std::unique_ptr<int>);
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, std::shared_ptr<int>);
-HAMON_WEAKLY_INCREMENTABLE_TEST(false, std::vector<int>);
-HAMON_WEAKLY_INCREMENTABLE_TEST(true,  std::vector<int>::iterator);
-HAMON_WEAKLY_INCREMENTABLE_TEST(true,  std::vector<int>::const_iterator);
+HAMON_WEAKLY_INCREMENTABLE_TEST(false, hamon::vector<int>);
+HAMON_WEAKLY_INCREMENTABLE_TEST(true,  hamon::vector<int>::iterator);
+HAMON_WEAKLY_INCREMENTABLE_TEST(true,  hamon::vector<int>::const_iterator);
 
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, int[]);
 HAMON_WEAKLY_INCREMENTABLE_TEST(false, int[2]);

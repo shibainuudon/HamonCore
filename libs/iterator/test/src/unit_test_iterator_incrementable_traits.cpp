@@ -10,8 +10,8 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/make_signed.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 namespace hamon_iterator_test
 {
@@ -47,8 +47,8 @@ struct Z
 
 using T = int;
 
-using vec_iterator = std::vector<T>::iterator;
-using vec_const_iterator = std::vector<T>::const_iterator;
+using vec_iterator = hamon::vector<T>::iterator;
+using vec_const_iterator = hamon::vector<T>::const_iterator;
 
 static_assert(hamon::is_same<hamon::incrementable_traits<T                          >::difference_type, hamon::make_signed_t<T>>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<T      *                   >::difference_type, hamon::ptrdiff_t>::value, "");
@@ -63,8 +63,8 @@ static_assert(hamon::is_same<hamon::incrementable_traits<vec_iterator           
 static_assert(hamon::is_same<hamon::incrementable_traits<vec_iterator const         >::difference_type, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<vec_const_iterator         >::difference_type, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<vec_const_iterator const   >::difference_type, hamon::ptrdiff_t>::value, "");
-static_assert(hamon::is_same<hamon::incrementable_traits<std::vector<T>           >::difference_type, hamon::ptrdiff_t>::value, "");
-static_assert(hamon::is_same<hamon::incrementable_traits<std::vector<T> const     >::difference_type, hamon::ptrdiff_t>::value, "");
+static_assert(hamon::is_same<hamon::incrementable_traits<hamon::vector<T>           >::difference_type, hamon::ptrdiff_t>::value, "");
+static_assert(hamon::is_same<hamon::incrementable_traits<hamon::vector<T> const     >::difference_type, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<X<T      >      >::difference_type, T>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<X<T const>      >::difference_type, T const>::value, "");
 static_assert(hamon::is_same<hamon::incrementable_traits<X<T      > const>::difference_type, T>::value, "");

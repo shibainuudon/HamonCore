@@ -5,9 +5,9 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
-#include <vector>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_INDIRECTLY_SWAPPABLE_TEST(B, ...)	\
@@ -75,12 +75,12 @@ HAMON_INDIRECTLY_SWAPPABLE_TEST(false, int*, int[2]);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(false, int*, void*);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  int*, std::unique_ptr<int>);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  int*, std::shared_ptr<int>);
-HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  std::vector<int>::iterator,       int*);
-HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  std::vector<int>::iterator,       std::vector<int>::iterator);
-//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, std::vector<int>::iterator,       std::vector<int>::const_iterator);
-//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, std::vector<int>::const_iterator, int*);
-//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, std::vector<int>::const_iterator, std::vector<int>::iterator);
-//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, std::vector<int>::const_iterator, std::vector<int>::const_iterator);
+HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  hamon::vector<int>::iterator,       int*);
+HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);
+//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, hamon::vector<int>::iterator,       hamon::vector<int>::const_iterator);
+//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, hamon::vector<int>::const_iterator, int*);
+//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, hamon::vector<int>::const_iterator, hamon::vector<int>::iterator);
+//HAMON_INDIRECTLY_SWAPPABLE_TEST(false, hamon::vector<int>::const_iterator, hamon::vector<int>::const_iterator);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(true,  CopyableMovable<true,  true >*, CopyableMovable<true,  true >*);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(false, CopyableMovable<true,  true >*, CopyableMovable<true,  false>*);
 HAMON_INDIRECTLY_SWAPPABLE_TEST(false, CopyableMovable<true,  true >*, CopyableMovable<false, true >*);

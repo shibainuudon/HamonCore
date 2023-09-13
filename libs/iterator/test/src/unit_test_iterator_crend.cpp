@@ -7,15 +7,15 @@
 #include <hamon/iterator/crend.hpp>
 #include <hamon/iterator/crbegin.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, CREndTest)
 {
 	{
-		std::vector<float> v;
+		hamon::vector<float> v;
 		{
 			auto it1 = hamon::crbegin(v);
 			auto it2 = hamon::crend(v);
@@ -33,7 +33,7 @@ GTEST_TEST(IteratorTest, CREndTest)
 
 	HAMON_STATIC_CONSTEXPR int a[] = {0,1,2};
 	HAMON_STATIC_CONSTEXPR hamon::array<float, 2> a2{{0.5f, 1.5f}};
-	std::vector<float> v {3,1,4,1,5};
+	hamon::vector<float> v {3,1,4,1,5};
 	std::list<int> l {6, 7, 8};
 
 //	EXPECT_TRUE(&*hamon::crend(a) == &a[-1]);

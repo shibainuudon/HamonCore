@@ -6,7 +6,7 @@
 
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 #include "constexpr_test.hpp"
 
 namespace hamon_iterator_test
@@ -29,8 +29,8 @@ struct have_element
 
 using T = int;
 
-using vec_iterator = std::vector<T>::iterator;
-using vec_const_iterator = std::vector<T>::const_iterator;
+using vec_iterator = hamon::vector<T>::iterator;
+using vec_const_iterator = hamon::vector<T>::const_iterator;
 
 static_assert(hamon::is_same<hamon::iter_value_t<T               *          >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<T const         *          >, T>::value, "");
@@ -52,8 +52,8 @@ static_assert(hamon::is_same<hamon::iter_value_t<vec_iterator               >, T
 static_assert(hamon::is_same<hamon::iter_value_t<vec_iterator const         >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<vec_const_iterator         >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<vec_const_iterator const   >, T>::value, "");
-static_assert(hamon::is_same<hamon::iter_value_t<std::vector<T>             >, T>::value, "");
-static_assert(hamon::is_same<hamon::iter_value_t<std::vector<T> const       >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<hamon::vector<T>           >, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<hamon::vector<T> const     >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<have_value<T      >        >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<have_value<T const>        >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<have_value<T      > const  >, T>::value, "");

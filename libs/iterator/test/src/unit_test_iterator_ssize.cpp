@@ -7,8 +7,8 @@
 #include <hamon/iterator/ssize.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(IteratorTest, SSizeTest)
@@ -24,7 +24,7 @@ GTEST_TEST(IteratorTest, SSizeTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::ssize(a));
 	}
 	{
-		std::vector<int> a{};
+		hamon::vector<int> a{};
 		static_assert(hamon::is_signed<decltype(hamon::ssize(a))>::value, "");
 		EXPECT_EQ(0, hamon::ssize(a));
 		a.push_back(10);

@@ -14,7 +14,7 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/forward.hpp>
-#include <vector>
+#include <hamon/vector.hpp>
 
 namespace hamon_iterator_test
 {
@@ -31,7 +31,7 @@ struct Identity
 	}
 };
 
-using vec_iterator = std::vector<int>::iterator;
+using vec_iterator = hamon::vector<int>::iterator;
 using vecitr_proj = hamon::projected<vec_iterator, Identity>;
 
 static_assert(hamon::indirectly_readable_t<vecitr_proj>::value, "");

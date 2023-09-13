@@ -15,8 +15,8 @@ HAMON_WARNING_DISABLE_MSVC(4308) // 負の整数定数が符号なしの型に�
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -67,7 +67,7 @@ GTEST_TEST(IteratorTest, PrevTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(it5 == hamon::begin(a));
 	}
 	{
-		const std::vector<float> v {3,1,4,1,5};
+		const hamon::vector<float> v {3,1,4,1,5};
 
 		auto it = hamon::end(v);
 		it = hamon::prev(it);
@@ -83,7 +83,7 @@ GTEST_TEST(IteratorTest, PrevTest)
 		EXPECT_TRUE(it == hamon::begin(v));
 	}
 	{
-		std::vector<float> v {3,1,4,1,5};
+		hamon::vector<float> v {3,1,4,1,5};
 
 		auto it = hamon::end(v);
 		it = hamon::prev(it, 3);

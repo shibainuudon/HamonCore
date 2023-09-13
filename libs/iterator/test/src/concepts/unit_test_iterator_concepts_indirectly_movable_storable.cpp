@@ -5,8 +5,8 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_movable_storable.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <vector>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(B, ...)	\
@@ -101,14 +101,14 @@ HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, int*, void*);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  float*, int*);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  char*, int*);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, void*, int*);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  int*, std::vector<int>::iterator);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, int*, std::vector<int>::const_iterator);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  std::vector<int>::iterator, int*);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  std::vector<int>::iterator, std::vector<int>::iterator);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, std::vector<int>::iterator, std::vector<int>::const_iterator);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  std::vector<int>::const_iterator, int*);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  std::vector<int>::const_iterator, std::vector<int>::iterator);
-HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, std::vector<int>::const_iterator, std::vector<int>::const_iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  int*, hamon::vector<int>::iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, int*, hamon::vector<int>::const_iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  hamon::vector<int>::iterator, int*);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  hamon::vector<int>::iterator, hamon::vector<int>::iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, hamon::vector<int>::iterator, hamon::vector<int>::const_iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  hamon::vector<int>::const_iterator, int*);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  hamon::vector<int>::const_iterator, hamon::vector<int>::iterator);
+HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, hamon::vector<int>::const_iterator, hamon::vector<int>::const_iterator);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(true,  CopyableMovable<true,  true >*, CopyableMovable<true,  true >*);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, CopyableMovable<true,  true >*, CopyableMovable<true,  false>*);
 HAMON_INDIRECTLY_MOVABLE_STORABLE_TEST(false, CopyableMovable<true,  true >*, CopyableMovable<false, true >*);

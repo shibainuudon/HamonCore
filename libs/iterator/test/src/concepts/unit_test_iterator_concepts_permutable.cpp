@@ -7,6 +7,7 @@
 #include <hamon/iterator/concepts/permutable.hpp>
 //#include <hamon/string_view.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <deque>
 #include <forward_list>
@@ -14,7 +15,6 @@
 #include <list>
 #include <memory>
 #include <string>
-#include <vector>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_PERMUTABLE_TEST(B, ...)	\
@@ -51,8 +51,8 @@ HAMON_PERMUTABLE_TEST(true,  std::string::iterator);
 HAMON_PERMUTABLE_TEST(false, std::string::const_iterator);
 //HAMON_PERMUTABLE_TEST(false, hamon::string_view::iterator);
 //HAMON_PERMUTABLE_TEST(false, hamon::string_view::const_iterator);
-HAMON_PERMUTABLE_TEST(true,  std::vector<int>::iterator);
-HAMON_PERMUTABLE_TEST(false, std::vector<int>::const_iterator);
+HAMON_PERMUTABLE_TEST(true,  hamon::vector<int>::iterator);
+HAMON_PERMUTABLE_TEST(false, hamon::vector<int>::const_iterator);
 HAMON_PERMUTABLE_TEST(false, std::istreambuf_iterator<char>);
 HAMON_PERMUTABLE_TEST(false, std::ostreambuf_iterator<char>);
 HAMON_PERMUTABLE_TEST(false, std::shared_ptr<int>);
