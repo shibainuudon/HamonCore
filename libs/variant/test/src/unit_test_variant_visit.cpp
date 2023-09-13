@@ -14,10 +14,10 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <string>
 #include <sstream>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -286,7 +286,7 @@ inline void RuntimeTest()
 #if defined(HAMON_HAS_CXX14_GENERIC_LAMBDAS)
 	{
 		using var_t = hamon::variant<int, long, double, std::string>;
-		std::vector<var_t> vec = { "hello", 15l, 10, 1.5 };
+		hamon::vector<var_t> vec = { "hello", 15l, 10, 1.5 };
 
 		std::stringstream ss;
 		for (auto& v : vec)
