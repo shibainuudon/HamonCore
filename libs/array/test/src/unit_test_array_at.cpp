@@ -8,6 +8,7 @@
  */
 
 #include <hamon/array/array.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -49,7 +50,7 @@ void AtTest()
 		EXPECT_EQ(T(2), a.at(1));
 		EXPECT_EQ(T(3), a.at(2));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)a.at(3), std::out_of_range);
+		EXPECT_THROW((void)a.at(3), hamon::out_of_range);
 #endif
 	}
 	{
@@ -59,7 +60,7 @@ void AtTest()
 		EXPECT_EQ(T(15), a.at(2));
 		EXPECT_EQ(T(16), a.at(3));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)a.at(4), std::out_of_range);
+		EXPECT_THROW((void)a.at(4), hamon::out_of_range);
 #endif
 	}
 	{
@@ -68,7 +69,7 @@ void AtTest()
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(2), a.at(1));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(3), a.at(2));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)a.at(3), std::out_of_range);
+		EXPECT_THROW((void)a.at(3), hamon::out_of_range);
 #endif
 	}
 	{
@@ -78,7 +79,7 @@ void AtTest()
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(15), a.at(2));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(16), a.at(3));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)a.at(4), std::out_of_range);
+		EXPECT_THROW((void)a.at(4), hamon::out_of_range);
 #endif
 	}
 }

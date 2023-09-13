@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
@@ -222,35 +223,35 @@ TYPED_TEST(MatrixTest, AtTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		matrix3x3 m;
-		EXPECT_THROW((void)m.at(3), std::out_of_range);
+		EXPECT_THROW((void)m.at(3), hamon::out_of_range);
 	}
 	{
 		matrix3x3 const m;
-		EXPECT_THROW((void)m.at(3), std::out_of_range);
+		EXPECT_THROW((void)m.at(3), hamon::out_of_range);
 	}
 	{
 		matrix3x4 m;
-		EXPECT_THROW((void)m.at(3), std::out_of_range);
+		EXPECT_THROW((void)m.at(3), hamon::out_of_range);
 	}
 	{
 		matrix3x4 const m;
-		EXPECT_THROW((void)m.at(3), std::out_of_range);
+		EXPECT_THROW((void)m.at(3), hamon::out_of_range);
 	}
 	{
 		matrix4x3 m;
-		EXPECT_THROW((void)m.at(4), std::out_of_range);
+		EXPECT_THROW((void)m.at(4), hamon::out_of_range);
 	}
 	{
 		matrix4x3 const m;
-		EXPECT_THROW((void)m.at(4), std::out_of_range);
+		EXPECT_THROW((void)m.at(4), hamon::out_of_range);
 	}
 	{
 		matrix4x4 m;
-		EXPECT_THROW((void)m.at(4), std::out_of_range);
+		EXPECT_THROW((void)m.at(4), hamon::out_of_range);
 	}
 	{
 		matrix4x4 const m;
-		EXPECT_THROW((void)m.at(4), std::out_of_range);
+		EXPECT_THROW((void)m.at(4), hamon::out_of_range);
 	}
 #endif
 

@@ -8,6 +8,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -191,63 +192,63 @@ GTEST_TEST(BitsetTest, SetTest)
 	{
 		hamon::bitset<0> b(1);
 		EXPECT_NO_THROW(b.set());
-		EXPECT_THROW(b.set(0), std::out_of_range);
-		EXPECT_THROW(b.set(0, true), std::out_of_range);
-		EXPECT_THROW(b.set(0, false), std::out_of_range);
+		EXPECT_THROW(b.set(0), hamon::out_of_range);
+		EXPECT_THROW(b.set(0, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(0, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<1> b(1);
 		EXPECT_NO_THROW(b.set(0));
 		EXPECT_NO_THROW(b.set(0, true));
 		EXPECT_NO_THROW(b.set(0, false));
-		EXPECT_THROW(b.set(1), std::out_of_range);
-		EXPECT_THROW(b.set(1, true), std::out_of_range);
-		EXPECT_THROW(b.set(1, false), std::out_of_range);
+		EXPECT_THROW(b.set(1), hamon::out_of_range);
+		EXPECT_THROW(b.set(1, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(1, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<7> b(1);
 		EXPECT_NO_THROW(b.set(6));
 		EXPECT_NO_THROW(b.set(6, true));
 		EXPECT_NO_THROW(b.set(6, false));
-		EXPECT_THROW(b.set(7), std::out_of_range);
-		EXPECT_THROW(b.set(7, true), std::out_of_range);
-		EXPECT_THROW(b.set(7, false), std::out_of_range);
+		EXPECT_THROW(b.set(7), hamon::out_of_range);
+		EXPECT_THROW(b.set(7, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(7, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<8> b(1);
 		EXPECT_NO_THROW(b.set(7));
 		EXPECT_NO_THROW(b.set(7, true));
 		EXPECT_NO_THROW(b.set(7, false));
-		EXPECT_THROW(b.set(8), std::out_of_range);
-		EXPECT_THROW(b.set(8, true), std::out_of_range);
-		EXPECT_THROW(b.set(8, false), std::out_of_range);
+		EXPECT_THROW(b.set(8), hamon::out_of_range);
+		EXPECT_THROW(b.set(8, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(8, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<13> b(1);
 		EXPECT_NO_THROW(b.set(12));
 		EXPECT_NO_THROW(b.set(12, true));
 		EXPECT_NO_THROW(b.set(12, false));
-		EXPECT_THROW(b.set(13), std::out_of_range);
-		EXPECT_THROW(b.set(13, true), std::out_of_range);
-		EXPECT_THROW(b.set(13, false), std::out_of_range);
+		EXPECT_THROW(b.set(13), hamon::out_of_range);
+		EXPECT_THROW(b.set(13, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(13, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<63> b(1);
 		EXPECT_NO_THROW(b.set(62));
 		EXPECT_NO_THROW(b.set(62, true));
 		EXPECT_NO_THROW(b.set(62, false));
-		EXPECT_THROW(b.set(63), std::out_of_range);
-		EXPECT_THROW(b.set(63, true), std::out_of_range);
-		EXPECT_THROW(b.set(63, false), std::out_of_range);
+		EXPECT_THROW(b.set(63), hamon::out_of_range);
+		EXPECT_THROW(b.set(63, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(63, false), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<128> b(1);
 		EXPECT_NO_THROW(b.set(127));
 		EXPECT_NO_THROW(b.set(127, true));
 		EXPECT_NO_THROW(b.set(127, false));
-		EXPECT_THROW(b.set(128), std::out_of_range);
-		EXPECT_THROW(b.set(128, true), std::out_of_range);
-		EXPECT_THROW(b.set(128, false), std::out_of_range);
+		EXPECT_THROW(b.set(128), hamon::out_of_range);
+		EXPECT_THROW(b.set(128, true), hamon::out_of_range);
+		EXPECT_THROW(b.set(128, false), hamon::out_of_range);
 	}
 #endif
 }

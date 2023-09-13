@@ -5,6 +5,7 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -43,19 +44,19 @@ TYPED_TEST(StringViewTest, AtTest)
 	{
 		auto str = StringViewTestHelper<CharT>::foo_bar();
 		string_view sv{str};
-		EXPECT_THROW((void)sv.at(7), std::out_of_range);
+		EXPECT_THROW((void)sv.at(7), hamon::out_of_range);
 	}
 	{
 		string_view sv{StringViewTestHelper<CharT>::with_nulls()};
 		EXPECT_NO_THROW((void)sv.at(0));
 		EXPECT_NO_THROW((void)sv.at(13));
-		EXPECT_THROW   ((void)sv.at(14),  std::out_of_range);
-		EXPECT_THROW   ((void)sv.at(100), std::out_of_range);
+		EXPECT_THROW   ((void)sv.at(14),  hamon::out_of_range);
+		EXPECT_THROW   ((void)sv.at(100), hamon::out_of_range);
 	}
 	{
 		string_view sv;
-		EXPECT_THROW((void)sv.at(0), std::out_of_range);
-		EXPECT_THROW((void)sv.at(1), std::out_of_range);
+		EXPECT_THROW((void)sv.at(0), hamon::out_of_range);
+		EXPECT_THROW((void)sv.at(1), hamon::out_of_range);
 	}
 #endif
 }

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -72,7 +73,7 @@ TYPED_TEST(StringViewTest, CopyTest)
 		auto str = StringViewTestHelper<CharT>::foo_bar();
 		string_view sv{str};
 		CharT buffer[16] {};
-		EXPECT_THROW(sv.copy(buffer, 7, 8), std::out_of_range);
+		EXPECT_THROW(sv.copy(buffer, 7, 8), hamon::out_of_range);
 	}
 #endif
 #endif

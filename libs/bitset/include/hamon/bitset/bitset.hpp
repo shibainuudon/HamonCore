@@ -39,13 +39,15 @@ using std::bitset;
 #include <hamon/iterator/rend.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/numeric/accumulate.hpp>
+#include <hamon/stdexcept/invalid_argument.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
+#include <hamon/stdexcept/overflow_error.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
-#include <stdexcept>	// std::out_of_range, std::invalid_argument, std::overflow_error
 #include <cstdlib>		// std::abort
 #include <string>
 #include <istream>
@@ -59,39 +61,6 @@ namespace hamon
 
 namespace bitset_detail
 {
-
-HAMON_NORETURN inline void
-throw_out_of_range(char const* msg)
-{
-#if !defined(HAMON_NO_EXCEPTIONS)
-	throw std::out_of_range(msg);
-#else
-	(void)msg;
-	std::abort();
-#endif
-}
-
-HAMON_NORETURN inline void
-throw_invalid_argument(char const* msg)
-{
-#if !defined(HAMON_NO_EXCEPTIONS)
-	throw std::invalid_argument(msg);
-#else
-	(void)msg;
-	std::abort();
-#endif
-}
-
-HAMON_NORETURN inline void
-throw_overflow_error(char const* msg)
-{
-#if !defined(HAMON_NO_EXCEPTIONS)
-	throw std::overflow_error(msg);
-#else
-	(void)msg;
-	std::abort();
-#endif
-}
 
 template <typename T, hamon::size_t NBits, hamon::size_t NWords>
 struct bitset_impl
@@ -393,7 +362,7 @@ private:
 	{
 		return
 			is_overflow<UInt>() ?
-				(bitset_detail::throw_overflow_error("bitset::to_integer"), UInt{}) :
+				(hamon::detail::throw_overflow_error("bitset::to_integer"), UInt{}) :
 			hamon::accumulate(
 				hamon::rbegin(m_value),
 				hamon::rend(m_value),
@@ -589,12 +558,12 @@ struct bitset_impl<T, NBits, 0>
 
 	T& get_word(hamon::size_t)
 	{
-		throw_out_of_range("bitset_impl::get_word");
+		hamon::detail::throw_out_of_range("bitset_impl::get_word");
 	}
 
 	T const& get_word(hamon::size_t) const
 	{
-		throw_out_of_range("bitset_impl::get_word");
+		hamon::detail::throw_out_of_range("bitset_impl::get_word");
 	}
 
 	HAMON_CXX11_CONSTEXPR T get_bit(hamon::size_t) const HAMON_NOEXCEPT { return 0; }
@@ -747,7 +716,7 @@ HAMON_WARNING_POP()
 	{
 		return
 			!is_valid_string<Traits>(str, pos, n, zero, one) ?
-				(bitset_detail::throw_invalid_argument("bitset::bitset"), hamon::array<bool, N>{}) :
+				(hamon::detail::throw_invalid_argument("bitset::bitset"), hamon::array<bool, N>{}) :
 			string_to_bool_array_impl<Traits>(
 				str + pos,
 				hamon::min(N, n),
@@ -761,7 +730,7 @@ HAMON_WARNING_POP()
 	{
 		return
 			pos > len ?	// [bitset.cons]/7
-				(bitset_detail::throw_out_of_range("bitset::bitset"), hamon::array<bool, N>{}) :
+				(hamon::detail::throw_out_of_range("bitset::bitset"), hamon::array<bool, N>{}) :
 			string_to_bool_array_2<Traits>(str, pos, hamon::min(n, len - pos), zero, one);
 	}
 
@@ -857,7 +826,7 @@ public:
 		// [bitset.members]/17
 		if (pos >= N)
 		{
-			bitset_detail::throw_out_of_range("bitset::set");
+			hamon::detail::throw_out_of_range("bitset::set");
 		}
 
 		// [bitset.members]/15
@@ -890,7 +859,7 @@ public:
 		// [bitset.members]/22
 		if (pos >= N)
 		{
-			bitset_detail::throw_out_of_range("bitset::reset");
+			hamon::detail::throw_out_of_range("bitset::reset");
 		}
 
 		// [bitset.members]/20
@@ -922,7 +891,7 @@ public:
 		// [bitset.members]/29
 		if (pos >= N)
 		{
-			bitset_detail::throw_out_of_range("bitset::flip");
+			hamon::detail::throw_out_of_range("bitset::flip");
 		}
 
 		// [bitset.members]/27
@@ -1021,7 +990,7 @@ HAMON_WARNING_POP()
 	test(hamon::size_t pos) const
 	{
 		return pos >= N ?			// [bitset.members]/47
-			(bitset_detail::throw_out_of_range("bitset::test"), false) :
+			(hamon::detail::throw_out_of_range("bitset::test"), false) :
 			unchecked_test(pos);	// [bitset.members]/46
 	}
 

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -53,7 +54,7 @@ TYPED_TEST(StringViewTest, SubStrTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		EXPECT_THROW((void)sv1.substr(8), std::out_of_range);
+		EXPECT_THROW((void)sv1.substr(8), hamon::out_of_range);
 	}
 #endif
 }

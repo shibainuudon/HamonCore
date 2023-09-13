@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
@@ -66,11 +67,11 @@ TYPED_TEST(QuaternionTest, AtTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		quaternion q{1, 2, 3, 4};
-		EXPECT_THROW((void)q.at(4), std::out_of_range);
+		EXPECT_THROW((void)q.at(4), hamon::out_of_range);
 	}
 	{
 		quaternion const q{5, 6, 7, 8};
-		EXPECT_THROW((void)q.at(4), std::out_of_range);
+		EXPECT_THROW((void)q.at(4), hamon::out_of_range);
 	}
 #endif
 

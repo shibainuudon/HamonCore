@@ -12,6 +12,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/invalid_argument.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -197,24 +198,24 @@ GTEST_TEST(BitsetTest, CtorCharPtrTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(209u, b19.to_ulong());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW(hamon::bitset<0> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3, 8, 'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3, 8, 'A', 'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'B'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'A', 'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'B', 'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3, 8, 'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3, 8, 'A', 'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3, 8, 'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3, 8, 'A', 'C'), std::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3, 8, 'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3, 8, 'A', 'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'B'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'A', 'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, 'B', 'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3, 8, 'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3, 8, 'A', 'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3, 8, 'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3, 8, 'A', 'C'), hamon::invalid_argument);
 #endif
 	}
 	{
@@ -325,24 +326,24 @@ GTEST_TEST(BitsetTest, CtorCharPtrTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(209u, b19.to_ulong());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW(hamon::bitset<0> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3, 8, L'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<0> b(s3, 8, L'A', L'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'B'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'A', L'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'B', L'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3, 8, L'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<8> b(s3, 8, L'A', L'C'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s2), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3, 8, L'A'), std::invalid_argument);
-		EXPECT_THROW(hamon::bitset<64> b(s3, 8, L'A', L'C'), std::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3, 8, L'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<0> b(s3, 8, L'A', L'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'B'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'A', L'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<1> b(s3, 8, L'B', L'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3, 8, L'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<8> b(s3, 8, L'A', L'C'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s2), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3, 8, L'A'), hamon::invalid_argument);
+		EXPECT_THROW(hamon::bitset<64> b(s3, 8, L'A', L'C'), hamon::invalid_argument);
 #endif
 	}
 	{

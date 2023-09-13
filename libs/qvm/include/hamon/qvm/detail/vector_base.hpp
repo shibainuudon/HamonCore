@@ -11,6 +11,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
@@ -19,8 +20,6 @@
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/config.hpp>
-#include <cstdlib>		// std::abort
-#include <stdexcept>	// std::out_of_range
 
 namespace hamon
 {
@@ -188,7 +187,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// unreachable code
 	{
 		return i < N ?
 			traits_type::ref(m_elems, i) :
-			(throw_out_of_range("qvm::vector::at"), traits_type::ref(m_elems, 0));
+			(hamon::detail::throw_out_of_range("qvm::vector::at"), traits_type::ref(m_elems, 0));
 	}
 
 	/**
@@ -199,7 +198,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// unreachable code
 	{
 		return i < N ?
 			traits_type::ref(m_elems, i) :
-			(throw_out_of_range("qvm::vector::at"), traits_type::ref(m_elems, 0));
+			(hamon::detail::throw_out_of_range("qvm::vector::at"), traits_type::ref(m_elems, 0));
 	}
 
 HAMON_WARNING_POP()
@@ -338,17 +337,6 @@ HAMON_WARNING_POP()
 		HAMON_NOEXCEPT_IF(N == 0 || hamon::is_nothrow_swappable<T>::value)
 	{
 		hamon::swap_ranges(begin(), end(), other.begin());
-	}
-
-private:
-	HAMON_NORETURN static void throw_out_of_range(char const* msg)
-	{
-#if !defined(HAMON_NO_EXCEPTIONS)
-		throw std::out_of_range(msg);
-#else
-		(void)msg;
-		std::abort();
-#endif
 	}
 
 private:

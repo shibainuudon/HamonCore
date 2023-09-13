@@ -31,12 +31,12 @@ using std::array;
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/config.hpp>
-#include <stdexcept>	// std::out_of_range
 
 namespace hamon
 {
@@ -250,7 +250,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです
 		return
 			n < N ?
 			(*this)[n] :
-			(throw_out_of_range("array::at"), (*this)[n]);
+			(hamon::detail::throw_out_of_range("array::at"), (*this)[n]);
 	}
 
 	HAMON_NODISCARD	// extension
@@ -260,7 +260,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです
 		return
 			n < N ?
 			(*this)[n] :
-			(throw_out_of_range("array::at"), (*this)[n]);
+			(hamon::detail::throw_out_of_range("array::at"), (*this)[n]);
 	}
 
 HAMON_WARNING_POP()
@@ -305,18 +305,6 @@ HAMON_WARNING_POP()
 	data() const HAMON_NOEXCEPT
 	{
 		return traits_type::ptr(m_elems);
-	}
-
-private:
-	HAMON_NORETURN static void
-	throw_out_of_range(char const* msg)
-	{
-#if !defined(HAMON_NO_EXCEPTIONS)
-		throw std::out_of_range(msg);
-#else
-		(void)msg;
-		std::abort();
-#endif
 	}
 };
 

@@ -7,6 +7,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/overflow_error.hpp>
 #include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -41,7 +42,7 @@ GTEST_TEST(BitsetTest, ToUlongTest)
 		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<65>(ULONG_MAX) << 1;
 		(void)b;
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.to_ulong(), std::overflow_error);
+		EXPECT_THROW((void)b.to_ulong(), hamon::overflow_error);
 #endif
 	}
 	{
@@ -52,7 +53,7 @@ GTEST_TEST(BitsetTest, ToUlongTest)
 #endif
 		(void)b;
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.to_ulong(), std::overflow_error);
+		EXPECT_THROW((void)b.to_ulong(), hamon::overflow_error);
 #endif
 	}
 }

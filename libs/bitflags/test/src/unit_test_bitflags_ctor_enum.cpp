@@ -5,6 +5,7 @@
  */
 
 #include <hamon/bitflags.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "bitflags_test.hpp"
@@ -42,20 +43,20 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wconversion")
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-	EXPECT_THROW   (Bitflag1 b{(Enum1)-1}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag1 b{(Enum1)-1}; (void)b, hamon::out_of_range);
 	EXPECT_NO_THROW(Bitflag1 b{(Enum1) 0}; (void)b);
 	EXPECT_NO_THROW(Bitflag1 b{(Enum1)31}; (void)b);
-	EXPECT_THROW   (Bitflag1 b{(Enum1)32}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag1 b{(Enum1)32}; (void)b, hamon::out_of_range);
 
-	EXPECT_THROW   (Bitflag2 b{(Enum2)-1}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag2 b{(Enum2)-1}; (void)b, hamon::out_of_range);
 	EXPECT_NO_THROW(Bitflag2 b{(Enum2) 0}; (void)b);
 	EXPECT_NO_THROW(Bitflag2 b{(Enum2) 4}; (void)b);
-	EXPECT_THROW   (Bitflag2 b{(Enum2) 5}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag2 b{(Enum2) 5}; (void)b, hamon::out_of_range);
 
-	EXPECT_THROW   (Bitflag3 b{(Enum3)-1}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag3 b{(Enum3)-1}; (void)b, hamon::out_of_range);
 	EXPECT_NO_THROW(Bitflag3 b{(Enum3) 0}; (void)b);
 	EXPECT_NO_THROW(Bitflag3 b{(Enum3)15}; (void)b);
-	EXPECT_THROW   (Bitflag3 b{(Enum3)16}; (void)b, std::out_of_range);
+	EXPECT_THROW   (Bitflag3 b{(Enum3)16}; (void)b, hamon::out_of_range);
 #endif
 
 HAMON_WARNING_POP()

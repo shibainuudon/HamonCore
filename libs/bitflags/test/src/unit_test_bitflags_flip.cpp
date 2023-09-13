@@ -5,6 +5,7 @@
  */
 
 #include <hamon/bitflags.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -163,24 +164,24 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion")
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		Bitflag1 b{};
-		EXPECT_THROW   ((void)b.flip((Enum1)-1), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum1)-1), hamon::out_of_range);
 		EXPECT_NO_THROW((void)b.flip((Enum1)0));
 		EXPECT_NO_THROW((void)b.flip((Enum1)31));
-		EXPECT_THROW   ((void)b.flip((Enum1)32), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum1)32), hamon::out_of_range);
 	}
 	{
 		Bitflag2 b{};
-		EXPECT_THROW   ((void)b.flip((Enum2)-1), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum2)-1), hamon::out_of_range);
 		EXPECT_NO_THROW((void)b.flip((Enum2)0));
 		EXPECT_NO_THROW((void)b.flip((Enum2)4));
-		EXPECT_THROW   ((void)b.flip((Enum2)5), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum2)5), hamon::out_of_range);
 	}
 	{
 		Bitflag3 b{};
-		EXPECT_THROW   ((void)b.flip((Enum3)-1), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum3)-1), hamon::out_of_range);
 		EXPECT_NO_THROW((void)b.flip((Enum3)0));
 		EXPECT_NO_THROW((void)b.flip((Enum3)15));
-		EXPECT_THROW   ((void)b.flip((Enum3)16), std::out_of_range);
+		EXPECT_THROW   ((void)b.flip((Enum3)16), hamon::out_of_range);
 	}
 #endif
 

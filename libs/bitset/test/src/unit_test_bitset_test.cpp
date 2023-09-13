@@ -7,6 +7,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -16,7 +17,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR hamon::bitset<0> b;
 		(void)b;
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(0), std::out_of_range);
+		EXPECT_THROW((void)b.test(0), hamon::out_of_range);
 #endif
 	}
 	{
@@ -27,7 +28,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (b.test(3));
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(6));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(7), std::out_of_range);
+		EXPECT_THROW((void)b.test(7), hamon::out_of_range);
 #endif
 	}
 	{
@@ -38,7 +39,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(3));
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(7));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(8), std::out_of_range);
+		EXPECT_THROW((void)b.test(8), hamon::out_of_range);
 #endif
 	}
 	{
@@ -50,7 +51,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(7));
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (b.test(8));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(9), std::out_of_range);
+		EXPECT_THROW((void)b.test(9), hamon::out_of_range);
 #endif
 	}
 	{
@@ -68,7 +69,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (b.test(61));
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(62));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(63), std::out_of_range);
+		EXPECT_THROW((void)b.test(63), hamon::out_of_range);
 #endif
 	}
 	{
@@ -81,7 +82,7 @@ GTEST_TEST(BitsetTest, TestTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (b.test(32));
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(b.test(63));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)b.test(64), std::out_of_range);
+		EXPECT_THROW((void)b.test(64), hamon::out_of_range);
 #endif
 	}
 }

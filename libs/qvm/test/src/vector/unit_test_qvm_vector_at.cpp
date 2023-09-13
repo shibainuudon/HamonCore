@@ -5,6 +5,7 @@
  */
 
 #include <hamon/qvm/vector/vector.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
@@ -109,7 +110,7 @@ TYPED_TEST(VectorTest, AtTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, v.at(0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(2, v.at(1));
 #if !defined(HAMON_NO_EXCEPTIONS)
-		EXPECT_THROW((void)v.at(2), std::out_of_range);
+		EXPECT_THROW((void)v.at(2), hamon::out_of_range);
 #endif
 	}
 	{
@@ -136,27 +137,27 @@ TYPED_TEST(VectorTest, AtTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		vector2 v{1, 2};
-		EXPECT_THROW((void)v.at(2), std::out_of_range);
+		EXPECT_THROW((void)v.at(2), hamon::out_of_range);
 	}
 	{
 		vector2 const v{5, 6};
-		EXPECT_THROW((void)v.at(2), std::out_of_range);
+		EXPECT_THROW((void)v.at(2), hamon::out_of_range);
 	}
 	{
 		vector3 v{1, 2, 3};
-		EXPECT_THROW((void)v.at(3), std::out_of_range);
+		EXPECT_THROW((void)v.at(3), hamon::out_of_range);
 	}
 	{
 		vector3 const v{5, 6, 7};
-		EXPECT_THROW((void)v.at(3), std::out_of_range);
+		EXPECT_THROW((void)v.at(3), hamon::out_of_range);
 	}
 	{
 		vector4 v{1, 2, 3, 4};
-		EXPECT_THROW((void)v.at(4), std::out_of_range);
+		EXPECT_THROW((void)v.at(4), hamon::out_of_range);
 	}
 	{
 		vector4 const v{5, 6, 7, 8};
-		EXPECT_THROW((void)v.at(4), std::out_of_range);
+		EXPECT_THROW((void)v.at(4), hamon::out_of_range);
 	}
 #endif
 

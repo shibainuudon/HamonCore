@@ -8,6 +8,7 @@
 #define HAMON_BITFLAGS_BITFLAGS_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_enum.hpp>
@@ -15,8 +16,6 @@
 #include <hamon/config.hpp>
 #include <string>
 #include <ostream>
-#include <cstdlib>		// std::abort
-#include <stdexcept>	// std::out_of_range
 
 namespace hamon
 {
@@ -497,7 +496,7 @@ HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_GCC("-Wconversion")
 		return static_cast<size_type>(pos) < N ?
 			static_cast<value_type>(static_cast<value_type>(1) << (static_cast<size_type>(pos))) :
-			(throw_out_of_range(), static_cast<value_type>(0));
+			(hamon::detail::throw_out_of_range("bitflags"), static_cast<value_type>(0));
 HAMON_WARNING_POP()
 	}
 
@@ -505,16 +504,6 @@ HAMON_WARNING_POP()
 	get_mask_bit() HAMON_NOEXCEPT
 	{
 		return (value_type(1) << N) - 1;
-	}
-
-	HAMON_NORETURN static void
-	throw_out_of_range()
-	{
-#if !defined(HAMON_NO_EXCEPTIONS)
-		throw std::out_of_range("bitflags");
-#else
-		std::abort();
-#endif
 	}
 
 private:

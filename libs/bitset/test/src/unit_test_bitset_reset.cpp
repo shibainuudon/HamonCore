@@ -8,6 +8,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -159,37 +160,37 @@ GTEST_TEST(BitsetTest, ResetTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		hamon::bitset<0> b;
-		EXPECT_THROW(b.reset(0), std::out_of_range);
+		EXPECT_THROW(b.reset(0), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<1> b(1);
 		EXPECT_NO_THROW(b.reset(0));
-		EXPECT_THROW(b.reset(1), std::out_of_range);
+		EXPECT_THROW(b.reset(1), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<7> b = ~hamon::bitset<7>{};
 		EXPECT_NO_THROW(b.reset(6));
-		EXPECT_THROW(b.reset(7), std::out_of_range);
+		EXPECT_THROW(b.reset(7), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<8> b("11111111");
 		EXPECT_NO_THROW(b.reset(7));
-		EXPECT_THROW(b.reset(8), std::out_of_range);
+		EXPECT_THROW(b.reset(8), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<13> b("1111111111111");
 		EXPECT_NO_THROW(b.reset(12));
-		EXPECT_THROW(b.reset(13), std::out_of_range);
+		EXPECT_THROW(b.reset(13), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<63> b = ~hamon::bitset<63>{1};
 		EXPECT_NO_THROW(b.reset(62));
-		EXPECT_THROW(b.reset(63), std::out_of_range);
+		EXPECT_THROW(b.reset(63), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<128> b("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111");
 		EXPECT_NO_THROW(b.reset(127));
-		EXPECT_THROW(b.reset(128), std::out_of_range);
+		EXPECT_THROW(b.reset(128), hamon::out_of_range);
 	}
 #endif
 }

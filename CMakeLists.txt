@@ -51,6 +51,7 @@ set(SUBDIRECTORIES
 	ratio
 	serialization
 	span
+	stdexcept
 	string
 	string_view
 	tuple

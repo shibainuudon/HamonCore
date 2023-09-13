@@ -32,6 +32,7 @@ using std::basic_string_view;
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/string/char_traits.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -45,8 +46,6 @@ using std::basic_string_view;
 #include <hamon/config.hpp>
 #include <limits>
 #include <ostream>
-#include <cstdlib>
-#include <stdexcept>
 
 namespace hamon
 {
@@ -206,7 +205,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	at(size_type pos) const
 	{
 		return (pos >= m_len) ?
-			(throw_out_of_range("basic_string_view::at"), *this->m_str) :
+			(hamon::detail::throw_out_of_range("basic_string_view::at"), *this->m_str) :
 			*(this->m_str + pos);
 	}
 
@@ -265,7 +264,7 @@ HAMON_WARNING_POP()
 	{
 		if (pos > size())
 		{
-			throw_out_of_range("basic_string_view::copy");
+			hamon::detail::throw_out_of_range("basic_string_view::copy");
 		}
 
 		size_type const rlen = hamon::min(count, m_len - pos);
@@ -282,7 +281,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	{
 		return pos <= size() ?
 			basic_string_view{m_str + pos, hamon::min(count, m_len - pos)} :
-			(throw_out_of_range("basic_string_view::substr"), basic_string_view{});
+			(hamon::detail::throw_out_of_range("basic_string_view::substr"), basic_string_view{});
 	}
 
 HAMON_WARNING_POP()
@@ -797,16 +796,6 @@ private:
 		while (pos-- > 0);
 
 		return npos;
-#endif
-	}
-
-	HAMON_NORETURN static void throw_out_of_range(char const* msg)
-	{
-#if !defined(HAMON_NO_EXCEPTIONS)
-		throw std::out_of_range(msg);
-#else
-		(void)msg;
-		std::abort();
 #endif
 	}
 

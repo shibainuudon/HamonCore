@@ -8,6 +8,7 @@
  */
 
 #include <hamon/bitset.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -145,37 +146,37 @@ GTEST_TEST(BitsetTest, FlipTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		hamon::bitset<0> b;
-		EXPECT_THROW(b.flip(0), std::out_of_range);
+		EXPECT_THROW(b.flip(0), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<7> b;
 		EXPECT_NO_THROW(b.flip(6));
-		EXPECT_THROW(b.flip(7), std::out_of_range);
+		EXPECT_THROW(b.flip(7), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<8> b;
 		EXPECT_NO_THROW(b.flip(7));
-		EXPECT_THROW(b.flip(8), std::out_of_range);
+		EXPECT_THROW(b.flip(8), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<31> b;
 		EXPECT_NO_THROW(b.flip(30));
-		EXPECT_THROW(b.flip(31), std::out_of_range);
+		EXPECT_THROW(b.flip(31), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<32> b;
 		EXPECT_NO_THROW(b.flip(31));
-		EXPECT_THROW(b.flip(32), std::out_of_range);
+		EXPECT_THROW(b.flip(32), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<33> b;
 		EXPECT_NO_THROW(b.flip(32));
-		EXPECT_THROW(b.flip(33), std::out_of_range);
+		EXPECT_THROW(b.flip(33), hamon::out_of_range);
 	}
 	{
 		hamon::bitset<128> b;
 		EXPECT_NO_THROW(b.flip(127));
-		EXPECT_THROW(b.flip(128), std::out_of_range);
+		EXPECT_THROW(b.flip(128), hamon::out_of_range);
 	}
 #endif
 }
