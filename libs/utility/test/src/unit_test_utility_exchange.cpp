@@ -7,8 +7,8 @@
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -85,7 +85,7 @@ GTEST_TEST(UtilityTest, ExchangeTest)
 		EXPECT_EQ(10, t);
 	}
 	{
-		std::vector<int> v;
+		hamon::vector<int> v;
 		auto t = hamon::exchange(v, {1, 2, 3, 4});
 
 		EXPECT_EQ(4u, v.size());
