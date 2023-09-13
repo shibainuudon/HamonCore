@@ -9,8 +9,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/functional/multiplies.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -35,7 +35,7 @@ GTEST_TEST(NumericTest, AccumulateTest)
 		EXPECT_EQ(200, x3);
 	}
 	{
-		const std::vector<int> v = { 3, 1, 4, 1, 5 };
+		const hamon::vector<int> v = { 3, 1, 4, 1, 5 };
 		auto x1 = hamon::accumulate(hamon::begin(v), hamon::end(v), 0);
 		EXPECT_EQ(14, x1);
 		auto x2 = hamon::accumulate(hamon::begin(v), hamon::end(v), 20);

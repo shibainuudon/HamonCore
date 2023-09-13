@@ -8,8 +8,8 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <list>
 #include "constexpr_test.hpp"
 
@@ -54,7 +54,7 @@ GTEST_TEST(NumericTest, IotaTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 
 	{
-		std::vector<int> a(6);
+		hamon::vector<int> a(6);
 		hamon::iota(hamon::begin(a), hamon::end(a), -1);
 		EXPECT_EQ(-1, a[0]);
 		EXPECT_EQ( 0, a[1]);
