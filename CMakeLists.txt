@@ -59,7 +59,8 @@ set(SUBDIRECTORIES
 	type_traits
 	units
 	utility
-	variant)
+	variant
+	vector)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include(AddSubLibrary)
