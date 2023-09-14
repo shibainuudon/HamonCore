@@ -6,9 +6,9 @@
 
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <list>
 #include <deque>
 #include <string>
 #include "iterator_test.hpp"
@@ -73,8 +73,8 @@ HAMON_CONTIGUOUS_ITERATOR_TEST(true,  hamon::array<int, 1>::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  hamon::array<A, 1>::const_iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::deque<int>::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::deque<A>::const_iterator);
-HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::list<int>::iterator);
-HAMON_CONTIGUOUS_ITERATOR_TEST(false, std::list<A>::const_iterator);
+HAMON_CONTIGUOUS_ITERATOR_TEST(false, hamon::list<int>::iterator);
+HAMON_CONTIGUOUS_ITERATOR_TEST(false, hamon::list<A>::const_iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::string::iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  std::string::const_iterator);
 HAMON_CONTIGUOUS_ITERATOR_TEST(true,  hamon::vector<int>::iterator);

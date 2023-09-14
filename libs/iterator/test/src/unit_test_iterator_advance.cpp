@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_iterator_test
 {
@@ -77,7 +77,7 @@ GTEST_TEST(IteratorTest, AdvanceTest)
 		EXPECT_TRUE(it == hamon::end(v));
 	}
 	{
-		std::list<int> l {2, 3, 4};
+		hamon::list<int> l {2, 3, 4};
 
 		auto it = hamon::begin(l);
 		EXPECT_EQ(2, *it);
@@ -89,7 +89,7 @@ GTEST_TEST(IteratorTest, AdvanceTest)
 		EXPECT_TRUE(it == hamon::end(l));
 	}
 	{
-		std::list<int> l {2, 3, 4};
+		hamon::list<int> l {2, 3, 4};
 
 		auto it = hamon::begin(l);
 		EXPECT_EQ(2, *it);

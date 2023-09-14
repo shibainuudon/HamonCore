@@ -6,9 +6,9 @@
 
 #include <hamon/iterator/concepts/mergeable.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <list>
 #include <memory>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -33,10 +33,10 @@ HAMON_MERGEABLE_TEST(false, int const*, int const*, int const*);
 HAMON_MERGEABLE_TEST(false, std::shared_ptr<int>, int*, int*);
 HAMON_MERGEABLE_TEST(false, int*, std::unique_ptr<int>, int*);
 HAMON_MERGEABLE_TEST(false, int*, int*, std::shared_ptr<int>);
-HAMON_MERGEABLE_TEST(true,  std::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::vector<int>::iterator);
-HAMON_MERGEABLE_TEST(false, std::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::vector<int>::const_iterator);
-HAMON_MERGEABLE_TEST(true,  std::list<int>::iterator, hamon::array<int, 2>::iterator, std::list<int>::iterator);
-HAMON_MERGEABLE_TEST(false, std::list<int>::iterator, hamon::array<int, 2>::iterator, std::list<int>::const_iterator);
+HAMON_MERGEABLE_TEST(true,  hamon::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::vector<int>::iterator);
+HAMON_MERGEABLE_TEST(false, hamon::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::vector<int>::const_iterator);
+HAMON_MERGEABLE_TEST(true,  hamon::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::list<int>::iterator);
+HAMON_MERGEABLE_TEST(false, hamon::list<int>::iterator, hamon::array<int, 2>::iterator, hamon::list<int>::const_iterator);
 
 }	// namespace mergeable_test
 

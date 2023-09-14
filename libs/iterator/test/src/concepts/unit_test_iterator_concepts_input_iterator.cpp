@@ -6,10 +6,10 @@
 
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <list>
 #include <forward_list>
 #include <deque>
 #include <string>
@@ -85,8 +85,8 @@ HAMON_INPUT_ITERATOR_TEST(true,  std::deque<int>::iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::deque<A>::const_iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::forward_list<int>::iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::forward_list<A>::const_iterator);
-HAMON_INPUT_ITERATOR_TEST(true,  std::list<int>::iterator);
-HAMON_INPUT_ITERATOR_TEST(true,  std::list<A>::const_iterator);
+HAMON_INPUT_ITERATOR_TEST(true,  hamon::list<int>::iterator);
+HAMON_INPUT_ITERATOR_TEST(true,  hamon::list<A>::const_iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::string::iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  std::string::const_iterator);
 HAMON_INPUT_ITERATOR_TEST(true,  hamon::string_view::iterator);

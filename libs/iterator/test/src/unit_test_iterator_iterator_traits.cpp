@@ -13,9 +13,9 @@
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <utility>	// pair
-#include <list>
 #include <forward_list>
 #include <map>
 #include <string>
@@ -79,7 +79,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it3>::difference_type,   ham
 static_assert(hamon::is_same<hamon::iterator_traits<it3>::pointer,           char*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it3>::reference,         char&>::value, "");
 
-using it4 = std::list<int>::iterator;
+using it4 = hamon::list<int>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it4>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it4>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it4>::value_type,        int>::value, "");
