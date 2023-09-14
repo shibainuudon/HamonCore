@@ -9,10 +9,10 @@
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -76,7 +76,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01_1()
 inline bool test01_2()
 {
 	{
-		const std::forward_list fwl = {1, 2, 3, 4};
+		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl.begin(), fwl.end());
 		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == fwl.begin());
@@ -144,7 +144,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02_1()
 inline bool test02_2()
 {
 	{
-		const std::forward_list fwl = {1, 2, 3, 4};
+		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl.begin(), fwl.end(), 4);
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == fwl.begin());
@@ -203,7 +203,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03_1()
 inline bool test03_2()
 {
 	{
-		const std::forward_list fwl = {1, 2, 3, 4};
+		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl);
 		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == fwl.begin());
@@ -262,7 +262,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04_1()
 inline bool test04_2()
 {
 	{
-		const std::forward_list fwl = {1, 2, 3, 4};
+		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl, 4);
 		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
 		VERIFY(sr.begin() == fwl.begin());

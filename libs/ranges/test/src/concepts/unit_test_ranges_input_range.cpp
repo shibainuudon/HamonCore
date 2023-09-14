@@ -6,10 +6,10 @@
 
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <forward_list>
 #include <deque>
 #include <set>
 #include <unordered_set>
@@ -43,7 +43,7 @@ HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::array<int, 2>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::vector<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::deque<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::list<int>);
-HAMON_RANGES_INPUT_RANGE_TEST(true,  std::forward_list<int>);
+HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::forward_list<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::set<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::multiset<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::unordered_set<int>);
