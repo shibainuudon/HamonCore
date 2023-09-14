@@ -8,8 +8,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/forward_list.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -67,17 +67,17 @@ inline bool test02()
 		VERIFY(it == a+3);
 	}
 	{
-		std::forward_list<int> const a = {3,3,4,4,5,5};
+		hamon::forward_list<int> const a = {3,3,4,4,5,5};
 		auto it = ranges::is_sorted_until(a, [] (int x, int y) { return x < y; });
 		EXPECT_TRUE(it == a.end());
 	}
 	{
-		std::forward_list<int> const a = {3,3,4,4,5,5};
+		hamon::forward_list<int> const a = {3,3,4,4,5,5};
 		auto it = ranges::is_sorted_until(a, [] (int x, int y) { return x > y; });
 		EXPECT_TRUE(it == ranges::next(a.begin(), 2));
 	}
 	{
-		std::forward_list<int> const a = {};
+		hamon::forward_list<int> const a = {};
 		auto it = ranges::is_sorted_until(a);
 		EXPECT_TRUE(it == a.end());
 	}

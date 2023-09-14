@@ -9,10 +9,10 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -84,32 +84,32 @@ GTEST_TEST(AlgorithmTest, FindEndTest)
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
 		const int b[] = { 1,2,3 };
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
 		const hamon::array<int, 3> b = {{ 1,2,3 }};
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
 		const hamon::vector<int> b = { 1,2,3 };
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
 		const hamon::list<int> b = { 1,2,3 };
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}
 	{
-		const std::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
-		const std::forward_list<int> b = { 1,2,3 };
+		const hamon::forward_list<int> a = { 1,2,3,4,1,2,3,1,2,1 };
+		const hamon::forward_list<int> b = { 1,2,3 };
 		auto const it = hamon::find_end(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 4));
 	}

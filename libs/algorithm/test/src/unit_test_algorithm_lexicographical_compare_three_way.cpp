@@ -6,11 +6,11 @@
 
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -246,7 +246,7 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareThreeWayTest)
 			c2.begin(), c2.end(),
 			c1.begin(), c1.end()) > 0);
 
-		std::forward_list<int> c3 = { 0, 1, 2, 3, 4, 5, 6 };
+		hamon::forward_list<int> c3 = { 0, 1, 2, 3, 4, 5, 6 };
 
 		EXPECT_TRUE(hamon::lexicographical_compare_three_way(
 			c3.begin(), c3.end(),

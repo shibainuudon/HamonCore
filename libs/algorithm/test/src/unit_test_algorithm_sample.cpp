@@ -9,11 +9,11 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <forward_list>
 #include <iterator>
 
 namespace hamon_algorithm_test
@@ -55,7 +55,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		EXPECT_TRUE(i == hamon::next(hamon::begin(out), 3));
 	}
 	{
-		std::forward_list<int> const a {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		hamon::forward_list<int> const a {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 		hamon::list<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),

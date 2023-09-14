@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/unique_copy.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/forward_list.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -93,7 +93,7 @@ inline bool test02()
 		VERIFY(ranges::equal(w, w+5, y, y+5));
 	}
 	{
-		std::forward_list<int> x = {};
+		hamon::forward_list<int> x = {};
 		int w[1] = {};
 		auto res = ranges::unique_copy(x, w);
 		VERIFY(res.in  == x.end());

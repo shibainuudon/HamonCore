@@ -8,9 +8,9 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -83,15 +83,15 @@ inline bool test03()
 		VERIFY(ranges::adjacent_find(x) == x.begin()+1);
 	}
 	{
-		std::forward_list<int> x{};
+		hamon::forward_list<int> x{};
 		VERIFY(ranges::adjacent_find(x) == x.end());
 	}
 	{
-		std::forward_list<int> x{1,2,3};
+		hamon::forward_list<int> x{1,2,3};
 		VERIFY(ranges::adjacent_find(x) == x.end());
 	}
 	{
-		std::forward_list<int> x{1,2,2,3,3,3};
+		hamon::forward_list<int> x{1,2,2,3,3,3};
 		VERIFY(ranges::adjacent_find(x) == ranges::next(x.begin(), 1));
 	}
 	return true;

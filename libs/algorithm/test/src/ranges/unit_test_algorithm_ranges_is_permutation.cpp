@@ -5,9 +5,9 @@
  */
 
 #include <hamon/algorithm/ranges/is_permutation.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -72,18 +72,18 @@ inline bool test03()
 		VERIFY(!ranges::is_permutation(x, y));
 	}
 	{
-		std::forward_list<int> x{};
-		std::forward_list<int> y{};
+		hamon::forward_list<int> x{};
+		hamon::forward_list<int> y{};
 		VERIFY(ranges::is_permutation(x, y));
 	}
 	{
-		std::forward_list<int> x{1,2,3};
-		std::forward_list<int> y{2,3,1};
+		hamon::forward_list<int> x{1,2,3};
+		hamon::forward_list<int> y{2,3,1};
 		VERIFY(ranges::is_permutation(x, y));
 	}
 	{
-		std::forward_list<int> x{1,2,3};
-		std::forward_list<int> y{1,2};
+		hamon::forward_list<int> x{1,2,3};
+		hamon::forward_list<int> y{1,2};
 		VERIFY(!ranges::is_permutation(x, y));
 	}
 	return true;

@@ -7,8 +7,8 @@
 #include <hamon/algorithm/ranges/is_sorted.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/forward_list.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -77,7 +77,7 @@ inline bool test02()
 		VERIFY(false == ranges::is_sorted(a, ranges::greater{}, &X::i));
 	}
 	{
-		std::forward_list<int> const a = {};
+		hamon::forward_list<int> const a = {};
 		VERIFY(true  == ranges::is_sorted(a));
 		VERIFY(true  == ranges::is_sorted(a, ranges::greater{}));
 	}

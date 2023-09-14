@@ -8,8 +8,8 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/forward_list.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -105,7 +105,7 @@ inline bool test02()
 		VERIFY(ranges::upper_bound(x, 0, pred, &X::i) == ranges::next(x, 7));
 	}
 	{
-		std::forward_list<int> x {};
+		hamon::forward_list<int> x {};
 		VERIFY(ranges::upper_bound(x, 0) == x.end());
 	}
 	return true;

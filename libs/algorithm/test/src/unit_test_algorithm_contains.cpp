@@ -8,10 +8,10 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <forward_list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -89,11 +89,11 @@ inline bool testList()
 inline bool testForwardList()
 {
 	{
-		std::forward_list<int> x;
+		hamon::forward_list<int> x;
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 	}
 	{
-		std::forward_list<int> x{4,1,4,1,4};
+		hamon::forward_list<int> x{4,1,4,1,4};
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 1));
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 2));
