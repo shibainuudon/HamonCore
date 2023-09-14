@@ -5,7 +5,7 @@
  */
 
 #include <hamon/algorithm/ranges/merge.hpp>
-//#include <hamon/algorithm/ranges/sort.hpp>	// TODO
+#include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/vector.hpp>
@@ -80,8 +80,7 @@ inline bool test02()
 
 				hamon::vector<int> v(x, x+i);
 				v.insert(v.end(), x, x+j);
-				//ranges::sort(v);	// TODO
-				std::sort(v.begin(), v.end());
+				ranges::sort(v);
 
 				VERIFY(ranges::equal(v.begin(), v.end(), z, z+i+j));
 			}
