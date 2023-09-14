@@ -7,11 +7,11 @@
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -99,7 +99,7 @@ GTEST_TEST(AlgorithmTest, CopyNTest)
 		const hamon::vector<int> v { 5, 6, 7, 8, 9 };
 		hamon::list<int> l;
 
-		hamon::copy_n(hamon::begin(v), 5, std::back_inserter(l));
+		hamon::copy_n(hamon::begin(v), 5, hamon::back_inserter(l));
 
 		auto it = l.begin();
 		EXPECT_EQ(5, *it++);
@@ -113,7 +113,7 @@ GTEST_TEST(AlgorithmTest, CopyNTest)
 		const hamon::list<int> a { 1, 2, 3 };
 		hamon::list<int> b;
 
-		hamon::copy_n(hamon::begin(a), a.size(), std::back_inserter(b));
+		hamon::copy_n(hamon::begin(a), a.size(), hamon::back_inserter(b));
 
 		auto it = b.begin();
 		EXPECT_EQ(1, *it++);

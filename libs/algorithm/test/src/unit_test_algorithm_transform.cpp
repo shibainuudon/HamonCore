@@ -8,11 +8,11 @@
 #include <hamon/functional/plus.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -163,7 +163,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		const hamon::vector<int> v1 { 1, 2, 3 };
 		hamon::vector<int> v2;
 		auto const it = hamon::transform(
-			hamon::begin(v1), hamon::end(v1), std::back_inserter(v2), Doubling());
+			hamon::begin(v1), hamon::end(v1), hamon::back_inserter(v2), Doubling());
 
 		EXPECT_EQ( 3u, v2.size());
 		EXPECT_EQ( 2, v2[0]);
@@ -177,7 +177,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		const hamon::vector<int> v1 { 1, 2, 3 };
 		hamon::list<int> l1;
 		hamon::transform(
-			hamon::begin(v1), hamon::end(v1), std::back_inserter(l1), Doubling());
+			hamon::begin(v1), hamon::end(v1), hamon::back_inserter(l1), Doubling());
 
 		auto it = l1.begin();
 		EXPECT_EQ(2, *it++);
@@ -190,7 +190,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		const float a1[] {1.5, 2.5};
 		hamon::vector<int> v1;
 		auto const it = hamon::transform(
-			hamon::begin(a1), hamon::end(a1), std::back_inserter(v1), to_int);
+			hamon::begin(a1), hamon::end(a1), hamon::back_inserter(v1), to_int);
 
 		EXPECT_EQ(2u, v1.size());
 		EXPECT_EQ(1, v1[0]);
@@ -203,7 +203,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		const float a1[] {1.5, 2.5, 3.5};
 		hamon::list<int> l1;
 		hamon::transform(
-			hamon::begin(a1), hamon::end(a1), std::back_inserter(l1), to_int);
+			hamon::begin(a1), hamon::end(a1), hamon::back_inserter(l1), to_int);
 
 		auto it = l1.begin();
 		EXPECT_EQ(1, *it++);
@@ -338,7 +338,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2),
-			std::back_inserter(l1),
+			hamon::back_inserter(l1),
 			hamon::plus<>());
 
 		auto it = l1.begin();
@@ -355,7 +355,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2), hamon::end(v2),
-			std::back_inserter(l1),
+			hamon::back_inserter(l1),
 			hamon::plus<>());
 
 		auto it = l1.begin();
@@ -423,7 +423,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
 			hamon::begin(v1),
-			std::back_inserter(l1),
+			hamon::back_inserter(l1),
 			hamon::plus<>());
 
 		auto it = l1.begin();
@@ -439,7 +439,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
 			hamon::begin(v1), hamon::end(v1),
-			std::back_inserter(l1),
+			hamon::back_inserter(l1),
 			hamon::plus<>());
 
 		auto it = l1.begin();

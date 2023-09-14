@@ -8,11 +8,11 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -92,7 +92,7 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 	{
 		const hamon::array<int, 4> a {{ 1,2,3,4 }};
 		hamon::list<int> b;
-		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
+		hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::back_inserter(b));
 		auto it = b.begin();
 		EXPECT_EQ(4, *it++);
 		EXPECT_EQ(3, *it++);
@@ -103,7 +103,7 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 	{
 		const hamon::vector<int> a { 1,2,3,4,5 };
 		hamon::vector<int> b;
-		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
+		hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::back_inserter(b));
 		EXPECT_EQ(5, b[0]);
 		EXPECT_EQ(4, b[1]);
 		EXPECT_EQ(3, b[2]);
@@ -123,13 +123,13 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 	{
 		const hamon::vector<int> a;
 		hamon::vector<int> b;
-		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
+		hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::back_inserter(b));
 		EXPECT_TRUE(b.empty());
 	}
 	{
 		const hamon::list<int> a { 1,2 };
 		hamon::list<int> b;
-		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
+		hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::back_inserter(b));
 		auto it = b.begin();
 		EXPECT_EQ(2, *it++);
 		EXPECT_EQ(1, *it++);
@@ -148,7 +148,7 @@ GTEST_TEST(AlgorithmTest, ReverseCopyTest)
 	{
 		const hamon::list<int> a;
 		hamon::list<int> b;
-		hamon::reverse_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
+		hamon::reverse_copy(hamon::begin(a), hamon::end(a), hamon::back_inserter(b));
 		EXPECT_TRUE(b.empty());
 	}
 }

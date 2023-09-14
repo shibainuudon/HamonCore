@@ -7,11 +7,11 @@
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -80,7 +80,7 @@ GTEST_TEST(AlgorithmTest, FillNTest)
 	}
 	{
 		hamon::vector<int> v2;
-		hamon::fill_n(std::back_inserter(v2), 3, 11);
+		hamon::fill_n(hamon::back_inserter(v2), 3, 11);
 		EXPECT_EQ(11, v2[0]);
 		EXPECT_EQ(11, v2[1]);
 		EXPECT_EQ(11, v2[2]);
@@ -96,7 +96,7 @@ GTEST_TEST(AlgorithmTest, FillNTest)
 	}
 	{
 		hamon::list<int> l2;
-		hamon::fill_n(std::back_inserter(l2), 2, 12);
+		hamon::fill_n(hamon::back_inserter(l2), 2, 12);
 		auto it = l2.begin();
 		EXPECT_EQ(12, *it++);
 		EXPECT_EQ(12, *it++);

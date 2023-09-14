@@ -9,11 +9,11 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -75,7 +75,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
-			std::back_inserter(c),
+			hamon::back_inserter(c),
 			hamon::greater<>());
 
 		(void)ret;
@@ -92,7 +92,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
-			std::back_inserter(c));
+			hamon::back_inserter(c));
 
 		(void)ret;
 
@@ -105,7 +105,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
-			std::back_inserter(c));
+			hamon::back_inserter(c));
 
 		(void)ret;
 
@@ -121,7 +121,7 @@ GTEST_TEST(AlgorithmTest, SetDifferenceTest)
 		auto ret = hamon::set_difference(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
-			std::back_inserter(c));
+			hamon::back_inserter(c));
 
 		(void)ret;
 

@@ -9,6 +9,7 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
@@ -31,7 +32,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		hamon::vector<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),
-			std::back_inserter(out),
+			hamon::back_inserter(out),
 			5, g);
 		(void)i;
 		EXPECT_EQ(5u, out.size());
@@ -59,7 +60,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		hamon::list<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),
-			std::back_inserter(out),
+			hamon::back_inserter(out),
 			3, g);
 		(void)i;
 		auto it = hamon::begin(out);
@@ -88,7 +89,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		hamon::vector<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),
-			std::back_inserter(out),
+			hamon::back_inserter(out),
 			10, g);
 		(void)i;
 		EXPECT_EQ(10u, out.size());
@@ -108,7 +109,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		hamon::vector<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),
-			std::back_inserter(out),
+			hamon::back_inserter(out),
 			20, g);
 		(void)i;
 		EXPECT_EQ(10u, out.size());
@@ -128,7 +129,7 @@ GTEST_TEST(AlgorithmTest, SampleTest)
 		hamon::vector<int> out;
 		auto i = hamon::sample(
 			hamon::begin(a), hamon::end(a),
-			std::back_inserter(out),
+			hamon::back_inserter(out),
 			0, g);
 		(void)i;
 		EXPECT_EQ(0u, out.size());

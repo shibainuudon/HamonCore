@@ -8,11 +8,11 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -119,7 +119,7 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 		auto ret = hamon::partition_copy(
 			hamon::begin(a),
 			hamon::end(a),
-			std::back_inserter(b),
+			hamon::back_inserter(b),
 			hamon::begin(c),
 			[](int x) { return (x % 2) == 1; });
 		//EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(b), 3));
@@ -142,8 +142,8 @@ GTEST_TEST(AlgorithmTest, PartitionCopyTest)
 		auto ret = hamon::partition_copy(
 			hamon::begin(a),
 			hamon::end(a),
-			std::back_inserter(b),
-			std::back_inserter(c),
+			hamon::back_inserter(b),
+			hamon::back_inserter(c),
 			[](int x) { return (x % 2) == 1; });
 		(void)ret;
 		//EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(b), 3));

@@ -7,12 +7,12 @@
 #include <hamon/algorithm/move.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -128,7 +128,7 @@ GTEST_TEST(AlgorithmTest, MoveTest)
 
 		hamon::list<noncopyable> l;
 
-		hamon::move(hamon::begin(v), hamon::end(v), std::back_inserter(l));
+		hamon::move(hamon::begin(v), hamon::end(v), hamon::back_inserter(l));
 
 		auto it = l.begin();
 		EXPECT_EQ(5, (*it++).get());

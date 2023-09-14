@@ -7,11 +7,11 @@
 #include <hamon/algorithm/copy_if.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/iterator/back_inserter.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <iterator>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -73,7 +73,7 @@ GTEST_TEST(AlgorithmTest, CopyIfTest)
 		const hamon::vector<int> v { 5, 6, 7, 8, 9 };
 		hamon::list<int> l;
 
-		hamon::copy_if(hamon::begin(v), hamon::end(v), std::back_inserter(l), [](int x) { return (x % 2) == 1; });
+		hamon::copy_if(hamon::begin(v), hamon::end(v), hamon::back_inserter(l), [](int x) { return (x % 2) == 1; });
 
 		auto it = l.begin();
 		EXPECT_EQ(5, *it++);
