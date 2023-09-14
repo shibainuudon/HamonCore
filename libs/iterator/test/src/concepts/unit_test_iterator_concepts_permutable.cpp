@@ -7,11 +7,11 @@
 #include <hamon/iterator/concepts/permutable.hpp>
 //#include <hamon/string_view.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <deque>
-#include <forward_list>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -43,8 +43,8 @@ HAMON_PERMUTABLE_TEST(true,  hamon::array<int, 1>::iterator);
 HAMON_PERMUTABLE_TEST(false, hamon::array<int, 1>::const_iterator);
 HAMON_PERMUTABLE_TEST(true,  std::deque<int>::iterator);
 HAMON_PERMUTABLE_TEST(false, std::deque<int>::const_iterator);
-HAMON_PERMUTABLE_TEST(true,  std::forward_list<int>::iterator);
-HAMON_PERMUTABLE_TEST(false, std::forward_list<int>::const_iterator);
+HAMON_PERMUTABLE_TEST(true,  hamon::forward_list<int>::iterator);
+HAMON_PERMUTABLE_TEST(false, hamon::forward_list<int>::const_iterator);
 HAMON_PERMUTABLE_TEST(true,  hamon::list<int>::iterator);
 HAMON_PERMUTABLE_TEST(false, hamon::list<int>::const_iterator);
 HAMON_PERMUTABLE_TEST(true,  std::string::iterator);

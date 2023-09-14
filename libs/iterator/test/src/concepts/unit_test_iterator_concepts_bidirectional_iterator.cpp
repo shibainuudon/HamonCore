@@ -6,12 +6,12 @@
 
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <string>
-#include <forward_list>
 #include <deque>
 #include "iterator_test.hpp"
 
@@ -75,8 +75,8 @@ HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::deque<int>::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::deque<A>::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::list<int>::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::list<A>::const_iterator);
-HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, std::forward_list<int>::iterator);
-HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, std::forward_list<A>::const_iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, hamon::forward_list<int>::iterator);
+HAMON_BIDIRECTIONAL_ITERATOR_TEST(false, hamon::forward_list<A>::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  std::string::const_iterator);
 HAMON_BIDIRECTIONAL_ITERATOR_TEST(true,  hamon::string_view::iterator);
