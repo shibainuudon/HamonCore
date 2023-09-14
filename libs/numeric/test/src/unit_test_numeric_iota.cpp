@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_numeric_test
@@ -64,7 +64,7 @@ GTEST_TEST(NumericTest, IotaTest)
 		EXPECT_EQ( 4, a[5]);
 	}
 	{
-		std::list<int> a(3);
+		hamon::list<int> a(3);
 		hamon::iota(hamon::begin(a), hamon::end(a), 1);
 		auto it = a.begin();
 		EXPECT_EQ( 1, *it++);

@@ -10,9 +10,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -73,7 +73,7 @@ GTEST_TEST(NumericTest, AdjacentDifferenceTest)
 	}
 	{
 		const hamon::array<int, 4> a {{ 3, 1, 4, 1 }};
-		std::list<int> b;
+		hamon::list<int> b;
 		auto ret = hamon::adjacent_difference(hamon::begin(a), hamon::end(a), std::back_inserter(b));
 		(void)ret;
 		auto it = b.begin();
@@ -85,7 +85,7 @@ GTEST_TEST(NumericTest, AdjacentDifferenceTest)
 	}
 	{
 		const hamon::array<int, 4> a {{ 3, 1, 4, 1 }};
-		std::list<int> b;
+		hamon::list<int> b;
 		auto ret = hamon::adjacent_difference(hamon::begin(a), hamon::end(a), std::back_inserter(b), hamon::plus<>());
 		(void)ret;
 		auto it = b.begin();
@@ -106,7 +106,7 @@ GTEST_TEST(NumericTest, AdjacentDifferenceTest)
 		EXPECT_EQ( 0, b[3]);
 	}
 	{
-		const std::list<int> a { 2, 2, 2, 2, 2 };
+		const hamon::list<int> a { 2, 2, 2, 2, 2 };
 		hamon::vector<int> b;
 		auto ret = hamon::adjacent_difference(hamon::begin(a), hamon::end(a), std::back_inserter(b));
 		(void)ret;

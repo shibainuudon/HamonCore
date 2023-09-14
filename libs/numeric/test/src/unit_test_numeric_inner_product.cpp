@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(NumericTest, InnerProductTest)
@@ -81,7 +81,7 @@ GTEST_TEST(NumericTest, InnerProductTest)
 	}
 	{
 		HAMON_CONSTEXPR_OR_CONST hamon::array<int, 3> a1 = {{ 2, 3, 4 }};
-		const std::list<int> l1 = {{ 4, 5, 6 }};
+		const hamon::list<int> l1 = {{ 4, 5, 6 }};
 		auto const x1 = hamon::inner_product(hamon::begin(a1), hamon::end(a1), hamon::begin(l1), 0);
 		EXPECT_EQ(47, x1);
 		auto const x2 = hamon::inner_product(hamon::begin(a1), hamon::end(a1), hamon::begin(l1), 20);
@@ -97,7 +97,7 @@ GTEST_TEST(NumericTest, InnerProductTest)
 	}
 	{
 		hamon::vector<int> v1 = { 3, 4, 5, 6 };
-		std::list<int> l1 = { 5, 6, 7, 8 };
+		hamon::list<int> l1 = { 5, 6, 7, 8 };
 		auto x1 = hamon::inner_product(hamon::begin(v1), hamon::end(v1), hamon::begin(l1), 0);
 		EXPECT_EQ(122, x1);
 		auto x2 = hamon::inner_product(hamon::begin(v1), hamon::end(v1), hamon::begin(l1), 30);
@@ -112,16 +112,16 @@ GTEST_TEST(NumericTest, InnerProductTest)
 		EXPECT_EQ(30, x2);
 	}
 	{
-		std::list<int> l1 = { 1, 2, 3, 4, 5 };
-		std::list<int> l2 = { 6, 7, 8, 9, 10 };
+		hamon::list<int> l1 = { 1, 2, 3, 4, 5 };
+		hamon::list<int> l2 = { 6, 7, 8, 9, 10 };
 		auto x1 = hamon::inner_product(hamon::begin(l1), hamon::end(l1), hamon::begin(l2), 0);
 		EXPECT_EQ(130, x1);
 		auto x2 = hamon::inner_product(hamon::begin(l1), hamon::end(l1), hamon::begin(l2), 40);
 		EXPECT_EQ(170, x2);
 	}
 	{
-		std::list<int> l1;
-		std::list<int> l2;
+		hamon::list<int> l1;
+		hamon::list<int> l2;
 		auto x1 = hamon::inner_product(hamon::begin(l1), hamon::end(l1), hamon::begin(l2), 0);
 		EXPECT_EQ(0, x1);
 		auto x2 = hamon::inner_product(hamon::begin(l1), hamon::end(l1), hamon::begin(l2), 40);
