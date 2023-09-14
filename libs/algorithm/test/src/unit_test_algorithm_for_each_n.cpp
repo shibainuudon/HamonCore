@@ -10,9 +10,9 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -108,14 +108,14 @@ GTEST_TEST(AlgorithmTest, ForEachNTest)
 		EXPECT_TRUE(i == hamon::next(hamon::begin(v), 1));
 	}
 	{
-		const std::list<int> l { 5, 6, 7, 8 };
+		const hamon::list<int> l { 5, 6, 7, 8 };
 		int n = 0;
 		auto i = hamon::for_each_n(hamon::begin(l), l.size(), Sum(&n));
 		EXPECT_EQ(26, n);
 		EXPECT_TRUE(i == hamon::end(l));
 	}
 	{
-		const std::list<int> l { 5, 6, 7, 8 };
+		const hamon::list<int> l { 5, 6, 7, 8 };
 		int n = 0;
 		auto i = hamon::for_each_n(hamon::begin(l), 2, Sum(&n));
 		EXPECT_EQ(11, n);

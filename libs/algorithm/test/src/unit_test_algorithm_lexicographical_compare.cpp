@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -38,9 +38,9 @@ GTEST_TEST(AlgorithmTest, LexicographicalCompareTest)
 	const hamon::vector<int> v2 {0,1,2,3};
 	const hamon::vector<int> v3 {0,1,2,3};
 
-	const std::list<int> l1 {0,1,2};
-	const std::list<int> l2 {0,1,2,3};
-	const std::list<int> l3 {0,1,2,3};
+	const hamon::list<int> l1 {0,1,2};
+	const hamon::list<int> l2 {0,1,2,3};
+	const hamon::list<int> l3 {0,1,2,3};
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::lexicographical_compare(
 		hamon::begin(a1), hamon::end(a1), hamon::begin(a1), hamon::end(a1)));

@@ -10,9 +10,9 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -140,7 +140,7 @@ GTEST_TEST(AlgorithmTest, MoveBackwardTest)
 		EXPECT_EQ( 7, v[4].get());
 	}
 	{
-		std::list<noncopyable> l;
+		hamon::list<noncopyable> l;
 		l.emplace_back(noncopyable(0));
 		l.emplace_back(noncopyable(1));
 		l.emplace_back(noncopyable(2));

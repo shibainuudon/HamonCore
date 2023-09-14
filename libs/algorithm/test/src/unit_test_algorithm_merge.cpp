@@ -10,9 +10,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -82,7 +82,7 @@ GTEST_TEST(AlgorithmTest, MergeTest)
 	{
 		const hamon::array<int, 4> a {{ 6, 5, 2, 1 }};
 		const hamon::vector<int> b { 5, 3, 1 };
-		std::list<int> c;
+		hamon::list<int> c;
 		auto ret = hamon::merge(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b),
@@ -103,7 +103,7 @@ GTEST_TEST(AlgorithmTest, MergeTest)
 	}
 	{
 		const int a[] { 1, 2, 3 };
-		const std::list<int> b { 1, 2, 3 };
+		const hamon::list<int> b { 1, 2, 3 };
 		hamon::vector<int> c(6);
 		auto ret = hamon::merge(
 			hamon::begin(a), hamon::end(a),
@@ -121,7 +121,7 @@ GTEST_TEST(AlgorithmTest, MergeTest)
 		EXPECT_EQ(3, c[5]);
 	}
 	{
-		const std::list<int> a { 5, 6, 7 };
+		const hamon::list<int> a { 5, 6, 7 };
 		const int b[] { 1, 2, 3 };
 		hamon::vector<int> c;
 		auto ret = hamon::merge(
@@ -141,7 +141,7 @@ GTEST_TEST(AlgorithmTest, MergeTest)
 	}
 	{
 		const hamon::vector<int> a;
-		const std::list<int> b;
+		const hamon::list<int> b;
 		hamon::vector<int> c;
 		auto ret = hamon::merge(
 			hamon::begin(a), hamon::end(a),

@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -71,13 +71,13 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 	}
 	{
 		const hamon::vector<int> a { 1, 3, 7, 4, 2 };
-		const std::list<int> b { 2, 4, 6, 8 };
+		const hamon::list<int> b { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::next(hamon::begin(a), 3));
 		EXPECT_EQ(4, *it);
 	}
 	{
-		const std::list<int> a { 1, 3, 7, 4, 2 };
+		const hamon::list<int> a { 1, 3, 7, 4, 2 };
 		const int b[] { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), pred1);
 		EXPECT_EQ(it, hamon::next(hamon::begin(a), 0));
@@ -91,33 +91,33 @@ GTEST_TEST(AlgorithmTest, FindFirstOfTest)
 		EXPECT_EQ(3, *it);
 	}
 	{
-		const std::list<int> a {1,2,3,4,5,6,7};
-		const std::list<int> b {5};
+		const hamon::list<int> a {1,2,3,4,5,6,7};
+		const hamon::list<int> b {5};
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), [](int x, int y) { return x > y; });
 		EXPECT_EQ(it, hamon::next(hamon::begin(a), 5));
 		EXPECT_EQ(6, *it);
 	}
 	{
-		const std::list<int> a { 1, 3, 7, 4, 2 };
+		const hamon::list<int> a { 1, 3, 7, 4, 2 };
 		const hamon::vector<int> b;
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::end(a));
 	}
 	{
 		const hamon::vector<int> a;
-		const std::list<int> b { 2, 4, 6, 8 };
+		const hamon::list<int> b { 2, 4, 6, 8 };
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::end(a));
 	}
 	{
-		const std::list<int> a;
-		const std::list<int> b;
+		const hamon::list<int> a;
+		const hamon::list<int> b;
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_EQ(it, hamon::end(a));
 	}
 	{
-		const std::list<int> a;
-		const std::list<int> b;
+		const hamon::list<int> a;
+		const hamon::list<int> b;
 		auto it = hamon::find_first_of(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), [](int , int ){ return true; });
 		EXPECT_EQ(it, hamon::end(a));
 	}

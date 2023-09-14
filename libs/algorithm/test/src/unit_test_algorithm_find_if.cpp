@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -115,7 +115,7 @@ GTEST_TEST(AlgorithmTest, FindIfTest)
 		EXPECT_TRUE(it == hamon::end(v1));
 	}
 
-	const std::list<int> l1 {0,1,2};
+	const hamon::list<int> l1 {0,1,2};
 	{
 		auto it = hamon::find_if(hamon::begin(l1), hamon::end(l1), pred1);
 		EXPECT_TRUE(it == ++hamon::begin(l1));
@@ -129,7 +129,7 @@ GTEST_TEST(AlgorithmTest, FindIfTest)
 		EXPECT_TRUE(it == hamon::end(l1));
 	}
 
-	std::list<int> l2 {0,1,2};
+	hamon::list<int> l2 {0,1,2};
 	{
 		auto it = hamon::find_if(hamon::begin(l2), hamon::end(l2), [](int x) { return x % 2 == 1; });
 		EXPECT_TRUE(it == ++hamon::begin(l2));

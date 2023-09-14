@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -91,7 +91,7 @@ GTEST_TEST(AlgorithmTest, EqualRangeTest)
 		}
 	}
 	{
-		const std::list<int> a { 8, 6, 6, 7, 5, 5, 5, 3, 4, 2, 2 };
+		const hamon::list<int> a { 8, 6, 6, 7, 5, 5, 5, 3, 4, 2, 2 };
 		{
 			auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 5, [] (int x, int y) { return x > y; });
 			EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 4));
@@ -107,7 +107,7 @@ GTEST_TEST(AlgorithmTest, EqualRangeTest)
 		}
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		{
 			auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 0, pred1);
 			EXPECT_TRUE(ret.first  == hamon::begin(a));

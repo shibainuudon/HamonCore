@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -89,7 +89,7 @@ GTEST_TEST(AlgorithmTest, ForEachTest)
 		EXPECT_EQ(4, n);
 	}
 	{
-		const std::list<int> l { 5, 6, 7, 8 };
+		const hamon::list<int> l { 5, 6, 7, 8 };
 		auto s = hamon::for_each(hamon::begin(l), hamon::end(l), Sum());
 		EXPECT_EQ(26, s.get());
 	}

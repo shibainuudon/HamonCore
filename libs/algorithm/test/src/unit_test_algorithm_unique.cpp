@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <memory>
 #include "constexpr_test.hpp"
 
@@ -105,7 +105,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 		EXPECT_TRUE(a.empty());
 	}
 	{
-		std::list<std::unique_ptr<int>> a;
+		hamon::list<std::unique_ptr<int>> a;
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(1));
@@ -126,7 +126,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 		EXPECT_TRUE(it == ret);
 	}
 	{
-		std::list<int> a;
+		hamon::list<int> a;
 		auto ret = hamon::unique(hamon::begin(a), hamon::end(a), [](int, int){ return false; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 		EXPECT_TRUE(a.empty());

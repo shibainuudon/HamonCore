@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -79,7 +79,7 @@ GTEST_TEST(AlgorithmTest, BinarySearchTest)
 		EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, [](int x, int y) { return x < y; }));
 	}
 	{
-		const std::list<int> a { 5,3,3,2,0 };
+		const hamon::list<int> a { 5,3,3,2,0 };
 		EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 0, [](int x, int y) { return x > y; }));
 		EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, [](int x, int y) { return x > y; }));
 		EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, [](int x, int y) { return x > y; }));
@@ -94,7 +94,7 @@ GTEST_TEST(AlgorithmTest, BinarySearchTest)
 		EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 2));
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, [](int x, int y) { return x < y; }));
 		EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 1, [](int x, int y) { return x < y; }));
 		EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 2, [](int x, int y) { return x < y; }));

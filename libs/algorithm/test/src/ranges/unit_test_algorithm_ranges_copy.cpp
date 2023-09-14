@@ -6,9 +6,9 @@
 
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -86,8 +86,8 @@ inline bool test03()
 		VERIFY(ranges::equal(w, y));
 	}
 	{
-		std::list<int> x = { 1, 2, 3, 4, 5, 6, 7 };
-		std::list<int> w(x.size());
+		hamon::list<int> x = { 1, 2, 3, 4, 5, 6, 7 };
+		hamon::list<int> w(x.size());
 		auto res = ranges::copy(x.rbegin(), x.rend(), w.rbegin());
 #if !defined(HAMON_STDLIB_LIBSTDCPP3)
 		// libstdc++のranges::copyのバグでres.inに正しい値が帰ってこない

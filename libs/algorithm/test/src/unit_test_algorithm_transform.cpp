@@ -9,9 +9,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -175,7 +175,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// vector => list (back_inserter)
 	{
 		const hamon::vector<int> v1 { 1, 2, 3 };
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1), std::back_inserter(l1), Doubling());
 
@@ -201,7 +201,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	// float[] => list<int> (back_inserter)
 	{
 		const float a1[] {1.5, 2.5, 3.5};
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1), std::back_inserter(l1), to_int);
 
@@ -334,7 +334,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	{
 		const hamon::vector<int> v1 { 1, 2, 3, 4 };
 		const hamon::vector<int> v2 { 4, 5, 6, 7 };
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2),
@@ -351,7 +351,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	{
 		const hamon::vector<int> v1 { 1, 2, 3, 4 };
 		const hamon::vector<int> v2 { 4, 5, 6, 7 };
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(v1), hamon::end(v1),
 			hamon::begin(v2), hamon::end(v2),
@@ -385,7 +385,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 
 	// list, vector => array
 	{
-		const std::list<int>   l1 { 10, 11, 12 };
+		const hamon::list<int>   l1 { 10, 11, 12 };
 		const hamon::vector<int> v1 { 13, 14, 15, 16 };
 		hamon::array<int, 3> a1;
 		auto const it = hamon::transform(
@@ -400,7 +400,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 		EXPECT_TRUE(it == hamon::end(a1));
 	}
 	{
-		const std::list<int>   l1 { 10, 11, 12 };
+		const hamon::list<int>   l1 { 10, 11, 12 };
 		const hamon::vector<int> v1 { 13, 14, 15, 16 };
 		hamon::array<int, 3> a1;
 		auto const it = hamon::transform(
@@ -419,7 +419,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	{
 		const int a1[] = { 17, 18, 19 };
 		const hamon::vector<int> v1 { 20, 21, 22 };
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
 			hamon::begin(v1),
@@ -435,7 +435,7 @@ GTEST_TEST(AlgorithmTest, TransformTest)
 	{
 		const int a1[] = { 17, 18, 19 };
 		const hamon::vector<int> v1 { 20, 21, 22 };
-		std::list<int> l1;
+		hamon::list<int> l1;
 		hamon::transform(
 			hamon::begin(a1), hamon::end(a1),
 			hamon::begin(v1), hamon::end(v1),

@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -70,8 +70,8 @@ GTEST_TEST(AlgorithmTest, SwapRangesTest)
 	hamon::array<int, 3> a4 {{10,11,12}};
 	hamon::vector<int> v1{13,14,15};
 	hamon::vector<int> v2{16,17,18};
-	std::list<int> l1{19,20,21};
-	std::list<int> l2{22,23,24};
+	hamon::list<int> l1{19,20,21};
+	hamon::list<int> l2{22,23,24};
 
 	{
 		auto it = hamon::swap_ranges(hamon::begin(a1), hamon::end(a1), hamon::begin(a2));

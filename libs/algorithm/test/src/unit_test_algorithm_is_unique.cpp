@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -102,27 +102,27 @@ GTEST_TEST(AlgorithmTest, IsUniqueTest)
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a), [](int x, int y){return x == y; }));
 	}
 	{
-		std::list<float> a;
+		hamon::list<float> a;
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::list<float> a { 1, 2, 3, 1, 2, 3 };
+		hamon::list<float> a { 1, 2, 3, 1, 2, 3 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::list<float> a { 1, 1, 2, 2, 3, 3 };
+		hamon::list<float> a { 1, 1, 2, 2, 3, 3 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::list<float> a { 1, 2, 3, 4, 3, 2, 1 };
+		hamon::list<float> a { 1, 2, 3, 4, 3, 2, 1 };
 		EXPECT_TRUE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::list<float> a { 1, 2, 3, 4, 4, 3, 2, 1 };
+		hamon::list<float> a { 1, 2, 3, 4, 4, 3, 2, 1 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		std::list<float> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
+		hamon::list<float> a { 3,1,4,1,5,9,2,6,5,3,5,8,9,7,9,3,2,3,8,4,6,2,6,4,3,3,8,3,2,7,9,5,0,2,8,8 };
 		EXPECT_FALSE(hamon::is_unique(hamon::begin(a), hamon::end(a)));
 	}
 }

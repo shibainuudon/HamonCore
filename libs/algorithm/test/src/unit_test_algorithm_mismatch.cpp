@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -83,28 +83,28 @@ GTEST_TEST(AlgorithmTest, MismatchTest)
 		EXPECT_TRUE(p.second == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::list<int>   l = { 1,2,3,4,3, };
+		const hamon::list<int>   l = { 1,2,3,4,3, };
 		const hamon::vector<int> v = { 1,2,3,4,3,2 };
 		auto const p = hamon::mismatch(hamon::begin(l), hamon::end(l), hamon::begin(v));
 		EXPECT_TRUE(p.first  == hamon::end(l));
 		EXPECT_TRUE(p.second == hamon::next(hamon::begin(v), 5));
 	}
 	{
-		const std::list<int>   l = { 1,2,3,4,5 };
+		const hamon::list<int>   l = { 1,2,3,4,5 };
 		const hamon::vector<int> v = { 3,4,3,3,5 };
 		auto const p = hamon::mismatch(hamon::begin(l), hamon::end(l), hamon::begin(v), pred1);
 		EXPECT_TRUE(p.first  == hamon::next(hamon::begin(l), 3));
 		EXPECT_TRUE(p.second == hamon::next(hamon::begin(v), 3));
 	}
 	{
-		const std::list<int>   l = { 1,2,3,4,5 };
+		const hamon::list<int>   l = { 1,2,3,4,5 };
 		const hamon::vector<int> v = { 1,2,3,4 };
 		auto const p = hamon::mismatch(hamon::begin(l), hamon::end(l), hamon::begin(v), hamon::end(v));
 		EXPECT_TRUE(p.first  == hamon::next(hamon::begin(l), 4));
 		EXPECT_TRUE(p.second == hamon::end(v));
 	}
 	{
-		const std::list<int>   l = { 1,2,3,4 };
+		const hamon::list<int>   l = { 1,2,3,4 };
 		const hamon::vector<int> v = { 1,2,3,4,5 };
 		auto const p = hamon::mismatch(hamon::begin(l), hamon::end(l), hamon::begin(v), hamon::end(v), [](int x, int y) { return x == y; });
 		EXPECT_TRUE(p.first  == hamon::end(l));

@@ -10,9 +10,9 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
 
@@ -198,7 +198,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_TRUE(a.empty());
 	}
 	{
-		std::list<int> a { 1, 2 };
+		hamon::list<int> a { 1, 2 };
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 1), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 		auto it = a.begin();
@@ -207,7 +207,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_TRUE(it == a.end());
 	}
 	{
-		std::list<int> a { 1, 2, 3, 4 };
+		hamon::list<int> a { 1, 2, 3, 4 };
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 3), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 		auto it = a.begin();
@@ -218,7 +218,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_TRUE(it == a.end());
 	}
 	{
-		std::list<int> a { 1, 2, 3, 4 };
+		hamon::list<int> a { 1, 2, 3, 4 };
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 2), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 2));
 		auto it = a.begin();
@@ -229,7 +229,7 @@ GTEST_TEST(AlgorithmTest, RotateTest)
 		EXPECT_TRUE(it == a.end());
 	}
 	{
-		std::list<int> a;
+		hamon::list<int> a;
 		auto ret = hamon::rotate(hamon::begin(a), hamon::next(hamon::begin(a), 0), hamon::end(a));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 		EXPECT_TRUE(a.empty());

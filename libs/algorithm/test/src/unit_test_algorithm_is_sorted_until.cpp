@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -116,22 +116,22 @@ GTEST_TEST(AlgorithmTest, IsSortedUntilTest)
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a));
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x < y; });
 		EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x > y; });
 		EXPECT_TRUE(it == hamon::end(a));
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		auto const it = hamon::is_sorted_until(hamon::begin(a), hamon::end(a), pred1);
 		EXPECT_TRUE(it == hamon::end(a));
 	}

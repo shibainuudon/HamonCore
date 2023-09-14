@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
 
@@ -72,11 +72,11 @@ inline bool testVector()
 inline bool testList()
 {
 	{
-		std::list<int> x;
+		hamon::list<int> x;
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 	}
 	{
-		std::list<int> x{1, 3, 5};
+		hamon::list<int> x{1, 3, 5};
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 0));
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 1));
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 2));

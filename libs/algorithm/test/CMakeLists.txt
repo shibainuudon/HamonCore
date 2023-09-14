@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		cstddef
 		functional
 		iterator
+		list
 		random
 		ranges
 		utility

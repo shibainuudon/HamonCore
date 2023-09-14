@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -126,7 +126,7 @@ GTEST_TEST(AlgorithmTest, MoveTest)
 		v.emplace_back(noncopyable(8));
 		v.emplace_back(noncopyable(9));
 
-		std::list<noncopyable> l;
+		hamon::list<noncopyable> l;
 
 		hamon::move(hamon::begin(v), hamon::end(v), std::back_inserter(l));
 

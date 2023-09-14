@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -107,7 +107,7 @@ GTEST_TEST(AlgorithmTest, CopyBackwardTest)
 	}
 	{
 		const hamon::vector<int> v{ 1, 2, 3, 4, 5 };
-		std::list<int> l{ 6, 7, 8, 9 };
+		hamon::list<int> l{ 6, 7, 8, 9 };
 
 		{
 			auto it = hamon::copy_backward(hamon::begin(v), hamon::begin(v) + 2, hamon::end(l));

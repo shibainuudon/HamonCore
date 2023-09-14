@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -100,19 +100,19 @@ GTEST_TEST(AlgorithmTest, IsSortedTest)
 		EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a)));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		EXPECT_FALSE(hamon::is_sorted(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x < y; }));
 	}
 	{
-		const std::list<int> a {5,5,4,4,3,3};
+		const hamon::list<int> a {5,5,4,4,3,3};
 		EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), [] (int x, int y) { return x > y; }));
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		EXPECT_TRUE(hamon::is_sorted(hamon::begin(a), hamon::end(a), pred1));
 	}
 }

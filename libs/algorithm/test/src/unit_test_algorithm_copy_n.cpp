@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -97,7 +97,7 @@ GTEST_TEST(AlgorithmTest, CopyNTest)
 
 	{
 		const hamon::vector<int> v { 5, 6, 7, 8, 9 };
-		std::list<int> l;
+		hamon::list<int> l;
 
 		hamon::copy_n(hamon::begin(v), 5, std::back_inserter(l));
 
@@ -110,8 +110,8 @@ GTEST_TEST(AlgorithmTest, CopyNTest)
 		EXPECT_TRUE(it == l.end());
 	}
 	{
-		const std::list<int> a { 1, 2, 3 };
-		std::list<int> b;
+		const hamon::list<int> a { 1, 2, 3 };
+		hamon::list<int> b;
 
 		hamon::copy_n(hamon::begin(a), a.size(), std::back_inserter(b));
 

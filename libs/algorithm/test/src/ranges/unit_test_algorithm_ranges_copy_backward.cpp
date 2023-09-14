@@ -12,7 +12,6 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 

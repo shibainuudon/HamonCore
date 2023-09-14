@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -61,7 +61,7 @@ GTEST_TEST(AlgorithmTest, PartitionPointTest)
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 3));
 	}
 	{
-		const std::list<int> a { 1,5,3,2,4 };
+		const hamon::list<int> a { 1,5,3,2,4 };
 		auto ret = hamon::partition_point(hamon::begin(a), hamon::end(a), [](int x){ return x < 2; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 1));
 	}
@@ -71,7 +71,7 @@ GTEST_TEST(AlgorithmTest, PartitionPointTest)
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		auto ret = hamon::partition_point(hamon::begin(a), hamon::end(a), pred2());
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}

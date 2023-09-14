@@ -9,10 +9,10 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -210,7 +210,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
-		std::list<int> b;
+		hamon::list<int> b;
 
 		hamon::copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
 
@@ -224,7 +224,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
-		std::list<int> b { 1, 2, 3 };
+		hamon::list<int> b { 1, 2, 3 };
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(ret == hamon::end(b));
@@ -237,7 +237,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::vector<int> a { 5, 6, 7, 8, 9 };
-		std::list<int> b { 1, 2, 3, 4, 5, 6, 7 };
+		hamon::list<int> b { 1, 2, 3, 4, 5, 6, 7 };
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(b), 5));
@@ -253,7 +253,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_TRUE(it == b.end());
 	}
 	{
-		const std::list<int> a { 1, 2, 3, 4 };
+		const hamon::list<int> a { 1, 2, 3, 4 };
 		int b[5] {};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));
@@ -266,7 +266,7 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 		EXPECT_EQ(0, b[4]);
 	}
 	{
-		const std::list<int> a { 1, 2, 3, 4 };
+		const hamon::list<int> a { 1, 2, 3, 4 };
 		int b[3] {};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b));
@@ -278,14 +278,14 @@ GTEST_TEST(AlgorithmTest, CopyTest)
 	}
 	{
 		const hamon::vector<int> a;
-		std::list<int> b;
+		hamon::list<int> b;
 
 		hamon::copy(hamon::begin(a), hamon::end(a), std::back_inserter(b));
 
 		EXPECT_TRUE(b.empty());
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		int b[3] {};
 
 		auto ret = hamon::copy(hamon::begin(a), hamon::end(a), hamon::begin(b));

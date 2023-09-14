@@ -9,9 +9,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -103,7 +103,7 @@ GTEST_TEST(AlgorithmTest, GenerateNTest)
 	}
 	{
 		int n = 1;
-		std::list<int> a(4);
+		hamon::list<int> a(4);
 		auto ret = hamon::generate_n(hamon::begin(a), 4, [&]() { auto t = n; n *= 2; return t;});
 		EXPECT_TRUE(ret == hamon::end(a));
 
@@ -118,7 +118,7 @@ GTEST_TEST(AlgorithmTest, GenerateNTest)
 	}
 	{
 		int n = 1;
-		std::list<int> a;
+		hamon::list<int> a;
 		auto ret = hamon::generate_n(hamon::begin(a), 0, [&]() { auto t = n; n *= 2; return t;});
 		EXPECT_TRUE(ret == hamon::end(a));
 		EXPECT_TRUE(a.empty());

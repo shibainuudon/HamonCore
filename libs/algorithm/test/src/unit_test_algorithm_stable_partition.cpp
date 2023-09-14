@@ -10,9 +10,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_algorithm_test
 {
@@ -83,7 +83,7 @@ GTEST_TEST(AlgorithmTest, StablePartitionTest)
 		EXPECT_EQ(4, a[4]);
 	}
 	{
-		std::list<int> a {1,2,3,4,5};
+		hamon::list<int> a {1,2,3,4,5};
 		auto ret = hamon::stable_partition(hamon::begin(a), hamon::end(a), [](int x) { return x < 3; });
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 2));
 		auto it = a.begin();
@@ -100,7 +100,7 @@ GTEST_TEST(AlgorithmTest, StablePartitionTest)
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}
 	{
-		std::list<int> a;
+		hamon::list<int> a;
 		auto ret = hamon::stable_partition(hamon::begin(a), hamon::end(a), pred2());
 		EXPECT_TRUE(ret == hamon::next(hamon::begin(a), 0));
 	}

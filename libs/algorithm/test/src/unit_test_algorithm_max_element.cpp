@@ -10,9 +10,9 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -85,7 +85,7 @@ GTEST_TEST(AlgorithmTest, MaxElementTest)
 		}
 	}
 	{
-		const std::list<int> a { 1, -5, 7, 3, 7, -5 };
+		const hamon::list<int> a { 1, -5, 7, 3, 7, -5 };
 
 		{
 			auto ret = hamon::max_element(hamon::begin(a), hamon::end(a));

@@ -8,10 +8,10 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <iterator>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -86,7 +86,7 @@ GTEST_TEST(AlgorithmTest, FillNTest)
 		EXPECT_EQ(11, v2[2]);
 	}
 	{
-		std::list<int> l1(3);
+		hamon::list<int> l1(3);
 		hamon::fill_n(hamon::begin(l1), 3, 4);
 		auto it = l1.begin();
 		EXPECT_EQ(4, *it++);
@@ -95,7 +95,7 @@ GTEST_TEST(AlgorithmTest, FillNTest)
 		EXPECT_TRUE(it == l1.end());
 	}
 	{
-		std::list<int> l2;
+		hamon::list<int> l2;
 		hamon::fill_n(std::back_inserter(l2), 2, 12);
 		auto it = l2.begin();
 		EXPECT_EQ(12, *it++);

@@ -9,9 +9,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <string>
 #include "constexpr_test.hpp"
 
@@ -65,9 +65,9 @@ GTEST_TEST(AlgorithmTest, IsPermutationTest)
 		EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c), pred1));
 	}
 	{
-		const std::list<int> a { 3, 2, 1 };
-		const std::list<int> b { 2, 3, 1 };
-		const std::list<int> c { 2, 3, 4 };
+		const hamon::list<int> a { 3, 2, 1 };
+		const hamon::list<int> b { 2, 3, 1 };
+		const hamon::list<int> c { 2, 3, 4 };
 
 		EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(b)));
 		EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c)));

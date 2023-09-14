@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -74,8 +74,8 @@ GTEST_TEST(AlgorithmTest, IterSwapTest)
 	}
 
 	{
-		std::list<int> l1{19,20,21};
-		std::list<int> l2{22,23,24};
+		hamon::list<int> l1{19,20,21};
+		hamon::list<int> l2{22,23,24};
 		hamon::iter_swap(++hamon::begin(l1), hamon::begin(l2));
 		{
 			auto i = l1.begin();
@@ -93,7 +93,7 @@ GTEST_TEST(AlgorithmTest, IterSwapTest)
 
 	{
 		int a1[] = {1, 2, 3};
-		std::list<int> l1{19,20,21};
+		hamon::list<int> l1{19,20,21};
 		hamon::iter_swap(hamon::begin(a1), hamon::begin(l1));
 		EXPECT_EQ(19, a1[0]);
 		EXPECT_EQ( 2, a1[1]);

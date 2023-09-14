@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -68,7 +68,7 @@ GTEST_TEST(AlgorithmTest, AnyOfTest)
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v2), hamon::end(v2), pred1));
 	EXPECT_FALSE(hamon::any_of(hamon::begin(v2), hamon::end(v2), [](int) { return true; }));
 
-	const std::list<int> l1 {0,1,2};
+	const hamon::list<int> l1 {0,1,2};
 	EXPECT_TRUE (hamon::any_of(hamon::begin(l1), hamon::end(l1), pred1));
 	EXPECT_FALSE(hamon::any_of(hamon::begin(l1), hamon::end(l1), pred2));
 	EXPECT_TRUE (hamon::any_of(hamon::begin(l1), hamon::end(l1), pred3()));

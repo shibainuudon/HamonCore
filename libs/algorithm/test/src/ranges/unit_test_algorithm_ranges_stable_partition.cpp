@@ -7,9 +7,9 @@
 #include <hamon/algorithm/ranges/stable_partition.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -45,7 +45,7 @@ GTEST_TEST(AlgorithmTest, RangesStablePartitionTest)
 		EXPECT_TRUE(ranges::equal(x, y));
 	}
 	{
-		std::list<int> x = {3,1,4,1,5,9,2,6,5};
+		hamon::list<int> x = {3,1,4,1,5,9,2,6,5};
 		auto ret = ranges::stable_partition(x, [](int a) { return a > 3;});
 		EXPECT_TRUE(ret.begin() == ranges::next(x.begin(), 5));
 		EXPECT_TRUE(ret.end()   == x.end());

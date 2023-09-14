@@ -9,10 +9,10 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <list>
 #include <iterator>
 #include "constexpr_test.hpp"
 
@@ -109,7 +109,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 	}
 	{
 		const hamon::vector<int> a { 1,4,4,2,1,1,3,3,3 };
-		std::list<int> b;
+		hamon::list<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), pred1);
 		(void)ret;
 
@@ -131,7 +131,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_EQ(0, b[2]);
 	}
 	{
-		const std::list<int> a { 1,1,1,4,4,2,3,3,2 };
+		const hamon::list<int> a { 1,1,1,4,4,2,3,3,2 };
 		hamon::vector<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), pred2());
 		(void)ret;
@@ -143,7 +143,7 @@ GTEST_TEST(AlgorithmTest, UniqueCopyTest)
 		EXPECT_EQ(2, b[4]);
 	}
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		hamon::vector<int> b;
 		auto ret = hamon::unique_copy(hamon::begin(a), hamon::end(a), std::back_inserter(b), [](int, int){ return false; });
 		(void)ret;

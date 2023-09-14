@@ -8,9 +8,9 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -59,7 +59,7 @@ GTEST_TEST(AlgorithmTest, CountTest)
 		EXPECT_EQ(0, hamon::count(hamon::begin(v), hamon::end(v), 40));
 	}
 	{
-		const std::list<int> l{10, 20, 40, 40, 10};
+		const hamon::list<int> l{10, 20, 40, 40, 10};
 		EXPECT_EQ(0, hamon::count(hamon::begin(l), hamon::end(l),  0));
 		EXPECT_EQ(2, hamon::count(hamon::begin(l), hamon::end(l), 10));
 		EXPECT_EQ(1, hamon::count(hamon::begin(l), hamon::end(l), 20));
@@ -67,7 +67,7 @@ GTEST_TEST(AlgorithmTest, CountTest)
 		EXPECT_EQ(2, hamon::count(hamon::begin(l), hamon::end(l), 40));
 	}
 	{
-		const std::list<int> l;
+		const hamon::list<int> l;
 		EXPECT_EQ(0, hamon::count(hamon::begin(l), hamon::end(l),  0));
 		EXPECT_EQ(0, hamon::count(hamon::begin(l), hamon::end(l), 10));
 		EXPECT_EQ(0, hamon::count(hamon::begin(l), hamon::end(l), 20));
