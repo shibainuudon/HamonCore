@@ -36,6 +36,7 @@ set(SUBDIRECTORIES
 	cstdint
 	cstring
 	debug
+	forward_list
 	functional
 	ios
 	iterator
