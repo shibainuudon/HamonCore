@@ -13,11 +13,11 @@
 //#include <hamon/string_view.hpp>
 #include <hamon/span.hpp>
 #include <hamon/array.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <deque>
 #include <set>
 #include <string>
 #include <unordered_set>
@@ -192,7 +192,7 @@ HAMON_RANGES_VIEW_TEST(false, int const*);
 
 HAMON_RANGES_VIEW_TEST(false, hamon::array<int, 2>);
 HAMON_RANGES_VIEW_TEST(false, hamon::vector<int>);
-HAMON_RANGES_VIEW_TEST(false, std::deque<int>);
+HAMON_RANGES_VIEW_TEST(false, hamon::deque<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::list<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::forward_list<int>);
 HAMON_RANGES_VIEW_TEST(false, std::set<int>);

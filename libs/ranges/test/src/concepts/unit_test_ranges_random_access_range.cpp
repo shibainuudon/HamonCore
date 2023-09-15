@@ -6,10 +6,10 @@
 
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/array.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
-#include <deque>
 #include <set>
 #include <string>
 #include <unordered_set>
@@ -40,7 +40,7 @@ HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(false, int const*);
 
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(true,  hamon::array<int, 2>);
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(true,  hamon::vector<int>);
-HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(true,  std::deque<int>);
+HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(true,  hamon::deque<int>);
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(false, hamon::list<int>);
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(false, hamon::forward_list<int>);
 HAMON_RANGES_RANDOM_ACCESS_RANGE_TEST(false, std::set<int>);
