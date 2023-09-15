@@ -8,8 +8,8 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -174,20 +174,20 @@ GTEST_TEST(VariantTest, CtorCopyTest)
 	}
 #endif
 	{
-		hamon::variant<int, std::string, float> v1 = 13;
-		hamon::variant<int, std::string, float> v2 = v1;
+		hamon::variant<int, hamon::string, float> v1 = 13;
+		hamon::variant<int, hamon::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v2), 13);
 	}
 	{
-		hamon::variant<int, std::string, float> v1 = "hello";
-		hamon::variant<int, std::string, float> v2 = v1;
+		hamon::variant<int, hamon::string, float> v1 = "hello";
+		hamon::variant<int, hamon::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v2), "hello");
 	}
 	{
-		hamon::variant<int, std::string, float> v1 = 1.5f;
-		hamon::variant<int, std::string, float> v2 = v1;
+		hamon::variant<int, hamon::string, float> v1 = 1.5f;
+		hamon::variant<int, hamon::string, float> v2 = v1;
 		EXPECT_EQ(v2.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v2), 1.5f);
 	}

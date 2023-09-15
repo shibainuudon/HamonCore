@@ -10,6 +10,7 @@
 #include <hamon/tuple/tie.hpp>
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -43,15 +44,15 @@ GTEST_TEST(TupleTest, TieTest)
 	{
 		int a = 1;
 		char b = 'a';
-		std::string c = "Hello";
+		hamon::string c = "Hello";
 		auto t = hamon::tie(a, b, c);
-		static_assert(hamon::is_same<decltype(t), hamon::tuple<int&, char&, std::string&>>::value, "");
+		static_assert(hamon::is_same<decltype(t), hamon::tuple<int&, char&, hamon::string&>>::value, "");
 	}
 	{
-		hamon::tuple<int, char, std::string> t(1, 'a', "Hello");
+		hamon::tuple<int, char, hamon::string> t(1, 'a', "Hello");
 		int a = 0;
 		char b = 0;
-		std::string c;
+		hamon::string c;
 		hamon::tie(a, b, c) = t;
 		EXPECT_TRUE(a == 1);
 		EXPECT_TRUE(b == 'a');

@@ -6,7 +6,7 @@
 
 #include <hamon/span.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <string>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -43,13 +43,13 @@ GTEST_TEST(SpanTest, REndTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<long>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<double>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<A>()));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<std::string>()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<hamon::string>()));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<int, 0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<long, 0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<double, 0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<A, 0>()));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<std::string, 0>()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test1(hamon::span<hamon::string, 0>()));
 
 	HAMON_CXX11_CONSTEXPR int arr[] ={10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test2(hamon::span<int const>(arr, 1)));

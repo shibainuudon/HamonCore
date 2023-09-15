@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_trivially_constructible.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -38,7 +38,7 @@ namespace is_trivially_constructible_test
 HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(true,  int);
 HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(true,  int, int);
 HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(false, int, int, int);
-HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(false, int, std::string);
+HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(false, int, hamon::string);
 HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(false, int&, int);
 
 HAMON_IS_TRIVIALLY_CONSTRUCTIBLE_TEST(false, trivial_except_construct);

@@ -9,9 +9,9 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -54,7 +54,7 @@ GTEST_TEST(OptionalTest, CtorInPlaceArgsTest)
 		EXPECT_EQ(42, *t);
 	}
 	{
-		hamon::optional<std::string> t { hamon::in_place, 3u, 'A' };
+		hamon::optional<hamon::string> t { hamon::in_place, 3u, 'A' };
 		EXPECT_EQ("AAA", t.value());
 		EXPECT_EQ("AAA", *t);
 	}

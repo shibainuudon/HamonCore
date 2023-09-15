@@ -6,6 +6,7 @@
 
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -25,7 +26,7 @@ private:
 	bool   a = get_random_value<bool>();
 	double b = get_random_value<double>();
 public:
-	std::wstring c;
+	hamon::wstring c;
 private:
 	int    d[2][3] =
 	{

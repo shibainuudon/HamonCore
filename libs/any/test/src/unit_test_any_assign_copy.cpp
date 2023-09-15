@@ -8,8 +8,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_any_test
 {
@@ -56,12 +56,12 @@ GTEST_TEST(AnyTest, AssignCopyTest)
 		EXPECT_FALSE(b.has_value());
 	}
 	{
-		hamon::any const a{std::string("Hello")};
+		hamon::any const a{hamon::string("Hello")};
 		hamon::any b{};
 		EXPECT_FALSE(b.has_value());
 		b = a;
 		EXPECT_TRUE(b.has_value());
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(b));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(b));
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

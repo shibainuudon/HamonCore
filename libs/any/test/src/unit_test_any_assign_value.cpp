@@ -10,8 +10,8 @@
 #include <hamon/any.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/array.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_any_test
 {
@@ -46,7 +46,7 @@ struct S4
 static_assert( hamon::is_assignable<hamon::any, int>::value, "");
 static_assert( hamon::is_assignable<hamon::any, float>::value, "");
 static_assert( hamon::is_assignable<hamon::any, void*>::value, "");
-static_assert( hamon::is_assignable<hamon::any, std::string>::value, "");
+static_assert( hamon::is_assignable<hamon::any, hamon::string>::value, "");
 static_assert( hamon::is_assignable<hamon::any, S1>::value, "");
 static_assert(!hamon::is_assignable<hamon::any, S2>::value, "");
 static_assert( hamon::is_assignable<hamon::any, S3>::value, "");
@@ -127,9 +127,9 @@ GTEST_TEST(AnyTest, AssignValueTest)
 		EXPECT_TRUE(a.has_value());
 		EXPECT_EQ(42, hamon::any_cast<int>(a));
 
-		a = std::string("World");
+		a = hamon::string("World");
 		EXPECT_TRUE(a.has_value());
-		EXPECT_EQ("World", hamon::any_cast<std::string>(a));
+		EXPECT_EQ("World", hamon::any_cast<hamon::string>(a));
 
 		AssignArrayTest<char>(a);
 		AssignArrayTest<short>(a);

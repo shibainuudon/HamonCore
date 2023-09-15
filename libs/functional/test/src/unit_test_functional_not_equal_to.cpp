@@ -5,8 +5,8 @@
  */
 
 #include <hamon/functional/not_equal_to.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "functional_test.hpp"
 
@@ -34,8 +34,8 @@ GTEST_TEST(FunctionalTest, NotEqualToTest)
 		using type = hamon::not_equal_to<>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(type()(1, 1.0));
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (type()(1.5, 2U));
-		EXPECT_FALSE(type()(std::string("Hello"), "Hello"));
-		EXPECT_TRUE (type()(std::string("Hello"), "hello"));
+		EXPECT_FALSE(type()(hamon::string("Hello"), "Hello"));
+		EXPECT_TRUE (type()(hamon::string("Hello"), "hello"));
 		static_assert( has_is_transparent<type>::value, "");
 	}
 }

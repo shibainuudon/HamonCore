@@ -8,6 +8,7 @@
 #include <hamon/serialization/types/shared_ptr.hpp>
 #include <hamon/serialization/types/weak_ptr.hpp>
 #include <hamon/memory/construct_at.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
@@ -83,7 +84,7 @@ void NoDefaultCtorTest()
 	}
 
 #if 0
-	std::string expected =
+	hamon::string expected =
 R"({
     "p0": {
         "has_value": false

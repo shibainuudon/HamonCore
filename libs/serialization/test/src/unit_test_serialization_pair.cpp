@@ -7,11 +7,11 @@
 #include <hamon/serialization/types/pair.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <string>
 #include <utility>
 #include <vector>
 #include "serialization_test_archives.hpp"
@@ -44,7 +44,7 @@ void PairTest()
 	Stream str;
 	{
 		std::pair<int, float> const p1{2, 3.5f};
-		std::pair<std::string, Object> const p2
+		std::pair<hamon::string, Object> const p2
 		{
 			"Hello World!",
 			{ 10, -2.5f, {1, 2, 3} },
@@ -64,7 +64,7 @@ void PairTest()
 	}
 
 #if 0
-	std::string expected =
+	hamon::string expected =
 R"({
     "value0": {
         "first": 2,
@@ -103,7 +103,7 @@ R"({
 
 	{
 		std::pair<int, float> a;
-		std::pair<std::string, Object> b;
+		std::pair<hamon::string, Object> b;
 		std::vector<std::pair<float, int>> c;
 
 		IArchive ia(str);

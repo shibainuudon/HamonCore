@@ -12,8 +12,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, MakeAnyTest)
 {
@@ -22,8 +22,8 @@ GTEST_TEST(AnyTest, MakeAnyTest)
 		EXPECT_EQ(41, hamon::any_cast<int>(a));
 	}
 	{
-		hamon::any a = hamon::make_any<std::string>(3u, 'z');
-		EXPECT_EQ("zzz", hamon::any_cast<std::string>(a));
+		hamon::any a = hamon::make_any<hamon::string>(3u, 'z');
+		EXPECT_EQ("zzz", hamon::any_cast<hamon::string>(a));
 	}
 	{
 		std::allocator<int> alloc;

@@ -7,7 +7,7 @@
 #include <hamon/variant.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
-#include <string>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -29,7 +29,7 @@ GTEST_TEST(VariantTest, IndexTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1u, v.index());
 	}
 	{
-		hamon::variant<char, float, std::string> v("hoge");
+		hamon::variant<char, float, hamon::string> v("hoge");
 		EXPECT_EQ(2u, v.index());
 		v = 0.5f;
 		EXPECT_EQ(1u, v.index());

@@ -9,9 +9,9 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <initializer_list>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -124,37 +124,37 @@ GTEST_TEST(VariantTest, CtorInPlaceIndexInitListArgsTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::adl_get<1>(v).m_value, 43);
 	}
 	{
-		hamon::variant<std::string> v(
+		hamon::variant<hamon::string> v(
 			hamon::in_place_index_t<0>{}, {'H','e','l','l','o'});
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
-		hamon::variant<std::string> v(
+		hamon::variant<hamon::string> v(
 			hamon::in_place_index_t<0>{}, {'H','e','l','l','o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
-		hamon::variant<int, std::string> v(
+		hamon::variant<int, hamon::string> v(
 			hamon::in_place_index_t<1>{}, {'H','e','l','l','o'});
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), "Hello");
 	}
 	{
-		hamon::variant<int, std::string, float> v(
+		hamon::variant<int, hamon::string, float> v(
 			hamon::in_place_index_t<1>{}, {'H','e','l','l','o'});
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), "Hello");
 	}
 	{
-		hamon::variant<int, char, std::string> v(
+		hamon::variant<int, char, hamon::string> v(
 			hamon::in_place_index_t<2>{}, {'H','e','l','l','o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v), "Hello");
 	}
 	{
-		hamon::variant<int, char, std::string, float> v(
+		hamon::variant<int, char, hamon::string, float> v(
 			hamon::in_place_index_t<2>{}, {'H','e','l','l','o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v), "Hello");

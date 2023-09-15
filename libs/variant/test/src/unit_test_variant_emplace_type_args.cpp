@@ -12,6 +12,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -94,11 +95,11 @@ GTEST_TEST(VariantTest, EmplaceTypeArgsTest)
 		static_assert(!hamon::is_detected<invoke_emplace, V, int, decltype(nullptr)>::value, "");
 	}
 	{
-		using V = hamon::variant<int, char, void*, std::string, char>;
+		using V = hamon::variant<int, char, void*, hamon::string, char>;
 		static_assert( hamon::is_detected<invoke_emplace, V, int>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, char>::value, "");
 		static_assert( hamon::is_detected<invoke_emplace, V, void*>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, std::string>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string>::value, "");
 		static_assert( hamon::is_detected<invoke_emplace, V, int, int>::value, "");
 		static_assert( hamon::is_detected<invoke_emplace, V, int, char>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, int, void*>::value, "");
@@ -109,10 +110,10 @@ GTEST_TEST(VariantTest, EmplaceTypeArgsTest)
 		static_assert( hamon::is_detected<invoke_emplace, V, void*, int*>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, void*, const int*>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, void*, int>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, std::string, const char*>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, std::string, hamon::size_t, char>::value, "");
-		static_assert(!hamon::is_detected<invoke_emplace, V, std::string, const void*>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, std::string, hamon::size_t, char, std::allocator<char>>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, const char*>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, hamon::size_t, char>::value, "");
+		static_assert(!hamon::is_detected<invoke_emplace, V, hamon::string, const void*>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, hamon::size_t, char, std::allocator<char>>::value, "");
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

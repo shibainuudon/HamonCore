@@ -12,9 +12,9 @@
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>	// strtold
-#include <string>
 #include <istream>	// basic_istream
 #include <iomanip>
 #include <ios>		// ios_base
@@ -46,22 +46,22 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-	virtual void load_string(std::string&, hamon::size_t length) = 0;
-	virtual void load_string(std::wstring&, hamon::size_t length) = 0;
+	virtual void load_string(hamon::string&, hamon::size_t length) = 0;
+	virtual void load_string(hamon::wstring&, hamon::size_t length) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_string(std::u8string&, hamon::size_t length) = 0;
+	virtual void load_string(hamon::u8string&, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_string(std::u16string&, hamon::size_t length) = 0;
+	virtual void load_string(hamon::u16string&, hamon::size_t length) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_string(std::u32string&, hamon::size_t length) = 0;
+	virtual void load_string(hamon::u32string&, hamon::size_t length) = 0;
 #endif
 
 public:
 	template <typename CharT, typename Traits>
 	void load_quoted_string(
-		std::basic_string<CharT, Traits>& s,
+		hamon::basic_string<CharT, Traits>& s,
 		CharT leading_delim  = CharT('"'),
 		CharT trailing_delim = CharT('"'))
 	{
@@ -70,20 +70,20 @@ public:
 
 private:
 	virtual void vload_quoted_string(
-		std::string&, char, char) = 0;
+		hamon::string&, char, char) = 0;
 	virtual void vload_quoted_string(
-		std::wstring&, wchar_t, wchar_t) = 0;
+		hamon::wstring&, wchar_t, wchar_t) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 	virtual void vload_quoted_string(
-		std::u8string&, char8_t, char8_t) = 0;
+		hamon::u8string&, char8_t, char8_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 	virtual void vload_quoted_string(
-		std::u16string&, char16_t, char16_t) = 0;
+		hamon::u16string&, char16_t, char16_t) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 	virtual void vload_quoted_string(
-		std::u32string&, char32_t, char32_t) = 0;
+		hamon::u32string&, char32_t, char32_t) = 0;
 #endif
 
 public:
@@ -149,11 +149,11 @@ private:
 	>
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s,
+		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		hamon::true_type)
 	{
-		std::basic_string<CharT1> tmp;
+		hamon::basic_string<CharT1> tmp;
 		tmp.resize(length);
 		is.read(&tmp[0], static_cast<std::streamsize>(tmp.size()));
 		s.resize(length);
@@ -167,7 +167,7 @@ private:
 	>
 	static void load_string_impl_2(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s,
+		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		hamon::false_type)
 	{
@@ -182,7 +182,7 @@ private:
 	>
 	static void load_string_impl(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s,
+		hamon::basic_string<CharT2, Traits2>& s,
 		hamon::size_t length,
 		bool skip_whitespace)
 	{
@@ -203,14 +203,14 @@ private:
 	>
 	static void load_quoted_string_impl(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s,
+		hamon::basic_string<CharT2, Traits2>& s,
 		CharT2 leading_delim,
 		CharT2 trailing_delim)
 	{
 #if 0//defined(__cpp_lib_quoted_string_io) && (__cpp_lib_quoted_string_io >= 201304L)
 		is >> std::quoted(s);
 #else
-		using String = std::basic_string<CharT2, Traits2>;
+		using String = hamon::basic_string<CharT2, Traits2>;
 		auto const leading_delim_str  = String(1, leading_delim);
 		auto const trailing_delim_str = String(1, trailing_delim);
 		auto const escape = String(1, '\\');
@@ -244,7 +244,7 @@ private:
 
 public:
 	void vload_quoted_string(
-		std::string& t,
+		hamon::string& t,
 		char leading_delim,
 		char trailing_delim) override
 	{
@@ -252,7 +252,7 @@ public:
 	}
 
 	void vload_quoted_string(
-		std::wstring& t,
+		hamon::wstring& t,
 		wchar_t leading_delim,
 		wchar_t trailing_delim) override
 	{
@@ -261,7 +261,7 @@ public:
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 	void vload_quoted_string(
-		std::u8string& t,
+		hamon::u8string& t,
 		char8_t leading_delim,
 		char8_t trailing_delim) override
 	{
@@ -270,7 +270,7 @@ public:
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
 	void vload_quoted_string(
-		std::u16string& t,
+		hamon::u16string& t,
 		char16_t leading_delim,
 		char16_t trailing_delim) override
 	{
@@ -279,7 +279,7 @@ public:
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 	void vload_quoted_string(
-		std::u32string& t,
+		hamon::u32string& t,
 		char32_t leading_delim,
 		char32_t trailing_delim) override
 	{
@@ -288,32 +288,32 @@ public:
 #endif
 
 public:
-	void load_string(std::string& str, hamon::size_t length) override
+	void load_string(hamon::string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
-	void load_string(std::wstring& str, hamon::size_t length) override
+	void load_string(hamon::wstring& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_string(std::u8string& str, hamon::size_t length) override
+	void load_string(hamon::u8string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_string(std::u16string& str, hamon::size_t length) override
+	void load_string(hamon::u16string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_string(std::u32string& str, hamon::size_t length) override
+	void load_string(hamon::u32string& str, hamon::size_t length) override
 	{
 		load_string_impl(m_is, str, length, true);
 	}
@@ -349,9 +349,9 @@ private:
 		// https://cplusplus.github.io/LWG/issue2381
 
 		using char_type = typename IStream::char_type;
-		std::basic_string<char_type> tmp;
+		hamon::basic_string<char_type> tmp;
 		m_is >> tmp;
-		std::string s;
+		hamon::string s;
 		s.resize(tmp.size());
 		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](char_type c){return static_cast<char>(c);});

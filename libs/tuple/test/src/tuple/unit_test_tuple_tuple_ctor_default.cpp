@@ -12,9 +12,9 @@
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_tuple_test
@@ -142,11 +142,11 @@ GTEST_TEST(TupleTest, CtorDefaultTest)
 		(void)t;
 	}
 	{
-		hamon::tuple<std::string> t{};
+		hamon::tuple<hamon::string> t{};
 		EXPECT_TRUE(hamon::adl_get<0>(t) == "");
 	}
 	{
-		hamon::tuple<int, std::string, float> t{};
+		hamon::tuple<int, hamon::string, float> t{};
 		EXPECT_TRUE(hamon::adl_get<0>(t) == 0);
 		EXPECT_TRUE(hamon::adl_get<1>(t) == "");
 		EXPECT_TRUE(hamon::adl_get<2>(t) == 0.0f);

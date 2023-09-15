@@ -20,9 +20,9 @@
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/string.hpp>
 #include <memory>
 #include <stack>
-#include <string>
 
 namespace hamon
 {
@@ -65,7 +65,7 @@ public:
 	json_oarchive& operator<<(T const& t)
 	{
 		auto const name =
-			std::string("value") + std::to_string(get_value_index());
+			hamon::string("value") + std::to_string(get_value_index());
 		increment_value_index();
 		return *this << make_nvp(name, t);
 	}
@@ -117,9 +117,9 @@ private:
 		return m_value_index_stack.size();
 	}
 
-	std::string get_indent_string(void) const
+	hamon::string get_indent_string(void) const
 	{
-		std::string s;
+		hamon::string s;
 		for (hamon::size_t i = 0; i < get_indent_level(); ++i)
 		{
 			s += m_indent_string_element;
@@ -128,9 +128,9 @@ private:
 	}
 
 	template <typename CharT>
-	static std::basic_string<CharT> escape(std::basic_string<CharT> const& str)
+	static hamon::basic_string<CharT> escape(hamon::basic_string<CharT> const& str)
 	{
-		std::basic_string<CharT> result;
+		hamon::basic_string<CharT> result;
 		for (auto const& c : str)
 		{
 			switch (c)
@@ -150,12 +150,12 @@ private:
 	}
 
 	template <typename CharT>
-	static std::basic_string<CharT> quote(std::basic_string<CharT> const& str)
+	static hamon::basic_string<CharT> quote(hamon::basic_string<CharT> const& str)
 	{
 		return
-			std::basic_string<CharT>(1, CharT('"')) +
+			hamon::basic_string<CharT>(1, CharT('"')) +
 			str +
-			std::basic_string<CharT>(1, CharT('"'));
+			hamon::basic_string<CharT>(1, CharT('"'));
 	}
 
 private:
@@ -233,7 +233,7 @@ private:
 
 private:
 	std::unique_ptr<detail::text_oarchive_impl_base>	m_impl;
-	std::string			m_indent_string_element = "    ";
+	hamon::string		m_indent_string_element = "    ";
 	std::stack<int>		m_value_index_stack;
 	bool				m_first_value = true;
 };

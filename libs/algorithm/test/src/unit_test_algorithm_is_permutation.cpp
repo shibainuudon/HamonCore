@@ -10,9 +10,9 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -79,9 +79,9 @@ GTEST_TEST(AlgorithmTest, IsPermutationTest)
 		EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c), hamon::equal_to<>()));
 	}
 	{
-		const std::string a = "abc";
-		const std::string b = "cba";
-		const std::string c = "aba";
+		const hamon::string a = "abc";
+		const hamon::string b = "cba";
+		const hamon::string c = "aba";
 
 		EXPECT_TRUE (hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(b), hamon::end(b), hamon::equal_to<>()));
 		EXPECT_FALSE(hamon::is_permutation(hamon::begin(a), hamon::end(a), hamon::begin(c), hamon::end(c), hamon::equal_to<>()));

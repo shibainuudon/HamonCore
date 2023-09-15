@@ -9,8 +9,8 @@
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_index.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -21,7 +21,7 @@ namespace ctor_in_place_index_args_test
 
 static_assert( hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<0>, int>::value, "");
 static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<1>, int>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<0>, std::string>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<int>, hamon::in_place_index_t<0>, hamon::string>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, int>, hamon::in_place_index_t<0>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, int>, hamon::in_place_index_t<1>, int>::value, "");
 static_assert(!hamon::is_constructible<hamon::variant<int, int>, hamon::in_place_index_t<2>, int>::value, "");
@@ -29,10 +29,10 @@ static_assert(!hamon::is_constructible<hamon::variant<int, long, int*>, hamon::i
 static_assert(!hamon::is_constructible<hamon::variant<int, long, int*>, hamon::in_place_index_t<1>, int*>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, long, int*>, hamon::in_place_index_t<2>, int*>::value, "");
 
-static_assert( hamon::is_constructible<hamon::variant<std::string>, hamon::in_place_index_t<0>, char const*>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<std::string>, hamon::in_place_index_t<0>, char const*, int>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<std::string>, hamon::in_place_index_t<0>, int, char>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<std::string>, hamon::in_place_index_t<0>, int, char const*>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<hamon::string>, hamon::in_place_index_t<0>, char const*>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<hamon::string>, hamon::in_place_index_t<0>, char const*, int>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<hamon::string>, hamon::in_place_index_t<0>, int, char>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<hamon::string>, hamon::in_place_index_t<0>, int, char const*>::value, "");
 
 struct Noexcept
 {
@@ -136,37 +136,37 @@ GTEST_TEST(VariantTest, CtorInPlaceIndexArgsTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<2>(v).y, 7.0f);
 	}
 	{
-		hamon::variant<std::string> v(
+		hamon::variant<hamon::string> v(
 			hamon::in_place_index_t<0>{}, "hoge");
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "hoge");
 	}
 	{
-		hamon::variant<std::string> v(
+		hamon::variant<hamon::string> v(
 			hamon::in_place_index_t<0>{}, 3u, 'a');
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "aaa");
 	}
 	{
-		hamon::variant<std::string, int> v(
+		hamon::variant<hamon::string, int> v(
 			hamon::in_place_index_t<0>{}, 3u, 'a');
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "aaa");
 	}
 	{
-		hamon::variant<int, std::string, int> v(
+		hamon::variant<int, hamon::string, int> v(
 			hamon::in_place_index_t<1>{}, 4u, 'b');
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), "bbbb");
 	}
 	{
-		hamon::variant<int, char, std::string> v(
+		hamon::variant<int, char, hamon::string> v(
 			hamon::in_place_index_t<2>{}, 4u, 'b');
 		EXPECT_EQ(v.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v), "bbbb");
 	}
 	{
-		hamon::variant<int, char, std::string, float> v(
+		hamon::variant<int, char, hamon::string, float> v(
 			hamon::in_place_index_t<2>{}, 4u, 'b');
 		EXPECT_EQ(v.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v), "bbbb");

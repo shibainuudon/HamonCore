@@ -12,9 +12,9 @@
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>	// strtold
-#include <string>
 #include <istream>	// basic_istream
 #include <iomanip>
 #include <ios>		// ios_base
@@ -46,22 +46,22 @@ public:
 	virtual void load(double&) = 0;
 	virtual void load(long double&) = 0;
 
-	virtual void load_string_until(std::string&, char delim) = 0;
-	virtual void load_string_until(std::wstring&, char delim) = 0;
+	virtual void load_string_until(hamon::string&, char delim) = 0;
+	virtual void load_string_until(hamon::wstring&, char delim) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void load_string_until(std::u8string&, char delim) = 0;
+	virtual void load_string_until(hamon::u8string&, char delim) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void load_string_until(std::u16string&, char delim) = 0;
+	virtual void load_string_until(hamon::u16string&, char delim) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void load_string_until(std::u32string&, char delim) = 0;
+	virtual void load_string_until(hamon::u32string&, char delim) = 0;
 #endif
 
 	virtual char get_one_char() = 0;
 	virtual void unget_one_char() = 0;
 
-	virtual std::string read_tag() = 0;
+	virtual hamon::string read_tag() = 0;
 };
 
 template <typename IStream>
@@ -119,7 +119,7 @@ private:
 	template <typename CharT, typename Traits>
 	static void load_string_until_impl(
 		std::basic_istream<CharT, Traits>& is,
-		std::basic_string<CharT, Traits>& s,
+		hamon::basic_string<CharT, Traits>& s,
 		char delim)
 	{
 		using istream_type = std::basic_istream<CharT, Traits>;
@@ -137,7 +137,7 @@ private:
 	>
 	static void load_string_until_impl(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& s,
+		hamon::basic_string<CharT2, Traits2>& s,
 		char delim)
 	{
 		using istream_type = std::basic_istream<CharT1, Traits1>;
@@ -145,8 +145,8 @@ private:
 
 		if (ok)
 		{
-			using String1 = std::basic_string<CharT1, Traits1>;
-			using String2 = std::basic_string<CharT2, Traits2>;
+			using String1 = hamon::basic_string<CharT1, Traits1>;
+			using String2 = hamon::basic_string<CharT2, Traits2>;
 			String1 tmp;
 			std::getline(is, tmp, CharT1(delim));
 			s = hamon::base64_xml_name::decode<String2>(tmp);
@@ -154,32 +154,32 @@ private:
 	}
 
 public:
-	void load_string_until(std::string& str, char delim) override
+	void load_string_until(hamon::string& str, char delim) override
 	{
 		load_string_until_impl(m_is, str, delim);
 	}
 
-	void load_string_until(std::wstring& str, char delim) override
+	void load_string_until(hamon::wstring& str, char delim) override
 	{
 		load_string_until_impl(m_is, str, delim);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void load_string_until(std::u8string& str, char delim) override
+	void load_string_until(hamon::u8string& str, char delim) override
 	{
 		load_string_until_impl(m_is, str, delim);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void load_string_until(std::u16string& str, char delim) override
+	void load_string_until(hamon::u16string& str, char delim) override
 	{
 		load_string_until_impl(m_is, str, delim);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void load_string_until(std::u32string& str, char delim) override
+	void load_string_until(hamon::u32string& str, char delim) override
 	{
 		load_string_until_impl(m_is, str, delim);
 	}
@@ -209,7 +209,7 @@ private:
 	template <typename CharT, typename Traits>
 	static void read_tag_impl(
 		std::basic_istream<CharT, Traits>& is,
-		std::basic_string<CharT, Traits>& result,
+		hamon::basic_string<CharT, Traits>& result,
 		char delim)
 	{
 		using istream_type = std::basic_istream<CharT, Traits>;
@@ -227,14 +227,14 @@ private:
 	>
 	static void read_tag_impl(
 		std::basic_istream<CharT1, Traits1>& is,
-		std::basic_string<CharT2, Traits2>& result,
+		hamon::basic_string<CharT2, Traits2>& result,
 		char delim)
 	{
 		using istream_type = std::basic_istream<CharT1, Traits1>;
 		const typename istream_type::sentry ok(is);
 		if (ok)
 		{
-			using String1 = std::basic_string<CharT1, Traits1>;
+			using String1 = hamon::basic_string<CharT1, Traits1>;
 			String1 tmp;
 			std::getline(is, tmp, CharT1(delim));
 			result.resize(tmp.size());
@@ -245,9 +245,9 @@ private:
 	}
 
 public:
-	std::string read_tag() override
+	hamon::string read_tag() override
 	{
-		std::string result;
+		hamon::string result;
 		read_tag_impl(m_is, result, '>');
 		return result;
 	}
@@ -262,9 +262,9 @@ private:
 		// https://cplusplus.github.io/LWG/issue2381
 
 		using char_type = typename IStream::char_type;
-		std::basic_string<char_type> tmp;
+		hamon::basic_string<char_type> tmp;
 		m_is >> tmp;
-		std::string s;
+		hamon::string s;
 		s.resize(tmp.size());
 		hamon::transform(tmp.begin(), tmp.end(), s.begin(),
 			[](char_type c){return static_cast<char>(c);});

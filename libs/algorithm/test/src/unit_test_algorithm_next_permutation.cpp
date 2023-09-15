@@ -12,8 +12,8 @@
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/size.hpp>
 #include <hamon/array.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -136,7 +136,7 @@ GTEST_TEST(AlgorithmTest, NextPermutationTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NextPermutationTest2());
 
 	{
-		std::string a = "baa";
+		hamon::string a = "baa";
 		{
 			auto ret = hamon::next_permutation(hamon::begin(a), hamon::end(a), hamon::greater<>());
 			EXPECT_EQ(true, ret);

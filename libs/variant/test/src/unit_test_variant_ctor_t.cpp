@@ -8,9 +8,9 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include <memory>
 #include "constexpr_test.hpp"
 
@@ -31,9 +31,9 @@ static_assert( hamon::is_constructible<hamon::variant<int, float, int>, float>::
 static_assert( hamon::is_constructible<hamon::variant<long>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<long long>, int>::value, "");
 static_assert(!hamon::is_constructible<hamon::variant<long, long long>, int>::value, "ambiguous");
-static_assert( hamon::is_constructible<hamon::variant<std::string>, const char*>::value, "");
-static_assert(!hamon::is_constructible<hamon::variant<std::string, std::string>, const char*>::value, "ambiguous");
-static_assert(!hamon::is_constructible<hamon::variant<std::string, void*>, int>::value, "no matching constructor");
+static_assert( hamon::is_constructible<hamon::variant<hamon::string>, const char*>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<hamon::string, hamon::string>, const char*>::value, "ambiguous");
+static_assert(!hamon::is_constructible<hamon::variant<hamon::string, void*>, int>::value, "no matching constructor");
 static_assert(!hamon::is_constructible<hamon::variant<std::unique_ptr<int>, bool>, std::unique_ptr<char>>::value, "no explicit bool in constructor");
 static_assert(!hamon::is_constructible<hamon::variant<std::unique_ptr<int>, int>, void*>::value, "");
 
@@ -72,10 +72,10 @@ static_assert( hamon::is_constructible<hamon::variant<AnyConstructible>, int>::v
 static_assert(!hamon::is_constructible<hamon::variant<NoConstructible>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<AnyConstructible, NoConstructible>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<AnyConstructible, NoConstructible>, float>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<AnyConstructible, NoConstructible>, std::string>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<AnyConstructible, NoConstructible>, hamon::string>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<NoConstructible, AnyConstructible>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<NoConstructible, AnyConstructible>, float>::value, "");
-static_assert( hamon::is_constructible<hamon::variant<NoConstructible, AnyConstructible>, std::string>::value, "");
+static_assert( hamon::is_constructible<hamon::variant<NoConstructible, AnyConstructible>, hamon::string>::value, "");
 
 template <typename T>
 struct RValueConvertibleFrom { constexpr RValueConvertibleFrom(T&&) {} };
@@ -108,7 +108,7 @@ GTEST_TEST(VariantTest, CtorTTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), true);
 	}
 	{
-		hamon::variant<std::string, int const> v("foo");
+		hamon::variant<hamon::string, int const> v("foo");
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "foo");
 	}

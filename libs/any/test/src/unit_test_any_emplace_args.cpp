@@ -9,8 +9,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/utility/in_place_type.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_any_test
 {
@@ -38,9 +38,9 @@ GTEST_TEST(AnyTest, EmplaceArgsTest)
 		EXPECT_TRUE(a.has_value());
 		EXPECT_EQ(43, hamon::any_cast<int>(a));
 
-		a.emplace<std::string>(4u, 'A');
+		a.emplace<hamon::string>(4u, 'A');
 		EXPECT_TRUE(a.has_value());
-		EXPECT_EQ("AAAA", hamon::any_cast<std::string>(a));
+		EXPECT_EQ("AAAA", hamon::any_cast<hamon::string>(a));
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW(a.emplace<ThrowOnCtor>(0), int);

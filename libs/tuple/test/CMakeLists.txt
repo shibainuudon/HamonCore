@@ -22,5 +22,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		cstddef
 		pair
 		ranges
+		string
 		type_traits
 		utility)

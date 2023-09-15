@@ -6,11 +6,11 @@
 
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <string>
 #include <vector>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
@@ -30,7 +30,7 @@ void VectorTest()
 		std::vector<int>   const v2{1, 2, 3};
 		std::vector<float> const v3;
 		std::vector<float> const v4{0.5f, -0.5f, 1.5f, -2.5f};
-		std::vector<std::vector<std::string>> const v5
+		std::vector<std::vector<hamon::string>> const v5
 		{
 			{ "A1", "A2" },
 			{ "B1", "B2", "B3" },
@@ -51,7 +51,7 @@ void VectorTest()
 		std::vector<int> b;
 		std::vector<float> c;
 		std::vector<float> d;
-		std::vector<std::vector<std::string>> e;
+		std::vector<std::vector<hamon::string>> e;
 
 		IArchive ia(str);
 

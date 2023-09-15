@@ -6,8 +6,8 @@
 
 #include <hamon/array/array.hpp>
 #include <hamon/type_traits/is_aggregate.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_array_test
 {
@@ -48,7 +48,7 @@ GTEST_TEST(ArrayTest, AggregateTest)
 	AggregateTest<Empty>();
 	AggregateTest<Trivial>();
 	AggregateTest<NonTrivial>();
-	AggregateTest<std::string>();
+	AggregateTest<hamon::string>();
 }
 
 }	// namespace aggregate_test

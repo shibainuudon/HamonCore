@@ -7,8 +7,8 @@
 #include <hamon/algorithm/max.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/greater.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -113,8 +113,8 @@ GTEST_TEST(AlgorithmTest, MaxTest)
 	EXPECT_EQ('a', hamon::max({'a'}));
 	EXPECT_EQ('z', hamon::max({'a', 'z'}));
 	EXPECT_EQ('c', hamon::max({'a', 'c', 'b'}));
-	EXPECT_EQ("hoge", hamon::max(std::string("foo"), std::string("hoge")));
-	EXPECT_EQ("zzzz", hamon::max({std::string("abc"), std::string("ABC"), std::string("zzzz")}));
+	EXPECT_EQ("hoge", hamon::max(hamon::string("foo"), hamon::string("hoge")));
+	EXPECT_EQ("zzzz", hamon::max({hamon::string("abc"), hamon::string("ABC"), hamon::string("zzzz")}));
 }
 
 }	// namespace max_test

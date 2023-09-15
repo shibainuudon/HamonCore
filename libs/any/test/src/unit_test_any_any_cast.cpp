@@ -15,8 +15,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, AnyCastTest)
 {
@@ -41,11 +41,11 @@ GTEST_TEST(AnyTest, AnyCastTest)
 		EXPECT_THROW((void)hamon::any_cast<long>(a), hamon::bad_any_cast);
 #endif
 
-		a = std::string("Meow");
-		auto s = hamon::any_cast<std::string&>(a);
+		a = hamon::string("Meow");
+		auto s = hamon::any_cast<hamon::string&>(a);
 		EXPECT_EQ("Meow", s);
-		hamon::any_cast<std::string&>(a) = std::string("Jane");
-		EXPECT_EQ("Jane", hamon::any_cast<std::string>(a));
+		hamon::any_cast<hamon::string&>(a) = hamon::string("Jane");
+		EXPECT_EQ("Jane", hamon::any_cast<hamon::string>(a));
 	}
 
 	// (3)

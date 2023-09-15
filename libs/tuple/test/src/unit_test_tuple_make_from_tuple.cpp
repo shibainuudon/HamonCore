@@ -11,8 +11,8 @@
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_tuple_test
@@ -25,7 +25,7 @@ struct S1
 {
 	int i;
 	float f;
-	std::string s;
+	hamon::string s;
 
 	S1(int x) : i(x), f(2.0f), s("hoge") {}
 	S1(int x, float y) : i(x), f(y), s("fuga") {}
@@ -100,7 +100,7 @@ GTEST_TEST(TupleTest, MakeFromTupleTest)
 	// ダングリング参照が発生するケース
 	// reference_constructs_from_temporary が定義されている場合はコンパイルエラーになる。
 	{
-		auto s = hamon::make_from_tuple<std::string const&>(hamon::make_tuple("Hello"));
+		auto s = hamon::make_from_tuple<hamon::string const&>(hamon::make_tuple("Hello"));
 		(void)s;
 	}
 #endif

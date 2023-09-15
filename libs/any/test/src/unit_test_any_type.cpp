@@ -7,8 +7,8 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, TypeTest)
 {
@@ -22,8 +22,8 @@ GTEST_TEST(AnyTest, TypeTest)
 		EXPECT_TRUE(a.type() == typeid(int));
 	}
 	{
-		hamon::any a{std::string("hello")};
-		EXPECT_TRUE(a.type() == typeid(std::string));
+		hamon::any a{hamon::string("hello")};
+		EXPECT_TRUE(a.type() == typeid(hamon::string));
 	}
 #endif
 }

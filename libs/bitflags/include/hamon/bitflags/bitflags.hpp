@@ -13,8 +13,8 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/bit/popcount.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <string>
 #include <ostream>
 
 namespace hamon
@@ -420,10 +420,10 @@ public:
 		typename Allocator = std::allocator<CharT>
 	>
 	HAMON_NODISCARD /*HAMON_CONSTEXPR*/
-	std::basic_string<CharT, Traits, Allocator>
+	hamon::basic_string<CharT, Traits, Allocator>
     to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const
 	{
-		std::basic_string<CharT, Traits, Allocator> result;
+		hamon::basic_string<CharT, Traits, Allocator> result;
 		auto value = m_value;
 		auto const mask = static_cast<value_type>(1) << (N - 1);
 		for (hamon::size_t i = 0; i < N; ++i)

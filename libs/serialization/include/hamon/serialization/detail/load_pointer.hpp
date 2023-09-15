@@ -12,8 +12,8 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_class.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <string>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ private:
 		typename = hamon::enable_if_t<hamon::is_class<T>::value>>
 	static void impl(Archive& ar, T*& p, hamon::detail::overload_priority<1>)
 	{
-		std::string id;
+		hamon::string id;
 		ar >> make_nvp("class_id", id);
 		hamon::serialization::detail::pointer_loader<Archive>::get_instance().load(ar, id, p);
 	}

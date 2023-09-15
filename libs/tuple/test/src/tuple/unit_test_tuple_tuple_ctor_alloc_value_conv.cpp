@@ -11,6 +11,7 @@
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -228,7 +229,7 @@ GTEST_TEST(TupleTest, CtorAllocValueConvTest)
 		EXPECT_TRUE(hamon::adl_get<0>(t) == 42);
 	}
 	{
-		hamon::tuple<std::string, int> t(hamon::allocator_arg, a, "hello", 43);
+		hamon::tuple<hamon::string, int> t(hamon::allocator_arg, a, "hello", 43);
 		EXPECT_TRUE(hamon::adl_get<0>(t) == "hello");
 		EXPECT_TRUE(hamon::adl_get<1>(t) == 43);
 	}

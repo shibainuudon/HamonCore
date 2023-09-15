@@ -47,9 +47,9 @@ using std::bitset;
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <cstdlib>		// std::abort
-#include <string>
 #include <istream>
 #include <ostream>
 
@@ -738,9 +738,9 @@ public:
 	template <typename CharT, typename Traits, typename Allocator>
 	HAMON_CXX11_CONSTEXPR explicit
 	bitset(
-		std::basic_string<CharT, Traits, Allocator> const& str,
-		typename std::basic_string<CharT, Traits, Allocator>::size_type pos = 0,
-		typename std::basic_string<CharT, Traits, Allocator>::size_type n = std::basic_string<CharT, Traits, Allocator>::npos,
+		hamon::basic_string<CharT, Traits, Allocator> const& str,
+		typename hamon::basic_string<CharT, Traits, Allocator>::size_type pos = 0,
+		typename hamon::basic_string<CharT, Traits, Allocator>::size_type n = hamon::basic_string<CharT, Traits, Allocator>::npos,
 		CharT zero = CharT('0'),
 		CharT one = CharT('1'))
 		: m_impl(string_to_bool_array<Traits>(str.c_str(), str.length(), pos, n, zero, one))
@@ -750,10 +750,10 @@ public:
 	HAMON_CXX11_CONSTEXPR explicit
 	bitset(
 		CharT const* str,
-		typename std::basic_string<CharT>::size_type n = std::basic_string<CharT>::npos,
+		typename hamon::basic_string<CharT>::size_type n = hamon::basic_string<CharT>::npos,
 		CharT zero = CharT('0'),
 		CharT one = CharT('1'))
-		: m_impl(string_to_bool_array<std::char_traits<CharT>>(str, hamon::ct::strlen(str), hamon::size_t(0), n, zero, one))
+		: m_impl(string_to_bool_array<hamon::char_traits<CharT>>(str, hamon::ct::strlen(str), hamon::size_t(0), n, zero, one))
 	{}
 
 	// [bitset.members], bitset operations
@@ -935,16 +935,16 @@ public:
 
 	template <
 		typename CharT = char,
-		typename Traits = std::char_traits<CharT>,
+		typename Traits = hamon::char_traits<CharT>,
 		typename Allocator = std::allocator<CharT>>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR std::basic_string<CharT, Traits, Allocator>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR hamon::basic_string<CharT, Traits, Allocator>
 	to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const
 	{
 HAMON_WARNING_PUSH()
 #if defined(HAMON_GCC_VERSION) && (100000 <= HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000)
 HAMON_WARNING_DISABLE_GCC("-Wtype-limits")	// GCC10 だと不要な警告が出る
 #endif
-		std::basic_string<CharT, Traits, Allocator> s(N, zero);
+		hamon::basic_string<CharT, Traits, Allocator> s(N, zero);
 		for (hamon::size_t i = 0; i < N; ++i)
 		{
 			if (unchecked_test(i))
@@ -1096,7 +1096,7 @@ operator>>(std::basic_istream<CharT, Traits>& is, bitset<N>& x)
 		try
 		{
 #endif
-			std::basic_string<CharT, Traits> str;
+			hamon::basic_string<CharT, Traits> str;
 			auto const& ct = std::use_facet<std::ctype<CharT>>(is.getloc());
 			hamon::size_t count = 0;
 			CharT const zero = ct.widen('0');

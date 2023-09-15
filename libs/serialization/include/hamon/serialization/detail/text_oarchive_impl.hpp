@@ -12,9 +12,9 @@
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/array.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <string>
-#include <array>
 #include <limits>
 #include <iomanip>
 #include <ostream>	// basic_ostream
@@ -44,20 +44,20 @@ public:
 	virtual void save(double) = 0;
 	virtual void save(long double) = 0;
 
-	virtual void save_string(std::string const&) = 0;
-	virtual void save_string(std::wstring const&) = 0;
+	virtual void save_string(hamon::string const&) = 0;
+	virtual void save_string(hamon::wstring const&) = 0;
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	virtual void save_string(std::u8string const&) = 0;
+	virtual void save_string(hamon::u8string const&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	virtual void save_string(std::u16string const&) = 0;
+	virtual void save_string(hamon::u16string const&) = 0;
 #endif
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	virtual void save_string(std::u32string const&) = 0;
+	virtual void save_string(hamon::u32string const&) = 0;
 #endif
 
 	virtual void put(const char*) = 0;
-	virtual void put(std::string const&) = 0;
+	virtual void put(hamon::string const&) = 0;
 };
 
 template <typename OStream>
@@ -109,9 +109,9 @@ private:
 	>
 	static void save_string_impl(
 		std::basic_ostream<CharT1, Traits1>& os,
-		std::basic_string<CharT2, Traits2> const& s)
+		hamon::basic_string<CharT2, Traits2> const& s)
 	{
-		std::basic_string<CharT1> tmp;
+		hamon::basic_string<CharT1> tmp;
 		tmp.resize(s.size());
 		hamon::transform(s.begin(), s.end(), tmp.begin(),
 			[](CharT2 c){return static_cast<CharT1>(c);});
@@ -125,39 +125,39 @@ private:
 	>
 	static void save_string_impl(
 		std::basic_ostream<CharT1, Traits1>& os,
-		std::basic_string<CharT2, Traits2> const& s)
+		hamon::basic_string<CharT2, Traits2> const& s)
 	{
 		auto const count = (s.size() * sizeof(CharT2)) / sizeof(CharT1);
 		os.write(reinterpret_cast<CharT1 const*>(s.data()), static_cast<std::streamsize>(count));
 	}
 
 public:
-	void save_string(std::string const& str) override
+	void save_string(hamon::string const& str) override
 	{
 		save_string_impl(m_os, str);
 	}
 
-	void save_string(std::wstring const& str) override
+	void save_string(hamon::wstring const& str) override
 	{
 		save_string_impl(m_os, str);
 	}
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
-	void save_string(std::u8string const& str) override
+	void save_string(hamon::u8string const& str) override
 	{
 		save_string_impl(m_os, str);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR16_T)
-	void save_string(std::u16string const& str) override
+	void save_string(hamon::u16string const& str) override
 	{
 		save_string_impl(m_os, str);
 	}
 #endif
 
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
-	void save_string(std::u32string const& str) override
+	void save_string(hamon::u32string const& str) override
 	{
 		save_string_impl(m_os, str);
 	}
@@ -168,7 +168,7 @@ public:
 		m_os << s;
 	}
 	
-	void put(std::string const& s) override
+	void put(hamon::string const& s) override
 	{
 		m_os << s.c_str();
 	}
@@ -183,7 +183,7 @@ private:
 			4 +	// sign, decimal point, "e+" or "e-"
 			std::numeric_limits<T>::max_digits10 +
 			4;	// log10(max_exponent10)
-		std::array<char, digits + 1> buf{};
+		hamon::array<char, digits + 1> buf{};
 		auto result = std::to_chars(buf.data(), buf.data() + buf.size(), t);
 		m_os << buf.data();
 		(void)result;
@@ -195,9 +195,9 @@ private:
 			digits10 +
 			4;	// log10(max_exponent10)
 		const char* length_modifier = hamon::is_same<T, long double>::value ? "L" : "";
-		std::array<char, 10> fmt{};	// フォーマット文字列。"%.9g"など。
+		hamon::array<char, 10> fmt{};	// フォーマット文字列。"%.9g"など。
 		std::snprintf(fmt.data(), fmt.size(), "%%.%d%sg", digits10, length_modifier);
-		std::array<char, digits + 1> buf{};
+		hamon::array<char, digits + 1> buf{};
 		std::snprintf(buf.data(), buf.size(), fmt.data(), t);
 		m_os << buf.data();
 #else

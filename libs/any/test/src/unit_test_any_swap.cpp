@@ -8,23 +8,23 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, SwapTest)
 {
 	{
 		hamon::any a{3};
-		hamon::any b{std::string("Hello")};
+		hamon::any b{hamon::string("Hello")};
 		EXPECT_EQ(3, hamon::any_cast<int>(a));
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(b));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(b));
 
 		a.swap(b);
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(a));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(a));
 		EXPECT_EQ(3, hamon::any_cast<int>(b));
 
 		swap(a, b);
 		EXPECT_EQ(3, hamon::any_cast<int>(a));
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(b));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(b));
 	}
 }

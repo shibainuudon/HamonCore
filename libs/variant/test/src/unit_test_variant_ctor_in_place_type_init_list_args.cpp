@@ -10,9 +10,9 @@
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/utility/in_place_type.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <initializer_list>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -106,22 +106,22 @@ GTEST_TEST(VariantTest, CtorInPlaceTypeInitListArgsTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::adl_get<2>(v).m_value, 42);
 	}
 	{
-		hamon::variant<std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'});
+		hamon::variant<hamon::string> v(hamon::in_place_type_t<hamon::string>{}, {'H', 'e', 'l', 'l', 'o'});
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
-		hamon::variant<std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
+		hamon::variant<hamon::string> v(hamon::in_place_type_t<hamon::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v), "Hello");
 	}
 	{
-		hamon::variant<int, std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'});
+		hamon::variant<int, hamon::string> v(hamon::in_place_type_t<hamon::string>{}, {'H', 'e', 'l', 'l', 'o'});
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), "Hello");
 	}
 	{
-		hamon::variant<int, char, std::string> v(hamon::in_place_type_t<std::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
+		hamon::variant<int, char, hamon::string> v(hamon::in_place_type_t<hamon::string>{}, {'H', 'e', 'l', 'l', 'o'}, std::allocator<char>{});
 		EXPECT_EQ(v.index(), 2u);
 		EXPECT_EQ(hamon::adl_get<2>(v), "Hello");
 	}

@@ -18,8 +18,8 @@
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/string.hpp>
 #include <memory>
-#include <string>
 
 namespace hamon
 {
@@ -51,7 +51,7 @@ public:
 		}
 		m_first_value = false;
 
-		std::string name;
+		hamon::string name;
 		hamon::serialization::detail::load_value(*this, name);
 		m_impl->get_one_char();		// ":"
 		hamon::serialization::detail::load_value(*this, t.value());
@@ -83,10 +83,10 @@ private:
 	}
 
 	template <typename CharT>
-	static std::basic_string<CharT> unescape(std::basic_string<CharT> const& str)
+	static hamon::basic_string<CharT> unescape(hamon::basic_string<CharT> const& str)
 	{
 		bool escaping = false;
-		std::basic_string<CharT> result;
+		hamon::basic_string<CharT> result;
 		for (auto c : str)
 		{
 			if (escaping)

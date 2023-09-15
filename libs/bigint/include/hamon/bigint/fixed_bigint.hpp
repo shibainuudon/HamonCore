@@ -33,6 +33,7 @@
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/string.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 #include <istream>
@@ -67,7 +68,7 @@ HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
 
 template <hamon::size_t B, bool S>
-std::string to_string(fixed_bigint<B, S> const& value);
+hamon::string to_string(fixed_bigint<B, S> const& value);
 
 template <hamon::size_t Bits, bool Signed>
 class fixed_bigint
@@ -463,7 +464,7 @@ private:
 	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
 
 	template <hamon::size_t B, bool S>
-	friend std::string to_string(fixed_bigint<B, S> const& value);
+	friend hamon::string to_string(fixed_bigint<B, S> const& value);
 };
 
 template <hamon::size_t Bits, bool Signed>
@@ -501,7 +502,7 @@ to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int b
 }
 
 template <hamon::size_t Bits, bool Signed>
-inline std::string
+inline hamon::string
 to_string(fixed_bigint<Bits, Signed> const& value)
 {
 	int base = 10;
@@ -509,7 +510,7 @@ to_string(fixed_bigint<Bits, Signed> const& value)
 		bigint_algo::to_chars_length(value.m_data, base) +
 		(Signed ? 1 : 0) +	// '-' 
 		1;	// '\0'
-	std::string result;
+	hamon::string result;
 	result.resize(len);
 	auto first = hamon::to_address(result.begin());
 	auto ret = to_chars(first, first + len, value, base);

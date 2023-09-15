@@ -11,9 +11,9 @@
 #include <hamon/list.hpp>
 #include <hamon/set.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <string>
 #include "iterator_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -84,10 +84,10 @@ HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<int>::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<A>::iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<int>::const_iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<A>::const_iterator, A);
-HAMON_OUTPUT_ITERATOR_TEST(true,  std::string::iterator, char);
-HAMON_OUTPUT_ITERATOR_TEST(true,  std::string::iterator, int);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::string::const_iterator, char);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::string::const_iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::string::iterator, char);
+HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::string::iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::string::const_iterator, char);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::string::const_iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::string_view::iterator, char);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::string_view::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::string_view::const_iterator, char);

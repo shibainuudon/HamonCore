@@ -11,12 +11,12 @@
 #include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
 #include <vector>
 #include <list>
-#include <string>
 #include <bitset>
 #include <memory>
 #include "constexpr_test.hpp"
@@ -477,11 +477,11 @@ GTEST_TEST(FunctionalTest, HashListTest)
 GTEST_TEST(FunctionalTest, HashStringTest)
 {
 	{
-		const std::string s;
+		const hamon::string s;
 		EXPECT_EQ(0u, hamon::hash(s));
 	}
 	{
-		const std::string s = "Hello World";
+		const hamon::string s = "Hello World";
 		const hamon::size_t expect =
 			sizeof(hamon::size_t) == 4 ?
 			0x30E5A5D0u :

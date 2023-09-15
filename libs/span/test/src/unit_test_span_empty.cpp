@@ -5,8 +5,8 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -31,13 +31,13 @@ GTEST_TEST(SpanTest, EmptyTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<long>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<double>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<A>()));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<std::string>()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<hamon::string>()));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<int,         0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<long,        0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<double,      0>()));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<A,           0>()));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<std::string, 0>()));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<hamon::string, 0>()));
 
 	HAMON_CXX11_CONSTEXPR int arr[] = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19};
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!test(hamon::span<int const>(arr, 1)));

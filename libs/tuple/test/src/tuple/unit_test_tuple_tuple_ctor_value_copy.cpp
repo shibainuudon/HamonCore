@@ -12,6 +12,7 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -111,15 +112,15 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow, Implicit, I
 GTEST_TEST(TupleTest, CtorValueCopyTest)
 {
 	{
-		std::string const s = "hello";
-		hamon::tuple<std::string> t{s};
+		hamon::string const s = "hello";
+		hamon::tuple<hamon::string> t{s};
 		EXPECT_TRUE(hamon::adl_get<0>(t) == "hello");
 	}
 	{
 		int const n = 42;
-		std::string const s = "world";
+		hamon::string const s = "world";
 		float const f = 2.5f;
-		hamon::tuple<int, std::string, float> t{n, s, f};
+		hamon::tuple<int, hamon::string, float> t{n, s, f};
 		EXPECT_TRUE(hamon::adl_get<0>(t) == 42);
 		EXPECT_TRUE(hamon::adl_get<1>(t) == "world");
 		EXPECT_TRUE(hamon::adl_get<2>(t) == 2.5f);

@@ -7,8 +7,8 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, AssignResetTest)
 {
@@ -19,7 +19,7 @@ GTEST_TEST(AnyTest, AssignResetTest)
 		a.reset();
 		EXPECT_FALSE(a.has_value());
 
-		a = std::string("XXX");
+		a = hamon::string("XXX");
 		EXPECT_TRUE(a.has_value());
 
 		a.reset();

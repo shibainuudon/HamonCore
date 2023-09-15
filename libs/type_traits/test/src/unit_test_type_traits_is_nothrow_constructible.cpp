@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -41,7 +41,7 @@ struct S1
 	S1(S1&&) HAMON_NOEXCEPT_OR_NOTHROW;
 	S1(int) HAMON_NOEXCEPT_OR_NOTHROW;
 	S1(int, float) HAMON_NOEXCEPT_OR_NOTHROW;
-	S1(int, UDT, std::string);
+	S1(int, UDT, hamon::string);
 	S1(int, int, int) HAMON_NOEXCEPT_OR_NOTHROW;
 };
 
@@ -56,7 +56,7 @@ struct S2
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  int);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  int, int);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, int, int, int);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, int, std::string);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, int, hamon::string);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, int&, int);
 
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, trivial_except_construct);
@@ -126,14 +126,14 @@ HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int*);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  S1, int&);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  S1, int&&);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, UDT);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, std::string);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, hamon::string);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  S1, int, float);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, UDT);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, UDT, int);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, UDT, std::string);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, int, std::string);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, UDT, int, std::string);
-HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, UDT, std::string, int);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, UDT, hamon::string);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, int, hamon::string);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, UDT, int, hamon::string);
+HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S1, int, UDT, hamon::string, int);
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(true,  S1, int, int, int);
 	
 HAMON_IS_NOTHROW_CONSTRUCTIBLE_TEST(false, S2, S2);

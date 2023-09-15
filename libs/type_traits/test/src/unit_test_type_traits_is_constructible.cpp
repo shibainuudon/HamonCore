@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -39,7 +39,7 @@ struct S1
 	S1(const S1&);
 	S1(int);
 	S1(int, UDT);
-	S1(int, UDT, std::string);
+	S1(int, UDT, hamon::string);
 };
 
 struct S2
@@ -94,15 +94,15 @@ HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int*);
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1, int&);
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1, int&&);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, UDT);
-HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, std::string);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, hamon::string);
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1, int, UDT);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, int);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, void);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, UDT, int);
-HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1, int, UDT, std::string);
-HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, int, std::string);
-HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, UDT, int, std::string);
-HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, UDT, std::string, int);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1, int, UDT, hamon::string);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, int, hamon::string);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, UDT, int, hamon::string);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1, int, UDT, hamon::string, int);
 
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1*,                S1);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, S1*, const          S1);

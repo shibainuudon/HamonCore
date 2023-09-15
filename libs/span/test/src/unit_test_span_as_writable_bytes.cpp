@@ -8,9 +8,9 @@
 #include <hamon/cstddef/byte.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "noexcept_test.hpp"
 
 #define ASSERT_SAME_TYPE(...) \
@@ -55,13 +55,13 @@ GTEST_TEST(SpanTest, AsWritableBytesTest)
 	test(hamon::span<long>       ());
 	test(hamon::span<double>     ());
 	test(hamon::span<A>          ());
-	test(hamon::span<std::string>());
+	test(hamon::span<hamon::string>());
 
 	test(hamon::span<int,         0>());
 	test(hamon::span<long,        0>());
 	test(hamon::span<double,      0>());
 	test(hamon::span<A,           0>());
-	test(hamon::span<std::string, 0>());
+	test(hamon::span<hamon::string, 0>());
 
 	int arr[] ={0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	test(hamon::span<int>(arr, 1));
@@ -76,9 +76,9 @@ GTEST_TEST(SpanTest, AsWritableBytesTest)
 	test(hamon::span<int, 4>(arr + 2, 4));
 	test(hamon::span<int, 5>(arr + 1, 5));
 
-	std::string s;
-	test(hamon::span<std::string>(&s, static_cast<hamon::size_t>(0)));
-	test(hamon::span<std::string>(&s, 1));
+	hamon::string s;
+	test(hamon::span<hamon::string>(&s, static_cast<hamon::size_t>(0)));
+	test(hamon::span<hamon::string>(&s, 1));
 }
 
 }	// namespace as_writable_bytes_test

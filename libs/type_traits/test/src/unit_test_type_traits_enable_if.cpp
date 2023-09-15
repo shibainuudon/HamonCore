@@ -7,9 +7,9 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
-#include <vector>
 
 namespace hamon_type_traits_test
 {
@@ -60,8 +60,8 @@ GTEST_TEST(TypeTraitsTest, EnableIfTest)
 	float f = 0;
 	double d = 0;
 	void* vp = 0;
-	std::string str;
-	std::vector<int> vec;
+	hamon::string str;
+	hamon::vector<int> vec;
 	A a;
 
 	EXPECT_EQ(0, func1(sc));

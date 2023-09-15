@@ -12,6 +12,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -104,7 +105,7 @@ GTEST_TEST(VariantTest, EmplaceIndexArgsTest)
 		static_assert(!is_detected_emplace<V, 1, int>::value, "");
 	}
 	{
-		using V = hamon::variant<int, char, void*, std::string, char>;
+		using V = hamon::variant<int, char, void*, hamon::string, char>;
 		static_assert( is_detected_emplace<V, 0>::value, "");
 		static_assert( is_detected_emplace<V, 1>::value, "");
 		static_assert( is_detected_emplace<V, 2>::value, "");

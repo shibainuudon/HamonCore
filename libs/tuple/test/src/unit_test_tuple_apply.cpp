@@ -13,8 +13,8 @@
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_tuple_test
@@ -107,7 +107,7 @@ GTEST_TEST(TupleTest, ApplyTest)
 		EXPECT_TRUE(hamon::apply(mul, a) == 30);
 	}
 	{
-		hamon::array<std::string, 2> a { "hello ", "world" };
+		hamon::array<hamon::string, 2> a { "hello ", "world" };
 		EXPECT_TRUE(hamon::apply(add_t{}, a) == "hello world");
 	}
 	{

@@ -18,8 +18,8 @@
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/string.hpp>
 #include <memory>
-#include <string>
 
 namespace hamon
 {
@@ -65,16 +65,16 @@ public:
 	}
 
 private:
-	std::string read_tag(void)
+	hamon::string read_tag(void)
 	{
 		return m_impl->read_tag();
 	}
 
 	template <typename CharT>
-	static std::basic_string<CharT> unescape(std::basic_string<CharT> const& str)
+	static hamon::basic_string<CharT> unescape(hamon::basic_string<CharT> const& str)
 	{
 		bool escaping = false;
-		std::basic_string<CharT> result;
+		hamon::basic_string<CharT> result;
 		for (hamon::size_t i = 0; i < str.size(); ++i)
 		{
 			auto c = str[i];

@@ -5,8 +5,8 @@
  */
 
 #include <hamon/functional/plus.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "functional_test.hpp"
 
@@ -34,7 +34,7 @@ GTEST_TEST(FunctionalTest, PlusTest)
 		using type = hamon::plus<>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1.5, type()(  1,   0.5));
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 6.5, type()( -1.5, 8U));
-		EXPECT_EQ("Hello world", type()(std::string("Hello "), "world"));
+		EXPECT_EQ("Hello world", type()(hamon::string("Hello "), "world"));
 		static_assert( has_is_transparent<type>::value, "");
 	}
 }

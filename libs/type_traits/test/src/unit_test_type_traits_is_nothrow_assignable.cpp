@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "type_traits_test_utility.hpp"
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -42,7 +42,7 @@ struct S1
 struct S2
 {
 	S2& operator=(const S2&) HAMON_NOEXCEPT_OR_NOTHROW;
-	S2& operator=(const std::string&) HAMON_NOEXCEPT_OR_NOTHROW;
+	S2& operator=(const hamon::string&) HAMON_NOEXCEPT_OR_NOTHROW;
 };
 
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, int,		int);
@@ -106,11 +106,11 @@ HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, const volatile S1, const volatile int);
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  S1&,	int);
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  S1&&,	int);
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, S1&,	int[2]);
-HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, S1,	std::string);
+HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, S1,	hamon::string);
 
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  S2, S2);
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(false, S2, int);
-HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  S2, std::string);
+HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  S2, hamon::string);
 
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  trivial_except_construct,		trivial_except_construct);
 HAMON_IS_NOTHROW_ASSIGNABLE_TEST(true,  trivial_except_destroy,			trivial_except_destroy);

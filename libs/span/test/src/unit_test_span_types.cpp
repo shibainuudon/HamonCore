@@ -11,8 +11,8 @@
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/string.hpp>
 #include <iterator>
-#include <string>
 #include <gtest/gtest.h>
 
 #define ASSERT_SAME_TYPE(...) \
@@ -77,7 +77,7 @@ GTEST_TEST(SpanTest, TypesTest)
 	test<int>();
 	test<long>();
 	test<double>();
-	test<std::string>();
+	test<hamon::string>();
 	test<A>();
 }
 

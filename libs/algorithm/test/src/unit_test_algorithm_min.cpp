@@ -7,8 +7,8 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/greater.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_algorithm_test
@@ -113,8 +113,8 @@ GTEST_TEST(AlgorithmTest, MinTest)
 	EXPECT_EQ('a', hamon::min({'a'}));
 	EXPECT_EQ('x', hamon::min({'x', 'y'}));
 	EXPECT_EQ('a', hamon::min({'c', 'b', 'a'}));
-	EXPECT_EQ("foo", hamon::min(std::string("foo"), std::string("hoge")));
-	EXPECT_EQ("ABC", hamon::min({std::string("abc"), std::string("ABC"), std::string("zzzz")}));
+	EXPECT_EQ("foo", hamon::min(hamon::string("foo"), hamon::string("hoge")));
+	EXPECT_EQ("ABC", hamon::min({hamon::string("abc"), hamon::string("ABC"), hamon::string("zzzz")}));
 }
 
 }	// namespace min_test

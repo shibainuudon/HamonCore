@@ -10,11 +10,11 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 //#include <hamon/string_view.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <iterator>
 #include <memory>
-#include <string>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 #  define HAMON_SORTABLE_TEST(B, ...)	\
@@ -76,8 +76,8 @@ HAMON_SORTABLE_TEST(true,  hamon::forward_list<int>::iterator);
 HAMON_SORTABLE_TEST(false, hamon::forward_list<int>::const_iterator);
 HAMON_SORTABLE_TEST(true,  hamon::list<int>::iterator);
 HAMON_SORTABLE_TEST(false, hamon::list<int>::const_iterator);
-HAMON_SORTABLE_TEST(true,  std::string::iterator);
-HAMON_SORTABLE_TEST(false, std::string::const_iterator);
+HAMON_SORTABLE_TEST(true,  hamon::string::iterator);
+HAMON_SORTABLE_TEST(false, hamon::string::const_iterator);
 //HAMON_SORTABLE_TEST(false, hamon::string_view::iterator);
 //HAMON_SORTABLE_TEST(false, hamon::string_view::const_iterator);
 HAMON_SORTABLE_TEST(true,  hamon::vector<int>::iterator);

@@ -15,9 +15,9 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -42,14 +42,14 @@ GTEST_TEST(OptionalTest, MakeOptionalTest)
 		EXPECT_EQ(42, o.value());
 	}
 	{
-		auto o = hamon::make_optional<std::string>(3u, 'A');
-		static_assert(hamon::is_same<decltype(o), hamon::optional<std::string>>::value, "");
+		auto o = hamon::make_optional<hamon::string>(3u, 'A');
+		static_assert(hamon::is_same<decltype(o), hamon::optional<hamon::string>>::value, "");
 		EXPECT_EQ("AAA", o.value());
 	}
 	{
 		std::allocator<char> alloc;
-		auto o = hamon::make_optional<std::string>({ 'X', 'Y', 'Z' }, alloc);
-		static_assert(hamon::is_same<decltype(o), hamon::optional<std::string>>::value, "");
+		auto o = hamon::make_optional<hamon::string>({ 'X', 'Y', 'Z' }, alloc);
+		static_assert(hamon::is_same<decltype(o), hamon::optional<hamon::string>>::value, "");
 		EXPECT_EQ("XYZ", o.value());
 	}
 

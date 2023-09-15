@@ -30,6 +30,7 @@
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
@@ -47,7 +48,7 @@ from_chars(char const* first, char const* last, bigint& value, int base = 10);
 hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base = 10);
 
-std::string to_string(bigint const& value);
+hamon::string to_string(bigint const& value);
 
 class bigint
 {
@@ -327,7 +328,7 @@ private:
 	friend hamon::to_chars_result
 	to_chars(char* first, char* last, bigint const& value, int base);
 
-	friend std::string to_string(bigint const& value);
+	friend hamon::string to_string(bigint const& value);
 };
 
 HAMON_NODISCARD inline bigint
@@ -456,7 +457,7 @@ to_chars(char* first, char* last, bigint const& value, int base)
 	return bigint_algo::to_chars(first, last, value.m_magnitude, base);
 }
 
-inline std::string
+inline hamon::string
 to_string(bigint const& value)
 {
 	int base = 10;
@@ -464,7 +465,7 @@ to_string(bigint const& value)
 		bigint_algo::to_chars_length(value.m_magnitude, base) +
 		1 +	// '-' 
 		1;	// '\0'
-	std::string result;
+	hamon::string result;
 	result.resize(len);
 	auto first = hamon::to_address(result.begin());
 	auto ret = hamon::to_chars(first, first + len, value, base);

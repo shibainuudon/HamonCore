@@ -8,8 +8,8 @@
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/remove_volatile.hpp>
 #include <hamon/type_traits/is_class.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -66,7 +66,7 @@ GTEST_TEST(SpanTest, CtorCopyTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<A>()));
-	                      EXPECT_TRUE((test<std::string>()));
+	                      EXPECT_TRUE((test<hamon::string>()));
 }
 
 }	// namespace ctor_copy_test

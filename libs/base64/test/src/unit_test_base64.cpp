@@ -8,9 +8,9 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint16_t.hpp>
 #include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "get_random_value.hpp"
 #include "constexpr_test.hpp"
 
@@ -213,8 +213,8 @@ GTEST_TEST(Base64Test, ArrayTest)
 template <typename CharT1, typename CharT2>
 void Base64StringTest(CharT1 const* src, CharT2 const* expected)
 {
-	using String1 = std::basic_string<CharT1>;
-	using String2 = std::basic_string<CharT2>;
+	using String1 = hamon::basic_string<CharT1>;
+	using String2 = hamon::basic_string<CharT2>;
 
 	String1 src_str(src);
 	{
@@ -278,7 +278,7 @@ template <typename T, typename CharT>
 void Base64VectorTest()
 {
 	using Vector = hamon::vector<T>;
-	using String = std::basic_string<CharT>;
+	using String = hamon::basic_string<CharT>;
 
 	Vector vec(get_random_value<hamon::size_t>(0, 100));
 	for (auto& x : vec)

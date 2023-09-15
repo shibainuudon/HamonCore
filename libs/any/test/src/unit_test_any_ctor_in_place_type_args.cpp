@@ -9,8 +9,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/utility/in_place_type.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, CtorInPlaceTypeArgsTest)
 {
@@ -20,8 +20,8 @@ GTEST_TEST(AnyTest, CtorInPlaceTypeArgsTest)
 		EXPECT_EQ(42, hamon::any_cast<double>(a));
 	}
 	{
-		hamon::any a { hamon::in_place_type_t<std::string>{}, 3u, 'X'};
+		hamon::any a { hamon::in_place_type_t<hamon::string>{}, 3u, 'X'};
 		EXPECT_TRUE(a.has_value());
-		EXPECT_EQ("XXX", hamon::any_cast<std::string>(a));
+		EXPECT_EQ("XXX", hamon::any_cast<hamon::string>(a));
 	}
 }

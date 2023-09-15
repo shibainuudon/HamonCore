@@ -10,9 +10,9 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -208,47 +208,47 @@ GTEST_TEST(OptionalTest, EmplaceTest)
 
 	// *this contains a value
 	{
-		hamon::optional<std::string> o {"hello"};
+		hamon::optional<hamon::string> o {"hello"};
 		EXPECT_TRUE(o.has_value());
 		auto& r = o.emplace(3u, 'X');
 		EXPECT_TRUE(o.has_value());
 		EXPECT_EQ(o.value(), "XXX");
 		EXPECT_EQ(*o, "XXX");
-		static_assert(hamon::is_same<decltype(r), std::string&>::value, "");
+		static_assert(hamon::is_same<decltype(r), hamon::string&>::value, "");
 		EXPECT_EQ(r, "XXX");
 	}
 	{
 		std::allocator<char> alloc;
-		hamon::optional<std::string> o {"hello"};
+		hamon::optional<hamon::string> o {"hello"};
 		EXPECT_TRUE(o.has_value());
 		auto& r = o.emplace({'A', 'B', 'C'}, alloc);
 		EXPECT_TRUE(o.has_value());
 		EXPECT_EQ(o.value(), "ABC");
 		EXPECT_EQ(*o, "ABC");
-		static_assert(hamon::is_same<decltype(r), std::string&>::value, "");
+		static_assert(hamon::is_same<decltype(r), hamon::string&>::value, "");
 		EXPECT_EQ(r, "ABC");
 	}
 
 	// *this dos not contain a value
 	{
-		hamon::optional<std::string> o;
+		hamon::optional<hamon::string> o;
 		EXPECT_TRUE(!o.has_value());
 		auto& r = o.emplace(4u, 'Y');
 		EXPECT_TRUE(o.has_value());
 		EXPECT_EQ(o.value(), "YYYY");
 		EXPECT_EQ(*o, "YYYY");
-		static_assert(hamon::is_same<decltype(r), std::string&>::value, "");
+		static_assert(hamon::is_same<decltype(r), hamon::string&>::value, "");
 		EXPECT_EQ(r, "YYYY");
 	}
 	{
 		std::allocator<char> alloc;
-		hamon::optional<std::string> o;
+		hamon::optional<hamon::string> o;
 		EXPECT_TRUE(!o.has_value());
 		auto& r = o.emplace({'X', 'Y', 'Z'}, alloc);
 		EXPECT_TRUE(o.has_value());
 		EXPECT_EQ(o.value(), "XYZ");
 		EXPECT_EQ(*o, "XYZ");
-		static_assert(hamon::is_same<decltype(r), std::string&>::value, "");
+		static_assert(hamon::is_same<decltype(r), hamon::string&>::value, "");
 		EXPECT_EQ(r, "XYZ");
 	}
 

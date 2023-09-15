@@ -8,9 +8,9 @@
 
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -77,8 +77,8 @@ GTEST_TEST(OptionalTest, CtorCopyTest)
 		EXPECT_EQ(3, *t2);
 	}
 	{
-		hamon::optional<std::string> t1 = "Hello";
-		hamon::optional<std::string> t2(t1);
+		hamon::optional<hamon::string> t1 = "Hello";
+		hamon::optional<hamon::string> t2(t1);
 		EXPECT_EQ("Hello", t2.value());
 		EXPECT_EQ("Hello", *t2);
 	}

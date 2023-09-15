@@ -9,9 +9,9 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -31,7 +31,7 @@ struct S
 };
 
 static_assert( hamon::is_nothrow_assignable<hamon::optional<int>&, hamon::nullopt_t>::value, "");
-static_assert( hamon::is_nothrow_assignable<hamon::optional<std::string>&, hamon::nullopt_t>::value, "");
+static_assert( hamon::is_nothrow_assignable<hamon::optional<hamon::string>&, hamon::nullopt_t>::value, "");
 static_assert( hamon::is_nothrow_assignable<hamon::optional<S>&, hamon::nullopt_t>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }

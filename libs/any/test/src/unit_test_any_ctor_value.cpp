@@ -9,8 +9,8 @@
 
 #include <hamon/any.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 namespace hamon_any_test
 {
@@ -45,7 +45,7 @@ struct S4
 static_assert( hamon::is_constructible<hamon::any, int>::value, "");
 static_assert( hamon::is_constructible<hamon::any, float>::value, "");
 static_assert( hamon::is_constructible<hamon::any, void*>::value, "");
-static_assert( hamon::is_constructible<hamon::any, std::string>::value, "");
+static_assert( hamon::is_constructible<hamon::any, hamon::string>::value, "");
 static_assert( hamon::is_constructible<hamon::any, S1>::value, "");
 static_assert(!hamon::is_constructible<hamon::any, S2>::value, "");
 static_assert( hamon::is_constructible<hamon::any, S3>::value, "");
@@ -59,9 +59,9 @@ GTEST_TEST(AnyTest, CtorValueTest)
 		EXPECT_EQ(3, hamon::any_cast<int>(a));
 	}
 	{
-		hamon::any a{std::string("Hello")};
+		hamon::any a{hamon::string("Hello")};
 		EXPECT_TRUE(a.has_value());
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(a));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(a));
 	}
 }
 

@@ -14,3 +14,7 @@ target_link_libraries(${TARGET_NAME}
 	INTERFACE
 		Hamon::${TARGET_NAME_BASE}
 		Hamon::common_test)
+
+add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
+	INTERFACE
+		string)

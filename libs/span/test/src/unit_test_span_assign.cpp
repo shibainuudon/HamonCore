@@ -8,8 +8,8 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/size.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -93,11 +93,11 @@ test1()
 
 inline bool test2()
 {
-	std::string strs[] = {"ABC", "DEF", "GHI"};
+	hamon::string strs[] = {"ABC", "DEF", "GHI"};
 
 	//  dynamically sized assignment
 	{
-		hamon::span<std::string> spans[] =
+		hamon::span<hamon::string> spans[] =
 		{
 			{strs, strs},
 			{strs, strs + 1},
@@ -122,7 +122,7 @@ inline bool test2()
 
 	// statically sized assignment
 	{
-		using spanType = hamon::span<std::string, 1>;
+		using spanType = hamon::span<hamon::string, 1>;
 		spanType spans[] =
 		{
 			spanType{strs, strs + 1},

@@ -7,11 +7,11 @@
 #include <hamon/serialization/types/list.hpp>
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <string>
 #include <list>
 #include <vector>
 #include "serialization_test_archives.hpp"
@@ -54,7 +54,7 @@ void ListTest()
 {
 	std::list<int> const v1;
 	std::list<int> const v2{ 1, 2, 3 };
-	std::list<std::string> const v3 { "The", "quick brown", "fox" };
+	std::list<hamon::string> const v3 { "The", "quick brown", "fox" };
 	std::list<std::vector<float>> const v4
 	{
 		{ 10, 11, 12, 13 },
@@ -79,7 +79,7 @@ void ListTest()
 	}
 
 #if 0
-	std::string expected =
+	hamon::string expected =
 R"({
     "value0": [
 
@@ -131,7 +131,7 @@ R"({
 	{
 		std::list<int> a{ 10, 11, 12 };
 		std::list<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		std::list<std::string> c;
+		std::list<hamon::string> c;
 		std::list<std::vector<float>> d;
 		std::list<Point> e;
 

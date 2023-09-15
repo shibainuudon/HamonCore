@@ -10,8 +10,8 @@
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 static_assert(hamon::is_move_constructible<hamon::any>::value, "");
 static_assert(hamon::is_nothrow_move_constructible<hamon::any>::value, "");
@@ -30,9 +30,9 @@ GTEST_TEST(AnyTest, CtorMoveTest)
 		EXPECT_EQ(3, hamon::any_cast<int>(b));
 	}
 	{
-		hamon::any a{std::string("Hello")};
+		hamon::any a{hamon::string("Hello")};
 		hamon::any b{hamon::move(a)};
 		EXPECT_TRUE(b.has_value());
-		EXPECT_EQ("Hello", hamon::any_cast<std::string>(b));
+		EXPECT_EQ("Hello", hamon::any_cast<hamon::string>(b));
 	}
 }

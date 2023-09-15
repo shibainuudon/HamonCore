@@ -29,6 +29,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		preprocessor
 		set
 		span
+		string
 		tuple
 		type_traits
 		unordered_set

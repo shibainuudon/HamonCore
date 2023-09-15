@@ -9,8 +9,8 @@
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_span_test
@@ -102,7 +102,7 @@ GTEST_TEST(SpanTest, CtorPtrLenTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<A>()));
-	                      EXPECT_TRUE((test<std::string>()));
+	                      EXPECT_TRUE((test<hamon::string>()));
 }
 
 }	// namespace ctor_ptr_len_test

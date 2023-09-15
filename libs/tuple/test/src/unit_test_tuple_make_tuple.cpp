@@ -12,6 +12,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/functional/ref.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -30,9 +31,9 @@ GTEST_TEST(TupleTest, MakeTupleTest)
 	}
 	{
 		int x = 3;
-		std::string y = "hello";
+		hamon::string y = "hello";
 		auto t = hamon::make_tuple(x, y);	// make_tupleは引数をコピーする
-		static_assert(hamon::is_same<decltype(t), hamon::tuple<int, std::string>>::value, "");
+		static_assert(hamon::is_same<decltype(t), hamon::tuple<int, hamon::string>>::value, "");
 		EXPECT_TRUE(hamon::adl_get<0>(t) == 3);
 		EXPECT_TRUE(hamon::adl_get<1>(t) == "hello");
 		y = "world";
@@ -40,9 +41,9 @@ GTEST_TEST(TupleTest, MakeTupleTest)
 	}
 	{
 		int x = 3;
-		std::string y = "hello";
+		hamon::string y = "hello";
 		auto t = hamon::make_tuple(x, hamon::ref(y));	// ref, cref で明示的に参照にすることができる
-		static_assert(hamon::is_same<decltype(t), hamon::tuple<int, std::string&>>::value, "");
+		static_assert(hamon::is_same<decltype(t), hamon::tuple<int, hamon::string&>>::value, "");
 		EXPECT_TRUE(hamon::adl_get<0>(t) == 3);
 		EXPECT_TRUE(hamon::adl_get<1>(t) == "hello");
 		y = "world";

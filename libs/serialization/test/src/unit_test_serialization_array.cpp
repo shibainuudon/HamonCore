@@ -5,11 +5,11 @@
  */
 
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <string>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -43,7 +43,7 @@ void ArrayTest()
 			Enum::Value1,
 			Enum::Value3,
 		};
-		std::string const a4[] =
+		hamon::string const a4[] =
 		{
 			"quick brown fox",
 			"",
@@ -61,7 +61,7 @@ void ArrayTest()
 		int a[5];
 		float b[2][3];
 		Enum c[3];
-		std::string d[3];
+		hamon::string d[3];
 
 		IArchive ia(str);
 

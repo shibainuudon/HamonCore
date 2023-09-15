@@ -5,11 +5,11 @@
  */
 
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <string>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -30,7 +30,7 @@ public:
 		get_random_value<float>(),
 		get_random_value<float>(),
 	};
-	std::string d;
+	hamon::string d;
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)

@@ -15,8 +15,8 @@
 #include <hamon/bitset.hpp>
 #include <hamon/stdexcept/invalid_argument.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_bitset_test
@@ -28,7 +28,7 @@ namespace ctor_string_test
 GTEST_TEST(BitsetTest, CtorStringTest)
 {
 	{
-		const std::string s = "10101100111000111100001111100000";
+		const hamon::string s = "10101100111000111100001111100000";
 
 		const hamon::bitset< 0> b0(s);
 		const hamon::bitset< 1> b1(s);
@@ -76,7 +76,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 		EXPECT_EQ(16u, b13.count());
 	}
 	{
-		const std::string s = "10101100111000111100001111100000";
+		const hamon::string s = "10101100111000111100001111100000";
 
 		const hamon::bitset< 7> b0(s, 0);
 		const hamon::bitset< 7> b1(s, 1);
@@ -109,7 +109,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 		EXPECT_EQ(4u, b8.count());
 	}
 	{
-		const std::string s = "10101100111000111100001111100000";
+		const hamon::string s = "10101100111000111100001111100000";
 
 		const hamon::bitset<17> b0(s, 0);
 		const hamon::bitset<17> b1(s, 1);
@@ -142,7 +142,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 		EXPECT_EQ(10u, b8.count());
 	}
 	{
-		const std::string s = "10101100111000111100001111100000";
+		const hamon::string s = "10101100111000111100001111100000";
 
 		const hamon::bitset< 7> b0(s, 0, 0);
 		const hamon::bitset< 7> b1(s, 0, 1);
@@ -175,7 +175,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 		EXPECT_EQ(4u, b8.count());
 	}
 	{
-		const std::string s = "10101100111000111100001111100000";
+		const hamon::string s = "10101100111000111100001111100000";
 
 		const hamon::bitset< 7> b0(s, 1, 0);
 		const hamon::bitset< 7> b1(s, 1, 1);
@@ -209,7 +209,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		const std::string s = "..111...";
+		const hamon::string s = "..111...";
 		EXPECT_NO_THROW(hamon::bitset<0> b(s, 8));
 		EXPECT_NO_THROW(hamon::bitset<0> b(s, 8, 0));
 		EXPECT_NO_THROW(hamon::bitset<0> b(s, 8, 1));
@@ -233,9 +233,9 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 	}
 #endif
 	{
-		const std::string s1 = "110010";
-		const std::string s2 = ".1...1.1";
-		const std::string s3 = "AABABBBA";
+		const hamon::string s1 = "110010";
+		const hamon::string s2 = ".1...1.1";
+		const hamon::string s3 = "AABABBBA";
 
 		const hamon::bitset< 0> b0(s1);
 		const hamon::bitset< 1> b1(s1);
@@ -347,7 +347,7 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 #endif
 	}
 	{
-		const std::wstring s = L"10101100111000111100001111100000";
+		const hamon::wstring s = L"10101100111000111100001111100000";
 
 		const hamon::bitset< 0> b0(s);
 		const hamon::bitset< 1> b1(s);
@@ -395,9 +395,9 @@ GTEST_TEST(BitsetTest, CtorStringTest)
 		EXPECT_EQ(16u, b13.count());
 	}
 	{
-		const std::wstring s1 = L"110010";
-		const std::wstring s2 = L".1...1.1";
-		const std::wstring s3 = L"AABABBBA";
+		const hamon::wstring s1 = L"110010";
+		const hamon::wstring s2 = L".1...1.1";
+		const hamon::wstring s3 = L"AABABBBA";
 
 		const hamon::bitset< 0> b0(s1);
 		const hamon::bitset< 1> b1(s1);

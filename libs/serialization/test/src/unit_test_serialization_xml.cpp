@@ -9,6 +9,7 @@
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
@@ -47,12 +48,12 @@ inline void serialize(Archive& ar, Point& o)
 class Object
 {
 public:
-	int         a{};
-	float       b{};
-	std::string c{};
-	Point		d{};
+	int           a{};
+	float         b{};
+	hamon::string c{};
+	Point		  d{};
 	std::vector<int> e{};
-	std::vector<std::vector<std::string>> f{};
+	std::vector<std::vector<hamon::string>> f{};
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)
@@ -109,8 +110,8 @@ void XmlTest()
 		bool const c = true;
 		float const d = std::numeric_limits<float>::infinity();
 		bool const e = false;
-		std::string const f = "hello world";
-		std::string const g = "A\"B\'C<DE>F&G";
+		hamon::string const f = "hello world";
+		hamon::string const g = "A\"B\'C<DE>F&G";
 		std::array<int, 5> const h = {1, 1, 2, 3, 5};
 		float const i[2][3] =
 		{
@@ -132,7 +133,7 @@ void XmlTest()
 		oa << HAMON_SERIALIZATION_NVP(obj);
 	}
 
-	std::string expected =
+	hamon::string expected =
 R"(<?xml version="1.0"?>
 <serialization>
     <value0>3</value0>
@@ -199,8 +200,8 @@ R"(<?xml version="1.0"?>
 		bool c;
 		float d;
 		bool e;
-		std::string f;
-		std::string g;
+		hamon::string f;
+		hamon::string g;
 		std::array<int, 5> h;
 		float i[2][3];
 		Object j;

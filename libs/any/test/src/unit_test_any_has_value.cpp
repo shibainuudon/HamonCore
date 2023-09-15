@@ -8,7 +8,6 @@
 
 #include <hamon/any.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, HasValueTest)
 {

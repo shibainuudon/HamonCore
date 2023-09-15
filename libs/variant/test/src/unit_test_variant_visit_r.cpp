@@ -14,8 +14,8 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -316,7 +316,7 @@ struct Doubling
 		n *= 2;
 	}
 
-	void operator()(std::string& s)
+	void operator()(hamon::string& s)
 	{
 		s += s;
 	}
@@ -325,15 +325,15 @@ struct Doubling
 inline void RuntimeTest()
 {
 	{
-		hamon::variant<int, std::string> v = 2;
+		hamon::variant<int, hamon::string> v = 2;
 		EXPECT_EQ(2, hamon::adl_get<int>(v));
 		hamon::visit<void>(Doubling{}, v);
 		EXPECT_EQ(4, hamon::adl_get<int>(v));
 
 		v = "Hello";
-		EXPECT_EQ(std::string("Hello"), hamon::adl_get<std::string>(v));
+		EXPECT_EQ(hamon::string("Hello"), hamon::adl_get<hamon::string>(v));
 		hamon::visit<void>(Doubling{}, v);
-		EXPECT_EQ(std::string("HelloHello"), hamon::adl_get<std::string>(v));
+		EXPECT_EQ(hamon::string("HelloHello"), hamon::adl_get<hamon::string>(v));
 	}
 }
 
@@ -417,10 +417,10 @@ inline void ExceptionsTest()
 #endif
 }
 
-struct MyVariant : public hamon::variant<int, std::string>
+struct MyVariant : public hamon::variant<int, hamon::string>
 {
-	using hamon::variant<int, std::string>::variant;
-	using hamon::variant<int, std::string>::operator=;
+	using hamon::variant<int, hamon::string>::variant;
+	using hamon::variant<int, hamon::string>::operator=;
 };
 
 inline void DerivedFromVariantTest()
@@ -432,9 +432,9 @@ inline void DerivedFromVariantTest()
 		EXPECT_EQ(4, hamon::adl_get<int>(v));
 
 		v = "Hello";
-		EXPECT_EQ(std::string("Hello"), hamon::adl_get<std::string>(v));
+		EXPECT_EQ(hamon::string("Hello"), hamon::adl_get<hamon::string>(v));
 		hamon::visit<void>(Doubling{}, v);
-		EXPECT_EQ(std::string("HelloHello"), hamon::adl_get<std::string>(v));
+		EXPECT_EQ(hamon::string("HelloHello"), hamon::adl_get<hamon::string>(v));
 	}
 }
 

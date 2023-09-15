@@ -15,9 +15,9 @@
 #include <hamon/compare/is_eq.hpp>
 #include <hamon/compare/is_lt.hpp>
 #include <hamon/compare/is_gt.hpp>
+#include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_tuple_test
@@ -29,10 +29,10 @@ namespace rel_op_test
 GTEST_TEST(TupleTest, RelOpTest)
 {
 	{
-		hamon::tuple<int, char, std::string> t1(1, 'a', "hello");
-		hamon::tuple<int, char, const char*> t2(1, 'a', "hello");
-		hamon::tuple<int, char, std::string> t3(1, 'a', "hellot");
-		hamon::tuple<int, char, std::string> t4(0, 'a', "hello");
+		hamon::tuple<int, char, hamon::string> t1(1, 'a', "hello");
+		hamon::tuple<int, char, const char*>   t2(1, 'a', "hello");
+		hamon::tuple<int, char, hamon::string> t3(1, 'a', "hellot");
+		hamon::tuple<int, char, hamon::string> t4(0, 'a', "hello");
 
 		EXPECT_TRUE( (t1 == t1));
 		EXPECT_TRUE( (t1 == t2));

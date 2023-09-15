@@ -12,8 +12,8 @@
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/in_place_index.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -30,9 +30,9 @@ static_assert( hamon::is_assignable<hamon::variant<float, int>, int>::value, "")
 static_assert(!hamon::is_assignable<hamon::variant<int, int>, int>::value, "ambiguous");
 static_assert(!hamon::is_assignable<hamon::variant<int, float, int>, int>::value, "ambiguous");
 static_assert( hamon::is_assignable<hamon::variant<int, float, int>, float>::value, "");
-static_assert( hamon::is_assignable<hamon::variant<std::string>, const char*>::value, "");
-static_assert(!hamon::is_assignable<hamon::variant<std::string, std::string>, const char*>::value, "ambiguous");
-static_assert(!hamon::is_assignable<hamon::variant<std::string, void*>, int>::value, "no matching operator=");
+static_assert( hamon::is_assignable<hamon::variant<hamon::string>, const char*>::value, "");
+static_assert(!hamon::is_assignable<hamon::variant<hamon::string, hamon::string>, const char*>::value, "ambiguous");
+static_assert(!hamon::is_assignable<hamon::variant<hamon::string, void*>, int>::value, "no matching operator=");
 static_assert(!hamon::is_assignable<hamon::variant<int>, float>::value, "narrowing conversion");
 static_assert( hamon::is_assignable<hamon::variant<std::unique_ptr<int>>, std::unique_ptr<int>>::value, "");
 static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>>, std::unique_ptr<int>>::value, "no matching operator=");
@@ -194,7 +194,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 #endif
 
 	{
-		hamon::variant<float, std::string> v = 0.5f;
+		hamon::variant<float, hamon::string> v = 0.5f;
 		v = "foo";
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), "foo");
@@ -204,7 +204,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		hamon::variant<std::string, ThrowOnCtor> v(
+		hamon::variant<hamon::string, ThrowOnCtor> v(
 			hamon::in_place_index_t<0>{}, "hoge");
 
 		// ThrowOnCtor::ThrowOnCtor(int) を呼び出すので例外を投げる
@@ -214,7 +214,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		EXPECT_EQ(hamon::adl_get<0>(v), "hoge");
 	}
 	{
-		hamon::variant<std::string, ThrowOnAssign> v(
+		hamon::variant<hamon::string, ThrowOnAssign> v(
 			hamon::in_place_index_t<0>{}, "hoge");
 		
 		// ThrowOnAssign::ThrowOnAssign(int) を呼び出すので例外を投げない
@@ -224,7 +224,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		EXPECT_EQ(hamon::adl_get<1>(v).value, 42);
 	}
 	{
-		hamon::variant<ThrowOnCtor, std::string> v;
+		hamon::variant<ThrowOnCtor, hamon::string> v;
 
 		// ThrowOnCtor::operator=(int) を呼び出すので例外を投げない
 		v = 42;
@@ -233,7 +233,7 @@ GTEST_TEST(VariantTest, AssignTTest)
 		EXPECT_EQ(hamon::adl_get<0>(v).value, 42);
 	}
 	{
-		hamon::variant<ThrowOnAssign, std::string> v;
+		hamon::variant<ThrowOnAssign, hamon::string> v;
 
 		// ThrowOnAssign::operator=(int) を呼び出すので例外を投げる
 		EXPECT_THROW(v = 42, int);

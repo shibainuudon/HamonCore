@@ -14,8 +14,8 @@
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 //#include "tuple_test_utility.hpp"
 
@@ -449,7 +449,7 @@ void return_type_tests()
 		using T = CopyCallable<ExplicitBool>;
 		auto ret = hamon::not_fn(T{true});
 		static_assert(hamon::is_same<decltype(ret()), bool>::value, "");
-		static_assert(hamon::is_same<decltype(ret(std::string("abc"))), bool>::value, "");
+		static_assert(hamon::is_same<decltype(ret(hamon::string("abc"))), bool>::value, "");
 		EXPECT_FALSE(ret());
 	}
 	{
@@ -565,7 +565,7 @@ void call_operator_sfinae_test()
 		auto fn = [](auto x) { return x; };
 		using T = decltype(hamon::not_fn(fn));
 		static_assert( hamon::is_invocable<T, bool>::value, "");
-		static_assert(!hamon::is_invocable<T, std::string>::value, "");
+		static_assert(!hamon::is_invocable<T, hamon::string>::value, "");
 	}
 #endif
 }
@@ -645,15 +645,15 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の hamon::move は使用しな
 	}
 	{ // test multi arg
 		const double y = 3.14;
-		std::string s = "abc";
-		obj(42, hamon::move(y), s, std::string{"foo"});
-		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::NonConst | CallType::LValue);
-		hamon::move(obj)(42, hamon::move(y), s, std::string{"foo"});
-		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::NonConst | CallType::RValue);
-		c_obj(42, hamon::move(y), s, std::string{"foo"});
-		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::Const  | CallType::LValue);
-		hamon::move(c_obj)(42, hamon::move(y), s, std::string{"foo"});
-		Fn::check_call<int&&, const double&&, std::string&, std::string&&>(CallType::Const  | CallType::RValue);
+		hamon::string s = "abc";
+		obj(42, hamon::move(y), s, hamon::string{"foo"});
+		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::LValue);
+		hamon::move(obj)(42, hamon::move(y), s, hamon::string{"foo"});
+		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::RValue);
+		c_obj(42, hamon::move(y), s, hamon::string{"foo"});
+		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::LValue);
+		hamon::move(c_obj)(42, hamon::move(y), s, hamon::string{"foo"});
+		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::RValue);
 	}
 HAMON_WARNING_POP()
 }

@@ -14,7 +14,6 @@
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -22,7 +21,6 @@ namespace hamon_optional_test
 
 namespace swap_test
 {
-
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

@@ -23,5 +23,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		list
 		map
 		set
+		string
 		string_view
 		vector)

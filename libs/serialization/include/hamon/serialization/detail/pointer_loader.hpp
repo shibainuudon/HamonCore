@@ -12,7 +12,7 @@
 #include <hamon/serialization/access.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/map.hpp>
-#include <string>
+#include <hamon/string.hpp>
 #include <functional>
 
 namespace hamon
@@ -68,7 +68,7 @@ public:
 	}
 
 	template <typename T>
-	void load(Archive& ia, std::string const& name, T*& p)
+	void load(Archive& ia, hamon::string const& name, T*& p)
 	{
 		if (m_f.find(name) != m_f.end())
 		{
@@ -92,7 +92,7 @@ private:
 	{
 	}
 
-	hamon::map<std::string, std::function<void*(Archive&)>> m_f;
+	hamon::map<hamon::string, std::function<void*(Archive&)>> m_f;
 };
 
 }	// namespace detail

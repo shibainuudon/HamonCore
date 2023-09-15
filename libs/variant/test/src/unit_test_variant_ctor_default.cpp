@@ -8,8 +8,8 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -111,7 +111,7 @@ GTEST_TEST(VariantTest, CtorDefaultTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v), 0);
 	}
 	{
-		hamon::variant<std::string> v;
+		hamon::variant<hamon::string> v;
 		EXPECT_EQ(v.index(), 0u);
 		EXPECT_EQ(hamon::adl_get<0>(v).length(), 0u);
 	}

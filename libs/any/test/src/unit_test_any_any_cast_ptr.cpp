@@ -14,7 +14,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
-#include <string>
 
 GTEST_TEST(AnyTest, AnyCastPtrTest)
 {

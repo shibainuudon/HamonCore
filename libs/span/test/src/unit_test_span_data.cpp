@@ -5,8 +5,8 @@
  */
 
 #include <hamon/span.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
-#include <string>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
 
@@ -33,7 +33,7 @@ GTEST_TEST(SpanTest, DataTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<long>(),        nullptr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<double>(),      nullptr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<A>(),           nullptr));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<std::string>(), nullptr));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<hamon::string>(), nullptr));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<int const>(arr, 1), arr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<int const>(arr, 2), arr));
@@ -50,7 +50,7 @@ GTEST_TEST(SpanTest, DataTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<long, 0>(),        nullptr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<double, 0>(),      nullptr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<A, 0>(),           nullptr));
-	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<std::string, 0>(), nullptr));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<hamon::string, 0>(), nullptr));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<int const, 1>(arr, 1), arr));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(test(hamon::span<int const, 2>(arr, 2), arr));
