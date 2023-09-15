@@ -11,7 +11,7 @@
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
-#include <map>
+#include <hamon/map.hpp>
 #include <string>
 #include <functional>
 
@@ -92,7 +92,7 @@ private:
 	{
 	}
 
-	std::map<std::string, std::function<void*(Archive&)>> m_f;
+	hamon::map<std::string, std::function<void*(Archive&)>> m_f;
 };
 
 }	// namespace detail

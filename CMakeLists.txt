@@ -42,6 +42,7 @@ set(SUBDIRECTORIES
 	ios
 	iterator
 	list
+	map
 	memory
 	numbers
 	numeric

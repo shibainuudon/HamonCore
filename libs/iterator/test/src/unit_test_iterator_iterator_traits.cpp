@@ -15,9 +15,9 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/map.hpp>
 #include <hamon/vector.hpp>
 #include <utility>	// pair
-#include <map>
 #include <string>
 #include <iterator>
 
@@ -103,7 +103,7 @@ static_assert(hamon::is_same<hamon::iterator_traits<it6>::difference_type,   ham
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::pointer,           int*>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it6>::reference,         int&>::value, "");
 
-using it7 = std::map<int, float>::iterator;
+using it7 = hamon::map<int, float>::iterator;
 //static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_concept,  hamon::contiguous_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::value_type,        std::pair<int const, float>>::value, "");
