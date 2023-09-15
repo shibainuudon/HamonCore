@@ -6,12 +6,12 @@
 
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/array.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <deque>
 #include <set>
 #include <string>
 #include "iterator_test.hpp"
@@ -68,10 +68,10 @@ HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::array<int, 1>::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::array<A, 1>::iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::array<int, 1>::const_iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::array<A, 1>::const_iterator, A);
-HAMON_OUTPUT_ITERATOR_TEST(true,  std::deque<int>::iterator, int);
-HAMON_OUTPUT_ITERATOR_TEST(true,  std::deque<A>::iterator, A);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::deque<int>::const_iterator, int);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::deque<A>::const_iterator, A);
+HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::deque<int>::iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::deque<A>::iterator, A);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::deque<int>::const_iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::deque<A>::const_iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::forward_list<int>::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::forward_list<A>::iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::forward_list<int>::const_iterator, int);

@@ -18,6 +18,7 @@ target_link_libraries(${TARGET_NAME}
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		array
+		deque
 		forward_list
 		list
 		string_view
