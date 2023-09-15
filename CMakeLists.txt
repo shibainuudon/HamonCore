@@ -36,6 +36,7 @@ set(SUBDIRECTORIES
 	cstdint
 	cstring
 	debug
+	deque
 	forward_list
 	functional
 	ios
