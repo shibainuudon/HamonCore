@@ -17,10 +17,10 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/set.hpp>
+#include <hamon/unordered_set.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <string>
-#include <unordered_set>
 #include "ranges_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -197,8 +197,8 @@ HAMON_RANGES_VIEW_TEST(false, hamon::list<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::forward_list<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::set<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::multiset<int>);
-HAMON_RANGES_VIEW_TEST(false, std::unordered_set<int>);
-HAMON_RANGES_VIEW_TEST(false, std::unordered_multiset<int>);
+HAMON_RANGES_VIEW_TEST(false, hamon::unordered_set<int>);
+HAMON_RANGES_VIEW_TEST(false, hamon::unordered_multiset<int>);
 HAMON_RANGES_VIEW_TEST(false, std::string);
 #if 0	// TODO
 HAMON_RANGES_VIEW_TEST(true,  hamon::string_view);

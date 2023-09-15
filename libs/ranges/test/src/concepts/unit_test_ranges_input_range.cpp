@@ -10,9 +10,9 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/set.hpp>
+#include <hamon/unordered_set.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <unordered_set>
 #include <string>
 #include "ranges_test.hpp"
 
@@ -46,8 +46,8 @@ HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::list<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::forward_list<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::set<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::multiset<int>);
-HAMON_RANGES_INPUT_RANGE_TEST(true,  std::unordered_set<int>);
-HAMON_RANGES_INPUT_RANGE_TEST(true,  std::unordered_multiset<int>);
+HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::unordered_set<int>);
+HAMON_RANGES_INPUT_RANGE_TEST(true,  hamon::unordered_multiset<int>);
 HAMON_RANGES_INPUT_RANGE_TEST(true,  std::string);
 
 HAMON_RANGES_INPUT_RANGE_TEST(true,  test_contiguous_range<int>);

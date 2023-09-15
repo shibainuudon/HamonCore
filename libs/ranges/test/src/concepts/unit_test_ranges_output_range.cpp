@@ -10,9 +10,9 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/set.hpp>
+#include <hamon/unordered_set.hpp>
 #include <hamon/vector.hpp>
 #include <string>
-#include <unordered_set>
 #include "ranges_test.hpp"
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -45,8 +45,8 @@ HAMON_RANGES_OUTPUT_RANGE_TEST(true,  hamon::list<int>,             int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  hamon::forward_list<int>,     int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(false, hamon::set<int>,              int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(false, hamon::multiset<int>,         int);
-HAMON_RANGES_OUTPUT_RANGE_TEST(false, std::unordered_set<int>,      int);
-HAMON_RANGES_OUTPUT_RANGE_TEST(false, std::unordered_multiset<int>, int);
+HAMON_RANGES_OUTPUT_RANGE_TEST(false, hamon::unordered_set<int>,    int);
+HAMON_RANGES_OUTPUT_RANGE_TEST(false, hamon::unordered_multiset<int>, int);
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  std::string,                  char);
 
 HAMON_RANGES_OUTPUT_RANGE_TEST(true,  test_contiguous_range<int>,            int);

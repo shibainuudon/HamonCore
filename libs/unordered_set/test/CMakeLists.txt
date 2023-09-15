@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE ranges)
+set(TARGET_NAME_BASE unordered_set)
 set(TARGET_NAME hamon_${TARGET_NAME_BASE}_test)
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE}_test)
 
@@ -14,23 +14,3 @@ target_link_libraries(${TARGET_NAME}
 	INTERFACE
 		Hamon::${TARGET_NAME_BASE}
 		Hamon::common_test)
-
-add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
-	INTERFACE
-		algorithm
-		array
-		concepts
-		config
-		deque
-		forward_list
-		iterator
-		list
-		memory
-		preprocessor
-		set
-		span
-		tuple
-		type_traits
-		unordered_set
-		utility
-		vector)

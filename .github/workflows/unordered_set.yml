@@ -1,0 +1,110 @@
+name: unordered_set
+
+on:
+  push:
+    paths:
+      - libs/unordered_set/**
+      - .github/workflows/unordered_set.yml
+
+  workflow_dispatch:
+
+env:
+  SRC_DIR: ${{github.workspace}}/libs/unordered_set
+  BUILD_DIR: ${{github.workspace}}/build
+
+jobs:
+  windows-test:
+    runs-on: ${{matrix.config.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - { os: windows-2022, generator: "Visual Studio 17 2022" }
+        - { os: windows-2019, generator: "Visual Studio 16 2019" }
+        architecture: [x64, Win32]
+        cxx_standard: [14, 17, 20]
+        build_type: [Debug, Release]
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Configure CMake
+        run: |
+          cmake "$SRC_DIR" \
+            -B "$BUILD_DIR" \
+            -G "${{matrix.config.generator}}" \
+            -A "${{matrix.architecture}}" \
+            -DCMAKE_CXX_STANDARD="${{matrix.cxx_standard}}" \
+            -DCMAKE_BUILD_TYPE="${{matrix.build_type}}"
+      - name: Build
+        run: cmake --build "$BUILD_DIR" --config ${{matrix.build_type}}
+      - name: Test
+        working-directory: ${{env.BUILD_DIR}}
+        run: ctest -j 4 -C ${{matrix.build_type}}
+
+  ubuntu-test:
+    runs-on: ${{matrix.config.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - { os: ubuntu-22.04, cc: "gcc-12",   cxx: "g++-12" }
+        - { os: ubuntu-22.04, cc: "gcc-11",   cxx: "g++-11" }
+        - { os: ubuntu-22.04, cc: "gcc-10",   cxx: "g++-10" }
+        - { os: ubuntu-20.04, cc: "gcc-9",    cxx: "g++-9"  }
+        - { os: ubuntu-22.04, cc: "clang-14", cxx: "clang++-14" }
+        - { os: ubuntu-22.04, cc: "clang-13", cxx: "clang++-13" }
+        - { os: ubuntu-22.04, cc: "clang-12", cxx: "clang++-12" }
+        - { os: ubuntu-20.04, cc: "clang-11", cxx: "clang++-11" }
+        - { os: ubuntu-20.04, cc: "clang-10", cxx: "clang++-10" }
+        cxx_standard: [11, 14, 17, 20]
+        build_type: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Configure CMake
+        run: |
+          cmake "$SRC_DIR" \
+            -B "$BUILD_DIR" \
+            -DCMAKE_CXX_COMPILER=${{matrix.config.cxx}} \
+            -DCMAKE_C_COMPILER=${{matrix.config.cc}} \
+            -DCMAKE_CXX_STANDARD=${{matrix.cxx_standard}} \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+      - name: Build
+        run: cmake --build "$BUILD_DIR" --config ${{matrix.build_type}}
+      - name: Test
+        working-directory: ${{env.BUILD_DIR}}
+        run: ctest -j 4 -C ${{matrix.build_type}}
+
+  macos-test:
+    runs-on: ${{matrix.config.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+        - { os: macos-12, cc: "clang", cxx: "clang++" }
+        - { os: macos-11, cc: "clang", cxx: "clang++" }
+        cxx_standard: [11, 14, 17, 20]
+        build_type: [Debug, Release]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Configure CMake
+        run: |
+          cmake "${SRC_DIR}" \
+            -B "$BUILD_DIR" \
+            -DCMAKE_CXX_COMPILER=${{matrix.config.cxx}} \
+            -DCMAKE_C_COMPILER=${{matrix.config.cc}} \
+            -DCMAKE_CXX_STANDARD=${{matrix.cxx_standard}} \
+            -DCMAKE_BUILD_TYPE=${{matrix.build_type}}
+      - name: Build
+        run: cmake --build "$BUILD_DIR" --config ${{matrix.build_type}}
+      - name: Test
+        working-directory: ${{env.BUILD_DIR}}
+        run: ctest -j 4 -C ${{matrix.build_type}}
+
