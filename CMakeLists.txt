@@ -63,6 +63,7 @@ set(SUBDIRECTORIES
 	type_info
 	type_traits
 	units
+	unordered_map
 	utility
 	variant
 	vector)
