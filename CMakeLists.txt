@@ -54,6 +54,7 @@ set(SUBDIRECTORIES
 	ranges
 	ratio
 	serialization
+	set
 	span
 	stdexcept
 	string

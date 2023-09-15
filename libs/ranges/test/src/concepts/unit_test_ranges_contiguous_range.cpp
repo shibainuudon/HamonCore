@@ -9,8 +9,8 @@
 #include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/set.hpp>
 #include <hamon/vector.hpp>
-#include <set>
 #include <unordered_set>
 #include <string>
 #include "ranges_test.hpp"
@@ -44,8 +44,8 @@ HAMON_RANGES_CONTIGUOUS_RANGE_TEST(true,  hamon::vector<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, hamon::deque<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, hamon::list<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, hamon::forward_list<int>);
-HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::set<int>);
-HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::multiset<int>);
+HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, hamon::set<int>);
+HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, hamon::multiset<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::unordered_set<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(false, std::unordered_multiset<int>);
 HAMON_RANGES_CONTIGUOUS_RANGE_TEST(true,  std::string);

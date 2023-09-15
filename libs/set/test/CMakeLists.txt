@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE iterator)
+set(TARGET_NAME_BASE set)
 set(TARGET_NAME hamon_${TARGET_NAME_BASE}_test)
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE}_test)
 
@@ -17,11 +17,4 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
-		array
-		deque
-		forward_list
-		list
-		map
-		set
-		string_view
-		vector)
+		algorithm)

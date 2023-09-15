@@ -9,10 +9,10 @@
 #include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/set.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <set>
 #include <string>
 #include "iterator_test.hpp"
 
@@ -80,10 +80,10 @@ HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::list<int>::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(true,  hamon::list<A>::iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::list<int>::const_iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, hamon::list<A>::const_iterator, A);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::set<int>::iterator, int);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::set<A>::iterator, A);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::set<int>::const_iterator, int);
-HAMON_OUTPUT_ITERATOR_TEST(false, std::set<A>::const_iterator, A);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<int>::iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<A>::iterator, A);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<int>::const_iterator, int);
+HAMON_OUTPUT_ITERATOR_TEST(false, hamon::set<A>::const_iterator, A);
 HAMON_OUTPUT_ITERATOR_TEST(true,  std::string::iterator, char);
 HAMON_OUTPUT_ITERATOR_TEST(true,  std::string::iterator, int);
 HAMON_OUTPUT_ITERATOR_TEST(false, std::string::const_iterator, char);
