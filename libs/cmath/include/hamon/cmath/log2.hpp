@@ -18,9 +18,9 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/numbers/ln2.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -79,15 +79,15 @@ log2_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::iszero(x) ?
-			-std::numeric_limits<FloatType>::infinity() :
+			-hamon::numeric_limits<FloatType>::infinity() :
 		x == FloatType(1) ?
 			FloatType(0) :
 		x < FloatType(0) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(x) ?
-			std::numeric_limits<FloatType>::infinity() :
+			hamon::numeric_limits<FloatType>::infinity() :
 		log2_unchecked(x);
 }
 
@@ -98,11 +98,11 @@ log2_integral(IntegralType x) HAMON_NOEXCEPT
 	using UT = hamon::make_unsigned_t<IntegralType>;
 	return
 		x == 0 ?
-			-std::numeric_limits<double>::infinity() :
+			-hamon::numeric_limits<double>::infinity() :
 		x == 1 ?
 			0.0 :
 		x < 0 ?
-			std::numeric_limits<double>::quiet_NaN() :
+			hamon::numeric_limits<double>::quiet_NaN() :
 		hamon::has_single_bit(static_cast<UT>(x)) ?	// ２のべき乗のときは、正確に計算できる
 			static_cast<double>(hamon::countr_zero(static_cast<UT>(x))) :
 		log2_unchecked(static_cast<double>(x));

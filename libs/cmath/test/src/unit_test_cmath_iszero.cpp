@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -29,11 +29,11 @@ HAMON_WARNING_DISABLE_MSVC(4723)	// 除算の 2 番目のオペランドは、�
 template <typename T>
 void IsZeroTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 	T zero = 0;	// MSVCでのエラーを避けるために変数にする
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::iszero(inf));
@@ -62,8 +62,8 @@ HAMON_WARNING_POP()
 template <typename T>
 void IsZeroTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::iszero(T(-1)));
@@ -75,8 +75,8 @@ void IsZeroTestSignedInt(void)
 template <typename T>
 void IsZeroTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::iszero(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::iszero(T(1)));

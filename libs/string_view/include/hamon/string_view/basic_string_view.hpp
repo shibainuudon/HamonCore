@@ -43,8 +43,8 @@ using std::basic_string_view;
 #include <hamon/type_traits/is_trivial.hpp>
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/assert.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 #include <ostream>
 
 namespace hamon
@@ -557,7 +557,7 @@ private:
 	static HAMON_CONSTEXPR int
 	compare_length(size_type n1, size_type n2) HAMON_NOEXCEPT
 	{
-		using limits = std::numeric_limits<int>;
+		using limits = hamon::numeric_limits<int>;
 		return static_cast<int>(hamon::clamp(
 			static_cast<difference_type>(n1) - static_cast<difference_type>(n2),
 			static_cast<difference_type>(limits::min()),

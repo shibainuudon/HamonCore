@@ -15,8 +15,8 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 eps(T x, T y) HAMON_NOEXCEPT
 {
-	return std::numeric_limits<T>::epsilon() *
+	return hamon::numeric_limits<T>::epsilon() *
 		tmax(tmax(hamon::fabs(x), hamon::fabs(y)), T(1));
 }
 

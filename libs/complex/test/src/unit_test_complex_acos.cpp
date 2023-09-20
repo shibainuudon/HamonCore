@@ -11,8 +11,8 @@
 #include <hamon/complex/conj.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers/pi.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 #include "complex_test_utility.hpp"
 
@@ -92,7 +92,7 @@ void test()
 		EXPECT_TRUE((complex_near(hamon::acos(z), pi - hamon::acos(-z), error)));
 	}
 
-	// std::acos(std::conj(z)) == std::conj(std::acos(z))
+	// acos(conj(z)) == conj(acos(z))
 	{
 		hamon::complex<T> z{1.0, 2.5};
 		EXPECT_TRUE((complex_near(hamon::acos(hamon::conj(z)), hamon::conj(hamon::acos(z)), error)));
@@ -150,7 +150,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::acos(z), pi - hamon::acos(-z), error)));
 	}
 
-	// std::acos(std::conj(z)) == std::conj(std::acos(z))
+	// acos(conj(z)) == conj(acos(z))
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.0, 2.5};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::acos(hamon::conj(z)), hamon::conj(hamon::acos(z)), error)));
@@ -168,8 +168,8 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::acos(hamon::conj(z)), hamon::conj(hamon::acos(z)), error)));
 	}
 
-	HAMON_CXX11_CONSTEXPR T nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR T inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR T nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR T inf = hamon::numeric_limits<T>::infinity();
 
 	// If z is (±0,+0), the result is (π/2,-0)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(pi / 2, -0.0), hamon::acos(hamon::complex<T>(+0.0, +0.0))));

@@ -6,6 +6,7 @@
 
 #include <hamon/cmath/ranges/almost_equal.hpp>
 #include <hamon/cmath/fabs.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -49,7 +50,7 @@ struct Vector3
 template <typename T>
 struct almost_equal_eps
 {
-	HAMON_CXX11_STATIC_CONSTEXPR T value = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_STATIC_CONSTEXPR T value = hamon::numeric_limits<T>::epsilon();
 };
 
 template <typename T>

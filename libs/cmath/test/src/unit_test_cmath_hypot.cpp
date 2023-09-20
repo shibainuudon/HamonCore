@@ -8,8 +8,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -126,10 +126,10 @@ inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 template <typename T>
 void HypotTestFloat()
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
@@ -274,9 +274,9 @@ void HypotTestInteger(void)
 template <typename T>
 void Hypot3TestFloat()
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 
@@ -374,7 +374,7 @@ void Hypot3TestInteger(void)
 {
 	HAMON_CXX11_CONSTEXPR double error = 1e-12;
 
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0,              hamon::hypot(T( 0), T( 0), T( 0)), error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(hamon::sqrt(2.0), hamon::hypot(T( 1), T( 0), T( 1)), error);

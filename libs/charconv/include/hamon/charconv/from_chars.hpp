@@ -29,6 +29,7 @@ using std::from_chars;
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
 
@@ -165,7 +166,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 
 	if (minus)
 	{
-		if (x > negate_unsigned(static_cast<UT>(std::numeric_limits<T>::min())))
+		if (x > negate_unsigned(static_cast<UT>(hamon::numeric_limits<T>::min())))
 		{
 			return {ret.ptr, std::errc::result_out_of_range};
 		}
@@ -174,7 +175,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 	}
 	else
 	{
-		if (x > static_cast<UT>(std::numeric_limits<T>::max()))
+		if (x > static_cast<UT>(hamon::numeric_limits<T>::max()))
 		{
 			return {ret.ptr, std::errc::result_out_of_range};
 		}

@@ -6,8 +6,8 @@
 
 #include <hamon/bigint.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_bigint_test
@@ -35,67 +35,67 @@ CtorIntegralTest()
 		VERIFY(x == BigInt{"3"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int8_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::int8_t>::min()};
 		VERIFY(x == BigInt{"-128"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int8_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::int8_t>::max()};
 		VERIFY(x == BigInt{"127"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int16_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::int16_t>::min()};
 		VERIFY(x == BigInt{"-32768"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int16_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::int16_t>::max()};
 		VERIFY(x == BigInt{"32767"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int32_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::int32_t>::min()};
 		VERIFY(x == BigInt{"-2147483648"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int32_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::int32_t>::max()};
 		VERIFY(x == BigInt{"2147483647"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int64_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::int64_t>::min()};
 		VERIFY(x == BigInt{"-9223372036854775808"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::int64_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::int64_t>::max()};
 		VERIFY(x == BigInt{"9223372036854775807"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint8_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::uint8_t>::min()};
 		VERIFY(x == BigInt{"0"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint8_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::uint8_t>::max()};
 		VERIFY(x == BigInt{"255"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint16_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::uint16_t>::min()};
 		VERIFY(x == BigInt{"0"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint16_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::uint16_t>::max()};
 		VERIFY(x == BigInt{"65535"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint32_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::uint32_t>::min()};
 		VERIFY(x == BigInt{"0"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint32_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::uint32_t>::max()};
 		VERIFY(x == BigInt{"4294967295"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint64_t>::min()};
+		BigInt x{hamon::numeric_limits<hamon::uint64_t>::min()};
 		VERIFY(x == BigInt{"0"});
 	}
 	{
-		BigInt x{std::numeric_limits<hamon::uint64_t>::max()};
+		BigInt x{hamon::numeric_limits<hamon::uint64_t>::max()};
 		VERIFY(x == BigInt{"18446744073709551615"});
 	}
 	return true;

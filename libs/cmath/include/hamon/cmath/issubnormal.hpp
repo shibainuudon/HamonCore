@@ -17,8 +17,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -32,8 +32,8 @@ issubnormal_or_zero(T x) HAMON_NOEXCEPT
 {
 	return
 		x > 0 ?
-			x <  (std::numeric_limits<T>::min)():
-			x > -(std::numeric_limits<T>::min)();
+			x <  (hamon::numeric_limits<T>::min)():
+			x > -(hamon::numeric_limits<T>::min)();
 }
 
 template <typename FloatType>

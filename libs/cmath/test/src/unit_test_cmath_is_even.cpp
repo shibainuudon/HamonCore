@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/is_even.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -24,8 +24,8 @@ static_assert(hamon::is_same<bool, decltype(hamon::is_even(0   ))>::value, "");
 template <typename T>
 void IsEvenTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::is_even(T(-4.1)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::is_even(T(-4.0)));

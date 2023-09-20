@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/step.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -36,11 +36,11 @@ static_assert(hamon::is_same<double,      decltype(hamon::step(0   , 0   ))>::va
 template <typename T1, typename T2>
 void StepTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
-	HAMON_CXX11_CONSTEXPR auto eps2 = std::numeric_limits<T2>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nan1 = hamon::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = hamon::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = hamon::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = hamon::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps2 = hamon::numeric_limits<T2>::epsilon();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1, hamon::step(T1(0.0), T2( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0, hamon::step(T1(0.0), T2(-1.0)));

@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cmath
 		concepts
 		config
+		limits
 		numbers
 		type_traits
 		common)

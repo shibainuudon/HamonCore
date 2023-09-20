@@ -14,9 +14,9 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -68,11 +68,11 @@ lround_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<long>::min() :
-		x < (FloatType)std::numeric_limits<long>::min() ?
-			std::numeric_limits<long>::min() :
-		x > (FloatType)std::numeric_limits<long>::max() ?
-			std::numeric_limits<long>::max() :
+			hamon::numeric_limits<long>::min() :
+		x < (FloatType)hamon::numeric_limits<long>::min() ?
+			hamon::numeric_limits<long>::min() :
+		x > (FloatType)hamon::numeric_limits<long>::max() ?
+			hamon::numeric_limits<long>::max() :
 		lround_unchecked(x);
 }
 

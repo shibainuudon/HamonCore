@@ -34,8 +34,8 @@ using std::midpoint;
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_object.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -61,7 +61,7 @@ midpoint_impl(T a, T b, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 		a,
 		U(U(b) - U(a)),
 		b < a,
-		std::numeric_limits<U>::digits - 1);
+		hamon::numeric_limits<U>::digits - 1);
 }
 
 // floating
@@ -88,8 +88,8 @@ midpoint_impl(T a, T b, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 		a, b,
 		hamon::abs(a),
 		hamon::abs(b),
-		std::numeric_limits<T>::min() * 2,
-		std::numeric_limits<T>::max() / 2);
+		hamon::numeric_limits<T>::min() * 2,
+		hamon::numeric_limits<T>::max() / 2);
 }
 
 }	// namespace detail

@@ -10,9 +10,9 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -29,8 +29,8 @@ static_assert(hamon::is_same<double,      decltype(hamon::degrees_to_radians(0  
 template <typename T>
 void DegreesToRadiansTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR double error = 0.000001;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::degrees_to_radians(T(   0.0)), error);

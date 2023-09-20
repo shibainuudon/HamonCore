@@ -16,8 +16,8 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/numbers/pi.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -40,8 +40,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 acos_impl(T x, T y,
 	T pi = hamon::numbers::pi_fn<T>(),
-	T nan = std::numeric_limits<T>::quiet_NaN(),
-	T inf = std::numeric_limits<T>::infinity())
+	T nan = hamon::numeric_limits<T>::quiet_NaN(),
+	T inf = hamon::numeric_limits<T>::infinity())
 {
 	return
 		// If z is (±0,+0), the result is (π/2,-0)

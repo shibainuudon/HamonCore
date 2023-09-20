@@ -11,8 +11,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ saturate_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		(x < FloatType(0)) ?
 			FloatType(0) :
 		(FloatType(1) < x) ?

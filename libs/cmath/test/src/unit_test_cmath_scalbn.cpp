@@ -7,8 +7,8 @@
 #include <hamon/cmath/scalbn.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -27,8 +27,8 @@ static_assert(hamon::is_same<long double, decltype(hamon::scalbnl(0.0l, 0))>::va
 template <typename T>
 void ScalbnTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.125, hamon::scalbn(T( 1.0), -3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.25,  hamon::scalbn(T( 1.0), -2));

@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/is_positive.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -24,11 +24,11 @@ static_assert(hamon::is_same<bool, decltype(hamon::is_positive(0   ))>::value, "
 template <typename T>
 void IsPositiveTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::is_positive(T( 1.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::is_positive(T(-1.0)));
@@ -50,9 +50,9 @@ void IsPositiveTestFloat(void)
 template <typename T>
 void IsPositiveTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::is_positive(T( 0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::is_positive(T( 1)));
@@ -67,9 +67,9 @@ void IsPositiveTestSignedInt(void)
 template <typename T>
 void IsPositiveTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::is_positive(T( 0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::is_positive(T( 1)));

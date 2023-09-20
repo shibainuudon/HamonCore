@@ -10,8 +10,8 @@
 #include <hamon/complex/sqrt.hpp>
 #include <hamon/complex/conj.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 #include "complex_test_utility.hpp"
 
@@ -71,7 +71,7 @@ void test()
 		EXPECT_NEAR(-1.4553466902253549,  (double)x.imag(), error);
 	}
 
-	// std::sqrt(std::conj(z)) == std::conj(std::sqrt(z))
+	// sqrt(conj(z)) == conj(sqrt(z))
 	{
 		hamon::complex<T> z{1.0, 2.0};
 		EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
@@ -110,7 +110,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4553466902253549,  (double)x.imag(), error);
 	}
 
-	// std::sqrt(std::conj(z)) == std::conj(std::sqrt(z))
+	// sqrt(conj(z)) == conj(sqrt(z))
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.0, 2.0};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
@@ -128,8 +128,8 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_near(hamon::sqrt(hamon::conj(z)), hamon::conj(hamon::sqrt(z)), error));
 	}
 
-	HAMON_CXX11_CONSTEXPR T nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR T inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR T nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR T inf = hamon::numeric_limits<T>::infinity();
 
 	// If z is (±0,+0), the result is (+0,+0)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(+0.0, +0.0), hamon::sqrt(hamon::complex<T>(+0.0, +0.0))));

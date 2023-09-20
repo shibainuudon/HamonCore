@@ -7,9 +7,9 @@
 #include <hamon/cmath/issubnormal.hpp>
 #include <hamon/cmath/exp.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -29,12 +29,12 @@ static_assert(hamon::is_same<bool, decltype(hamon::issubnormal(0   ))>::value, "
 template <typename T>
 void IsSubnormalTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
-	HAMON_CXX11_CONSTEXPR auto denorm_min = std::numeric_limits<T>::denorm_min();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto denorm_min = hamon::numeric_limits<T>::denorm_min();
 	T zero = 0;	// MSVCでのエラーを避けるために変数にする
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::issubnormal(inf));
@@ -66,8 +66,8 @@ void IsSubnormalTestFloat(void)
 template <typename T>
 void IsSubnormalTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::issubnormal(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::issubnormal(T(-1)));
@@ -79,8 +79,8 @@ void IsSubnormalTestSignedInt(void)
 template <typename T>
 void IsSubnormalTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::issubnormal(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::issubnormal(T(1)));

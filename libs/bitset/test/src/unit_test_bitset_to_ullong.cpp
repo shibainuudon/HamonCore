@@ -9,6 +9,7 @@
 #include <hamon/bitset.hpp>
 #include <hamon/stdexcept/overflow_error.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -24,15 +25,15 @@ GTEST_TEST(BitsetTest, ToUllongTest)
 	}
 	{
 		HAMON_CXX11_CONSTEXPR auto b = ~hamon::bitset<64>();
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(std::numeric_limits<hamon::uint64_t>::max(), b.to_ullong());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<hamon::uint64_t>::max(), b.to_ullong());
 	}
 	{
 		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<65>();
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, b.to_ullong());
 	}
 	{
-		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<65>(std::numeric_limits<hamon::uint64_t>::max());
-		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(std::numeric_limits<hamon::uint64_t>::max(), b.to_ullong());
+		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<65>(hamon::numeric_limits<hamon::uint64_t>::max());
+		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<hamon::uint64_t>::max(), b.to_ullong());
 	}
 	{
 		HAMON_CXX11_CONSTEXPR auto b = ~hamon::bitset<65>();
@@ -42,7 +43,7 @@ GTEST_TEST(BitsetTest, ToUllongTest)
 #endif
 	}
 	{
-		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<128>(std::numeric_limits<hamon::uint64_t>::max()) << 1;
+		HAMON_CXX11_CONSTEXPR auto b = hamon::bitset<128>(hamon::numeric_limits<hamon::uint64_t>::max()) << 1;
 		(void)b;
 #if !defined(HAMON_NO_EXCEPTIONS)
 		EXPECT_THROW((void)b.to_ullong(), hamon::overflow_error);

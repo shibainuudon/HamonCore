@@ -10,8 +10,8 @@
 #include <hamon/random/engines/detail/split_mix64.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/ios/flags_saver.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 #include <istream>
 #include <ostream>
 
@@ -26,8 +26,8 @@ public:
 
 	static HAMON_CONSTEXPR result_type const default_seed = 2463534242UL;
 
-	static HAMON_CONSTEXPR result_type min() { return std::numeric_limits<result_type>::min(); }
-	static HAMON_CONSTEXPR result_type max() { return std::numeric_limits<result_type>::max(); }
+	static HAMON_CONSTEXPR result_type min() { return hamon::numeric_limits<result_type>::min(); }
+	static HAMON_CONSTEXPR result_type max() { return hamon::numeric_limits<result_type>::max(); }
 
 	explicit xorshift_base(result_type sd = default_seed)
 	{

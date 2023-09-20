@@ -11,8 +11,8 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers/pi.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -65,10 +65,10 @@ template <typename T1, typename T2>
 void Atan2TestFloat()
 {
 	using R = hamon::float_promote_t<T1, T2>;
-	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan1 = hamon::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = hamon::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = hamon::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = hamon::numeric_limits<T2>::infinity();
 
 	HAMON_CXX11_CONSTEXPR auto pi                = hamon::numbers::pi_fn<R>();
 	HAMON_CXX11_CONSTEXPR auto half_pi           = hamon::numbers::pi_fn<R>() / 2;

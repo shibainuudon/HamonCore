@@ -14,8 +14,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -36,13 +36,13 @@ rsqrt_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		x < 0 ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(x) ?
 			FloatType(0) :
 		hamon::iszero(x) ?
-			std::numeric_limits<FloatType>::infinity() :
+			hamon::numeric_limits<FloatType>::infinity() :
 		rsqrt_unchecked(x);
 }
 

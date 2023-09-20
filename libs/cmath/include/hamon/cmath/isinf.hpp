@@ -10,8 +10,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -27,8 +27,8 @@ isinf_impl(FloatType x) HAMON_NOEXCEPT
 	return __builtin_isinf(x);
 #else
 	return
-		x ==  std::numeric_limits<FloatType>::infinity() ||
-		x == -std::numeric_limits<FloatType>::infinity();
+		x ==  hamon::numeric_limits<FloatType>::infinity() ||
+		x == -hamon::numeric_limits<FloatType>::infinity();
 #endif
 }
 

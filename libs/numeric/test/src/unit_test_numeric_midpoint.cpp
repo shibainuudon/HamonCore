@@ -5,9 +5,9 @@
  */
 
 #include <hamon/numeric/midpoint.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 HAMON_WARNING_PUSH()
@@ -29,8 +29,8 @@ void test_floating()
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(-1.0), T(-2.0)) == T(-1.5));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T( 9e9), T(-9e9)) == T( 0.0));
 
-	HAMON_CXX11_CONSTEXPR T min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR T max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR T min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR T max = hamon::numeric_limits<T>::max();
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(min, min) == min);
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(max, min) == max/2);
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(min, max) == max/2);
@@ -51,8 +51,8 @@ void test_signed_integral()
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(-5), T(-4)) == T(-5));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(-4), T(-5)) == T(-4));
 
-	HAMON_CXX11_CONSTEXPR T min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR T max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR T min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR T max = hamon::numeric_limits<T>::max();
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(min),   T(max))   == T(-1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(max),   T(min))   == T(0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(max),   T(max))   == T(max));
@@ -71,7 +71,7 @@ void test_unsigned_integral()
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(0), T(2)) == T(1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(3), T(2)) == T(3));
 
-	HAMON_CXX11_CONSTEXPR T max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR T max = hamon::numeric_limits<T>::max();
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(0),     T(max))   == T(max/2));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(max),   T(0))     == T(max/2 + 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::midpoint(T(max),   T(max))   == T(max));

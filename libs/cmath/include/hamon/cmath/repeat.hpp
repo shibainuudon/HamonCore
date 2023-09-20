@@ -13,8 +13,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -44,7 +44,7 @@ repeat_impl(FloatType x, FloatType min, FloatType max) HAMON_NOEXCEPT
 		hamon::isnan(x) || hamon::isnan(min) || hamon::isnan(max) ||
 		hamon::isinf(x) || hamon::isinf(min) || hamon::isinf(max) ||
 		min > max ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		min == max ?
 			min :
 		repeat_unchecked(x, min, max);

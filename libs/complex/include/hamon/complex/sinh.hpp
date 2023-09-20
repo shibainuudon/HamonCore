@@ -15,8 +15,8 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/sin.hpp>
 #include <hamon/cmath/cos.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -36,8 +36,8 @@ sinh_unchecked(complex<T> const& x)
 template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 sinh_impl(T x, T y,
-	T nan = std::numeric_limits<T>::quiet_NaN(),
-	T inf = std::numeric_limits<T>::infinity())
+	T nan = hamon::numeric_limits<T>::quiet_NaN(),
+	T inf = hamon::numeric_limits<T>::infinity())
 {
 	return
 		// If z is (+0,+0), the result is (+0,+0)

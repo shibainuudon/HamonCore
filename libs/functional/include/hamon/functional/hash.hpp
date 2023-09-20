@@ -35,11 +35,11 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <functional>
 #include <tuple>
 #include <climits>
-#include <limits>
 #include <array>
 
 HAMON_WARNING_PUSH()
@@ -123,7 +123,7 @@ private:
 		T buf[N];
 	};
 
-	template <typename T, hamon::size_t Digits = std::numeric_limits<hamon::remove_cvref_t<T>>::digits>
+	template <typename T, hamon::size_t Digits = hamon::numeric_limits<hamon::remove_cvref_t<T>>::digits>
 	struct hash_float
 	{
 		static HAMON_CXX11_CONSTEXPR hamon::size_t

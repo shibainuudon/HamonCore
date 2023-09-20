@@ -15,9 +15,9 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -45,7 +45,7 @@ fmod_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) || hamon::isnan(y) || hamon::isinf(x) || hamon::iszero(y) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::iszero(x) || hamon::isinf(y) ?
 			x :
 		fmod_unchecked(x, y);

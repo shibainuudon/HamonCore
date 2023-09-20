@@ -10,8 +10,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -31,9 +31,9 @@ static_assert(hamon::is_same<long double, decltype(hamon::truncl(0.0l))>::value,
 template <typename T>
 void TruncTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon() * 2;
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon() * 2;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::trunc(T( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T( 0.0), hamon::trunc(T( 0.1)));

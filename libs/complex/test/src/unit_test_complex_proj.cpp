@@ -9,8 +9,8 @@
 #include <hamon/complex/complex.hpp>
 #include <hamon/complex/proj.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_complex_test
@@ -26,7 +26,7 @@ void test()
 	static_assert(hamon::is_same<decltype(hamon::proj(T{})), hamon::complex<T>>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::proj(int{})), hamon::complex<double>>::value, "");
 
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
 #if defined(HAMON_USE_STD_COMPLEX)
 

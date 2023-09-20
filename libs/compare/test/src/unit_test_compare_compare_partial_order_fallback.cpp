@@ -7,9 +7,9 @@
 #include <hamon/compare/compare_partial_order_fallback.hpp>
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/cmath/isnan.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_compare_test
@@ -54,12 +54,12 @@ inline HAMON_CXX17_CONSTEXPR bool test01()
 	X x2  {-0.0};
 	X x3  {+1.0};
 	X x4  {-1.0};
-	X x5  { std::numeric_limits<double>::quiet_NaN()};
-	X x6  {-std::numeric_limits<double>::quiet_NaN()};
-	X x7  { std::numeric_limits<double>::max()};
-	X x8  { std::numeric_limits<double>::lowest()};
-	X x9  { std::numeric_limits<double>::infinity()};
-	X x10 {-std::numeric_limits<double>::infinity()};
+	X x5  { hamon::numeric_limits<double>::quiet_NaN()};
+	X x6  {-hamon::numeric_limits<double>::quiet_NaN()};
+	X x7  { hamon::numeric_limits<double>::max()};
+	X x8  { hamon::numeric_limits<double>::lowest()};
+	X x9  { hamon::numeric_limits<double>::infinity()};
+	X x10 {-hamon::numeric_limits<double>::infinity()};
 
 	VERIFY(compare_partial_order_fallback(x1, x1)  == partial_ordering::equivalent);
 	VERIFY(compare_partial_order_fallback(x1, x2)  == partial_ordering::equivalent);

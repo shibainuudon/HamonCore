@@ -10,8 +10,8 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -51,10 +51,10 @@ inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
 template <typename T>
 void Log1pTestFloat()
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
 

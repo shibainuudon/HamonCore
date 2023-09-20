@@ -15,8 +15,8 @@
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -285,7 +285,7 @@ factorial_impl(unsigned int n) HAMON_NOEXCEPT
 {
 	return
 		n > max_factorial<T>() ?
-			std::numeric_limits<T>::infinity() :
+			hamon::numeric_limits<T>::infinity() :
 		unchecked_factorial<T>(n);
 }
 

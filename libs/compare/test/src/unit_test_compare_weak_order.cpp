@@ -9,9 +9,9 @@
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/is_eq.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 #if defined(HAMON_HAS_STD_COMPARE) && defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
@@ -122,13 +122,13 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(weak_order(-0.0,  0.0) == weak_ordering::equivalent);
 	VERIFY(weak_order( 0.0, -0.0) == weak_ordering::equivalent);
 
-	double min = std::numeric_limits<double>::lowest();
-	double max = std::numeric_limits<double>::max();
-	double nan = std::numeric_limits<double>::quiet_NaN();
-	double inf = std::numeric_limits<double>::infinity();
-	double denorm = std::numeric_limits<double>::denorm_min();
-	double smallest = std::numeric_limits<double>::min();
-	double epsilon = std::numeric_limits<double>::epsilon();
+	double min = hamon::numeric_limits<double>::lowest();
+	double max = hamon::numeric_limits<double>::max();
+	double nan = hamon::numeric_limits<double>::quiet_NaN();
+	double inf = hamon::numeric_limits<double>::infinity();
+	double denorm = hamon::numeric_limits<double>::denorm_min();
+	double smallest = hamon::numeric_limits<double>::min();
+	double epsilon = hamon::numeric_limits<double>::epsilon();
 
 	VERIFY(weak_order(denorm, smallest) == weak_ordering::less);
 	VERIFY(weak_order(denorm, 0.0) == weak_ordering::greater);

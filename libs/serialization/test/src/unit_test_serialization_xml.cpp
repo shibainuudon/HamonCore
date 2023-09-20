@@ -10,6 +10,7 @@
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/string.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
@@ -108,7 +109,7 @@ void XmlTest()
 		int const a = 3;
 		float const b = 1.5f;
 		bool const c = true;
-		float const d = std::numeric_limits<float>::infinity();
+		float const d = hamon::numeric_limits<float>::infinity();
 		bool const e = false;
 		hamon::string const f = "hello world";
 		hamon::string const g = "A\"B\'C<DE>F&G";
@@ -222,7 +223,7 @@ R"(<?xml version="1.0"?>
 		EXPECT_EQ(a, 3);
 		EXPECT_EQ(b, 1.5f);
 		EXPECT_EQ(c, true);
-		EXPECT_EQ(d, std::numeric_limits<float>::infinity());
+		EXPECT_EQ(d, hamon::numeric_limits<float>::infinity());
 		EXPECT_EQ(e, false);
 		EXPECT_EQ(f, "hello world");
 		EXPECT_EQ(g, "A\"B\'C<DE>F&G");

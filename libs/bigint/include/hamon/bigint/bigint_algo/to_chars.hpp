@@ -17,9 +17,9 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -62,7 +62,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
 	
-	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(std::numeric_limits<T>::digits / hamon::log2(base)));
+	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(hamon::numeric_limits<T>::digits / hamon::log2(base)));
 
 	// base2 = pow_n(base, digits)
 	VectorType base2{};

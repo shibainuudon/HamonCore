@@ -10,8 +10,8 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -30,9 +30,9 @@ static_assert(hamon::is_same<long double, decltype(hamon::sqrtl(0.0l))>::value, 
 template <typename T>
 void SqrtTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
 
 	HAMON_CXX11_CONSTEXPR double error = 0.0000001;
 

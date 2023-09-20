@@ -10,8 +10,8 @@
 #include <hamon/complex/tanh.hpp>
 #include <hamon/complex/conj.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 #include "complex_test_utility.hpp"
 
@@ -72,7 +72,7 @@ void test()
 		EXPECT_NEAR(-0.00016212700415590612, (double)x.imag(), error);
 	}
 
-	// std::tanh(std::conj(z)) == std::conj(std::tanh(z))
+	// tanh(conj(z)) == conj(tanh(z))
 	{
 		hamon::complex<T> z{1.0, 2.5};
 		EXPECT_TRUE((complex_near(hamon::tanh(hamon::conj(z)), hamon::conj(hamon::tanh(z)), error)));
@@ -90,7 +90,7 @@ void test()
 		EXPECT_TRUE((complex_near(hamon::tanh(hamon::conj(z)), hamon::conj(hamon::tanh(z)), error)));
 	}
 
-	// std::tanh(-z) == -std::tanh(z)
+	// tanh(-z) == -tanh(z)
 	{
 		hamon::complex<T> z{1.5, 2.0};
 		EXPECT_TRUE((complex_eq(hamon::tanh(-z), -hamon::tanh(z))));
@@ -130,7 +130,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.00016212700415590612, (double)x.imag(), error);
 	}
 
-	// std::tanh(std::conj(z)) == std::conj(std::tanh(z))
+	// tanh(conj(z)) == conj(tanh(z))
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.0, 2.5};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::tanh(hamon::conj(z)), hamon::conj(hamon::tanh(z)), error)));
@@ -148,7 +148,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::tanh(hamon::conj(z)), hamon::conj(hamon::tanh(z)), error)));
 	}
 
-	// std::tanh(-z) == -std::tanh(z)
+	// tanh(-z) == -tanh(z)
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.5, 2.0};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_eq(hamon::tanh(-z), -hamon::tanh(z))));
@@ -166,8 +166,8 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_eq(hamon::tanh(-z), -hamon::tanh(z))));
 	}
 
-	HAMON_CXX11_CONSTEXPR T nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR T inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR T nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR T inf = hamon::numeric_limits<T>::infinity();
 
 	// If z is (+0,+0), the result is (+0,+0)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(complex_eq(hamon::complex<T>(+0.0, +0.0), hamon::tanh(hamon::complex<T>(+0.0, +0.0))));

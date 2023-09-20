@@ -41,6 +41,7 @@ set(SUBDIRECTORIES
 	functional
 	ios
 	iterator
+	limits
 	list
 	map
 	memory

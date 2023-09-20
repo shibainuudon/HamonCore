@@ -7,8 +7,8 @@
 #include <hamon/cmath/saturate.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -25,10 +25,10 @@ static_assert(hamon::is_same<long double, decltype(hamon::saturate(0.0l))>::valu
 template <typename T>
 void SaturateTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::saturate(T(lowest)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::saturate(T(-0.2)));
@@ -48,8 +48,8 @@ void SaturateTestFloat(void)
 template <typename T>
 void SaturateTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::saturate(T(lowest)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::saturate(T(-2)));
@@ -63,7 +63,7 @@ void SaturateTestSignedInt(void)
 template <typename T>
 void SaturateTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::saturate(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(1), hamon::saturate(T(1)));

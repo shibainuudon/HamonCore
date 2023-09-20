@@ -13,8 +13,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -28,7 +28,7 @@ round_up_impl(FloatType x, FloatType base) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) || hamon::isnan(base) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(base) ?
 			base :
 		hamon::isinf(x) ?

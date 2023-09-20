@@ -10,8 +10,8 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -30,9 +30,9 @@ static_assert(hamon::is_same<double,      decltype(hamon::round(0   ))>::value, 
 template <typename T>
 void RoundTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon() * 2;
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon() * 2;
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)-2.0,  hamon::round(T(-1.5) - eps));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ((T)-2.0,  hamon::round(T(-1.5)));

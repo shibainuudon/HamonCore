@@ -7,8 +7,8 @@
 #include <hamon/cmath/fma.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -89,13 +89,13 @@ void FmaTestFloat(void)
 {
 	using R = hamon::float_promote_t<T1, T2, T3>;
 
-	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf3 = std::numeric_limits<T3>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf4 = std::numeric_limits<R>::infinity();
-	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto nan3 = std::numeric_limits<T3>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = hamon::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = hamon::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf3 = hamon::numeric_limits<T3>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf4 = hamon::numeric_limits<R>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan1 = hamon::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = hamon::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan3 = hamon::numeric_limits<T3>::quiet_NaN();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::fma(T1( 0.0), T2( 0.0), T3( 0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.5, hamon::fma(T1( 0.0), T2( 0.0), T3( 0.5)));

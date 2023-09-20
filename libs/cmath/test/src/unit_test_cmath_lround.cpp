@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/lround.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -26,14 +26,14 @@ static_assert(hamon::is_same<long, decltype(hamon::lround(0   ))>::value, "");
 template <typename T>
 void LRoundTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::lowest();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto eps = std::numeric_limits<T>::epsilon() * 2;
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon() * 2;
 
-	HAMON_CXX11_CONSTEXPR auto lmin = std::numeric_limits<long>::lowest();
-	HAMON_CXX11_CONSTEXPR auto lmax = std::numeric_limits<long>::max();
+	HAMON_CXX11_CONSTEXPR auto lmin = hamon::numeric_limits<long>::lowest();
+	HAMON_CXX11_CONSTEXPR auto lmax = hamon::numeric_limits<long>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-2L,  hamon::lround(T(-1.5) - eps));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-2L,  hamon::lround(T(-1.5)));

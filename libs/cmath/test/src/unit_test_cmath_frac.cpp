@@ -8,8 +8,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -55,11 +55,11 @@ void FracTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.1,    (double)hamon::frac(T( 2.1)),    error);
 	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.2,    (double)hamon::frac(T( 2.2)),    error);
 
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::frac(T( inf)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0.0), hamon::frac(T(-inf)));
 
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::frac(T( nan))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::frac(T(-nan))));
 }
@@ -67,8 +67,8 @@ void FracTestFloat(void)
 template <typename T>
 void FracTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::frac(T(lowest)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::frac(T(-2)));
@@ -82,7 +82,7 @@ void FracTestSignedInt(void)
 template <typename T>
 void FracTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::frac(T(0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(T(0), hamon::frac(T(1)));

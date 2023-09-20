@@ -15,8 +15,8 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -37,7 +37,7 @@ frac_impl(FloatingPoint x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatingPoint>::quiet_NaN() :
+			hamon::numeric_limits<FloatingPoint>::quiet_NaN() :
 		hamon::isinf(x) ?
 			FloatingPoint(0) :
 		frac_unchecked(x);

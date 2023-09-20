@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/fpclassify.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -24,12 +24,12 @@ static_assert(hamon::is_same<int, decltype(hamon::fpclassify(0   ))>::value, "")
 template <typename T>
 void FpClassifyTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
-	HAMON_CXX11_CONSTEXPR auto denorm_min = std::numeric_limits<T>::denorm_min();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto denorm_min = hamon::numeric_limits<T>::denorm_min();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_INFINITE,  hamon::fpclassify(+inf));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_INFINITE,  hamon::fpclassify(-inf));
@@ -51,8 +51,8 @@ void FpClassifyTestFloat(void)
 template <typename T>
 void FpClassifyTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_ZERO,   hamon::fpclassify(T( 0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_NORMAL, hamon::fpclassify(T(-1)));
@@ -66,8 +66,8 @@ void FpClassifyTestSignedInt(void)
 template <typename T>
 void FpClassifyTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR auto min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max = std::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_ZERO,   hamon::fpclassify(T( 0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(FP_NORMAL, hamon::fpclassify(T( 1)));

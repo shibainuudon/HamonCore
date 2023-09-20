@@ -11,7 +11,6 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/numbers/pi.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 #include "complex_test_utility.hpp"
 

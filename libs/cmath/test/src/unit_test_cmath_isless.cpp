@@ -6,8 +6,8 @@
 
 #include <hamon/cmath/isless.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -36,14 +36,14 @@ static_assert(hamon::is_same<bool, decltype(hamon::isless(0   , 0   ))>::value, 
 template <typename T1, typename T2>
 void IsLessTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan1 = std::numeric_limits<T1>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto nan2 = std::numeric_limits<T2>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf1 = std::numeric_limits<T1>::infinity();
-	HAMON_CXX11_CONSTEXPR auto inf2 = std::numeric_limits<T2>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min1 = std::numeric_limits<T1>::min();
-	HAMON_CXX11_CONSTEXPR auto min2 = std::numeric_limits<T2>::min();
-	HAMON_CXX11_CONSTEXPR auto max1 = std::numeric_limits<T1>::max();
-	HAMON_CXX11_CONSTEXPR auto max2 = std::numeric_limits<T2>::max();
+	HAMON_CXX11_CONSTEXPR auto nan1 = hamon::numeric_limits<T1>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto nan2 = hamon::numeric_limits<T2>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf1 = hamon::numeric_limits<T1>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf2 = hamon::numeric_limits<T2>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min1 = hamon::numeric_limits<T1>::min();
+	HAMON_CXX11_CONSTEXPR auto min2 = hamon::numeric_limits<T2>::min();
+	HAMON_CXX11_CONSTEXPR auto max1 = hamon::numeric_limits<T1>::max();
+	HAMON_CXX11_CONSTEXPR auto max2 = hamon::numeric_limits<T2>::max();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isless(T1(0.0), T2(0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::isless(T1(1.0), T2(0.0)));

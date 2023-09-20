@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/ranges/isnan.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -49,11 +49,11 @@ struct Vector3
 template <typename T, typename U = T>
 void RangesIsNanTest(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<U>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<U>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<U>::min();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<U>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<U>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<U>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<U>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<U>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<U>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<U>::lowest();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::isnan(T{ inf}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::isnan(T{-inf}));
@@ -70,11 +70,11 @@ void RangesIsNanTest(void)
 template <typename T>
 void RangesIsNanTest2(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan    = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf    = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR auto min    = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR auto max    = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR auto lowest = std::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR auto nan    = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf    = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto min    = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR auto max    = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto lowest = hamon::numeric_limits<T>::lowest();
 
 	{
 		HAMON_CXX11_CONSTEXPR Vector3<T> v1 { -1, 0, 0.5 };

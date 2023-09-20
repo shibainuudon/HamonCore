@@ -13,6 +13,7 @@
 #include <hamon/bit/countl_zero.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
@@ -38,7 +39,7 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 	dst = 0;
 	for (hamon::size_t i = 0; i < size; ++i)
 	{
-		if (src[i] > std::numeric_limits<UInt>::max())
+		if (src[i] > hamon::numeric_limits<UInt>::max())
 		{
 			overflow = true;
 		}

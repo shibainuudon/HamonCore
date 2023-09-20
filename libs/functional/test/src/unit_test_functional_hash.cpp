@@ -12,6 +12,7 @@
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/string.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
@@ -264,12 +265,12 @@ void HashFloatTest()
 {
 //	static_assert( hamon::is_nothrow_invocable<decltype(hamon::hash), T>::value, "");
 
-	HAMON_CXX11_CONSTEXPR T const eps = std::numeric_limits<T>::epsilon();
-	HAMON_CXX11_CONSTEXPR T const max = std::numeric_limits<T>::max();
-	HAMON_CXX11_CONSTEXPR T const min = std::numeric_limits<T>::min();
-	HAMON_CXX11_CONSTEXPR T const low = std::numeric_limits<T>::lowest();
-	HAMON_CXX11_CONSTEXPR T const inf = std::numeric_limits<T>::infinity();
-	HAMON_CXX11_CONSTEXPR T const nan = std::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR T const eps = hamon::numeric_limits<T>::epsilon();
+	HAMON_CXX11_CONSTEXPR T const max = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR T const min = hamon::numeric_limits<T>::min();
+	HAMON_CXX11_CONSTEXPR T const low = hamon::numeric_limits<T>::lowest();
+	HAMON_CXX11_CONSTEXPR T const inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR T const nan = hamon::numeric_limits<T>::quiet_NaN();
 
 	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(T(0)), hamon::hash(T(0)));
 	HAMON_CXX11_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(T(1)), hamon::hash(T(1)));

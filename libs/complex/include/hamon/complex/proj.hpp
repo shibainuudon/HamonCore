@@ -15,8 +15,8 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/copysign.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -29,7 +29,7 @@ proj(complex<T> const& x)
 {
     return
 		hamon::isinf(hamon::real(x)) || hamon::isinf(hamon::imag(x)) ?
-			hamon::complex<T>(std::numeric_limits<T>::infinity(), hamon::copysign(T(), hamon::imag(x))) :
+			hamon::complex<T>(hamon::numeric_limits<T>::infinity(), hamon::copysign(T(), hamon::imag(x))) :
 		x;
 }
 

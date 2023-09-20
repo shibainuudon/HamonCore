@@ -19,6 +19,7 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <system_error>
@@ -37,7 +38,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
 
-	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(std::numeric_limits<T>::digits / hamon::log2(base)));
+	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(hamon::numeric_limits<T>::digits / hamon::log2(base)));
 
 	VectorType base2{0};
 	bigint_algo::pow_n(base2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(digits));

@@ -19,9 +19,9 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -90,7 +90,7 @@ atan2_impl_1(FloatType y, FloatType x, FloatType pi) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) || hamon::isnan(y) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::iszero(y) ?
 			hamon::signbit(x) ?
 				hamon::copysign(pi, y) :

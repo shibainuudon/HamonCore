@@ -14,9 +14,9 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -31,7 +31,7 @@ inline HAMON_CXX14_CONSTEXPR hamon::size_t
 to_chars_length(VectorType const& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
-	auto const d = std::numeric_limits<T>::digits;
+	auto const d = hamon::numeric_limits<T>::digits;
 	auto const l = hamon::log2(base);
 	auto const s = static_cast<double>(value.size());
 	return static_cast<hamon::size_t>(

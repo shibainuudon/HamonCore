@@ -8,8 +8,8 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -28,8 +28,8 @@ static_assert(hamon::is_same<long double, decltype(hamon::logbl(0.0l))>::value, 
 template <typename T>
 void LogbTestFloat(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-17.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-16.0)));
@@ -76,7 +76,7 @@ template <typename T>
 void LogbTestSignedInt(void)
 {
 	using R = hamon::float_promote_t<T>;
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<R>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<R>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-17)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-16)));
@@ -108,7 +108,7 @@ template <typename T>
 void LogbTestUnsignedInt(void)
 {
 	using R = hamon::float_promote_t<T>;
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<R>::infinity();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<R>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0, hamon::logb(T(  1)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 1, hamon::logb(T(  2)));

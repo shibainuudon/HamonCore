@@ -6,9 +6,9 @@
 
 #include <hamon/compare/compare_strong_order_fallback.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_compare_test
@@ -52,8 +52,8 @@ inline HAMON_CXX17_CONSTEXPR bool test01()
 	X x1 { 0 };
 	X x2 { 1 };
 	X x3 {-1 };
-	X x4 { std::numeric_limits<int>::max() };
-	X x5 { std::numeric_limits<int>::min() };
+	X x4 { hamon::numeric_limits<int>::max() };
+	X x5 { hamon::numeric_limits<int>::min() };
 
 	VERIFY(compare_strong_order_fallback(x1, x1) == strong_ordering::equal);
 	VERIFY(compare_strong_order_fallback(x1, x2) == strong_ordering::less);

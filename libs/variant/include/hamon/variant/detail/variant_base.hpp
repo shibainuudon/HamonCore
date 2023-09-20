@@ -15,8 +15,8 @@
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/in_place_index.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -34,9 +34,9 @@ private:
 	using index_type = hamon::size_t;
 #else
 	using index_type =
-		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)std::numeric_limits<hamon::int8_t>::max()),  hamon::int8_t,
-		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)std::numeric_limits<hamon::int16_t>::max()), hamon::int16_t,
-		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)std::numeric_limits<hamon::int32_t>::max()), hamon::int32_t,
+		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)hamon::numeric_limits<hamon::int8_t>::max()),  hamon::int8_t,
+		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)hamon::numeric_limits<hamon::int16_t>::max()), hamon::int16_t,
+		hamon::conditional_t<(sizeof...(Types) < (hamon::size_t)hamon::numeric_limits<hamon::int32_t>::max()), hamon::int32_t,
 		hamon::size_t>>>;
 #endif
 

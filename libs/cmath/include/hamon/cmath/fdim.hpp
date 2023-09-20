@@ -12,8 +12,8 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ fdim_impl_2(FloatType x, FloatType y, FloatType inf) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) || hamon::isnan(y) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		x == inf ?
 			y == inf ?
 				FloatType(0) :
@@ -76,7 +76,7 @@ template <typename FloatType>
 inline HAMON_CXX11_CONSTEXPR FloatType
 fdim_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
-	return fdim_impl_2(x, y, std::numeric_limits<FloatType>::infinity());
+	return fdim_impl_2(x, y, hamon::numeric_limits<FloatType>::infinity());
 }
 
 }	// namespace detail

@@ -29,8 +29,8 @@ using std::ranges::ssize;
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/make_signed.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon {
 namespace ranges {
@@ -47,7 +47,7 @@ public:
 			hamon::conditional_t<
 				hamon::integral_t<size_type>::value,
 				hamon::conditional_t<
-					(std::numeric_limits<size_type>::digits < std::numeric_limits<hamon::ptrdiff_t>::digits),
+					(hamon::numeric_limits<size_type>::digits < hamon::numeric_limits<hamon::ptrdiff_t>::digits),
 					hamon::ptrdiff_t,
 					hamon::make_signed_t<size_type>
 				>,

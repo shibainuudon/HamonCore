@@ -21,9 +21,9 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -155,8 +155,8 @@ inline HAMON_CXX11_CONSTEXPR FloatType
 pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return pow_impl_2(x, y,
-		std::numeric_limits<FloatType>::infinity(),
-		std::numeric_limits<FloatType>::quiet_NaN());
+		hamon::numeric_limits<FloatType>::infinity(),
+		hamon::numeric_limits<FloatType>::quiet_NaN());
 }
 
 }	// namespace detail

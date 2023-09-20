@@ -13,9 +13,9 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
-#include <limits>
 #include <type_traits>	// is_constant_evaluated
 
 namespace hamon
@@ -90,9 +90,9 @@ sqrt_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		x < 0 ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(x) || hamon::iszero(x) ?
 			x :
 		sqrt_unchecked(x);

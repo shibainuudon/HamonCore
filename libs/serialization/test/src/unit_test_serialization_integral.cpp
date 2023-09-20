@@ -4,11 +4,11 @@
  *	@brief	整数型のシリアライズのテスト
  */
 
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <limits>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -26,9 +26,9 @@ void IntegralTest()
 	T const zero  = T(0);
 	T const one   = T(1);
 	T const minus = T(-1);
-	T const min   = std::numeric_limits<T>::min();
-	T const max   = std::numeric_limits<T>::max();
-	T const low   = std::numeric_limits<T>::lowest();
+	T const min   = hamon::numeric_limits<T>::min();
+	T const max   = hamon::numeric_limits<T>::max();
+	T const low   = hamon::numeric_limits<T>::lowest();
 
 	Stream str;
 	{

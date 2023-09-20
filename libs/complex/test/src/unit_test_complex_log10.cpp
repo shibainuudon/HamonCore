@@ -70,7 +70,7 @@ void test()
 		EXPECT_NEAR(-1.1296751469614137,  (double)x.imag(), error);
 	}
 
-	// std::log10(std::conj(z)) == std::conj(std::log10(z))
+	// log10(conj(z)) == conj(log10(z))
 	{
 		hamon::complex<T> z{1.5, 2.0};
 		EXPECT_TRUE((complex_near(hamon::log10(hamon::conj(z)), hamon::conj(hamon::log10(z)), error)));
@@ -109,7 +109,7 @@ void test()
 		HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.1296751469614137,  (double)x.imag(), error);
 	}
 
-	// std::log10(std::conj(z)) == std::conj(std::log10(z))
+	// log10(conj(z)) == conj(log10(z))
 	{
 		HAMON_CXX11_CONSTEXPR hamon::complex<T> z{1.5, 2.0};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE((complex_near(hamon::log10(hamon::conj(z)), hamon::conj(hamon::log10(z)), error)));

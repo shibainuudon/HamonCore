@@ -23,8 +23,8 @@ using std::in_range;
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/utility/detail/is_standard_integer.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -41,7 +41,7 @@ struct in_range_impl
 	static HAMON_CONSTEXPR bool
 	invoke(T t) HAMON_NOEXCEPT
 	{
-		return std::numeric_limits<U>::min() <= t && t <= std::numeric_limits<U>::max();
+		return hamon::numeric_limits<U>::min() <= t && t <= hamon::numeric_limits<U>::max();
 	}
 };
 
@@ -51,7 +51,7 @@ struct in_range_impl<U, T, false, true>
 	static HAMON_CONSTEXPR bool
 	invoke(T t) HAMON_NOEXCEPT
 	{
-		return t >= 0 && hamon::make_unsigned_t<T>(t) <= std::numeric_limits<U>::max();
+		return t >= 0 && hamon::make_unsigned_t<T>(t) <= hamon::numeric_limits<U>::max();
 	}
 };
 
@@ -61,7 +61,7 @@ struct in_range_impl<U, T, true, false>
 	static HAMON_CONSTEXPR bool
 	invoke(T t) HAMON_NOEXCEPT
 	{
-		return t <= hamon::make_unsigned_t<U>(std::numeric_limits<U>::max());
+		return t <= hamon::make_unsigned_t<U>(hamon::numeric_limits<U>::max());
 	}
 };
 

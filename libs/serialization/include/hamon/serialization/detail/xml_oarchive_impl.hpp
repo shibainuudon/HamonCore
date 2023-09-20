@@ -14,9 +14,9 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/array.hpp>
 #include <hamon/string.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <algorithm>
-#include <limits>
 #include <iomanip>
 #include <ostream>	// basic_ostream
 #include <ios>		// ios_base
@@ -174,7 +174,7 @@ private:
 		// to_charsが使えるなら使う
 		auto constexpr digits =
 			4 +	// sign, decimal point, "e+" or "e-"
-			std::numeric_limits<T>::max_digits10 +
+			hamon::numeric_limits<T>::max_digits10 +
 			4;	// log10(max_exponent10)
 		hamon::array<char, digits + 1> buf{};
 		auto result = std::to_chars(buf.data(), buf.data() + buf.size(), t);
@@ -182,7 +182,7 @@ private:
 		(void)result;
 #elif 1
 		// snprintfを使う
-		auto constexpr digits10 = std::numeric_limits<T>::max_digits10;
+		auto constexpr digits10 = hamon::numeric_limits<T>::max_digits10;
 		auto constexpr digits =
 			4 +	// sign, decimal point, "e+" or "e-"
 			digits10 +
@@ -197,7 +197,7 @@ private:
 		// operator<< を使う方法だと最も短い文字列にならない。
 		// (TODO: 良い方法があるなら修正したい)
 		auto const flags = m_os.flags();
-		m_os << std::setprecision(std::numeric_limits<T>::max_digits10)
+		m_os << std::setprecision(hamon::numeric_limits<T>::max_digits10)
 			<< std::scientific << t;
 		m_os.flags(flags);
 #endif

@@ -19,9 +19,9 @@
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/numbers/ln2.hpp>
 #include <hamon/numbers/ln10.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -64,7 +64,7 @@ logb_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
 		base < 1 ?
@@ -74,7 +74,7 @@ logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = std::numeric_limi
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
 		!(base < radix) ?
@@ -84,7 +84,7 @@ logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = std::numeric_limi
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
 		base < 1 ?
@@ -94,7 +94,7 @@ logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = std::numeric_limi
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
 		!(base < radix) ?
@@ -104,7 +104,7 @@ logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = std::numeric_limi
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
 		x < 1 ?
@@ -129,7 +129,7 @@ logb_unchecked_ct_2(T x, T x0, T exp)
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_1(T x, T exp, T radix = std::numeric_limits<T>::radix)
+logb_unchecked_ct_1(T x, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return logb_unchecked_ct_2(
 		x, hamon::detail::pow_n(radix, /*hamon::itrunc*/static_cast<hamon::intmax_t>(exp)), exp);
@@ -137,7 +137,7 @@ logb_unchecked_ct_1(T x, T exp, T radix = std::numeric_limits<T>::radix)
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct(T x, T radix = std::numeric_limits<T>::radix) HAMON_NOEXCEPT
+logb_unchecked_ct(T x, T radix = hamon::numeric_limits<T>::radix) HAMON_NOEXCEPT
 {
 	return x < 0 ?
 		logb_unchecked_ct_1(-x, hamon::trunc(log_a(radix, -x))) :
@@ -165,11 +165,11 @@ logb_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::iszero(x) ?
-			-std::numeric_limits<FloatType>::infinity() :
+			-hamon::numeric_limits<FloatType>::infinity() :
 		hamon::isinf(x) ?
-			std::numeric_limits<FloatType>::infinity() :
+			hamon::numeric_limits<FloatType>::infinity() :
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		logb_unchecked(x);
 }
 

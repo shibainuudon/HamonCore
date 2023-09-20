@@ -5,8 +5,8 @@
  */
 
 #include <hamon/cmath/ranges/is_even.hpp>
+#include <hamon/limits.hpp>
 #include <gtest/gtest.h>
-#include <limits>
 #include "constexpr_test.hpp"
 
 namespace hamon_cmath_test
@@ -49,8 +49,8 @@ struct Vector3
 template <typename T, typename U = T>
 void RangesIsEvenTest(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<U>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<U>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<U>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<U>::infinity();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_FALSE(hamon::ranges::is_even(T{-4.1f}));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE (hamon::ranges::is_even(T{-4.0f}));
@@ -92,8 +92,8 @@ void RangesIsEvenTest(void)
 template <typename T>
 void RangesIsEvenTest2(void)
 {
-	HAMON_CXX11_CONSTEXPR auto nan = std::numeric_limits<T>::quiet_NaN();
-	HAMON_CXX11_CONSTEXPR auto inf = std::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
+	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
 	{
 		HAMON_CXX11_CONSTEXPR Vector3<T> v1 { 0.0f, 0.1f, 0.2f };

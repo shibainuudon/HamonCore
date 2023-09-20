@@ -13,8 +13,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <limits>
 
 namespace hamon
 {
@@ -42,7 +42,7 @@ smoothstep_impl(FloatType from, FloatType to, FloatType x) HAMON_NOEXCEPT
 {
 	return
 		hamon::isnan(from) || hamon::isnan(to) || hamon::isnan(x) || from > to ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		x >= to ?
 			FloatType(1) :
 		x <= from ?
@@ -50,7 +50,7 @@ smoothstep_impl(FloatType from, FloatType to, FloatType x) HAMON_NOEXCEPT
 		from == to ?
 			FloatType(1) :
 		hamon::isinf(from) && hamon::isinf(to) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		hamon::isinf(from) ?
 			FloatType(1) :
 		hamon::isinf(to) ?

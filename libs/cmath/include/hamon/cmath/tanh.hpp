@@ -15,9 +15,9 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <type_traits>	// is_constant_evaluated
-#include <limits>
 #include <cmath>
 
 namespace hamon
@@ -94,7 +94,7 @@ tanh_impl(FloatType x) HAMON_NOEXCEPT
 		hamon::isinf(x) ?
 			hamon::copysign(FloatType(1), x) :
 		hamon::isnan(x) ?
-			std::numeric_limits<FloatType>::quiet_NaN() :
+			hamon::numeric_limits<FloatType>::quiet_NaN() :
 		tanh_unchecked(x);
 }
 
