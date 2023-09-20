@@ -44,6 +44,7 @@
 #include <hamon/type_traits/is_class.hpp>
 #include <hamon/type_traits/is_compound.hpp>
 #include <hamon/type_traits/is_const.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>

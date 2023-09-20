@@ -45,11 +45,11 @@ using std::ranges::copy_backward;
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
 #include <hamon/type_traits/detail/is_memcpyable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>	// is_constant_evaluated
 
 namespace hamon
 {
@@ -72,8 +72,8 @@ private:
 	impl(Iter first, Sent last, Out result,
 		hamon::detail::overload_priority<1>)
 	{
-#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-		if (!std::is_constant_evaluated())
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+		if (!hamon::is_constant_evaluated())
 		{
 			if constexpr (hamon::detail::is_memcpyable<Out, Iter>::value)
 			{

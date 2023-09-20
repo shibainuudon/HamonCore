@@ -28,8 +28,8 @@ using std::byteswap;
 #include <hamon/cstdint/uint16_t.hpp>
 #include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/cstdint/uint64_t.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>	// is_constant_evaluated
 #include <stdlib.h>
 
 namespace hamon
@@ -44,8 +44,8 @@ byteswap_impl_uint16(hamon::uint16_t value) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_bswap16)
 	return __builtin_bswap16(value);
 #else
-#if defined(HAMON_MSVC) && defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-	if (!std::is_constant_evaluated())
+#if defined(HAMON_MSVC) && defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
 	{
 		return _byteswap_ushort(value);
 	}
@@ -60,8 +60,8 @@ byteswap_impl_uint32(hamon::uint32_t value) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_bswap32)
 	return __builtin_bswap32(value);
 #else
-#if defined(HAMON_MSVC) && defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-	if (!std::is_constant_evaluated())
+#if defined(HAMON_MSVC) && defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
 	{
 		return _byteswap_ulong(value);
 	}
@@ -80,8 +80,8 @@ byteswap_impl_uint64(hamon::uint64_t value) HAMON_NOEXCEPT
 #if HAMON_HAS_BUILTIN(__builtin_bswap64)
 	return __builtin_bswap64(value);
 #else
-#if defined(HAMON_MSVC) && defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-	if (!std::is_constant_evaluated())
+#if defined(HAMON_MSVC) && defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
 	{
 		return _byteswap_uint64(value);
 	}

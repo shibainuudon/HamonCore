@@ -17,9 +17,9 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>	// is_constant_evaluated
 #include <cmath>
 
 namespace hamon
@@ -80,8 +80,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 log_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-	if (!std::is_constant_evaluated())
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
 	{
 		return std::log(x);
 	}

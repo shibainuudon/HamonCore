@@ -30,10 +30,10 @@ using std::ranges::less;
 #include <hamon/cstdint/uintptr_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>	// is_constant_evaluated
 
 namespace hamon
 {
@@ -60,8 +60,8 @@ private:
 	static HAMON_CXX14_CONSTEXPR bool impl(hamon::detail::overload_priority<1>, T&& t, U&& u)
 		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<T>() < hamon::declval<U>())
 	{
-#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-		if (std::is_constant_evaluated())
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+		if (hamon::is_constant_evaluated())
 		{
 			return t < u;
 		}

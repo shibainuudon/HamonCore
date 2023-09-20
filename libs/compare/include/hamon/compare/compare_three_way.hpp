@@ -27,9 +27,9 @@ using std::compare_three_way;
 #include <hamon/compare/detail/builtin_ptr_three_way.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/cstdint/uintptr_t.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>	// is_constant_evaluated
 
 namespace hamon
 {
@@ -46,8 +46,8 @@ struct compare_three_way
 			auto pt = static_cast<void const volatile*>(t);
 			auto pu = static_cast<void const volatile*>(u);
 
-#if defined(__cpp_lib_is_constant_evaluated) && __cpp_lib_is_constant_evaluated >= 201811
-			if (std::is_constant_evaluated())
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+			if (hamon::is_constant_evaluated())
 			{
 				return pt <=> pu;
 			}
