@@ -56,7 +56,7 @@ copy_n_impl(
 	InputIterator first,
 	Size n,
 	OutputIterator result,
-	hamon::input_iterator_tag*)
+	hamon::input_iterator_tag const*)
 {
 	for (Size i = 0; i < n; i++)
 	{
@@ -76,7 +76,7 @@ copy_n_impl(
 	RandomAccessIterator first,
 	Size n,
 	OutputIterator result,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*)
 {
 	return hamon::copy(first, first + n, result);
 }

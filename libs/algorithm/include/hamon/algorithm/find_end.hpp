@@ -46,8 +46,8 @@ find_end_impl(
 	ForwardIterator1 first1, ForwardIterator1 last1,
 	ForwardIterator2 first2, ForwardIterator2 last2,
 	BinaryPredicate pred,
-	hamon::forward_iterator_tag*,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*,
+	hamon::forward_iterator_tag const*)
 {
 	// modeled after search algorithm
 	auto r = last1;  // last1 is the "default" answer
@@ -115,8 +115,8 @@ find_end_impl(
 	BidirectionalIterator1 first1, BidirectionalIterator1 last1,
 	BidirectionalIterator2 first2, BidirectionalIterator2 last2,
 	BinaryPredicate pred,
-	hamon::bidirectional_iterator_tag*,
-	hamon::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag const*,
+	hamon::bidirectional_iterator_tag const*)
 {
 	// modeled after search algorithm (in reverse)
 	if (first2 == last2)
@@ -181,8 +181,8 @@ find_end_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	hamon::random_access_iterator_tag*,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*,
+	hamon::random_access_iterator_tag const*)
 {
 	// Take advantage of knowing source and pattern lengths.
 	// Stop short when source is smaller than pattern

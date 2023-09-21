@@ -39,7 +39,6 @@ using std::rotate;
 #include <hamon/utility/adl_swap.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <iterator>	// *_iterator_tag
 
 namespace hamon
 {
@@ -180,7 +179,7 @@ rotate_impl_2(
 	ForwardIterator first,
 	ForwardIterator middle,
 	ForwardIterator last,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	if (hamon::next(first) == middle)
 	{
@@ -196,7 +195,7 @@ rotate_impl_2(
 	BidirectionalIterator first,
 	BidirectionalIterator middle,
 	BidirectionalIterator last,
-	hamon::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag const*)
 {
 	if (hamon::next(first) == middle)
 	{
@@ -217,7 +216,7 @@ rotate_impl_2(
 	RandomAccessIterator first,
 	RandomAccessIterator middle,
 	RandomAccessIterator last,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*)
 {
 	if (hamon::next(first) == middle)
 	{

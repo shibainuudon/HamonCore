@@ -47,7 +47,7 @@ search_n_impl(
 	Size count,
 	T const& value,
 	BinaryPredicate pred,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	if (count <= 0)
 	{
@@ -109,7 +109,7 @@ search_n_impl(
 	Size count,
 	T const& value,
 	BinaryPredicate pred,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*)
 {
 	if (count <= 0)
 	{

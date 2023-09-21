@@ -150,8 +150,8 @@ is_permutation_impl(
 	ForwardIterator1 first1, ForwardIterator1 last1,
 	ForwardIterator2 first2, ForwardIterator2 last2,
 	BinaryPredicate pred,
-	hamon::forward_iterator_tag*,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*,
+	hamon::forward_iterator_tag const*)
 {
 	//  shorten sequences as much as possible by lopping of any equal prefix
 	for (; first1 != last1 && first2 != last2; ++first1, ++first2)
@@ -192,8 +192,8 @@ is_permutation_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator2 last1,
 	RandomAccessIterator1 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	hamon::random_access_iterator_tag*,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*,
+	hamon::random_access_iterator_tag const*)
 {
 	if (hamon::distance(first1, last1) != hamon::distance(first2, last2))
 	{

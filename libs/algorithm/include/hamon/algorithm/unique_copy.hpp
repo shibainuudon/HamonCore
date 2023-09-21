@@ -47,8 +47,8 @@ unique_copy_impl(
 	InputIterator last,
 	OutputIterator result,
 	BinaryPredicate pred,
-	hamon::input_iterator_tag*,
-	hamon::output_iterator_tag*)
+	hamon::input_iterator_tag const*,
+	hamon::output_iterator_tag const*)
 {
 	if (first != last)
 	{
@@ -81,8 +81,8 @@ unique_copy_impl(
 	ForwardIterator last,
 	OutputIterator result,
 	BinaryPredicate pred,
-	hamon::forward_iterator_tag*,
-	hamon::output_iterator_tag*)
+	hamon::forward_iterator_tag const*,
+	hamon::output_iterator_tag const*)
 {
 	if (first != last)
 	{
@@ -115,8 +115,8 @@ unique_copy_impl(
 	InputIterator last,
 	ForwardIterator result,
 	BinaryPredicate pred,
-	hamon::input_iterator_tag*,
-	hamon::forward_iterator_tag*)
+	hamon::input_iterator_tag const*,
+	hamon::forward_iterator_tag const*)
 {
 	if (first != last)
 	{

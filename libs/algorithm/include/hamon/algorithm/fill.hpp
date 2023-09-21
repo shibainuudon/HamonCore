@@ -40,7 +40,7 @@ fill_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	T const& value,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	while (first != last)
 	{
@@ -54,7 +54,7 @@ fill_impl(
 	RandomAccessIterator first,
 	RandomAccessIterator last,
 	T const& value,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*)
 {
 	hamon::fill_n(first, last - first, value);
 }

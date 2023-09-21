@@ -41,7 +41,7 @@ partition_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	Predicate pred,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	for (;;)
 	{
@@ -76,7 +76,7 @@ partition_impl(
 	BidirectionalIterator first,
 	BidirectionalIterator last,
 	Predicate pred,
-	hamon::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag const*)
 {
 	for (;;)
 	{

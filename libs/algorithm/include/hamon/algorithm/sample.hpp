@@ -53,7 +53,7 @@ sample(
 	SampleIterator out,
 	Distance n,
 	UniformRandomBitGenerator& g,
-	hamon::input_iterator_tag*)
+	hamon::input_iterator_tag const*)
 {
 	using Distribution = std::uniform_int_distribution<Distance>;
 
@@ -89,7 +89,7 @@ sample(
 	SampleIterator out,
 	Distance n,
 	UniformRandomBitGenerator& g,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	using Distribution = std::uniform_int_distribution<Distance>;
 

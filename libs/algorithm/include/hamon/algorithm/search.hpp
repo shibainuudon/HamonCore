@@ -44,8 +44,8 @@ search_impl(
 	ForwardIterator1 first1, ForwardIterator1 last1,
 	ForwardIterator2 first2, ForwardIterator2 last2,
 	BinaryPredicate pred,
-	hamon::forward_iterator_tag*,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*,
+	hamon::forward_iterator_tag const*)
 {
 	if (first2 == last2)
 	{
@@ -103,8 +103,8 @@ search_impl(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	hamon::random_access_iterator_tag*,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*,
+	hamon::random_access_iterator_tag const*)
 {
 	auto const len2 = last2 - first2;
 	if (len2 == 0)

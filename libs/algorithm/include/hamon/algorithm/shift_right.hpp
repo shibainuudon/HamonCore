@@ -45,7 +45,7 @@ shift_right_impl(
 	BidirectionalIterator first,
 	BidirectionalIterator last,
 	Difference n,
-	hamon::bidirectional_iterator_tag*)
+	hamon::bidirectional_iterator_tag const*)
 {
 	auto mid = ranges::next(last, -n, first);
 	if (mid == first)
@@ -62,7 +62,7 @@ shift_right_impl(
 	ForwardIterator first,
 	ForwardIterator last,
 	Difference n,
-	hamon::forward_iterator_tag*)
+	hamon::forward_iterator_tag const*)
 {
 	auto result = ranges::next(first, n, last);
 	if (result == last)

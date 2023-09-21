@@ -104,8 +104,8 @@ equal_impl_2(
 	InputIterator1 first1, InputIterator1 last1,
 	InputIterator2 first2, InputIterator2 last2,
 	BinaryPredicate pred,
-	hamon::input_iterator_tag*,
-	hamon::input_iterator_tag*)
+	hamon::input_iterator_tag const*,
+	hamon::input_iterator_tag const*)
 {
 	return equal_impl_1(first1, last1, first2, last2, pred);
 }
@@ -120,8 +120,8 @@ equal_impl_2(
 	RandomAccessIterator1 first1, RandomAccessIterator1 last1,
 	RandomAccessIterator2 first2, RandomAccessIterator2 last2,
 	BinaryPredicate pred,
-	hamon::random_access_iterator_tag*,
-	hamon::random_access_iterator_tag*)
+	hamon::random_access_iterator_tag const*,
+	hamon::random_access_iterator_tag const*)
 {
 	return
 		hamon::distance(first1, last1) == hamon::distance(first2, last2) &&
