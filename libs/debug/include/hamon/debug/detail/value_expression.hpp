@@ -14,7 +14,6 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
@@ -32,20 +31,13 @@ template <typename T>
 class value_expression : public expression_base<value_expression<T>, hamon::remove_reference_t<T>>
 {
 public:
-	HAMON_CONSTEXPR value_expression(value_expression&& ve)
-		: m_value(hamon::forward<T>(ve.m_value))
-	{
-	}
-
 	HAMON_CONSTEXPR value_expression(value_expression const& ve)
 		: m_value(ve.m_value)
-	{
-	}
+	{}
 
 	explicit HAMON_CONSTEXPR value_expression(T&& val)
-		: m_value(hamon::forward<T>(val))
-	{
-	}
+		: m_value(static_cast<T&&>(val))
+	{}
 
 	value_expression& operator=(value_expression const&) = delete;
 
