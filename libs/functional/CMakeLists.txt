@@ -22,12 +22,16 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		bit
 		concepts
 		config
+		cstddef
+		cstdint
 		detail
+		iterator
 		limits
 		memory
+		ranges
 		tuple
 		type_traits
-		ranges
+		utility
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
