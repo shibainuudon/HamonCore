@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_CONCEPTS_PAIR_LIKE_HPP
 
 #include <hamon/tuple/concepts/tuple_like.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
 #include <tuple>
@@ -27,7 +28,6 @@ concept pair_like =
 
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
 namespace detail {
@@ -59,8 +59,6 @@ using pair_like =
 }	// namespace hamon
 
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
 

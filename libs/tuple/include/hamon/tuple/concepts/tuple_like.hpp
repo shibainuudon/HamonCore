@@ -11,6 +11,7 @@
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
 
@@ -46,8 +47,6 @@ using tuple_like = hamon::disjunction<
 }	// namespace hamon
 
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon {
 

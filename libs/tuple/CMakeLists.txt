@@ -19,10 +19,14 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		compare
 		concepts
 		config
+		cstddef
 		functional
+		memory
 		pair
+		ranges	# different_from
 		type_traits
 		utility
 		common)
