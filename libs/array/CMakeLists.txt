@@ -20,11 +20,14 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		algorithm
+		compare		# synth3way
+		concepts
 		config
 		cstddef
 		iterator
 		stdexcept
 		type_traits
+		utility
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
