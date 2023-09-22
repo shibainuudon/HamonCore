@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECT_EQUIVALENCE_RELATION_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirect_equivalence_relation;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -27,13 +19,16 @@ using std::indirect_equivalence_relation;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/equivalence_relation.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirect_equivalence_relation;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2 = I1>
 concept indirect_equivalence_relation =
@@ -87,15 +82,6 @@ using indirect_equivalence_relation =
 	typename detail::indirect_equivalence_relation_impl<F, I1, I2>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename F, typename I1, typename I2 = I1>
 using indirect_equivalence_relation_t =

@@ -8,28 +8,23 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_WRITABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
+#include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
-namespace hamon
-{
-
 using std::indirectly_writable;
 
-}	// namespace hamon
-
-#else
-
-#include <hamon/iterator/iter_reference_t.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/forward.hpp>
-#include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Out, typename T>
 concept indirectly_writable =
@@ -73,15 +68,6 @@ using indirectly_writable =
 	typename detail::indirectly_writable_impl<Out, T>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Out, typename T>
 using indirectly_writable_t =

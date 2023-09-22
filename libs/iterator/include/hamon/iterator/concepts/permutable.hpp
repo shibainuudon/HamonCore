@@ -8,29 +8,24 @@
 #define HAMON_ITERATOR_CONCEPTS_PERMUTABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::permutable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_movable_storable.hpp>
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::permutable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 concept permutable =
@@ -68,15 +63,6 @@ using permutable =
 	typename detail::permutable_impl<Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter>
 using permutable_t =

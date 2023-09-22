@@ -64,7 +64,6 @@ using std::move_iterator;
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {

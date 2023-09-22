@@ -8,28 +8,24 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_COMPARABLE_HPP
 
 #include <hamon/iterator/config.hpp>
-
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirectly_comparable;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
-#include <hamon/iterator/projected.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
+#include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
+#include <hamon/iterator/projected.hpp>
+#include <hamon/functional/identity.hpp>
+#endif
+
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirectly_comparable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename I1,
@@ -74,16 +70,6 @@ using indirectly_comparable =
 	typename detail::indirectly_comparable_impl<I1, I2, Rel, P1, P2>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/functional/identity.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <
 	typename I1,

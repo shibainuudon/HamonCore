@@ -8,31 +8,26 @@
 #define HAMON_ITERATOR_CONCEPTS_WEAKLY_INCREMENTABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::weakly_incrementable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/signed_integer_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::weakly_incrementable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 concept weakly_incrementable =
@@ -78,15 +73,6 @@ using weakly_incrementable =
 	typename detail::weakly_incrementable_impl<Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter>
 using weakly_incrementable_t =

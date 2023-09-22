@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_MOVABLE_STORABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirectly_movable_storable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_movable.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -28,13 +20,16 @@ using std::indirectly_movable_storable;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirectly_movable_storable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename In, typename Out>
 concept indirectly_movable_storable =
@@ -78,15 +73,6 @@ using indirectly_movable_storable =
 	typename detail::indirectly_movable_storable_impl<In, Out>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename In, typename Out>
 using indirectly_movable_storable_t =

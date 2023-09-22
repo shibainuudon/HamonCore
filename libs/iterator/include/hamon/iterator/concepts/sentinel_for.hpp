@@ -8,29 +8,24 @@
 #define HAMON_ITERATOR_CONCEPTS_SENTINEL_FOR_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::sentinel_for;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::sentinel_for;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Sent, typename Iter>
 concept sentinel_for =
@@ -68,15 +63,6 @@ using sentinel_for =
 	typename detail::sentinel_for_impl<Sent, Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Sent, typename Iter>
 using sentinel_for_t =

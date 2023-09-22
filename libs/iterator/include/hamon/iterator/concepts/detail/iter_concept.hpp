@@ -15,7 +15,6 @@
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {

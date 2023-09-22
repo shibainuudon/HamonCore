@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_RANDOM_ACCESS_ITERATOR_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::random_access_iterator;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
@@ -31,15 +23,17 @@ using std::random_access_iterator;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
-#include <iterator>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::random_access_iterator;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 concept random_access_iterator =
@@ -108,15 +102,6 @@ using random_access_iterator =
 	typename detail::random_access_iterator_impl<Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter>
 using random_access_iterator_t =

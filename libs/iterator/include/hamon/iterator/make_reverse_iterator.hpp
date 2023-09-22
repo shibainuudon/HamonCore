@@ -23,7 +23,6 @@ using std::make_reverse_iterator;
 #else
 
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {

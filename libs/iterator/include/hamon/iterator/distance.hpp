@@ -25,7 +25,6 @@ using std::distance;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {

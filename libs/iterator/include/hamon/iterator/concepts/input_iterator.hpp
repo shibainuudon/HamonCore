@@ -8,32 +8,26 @@
 #define HAMON_ITERATOR_CONCEPTS_INPUT_ITERATOR_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::input_iterator;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/config.hpp>
-#include <iterator>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::input_iterator;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 concept input_iterator =
@@ -72,15 +66,6 @@ using input_iterator =
 	typename detail::input_iterator_impl<Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter>
 using input_iterator_t =

@@ -8,29 +8,24 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_SWAPPABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirectly_swappable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirectly_swappable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I1, typename I2 = I1>
 concept indirectly_swappable =
@@ -77,15 +72,6 @@ using indirectly_swappable =
 	typename detail::indirectly_swappable_impl<I1, I2>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename I1, typename I2 = I1>
 using indirectly_swappable_t =

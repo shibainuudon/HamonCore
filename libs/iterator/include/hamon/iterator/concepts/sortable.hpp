@@ -10,29 +10,24 @@
 #include <hamon/iterator/config.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/ranges/less.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::sortable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::sortable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename Iter,
@@ -77,15 +72,6 @@ using sortable =
 	typename detail::sortable_impl<Iter, Rel, Proj>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <
 	typename Iter,

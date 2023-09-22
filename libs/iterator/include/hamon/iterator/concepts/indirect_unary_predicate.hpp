@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECT_UNARY_PREDICATE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirect_unary_predicate;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -27,13 +19,16 @@ using std::indirect_unary_predicate;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/predicate.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirect_unary_predicate;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I>
 concept indirect_unary_predicate =
@@ -75,15 +70,6 @@ using indirect_unary_predicate =
 	typename detail::indirect_unary_predicate_impl<F, I>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename F, typename I>
 using indirect_unary_predicate_t =

@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECT_STRICT_WEAK_ORDER_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirect_strict_weak_order;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -27,13 +19,16 @@ using std::indirect_strict_weak_order;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirect_strict_weak_order;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2 = I1>
 concept indirect_strict_weak_order =
@@ -87,15 +82,6 @@ using indirect_strict_weak_order =
 	typename detail::indirect_strict_weak_order_impl<F, I1, I2>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename F, typename I1, typename I2 = I1>
 using indirect_strict_weak_order_t =

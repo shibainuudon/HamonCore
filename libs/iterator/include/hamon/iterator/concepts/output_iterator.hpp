@@ -8,29 +8,24 @@
 #define HAMON_ITERATOR_CONCEPTS_OUTPUT_ITERATOR_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
+#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/iterator/concepts/indirectly_writable.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
-namespace hamon
-{
-
 using std::output_iterator;
 
-}	// namespace hamon
-
-#else
-
-#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
-#include <hamon/iterator/concepts/indirectly_writable.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/forward.hpp>
-#include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter, typename T>
 concept output_iterator =
@@ -68,15 +63,6 @@ using output_iterator =
 	typename detail::output_iterator_impl<Iter, T>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter, typename T>
 using output_iterator_t =

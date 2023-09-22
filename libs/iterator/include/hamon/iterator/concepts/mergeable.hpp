@@ -10,31 +10,26 @@
 #include <hamon/iterator/config.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::mergeable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::mergeable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <
 	typename I1,
@@ -93,15 +88,6 @@ using mergeable =
 	typename detail::mergeable_impl<I1, I2, Out, Rel, P1, P2>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <
 	typename I1,

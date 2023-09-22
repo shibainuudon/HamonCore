@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_READABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirectly_readable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
@@ -28,13 +20,16 @@ using std::indirectly_readable;
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirectly_readable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 namespace detail
 {
@@ -96,15 +91,6 @@ using indirectly_readable =
 	typename detail::indirectly_readable_impl<hamon::remove_cvref_t<In>>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename In>
 using indirectly_readable_t =

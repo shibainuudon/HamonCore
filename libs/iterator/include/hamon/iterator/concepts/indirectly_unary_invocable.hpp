@@ -8,18 +8,10 @@
 #define HAMON_ITERATOR_CONCEPTS_INDIRECTLY_UNARY_INVOCABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::indirectly_unary_invocable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -29,13 +21,16 @@ using std::indirectly_unary_invocable;
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::indirectly_unary_invocable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I>
 concept indirectly_unary_invocable =
@@ -90,15 +85,6 @@ using indirectly_unary_invocable =
 	typename detail::indirectly_unary_invocable_impl<F, I>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename F, typename I>
 using indirectly_unary_invocable_t =

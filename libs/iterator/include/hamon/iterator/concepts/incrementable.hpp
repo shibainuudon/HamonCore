@@ -8,31 +8,26 @@
 #define HAMON_ITERATOR_CONCEPTS_INCREMENTABLE_HPP
 
 #include <hamon/iterator/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
-
-namespace hamon
-{
-
-using std::incrementable;
-
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/concepts/regular.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+
+using std::incrementable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
 concept incrementable =
@@ -70,15 +65,6 @@ using incrementable =
 	typename detail::incrementable_impl<Iter>::type;
 
 #endif
-
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Iter>
 using incrementable_t =

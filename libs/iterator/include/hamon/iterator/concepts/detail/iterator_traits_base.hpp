@@ -27,7 +27,6 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
-#include <iterator>
 
 namespace hamon
 {

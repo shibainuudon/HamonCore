@@ -29,7 +29,6 @@ using std::iterator_traits;
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {
