@@ -26,10 +26,10 @@ using std::exchange;
 
 #else
 
-#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 
 namespace hamon
 {

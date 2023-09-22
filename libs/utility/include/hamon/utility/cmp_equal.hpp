@@ -20,9 +20,9 @@ using std::cmp_equal;
 
 #else
 
+#include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/is_signed.hpp>
-#include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

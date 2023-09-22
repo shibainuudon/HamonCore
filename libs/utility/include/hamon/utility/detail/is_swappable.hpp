@@ -7,13 +7,13 @@
 #ifndef HAMON_UTILITY_DETAIL_IS_SWAPPABLE_HPP
 #define HAMON_UTILITY_DETAIL_IS_SWAPPABLE_HPP
 
+#include <hamon/utility/declval.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_void.hpp>
-#include <hamon/utility/declval.hpp>
-#include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

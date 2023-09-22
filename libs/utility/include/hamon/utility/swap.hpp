@@ -25,6 +25,7 @@ using std::swap;
 
 #else
 
+#include <hamon/utility/move.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -32,7 +33,6 @@ using std::swap;
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/utility/move.hpp>
 
 namespace hamon
 {

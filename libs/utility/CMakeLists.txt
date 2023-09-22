@@ -20,6 +20,7 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		config
+		cstddef
 		limits
 		type_traits
 		common)

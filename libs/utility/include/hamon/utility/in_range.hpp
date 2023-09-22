@@ -20,9 +20,9 @@ using std::in_range;
 
 #else
 
+#include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/type_traits/is_signed.hpp>
-#include <hamon/utility/detail/is_standard_integer.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
