@@ -19,19 +19,21 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
-		algorithm
+		algorithm	# min, max
 		array
 		bit
 		charconv
+		cmath
 		compare
 		concepts
 		config
 		cstddef
+		cstdint
 		limits
 		memory
-		pair
-		ranges
+		ranges		# range_value_t
 		string
+		string_view
 		type_traits
 		utility
 		vector
