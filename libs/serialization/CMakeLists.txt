@@ -46,10 +46,9 @@ endif()
 
 target_include_directories(${TARGET_NAME} INTERFACE ${PROJECT_SOURCE_DIR}/include)
 
-add_subdirectory(test)
-
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	if(HAMON_BUILD_TESTING)
+		add_subdirectory(test)
 		enable_testing()
 		add_executable(unit_test)
 		target_link_libraries(unit_test PRIVATE ${TARGET_NAME}_test)

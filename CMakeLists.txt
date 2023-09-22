@@ -14,9 +14,6 @@ project(${TARGET_NAME} LANGUAGES C CXX)
 add_library(${TARGET_NAME} INTERFACE)
 add_library(${TARGET_ALIAS_NAME} ALIAS ${TARGET_NAME})
 
-add_library(${TARGET_NAME}_test INTERFACE)
-add_library(${TARGET_ALIAS_NAME}_test ALIAS ${TARGET_NAME}_test)
-
 set(SUBDIRECTORIES
 	algorithm
 	any
@@ -76,12 +73,16 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/libs
 	INTERFACE ${SUBDIRECTORIES})
 
-foreach(SUBDIRECTORY ${SUBDIRECTORIES})
-	target_link_libraries(${TARGET_NAME}_test INTERFACE Hamon::${SUBDIRECTORY}_test)
-endforeach()
-
 if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	if(HAMON_BUILD_TESTING)
+		add_library(${TARGET_NAME}_test INTERFACE)
+		add_library(${TARGET_ALIAS_NAME}_test ALIAS ${TARGET_NAME}_test)
+
+		foreach(SUBDIRECTORY ${SUBDIRECTORIES})
+			add_subdirectory(libs/${SUBDIRECTORY}/test)
+			target_link_libraries(${TARGET_NAME}_test INTERFACE Hamon::${SUBDIRECTORY}_test)
+		endforeach()
+
 		enable_testing()
 		add_executable(unit_test)
 		target_link_libraries(unit_test PRIVATE ${TARGET_NAME}_test)
