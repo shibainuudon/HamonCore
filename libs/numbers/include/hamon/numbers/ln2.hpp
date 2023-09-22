@@ -7,19 +7,17 @@
 #ifndef HAMON_NUMBERS_LN2_HPP
 #define HAMON_NUMBERS_LN2_HPP
 
+#include <hamon/numbers/config.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#if HAMON_HAS_INCLUDE(<numbers>) && (HAMON_CXX_STANDARD >= 20)
-#include <numbers>
-#endif
 
 namespace hamon
 {
 namespace numbers
 {
 
-#if defined(__cpp_lib_math_constants) && (__cpp_lib_math_constants >= 201907L)
+#if defined(HAMON_USE_STD_NUMBERS)
 
 using std::numbers::ln2_v;
 using std::numbers::ln2;
