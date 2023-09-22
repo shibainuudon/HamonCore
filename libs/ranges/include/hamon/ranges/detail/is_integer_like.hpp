@@ -16,14 +16,9 @@
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -68,9 +63,7 @@ using is_integer_like_t = is_integer_like<T>;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_IS_INTEGER_LIKE_HPP

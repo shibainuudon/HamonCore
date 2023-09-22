@@ -8,33 +8,25 @@
 #define HAMON_RANGES_CONCEPTS_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+
+#if !defined(HAMON_USE_STD_RANGES)
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
+#include <hamon/utility/declval.hpp>
+#endif
+
+namespace hamon
+{
+namespace ranges
+{
 
 #if defined(HAMON_USE_STD_RANGES)
 
-namespace hamon
-{
-namespace ranges
-{
-
 using std::ranges::range;
 
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
-#include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
-
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept range =
@@ -72,18 +64,6 @@ template <typename T>
 using range = typename ranges::detail::range_impl<T>::type;
 
 #endif
-
-}	// namespace ranges
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
 
 template <typename T>
 using range_t =

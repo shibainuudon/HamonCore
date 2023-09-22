@@ -8,21 +8,11 @@
 #define HAMON_RANGES_CONCEPTS_VIEWABLE_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+#include <initializer_list>
 
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::viewable_range;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 //#include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
@@ -34,9 +24,7 @@ using std::ranges::viewable_range;
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-#include <initializer_list>
+#endif
 
 namespace hamon
 {
@@ -54,7 +42,11 @@ struct is_initializer_list<std::initializer_list<T>> : public hamon::true_type {
 
 } // namespace detail
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES)
+
+using std::ranges::viewable_range;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept viewable_range =
@@ -109,18 +101,6 @@ template <typename T>
 using viewable_range = typename ranges::detail::viewable_range_impl<T>::type;
 
 #endif
-
-}	// namespace ranges
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
 
 template <typename T>
 using viewable_range_t =

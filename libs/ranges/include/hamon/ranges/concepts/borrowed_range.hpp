@@ -8,32 +8,25 @@
 #define HAMON_RANGES_CONCEPTS_BORROWED_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::borrowed_range;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 namespace ranges
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES)
+
+using std::ranges::borrowed_range;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept borrowed_range =
@@ -49,18 +42,6 @@ using borrowed_range = hamon::conjunction<
 >;
 
 #endif
-
-}	// namespace ranges
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
 
 template <typename T>
 using borrowed_range_t =

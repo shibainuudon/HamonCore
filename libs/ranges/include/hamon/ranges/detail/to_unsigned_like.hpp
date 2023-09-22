@@ -15,14 +15,9 @@
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 HAMON_CONSTEXPR hamon::detail::max_size_type
 to_unsigned_like(hamon::detail::max_size_type t) HAMON_NOEXCEPT
@@ -44,9 +39,7 @@ to_unsigned_like(T t) HAMON_NOEXCEPT
 }
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_TO_UNSIGNED_LIKE_HPP

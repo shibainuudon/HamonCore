@@ -19,14 +19,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if 0
 void size(auto&) = delete;
@@ -78,9 +73,7 @@ using has_adl_size = typename has_adl_size_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_HAS_ADL_SIZE_HPP

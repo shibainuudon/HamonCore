@@ -10,14 +10,9 @@
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 template <typename T>
 HAMON_CONSTEXPR hamon::remove_reference_t<T> const&
@@ -34,9 +29,7 @@ as_const(T&& t) HAMON_NOEXCEPT
 }
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_AS_CONST_HPP

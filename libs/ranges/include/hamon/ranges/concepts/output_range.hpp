@@ -8,34 +8,26 @@
 #define HAMON_RANGES_CONCEPTS_OUTPUT_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::output_range;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 namespace ranges
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES)
+
+using std::ranges::output_range;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Range, typename T>
 concept output_range =
@@ -70,18 +62,6 @@ template <typename Range, typename T>
 using output_range = typename ranges::detail::output_range_impl<Range, T>::type;
 
 #endif
-
-}	// namespace ranges
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
 
 template <typename Range, typename T>
 using output_range_t =

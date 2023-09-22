@@ -12,14 +12,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -54,9 +49,7 @@ using size0_empty = typename size0_empty_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_SIZE0_EMPTY_HPP

@@ -8,21 +8,10 @@
 #define HAMON_RANGES_CONCEPTS_CONTIGUOUS_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES)
-
-namespace hamon
-{
-namespace ranges
-{
-
-using std::ranges::contiguous_range;
-
-}	// namespace ranges
-}	// namespace hamon
-
-#else
-
+#if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -31,16 +20,19 @@ using std::ranges::contiguous_range;
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
+#endif
 
 namespace hamon
 {
 namespace ranges
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_USE_STD_RANGES)
+
+using std::ranges::contiguous_range;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept contiguous_range =
@@ -83,18 +75,6 @@ using contiguous_range =
 	typename ranges::detail::contiguous_range_impl<T>::type;
 
 #endif
-
-}	// namespace ranges
-}	// namespace hamon
-
-#endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
 
 template <typename T>
 using contiguous_range_t =

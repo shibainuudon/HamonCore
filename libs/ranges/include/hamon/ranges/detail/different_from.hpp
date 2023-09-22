@@ -13,14 +13,9 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -52,9 +47,7 @@ using different_from_t =
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_DIFFERENT_FROM_HPP

@@ -13,14 +13,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -55,9 +50,7 @@ using has_member_rbegin = typename has_member_rbegin_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_HAS_MEMBER_RBEGIN_HPP

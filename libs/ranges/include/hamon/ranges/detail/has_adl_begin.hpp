@@ -16,14 +16,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 // Poison pills so that unqualified lookup doesn't find std::begin.
 #if 0
@@ -72,9 +67,7 @@ using has_adl_begin = typename has_adl_begin_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_HAS_ADL_BEGIN_HPP

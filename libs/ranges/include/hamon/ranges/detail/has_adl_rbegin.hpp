@@ -16,14 +16,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if 0
 void rbegin(auto&) = delete;
@@ -71,9 +66,7 @@ using has_adl_rbegin = typename has_adl_rbegin_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_HAS_ADL_RBEGIN_HPP

@@ -19,14 +19,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
-namespace hamon
-{
-
-namespace ranges
-{
-
-namespace detail
-{
+namespace hamon {
+namespace ranges {
+namespace detail {
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -75,9 +70,7 @@ using sentinel_size = typename sentinel_size_impl<T>::type;
 #endif
 
 }	// namespace detail
-
 }	// namespace ranges
-
 }	// namespace hamon
 
 #endif // HAMON_RANGES_DETAIL_SENTINEL_SIZE_HPP
