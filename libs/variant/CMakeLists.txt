@@ -21,10 +21,14 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		array
 		compare
+		concepts
 		config
 		cstddef
+		cstdint
+		detail
 		functional
 		limits
+		memory
 		type_traits
 		utility
 		common)

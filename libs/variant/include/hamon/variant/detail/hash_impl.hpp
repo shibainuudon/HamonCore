@@ -15,7 +15,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/remove_const.hpp>
-#include <functional>
+#include <functional>	// std::hash
 
 namespace hamon
 {
