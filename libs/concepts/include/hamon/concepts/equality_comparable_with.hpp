@@ -8,26 +8,24 @@
 #define HAMON_CONCEPTS_EQUALITY_COMPARABLE_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::equality_comparable_with;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::equality_comparable_with;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
 concept equality_comparable_with =
@@ -37,20 +35,7 @@ concept equality_comparable_with =
 	hamon::equality_comparable<hamon::common_reference_t<detail::cref<T>, detail::cref<U>>> &&
 	detail::weakly_eq_cmp_with<T, U>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/concepts/detail/cref.hpp>
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
-#include <hamon/type_traits/common_reference.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -80,14 +65,7 @@ template <typename T, typename U>
 using equality_comparable_with =
 	typename detail::equality_comparable_with_impl<T, U>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T, typename U>
 using equality_comparable_with_t =

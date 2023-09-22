@@ -7,43 +7,31 @@
 #ifndef HAMON_CONCEPTS_DERIVED_FROM_HPP
 #define HAMON_CONCEPTS_DERIVED_FROM_HPP
 
-#include <hamon/type_traits/is_base_of.hpp>
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/type_traits/add_cv.hpp>
+#include <hamon/type_traits/add_pointer.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/is_base_of.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
-namespace hamon
-{
-
 using std::derived_from;
 
-}	// namespace hamon
-
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-#include <hamon/type_traits/is_base_of.hpp>
-#include <hamon/type_traits/is_convertible.hpp>
-
-namespace hamon
-{
 
 template <typename Derived, typename Base>
 concept derived_from =
 	hamon::is_base_of<Base, Derived>::value &&
 	hamon::is_convertible<Derived const volatile*, Base const volatile*>::value;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/add_cv.hpp>
-#include <hamon/type_traits/add_pointer.hpp>
-#include <hamon/type_traits/is_base_of.hpp>
-#include <hamon/type_traits/is_convertible.hpp>
-
-namespace hamon
-{
 
 template <typename Derived, typename Base>
 using derived_from =
@@ -55,14 +43,7 @@ using derived_from =
 		>
 	>;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Derived, typename Base>
 using derived_from_t =

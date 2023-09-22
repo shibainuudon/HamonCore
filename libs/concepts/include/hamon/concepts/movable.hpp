@@ -8,25 +8,23 @@
 #define HAMON_CONCEPTS_MOVABLE_HPP
 
 #include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::movable;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/swappable.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_object.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::movable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept movable =
@@ -35,19 +33,7 @@ concept movable =
 	hamon::assignable_from<T&, T> &&
 	hamon::swappable<T>;
 
-}	// namespace detail
-
 #else
-
-#include <hamon/concepts/move_constructible.hpp>
-#include <hamon/concepts/assignable_from.hpp>
-#include <hamon/concepts/swappable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/is_object.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -75,14 +61,7 @@ public:
 template <typename T>
 using movable = typename detail::movable_impl<T>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using movable_t =

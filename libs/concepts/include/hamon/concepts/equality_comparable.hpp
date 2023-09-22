@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_EQUALITY_COMPARABLE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
 #endif
@@ -30,13 +31,6 @@ template <typename T>
 using equality_comparable = detail::weakly_eq_cmp_with<T, T>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using equality_comparable_t =

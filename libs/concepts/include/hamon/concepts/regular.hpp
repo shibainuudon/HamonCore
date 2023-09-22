@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_REGULAR_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
@@ -38,13 +39,6 @@ using regular =
 	>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using regular_t =

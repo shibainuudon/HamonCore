@@ -8,11 +8,13 @@
 #define HAMON_CONCEPTS_CONVERTIBLE_TO_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/type_traits/add_rvalue_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/declval.hpp>
+#endif
 
 namespace hamon
 {

@@ -8,12 +8,12 @@
 #define HAMON_CONCEPTS_MOVE_CONSTRUCTIBLE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #endif
-#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {

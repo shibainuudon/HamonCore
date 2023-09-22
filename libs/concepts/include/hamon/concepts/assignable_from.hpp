@@ -8,26 +8,25 @@
 #define HAMON_CONCEPTS_ASSIGNABLE_FROM_HPP
 
 #include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::assignable_from;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/cref.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/declval.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::assignable_from;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Lhs, typename Rhs>
 concept assignable_from =
@@ -38,20 +37,7 @@ concept assignable_from =
 		{ lhs = hamon::forward<Rhs>(rhs) } -> hamon::same_as<Lhs>;
 	};
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/cref.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_lvalue_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/declval.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -80,14 +66,7 @@ template <typename Lhs, typename Rhs>
 using assignable_from =
 	typename detail::assignable_from_impl<Lhs, Rhs>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Lhs, typename Rhs>
 using assignable_from_t =

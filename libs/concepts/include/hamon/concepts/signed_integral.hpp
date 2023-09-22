@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_SIGNED_INTEGRAL_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/integral.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -35,13 +36,6 @@ using signed_integral =
 	>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using signed_integral_t =

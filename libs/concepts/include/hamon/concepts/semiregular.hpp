@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_SEMIREGULAR_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
@@ -38,13 +39,6 @@ using semiregular =
 	>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using semiregular_t =

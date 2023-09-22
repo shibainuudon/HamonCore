@@ -8,21 +8,20 @@
 #define HAMON_CONCEPTS_SAME_AS_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
-namespace hamon
-{
-
 using std::same_as;
 
-}	// namespace hamon
-
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -37,14 +36,7 @@ concept same_as =
 	detail::SameHelper<T, U> &&
 	detail::SameHelper<U, T>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/type_traits/conjunction.hpp>
-
-namespace hamon
-{
 
 template <typename T, typename U>
 using same_as =
@@ -53,14 +45,7 @@ using same_as =
 		hamon::is_same<U, T>
 	>;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T, typename U>
 using same_as_t =

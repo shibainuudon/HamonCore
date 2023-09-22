@@ -8,24 +8,23 @@
 #define HAMON_CONCEPTS_COPY_CONSTRUCTIBLE_HPP
 
 #include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::copy_constructible;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::copy_constructible;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept copy_constructible =
@@ -34,18 +33,7 @@ concept copy_constructible =
 	hamon::constructible_from<T, T const&> && hamon::convertible_to<T const&, T> &&
 	hamon::constructible_from<T, T const>  && hamon::convertible_to<T const, T>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/move_constructible.hpp>
-#include <hamon/concepts/constructible_from.hpp>
-#include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -74,14 +62,7 @@ template <typename T>
 using copy_constructible =
 	typename detail::copy_constructible_impl<T>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using copy_constructible_t =

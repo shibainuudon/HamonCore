@@ -8,10 +8,10 @@
 #define HAMON_CONCEPTS_STRICT_WEAK_ORDER_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/relation.hpp>
 #endif
-#include <hamon/type_traits/bool_constant.hpp>
 
 namespace hamon
 {

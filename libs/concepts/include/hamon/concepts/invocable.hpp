@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_INVOCABLE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/type_traits/is_invocable.hpp>
 #endif
@@ -30,13 +31,6 @@ template <typename Fn, typename... Args>
 using invocable = hamon::is_invocable<Fn, Args...>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Fn, typename... Args>
 using invocable_t =

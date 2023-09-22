@@ -8,27 +8,25 @@
 #define HAMON_CONCEPTS_COMMON_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_reference.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::common_with;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/declval.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::common_with;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
 concept common_with =
@@ -50,20 +48,7 @@ concept common_with =
 		>
 	>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/add_lvalue_reference.hpp>
-#include <hamon/type_traits/common_type.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/declval.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -108,14 +93,7 @@ template <typename T, typename U>
 using common_with =
 	typename detail::common_with_impl<T, U>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T, typename U>
 using common_with_t =

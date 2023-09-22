@@ -8,24 +8,23 @@
 #define HAMON_CONCEPTS_COPYABLE_HPP
 
 #include <hamon/concepts/config.hpp>
-
-#if defined(HAMON_USE_STD_CONCEPTS)
-
-namespace hamon
-{
-
-using std::copyable;
-
-}	// namespace hamon
-
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/negation.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/assignable_from.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#endif
 
 namespace hamon
 {
+
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+using std::copyable;
+
+#elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept copyable =
@@ -35,18 +34,7 @@ concept copyable =
 	hamon::assignable_from<T&, const T&> &&
 	hamon::assignable_from<T&, const T>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/copy_constructible.hpp>
-#include <hamon/concepts/movable.hpp>
-#include <hamon/concepts/assignable_from.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -76,15 +64,7 @@ template <typename T>
 using copyable =
 	typename detail::copyable_impl<T>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/negation.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using copyable_t =

@@ -8,6 +8,7 @@
 #define HAMON_CONCEPTS_RELATION_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/predicate.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -41,13 +42,6 @@ using relation =
 	>;
 
 #endif
-
-}	// namespace hamon
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Rel, typename T, typename U>
 using relation_t =

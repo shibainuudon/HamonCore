@@ -8,42 +8,29 @@
 #define HAMON_CONCEPTS_PREDICATE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/concepts/regular_invocable.hpp>
+#include <hamon/concepts/detail/boolean_testable.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/invoke_result.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
-namespace hamon
-{
-
 using std::predicate;
 
-}	// namespace hamon
-
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-#include <hamon/concepts/regular_invocable.hpp>
-#include <hamon/concepts/detail/boolean_testable.hpp>
-#include <hamon/type_traits/invoke_result.hpp>
-
-namespace hamon
-{
 
 template <typename Fn, typename... Args>
 concept predicate =
 	hamon::regular_invocable<Fn, Args...> &&
 	detail::boolean_testable<hamon::invoke_result_t<Fn, Args...>>;
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/regular_invocable.hpp>
-#include <hamon/concepts/detail/boolean_testable.hpp>
-#include <hamon/type_traits/invoke_result.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -70,14 +57,7 @@ public:
 template <typename Fn, typename... Args>
 using predicate = typename detail::predicate_impl<Fn, Args...>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename Fn, typename... Args>
 using predicate_t =

@@ -8,22 +8,21 @@
 #define HAMON_CONCEPTS_SWAPPABLE_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/swap.hpp>
+#include <hamon/utility/declval.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
-namespace hamon
-{
-
 using std::swappable_with;
 
-}	// namespace hamon
-
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-namespace hamon
-{
 
 template <typename T, typename U>
 concept swappable_with =
@@ -36,15 +35,7 @@ concept swappable_with =
 		ranges::swap(static_cast<U&&>(u), static_cast<T&&>(t));
 	};
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/utility/declval.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -75,14 +66,7 @@ template <typename T, typename U>
 using swappable_with =
 	typename detail::swappable_with_impl<T, U>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T, typename U>
 using swappable_with_t =

@@ -9,7 +9,9 @@
 
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/type_traits/is_integral.hpp>
+#endif
 
 namespace hamon
 {

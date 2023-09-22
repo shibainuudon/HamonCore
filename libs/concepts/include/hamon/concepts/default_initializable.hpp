@@ -8,22 +8,19 @@
 #define HAMON_CONCEPTS_DEFAULT_INITIALIZABLE_HPP
 
 #include <hamon/concepts/config.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/concepts/constructible_from.hpp>
+#endif
+
+namespace hamon
+{
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
-namespace hamon
-{
-
 using std::default_initializable;
 
-}	// namespace hamon
-
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-#include <hamon/concepts/constructible_from.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 concept default_initializable =
@@ -34,15 +31,7 @@ concept default_initializable =
 		(void) ::new T;
 	};
 
-}	// namespace hamon
-
 #else
-
-#include <hamon/concepts/constructible_from.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 namespace detail
 {
@@ -70,14 +59,7 @@ template <typename T>
 using default_initializable =
 	typename detail::default_initializable_impl<T>::type;
 
-}	// namespace hamon
-
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-
-namespace hamon
-{
 
 template <typename T>
 using default_initializable_t =
