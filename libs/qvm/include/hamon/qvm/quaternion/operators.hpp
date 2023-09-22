@@ -22,7 +22,6 @@
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/minus.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {
