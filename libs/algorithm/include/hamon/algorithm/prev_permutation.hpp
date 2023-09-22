@@ -26,7 +26,6 @@ using std::prev_permutation;
 #include <hamon/concepts/swap.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
-#include <utility>
 
 namespace hamon
 {

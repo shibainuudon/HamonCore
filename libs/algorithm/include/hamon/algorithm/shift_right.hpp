@@ -31,7 +31,6 @@ using std::shift_right;
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/utility/move.hpp>
-#include <iterator>
 
 namespace hamon
 {

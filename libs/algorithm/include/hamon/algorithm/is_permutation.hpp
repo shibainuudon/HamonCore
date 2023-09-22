@@ -30,7 +30,6 @@ using std::is_permutation;
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {

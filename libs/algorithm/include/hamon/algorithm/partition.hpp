@@ -27,7 +27,6 @@ using std::partition;
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/config.hpp>
-#include <iterator>
 
 namespace hamon
 {
