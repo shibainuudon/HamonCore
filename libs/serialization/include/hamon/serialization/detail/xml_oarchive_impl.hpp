@@ -16,7 +16,6 @@
 #include <hamon/string.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <algorithm>
 #include <iomanip>
 #include <ostream>	// basic_ostream
 #include <ios>		// ios_base

@@ -24,6 +24,8 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		base64
 		concepts
 		config
+		cstddef
+		cstdint
 		cstring
 		detail
 		limits
@@ -31,6 +33,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		preprocessor
 		string
 		type_traits
+		utility
 		common)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
