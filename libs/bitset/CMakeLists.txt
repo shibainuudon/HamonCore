@@ -22,7 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		algorithm
 		array
 		bit
-		cmath
+		cmath	# round_up
 		config
 		cstddef
 		cstdint

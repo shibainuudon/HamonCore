@@ -31,6 +31,10 @@ using std::bitset;
 #include <hamon/bit/popcount.hpp>
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/cstdint/uint8_t.hpp>
+#include <hamon/cstdint/uint16_t.hpp>
+#include <hamon/cstdint/uint32_t.hpp>
+#include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/cstring/strlen.hpp>
 #include <hamon/functional/hash.hpp>
 #include <hamon/iterator/begin.hpp>
@@ -46,12 +50,13 @@ using std::bitset;
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
-#include <hamon/cstdint.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
-#include <cstdlib>		// std::abort
-#include <istream>
-#include <ostream>
+#include <ios>				// std::ios_base
+#include <istream>			// std::basic_istream
+#include <locale>			// std::use_facet, std::ctype
+#include <memory>			// std::allocator
+#include <ostream>			// std::basic_ostream
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
