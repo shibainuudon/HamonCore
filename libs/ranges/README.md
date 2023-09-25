@@ -18,9 +18,12 @@
 
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
 * Hamon.Debug
 * Hamon.Detail
 * Hamon.Iterator
+* Hamon.Limits
 * Hamon.Memory
 * Hamon.Tuple
 * Hamon.TypeTraits
+* Hamon.Utility
