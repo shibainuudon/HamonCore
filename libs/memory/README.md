@@ -1,6 +1,6 @@
 ﻿[![memory](https://github.com/shibainuudon/HamonCore/actions/workflows/memory.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/memory.yml)
 
-# Hamon.memory
+# Hamon.Memory
 
 このライブラリはC++標準ライブラリの`<memory>`を拡張・改良する機能を提供します。
 
@@ -16,5 +16,12 @@
 
 ## 依存ライブラリ
 
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Detail
+* Hamon.Iterator
+* Hamon.Pair
+* Hamon.Tuple
 * Hamon.TypeTraits
+* Hamon.Utility
