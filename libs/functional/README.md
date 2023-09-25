@@ -21,7 +21,13 @@
 * Hamon.Bit
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.Detail
+* Hamon.Iterator
+* Hamon.Limits
 * Hamon.Memory
+* Hamon.Ranges
 * Hamon.Tuple
 * Hamon.TypeTraits
-* Hamon.Ranges
+* Hamon.Utility
