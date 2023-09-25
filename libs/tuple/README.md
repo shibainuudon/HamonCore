@@ -7,6 +7,7 @@
 ## `<tuple>`からの変更点
 
 * C++の特定のバージョン以降で追加された関数をバージョンに関係なく使えるようにした
+* いくつかの関数を追加
 
 ## ビルドステータス
 
@@ -16,7 +17,13 @@
 
 ## 依存ライブラリ
 
+* Hamon.Compare
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Functional
+* Hamon.Memory
+* Hamon.Pair
+* Hamon.Ranges
 * Hamon.TypeTraits
 * Hamon.Utility
