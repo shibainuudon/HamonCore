@@ -13,3 +13,6 @@
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.Functional
+* Hamon.StringView
+* Hamon.TypeTraits
