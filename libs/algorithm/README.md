@@ -18,13 +18,19 @@
 
 ## 依存ライブラリ
 
+* Hamon.Bit
 * Hamon.Compare
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CString
 * Hamon.Debug
 * Hamon.Detail
 * Hamon.Functional
 * Hamon.Iterator
 * Hamon.Numeric
+* Hamon.Pair
+* Hamon.Preprocessor
 * Hamon.Ranges
 * Hamon.TypeTraits
+* Hamon.Utility
