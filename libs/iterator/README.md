@@ -16,7 +16,14 @@
 
 ## 依存ライブラリ
 
+* Hamon.CMath
+* Hamon.Compare
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Debug
+* Hamon.Detail
 * Hamon.Memory
+* Hamon.Ranges
 * Hamon.TypeTraits
+* Hamon.Utility
