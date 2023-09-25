@@ -17,4 +17,10 @@
 
 ## 依存ライブラリ
 
+* Hamon.Algorithm
+* Hamon.Compare
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.StringView
+* Hamon.TypeTraits
