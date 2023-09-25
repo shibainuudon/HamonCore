@@ -19,5 +19,8 @@
 * Hamon.Bit
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
 * Hamon.Ios
+* Hamon.Limits
 * Hamon.TypeTraits
