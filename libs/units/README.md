@@ -31,7 +31,6 @@ auto a = metres{3} * metres{4};
 // a.value() == 12
 ```
 
-
 ## ビルドステータス
 
 | main | develop |
@@ -40,7 +39,13 @@ auto a = metres{3} * metres{4};
 
 ## 依存ライブラリ
 
+* Hamon.Cmath
+* Hamon.Compare
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.Functional
 * Hamon.Ratio
 * Hamon.Tuple
 * Hamon.TypeTraits
+* Hamon.Utility
