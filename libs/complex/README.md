@@ -7,6 +7,7 @@
 ## `<complex>`からの変更点
 
 * 可能な限り`constexpr`をつけた
+* 可能な限り`nodiscard`をつけた
 
 ## ビルドステータス
 
@@ -19,5 +20,6 @@
 * Hamon.CMath
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.Limits
 * Hamon.Numbers
 * Hamon.TypeTraits
