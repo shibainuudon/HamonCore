@@ -1,6 +1,6 @@
 ﻿[![concepts](https://github.com/shibainuudon/HamonCore/actions/workflows/concepts.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/concepts.yml)
 
-# Hamon.concepts
+# Hamon.Concepts
 
 このライブラリはC++標準ライブラリの`<concepts>`を使えない環境でも、できるだけ`<concepts>`を再現することを目標としています。
 
@@ -36,5 +36,8 @@ hamon::XXX_t<T>::value
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Detail
 * Hamon.Preprocessor
 * Hamon.TypeTraits
+* Hamon.Utility
