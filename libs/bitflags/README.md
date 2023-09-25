@@ -2,7 +2,13 @@
 
 # Hamon.Bitflags
 
-このライブラリは
+このライブラリは、enumと組み合わせて安全なビットフラグを実現するクラステンプレートを提供します。
+
+## 使い方
+
+```cpp
+TODO
+```
 
 ## ビルドステータス
 
@@ -12,5 +18,9 @@
 
 ## 依存ライブラリ
 
+* Hamon.Bit
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.StdExcept
+* Hamon.String
 * Hamon.TypeTraits
