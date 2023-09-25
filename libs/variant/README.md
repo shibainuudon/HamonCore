@@ -2,7 +2,7 @@
 
 # Hamon.Variant
 
-このライブラリはC++標準ライブラリの`<variant>`を拡張・改良する機能を提供します。
+このライブラリはC\+\+標準ライブラリの`<variant>`を、C\+\+11でも使えるようにするものです。
 
 ## ビルドステータス
 
@@ -12,4 +12,15 @@
 
 ## 依存ライブラリ
 
+* Hamon.Array
+* Hamon.Compare
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.Detail
+* Hamon.Functional
+* Hamon.Limits
+* Hamon.Memory
+* Hamon.TypeTraits
+* Hamon.Utility
