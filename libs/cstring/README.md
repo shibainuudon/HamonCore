@@ -7,6 +7,7 @@
 ## `<cstring>`からの変更点
 
 * 可能な限り`constexpr`をつけた
+* 可能な限り`nodiscard`をつけた
 
 ## ビルドステータス
 
@@ -17,3 +18,5 @@
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.TypeTraits
