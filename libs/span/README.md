@@ -1,6 +1,12 @@
 ﻿[![span](https://github.com/shibainuudon/HamonCore/actions/workflows/span.yml/badge.svg)](https://github.com/shibainuudon/HamonCore/actions/workflows/span.yml)
 
-# Hamon.span
+# Hamon.Span
+
+このライブラリはC\+\+標準ライブラリの`<span>`を、C\+\+11でも使えるようにするものです。
+
+## `<span>`からの変更点
+
+* 可能な限り`nodiscard`をつけた
 
 ## ビルドステータス
 
@@ -10,4 +16,12 @@
 
 ## 依存ライブラリ
 
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Debug
+* Hamon.Iterator
+* Hamon.Limits
+* Hamon.Memory
+* Hamon.Ranges
+* Hamon.TypeTraits
