@@ -19,4 +19,7 @@
 
 * Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdInt
+* Hamon.Detail
 * Hamon.TypeTraits
+* Hamon.Utility
