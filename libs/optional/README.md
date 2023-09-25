@@ -2,11 +2,12 @@
 
 # Hamon.Optional
 
-このライブラリはC++標準ライブラリの`<optional>`を拡張・改良する機能を提供します。
+このライブラリはC\+\+標準ライブラリに`C++17`で追加された`<numbers>`を、C\+\+11でも使えるようにするものです。
 
 ## `<optional>`からの変更点
 
-* `C++17`で追加された`optional`を、`C++11`以降で使えるようにした
+* 可能な限り`constexpr`をつけた
+* 可能な限り`nodiscard`をつけた
 
 ## ビルドステータス
 
@@ -16,4 +17,11 @@
 
 ## 依存ライブラリ
 
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Debug
+* Hamon.Functional
+* Hamon.Memory
+* Hamon.TypeTraits
+* Hamon.Utility
