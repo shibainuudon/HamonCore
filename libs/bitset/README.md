@@ -7,8 +7,8 @@
 ## `<bitset>`からの変更点
 
 * 可能な限り`constexpr`をつけた
-* C++の特定のバージョン以降で追加された関数をバージョンに関係なく使えるようにした
-* 関数を追加
+* 可能な限り`nodiscard`をつけた
+* C++のバージョンごとの違いをなくした
 
 ## ビルドステータス
 
@@ -18,4 +18,17 @@
 
 ## 依存ライブラリ
 
+* Hamon.Algorithm
+* Hamon.Array
+* Hamon.Bit
+* Hamon.Cmath
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.CString
+* Hamon.Functional
+* Hamon.Iterator
+* Hamon.Numeric
+* Hamon.StdExcept
+* Hamon.String
+* Hamon.Utility
