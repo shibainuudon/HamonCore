@@ -5,20 +5,6 @@
 このライブラリはヘッダオンリーのシリアライゼーションライブラリです。
 任意のデータ型を、決められたフォーマットのデータに変換することができます。
 
-## ビルドステータス
-
-| main | develop |
-| ---- | ------- |
-|[![serialization](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml)|[![serialization](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml)|
-
-## 依存ライブラリ
-
-* Hamon.Base64
-* Hamon.Concepts
-* Hamon.Config
-* Hamon.Detail
-* Hamon.TypeTraits
-
 ## 対応フォーマット
 
 * Binary
@@ -95,3 +81,27 @@ Hamon.Serializationは生ポインタと参照型変数のシリアライズを�
 
 `std::unique_ptr`や`std::shared_ptr`のようなスマートポインタにはこのような問題がないため、
 シリアライズをサポートすることができます。
+
+## ビルドステータス
+
+| main | develop |
+| ---- | ------- |
+|[![serialization](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml/badge.svg?branch=main)](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml)|[![serialization](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml/badge.svg?branch=develop)](https://github.com/shibainuudon/HamonCore/actions/workflows/serialization.yml)|
+
+## 依存ライブラリ
+
+* Hamon.Algorithm
+* Hamon.Array
+* Hamon.Base64
+* Hamon.Concepts
+* Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
+* Hamon.CString
+* Hamon.Detail
+* Hamon.Limits
+* Hamon.Map
+* Hamon.Preprocessor
+* Hamon.String
+* Hamon.TypeTraits
+* Hamon.Utility
