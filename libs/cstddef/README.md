@@ -17,3 +17,4 @@
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.TypeTraits
