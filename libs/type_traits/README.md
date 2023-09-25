@@ -2,13 +2,12 @@
 
 # Hamon.TypeTraits
 
-このライブラリは型の特性を判定・操作するためのクラスを定義します。
-C++標準ライブラリの`<type_traits>`を拡張・改良します。
+このライブラリはC++標準ライブラリの`<type_traits>`を拡張・改良する機能を提供します。
 
 ## `<type_traits>`からの変更点
 
 * C++の特定のバージョン以降で追加されたクラスをバージョンに関係なく使えるようにした
-* クラスを追加
+* いくつかのクラスを追加
 
 ## ビルドステータス
 
@@ -19,5 +18,8 @@ C++標準ライブラリの`<type_traits>`を拡張・改良します。
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.CStdInt
 * Hamon.Functional
 * Hamon.Preprocessor
+* Hamon.Utility
