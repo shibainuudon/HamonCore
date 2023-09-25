@@ -2,13 +2,14 @@
 
 # Hamon.Pair
 
-このライブラリはC++標準ライブラリの`<pair>`を拡張・改良する機能を提供します。
+このライブラリはC++標準ライブラリの`std::pair`を拡張・改良する機能を提供します。
 
-## `<pair>`からの変更点
+## `std::pair`からの変更点
 
+* `<utility>`ヘッダではなく、独立したライブラリにした
 * 可能な限り`constexpr`をつけた
-* C++の特定のバージョン以降で追加された関数をバージョンに関係なく使えるようにした
-* 関数を追加
+* 可能な限り`nodiscard`をつけた
+* C++のバージョンごとの差異をなくした
 
 ## ビルドステータス
 
@@ -18,4 +19,11 @@
 
 ## 依存ライブラリ
 
+* Hamon.Compare
+* Hamon.Concepts
 * Hamon.Config
+* Hamon.CStdDef
+* Hamon.Ranges
+* Hamon.Tuple
+* Hamon.TypeTraits
+* Hamon.Utility
