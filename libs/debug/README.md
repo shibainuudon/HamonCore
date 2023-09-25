@@ -13,4 +13,6 @@
 ## 依存ライブラリ
 
 * Hamon.Config
+* Hamon.CStdDef
 * Hamon.TypeTraits
+* Hamon.Utility
