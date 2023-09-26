@@ -5,8 +5,8 @@
  */
 
 #include <hamon/random/engines/xorshift.hpp>
+#include <hamon/random/seed_seq.hpp>
 #include <gtest/gtest.h>
-#include <random>
 #include <sstream>
 #include "constexpr_test.hpp"
 
@@ -144,7 +144,7 @@ TYPED_TEST(XorShiftTest, SseqCtorTest)
 	using Engine = TypeParam;
 	{
 		unsigned const a[] ={3, 5, 7};
-		std::seed_seq sseq(a, a+3);
+		hamon::seed_seq sseq(a, a+3);
 		Engine e1;
 		Engine e2(sseq);
 		EXPECT_TRUE(e1 != e2);
@@ -152,7 +152,7 @@ TYPED_TEST(XorShiftTest, SseqCtorTest)
 	}
 	{
 		unsigned const a[] ={3, 5, 7};
-		std::seed_seq sseq(a, a+3);
+		hamon::seed_seq sseq(a, a+3);
 		Engine e1(sseq);
 		Engine e2(sseq);
 		EXPECT_TRUE(e1 == e2);
@@ -241,7 +241,7 @@ TYPED_TEST(XorShiftTest, SeedSseqTest)
 	using Engine = TypeParam;
 
 	unsigned a[] ={1, 2, 3, 4, 5};
-	std::seed_seq sseq(a, a+5);
+	hamon::seed_seq sseq(a, a+5);
 
 	Engine e1(sseq);
 	Engine e2;

@@ -21,5 +21,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		detail
 		limits
 		memory
+		random
 		string
 		type_traits)

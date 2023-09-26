@@ -31,6 +31,7 @@
 * Hamon.Numeric
 * Hamon.Pair
 * Hamon.Preprocessor
+* Hamon.Random
 * Hamon.Ranges
 * Hamon.TypeTraits
 * Hamon.Utility

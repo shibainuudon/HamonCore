@@ -32,6 +32,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		numeric		#gcd
 		pair
 		preprocessor
+		random
 		ranges
 		type_traits
 		utility

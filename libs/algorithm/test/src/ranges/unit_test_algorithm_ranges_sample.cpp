@@ -9,8 +9,8 @@
 #include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/adjacent_find.hpp>
 #include <hamon/algorithm/ranges/includes.hpp>
+#include <hamon/random.hpp>
 #include <gtest/gtest.h>
-#include <random>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -59,7 +59,7 @@ inline bool test01(Rng& rng)
 
 GTEST_TEST(AlgorithmTest, RangesSampleTest)
 {
-	std::mt19937 rng;
+	hamon::mt19937 rng;
 	EXPECT_TRUE((test01<forward_iterator_wrapper, output_iterator_wrapper>(rng)));
 	EXPECT_TRUE((test01<input_iterator_wrapper, random_access_iterator_wrapper>(rng)));
 }

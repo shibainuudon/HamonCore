@@ -26,12 +26,12 @@ using std::sample;
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/random/distributions/uniform_int_distribution.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
-#include <random>
 
 namespace hamon
 {
@@ -54,7 +54,7 @@ sample(
 	UniformRandomBitGenerator& g,
 	hamon::input_iterator_tag const*)
 {
-	using Distribution = std::uniform_int_distribution<Distance>;
+	using Distribution = hamon::uniform_int_distribution<Distance>;
 
 	Distance k = 0;
 	for (; first != last && k < n; ++first, ++k)
@@ -90,7 +90,7 @@ sample(
 	UniformRandomBitGenerator& g,
 	hamon::forward_iterator_tag const*)
 {
-	using Distribution = std::uniform_int_distribution<Distance>;
+	using Distribution = hamon::uniform_int_distribution<Distance>;
 
 	auto unsampled_sz = hamon::distance(first, last);
 	for (n = hamon::min(n, unsampled_sz); n != 0; ++first)

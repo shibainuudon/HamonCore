@@ -24,9 +24,9 @@ using std::shuffle;
 
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/random/distributions/uniform_int_distribution.hpp>
 #include <hamon/utility/adl_swap.hpp>
 #include <hamon/config.hpp>
-#include <random>	// uniform_int_distribution
 
 namespace hamon
 {
@@ -58,7 +58,7 @@ shuffle(
 	UniformRandomNumberGenerator&& g)
 {
 	using difference_type = hamon::iter_difference_t<RandomAccessIterator>;
-	using D = std::uniform_int_distribution<hamon::ptrdiff_t>;
+	using D = hamon::uniform_int_distribution<hamon::ptrdiff_t>;
 	using P = typename D::param_type;
 	
 	auto d = last - first;

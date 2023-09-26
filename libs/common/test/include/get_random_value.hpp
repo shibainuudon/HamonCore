@@ -16,36 +16,36 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <random>
-#include <limits>
+#include <hamon/limits.hpp>
+#include <hamon/random.hpp>
 
 namespace
 {
 
-inline std::mt19937& get_random_engine()
+inline hamon::mt19937& get_random_engine()
 {
-	static std::mt19937 mt;
+	static hamon::mt19937 mt;
 	return mt;
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<2>)
 {
-	std::uniform_real_distribution<T> dist(min, max);
+	hamon::uniform_real_distribution<T> dist(min, max);
 	return dist(get_random_engine());
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<1>)
 {
-	std::uniform_int_distribution<hamon::uintmax_t> dist(min, max);
+	hamon::uniform_int_distribution<hamon::uintmax_t> dist(min, max);
 	return static_cast<T>(dist(get_random_engine()));
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_signed<T>::value>>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<0>)
 {
-	std::uniform_int_distribution<hamon::intmax_t> dist(min, max);
+	hamon::uniform_int_distribution<hamon::intmax_t> dist(min, max);
 	return static_cast<T>(dist(get_random_engine()));
 }
 
@@ -59,16 +59,16 @@ template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<1>)
 {
 	return get_random_value(
-		std::numeric_limits<T>::lowest() / 2,
-		std::numeric_limits<T>::max() / 2);
+		hamon::numeric_limits<T>::lowest() / 2,
+		hamon::numeric_limits<T>::max() / 2);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<0>)
 {
 	return get_random_value(
-		std::numeric_limits<T>::min(),
-		std::numeric_limits<T>::max());
+		hamon::numeric_limits<T>::min(),
+		hamon::numeric_limits<T>::max());
 }
 
 template <typename T>
