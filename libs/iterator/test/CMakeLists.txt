@@ -12,8 +12,7 @@ target_sources(${TARGET_NAME} INTERFACE ${test_sources})
 target_include_directories(${TARGET_NAME} INTERFACE src)
 target_link_libraries(${TARGET_NAME}
 	INTERFACE
-		Hamon::${TARGET_NAME_BASE}
-		Hamon::common_test)
+		Hamon::${TARGET_NAME_BASE})
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
@@ -25,4 +24,5 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		set
 		string
 		string_view
-		vector)
+		vector
+		common_test)
