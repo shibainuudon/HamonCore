@@ -18,11 +18,11 @@
 //#include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <system_error>
 
 namespace hamon
 {
@@ -53,7 +53,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		auto p2 = first + hamon::min(p - first + digits, last - first);
 		T t{};
 		auto r = hamon::from_chars(p, p2, t, base);
-		if (r.ec == std::errc::invalid_argument)
+		if (r.ec == hamon::errc::invalid_argument)
 		{
 			break;
 		}
@@ -86,17 +86,17 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 
 	if (p == first)
 	{
-		return {first, std::errc::invalid_argument};
+		return {first, hamon::errc::invalid_argument};
 	}
 	
 	if (overflow)
 	{
-		return {p, std::errc::result_out_of_range};
+		return {p, hamon::errc::result_out_of_range};
 	}
 
 	value = x;
 
-	return {p, std::errc{}};
+	return {p, hamon::errc{}};
 }
 
 }	// namespace from_chars_detail

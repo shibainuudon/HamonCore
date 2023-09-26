@@ -57,6 +57,7 @@ set(SUBDIRECTORIES
 	stdexcept
 	string
 	string_view
+	system_error
 	tuple
 	type_info
 	type_traits

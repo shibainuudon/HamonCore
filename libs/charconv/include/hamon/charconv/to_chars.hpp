@@ -25,12 +25,12 @@ using std::to_chars;
 
 #include <hamon/charconv/detail/negate_unsigned.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/config.hpp>
-#include <system_error>
 
 namespace hamon
 {
@@ -38,7 +38,7 @@ namespace hamon
 struct to_chars_result
 {
 	char* ptr;
-	std::errc ec;
+	hamon::errc ec;
 #if defined(HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS)
 	friend bool operator==(to_chars_result const&, to_chars_result const&) = default;
 #else
@@ -85,7 +85,7 @@ to_chars_unsigned_integral(char* first, char* last, T value, T base)
 	auto n = to_chars_integral_width(value, base);
 	if (n > (last - first))
 	{
-		return {last, std::errc::value_too_large};
+		return {last, hamon::errc::value_too_large};
 	}
 
 	last = first + n;
@@ -98,7 +98,7 @@ to_chars_unsigned_integral(char* first, char* last, T value, T base)
 	}
 	while (value != 0);
 
-	return {last, std::errc{}};
+	return {last, hamon::errc{}};
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>

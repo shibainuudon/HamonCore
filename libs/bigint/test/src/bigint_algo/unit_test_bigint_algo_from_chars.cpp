@@ -8,6 +8,7 @@
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -22,7 +23,7 @@ namespace bigint_algo_from_chars_test
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-FromCharsTest(hamon::string_view sv, int base, T const& expected, hamon::size_t length = hamon::string_view::npos, std::errc ec = {})
+FromCharsTest(hamon::string_view sv, int base, T const& expected, hamon::size_t length = hamon::string_view::npos, hamon::errc ec = {})
 {
 	if (length == hamon::string_view::npos)
 	{
@@ -619,37 +620,37 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 	// オーバーフローに関するテスト
 	{
 		using Vector = hamon::array<hamon::uint8_t, 1>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("255", 10, Vector{0xFF}, 3, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("256", 10, Vector{0x00}, 3, std::errc::result_out_of_range));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("11111111",  2, Vector{0xFF}, 8, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 2, Vector{0x00}, 9, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("255", 10, Vector{0xFF}, 3, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("256", 10, Vector{0x00}, 3, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("11111111",  2, Vector{0xFF}, 8, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 2, Vector{0x00}, 9, hamon::errc::result_out_of_range));
 	}
 	{
 		using Vector = hamon::array<hamon::uint8_t, 2>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("65535", 10, Vector{0xFF, 0xFF}, 5, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("65536", 10, Vector{0x00, 0x00}, 5, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("65535", 10, Vector{0xFF, 0xFF}, 5, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("65536", 10, Vector{0x00, 0x00}, 5, hamon::errc::result_out_of_range));
 	}
 	{
 		using Vector = hamon::array<hamon::uint8_t, 3>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffff",  16, Vector{0xFF, 0xFF, 0xFF}, 6, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("1000000", 16, Vector{0x00, 0x00, 0x00}, 7, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffff",  16, Vector{0xFF, 0xFF, 0xFF}, 6, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("1000000", 16, Vector{0x00, 0x00, 0x00}, 7, hamon::errc::result_out_of_range));
 	}
 	{
 		using Vector = hamon::array<hamon::uint8_t, 4>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffff",  16, Vector{0xFF, 0xFF, 0xFF, 0xFF}, 8, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 16, Vector{0x00, 0x00, 0x00, 0x00}, 9, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffff",  16, Vector{0xFF, 0xFF, 0xFF, 0xFF}, 8, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 16, Vector{0x00, 0x00, 0x00, 0x00}, 9, hamon::errc::result_out_of_range));
 	}
 	{
 		using Vector = hamon::array<hamon::uint16_t, 2>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffff",  16, Vector{0xFFFF, 0xFFFF}, 8, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 16, Vector{0x0000, 0x0000}, 9, std::errc::result_out_of_range));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffff 012", 16, Vector{0x0000, 0x0000}, 10, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffff",  16, Vector{0xFFFF, 0xFFFF}, 8, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("100000000", 16, Vector{0x0000, 0x0000}, 9, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffff 012", 16, Vector{0x0000, 0x0000}, 10, hamon::errc::result_out_of_range));
 	}
 	{
 		using Vector = hamon::array<hamon::uint32_t, 3>;
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffffffffffffffffff",  16, Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 24, std::errc{}));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("1000000000000000000000000", 16, Vector{0x00000000, 0x00000000, 0x00000000}, 25, std::errc::result_out_of_range));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffffffffffffffffffffff", 16, Vector{0x00000000, 0x00000000, 0x00000000}, 28, std::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffffffffffffffffff",  16, Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 24, hamon::errc{}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("1000000000000000000000000", 16, Vector{0x00000000, 0x00000000, 0x00000000}, 25, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsTest("ffffffffffffffffffffffffffff", 16, Vector{0x00000000, 0x00000000, 0x00000000}, 28, hamon::errc::result_out_of_range));
 	}
 }
 

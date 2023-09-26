@@ -8,6 +8,7 @@
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -32,7 +33,7 @@ ToCharsTest(T const& val, int base, const char* expected)
 	//}
 
 	VERIFY(hamon::string_view(buf, ret.ptr) == expected);
-	VERIFY(ret.ec == std::errc{});
+	VERIFY(ret.ec == hamon::errc{});
 
 	return true;
 }

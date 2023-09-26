@@ -7,6 +7,7 @@
 #include <hamon/bigint.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -25,7 +26,7 @@ ToCharsTestImpl(BigInt const& value, int base, const char* expected)
 	char buf[1024]{};
 	auto ret = hamon::to_chars(buf, buf+sizeof(buf), value, base);
 	VERIFY(hamon::string_view(buf, ret.ptr) == expected);
-	VERIFY(ret.ec == std::errc{});
+	VERIFY(ret.ec == hamon::errc{});
 	return true;
 }
 

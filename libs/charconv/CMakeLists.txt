@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		config
 		detail
 		limits
+		system_error
 		type_traits
 		common)
 

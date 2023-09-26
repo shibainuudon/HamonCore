@@ -19,4 +19,5 @@
 * Hamon.Config
 * Hamon.Detail
 * Hamon.Limits
+* Hamon.SystemError
 * Hamon.TypeTraits

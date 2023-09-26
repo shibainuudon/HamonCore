@@ -25,13 +25,13 @@ using std::from_chars;
 
 #include <hamon/charconv/detail/negate_unsigned.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <system_error>
 
 namespace hamon
 {
@@ -39,7 +39,7 @@ namespace hamon
 struct from_chars_result
 {
 	const char* ptr;
-	std::errc ec;
+	hamon::errc ec;
 #if defined(HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS)
 	friend bool operator==(from_chars_result const&, from_chars_result const&) = default;
 #else
@@ -121,15 +121,15 @@ from_chars_unsigned_integral(char const* first, char const* last, T& value, T ba
 
 	if (p == first)
 	{
-		return {first, std::errc::invalid_argument};
+		return {first, hamon::errc::invalid_argument};
 	}
 	
 	if (overflow)
 	{
-		return {p, std::errc::result_out_of_range};
+		return {p, hamon::errc::result_out_of_range};
 	}
 
-	return {p, std::errc{}};
+	return {p, hamon::errc{}};
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
@@ -138,7 +138,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 {
 	T x{};
 	auto ret = from_chars_unsigned_integral(first, last, x, static_cast<T>(base));
-	if (ret.ec == std::errc{})
+	if (ret.ec == hamon::errc{})
 	{
 		value = x;
 	}
@@ -159,7 +159,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 
 	UT x{};
 	auto ret = from_chars_unsigned_integral(first, last, x, static_cast<UT>(base));
-	if (ret.ec != std::errc{})
+	if (ret.ec != hamon::errc{})
 	{
 		return ret;
 	}
@@ -168,7 +168,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 	{
 		if (x > negate_unsigned(static_cast<UT>(hamon::numeric_limits<T>::min())))
 		{
-			return {ret.ptr, std::errc::result_out_of_range};
+			return {ret.ptr, hamon::errc::result_out_of_range};
 		}
 
 		x = negate_unsigned(x);
@@ -177,7 +177,7 @@ from_chars_integral(char const* first, char const* last, T& value, int base, ham
 	{
 		if (x > static_cast<UT>(hamon::numeric_limits<T>::max()))
 		{
-			return {ret.ptr, std::errc::result_out_of_range};
+			return {ret.ptr, hamon::errc::result_out_of_range};
 		}
 	}
 

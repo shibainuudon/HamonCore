@@ -15,6 +15,7 @@
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/limits.hpp>
@@ -87,12 +88,12 @@ to_chars(char* first, char* last, VectorType value, int base)
 
 	if (p == last)
 	{
-		return {last, std::errc::value_too_large};
+		return {last, hamon::errc::value_too_large};
 	}
 
 	hamon::reverse(first, p);
 
-	return {p, std::errc{}};
+	return {p, hamon::errc{}};
 }
 
 }	// namespace to_chars_detail

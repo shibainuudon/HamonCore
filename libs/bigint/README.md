@@ -31,6 +31,7 @@
 * Hamon.Ranges
 * Hamon.String
 * Hamon.StringView
+* Hamon.SystemError
 * Hamon.TypeTraits
 * Hamon.Utility
 * Hamon.Vector

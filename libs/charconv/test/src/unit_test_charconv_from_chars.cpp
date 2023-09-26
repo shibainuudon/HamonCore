@@ -6,6 +6,7 @@
 
 #include <hamon/charconv/from_chars.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -23,11 +24,11 @@ FromCharsResultTest()
 {
 	const char buf[128]{};
 
-	hamon::from_chars_result res1{buf, std::errc{}};
-	hamon::from_chars_result res2{buf, std::errc{}};
-	hamon::from_chars_result res3{buf, std::errc::invalid_argument};
-	hamon::from_chars_result res4{buf+1, std::errc{}};
-	hamon::from_chars_result res5{buf+1, std::errc::invalid_argument};
+	hamon::from_chars_result res1{buf, hamon::errc{}};
+	hamon::from_chars_result res2{buf, hamon::errc{}};
+	hamon::from_chars_result res3{buf, hamon::errc::invalid_argument};
+	hamon::from_chars_result res4{buf+1, hamon::errc{}};
+	hamon::from_chars_result res5{buf+1, hamon::errc::invalid_argument};
 
 	VERIFY( (res1 == res1));
 	VERIFY( (res1 == res2));
@@ -46,7 +47,7 @@ FromCharsResultTest()
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-IntegerFromCharsTest(hamon::string_view sv, int base, T expected, hamon::size_t length, std::errc ec = {})
+IntegerFromCharsTest(hamon::string_view sv, int base, T expected, hamon::size_t length, hamon::errc ec = {})
 {
 	T value{};
 	auto ret = hamon::from_chars(sv.begin(), sv.end(), value, base);
@@ -140,23 +141,23 @@ GTEST_TEST(CharConvTest, FromCharsTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("0xffff", 16, 0, 1));
 
 	// パターンにマッチする文字列が見つからない場合
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("a123", 10, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("+10", 10, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest(" 1", 10, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("", 10, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("ffff", 15, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("-1", 10, 0, 0, std::errc::invalid_argument));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("+1", 10, 0, 0, std::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("a123", 10, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("+10", 10, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest(" 1", 10, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("", 10, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("ffff", 15, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("-1", 10, 0, 0, hamon::errc::invalid_argument));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("+1", 10, 0, 0, hamon::errc::invalid_argument));
 
 	// 変換した結果の値がvalueの型では表現できない場合
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int8_t>("128", 10, 0, 3, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int8_t>("-129", 10, 0, 4, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("256", 10, 0, 3, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int16_t>("32768", 10, 0, 5, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int16_t>("-32769", 10, 0, 6, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint16_t>("65536", 10, 0, 5, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<signed   int>("ffffffffffffffffffffffffffffffff", 16, 0, 32, std::errc::result_out_of_range));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<unsigned int>("ffffffffffffffffffffffffffffffff", 16, 0, 32, std::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int8_t>("128", 10, 0, 3, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int8_t>("-129", 10, 0, 4, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint8_t>("256", 10, 0, 3, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int16_t>("32768", 10, 0, 5, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::int16_t>("-32769", 10, 0, 6, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<hamon::uint16_t>("65536", 10, 0, 5, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<signed   int>("ffffffffffffffffffffffffffffffff", 16, 0, 32, hamon::errc::result_out_of_range));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest<unsigned int>("ffffffffffffffffffffffffffffffff", 16, 0, 32, hamon::errc::result_out_of_range));
 }
 
 #undef VERIFY

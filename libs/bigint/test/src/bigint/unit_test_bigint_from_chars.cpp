@@ -5,6 +5,7 @@
  */
 
 #include <hamon/bigint.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -18,7 +19,7 @@ namespace bigint_from_chars_test
 
 template <typename BigInt>
 inline HAMON_CXX14_CONSTEXPR bool
-FromCharsTestImpl(hamon::string_view sv, int base, BigInt const& expected, hamon::size_t length, std::errc ec = {})
+FromCharsTestImpl(hamon::string_view sv, int base, BigInt const& expected, hamon::size_t length, hamon::errc ec = {})
 {
 	BigInt value{};
 	auto ret = hamon::from_chars(sv.begin(), sv.end(), value, base);

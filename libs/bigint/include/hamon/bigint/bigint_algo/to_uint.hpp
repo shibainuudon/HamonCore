@@ -11,12 +11,12 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/countl_zero.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <system_error>
 
 namespace hamon
 {
@@ -25,7 +25,7 @@ namespace bigint_algo
 
 struct to_uint_result
 {
-	std::errc ec;
+	hamon::errc ec;
 };
 
 namespace to_uint_detail
@@ -57,9 +57,9 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 
 	if (overflow)
 	{
-		return {std::errc::value_too_large};
+		return {hamon::errc::value_too_large};
 	}
-	return {std::errc{}};
+	return {hamon::errc{}};
 }
 
 }	// namespace to_uint_detail

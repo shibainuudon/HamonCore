@@ -6,6 +6,7 @@
 
 #include <hamon/charconv/to_chars.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -22,11 +23,11 @@ ToCharsResultTest()
 {
 	char buf[128]{};
 
-	hamon::to_chars_result res1{buf, std::errc{}};
-	hamon::to_chars_result res2{buf, std::errc{}};
-	hamon::to_chars_result res3{buf, std::errc::value_too_large};
-	hamon::to_chars_result res4{buf+1, std::errc{}};
-	hamon::to_chars_result res5{buf+1, std::errc::value_too_large};
+	hamon::to_chars_result res1{buf, hamon::errc{}};
+	hamon::to_chars_result res2{buf, hamon::errc{}};
+	hamon::to_chars_result res3{buf, hamon::errc::value_too_large};
+	hamon::to_chars_result res4{buf+1, hamon::errc{}};
+	hamon::to_chars_result res5{buf+1, hamon::errc::value_too_large};
 
 	VERIFY( (res1 == res1));
 	VERIFY( (res1 == res2));
@@ -50,7 +51,7 @@ IntegerToCharsTest(T val, int base, const char* expected)
 	char buf[128]{};
 	auto ret = hamon::to_chars(buf, buf+sizeof(buf), val, base);
 	VERIFY(hamon::string_view(buf, ret.ptr) == expected);
-	VERIFY(ret.ec == std::errc{});
+	VERIFY(ret.ec == hamon::errc{});
 
 	return true;
 }
@@ -206,25 +207,25 @@ GTEST_TEST(CharConvTest, ToCharsTest)
 		char buf[4];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 12345);
 		EXPECT_EQ(ret.ptr, buf+sizeof(buf));
-		EXPECT_EQ(ret.ec, std::errc::value_too_large);
+		EXPECT_EQ(ret.ec, hamon::errc::value_too_large);
 	}
 	{
 		char buf[5];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 12345);
 		EXPECT_EQ(hamon::string_view(buf, ret.ptr), "12345");
-		EXPECT_EQ(ret.ec, std::errc{});
+		EXPECT_EQ(ret.ec, hamon::errc{});
 	}
 	{
 		char buf[7];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 0xFFFFFFFF, 16);
 		EXPECT_EQ(ret.ptr, buf+sizeof(buf));
-		EXPECT_EQ(ret.ec, std::errc::value_too_large);
+		EXPECT_EQ(ret.ec, hamon::errc::value_too_large);
 	}
 	{
 		char buf[8];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 0xFFFFFFFF, 16);
 		EXPECT_EQ(hamon::string_view(buf, ret.ptr), "ffffffff");
-		EXPECT_EQ(ret.ec, std::errc{});
+		EXPECT_EQ(ret.ec, hamon::errc{});
 	}
 }
 

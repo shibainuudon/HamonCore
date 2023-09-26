@@ -12,11 +12,11 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <system_error>
 
 namespace hamon
 {
@@ -25,7 +25,7 @@ namespace bigint_algo
 
 struct from_uint_result
 {
-	std::errc ec;
+	hamon::errc ec;
 };
 
 namespace from_uint_detail
@@ -43,10 +43,10 @@ from_uint(UInt n, T* dst, hamon::size_t size)
 	
 	if (n != 0)
 	{
-		return {std::errc::result_out_of_range};
+		return {hamon::errc::result_out_of_range};
 	}
 
-	return {std::errc{}};
+	return {hamon::errc{}};
 }
 
 }	// namespace from_uint_detail
