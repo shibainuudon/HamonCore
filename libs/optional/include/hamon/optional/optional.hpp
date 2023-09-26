@@ -34,6 +34,7 @@ using std::optional;
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/invocable.hpp>
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -620,7 +621,7 @@ private:
 #if !defined(HAMON_NO_EXCEPTIONS)
 		throw hamon::bad_optional_access();
 #else
-		std::abort();
+		hamon::abort();
 #endif
 	}
 };

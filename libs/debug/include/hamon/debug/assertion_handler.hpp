@@ -8,8 +8,8 @@
 #define HAMON_DEBUG_ASSERTION_HANDLER_HPP
 
 #include <hamon/debug/assertion_info.hpp>
+#include <hamon/cstdlib/abort.hpp>
 #include <iostream>
-#include <cstdlib>
 
 namespace hamon
 {
@@ -35,7 +35,7 @@ inline void default_assertion_handler(assertion_info const& info)
 		<< info.evaluated_expr_str << std::endl
 		<< info.msg                << std::endl;
 
-	std::abort();
+	hamon::abort();
 }
 
 inline assertion_handler& assertion_handler_instance(void)

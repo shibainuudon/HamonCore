@@ -31,6 +31,7 @@ set(SUBDIRECTORIES
 	config
 	cstddef
 	cstdint
+	cstdlib
 	cstring
 	debug
 	deque

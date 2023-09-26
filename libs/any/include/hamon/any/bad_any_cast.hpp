@@ -22,8 +22,8 @@ using std::bad_any_cast;
 
 #else
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
-#include <cstdlib>	// abort
 #include <typeinfo>	// bad_cast
 
 namespace hamon
@@ -48,7 +48,7 @@ HAMON_NORETURN inline void throw_bad_any_cast()
 #if !defined(HAMON_NO_EXCEPTIONS)
 	throw hamon::bad_any_cast();
 #else
-	std::abort();
+	hamon::abort();
 #endif
 }
 

@@ -20,8 +20,8 @@ using std::unreachable;
 
 #else
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
-#include <cstdlib>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ HAMON_NORETURN inline void unreachable() HAMON_NOEXCEPT
 	__assume(false);
 #endif
 
-	std::abort();
+	hamon::abort();
 }
 
 }	// namespace hamon

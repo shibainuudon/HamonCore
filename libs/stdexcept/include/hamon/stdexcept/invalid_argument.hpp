@@ -7,9 +7,9 @@
 #ifndef HAMON_STDEXCEPT_INVALID_ARGUMENT_HPP
 #define HAMON_STDEXCEPT_INVALID_ARGUMENT_HPP
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <stdexcept>
-#include <cstdlib>		// std::abort
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ throw_invalid_argument(char const* msg)
 	throw hamon::invalid_argument(msg);
 #else
 	(void)msg;
-	std::abort();
+	hamon::abort();
 #endif
 }
 

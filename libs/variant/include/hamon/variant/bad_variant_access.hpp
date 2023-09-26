@@ -20,9 +20,9 @@ using std::bad_variant_access;
 
 #else
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <exception>
-#include <cstdlib>
 
 namespace hamon
 {
@@ -43,7 +43,7 @@ void throw_bad_variant_access()
 #if !defined(HAMON_NO_EXCEPTIONS)
 	throw bad_variant_access();
 #else
-	std::abort();
+	hamon::abort();
 #endif
 }
 

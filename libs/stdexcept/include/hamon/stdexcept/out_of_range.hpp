@@ -7,9 +7,9 @@
 #ifndef HAMON_STDEXCEPT_OUT_OF_RANGE_HPP
 #define HAMON_STDEXCEPT_OUT_OF_RANGE_HPP
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <stdexcept>
-#include <cstdlib>		// std::abort
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ throw_out_of_range(char const* msg)
 	throw hamon::out_of_range(msg);
 #else
 	(void)msg;
-	std::abort();
+	hamon::abort();
 #endif
 }
 

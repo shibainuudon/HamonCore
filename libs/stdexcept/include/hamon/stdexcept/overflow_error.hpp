@@ -7,9 +7,9 @@
 #ifndef HAMON_STDEXCEPT_OVERFLOW_ERROR_HPP
 #define HAMON_STDEXCEPT_OVERFLOW_ERROR_HPP
 
+#include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <stdexcept>
-#include <cstdlib>		// std::abort
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ throw_overflow_error(char const* msg)
 	throw hamon::overflow_error(msg);
 #else
 	(void)msg;
-	std::abort();
+	hamon::abort();
 #endif
 }
 
