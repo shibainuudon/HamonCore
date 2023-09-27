@@ -23,12 +23,12 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
-#if 0
-void size(auto&) = delete;
-void size(const auto&) = delete;
+#if (defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 120000) && defined(HAMON_HAS_CXX20_CONCEPTS)) || \
+    (defined(HAMON_CLANG_VERSION)) || \
+    (defined(HAMON_MSVC) && (HAMON_MSVC >= 1930) && defined(HAMON_HAS_CXX20_CONCEPTS))
+void size() = delete;
 #else
-template <typename T> void size(T&) = delete;
-template <typename T> void size(const T&) = delete;
+void size();
 #endif
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)

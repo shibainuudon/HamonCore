@@ -21,13 +21,12 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
-// Poison pills so that unqualified lookup doesn't find std::end.
-#if 0
-void end(auto&) = delete;
-void end(const auto&) = delete;
+#if (defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 120000) && defined(HAMON_HAS_CXX20_CONCEPTS)) || \
+    (defined(HAMON_CLANG_VERSION)) || \
+    (defined(HAMON_MSVC) && (HAMON_MSVC >= 1930) && defined(HAMON_HAS_CXX20_CONCEPTS))
+void end() = delete;
 #else
-template <typename T> void end(T&) = delete;
-template <typename T> void end(const T&) = delete;
+void end();
 #endif
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
