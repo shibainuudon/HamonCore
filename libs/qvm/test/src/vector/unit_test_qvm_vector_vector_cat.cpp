@@ -6,9 +6,9 @@
 
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/type_traits/is_same.hpp>
+//#include <hamon/array.hpp>
 #include "constexpr_test.hpp"
 #include "vector_test.hpp"
-#include <array>
 
 namespace hamon_qvm_test
 {
@@ -120,13 +120,13 @@ TYPED_TEST(VectorTest, VectorCatTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12, v[4]);
 	}
 	{
-		HAMON_CXX14_CONSTEXPR std::array<T, 1> const a = { 2 };
+		HAMON_CXX14_CONSTEXPR hamon::array<T, 1> const a = { 2 };
 		HAMON_CXX14_CONSTEXPR auto const v = hamon::qvm::vector_cat(a);
 		static_assert(hamon::is_same<decltype(v), const vector1>::value, "");
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(2, v[0]);
 	}
 	{
-		HAMON_CXX14_CONSTEXPR std::array<T, 2> const a1 = { 10, 11 };
+		HAMON_CXX14_CONSTEXPR hamon::array<T, 2> const a1 = { 10, 11 };
 		HAMON_CXX14_CONSTEXPR T const a2[] = { 12, 13, 14 };
 		HAMON_CXX14_CONSTEXPR auto const v = hamon::qvm::vector_cat(a1, a2, vector2{15, 16});
 		static_assert(hamon::is_same<decltype(v), const hamon::qvm::vector<T, 7>>::value, "");

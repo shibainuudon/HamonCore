@@ -11,13 +11,13 @@
 #include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/array.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/list.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 #include <bitset>
 #include <memory>
 #include "constexpr_test.hpp"
@@ -401,19 +401,19 @@ GTEST_TEST(FunctionalTest, HashArrayTest)
 GTEST_TEST(FunctionalTest, HashStdArrayTest)
 {
 	{
-		HAMON_CXX11_CONSTEXPR std::array<int, 3> a = {1, 2, 3};
-		HAMON_CXX11_CONSTEXPR std::array<int, 3> b = {1, 2, 3};
-		HAMON_CXX11_CONSTEXPR std::array<int, 3> c = {2, 3, 1};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 3> a = {1, 2, 3};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 3> b = {1, 2, 3};
+		HAMON_CXX11_CONSTEXPR hamon::array<int, 3> c = {2, 3, 1};
 
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		HAMON_CXX14_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
-		HAMON_CXX11_CONSTEXPR std::array<float, 4> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		HAMON_CXX11_CONSTEXPR std::array<float, 4> b = {0.0f, 0.5f, -1.5f, 2.0f};
-		HAMON_CXX11_CONSTEXPR std::array<float, 3> c = {0.0f, 0.5f, -1.5f};
-		HAMON_CXX11_CONSTEXPR std::array<float, 5> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
+		HAMON_CXX11_CONSTEXPR hamon::array<float, 4> a = {0.0f, 0.5f, -1.5f, 2.0f};
+		HAMON_CXX11_CONSTEXPR hamon::array<float, 4> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		HAMON_CXX11_CONSTEXPR hamon::array<float, 3> c = {0.0f, 0.5f, -1.5f};
+		HAMON_CXX11_CONSTEXPR hamon::array<float, 5> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
 		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_NE(hamon::hash(a), hamon::hash(c));
