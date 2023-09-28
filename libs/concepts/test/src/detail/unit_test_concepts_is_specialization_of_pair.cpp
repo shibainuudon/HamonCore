@@ -5,6 +5,10 @@
  */
 
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
+#include <hamon/array.hpp>
+#include <hamon/pair.hpp>
+#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <array>
 #include <tuple>
@@ -31,6 +35,14 @@ HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, std::tuple<char, float, int>);
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, std::ranges::subrange<int*, int*, std::ranges::subrange_kind::sized>);
 #endif
+
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, hamon::array<int, 3>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, hamon::array<float, 10>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(true,  hamon::pair<int, float>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(true,  hamon::pair<double, long>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, hamon::tuple<int>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, hamon::tuple<char, float, int>);
+HAMON_IS_SPECIALIZATION_OF_PAIR_TEST(false, hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>);
 
 template <typename, typename>
 struct Pair {};

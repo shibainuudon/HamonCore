@@ -5,7 +5,10 @@
  */
 
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
-#include <hamon/cstddef.hpp>
+#include <hamon/array.hpp>
+#include <hamon/pair.hpp>
+#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <array>
 #include <tuple>
@@ -32,6 +35,14 @@ HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(true,  std::tuple<char, float, int>);
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::ranges::subrange<int*, int*, std::ranges::subrange_kind::sized>);
 #endif
+
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::array<int, 3>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::array<float, 10>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::pair<int, float>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::pair<double, long>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(true,  hamon::tuple<int>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(true,  hamon::tuple<char, float, int>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>);
 
 template <typename...>
 struct Tuple{};
