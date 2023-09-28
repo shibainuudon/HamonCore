@@ -40,6 +40,7 @@ using std::span;
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/type_identity.hpp>
+#include <hamon/array.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <array>
@@ -108,6 +109,28 @@ public:
 	// (5)
 	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U)>
 	HAMON_CXX11_CONSTEXPR
+	span(hamon::array<U, Extent>& arr) HAMON_NOEXCEPT
+		: m_data{ arr.data() }
+	{}
+
+	// (6)
+	template <typename U
+#if !defined(HAMON_HAS_CXX20_CONCEPTS)
+		, typename = hamon::enable_if_t<detail::span_array_convertible<U const, element_type>::value>
+#endif
+	>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	requires detail::span_array_convertible<U const, element_type>
+#endif
+	HAMON_CXX11_CONSTEXPR
+	span(hamon::array<U, Extent> const& arr) HAMON_NOEXCEPT
+		: m_data{ arr.data() }
+	{}
+
+#if !defined(HAMON_USE_STD_ARRAY)
+	// (5)
+	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U)>
+	HAMON_CXX11_CONSTEXPR
 	span(std::array<U, Extent>& arr) HAMON_NOEXCEPT
 		: m_data{ arr.data() }
 	{}
@@ -125,6 +148,7 @@ public:
 	span(std::array<U, Extent> const& arr) HAMON_NOEXCEPT
 		: m_data{ arr.data() }
 	{}
+#endif
 
 	// (7)
 	template <HAMON_CONSTRAINED_PARAM(detail::span_compatible_range, element_type, Range)>
@@ -356,6 +380,30 @@ public:
 	// (5)
 	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), hamon::size_t N>
 	HAMON_CXX11_CONSTEXPR
+	span(hamon::array<U, N>& arr) HAMON_NOEXCEPT
+		: m_data{ arr.data() }
+		, m_size{ N }
+	{}
+
+	// (6)
+	template <typename U, hamon::size_t N
+#if !defined(HAMON_HAS_CXX20_CONCEPTS)
+		, typename = hamon::enable_if_t<detail::span_array_convertible<U const, element_type>::value>
+#endif
+	>
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	requires detail::span_array_convertible<U const, element_type>
+#endif
+	HAMON_CXX11_CONSTEXPR
+	span(hamon::array<U, N> const& arr) HAMON_NOEXCEPT
+		: m_data{ arr.data() }
+		, m_size{ N }
+	{}
+
+#if !defined(HAMON_USE_STD_ARRAY)
+	// (5)
+	template <HAMON_CONSTRAINED_PARAM(detail::span_array_convertible, element_type, U), hamon::size_t N>
+	HAMON_CXX11_CONSTEXPR
 	span(std::array<U, N>& arr) HAMON_NOEXCEPT
 		: m_data{ arr.data() }
 		, m_size{ N }
@@ -375,6 +423,7 @@ public:
 		: m_data{ arr.data() }
 		, m_size{ N }
 	{}
+#endif
 
 	// (7)
 	template <HAMON_CONSTRAINED_PARAM(detail::span_compatible_range, element_type, Range)>
@@ -551,12 +600,22 @@ span(T(&)[N])
 -> span<T, N>;
 
 template <typename T, hamon::size_t N>
+span(hamon::array<T, N>&)
+-> span<T, N>;
+
+template <typename T, hamon::size_t N>
+span(hamon::array<T, N> const&)
+-> span<T const, N>;
+
+#if !defined(HAMON_USE_STD_ARRAY)
+template <typename T, hamon::size_t N>
 span(std::array<T, N>&)
 -> span<T, N>;
 
 template <typename T, hamon::size_t N>
 span(std::array<T, N> const&)
 -> span<T const, N>;
+#endif
 
 template <HAMON_CONSTRAINED_PARAM(ranges::contiguous_range, Range)>
 span(Range&&)

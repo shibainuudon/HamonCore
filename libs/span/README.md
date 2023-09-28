@@ -16,6 +16,7 @@
 
 ## 依存ライブラリ
 
+* Hamon.Array
 * Hamon.Concepts
 * Hamon.Config
 * Hamon.CStdDef

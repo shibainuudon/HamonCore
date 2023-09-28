@@ -10,6 +10,7 @@
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
@@ -43,6 +44,23 @@ struct MyRange
 GTEST_TEST(SpanTest, CtorDeductTest)
 {
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+	// It, EndOrSize
+	{
+		int arr[] = { 1,2,3 };
+		hamon::span s{ hamon::begin(arr), hamon::end(arr) };
+		using S = decltype(s);
+		ASSERT_SAME_TYPE(S, hamon::span<int, hamon::dynamic_extent>);
+		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
+	}
+	{
+		int arr[] = { 1,2,3 };
+		hamon::span s{ hamon::begin(arr), 3 };
+		using S = decltype(s);
+		ASSERT_SAME_TYPE(S, hamon::span<int, hamon::dynamic_extent>);
+		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
+	}
+
+	// T(&)[N]
 	{
 		int arr[] = { 1,2,3 };
 		hamon::span s{ arr };
@@ -51,6 +69,25 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
 
+	// hamon::array<T, N>&
+	{
+		hamon::array<double, 4> arr = { 1.0, 2.0, 3.0, 4.0 };
+		hamon::span s{ arr };
+		using S = decltype(s);
+		ASSERT_SAME_TYPE(S, hamon::span<double, 4>);
+		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
+	}
+
+	// hamon::array<T, N> const&
+	{
+		hamon::array<long, 5> const arr = { 4, 5, 6, 7, 8 };
+		hamon::span s{ arr };
+		using S = decltype(s);
+		ASSERT_SAME_TYPE(S, hamon::span<long const, 5>);
+		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
+	}
+
+	// std::array<T, N>&
 	{
 		std::array<double, 4> arr = { 1.0, 2.0, 3.0, 4.0 };
 		hamon::span s{ arr };
@@ -59,6 +96,7 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
 
+	// std::array<T, N> const&
 	{
 		std::array<long, 5> const arr = { 4, 5, 6, 7, 8 };
 		hamon::span s{ arr };
@@ -66,6 +104,8 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		ASSERT_SAME_TYPE(S, hamon::span<long const, 5>);
 		EXPECT_TRUE((hamon::equal(hamon::begin(arr), hamon::end(arr), s.begin(), s.end())));
 	}
+
+	// Range&&
 	{
 		MyRange<int> r;
 		hamon::span s{ r };
@@ -74,7 +114,6 @@ GTEST_TEST(SpanTest, CtorDeductTest)
 		EXPECT_TRUE(static_cast<hamon::size_t>(s.size()) == r.size());
 		EXPECT_TRUE((hamon::equal(hamon::begin(r), hamon::end(r), s.begin(), s.end())));
 	}
-
 	{
 		MyRange<char> const r;
 		hamon::span s{ r };
