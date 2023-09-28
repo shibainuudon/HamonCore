@@ -11,13 +11,13 @@
 #include <hamon/cstdint/uint64_t.hpp>
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/limits.hpp>
+#include <hamon/list.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
-#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <list>
 #include <bitset>
 #include <memory>
 #include "constexpr_test.hpp"
@@ -451,23 +451,23 @@ GTEST_TEST(FunctionalTest, HashVectorTest)
 GTEST_TEST(FunctionalTest, HashListTest)
 {
 	{
-		const std::list<int> a;
+		const hamon::list<int> a;
 		EXPECT_EQ(0u, hamon::hash(a));
 	}
 	{
-		const std::list<int> a = {1, 2, 3};
-		const std::list<int> b = {1, 2, 3};
-		const std::list<int> c = {1,-2, 3};
+		const hamon::list<int> a = {1, 2, 3};
+		const hamon::list<int> b = {1, 2, 3};
+		const hamon::list<int> c = {1,-2, 3};
 
 		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
-		const std::list<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::list<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::list<float> c = {0.0f, 0.5f, -1.5f, 2.1f};
-		const std::list<float> d = {0.1f, 0.5f, -1.5f, 2.0f};
+		const hamon::list<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
+		const hamon::list<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		const hamon::list<float> c = {0.0f, 0.5f, -1.5f, 2.1f};
+		const hamon::list<float> d = {0.1f, 0.5f, -1.5f, 2.0f};
 		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		EXPECT_NE(hamon::hash(a), hamon::hash(c));

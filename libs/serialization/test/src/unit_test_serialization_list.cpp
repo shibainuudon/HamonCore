@@ -1,19 +1,19 @@
 ﻿/**
  *	@file	unit_test_serialization_list.cpp
  *
- *	@brief	std::listのシリアライズのテスト
+ *	@brief	hamon::listのシリアライズのテスト
  */
 
 #include <hamon/serialization/types/list.hpp>
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/list.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <list>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -52,15 +52,15 @@ struct Point
 template <typename Stream, typename OArchive, typename IArchive>
 void ListTest()
 {
-	std::list<int> const v1;
-	std::list<int> const v2{ 1, 2, 3 };
-	std::list<hamon::string> const v3 { "The", "quick brown", "fox" };
-	std::list<hamon::vector<float>> const v4
+	hamon::list<int> const v1;
+	hamon::list<int> const v2{ 1, 2, 3 };
+	hamon::list<hamon::string> const v3 { "The", "quick brown", "fox" };
+	hamon::list<hamon::vector<float>> const v4
 	{
 		{ 10, 11, 12, 13 },
 		{ 20, 21, 22 },
 	};
-	std::list<Point> const v5
+	hamon::list<Point> const v5
 	{
 		{ 1, 2 },
 		{ 3, 4 },
@@ -129,11 +129,11 @@ R"({
 #endif
 
 	{
-		std::list<int> a{ 10, 11, 12 };
-		std::list<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-		std::list<hamon::string> c;
-		std::list<hamon::vector<float>> d;
-		std::list<Point> e;
+		hamon::list<int> a{ 10, 11, 12 };
+		hamon::list<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		hamon::list<hamon::string> c;
+		hamon::list<hamon::vector<float>> d;
+		hamon::list<Point> e;
 
 		IArchive ia(str);
 
