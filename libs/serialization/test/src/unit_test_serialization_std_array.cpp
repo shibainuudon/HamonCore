@@ -6,6 +6,7 @@
 
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/types/string.hpp>
+#include <hamon/array.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -31,10 +32,12 @@ enum class Enum
 template <typename Stream, typename OArchive, typename IArchive>
 void StdArrayTest()
 {
+	// std::arrayとhamon::arrayはどちらもシリアライズ可能
+	// 混在も可能
 	Stream str;
 	{
-		std::array<int, 5> const a1 = {1, 2, 3, 4, 5};
-		std::array<std::array<int, 3>, 2> const a2 =
+		hamon::array<int, 5> const a1 = {1, 2, 3, 4, 5};
+		std::array<hamon::array<int, 3>, 2> const a2 =
 		{{
 			{ 11, 12, 13 },
 			{ 21, 22, 23 },
@@ -45,7 +48,7 @@ void StdArrayTest()
 			Enum::Value1,
 			Enum::Value3,
 		};
-		std::array<hamon::string, 3> const a4 =
+		hamon::array<hamon::string, 3> const a4 =
 		{
 			"quick brown fox",
 			",",
@@ -61,8 +64,8 @@ void StdArrayTest()
 	}
 	{
 		std::array<int, 5> a;
-		std::array<std::array<int, 3>, 2> b;
-		std::array<Enum, 3> c;
+		hamon::array<std::array<int, 3>, 2> b;
+		hamon::array<Enum, 3> c;
 		std::array<hamon::string, 3> d;
 
 		IArchive ia(str);
