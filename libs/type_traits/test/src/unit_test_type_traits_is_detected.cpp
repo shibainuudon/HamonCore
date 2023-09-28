@@ -6,8 +6,8 @@
 
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/vector.hpp>
 #include <memory>
-#include <vector>
 
 namespace hamon_type_traits_test
 {
@@ -50,12 +50,12 @@ struct NonCopyable
 static_assert( hamon::is_detected<copy_assignable, int>::value, "");
 static_assert(!hamon::is_detected<copy_assignable, std::unique_ptr<int>>::value, "");
 static_assert( hamon::is_detected<copy_assignable, std::shared_ptr<int>>::value, "");
-static_assert( hamon::is_detected<copy_assignable, std::vector<int>>::value, "");
+static_assert( hamon::is_detected<copy_assignable, hamon::vector<int>>::value, "");
 static_assert( hamon::is_detected<copy_assignable, Copyable>::value, "");
 static_assert(!hamon::is_detected<copy_assignable, NonCopyable>::value, "");
 
 static_assert(!hamon::is_detected<has_func, int>::value, "");
-static_assert(!hamon::is_detected<has_func, std::vector<int>>::value, "");
+static_assert(!hamon::is_detected<has_func, hamon::vector<int>>::value, "");
 static_assert(!hamon::is_detected<has_func, Copyable>::value, "");
 static_assert( hamon::is_detected<has_func, NonCopyable>::value, "");
 
@@ -69,7 +69,7 @@ static_assert(!hamon::is_detected<has_func2, NonCopyable, float>::value, "");
 static_assert(!hamon::is_detected<has_value_type, int>::value, "");
 static_assert(!hamon::is_detected<has_value_type, std::unique_ptr<int>>::value, "");
 static_assert(!hamon::is_detected<has_value_type, std::shared_ptr<int>>::value, "");
-static_assert( hamon::is_detected<has_value_type, std::vector<int>>::value, "");
+static_assert( hamon::is_detected<has_value_type, hamon::vector<int>>::value, "");
 static_assert( hamon::is_detected<has_value_type, Copyable>::value, "");
 static_assert(!hamon::is_detected<has_value_type, NonCopyable>::value, "");
 

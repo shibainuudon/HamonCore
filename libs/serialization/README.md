@@ -105,3 +105,4 @@ Hamon.Serializationは生ポインタと参照型変数のシリアライズを�
 * Hamon.String
 * Hamon.TypeTraits
 * Hamon.Utility
+* Hamon.Vector

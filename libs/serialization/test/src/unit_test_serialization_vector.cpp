@@ -1,17 +1,17 @@
 ﻿/**
  *	@file	unit_test_serialization_vector.cpp
  *
- *	@brief	std::vectorのシリアライズのテスト
+ *	@brief	hamon::vectorのシリアライズのテスト
  */
 
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <vector>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -26,11 +26,11 @@ void VectorTest()
 {
 	Stream str;
 	{
-		std::vector<int>   const v1;
-		std::vector<int>   const v2{1, 2, 3};
-		std::vector<float> const v3;
-		std::vector<float> const v4{0.5f, -0.5f, 1.5f, -2.5f};
-		std::vector<std::vector<hamon::string>> const v5
+		hamon::vector<int>   const v1;
+		hamon::vector<int>   const v2{1, 2, 3};
+		hamon::vector<float> const v3;
+		hamon::vector<float> const v4{0.5f, -0.5f, 1.5f, -2.5f};
+		hamon::vector<hamon::vector<hamon::string>> const v5
 		{
 			{ "A1", "A2" },
 			{ "B1", "B2", "B3" },
@@ -47,11 +47,11 @@ void VectorTest()
 		oa << v5;
 	}
 	{
-		std::vector<int> a;
-		std::vector<int> b;
-		std::vector<float> c;
-		std::vector<float> d;
-		std::vector<std::vector<hamon::string>> e;
+		hamon::vector<int> a;
+		hamon::vector<int> b;
+		hamon::vector<float> c;
+		hamon::vector<float> d;
+		hamon::vector<hamon::vector<hamon::string>> e;
 
 		IArchive ia(str);
 

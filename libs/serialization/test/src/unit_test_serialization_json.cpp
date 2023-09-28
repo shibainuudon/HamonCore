@@ -11,14 +11,14 @@
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
-#include <hamon/string.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
 #include <array>
-#include <vector>
 #include "get_random_value.hpp"
 
 namespace hamon_serialization_test
@@ -59,8 +59,8 @@ public:
 	float         b{};
 	hamon::string c{};
 	Point		  d{};
-	std::vector<int> e{};
-	std::vector<std::vector<hamon::string>> f{};
+	hamon::vector<int> e{};
+	hamon::vector<hamon::vector<hamon::string>> f{};
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)

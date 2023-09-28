@@ -12,11 +12,11 @@
 #include <hamon/type_traits/is_nothrow_invocable.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <array>
-#include <vector>
 #include <list>
 #include <bitset>
 #include <memory>
@@ -424,23 +424,23 @@ GTEST_TEST(FunctionalTest, HashStdArrayTest)
 GTEST_TEST(FunctionalTest, HashVectorTest)
 {
 	{
-		const std::vector<int> a;
+		const hamon::vector<int> a;
 		EXPECT_EQ(0u, hamon::hash(a));
 	}
 	{
-		const std::vector<int> a = {1, 2, 3};
-		const std::vector<int> b = {1, 2, 3};
-		const std::vector<int> c = {1,-2, 3};
+		const hamon::vector<int> a = {1, 2, 3};
+		const hamon::vector<int> b = {1, 2, 3};
+		const hamon::vector<int> c = {1,-2, 3};
 
 		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		EXPECT_NE(hamon::hash(a), hamon::hash(c));
 	}
 	{
-		const std::vector<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::vector<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
-		const std::vector<float> c = {0.0f, 0.5f, -1.5f};
-		const std::vector<float> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
+		const hamon::vector<float> a = {0.0f, 0.5f, -1.5f, 2.0f};
+		const hamon::vector<float> b = {0.0f, 0.5f, -1.5f, 2.0f};
+		const hamon::vector<float> c = {0.0f, 0.5f, -1.5f};
+		const hamon::vector<float> d = {0.0f, 0.5f, -1.5f, 2.0f, 0.0f};
 		EXPECT_EQ(hamon::hash(a), hamon::hash(a));
 		EXPECT_EQ(hamon::hash(a), hamon::hash(b));
 		EXPECT_NE(hamon::hash(a), hamon::hash(c));

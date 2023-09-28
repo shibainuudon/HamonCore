@@ -10,9 +10,9 @@
 #include <hamon/optional.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 
 namespace hamon_optional_test
@@ -68,7 +68,7 @@ GTEST_TEST(OptionalTest, CtorInPlaceInitListArgsTest)
 {
 	{
 		std::allocator<int> alloc;
-		hamon::optional<std::vector<int>> t { hamon::in_place, {3, 1, 4}, alloc };
+		hamon::optional<hamon::vector<int>> t { hamon::in_place, {3, 1, 4}, alloc };
 		EXPECT_EQ(3, t.value()[0]);
 		EXPECT_EQ(1, t.value()[1]);
 		EXPECT_EQ(4, t.value()[2]);

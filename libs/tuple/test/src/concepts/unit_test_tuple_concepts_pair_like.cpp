@@ -9,11 +9,11 @@
 #include <hamon/pair/pair.hpp>
 #include <hamon/array/array.hpp>
 #include <hamon/ranges/views/subrange.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <utility>
 #include <tuple>
 #include <array>
-#include <vector>
 #include <string>
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
 #  include <ranges>
@@ -70,7 +70,7 @@ HAMON_PAIR_LIKE_TEST(true,  hamon::ranges::subrange<int*, int*, hamon::ranges::s
 HAMON_PAIR_LIKE_TEST(false, int);
 HAMON_PAIR_LIKE_TEST(false, float);
 
-HAMON_PAIR_LIKE_TEST(false, std::vector<int>);
+HAMON_PAIR_LIKE_TEST(false, hamon::vector<int>);
 HAMON_PAIR_LIKE_TEST(false, std::string);
 
 #undef HAMON_PAIR_LIKE_TEST_IMPL

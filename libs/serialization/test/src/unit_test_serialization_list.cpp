@@ -8,12 +8,12 @@
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
 #include <list>
-#include <vector>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -55,7 +55,7 @@ void ListTest()
 	std::list<int> const v1;
 	std::list<int> const v2{ 1, 2, 3 };
 	std::list<hamon::string> const v3 { "The", "quick brown", "fox" };
-	std::list<std::vector<float>> const v4
+	std::list<hamon::vector<float>> const v4
 	{
 		{ 10, 11, 12, 13 },
 		{ 20, 21, 22 },
@@ -132,7 +132,7 @@ R"({
 		std::list<int> a{ 10, 11, 12 };
 		std::list<int> b{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 		std::list<hamon::string> c;
-		std::list<std::vector<float>> d;
+		std::list<hamon::vector<float>> d;
 		std::list<Point> e;
 
 		IArchive ia(str);

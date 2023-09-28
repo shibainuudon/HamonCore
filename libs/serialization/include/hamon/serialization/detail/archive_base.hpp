@@ -8,8 +8,8 @@
 #define HAMON_SERIALIZATION_DETAIL_ARCHIVE_BASE_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/vector.hpp>
 #include <memory>
-#include <vector>
 
 namespace hamon
 {
@@ -49,7 +49,7 @@ public:
 	}
 
 private:
-	std::vector<std::shared_ptr<void>>	m_list;
+	hamon::vector<std::shared_ptr<void>>	m_list;
 };
 
 }	// namespace detail

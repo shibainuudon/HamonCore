@@ -9,8 +9,8 @@
 
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memcpy.hpp>
+#include <hamon/vector.hpp>
 #include <ostream>	// basic_ostream
-#include <vector>
 
 namespace hamon
 {
@@ -34,7 +34,7 @@ void save_binary(std::basic_ostream<CharT, Traits>& os, void const* p, hamon::si
 	else
 	{
 		// そうでないときは、一時バッファにコピーしてから書き込む
-		std::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
+		hamon::vector<CharT> buf(count);	// TODO basic_stringを使ったほうが、countが小さい場合に高速かもしれない
 		hamon::memcpy(buf.data(), p, size);
 		pbuf->sputn(buf.data(), static_cast<std::streamsize>(count));
 	}

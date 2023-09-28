@@ -7,11 +7,11 @@
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/serialization/access.hpp>
 #include <hamon/serialization/version.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
-#include <vector>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -25,7 +25,7 @@ namespace object_version_split_member_test
 class Object1
 {
 private:
-	std::vector<float> a
+	hamon::vector<float> a
 	{
 		get_random_value<float>(),
 		get_random_value<float>(),

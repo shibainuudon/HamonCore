@@ -8,12 +8,12 @@
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
 #include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <tuple>
 #include <sstream>
 #include <utility>
-#include <vector>
 #include "serialization_test_archives.hpp"
 #include "get_random_value.hpp"
 
@@ -27,7 +27,7 @@ struct Object
 {
 	int n;
 	float f;
-	std::vector<int> v;
+	hamon::vector<int> v;
 	
 	template <typename Archive>
 	void serialize(Archive& ar)
@@ -49,7 +49,7 @@ void PairTest()
 			"Hello World!",
 			{ 10, -2.5f, {1, 2, 3} },
 		};
-		std::vector<std::pair<float, int>> const p3
+		hamon::vector<std::pair<float, int>> const p3
 		{
 			{0.5f, 1},
 			{1.5f, 2},
@@ -104,7 +104,7 @@ R"({
 	{
 		std::pair<int, float> a;
 		std::pair<hamon::string, Object> b;
-		std::vector<std::pair<float, int>> c;
+		hamon::vector<std::pair<float, int>> c;
 
 		IArchive ia(str);
 
@@ -118,7 +118,7 @@ R"({
 		EXPECT_EQ("Hello World!", b.first);
 		EXPECT_EQ(10, b.second.n);
 		EXPECT_EQ(-2.5f, b.second.f);
-		EXPECT_EQ((std::vector<int>{1, 2, 3}), b.second.v);
+		EXPECT_EQ((hamon::vector<int>{1, 2, 3}), b.second.v);
 
 		EXPECT_EQ(0.5f, c[0].first);
 		EXPECT_EQ(1,    c[0].second);

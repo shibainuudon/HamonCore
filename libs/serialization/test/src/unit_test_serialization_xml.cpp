@@ -9,8 +9,9 @@
 #include <hamon/serialization/types/array.hpp>
 #include <hamon/serialization/types/string.hpp>
 #include <hamon/serialization/types/vector.hpp>
-#include <hamon/string.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/string.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "get_random_value.hpp"
@@ -53,8 +54,8 @@ public:
 	float         b{};
 	hamon::string c{};
 	Point		  d{};
-	std::vector<int> e{};
-	std::vector<std::vector<hamon::string>> f{};
+	hamon::vector<int> e{};
+	hamon::vector<hamon::vector<hamon::string>> f{};
 
 private:
 	friend bool operator==(Object const& lhs, Object const& rhs)
