@@ -75,7 +75,7 @@
 #include <hamon/algorithm/ranges/pop_heap.hpp>
 #include <hamon/algorithm/ranges/prev_permutation.hpp>
 #include <hamon/algorithm/ranges/push_heap.hpp>
-//#include <hamon/algorithm/ranges/radix_sort.hpp>
+#include <hamon/algorithm/ranges/radix_sort.hpp>
 #include <hamon/algorithm/ranges/remove.hpp>
 #include <hamon/algorithm/ranges/remove_copy.hpp>
 #include <hamon/algorithm/ranges/remove_copy_if.hpp>
