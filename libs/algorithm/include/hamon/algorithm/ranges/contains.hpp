@@ -27,6 +27,7 @@ using std::ranges::contains;
 
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
