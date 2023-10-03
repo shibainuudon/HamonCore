@@ -5,6 +5,8 @@
  */
 
 #include <hamon/algorithm/ranges/ends_with.hpp>
+#include <hamon/functional/ranges/equal_to.hpp>
+#include <hamon/functional/identity.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
