@@ -33,6 +33,12 @@
 #include <hamon/algorithm/ranges/find_last.hpp>
 #include <hamon/algorithm/ranges/find_last_if.hpp>
 #include <hamon/algorithm/ranges/find_last_if_not.hpp>
+//#include <hamon/algorithm/ranges/fold_left.hpp>
+//#include <hamon/algorithm/ranges/fold_left_first.hpp>
+//#include <hamon/algorithm/ranges/fold_right.hpp>
+//#include <hamon/algorithm/ranges/fold_right_first.hpp>
+//#include <hamon/algorithm/ranges/fold_left_with_iter.hpp>
+//#include <hamon/algorithm/ranges/fold_left_first_with_iter.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/algorithm/ranges/for_each_n.hpp>
 #include <hamon/algorithm/ranges/generate.hpp>
@@ -96,7 +102,7 @@
 #include <hamon/algorithm/ranges/set_intersection.hpp>
 #include <hamon/algorithm/ranges/set_symmetric_difference.hpp>
 #include <hamon/algorithm/ranges/set_union.hpp>
-//#include <hamon/algorithm/ranges/shift_left.hpp>
+#include <hamon/algorithm/ranges/shift_left.hpp>
 //#include <hamon/algorithm/ranges/shift_right.hpp>
 #include <hamon/algorithm/ranges/shuffle.hpp>
 #include <hamon/algorithm/ranges/sort.hpp>
