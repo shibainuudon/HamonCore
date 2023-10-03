@@ -43,6 +43,24 @@ namespace hamon
 namespace tuple_detail
 {
 
+template <typename T, typename Tuple, hamon::size_t N = std::tuple_size<hamon::remove_reference_t<Tuple>>::value>
+struct make_from_tuple_dangling_check
+{
+	HAMON_STATIC_CONSTEXPR bool value = true;
+};
+
+template <typename T, typename Tuple>
+struct make_from_tuple_dangling_check<T, Tuple, 1>
+{
+	// [tuple.apply]/3
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+	using E = decltype(hamon::adl_get<0>(hamon::declval<Tuple>()));
+	HAMON_STATIC_CONSTEXPR bool value = !hamon::reference_constructs_from_temporary<T, E>::value;
+#else
+	HAMON_STATIC_CONSTEXPR bool value = true;
+#endif
+};
+
 // [tuple.apply]/4
 template <typename T, typename Tuple, hamon::size_t... I>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -52,15 +70,7 @@ inline HAMON_CXX11_CONSTEXPR T
 make_from_tuple_impl(Tuple&& t, hamon::index_sequence<I...>)
 HAMON_NOEXCEPT_IF_EXPR(T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
 {
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-	// [tuple.apply]/3
-	if constexpr (std::tuple_size<hamon::remove_reference_t<Tuple>>::value == 1)
-	{
-		using E = decltype(hamon::adl_get<0>(hamon::declval<Tuple>()));
-		static_assert(!hamon::reference_constructs_from_temporary<T, E>::value);
-	}
-#endif
-
+	static_assert(make_from_tuple_dangling_check<T, Tuple>::value, "reference constructs from temporary");
 	return T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...);
 }
 
