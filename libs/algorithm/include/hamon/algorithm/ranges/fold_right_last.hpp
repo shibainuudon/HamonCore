@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	fold_left_first.hpp
+ *	@file	fold_right_last.hpp
  *
- *	@brief	ranges::fold_left_first の定義
+ *	@brief	ranges::fold_right_last の定義
  */
 
-#ifndef HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_HPP
-#define HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_HPP
+#ifndef HAMON_ALGORITHM_RANGES_FOLD_RIGHT_LAST_HPP
+#define HAMON_ALGORITHM_RANGES_FOLD_RIGHT_LAST_HPP
 
 #include <hamon/algorithm/config.hpp>
 
@@ -20,7 +20,7 @@ namespace hamon
 namespace ranges
 {
 
-using std::ranges::fold_left_first;
+using std::ranges::fold_right_last;
 
 }	// namespace ranges
 
@@ -28,21 +28,22 @@ using std::ranges::fold_left_first;
 
 #else
 
-#include <hamon/algorithm/ranges/fold_left.hpp>
-#include <hamon/algorithm/ranges/detail/indirectly_binary_left_foldable.hpp>
+#include <hamon/algorithm/ranges/fold_right.hpp>
+#include <hamon/algorithm/ranges/detail/indirectly_binary_right_foldable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/functional/ref.hpp>
-#include <hamon/iterator/concepts/input_iterator.hpp>
+#include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
+#include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
+#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/declval.hpp>
@@ -56,13 +57,13 @@ namespace hamon
 namespace ranges
 {
 
-struct fold_left_first_fn
+struct fold_right_last_fn
 {
 private:
 	template <
 		typename Iter, typename Sent, typename F,
 		typename U = decltype(
-			ranges::fold_left(
+			ranges::fold_right(
 				hamon::declval<Iter>(),
 				hamon::declval<Sent>(),
 				hamon::declval<hamon::iter_value_t<Iter>>(),
@@ -77,15 +78,16 @@ private:
 			return hamon::optional<U>();
 		}
 
+		Iter tail = ranges::prev(ranges::next(first, hamon::move(last)));
 		return hamon::optional<U>(hamon::in_place,
-			ranges::fold_left(ranges::next(first), last, hamon::iter_value_t<Iter>(*first), hamon::move(f)));
+			ranges::fold_right(hamon::move(first), tail, hamon::iter_value_t<Iter>(*tail), hamon::move(f)));
 	}
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_left_foldable,
+		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_right_foldable,
 			hamon::iter_value_t<Iter>, Iter, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
@@ -98,8 +100,8 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_left_foldable,
+		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, Range),
+		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_right_foldable,
 			ranges::range_value_t<Range>, ranges::iterator_t<Range>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
@@ -115,7 +117,7 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR fold_left_first_fn fold_left_first{};
+HAMON_INLINE_VAR HAMON_CONSTEXPR fold_right_last_fn fold_right_last{};
 
 }	// inline namespace cpo
 
@@ -125,4 +127,4 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR fold_left_first_fn fold_left_first{};
 
 #endif
 
-#endif // HAMON_ALGORITHM_RANGES_FOLD_LEFT_FIRST_HPP
+#endif // HAMON_ALGORITHM_RANGES_FOLD_RIGHT_LAST_HPP
