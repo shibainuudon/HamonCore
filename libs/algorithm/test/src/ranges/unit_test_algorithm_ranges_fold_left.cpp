@@ -75,7 +75,7 @@ inline bool test03()
 		};
 		VERIFY(
 			ranges::fold_left(x, "!",
-				[](hamon::string const& x, hamon::string const& y) { return "(" + x + "+" + y + ")"; }) ==
+				[](hamon::string const& a, hamon::string const& b) { return "(" + a + "+" + b + ")"; }) ==
 			"((((!+A)+B)+C)+D)");
 	}
 

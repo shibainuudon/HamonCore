@@ -59,7 +59,8 @@ struct fold_left_with_iter_fn
 {
 private:
 	template <typename O, typename I, typename S, typename T, typename F,
-		typename U = hamon::decay_t<hamon::invoke_result_t<F&, T, hamon::iter_reference_t<I>>>,
+		typename U = hamon::decay_t<
+			hamon::invoke_result_t<F&, T, hamon::iter_reference_t<I>>>,
 		typename Ret = ranges::fold_left_with_iter_result<O, U>
 	>
 	HAMON_CXX14_CONSTEXPR Ret
@@ -85,7 +86,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename T,
 		HAMON_CONSTRAINED_PARAM(
-			ranges::detail::indirectly_binary_left_foldable, T, Iter, F)
+			ranges::detail::indirectly_binary_left_foldable,
+			T, Iter, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, T init, F f) const
@@ -100,7 +102,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
 		typename T,
 		HAMON_CONSTRAINED_PARAM(
-			ranges::detail::indirectly_binary_left_foldable, T, ranges::iterator_t<Range>, F)
+			ranges::detail::indirectly_binary_left_foldable,
+			T, ranges::iterator_t<Range>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, T init, F f) const

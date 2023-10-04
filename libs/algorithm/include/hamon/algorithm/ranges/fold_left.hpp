@@ -57,7 +57,9 @@ struct fold_left_fn
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename T,
-		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_left_foldable, T, Iter, F)
+		HAMON_CONSTRAINED_PARAM(
+			ranges::detail::indirectly_binary_left_foldable,
+			T, Iter, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, T init, F f) const
@@ -82,7 +84,8 @@ struct fold_left_fn
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
 		typename T,
 		HAMON_CONSTRAINED_PARAM(
-			ranges::detail::indirectly_binary_left_foldable, T, ranges::iterator_t<Range>, F)
+			ranges::detail::indirectly_binary_left_foldable,
+			T, ranges::iterator_t<Range>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, T init, F f) const

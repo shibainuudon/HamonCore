@@ -95,7 +95,7 @@ inline bool test03()
 			"A", "B", "C", "D",
 		};
 		auto ret = ranges::fold_left_first_with_iter(x,
-			[](hamon::string const& x, hamon::string const& y) { return "(" + x + "+" + y + ")"; });
+			[](hamon::string const& a, hamon::string const& b) { return "(" + a + "+" + b + ")"; });
 		VERIFY(ret.value == "(((A+B)+C)+D)");
 		VERIFY(ret.in == x.end());
 	}

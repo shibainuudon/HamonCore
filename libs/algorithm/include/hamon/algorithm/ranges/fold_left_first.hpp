@@ -47,6 +47,7 @@ using std::ranges::fold_left_first;
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/in_place.hpp>
 #include <hamon/optional.hpp>
 #include <hamon/config.hpp>
 
@@ -61,13 +62,11 @@ struct fold_left_first_fn
 private:
 	template <
 		typename Iter, typename Sent, typename F,
-		typename U = decltype(
-			ranges::fold_left(
-				hamon::declval<Iter>(),
-				hamon::declval<Sent>(),
-				hamon::declval<hamon::iter_value_t<Iter>>(),
-				hamon::declval<F>())
-		)
+		typename U = decltype(ranges::fold_left(
+			hamon::declval<Iter>(),
+			hamon::declval<Sent>(),
+			hamon::declval<hamon::iter_value_t<Iter>>(),
+			hamon::declval<F>()))
 	>
 	HAMON_CXX14_CONSTEXPR hamon::optional<U>
 	impl(Iter first, Sent last, F f) const
@@ -78,35 +77,45 @@ private:
 		}
 
 		return hamon::optional<U>(hamon::in_place,
-			ranges::fold_left(ranges::next(first), last, hamon::iter_value_t<Iter>(*first), hamon::move(f)));
+			ranges::fold_left(
+				ranges::next(first),
+				last,
+				hamon::iter_value_t<Iter>(*first),
+				hamon::move(f)));
 	}
 
 public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_left_foldable,
+		HAMON_CONSTRAINED_PARAM(
+			ranges::detail::indirectly_binary_left_foldable,
 			hamon::iter_value_t<Iter>, Iter, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		decltype(impl(hamon::move(first), hamon::move(last), hamon::ref(f))),
-		hamon::constructible_from<hamon::iter_value_t<Iter>, hamon::iter_reference_t<Iter>>)
+		hamon::constructible_from<
+			hamon::iter_value_t<Iter>,
+			hamon::iter_reference_t<Iter>>)
 	{
 		return impl(hamon::move(first), hamon::move(last), hamon::ref(f));
 	}
 
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(ranges::detail::indirectly_binary_left_foldable,
+		HAMON_CONSTRAINED_PARAM(
+			ranges::detail::indirectly_binary_left_foldable,
 			ranges::range_value_t<Range>, ranges::iterator_t<Range>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		decltype((*this)(ranges::begin(r), ranges::end(r), hamon::ref(f))),
-		hamon::constructible_from<ranges::range_value_t<Range>, ranges::range_reference_t<Range>>)
+		hamon::constructible_from<
+			ranges::range_value_t<Range>,
+			ranges::range_reference_t<Range>>)
 	{
 		return (*this)(ranges::begin(r), ranges::end(r), hamon::ref(f));
 	}
