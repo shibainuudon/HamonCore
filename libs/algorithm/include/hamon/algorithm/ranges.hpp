@@ -34,7 +34,7 @@
 #include <hamon/algorithm/ranges/find_last_if.hpp>
 #include <hamon/algorithm/ranges/find_last_if_not.hpp>
 #include <hamon/algorithm/ranges/fold_left.hpp>
-//#include <hamon/algorithm/ranges/fold_left_first.hpp>
+#include <hamon/algorithm/ranges/fold_left_first.hpp>
 //#include <hamon/algorithm/ranges/fold_right.hpp>
 //#include <hamon/algorithm/ranges/fold_right_last.hpp>
 //#include <hamon/algorithm/ranges/fold_left_with_iter.hpp>

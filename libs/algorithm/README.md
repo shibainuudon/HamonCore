@@ -29,6 +29,7 @@
 * Hamon.Functional
 * Hamon.Iterator
 * Hamon.Numeric
+* Hamon.Optional
 * Hamon.Pair
 * Hamon.Preprocessor
 * Hamon.Random
