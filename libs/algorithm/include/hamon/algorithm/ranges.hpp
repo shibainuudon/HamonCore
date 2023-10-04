@@ -37,7 +37,7 @@
 #include <hamon/algorithm/ranges/fold_left_first.hpp>
 #include <hamon/algorithm/ranges/fold_right.hpp>
 #include <hamon/algorithm/ranges/fold_right_last.hpp>
-//#include <hamon/algorithm/ranges/fold_left_with_iter.hpp>
+#include <hamon/algorithm/ranges/fold_left_with_iter.hpp>
 //#include <hamon/algorithm/ranges/fold_left_first_with_iter.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/algorithm/ranges/for_each_n.hpp>
@@ -51,6 +51,7 @@
 #include <hamon/algorithm/ranges/in_in_result.hpp>
 #include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/in_out_result.hpp>
+#include <hamon/algorithm/ranges/in_value_result.hpp>
 #include <hamon/algorithm/ranges/is_heap.hpp>
 #include <hamon/algorithm/ranges/is_heap_until.hpp>
 #include <hamon/algorithm/ranges/is_partitioned.hpp>
