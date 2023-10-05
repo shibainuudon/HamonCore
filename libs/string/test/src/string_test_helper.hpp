@@ -41,6 +41,10 @@ struct StringTestHelper;
 template <>
 struct StringTestHelper<char>
 {
+	HAMON_CONSTEXPR static const char* aababc() { return "aababc"; }
+	HAMON_CONSTEXPR static const char* abcd() { return "abcd"; }
+	HAMON_CONSTEXPR static const char* abc() { return "abc"; }
+	HAMON_CONSTEXPR static const char* ab() { return "ab"; }
 	HAMON_CONSTEXPR static const char* abbccc() { return "abbccc"; }
 	HAMON_CONSTEXPR static const char* abcde() { return "abcde"; }
 	HAMON_CONSTEXPR static const char* abb() { return "abb"; }
@@ -53,6 +57,10 @@ struct StringTestHelper<char>
 template <>
 struct StringTestHelper<wchar_t>
 {
+	HAMON_CONSTEXPR static const wchar_t* aababc() { return L"aababc"; }
+	HAMON_CONSTEXPR static const wchar_t* abcd() { return L"abcd"; }
+	HAMON_CONSTEXPR static const wchar_t* abc() { return L"abc"; }
+	HAMON_CONSTEXPR static const wchar_t* ab() { return L"ab"; }
 	HAMON_CONSTEXPR static const wchar_t* abbccc() { return L"abbccc"; }
 	HAMON_CONSTEXPR static const wchar_t* abcde() { return L"abcde"; }
 	HAMON_CONSTEXPR static const wchar_t* abb() { return L"abb"; }
@@ -66,6 +74,10 @@ struct StringTestHelper<wchar_t>
 template <>
 struct StringTestHelper<char8_t>
 {
+	HAMON_CONSTEXPR static const char8_t* aababc() { return u8"aababc"; }
+	HAMON_CONSTEXPR static const char8_t* abcd() { return u8"abcd"; }
+	HAMON_CONSTEXPR static const char8_t* abc() { return u8"abc"; }
+	HAMON_CONSTEXPR static const char8_t* ab() { return u8"ab"; }
 	HAMON_CONSTEXPR static const char8_t* abbccc() { return u8"abbccc"; }
 	HAMON_CONSTEXPR static const char8_t* abcde() { return u8"abcde"; }
 	HAMON_CONSTEXPR static const char8_t* abb() { return u8"abb"; }
@@ -80,6 +92,10 @@ struct StringTestHelper<char8_t>
 template <>
 struct StringTestHelper<char16_t>
 {
+	HAMON_CONSTEXPR static const char16_t* aababc() { return u"aababc"; }
+	HAMON_CONSTEXPR static const char16_t* abcd() { return u"abcd"; }
+	HAMON_CONSTEXPR static const char16_t* abc() { return u"abc"; }
+	HAMON_CONSTEXPR static const char16_t* ab() { return u"ab"; }
 	HAMON_CONSTEXPR static const char16_t* abbccc() { return u"abbccc"; }
 	HAMON_CONSTEXPR static const char16_t* abcde() { return u"abcde"; }
 	HAMON_CONSTEXPR static const char16_t* abb() { return u"abb"; }
@@ -94,6 +110,10 @@ struct StringTestHelper<char16_t>
 template <>
 struct StringTestHelper<char32_t>
 {
+	HAMON_CONSTEXPR static const char32_t* aababc() { return U"aababc"; }
+	HAMON_CONSTEXPR static const char32_t* abcd() { return U"abcd"; }
+	HAMON_CONSTEXPR static const char32_t* abc() { return U"abc"; }
+	HAMON_CONSTEXPR static const char32_t* ab() { return U"ab"; }
 	HAMON_CONSTEXPR static const char32_t* abbccc() { return U"abbccc"; }
 	HAMON_CONSTEXPR static const char32_t* abcde() { return U"abcde"; }
 	HAMON_CONSTEXPR static const char32_t* abb() { return U"abb"; }
