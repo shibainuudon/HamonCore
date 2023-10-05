@@ -9,9 +9,10 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-namespace hamon_string_test
+namespace hamon_test
 {
-
+namespace string_test
+{
 namespace char_traits_test
 {
 
@@ -305,5 +306,5 @@ TYPED_TEST(CharTraitsTest, MoveTest)
 #undef VERIFY
 
 }	// namespace char_traits_test
-
-}	// namespace hamon_string_test
+}	// namespace string_test
+}	// namespace hamon_test

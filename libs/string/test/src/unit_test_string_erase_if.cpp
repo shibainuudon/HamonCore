@@ -7,66 +7,15 @@
 #include <hamon/string/erase_if.hpp>
 #include <hamon/string/basic_string.hpp>
 #include <hamon/config.hpp>
+#include "constexpr_test.hpp"
+#include "string_test_helper.hpp"
 
-namespace hamon_string_test
+namespace hamon_test
 {
-
+namespace string_test
+{
 namespace erase_if_test
 {
-
-template <typename CharT>
-struct StringTestHelper;
-
-template <>
-struct StringTestHelper<char>
-{
-	HAMON_CONSTEXPR static const char* abbccc() { return "abbccc"; }
-	HAMON_CONSTEXPR static const char* abcde() { return "abcde"; }
-	HAMON_CONSTEXPR static const char* abb() { return "abb"; }
-	HAMON_CONSTEXPR static const char* bcde() { return "bcde"; }
-};
-
-template <>
-struct StringTestHelper<wchar_t>
-{
-	HAMON_CONSTEXPR static const wchar_t* abbccc() { return L"abbccc"; }
-	HAMON_CONSTEXPR static const wchar_t* abcde() { return L"abcde"; }
-	HAMON_CONSTEXPR static const wchar_t* abb() { return L"abb"; }
-	HAMON_CONSTEXPR static const wchar_t* bcde() { return L"bcde"; }
-};
-
-#if defined(HAMON_HAS_CXX20_CHAR8_T)
-template <>
-struct StringTestHelper<char8_t>
-{
-	HAMON_CONSTEXPR static const char8_t* abbccc() { return u8"abbccc"; }
-	HAMON_CONSTEXPR static const char8_t* abcde() { return u8"abcde"; }
-	HAMON_CONSTEXPR static const char8_t* abb() { return u8"abb"; }
-	HAMON_CONSTEXPR static const char8_t* bcde() { return u8"bcde"; }
-};
-#endif
-
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-template <>
-struct StringTestHelper<char16_t>
-{
-	HAMON_CONSTEXPR static const char16_t* abbccc() { return u"abbccc"; }
-	HAMON_CONSTEXPR static const char16_t* abcde() { return u"abcde"; }
-	HAMON_CONSTEXPR static const char16_t* abb() { return u"abb"; }
-	HAMON_CONSTEXPR static const char16_t* bcde() { return u"bcde"; }
-};
-#endif
-
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-template <>
-struct StringTestHelper<char32_t>
-{
-	HAMON_CONSTEXPR static const char32_t* abbccc() { return U"abbccc"; }
-	HAMON_CONSTEXPR static const char32_t* abcde() { return U"abcde"; }
-	HAMON_CONSTEXPR static const char32_t* abb() { return U"abb"; }
-	HAMON_CONSTEXPR static const char32_t* bcde() { return U"bcde"; }
-};
-#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -97,23 +46,13 @@ EraseIfTest()
 	return true;
 }
 
-GTEST_TEST(StringTest, EraseIfTest)
-{
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<char>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<wchar_t>());
-#if defined(HAMON_HAS_CXX20_CHAR8_T)
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<char8_t>());
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<char16_t>());
-#endif
-#if defined(HAMON_HAS_CXX11_CHAR32_T)
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<char32_t>());
-#endif
-}
-
 #undef VERIFY
 
-}	// namespace erase_if_test
+TYPED_TEST(StringTest, EraseIfTest)
+{
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<TypeParam>());
+}
 
-}	// namespace hamon_string_test
+}	// namespace erase_if_test
+}	// namespace string_test
+}	// namespace hamon_test
