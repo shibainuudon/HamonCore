@@ -22,8 +22,11 @@ jobs:
         - { os: windows-2022, generator: "Visual Studio 17 2022" }
         - { os: windows-2019, generator: "Visual Studio 16 2019" }
         architecture: [x64, Win32]
-        cxx_standard: [14, 17, 20]
+        cxx_standard: [14, 17, 20, 23]
         build_type: [Debug, Release]
+        exclude:
+          - config: { generator: "Visual Studio 16 2019" }
+            cxx_standard: 23
     defaults:
       run:
         shell: bash
@@ -60,8 +63,23 @@ jobs:
         - { os: ubuntu-20.04, cc: "clang-12", cxx: "clang++-12" }
         - { os: ubuntu-20.04, cc: "clang-11", cxx: "clang++-11" }
         - { os: ubuntu-20.04, cc: "clang-10", cxx: "clang++-10" }
-        cxx_standard: [11, 14, 17, 20]
+        cxx_standard: [11, 14, 17, 20, 23]
         build_type: [Debug, Release]
+        exclude:
+          - config: { cxx: "g++-10" }
+            cxx_standard: 23
+          - config: { cxx: "g++-9" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-14" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-13" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-12" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-11" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-10" }
+            cxx_standard: 23
     steps:
       - uses: actions/checkout@v3
         with:
@@ -88,7 +106,7 @@ jobs:
         config:
         - { os: macos-12, cc: "clang", cxx: "clang++" }
         - { os: macos-11, cc: "clang", cxx: "clang++" }
-        cxx_standard: [11, 14, 17, 20]
+        cxx_standard: [11, 14, 17, 20, 23]
         build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v3
