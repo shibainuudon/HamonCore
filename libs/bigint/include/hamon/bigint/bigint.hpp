@@ -111,7 +111,7 @@ public:
 			}
 		}
 
-		bigint_algo::from_chars(str.begin(), str.end(), m_magnitude, base);
+		bigint_algo::from_chars(str.data(), str.data() + str.size(), m_magnitude, base);
 
 		if (bigint_algo::is_zero(m_magnitude))
 		{

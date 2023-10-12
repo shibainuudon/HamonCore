@@ -31,9 +31,9 @@ FromCharsTest(hamon::string_view sv, int base, T const& expected, hamon::size_t 
 	}
 
 	T value{0};
-	auto ret = hamon::bigint_algo::from_chars(sv.begin(), sv.end(), value, base);
+	auto ret = hamon::bigint_algo::from_chars(sv.data(), sv.data() + sv.size(), value, base);
 	VERIFY(value == expected);
-	VERIFY(ret.ptr == sv.begin() + length);
+	VERIFY(ret.ptr == sv.data() + length);
 	VERIFY(ret.ec == ec);
 
 	return true;

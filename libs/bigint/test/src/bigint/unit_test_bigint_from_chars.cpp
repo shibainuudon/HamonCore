@@ -22,9 +22,9 @@ inline HAMON_CXX14_CONSTEXPR bool
 FromCharsTestImpl(hamon::string_view sv, int base, BigInt const& expected, hamon::size_t length, hamon::errc ec = {})
 {
 	BigInt value{};
-	auto ret = hamon::from_chars(sv.begin(), sv.end(), value, base);
+	auto ret = hamon::from_chars(sv.data(), sv.data() + sv.size(), value, base);
 	VERIFY(value == expected);
-	VERIFY(ret.ptr == sv.begin() + length);
+	VERIFY(ret.ptr == sv.data() + length);
 	VERIFY(ret.ec == ec);
 	return true;
 }

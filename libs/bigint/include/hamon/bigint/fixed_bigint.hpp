@@ -140,7 +140,7 @@ public:
 			}
 		}
 
-		bigint_algo::from_chars(str.begin(), str.end(), m_data, base);
+		bigint_algo::from_chars(str.data(), str.data() + str.size(), m_data, base);
 		if (sign < 0)
 		{
 			bigint_algo::negate(m_data);
