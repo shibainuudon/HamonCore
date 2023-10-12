@@ -50,9 +50,9 @@ inline HAMON_CXX14_CONSTEXPR bool
 IntegerFromCharsTest(hamon::string_view sv, int base, T expected, hamon::size_t length, hamon::errc ec = {})
 {
 	T value{};
-	auto ret = hamon::from_chars(sv.begin(), sv.end(), value, base);
+	auto ret = hamon::from_chars(sv.data(), sv.data() + sv.size(), value, base);
 	VERIFY(value == expected);
-	VERIFY(ret.ptr == sv.begin() + length);
+	VERIFY(ret.ptr == sv.data() + length);
 	VERIFY(ret.ec == ec);
 
 	return true;
