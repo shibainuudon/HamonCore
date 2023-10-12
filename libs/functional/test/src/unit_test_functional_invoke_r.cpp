@@ -139,20 +139,20 @@ GTEST_TEST(FunctionalTest, InvokeRTest)
 		Foo f{};
 		static_assert(!noexcept(f.throw_member_func()), "");
 		static_assert( noexcept(f.nothrow_member_func()), "");
-		static_assert(!noexcept(hamon::invoke_r<int  >(&Foo::throw_member_func, &f)), "");
-		static_assert(!noexcept(hamon::invoke_r<float>(&Foo::throw_member_func, &f)), "");
-		static_assert(!noexcept(hamon::invoke_r<void >(&Foo::throw_member_func, &f)), "");
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<int  >(&Foo::throw_member_func, &f)), int>::value, "");
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<float>(&Foo::throw_member_func, &f)), float>::value, "");
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<void >(&Foo::throw_member_func, &f)), void>::value, "");
+		static_assert(!noexcept(hamon::invoke_r<int >(&Foo::throw_member_func, &f)), "");
+		static_assert(!noexcept(hamon::invoke_r<long>(&Foo::throw_member_func, &f)), "");
+		static_assert(!noexcept(hamon::invoke_r<void>(&Foo::throw_member_func, &f)), "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<int >(&Foo::throw_member_func, &f)), int>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<long>(&Foo::throw_member_func, &f)), long>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<void>(&Foo::throw_member_func, &f)), void>::value, "");
 #if HAMON_CXX_STANDARD >= 17
 		static_assert( noexcept(hamon::invoke_r<int >(&Foo::nothrow_member_func, &f)), "");
 		static_assert( noexcept(hamon::invoke_r<long>(&Foo::nothrow_member_func, &f)), "");
 		static_assert( noexcept(hamon::invoke_r<void>(&Foo::nothrow_member_func, &f)), "");
 #endif
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<int  >(&Foo::nothrow_member_func, &f)), int>::value, "");
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<float>(&Foo::nothrow_member_func, &f)), float>::value, "");
-		static_assert(hamon::is_same<decltype(hamon::invoke_r<void >(&Foo::nothrow_member_func, &f)), void>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<int >(&Foo::nothrow_member_func, &f)), int>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<long>(&Foo::nothrow_member_func, &f)), long>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::invoke_r<void>(&Foo::nothrow_member_func, &f)), void>::value, "");
 	}
 	{
 		Bar bar;
