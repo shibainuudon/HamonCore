@@ -16,14 +16,20 @@ namespace hamon
 namespace detail
 {
 
+#if defined(HAMON_USE_STD_STRING_VIEW)
+	#define HAMON_STRING_VIEW_NAMESPACE "std"
+#else
+	#define HAMON_STRING_VIEW_NAMESPACE "hamon"
+#endif
+
 #if defined(__clang__)
-    #define HAMON_PRETTY_FUNCTION_PREFIX "hamon::string_view hamon::detail::pretty_function() [T = "
+    #define HAMON_PRETTY_FUNCTION_PREFIX HAMON_STRING_VIEW_NAMESPACE "::string_view hamon::detail::pretty_function() [T = "
     #define HAMON_PRETTY_FUNCTION_SUFFIX "]"
 #elif defined(__GNUC__) && !defined(__clang__)
-    #define HAMON_PRETTY_FUNCTION_PREFIX "constexpr hamon::string_view hamon::detail::pretty_function() [with T = "
-    #define HAMON_PRETTY_FUNCTION_SUFFIX "; hamon::string_view = hamon::basic_string_view<char>]"
+    #define HAMON_PRETTY_FUNCTION_PREFIX "constexpr " HAMON_STRING_VIEW_NAMESPACE "::string_view hamon::detail::pretty_function() [with T = "
+    #define HAMON_PRETTY_FUNCTION_SUFFIX "; " HAMON_STRING_VIEW_NAMESPACE "::string_view = hamon::basic_string_view<char>]"
 #elif defined(_MSC_VER)
-    #define HAMON_PRETTY_FUNCTION_PREFIX "class hamon::basic_string_view<char,struct hamon::char_traits<char> > __cdecl hamon::detail::pretty_function<"
+    #define HAMON_PRETTY_FUNCTION_PREFIX "class " HAMON_STRING_VIEW_NAMESPACE "::basic_string_view<char,struct " HAMON_STRING_VIEW_NAMESPACE "::char_traits<char> > __cdecl hamon::detail::pretty_function<"
     #define HAMON_PRETTY_FUNCTION_SUFFIX ">(void)"
 #else
     #error "No support for this compiler."
@@ -63,6 +69,12 @@ nameof_impl(hamon::string_view type_name)
 {
 	return remove_prefix(remove_prefix(remove_prefix(type_name, "class "), "struct "), "enum ");
 }
+
+#undef HAMON_STRING_VIEW_NAMESPACE
+#undef HAMON_PRETTY_FUNCTION_PREFIX
+#undef HAMON_PRETTY_FUNCTION_SUFFIX
+#undef HAMON_PRETTY_FUNCTION_LEFT
+#undef HAMON_PRETTY_FUNCTION_RIGHT
 
 }	// namespace detail
 
