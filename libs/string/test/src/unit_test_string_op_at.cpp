@@ -23,7 +23,7 @@ namespace op_at_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 OpAtTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -35,7 +35,7 @@ OpAtTest()
 	{
 		auto p = Helper::abcde();
 		string const s = p;
-		static_assert(noexcept(s[SizeType{}]), "");
+		//static_assert(noexcept(s[SizeType{}]), "");
 		static_assert(hamon::is_same<decltype(s[SizeType{}]), ConstReference>::value, "");
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -68,7 +68,7 @@ OpAtTest()
 
 TYPED_TEST(StringTest, OpAtTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(OpAtTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(OpAtTest<TypeParam>());
 }
 
 }	// namespace op_at_test

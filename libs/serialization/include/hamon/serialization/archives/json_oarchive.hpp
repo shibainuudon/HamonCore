@@ -65,7 +65,7 @@ public:
 	json_oarchive& operator<<(T const& t)
 	{
 		auto const name =
-			hamon::string("value") + std::to_string(get_value_index());
+			hamon::string("value") + hamon::to_string(get_value_index());
 		increment_value_index();
 		return *this << make_nvp(name, t);
 	}

@@ -30,16 +30,16 @@ namespace ends_with_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 EndsWithTest()
 {
-#if HAMON_CXX_STANDARD >= 20	// TODO
+#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 20
 	using string = hamon::basic_string<CharT>;
-	using string_view = std::basic_string_view<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr bool ends_with(basic_string_view<charT, traits> x) const noexcept;
 	{
+		using string_view = hamon::basic_string_view<CharT>;
 		auto p = Helper::abcd();
 		string const s = p;
 		static_assert(noexcept(s.ends_with(string_view{p})), "");
@@ -50,6 +50,20 @@ EndsWithTest()
 		VERIFY(!(s.ends_with(string_view{Helper::ab()})));
 		VERIFY( (s.ends_with(string_view{Helper::bcd()})));
 	}
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+	{
+		using string_view = std::basic_string_view<CharT>;
+		auto p = Helper::abcd();
+		string const s = p;
+//		static_assert(noexcept(s.ends_with(string_view{p})), "");
+		static_assert(hamon::is_same<decltype(s.ends_with(string_view{p})), bool>::value, "");
+		VERIFY(!(s.ends_with(string_view{Helper::abcde()})));
+		VERIFY( (s.ends_with(string_view{Helper::abcd()})));
+		VERIFY(!(s.ends_with(string_view{Helper::abc()})));
+		VERIFY(!(s.ends_with(string_view{Helper::ab()})));
+		VERIFY( (s.ends_with(string_view{Helper::bcd()})));
+	}
+#endif
 
 	// constexpr bool ends_with(charT x) const noexcept;
 	{
@@ -73,7 +87,7 @@ EndsWithTest()
 	{
 		auto p = Helper::abcd();
 		string const s = p;
-		static_assert(noexcept(s.ends_with(p)), "");
+		//static_assert(noexcept(s.ends_with(p)), "");
 		static_assert(hamon::is_same<decltype(s.ends_with(p)), bool>::value, "");
 		VERIFY(!(s.ends_with(Helper::abcde())));
 		VERIFY( (s.ends_with(Helper::abcd())));
@@ -90,7 +104,7 @@ EndsWithTest()
 
 TYPED_TEST(StringTest, EndsWithTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EndsWithTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(EndsWithTest<TypeParam>());
 }
 
 }	// namespace ends_with_test

@@ -27,7 +27,7 @@ namespace copy_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 CopyTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -89,7 +89,7 @@ CopyTest()
 
 TYPED_TEST(StringTest, CopyTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CopyTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CopyTest<TypeParam>());
 }
 
 }	// namespace copy_test

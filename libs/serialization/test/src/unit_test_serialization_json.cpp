@@ -139,7 +139,7 @@ void JsonTest()
 		oa << HAMON_SERIALIZATION_NVP(i);
 		oa << HAMON_SERIALIZATION_NVP(obj);
 	}
-	hamon::string expected =
+	const char* expected =
 R"({
     "value0": 3,
     "b": 1.5,
@@ -197,7 +197,7 @@ R"({
         ]
     }
 })";
-	EXPECT_EQ(expected, str.str());
+	EXPECT_STREQ(expected, str.str().c_str());
 	{
 		int a;
 		float b;

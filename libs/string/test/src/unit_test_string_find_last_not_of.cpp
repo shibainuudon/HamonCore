@@ -33,15 +33,14 @@ namespace find_last_not_of_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 FindLastNotOfTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr size_type find_last_not_of(const T& t, size_type pos = npos) const noexcept(see below);
@@ -51,9 +50,8 @@ FindLastNotOfTest()
 		string_view const s3 = Helper::abc();
 		string_view const s4 = Helper::abcd();
 		string_view const s5 = Helper::abcde();
-		// TODO
-		//static_assert(!noexcept(s1.find_last_not_of(s2)), "");
-		//static_assert(!noexcept(s1.find_last_not_of(s2, SizeType{})), "");
+		static_assert(noexcept(s1.find_last_not_of(s2)), "");
+		static_assert(noexcept(s1.find_last_not_of(s2, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s1.find_last_not_of(s2)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s1.find_last_not_of(s2, SizeType{})), SizeType>::value, "");
 
@@ -67,7 +65,6 @@ FindLastNotOfTest()
 		VERIFY(s1.find_last_not_of(s2, 2) == 2);
 		VERIFY(s1.find_last_not_of(s2, 3) == 2);
 	}
-#endif
 
 	// constexpr size_type find_last_not_of(const basic_string& str, size_type pos = npos) const noexcept;
 	{
@@ -100,9 +97,9 @@ FindLastNotOfTest()
 		auto p2 = Helper::abc();
 		auto p3 = Helper::abcd();
 		auto p4 = Helper::abcde();
-		static_assert(noexcept(s.find_last_not_of(p1)), "");
-		static_assert(noexcept(s.find_last_not_of(p1, SizeType{})), "");
-		static_assert(noexcept(s.find_last_not_of(p1, SizeType{}, SizeType{})), "");
+		//static_assert(noexcept(s.find_last_not_of(p1)), "");
+		//static_assert(noexcept(s.find_last_not_of(p1, SizeType{})), "");
+		//static_assert(noexcept(s.find_last_not_of(p1, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.find_last_not_of(p1)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find_last_not_of(p1, SizeType{})), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find_last_not_of(p1, SizeType{}, SizeType{})), SizeType>::value, "");
@@ -156,7 +153,7 @@ FindLastNotOfTest()
 
 TYPED_TEST(StringTest, FindLastNotOfTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FindLastNotOfTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(FindLastNotOfTest<TypeParam>());
 }
 
 }	// namespace find_last_not_of_test

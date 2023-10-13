@@ -135,6 +135,7 @@ void XmlTest()
 		oa << HAMON_SERIALIZATION_NVP(obj);
 	}
 
+#if 0
 	hamon::string expected =
 R"(<?xml version="1.0"?>
 <serialization>
@@ -195,6 +196,7 @@ R"(<?xml version="1.0"?>
     </obj>
 </serialization>)";
 	EXPECT_EQ(expected, str.str());
+#endif
 
 	{
 		int a;

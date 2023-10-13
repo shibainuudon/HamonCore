@@ -46,7 +46,7 @@ namespace op_compare_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 OpCompareTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -218,7 +218,7 @@ OpCompareTest()
 
 TYPED_TEST(StringTest, OpCompareTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(OpCompareTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(OpCompareTest<TypeParam>());
 }
 
 }	// namespace op_compare_test

@@ -33,15 +33,14 @@ namespace find_first_of_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 FindFirstOfTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr size_type find_first_of(const T& t, size_type pos = 0) const noexcept(see below);
@@ -51,9 +50,8 @@ FindFirstOfTest()
 		string_view const s3 = Helper::abc();
 		string_view const s4 = Helper::abcd();
 		string_view const s5 = Helper::ABCDE();
-		// TODO
-		//static_assert(!noexcept(s1.find_first_of(s2)), "");
-		//static_assert(!noexcept(s1.find_first_of(s2, SizeType{})), "");
+		static_assert(noexcept(s1.find_first_of(s2)), "");
+		static_assert(noexcept(s1.find_first_of(s2, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s1.find_first_of(s2)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s1.find_first_of(s2, SizeType{})), SizeType>::value, "");
 
@@ -69,7 +67,6 @@ FindFirstOfTest()
 		VERIFY(s1.find_first_of(s4, 4) == 4);
 		VERIFY(s1.find_first_of(s4, 5) == string::npos);
 	}
-#endif
 
 	// constexpr size_type find_first_of(const basic_string& str, size_type pos = 0) const noexcept;
 	{
@@ -104,9 +101,9 @@ FindFirstOfTest()
 		auto p2 = Helper::abc();
 		auto p3 = Helper::abcd();
 		auto p4 = Helper::ABCDE();
-		static_assert(noexcept(s.find_first_of(p1)), "");
-		static_assert(noexcept(s.find_first_of(p1, SizeType{})), "");
-		static_assert(noexcept(s.find_first_of(p1, SizeType{}, SizeType{})), "");
+		//static_assert(noexcept(s.find_first_of(p1)), "");
+		//static_assert(noexcept(s.find_first_of(p1, SizeType{})), "");
+		//static_assert(noexcept(s.find_first_of(p1, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.find_first_of(p1)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find_first_of(p1, SizeType{})), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find_first_of(p1, SizeType{}, SizeType{})), SizeType>::value, "");
@@ -161,7 +158,7 @@ FindFirstOfTest()
 
 TYPED_TEST(StringTest, FindFirstOfTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FindFirstOfTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(FindFirstOfTest<TypeParam>());
 }
 
 }	// namespace find_first_of_test

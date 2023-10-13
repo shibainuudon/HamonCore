@@ -33,15 +33,14 @@ namespace find_first_not_of_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 FindFirstNotOfTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr size_type find_first_not_of(const T& t, size_type pos = 0) const noexcept(see below);
@@ -51,8 +50,7 @@ FindFirstNotOfTest()
 		string_view const s3 = Helper::abc();
 		string_view const s4 = Helper::abcd();
 		string_view const s5 = Helper::abcde();
-		// TODO
-		//static_assert(!noexcept(s1.find_first_not_of(s2)), "");
+		static_assert(noexcept(s1.find_first_not_of(s2)), "");
 		static_assert(hamon::is_same<decltype(s1.find_first_not_of(s2)), SizeType>::value, "");
 
 		VERIFY(s1.find_first_not_of(s2) == 2);
@@ -63,8 +61,7 @@ FindFirstNotOfTest()
 	{
 		string const s1 = Helper::edcba();
 		string_view const s2 = Helper::ab();
-		// TODO
-		//static_assert(!noexcept(s1.find_first_not_of(s2, SizeType{})), "");
+		static_assert(noexcept(s1.find_first_not_of(s2, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s1.find_first_not_of(s2, SizeType{})), SizeType>::value, "");
 
 		VERIFY(s1.find_first_not_of(s2, 0) == 0);
@@ -72,7 +69,6 @@ FindFirstNotOfTest()
 		VERIFY(s1.find_first_not_of(s2, 2) == 2);
 		VERIFY(s1.find_first_not_of(s2, 3) == string::npos);
 	}
-#endif
 
 	// constexpr size_type find_first_not_of(const basic_string& str, size_type pos = 0) const noexcept;
 	{
@@ -109,7 +105,7 @@ FindFirstNotOfTest()
 		auto p2 = Helper::abc();
 		auto p3 = Helper::abcd();
 		auto p4 = Helper::abcde();
-		static_assert(noexcept(s.find_first_not_of(p1)), "");
+		//static_assert(noexcept(s.find_first_not_of(p1)), "");
 		static_assert(hamon::is_same<decltype(s.find_first_not_of(p1)), SizeType>::value, "");
 
 		VERIFY(s.find_first_not_of(p1) == 2);
@@ -120,7 +116,7 @@ FindFirstNotOfTest()
 	{
 		string const s = Helper::edcba();
 		auto p = Helper::ab();
-		static_assert(noexcept(s.find_first_not_of(p, SizeType{})), "");
+		//static_assert(noexcept(s.find_first_not_of(p, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.find_first_not_of(p, SizeType{})), SizeType>::value, "");
 
 		VERIFY(s.find_first_not_of(p, 0) == 0);
@@ -131,7 +127,7 @@ FindFirstNotOfTest()
 	{
 		string const s = Helper::abcde();
 		auto p = Helper::abcde();
-		static_assert(noexcept(s.find_first_not_of(p, SizeType{}, SizeType{})), "");
+		//static_assert(noexcept(s.find_first_not_of(p, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.find_first_not_of(p, SizeType{}, SizeType{})), SizeType>::value, "");
 
 		VERIFY(s.find_first_not_of(p, 1, 1) == 1);
@@ -171,7 +167,7 @@ FindFirstNotOfTest()
 
 TYPED_TEST(StringTest, FindFirstNotOfTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FindFirstNotOfTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(FindFirstNotOfTest<TypeParam>());
 }
 
 }	// namespace find_first_not_of_test

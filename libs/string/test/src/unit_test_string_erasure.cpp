@@ -29,7 +29,7 @@ namespace erasure_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 EraseTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -64,7 +64,7 @@ EraseTest()
 }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 EraseIfTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -99,8 +99,8 @@ EraseIfTest()
 
 TYPED_TEST(StringTest, ErasureTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseTest<TypeParam>());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(EraseTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(EraseIfTest<TypeParam>());
 }
 
 }	// namespace erasure_test

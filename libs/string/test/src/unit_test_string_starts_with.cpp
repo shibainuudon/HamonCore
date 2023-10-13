@@ -30,16 +30,16 @@ namespace starts_with_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 StartsWithTest()
 {
-#if HAMON_CXX_STANDARD >= 20	// TODO
+#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 20
 	using string = hamon::basic_string<CharT>;
-	using string_view = std::basic_string_view<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr bool starts_with(basic_string_view<charT, traits> x) const noexcept;
 	{
+		using string_view = hamon::basic_string_view<CharT>;
 		auto p = Helper::abcd();
 		string const s = p;
 		static_assert(noexcept(s.starts_with(string_view{p})), "");
@@ -51,6 +51,21 @@ StartsWithTest()
 		VERIFY(!(s.starts_with(string_view{Helper::abb()})));
 		VERIFY(!(s.starts_with(string_view{Helper::bcde()})));
 	}
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+	{
+		using string_view = std::basic_string_view<CharT>;
+		auto p = Helper::abcd();
+		string const s = p;
+//		static_assert(noexcept(s.starts_with(string_view{p})), "");
+		static_assert(hamon::is_same<decltype(s.starts_with(string_view{p})), bool>::value, "");
+		VERIFY(!(s.starts_with(string_view{Helper::abcde()})));
+		VERIFY( (s.starts_with(string_view{Helper::abcd()})));
+		VERIFY( (s.starts_with(string_view{Helper::abc()})));
+		VERIFY( (s.starts_with(string_view{Helper::ab()})));
+		VERIFY(!(s.starts_with(string_view{Helper::abb()})));
+		VERIFY(!(s.starts_with(string_view{Helper::bcde()})));
+	}
+#endif
 
 	// constexpr bool starts_with(charT x) const noexcept;
 	{
@@ -72,7 +87,7 @@ StartsWithTest()
 	{
 		auto p = Helper::abcd();
 		string const s = p;
-		static_assert(noexcept(s.starts_with(p)), "");
+		//static_assert(noexcept(s.starts_with(p)), "");
 		static_assert(hamon::is_same<decltype(s.starts_with(p)), bool>::value, "");
 		VERIFY(!(s.starts_with(Helper::abcde())));
 		VERIFY( (s.starts_with(Helper::abcd())));
@@ -90,7 +105,7 @@ StartsWithTest()
 
 TYPED_TEST(StringTest, StartsWithTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(StartsWithTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(StartsWithTest<TypeParam>());
 }
 
 }	// namespace starts_with_test

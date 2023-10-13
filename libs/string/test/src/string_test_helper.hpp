@@ -15,6 +15,17 @@ namespace hamon_test
 namespace string_test
 {
 
+template <typename String>
+constexpr bool GeneralCheck(String const& s)
+{
+	using CharT = typename String::value_type;
+	// [basic.string.general]/3
+	return
+		s.size() <= s.capacity() &&
+		*(s.data() + s.size()) == CharT{} &&
+		s[s.size()] == CharT{};
+}
+
 template <typename T>
 class StringTest : public ::testing::Test {};
 
@@ -52,6 +63,7 @@ struct StringTestHelper<char>
 	HAMON_CONSTEXPR static const char* bcd() { return "bcd"; }
 	HAMON_CONSTEXPR static const char* edcba() { return "edcba"; }
 	HAMON_CONSTEXPR static const char* ABCDE() { return "ABCDE"; }
+	HAMON_CONSTEXPR static const char* long_str() { return "The quick brown fox jumps over the lazy dog"; }
 };
 
 template <>
@@ -68,6 +80,7 @@ struct StringTestHelper<wchar_t>
 	HAMON_CONSTEXPR static const wchar_t* bcd() { return L"bcd"; }
 	HAMON_CONSTEXPR static const wchar_t* edcba() { return L"edcba"; }
 	HAMON_CONSTEXPR static const wchar_t* ABCDE() { return L"ABCDE"; }
+	HAMON_CONSTEXPR static const wchar_t* long_str() { return L"The quick brown fox jumps over the lazy dog"; }
 };
 
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
@@ -85,6 +98,7 @@ struct StringTestHelper<char8_t>
 	HAMON_CONSTEXPR static const char8_t* bcd() { return u8"bcd"; }
 	HAMON_CONSTEXPR static const char8_t* edcba() { return u8"edcba"; }
 	HAMON_CONSTEXPR static const char8_t* ABCDE() { return u8"ABCDE"; }
+	HAMON_CONSTEXPR static const char8_t* long_str() { return u8"The quick brown fox jumps over the lazy dog"; }
 };
 #endif
 
@@ -103,6 +117,7 @@ struct StringTestHelper<char16_t>
 	HAMON_CONSTEXPR static const char16_t* bcd() { return u"bcd"; }
 	HAMON_CONSTEXPR static const char16_t* edcba() { return u"edcba"; }
 	HAMON_CONSTEXPR static const char16_t* ABCDE() { return u"ABCDE"; }
+	HAMON_CONSTEXPR static const char16_t* long_str() { return u"The quick brown fox jumps over the lazy dog"; }
 };
 #endif
 
@@ -121,6 +136,7 @@ struct StringTestHelper<char32_t>
 	HAMON_CONSTEXPR static const char32_t* bcd() { return U"bcd"; }
 	HAMON_CONSTEXPR static const char32_t* edcba() { return U"edcba"; }
 	HAMON_CONSTEXPR static const char32_t* ABCDE() { return U"ABCDE"; }
+	HAMON_CONSTEXPR static const char32_t* long_str() { return U"The quick brown fox jumps over the lazy dog"; }
 };
 #endif
 

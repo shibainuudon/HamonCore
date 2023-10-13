@@ -22,7 +22,7 @@ namespace clear_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ClearTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -33,8 +33,22 @@ ClearTest()
 		static_assert(noexcept(s.clear()), "");
 		static_assert(hamon::is_same<decltype(s.clear()), void>::value, "");
 
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.empty() == false);
+		
 		s.clear();
+		
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.empty() == true);
+
+		s = Helper::long_str();
+
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.empty() == false);
+		
+		s.clear();
+		
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.empty() == true);
 	}
 
@@ -45,7 +59,7 @@ ClearTest()
 
 TYPED_TEST(StringTest, ClearTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ClearTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ClearTest<TypeParam>());
 }
 
 }	// namespace clear_test

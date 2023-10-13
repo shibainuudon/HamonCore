@@ -41,12 +41,14 @@ namespace replace_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ReplaceTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
 	using ConstIterator = typename string::const_iterator;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr basic_string& replace(size_type pos1, size_type n1, const basic_string& str);
@@ -60,6 +62,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(1, 2, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -69,6 +72,24 @@ ReplaceTest()
 			VERIFY(s2[5] == p1[4]);
 			VERIFY(s2[6] == p2[3]);
 			VERIFY(s2[7] == p2[4]);
+		}
+	}
+	{
+		auto p = Helper::abcde();
+		string s = p;
+		{
+			auto& r = s.replace(1, 2, s);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
+			VERIFY(s.size() == 8);
+			VERIFY(s[0] == p[0]);
+			VERIFY(s[1] == p[0]);
+			VERIFY(s[2] == p[1]);
+			VERIFY(s[3] == p[2]);
+			VERIFY(s[4] == p[3]);
+			VERIFY(s[5] == p[4]);
+			VERIFY(s[6] == p[3]);
+			VERIFY(s[7] == p[4]);
 		}
 	}
 
@@ -85,6 +106,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(1, 2, s1, 2, 3);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 6);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[2]);
@@ -96,6 +118,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(2, 3, s1, 4);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 4);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[2]);
@@ -103,9 +126,22 @@ ReplaceTest()
 			VERIFY(s2[3] == p2[4]);
 		}
 	}
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
+	{
+		auto p = Helper::abcde();
+		string s = p;
+		{
+			auto& r = s.replace(1, 2, s, 2, 3);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
+			VERIFY(s.size() == 6);
+			VERIFY(s[0] == p[0]);
+			VERIFY(s[1] == p[2]);
+			VERIFY(s[2] == p[3]);
+			VERIFY(s[3] == p[4]);
+			VERIFY(s[4] == p[3]);
+			VERIFY(s[5] == p[4]);
+		}
+	}
 
 	// template<class T>
 	// constexpr basic_string& replace(size_type pos1, size_type n1, const T& t);
@@ -119,6 +155,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(1, 2, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -145,6 +182,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(1, 2, s1, 2, 3);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 6);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[2]);
@@ -156,6 +194,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(2, 3, s1, 4);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 4);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[2]);
@@ -176,6 +215,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(s2.begin() + 1, s2.begin() + 3, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -187,7 +227,6 @@ ReplaceTest()
 			VERIFY(s2[7] == p2[4]);
 		}
 	}
-#endif
 
 	// constexpr basic_string& replace(size_type pos, size_type n1, const charT* s, size_type n2);
 	{
@@ -199,6 +238,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(1, 3, p2, 2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 4);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -217,6 +257,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(1, 3, p2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 7);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -238,6 +279,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(2, 2, 3, p2[0]);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 6);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p1[1]);
@@ -259,6 +301,7 @@ ReplaceTest()
 		{
 			auto& r = s2.replace(s2.begin() + 1, s2.begin() + 3, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -281,6 +324,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(s.begin() + 1, s.begin() + 4, p2, 2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 4);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -299,6 +343,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(s.begin() + 1, s.begin() + 3, p2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 8);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -321,6 +366,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(s.begin() + 2, s.begin() + 4, 3, p2[0]);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 6);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p1[1]);
@@ -342,6 +388,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(s.begin() + 1, s.begin() + 3, p2, p2 + 2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -361,6 +408,7 @@ ReplaceTest()
 		{
 			auto& r = s.replace(s.begin() + 1, s.begin() + 4, {p2[0], p2[3]});
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 4);
 			VERIFY(s[0] == p1[0]);
 			VERIFY(s[1] == p2[0]);
@@ -376,7 +424,56 @@ ReplaceTest()
 
 TYPED_TEST(StringTest, ReplaceTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ReplaceTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ReplaceTest<TypeParam>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using CharT = TypeParam;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
+
+	{
+		auto const p = Helper::abcde();
+		string s = p;
+		EXPECT_THROW(s.replace(6, 1, Helper::abc(), 3);, std::out_of_range);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+
+		EXPECT_THROW(s.replace(0, 5, Helper::abc(), s.max_size() - s.size() + 6);, std::length_error);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+	}
+	{
+		auto const p = Helper::abcde();
+		string s = p;
+		EXPECT_THROW(s.replace(6, 1, p[0], 3);, std::out_of_range);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+
+		EXPECT_THROW(s.replace(0, 5, s.max_size() - s.size() + 6, p[0]);, std::length_error);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+	}
+#endif
 }
 
 }	// namespace replace_test

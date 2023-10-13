@@ -33,7 +33,7 @@ namespace swap_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 SwapTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -50,12 +50,14 @@ SwapTest()
 	static_assert(hamon::is_same<decltype(s1.swap(s2)), void>::value, "");
 	static_assert(hamon::is_same<decltype(swap(s1, s2)), void>::value, "");
 
+	VERIFY(GeneralCheck(s1));
 	VERIFY(s1.size() == 5);
 	VERIFY(s1[0] == p1[0]);
 	VERIFY(s1[1] == p1[1]);
 	VERIFY(s1[2] == p1[2]);
 	VERIFY(s1[3] == p1[3]);
 	VERIFY(s1[4] == p1[4]);
+	VERIFY(GeneralCheck(s2));
 	VERIFY(s2.size() == 3);
 	VERIFY(s2[0] == p2[0]);
 	VERIFY(s2[1] == p2[1]);
@@ -63,10 +65,12 @@ SwapTest()
 
 	s1.swap(s2);
 
+	VERIFY(GeneralCheck(s1));
 	VERIFY(s1.size() == 3);
 	VERIFY(s1[0] == p2[0]);
 	VERIFY(s1[1] == p2[1]);
 	VERIFY(s1[2] == p2[2]);
+	VERIFY(GeneralCheck(s2));
 	VERIFY(s2.size() == 5);
 	VERIFY(s2[0] == p1[0]);
 	VERIFY(s2[1] == p1[1]);
@@ -76,12 +80,14 @@ SwapTest()
 
 	swap(s1, s2);
 
+	VERIFY(GeneralCheck(s1));
 	VERIFY(s1.size() == 5);
 	VERIFY(s1[0] == p1[0]);
 	VERIFY(s1[1] == p1[1]);
 	VERIFY(s1[2] == p1[2]);
 	VERIFY(s1[3] == p1[3]);
 	VERIFY(s1[4] == p1[4]);
+	VERIFY(GeneralCheck(s2));
 	VERIFY(s2.size() == 3);
 	VERIFY(s2[0] == p2[0]);
 	VERIFY(s2[1] == p2[1]);
@@ -94,7 +100,7 @@ SwapTest()
 
 TYPED_TEST(StringTest, SwapTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SwapTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SwapTest<TypeParam>());
 }
 
 }	// namespace swap_test

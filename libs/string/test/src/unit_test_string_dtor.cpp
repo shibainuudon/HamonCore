@@ -19,27 +19,14 @@ namespace string_test
 namespace dtor_test
 {
 
-#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
-
-template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
-DtorTest()
+TYPED_TEST(StringTest, DtorTest)
 {
-	using string = hamon::basic_string<CharT>;
+	using string = hamon::basic_string<TypeParam>;
 
 	// constexpr ~basic_string();
 	static_assert( hamon::is_destructible<string>::value, "is_destructible");
 	static_assert( hamon::is_nothrow_destructible<string>::value, "is_nothrow_destructible");
 	static_assert(!hamon::is_trivially_destructible<string>::value, "is_trivially_destructible");
-
-	return true;
-}
-
-#undef VERIFY
-
-TYPED_TEST(StringTest, DtorTest)
-{
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(DtorTest<TypeParam>());
 }
 
 }	// namespace dtor_test

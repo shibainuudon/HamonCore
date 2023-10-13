@@ -22,7 +22,7 @@ namespace push_back_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 PushBackTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -34,11 +34,14 @@ PushBackTest()
 		string s;
 		static_assert(!noexcept(s.push_back(CharT{})), "");
 		static_assert(hamon::is_same<decltype(s.push_back(CharT{})), void>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		s.push_back(p[1]);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 1);
 		VERIFY(s[0] == p[1]);
 		s.push_back(p[3]);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 2);
 		VERIFY(s[0] == p[1]);
 		VERIFY(s[1] == p[3]);
@@ -51,7 +54,7 @@ PushBackTest()
 
 TYPED_TEST(StringTest, PushBackTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(PushBackTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(PushBackTest<TypeParam>());
 }
 
 }	// namespace push_back_test

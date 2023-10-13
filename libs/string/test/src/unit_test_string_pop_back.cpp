@@ -27,7 +27,7 @@ namespace pop_back_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 PopBackTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -39,6 +39,7 @@ PopBackTest()
 		string s = p;
 //		static_assert(!noexcept(s.pop_back()), "");
 		static_assert(hamon::is_same<decltype(s.pop_back()), void>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -47,6 +48,7 @@ PopBackTest()
 		VERIFY(s[4] == p[4]);
 
 		s.pop_back();
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -54,6 +56,7 @@ PopBackTest()
 		VERIFY(s[3] == p[3]);
 
 		s.pop_back();
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -67,7 +70,7 @@ PopBackTest()
 
 TYPED_TEST(StringTest, PopBackTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(PopBackTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(PopBackTest<TypeParam>());
 }
 
 }	// namespace pop_back_test

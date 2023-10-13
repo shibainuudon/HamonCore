@@ -23,7 +23,7 @@ namespace resize_and_overwrite_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ResizeAndOverwriteTest()
 {
 	//using string = hamon::basic_string<CharT>;
@@ -37,7 +37,7 @@ ResizeAndOverwriteTest()
 
 TYPED_TEST(StringTest, ResizeAndOverwriteTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ResizeAndOverwriteTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ResizeAndOverwriteTest<TypeParam>());
 }
 
 }	// namespace resize_and_overwrite_test

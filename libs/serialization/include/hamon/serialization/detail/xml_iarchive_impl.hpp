@@ -127,7 +127,7 @@ private:
 
 		if (ok)
 		{
-			std::getline(is, s, CharT(delim));
+			hamon::getline(is, s, CharT(delim));
 		}
 	}
 
@@ -148,7 +148,7 @@ private:
 			using String1 = hamon::basic_string<CharT1, Traits1>;
 			using String2 = hamon::basic_string<CharT2, Traits2>;
 			String1 tmp;
-			std::getline(is, tmp, CharT1(delim));
+			hamon::getline(is, tmp, CharT1(delim));
 			s = hamon::base64_xml_name::decode<String2>(tmp);
 		}
 	}
@@ -216,7 +216,7 @@ private:
 		const typename istream_type::sentry ok(is);
 		if (ok)
 		{
-			std::getline(is, result, delim);
+			hamon::getline(is, result, delim);
 			result += delim;
 		}
 	}
@@ -236,7 +236,7 @@ private:
 		{
 			using String1 = hamon::basic_string<CharT1, Traits1>;
 			String1 tmp;
-			std::getline(is, tmp, CharT1(delim));
+			hamon::getline(is, tmp, CharT1(delim));
 			result.resize(tmp.size());
 			hamon::transform(tmp.begin(), tmp.end(), result.begin(),
 				[](CharT1 c){return static_cast<CharT2>(c);});

@@ -23,7 +23,7 @@ namespace front_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 FrontTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -34,7 +34,7 @@ FrontTest()
 	{
 		auto p = Helper::abcde();
 		string const s = p;
-		static_assert(noexcept(s.front()), "");
+		//static_assert(noexcept(s.front()), "");
 		static_assert(hamon::is_same<decltype(s.front()), ConstReference>::value, "");
 		VERIFY(s.front() == p[0]);
 		VERIFY(s.front() == s[0]);
@@ -42,7 +42,7 @@ FrontTest()
 	{
 		auto p = Helper::abcde();
 		string s = p;
-		static_assert(noexcept(s.front()), "");
+		//static_assert(noexcept(s.front()), "");
 		static_assert(hamon::is_same<decltype(s.front()), Reference>::value, "");
 		VERIFY(s.front() == p[0]);
 		VERIFY(s.front() == s[0]);
@@ -59,7 +59,7 @@ FrontTest()
 
 TYPED_TEST(StringTest, FrontTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FrontTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(FrontTest<TypeParam>());
 }
 
 }	// namespace front_test

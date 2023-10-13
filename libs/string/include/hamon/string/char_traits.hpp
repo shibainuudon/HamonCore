@@ -7,14 +7,27 @@
 #ifndef HAMON_STRING_CHAR_TRAITS_HPP
 #define HAMON_STRING_CHAR_TRAITS_HPP
 
+#include <hamon/string/config.hpp>
+
+#if defined(HAMON_USE_STD_CHAR_TRAITS)
+
+#include <string>
+
+namespace hamon
+{
+
+using std::char_traits;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/algorithm/copy_backward.hpp>
 #include <hamon/algorithm/copy_n.hpp>
 #include <hamon/compare/strong_ordering.hpp>
-#include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint_least16_t.hpp>
 #include <hamon/cstdint/uint_least32_t.hpp>
-#include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
 #include <ios>
 #include <cwchar>
@@ -341,6 +354,16 @@ struct char_traits<char32_t> : public detail::char_traits_base<char32_t, char_tr
 {
 };
 #endif
+
+}	// namespace hamon
+
+#endif	// defined(HAMON_USE_STD_CHAR_TRAITS)
+
+#include <hamon/compare/common_comparison_category.hpp>
+#include <hamon/type_traits/is_void.hpp>
+
+namespace hamon
+{
 
 namespace detail
 {

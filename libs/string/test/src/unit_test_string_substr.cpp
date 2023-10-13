@@ -29,7 +29,7 @@ namespace substr_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 SubstrTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -49,6 +49,7 @@ SubstrTest()
 
 		{
 			auto r = s.substr();
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 5);
 			VERIFY(r[0] == p[0]);
 			VERIFY(r[1] == p[1]);
@@ -58,6 +59,7 @@ SubstrTest()
 		}
 		{
 			auto r = s.substr(2);
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 3);
 			VERIFY(r[0] == p[2]);
 			VERIFY(r[1] == p[3]);
@@ -65,6 +67,7 @@ SubstrTest()
 		}
 		{
 			auto r = s.substr(1, 4);
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 4);
 			VERIFY(r[0] == p[1]);
 			VERIFY(r[1] == p[2]);
@@ -86,6 +89,7 @@ SubstrTest()
 		
 		{
 			auto r = string{s}.substr();
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 5);
 			VERIFY(r[0] == p[0]);
 			VERIFY(r[1] == p[1]);
@@ -95,6 +99,7 @@ SubstrTest()
 		}
 		{
 			auto r = string{s}.substr(2);
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 3);
 			VERIFY(r[0] == p[2]);
 			VERIFY(r[1] == p[3]);
@@ -102,6 +107,7 @@ SubstrTest()
 		}
 		{
 			auto r = string{s}.substr(1, 4);
+			VERIFY(GeneralCheck(r));
 			VERIFY(r.size() == 4);
 			VERIFY(r[0] == p[1]);
 			VERIFY(r[1] == p[2]);
@@ -117,7 +123,7 @@ SubstrTest()
 
 TYPED_TEST(StringTest, SubstrTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubstrTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SubstrTest<TypeParam>());
 }
 
 }	// namespace substr_test

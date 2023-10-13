@@ -35,7 +35,7 @@ namespace iterators_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 IteratorsTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -225,7 +225,7 @@ IteratorsTest()
 
 TYPED_TEST(StringTest, IteratorsTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(IteratorsTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(IteratorsTest<TypeParam>());
 }
 
 }	// namespace iterators_test

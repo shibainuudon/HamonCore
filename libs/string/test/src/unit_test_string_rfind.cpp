@@ -33,15 +33,14 @@ namespace rfind_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 RFindTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr size_type rfind(const T& t, size_type pos = npos) const noexcept(see below);
@@ -50,9 +49,8 @@ RFindTest()
 		string_view const s2 = Helper::ab();
 		string_view const s3 = Helper::abc();
 		string_view const s4 = Helper::abcd();
-		// TODO
-		//static_assert(!noexcept(s1.rfind(s2)), "");
-		//static_assert(!noexcept(s1.rfind(s2, SizeType{})), "");
+		static_assert(noexcept(s1.rfind(s2)), "");
+		static_assert(noexcept(s1.rfind(s2, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s1.rfind(s2)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s1.rfind(s2, SizeType{})), SizeType>::value, "");
 
@@ -66,7 +64,6 @@ RFindTest()
 		VERIFY(s1.rfind(s2, 3) == 3);
 		VERIFY(s1.rfind(s2, 4) == 3);
 	}
-#endif
 
 	// constexpr size_type rfind(const basic_string& str, size_type pos = npos) const noexcept;
 	{
@@ -152,7 +149,7 @@ RFindTest()
 
 TYPED_TEST(StringTest, RFindTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(RFindTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(RFindTest<TypeParam>());
 }
 
 }	// namespace rfind_test

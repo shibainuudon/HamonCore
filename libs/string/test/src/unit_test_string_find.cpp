@@ -33,15 +33,14 @@ namespace find_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 FindTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr size_type find(const T& t, size_type pos = 0) const noexcept(see below);
@@ -50,9 +49,8 @@ FindTest()
 		string_view const s2 = Helper::ab();
 		string_view const s3 = Helper::abc();
 		string_view const s4 = Helper::abcd();
-		// TODO
-		//static_assert(!noexcept(s1.find(s2)), "");
-		//static_assert(!noexcept(s1.find(s2, SizeType{})), "");
+		static_assert(noexcept(s1.find(s2)), "");
+		static_assert(noexcept(s1.find(s2, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s1.find(s2)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s1.find(s2, SizeType{})), SizeType>::value, "");
 
@@ -65,7 +63,6 @@ FindTest()
 		VERIFY(s1.find(s2, 3) == 3);
 		VERIFY(s1.find(s2, 4) == string::npos);
 	}
-#endif
 
 	// constexpr size_type find(const basic_string& str, size_type pos = 0) const noexcept;
 	{
@@ -95,9 +92,9 @@ FindTest()
 		auto p1 = Helper::ab();
 		auto p2 = Helper::abc();
 		auto p3 = Helper::abcd();
-		static_assert(noexcept(s.find(p1)), "");
-		static_assert(noexcept(s.find(p1, SizeType{})), "");
-		static_assert(noexcept(s.find(p1, SizeType{}, SizeType{})), "");
+		//static_assert(noexcept(s.find(p1)), "");
+		//static_assert(noexcept(s.find(p1, SizeType{})), "");
+		//static_assert(noexcept(s.find(p1, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.find(p1)), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find(p1, SizeType{})), SizeType>::value, "");
 		static_assert(hamon::is_same<decltype(s.find(p1, SizeType{}, SizeType{})), SizeType>::value, "");
@@ -147,7 +144,7 @@ FindTest()
 
 TYPED_TEST(StringTest, FindTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(FindTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(FindTest<TypeParam>());
 }
 
 }	// namespace find_test

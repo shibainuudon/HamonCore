@@ -12,7 +12,10 @@
 #include <hamon/string/config.hpp>
 #include <hamon/string/erase.hpp>
 #include <hamon/string/erase_if.hpp>
+#include <hamon/string/getline.hpp>
 #include <hamon/string/string.hpp>
+#include <hamon/string/to_string.hpp>
+#include <hamon/string/to_wstring.hpp>
 #include <hamon/string/u8string.hpp>
 #include <hamon/string/u16string.hpp>
 #include <hamon/string/u32string.hpp>

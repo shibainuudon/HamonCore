@@ -22,7 +22,7 @@ namespace get_allocator_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 GetAllocatorTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -43,7 +43,7 @@ GetAllocatorTest()
 
 TYPED_TEST(StringTest, GetAllocatorTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(GetAllocatorTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(GetAllocatorTest<TypeParam>());
 }
 
 }	// namespace get_allocator_test

@@ -30,7 +30,7 @@ namespace erase_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 EraseTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -49,6 +49,7 @@ EraseTest()
 		static_assert(hamon::is_same<decltype(s.erase()), string&>::value, "");
 		static_assert(hamon::is_same<decltype(s.erase(SizeType{})), string&>::value, "");
 		static_assert(hamon::is_same<decltype(s.erase(SizeType{}, SizeType{})), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -57,23 +58,26 @@ EraseTest()
 		VERIFY(s[4] == p[4]);
 		{
 			auto& r = s.erase(1, 2);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 3);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[3]);
 			VERIFY(s[2] == p[4]);
-			VERIFY(&r == &s);
 		}
 		{
 			auto& r = s.erase(2);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 2);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[3]);
-			VERIFY(&r == &s);
 		}
 		{
 			auto& r = s.erase();
-			VERIFY(s.size() == 0);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
+			VERIFY(s.size() == 0);
 		}
 	}
 
@@ -83,6 +87,7 @@ EraseTest()
 		string s = p;
 //		static_assert(!noexcept(s.erase(ConstIterator{})), "");
 		static_assert(hamon::is_same<decltype(s.erase(ConstIterator{})), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -91,6 +96,7 @@ EraseTest()
 		VERIFY(s[4] == p[4]);
 		{
 			auto it = s.erase(s.begin() + 2);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 4);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[1]);
@@ -100,6 +106,7 @@ EraseTest()
 		}
 		{
 			auto it = s.erase(s.begin() + 3);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 3);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[1]);
@@ -114,6 +121,7 @@ EraseTest()
 		string s = p;
 //		static_assert(!noexcept(s.erase(ConstIterator{}, ConstIterator{})), "");
 		static_assert(hamon::is_same<decltype(s.erase(ConstIterator{}, ConstIterator{})), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -122,6 +130,7 @@ EraseTest()
 		VERIFY(s[4] == p[4]);
 		{
 			auto it = s.erase(s.begin() + 1, s.begin() + 3);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 3);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[3]);
@@ -130,6 +139,7 @@ EraseTest()
 		}
 		{
 			auto it = s.erase(s.begin(), s.end());
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 0);
 			VERIFY(it == s.end());
 		}
@@ -142,7 +152,19 @@ EraseTest()
 
 TYPED_TEST(StringTest, EraseTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(EraseTest<TypeParam>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using CharT = TypeParam;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
+
+	{
+		auto p = Helper::abcde();
+		string s = p;
+		EXPECT_THROW(s.erase(6);, std::out_of_range);
+	}
+#endif
 }
 
 }	// namespace erase_test

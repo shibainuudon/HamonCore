@@ -27,7 +27,7 @@ namespace reserve_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ReserveTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -40,18 +40,20 @@ ReserveTest()
 		static_assert(hamon::is_same<decltype(s.reserve(SizeType{})), void>::value, "");
 
 		s.reserve(10);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.length() == 5);
 		VERIFY(s.capacity() >= 10);
 
 		s.reserve(128);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.length() == 5);
 		VERIFY(s.capacity() >= 128);
 
-#if 0	// TODO P0966R1
+		// P0966R1
 		s.reserve(0);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.length() == 5);
 		VERIFY(s.capacity() >= 128);
-#endif
 	}
 
 	return true;
@@ -61,7 +63,16 @@ ReserveTest()
 
 TYPED_TEST(StringTest, ReserveTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ReserveTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ReserveTest<TypeParam>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using string = hamon::basic_string<TypeParam>;
+
+	{
+		string s;
+		EXPECT_THROW(s.reserve(s.max_size() + 1);, std::length_error);
+	}
+#endif
 }
 
 }	// namespace reserve_test

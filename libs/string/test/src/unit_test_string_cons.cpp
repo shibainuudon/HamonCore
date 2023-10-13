@@ -52,12 +52,14 @@ namespace cons_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ConsTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using Allocator = typename string::allocator_type;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
 	
 	// constexpr basic_string() noexcept(noexcept(Allocator()))
@@ -67,6 +69,7 @@ ConsTest()
 	static_assert(!hamon::is_trivially_default_constructible <string>::value, "is_trivially_default_constructible");
 	{
 		string const s;
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 	}
 
@@ -78,6 +81,7 @@ ConsTest()
 	{
 		Allocator const alloc{};
 		string const s(alloc);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 	}
 
@@ -89,17 +93,33 @@ ConsTest()
 	{
 		string const s1;
 		string const s2{s1};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 0);
 	}
 	{
-		string const s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string const s1{p};
 		string const s2{s1};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
+	}
+	{
+		auto const p = Helper::long_str();
+		string const s1{p};
+		string const s2{s1};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 43);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[41] == p[41]);
+		VERIFY(s2[42] == p[42]);
 	}
 
 	// constexpr basic_string(basic_string&& str) noexcept;
@@ -110,17 +130,33 @@ ConsTest()
 	{
 		string s1;
 		string s2{hamon::move(s1)};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 0);
 	}
 	{
-		string s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string s1{p};
 		string s2{hamon::move(s1)};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
+	}
+	{
+		auto const p = Helper::long_str();
+		string s1{p};
+		string s2{hamon::move(s1)};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 43);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[41] == p[41]);
+		VERIFY(s2[42] == p[42]);
 	}
 
 	// constexpr basic_string(const basic_string& str, size_type pos, const Allocator& a = Allocator());
@@ -133,22 +169,39 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const string&, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const string&, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string const s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string const s1{p};
 		string const s2{s1, 1};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
-		VERIFY(s2[0] == Helper::abcde()[1]);
-		VERIFY(s2[1] == Helper::abcde()[2]);
-		VERIFY(s2[2] == Helper::abcde()[3]);
-		VERIFY(s2[3] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
+		VERIFY(s2[3] == p[4]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string const s1{Helper::abcde()};
+		string const s1{p};
 		string const s2{s1, 2, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 3);
-		VERIFY(s2[0] == Helper::abcde()[2]);
-		VERIFY(s2[1] == Helper::abcde()[3]);
-		VERIFY(s2[2] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
+		VERIFY(s2[2] == p[4]);
+	}
+	{
+		auto const p = Helper::long_str();
+		Allocator const alloc{};
+		string const s1{p};
+		string const s2{s1, 2, alloc};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 41);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
+		VERIFY(s2[2] == p[4]);
+		VERIFY(s2[39] == p[41]);
+		VERIFY(s2[40] == p[42]);
 	}
 
 	// constexpr basic_string(const basic_string& str, size_type pos, size_type n, const Allocator& a = Allocator());
@@ -161,20 +214,49 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const string&, SizeType, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const string&, SizeType, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string const s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string const s1{p};
 		string const s2{s1, 1, 3};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 3);
-		VERIFY(s2[0] == Helper::abcde()[1]);
-		VERIFY(s2[1] == Helper::abcde()[2]);
-		VERIFY(s2[2] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string const s1{Helper::abcde()};
+		string const s1{p};
 		string const s2{s1, 2, 2, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 2);
-		VERIFY(s2[0] == Helper::abcde()[2]);
-		VERIFY(s2[1] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
+	}
+	{
+		auto const p = Helper::long_str();
+		string const s1{p};
+		string const s2{s1, 1, 40};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 40);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
+		VERIFY(s2[38] == p[39]);
+		VERIFY(s2[39] == p[40]);
+	}
+	{
+		auto const p = Helper::long_str();
+		Allocator const alloc{};
+		string const s1{p};
+		string const s2{s1, 1, 40, alloc};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 40);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
+		VERIFY(s2[38] == p[39]);
+		VERIFY(s2[39] == p[40]);
 	}
 
 	// constexpr basic_string(basic_string&& str, size_type pos, const Allocator& a = Allocator());
@@ -187,22 +269,51 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, string&&, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, string&&, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string s1{p};
 		string const s2{hamon::move(s1), 1};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
-		VERIFY(s2[0] == Helper::abcde()[1]);
-		VERIFY(s2[1] == Helper::abcde()[2]);
-		VERIFY(s2[2] == Helper::abcde()[3]);
-		VERIFY(s2[3] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
+		VERIFY(s2[3] == p[4]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string s1{Helper::abcde()};
+		string s1{p};
 		string const s2{hamon::move(s1), 2, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 3);
-		VERIFY(s2[0] == Helper::abcde()[2]);
-		VERIFY(s2[1] == Helper::abcde()[3]);
-		VERIFY(s2[2] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
+		VERIFY(s2[2] == p[4]);
+	}
+	{
+		auto const p = Helper::long_str();
+		string s1{p};
+		string const s2{hamon::move(s1), 2};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 41);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
+		VERIFY(s2[2] == p[4]);
+		VERIFY(s2[39] == p[41]);
+		VERIFY(s2[40] == p[42]);
+	}
+	{
+		auto const p = Helper::long_str();
+		Allocator const alloc{};
+		string s1{p};
+		string const s2{hamon::move(s1), 3, alloc};
+		VERIFY(GeneralCheck(s2));
+		VERIFY(s2.size() == 40);
+		VERIFY(s2[0] == p[3]);
+		VERIFY(s2[1] == p[4]);
+		VERIFY(s2[2] == p[5]);
+		VERIFY(s2[38] == p[41]);
+		VERIFY(s2[39] == p[42]);
 	}
 
 	// constexpr basic_string(basic_string&& str, size_type pos, size_type n, const Allocator& a = Allocator());
@@ -215,24 +326,25 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, string&&, SizeType, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, string&&, SizeType, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string s1{p};
 		string const s2{hamon::move(s1), 1, 3};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 3);
-		VERIFY(s2[0] == Helper::abcde()[1]);
-		VERIFY(s2[1] == Helper::abcde()[2]);
-		VERIFY(s2[2] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string s1{Helper::abcde()};
+		string s1{p};
 		string const s2{hamon::move(s1), 2, 2, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 2);
-		VERIFY(s2[0] == Helper::abcde()[2]);
-		VERIFY(s2[1] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
 	}
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr basic_string(const T& t, size_type pos, size_type n, const Allocator& a = Allocator());
@@ -245,20 +357,24 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const string_view&, SizeType, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const string_view&, SizeType, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string_view const s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string_view const s1{p};
 		string const s2{s1, 1, 3};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 3);
-		VERIFY(s2[0] == Helper::abcde()[1]);
-		VERIFY(s2[1] == Helper::abcde()[2]);
-		VERIFY(s2[2] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[1]);
+		VERIFY(s2[1] == p[2]);
+		VERIFY(s2[2] == p[3]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string_view const s1{Helper::abcde()};
+		string_view const s1{p};
 		string const s2{s1, 2, 2, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 2);
-		VERIFY(s2[0] == Helper::abcde()[2]);
-		VERIFY(s2[1] == Helper::abcde()[3]);
+		VERIFY(s2[0] == p[2]);
+		VERIFY(s2[1] == p[3]);
 	}
 
 	// template<class T>
@@ -272,27 +388,30 @@ ConsTest()
 	static_assert(!hamon::is_implicitly_constructible<string, const string_view&, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const string_view&, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string_view const s1{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string_view const s1{p};
 		string const s2{s1};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string_view const s1{Helper::abcde()};
+		string_view const s1{p};
 		string const s2{s1, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
 	}
-#endif
 
 	// constexpr basic_string(const charT* s, size_type n, const Allocator& a = Allocator());
 	static_assert( hamon::is_constructible           <string, const CharT*, SizeType>::value, "is_constructible");
@@ -304,22 +423,26 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const CharT*, SizeType, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const CharT*, SizeType, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string const s{Helper::abcde(), 5};
+		auto const p = Helper::abcde();
+		string const s{p, 5};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
-		VERIFY(s[0] == Helper::abcde()[0]);
-		VERIFY(s[1] == Helper::abcde()[1]);
-		VERIFY(s[2] == Helper::abcde()[2]);
-		VERIFY(s[3] == Helper::abcde()[3]);
-		VERIFY(s[4] == Helper::abcde()[4]);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
+		VERIFY(s[4] == p[4]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string const s{Helper::abcde(), 4, alloc};
+		string const s{p, 4, alloc};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
-		VERIFY(s[0] == Helper::abcde()[0]);
-		VERIFY(s[1] == Helper::abcde()[1]);
-		VERIFY(s[2] == Helper::abcde()[2]);
-		VERIFY(s[3] == Helper::abcde()[3]);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
 	}
 
 	// constexpr basic_string(const charT* s, const Allocator& a = Allocator());
@@ -332,27 +455,30 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const CharT*, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const CharT*, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string const s{Helper::abcde()};
+		auto const p = Helper::abcde();
+		string const s{p};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
-		VERIFY(s[0] == Helper::abcde()[0]);
-		VERIFY(s[1] == Helper::abcde()[1]);
-		VERIFY(s[2] == Helper::abcde()[2]);
-		VERIFY(s[3] == Helper::abcde()[3]);
-		VERIFY(s[4] == Helper::abcde()[4]);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
+		VERIFY(s[4] == p[4]);
 	}
 	{
+		auto const p = Helper::bcde();
 		Allocator const alloc{};
-		string const s{Helper::bcde(), alloc};
+		string const s{p, alloc};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
-		VERIFY(s[0] == Helper::bcde()[0]);
-		VERIFY(s[1] == Helper::bcde()[1]);
-		VERIFY(s[2] == Helper::bcde()[2]);
-		VERIFY(s[3] == Helper::bcde()[3]);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
 	}
 
 	// basic_string(nullptr_t) = delete;
-	// TODO C++23
-//	static_assert(!hamon::is_constructible<string, std::nullptr_t>::value, "");
+	static_assert(!hamon::is_constructible<string, std::nullptr_t>::value, "");
 
 	// constexpr basic_string(size_type n, charT c, const Allocator& a = Allocator());
 	static_assert( hamon::is_constructible           <string, SizeType, CharT>::value, "is_constructible");
@@ -366,20 +492,24 @@ ConsTest()
 	{
 		// string{size_type, charT} だとinitializer_listのほうにマッチしてしまうので、
 		// string(size_type, charT) にしなければいけない
-		string const s(4, Helper::abcde()[1]);
+		auto const c = Helper::abcde()[1];
+		string const s(4, c);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
-		VERIFY(s[0] == Helper::abcde()[1]);
-		VERIFY(s[1] == Helper::abcde()[1]);
-		VERIFY(s[2] == Helper::abcde()[1]);
-		VERIFY(s[3] == Helper::abcde()[1]);
+		VERIFY(s[0] == c);
+		VERIFY(s[1] == c);
+		VERIFY(s[2] == c);
+		VERIFY(s[3] == c);
 	}
 	{
+		auto const c = Helper::abcde()[2];
 		Allocator const alloc{};
-		string const s{3, Helper::abcde()[2], alloc};
+		string const s{3, c, alloc};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
-		VERIFY(s[0] == Helper::abcde()[2]);
-		VERIFY(s[1] == Helper::abcde()[2]);
-		VERIFY(s[2] == Helper::abcde()[2]);
+		VERIFY(s[0] == c);
+		VERIFY(s[1] == c);
+		VERIFY(s[2] == c);
 	}
 
 	// template<class InputIterator>
@@ -393,21 +523,25 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, const CharT*, const CharT*, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, const CharT*, const CharT*, const Allocator&>::value, "is_trivially_constructible");
 	{
-		string const s(Helper::abcde(), Helper::abcde() + 5);
+		auto const p = Helper::abcde();
+		string const s(p, p + 5);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
-		VERIFY(s[0] == Helper::abcde()[0]);
-		VERIFY(s[1] == Helper::abcde()[1]);
-		VERIFY(s[2] == Helper::abcde()[2]);
-		VERIFY(s[3] == Helper::abcde()[3]);
-		VERIFY(s[4] == Helper::abcde()[4]);
+		VERIFY(s[0] == p[0]);
+		VERIFY(s[1] == p[1]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[3]);
+		VERIFY(s[4] == p[4]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string const s(Helper::abcde() + 1, Helper::abcde() + 4, alloc);
+		string const s(p + 1, p + 4, alloc);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
-		VERIFY(s[0] == Helper::abcde()[1]);
-		VERIFY(s[1] == Helper::abcde()[2]);
-		VERIFY(s[2] == Helper::abcde()[3]);
+		VERIFY(s[0] == p[1]);
+		VERIFY(s[1] == p[2]);
+		VERIFY(s[2] == p[3]);
 	}
 
 	// template<container-compatible-range<charT> R>
@@ -426,32 +560,36 @@ ConsTest()
 	static_assert( hamon::is_implicitly_constructible<string, std::initializer_list<CharT>, const Allocator&>::value, "is_implicitly_constructible");
 	static_assert(!hamon::is_trivially_constructible <string, std::initializer_list<CharT>, const Allocator&>::value, "is_trivially_constructible");
 	{
+		auto const p = Helper::abcde();
 		string const s =
 		{
-			Helper::abcde()[3],
-			Helper::abcde()[0],
-			Helper::abcde()[2],
-			Helper::abcde()[1],
+			p[3],
+			p[0],
+			p[2],
+			p[1],
 		};
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
-		VERIFY(s[0] == Helper::abcde()[3]);
-		VERIFY(s[1] == Helper::abcde()[0]);
-		VERIFY(s[2] == Helper::abcde()[2]);
-		VERIFY(s[3] == Helper::abcde()[1]);
+		VERIFY(s[0] == p[3]);
+		VERIFY(s[1] == p[0]);
+		VERIFY(s[2] == p[2]);
+		VERIFY(s[3] == p[1]);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
 		string const s (
 			{
-				Helper::abcde()[3],
-				Helper::abcde()[4],
-				Helper::abcde()[0],
+				p[3],
+				p[4],
+				p[0],
 			},
 			alloc);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
-		VERIFY(s[0] == Helper::abcde()[3]);
-		VERIFY(s[1] == Helper::abcde()[4]);
-		VERIFY(s[2] == Helper::abcde()[0]);
+		VERIFY(s[0] == p[3]);
+		VERIFY(s[1] == p[4]);
+		VERIFY(s[2] == p[0]);
 	}
 
 	// constexpr basic_string(const basic_string&, const Allocator&);
@@ -463,18 +601,21 @@ ConsTest()
 		Allocator const alloc{};
 		string const s1;
 		string const s2{s1, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 0);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string const s1{Helper::abcde()};
+		string const s1{p};
 		string const s2{s1, alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
 	}
 
 	// constexpr basic_string(basic_string&&, const Allocator&);
@@ -486,18 +627,21 @@ ConsTest()
 		Allocator const alloc{};
 		string s1;
 		string s2{hamon::move(s1), alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 0);
 	}
 	{
+		auto const p = Helper::abcde();
 		Allocator const alloc{};
-		string s1{Helper::abcde()};
+		string s1{p};
 		string s2{hamon::move(s1), alloc};
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 5);
-		VERIFY(s2[0] == Helper::abcde()[0]);
-		VERIFY(s2[1] == Helper::abcde()[1]);
-		VERIFY(s2[2] == Helper::abcde()[2]);
-		VERIFY(s2[3] == Helper::abcde()[3]);
-		VERIFY(s2[4] == Helper::abcde()[4]);
+		VERIFY(s2[0] == p[0]);
+		VERIFY(s2[1] == p[1]);
+		VERIFY(s2[2] == p[2]);
+		VERIFY(s2[3] == p[3]);
+		VERIFY(s2[4] == p[4]);
 	}
 
 	return true;
@@ -507,7 +651,70 @@ ConsTest()
 
 TYPED_TEST(StringTest, ConsTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ConsTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ConsTest<TypeParam>());
+	
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using CharT = TypeParam;
+	using string = hamon::basic_string<CharT>;
+	using Allocator = typename string::allocator_type;
+	using Helper = StringTestHelper<CharT>;
+
+	// [string.cons]/6	Throws: out_of_range if pos > s.size().
+
+	// constexpr basic_string(const basic_string& str, size_type pos, const Allocator& a = Allocator());
+	{
+		string const s1{Helper::abcde()};
+		EXPECT_NO_THROW(string s2(s1, 5); (void)s2;);
+		EXPECT_THROW(string s2(s1, 6); (void)s2;, std::out_of_range);
+	}
+	{
+		Allocator const alloc{};
+		string const s1{Helper::abcde()};
+		EXPECT_NO_THROW(string s2(s1, 5, alloc); (void)s2;);
+		EXPECT_THROW(string s2(s1, 6, alloc); (void)s2;, std::out_of_range);
+	}
+	// constexpr basic_string(const basic_string& str, size_type pos, size_type n, const Allocator& a = Allocator());
+	{
+		string const s1{Helper::abcde()};
+		EXPECT_NO_THROW(string s2(s1, 5, 1); (void)s2;);
+		EXPECT_THROW(string s2(s1, 6, 1); (void)s2;, std::out_of_range);
+	}
+	{
+		Allocator const alloc{};
+		string const s1{Helper::abcde()};
+		EXPECT_NO_THROW(string s2(s1, 5, 1, alloc); (void)s2;);
+		EXPECT_THROW(string s2(s1, 6, 1, alloc); (void)s2;, std::out_of_range);
+	}
+	// constexpr basic_string(basic_string&& str, size_type pos, const Allocator& a = Allocator());
+	{
+		string s1{Helper::abcde()};
+		EXPECT_THROW(string s2(hamon::move(s1), 6); (void)s2;, std::out_of_range);
+	}
+	{
+		Allocator const alloc{};
+		string s1{Helper::abcde()};
+		EXPECT_THROW(string s2(hamon::move(s1), 6, alloc); (void)s2;, std::out_of_range);
+	}
+	// constexpr basic_string(basic_string&& str, size_type pos, size_type n, const Allocator& a = Allocator());
+	{
+		string s1{Helper::abcde()};
+		EXPECT_THROW(string s2(hamon::move(s1), 6, 1); (void)s2;, std::out_of_range);
+	}
+	{
+		Allocator const alloc{};
+		string s1{Helper::abcde()};
+		EXPECT_THROW(string s2(hamon::move(s1), 6, 1, alloc); (void)s2;, std::out_of_range);
+	}
+
+	// [string.require]/1
+	// If any operation would cause size() to exceed max_size(), that operation throws an exception object of type length_error.
+
+	{
+		string const s1;
+		auto const c = Helper::abc()[0];	// 'a'
+		EXPECT_THROW(string s2(s1.max_size() + 1, c); (void)s2;, std::length_error);
+	}
+#endif
 }
 
 }	// namespace cons_test

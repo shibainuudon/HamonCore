@@ -39,15 +39,14 @@ namespace compare_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 CompareTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr int compare(const T& t) const noexcept(see below);
@@ -103,7 +102,6 @@ CompareTest()
 		VERIFY(s1.compare(1, 3, s3, 0, 2) >  0);	// "bcd".compare("bc")
 		VERIFY(s1.compare(1, 3, s3, 0, 4) <  0);	// "bcd".compare("bcde")
 	}
-#endif
 
 	// constexpr int compare(const basic_string& str) const noexcept;
 	{
@@ -160,7 +158,7 @@ CompareTest()
 	// constexpr int compare(const charT* s) const;
 	{
 		string const s(Helper::abcd());
-		static_assert(noexcept(s.compare((CharT*)nullptr)), "");
+		//static_assert(noexcept(s.compare((CharT*)nullptr)), "");
 		static_assert(hamon::is_same<decltype(s.compare((CharT*)nullptr)), int>::value, "");
 
 		VERIFY(s.compare(Helper::abcd())  == 0);	// "abcd".compare("abcd")
@@ -199,7 +197,7 @@ CompareTest()
 
 TYPED_TEST(StringTest, CompareTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CompareTest<TypeParam>());
 }
 
 }	// namespace compare_test

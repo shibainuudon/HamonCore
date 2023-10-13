@@ -22,7 +22,7 @@ namespace c_str_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 CStrTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -61,7 +61,7 @@ CStrTest()
 
 TYPED_TEST(StringTest, CStrTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CStrTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CStrTest<TypeParam>());
 }
 
 }	// namespace c_str_test

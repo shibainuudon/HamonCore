@@ -30,16 +30,16 @@ namespace contains_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ContainsTest()
 {
-#if HAMON_CXX_STANDARD >= 23	// TODO
+#if !defined(HAMON_USE_STD_STRING) || HAMON_CXX_STANDARD >= 23
 	using string = hamon::basic_string<CharT>;
-	using string_view = std::basic_string_view<CharT>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr bool contains(basic_string_view<charT, traits> x) const noexcept;
 	{
+		using string_view = hamon::basic_string_view<CharT>;
 		auto p = Helper::abcd();
 		string const s = p;
 		static_assert(noexcept(s.contains(string_view{p})), "");
@@ -51,6 +51,21 @@ ContainsTest()
 		VERIFY( (s.contains(string_view{Helper::bcd()})));
 		VERIFY(!(s.contains(string_view{Helper::abb()})));
 	}
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+	{
+		using string_view = std::basic_string_view<CharT>;
+		auto p = Helper::abcd();
+		string const s = p;
+		//static_assert(noexcept(s.contains(string_view{p})), "");
+		static_assert(hamon::is_same<decltype(s.contains(string_view{p})), bool>::value, "");
+		VERIFY(!(s.contains(string_view{Helper::abcde()})));
+		VERIFY( (s.contains(string_view{Helper::abcd()})));
+		VERIFY( (s.contains(string_view{Helper::abc()})));
+		VERIFY( (s.contains(string_view{Helper::ab()})));
+		VERIFY( (s.contains(string_view{Helper::bcd()})));
+		VERIFY(!(s.contains(string_view{Helper::abb()})));
+	}
+#endif
 
 	// constexpr bool contains(charT x) const noexcept;
 	{
@@ -74,7 +89,7 @@ ContainsTest()
 	{
 		auto p = Helper::abcd();
 		string const s = p;
-		static_assert(noexcept(s.contains(p)), "");
+		//static_assert(noexcept(s.contains(p)), "");
 		static_assert(hamon::is_same<decltype(s.contains(p)), bool>::value, "");
 		VERIFY(!(s.contains(Helper::abcde())));
 		VERIFY( (s.contains(Helper::abcd())));
@@ -92,7 +107,7 @@ ContainsTest()
 
 TYPED_TEST(StringTest, ContainsTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ContainsTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ContainsTest<TypeParam>());
 }
 
 }	// namespace contains_test

@@ -23,7 +23,7 @@ namespace assign_range_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 AssignRangeTest()
 {
 	//using string = hamon::basic_string<CharT>;
@@ -37,7 +37,7 @@ AssignRangeTest()
 
 TYPED_TEST(StringTest, AssignRangeTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(AssignRangeTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(AssignRangeTest<TypeParam>());
 }
 
 }	// namespace assign_range_test

@@ -28,7 +28,7 @@ namespace resize_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ResizeTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -42,9 +42,11 @@ ResizeTest()
 		static_assert(hamon::is_same<decltype(s.resize(SizeType{})), void>::value, "");
 		static_assert(hamon::is_same<decltype(s.resize(SizeType{}, CharT{})), void>::value, "");
 
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 
 		s.resize(4);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
 		VERIFY(s[0] == Helper::abcde()[0]);
 		VERIFY(s[1] == Helper::abcde()[1]);
@@ -52,12 +54,14 @@ ResizeTest()
 		VERIFY(s[3] == Helper::abcde()[3]);
 
 		s.resize(3, Helper::abcde()[2]);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
 		VERIFY(s[0] == Helper::abcde()[0]);
 		VERIFY(s[1] == Helper::abcde()[1]);
 		VERIFY(s[2] == Helper::abcde()[2]);
 
 		s.resize(4);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 4);
 		VERIFY(s[0] == Helper::abcde()[0]);
 		VERIFY(s[1] == Helper::abcde()[1]);
@@ -65,6 +69,7 @@ ResizeTest()
 		VERIFY(s[3] == CharT{});
 
 		s.resize(6, Helper::abcde()[1]);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 6);
 		VERIFY(s[0] == Helper::abcde()[0]);
 		VERIFY(s[1] == Helper::abcde()[1]);
@@ -81,7 +86,7 @@ ResizeTest()
 
 TYPED_TEST(StringTest, ResizeTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ResizeTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ResizeTest<TypeParam>());
 }
 
 }	// namespace resize_test

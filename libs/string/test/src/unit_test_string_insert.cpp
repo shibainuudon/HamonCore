@@ -42,12 +42,14 @@ namespace insert_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 InsertTest()
 {
 	using string = hamon::basic_string<CharT>;
 	using SizeType = typename string::size_type;
 	using Iterator = typename string::iterator;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr basic_string& insert(size_type pos, const basic_string& str);
@@ -58,6 +60,7 @@ InsertTest()
 		string s2 = p2;
 		static_assert(!noexcept(s2.insert(SizeType{}, s1)), "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1)), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -66,6 +69,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(1, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 7);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -74,6 +78,26 @@ InsertTest()
 			VERIFY(s2[4] == p2[1]);
 			VERIFY(s2[5] == p2[2]);
 			VERIFY(s2[6] == p2[3]);
+		}
+	}
+	{
+		auto p = Helper::abcde();
+		string s = p;
+		{
+			auto& r = s.insert(2, s);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
+			VERIFY(s.size() == 10);
+			VERIFY(s[0] == p[0]);
+			VERIFY(s[1] == p[1]);
+			VERIFY(s[2] == p[0]);
+			VERIFY(s[3] == p[1]);
+			VERIFY(s[4] == p[2]);
+			VERIFY(s[5] == p[3]);
+			VERIFY(s[6] == p[4]);
+			VERIFY(s[7] == p[2]);
+			VERIFY(s[8] == p[3]);
+			VERIFY(s[9] == p[4]);
 		}
 	}
 
@@ -87,6 +111,7 @@ InsertTest()
 		static_assert(!noexcept(s2.insert(SizeType{}, s1, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1, SizeType{})), string&>::value, "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1, SizeType{}, SizeType{})), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -95,6 +120,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(1, s1, 1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 6);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[1]);
@@ -106,6 +132,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(2, s2, 2, 2);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[1]);
@@ -117,9 +144,23 @@ InsertTest()
 			VERIFY(s2[7] == p2[3]);
 		}
 	}
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
+	{
+		auto p = Helper::abcde();
+		string s = p;
+		{
+			auto& r = s.insert(2, s, 1, 2);
+			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
+			VERIFY(s.size() == 7);
+			VERIFY(s[0] == p[0]);
+			VERIFY(s[1] == p[1]);
+			VERIFY(s[2] == p[1]);
+			VERIFY(s[3] == p[2]);
+			VERIFY(s[4] == p[2]);
+			VERIFY(s[5] == p[3]);
+			VERIFY(s[6] == p[4]);
+		}
+	}
 
 	// template<class T>
 	// constexpr basic_string& insert(size_type pos, const T& t);
@@ -130,6 +171,7 @@ InsertTest()
 		string s2 = p2;
 		static_assert(!noexcept(s2.insert(SizeType{}, s1)), "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1)), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -138,6 +180,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(1, s1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 7);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[0]);
@@ -160,6 +203,7 @@ InsertTest()
 		static_assert(!noexcept(s2.insert(SizeType{}, s1, SizeType{}, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1, SizeType{})), string&>::value, "");
 		static_assert(hamon::is_same<decltype(s2.insert(SizeType{}, s1, SizeType{}, SizeType{})), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -168,6 +212,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(1, s1, 1);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 6);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[1]);
@@ -179,6 +224,7 @@ InsertTest()
 		{
 			auto& r = s2.insert(2, s2, 2, 2);
 			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
 			VERIFY(s2.size() == 8);
 			VERIFY(s2[0] == p2[0]);
 			VERIFY(s2[1] == p1[1]);
@@ -190,7 +236,6 @@ InsertTest()
 			VERIFY(s2[7] == p2[3]);
 		}
 	}
-#endif
 
 	// constexpr basic_string& insert(size_type pos, const charT* s, size_type n);
 	{
@@ -199,6 +244,7 @@ InsertTest()
 		string s = p2;
 		static_assert(!noexcept(s.insert(SizeType{}, p1, SizeType{})), "");
 		static_assert(hamon::is_same<decltype(s.insert(SizeType{}, p1, SizeType{})), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
 		VERIFY(s[0] == p2[0]);
 		VERIFY(s[1] == p2[1]);
@@ -206,6 +252,7 @@ InsertTest()
 		{
 			auto& r = s.insert(1, p1, 2);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p2[0]);
 			VERIFY(s[1] == p1[0]);
@@ -222,6 +269,7 @@ InsertTest()
 		string s = p2;
 		static_assert(!noexcept(s.insert(SizeType{}, p1)), "");
 		static_assert(hamon::is_same<decltype(s.insert(SizeType{}, p1)), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
 		VERIFY(s[0] == p2[0]);
 		VERIFY(s[1] == p2[1]);
@@ -229,6 +277,7 @@ InsertTest()
 		{
 			auto& r = s.insert(2, p1);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 8);
 			VERIFY(s[0] == p2[0]);
 			VERIFY(s[1] == p2[1]);
@@ -247,10 +296,12 @@ InsertTest()
 		string s;
 		static_assert(!noexcept(s.insert(SizeType{}, SizeType{}, CharT{})), "");
 		static_assert(hamon::is_same<decltype(s.insert(SizeType{}, SizeType{}, CharT{})), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{
 			auto& r = s.insert(0, 2, p[1]);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 2);
 			VERIFY(s[0] == p[1]);
 			VERIFY(s[1] == p[1]);
@@ -258,6 +309,7 @@ InsertTest()
 		{
 			auto& r = s.insert(1, 3, p[0]);
 			VERIFY(&r == &s);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p[1]);
 			VERIFY(s[1] == p[0]);
@@ -273,9 +325,11 @@ InsertTest()
 		string s;
 		static_assert(!noexcept(s.insert(s.begin(), CharT{})), "");
 		static_assert(hamon::is_same<decltype(s.insert(s.begin(), CharT{})), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{
 			auto it = s.insert(s.begin(), p[1]);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 1);
 			VERIFY(s[0] == p[1]);
 			VERIFY(it == s.begin());
@@ -283,6 +337,7 @@ InsertTest()
 		}
 		{
 			auto it = s.insert(s.begin() + 1, p[0]);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 2);
 			VERIFY(s[0] == p[1]);
 			VERIFY(s[1] == p[0]);
@@ -297,9 +352,11 @@ InsertTest()
 		string s;
 		static_assert(!noexcept(s.insert(s.begin(), SizeType{}, CharT{})), "");
 		static_assert(hamon::is_same<decltype(s.insert(s.begin(), SizeType{}, CharT{})), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{
 			auto it = s.insert(s.begin(), 2, p[1]);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 2);
 			VERIFY(s[0] == p[1]);
 			VERIFY(s[1] == p[1]);
@@ -308,6 +365,7 @@ InsertTest()
 		}
 		{
 			auto it = s.insert(s.begin() + 1, 3, p[0]);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p[1]);
 			VERIFY(s[1] == p[0]);
@@ -326,9 +384,11 @@ InsertTest()
 		string s;
 		static_assert(!noexcept(s.insert(s.begin(), p, p)), "");
 		static_assert(hamon::is_same<decltype(s.insert(s.begin(), p, p)), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{
 			auto it = s.insert(s.begin(), p, p + 3);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 3);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[1]);
@@ -338,6 +398,7 @@ InsertTest()
 		}
 		{
 			auto it = s.insert(s.begin() + 1, p + 3, p + 5);
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[3]);
@@ -355,9 +416,11 @@ InsertTest()
 		string s;
 		static_assert(!noexcept(s.insert(s.begin(), std::initializer_list<CharT>{})), "");
 		static_assert(hamon::is_same<decltype(s.insert(s.begin(), std::initializer_list<CharT>{})), Iterator>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		{
 			auto it = s.insert(s.begin(), {p[0], p[3], p[1]});
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 3);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[3]);
@@ -367,6 +430,7 @@ InsertTest()
 		}
 		{
 			auto it = s.insert(s.begin() + 1, {p[1], p[2]});
+			VERIFY(GeneralCheck(s));
 			VERIFY(s.size() == 5);
 			VERIFY(s[0] == p[0]);
 			VERIFY(s[1] == p[1]);
@@ -385,7 +449,56 @@ InsertTest()
 
 TYPED_TEST(StringTest, InsertTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(InsertTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(InsertTest<TypeParam>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using CharT = TypeParam;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
+
+	{
+		auto const p = Helper::abcde();
+		string s = p;
+		EXPECT_THROW(s.insert(6, Helper::abc(), 3);, std::out_of_range);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+
+		EXPECT_THROW(s.insert(0, Helper::abc(), s.max_size() - s.size() + 1);, std::length_error);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+	}
+	{
+		auto const p = Helper::abcde();
+		string s = p;
+		EXPECT_THROW(s.insert(6, p[0], 3);, std::out_of_range);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+
+		EXPECT_THROW(s.insert(0, s.max_size() - s.size() + 1, p[0]);, std::length_error);
+		EXPECT_TRUE(GeneralCheck(s));
+		EXPECT_TRUE(s.size() == 5);
+		EXPECT_TRUE(s[0] == p[0]);
+		EXPECT_TRUE(s[1] == p[1]);
+		EXPECT_TRUE(s[2] == p[2]);
+		EXPECT_TRUE(s[3] == p[3]);
+		EXPECT_TRUE(s[4] == p[4]);
+	}
+#endif
 }
 
 }	// namespace insert_test

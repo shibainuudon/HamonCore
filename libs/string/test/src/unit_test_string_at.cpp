@@ -23,7 +23,7 @@ namespace at_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 AtTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -68,7 +68,24 @@ AtTest()
 
 TYPED_TEST(StringTest, AtTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(AtTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(AtTest<TypeParam>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	using CharT = TypeParam;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
+
+	{
+		string const s{Helper::abcde()};
+		EXPECT_NO_THROW((void)s.at(4));
+		EXPECT_THROW((void)s.at(5);, std::out_of_range);
+	}
+	{
+		string s{Helper::abcde()};
+		EXPECT_NO_THROW((void)s.at(4));
+		EXPECT_THROW((void)s.at(5);, std::out_of_range);
+	}
+#endif
 }
 
 }	// namespace at_test

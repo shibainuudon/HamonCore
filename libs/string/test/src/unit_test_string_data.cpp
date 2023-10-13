@@ -23,7 +23,7 @@ namespace data_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 DataTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -89,7 +89,7 @@ DataTest()
 
 TYPED_TEST(StringTest, DataTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(DataTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(DataTest<TypeParam>());
 }
 
 }	// namespace data_test

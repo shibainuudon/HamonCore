@@ -23,7 +23,7 @@ namespace replace_with_range_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 ReplaceWithRangeTest()
 {
 	//using string = hamon::basic_string<CharT>;
@@ -37,7 +37,7 @@ ReplaceWithRangeTest()
 
 TYPED_TEST(StringTest, ReplaceWithRangeTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ReplaceWithRangeTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ReplaceWithRangeTest<TypeParam>());
 }
 
 }	// namespace replace_with_range_test

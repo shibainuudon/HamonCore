@@ -34,10 +34,12 @@ namespace op_append_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 OpAppendTest()
 {
 	using string = hamon::basic_string<CharT>;
+	using Traits = typename string::traits_type;
+	using string_view = hamon::basic_string_view<CharT, Traits>;
 	using Helper = StringTestHelper<CharT>;
 
 	// constexpr basic_string& operator+=(const basic_string& str);
@@ -48,25 +50,46 @@ OpAppendTest()
 		string s2 = p2;
 		static_assert(!noexcept(s2 += s1), "");
 		static_assert(hamon::is_same<decltype(s2 += s1), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
 		VERIFY(s2[2] == p2[2]);
 		VERIFY(s2[3] == p2[3]);
-		auto& r = (s2 += s1);
-		VERIFY(&r == &s2);
-		VERIFY(s2.size() == 7);
-		VERIFY(s2[0] == p2[0]);
-		VERIFY(s2[1] == p2[1]);
-		VERIFY(s2[2] == p2[2]);
-		VERIFY(s2[3] == p2[3]);
-		VERIFY(s2[4] == p1[0]);
-		VERIFY(s2[5] == p1[1]);
-		VERIFY(s2[6] == p1[2]);
+		{
+			auto& r = (s2 += s1);
+			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
+			VERIFY(s2.size() == 7);
+			VERIFY(s2[0] == p2[0]);
+			VERIFY(s2[1] == p2[1]);
+			VERIFY(s2[2] == p2[2]);
+			VERIFY(s2[3] == p2[3]);
+			VERIFY(s2[4] == p1[0]);
+			VERIFY(s2[5] == p1[1]);
+			VERIFY(s2[6] == p1[2]);
+		}
+		{
+			auto& r = (s2 += s2);
+			VERIFY(&r == &s2);
+			VERIFY(GeneralCheck(s2));
+			VERIFY(s2.size() == 14);
+			VERIFY(s2[ 0] == p2[0]);
+			VERIFY(s2[ 1] == p2[1]);
+			VERIFY(s2[ 2] == p2[2]);
+			VERIFY(s2[ 3] == p2[3]);
+			VERIFY(s2[ 4] == p1[0]);
+			VERIFY(s2[ 5] == p1[1]);
+			VERIFY(s2[ 6] == p1[2]);
+			VERIFY(s2[ 7] == p2[0]);
+			VERIFY(s2[ 8] == p2[1]);
+			VERIFY(s2[ 9] == p2[2]);
+			VERIFY(s2[10] == p2[3]);
+			VERIFY(s2[11] == p1[0]);
+			VERIFY(s2[12] == p1[1]);
+			VERIFY(s2[13] == p1[2]);
+		}
 	}
-
-#if HAMON_CXX_STANDARD >= 17	// TODO
-	using string_view = std::basic_string_view<CharT>;
 
 	// template<class T>
 	// constexpr basic_string& operator+=(const T& t);
@@ -77,6 +100,7 @@ OpAppendTest()
 		string s2 = p2;
 		static_assert(!noexcept(s2 += s1), "");
 		static_assert(hamon::is_same<decltype(s2 += s1), string&>::value, "");
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 4);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -84,6 +108,7 @@ OpAppendTest()
 		VERIFY(s2[3] == p2[3]);
 		auto& r = (s2 += s1);
 		VERIFY(&r == &s2);
+		VERIFY(GeneralCheck(s2));
 		VERIFY(s2.size() == 7);
 		VERIFY(s2[0] == p2[0]);
 		VERIFY(s2[1] == p2[1]);
@@ -93,7 +118,6 @@ OpAppendTest()
 		VERIFY(s2[5] == p1[1]);
 		VERIFY(s2[6] == p1[2]);
 	}
-#endif
 
 	// constexpr basic_string& operator+=(const charT* s);
 	{
@@ -102,12 +126,14 @@ OpAppendTest()
 		string s = p2;
 		static_assert(!noexcept(s += p1), "");
 		static_assert(hamon::is_same<decltype(s += p1), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 3);
 		VERIFY(s[0] == p2[0]);
 		VERIFY(s[1] == p2[1]);
 		VERIFY(s[2] == p2[2]);
 		auto& r = (s += p1);
 		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 8);
 		VERIFY(s[0] == p2[0]);
 		VERIFY(s[1] == p2[1]);
@@ -125,6 +151,7 @@ OpAppendTest()
 		string s = p;
 		static_assert(!noexcept(s += CharT{}), "");
 		static_assert(hamon::is_same<decltype(s += CharT{}), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -133,6 +160,7 @@ OpAppendTest()
 		VERIFY(s[4] == p[4]);
 		auto& r = (s += p[1]);
 		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 6);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[1]);
@@ -148,9 +176,11 @@ OpAppendTest()
 		string s;
 		static_assert(!noexcept(s += std::initializer_list<CharT>{}), "");
 		static_assert(hamon::is_same<decltype(s += std::initializer_list<CharT>{}), string&>::value, "");
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 0);
 		auto& r = (s += {p[0], p[3], p[4], p[1], p[1]});
 		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 5);
 		VERIFY(s[0] == p[0]);
 		VERIFY(s[1] == p[3]);
@@ -166,7 +196,7 @@ OpAppendTest()
 
 TYPED_TEST(StringTest, OpAppendTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(OpAppendTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(OpAppendTest<TypeParam>());
 }
 
 }	// namespace op_append_test

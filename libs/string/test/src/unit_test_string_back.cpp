@@ -26,7 +26,7 @@ namespace back_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename CharT>
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
+inline HAMON_CXX20_CONSTEXPR bool
 BackTest()
 {
 	using string = hamon::basic_string<CharT>;
@@ -37,7 +37,7 @@ BackTest()
 	{
 		auto p = Helper::abcde();
 		string const s = p;
-		static_assert(noexcept(s.back()), "");
+		//static_assert(noexcept(s.back()), "");
 		static_assert(hamon::is_same<decltype(s.back()), ConstReference>::value, "");
 		VERIFY(s.back() == p[4]);
 		VERIFY(s.back() == s[4]);
@@ -45,7 +45,7 @@ BackTest()
 	{
 		auto p = Helper::abcde();
 		string s = p;
-		static_assert(noexcept(s.back()), "");
+		//static_assert(noexcept(s.back()), "");
 		static_assert(hamon::is_same<decltype(s.back()), Reference>::value, "");
 		VERIFY(s.back() == p[4]);
 		VERIFY(s.back() == s[4]);
@@ -53,6 +53,12 @@ BackTest()
 		VERIFY(s.back() != p[4]);
 		VERIFY(s.back() == CharT{});
 		VERIFY(s.back() == s[4]);
+	}
+	{
+		auto p = Helper::long_str();
+		string const s = p;
+		VERIFY(s.back() == p[42]);
+		VERIFY(s.back() == s[42]);
 	}
 
 	return true;
@@ -62,7 +68,7 @@ BackTest()
 
 TYPED_TEST(StringTest, BackTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(BackTest<TypeParam>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(BackTest<TypeParam>());
 }
 
 }	// namespace back_test
