@@ -88,6 +88,14 @@ using cpp17_randacc_iterator =
 
 #endif
 
+template <typename Iter>
+using cpp17_randacc_iterator_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::detail::cpp17_randacc_iterator<Iter>>;
+#else
+	hamon::detail::cpp17_randacc_iterator<Iter>;
+#endif
+
 }	// namespace detail
 
 }	// namespace hamon

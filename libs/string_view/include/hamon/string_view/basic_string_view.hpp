@@ -31,34 +31,84 @@ using std::basic_string_view;
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
+#include <hamon/memory/addressof.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/ranges/concepts/contiguous_range.hpp>
+#include <hamon/ranges/concepts/sized_range.hpp>
+#include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/data.hpp>
+#include <hamon/ranges/size.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/string/char_traits.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 #include <hamon/type_traits/is_standard_layout.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 #include <ostream>
 
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/void_t.hpp>
+#include <hamon/utility/declval.hpp>
+
 namespace hamon
 {
 
 template <typename CharT, typename Traits = hamon::char_traits<CharT>>
+class basic_string_view;
+
+namespace detail
+{
+
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+
+template <typename T, typename CharT, typename Traits>
+concept has_operator_string_view =
+	requires(T& d)
+	{
+		d.operator hamon::basic_string_view<CharT, Traits>();
+	};
+
+#else
+
+template <typename T, typename CharT, typename Traits, typename = hamon::void_t<>>
+struct has_operator_string_view : hamon::false_type {};
+
+template <typename T, typename CharT, typename Traits>
+struct has_operator_string_view<T, CharT, Traits,
+	hamon::void_t<decltype(hamon::declval<T&>().operator hamon::basic_string_view<CharT, Traits>())>> : hamon::true_type {};
+
+#endif
+
+template <typename T, typename CharT, typename Traits>
+using has_operator_string_view_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::detail::has_operator_string_view<T, CharT, Traits>>;
+#else
+	hamon::detail::has_operator_string_view<T, CharT, Traits>;
+#endif
+
+}	// namespace detail
+
+template <typename CharT, typename Traits>
 class basic_string_view
 {
 private:
 	static_assert(!hamon::is_array<CharT>::value, "");
 	static_assert(hamon::is_trivial<CharT>::value && hamon::is_standard_layout<CharT>::value, "");
-	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "");
+	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "[string.view.template.general]/1 Note1");
 
 public:
+	// types
 	using traits_type		        = Traits;
 	using value_type		        = CharT;
 	using pointer		            = value_type*;
@@ -66,7 +116,7 @@ public:
 	using reference		            = value_type&;
 	using const_reference	        = value_type const&;
 	using const_iterator	        = value_type const*;
-	using iterator		            = const_iterator;
+	using iterator		            = const_iterator;	// implementation-defined;
 	using const_reverse_iterator    = hamon::reverse_iterator<const_iterator>;
 	using reverse_iterator	        = const_reverse_iterator;
 	using size_type		            = hamon::size_t;
@@ -74,91 +124,117 @@ public:
 
 	HAMON_STATIC_CONSTEXPR size_type npos = size_type(-1);
 
+	// [string.view.cons], construction and assignment
 	HAMON_CONSTEXPR
 	basic_string_view() HAMON_NOEXCEPT
-		: m_len{0}
-		, m_str{nullptr}
-	{}
+		: m_data{nullptr}
+		, m_size{0}
+	{
+		// [string.view.cons]/1
+	}
 
 	HAMON_CONSTEXPR
 	basic_string_view(basic_string_view const&) HAMON_NOEXCEPT = default;
 
-	HAMON_CONSTEXPR
-	basic_string_view(CharT const* s, size_type count) HAMON_NOEXCEPT
-		: m_len{count}
-		, m_str{s}
-	{}
+	HAMON_CXX14_CONSTEXPR basic_string_view&
+	operator=(basic_string_view const&) HAMON_NOEXCEPT = default;
 
 	HAMON_CONSTEXPR
-	basic_string_view(CharT const* s) HAMON_NOEXCEPT
-		: m_len{traits_type::length(s)}
-		, m_str{s}
+	basic_string_view(CharT const* str) HAMON_NOEXCEPT
+		: basic_string_view(str, traits_type::length(str))	// [string.view.cons]/3
+	{}
+	
+	basic_string_view(hamon::nullptr_t) = delete;
+
+	HAMON_CONSTEXPR
+	basic_string_view(CharT const* str, size_type len) HAMON_NOEXCEPT
+		: m_data{str} , m_size{len}	// [string.view.cons]/6
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),
+		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),		// [string.view.cons]/7.1
+		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::same_as_t<hamon::iter_value_t<It>, CharT>,
-			hamon::negation<hamon::convertible_to_t<End, size_type>>
+			hamon::same_as_t<hamon::iter_value_t<It>, CharT>,			// [string.view.cons]/7.3
+			hamon::negation<hamon::convertible_to_t<End, size_type>>	// [string.view.cons]/7.4
 		>::value>
 	>
 	HAMON_CONSTEXPR
-	basic_string_view(It first, End last)
-		: m_len(static_cast<size_type>(last - first))
-		, m_str(hamon::to_address(first))
-	{}
+	basic_string_view(It begin, End end)
+		: m_data(hamon::to_address(begin))
+		, m_size(static_cast<size_type>(end - begin))
+	{
+		// [string.view.cons]/9
+	}
 
-	HAMON_CXX14_CONSTEXPR basic_string_view&
-	operator=(basic_string_view const&) HAMON_NOEXCEPT = default;
+	template <typename R,
+		typename = hamon::enable_if_t<
+			!hamon::is_same<hamon::remove_cvref_t<R>, basic_string_view>::value &&		// [string.view.cons]/12.1
+			ranges::contiguous_range_t<R>::value && ranges::sized_range_t<R>::value &&	// [string.view.cons]/12.2
+			hamon::is_same<ranges::range_value_t<R>, CharT>::value &&					// [string.view.cons]/12.3
+			!hamon::is_convertible<R, CharT const*>::value &&							// [string.view.cons]/12.4
+			!hamon::detail::has_operator_string_view_t<hamon::remove_cvref_t<R>, CharT, Traits>::value			// [string.view.cons]/12.5
+		>
+	>
+	constexpr explicit basic_string_view(R&& r)
+		: m_data(ranges::data(r)), m_size(ranges::size(r))	// [string.view.cons]/13
+	{}
 
 	// [string.view.iterators], iterator support
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_iterator
 	begin() const HAMON_NOEXCEPT
 	{
-		return this->m_str;
+		// [string.view.iterators]/3
+		return this->m_data;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_iterator
 	end() const HAMON_NOEXCEPT
 	{
-		return this->m_str + this->m_len;
+		// [string.view.iterators]/4
+		return this->begin() + this->size();
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_iterator
 	cbegin() const HAMON_NOEXCEPT
 	{
-		return this->m_str;
+		// [string.view.iterators]/3
+		return this->m_data;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_iterator
 	cend() const HAMON_NOEXCEPT
 	{
-		return this->m_str + this->m_len;
+		// [string.view.iterators]/4
+		return this->begin() + this->size();
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reverse_iterator
 	rbegin() const HAMON_NOEXCEPT
 	{
+		// [string.view.iterators]/5
 		return const_reverse_iterator(this->end());
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reverse_iterator
 	rend() const HAMON_NOEXCEPT
 	{
+		// [string.view.iterators]/6
 		return const_reverse_iterator(this->begin());
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reverse_iterator
 	crbegin() const HAMON_NOEXCEPT
 	{
+		// [string.view.iterators]/5
 		return const_reverse_iterator(this->end());
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reverse_iterator
 	crend() const HAMON_NOEXCEPT
 	{
+		// [string.view.iterators]/6
 		return const_reverse_iterator(this->begin());
 	}
 
@@ -167,25 +243,30 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	size() const HAMON_NOEXCEPT
 	{
-		return this->m_len;
+		// [string.view.capacity]/1
+		return this->m_size;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	length() const HAMON_NOEXCEPT
 	{
-		return m_len;
+		// [string.view.capacity]/1
+		return this->m_size;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	max_size() const HAMON_NOEXCEPT
 	{
+		// [string.view.capacity]/2
+		// TODO
 		return (npos - sizeof(size_type) - sizeof(void*)) / sizeof(value_type) / 4;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	empty() const HAMON_NOEXCEPT
 	{
-		return this->m_len == 0;
+		// [string.view.capacity]/3
+		return this->m_size == 0;
 	}
 
 	// [string.view.access], element access
@@ -194,8 +275,8 @@ public:
 	operator[](size_type pos) const HAMON_NOEXCEPT
 	{
 		return
-			HAMON_ASSERT(pos < this->m_len),
-			*(this->m_str + pos);
+			HAMON_ASSERT(pos < this->size()),	// [string.view.access]/1
+			this->m_data[pos];					// [string.view.access]/2
 	}
 
 HAMON_WARNING_PUSH()
@@ -204,9 +285,9 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reference
 	at(size_type pos) const
 	{
-		return (pos >= m_len) ?
-			(hamon::detail::throw_out_of_range("basic_string_view::at"), *this->m_str) :
-			*(this->m_str + pos);
+		return (pos >= size()) ?	// [string.view.access]/6
+			(hamon::detail::throw_out_of_range("basic_string_view::at"), *this->m_data) :
+			this->m_data[pos];		// [string.view.access]/5
 	}
 
 HAMON_WARNING_POP()
@@ -215,60 +296,72 @@ HAMON_WARNING_POP()
 	front() const HAMON_NOEXCEPT
 	{
 		return
-			HAMON_ASSERT(this->m_len > 0u),
-			*this->m_str;
+			HAMON_ASSERT(!this->empty()),	// [string.view.access]/7
+			this->m_data[0];				// [string.view.access]/8
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_reference
 	back() const HAMON_NOEXCEPT
 	{
 		return
-			HAMON_ASSERT(this->m_len > 0u),
-			*(this->m_str + this->m_len - 1);
+			HAMON_ASSERT(!this->empty()),	// [string.view.access]/10
+			this->m_data[this->size() - 1];	// [string.view.access]/11
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_pointer
 	data() const HAMON_NOEXCEPT
 	{
-		return this->m_str;
+		return this->m_data;		// [string.view.access]/13
 	}
 
-	// remove_prefix
+	// [string.view.modifiers], modifiers
+
 	HAMON_CXX14_CONSTEXPR void
 	remove_prefix(size_type n) HAMON_NOEXCEPT
 	{
-		HAMON_ASSERT(this->m_len >= n);
-		this->m_str += n;
-		this->m_len -= n;
+		// [string.view.modifiers]/1
+		HAMON_ASSERT(n <= this->size());
+
+		// [string.view.modifiers]/2
+		this->m_data += n;
+		this->m_size -= n;
 	}
 
-	// remove_suffix
 	HAMON_CXX14_CONSTEXPR void
 	remove_suffix(size_type n) HAMON_NOEXCEPT
 	{
-		this->m_len -= n;
+		// [string.view.modifiers]/3
+		HAMON_ASSERT(n <= this->size());
+
+		// [string.view.modifiers]/4
+		this->m_size -= n;
 	}
 
-	// swap
 	HAMON_CXX14_CONSTEXPR void
 	swap(basic_string_view& sv) HAMON_NOEXCEPT
 	{
-		auto tmp = *this;
-		*this = sv;
-		sv = tmp;
+		// [string.view.modifiers]/5
+		hamon::swap(this->m_data, sv.m_data);
+		hamon::swap(this->m_size, sv.m_size);
 	}
+
+	// [string.view.ops], string operations
 
 	// copy
 	HAMON_CXX14_CONSTEXPR size_type
-	copy(CharT* dest, size_type count, size_type pos = 0) const
+	copy(CharT* dest, size_type n, size_type pos = 0) const
 	{
+		// [string.view.ops]/5
 		if (pos > size())
 		{
 			hamon::detail::throw_out_of_range("basic_string_view::copy");
 		}
 
-		size_type const rlen = hamon::min(count, m_len - pos);
+		// [string.view.ops]/1
+		size_type const rlen = hamon::min(n, size() - pos);
+		// [string.view.ops]/3
 		traits_type::copy(dest, data() + pos, rlen);
+		// [string.view.ops]/4
 		return rlen;
 	}
 
@@ -277,11 +370,11 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 	// substr
 	HAMON_NODISCARD HAMON_CONSTEXPR basic_string_view
-	substr(size_type pos = 0, size_type count = npos) const
+	substr(size_type pos = 0, size_type n = npos) const
 	{
 		return pos <= size() ?
-			basic_string_view{m_str + pos, hamon::min(count, m_len - pos)} :
-			(hamon::detail::throw_out_of_range("basic_string_view::substr"), basic_string_view{});
+			basic_string_view{data() + pos, hamon::min(n, size() - pos)} :	// [string.view.ops]/9
+			(hamon::detail::throw_out_of_range("basic_string_view::substr"), basic_string_view{});	// [string.view.ops]/10
 	}
 
 HAMON_WARNING_POP()
@@ -294,52 +387,60 @@ HAMON_WARNING_POP()
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR int
-	compare(size_type pos1, size_type count1, basic_string_view sv) const
+	compare(size_type pos1, size_type n1, basic_string_view sv) const
 	{
-		return this->substr(pos1, count1).compare(sv);
+		// [string.view.ops]/15
+		return this->substr(pos1, n1).compare(sv);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR int
-	compare(size_type pos1, size_type count1,
-		basic_string_view sv, size_type pos2, size_type count2) const
+	compare(size_type pos1, size_type n1,
+		basic_string_view sv, size_type pos2, size_type n2) const
 	{
-		return this->substr(pos1, count1).compare(sv.substr(pos2, count2));
+		// [string.view.ops]/16
+		return this->substr(pos1, n1).compare(sv.substr(pos2, n2));
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR int
 	compare(CharT const* s) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/17
 		return this->compare(basic_string_view{s});
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR int
-	compare(size_type pos1, size_type count1, CharT const* s) const
+	compare(size_type pos1, size_type n1, CharT const* s) const
 	{
-		return this->substr(pos1, count1).compare(basic_string_view{s});
+		// [string.view.ops]/18
+		return this->substr(pos1, n1).compare(basic_string_view{s});
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR int
-	compare(size_type pos1, size_type count1, CharT const* s, size_type count2) const
+	compare(size_type pos1, size_type n1, CharT const* s, size_type n2) const
 	{
-		return this->substr(pos1, count1).compare(basic_string_view(s, count2));
+		// [string.view.ops]/19
+		return this->substr(pos1, n1).compare(basic_string_view(s, n2));
 	}
 
 	// starts_with
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	starts_with(basic_string_view sv) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/20
 		return this->substr(0, sv.size()) == sv;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	starts_with(CharT c) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/21
 		return !this->empty() && traits_type::eq(this->front(), c);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	starts_with(CharT const* s) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/22
 		return this->starts_with(basic_string_view(s));
 	}
 
@@ -347,18 +448,22 @@ HAMON_WARNING_POP()
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	ends_with(basic_string_view sv) const HAMON_NOEXCEPT
 	{
-		return this->size() >= sv.size() && this->compare(this->size() - sv.size(), npos, sv) == 0;
+		// [string.view.ops]/23
+		return this->size() >= sv.size() &&
+			this->compare(this->size() - sv.size(), npos, sv) == 0;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	ends_with(CharT c) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/24
 		return !this->empty() && traits_type::eq(this->back(), c);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	ends_with(CharT const* s) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/25
 		return this->ends_with(basic_string_view(s));
 	}
 
@@ -366,452 +471,364 @@ HAMON_WARNING_POP()
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	contains(basic_string_view sv) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/26
 		return find(sv) != npos;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	contains(CharT c) const HAMON_NOEXCEPT
 	{
+		// [string.view.ops]/26
 		return find(c) != npos;
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR bool
 	contains(CharT const* s) const
 	{
+		// [string.view.ops]/26
 		return find(s) != npos;
 	}
 
-	// find
+	// [string.view.find], searching
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	find(basic_string_view sv, size_type pos = 0) const HAMON_NOEXCEPT
+	find(basic_string_view s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/3
+		// [string.view.find]/4
+		// [string.view.find]/5
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos + s.size() > this->size() ?
+				npos :
+			traits_type::compare(this->data() + pos, s.data(), s.size()) == 0 ?
+				pos :
+			find(s, pos + 1);
+#else
+		for (auto xpos = pos; xpos + s.size() <= this->size(); ++xpos)
+		{
+			if (traits_type::compare(this->data() + xpos, s.data(), s.size()) == 0)
+			{
+				return xpos;
+			}
+		}
+
+		return npos;
+#endif
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find(CharT c, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return (pos < this->m_len) ?
-			find_impl(traits_type::find(this->m_str + pos, this->m_len - pos, c), this->m_str) :
-			npos;
+		// [string.view.find]/2.3
+		return find(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return
-			(n == 0) ?
-				(pos <= this->m_len ? pos : npos) :
-			(n > this->m_len) ?
-				npos :
-			find_impl(s, pos, n, this->m_str, this->m_len);
+		// [string.view.find]/2.2
+		return find(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find(CharT const* s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return find(basic_string_view(s), pos);
 	}
 
-	// rfind
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	rfind(basic_string_view sv, size_type pos = npos) const HAMON_NOEXCEPT
+	rfind(basic_string_view s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->rfind(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/6
+		// [string.view.find]/7
+		// [string.view.find]/8
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos > this->size() - s.size() ?
+				rfind(s, this->size() - s.size()) :
+			traits_type::compare(this->data() + pos, s.data(), s.size()) == 0 ?
+				pos :
+			pos > 0 ?
+				rfind(s, pos - 1) :
+			npos;
+#else
+		auto xpos = hamon::min(pos, this->size() - s.size());
+
+		do
+		{
+			if (traits_type::compare(this->data() + xpos, s.data(), s.size()) == 0)
+			{
+				return xpos;
+			}
+		}
+		while (xpos-- > 0);
+
+		return npos;
+#endif
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	rfind(CharT c, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return
-			(this->m_len < 1) ?
-				npos :
-				rfind_impl(c, hamon::min(size_type(this->m_len - 1), pos), this->m_str);
+		// [string.view.find]/2.3
+		return rfind(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	rfind(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return 
-			(this->m_len < n) ?
-				npos :
-				rfind_impl(s, hamon::min(size_type(this->m_len - n), pos), n, this->m_str);
+		// [string.view.find]/2.2
+		return rfind(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	rfind(CharT const* s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->rfind(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return rfind(basic_string_view(s), pos);
 	}
 
-	// find_first_of
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	find_first_of(basic_string_view sv, size_type pos = 0) const HAMON_NOEXCEPT
+	find_first_of(basic_string_view s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find_first_of(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/9
+		// [string.view.find]/10
+		// [string.view.find]/11
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos >= this->size() ?
+				npos :
+			traits_type::find(s.data(), s.size(), (*this)[pos]) ?
+				pos :
+			find_first_of(s, pos + 1);
+#else
+		for (auto xpos = pos; xpos < this->size(); ++xpos)
+		{
+			if (traits_type::find(s.data(), s.size(), (*this)[xpos]))
+			{
+				return xpos;
+			}
+		}
+
+		return npos;
+#endif
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_of(CharT c, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find(c, pos);
+		// [string.view.find]/2.3
+		return find_first_of(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_of(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return find_first_of_impl(s, pos, n, this->m_str, this->m_len);
+		// [string.view.find]/2.2
+		return find_first_of(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_of(CharT const* s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find_first_of(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return find_first_of(basic_string_view(s), pos);
 	}
 
-	// find_last_of
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	find_last_of(basic_string_view sv, size_type pos = npos) const HAMON_NOEXCEPT
+	find_last_of(basic_string_view s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->find_last_of(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/12
+		// [string.view.find]/13
+		// [string.view.find]/14
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos > this->size() - 1 ?
+				find_last_of(s, this->size() - 1) :
+			traits_type::find(s.data(), s.size(), (*this)[pos]) ?
+				pos :
+			pos > 0 ?
+				find_last_of(s, pos - 1) :
+			npos;
+
+#else
+		auto xpos = hamon::min(pos, this->size() - 1);
+
+		do
+		{
+			if (traits_type::find(s.data(), s.size(), (*this)[xpos]))
+			{
+				return xpos;
+			}
+		}
+		while (xpos-- > 0);
+
+		return npos;
+#endif
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_of(CharT c, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->rfind(c, pos);
+		// [string.view.find]/2.3
+		return find_last_of(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_of(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return
-			!(this->m_len && n) ?
-				npos :
-				find_last_of_impl(s, hamon::min(size_type(this->m_len - n), pos), n, this->m_str);
+		// [string.view.find]/2.2
+		return find_last_of(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_of(CharT const* s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->find_last_of(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return find_last_of(basic_string_view(s), pos);
 	}
 
-	// find_first_not_of
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	find_first_not_of(basic_string_view sv, size_type pos = 0) const HAMON_NOEXCEPT
+	find_first_not_of(basic_string_view s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find_first_not_of(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/15
+		// [string.view.find]/16
+		// [string.view.find]/17
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos >= this->size() ?
+				npos :
+			!traits_type::find(s.data(), s.size(), (*this)[pos]) ?
+				pos :
+			find_first_not_of(s, pos + 1);
+#else
+		for (auto xpos = pos; xpos < this->size(); ++xpos)
+		{
+			if (!traits_type::find(s.data(), s.size(), (*this)[xpos]))
+			{
+				return xpos;
+			}
+		}
+
+		return npos;
+#endif
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_not_of(CharT c, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return find_first_not_of_impl(c, pos, this->m_str, this->m_len);
+		// [string.view.find]/2.3
+		return find_first_not_of(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_not_of(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return find_first_not_of_impl(s, pos, n, this->m_str, this->m_len);
+		// [string.view.find]/2.2
+		return find_first_not_of(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_first_not_of(CharT const* s, size_type pos = 0) const HAMON_NOEXCEPT
 	{
-		return this->find_first_not_of(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return find_first_not_of(basic_string_view(s), pos);
 	}
 
-	// find_last_not_of
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
-	find_last_not_of(basic_string_view sv, size_type pos = npos) const HAMON_NOEXCEPT
+	find_last_not_of(basic_string_view s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->find_last_not_of(sv.m_str, pos, sv.m_len);
+		// [string.view.find]/18
+		// [string.view.find]/19
+		// [string.view.find]/20
+#if HAMON_CXX_STANDARD < 14
+		return
+			pos > this->size() - 1 ?
+				find_last_not_of(s, this->size() - 1) :
+			!traits_type::find(s.data(), s.size(), (*this)[pos]) ?
+				pos :
+			pos > 0 ?
+				find_last_not_of(s, pos - 1) :
+			npos;
+#else
+		auto xpos = hamon::min(pos, this->size() - 1);
+
+		do
+		{
+			if (!traits_type::find(s.data(), s.size(), (*this)[xpos]))
+			{
+				return xpos;
+			}
+		}
+		while (xpos-- > 0);
+
+		return npos;
+#endif
 	}
-	
+
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_not_of(CharT c, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return
-			this->m_len == 0 ?
-				npos :
-				find_last_not_of_impl(c, hamon::min(size_type(this->m_len - 1), pos), this->m_str);
+		// [string.view.find]/2.3
+		return find_last_not_of(basic_string_view(hamon::addressof(c), 1), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_not_of(CharT const* s, size_type pos, size_type n) const HAMON_NOEXCEPT
 	{
-		return
-			this->m_len == 0 ?
-				npos :
-				find_last_not_of_impl(s, hamon::min(size_type(this->m_len - 1), pos), n, this->m_str);
+		// [string.view.find]/2.2
+		return find_last_not_of(basic_string_view(s, n), pos);
 	}
 
 	HAMON_NODISCARD HAMON_CONSTEXPR size_type
 	find_last_not_of(CharT const* s, size_type pos = npos) const HAMON_NOEXCEPT
 	{
-		return this->find_last_not_of(s, pos, traits_type::length(s));
+		// [string.view.find]/2.1
+		return find_last_not_of(basic_string_view(s), pos);
 	}
 
 private:
 	static HAMON_CONSTEXPR int
-	compare_length(size_type n1, size_type n2) HAMON_NOEXCEPT
-	{
-		using limits = hamon::numeric_limits<int>;
-		return static_cast<int>(hamon::clamp(
-			static_cast<difference_type>(n1) - static_cast<difference_type>(n2),
-			static_cast<difference_type>(limits::min()),
-			static_cast<difference_type>(limits::max())));
-	}
-
-	static HAMON_CONSTEXPR int
 	compare_impl2(int ret, size_type n1, size_type n2) HAMON_NOEXCEPT
 	{
-		return ret == 0 ? compare_length(n1, n2) : ret;
+		return
+			ret != 0 ? ret :
+			n1 <  n2 ? -1 :
+			n1 == n2 ? 0 :
+			/*n1 > n2 ?*/ 1;
 	}
 
 	static HAMON_CONSTEXPR int
 	compare_impl(basic_string_view sv1, basic_string_view sv2) HAMON_NOEXCEPT
 	{
 		return compare_impl2(
-			traits_type::compare(sv1.m_str, sv2.m_str, hamon::min(sv1.m_len, sv2.m_len)),
-			sv1.m_len, sv2.m_len);
+			traits_type::compare(sv1.data(), sv2.data(), hamon::min(sv1.size(), sv2.size())),
+			sv1.size(), sv2.size());
 	}
 
-	static HAMON_CONSTEXPR size_type
-	find_impl(CharT const* p, CharT const* str) HAMON_NOEXCEPT
-	{
-		return p ? static_cast<size_type>(p - str) : npos;
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_impl(CharT const* s, size_type pos, size_type n, CharT const* str, size_type len) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			pos > len - n ?
-				npos :
-			(traits_type::eq(str[pos], s[0]) &&
-			traits_type::compare(str + pos + 1, s + 1, n - 1) == 0) ?
-				pos :
-			find_impl(s, pos + 1, n, str, len);
-#else
-		for (; pos <= len - n; ++pos)
-		{
-			if (traits_type::eq(str[pos], s[0]) &&
-				traits_type::compare(str + pos + 1, s + 1, n - 1) == 0)
-			{
-				return pos;
-			}
-		}
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	rfind_impl(CharT c, size_type pos, CharT const* str) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			traits_type::eq(str[pos], c) ?
-				pos :
-			(pos > 0) ?
-				rfind_impl(c, pos - 1, str) :
-				npos;
-#else
-		do
-		{
-			if (traits_type::eq(str[pos], c))
-			{
-				return pos;
-			}
-		}
-		while (pos-- > 0);
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	rfind_impl(CharT const* s, size_type pos, size_type n, CharT const* str) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			(traits_type::compare(str + pos, s, n) == 0) ?
-				pos :
-			(pos > 0) ?
-				rfind_impl(s, pos - 1, n, str) :
-				npos;
-#else
-		do
-		{
-			if (traits_type::compare(str + pos, s, n) == 0)
-			{
-				return pos;
-			}
-		}
-		while (pos-- > 0);
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_first_of_impl(CharT const* s, size_type pos, size_type n, CharT const* str, size_type len) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			!(n && pos < len) ?
-				npos :
-			traits_type::find(s, n, str[pos]) ?
-				pos :
-				find_first_of_impl(s, pos + 1, n, str, len);
-#else
-		for (; n && pos < len; ++pos)
-		{
-			CharT const* p = traits_type::find(s, n, str[pos]);
-			if (p)
-			{
-				return pos;
-			}
-		}
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_last_of_impl(CharT const* s, size_type pos, size_type n, CharT const* str) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			traits_type::find(s, n, str[pos]) ?
-				pos :
-			(pos > 0) ?
-				find_last_of_impl(s, pos - 1, n, str):
-				npos;
-#else
-		do
-		{
-			if (traits_type::find(s, n, str[pos]))
-			{
-				return pos;
-			}
-		}
-		while (pos-- > 0);
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_first_not_of_impl(CharT c, size_type pos, CharT const* str, size_type len) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			pos >= len ?
-				npos :
-			!traits_type::eq(str[pos], c) ?
-				pos :
-				find_first_not_of_impl(c, pos + 1, str, len);
-#else
-		for (; pos < len; ++pos)
-		{
-			if (!traits_type::eq(str[pos], c))
-			{
-				return pos;
-			}
-		}
-
-		return npos;
-#endif
-	}
-	
-	static HAMON_CONSTEXPR size_type
-	find_first_not_of_impl(CharT const* s, size_type pos, size_type n, CharT const* str, size_type len) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			pos >= len ?
-				npos :
-			!traits_type::find(s, n, str[pos]) ?
-				pos :
-				find_first_not_of_impl(s, pos + 1, n, str, len);
-#else
-		for (; pos < len; ++pos)
-		{
-			if (!traits_type::find(s, n, str[pos]))
-			{
-				return pos;
-			}
-		}
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_last_not_of_impl(CharT c, size_type pos, CharT const* str) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			!traits_type::eq(str[pos], c) ?
-				pos :
-			pos > 0 ?
-				find_last_not_of_impl(c, pos - 1, str) :
-				npos;
-#else
-		do
-		{
-			if (!traits_type::eq(str[pos], c))
-			{
-				return pos;
-			}
-		}
-		while (pos-- > 0);
-
-		return npos;
-#endif
-	}
-
-	static HAMON_CONSTEXPR size_type
-	find_last_not_of_impl(CharT const* s, size_type pos, size_type n, CharT const* str) HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD < 14
-		return
-			!traits_type::find(s, n, str[pos]) ?
-				pos :
-			pos > 0 ?
-				find_last_not_of_impl(s, pos - 1, n, str) :
-				npos;
-#else
-		do
-		{
-			if (!traits_type::find(s, n, str[pos]))
-			{
-				return pos;
-			}
-		}
-		while (pos-- > 0);
-
-		return npos;
-#endif
-	}
-
-	size_type		m_len;
-	CharT const*	m_str;
+	const_pointer	m_data;
+	size_type		m_size;
 };
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
+// [string.view.deduct], deduction guides
+
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),
-	HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End)
+	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),	// [string.view.deduct]/1.1
+	HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End)	// [string.view.deduct]/1.2
 >
-basic_string_view(It, End) -> basic_string_view<hamon::iter_value_t<It>>;
+basic_string_view(It, End)
+	-> basic_string_view<hamon::iter_value_t<It>>;
+
+template <HAMON_CONSTRAINED_PARAM(hamon::ranges::contiguous_range, R)>	// [string.view.deduct]/2
+basic_string_view(R&&)
+	-> basic_string_view<ranges::range_value_t<R>>;
 
 #endif
+
+// [string.view.comparison], non-member comparison functions
 
 template <typename CharT, typename Traits>
 HAMON_NODISCARD inline HAMON_CONSTEXPR bool
@@ -819,6 +836,7 @@ operator==(
 	basic_string_view<CharT, Traits> lhs,
 	basic_string_view<CharT, Traits> rhs) HAMON_NOEXCEPT
 {
+	// [string.view.comparison]/2
 	return lhs.size() == rhs.size() && lhs.compare(rhs) == 0;
 }
 
@@ -828,6 +846,7 @@ operator==(
 	basic_string_view<CharT, Traits> lhs,
 	hamon::type_identity_t<basic_string_view<CharT, Traits>> rhs) HAMON_NOEXCEPT
 {
+	// [string.view.comparison]/2
 	return lhs.size() == rhs.size() && lhs.compare(rhs) == 0;
 }
 
@@ -840,8 +859,10 @@ operator<=>(
 	basic_string_view<CharT, Traits> rhs) HAMON_NOEXCEPT
 -> detail::char_traits_cmp_cat_t<Traits>
 {
-	using cat = detail::char_traits_cmp_cat_t<Traits>;
-	return static_cast<cat>(lhs.compare(rhs) <=> 0);
+	// [string.view.comparison]/3
+	using R = detail::char_traits_cmp_cat_t<Traits>;
+	// [string.view.comparison]/5
+	return static_cast<R>(lhs.compare(rhs) <=> 0);
 }
 
 template <typename CharT, typename Traits, int = 1>
@@ -851,8 +872,10 @@ operator<=>(
 	hamon::type_identity_t<basic_string_view<CharT, Traits>> rhs) HAMON_NOEXCEPT
 -> detail::char_traits_cmp_cat_t<Traits>
 {
-	using cat = detail::char_traits_cmp_cat_t<Traits>;
-	return static_cast<cat>(lhs.compare(rhs) <=> 0);
+	// [string.view.comparison]/3
+	using R = detail::char_traits_cmp_cat_t<Traits>;
+	// [string.view.comparison]/5
+	return static_cast<R>(lhs.compare(rhs) <=> 0);
 }
 
 #else
@@ -1003,12 +1026,15 @@ operator>=(
 
 #endif // defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
+// [string.view.io], inserters and extractors
+
 template <typename CharT, typename Traits1, typename Traits2>
 inline std::basic_ostream<CharT, Traits1>&
 operator<<(
 	std::basic_ostream<CharT, Traits1>& os,
 	basic_string_view<CharT, Traits2> sv)
 {
+	// TODO
 	return os.write(sv.data(), static_cast<std::streamsize>(sv.size()));
 }
 
@@ -1027,6 +1053,8 @@ operator<<(
 
 namespace HAMON_HASH_NAMESPACE
 {
+
+// [string.view.hash], hash support
 
 template <typename CharT, typename Traits>
 struct hash<hamon::basic_string_view<CharT, Traits>>
@@ -1070,6 +1098,8 @@ inline namespace literals
 {
 inline namespace string_view_literals
 {
+
+// [string.view.literals], suffix for basic_string_view literals
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char>
 operator"" _sv(char const* str, hamon::size_t len) HAMON_NOEXCEPT

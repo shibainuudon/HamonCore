@@ -9,6 +9,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 #include "string_view_test_helper.hpp"
 
 namespace hamon_test
@@ -121,6 +122,13 @@ TYPED_TEST(StringViewTest, CtorRangeTest)
 		HAMON_MSVC1929_WORKAROUND_EXPECT_TRUE(sv.data() == str);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(!sv.empty());
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(sv.max_size() >= sv.size());
+	}
+	{
+		TypeParam arr[] = {'H', 'e', 'l', 'l', 'o', '\0', '!'};
+		test_contiguous_range<TypeParam> rng(arr);
+		string_view sv{rng};
+		EXPECT_EQ(7, sv.length());
+		EXPECT_TRUE(sv.data() == arr);
 	}
 }
 

@@ -27,6 +27,7 @@ TYPED_TEST(StringViewTest, RFindTest)
 	HAMON_CXX11_CONSTEXPR string_view const sv3{Helper::abcd(), 2};	// "ab"
 	HAMON_CXX11_CONSTEXPR string_view const sv4{Helper::abcd(), 3};	// "abc"
 	HAMON_CXX11_CONSTEXPR string_view const sv5{Helper::abcd(), 4};	// "abcd"
+	HAMON_CXX11_CONSTEXPR string_view const sv6{Helper::aababc(), 3};	// "aab"
 
 	// (1)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv1));
@@ -34,21 +35,25 @@ TYPED_TEST(StringViewTest, RFindTest)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(sv3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(sv4));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv5));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv6));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv1, 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv2, 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv3, 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv4, 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv5, 0));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv6, 0));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv1, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  1u == sv1.rfind(sv2, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  1u == sv1.rfind(sv3, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv4, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv5, 1));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv6, 1));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv1, 3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(sv2, 3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(sv3, 3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(sv4, 3));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(npos == sv1.rfind(sv5, 3));
+	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  0u == sv1.rfind(sv6, 3));
 
 	// (2)
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(  3u == sv1.rfind(Helper::abcd()[0]));
