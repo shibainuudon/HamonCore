@@ -28,6 +28,41 @@ GTEST_TEST(StringViewTest, OutputStreamTest)
 		ss << sv;
 		EXPECT_TRUE(ss.str() == L"abcde");
 	}
+
+	{
+		hamon::string_view sv{"abc"};
+		std::stringstream ss;
+		ss << std::setfill('-');
+		ss << std::left;
+		ss << std::setw(5);
+		ss << sv;
+		EXPECT_EQ(ss.str(), "abc--");
+
+		// width is reset after each call
+		ss << sv;
+		EXPECT_EQ(ss.str(), "abc--abc");
+
+		ss << std::setw(6);
+		ss << sv;
+		EXPECT_EQ(ss.str(), "abc--abcabc---");
+	}
+	{
+		hamon::wstring_view sv{L"abcd"};
+		std::wstringstream ss;
+		ss << std::setfill(L'+');
+		ss << std::right;
+		ss << std::setw(6);
+		ss << sv;
+		EXPECT_EQ(ss.str(), L"++abcd");
+
+		// width is reset after each call
+		ss << sv;
+		EXPECT_EQ(ss.str(), L"++abcdabcd");
+
+		ss << std::setw(5);
+		ss << sv;
+		EXPECT_EQ(ss.str(), L"++abcdabcd+abcd");
+	}
 }
 
 }	// namespace string_view_test

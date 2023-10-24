@@ -20,6 +20,7 @@ using std::basic_string_view;
 
 #else
 
+#include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/algorithm/clamp.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -1032,10 +1033,69 @@ template <typename CharT, typename Traits1, typename Traits2>
 inline std::basic_ostream<CharT, Traits1>&
 operator<<(
 	std::basic_ostream<CharT, Traits1>& os,
-	basic_string_view<CharT, Traits2> sv)
+	basic_string_view<CharT, Traits2> str)
 {
-	// TODO
-	return os.write(sv.data(), static_cast<std::streamsize>(sv.size()));
+	// 31.7.6.3.1 [ostream.formatted.reqmts]
+	std::ios_base::iostate state = std::ios_base::goodbit;
+	typename std::basic_ostream<CharT, Traits1>::sentry sen(os);
+	if (sen)
+	{
+#if !defined(HAMON_NO_EXCEPTIONS)
+		try
+		{
+#endif
+			// [string.view.io]/1
+
+			auto const str_n = static_cast<std::streamsize>(str.size());
+			auto const n = hamon::max(os.width(), str_n);
+			auto const fill_n = n - str_n;
+			auto const fill_c = os.fill();
+
+			if ((os.flags() & std::ios_base::adjustfield) != std::ios_base::left)
+			{
+				for (std::streamsize i = 0; i < fill_n; ++i)
+				{
+					if (os.rdbuf()->sputc(fill_c) == Traits1::eof())
+					{
+						state |= std::ios_base::failbit;
+					}
+				}
+			}
+
+			if (os.rdbuf()->sputn(str.data(), str_n) != str_n)
+			{
+				state |= std::ios_base::failbit;
+			}
+
+			if ((os.flags() & std::ios_base::adjustfield) == std::ios_base::left)
+			{
+				for (std::streamsize i = 0; i < fill_n; ++i)
+				{
+					if (os.rdbuf()->sputc(fill_c) == Traits1::eof())
+					{
+						state |= std::ios_base::failbit;
+					}
+				}
+			}
+
+			os.width(0);
+#if !defined(HAMON_NO_EXCEPTIONS)
+		}
+		catch (...)
+		{
+			state |= std::ios_base::badbit;
+			os.setstate(state);
+			if (os.exceptions() & std::ios_base::badbit)
+			{
+				throw;
+			}
+		}
+#endif
+		os.setstate(state);
+	}
+
+	// [string.view.io]/2
+	return os;
 }
 
 }	// namespace hamon

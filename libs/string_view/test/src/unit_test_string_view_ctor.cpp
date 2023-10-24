@@ -127,7 +127,7 @@ TYPED_TEST(StringViewTest, CtorRangeTest)
 		TypeParam arr[] = {'H', 'e', 'l', 'l', 'o', '\0', '!'};
 		test_contiguous_range<TypeParam> rng(arr);
 		string_view sv{rng};
-		EXPECT_EQ(7, sv.length());
+		EXPECT_EQ(7u, sv.length());
 		EXPECT_TRUE(sv.data() == arr);
 	}
 }
