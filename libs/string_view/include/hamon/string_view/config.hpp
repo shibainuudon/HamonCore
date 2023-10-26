@@ -11,9 +11,10 @@
 
 #if (HAMON_CXX_STANDARD >= 17) && HAMON_HAS_INCLUDE(<string_view>)
 #  include <string_view>
+#  define HAMON_HAS_STD_STRING_VIEW
 #endif
 
-#if (HAMON_CXX_STANDARD >= 17) && \
+#if defined(HAMON_HAS_STD_STRING_VIEW) && \
 	defined(__cpp_lib_starts_ends_with)      && (__cpp_lib_starts_ends_with      >= 201711) &&	\
 	defined(__cpp_lib_string_view)           && (__cpp_lib_string_view           >= 201803) &&	\
 	defined(__cpp_lib_constexpr_string_view) && (__cpp_lib_constexpr_string_view >= 201811) &&	\

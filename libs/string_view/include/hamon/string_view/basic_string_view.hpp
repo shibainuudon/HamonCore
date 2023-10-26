@@ -181,6 +181,23 @@ public:
 		: m_data(ranges::data(r)), m_size(ranges::size(r))	// [string.view.cons]/13
 	{}
 
+#if defined(HAMON_HAS_STD_STRING_VIEW)
+	// std::basic_string_view からの変換
+	template <typename Traits2>
+	HAMON_CXX11_CONSTEXPR	// implicit
+	basic_string_view(std::basic_string_view<CharT, Traits2> sv) HAMON_NOEXCEPT
+		: basic_string_view(sv.data(), sv.size())
+	{}
+
+	// std::basic_string_view への変換
+	template <typename Traits2>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// implicit
+	operator std::basic_string_view<CharT, Traits2>() const HAMON_NOEXCEPT
+	{
+		return std::basic_string_view<CharT, Traits2>(data(), size());
+	}
+#endif
+
 	// [string.view.iterators], iterator support
 
 	HAMON_NODISCARD HAMON_CONSTEXPR const_iterator
