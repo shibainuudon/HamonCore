@@ -28,22 +28,22 @@
 
 #if !defined(HAMON_NOEXCEPT_IF)
 #	if defined(HAMON_HAS_CXX11_NOEXCEPT)
-#	  define HAMON_NOEXCEPT_IF(Predicate) noexcept((Predicate))
+#	  define HAMON_NOEXCEPT_IF(...) noexcept((__VA_ARGS__))
 #	else
-#	  define HAMON_NOEXCEPT_IF(Predicate)
+#	  define HAMON_NOEXCEPT_IF(...)
 #	endif
 #endif
 
 #if !defined(HAMON_NOEXCEPT_EXPR)
 #	if defined(HAMON_HAS_CXX11_NOEXCEPT)
-#	  define HAMON_NOEXCEPT_EXPR(Expression) noexcept((Expression))
+#	  define HAMON_NOEXCEPT_EXPR(...) noexcept((__VA_ARGS__))
 #	else
-#	  define HAMON_NOEXCEPT_EXPR(Expression) false
+#	  define HAMON_NOEXCEPT_EXPR(...) false
 #	endif
 #endif
 
 #if !defined(HAMON_NOEXCEPT_IF_EXPR)
-#	define HAMON_NOEXCEPT_IF_EXPR(Expression)	HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR((Expression)))
+#	define HAMON_NOEXCEPT_IF_EXPR(...)	HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR((__VA_ARGS__)))
 #endif
 
 #endif // HAMON_CONFIG_SUFFIX_NOEXCEPT_HPP
