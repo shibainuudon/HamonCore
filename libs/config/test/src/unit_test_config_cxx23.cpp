@@ -249,6 +249,9 @@ struct Jeff {
 	operator int&() && { return i; }
 };
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wreturn-local-addr")
+
 int* five(Mutt x) {
 	return x;  // OK since C++20 because P1155
 }
@@ -256,6 +259,8 @@ int* five(Mutt x) {
 int& six(Jeff x) {
 	return x;  // Error
 }
+
+HAMON_WARNING_POP()
 
 template<class T>
 T&& seven(T&& x) { return x; }
