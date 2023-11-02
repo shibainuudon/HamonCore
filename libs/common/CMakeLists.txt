@@ -52,7 +52,11 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(${TARGET_NAME} INTERFACE -fno-rtti -Wall -Wextra -Wshadow -Wconversion -Wpedantic -Werror)
+	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-aggressive-loop-optimizations>")
 	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-array-bounds>")
+	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-maybe-uninitialized>")
+	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-stringop-overflow>")
+	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-stringop-overread>")
 endif()
 
 # emscriptenビルドのときは例外を無効にする
