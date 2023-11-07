@@ -54,9 +54,7 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 
 TYPED_TEST(StringViewTest, SwapTest)
 {
-	// TODO
-	//HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SwapTest<TypeParam>());
-	EXPECT_TRUE(SwapTest<TypeParam>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SwapTest<TypeParam>());
 }
 
 #undef VERIFY

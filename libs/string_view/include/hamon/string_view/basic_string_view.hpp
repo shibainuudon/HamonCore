@@ -1044,6 +1044,18 @@ operator>=(
 
 #endif // defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
+// extension
+// std::swapとhamon::swapが曖昧にならないように特殊化
+template <typename CharT, typename Traits>
+HAMON_CXX14_CONSTEXPR void
+swap(
+	basic_string_view<CharT, Traits>& lhs,
+	basic_string_view<CharT, Traits>& rhs)
+	HAMON_NOEXCEPT_IF_EXPR(lhs.swap(rhs))
+{
+	lhs.swap(rhs);
+}
+
 // [string.view.io], inserters and extractors
 
 template <typename CharT, typename Traits1, typename Traits2>
