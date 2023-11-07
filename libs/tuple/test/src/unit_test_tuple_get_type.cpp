@@ -30,7 +30,7 @@ namespace get_type_test
 
 GTEST_TEST(TupleTest, GetTypeTest)
 {
-	using std::get;
+	using hamon::get;
 	{
 		hamon::tuple<int> t(3);
 		int& i = get<int>(t);

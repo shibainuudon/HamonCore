@@ -7,8 +7,9 @@
 #ifndef HAMON_TUPLE_DETAIL_ACCESS_HPP
 #define HAMON_TUPLE_DETAIL_ACCESS_HPP
 
+#include <hamon/tuple/detail/tuple_leaf.hpp>
 #include <hamon/tuple/tuple_element.hpp>
-#include <hamon/tuple/tuple.hpp>
+#include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 

@@ -7,6 +7,7 @@
 #ifndef HAMON_TUPLE_ADL_GET_HPP
 #define HAMON_TUPLE_ADL_GET_HPP
 
+#include <hamon/tuple/get.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
@@ -36,8 +37,7 @@ namespace adl_get_detail
 {
 
 // "get"という名前を導入する
-template <typename T>
-void get(T) = delete;
+using hamon::get;
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \

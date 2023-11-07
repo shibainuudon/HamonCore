@@ -34,7 +34,7 @@ namespace get_index_test
 
 GTEST_TEST(TupleTest, GetIndexTest)
 {
-	using std::get;
+	using hamon::get;
 	{
 		hamon::tuple<int> t(3);
 		int& i = get<0>(t);

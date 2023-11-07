@@ -107,8 +107,16 @@ GTEST_TEST(TupleTest, ApplyTest)
 		EXPECT_TRUE(hamon::apply(mul, a) == 30);
 	}
 	{
+		hamon::tuple<hamon::string, hamon::string> t { "hello ", "world" };
+		EXPECT_TRUE(hamon::apply(add_t{}, t) == "hello world");
+	}
+	{
 		hamon::array<hamon::string, 2> a { "hello ", "world" };
 		EXPECT_TRUE(hamon::apply(add_t{}, a) == "hello world");
+	}
+	{
+		hamon::pair<hamon::string, hamon::string> p { "hello ", "world" };
+		EXPECT_TRUE(hamon::apply(add_t{}, p) == "hello world");
 	}
 	{
 		HAMON_CXX11_CONSTEXPR hamon::tuple<int, int> t { 1, 2 };
