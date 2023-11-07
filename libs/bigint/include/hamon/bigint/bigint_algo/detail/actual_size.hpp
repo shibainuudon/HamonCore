@@ -8,6 +8,7 @@
 #define HAMON_BIGINT_BIGINT_ALGO_DETAIL_ACTUAL_SIZE_HPP
 
 #include <hamon/array.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
