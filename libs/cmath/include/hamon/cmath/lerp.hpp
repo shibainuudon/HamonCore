@@ -12,6 +12,10 @@
 
 #if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902) &&	\
 	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000))
+#  define HAMON_USE_STD_LERP
+#endif
+
+#if defined(HAMON_USE_STD_LERP)
 
 namespace hamon
 {
@@ -85,6 +89,8 @@ lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
 
 #endif
 
+#if !(defined(HAMON_USE_STD_LERP) && defined(HAMON_HAS_CXX23_LIB_EXTENDED_FLOATING_POINT_TYPES))
+
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -97,6 +103,7 @@ namespace hamon
  *	@brief
  *
  *	@note	LWG-3223 により、このオーバーロードが標準に含まれるかどうかは不透明である。
+ *          → P1467R9 により、標準に含まれることが明確になった。
  */
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
@@ -111,5 +118,7 @@ lerp(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_LERP_HPP

@@ -1251,7 +1251,7 @@
 // C++23 libary features
 #define HAMON_HAS_CXX23_											// P2186R2	Removing Garbage Collection Support
 #define HAMON_HAS_CXX23_											// P2255R2	A type trait to detect reference binding to temporary
-#define HAMON_HAS_CXX23_											// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
+#define HAMON_HAS_CXX23_LIB_EXTENDED_FLOATING_POINT_TYPES			// P1467R9	Extended floating-point types and standard names	__STDCPP_FLOAT16_T__, __STDCPP_FLOAT32_T__, __STDCPP_FLOAT64_T__, __STDCPP_FLOAT128_T__, __STDCPP_BFLOAT16_T__
 #define HAMON_HAS_CXX23_											// P2590R2	Explicit lifetime management
 
 #endif
