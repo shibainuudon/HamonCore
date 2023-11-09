@@ -116,7 +116,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(r.end() == a+4);
 		first = a+2;
 		last = a+2;
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC == 1936))
+#if !defined(HAMON_MSVC)
 		VERIFY(first == a+2);
 		VERIFY(last == a+2);
 #endif
@@ -134,7 +134,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(r.end() == a+4);
 		first = a+2;
 		last = a+2;
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC == 1936))
+#if !defined(HAMON_MSVC)
 		VERIFY(first == a+2);
 		VERIFY(last == a+2);
 #endif
