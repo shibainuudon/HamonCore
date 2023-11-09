@@ -1089,6 +1089,11 @@ operator^(bitset<N> const& lhs, bitset<N> const& rhs) HAMON_NOEXCEPT
 	return bitset<N>{lhs.m_impl ^ rhs.m_impl};
 }
 
+HAMON_WARNING_PUSH()
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 130000)
+HAMON_WARNING_DISABLE_GCC("-Wdangling-reference")
+#endif
+
 template <typename CharT, typename Traits, hamon::size_t N>
 std::basic_istream<CharT, Traits>&
 operator>>(std::basic_istream<CharT, Traits>& is, bitset<N>& x)
@@ -1146,6 +1151,8 @@ operator>>(std::basic_istream<CharT, Traits>& is, bitset<N>& x)
 	// [bitset.operators]/7
 	return is;
 }
+
+HAMON_WARNING_POP()
 
 template <typename CharT, typename Traits, hamon::size_t N>
 std::basic_ostream<CharT, Traits>&
