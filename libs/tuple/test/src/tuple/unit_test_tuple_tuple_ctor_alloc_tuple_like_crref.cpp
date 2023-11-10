@@ -199,9 +199,11 @@ static_assert(!hamon::is_constructible<hamon::tuple<int>,           hamon::alloc
 static_assert( hamon::is_constructible<hamon::tuple<int, int>,      hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<int, int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<int, int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 1> &>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 1> &&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 1> const&>::value, "");
+#endif
 static_assert( hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 1> const&&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
 static_assert(!hamon::is_constructible<hamon::tuple<NoCtor,             ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
@@ -211,9 +213,11 @@ static_assert(!hamon::is_constructible<hamon::tuple<ImplicitFirstAlloc, Implicit
 static_assert( hamon::is_implicitly_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 0> const&&>::value, "");
 static_assert( hamon::is_implicitly_constructible<hamon::tuple<int, int>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 2> const&&>::value, "");
 static_assert( hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ExplicitFirstAlloc, ImplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ExplicitLastAlloc, ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ImplicitFirstAlloc, ImplicitLastAlloc, ExplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 3> const&&>::value, "");
+#endif
 
 #if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc, hamon::array<int, 0> const&&>::value, "");
