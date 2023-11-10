@@ -263,7 +263,7 @@ GTEST_TEST(TupleTest, CtorAllocValueConvTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 42);
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::tuple<float, int> t(hamon::allocator_arg, a, 2, 43);
+		HAMON_CXX11_CONSTEXPR hamon::tuple<float, int> t(hamon::allocator_arg, a, 2.0f, 43);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t) == 2);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t) == 43);
 	}

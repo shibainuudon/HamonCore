@@ -276,6 +276,9 @@ static_assert(!hamon::is_nothrow_constructible<
 	hamon::tuple<NoThrowLastAlloc, NoThrowLastAlloc, ImplicitLastAlloc>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<int, int, int> const&>::value, "");
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 GTEST_TEST(TupleTest, CtorAllocTupleCRefTest)
 {
 	HAMON_CXX11_CONSTEXPR MyAlloc a{};
@@ -324,7 +327,7 @@ GTEST_TEST(TupleTest, CtorAllocTupleCRefTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t2) == 42);
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::tuple<float, int> const t1(43, 44);
+		HAMON_CXX11_CONSTEXPR hamon::tuple<float, int> const t1(43.0f, 44);
 		HAMON_CXX11_CONSTEXPR hamon::tuple<double, long> const t2(hamon::allocator_arg, a, t1);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<0>(t2) == 43);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<1>(t2) == 44);
@@ -340,6 +343,8 @@ GTEST_TEST(TupleTest, CtorAllocTupleCRefTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::adl_get<4>(t2).n == 5);
 	}
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace ctor_alloc_tuple_cref_test
 

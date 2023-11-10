@@ -69,6 +69,9 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  Implicit, 
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  Implicit>, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, Implicit, Implicit>, hamon::array<int, 3> const&>::value, "");
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 GTEST_TEST(TupleTest, CtorTupleLikeCRefTest)
 {
 	{
@@ -98,6 +101,8 @@ GTEST_TEST(TupleTest, CtorTupleLikeCRefTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(5, hamon::adl_get<2>(t).n);
 	}
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace ctor_tuple_like_cref_test
 

@@ -139,7 +139,7 @@ GTEST_TEST(TupleTest, ApplyTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::apply(get_arity_t{}, t) == 1);
 	}
 	{
-		HAMON_CXX11_CONSTEXPR hamon::tuple<int, float> t{1, 2};
+		HAMON_CXX11_CONSTEXPR hamon::tuple<int, float> t{1, 2.0f};
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::apply(get_arity_t{}, t) == 2);
 	}
 	{

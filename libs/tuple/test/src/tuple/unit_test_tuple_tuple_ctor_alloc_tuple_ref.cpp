@@ -279,6 +279,9 @@ static_assert(!hamon::is_nothrow_constructible<
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	MyAlloc a{};
@@ -288,7 +291,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(hamon::adl_get<0>(t2) == 42);
 	}
 	{
-		hamon::tuple<float, int> t1(43, 44);
+		hamon::tuple<float, int> t1(43.0f, 44);
 		hamon::tuple<double, long> t2(hamon::allocator_arg, a, t1);
 		VERIFY(hamon::adl_get<0>(t2) == 43);
 		VERIFY(hamon::adl_get<1>(t2) == 44);
@@ -313,6 +316,8 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 	}
 	return true;
 }
+
+HAMON_WARNING_POP()
 
 #undef VERIFY
 
