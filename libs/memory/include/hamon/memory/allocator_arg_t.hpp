@@ -10,7 +10,7 @@
 #include <hamon/config.hpp>
 #include <memory>
 
-#if 0
+#if HAMON_CXX_STANDARD >= 17
 
 namespace hamon
 {
