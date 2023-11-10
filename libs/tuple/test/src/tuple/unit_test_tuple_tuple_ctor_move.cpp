@@ -67,9 +67,11 @@ static_assert( hamon::is_move_constructible<hamon::tuple<int,     int>>::value, 
 static_assert( hamon::is_move_constructible<hamon::tuple<Movable, int>>::value, "");
 static_assert( hamon::is_move_constructible<hamon::tuple<int,     Movable>>::value, "");
 static_assert( hamon::is_move_constructible<hamon::tuple<Movable, Movable>>::value, "");
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert(!hamon::is_move_constructible<hamon::tuple<NonMovable, int>>::value, "");
 static_assert(!hamon::is_move_constructible<hamon::tuple<int,        NonMovable>>::value, "");
 static_assert(!hamon::is_move_constructible<hamon::tuple<NonMovable, NonMovable>>::value, "");
+#endif
 
 static_assert( hamon::is_nothrow_move_constructible<hamon::tuple<int,      int>>::value, "");
 static_assert( hamon::is_nothrow_move_constructible<hamon::tuple<NothrowMovable, int>>::value, "");
@@ -79,10 +81,12 @@ static_assert(!hamon::is_nothrow_move_constructible<hamon::tuple<Movable, int>>:
 static_assert(!hamon::is_nothrow_move_constructible<hamon::tuple<int,     Movable>>::value, "");
 static_assert(!hamon::is_nothrow_move_constructible<hamon::tuple<Movable, Movable>>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_trivially_move_constructible<hamon::tuple<int,      int>>::value, "");
 static_assert( hamon::is_trivially_move_constructible<hamon::tuple<TriviallyMovable, int>>::value, "");
 static_assert( hamon::is_trivially_move_constructible<hamon::tuple<int,              TriviallyMovable>>::value, "");
 static_assert( hamon::is_trivially_move_constructible<hamon::tuple<TriviallyMovable, TriviallyMovable>>::value, "");
+#endif
 static_assert(!hamon::is_trivially_move_constructible<hamon::tuple<NothrowMovable, int>>::value, "");
 static_assert(!hamon::is_trivially_move_constructible<hamon::tuple<int,            NothrowMovable>>::value, "");
 static_assert(!hamon::is_trivially_move_constructible<hamon::tuple<NothrowMovable, NothrowMovable>>::value, "");

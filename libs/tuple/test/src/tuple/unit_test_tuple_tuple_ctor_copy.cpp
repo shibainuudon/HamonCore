@@ -69,10 +69,12 @@ static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<Copyable, int>>
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<int,      Copyable>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::tuple<Copyable, Copyable>>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<int,      int>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<TriviallyCopyable, int>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<int,               TriviallyCopyable>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::tuple<TriviallyCopyable, TriviallyCopyable>>::value, "");
+#endif
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyable, int>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<int,             NothrowCopyable>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyable, NothrowCopyable>>::value, "");
@@ -80,8 +82,8 @@ static_assert(!hamon::is_trivially_copy_constructible<hamon::tuple<NothrowCopyab
 GTEST_TEST(TupleTest, CtorCopyTest)
 {
 	{
-		hamon::tuple<int, double> t1(1, 2);
-		hamon::tuple<int, double> t2(t1);
+		hamon::tuple<int, double> const t1(1, 2);
+		hamon::tuple<int, double> const t2(t1);
 		EXPECT_EQ(1, hamon::adl_get<0>(t2));
 		EXPECT_EQ(2, hamon::adl_get<1>(t2));
 	}
