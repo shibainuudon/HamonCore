@@ -62,12 +62,14 @@ static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Explici
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Implicit, Implicit, Explicit>, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<Explicit, Explicit, Explicit>, hamon::array<int, 3> const&>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<short, float>, hamon::array<int, 2> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  NoThrow>,  hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, NoThrow,  NoThrow>,  hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  Implicit, NoThrow>,  hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow,  Implicit>, hamon::array<int, 3> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, Implicit, Implicit>, hamon::array<int, 3> const&>::value, "");
+#endif
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。

@@ -258,6 +258,7 @@ static_assert(!hamon::is_implicitly_constructible<
 	hamon::tuple<ImplicitFirstAlloc, ImplicitFirstAlloc, ExplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<int, int, int> const&>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<int>,                hamon::allocator_arg_t, MyAlloc, hamon::tuple<float> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowFirstAlloc>,  hamon::allocator_arg_t, MyAlloc, hamon::tuple<int> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowLastAlloc>,   hamon::allocator_arg_t, MyAlloc, hamon::tuple<int> const&>::value, "");
@@ -275,6 +276,7 @@ static_assert(!hamon::is_nothrow_constructible<
 static_assert(!hamon::is_nothrow_constructible<
 	hamon::tuple<NoThrowLastAlloc, NoThrowLastAlloc, ImplicitLastAlloc>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<int, int, int> const&>::value, "");
+#endif
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。

@@ -140,6 +140,7 @@ static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ExplicitFirstAllo
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ExplicitLastAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
 static_assert(!hamon::is_implicitly_constructible<hamon::tuple<ExplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<>, hamon::allocator_arg_t, MyAlloc>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<int>, hamon::allocator_arg_t, MyAlloc>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowFirstAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
@@ -148,6 +149,7 @@ static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowNoAlloc>, ham
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<ImplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<ImplicitLastAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<ImplicitNoAlloc>, hamon::allocator_arg_t, MyAlloc>::value, "");
+#endif
 
 GTEST_TEST(TupleTest, CtorAllocDefaultTest)
 {

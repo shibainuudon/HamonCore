@@ -260,6 +260,7 @@ static_assert(!hamon::is_implicitly_constructible<
 	hamon::tuple<ImplicitFirstAlloc, ImplicitFirstAlloc, ExplicitFirstAlloc>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<int, int, int>&&>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<int>,                hamon::allocator_arg_t, MyAlloc, hamon::tuple<float>&&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowFirstAlloc>,  hamon::allocator_arg_t, MyAlloc, hamon::tuple<int>&&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<NoThrowLastAlloc>,   hamon::allocator_arg_t, MyAlloc, hamon::tuple<int>&&>::value, "");
@@ -277,6 +278,7 @@ static_assert(!hamon::is_nothrow_constructible<
 static_assert(!hamon::is_nothrow_constructible<
 	hamon::tuple<NoThrowLastAlloc, NoThrowLastAlloc, ImplicitLastAlloc>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<int, int, int>&&>::value, "");
+#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
