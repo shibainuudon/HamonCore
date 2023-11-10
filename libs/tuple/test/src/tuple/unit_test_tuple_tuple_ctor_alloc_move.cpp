@@ -10,8 +10,10 @@
 
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/string.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

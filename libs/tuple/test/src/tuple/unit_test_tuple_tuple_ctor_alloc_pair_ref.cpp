@@ -10,6 +10,8 @@
 
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>

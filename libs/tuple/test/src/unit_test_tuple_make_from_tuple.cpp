@@ -12,6 +12,7 @@
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/string.hpp>
+#include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 

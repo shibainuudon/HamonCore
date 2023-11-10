@@ -10,6 +10,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/array.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
