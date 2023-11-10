@@ -7,6 +7,7 @@
 #include <hamon/ranges/crend.hpp>
 #include <hamon/ranges/rend.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
@@ -29,6 +30,9 @@ struct R1
 	       HAMON_CXX14_CONSTEXPR const int* rend() const { return &i + 1; }
 	friend HAMON_CXX14_CONSTEXPR const int* rbegin(const R1&& r) { return &r.j; }
 	friend HAMON_CXX14_CONSTEXPR const int* rend(const R1&& r) { return &r.j + 1; }
+
+	HAMON_CXX14_CONSTEXPR const int* begin() const { return nullptr; }
+	HAMON_CXX14_CONSTEXPR const int* end() const { return nullptr; }
 };
 
 struct R2
@@ -52,6 +56,9 @@ struct R3
 
 	friend HAMON_CXX14_CONSTEXPR const long* rbegin(const R3&) noexcept { return nullptr; }
 	friend HAMON_CXX14_CONSTEXPR const int* rend(const R3& r) { return &r.i; }
+
+	HAMON_CXX14_CONSTEXPR const int* begin() const { return nullptr; }
+	HAMON_CXX14_CONSTEXPR const int* end() const { return nullptr; }
 };
 
 }	// namespace crend_test

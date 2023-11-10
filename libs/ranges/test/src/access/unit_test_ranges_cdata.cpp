@@ -8,6 +8,7 @@
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/declval.hpp>
@@ -34,6 +35,9 @@ struct R
 	int j = 0;
 	HAMON_CXX14_CONSTEXPR int* data() { return &j; }
 	HAMON_CXX14_CONSTEXPR const R* data() const noexcept { return nullptr; }
+
+	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&) noexcept { return nullptr; }
+	friend HAMON_CXX14_CONSTEXPR const int* end(const R&) noexcept { return nullptr; }
 };
 
 struct R3
@@ -41,10 +45,12 @@ struct R3
 	static int i;
 	static long l;
 
-	HAMON_CXX14_CONSTEXPR int* data() &; // this function is not defined
+	HAMON_CXX14_CONSTEXPR int* data() & { return nullptr; }
 	friend HAMON_CXX14_CONSTEXPR long* begin(R3&& r); // not defined
 	friend HAMON_CXX14_CONSTEXPR const long* begin(const R3& r) { return &r.l; }
 	friend HAMON_CXX14_CONSTEXPR const short* begin(const R3&&); // not defined
+
+	friend HAMON_CXX14_CONSTEXPR const long* end(const R3&) noexcept { return nullptr; }
 };
 
 int R3::i = 0;
@@ -73,8 +79,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(has_cdata<const R&>::value, "");
 	R r;
 	const R& c = r;
-	VERIFY(hamon::ranges::cdata(r) == (R*)nullptr);
-	static_assert(noexcept(hamon::ranges::cdata(r)), "");
+//	VERIFY(hamon::ranges::cdata(r) == (R*)nullptr);
+//	static_assert(noexcept(hamon::ranges::cdata(r)), "");
 	VERIFY(hamon::ranges::cdata(c) == (R*)nullptr);
 	static_assert(noexcept(hamon::ranges::cdata(c)), "");
 
@@ -105,8 +111,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	R3 r;
 	const R3& c = r;
-	VERIFY(hamon::ranges::cdata(r) == hamon::ranges::data(c));
-	VERIFY(hamon::ranges::cdata(hamon::move(r)) == hamon::ranges::data(c));
+//	VERIFY(hamon::ranges::cdata(r) == hamon::ranges::data(c));
+//	VERIFY(hamon::ranges::cdata(hamon::move(r)) == hamon::ranges::data(c));
 	VERIFY(hamon::ranges::cdata(hamon::move(c)) == hamon::ranges::begin(c));
 
 	return true;

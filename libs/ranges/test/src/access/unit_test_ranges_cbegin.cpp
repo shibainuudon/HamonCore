@@ -7,6 +7,7 @@
 #include <hamon/ranges/cbegin.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/utility/as_const.hpp>
 #include <hamon/utility/move.hpp>
@@ -29,14 +30,18 @@ struct R
 	friend HAMON_CXX14_CONSTEXPR       int* begin(R&&); // this function is not defined
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const R& r) noexcept { return r.a + 2; }
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&&); // this function is not defined
+
+	friend HAMON_CXX14_CONSTEXPR const int* end(const R&) noexcept { return nullptr; }
 };
 
 struct RV // view on an R
 {
 	R& r;
 
-	friend HAMON_CXX14_CONSTEXPR       int* begin(RV&); // this function is not defined
+	friend HAMON_CXX14_CONSTEXPR       int* begin(RV&) { return nullptr; }
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const RV& rv) noexcept { return begin(hamon::as_const(rv.r)); }
+
+	friend HAMON_CXX14_CONSTEXPR const int* end(const RV&) noexcept { return nullptr; }
 };
 
 struct RR
@@ -52,6 +57,9 @@ struct RR
 	friend HAMON_CXX14_CONSTEXPR       int* begin(RR&& r) { return r.a + 1; }
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const RR& r) { return r.a + 2; }
 	friend HAMON_CXX14_CONSTEXPR const int* begin(const RR&& r) noexcept { return r.a + 3; }
+
+	HAMON_CXX14_CONSTEXPR short* end() noexcept { return &s + 1; }   // C++23 requires this.
+	HAMON_CXX14_CONSTEXPR const long* end() const { return &l + 1; } // C++23 requires this.
 };
 
 }	// namespace cbegin_test
