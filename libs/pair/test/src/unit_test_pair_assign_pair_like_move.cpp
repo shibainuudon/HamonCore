@@ -63,6 +63,9 @@ static_assert(!hamon::is_nothrow_assignable<hamon::pair<MovableInt,        Movab
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	{
@@ -82,6 +85,8 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 
 	return true;
 }
+
+HAMON_WARNING_POP()
 
 #undef VERIFY
 

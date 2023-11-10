@@ -75,6 +75,9 @@ static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> const&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> &&>::value, "");
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 GTEST_TEST(PairTest, CtorPairCRRefTest)
 {
 	{
@@ -126,6 +129,8 @@ GTEST_TEST(PairTest, CtorPairCRRefTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(10, p2.second.n);
 	}
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace ctor_pair_crref_test
 

@@ -73,6 +73,9 @@ static_assert(!hamon::is_nothrow_constructible<hamon::pair<Implicit, NoThrow>,  
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  Implicit>, hamon::array<int, 2> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<Implicit, Implicit>, hamon::array<int, 2> const&>::value, "");
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
+
 GTEST_TEST(PairTest, CtorPairLikeCRefTest)
 {
 	{
@@ -100,6 +103,8 @@ GTEST_TEST(PairTest, CtorPairLikeCRefTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(4, hamon::adl_get<1>(t).n);
 	}
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace ctor_pair_like_cref_test
 

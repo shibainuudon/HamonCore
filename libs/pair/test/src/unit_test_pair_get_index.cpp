@@ -38,7 +38,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	using std::get;
 	{
-		hamon::pair<float, int> p(1, 2);
+		hamon::pair<float, int> p(1.0f, 2);
 		auto&& f = get<0>(p);
 		static_assert(hamon::is_same<decltype(f), float&>::value, "");
 		VERIFY(f == 1);
@@ -47,7 +47,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(i == 2);
 	}
 	{
-		hamon::pair<float, int> p(1, 2);
+		hamon::pair<float, int> p(1.0f, 2);
 		auto&& f = get<0>(hamon::move(p));
 		static_assert(hamon::is_same<decltype(f), float&&>::value, "");
 		VERIFY(f == 1);
@@ -56,7 +56,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(i == 2);
 	}
 	{
-		hamon::pair<float, int> const p(1, 2);
+		hamon::pair<float, int> const p(1.0f, 2);
 		auto&& f = get<0>(p);
 		static_assert(hamon::is_same<decltype(f), float const&>::value, "");
 		VERIFY(f == 1);
@@ -65,7 +65,7 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		VERIFY(i == 2);
 	}
 	{
-		hamon::pair<float, int> const p(1, 2);
+		hamon::pair<float, int> const p(1.0f, 2);
 		auto&& f = get<0>(hamon::move(p));
 		static_assert(hamon::is_same<decltype(f), float const&&>::value, "");
 		VERIFY(f == 1);
