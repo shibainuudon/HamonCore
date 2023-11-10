@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_TUPLE_CAT_HPP
 
 #include <hamon/tuple/config.hpp>
+#include <hamon/tuple/tuple.hpp>
 
 #if defined(HAMON_USE_STD_TUPLE)
 
@@ -20,7 +21,6 @@ using std::tuple_cat;
 
 #else
 
-#include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/tuple/adl_get.hpp>

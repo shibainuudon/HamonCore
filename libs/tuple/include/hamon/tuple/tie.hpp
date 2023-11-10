@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_TIE_HPP
 
 #include <hamon/tuple/config.hpp>
+#include <hamon/tuple/tuple.hpp>
 
 #if defined(HAMON_USE_STD_TUPLE)
 
@@ -21,7 +22,6 @@ using std::ignore;
 
 #else
 
-#include <hamon/tuple/tuple.hpp>
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>

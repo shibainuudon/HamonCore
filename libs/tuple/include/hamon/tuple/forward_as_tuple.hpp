@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_FORWARD_AS_TUPLE_HPP
 
 #include <hamon/tuple/config.hpp>
+#include <hamon/tuple/tuple.hpp>
 
 #if defined(HAMON_USE_STD_TUPLE)
 
@@ -20,7 +21,6 @@ using std::forward_as_tuple;
 
 #else
 
-#include <hamon/tuple/tuple.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
