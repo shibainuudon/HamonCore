@@ -8,6 +8,7 @@
 #define HAMON_PAIR_MAKE_PAIR_HPP
 
 #include <hamon/pair/config.hpp>
+#include <hamon/pair/pair.hpp>
 
 #if defined(HAMON_USE_STD_PAIR)
 
@@ -22,7 +23,6 @@ using std::make_pair;
 
 #else
 
-#include <hamon/pair/pair.hpp>
 #include <hamon/type_traits/unwrap_ref_decay.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
