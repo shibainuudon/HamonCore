@@ -32,12 +32,16 @@ using std::uses_allocator_construction_args;
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
