@@ -92,16 +92,21 @@ template <template <typename, hamon::size_t> class Array, typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 test()
 {
-	return
-		test2<Array, T      >() &&
-		test2<Array, T const>() &&
-		cv_test<Array, T>();
+	return test2<Array, T>() && test2<Array, T const>();
 }
 
 struct A{};
 
 GTEST_TEST(SpanTest, CtorStdArrayTest)
 {
+	cv_test<std::array, int>();
+	cv_test<std::array, long>();
+	cv_test<std::array, double>();
+
+	cv_test<hamon::array, int>();
+	cv_test<hamon::array, long>();
+	cv_test<hamon::array, double>();
+
 	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, int>()));
 	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, long>()));
 	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE((test<std::array, double>()));

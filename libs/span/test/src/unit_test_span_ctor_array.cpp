@@ -19,7 +19,7 @@ namespace ctor_array_test
 {
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool
+inline HAMON_CXX14_CONSTEXPR void
 cv_test()
 {
 	static_assert( hamon::is_constructible<hamon::span<T               >, T               (&)[2]>::value, "");
@@ -86,8 +86,6 @@ cv_test()
 	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T const         (&)[3]>::value, "");
 	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T       volatile(&)[3]>::value, "");
 	static_assert(!hamon::is_constructible<hamon::span<T const volatile, 2>, T const volatile(&)[3]>::value, "");
-
-	return true;
 }
 
 template <typename T>
@@ -118,16 +116,17 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 test()
 {
-	return
-		test2<T      >() &&
-		test2<T const>() &&
-		cv_test<T>();
+	return test2<T>() && test2<T const>();
 }
 
 struct A{};
 
 GTEST_TEST(SpanTest, CtorArrayTest)
 {
+	cv_test<int>();
+	cv_test<long>();
+	cv_test<double>();
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<double>()));

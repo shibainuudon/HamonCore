@@ -57,7 +57,7 @@ void testSpan()
 
 
 template <typename T>
-void test()
+void test1()
 {
 	testSpan<hamon::span<               T>,                T, hamon::dynamic_extent>();
 	testSpan<hamon::span<const          T>, const          T, hamon::dynamic_extent>();
@@ -70,15 +70,26 @@ void test()
 	testSpan<hamon::span<const volatile T, 5>, const volatile T, 5>();
 }
 
+template <typename T>
+void test2()
+{
+	testSpan<hamon::span<               T>,                T, hamon::dynamic_extent>();
+	testSpan<hamon::span<const          T>, const          T, hamon::dynamic_extent>();
+
+	testSpan<hamon::span<               T, 5>,                T, 5>();
+	testSpan<hamon::span<const          T, 5>, const          T, 5>();
+}
+
 struct A {};
 
 GTEST_TEST(SpanTest, TypesTest)
 {
-	test<int>();
-	test<long>();
-	test<double>();
-	test<hamon::string>();
-	test<A>();
+	test1<int>();
+	test1<long>();
+	test1<double>();
+
+	test2<hamon::string>();
+	test2<A>();
 }
 
 }	// namespace types_test

@@ -36,7 +36,8 @@ struct MyRange
 };
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool cv_test()
+inline HAMON_CXX14_CONSTEXPR void
+cv_test()
 {
 	static_assert(!hamon::is_constructible<hamon::span<T               >, MyRange<T>>::value, "");
 	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T>>::value, "");
@@ -63,12 +64,10 @@ inline HAMON_CXX14_CONSTEXPR bool cv_test()
 	static_assert( hamon::is_constructible<hamon::span<T const         >, MyRange<T> const&&>::value, "");
 	static_assert(!hamon::is_constructible<hamon::span<T       volatile>, MyRange<T> const&&>::value, "");
 	static_assert( hamon::is_constructible<hamon::span<T const volatile>, MyRange<T> const&&>::value, "");
-
-	return true;
 }
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool test2()
+inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	static_assert( hamon::is_constructible<hamon::span<T>   , MyRange<T>&>::value, "");
 	static_assert( hamon::is_constructible<hamon::span<T, 0>, MyRange<T>&>::value, "");
@@ -98,18 +97,14 @@ inline HAMON_CXX14_CONSTEXPR bool test2()
 		s4.data() == val2.getV() && s4.size() == 1;
 }
 
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool test()
-{
-	return
-		test2<T>() &&
-		cv_test<T>();
-}
-
 struct A {};
 
 GTEST_TEST(SpanTest, CtorRangeTest)
 {
+	cv_test<int>();
+	cv_test<long>();
+	cv_test<double>();
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<double>()));
