@@ -19,8 +19,8 @@ namespace matrix_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-// gcc11,12でinternal compiler errorになるのを回避
-#if (defined(HAMON_GCC_VERSION) && (110000 <= HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000))
+// gcc11,12,13でinternal compiler errorになるのを回避
+#if (defined(HAMON_GCC_VERSION) && (110000 <= HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 140000))
 #  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR
 #  define HAMON_QVM_MATRIX_PLUS_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
 #else
