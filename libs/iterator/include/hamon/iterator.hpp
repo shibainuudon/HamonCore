@@ -33,6 +33,7 @@
 //#include <hamon/iterator/istreambuf_iterator.hpp>
 //#include <hamon/iterator/istream_iterator.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
+#include <hamon/iterator/iter_const_reference_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
