@@ -18,6 +18,7 @@
 #include <hamon/iterator/concepts.hpp>
 #include <hamon/iterator/config.hpp>
 #include <hamon/iterator/const_iterator.hpp>
+#include <hamon/iterator/const_sentinel.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 //#include <hamon/iterator/counted_iterator.hpp>
 #include <hamon/iterator/crbegin.hpp>
