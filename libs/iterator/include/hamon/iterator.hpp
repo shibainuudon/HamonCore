@@ -44,6 +44,7 @@
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/make_const_iterator.hpp>
+#include <hamon/iterator/make_const_sentinel.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/iterator/move_iterator.hpp>
