@@ -116,6 +116,23 @@ using three_way_comparable_with =
 
 #endif	// defined(HAMON_USE_STD_COMPARE)
 
+#include <hamon/compare/partial_ordering.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
+
+namespace hamon
+{
+
+template <typename T, typename U, typename Cat = hamon::partial_ordering>
+using three_way_comparable_with_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::three_way_comparable_with<T, U, Cat>>;
+#else
+	hamon::three_way_comparable_with<T, U, Cat>;
+#endif
+
+}	// namespace hamon
+
 #endif	// defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 #endif // HAMON_COMPARE_CONCEPTS_THREE_WAY_COMPARABLE_WITH_HPP
