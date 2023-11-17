@@ -23,6 +23,7 @@
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/iterator_t.hpp>
+#include <hamon/ranges/range_const_reference_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
