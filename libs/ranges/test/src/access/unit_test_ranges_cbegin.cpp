@@ -5,12 +5,10 @@
  */
 
 #include <hamon/ranges/cbegin.hpp>
-#include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/concepts/enable_borrowed_range.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/utility/as_const.hpp>
-#include <hamon/utility/move.hpp>
+#include <hamon/iterator/basic_const_iterator.hpp>
+#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/iterator/detail/constant_iterator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -22,117 +20,138 @@ namespace cbegin_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-struct R
+struct R1
 {
-	int a[4] ={ 0, 1, 2, 3 };
+	int a[4] = { 0, 1, 2, 3 };
 
-	friend HAMON_CXX14_CONSTEXPR       int* begin(R& r) { return r.a + 0; }
-	friend HAMON_CXX14_CONSTEXPR       int* begin(R&&); // this function is not defined
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const R& r) noexcept { return r.a + 2; }
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&&); // this function is not defined
-
-	friend HAMON_CXX14_CONSTEXPR const int* end(const R&) noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int      * begin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int const* begin() const noexcept { return a + 1; }
+	HAMON_CXX14_CONSTEXPR int const* cbegin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int      * end()       noexcept { return a + 4; }
+	HAMON_CXX14_CONSTEXPR int const* end() const noexcept { return a + 4; }
 };
 
-struct RV // view on an R
+struct R2
 {
-	R& r;
+	int a[4] = { 0, 1, 2, 3 };
 
-	friend HAMON_CXX14_CONSTEXPR       int* begin(RV&) { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const RV& rv) noexcept { return begin(hamon::as_const(rv.r)); }
-
-	friend HAMON_CXX14_CONSTEXPR const int* end(const RV&) noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int* begin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int* begin() const noexcept { return const_cast<int*>(a + 1); }
+	HAMON_CXX14_CONSTEXPR int* cbegin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int* end()       noexcept { return a + 4; }
+	HAMON_CXX14_CONSTEXPR int* end() const noexcept { return const_cast<int*>(a + 4); }
 };
-
-struct RR
-{
-	short s = 0;
-	long l = 0;
-	int a[4] ={ 0, 1, 2, 3 };
-
-	HAMON_CXX14_CONSTEXPR       short* begin() noexcept { return &s; }
-	HAMON_CXX14_CONSTEXPR const long*  begin() const { return &l; }
-
-	friend HAMON_CXX14_CONSTEXPR       int* begin(RR& r) { return r.a + 0; }
-	friend HAMON_CXX14_CONSTEXPR       int* begin(RR&& r) { return r.a + 1; }
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const RR& r) { return r.a + 2; }
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const RR&& r) noexcept { return r.a + 3; }
-
-	HAMON_CXX14_CONSTEXPR short* end() noexcept { return &s + 1; }   // C++23 requires this.
-	HAMON_CXX14_CONSTEXPR const long* end() const { return &l + 1; } // C++23 requires this.
-};
-
-}	// namespace cbegin_test
-
-}	// namespace hamon_ranges_test
-
-HAMON_RANGES_START_NAMESPACE
-
-// Allow ranges::begin to work with RV&&
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::cbegin_test::RV);
-
-// N.B. this is a lie, cbegin on an RR rvalue will return a dangling pointer.
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::cbegin_test::RR);
-
-HAMON_RANGES_END_NAMESPACE
-
-namespace hamon_ranges_test
-{
-
-namespace cbegin_test
-{
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	int a[2] ={};
+	int const a[2] = {};
 
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(a)), const int*>::value, "");
 	static_assert(noexcept(hamon::ranges::cbegin(a)), "");
 	VERIFY(hamon::ranges::cbegin(a) == (a + 0));
 
-	constexpr long b[2] ={};
-	static_assert(hamon::ranges::cbegin(b) == (b + 0), "");
+	// [range.access.cbegin]/2
+	{
+		using I = decltype(hamon::ranges::cbegin(a));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test02()
+{
+	int a[2] = {};
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(a)), const int*>::value, "");
+	static_assert(noexcept(hamon::ranges::cbegin(a)), "");
+	VERIFY(hamon::ranges::cbegin(a) == (a + 0));
+
+	// [range.access.cbegin]/2
+	{
+		using I = decltype(hamon::ranges::cbegin(a));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	R r;
-	const R& c = r;
-	VERIFY(hamon::ranges::cbegin(r) == hamon::ranges::begin(c));
-	VERIFY(hamon::ranges::cbegin(c) == hamon::ranges::begin(c));
+	R1 r;
+	R1 const& cr = r;
 
-	RV v{ r };
-	VERIFY(hamon::ranges::cbegin(hamon::move(v)) == hamon::ranges::begin(c));
-	const RV cv{ r };
-	VERIFY(hamon::ranges::cbegin(hamon::move(cv)) == hamon::ranges::begin(c));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(cr)), const int*>::value, "");
+
+	// const& にキャストされてbeginを呼び出す
+	// メンバ関数cbeginは呼び出されない
+	VERIFY(hamon::ranges::cbegin(r) != r.begin());
+	VERIFY(hamon::ranges::cbegin(r) == cr.begin());
+	VERIFY(hamon::ranges::cbegin(r) != r.cbegin());
+	VERIFY(hamon::ranges::cbegin(cr) != r.begin());
+	VERIFY(hamon::ranges::cbegin(cr) == cr.begin());
+	VERIFY(hamon::ranges::cbegin(cr) != r.cbegin());
+
+	// [range.access.cbegin]/2
+	{
+		using I = decltype(hamon::ranges::cbegin(r));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
+	{
+		using I = decltype(hamon::ranges::cbegin(cr));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	RR r;
-	const RR& c = r;
-	VERIFY(hamon::ranges::cbegin(r) == hamon::ranges::begin(c));
-	VERIFY(hamon::ranges::cbegin(hamon::move(r)) == hamon::ranges::begin(c));
-	VERIFY(hamon::ranges::cbegin(c) == hamon::ranges::begin(c));
-	VERIFY(hamon::ranges::cbegin(hamon::move(c)) == hamon::ranges::begin(c));
+	R2 r;
+	R2 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(r)), hamon::basic_const_iterator<int*>>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cbegin(cr)), hamon::basic_const_iterator<int*>>::value, "");
+
+	// const& にキャストしてもconstant_iteratorを返さないので、
+	// 非const 版の結果をbasic_const_iteratorに変換する。
+	// メンバ関数cbeginは呼び出されない
+	VERIFY(hamon::ranges::cbegin(r) == r.begin());
+	VERIFY(hamon::ranges::cbegin(r) != cr.begin());
+	VERIFY(hamon::ranges::cbegin(r) != r.cbegin());
+	VERIFY(hamon::ranges::cbegin(cr) != r.begin());
+	VERIFY(hamon::ranges::cbegin(cr) == cr.begin());
+	VERIFY(hamon::ranges::cbegin(cr) != r.cbegin());
+	
+	// [range.access.cbegin]/2
+	{
+		using I = decltype(hamon::ranges::cbegin(r));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
+	{
+		using I = decltype(hamon::ranges::cbegin(cr));
+		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
+	}
 
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(RangesTest, CBeginTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
-
-#undef VERIFY
 
 }	// namespace cbegin_test
 

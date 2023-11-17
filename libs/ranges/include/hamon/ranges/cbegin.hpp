@@ -9,12 +9,11 @@
 
 #include <hamon/ranges/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES)
+#if defined(HAMON_USE_STD_RANGES) &&	\
+	defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)
 
-namespace hamon
-{
-namespace ranges
-{
+namespace hamon {
+namespace ranges {
 
 using std::ranges::cbegin;
 
@@ -23,9 +22,11 @@ using std::ranges::cbegin;
 
 #else
 
+#include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
+#include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/detail/as_const.hpp>
-#include <hamon/utility/forward.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/iterator/const_iterator.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -40,10 +41,12 @@ namespace detail {
 
 struct cbegin_fn
 {
-	template <typename T>
+	// [range.access.cbegin]
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
 	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			ranges::begin(ranges::detail::as_const(hamon::forward<T>(t))))
+			hamon::const_iterator<decltype(hamon::ranges::begin(hamon::ranges::detail::possibly_const_range(t)))>(
+				hamon::ranges::begin(hamon::ranges::detail::possibly_const_range(t))))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
