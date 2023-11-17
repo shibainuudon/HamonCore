@@ -63,6 +63,10 @@ using std::basic_const_iterator;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
@@ -169,31 +173,34 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I, Iterator)>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator()
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<Iterator>::value)	// noexcept as an extension
 		: m_current(){}
 #endif
 
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator(Iterator current)
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iterator>::value)	// noexcept as an extension
 		: m_current(hamon::move(current))			// [const.iterators.ops]/1
 	{}
 	
 	template <HAMON_CONSTRAINED_PARAM(hamon::convertible_to, Iterator, U)>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator(basic_const_iterator<U> current)
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_constructible<Iterator, U>::value)		// noexcept as an extension
 		: m_current(hamon::move(current.m_current))	// [const.iterators.ops]/2
 	{}
 	
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, T),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<T, Iterator>::value>
-	>
+		typename = hamon::enable_if_t<hamon::convertible_to_t<T, Iterator>::value>>
 //		requires hamon::convertible_to<T, Iterator>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator(T&& current)
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_constructible<Iterator, T>::value)		// noexcept as an extension
 		: m_current(hamon::forward<T>(current))		// [const.iterators.ops]/3
 	{}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Iterator const&	// nodiscard as an extension
-	base() const & noexcept
+	base() const & HAMON_NOEXCEPT
 	{
 		// [const.iterators.ops]/4
 		return m_current;
@@ -201,6 +208,7 @@ public:
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR Iterator	// nodiscard as an extension
 	base() &&
+	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iterator>::value)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/5
 		return hamon::move(m_current);
@@ -208,6 +216,7 @@ public:
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
 	operator*() const
+	HAMON_NOEXCEPT_IF_EXPR(static_cast<reference>(*m_current))	// noexcept as an extension
 	{
 		// [const.iterators.ops]/6
 		return static_cast<reference>(*m_current);
@@ -217,11 +226,12 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto const*	// nodiscard as an extension
 	operator->() const
+	HAMON_NOEXCEPT_IF(hamon::contiguous_iterator<Iterator> || HAMON_NOEXCEPT_EXPR(*m_current))	// noexcept as an extension
 		requires hamon::is_lvalue_reference_v<hamon::iter_reference_t<Iterator>> &&
 			hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<Iterator>>, value_type>
 	{
 		// [const.iterators.ops]/7
-		if constexpr (hamon::contiguous_iterator_t<Iterator>::value)
+		if constexpr (hamon::contiguous_iterator<Iterator>)
 		{
 			return hamon::to_address(m_current);
 		}
@@ -234,7 +244,7 @@ public:
 private:
 	template <HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, I)>
 	HAMON_CXX11_CONSTEXPR auto
-	op_arrow_impl(I current, hamon::detail::overload_priority<1>) const
+	op_arrow_impl(I current, hamon::detail::overload_priority<1>) const HAMON_NOEXCEPT
 	->decltype(hamon::to_address(current))
 	{
 		return hamon::to_address(current);
@@ -243,6 +253,7 @@ private:
 	template <typename I>
 	HAMON_CXX11_CONSTEXPR auto
 	op_arrow_impl(I current, hamon::detail::overload_priority<0>) const
+	HAMON_NOEXCEPT_IF_EXPR(*current)
 	->decltype(hamon::addressof(*current))
 	{
 		return hamon::addressof(*current);
@@ -257,6 +268,7 @@ public:
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator->() const
+	HAMON_NOEXCEPT_IF_EXPR(op_arrow_impl(m_current, hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	->hamon::add_pointer_t<
 		hamon::add_const_t<
 			hamon::remove_pointer_t<
@@ -268,6 +280,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator++()
+	HAMON_NOEXCEPT_IF_EXPR(++m_current)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/8
 		++m_current;
@@ -278,6 +291,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	HAMON_CXX14_CONSTEXPR void
 	operator++(int)
+	HAMON_NOEXCEPT_IF_EXPR(++m_current)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/9
 		++m_current;
@@ -285,6 +299,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR basic_const_iterator
 	operator++(int)
+	HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR(++*this) && hamon::is_nothrow_copy_constructible<basic_const_iterator>::value)	// noexcept as an extension
 		requires hamon::forward_iterator<Iterator>
 	{
 		// [const.iterators.ops]/10
@@ -297,6 +312,7 @@ private:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::forward_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator
 	increment_impl(hamon::detail::overload_priority<1>)
+	HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR(++m_current) && hamon::is_nothrow_copy_constructible<Iterator>::value)
 	{
 		auto tmp = *this;
 		++*this;
@@ -305,6 +321,7 @@ private:
 
 	HAMON_CXX14_CONSTEXPR void
 	increment_impl(hamon::detail::overload_priority<0>)
+	HAMON_NOEXCEPT_IF_EXPR(++m_current)
 	{
 		++m_current;
 	}
@@ -312,6 +329,7 @@ private:
 public:
 	HAMON_CXX14_CONSTEXPR auto
 	operator++(int)
+	HAMON_NOEXCEPT_IF_EXPR(increment_impl(hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	->decltype(increment_impl(hamon::detail::overload_priority<1>{}))
 	{
 		return increment_impl(hamon::detail::overload_priority<1>{});
@@ -321,6 +339,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator--()
+	HAMON_NOEXCEPT_IF_EXPR(--m_current)	// noexcept as an extension
 //		requires hamon::bidirectional_iterator<Iterator>
 	{
 		// [const.iterators.ops]/11
@@ -331,6 +350,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator
 	operator--(int)
+    HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR(--*this) && hamon::is_nothrow_copy_constructible<basic_const_iterator>::value)	// noexcept as an extension
 //		requires hamon::bidirectional_iterator<Iterator>
 	{
 		// [const.iterators.ops]/12
@@ -342,6 +362,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator+=(difference_type n)
+	HAMON_NOEXCEPT_IF_EXPR(m_current += n)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/14
@@ -352,6 +373,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator-=(difference_type n)
+	HAMON_NOEXCEPT_IF_EXPR(m_current -= n)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/14
@@ -362,6 +384,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
 	operator[](difference_type n) const
+	HAMON_NOEXCEPT_IF_EXPR(static_cast<reference>(m_current[n]))	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/15
@@ -371,6 +394,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, S)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(S const& s) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current == s)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/16
 		return m_current == s;
@@ -379,12 +403,14 @@ public:
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current == y.m_current)	// noexcept as an extension
 	{
 		return m_current == y.m_current;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator!=(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current != y.m_current)	// noexcept as an extension
 	{
 		return m_current != y.m_current;
 	}
@@ -392,6 +418,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x == y.m_current)	// noexcept as an extension
 	{
 		return x == y.m_current;
 	}
@@ -399,6 +426,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator!=(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x != y.m_current)	// noexcept as an extension
 	{
 		return x != y.m_current;
 	}
@@ -407,6 +435,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current < y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/18
@@ -416,6 +445,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current > y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/18
@@ -425,6 +455,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current <= y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/18
@@ -434,6 +465,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current >= y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/18
@@ -443,6 +475,7 @@ public:
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(basic_const_iterator const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current <=> y.m_current)	// noexcept as an extension
 		requires hamon::random_access_iterator<Iterator> && hamon::three_way_comparable<Iterator>
 	{
 		// [const.iterators.ops]/18
@@ -479,6 +512,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current < y)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/20
@@ -489,6 +523,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current > y)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/20
@@ -499,6 +534,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current <= y)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/20
@@ -509,6 +545,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current >= y)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/20
@@ -520,6 +557,7 @@ public:
 		typename = hamon::enable_if_t<ThreeWayComparable<I>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(I const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current <=> y)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I> &&
 //			hamon::three_way_comparable_with<Iterator, I>
 	{
@@ -532,6 +570,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x < y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/22
@@ -542,6 +581,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x > y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/22
@@ -552,6 +592,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x <= y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/22
@@ -562,6 +603,7 @@ public:
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x >= y.m_current)	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator> && hamon::totally_ordered_with<Iterator, I>
 	{
 		// [const.iterators.ops]/22
@@ -571,6 +613,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator+(basic_const_iterator const& i, difference_type n)
+	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current + n))	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/23
@@ -580,6 +623,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator+(difference_type n, basic_const_iterator const& i)
+	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current + n))	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/23
@@ -589,6 +633,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator-(basic_const_iterator const& i, difference_type n)
+	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current - n))	// noexcept as an extension
 //		requires hamon::random_access_iterator<Iterator>
 	{
 		// [const.iterators.ops]/24
@@ -598,6 +643,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, S)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 	operator-(S const& y) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current - y)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/25
 		return m_current - y;
@@ -608,6 +654,7 @@ public:
 //		requires hamon::sized_sentinel_for<S, Iterator>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 	operator-(S const& x, basic_const_iterator const& y)
+	HAMON_NOEXCEPT_IF_EXPR(x - y.m_current)	// noexcept as an extension
 	{
 		// [const.iterators.ops]/26
 		return x - y.m_current;
@@ -615,7 +662,7 @@ public:
 
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR rvalue_reference	// nodiscard as an extension
 	iter_move(basic_const_iterator const& i)
-		noexcept(noexcept(static_cast<rvalue_reference>(ranges::iter_move(i.m_current))))
+	HAMON_NOEXCEPT_IF_EXPR(static_cast<rvalue_reference>(ranges::iter_move(i.m_current)))
 	{
 		return static_cast<rvalue_reference>(ranges::iter_move(i.m_current));
 	}
