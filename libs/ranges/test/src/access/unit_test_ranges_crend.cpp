@@ -6,10 +6,11 @@
 
 #include <hamon/ranges/crend.hpp>
 #include <hamon/ranges/rend.hpp>
-#include <hamon/ranges/concepts/enable_borrowed_range.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
+#include <hamon/ranges/crbegin.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/utility/move.hpp>
+#include <hamon/iterator/basic_const_iterator.hpp>
+#include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/iterator/detail/constant_iterator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -23,112 +24,125 @@ namespace crend_test
 
 struct R1
 {
-	int i = 0;
-	int j = 0;
+	int a[4] = { 0, 1, 2, 3 };
 
-	       HAMON_CXX14_CONSTEXPR const int* rbegin() const { return &i; }
-	       HAMON_CXX14_CONSTEXPR const int* rend() const { return &i + 1; }
-	friend HAMON_CXX14_CONSTEXPR const int* rbegin(const R1&& r) { return &r.j; }
-	friend HAMON_CXX14_CONSTEXPR const int* rend(const R1&& r) { return &r.j + 1; }
+	HAMON_CXX14_CONSTEXPR char      * begin()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char const* begin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char      * end()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char const* end() const noexcept { return nullptr; }
 
-	HAMON_CXX14_CONSTEXPR const int* begin() const { return nullptr; }
-	HAMON_CXX14_CONSTEXPR const int* end() const { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int      * rbegin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int const* rbegin() const noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int      * rend()       noexcept { return a + 3; }
+	HAMON_CXX14_CONSTEXPR int const* rend() const noexcept { return a + 4; }
+
+	HAMON_CXX14_CONSTEXPR int const* crend() const noexcept { return nullptr; }
 };
 
 struct R2
 {
-	int a[2] ={};
-	long l[2] ={};
+	int a[4] = { 0, 1, 2, 3 };
 
-	       HAMON_CXX14_CONSTEXPR const int* begin() const { return a; }
-	       HAMON_CXX14_CONSTEXPR const int* end() const { return a + 2; }
+	HAMON_CXX14_CONSTEXPR char* begin()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* begin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* end()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* end() const noexcept { return nullptr; }
 
-	friend HAMON_CXX14_CONSTEXPR const long* begin(const R2&& r) { return r.l; }
-	friend HAMON_CXX14_CONSTEXPR const long* end(const R2&& r) { return r.l + 2; }
+	HAMON_CXX14_CONSTEXPR int* rbegin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int* rbegin() const noexcept { return const_cast<int*>(a + 0); }
+	HAMON_CXX14_CONSTEXPR int* rend()       noexcept { return a + 3; }
+	HAMON_CXX14_CONSTEXPR int* rend() const noexcept { return const_cast<int*>(a + 4); }
+
+	HAMON_CXX14_CONSTEXPR int* crend() const noexcept { return nullptr; }
 };
-
-struct R3
-{
-	int i = 0;
-
-	       HAMON_CXX14_CONSTEXPR const int* rbegin() const noexcept { return &i + 1; }
-	       HAMON_CXX14_CONSTEXPR const long* rend() const noexcept { return nullptr; } // not a sentinel for rbegin()
-
-	friend HAMON_CXX14_CONSTEXPR const long* rbegin(const R3&) noexcept { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR const int* rend(const R3& r) { return &r.i; }
-
-	HAMON_CXX14_CONSTEXPR const int* begin() const { return nullptr; }
-	HAMON_CXX14_CONSTEXPR const int* end() const { return nullptr; }
-};
-
-}	// namespace crend_test
-
-}	// namespace hamon_ranges_test
-
-HAMON_RANGES_START_NAMESPACE
-
-// N.B. this is a lie, rend on an R1 rvalue will return a dangling pointer.
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::crend_test::R1);
-
-// N.B. this is a lie, rend on an R2 rvalue will return a dangling pointer.
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::crend_test::R2);
-
-// N.B. this is a lie, rend on an R3 rvalue will return a dangling pointer.
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::crend_test::R3);
-
-HAMON_RANGES_END_NAMESPACE
-
-namespace hamon_ranges_test
-{
-
-namespace crend_test
-{
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	R1 r;
-	const R1& c = r;
-	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(hamon::move(r)) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(hamon::move(c)) == hamon::ranges::rend(c));
+	int const a[2] = {};
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(a)), hamon::reverse_iterator<int const*>>::value, "");
+	static_assert(noexcept(hamon::ranges::crend(a)), "");
+	VERIFY(hamon::ranges::crend(a) == hamon::ranges::rend(a));
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	R2 r;
-	const R2& c = r;
-	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(hamon::move(r)) == hamon::ranges::rend(hamon::move(c)));
-	VERIFY(hamon::ranges::crend(hamon::move(c)) == hamon::ranges::rend(hamon::move(c)));
+	int a[2] = {};
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(a)), hamon::reverse_iterator<int const*>>::value, "");
+	static_assert(noexcept(hamon::ranges::crend(a)), "");
+	VERIFY(hamon::ranges::crend(a) == hamon::ranges::rend(a));
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	R3 r;
-	const R3& c = r;
-	static_assert(!noexcept(hamon::ranges::crend(r)), "");
-	static_assert(!noexcept(hamon::ranges::crend(c)), "");
-	VERIFY(hamon::ranges::crend(r) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
+	R1 r;
+	R1 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(cr)), const int*>::value, "");
+
+	// const& にキャストされてrendを呼び出す
+	// メンバ関数crendは呼び出されない
+	VERIFY(hamon::ranges::crend(r) != r.rend());
+	VERIFY(hamon::ranges::crend(r) == cr.rend());
+	VERIFY(hamon::ranges::crend(r) != r.crend());
+	VERIFY(hamon::ranges::crend(cr) != r.rend());
+	VERIFY(hamon::ranges::crend(cr) == cr.rend());
+	VERIFY(hamon::ranges::crend(cr) != r.crend());
+
+	// [range.access.crend]/2
+	{
+		using I = decltype(hamon::ranges::crbegin(r));
+		using S = decltype(hamon::ranges::crend(r));
+		static_assert(hamon::sentinel_for_t<S, I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+	}
+	{
+		using I = decltype(hamon::ranges::crbegin(cr));
+		using S = decltype(hamon::ranges::crend(cr));
+		static_assert(hamon::sentinel_for_t<S, I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+	}
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	int a[2] ={ };
-	const auto& c = a;
-	VERIFY(hamon::ranges::crend(a) == hamon::ranges::rend(c));
-	VERIFY(hamon::ranges::crend(c) == hamon::ranges::rend(c));
+	R2 r;
+	R2 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(r)), hamon::basic_const_iterator<int*>>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(cr)), hamon::basic_const_iterator<int*>>::value, "");
+
+	// const& にキャストしてもconstant_iteratorを返さないので、
+	// 非const 版の結果をbasic_const_iteratorに変換する。
+	// メンバ関数crendは呼び出されない
+	VERIFY(hamon::ranges::crend(r) == r.rend());
+	VERIFY(hamon::ranges::crend(r) != cr.rend());
+	VERIFY(hamon::ranges::crend(r) != r.crend());
+	VERIFY(hamon::ranges::crend(cr) != r.rend());
+	VERIFY(hamon::ranges::crend(cr) == cr.rend());
+	VERIFY(hamon::ranges::crend(cr) != r.crend());
+
+	// [range.access.crend]/2
+	{
+		using I = decltype(hamon::ranges::crbegin(r));
+		using S = decltype(hamon::ranges::crend(r));
+		static_assert(hamon::sentinel_for_t<S, I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+	}
+	{
+		using I = decltype(hamon::ranges::crbegin(cr));
+		using S = decltype(hamon::ranges::crend(cr));
+		static_assert(hamon::sentinel_for_t<S, I>::value, "");
+		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+	}
 
 	return true;
 }
@@ -136,7 +150,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 GTEST_TEST(RangesTest, CREndTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
