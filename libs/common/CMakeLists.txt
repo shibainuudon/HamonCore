@@ -57,6 +57,7 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-maybe-uninitialized>")
 	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-stringop-overflow>")
 	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-stringop-overread>")
+	target_compile_options(${TARGET_NAME} INTERFACE "$<$<CONFIG:Release>:-Wno-uninitialized>")
 endif()
 
 # emscriptenビルドのときは例外を無効にする
