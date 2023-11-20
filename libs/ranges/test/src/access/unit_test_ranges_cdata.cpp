@@ -5,13 +5,7 @@
  */
 
 #include <hamon/ranges/cdata.hpp>
-#include <hamon/ranges/data.hpp>
-#include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/concepts/enable_borrowed_range.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/type_traits/is_detected.hpp>
-#include <hamon/utility/move.hpp>
-#include <hamon/utility/declval.hpp>
+#include <hamon/concepts/same_as.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -23,109 +17,156 @@ namespace cdata_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T>
-using has_cdata_t = decltype(hamon::ranges::cdata(hamon::declval<T&&>()));
-
-template <typename T>
-using has_cdata = hamon::is_detected<has_cdata_t, T>;
-
-struct R
+struct R1
 {
-	int i = 0;
-	int j = 0;
-	HAMON_CXX14_CONSTEXPR int* data() { return &j; }
-	HAMON_CXX14_CONSTEXPR const R* data() const noexcept { return nullptr; }
+	int a[4] = { 0, 1, 2, 3 };
 
-	friend HAMON_CXX14_CONSTEXPR const int* begin(const R&) noexcept { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR const int* end(const R&) noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char      * begin()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char const* begin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char      * end()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char const* end() const noexcept { return nullptr; }
+
+	HAMON_CXX14_CONSTEXPR int      * data()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int const* data() const noexcept { return a + 1; }
+};
+
+struct R2
+{
+	int a[4] = { 0, 1, 2, 3 };
+
+	HAMON_CXX14_CONSTEXPR char* begin()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* begin() const noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* end()       noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR char* end() const noexcept { return nullptr; }
+
+	HAMON_CXX14_CONSTEXPR int* data()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int* data() const noexcept { return const_cast<int*>(a + 1); }
 };
 
 struct R3
 {
-	static int i;
-	static long l;
+	int a[4] = { 0, 1, 2, 3 };
 
-	HAMON_CXX14_CONSTEXPR int* data() & { return nullptr; }
-	friend HAMON_CXX14_CONSTEXPR long* begin(R3&& r); // not defined
-	friend HAMON_CXX14_CONSTEXPR const long* begin(const R3& r) { return &r.l; }
-	friend HAMON_CXX14_CONSTEXPR const short* begin(const R3&&); // not defined
-
-	friend HAMON_CXX14_CONSTEXPR const long* end(const R3&) noexcept { return nullptr; }
+	HAMON_CXX14_CONSTEXPR int      * begin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int const* begin() const noexcept { return a + 1; }
+	HAMON_CXX14_CONSTEXPR int      * end()       noexcept { return a + 4; }
+	HAMON_CXX14_CONSTEXPR int const* end() const noexcept { return a + 4; }
 };
 
-int R3::i = 0;
-long R3::l = 0;
-
-}	// namespace cdata_test
-
-}	// namespace hamon_ranges_test
-
-HAMON_RANGES_START_NAMESPACE
-
-template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::cdata_test::R3);
-
-HAMON_RANGES_END_NAMESPACE
-
-namespace hamon_ranges_test
+struct R4
 {
+	int a[4] = { 0, 1, 2, 3 };
 
-namespace cdata_test
-{
+	HAMON_CXX14_CONSTEXPR int* begin()       noexcept { return a + 0; }
+	HAMON_CXX14_CONSTEXPR int* begin() const noexcept { return const_cast<int*>(a + 1); }
+	HAMON_CXX14_CONSTEXPR int* end()       noexcept { return a + 4; }
+	HAMON_CXX14_CONSTEXPR int* end() const noexcept { return const_cast<int*>(a + 4); }
+};
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	static_assert(has_cdata<R&>::value, "");
-	static_assert(has_cdata<const R&>::value, "");
-	R r;
-	const R& c = r;
-//	VERIFY(hamon::ranges::cdata(r) == (R*)nullptr);
-//	static_assert(noexcept(hamon::ranges::cdata(r)), "");
-	VERIFY(hamon::ranges::cdata(c) == (R*)nullptr);
-	static_assert(noexcept(hamon::ranges::cdata(c)), "");
+	int const a[2] = {};
 
-	// not lvalues and not borrowed ranges
-	static_assert(!has_cdata<R>::value, "");
-	static_assert(!has_cdata<const R>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(a)), const int*>::value, "");
+	static_assert(noexcept(hamon::ranges::cdata(a)), "");
+	VERIFY(hamon::ranges::cdata(a) == (a + 0));
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	int a[] ={ 0, 1 };
-	VERIFY(hamon::ranges::cdata(a) == a + 0);
+	int a[2] = {};
 
-	static_assert( has_cdata<int(&)[2]>::value, "");
-	static_assert(!has_cdata<int(&&)[2]>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(a)), const int*>::value, "");
+	static_assert(noexcept(hamon::ranges::cdata(a)), "");
+	VERIFY(hamon::ranges::cdata(a) == (a + 0));
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	static_assert(has_cdata<R3&>::value, "");
-	static_assert(has_cdata<R3>::value, "");  // borrowed range
-	static_assert(has_cdata<const R3&>::value, "");
-	static_assert(has_cdata<const R3>::value, "");  // borrowed range
+	R1 r;
+	R1 const& cr = r;
 
-	R3 r;
-	const R3& c = r;
-//	VERIFY(hamon::ranges::cdata(r) == hamon::ranges::data(c));
-//	VERIFY(hamon::ranges::cdata(hamon::move(r)) == hamon::ranges::data(c));
-	VERIFY(hamon::ranges::cdata(hamon::move(c)) == hamon::ranges::begin(c));
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+
+	// const& にキャストされてdataを呼び出す
+	VERIFY(hamon::ranges::cdata(r) != r.data());
+	VERIFY(hamon::ranges::cdata(r) == cr.data());
+	VERIFY(hamon::ranges::cdata(cr) != r.data());
+	VERIFY(hamon::ranges::cdata(cr) == cr.data());
 
 	return true;
 }
 
-GTEST_TEST(RangesTest, CDataTest)
+HAMON_CXX14_CONSTEXPR bool test04()
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	R2 r;
+	R2 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+
+	// R2がconstant_rangeでないので、
+	// 非const版の結果をconstポインタに変換する。
+	VERIFY(hamon::ranges::cdata(r) == r.data());
+	VERIFY(hamon::ranges::cdata(r) != cr.data());
+	VERIFY(hamon::ranges::cdata(cr) != r.data());
+	VERIFY(hamon::ranges::cdata(cr) == cr.data());
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test05()
+{
+	R3 r;
+	R3 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+
+	// dataメンバ関数を持たないのでto_address(ranges::begin(r))を呼び出す
+	VERIFY(hamon::ranges::cdata(r) != r.begin());
+	VERIFY(hamon::ranges::cdata(r) == cr.begin());
+	VERIFY(hamon::ranges::cdata(cr) != r.begin());
+	VERIFY(hamon::ranges::cdata(cr) == cr.begin());
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test06()
+{
+	R4 r;
+	R4 const& cr = r;
+
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+
+	// dataメンバ関数を持たないのでto_address(ranges::begin(r))を呼び出す
+	// R4がconstant_rangeでないので、
+	// 非const版の結果をconstポインタに変換する。
+	VERIFY(hamon::ranges::cdata(r) == r.begin());
+	VERIFY(hamon::ranges::cdata(r) != cr.begin());
+	VERIFY(hamon::ranges::cdata(cr) != r.begin());
+	VERIFY(hamon::ranges::cdata(cr) == cr.begin());
+
+	return true;
 }
 
 #undef VERIFY
+
+GTEST_TEST(RangesTest, CDataTest)
+{
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test06());
+}
 
 }	// namespace cdata_test
 
