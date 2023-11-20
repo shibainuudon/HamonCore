@@ -16,6 +16,7 @@
 
 #if defined(__cpp_lib_span) && (__cpp_lib_span >= 202002) && \
 	defined(__cpp_lib_concepts) && (__cpp_lib_concepts >= 202002) && \
+	defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L) && \
 	defined(HAMON_USE_STD_RANGES)
 #  define HAMON_USE_STD_SPAN
 #endif

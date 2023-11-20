@@ -27,6 +27,7 @@ using std::dynamic_extent;
 namespace hamon
 {
 
+// [span.syn]
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR hamon::size_t
 dynamic_extent = hamon::numeric_limits<hamon::size_t>::max();
 

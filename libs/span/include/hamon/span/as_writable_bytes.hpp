@@ -30,6 +30,7 @@ using std::as_writable_bytes;
 namespace hamon
 {
 
+// [span.objectrep]
 template <typename T, hamon::size_t Extent, typename = hamon::enable_if_t<!hamon::is_const<T>::value>>
 inline span<hamon::byte, detail::as_bytes_extent<T, Extent>::value>
 as_writable_bytes(span<T, Extent> s) HAMON_NOEXCEPT

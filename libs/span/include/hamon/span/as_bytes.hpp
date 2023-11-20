@@ -28,6 +28,7 @@ using std::as_bytes;
 namespace hamon
 {
 
+// [span.objectrep]
 template <typename T, hamon::size_t Extent>
 inline span<hamon::byte const, detail::as_bytes_extent<T, Extent>::value>
 as_bytes(span<T, Extent> s) HAMON_NOEXCEPT

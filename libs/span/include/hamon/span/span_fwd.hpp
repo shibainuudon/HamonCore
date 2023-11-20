@@ -26,7 +26,8 @@ using std::span;
 namespace hamon
 {
 
-template <typename T, hamon::size_t Extent = hamon::dynamic_extent>
+// [span.syn]
+template <typename ElementType, hamon::size_t Extent = hamon::dynamic_extent>
 class span;
 
 }	// namespace hamon

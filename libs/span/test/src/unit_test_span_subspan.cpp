@@ -37,8 +37,10 @@ HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 template <hamon::size_t Offset, hamon::size_t Count, typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 {
+#if !defined(HAMON_USE_STD_SPAN)
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.template subspan<Offset, Count>());
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.subspan(Offset, Count));
+#endif
 	return test1_sub<Offset, Count, Span>(sp.template subspan<Offset, Count>(), sp.subspan(Offset, Count));
 }
 
@@ -67,8 +69,10 @@ HAMON_CXX11_CONSTEXPR bool test1_sub(S1 s1, S2 s2)
 template <hamon::size_t Offset, typename Span>
 HAMON_CXX11_CONSTEXPR bool test1(Span sp)
 {
+#if !defined(HAMON_USE_STD_SPAN)
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.template subspan<Offset>());
 	HAMON_ASSERT_NOEXCEPT_TRUE(sp.subspan(Offset));
+#endif
 	return test1_sub<Offset, Span>(sp.template subspan<Offset>(), sp.subspan(Offset));
 }
 
