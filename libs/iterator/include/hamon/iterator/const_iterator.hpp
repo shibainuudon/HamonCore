@@ -7,9 +7,9 @@
 #ifndef HAMON_ITERATOR_CONST_ITERATOR_HPP
 #define HAMON_ITERATOR_CONST_ITERATOR_HPP
 
-#include <hamon/iterator/basic_const_iterator.hpp>
+#include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_BASIC_CONST_ITERATOR)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
 namespace hamon
 {
@@ -20,6 +20,7 @@ using std::const_iterator;
 
 #else
 
+#include <hamon/iterator/basic_const_iterator.hpp>
 #include <hamon/iterator/detail/constant_iterator.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>

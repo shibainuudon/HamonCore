@@ -13,9 +13,9 @@
 #  include <ranges>
 #endif
 
-#if     (defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202110)) \
-	&& !(defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE <= 13))    /* libcstdc++ の enable_view は参照型でもtrueになってしまう */	\
-	&& !(defined(_MSVC_STL_VERSION) && (_MSVC_STL_VERSION <= 142)) /* MSVC STL の enable_view は参照型でもtrueになってしまう */
+#if (defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202110)) && \
+	(defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)) && \
+	!(defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE <= 13))    /* libcstdc++ の enable_view は参照型でもtrueになってしまう */
 
 #  define HAMON_USE_STD_RANGES
 

@@ -10,8 +10,7 @@
 #include <hamon/ranges/config.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 
-#if defined(HAMON_USE_STD_RANGES) && defined(HAMON_USE_STD_REVERSE_ITERATOR) &&	\
-	defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)
+#if defined(HAMON_USE_STD_RANGES) && defined(HAMON_USE_STD_REVERSE_ITERATOR)
 
 namespace hamon {
 namespace ranges {

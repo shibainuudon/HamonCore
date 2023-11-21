@@ -7,9 +7,9 @@
 #ifndef HAMON_ITERATOR_CONST_SENTINEL_HPP
 #define HAMON_ITERATOR_CONST_SENTINEL_HPP
 
-#include <hamon/iterator/basic_const_iterator.hpp>
+#include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_BASIC_CONST_ITERATOR)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
 namespace hamon
 {

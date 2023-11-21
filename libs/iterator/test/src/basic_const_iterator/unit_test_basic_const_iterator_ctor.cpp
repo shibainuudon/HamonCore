@@ -104,7 +104,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	// Microsoft-STLのbasic_const_iteratorは、
 	// basic_const_iterator<It2>をfriend指定していないので以下のコードがエラーになる
-#if defined(HAMON_STDLIB_DINKUMWARE) && !defined(HAMON_USE_STD_BASIC_CONST_ITERATOR)
+#if defined(HAMON_STDLIB_DINKUMWARE) && !defined(HAMON_USE_STD_RANGES_ITERATOR)
 	{
 		int a[3] = {1, 2, 3};
 		hamon::basic_const_iterator<int*> ci1{a};

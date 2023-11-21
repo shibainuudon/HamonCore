@@ -9,7 +9,7 @@
 
 #include <hamon/iterator/config.hpp>
 
-#if defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
 namespace hamon
 {
