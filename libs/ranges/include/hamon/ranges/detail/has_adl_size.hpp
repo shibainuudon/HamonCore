@@ -24,8 +24,7 @@ namespace ranges {
 namespace detail {
 
 #if (defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 120000) && defined(HAMON_HAS_CXX20_CONCEPTS)) || \
-    (defined(HAMON_CLANG_VERSION)) || \
-    (defined(HAMON_MSVC) && (HAMON_MSVC >= 1930) && defined(HAMON_HAS_CXX20_CONCEPTS))
+    (defined(HAMON_CLANG_VERSION))
 void size() = delete;
 #else
 void size();
