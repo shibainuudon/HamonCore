@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/make_const_iterator.hpp>
+#include <hamon/iterator/basic_const_iterator.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
 #include <vector>
