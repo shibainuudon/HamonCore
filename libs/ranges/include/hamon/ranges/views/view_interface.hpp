@@ -23,31 +23,36 @@ using std::ranges::view_interface;
 #else
 
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/cbegin.hpp>
+#include <hamon/ranges/cend.hpp>
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/ranges/size.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/concepts/range.hpp>
-#include <hamon/ranges/concepts/view.hpp>
-#include <hamon/concepts/derived_from.hpp>
+#include <hamon/ranges/concepts/sized_range.hpp>
+#include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/iterator/ranges/prev.hpp>
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
+#include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_class.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
-#include <hamon/config.hpp>
 #include <hamon/assert.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -57,14 +62,6 @@ namespace ranges
 namespace detail
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename T>
-concept ranges_empty_invocable =
-	requires { hamon::ranges::empty(hamon::declval<T>()); };
-
-#else
-
 template <typename T>
 using ranges_empty_invocable_impl =
 	decltype(hamon::ranges::empty(hamon::declval<T>()));
@@ -73,197 +70,221 @@ template <typename T>
 using ranges_empty_invocable =
 	hamon::is_detected<ranges_empty_invocable_impl, T>;
 
-#endif
-
 }	// namespace detail
 
-template <
-	typename Derived
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, typename
-#endif
->
+// [view.interface.general]
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires hamon::is_class<Derived>::value && hamon::same_as<Derived, hamon::remove_cv_t<Derived>>
+template <typename D>
+requires hamon::is_class<D>::value && hamon::same_as<D, hamon::remove_cv_t<D>>
+#else
+template <typename D, typename>
 #endif
 class view_interface
 {
 private:
-	template <typename D>
-	HAMON_CXX14_CONSTEXPR D& derived() HAMON_NOEXCEPT
+	HAMON_CXX14_CONSTEXPR D& derived() noexcept
 	{
-		static_assert(hamon::derived_from_t<hamon::remove_cv_t<D>, view_interface<Derived>>::value, "");
-		static_assert(ranges::view_t<hamon::remove_cv_t<D>>::value, "");
 		return static_cast<D&>(*this);
 	}
 
-	template <typename D>
-	HAMON_CXX11_CONSTEXPR D& derived() const HAMON_NOEXCEPT
+	HAMON_CXX11_CONSTEXPR D const& derived() const noexcept
 	{
-		static_assert(hamon::derived_from_t<hamon::remove_cv_t<D>, view_interface<Derived>>::value, "");
-		static_assert(ranges::view_t<hamon::remove_cv_t<D>>::value, "");
-		return static_cast<D&>(*this);
+		return static_cast<D const&>(*this);
 	}
 
-	template <typename T>
-	static constexpr bool
-	s_empty(T& t)
-	HAMON_NOEXCEPT_IF_EXPR(bool(ranges::begin(t) == ranges::end(t)))
+	template <typename R,
+		typename = hamon::enable_if_t<ranges::sized_range_t<R>::value>>
+	static HAMON_CXX11_CONSTEXPR bool
+	empry_impl(R& r, hamon::detail::overload_priority<1>)
+	HAMON_NOEXCEPT_IF_EXPR(ranges::size(r) == 0)
 	{
-		return ranges::begin(t) == ranges::end(t);
+		return ranges::size(r) == 0;
 	}
 
-	template <typename T>
-	static constexpr auto
-	s_data(T& t)
-	HAMON_NOEXCEPT_IF_EXPR(hamon::to_address(ranges::begin(t)))
-	->decltype(hamon::to_address(ranges::begin(t)))
+	template <typename R>
+	static HAMON_CXX11_CONSTEXPR bool
+	empry_impl(R& r, hamon::detail::overload_priority<0>)
+	HAMON_NOEXCEPT_IF_EXPR(bool(ranges::begin(r) == ranges::end(r)))
 	{
-		return hamon::to_address(ranges::begin(t));
-	}
-
-	template <typename T>
-	static constexpr auto
-	s_size(T& t)
-	HAMON_NOEXCEPT_IF_EXPR(ranges::end(t) - ranges::begin(t))
-	->decltype(ranges::end(t) - ranges::begin(t))
-	{
-		return ranges::end(t) - ranges::begin(t);
+		return ranges::begin(r) == ranges::end(r);
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived)>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool empty()
-	HAMON_NOEXCEPT_IF_EXPR(s_empty(derived<D>()))
+	template <typename R = D,
+		typename = hamon::enable_if_t<
+			ranges::sized_range_t<R>::value ||
+			ranges::forward_range_t<R>::value>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool	// nodiscard as an extension
+	empty()
+	HAMON_NOEXCEPT_IF_EXPR(empry_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	{
-		return s_empty(derived<D>());
+		return empry_impl(derived(), hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived const)>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool empty() const
-	HAMON_NOEXCEPT_IF_EXPR(s_empty(derived<D>()))
+	template <typename R = D const,
+		typename = hamon::enable_if_t<
+			ranges::sized_range_t<R>::value ||
+			ranges::forward_range_t<R>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
+	empty() const
+	HAMON_NOEXCEPT_IF_EXPR(empry_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	{
-		return s_empty(derived<D>());
+		return empry_impl(derived(), hamon::detail::overload_priority<1>{});
 	}
 
-	template <typename D = Derived
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<detail::ranges_empty_invocable<D&>::value>
-#endif
-	>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR explicit operator bool()
-	HAMON_NOEXCEPT_IF_EXPR(ranges::empty(derived<D>()))
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires detail::ranges_empty_invocable<D&>
-#endif
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	cbegin()
+	HAMON_NOEXCEPT_IF_EXPR(ranges::cbegin(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype(ranges::cbegin(hamon::declval<R&>()))
 	{
-		return !ranges::empty(derived<D>());
+		return ranges::cbegin(derived());
 	}
 
-	template <typename D = Derived const
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<detail::ranges_empty_invocable<D&>::value>
-#endif
-	>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR explicit operator bool() const
-	HAMON_NOEXCEPT_IF_EXPR(ranges::empty(derived<D>()))
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	requires detail::ranges_empty_invocable<D&>
-#endif
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	cbegin() const
+	HAMON_NOEXCEPT_IF_EXPR(ranges::cbegin(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype(ranges::cbegin(hamon::declval<R&>()))
 	{
-		return !ranges::empty(derived<D>());
+		return ranges::cbegin(derived());
+	}
+	
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	cend()
+	HAMON_NOEXCEPT_IF_EXPR(ranges::cend(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype(ranges::cend(hamon::declval<R&>()))
+	{
+		return ranges::cend(derived());
+	}
+	
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	cend() const
+	HAMON_NOEXCEPT_IF_EXPR(ranges::cend(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype(ranges::cend(hamon::declval<R&>()))
+	{
+		return ranges::cend(derived());
 	}
 
-	template <typename D = Derived,
-		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<D>>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto data()
-	HAMON_NOEXCEPT_IF_EXPR(s_data(derived<D>()))
-	->decltype(s_data(derived<D>()))
+	template <typename R = D,
+		typename = hamon::enable_if_t<detail::ranges_empty_invocable<R&>::value>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR explicit	// nodiscard as an extension
+	operator bool()
+	HAMON_NOEXCEPT_IF_EXPR(ranges::empty(hamon::declval<R&>()))	// noexcept as an extension
 	{
-		return s_data(derived<D>());
+		return !ranges::empty(derived());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, D, Derived const),
-		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<D>>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto data() const
-	HAMON_NOEXCEPT_IF_EXPR(s_data(derived<D>()))
-	->decltype(s_data(derived<D>()))
+	template <typename R = D const,
+		typename = hamon::enable_if_t<detail::ranges_empty_invocable<R&>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR explicit	// nodiscard as an extension
+	operator bool() const
+	HAMON_NOEXCEPT_IF_EXPR(ranges::empty(hamon::declval<R&>()))	// noexcept as an extension
 	{
-		return s_data(derived<D>());
+		return !ranges::empty(derived());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived),
-		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<ranges::sentinel_t<D>, ranges::iterator_t<D>>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto size()
-	HAMON_NOEXCEPT_IF_EXPR(s_size(derived<D>()))
-	->decltype(s_size(derived<D>()))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D),
+		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<R>>::value>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	data()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::to_address(ranges::begin(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype(hamon::to_address(ranges::begin(hamon::declval<R&>())))
 	{
-		return s_size(derived<D>());
+		return hamon::to_address(ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived const),
-		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<ranges::sentinel_t<D>, ranges::iterator_t<D>>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto size() const
-	HAMON_NOEXCEPT_IF_EXPR(s_size(derived<D>()))
-	->decltype(s_size(derived<D>()))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D const),
+		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<R>>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	data() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::to_address(ranges::begin(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype(hamon::to_address(ranges::begin(hamon::declval<R&>())))
 	{
-		return s_size(derived<D>());
+		return hamon::to_address(ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived)>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto front()
-	->decltype((*ranges::begin(derived<D>())))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D),
+		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<ranges::sentinel_t<R>, ranges::iterator_t<R>>::value>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	size()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::detail::to_unsigned_like(ranges::end(hamon::declval<R&>()) - ranges::begin(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype(hamon::ranges::detail::to_unsigned_like(ranges::end(hamon::declval<R&>()) - ranges::begin(hamon::declval<R&>())))
 	{
-		return HAMON_ASSERT(!empty()),
-			*ranges::begin(derived<D>());
+		return hamon::ranges::detail::to_unsigned_like(ranges::end(derived()) - ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, D, Derived const)>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto front() const
-	->decltype((*ranges::begin(derived<D>())))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D const),
+		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<ranges::sentinel_t<R>, ranges::iterator_t<R>>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	size() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::detail::to_unsigned_like(ranges::end(hamon::declval<R&>()) - ranges::begin(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype(hamon::ranges::detail::to_unsigned_like(ranges::end(hamon::declval<R&>()) - ranges::begin(hamon::declval<R&>())))
 	{
-		return HAMON_ASSERT(!empty()),
-			*ranges::begin(derived<D>());
+		return hamon::ranges::detail::to_unsigned_like(ranges::end(derived()) - ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, D, Derived),
-		typename = hamon::enable_if_t<ranges::common_range_t<D>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto back()
-	->decltype((*ranges::prev(ranges::end(derived<D>()))))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	front()
+	HAMON_NOEXCEPT_IF_EXPR(*ranges::begin(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype((*ranges::begin(hamon::declval<R&>())))
 	{
-		return HAMON_ASSERT(!empty()),
-			*ranges::prev(ranges::end(derived<D>()));
+		return HAMON_ASSERT(!empty()),	// [view.interface.members]/1
+			*ranges::begin(derived());	// [view.interface.members]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, D, Derived const),
-		typename = hamon::enable_if_t<ranges::common_range_t<D>::value>
-	>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto back() const
-	->decltype((*ranges::prev(ranges::end(derived<D>()))))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	front() const
+	HAMON_NOEXCEPT_IF_EXPR(*ranges::begin(hamon::declval<R&>()))	// noexcept as an extension
+	->decltype((*ranges::begin(hamon::declval<R&>())))
 	{
-		return HAMON_ASSERT(!empty()),
-			*ranges::prev(ranges::end(derived<D>()));
+		return HAMON_ASSERT(!empty()),	// [view.interface.members]/1
+			*ranges::begin(derived());	// [view.interface.members]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, D, Derived)>
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto
-	operator[](ranges::range_difference_t<D> n)
-	->decltype((ranges::begin(derived<D>())[n]))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, R, D),
+		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	back()
+	HAMON_NOEXCEPT_IF_EXPR(*ranges::prev(ranges::end(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype((*ranges::prev(ranges::end(hamon::declval<R&>()))))
 	{
-		return ranges::begin(derived<D>())[n];
+		return HAMON_ASSERT(!empty()),				// [view.interface.members]/3
+			*ranges::prev(ranges::end(derived()));	// [view.interface.members]/4
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, D, Derived const)>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
-	operator[](ranges::range_difference_t<D> n) const
-	->decltype((ranges::begin(derived<D>())[n]))
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, R, D const),
+		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	back() const
+	HAMON_NOEXCEPT_IF_EXPR(*ranges::prev(ranges::end(hamon::declval<R&>())))	// noexcept as an extension
+	->decltype((*ranges::prev(ranges::end(hamon::declval<R&>()))))
 	{
-		return ranges::begin(derived<D>())[n];
+		return HAMON_ASSERT(!empty()),				// [view.interface.members]/3
+			*ranges::prev(ranges::end(derived()));	// [view.interface.members]/4
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, R, D)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
+	operator[](ranges::range_difference_t<R> n)
+	HAMON_NOEXCEPT_IF_EXPR(ranges::begin(hamon::declval<R&>())[n])	// noexcept as an extension
+	->decltype((ranges::begin(hamon::declval<R&>())[n]))
+	{
+		return ranges::begin(derived())[n];
+	}
+	
+	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, R, D const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
+	operator[](ranges::range_difference_t<R> n) const
+	HAMON_NOEXCEPT_IF_EXPR(ranges::begin(hamon::declval<R&>())[n])	// noexcept as an extension
+	->decltype((ranges::begin(hamon::declval<R&>())[n]))
+	{
+		return ranges::begin(derived())[n];
 	}
 };
 

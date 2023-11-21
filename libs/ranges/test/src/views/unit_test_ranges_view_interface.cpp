@@ -294,6 +294,33 @@ GTEST_TEST(RangesViewInterfaceTest, EmptyTest)
 	}
 }
 
+HAMON_CXX14_CONSTEXPR bool CBeginCEndTest()
+{
+	{
+		InputRange rng;
+		VERIFY(rng.cbegin() != rng.cend());
+	}
+	{
+		ForwardRange rng;
+		VERIFY(rng.cbegin() != rng.cend());
+	}
+	return true;
+}
+
+GTEST_TEST(RangesViewInterfaceTest, CBeginCEndTest)
+{
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CBeginCEndTest());
+
+	{
+		HAMON_CXX11_CONSTEXPR InputRange const rng;
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(rng.cbegin() != rng.cend());
+	}
+	{
+		HAMON_CXX11_CONSTEXPR ForwardRange const rng;
+		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(rng.cbegin() != rng.cend());
+	}
+}
+
 #if 0
 template <typename T>
 concept DataInvocable = requires (T const& obj) { obj.data(); };
