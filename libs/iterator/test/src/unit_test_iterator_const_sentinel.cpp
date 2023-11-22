@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/const_sentinel.hpp>
+#include <hamon/iterator/basic_const_iterator.hpp>
 #include <hamon/iterator/default_sentinel.hpp>
 #include <hamon/iterator/unreachable_sentinel.hpp>
 #include <hamon/type_traits/is_same.hpp>
