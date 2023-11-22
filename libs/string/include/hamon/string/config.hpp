@@ -19,14 +19,16 @@
 #  define HAMON_USE_STD_CHAR_TRAITS
 #endif
 
-#if	defined(__cpp_lib_string_udls)           && (__cpp_lib_string_udls           >= 201304) &&	\
-	defined(__cpp_lib_starts_ends_with)      && (__cpp_lib_starts_ends_with      >= 201711) &&	\
-	defined(__cpp_lib_string_view)           && (__cpp_lib_string_view           >= 201803) &&	\
-	defined(__cpp_lib_constexpr_string)      && (__cpp_lib_constexpr_string      >= 201907) &&	\
-	defined(__cpp_lib_three_way_comparison)  && (__cpp_lib_three_way_comparison  >= 201907) &&	\
-	defined(__cpp_lib_char8_t)               && (__cpp_lib_char8_t               >= 201907) &&	\
-	defined(__cpp_lib_erase_if)              && (__cpp_lib_erase_if              >= 202002) &&	\
-	defined(__cpp_lib_string_contains)       && (__cpp_lib_string_contains       >= 202011)
+#if	defined(__cpp_lib_string_udls)                 && (__cpp_lib_string_udls                 >= 201304) &&	\
+	defined(__cpp_lib_starts_ends_with)            && (__cpp_lib_starts_ends_with            >= 201711) &&	\
+	defined(__cpp_lib_string_view)                 && (__cpp_lib_string_view                 >= 201803) &&	\
+	defined(__cpp_lib_constexpr_string)            && (__cpp_lib_constexpr_string            >= 201907) &&	\
+	defined(__cpp_lib_three_way_comparison)        && (__cpp_lib_three_way_comparison        >= 201907) &&	\
+	defined(__cpp_lib_char8_t)                     && (__cpp_lib_char8_t                     >= 201907) &&	\
+	defined(__cpp_lib_erase_if)                    && (__cpp_lib_erase_if                    >= 202002) &&	\
+	defined(__cpp_lib_string_contains)             && (__cpp_lib_string_contains             >= 202011) &&	\
+	defined(__cpp_lib_string_resize_and_overwrite) && (__cpp_lib_string_resize_and_overwrite >= 202110) &&	\
+	defined(__cpp_lib_containers_ranges)           && (__cpp_lib_containers_ranges           >= 202202)
 #  define HAMON_USE_STD_STRING
 #endif
 
