@@ -22,6 +22,7 @@
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_const_reference_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
