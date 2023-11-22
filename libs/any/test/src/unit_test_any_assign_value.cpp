@@ -8,6 +8,7 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/array.hpp>
 #include <hamon/string.hpp>
