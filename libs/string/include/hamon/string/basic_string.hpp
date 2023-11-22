@@ -35,6 +35,7 @@ using std::basic_string;
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/detail/is_integer_like.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/type_traits.hpp>
@@ -713,12 +714,21 @@ public:
 		resize(n, CharT());
 	}
 
-#if 0
-	// TODO
 	template <typename Operation>
 	HAMON_CXX14_CONSTEXPR void
-	resize_and_overwrite(size_type n, Operation op);
-#endif
+	resize_and_overwrite(size_type n, Operation op)
+	{
+		reserve(n + 1);
+		auto p = data();
+		size_type const m = n;			// [string.capacity]/7.4
+		auto r = hamon::move(op)(p, m);	// [string.capacity]/7.5, 7.6
+		static_assert(hamon::ranges::detail::is_integer_like_t<decltype(r)>::value, "[string.capacity]/8");
+		auto const rr = static_cast<size_type>(r);
+		HAMON_ASSERT(rr >= 0u);	// [string.capacity]/9.2
+		HAMON_ASSERT(rr <= m);	// [string.capacity]/9.3
+		m_rep.SetSize(rr);
+		m_rep.NullTerminate();
+	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR size_type	// nodiscard as an extension
 	capacity() const HAMON_NOEXCEPT
