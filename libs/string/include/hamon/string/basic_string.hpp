@@ -8,6 +8,7 @@
 #define HAMON_STRING_BASIC_STRING_HPP
 
 #include <hamon/string/config.hpp>
+#include <hamon/ranges/from_range_t.hpp>
 
 #if defined(HAMON_USE_STD_STRING)
 
@@ -35,7 +36,10 @@ using std::basic_string;
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/ranges/detail/is_integer_like.hpp>
+#include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/type_traits.hpp>
@@ -461,14 +465,23 @@ public:
 	{
 		auto const size = static_cast<size_type>(hamon::ranges::distance(begin, end));
 		m_rep.Allocate(m_allocator, size + 1);
-		Traits::copy(this->data(), begin, size);
+
+		//Traits::copy(this->data(), begin, size);
+		auto p = m_rep.GetData();
+		for (auto it = begin; it != end; ++it, (void)++p)
+		{
+			Traits::assign(*p, static_cast<CharT>(*it));
+		}
+
 		m_rep.SetSize(size);
 		m_rep.NullTerminate();
 	}
 
-	// TODO
-	//template <container-compatible-range<CharT> R>
-	//HAMON_CXX14_CONSTEXPR basic_string(from_range_t, R&& rg, Allocator const& a = Allocator());
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	HAMON_CXX14_CONSTEXPR
+	basic_string(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
+		: basic_string(hamon::ranges::begin(rg), hamon::ranges::end(rg), a)	// [string.cons]/22
+	{}
 
 	HAMON_CXX14_CONSTEXPR
 	basic_string(std::initializer_list<CharT> il, Allocator const& a = Allocator())

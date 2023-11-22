@@ -29,6 +29,7 @@
  */
 
 #include <hamon/string/basic_string.hpp>
+#include <hamon/ranges/from_range_t.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/move.hpp>
@@ -547,7 +548,24 @@ ConsTest()
 	// template<container-compatible-range<charT> R>
 	// constexpr basic_string(from_range_t, R&& rg, const Allocator& a = Allocator());
 	{
-		// TODO
+		auto const rng = {0x41, 0x42, 0x43};
+		string s(hamon::from_range, rng);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 3);
+		VERIFY(s[0] == 0x41);
+		VERIFY(s[1] == 0x42);
+		VERIFY(s[2] == 0x43);
+	}
+	{
+		CharT const arr[] = {3, 1, 4, 2};
+		Allocator const alloc{};
+		string s(hamon::from_range, arr, alloc);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 4);
+		VERIFY(s[0] == 3);
+		VERIFY(s[1] == 1);
+		VERIFY(s[2] == 4);
+		VERIFY(s[3] == 2);
 	}
 
 	// constexpr basic_string(initializer_list<charT>, const Allocator& = Allocator());
