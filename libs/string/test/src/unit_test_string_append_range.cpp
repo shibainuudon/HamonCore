@@ -26,9 +26,39 @@ template <typename CharT>
 inline HAMON_CXX20_CONSTEXPR bool
 AppendRangeTest()
 {
-	//using string = hamon::basic_string<CharT>;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
 
-	// TODO
+	{
+		string s = Helper::abc();
+		auto const rng = {0x41, 0x42, 0x43};
+		s.append_range(rng);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 6);
+		VERIFY(s[0] == Helper::abc()[0]);
+		VERIFY(s[1] == Helper::abc()[1]);
+		VERIFY(s[2] == Helper::abc()[2]);
+		VERIFY(s[3] == 0x41);
+		VERIFY(s[4] == 0x42);
+		VERIFY(s[5] == 0x43);
+	}
+
+	{
+		string s = Helper::ABCDE();
+		CharT const arr[] = {1, 2, 3, 4};
+		s.append_range(arr);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 9);
+		VERIFY(s[0] == Helper::ABCDE()[0]);
+		VERIFY(s[1] == Helper::ABCDE()[1]);
+		VERIFY(s[2] == Helper::ABCDE()[2]);
+		VERIFY(s[3] == Helper::ABCDE()[3]);
+		VERIFY(s[4] == Helper::ABCDE()[4]);
+		VERIFY(s[5] == 1);
+		VERIFY(s[6] == 2);
+		VERIFY(s[7] == 3);
+		VERIFY(s[8] == 4);
+	}
 
 	return true;
 }

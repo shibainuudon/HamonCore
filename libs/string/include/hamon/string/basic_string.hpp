@@ -1033,16 +1033,13 @@ HAMON_WARNING_POP()
 		return append(il.begin(), il.size());
 	}
 
-#if 0
-	// TODO
-	template <container-compatible-range<CharT> R>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	append_range(R&& rg)
 	{
 		// [string.append]/15
 		return append(basic_string(hamon::from_range, hamon::forward<R>(rg), get_allocator()));
 	}
-#endif
 
 	HAMON_CXX14_CONSTEXPR void
 	push_back(CharT c)
