@@ -1139,16 +1139,13 @@ HAMON_WARNING_POP()
 		return assign(basic_string(first, last, get_allocator()));
 	}
 
-#if 0
-	// TODO
-	template <container-compatible-range<CharT> R>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	assign_range(R&& rg)
 	{
 		// [string.assign]/16
 		return assign(basic_string(hamon::from_range, hamon::forward<R>(rg), get_allocator()));
 	}
-#endif
 
 	// 23.4.3.7.4	[string.insert]
 	HAMON_CXX14_CONSTEXPR basic_string&
