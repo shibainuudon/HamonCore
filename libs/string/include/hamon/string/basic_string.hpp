@@ -1329,19 +1329,17 @@ HAMON_WARNING_POP()
 		return insert(p, il.begin(), il.end());
 	}
 
-#if 0
-	// TODO
-	template <container-compatible-range<CharT> R>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator p, R&& rg)
 	{
 		// [string.insert]/26
-		insert(p - begin(), basic_string(hamon::from_range, hamon::forward<R>(rg), get_allocator()));
+		auto pos = p - begin();
+		insert(static_cast<size_type>(pos), basic_string(hamon::from_range, hamon::forward<R>(rg), get_allocator()));
 
 		// [string.insert]/27
-		// TODO
+		return begin() + pos;
 	}
-#endif
 
 	// 23.4.3.7.5	[string.erase]
 	HAMON_CXX14_CONSTEXPR basic_string&
