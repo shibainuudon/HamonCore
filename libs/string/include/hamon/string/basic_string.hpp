@@ -1574,16 +1574,13 @@ HAMON_WARNING_POP()
 		return replace(i1, i2, il.begin(), il.size());
 	}
 
-#if 0
-	// TODO
-	template <container-compatible-range<CharT> R>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	replace_with_range(const_iterator i1, const_iterator i2, R&& rg)
 	{
 		// [string.replace]/25
 		return replace(i1, i2, basic_string(hamon::from_range, hamon::forward<R>(rg), get_allocator()));
 	}
-#endif
 
 	// 23.4.3.7.7	[string.copy]
 	HAMON_CXX11_CONSTEXPR size_type

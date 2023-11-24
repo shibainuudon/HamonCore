@@ -26,9 +26,34 @@ template <typename CharT>
 inline HAMON_CXX20_CONSTEXPR bool
 ReplaceWithRangeTest()
 {
-	//using string = hamon::basic_string<CharT>;
+	using string = hamon::basic_string<CharT>;
+	using Helper = StringTestHelper<CharT>;
 
-	// TODO
+	{
+		string s = Helper::abc();
+		auto const rng = {0x41, 0x42, 0x43};
+		auto& r = s.replace_with_range(s.begin(), s.end(), rng);
+		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 3);
+		VERIFY(s[0] == 0x41);
+		VERIFY(s[1] == 0x42);
+		VERIFY(s[2] == 0x43);
+	}
+	{
+		string s = Helper::abcde();
+		CharT const arr[] = {1, 2, 3};
+		auto& r = s.replace_with_range(s.begin() + 1, s.begin() + 3, arr);
+		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 6);
+		VERIFY(s[0] == Helper::abcde()[0]);
+		VERIFY(s[1] == 1);
+		VERIFY(s[2] == 2);
+		VERIFY(s[3] == 3);
+		VERIFY(s[4] == Helper::abcde()[3]);
+		VERIFY(s[5] == Helper::abcde()[4]);
+	}
 
 	return true;
 }
