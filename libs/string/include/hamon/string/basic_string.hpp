@@ -2098,10 +2098,8 @@ template <
 basic_string(InputIterator, InputIterator, Allocator = Allocator())
 	-> basic_string<CharT, hamon::char_traits<CharT>, Allocator>;
 
-// TODO
-#if 0
 template <
-	ranges::input_range R,
+	HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
 	typename Allocator = std::allocator<ranges::range_value_t<R>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value
@@ -2109,7 +2107,6 @@ template <
 >
 basic_string(hamon::from_range_t, R&&, Allocator = Allocator())
 	-> basic_string<ranges::range_value_t<R>, hamon::char_traits<ranges::range_value_t<R>>, Allocator>;
-#endif
 
 template <
 	typename CharT,
