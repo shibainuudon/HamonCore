@@ -90,6 +90,17 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<Implicit, NoThrow,  
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<int,      Implicit, NoThrow>,  int, int, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<int,      NoThrow,  Implicit>, int, int, int>::value, "");
 
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+static_assert( hamon::is_constructible<hamon::tuple<hamon::string>, const char*>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<hamon::string const&>, const char*>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<hamon::string const&>, hamon::string>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<int>, long>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int const&>, long>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<int const&>, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int const&, int>, long, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int, int const&>, int, long>::value, "");
+#endif
+
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
 

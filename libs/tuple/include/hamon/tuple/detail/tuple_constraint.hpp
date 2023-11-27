@@ -131,16 +131,6 @@ private:
 	template <bool, typename... UTypes>
 	struct UTypesCtorImpl
 	{
-		// [tuple.cnstr]/15
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-		static const bool reference_from_temporary =
-			hamon::disjunction<
-				hamon::reference_constructs_from_temporary<Types, UTypes&&>...
-			>::value;
-#else
-		static const bool reference_from_temporary = false;
-#endif
-
 		// [tuple.cnstr]/13
 		static const bool constructible =
 			hamon::conjunction<
@@ -150,8 +140,17 @@ private:
 					sizeof...(Types)
 				>,
 				hamon::is_constructible<Types, UTypes>...	// [tuple.cnstr]/13.3
-			>::value
-			&& !reference_from_temporary;					// [tuple.cnstr]/15
+			>::value;
+
+		// [tuple.cnstr]/15
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+		static const bool dangles =
+			hamon::disjunction<
+				hamon::reference_constructs_from_temporary<Types, UTypes&&>...
+			>::value;
+#else
+		static const bool dangles = false;
+#endif
 
 		// [tuple.cnstr]/15
 		static const bool implicitly =
@@ -170,6 +169,7 @@ private:
 	struct UTypesCtorImpl<false, UTypes...>
 	{
 		static const bool constructible = false;
+		static const bool dangles = false;
 		static const bool implicitly = false;
 		static const bool nothrow = false;
 	};
@@ -186,18 +186,6 @@ private:
 	template <bool, typename UTuple, typename... UTypes>
 	struct UTupleCtorImpl
 	{
-		// [tuple.cnstr]/23
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-		static const bool reference_from_temporary =
-			hamon::disjunction<
-				hamon::reference_constructs_from_temporary<
-					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
-				>...
-			>::value;
-#else
-		static const bool reference_from_temporary = false;
-#endif
-
 		// [tuple.cnstr]/21
 		static const bool constructible =
 			hamon::conjunction<
@@ -214,8 +202,19 @@ private:
 						hamon::negation<hamon::is_same<Types, UTypes>>...
 					>
 				>
-			>::value
-			&& !reference_from_temporary;	// [tuple.cnstr]/23
+			>::value;
+
+		// [tuple.cnstr]/23
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+		static const bool dangles =
+			hamon::disjunction<
+				hamon::reference_constructs_from_temporary<
+					Types, decltype(hamon::adl_get<Is>(hamon::declval<UTuple>()))
+				>...
+			>::value;
+#else
+		static const bool dangles = false;
+#endif
 
 		// [tuple.cnstr]/23
 		static const bool implicitly =
@@ -238,6 +237,7 @@ private:
 	struct UTupleCtorImpl<false, UTuple, UTypes...>
 	{
 		static const bool constructible = false;
+		static const bool dangles = false;
 		static const bool implicitly = false;
 		static const bool nothrow = false;
 	};
@@ -316,24 +316,23 @@ private:
 		using U1 = decltype(hamon::adl_get<1>(hamon::declval<Pair>()));
 
 	public:
-		// [tuple.cnstr]/27
-#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
-		static const bool reference_from_temporary =
-			hamon::disjunction<
-				hamon::reference_constructs_from_temporary<T0, U0>,
-				hamon::reference_constructs_from_temporary<T1, U1>
-			>::value;
-#else
-		static const bool reference_from_temporary = false;
-#endif
-
 		// [tuple.cnstr]/25
 		static const bool constructible =
 			hamon::conjunction<
 				hamon::is_constructible<T0, U0>,	// [tuple.cnstr]/25.2
 				hamon::is_constructible<T1, U1>		// [tuple.cnstr]/25.3
-			>::value
-			&& !reference_from_temporary;			// [tuple.cnstr]/27
+			>::value;
+
+		// [tuple.cnstr]/27
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+		static const bool dangles =
+			hamon::disjunction<
+				hamon::reference_constructs_from_temporary<T0, U0>,
+				hamon::reference_constructs_from_temporary<T1, U1>
+			>::value;
+#else
+		static const bool dangles = false;
+#endif
 
 		// [tuple.cnstr]/27
 		static const bool implicitly =
@@ -354,6 +353,7 @@ private:
 	struct PairCtorImpl<false, Pair>
 	{
 		static const bool constructible = false;
+		static const bool dangles = false;
 		static const bool implicitly = false;
 		static const bool nothrow = false;
 	};

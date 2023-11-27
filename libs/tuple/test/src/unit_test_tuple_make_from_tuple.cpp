@@ -47,6 +47,19 @@ GTEST_TEST(TupleTest, MakeFromTupleTest)
 {
 	{
 		auto t = hamon::make_tuple(42);
+		auto s = hamon::make_from_tuple<long>(t);
+		EXPECT_EQ(42, s);
+	}
+#if 0
+	// P2255R2
+	{
+		auto t = hamon::make_tuple(42);
+		auto s = hamon::make_from_tuple<long const&>(t);	// ill-formed since C++23
+		EXPECT_EQ(42, s);
+	}
+#endif
+	{
+		auto t = hamon::make_tuple(42);
 		auto s = hamon::make_from_tuple<S1>(t);
 		EXPECT_EQ(42, s.i);
 		EXPECT_EQ(2.0f, s.f);

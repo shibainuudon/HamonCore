@@ -76,6 +76,14 @@ static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow>, 
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow>,  hamon::tuple<int, int> const&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::tuple<NoThrow,  NoThrow>,  hamon::tuple<int, int> const&&>::value, "");
 
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+static_assert( hamon::is_constructible<hamon::tuple<int>, hamon::tuple<long> &&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int const&>, hamon::tuple<long> &&>::value, "");
+static_assert( hamon::is_constructible<hamon::tuple<int const&>, hamon::tuple<int> &&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int const&, int>, hamon::tuple<long, int> &&>::value, "");
+static_assert(!hamon::is_constructible<hamon::tuple<int, int const&>, hamon::tuple<int, long> &&>::value, "");
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 inline HAMON_CXX14_CONSTEXPR bool test()

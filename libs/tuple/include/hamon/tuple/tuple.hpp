@@ -133,92 +133,162 @@ public:
 
 	// tuple(UTypes&&... args)
 	template <typename... UTypes,
-		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr>
+		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr,
+		hamon::enable_if_t<!UTypesCtor<UTypes...>::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!UTypesCtor<UTypes...>::implicitly)
 	tuple(UTypes&&... args)
 	HAMON_NOEXCEPT_IF((UTypesCtor<UTypes...>::nothrow))
 		: m_impl(tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
 	{}
 
+	template <typename... UTypes,
+		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr,
+		hamon::enable_if_t<UTypesCtor<UTypes...>::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!UTypesCtor<UTypes...>::implicitly)
+	tuple(UTypes&&...) = delete;
+
 	// tuple(tuple<UTypes...>& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&, UTypes...>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...>&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(tuple<UTypes...>&) = delete;
 
 	// tuple(tuple<UTypes...> const& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&, UTypes...>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...> const&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(tuple<UTypes...> const&) = delete;
+
 	// tuple(tuple<UTypes...>&& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&&, UTypes...>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...>&&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(tuple<UTypes...>&&) = delete;
+
 	// tuple(tuple<UTypes...> const&& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&&, UTypes...>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(tuple<UTypes...> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...> const&&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(tuple<UTypes...> const&&) = delete;
+
 	// tuple(pair<U1, U2>& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(pair<U1, U2>&) = delete;
+
 	// tuple(pair<U1, U2> const& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2> const& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(pair<U1, U2> const&) = delete;
+
 	// tuple(pair<U1, U2>&& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(pair<U1, U2>&&) = delete;
+
 	// tuple(pair<U1, U2> const&& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	tuple(pair<U1, U2> const&&) = delete;
 
 	// tuple(UTuple&& u)
 	template <typename UTuple,
@@ -415,6 +485,7 @@ public:
 	// tuple(UTypes&&... args)
 	template <typename... UTypes,
 		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr,
+		hamon::enable_if_t<!UTypesCtor<UTypes...>::dangles>* = nullptr,
 		hamon::enable_if_t<!UTypesCtor<UTypes...>::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(UTypes&&... args)
@@ -424,6 +495,7 @@ public:
 
 	template <typename... UTypes,
 		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr,
+		hamon::enable_if_t<!UTypesCtor<UTypes...>::dangles>* = nullptr,
 		hamon::enable_if_t<UTypesCtor<UTypes...>::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(UTypes&&... args)
@@ -431,10 +503,17 @@ public:
 		: m_impl(tuple_detail::ctor_from_elems_tag{}, hamon::forward<UTypes>(args)...)
 	{}
 
+	template <typename... UTypes,
+		hamon::enable_if_t<UTypesCtor<UTypes...>::constructible>* = nullptr,
+		hamon::enable_if_t<UTypesCtor<UTypes...>::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(UTypes&&...) = delete;
+
 	// tuple(tuple<UTypes...>& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>& u)
@@ -445,17 +524,26 @@ public:
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
+
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...>&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(tuple<UTypes...>&) = delete;
 
 	// tuple(tuple<UTypes...> const& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const& u)
@@ -466,6 +554,7 @@ public:
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const& u)
@@ -473,10 +562,18 @@ public:
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...> const&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(tuple<UTypes...> const&) = delete;
+
 	// tuple(tuple<UTypes...>&& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>&& u)
@@ -487,17 +584,26 @@ public:
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...>&&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
+
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...>&&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(tuple<UTypes...>&&) = delete;
 
 	// tuple(tuple<UTypes...> const&& u)
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const&& u)
@@ -508,6 +614,7 @@ public:
 	template <typename... UTypes,
 		typename Constraint = UTupleCtor<tuple<UTypes...> const&&, UTypes...>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(tuple<UTypes...> const&& u)
@@ -515,10 +622,18 @@ public:
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
 
+	template <typename... UTypes,
+		typename Constraint = UTupleCtor<tuple<UTypes...> const&&, UTypes...>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(tuple<UTypes...> const&&) = delete;
+
 	// tuple(pair<U1, U2>& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>& u)
@@ -529,17 +644,26 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(pair<U1, U2>&) = delete;
 
 	// tuple(pair<U1, U2> const& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const& u)
@@ -550,6 +674,7 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const& u)
@@ -557,10 +682,18 @@ public:
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, u)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(pair<U1, U2> const&) = delete;
+
 	// tuple(pair<U1, U2>&& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>&& u)
@@ -571,17 +704,26 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2>&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2>&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(pair<U1, U2>&&) = delete;
 
 	// tuple(pair<U1, U2> const&& u)
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const&& u)
@@ -592,12 +734,20 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = PairCtor<pair<U1, U2> const&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	tuple(pair<U1, U2> const&& u)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: m_impl(tuple_detail::ctor_from_tuple_tag{}, hamon::move(u))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = PairCtor<pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	tuple(pair<U1, U2> const&&) = delete;
 
 	// 	tuple(UTuple&& u)
 	template <typename UTuple,
