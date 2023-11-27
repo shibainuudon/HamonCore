@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/make_from_tuple.hpp>
 #include <hamon/tuple/make_tuple.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/string.hpp>
