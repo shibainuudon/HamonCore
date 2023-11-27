@@ -68,6 +68,13 @@ static_assert(!hamon::is_nothrow_constructible<hamon::pair<Implicit, NoThrow>,  
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<Implicit, Implicit>, int, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::pair<int, int>, int, int>::value, "");
 
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+static_assert( hamon::is_constructible<hamon::pair<int, int>, int, long>::value, "");
+static_assert( hamon::is_constructible<hamon::pair<int, int>, long, int>::value, "");
+static_assert(!hamon::is_constructible<hamon::pair<int, int const&>, int, long>::value, "");
+static_assert(!hamon::is_constructible<hamon::pair<int const&, int>, long, int>::value, "");
+#endif
+
 GTEST_TEST(PairTest, CtorValueMoveTest)
 {
 	{

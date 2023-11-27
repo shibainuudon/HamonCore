@@ -74,6 +74,11 @@ static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> &&>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> const&&>::value, "");
 
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+static_assert(!hamon::is_constructible<hamon::pair<int, int const&>, hamon::pair<int, long> &>::value, "");
+static_assert(!hamon::is_constructible<hamon::pair<int const&, int>, hamon::pair<long, int> &>::value, "");
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_WARNING_PUSH()

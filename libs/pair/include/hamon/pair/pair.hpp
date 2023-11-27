@@ -143,7 +143,8 @@ public:
 		typename U1 = T1,
 		typename U2 = T2,
 		typename Constraint = UTypesCtor<U1, U2>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(U1&& x, U2&& y)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
@@ -151,45 +152,86 @@ public:
 		, second(hamon::forward<U2>(y))
 	{}
 
+	template <
+		typename U1 = T1,
+		typename U2 = T2,
+		typename Constraint = UTypesCtor<U1, U2>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	pair(U1&&, U2&&) = delete;
+
 	// pair(pair<U1, U2>& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, p)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	pair(pair<U1, U2>&) = delete;
+
 	// pair(pair<U1, U2> const& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2> const& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, p)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	pair(pair<U1, U2> const&) = delete;
+
 	// pair(pair<U1, U2>&& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	pair(pair<U1, U2>&&) = delete;
+
 	// pair(pair<U1, U2> const&& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&&>,
-		hamon::enable_if_t<Constraint::constructible>* = nullptr>
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
+	pair(pair<U1, U2> const&&) = delete;
 
 	// pair(PairLike&& p)
 	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
@@ -247,6 +289,7 @@ public:
 		typename U2 = T2,
 		typename Constraint = UTypesCtor<U1, U2>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(U1&& x, U2&& y)
@@ -260,6 +303,7 @@ public:
 		typename U2 = T2,
 		typename Constraint = UTypesCtor<U1, U2>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	pair(U1&& x, U2&& y)
@@ -268,10 +312,20 @@ public:
 		, second(hamon::forward<U2>(y))
 	{}
 
+	template <
+		typename U1 = T1,
+		typename U2 = T2,
+		typename Constraint = UTypesCtor<U1, U2>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	pair(U1&&, U2&&) = delete;
+
 	// pair(pair<U1, U2>& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
@@ -282,17 +336,26 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, p)
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2>&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	pair(pair<U1, U2>&) = delete;
 
 	// pair(pair<U1, U2> const& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
@@ -303,6 +366,7 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const& p)
@@ -310,10 +374,18 @@ public:
 		: pair(ctor_from_pair_tag{}, p)
 	{}
 
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2> const&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	pair(pair<U1, U2> const&) = delete;
+
 	// pair(pair<U1, U2>&& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
@@ -324,17 +396,26 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2>&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2>&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2>&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	pair(pair<U1, U2>&&) = delete;
 
 	// pair(pair<U1, U2> const&& p)
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
 	explicit HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
@@ -345,12 +426,20 @@ public:
 	template <typename U1, typename U2,
 		typename Constraint = UPairCtor<pair<U1, U2> const&&>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<!Constraint::dangles>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
 	HAMON_CXX11_CONSTEXPR
 	pair(pair<U1, U2> const&& p)
 	HAMON_NOEXCEPT_IF((Constraint::nothrow))
 		: pair(ctor_from_pair_tag{}, hamon::move(p))
 	{}
+
+	template <typename U1, typename U2,
+		typename Constraint = UPairCtor<pair<U1, U2> const&&>,
+		hamon::enable_if_t<Constraint::constructible>* = nullptr,
+		hamon::enable_if_t<Constraint::dangles>* = nullptr>
+	HAMON_CXX11_CONSTEXPR
+	pair(pair<U1, U2> const&&) = delete;
 
 	// pair(PairLike&& p)
 	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),

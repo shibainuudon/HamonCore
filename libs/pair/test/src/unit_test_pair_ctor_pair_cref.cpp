@@ -74,6 +74,11 @@ static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  
 static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> &&>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::pair<NoThrow,  NoThrow>,  hamon::pair<int, int> const&&>::value, "");
 
+#if defined(HAMON_HAS_REFERENCE_CONSTRUCTS_FROM_TEMPORARY)
+static_assert(!hamon::is_constructible<hamon::pair<int, int const&>, hamon::pair<int, long> const&>::value, "");
+static_assert(!hamon::is_constructible<hamon::pair<int const&, int>, hamon::pair<long, int> const&>::value, "");
+#endif
+
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '...' から '...' への変換です。データが失われる可能性があります。
 
