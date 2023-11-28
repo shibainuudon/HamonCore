@@ -28,7 +28,7 @@ using std::three_way_comparable_with;
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/compare/detail/compares_as.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
+#include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/common_reference.hpp>
@@ -55,7 +55,7 @@ concept three_way_comparable_with =
 			hamon::remove_reference_t<T> const&,
 			hamon::remove_reference_t<U> const&
 		>, Cat> &&
-	detail::weakly_eq_cmp_with<T, U> &&
+	detail::weakly_equality_comparable_with<T, U> &&
 	detail::partially_ordered_with<T, U> &&
 	requires(
 		hamon::remove_reference_t<T> const& t,
@@ -85,7 +85,7 @@ private:
 				hamon::remove_reference_t<T2> const&,
 				hamon::remove_reference_t<U2> const&
 			>, C2>>,
-		typename = hamon::enable_if_t<detail::weakly_eq_cmp_with<T2, U2>>,
+		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>>,
 		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename B = hamon::remove_reference_t<U2>,

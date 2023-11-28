@@ -13,7 +13,7 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/concepts/semiregular.hpp>
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
+#include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #endif
@@ -31,7 +31,7 @@ template <typename Sent, typename Iter>
 concept sentinel_for =
 	hamon::semiregular<Sent> &&
 	hamon::input_or_output_iterator<Iter> &&
-	hamon::detail::weakly_eq_cmp_with<Sent, Iter>;
+	hamon::detail::weakly_equality_comparable_with<Sent, Iter>;
 
 #else
 
@@ -45,7 +45,7 @@ private:
 	template <typename S2, typename I2,
 		typename = hamon::enable_if_t<hamon::semiregular<S2>::value>,
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
-		typename = hamon::enable_if_t<hamon::detail::weakly_eq_cmp_with<S2, I2>::value>
+		typename = hamon::enable_if_t<hamon::detail::weakly_equality_comparable_with<S2, I2>::value>
 	>
 	static auto test(int) -> hamon::true_type;
 

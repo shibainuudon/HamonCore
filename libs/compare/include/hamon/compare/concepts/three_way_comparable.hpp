@@ -26,7 +26,7 @@ using std::three_way_comparable;
 
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/detail/compares_as.hpp>
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
+#include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -41,7 +41,7 @@ namespace hamon
 
 template <typename T, typename Cat = hamon::partial_ordering>
 concept three_way_comparable =
-	detail::weakly_eq_cmp_with<T, T> &&
+	detail::weakly_equality_comparable_with<T, T> &&
 	detail::partially_ordered_with<T, T> &&
 	requires(
 		hamon::remove_reference_t<T> const& a,
@@ -61,7 +61,7 @@ struct three_way_comparable_impl
 private:
 	template <typename T2, typename C2,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			detail::weakly_eq_cmp_with<T2, T2>,
+			detail::weakly_equality_comparable_with<T2, T2>,
 			detail::partially_ordered_with<T2, T2>
 		>::value>,
 		typename A = hamon::remove_reference_t<T2>,

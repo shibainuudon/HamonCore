@@ -10,11 +10,13 @@
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
+#include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #endif
 
 namespace hamon
 {
+
+// [concept.equalitycomparable]/2
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 
@@ -23,12 +25,12 @@ using std::equality_comparable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept equality_comparable = detail::weakly_eq_cmp_with<T, T>;
+concept equality_comparable = detail::weakly_equality_comparable_with<T, T>;
 
 #else
 
 template <typename T>
-using equality_comparable = detail::weakly_eq_cmp_with<T, T>;
+using equality_comparable = detail::weakly_equality_comparable_with<T, T>;
 
 #endif
 

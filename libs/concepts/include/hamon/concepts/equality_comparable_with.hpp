@@ -13,7 +13,7 @@
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/detail/cref.hpp>
-#include <hamon/concepts/detail/weakly_eq_cmp_with.hpp>
+#include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #endif
@@ -33,7 +33,7 @@ concept equality_comparable_with =
 	hamon::equality_comparable<U> &&
 	hamon::common_reference_with<detail::cref<T>, detail::cref<U>> &&
 	hamon::equality_comparable<hamon::common_reference_t<detail::cref<T>, detail::cref<U>>> &&
-	detail::weakly_eq_cmp_with<T, U>;
+	detail::weakly_equality_comparable_with<T, U>;
 
 #else
 
@@ -50,7 +50,7 @@ private:
 		hamon::equality_comparable<U2>,
 		hamon::common_reference_with<detail::cref<T2>, detail::cref<U2>>,
 		hamon::equality_comparable<hamon::common_reference_t<detail::cref<T2>, detail::cref<U2>>>,
-		detail::weakly_eq_cmp_with<T2, U2>>;
+		detail::weakly_equality_comparable_with<T2, U2>>;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

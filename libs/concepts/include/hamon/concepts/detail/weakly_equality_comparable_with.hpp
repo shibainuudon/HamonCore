@@ -1,16 +1,16 @@
 ﻿/**
- *	@file	weakly_eq_cmp_with.hpp
+ *	@file	weakly_equality_comparable_with.hpp
  *
- *	@brief	weakly_eq_cmp_with の定義
+ *	@brief	weakly_equality_comparable_with の定義
  */
 
-#ifndef HAMON_CONCEPTS_DETAIL_WEAKLY_EQ_CMP_WITH_HPP
-#define HAMON_CONCEPTS_DETAIL_WEAKLY_EQ_CMP_WITH_HPP
+#ifndef HAMON_CONCEPTS_DETAIL_WEAKLY_EQUALITY_COMPARABLE_WITH_HPP
+#define HAMON_CONCEPTS_DETAIL_WEAKLY_EQUALITY_COMPARABLE_WITH_HPP
 
-#include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -20,11 +20,15 @@ namespace hamon
 namespace detail
 {
 
+// [concept.equalitycomparable]/1
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept weakly_eq_cmp_with =
-	requires(detail::cref<T> t, detail::cref<U> u)
+concept weakly_equality_comparable_with =
+	requires(
+		hamon::remove_reference_t<T> const& t,
+		hamon::remove_reference_t<U> const& u)
 	{
 		{ t == u } -> detail::boolean_testable;
 		{ t != u } -> detail::boolean_testable;
@@ -35,13 +39,13 @@ concept weakly_eq_cmp_with =
 #else
 
 template <typename T, typename U>
-struct weakly_eq_cmp_with_impl
+struct weakly_equality_comparable_with_impl
 {
 private:
 	template <
 		typename T2, typename U2,
-		typename TR = detail::cref<T2>,
-		typename UR = detail::cref<U2>,
+		typename TR = hamon::remove_reference_t<T2> const&,
+		typename UR = hamon::remove_reference_t<U2> const&,
 		typename B1 = decltype(hamon::declval<TR>() == hamon::declval<UR>()),
 		typename B2 = decltype(hamon::declval<TR>() != hamon::declval<UR>()),
 		typename B3 = decltype(hamon::declval<UR>() == hamon::declval<TR>()),
@@ -62,13 +66,21 @@ public:
 };
 
 template <typename T, typename U>
-using weakly_eq_cmp_with =
-	typename weakly_eq_cmp_with_impl<T, U>::type;
+using weakly_equality_comparable_with =
+	typename weakly_equality_comparable_with_impl<T, U>::type;
 
+#endif
+
+template <typename T, typename U>
+using weakly_equality_comparable_with_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::detail::weakly_equality_comparable_with<T, U>>;
+#else
+	hamon::detail::weakly_equality_comparable_with<T, U>;
 #endif
 
 }	// namespace detail
 
 }	// namespace hamon
 
-#endif // HAMON_CONCEPTS_DETAIL_WEAKLY_EQ_CMP_WITH_HPP
+#endif // HAMON_CONCEPTS_DETAIL_WEAKLY_EQUALITY_COMPARABLE_WITH_HPP
