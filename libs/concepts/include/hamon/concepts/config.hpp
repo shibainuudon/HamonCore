@@ -13,7 +13,7 @@
 #  include <concepts>
 #endif
 
-#if defined(__cpp_lib_concepts) && (__cpp_lib_concepts >= 202002)
+#if defined(__cpp_lib_concepts) && (__cpp_lib_concepts >= 202207L)
 #  define HAMON_USE_STD_CONCEPTS
 #endif
 

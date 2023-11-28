@@ -7,9 +7,11 @@
 #ifndef HAMON_FUNCTIONAL_IDENTITY_HPP
 #define HAMON_FUNCTIONAL_IDENTITY_HPP
 
-#include <functional>
+#include <hamon/concepts/config.hpp>
 
-#if defined(__cpp_lib_concepts) && (__cpp_lib_concepts >= 202002)
+#if defined(HAMON_USE_STD_CONCEPTS)
+
+#include <functional>
 
 namespace hamon
 {
