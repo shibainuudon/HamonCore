@@ -11,7 +11,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/concepts/common_reference_with.hpp>
+#include <hamon/concepts/detail/comparison_common_type_with.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -33,9 +33,7 @@ template <typename T, typename U>
 concept equality_comparable_with =
 	hamon::equality_comparable<T> &&
 	hamon::equality_comparable<U> &&
-	hamon::common_reference_with<
-		hamon::remove_reference_t<T> const&,
-		hamon::remove_reference_t<U> const&> &&
+	detail::comparison_common_type_with<T, U> &&
 	hamon::equality_comparable<
 		hamon::common_reference_t<
 			hamon::remove_reference_t<T> const&,
@@ -57,9 +55,7 @@ private:
 	static auto test(int) -> hamon::conjunction<
 		hamon::equality_comparable<T2>,
 		hamon::equality_comparable<U2>,
-		hamon::common_reference_with<
-			hamon::remove_reference_t<T2> const&,
-			hamon::remove_reference_t<U2> const&>,
+		detail::comparison_common_type_with<T2, U2>,
 		hamon::equality_comparable<
 			hamon::common_reference_t<
 				hamon::remove_reference_t<T2> const&,
