@@ -20,6 +20,8 @@
 namespace hamon
 {
 
+// 18.4.3 Concept derived_from	[concept.derived]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::derived_from;

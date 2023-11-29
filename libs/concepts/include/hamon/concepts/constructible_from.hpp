@@ -18,6 +18,8 @@
 namespace hamon
 {
 
+// 18.4.11 Concept constructible_from	[concept.constructible]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::constructible_from;

@@ -20,6 +20,8 @@
 namespace hamon
 {
 
+// 18.4.14 Concept copy_constructible	[concept.copyconstructible]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::copy_constructible;

@@ -20,6 +20,8 @@
 namespace hamon
 {
 
+// 18.6 Object concepts	[concepts.object]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::movable;

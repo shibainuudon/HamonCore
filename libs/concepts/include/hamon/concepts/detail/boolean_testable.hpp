@@ -20,6 +20,8 @@ namespace hamon
 namespace detail
 {
 
+// 18.5.2 Boolean testability	[concept.booleantestable]
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>

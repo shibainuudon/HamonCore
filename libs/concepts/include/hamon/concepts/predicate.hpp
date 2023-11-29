@@ -19,6 +19,8 @@
 namespace hamon
 {
 
+// 18.7.4 Concept predicate	[concept.predicate]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::predicate;

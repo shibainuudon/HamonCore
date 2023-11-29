@@ -16,7 +16,7 @@
 namespace hamon
 {
 
-// [concept.equalitycomparable]/2
+// 18.5.4 Concept equality_comparable	[concept.equalitycomparable]
 
 #if defined(HAMON_USE_STD_CONCEPTS)
 

@@ -17,6 +17,8 @@
 namespace hamon
 {
 
+// 18.7.5 Concept relation	[concept.relation]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::relation;

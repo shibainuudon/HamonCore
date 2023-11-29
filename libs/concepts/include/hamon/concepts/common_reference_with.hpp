@@ -20,6 +20,8 @@
 namespace hamon
 {
 
+// 18.4.5 Concept common_reference_with	[concept.commonref]
+
 #if defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_COMMON_REFERENCE)
 
 using std::common_reference_with;

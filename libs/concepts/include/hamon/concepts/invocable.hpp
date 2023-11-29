@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.7.2 Concept invocable	[concept.invocable]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::invocable;

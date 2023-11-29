@@ -21,6 +21,8 @@
 namespace hamon
 {
 
+// 18.5.4 Concept equality_comparable	[concept.equalitycomparable]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::equality_comparable_with;

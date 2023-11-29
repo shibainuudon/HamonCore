@@ -17,6 +17,8 @@
 namespace hamon
 {
 
+// 18.4.2 Concept same_as [concept.same]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::same_as;
@@ -27,14 +29,14 @@ namespace detail
 {
 
 template <typename T, typename U>
-concept SameHelper = hamon::is_same<T, U>::value;
+concept same_as_impl = hamon::is_same<T, U>::value;
 
 }	// namespace detail
 
 template <typename T, typename U>
 concept same_as =
-	detail::SameHelper<T, U> &&
-	detail::SameHelper<U, T>;
+	detail::same_as_impl<T, U> &&
+	detail::same_as_impl<U, T>;
 
 #else
 

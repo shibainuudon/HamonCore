@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.4.10 Concept destructible	[concept.destructible]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::destructible;

@@ -22,6 +22,8 @@
 namespace hamon
 {
 
+// 18.4.8 Concept assignable_from	[concept.assignable]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::assignable_from;

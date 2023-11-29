@@ -22,6 +22,8 @@
 namespace hamon
 {
 
+// 18.4.6 Concept common_with	[concept.common]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::common_with;

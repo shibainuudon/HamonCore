@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.4.12 Concept default_initializable	[concept.default.init]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::default_initializable;

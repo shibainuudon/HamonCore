@@ -17,6 +17,8 @@
 namespace hamon
 {
 
+// 18.4.9 Concept swappable	[concept.swappable]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::swappable;

@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.4.7 Arithmetic concepts	[concepts.arithmetic]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::floating_point;

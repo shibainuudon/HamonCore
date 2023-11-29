@@ -18,6 +18,8 @@
 namespace hamon
 {
 
+// 18.4.13 Concept move_constructible	[concept.moveconstructible]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::move_constructible;

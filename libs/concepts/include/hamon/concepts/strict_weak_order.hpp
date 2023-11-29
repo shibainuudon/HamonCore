@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.7.7 Concept strict_weak_order	[concept.strictweakorder]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::strict_weak_order;

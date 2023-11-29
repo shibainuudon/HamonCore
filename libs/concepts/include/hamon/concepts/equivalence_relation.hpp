@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.7.6 Concept equivalence_relation	[concept.equiv]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::equivalence_relation;

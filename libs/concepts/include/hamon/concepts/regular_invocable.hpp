@@ -16,6 +16,8 @@
 namespace hamon
 {
 
+// 18.7.3 Concept regular_invocable	[concept.regularinvocable]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::regular_invocable;

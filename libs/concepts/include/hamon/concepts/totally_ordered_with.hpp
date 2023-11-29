@@ -20,6 +20,8 @@
 namespace hamon
 {
 
+// 18.5.5 Concept totally_ordered	[concept.totallyordered]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::totally_ordered_with;

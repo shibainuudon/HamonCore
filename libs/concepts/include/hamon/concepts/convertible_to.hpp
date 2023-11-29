@@ -19,6 +19,8 @@
 namespace hamon
 {
 
+// 18.4.4 Concept convertible_to	[concept.convertible]
+
 #if defined(HAMON_USE_STD_CONCEPTS)
 
 using std::convertible_to;
