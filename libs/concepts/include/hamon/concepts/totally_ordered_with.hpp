@@ -12,9 +12,9 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
-#include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #endif
 
 namespace hamon
@@ -33,7 +33,12 @@ concept totally_ordered_with =
 	hamon::totally_ordered<T> &&
 	hamon::totally_ordered<U> &&
 	hamon::equality_comparable_with<T, U> &&
-	hamon::totally_ordered<hamon::common_reference_t<detail::cref<T>, detail::cref<U>>> &&
+	hamon::totally_ordered<
+		hamon::common_reference_t<
+			hamon::remove_reference_t<T> const&,
+			hamon::remove_reference_t<U> const&
+		>
+	> &&
 	detail::partially_ordered_with<T, U>;
 
 #else
@@ -50,7 +55,12 @@ private:
 		hamon::totally_ordered<T2>,
 		hamon::totally_ordered<U2>,
 		hamon::equality_comparable_with<T2, U2>,
-		hamon::totally_ordered<hamon::common_reference_t<detail::cref<T2>, detail::cref<U2>>>,
+		hamon::totally_ordered<
+			hamon::common_reference_t<
+				hamon::remove_reference_t<T2> const&,
+				hamon::remove_reference_t<U2> const&
+			>
+		>,
 		detail::partially_ordered_with<T2, U2>>;
 
 	template <typename T2, typename U2>

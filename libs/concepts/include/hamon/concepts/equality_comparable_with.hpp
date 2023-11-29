@@ -12,10 +12,10 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
-#include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #endif
 
 namespace hamon
@@ -33,8 +33,15 @@ template <typename T, typename U>
 concept equality_comparable_with =
 	hamon::equality_comparable<T> &&
 	hamon::equality_comparable<U> &&
-	hamon::common_reference_with<detail::cref<T>, detail::cref<U>> &&
-	hamon::equality_comparable<hamon::common_reference_t<detail::cref<T>, detail::cref<U>>> &&
+	hamon::common_reference_with<
+		hamon::remove_reference_t<T> const&,
+		hamon::remove_reference_t<U> const&> &&
+	hamon::equality_comparable<
+		hamon::common_reference_t<
+			hamon::remove_reference_t<T> const&,
+			hamon::remove_reference_t<U> const&
+		>
+	> &&
 	detail::weakly_equality_comparable_with<T, U>;
 
 #else
@@ -50,8 +57,15 @@ private:
 	static auto test(int) -> hamon::conjunction<
 		hamon::equality_comparable<T2>,
 		hamon::equality_comparable<U2>,
-		hamon::common_reference_with<detail::cref<T2>, detail::cref<U2>>,
-		hamon::equality_comparable<hamon::common_reference_t<detail::cref<T2>, detail::cref<U2>>>,
+		hamon::common_reference_with<
+			hamon::remove_reference_t<T2> const&,
+			hamon::remove_reference_t<U2> const&>,
+		hamon::equality_comparable<
+			hamon::common_reference_t<
+				hamon::remove_reference_t<T2> const&,
+				hamon::remove_reference_t<U2> const&
+			>
+		>,
 		detail::weakly_equality_comparable_with<T2, U2>>;
 
 	template <typename T2, typename U2>

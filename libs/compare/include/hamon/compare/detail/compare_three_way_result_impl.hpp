@@ -7,7 +7,7 @@
 #ifndef HAMON_COMPARE_DETAIL_COMPARE_THREE_WAY_RESULT_IMPL_HPP
 #define HAMON_COMPARE_DETAIL_COMPARE_THREE_WAY_RESULT_IMPL_HPP
 
-#include <hamon/concepts/detail/cref.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -33,10 +33,10 @@ struct compare_three_way_result_impl
 {};
 
 template <typename T, typename U>
-requires requires { typename cmp3way_res_t<hamon::detail::cref<T>, hamon::detail::cref<U>>; }
+requires requires { typename cmp3way_res_t<hamon::remove_reference_t<T> const&, hamon::remove_reference_t<U> const&>; }
 struct compare_three_way_result_impl<T, U>
 {
-	using type = cmp3way_res_t<hamon::detail::cref<T>, hamon::detail::cref<U>>;
+	using type = cmp3way_res_t<hamon::remove_reference_t<T> const&, hamon::remove_reference_t<U> const&>;
 };
 
 #endif

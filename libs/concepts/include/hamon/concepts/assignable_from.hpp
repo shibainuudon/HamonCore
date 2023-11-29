@@ -12,9 +12,9 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/cref.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -33,7 +33,10 @@ using std::assignable_from;
 template <typename Lhs, typename Rhs>
 concept assignable_from =
 	hamon::is_lvalue_reference<Lhs>::value &&
-	hamon::common_reference_with<detail::cref<Lhs>, detail::cref<Rhs>> &&
+	hamon::common_reference_with<
+		hamon::remove_reference_t<Lhs> const&,
+		hamon::remove_reference_t<Rhs> const&
+	> &&
 	requires(Lhs lhs, Rhs&& rhs)
 	{
 		{ lhs = hamon::forward<Rhs>(rhs) } -> hamon::same_as<Lhs>;
@@ -50,7 +53,10 @@ struct assignable_from_impl
 private:
 	template <typename L, typename R,
 		typename = hamon::enable_if_t<hamon::is_lvalue_reference<L>::value>,
-		typename = hamon::enable_if_t<hamon::common_reference_with<detail::cref<L>, detail::cref<R>>::value>,
+		typename = hamon::enable_if_t<hamon::common_reference_with<
+			hamon::remove_reference_t<L> const&,
+			hamon::remove_reference_t<R> const&
+		>::value>,
 		typename T = decltype(hamon::declval<L&>() = hamon::declval<R&&>())
 	>
 	static auto test(int) -> hamon::same_as<T, L>;

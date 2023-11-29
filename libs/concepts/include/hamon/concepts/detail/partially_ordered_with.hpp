@@ -7,10 +7,10 @@
 #ifndef HAMON_CONCEPTS_DETAIL_PARTIALLY_ORDERED_WITH_HPP
 #define HAMON_CONCEPTS_DETAIL_PARTIALLY_ORDERED_WITH_HPP
 
-#include <hamon/concepts/detail/cref.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -24,7 +24,7 @@ namespace detail
 
 template <typename T, typename U>
 concept partially_ordered_with =
-	requires(detail::cref<T> t, detail::cref<U> u)
+	requires(hamon::remove_reference_t<T> const& t, hamon::remove_reference_t<U> const& u)
 	{
 		{ t <  u } -> detail::boolean_testable;
 		{ t >  u } -> detail::boolean_testable;
@@ -47,8 +47,8 @@ struct partially_ordered_with_impl
 private:
 	template <
 		typename T2, typename U2,
-		typename TR = detail::cref<T2>,
-		typename UR = detail::cref<U2>,
+		typename TR = hamon::remove_reference_t<T2> const&,
+		typename UR = hamon::remove_reference_t<U2> const&,
 		typename B1 = decltype(hamon::declval<TR>() <  hamon::declval<UR>()),
 		typename B2 = decltype(hamon::declval<TR>() >  hamon::declval<UR>()),
 		typename B3 = decltype(hamon::declval<TR>() <= hamon::declval<UR>()),
