@@ -4,8 +4,8 @@
  *	@brief	partially_ordered_with の定義
  */
 
-#ifndef HAMON_CONCEPTS_DETAIL_PARTIALLY_ORDERED_WITH_HPP
-#define HAMON_CONCEPTS_DETAIL_PARTIALLY_ORDERED_WITH_HPP
+#ifndef HAMON_COMPARE_DETAIL_PARTIALLY_ORDERED_WITH_HPP
+#define HAMON_COMPARE_DETAIL_PARTIALLY_ORDERED_WITH_HPP
 
 #include <hamon/concepts/detail/boolean_testable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -88,4 +88,4 @@ using partially_ordered_with =
 
 }	// namespace hamon
 
-#endif // HAMON_CONCEPTS_DETAIL_PARTIALLY_ORDERED_WITH_HPP
+#endif // HAMON_COMPARE_DETAIL_PARTIALLY_ORDERED_WITH_HPP

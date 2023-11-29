@@ -27,9 +27,9 @@ using std::three_way_comparable_with;
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/compare/detail/compares_as.hpp>
+#include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/detail/comparison_common_type_with.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
-#include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/conjunction.hpp>

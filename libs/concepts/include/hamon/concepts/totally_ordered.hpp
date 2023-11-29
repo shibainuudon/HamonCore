@@ -10,8 +10,8 @@
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #endif
 
