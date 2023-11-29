@@ -16,7 +16,7 @@
 //#include <hamon/ranges/views/elements_view.hpp>
 #include <hamon/ranges/views/empty_view.hpp>
 //#include <hamon/ranges/views/filter_view.hpp>
-//#include <hamon/ranges/views/iota_view.hpp>
+#include <hamon/ranges/views/iota_view.hpp>
 //#include <hamon/ranges/views/istream_view.hpp>
 //#include <hamon/ranges/views/join_view.hpp>
 //#include <hamon/ranges/views/ref_view.hpp>

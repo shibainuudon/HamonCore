@@ -24,7 +24,7 @@ template <typename T>
 struct weakly_incrementable_wrapper
 {
 	using difference_type = hamon::ptrdiff_t;
-	HAMON_CXX14_CONSTEXPR weakly_incrementable_wrapper& operator++();
+	HAMON_CXX14_CONSTEXPR weakly_incrementable_wrapper& operator++() { return *this; }
 	HAMON_CXX14_CONSTEXPR void                          operator++(int);
 };
 
