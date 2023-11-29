@@ -10,6 +10,7 @@
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/array.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <array>
