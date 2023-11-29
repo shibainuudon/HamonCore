@@ -10,7 +10,6 @@
 #include <hamon/concepts/config.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
-#include <hamon/type_traits/add_rvalue_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/declval.hpp>
@@ -30,9 +29,9 @@ using std::convertible_to;
 template <typename From, typename To>
 concept convertible_to =
 	hamon::is_convertible<From, To>::value &&
-	requires(hamon::add_rvalue_reference_t<From> (&f)())
+	requires
 	{
-		static_cast<To>(f());
+		static_cast<To>(hamon::declval<From>());
 	};
 
 #else
@@ -46,8 +45,7 @@ struct convertible_to_impl
 private:
 	template <typename F, typename T,
 		typename = hamon::enable_if_t<hamon::is_convertible<F, T>::value>,
-		typename Func = hamon::add_rvalue_reference_t<F> (&)(),
-		typename = decltype(static_cast<T>(hamon::declval<Func>()()))
+		typename = decltype(static_cast<T>(hamon::declval<F>()))
 	>
 	static auto test(int) -> hamon::true_type;
 
