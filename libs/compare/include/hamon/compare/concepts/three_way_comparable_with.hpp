@@ -27,7 +27,7 @@ using std::three_way_comparable_with;
 #include <hamon/compare/partial_ordering.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/compare/detail/compares_as.hpp>
-#include <hamon/concepts/common_reference_with.hpp>
+#include <hamon/concepts/detail/comparison_common_type_with.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/concepts/detail/partially_ordered_with.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -47,9 +47,7 @@ template <typename T, typename U, typename Cat = hamon::partial_ordering>
 concept three_way_comparable_with =
 	hamon::three_way_comparable<T, Cat> &&
 	hamon::three_way_comparable<U, Cat> &&
-	hamon::common_reference_with<
-		hamon::remove_reference_t<T> const&,
-		hamon::remove_reference_t<U> const&> &&
+	detail::comparison_common_type_with<T, U> &&
 	hamon::three_way_comparable<
 		hamon::common_reference_t<
 			hamon::remove_reference_t<T> const&,
@@ -75,18 +73,16 @@ struct three_way_comparable_with_impl
 {
 private:
 	template <typename T2, typename U2, typename C2,
-		typename = hamon::enable_if_t<hamon::three_way_comparable<T2, C2>>,
-		typename = hamon::enable_if_t<hamon::three_way_comparable<U2, C2>>,
-		typename = hamon::enable_if_t<hamon::common_reference_with<
-			hamon::remove_reference_t<T2> const&,
-			hamon::remove_reference_t<U2> const&> &&
+		typename = hamon::enable_if_t<hamon::three_way_comparable<T2, C2>::value>,
+		typename = hamon::enable_if_t<hamon::three_way_comparable<U2, C2>::value>,
+		typename = hamon::enable_if_t<detail::comparison_common_type_with<T2, U2>::value>,
 		typename = hamon::enable_if_t<hamon::three_way_comparable<
 			hamon::common_reference_t<
 				hamon::remove_reference_t<T2> const&,
 				hamon::remove_reference_t<U2> const&
-			>, C2>>,
-		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>>,
-		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>>,
+			>, C2>::value>,
+		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>::value>,
+		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>::value>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename B = hamon::remove_reference_t<U2>,
 		typename R1 = decltype(hamon::declval<A const&>() <=> hamon::declval<B const&>()),
