@@ -821,7 +821,7 @@
 #if (_MSC_FULL_VER >= 193833129)
 #endif
 
-// Visual Studio 2022 Preview Version 17.9.0 Preview 1.0
+// Visual Studio 2022 Preview Version 17.9.0 Preview (1.0-1.1)
 #if (_MSC_FULL_VER >= 193933218)
 #endif
 
@@ -939,7 +939,7 @@
 #if (_MSC_FULL_VER >= 193732825)
 #endif
 
-// Visual Studio 2022 Version 17.8.(0-1)
+// Visual Studio 2022 Version 17.8.(0-2)
 #if (_MSC_FULL_VER >= 193833130)
 #endif
 
