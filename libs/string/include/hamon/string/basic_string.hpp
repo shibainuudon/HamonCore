@@ -28,6 +28,7 @@ using std::basic_string;
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/concepts/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
@@ -38,7 +39,6 @@ using std::basic_string;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/ranges/detail/is_integer_like.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
@@ -735,7 +735,7 @@ public:
 		auto p = data();
 		size_type const m = n;			// [string.capacity]/7.4
 		auto r = hamon::move(op)(p, m);	// [string.capacity]/7.5, 7.6
-		static_assert(hamon::ranges::detail::is_integer_like_t<decltype(r)>::value, "[string.capacity]/8");
+		static_assert(hamon::detail::is_integer_like_t<decltype(r)>::value, "[string.capacity]/8");
 		auto const rr = static_cast<size_type>(r);
 		HAMON_ASSERT(rr >= 0u);	// [string.capacity]/9.2
 		HAMON_ASSERT(rr <= m);	// [string.capacity]/9.3

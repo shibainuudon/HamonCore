@@ -8,7 +8,7 @@
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_SIZE_HPP
 
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
-#include <hamon/ranges/detail/is_integer_like.hpp>
+#include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
@@ -27,7 +27,7 @@ concept has_member_size =
 	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
 	requires(T& t)
 	{
-		{ hamon::detail::decay_copy(t.size()) } -> detail::is_integer_like;
+		{ hamon::detail::decay_copy(t.size()) } -> hamon::detail::is_integer_like;
 	};
 
 #else
@@ -42,7 +42,7 @@ private:
 		>,
 		typename S = decltype(hamon::detail::decay_copy(hamon::declval<U&>().size()))
 	>
-	static auto test(int) -> detail::is_integer_like<S>;
+	static auto test(int) -> hamon::detail::is_integer_like<S>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

@@ -13,9 +13,9 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/detail/is_signed_integer_like.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/signed_integer_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -35,7 +35,7 @@ concept weakly_incrementable =
 	requires(Iter i)
 	{
 		typename hamon::iter_difference_t<Iter>;
-		requires hamon::ranges::detail::signed_integer_like<hamon::iter_difference_t<Iter>>;
+		requires hamon::detail::is_signed_integer_like<hamon::iter_difference_t<Iter>>;
 		{ ++i } -> hamon::same_as<Iter&>;
 		i++;
 	};
@@ -52,7 +52,7 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::movable<I2>::value>,
 		typename D = hamon::iter_difference_t<I2>,
-		typename = hamon::enable_if_t<hamon::ranges::detail::signed_integer_like<D>::value>,
+		typename = hamon::enable_if_t<hamon::detail::is_signed_integer_like<D>::value>,
 		typename T = decltype(++hamon::declval<I2&>()),
 		typename = hamon::enable_if_t<hamon::same_as<T, I2&>::value>,
 		typename = decltype(hamon::declval<I2&>()++)
