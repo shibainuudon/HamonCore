@@ -7,7 +7,7 @@
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/ranges/views/subrange_kind.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
-#include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/iterator/unreachable_sentinel_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/bool_constant.hpp>

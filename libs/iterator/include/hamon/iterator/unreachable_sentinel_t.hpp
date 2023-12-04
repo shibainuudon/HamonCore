@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	unreachable_sentinel.hpp
+ *	@file	unreachable_sentinel_t.hpp
  *
- *	@brief	unreachable_sentinel の定義
+ *	@brief	unreachable_sentinel_t の定義
  */
 
-#ifndef HAMON_ITERATOR_UNREACHABLE_SENTINEL_HPP
-#define HAMON_ITERATOR_UNREACHABLE_SENTINEL_HPP
+#ifndef HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP
+#define HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP
 
 #include <hamon/iterator/config.hpp>
 
@@ -66,4 +66,4 @@ unreachable_sentinel_t unreachable_sentinel{};
 
 #endif
 
-#endif // HAMON_ITERATOR_UNREACHABLE_SENTINEL_HPP
+#endif // HAMON_ITERATOR_UNREACHABLE_SENTINEL_T_HPP

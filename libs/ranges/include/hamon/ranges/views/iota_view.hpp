@@ -45,7 +45,7 @@ using std::ranges::views::iota;
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/detail/is_signed_integer_like.hpp>
-#include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/iterator/unreachable_sentinel_t.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/conditional.hpp>

@@ -4,7 +4,7 @@
  *	@brief	unreachable_sentinel のテスト
  */
 
-#include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/iterator/unreachable_sentinel_t.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>

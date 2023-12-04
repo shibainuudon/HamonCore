@@ -6,7 +6,7 @@
 
 #include <hamon/ranges/views/subrange.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
-#include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/iterator/unreachable_sentinel_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>

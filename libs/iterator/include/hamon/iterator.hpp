@@ -63,7 +63,7 @@
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/size.hpp>
 #include <hamon/iterator/ssize.hpp>
-#include <hamon/iterator/unreachable_sentinel.hpp>
+#include <hamon/iterator/unreachable_sentinel_t.hpp>
 //#include <hamon/iterator/unwrap_iterator.hpp>
 
 #endif // HAMON_ITERATOR_HPP
