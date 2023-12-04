@@ -55,7 +55,7 @@ using std::variant;
 #include <hamon/type_traits/nth.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>

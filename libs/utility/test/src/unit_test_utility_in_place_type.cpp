@@ -4,7 +4,7 @@
  *	@brief	in_place_type のテスト
  */
 
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>

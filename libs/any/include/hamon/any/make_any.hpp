@@ -23,7 +23,7 @@ using std::make_any;
 #else
 
 #include <hamon/any/any.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/forward.hpp>
 #include <initializer_list>
 

@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	in_place_type.hpp
+ *	@file	in_place_type_t.hpp
  *
- *	@brief	in_place_type を定義
+ *	@brief	in_place_type_t を定義
  */
 
-#ifndef HAMON_UTILITY_IN_PLACE_TYPE_HPP
-#define HAMON_UTILITY_IN_PLACE_TYPE_HPP
+#ifndef HAMON_UTILITY_IN_PLACE_TYPE_T_HPP
+#define HAMON_UTILITY_IN_PLACE_TYPE_T_HPP
 
 #include <hamon/config.hpp>
 
@@ -73,4 +73,4 @@ using is_in_place_type =
 
 }	// namespace hamon
 
-#endif // HAMON_UTILITY_IN_PLACE_TYPE_HPP
+#endif // HAMON_UTILITY_IN_PLACE_TYPE_T_HPP

@@ -9,7 +9,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include <initializer_list>

@@ -5,7 +5,7 @@
  */
 
 #include <hamon/variant.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/cstddef/size_t.hpp>

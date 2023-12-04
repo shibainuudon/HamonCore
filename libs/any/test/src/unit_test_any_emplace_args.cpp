@@ -8,7 +8,7 @@
  */
 
 #include <hamon/any.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
 

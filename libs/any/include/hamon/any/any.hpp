@@ -33,7 +33,7 @@ using std::any;
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place_type.hpp>
+#include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
