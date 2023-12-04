@@ -7,7 +7,7 @@
 #include <hamon/variant.hpp>
 #include <hamon/type_traits/is_trivially_copy_constructible.hpp>
 #include <hamon/type_traits/is_trivially_destructible.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 

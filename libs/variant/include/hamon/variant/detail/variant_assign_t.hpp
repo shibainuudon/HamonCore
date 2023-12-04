@@ -16,7 +16,7 @@
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/nth.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

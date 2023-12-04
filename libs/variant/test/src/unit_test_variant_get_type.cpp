@@ -13,7 +13,7 @@
 #include <hamon/variant/variant.hpp>
 #include <hamon/variant/bad_variant_access.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

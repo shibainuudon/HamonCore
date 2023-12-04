@@ -14,7 +14,7 @@
 #include <hamon/cstdint/int32_t.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 

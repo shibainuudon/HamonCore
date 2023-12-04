@@ -8,7 +8,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

@@ -15,7 +15,7 @@
 #include <hamon/variant/get_if.hpp>
 #include <hamon/variant/variant.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/utility/in_place_index.hpp>
+#include <hamon/utility/in_place_index_t.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"

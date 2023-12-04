@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	in_place_index.hpp
+ *	@file	in_place_index_t.hpp
  *
- *	@brief	in_place_index を定義
+ *	@brief	in_place_index_t を定義
  */
 
-#ifndef HAMON_UTILITY_IN_PLACE_INDEX_HPP
-#define HAMON_UTILITY_IN_PLACE_INDEX_HPP
+#ifndef HAMON_UTILITY_IN_PLACE_INDEX_T_HPP
+#define HAMON_UTILITY_IN_PLACE_INDEX_T_HPP
 
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
@@ -74,4 +74,4 @@ using is_in_place_index =
 
 }	// namespace hamon
 
-#endif // HAMON_UTILITY_IN_PLACE_INDEX_HPP
+#endif // HAMON_UTILITY_IN_PLACE_INDEX_T_HPP
