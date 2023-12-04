@@ -27,7 +27,7 @@
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/optional.hpp>

@@ -22,7 +22,7 @@
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/index_sequence_for.hpp>
 #include <hamon/utility/integer_sequence.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/in_place_index.hpp>
 #include <hamon/utility/in_place_type.hpp>
 #include <hamon/utility/in_range.hpp>

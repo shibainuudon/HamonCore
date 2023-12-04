@@ -18,7 +18,7 @@
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 
 namespace hamon
 {

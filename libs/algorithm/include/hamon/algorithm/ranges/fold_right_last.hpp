@@ -48,7 +48,7 @@ using std::ranges::fold_right_last;
 #include <hamon/ranges/end.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/optional.hpp>
 #include <hamon/config.hpp>
 

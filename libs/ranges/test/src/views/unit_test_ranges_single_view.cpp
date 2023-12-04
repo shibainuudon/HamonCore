@@ -9,7 +9,7 @@
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

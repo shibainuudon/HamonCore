@@ -4,7 +4,7 @@
  *	@brief	in_place のテスト
  */
 
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

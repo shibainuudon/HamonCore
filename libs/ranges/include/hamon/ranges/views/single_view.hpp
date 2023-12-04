@@ -37,7 +37,7 @@ using std::ranges::views::single;
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/cstddef/size_t.hpp>

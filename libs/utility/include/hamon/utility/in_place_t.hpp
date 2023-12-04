@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	in_place.hpp
+ *	@file	in_place_t.hpp
  *
- *	@brief	in_place を定義
+ *	@brief	in_place_t を定義
  */
 
-#ifndef HAMON_UTILITY_IN_PLACE_HPP
-#define HAMON_UTILITY_IN_PLACE_HPP
+#ifndef HAMON_UTILITY_IN_PLACE_T_HPP
+#define HAMON_UTILITY_IN_PLACE_T_HPP
 
 #include <hamon/config.hpp>
 
@@ -37,4 +37,4 @@ HAMON_STATIC_CONSTEXPR hamon::in_place_t in_place{};
 
 #endif
 
-#endif // HAMON_UTILITY_IN_PLACE_HPP
+#endif // HAMON_UTILITY_IN_PLACE_T_HPP

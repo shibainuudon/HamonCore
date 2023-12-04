@@ -56,7 +56,7 @@ using std::optional;
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/adl_swap.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>

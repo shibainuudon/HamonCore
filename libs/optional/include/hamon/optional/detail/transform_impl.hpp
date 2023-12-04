@@ -15,7 +15,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

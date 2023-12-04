@@ -25,7 +25,7 @@ using std::make_optional;
 #include <hamon/optional/optional.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/in_place.hpp>
+#include <hamon/utility/in_place_t.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
 
