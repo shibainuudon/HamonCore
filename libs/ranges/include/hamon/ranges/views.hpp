@@ -20,6 +20,7 @@
 //#include <hamon/ranges/views/istream_view.hpp>
 //#include <hamon/ranges/views/join_view.hpp>
 //#include <hamon/ranges/views/ref_view.hpp>
+#include <hamon/ranges/views/repeat_view.hpp>
 //#include <hamon/ranges/views/reverse_view.hpp>
 #include <hamon/ranges/views/single_view.hpp>
 //#include <hamon/ranges/views/split_view.hpp>
