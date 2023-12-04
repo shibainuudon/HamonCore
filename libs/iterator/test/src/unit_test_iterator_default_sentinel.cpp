@@ -4,7 +4,7 @@
  *	@brief	default_sentinel のテスト
  */
 
-#include <hamon/iterator/default_sentinel.hpp>
+#include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/is_empty.hpp>

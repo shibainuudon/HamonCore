@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	default_sentinel.hpp
+ *	@file	default_sentinel_t.hpp
  *
- *	@brief	default_sentinel の定義
+ *	@brief	default_sentinel_t の定義
  */
 
-#ifndef HAMON_ITERATOR_DEFAULT_SENTINEL_HPP
-#define HAMON_ITERATOR_DEFAULT_SENTINEL_HPP
+#ifndef HAMON_ITERATOR_DEFAULT_SENTINEL_T_HPP
+#define HAMON_ITERATOR_DEFAULT_SENTINEL_T_HPP
 
 #include <hamon/iterator/config.hpp>
 
@@ -35,4 +35,4 @@ default_sentinel_t default_sentinel{};
 
 #endif
 
-#endif // HAMON_ITERATOR_DEFAULT_SENTINEL_HPP
+#endif // HAMON_ITERATOR_DEFAULT_SENTINEL_T_HPP

@@ -6,7 +6,7 @@
 
 #include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/iterator/move_iterator.hpp>
-#include <hamon/iterator/default_sentinel.hpp>
+#include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
