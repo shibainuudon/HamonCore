@@ -226,7 +226,10 @@ private:
 	// [range.iota.iterator], class iota_view​::​iterator
 	struct iterator : detail::iota_view_iterator_category<W>
 	{
-#if defined(HAMON_MSVC)	// TODO
+#if defined(HAMON_MSVC) || \
+	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
+		// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
+		// 仕方なくpublicにする。
 	public:
 #else
 	private:
