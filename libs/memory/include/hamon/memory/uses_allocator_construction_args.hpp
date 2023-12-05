@@ -26,6 +26,7 @@ using std::uses_allocator_construction_args;
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/pair/pair.hpp>
+#include <hamon/pair/piecewise_construct_t.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/apply.hpp>
 #include <hamon/tuple/forward_as_tuple.hpp>

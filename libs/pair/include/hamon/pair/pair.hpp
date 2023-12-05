@@ -8,7 +8,7 @@
 #define HAMON_PAIR_PAIR_HPP
 
 #include <hamon/pair/config.hpp>
-#include <hamon/pair/piecewise_construct.hpp>
+#include <hamon/pair/piecewise_construct_t.hpp>
 #include <hamon/pair/pair_fwd.hpp>
 
 #if defined(HAMON_USE_STD_PAIR)

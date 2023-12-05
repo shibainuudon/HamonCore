@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	piecewise_construct.hpp
+ *	@file	piecewise_construct_t.hpp
  *
- *	@brief	piecewise_construct の定義
+ *	@brief	piecewise_construct_t の定義
  */
 
-#ifndef HAMON_PAIR_PIECEWISE_CONSTRUCT_HPP
-#define HAMON_PAIR_PIECEWISE_CONSTRUCT_HPP
+#ifndef HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
+#define HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
 
 #include <hamon/pair/config.hpp>
 
@@ -40,4 +40,4 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR piecewise_construct_t piecewise_construct
 
 #endif
 
-#endif // HAMON_PAIR_PIECEWISE_CONSTRUCT_HPP
+#endif // HAMON_PAIR_PIECEWISE_CONSTRUCT_T_HPP
