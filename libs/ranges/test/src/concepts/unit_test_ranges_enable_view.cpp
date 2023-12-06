@@ -6,7 +6,7 @@
 
 #include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/ranges/views/view_base.hpp>
-#include <hamon/ranges/views/view_interface.hpp>
+#include <hamon/ranges/utility/view_interface.hpp>
 
 namespace hamon_ranges_test {
 namespace enable_view_test {

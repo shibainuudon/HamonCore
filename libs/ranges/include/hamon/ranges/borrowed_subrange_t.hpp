@@ -23,9 +23,9 @@ using std::ranges::borrowed_subrange_t;
 
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
-#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/iterator_t.hpp>
-#include <hamon/ranges/dangling.hpp>
+#include <hamon/ranges/utility/dangling.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/config.hpp>

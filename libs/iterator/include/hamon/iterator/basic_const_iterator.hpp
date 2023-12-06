@@ -51,7 +51,7 @@ using std::basic_const_iterator;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/to_address.hpp>
-#include <hamon/ranges/detail/different_from.hpp>
+#include <hamon/ranges/utility/detail/different_from.hpp>
 #include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
 #include <hamon/type_traits/bool_constant.hpp>

@@ -37,7 +37,7 @@ using std::ranges::unique;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirect_equivalence_relation.hpp>
 #include <hamon/iterator/projected.hpp>
-#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_subrange_t.hpp>

@@ -20,7 +20,6 @@
 #include <hamon/ranges/const_sentinel_t.hpp>
 #include <hamon/ranges/crbegin.hpp>
 #include <hamon/ranges/crend.hpp>
-#include <hamon/ranges/dangling.hpp>
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/end.hpp>
@@ -38,6 +37,7 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/ssize.hpp>
+#include <hamon/ranges/utility.hpp>
 #include <hamon/ranges/views.hpp>
 
 #endif // HAMON_RANGES_HPP

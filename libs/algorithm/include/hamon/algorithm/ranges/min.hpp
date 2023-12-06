@@ -37,7 +37,7 @@ using std::ranges::min;
 #include <hamon/iterator/concepts/indirectly_copyable_storable.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>

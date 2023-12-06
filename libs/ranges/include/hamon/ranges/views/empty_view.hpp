@@ -27,7 +27,7 @@ using std::ranges::views::empty;
 
 #else
 
-#include <hamon/ranges/views/view_interface.hpp>
+#include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/enable_if.hpp>

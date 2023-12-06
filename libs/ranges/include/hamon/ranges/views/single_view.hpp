@@ -27,7 +27,7 @@ using std::ranges::views::single;
 
 #else
 
-#include <hamon/ranges/views/view_interface.hpp>
+#include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/detail/movable_box.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>

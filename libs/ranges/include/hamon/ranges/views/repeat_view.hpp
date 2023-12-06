@@ -30,7 +30,7 @@ using std::ranges::views::repeat;
 
 #else
 
-#include <hamon/ranges/views/view_interface.hpp>
+#include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/detail/movable_box.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/detail/iota_diff_t.hpp>

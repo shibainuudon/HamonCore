@@ -9,7 +9,7 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"

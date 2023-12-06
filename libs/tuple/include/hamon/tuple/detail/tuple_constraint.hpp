@@ -17,7 +17,7 @@
 #include <hamon/memory/detail/is_uses_allocator_constructible.hpp>
 #include <hamon/memory/detail/is_implicitly_uses_allocator_constructible.hpp>
 #include <hamon/memory/detail/is_nothrow_uses_allocator_constructible.hpp>
-#include <hamon/ranges/detail/different_from.hpp>
+#include <hamon/ranges/utility/detail/different_from.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>

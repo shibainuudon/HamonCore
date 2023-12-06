@@ -5,8 +5,8 @@
  */
 
 #include <hamon/ranges/borrowed_subrange_t.hpp>
-#include <hamon/ranges/dangling.hpp>
-#include <hamon/ranges/views/subrange.hpp>
+#include <hamon/ranges/utility/dangling.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/span.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/type_traits/is_same.hpp>
