@@ -23,6 +23,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.refinements]/1
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::output_range;

@@ -34,6 +34,8 @@ namespace ranges
 namespace detail
 {
 
+// [range.refinements]/5
+
 template <typename T>
 struct is_initializer_list : public hamon::false_type {};
 
@@ -41,6 +43,8 @@ template <typename T>
 struct is_initializer_list<std::initializer_list<T>> : public hamon::true_type {};
 
 } // namespace detail
+
+// [range.refinements]/6
 
 #if defined(HAMON_USE_STD_RANGES)
 

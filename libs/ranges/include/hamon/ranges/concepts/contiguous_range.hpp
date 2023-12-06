@@ -28,6 +28,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.refinements]/2
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::contiguous_range;

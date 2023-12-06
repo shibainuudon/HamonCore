@@ -14,6 +14,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.sized]/3
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::disable_sized_range;

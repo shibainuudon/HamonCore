@@ -14,6 +14,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.range]/6
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::enable_borrowed_range;

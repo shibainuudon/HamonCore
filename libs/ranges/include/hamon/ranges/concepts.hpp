@@ -2,6 +2,8 @@
  *	@file	concepts.hpp
  *
  *	@brief	Ranges Concepts
+ *
+ *	26.4 Range requirements[range.req]
  */
 
 #ifndef HAMON_RANGES_CONCEPTS_HPP

@@ -22,6 +22,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.range]/4
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::borrowed_range;

@@ -24,6 +24,8 @@ namespace hamon
 namespace ranges
 {
 
+// [range.refinements]/4
+
 #if defined(HAMON_USE_STD_RANGES)
 
 using std::ranges::common_range;

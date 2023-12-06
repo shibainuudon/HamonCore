@@ -39,6 +39,8 @@ namespace ranges
 namespace detail
 {
 
+// [range.view]/6
+
 template <
 	typename O, typename Y
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -57,6 +59,8 @@ using is_derived_from_view_interface =
 	decltype(is_derived_from_view_interface_fn((T*)nullptr, (T*)nullptr));
 
 }	// namespace_detail
+
+// [range.view]/7
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
