@@ -8,6 +8,7 @@
 #define HAMON_RANGES_HPP
 
 #include <hamon/ranges/access.hpp>
+#include <hamon/ranges/adaptors.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/borrowed_subrange_t.hpp>
