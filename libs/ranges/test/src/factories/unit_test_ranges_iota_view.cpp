@@ -4,7 +4,7 @@
  *	@brief	ranges::iota_view のテスト
  */
 
-#include <hamon/ranges/views/iota_view.hpp>
+#include <hamon/ranges/factories/iota_view.hpp>
 #include <hamon/ranges/concepts.hpp>
 #include <hamon/compare/is_eq.hpp>
 #include <hamon/compare/is_neq.hpp>

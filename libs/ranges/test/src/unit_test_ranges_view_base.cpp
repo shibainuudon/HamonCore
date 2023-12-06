@@ -4,7 +4,7 @@
  *	@brief	ranges::view_base のテスト
  */
 
-#include <hamon/ranges/views/view_base.hpp>
+#include <hamon/ranges/view_base.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 #include <hamon/type_traits/is_empty.hpp>
 

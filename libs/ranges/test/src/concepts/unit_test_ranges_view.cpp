@@ -7,7 +7,7 @@
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
-#include <hamon/ranges/views/view_base.hpp>
+#include <hamon/ranges/view_base.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 //#include <hamon/string_view.hpp>

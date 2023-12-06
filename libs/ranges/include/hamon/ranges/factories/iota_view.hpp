@@ -4,8 +4,8 @@
  *	@brief	iota_view の定義
  */
 
-#ifndef HAMON_RANGES_VIEWS_IOTA_VIEW_HPP
-#define HAMON_RANGES_VIEWS_IOTA_VIEW_HPP
+#ifndef HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP
+#define HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP
 
 #include <hamon/ranges/config.hpp>
 
@@ -932,4 +932,4 @@ detail::iota_fn iota{};
 
 #endif
 
-#endif // HAMON_RANGES_VIEWS_IOTA_VIEW_HPP
+#endif // HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP

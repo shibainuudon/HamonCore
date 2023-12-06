@@ -4,8 +4,8 @@
  *	@brief	single_view の定義
  */
 
-#ifndef HAMON_RANGES_VIEWS_SINGLE_VIEW_HPP
-#define HAMON_RANGES_VIEWS_SINGLE_VIEW_HPP
+#ifndef HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP
+#define HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP
 
 #include <hamon/ranges/config.hpp>
 
@@ -174,4 +174,4 @@ detail::single_fn single{};
 
 #endif
 
-#endif // HAMON_RANGES_VIEWS_SINGLE_VIEW_HPP
+#endif // HAMON_RANGES_FACTORIES_SINGLE_VIEW_HPP

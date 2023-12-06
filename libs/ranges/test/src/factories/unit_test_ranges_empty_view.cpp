@@ -4,7 +4,7 @@
  *	@brief	ranges::empty_view のテスト
  */
 
-#include <hamon/ranges/views/empty_view.hpp>
+#include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/begin.hpp>

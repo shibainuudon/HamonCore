@@ -7,7 +7,7 @@
 #ifndef UNIT_TEST_COMMON_RANGES_TEST_HPP
 #define UNIT_TEST_COMMON_RANGES_TEST_HPP
 
-#include <hamon/ranges/views/view_base.hpp>
+#include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>

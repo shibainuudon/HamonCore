@@ -23,7 +23,7 @@ using std::ranges::enable_view;
 
 #else
 
-#include <hamon/ranges/views/view_base.hpp>
+#include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/utility/view_interface_fwd.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/type_traits/enable_if.hpp>

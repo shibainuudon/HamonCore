@@ -4,8 +4,8 @@
  *	@brief	repeat_view の定義
  */
 
-#ifndef HAMON_RANGES_VIEWS_REPEAT_VIEW_HPP
-#define HAMON_RANGES_VIEWS_REPEAT_VIEW_HPP
+#ifndef HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP
+#define HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP
 
 #include <hamon/ranges/config.hpp>
 
@@ -484,4 +484,4 @@ detail::repeat_fn repeat{};
 
 #endif
 
-#endif // HAMON_RANGES_VIEWS_REPEAT_VIEW_HPP
+#endif // HAMON_RANGES_FACTORIES_REPEAT_VIEW_HPP

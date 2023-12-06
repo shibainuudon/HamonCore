@@ -4,7 +4,7 @@
  *	@brief	ranges::repeat_view のテスト
  */
 
-#include <hamon/ranges/views/repeat_view.hpp>
+#include <hamon/ranges/factories/repeat_view.hpp>
 #include <hamon/ranges/concepts.hpp>
 #include <hamon/compare.hpp>
 #include <hamon/cstddef.hpp>

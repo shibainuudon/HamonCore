@@ -4,7 +4,7 @@
  *	@brief	ranges::single_view のテスト
  */
 
-#include <hamon/ranges/views/single_view.hpp>
+#include <hamon/ranges/factories/single_view.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/begin.hpp>

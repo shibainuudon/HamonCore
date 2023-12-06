@@ -4,8 +4,8 @@
  *	@brief	empty_view の定義
  */
 
-#ifndef HAMON_RANGES_VIEWS_EMPTY_VIEW_HPP
-#define HAMON_RANGES_VIEWS_EMPTY_VIEW_HPP
+#ifndef HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP
+#define HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP
 
 #include <hamon/ranges/config.hpp>
 
@@ -74,4 +74,4 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR empty_view<T> empty{};
 
 #endif
 
-#endif // HAMON_RANGES_VIEWS_EMPTY_VIEW_HPP
+#endif // HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP

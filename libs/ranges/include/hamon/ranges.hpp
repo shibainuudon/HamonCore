@@ -23,6 +23,7 @@
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/empty.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/factories.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_common_reference_t.hpp>
@@ -38,6 +39,6 @@
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/ssize.hpp>
 #include <hamon/ranges/utility.hpp>
-#include <hamon/ranges/views.hpp>
+#include <hamon/ranges/view_base.hpp>
 
 #endif // HAMON_RANGES_HPP
