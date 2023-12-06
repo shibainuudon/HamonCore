@@ -16,6 +16,7 @@
 #include <hamon/ranges/concepts/range.hpp>
 //#include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
+#include <hamon/ranges/concepts/detail/is_initializer_list.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/movable.hpp>
@@ -30,19 +31,6 @@ namespace hamon
 {
 namespace ranges
 {
-
-namespace detail
-{
-
-// [range.refinements]/5
-
-template <typename T>
-struct is_initializer_list : public hamon::false_type {};
-
-template <typename T>
-struct is_initializer_list<std::initializer_list<T>> : public hamon::true_type {};
-
-} // namespace detail
 
 // [range.refinements]/6
 
