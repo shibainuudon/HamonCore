@@ -474,8 +474,13 @@ struct repeat_fn
 
 }	// namespace detail
 
+inline namespace cpo
+{
+
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 detail::repeat_fn repeat{};
+
+}	// inline namespace cpo
 
 }	// namespace views
 

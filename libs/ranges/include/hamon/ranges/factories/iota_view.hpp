@@ -922,8 +922,13 @@ struct iota_fn
 
 }	// namespace detail
 
+inline namespace cpo
+{
+
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 detail::iota_fn iota{};
+
+}	// inline namespace cpo
 
 }	// namespace views
 

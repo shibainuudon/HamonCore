@@ -164,8 +164,13 @@ struct single_fn
 
 }	// namespace detail
 
+inline namespace cpo
+{
+
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 detail::single_fn single{};
+
+}	// inline namespace cpo
 
 }	// namespace views
 
