@@ -45,7 +45,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	VERIFY(hamon::ranges::empty(e));
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-	auto e2 = hamon::ranges::views::empty<T>;
+	auto e2 = hamon::views::empty<T>;
 	static_assert(hamon::is_same<decltype(e2), hamon::ranges::empty_view<T>>::value, "");
 #endif
 

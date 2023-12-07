@@ -29,4 +29,14 @@
 
 #define HAMON_RANGES_END_NAMESPACE   }}
 
+namespace hamon {
+namespace ranges {
+namespace views {
+}	// namespace views
+}	// namespace ranges
+
+namespace views = ranges::views;
+
+}	// namespace hamon
+
 #endif // HAMON_RANGES_CONFIG_HPP

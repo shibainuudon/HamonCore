@@ -393,74 +393,74 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 {
 #if 1
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int&&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int&&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int&&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int&&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const&&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const&&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const&&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const&&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int*>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int*>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int*>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int*>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int*>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const*>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const*>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int const*>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const*>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const*>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int>(), hamon::declval<long>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int>(), hamon::declval<long>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int, long>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int>(), hamon::declval<long>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int>(), hamon::declval<long>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int&>(), hamon::declval<long&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int&>(), hamon::declval<long&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int, long>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int&>(), hamon::declval<long&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int&>(), hamon::declval<long&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const&>(), hamon::declval<long const&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const&>(), hamon::declval<long const&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int, long>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const&>(), hamon::declval<long const&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const&>(), hamon::declval<long const&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int&&>(), hamon::declval<long&&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int&&>(), hamon::declval<long&&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int, long>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int&&>(), hamon::declval<long&&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int&&>(), hamon::declval<long&&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const&&>(), hamon::declval<long const&&>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const&&>(), hamon::declval<long const&&>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int, long>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const&&>(), hamon::declval<long const&&>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const&&>(), hamon::declval<long const&&>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int*>(), hamon::declval<int*>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int*>(), hamon::declval<int*>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int*, int*>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int*>(), hamon::declval<int*>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int*>(), hamon::declval<int*>())), "");
 	}
 	{
-		using V = decltype(hamon::ranges::views::iota(hamon::declval<int const*>(), hamon::declval<int const*>()));
+		using V = decltype(hamon::views::iota(hamon::declval<int const*>(), hamon::declval<int const*>()));
 		static_assert(hamon::is_same<V, hamon::ranges::iota_view<int const*, int const*>>::value, "");
-		static_assert(noexcept(hamon::ranges::views::iota(hamon::declval<int const*>(), hamon::declval<int const*>())), "");
+		static_assert(noexcept(hamon::views::iota(hamon::declval<int const*>(), hamon::declval<int const*>())), "");
 	}
 	{
 		using V = hamon::ranges::iota_view<int>;
@@ -834,9 +834,8 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
-	auto v = views::iota(4);
+	auto v = hamon::views::iota(4);
 
 	using R = decltype(v);
 	static_assert( ranges::view_t<R>::value, "");
@@ -876,9 +875,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
-	auto v = ranges::views::iota(10, 15);
+	auto v = hamon::views::iota(10, 15);
 
 	using R = decltype(v);
 	static_assert( ranges::view_t<R>::value, "");
@@ -941,11 +939,10 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	int a[2] ={};
 	test_random_access_range<int> r(a);
-	auto v = views::iota(r.begin(), r.end());
+	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
 	static_assert( ranges::random_access_range_t<R>::value, "");
@@ -980,11 +977,10 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 inline HAMON_CXX14_CONSTEXPR bool test05()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	int a[2] ={};
 	test_bidirectional_range<int> r(a);
-	auto v = views::iota(r.begin(), r.end());
+	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
 	static_assert( ranges::bidirectional_range_t<R>::value, "");
@@ -1002,11 +998,10 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 inline HAMON_CXX14_CONSTEXPR bool test06()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	int a[2] ={};
 	test_forward_range<int> r(a);
-	auto v = views::iota(r.begin(), r.end());
+	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
 	static_assert( ranges::forward_range_t<R>::value, "");
@@ -1024,11 +1019,10 @@ inline HAMON_CXX14_CONSTEXPR bool test06()
 inline HAMON_CXX14_CONSTEXPR bool test07()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	int a[2] ={};
 	test_input_range<int> r(a);
-	auto v = views::iota(r.begin(), r.end());
+	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
 	static_assert( ranges::input_range_t<R>::value, "");
@@ -1056,7 +1050,6 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 inline HAMON_CXX14_CONSTEXPR bool test08()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	auto v = ranges::iota_view<unsigned int, unsigned int>{3u, 5u};
 
@@ -1085,9 +1078,8 @@ inline HAMON_CXX14_CONSTEXPR bool test08()
 inline HAMON_CXX14_CONSTEXPR bool test09()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
-	auto v1 = views::iota(10, 15);
+	auto v1 = hamon::views::iota(10, 15);
 	using R = decltype(v1);
 	R v2{v1.begin() + 3, v1.end()};
 
@@ -1112,9 +1104,8 @@ inline HAMON_CXX14_CONSTEXPR bool test09()
 inline HAMON_CXX14_CONSTEXPR bool test10()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
-	auto v1 = views::iota(10);
+	auto v1 = hamon::views::iota(10);
 	using R = decltype(v1);
 	R v2{v1.begin() + 3, v1.end()};
 
@@ -1138,7 +1129,6 @@ inline HAMON_CXX14_CONSTEXPR bool test10()
 inline HAMON_CXX14_CONSTEXPR bool test11()
 {
 	namespace ranges = hamon::ranges;
-	namespace views  = ranges::views;
 
 	auto v1 = ranges::iota_view<int, long>{10, 15};
 	using R = decltype(v1);

@@ -573,7 +573,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		VERIFY(it != v.end());
 	}
 	{
-		auto v = hamon::ranges::views::repeat(43);
+		auto v = hamon::views::repeat(43);
 		static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<int>>::value, "");
 
 		auto it = v.begin();
@@ -618,7 +618,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		VERIFY(it == v.end());
 	}
 	{
-		auto v = hamon::ranges::views::repeat(43, 3);
+		auto v = hamon::views::repeat(43, 3);
 		static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<int, int>>::value, "");
 
 		VERIFY(v.size() == 3);
@@ -643,7 +643,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 HAMON_CXX14_CONSTEXPR bool test03()
 {
 	{
-		auto v = hamon::ranges::views::repeat(13);
+		auto v = hamon::views::repeat(13);
 		auto it = v.begin();
 		VERIFY(*it == 13);
 		VERIFY(it == v.begin());
@@ -720,7 +720,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY( (t1 >= t3));
 	}
 	{
-		auto v = hamon::ranges::views::repeat(14, 3);
+		auto v = hamon::views::repeat(14, 3);
 		auto it = v.begin();
 		VERIFY(!(it + 0 == v.end()));
 		VERIFY(!(it + 1 == v.end()));

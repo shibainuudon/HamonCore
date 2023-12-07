@@ -85,7 +85,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 
 inline HAMON_CXX14_CONSTEXPR bool test04()
 {
-	auto s3 = hamon::ranges::views::single('a');
+	auto s3 = hamon::views::single('a');
 	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s3)>, char>::value, "");
 	VERIFY(hamon::ranges::size(s3) == 1);
 	VERIFY(*hamon::ranges::begin(s3) == 'a');
