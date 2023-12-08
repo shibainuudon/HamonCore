@@ -9,6 +9,7 @@
 
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
+#include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
@@ -206,6 +207,20 @@ template <typename T> using test_forward_sized_borrowed_range       = test_sized
 template <typename T> using test_input_sized_borrowed_range         = test_sized_borrowed_range<T, input_iterator_wrapper<T>>;
 template <typename T> using test_output_sized_borrowed_range        = test_sized_borrowed_range<T, output_iterator_wrapper<T>>;
 
+template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
+struct test_view : public test_range<T, Iterator, Sentinel>
+{
+	using base_t = test_range<T, Iterator, Sentinel>;
+	using base_t::base_t;
+};
+
+template <typename T> using test_contiguous_view    = test_view<T, contiguous_iterator_wrapper<T>>;
+template <typename T> using test_random_access_view = test_view<T, random_access_iterator_wrapper<T>>;
+template <typename T> using test_bidirectional_view = test_view<T, bidirectional_iterator_wrapper<T>>;
+template <typename T> using test_forward_view       = test_view<T, forward_iterator_wrapper<T>>;
+template <typename T> using test_input_view         = test_view<T, input_iterator_wrapper<T>>;
+template <typename T> using test_output_view        = test_view<T, output_iterator_wrapper<T>>;
+
 }	// namespace hamon_ranges_test
 
 using namespace hamon_ranges_test;
@@ -219,6 +234,10 @@ HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true,
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true,
 	hamon_ranges_test::test_sized_borrowed_range<T, Iterator, Sentinel>);
+
+template <typename T, typename Iterator, typename Sentinel>
+HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
+	hamon_ranges_test::test_view<T, Iterator, Sentinel>);
 
 HAMON_RANGES_END_NAMESPACE
 

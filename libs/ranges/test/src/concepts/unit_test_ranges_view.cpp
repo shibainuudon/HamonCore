@@ -10,7 +10,7 @@
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-//#include <hamon/string_view.hpp>
+#include <hamon/string_view.hpp>
 #include <hamon/span.hpp>
 #include <hamon/array.hpp>
 #include <hamon/deque.hpp>
@@ -200,7 +200,6 @@ HAMON_RANGES_VIEW_TEST(false, hamon::multiset<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::unordered_set<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::unordered_multiset<int>);
 HAMON_RANGES_VIEW_TEST(false, hamon::string);
-#if 0	// TODO
 HAMON_RANGES_VIEW_TEST(true,  hamon::string_view);
 HAMON_RANGES_VIEW_TEST(true,  hamon::wstring_view);
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
@@ -212,10 +211,16 @@ HAMON_RANGES_VIEW_TEST(true,  hamon::u16string_view);
 #if defined(HAMON_HAS_CXX11_CHAR32_T)
 HAMON_RANGES_VIEW_TEST(true,  hamon::u32string_view);
 #endif
-#endif
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int>);
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int, 0>);
 HAMON_RANGES_VIEW_TEST(true,  hamon::span<int, 1>);
+
+HAMON_RANGES_VIEW_TEST(true,  test_contiguous_view<int>);
+HAMON_RANGES_VIEW_TEST(true,  test_random_access_view<int>);
+HAMON_RANGES_VIEW_TEST(true,  test_bidirectional_view<int>);
+HAMON_RANGES_VIEW_TEST(true,  test_forward_view<int>);
+HAMON_RANGES_VIEW_TEST(true,  test_input_view<int>);
+HAMON_RANGES_VIEW_TEST(true,  test_output_view<int>);
 
 HAMON_RANGES_VIEW_TEST(false, test_contiguous_range<int>);
 HAMON_RANGES_VIEW_TEST(false, test_contiguous_range<int>&);
