@@ -229,6 +229,14 @@ template <typename T> using test_input_common_range         = test_range<T, inpu
 // これはrangeにならないので定義しない
 //template <typename T> using test_output_common_range        = test_range<T, output_iterator_wrapper<T>, output_iterator_wrapper<T>>;
 
+template <typename T> using test_contiguous_common_view    = test_view<T, contiguous_iterator_wrapper<T>, contiguous_iterator_wrapper<T>>;
+template <typename T> using test_random_access_common_view = test_view<T, random_access_iterator_wrapper<T>, random_access_iterator_wrapper<T>>;
+template <typename T> using test_bidirectional_common_view = test_view<T, bidirectional_iterator_wrapper<T>, bidirectional_iterator_wrapper<T>>;
+template <typename T> using test_forward_common_view       = test_view<T, forward_iterator_wrapper<T>, forward_iterator_wrapper<T>>;
+template <typename T> using test_input_common_view         = test_view<T, input_iterator_wrapper<T>, input_iterator_wrapper<T>>;
+// これはrangeにならないので定義しない
+//template <typename T> using test_output_common_view        = test_view<T, output_iterator_wrapper<T>, output_iterator_wrapper<T>>;
+
 }	// namespace hamon_ranges_test
 
 using namespace hamon_ranges_test;
