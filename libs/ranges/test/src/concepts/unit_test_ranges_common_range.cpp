@@ -87,4 +87,20 @@ HAMON_RANGES_COMMON_RANGE_TEST(false, test_output_sized_range<int>);
 HAMON_RANGES_COMMON_RANGE_TEST(false, test_output_sized_range<int>&);
 HAMON_RANGES_COMMON_RANGE_TEST(false, test_output_sized_range<int>&&);
 
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_contiguous_common_range<int>);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_contiguous_common_range<int>&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_contiguous_common_range<int>&&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_random_access_common_range<int>);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_random_access_common_range<int>&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_random_access_common_range<int>&&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_bidirectional_common_range<int>);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_bidirectional_common_range<int>&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_bidirectional_common_range<int>&&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_forward_common_range<int>);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_forward_common_range<int>&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_forward_common_range<int>&&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_input_common_range<int>);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_input_common_range<int>&);
+HAMON_RANGES_COMMON_RANGE_TEST(true,  test_input_common_range<int>&&);
+
 #undef HAMON_RANGES_COMMON_RANGE_TEST
