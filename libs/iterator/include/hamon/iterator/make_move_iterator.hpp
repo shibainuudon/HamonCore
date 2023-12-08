@@ -31,6 +31,7 @@ namespace hamon
 template <typename Iterator>
 inline HAMON_CXX14_CONSTEXPR hamon::move_iterator<Iterator>
 make_move_iterator(Iterator it)
+HAMON_NOEXCEPT_IF_EXPR(hamon::move_iterator<Iterator>(hamon::move(it)))
 {
     return hamon::move_iterator<Iterator>(hamon::move(it));
 }
