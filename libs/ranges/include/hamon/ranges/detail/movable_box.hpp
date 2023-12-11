@@ -17,6 +17,7 @@
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/movable.hpp>
+#include <hamon/concepts/constructible_from.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -25,6 +26,7 @@
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/utility/in_place_t.hpp>

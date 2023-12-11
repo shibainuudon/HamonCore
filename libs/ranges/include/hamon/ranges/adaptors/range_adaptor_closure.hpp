@@ -9,7 +9,7 @@
 
 #include <hamon/ranges/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES) && \
+#if 0 && defined(HAMON_USE_STD_RANGES) && \
 	(defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202202L))	// P2387R3
 
 namespace hamon {

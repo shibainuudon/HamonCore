@@ -50,6 +50,12 @@ struct test_sentinel
 	Iterator m_it;
 
 	HAMON_CONSTEXPR bool
+	operator==(test_sentinel const& i) const noexcept
+	{
+		return base(m_it) == base(i.m_it);
+	}
+
+	HAMON_CONSTEXPR bool
 	operator==(Iterator const& i) const noexcept
 	{
 		return base(m_it) == base(i);
