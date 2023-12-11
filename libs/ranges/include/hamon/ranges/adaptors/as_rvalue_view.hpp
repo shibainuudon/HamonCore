@@ -31,6 +31,7 @@ using std::ranges::views::as_rvalue;
 #else
 
 #include <hamon/ranges/adaptors/all.hpp>
+#include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
@@ -42,8 +43,11 @@ using std::ranges::views::as_rvalue;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/ranges/range_rvalue_reference_t.hpp>
+#include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
+#include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
@@ -52,6 +56,7 @@ using std::ranges::views::as_rvalue;
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -191,6 +196,11 @@ public:
 	}
 };
 
+#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
+	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
+	-> decltype(__VA_ARGS__)                \
+	{ return __VA_ARGS__; }
+
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <typename R>
@@ -198,12 +208,65 @@ as_rvalue_view(R&&) -> as_rvalue_view<hamon::views::all_t<R>>;
 
 #endif
 
+// extension: deduction guides が使えないときのために追加
+template <typename R>
+HAMON_CXX11_CONSTEXPR auto
+make_as_rvalue_view(R&& r)
+	HAMON_NOEXCEPT_DECLTYPE_RETURN(
+		as_rvalue_view<hamon::views::all_t<R>>(hamon::forward<R>(r)))
+
+// [range.as.rvalue], as rvalue view
 template <typename R>
 HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
 	HAMON_RANGES_ENABLE_BORROWED_RANGE(R),
 	hamon::ranges::as_rvalue_view<R>);
 
 namespace views {
+
+namespace detail {
+
+// 26.7.7 As rvalue view[range.as.rvalue]
+
+struct as_rvalue_fn : public hamon::ranges::range_adaptor_closure<as_rvalue_fn>
+{
+private:
+	// [range.as.rvalue.overview]/2.1
+	template <typename T,
+		typename = hamon::enable_if_t<
+			hamon::same_as_t<
+				hamon::ranges::range_rvalue_reference_t<T>,
+				hamon::ranges::range_reference_t<T>
+			>::value>>
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+			hamon::views::all(hamon::forward<T>(t)))
+
+	// [range.as.rvalue.overview]/2.2
+	template <typename T>
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+			hamon::ranges::make_as_rvalue_view(hamon::forward<T>(t)))
+public:
+	template <typename T>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+	operator()(T&& t) const
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<1>{}))
+};
+
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+
+} // namespace detail
+
+inline namespace cpo
+{
+
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+detail::as_rvalue_fn as_rvalue{};
+
+}	// inline namespace cpo
 
 }	// namespace views
 

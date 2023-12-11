@@ -437,6 +437,24 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	return true;
 }
 
+HAMON_CXX14_CONSTEXPR bool test04()
+{
+	int a[2] = {1, 2};
+	using R = test_input_view<int>;
+	R r(a);
+
+	auto rv1 = r | hamon::views::as_rvalue;
+	static_assert(hamon::same_as_t<decltype(rv1), hamon::ranges::as_rvalue_view<R>>::value, "");
+
+	auto rv2 = r | hamon::views::as_rvalue | hamon::views::as_rvalue;
+	static_assert(hamon::same_as_t<decltype(rv2), hamon::ranges::as_rvalue_view<R>>::value, "");
+
+	auto rv3 = r | (hamon::views::as_rvalue | hamon::views::as_rvalue);
+	static_assert(hamon::same_as_t<decltype(rv3), hamon::ranges::as_rvalue_view<R>>::value, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, AsRvalueViewTest)
@@ -469,6 +487,7 @@ GTEST_TEST(RangesTest, AsRvalueViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace as_rvalue_view_test
