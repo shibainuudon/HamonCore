@@ -8,7 +8,7 @@
 #define HAMON_FUNCTIONAL_HPP
 
 //#include <hamon/functional/bind.hpp>
-//#include <hamon/functional/bind_front.hpp>
+#include <hamon/functional/bind_front.hpp>
 #include <hamon/functional/bit_and.hpp>
 #include <hamon/functional/bit_not.hpp>
 #include <hamon/functional/bit_or.hpp>
