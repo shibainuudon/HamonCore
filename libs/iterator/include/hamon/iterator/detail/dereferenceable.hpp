@@ -29,6 +29,9 @@ concept dereferenceable =
 		{ *t } -> hamon::detail::can_reference;
 	};
 
+template <typename T>
+using dereferenceable_t = hamon::bool_constant<dereferenceable<T>>;
+
 #else
 
 template <typename T>
@@ -51,6 +54,9 @@ public:
 template <typename T>
 using dereferenceable =
 	typename detail::dereferenceable_impl<T>::type;
+
+template <typename T>
+using dereferenceable_t = dereferenceable<T>;
 
 #endif
 

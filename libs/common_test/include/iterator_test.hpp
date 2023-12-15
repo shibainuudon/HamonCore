@@ -58,9 +58,9 @@ struct input_or_output_iterator_wrapper
 {
 	T*	m_ptr;
 	using difference_type = hamon::ptrdiff_t;
-	HAMON_CXX14_CONSTEXPR input_or_output_iterator_wrapper& operator++();
-	HAMON_CXX14_CONSTEXPR void                              operator++(int);
-	HAMON_CXX14_CONSTEXPR T                                 operator*();
+	HAMON_CXX14_CONSTEXPR input_or_output_iterator_wrapper& operator++() { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR void                              operator++(int) { ++m_ptr; }
+	HAMON_CXX14_CONSTEXPR T                                 operator*() { return *m_ptr; }
 };
 
 template <typename T>
