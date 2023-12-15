@@ -4,8 +4,8 @@
  *	@brief	dereferenceable の定義
  */
 
-#ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_DEREFERENCEABLE_HPP
-#define HAMON_ITERATOR_CONCEPTS_DETAIL_DEREFERENCEABLE_HPP
+#ifndef HAMON_ITERATOR_DETAIL_DEREFERENCEABLE_HPP
+#define HAMON_ITERATOR_DETAIL_DEREFERENCEABLE_HPP
 
 #include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/iterator/concepts/detail/is_void_pointer.hpp>
@@ -24,10 +24,9 @@ namespace detail
 
 template <typename T>
 concept dereferenceable =
-	!hamon::detail::is_void_pointer<T>::value &&
 	requires(T& t)
 	{
-		{ *t } -> can_reference;
+		{ *t } -> hamon::detail::can_reference;
 	};
 
 #else
@@ -40,7 +39,7 @@ private:
 		typename = hamon::enable_if_t<!hamon::detail::is_void_pointer<U>::value>,
 		typename U2 = decltype(*hamon::declval<U&>())
 	>
-	static auto test(int) -> detail::can_reference<U2>;
+	static auto test(int) -> hamon::detail::can_reference<U2>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;
@@ -59,4 +58,4 @@ using dereferenceable =
 
 }	// namespace hamon
 
-#endif // HAMON_ITERATOR_CONCEPTS_DETAIL_DEREFERENCEABLE_HPP
+#endif // HAMON_ITERATOR_DETAIL_DEREFERENCEABLE_HPP

@@ -20,7 +20,7 @@ using std::iter_reference_t;
 
 #else
 
-#include <hamon/iterator/concepts/detail/dereferenceable.hpp>
+#include <hamon/iterator/detail/dereferenceable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>

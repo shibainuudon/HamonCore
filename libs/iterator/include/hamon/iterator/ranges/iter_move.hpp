@@ -24,7 +24,7 @@ using std::ranges::iter_move;
 #else
 
 #include <hamon/iterator/iter_reference_t.hpp>
-#include <hamon/iterator/concepts/detail/dereferenceable.hpp>
+#include <hamon/iterator/detail/dereferenceable.hpp>
 #include <hamon/iterator/concepts/detail/is_void_pointer.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/detail/overload_priority.hpp>
