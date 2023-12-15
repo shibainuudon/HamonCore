@@ -72,6 +72,20 @@ HAMON_INLINE_VAR HAMON_CONSTEXPR empty_view<T> empty{};
 }	// namespace ranges
 }	// namespace hamon
 
+#include <hamon/ranges/factories/detail/is_specialization_of_empty_view.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_empty_view の特殊化
+template <typename T>
+struct is_specialization_of_empty_view<hamon::ranges::empty_view<T>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif
 
 #endif // HAMON_RANGES_FACTORIES_EMPTY_VIEW_HPP

@@ -29,6 +29,8 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		memory
 		optional
 		pair
+		span
+		string_view
 		tuple
 		type_traits
 		utility

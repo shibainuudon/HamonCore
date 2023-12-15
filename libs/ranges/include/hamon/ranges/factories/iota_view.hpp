@@ -935,6 +935,20 @@ detail::iota_fn iota{};
 }	// namespace ranges
 }	// namespace hamon
 
+#include <hamon/ranges/factories/detail/is_specialization_of_iota_view.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_iota_view の特殊化
+template <typename W, typename Bound>
+struct is_specialization_of_iota_view<hamon::ranges::iota_view<W, Bound>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif
 
 #endif // HAMON_RANGES_FACTORIES_IOTA_VIEW_HPP

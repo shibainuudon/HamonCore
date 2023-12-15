@@ -1129,6 +1129,20 @@ operator<<(
 
 }	// namespace hamon
 
+#include <hamon/string_view/detail/is_specialization_of_basic_string_view.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_basic_string_view の特殊化
+template <typename CharT, typename Traits>
+struct is_specialization_of_basic_string_view<hamon::basic_string_view<CharT, Traits>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif	// defined(HAMON_USE_STD_STRING_VIEW)
 
 #include <hamon/functional/config.hpp>
