@@ -7,7 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_DEREFERENCEABLE_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_DEREFERENCEABLE_HPP
 
-#include <hamon/concepts/detail/can_reference.hpp>
+#include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/iterator/concepts/detail/is_void_pointer.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>

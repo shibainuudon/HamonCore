@@ -4,8 +4,8 @@
  *	@brief	can_reference の定義
  */
 
-#ifndef HAMON_CONCEPTS_DETAIL_CAN_REFERENCE_HPP
-#define HAMON_CONCEPTS_DETAIL_CAN_REFERENCE_HPP
+#ifndef HAMON_ITERATOR_DETAIL_CAN_REFERENCE_HPP
+#define HAMON_ITERATOR_DETAIL_CAN_REFERENCE_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
@@ -23,6 +23,8 @@ using with_ref = T&;
  *	@brief	Tがlvalue referenceを付けられる型であることを要求するコンセプト
  * 
  *	@note	実質的に、Tがvoidでないことを要求している
+ *
+ *	25.2 Header <iterator> synopsis		[iterator.synopsis]
  */
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -56,4 +58,4 @@ using can_reference =
 
 }	// namespace hamon
 
-#endif // HAMON_CONCEPTS_DETAIL_CAN_REFERENCE_HPP
+#endif // HAMON_ITERATOR_DETAIL_CAN_REFERENCE_HPP

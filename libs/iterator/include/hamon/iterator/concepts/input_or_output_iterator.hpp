@@ -13,7 +13,7 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
-#include <hamon/concepts/detail/can_reference.hpp>
+#include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif

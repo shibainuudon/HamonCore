@@ -7,7 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_ITERATOR_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_ITERATOR_HPP
 
-#include <hamon/concepts/detail/can_reference.hpp>
+#include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
