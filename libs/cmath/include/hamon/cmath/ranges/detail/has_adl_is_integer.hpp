@@ -7,8 +7,8 @@
 #ifndef HAMON_CMATH_RANGES_DETAIL_HAS_ADL_IS_INTEGER_HPP
 #define HAMON_CMATH_RANGES_DETAIL_HAS_ADL_IS_INTEGER_HPP
 
+#include <hamon/cmath/ranges/detail/is_not_void.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
-#include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 
@@ -34,7 +34,7 @@ concept has_adl_is_integer =
 	hamon::detail::class_or_enum<T> &&
 	requires(T const& t)
 	{
-		{ is_integer(t) } -> hamon::detail::can_reference;
+		{ is_integer(t) } -> hamon::detail::is_not_void;
 	};
 
 #else
@@ -48,7 +48,7 @@ private:
 			hamon::detail::class_or_enum<U>::value>,
 		typename S = decltype(is_integer(hamon::declval<U const&>()))
 	>
-	static auto test(int) -> hamon::detail::can_reference<S>;
+	static auto test(int) -> hamon::detail::is_not_void<S>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

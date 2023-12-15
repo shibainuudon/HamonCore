@@ -7,8 +7,8 @@
 #ifndef HAMON_CMATH_RANGES_DETAIL_HAS_ADL_ALMOST_EQUAL_HPP
 #define HAMON_CMATH_RANGES_DETAIL_HAS_ADL_ALMOST_EQUAL_HPP
 
+#include <hamon/cmath/ranges/detail/is_not_void.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
-#include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 
@@ -35,7 +35,7 @@ concept has_adl_almost_equal =
 	 hamon::detail::class_or_enum<T2> ) &&
 	requires(T1 const& x, T2 const& y)
 	{
-		{ almost_equal(x, y) } -> hamon::detail::can_reference;
+		{ almost_equal(x, y) } -> hamon::detail::is_not_void;
 	};
 
 #else
@@ -51,7 +51,7 @@ private:
 		>,
 		typename S = decltype(almost_equal(hamon::declval<U1 const&>(), hamon::declval<U2 const&>()))
 	>
-	static auto test(int) -> hamon::detail::can_reference<S>;
+	static auto test(int) -> hamon::detail::is_not_void<S>;
 
 	template <typename U1, typename U2>
 	static auto test(...) -> hamon::false_type;

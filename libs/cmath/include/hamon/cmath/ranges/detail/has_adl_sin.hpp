@@ -7,8 +7,8 @@
 #ifndef HAMON_CMATH_RANGES_DETAIL_HAS_ADL_SIN_HPP
 #define HAMON_CMATH_RANGES_DETAIL_HAS_ADL_SIN_HPP
 
+#include <hamon/cmath/ranges/detail/is_not_void.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
-#include <hamon/concepts/detail/can_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 
@@ -34,7 +34,7 @@ concept has_adl_sin =
 	hamon::detail::class_or_enum<T> &&
 	requires(T const& t)
 	{
-		{ sin(t) } -> hamon::detail::can_reference;
+		{ sin(t) } -> hamon::detail::is_not_void;
 	};
 
 #else
@@ -48,7 +48,7 @@ private:
 			hamon::detail::class_or_enum<U>::value>,
 		typename S = decltype(sin(hamon::declval<U const&>()))
 	>
-	static auto test(int) -> hamon::detail::can_reference<S>;
+	static auto test(int) -> hamon::detail::is_not_void<S>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;
