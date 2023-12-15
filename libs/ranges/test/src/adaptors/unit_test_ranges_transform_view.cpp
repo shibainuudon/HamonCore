@@ -1213,6 +1213,12 @@ GTEST_TEST(ViewsTest, TransformViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_random_access_borrowed_view, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_contiguous_borrowed_view, Double>()));
 
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_input_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_forward_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_bidirectional_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_random_access_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_contiguous_sized_view, Double>()));
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NoDefaultCtorInputView, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NoDefaultCtorForwardView, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NoDefaultCtorBidirectionalView, Double>()));

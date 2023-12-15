@@ -228,6 +228,20 @@ template <typename T> using test_input_view         = test_view<T, input_iterato
 template <typename T> using test_output_view        = test_view<T, output_iterator_wrapper<T>>;
 
 template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
+struct test_sized_view : public test_sized_range<T, Iterator, Sentinel>
+{
+	using base_t = test_sized_range<T, Iterator, Sentinel>;
+	using base_t::base_t;
+};
+
+template <typename T> using test_contiguous_sized_view    = test_sized_view<T, contiguous_iterator_wrapper<T>>;
+template <typename T> using test_random_access_sized_view = test_sized_view<T, random_access_iterator_wrapper<T>>;
+template <typename T> using test_bidirectional_sized_view = test_sized_view<T, bidirectional_iterator_wrapper<T>>;
+template <typename T> using test_forward_sized_view       = test_sized_view<T, forward_iterator_wrapper<T>>;
+template <typename T> using test_input_sized_view         = test_sized_view<T, input_iterator_wrapper<T>>;
+template <typename T> using test_output_sized_view        = test_sized_view<T, output_iterator_wrapper<T>>;
+
+template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
 struct test_borrowed_view : public test_range<T, Iterator, Sentinel>
 {
 	using base_t = test_range<T, Iterator, Sentinel>;
@@ -274,6 +288,10 @@ HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true,
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
 	hamon_ranges_test::test_view<T, Iterator, Sentinel>);
+
+template <typename T, typename Iterator, typename Sentinel>
+HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
+	hamon_ranges_test::test_sized_view<T, Iterator, Sentinel>);
 
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true,

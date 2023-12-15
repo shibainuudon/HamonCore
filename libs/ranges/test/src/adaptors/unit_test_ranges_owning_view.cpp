@@ -147,8 +147,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(noexcept(hamon::declval<RV const&>().base()), "");
 	static_assert(noexcept(hamon::declval<RV const&&>().base()), "");
 
-	static_assert(has_empty<RV&>::value == hamon::ranges::forward_range_t<R>::value, "");
-	static_assert(has_empty<RV const&>::value == hamon::ranges::forward_range_t<R>::value, "");
+	static_assert(has_empty<RV&>::value ==
+		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range_t<R>::value), "");
+	static_assert(has_empty<RV const&>::value ==
+		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range_t<R>::value), "");
 
 	static_assert(has_size<RV&>::value == hamon::ranges::sized_range_t<R>::value, "");
 	static_assert(has_size<RV const&>::value == hamon::ranges::sized_range_t<R>::value, "");
@@ -284,12 +286,25 @@ GTEST_TEST(RangesTest, OwningViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_range>());
 
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_common_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_common_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_common_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_common_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_common_view>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_output_borrowed_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_borrowed_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_borrowed_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_borrowed_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_borrowed_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_borrowed_range>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_output_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<NoDefaultCtorOutputRange>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<NoDefaultCtorInputRange>());

@@ -477,6 +477,12 @@ GTEST_TEST(RangesTest, AsRvalueViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_borrowed_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_borrowed_view>());
 
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<NotSimpleView>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<NotSimpleViewCommonRange>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<ConstNotView>());
