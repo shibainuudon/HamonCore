@@ -13,6 +13,16 @@ namespace hamon
 namespace detail
 {
 
+/**
+ *	@brief	iterator_traitsを特殊化したかどうかのフラグ
+ * 
+ *	iterator concept の取得の際、iterator_traitsを特殊化しているかどうかで結果が変わる。
+ *	つまり、iterator_traits<T> が primary template かどうかが重要なのだが、
+ *	コンパイラマジックを使わない限り、primary template かどうかを取得することはできない。
+ *	そこで、iterator_traitsを特殊化したかどうかを表すクラステンプレートを作成した。
+ *	独自のイテレータを作成してiterator_traitsを特殊化する際は、
+ *	is_iterator_traits_specializedクラステンプレートも特殊化して、value = true; に設定する。
+ */
 template <typename Iter>
 struct is_iterator_traits_specialized
 {

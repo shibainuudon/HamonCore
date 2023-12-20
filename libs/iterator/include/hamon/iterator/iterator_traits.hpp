@@ -33,6 +33,16 @@ using std::iterator_traits;
 namespace hamon
 {
 
+/**
+ *	@brief	iterator_traits
+ *
+ *	iterator_traits を特殊化する際は、
+ *	is_iterator_traits_specialized も特殊化するのを忘れないこと。
+ *	詳細は is_iterator_traits_specialized のコメントを参照。
+ */
+template <typename Iterator>
+struct iterator_traits;
+
 // primary template
 template <typename Iterator>
 struct iterator_traits

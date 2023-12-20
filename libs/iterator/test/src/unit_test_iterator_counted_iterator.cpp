@@ -465,6 +465,12 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	}
 #endif
 
+	static_assert(hamon::input_iterator_t<CI>::value == hamon::input_iterator_t<I>::value, "");
+	static_assert(hamon::forward_iterator_t<CI>::value == hamon::forward_iterator_t<I>::value, "");
+	static_assert(hamon::bidirectional_iterator_t<CI>::value == hamon::bidirectional_iterator_t<I>::value, "");
+	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(hamon::contiguous_iterator_t<CI>::value == hamon::contiguous_iterator_t<I>::value, "");
+
 	return true;
 }
 
