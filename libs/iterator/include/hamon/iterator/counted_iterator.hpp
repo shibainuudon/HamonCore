@@ -212,7 +212,9 @@ public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::contiguous_iterator, I2, I)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto operator->() const HAMON_NOEXCEPT
-	->decltype(hamon::to_address(hamon::declval<I2>()))
+#if !defined(HAMON_HAS_CXX14_RETURN_TYPE_DEDUCTION)
+	->decltype(hamon::to_address(hamon::declval<I2>()))	// std::to_address が SFINAE friendly でないことがあるので、できるだけエラーにならないように対処
+#endif
 	{
 		// [counted.iter.elem]/3
 		return hamon::to_address(m_current);
