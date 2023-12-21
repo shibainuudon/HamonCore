@@ -374,6 +374,7 @@ private:
 			return hamon::ranges::iter_move(i.m_current);
 		}
 
+#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <HAMON_CONSTRAINED_PARAM_D(hamon::indirectly_swappable, I2, I)>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& x, iterator const& y)
@@ -383,6 +384,7 @@ private:
 			// [range.filter.iterator]/16
 			hamon::ranges::iter_swap(x.m_current, y.m_current);
 		}
+#endif
 #endif
 	};
 
