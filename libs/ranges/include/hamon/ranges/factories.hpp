@@ -11,7 +11,7 @@
 
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/factories/iota_view.hpp>
-//#include <hamon/ranges/factories/istream_view.hpp>
+#include <hamon/ranges/factories/istream_view.hpp>
 #include <hamon/ranges/factories/repeat_view.hpp>
 #include <hamon/ranges/factories/single_view.hpp>
 
