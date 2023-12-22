@@ -467,13 +467,13 @@ public:
 #endif
 
 	HAMON_CXX11_CONSTEXPR explicit
-	filter_view(V base, Pred pred)
+	filter_view(V base, Pred pred_)	// predという名前だと、GCCで"-Wshadow"の警告が出る(なぜかbaseは大丈夫)
 		HAMON_NOEXCEPT_IF(		// noexcept as an extension
 			hamon::is_nothrow_move_constructible<V>::value &&
 			hamon::is_nothrow_move_constructible<Pred>::value)
 		// [range.filter.view]/1
 		: m_base(hamon::move(base))
-		, m_pred(hamon::move(pred))
+		, m_pred(hamon::move(pred_))
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::copy_constructible, V2, V)>
