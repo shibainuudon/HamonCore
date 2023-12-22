@@ -4,8 +4,8 @@
  *	@brief	range_adaptor の定義
  */
 
-#ifndef HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_HPP
-#define HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_HPP
+#ifndef HAMON_RANGES_ADAPTORS_DETAIL_RANGE_ADAPTOR_HPP
+#define HAMON_RANGES_ADAPTORS_DETAIL_RANGE_ADAPTOR_HPP
 
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/concepts/viewable_range.hpp>
@@ -62,4 +62,4 @@ make_range_adaptor(F&& f)
 }	// namespace ranges
 }	// namespace hamon
 
-#endif // HAMON_RANGES_ADAPTORS_RANGE_ADAPTOR_HPP
+#endif // HAMON_RANGES_ADAPTORS_DETAIL_RANGE_ADAPTOR_HPP

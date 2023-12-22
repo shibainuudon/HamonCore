@@ -29,6 +29,7 @@ using std::ranges::views::filter;
 
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
+#include <hamon/ranges/adaptors/detail/cached_value.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
@@ -80,50 +81,6 @@ using std::ranges::views::filter;
 
 namespace hamon {
 namespace ranges {
-
-namespace detail {
-
-template <bool, typename T>
-struct cached_value
-{
-private:
-	bool	m_has_value;
-	T		m_value;
-
-public:
-	HAMON_CXX11_CONSTEXPR
-	cached_value() HAMON_NOEXCEPT
-		: m_has_value(false)
-		, m_value()
-	{}
-
-	HAMON_CXX11_CONSTEXPR bool
-	has_value() const HAMON_NOEXCEPT
-	{
-		return m_has_value;
-	}
-
-	HAMON_CXX11_CONSTEXPR T const&
-	value() const&
-	{
-		return HAMON_ASSERT(m_has_value), m_value;
-	}
-
-	HAMON_CXX14_CONSTEXPR cached_value&
-	operator=(T const& v)
-	{
-		m_has_value = true;
-		m_value = v;
-		return *this;
-	}
-};
-
-template <typename T>
-struct cached_value<false, T>
-{
-};
-
-}	// namespace detail
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <hamon::ranges::input_range V, hamon::indirect_unary_predicate<hamon::ranges::iterator_t<V>> Pred>
