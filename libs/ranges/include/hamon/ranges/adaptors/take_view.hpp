@@ -234,16 +234,16 @@ public:
 #endif
 
 	HAMON_CXX11_CONSTEXPR explicit
-	take_view(V base, hamon::ranges::range_difference_t<V> count)
+	take_view(V base, hamon::ranges::range_difference_t<V> n)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_move_constructible<V>::value)
 		// [range.take.view]/2
 		: m_base(hamon::move(base))
-		, m_count(count)
+		, m_count(n)
 	{
 #if HAMON_CXX_STANDARD >= 14
 		// [range.take.view]/1
-		HAMON_ASSERT(count >= 0);
+		HAMON_ASSERT(n >= 0);
 #endif
 	}
 
@@ -393,9 +393,9 @@ take_view(R&&, hamon::ranges::range_difference_t<R>)
 // extension: deduction guides が使えないときのために追加
 template <typename R>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
-make_take_view(R&& r, hamon::ranges::range_difference_t<R> count)
+make_take_view(R&& r, hamon::ranges::range_difference_t<R> n)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		take_view<hamon::views::all_t<R>>(hamon::forward<R>(r), count))
+		take_view<hamon::views::all_t<R>>(hamon::forward<R>(r), n))
 
 // enable_borrowed_range の特殊化
 template <typename T>
@@ -415,7 +415,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::is_specialization_of_empty_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& /*count*/, hamon::detail::overload_priority<7>)
+	impl(R&& r, N&& /*n*/, hamon::detail::overload_priority<7>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.1
 		hamon::detail::decay_copy(hamon::forward<R>(r)))
@@ -428,13 +428,13 @@ private:
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_span<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<6>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<6>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.2.1
 		hamon::span<typename T::element_type>
 		{
 			hamon::ranges::begin(r),
-			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(count))
+			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(n))
 		})
 
 	template <typename R, typename N,
@@ -445,12 +445,12 @@ private:
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_basic_string_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<5>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<5>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.2.2
 		T {
 			hamon::ranges::begin(r),
-			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(count))
+			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(n))
 		})
 
 	template <typename R, typename N,
@@ -461,13 +461,13 @@ private:
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_subrange<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<4>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<4>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.2.3
 		hamon::ranges::subrange<hamon::ranges::iterator_t<T>>
 		{
 			hamon::ranges::begin(r),
-			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(count))
+			hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(n))
 		})
 
 	template <typename R, typename N,
@@ -478,12 +478,12 @@ private:
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_iota_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<3>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<3>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.3
 		hamon::views::iota(
 			*hamon::ranges::begin(r),
-			*(hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(count)))))
+			*(hamon::ranges::begin(r) + hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(n)))))
 
 	template <typename R, typename N,
 		typename T = hamon::remove_cvref_t<R>,
@@ -492,10 +492,10 @@ private:
 			hamon::detail::is_specialization_of_repeat_view<T>::value &&
 			hamon::ranges::sized_range_t<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<2>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<2>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.4.1
-		hamon::views::repeat(*r.begin(), hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(count))))
+		hamon::views::repeat(*r.begin(), hamon::min<D>(hamon::ranges::distance(r), hamon::forward<N>(n))))
 
 	template <typename R, typename N,
 		typename T = hamon::remove_cvref_t<R>,
@@ -503,17 +503,17 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::is_specialization_of_repeat_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<1>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.4.2
-		hamon::views::repeat(*r.begin(), static_cast<D>(hamon::forward<N>(count))))
+		hamon::views::repeat(*r.begin(), static_cast<D>(hamon::forward<N>(n))))
 
 	template <typename R, typename N>
 	static HAMON_CXX11_CONSTEXPR auto
-	impl(R&& r, N&& count, hamon::detail::overload_priority<0>)
+	impl(R&& r, N&& n, hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		// [range.take.overview]2.5
-		hamon::ranges::make_take_view(hamon::forward<R>(r), hamon::forward<N>(count)))
+		hamon::ranges::make_take_view(hamon::forward<R>(r), hamon::forward<N>(n)))
 
 public:
 	template <
@@ -521,10 +521,10 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
-	operator()(R&& r, N&& count) const
+	operator()(R&& r, N&& n) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(impl(
 		hamon::forward<R>(r),
-		hamon::forward<N>(count),
+		hamon::forward<N>(n),
 		hamon::detail::overload_priority<7>{}))
 
 	template <typename T,
@@ -532,10 +532,10 @@ public:
 			hamon::constructible_from_t<hamon::decay_t<T>, T
 		>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
-	operator()(T&& count) const
+	operator()(T&& n) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::ranges::detail::make_range_adaptor(
-			hamon::bind_back(*this, hamon::forward<T>(count))))
+			hamon::bind_back(*this, hamon::forward<T>(n))))
 };
 
 } // namespace detail
