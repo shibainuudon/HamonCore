@@ -318,24 +318,18 @@ private:
 			hamon::ranges::sized_range_t<V2>::value &&
 			hamon::ranges::random_access_range_t<V2>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
-	end_impl(This* this_, hamon::detail::overload_priority<3>)
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		hamon::ranges::begin(this_->m_base) + hamon::ranges::range_difference_t<V2>(this_->size()))
-
-	template <typename V2, typename This,
-		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range_t<V2>::value>>
-	static HAMON_CXX11_CONSTEXPR hamon::default_sentinel_t
-	end_impl(This* /*this_*/, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
+	end_impl(This* this_, hamon::detail::overload_priority<2>)
+	->decltype(hamon::ranges::begin(hamon::declval<V2&>()))
 	{
-		return hamon::default_sentinel;
+		return hamon::ranges::begin(this_->m_base) + hamon::ranges::range_difference_t<V2>(this_->size());
 	}
 
 	template <typename V2, typename This,
-		typename = hamon::enable_if_t<
+		typename = hamon::enable_if_t<hamon::disjunction<
+			hamon::ranges::sized_range_t<V2>,
 			hamon::sized_sentinel_for_t<
-				hamon::ranges::sentinel_t<V2>, hamon::ranges::iterator_t<V2>
-			>::value>>
+				hamon::ranges::sentinel_t<V2>, hamon::ranges::iterator_t<V2>>
+		>::value>>
 	static HAMON_CXX11_CONSTEXPR hamon::default_sentinel_t
 	end_impl(This* /*this_*/, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 	{
@@ -345,24 +339,25 @@ private:
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
 			hamon::ranges::range_t<V2>::value>>
-	static HAMON_CXX11_CONSTEXPR auto
+	static HAMON_CXX11_CONSTEXPR sentinel<hamon::is_const<V2>::value>
 	end_impl(This* this_, hamon::detail::overload_priority<0>)
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		sentinel<hamon::is_const<V2>::value>
+	{
+		return sentinel<hamon::is_const<V2>::value>
 		{
 			hamon::ranges::end(this_->m_base)
-		})
+		};
+	}
 
 public:
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
-		end_impl<V2>(this, hamon::detail::overload_priority<3>{}))
+		end_impl<V2>(this, hamon::detail::overload_priority<2>{}))
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
-		end_impl<V2>(this, hamon::detail::overload_priority<3>{}))
+		end_impl<V2>(this, hamon::detail::overload_priority<2>{}))
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
