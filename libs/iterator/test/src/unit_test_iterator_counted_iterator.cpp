@@ -420,7 +420,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() >  hamon::declval<CI const>()), bool>::value, "");
 	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() >= hamon::declval<CI const>()), bool>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() <=> hamon::declval<CI const>()), std::strong_ordering>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() <=> hamon::declval<CI const>()), hamon::strong_ordering>::value, "");
 #endif
 
 	// bool operator==(const counted_iterator& x, default_sentinel_t);
