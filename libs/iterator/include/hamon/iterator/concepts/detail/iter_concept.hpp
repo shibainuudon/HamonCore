@@ -9,9 +9,9 @@
 
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/concepts/detail/iter_traits.hpp>
-#include <hamon/iterator/concepts/detail/primary_traits_iter.hpp>
 #include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
 #include <hamon/iterator/concepts/detail/has_iterator_concept.hpp>
+#include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -69,14 +69,14 @@ template <typename Iter>
 requires (
 	!requires { typename detail::iter_traits<Iter>::iterator_concept; } &&
 	!requires { typename detail::iter_traits<Iter>::iterator_category; } &&
-	detail::primary_traits_iter<Iter>)
+	detail::is_iterator_traits_primary<Iter>::value)
 #endif
 struct iter_concept_impl<Iter
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, hamon::enable_if_t<
 		!has_iterator_concept<detail::iter_traits<Iter>>::value &&
 		!has_iterator_category<detail::iter_traits<Iter>>::value &&
-		detail::primary_traits_iter<Iter>::value
+		detail::is_iterator_traits_primary<Iter>::value
 	>
 #endif
 >

@@ -11,6 +11,8 @@
 
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
+#define HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE  std
+
 namespace hamon
 {
 
@@ -20,15 +22,16 @@ using std::indirectly_readable_traits;
 
 #else
 
-#include <hamon/iterator/concepts/detail/has_value_type.hpp>
-#include <hamon/iterator/concepts/detail/has_element_type.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/iterator/detail/has_member_value_type.hpp>
+#include <hamon/iterator/detail/has_member_element_type.hpp>
+#include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_extent.hpp>
-#include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_object.hpp>
-#include <hamon/type_traits/is_const.hpp>
+
+#define HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE  hamon
 
 namespace hamon
 {
@@ -45,38 +48,54 @@ struct cond_value_type<T, true>
 	using value_type = hamon::remove_cv_t<T>;
 };
 
-}	// namespace detail
+template <typename T,
+	bool = hamon::is_array<T>::value,
+	bool = hamon::detail::has_member_value_type_t<T>::value,
+	bool = hamon::detail::has_member_element_type_t<T>::value
+>
+struct indirectly_readable_traits_impl {};
 
-// (1) Primary template
-template <typename I, typename = void>
-struct indirectly_readable_traits {};
-
-// (2) Specialization for pointers
-template <typename T>
-struct indirectly_readable_traits<T*>
-	: public detail::cond_value_type<T> {};
-
-// (3) Specialization for array types
-template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && hamon::is_array<T>::value>>
+template <typename T, bool B1, bool B2>
+struct indirectly_readable_traits_impl<T, true, B1, B2>
 {
 	using value_type = hamon::remove_cv_t<hamon::remove_extent_t<T>>;
 };
 
-// (4) Specialization for const-qualified types
+template <typename T>
+struct indirectly_readable_traits_impl<T, false, true, false>
+	: public hamon::detail::cond_value_type<typename T::value_type> {};
+
+template <typename T>
+struct indirectly_readable_traits_impl<T, false, false, true>
+	: public hamon::detail::cond_value_type<typename T::element_type> {};
+
+template <typename T>
+struct indirectly_readable_traits_impl<T, false, true, true>
+	: public hamon::detail::cond_value_type<
+		hamon::conditional_t<
+			hamon::same_as_t<
+				hamon::remove_cv_t<typename T::element_type>,
+				hamon::remove_cv_t<typename T::value_type>
+			>::value,
+			hamon::remove_cv_t<typename T::value_type>,
+			void
+		>
+	>
+{};
+
+}	// namespace detail
+
+template <typename T>
+struct indirectly_readable_traits
+	: public hamon::detail::indirectly_readable_traits_impl<T> {};
+
+template <typename T>
+struct indirectly_readable_traits<T*>
+	: public hamon::detail::cond_value_type<T> {};
+
 template <typename I>
-struct indirectly_readable_traits<const I>
+struct indirectly_readable_traits<I const>
 	: public indirectly_readable_traits<I> {};
-
-// (5) Specialization for types that define a public and accessible member type value_type
-template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && detail::has_value_type<T>::value>>
-	: public detail::cond_value_type<typename T::value_type> {};
-
-// (6) Specialization for types that define a public and accessible member type element_type
-template <typename T>
-struct indirectly_readable_traits<T, hamon::enable_if_t<!hamon::is_const<T>::value && detail::has_element_type<T>::value>>
-	: public detail::cond_value_type<typename T::element_type> {};
 
 }	// namespace hamon
 

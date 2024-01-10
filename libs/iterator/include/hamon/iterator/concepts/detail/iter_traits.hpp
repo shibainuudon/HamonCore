@@ -7,7 +7,7 @@
 #ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_TRAITS_HPP
 #define HAMON_ITERATOR_CONCEPTS_DETAIL_ITER_TRAITS_HPP
 
-#include <hamon/iterator/concepts/detail/primary_traits_iter.hpp>
+#include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -26,11 +26,11 @@ struct iter_traits_impl
 
 template <typename Iter, typename T>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires detail::primary_traits_iter<Iter>
+requires detail::is_iterator_traits_primary<Iter>::value
 #endif
 struct iter_traits_impl<Iter, T
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<detail::primary_traits_iter<Iter>::value>
+	, hamon::enable_if_t<detail::is_iterator_traits_primary<Iter>::value>
 #endif
 >
 {

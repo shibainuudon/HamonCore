@@ -13,7 +13,6 @@
 #include <hamon/algorithm.hpp>
 #include <hamon/concepts.hpp>
 #include <hamon/iterator.hpp>
-#include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
@@ -25,6 +24,14 @@ namespace hamon_ranges_test
 {
 namespace filter_view_test
 {
+
+template <typename T, typename = void>
+struct has_iterator_category
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
+	: public hamon::true_type {};
 
 template <typename T, typename = void>
 struct has_base
@@ -214,7 +221,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using S = decltype(hamon::declval<RV&>().end());
 	using BI = decltype(hamon::ranges::begin(hamon::declval<V&>()));
 	static_assert(hamon::same_as_t<I, S>::value == hamon::ranges::common_range_t<V>::value, "");
-	static_assert(hamon::detail::has_iterator_category<I>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(has_iterator_category<I>::value == hamon::ranges::forward_range_t<V>::value, "");
 	static_assert(hamon::same_as_t<typename I::value_type, hamon::ranges::range_value_t<V>>::value, "");
 	static_assert(hamon::same_as_t<typename I::difference_type, hamon::ranges::range_difference_t<V>>::value, "");
 	static_assert(hamon::default_initializable_t<I>::value, "");
@@ -281,7 +288,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 		using I = decltype(it);
 		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::bidirectional_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(has_iterator_category<I>::value, "");
 		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 
 		using S = decltype(rv.end());
@@ -327,7 +334,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 		using I = decltype(it);
 		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::forward_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(has_iterator_category<I>::value, "");
 		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::forward_iterator_tag>::value, "");
 
 		using S = decltype(rv.end());
@@ -373,7 +380,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 		using I = decltype(it);
 		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
-		static_assert(!hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(!has_iterator_category<I>::value, "");
 
 		using S = decltype(rv.end());
 		I iter{};

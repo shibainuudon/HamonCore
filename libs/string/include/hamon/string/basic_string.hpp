@@ -29,7 +29,7 @@ using std::basic_string;
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
-#include <hamon/iterator/concepts/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/iterator_traits.hpp>

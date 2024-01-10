@@ -11,6 +11,8 @@
 
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 
+#define HAMON_ITERATOR_TRAITS_NAMESPACE  std
+
 namespace hamon
 {
 
@@ -20,8 +22,7 @@ using std::iterator_traits;
 
 #else
 
-#include <hamon/iterator/concepts/detail/iterator_traits_base.hpp>
-#include <hamon/iterator/concepts/detail/is_iterator_traits_specialized.hpp>
+#include <hamon/iterator/detail/iterator_traits_base.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -30,23 +31,10 @@ using std::iterator_traits;
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/config.hpp>
 
+#define HAMON_ITERATOR_TRAITS_NAMESPACE  hamon
+
 namespace hamon
 {
-
-/**
- *	@brief	iterator_traits
- *
- *	iterator_traits を特殊化する際は、
- *	is_iterator_traits_specialized も特殊化するのを忘れないこと。
- *	詳細は is_iterator_traits_specialized のコメントを参照。
- */
-template <typename Iterator>
-struct iterator_traits;
-
-// primary template
-template <typename Iterator>
-struct iterator_traits
-	: public detail::iterator_traits_base<Iterator> {};
 
 namespace detail
 {
@@ -54,16 +42,35 @@ namespace detail
 template <typename T, typename>
 using enable_iterator_traits_helper = T;
 
+template <typename T>
+struct is_iterator_traits_primary;
+
 }	// namespace detail
 
+// 25.3.2.3 Iterator traits	[iterator.traits]
+
+template <typename I>
+struct iterator_traits
+	: public detail::iterator_traits_base<I>
+{
+private:
+	// iterator_traits<I>が、プライマリテンプレートから生成されたかどうかを判定するためのタグ。
+	// ユーザーがiterator_traitsを特殊化するときに、このタグを *定義してはいけない* 。
+	using primary_template_tag = void;
+	friend hamon::detail::is_iterator_traits_primary<I>;
+};
+
+// [iterator.traits]/5
 template <typename T>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires hamon::is_object<T>::value
-#endif
+struct iterator_traits<T*>
+#else
 struct iterator_traits<
 	detail::enable_iterator_traits_helper<
 		T*,
 		hamon::enable_if_t<hamon::is_object<T>::value>>>
+#endif
 {
 	using iterator_concept  = hamon::contiguous_iterator_tag;
 	using iterator_category = hamon::random_access_iterator_tag;
@@ -72,20 +79,6 @@ struct iterator_traits<
 	using pointer	        = T*;
 	using reference	        = T&;
 };
-
-namespace detail
-{
-
-template <typename T>
-struct is_iterator_traits_specialized<
-	detail::enable_iterator_traits_helper<
-		T*,
-		hamon::enable_if_t<hamon::is_object<T>::value>>>
-{
-	static const bool value = true;
-};
-
-}	// namespace detail
 
 }	// namespace hamon
 

@@ -1,13 +1,13 @@
 ﻿/**
- *	@file	cpp17_randacc_iterator.hpp
+ *	@file	cpp17_random_access_iterator.hpp
  *
- *	@brief	cpp17_randacc_iterator の定義
+ *	@brief	cpp17_random_access_iterator の定義
  */
 
-#ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_RANDACC_ITERATOR_HPP
-#define HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_RANDACC_ITERATOR_HPP
+#ifndef HAMON_ITERATOR_DETAIL_CPP17_RANDOM_ACCESS_ITERATOR_HPP
+#define HAMON_ITERATOR_DETAIL_CPP17_RANDOM_ACCESS_ITERATOR_HPP
 
-#include <hamon/iterator/concepts/detail/cpp17_bidi_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_bidirectional_iterator.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
@@ -25,34 +25,39 @@ namespace hamon
 namespace detail
 {
 
+// [iterator.traits]/2
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-template <typename Iter>
-concept cpp17_randacc_iterator =
-	cpp17_bidi_iterator<Iter> &&
-	hamon::totally_ordered<Iter> &&
-	requires(Iter it, typename hamon::incrementable_traits<Iter>::difference_type n)
+template <typename I>
+concept cpp17_random_access_iterator =
+	cpp17_bidirectional_iterator<I> &&
+	hamon::totally_ordered<I> &&
+	requires(I i, typename hamon::incrementable_traits<I>::difference_type n)
 	{
-		{ it += n } -> hamon::same_as<Iter&>;
-		{ it -= n } -> hamon::same_as<Iter&>;
-		{ it +  n } -> hamon::same_as<Iter>;
-		{ n +  it } -> hamon::same_as<Iter>;
-		{ it -  n } -> hamon::same_as<Iter>;
-		{ it - it } -> hamon::same_as<decltype(n)>;
-		{  it[n]  } -> hamon::convertible_to<hamon::iter_reference_t<Iter>>;
+		{ i += n } -> hamon::same_as<I&>;
+		{ i -= n } -> hamon::same_as<I&>;
+		{ i +  n } -> hamon::same_as<I>;
+		{ n +  i } -> hamon::same_as<I>;
+		{ i -  n } -> hamon::same_as<I>;
+		{ i - i } -> hamon::same_as<decltype(n)>;
+		{  i[n]  } -> hamon::convertible_to<hamon::iter_reference_t<I>>;
 	};
+
+template <typename T>
+using cpp17_random_access_iterator_t = hamon::bool_constant<cpp17_random_access_iterator<T>>;
 
 #else
 
-namespace cpp17_randacc_iterator_detail
+namespace cpp17_random_access_iterator_detail
 {
 
-template <typename Iter>
-struct cpp17_randacc_iterator_impl
+template <typename I>
+struct cpp17_random_access_iterator_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<cpp17_bidi_iterator<I2>::value>,
+		typename = hamon::enable_if_t<cpp17_bidirectional_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>::value>,
 		typename D = typename hamon::incrementable_traits<I2>::difference_type,
 		typename T1 = decltype(hamon::declval<I2&>() += hamon::declval<D& >()),
@@ -77,27 +82,22 @@ private:
 	static auto test(...) -> hamon::false_type;
 
 public:
-	using type = decltype(test<Iter>(0));
+	using type = decltype(test<I>(0));
 };
 
-}	// namespace cpp17_randacc_iterator_detail
+}	// namespace cpp17_random_access_iterator_detail
 
-template <typename Iter>
-using cpp17_randacc_iterator =
-	typename cpp17_randacc_iterator_detail::cpp17_randacc_iterator_impl<Iter>::type;
+template <typename I>
+using cpp17_random_access_iterator =
+	typename cpp17_random_access_iterator_detail::cpp17_random_access_iterator_impl<I>::type;
 
-#endif
+template <typename T>
+using cpp17_random_access_iterator_t = cpp17_random_access_iterator<T>;
 
-template <typename Iter>
-using cpp17_randacc_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_randacc_iterator<Iter>>;
-#else
-	hamon::detail::cpp17_randacc_iterator<Iter>;
 #endif
 
 }	// namespace detail
 
 }	// namespace hamon
 
-#endif // HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_RANDACC_ITERATOR_HPP
+#endif // HAMON_ITERATOR_DETAIL_CPP17_RANDOM_ACCESS_ITERATOR_HPP

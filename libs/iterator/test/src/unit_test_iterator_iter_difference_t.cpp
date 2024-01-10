@@ -5,15 +5,14 @@
  */
 
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/incrementable_traits.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/vector.hpp>
 
-namespace hamon_iterator_test
-{
-
-namespace iter_difference_t_test
-{
+namespace hamon_iterator_test {
+namespace iter_difference_t_test {
 
 template <typename T>
 struct have_difference 
@@ -23,11 +22,41 @@ struct have_difference
 
 struct can_difference
 {
-	friend auto operator-(can_difference const&, can_difference const&) -> char
+	friend auto operator-(can_difference const&, can_difference const&) -> unsigned char
 	{
 		return 0;
 	}
 };
+
+struct my_iterator_1
+{
+};
+
+struct my_iterator_2
+{
+};
+
+}	// namespace iter_difference_t_test
+}	// namespace hamon_iterator_test
+
+// incrementable_traits<my_iterator_1> の特殊化
+template <>
+struct HAMON_INCREMENTABLE_TRAITS_NAMESPACE::incrementable_traits<
+	hamon_iterator_test::iter_difference_t_test::my_iterator_1>
+{
+	using difference_type = unsigned int;
+};
+
+// iterator_traits<my_iterator_2> の特殊化
+template <>
+struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+	hamon_iterator_test::iter_difference_t_test::my_iterator_2>
+{
+	using difference_type = signed short;
+};
+
+namespace hamon_iterator_test {
+namespace iter_difference_t_test {
 
 using T = int;
 
@@ -54,7 +83,8 @@ static_assert(hamon::is_same<hamon::iter_difference_t<have_difference <T      > 
 static_assert(hamon::is_same<hamon::iter_difference_t<have_difference <T const> const>, T const>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<can_difference      >, signed char>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<can_difference const>, signed char>::value, "");
+static_assert(hamon::is_same<hamon::iter_difference_t<my_iterator_1>, unsigned int>::value, "");
+static_assert(hamon::is_same<hamon::iter_difference_t<my_iterator_2>, signed short>::value, "");
 
 }	// namespace iter_difference_t_test
-
 }	// namespace hamon_iterator_test

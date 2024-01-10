@@ -13,7 +13,6 @@
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator.hpp>
-#include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
@@ -25,6 +24,14 @@ namespace hamon_ranges_test
 {
 namespace iota_view_test
 {
+
+template <typename T, typename = void>
+struct has_iterator_category
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
+	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -474,7 +481,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::random_access_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -508,7 +515,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::random_access_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -542,7 +549,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::random_access_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -583,7 +590,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
-		static_assert(!hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(!has_iterator_category<I>::value, "");
 		static_assert(!hamon::is_default_constructible<I>::value, "");
 		static_assert(!hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), void>::value, "");
@@ -617,7 +624,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
-		static_assert(!hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(!has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), void>::value, "");
@@ -651,7 +658,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
-		static_assert(!hamon::detail::has_iterator_category<I>::value, "");
+		static_assert(!has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), void>::value, "");
@@ -692,7 +699,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::forward_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -733,7 +740,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::bidirectional_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -774,7 +781,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 
 		using I = decltype(hamon::declval<V>().begin());
 		static_assert( hamon::is_same<typename I::iterator_concept, hamon::random_access_iterator_tag>::value, "");
-		static_assert( hamon::detail::has_iterator_category<I>::value, "");
+		static_assert( has_iterator_category<I>::value, "");
 		static_assert( hamon::is_default_constructible<I>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<I>::value, "");
 		static_assert( hamon::is_same<decltype(hamon::declval<I>()++), I>::value, "");
@@ -846,7 +853,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert( hamon::detail::has_iterator_category<I>::value, "");
+	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
 	static_assert( hamon::signed_integral_t<typename I::difference_type>::value, "");
@@ -887,7 +894,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert( hamon::detail::has_iterator_category<I>::value, "");
+	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
 	static_assert( hamon::signed_integral_t<typename I::difference_type>::value, "");
@@ -949,7 +956,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert( hamon::detail::has_iterator_category<I>::value, "");
+	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, random_access_iterator_wrapper<int>>::value, "");
 	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<random_access_iterator_wrapper<int>>>::value, "");
@@ -987,7 +994,7 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 	static_assert(!ranges::random_access_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert( hamon::detail::has_iterator_category<I>::value, "");
+	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, bidirectional_iterator_wrapper<int>>::value, "");
 	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<bidirectional_iterator_wrapper<int>>>::value, "");
@@ -1008,7 +1015,7 @@ inline HAMON_CXX14_CONSTEXPR bool test06()
 	static_assert(!ranges::bidirectional_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert( hamon::detail::has_iterator_category<I>::value, "");
+	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, forward_iterator_wrapper<int>>::value, "");
 	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<forward_iterator_wrapper<int>>>::value, "");
@@ -1029,7 +1036,7 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 	static_assert(!ranges::forward_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
-	static_assert(!hamon::detail::has_iterator_category<I>::value, "");
+	static_assert(!has_iterator_category<I>::value, "");
 	//static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, input_iterator_wrapper<int>>::value, "");
 	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<input_iterator_wrapper<int>>>::value, "");

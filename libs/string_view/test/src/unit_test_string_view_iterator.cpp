@@ -5,7 +5,7 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
-#include <hamon/iterator/concepts/detail/cpp17_randacc_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_random_access_iterator.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -211,7 +211,7 @@ TYPED_TEST(StringViewTest, IteratorTest)
 	using string_view = hamon::basic_string_view<CharT>;
 
 	using const_iterator = typename string_view::const_iterator;
-	static_assert(hamon::detail::cpp17_randacc_iterator_t<const_iterator>::value, "[string.view.iterators]/1");
+	static_assert(hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "[string.view.iterators]/1");
 	static_assert(hamon::contiguous_iterator_t<const_iterator>::value, "[string.view.iterators]/1");
 
 	using iterator_value_type = hamon::iter_value_t<const_iterator>;

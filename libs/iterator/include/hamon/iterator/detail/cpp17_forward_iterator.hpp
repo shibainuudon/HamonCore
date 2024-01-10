@@ -1,13 +1,13 @@
 ﻿/**
- *	@file	cpp17_fwd_iterator.hpp
+ *	@file	cpp17_forward_iterator.hpp
  *
- *	@brief	cpp17_fwd_iterator の定義
+ *	@brief	cpp17_forward_iterator の定義
  */
 
-#ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_FWD_ITERATOR_HPP
-#define HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_FWD_ITERATOR_HPP
+#ifndef HAMON_ITERATOR_DETAIL_CPP17_FORWARD_ITERATOR_HPP
+#define HAMON_ITERATOR_DETAIL_CPP17_FORWARD_ITERATOR_HPP
 
-#include <hamon/iterator/concepts/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
 #include <hamon/concepts/constructible_from.hpp>
@@ -27,30 +27,35 @@ namespace hamon
 namespace detail
 {
 
+// [iterator.traits]/2
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-template <typename Iter>
-concept cpp17_fwd_iterator =
-	cpp17_input_iterator<Iter> &&
-	hamon::constructible_from<Iter> &&
-	hamon::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
+template <typename I>
+concept cpp17_forward_iterator =
+	cpp17_input_iterator<I> &&
+	hamon::constructible_from<I> &&
+	hamon::is_lvalue_reference<hamon::iter_reference_t<I>>::value &&
 	hamon::same_as<
-		hamon::remove_cvref_t<hamon::iter_reference_t<Iter>>,
-		typename hamon::indirectly_readable_traits<Iter>::value_type
+		hamon::remove_cvref_t<hamon::iter_reference_t<I>>,
+		typename hamon::indirectly_readable_traits<I>::value_type
 	> &&
-	requires(Iter it)
+	requires(I i)
 	{
-		{  it++ } -> hamon::convertible_to<Iter const&>;
-		{ *it++ } -> hamon::same_as<hamon::iter_reference_t<Iter>>;
+		{  i++ } -> hamon::convertible_to<I const&>;
+		{ *i++ } -> hamon::same_as<hamon::iter_reference_t<I>>;
 	};
+
+template <typename T>
+using cpp17_forward_iterator_t = hamon::bool_constant<cpp17_forward_iterator<T>>;
 
 #else
 
-namespace cpp17_fwd_iterator_detail
+namespace cpp17_forward_iterator_detail
 {
 
-template <typename Iter>
-struct cpp17_fwd_iterator_impl
+template <typename I>
+struct cpp17_forward_iterator_impl
 {
 private:
 	template <typename I2,
@@ -74,14 +79,17 @@ private:
 	static auto test(...) -> hamon::false_type;
 
 public:
-	using type = decltype(test<Iter>(0));
+	using type = decltype(test<I>(0));
 };
 
-}	// namespace cpp17_fwd_iterator_detail
+}	// namespace cpp17_forward_iterator_detail
 
-template <typename Iter>
-using cpp17_fwd_iterator =
-	typename cpp17_fwd_iterator_detail::cpp17_fwd_iterator_impl<Iter>::type;
+template <typename I>
+using cpp17_forward_iterator =
+	typename cpp17_forward_iterator_detail::cpp17_forward_iterator_impl<I>::type;
+
+template <typename T>
+using cpp17_forward_iterator_t = cpp17_forward_iterator<T>;
 
 #endif
 
@@ -89,4 +97,4 @@ using cpp17_fwd_iterator =
 
 }	// namespace hamon
 
-#endif // HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_FWD_ITERATOR_HPP
+#endif // HAMON_ITERATOR_DETAIL_CPP17_FORWARD_ITERATOR_HPP

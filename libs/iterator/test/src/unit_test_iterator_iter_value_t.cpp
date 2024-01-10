@@ -5,15 +5,14 @@
  */
 
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/iterator/indirectly_readable_traits.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/vector.hpp>
 #include "constexpr_test.hpp"
 
-namespace hamon_iterator_test
-{
-
-namespace iter_value_t_test
-{
+namespace hamon_iterator_test {
+namespace iter_value_t_test {
 
 template <typename T>
 struct have_value
@@ -26,6 +25,36 @@ struct have_element
 {
 	using element_type = T;
 };
+
+struct my_iterator_1
+{
+};
+
+struct my_iterator_2
+{
+};
+
+}	// namespace iter_value_t_test
+}	// namespace hamon_iterator_test
+
+// indirectly_readable_traits<my_iterator_1> の特殊化
+template <>
+struct HAMON_INDIRECTLY_READABLE_TRAITS_NAMESPACE::indirectly_readable_traits<
+	hamon_iterator_test::iter_value_t_test::my_iterator_1>
+{
+	using value_type = long const;
+};
+
+// iterator_traits<my_iterator_2> の特殊化
+template <>
+struct HAMON_ITERATOR_TRAITS_NAMESPACE::iterator_traits<
+	hamon_iterator_test::iter_value_t_test::my_iterator_2>
+{
+	using value_type = char const;
+};
+
+namespace hamon_iterator_test {
+namespace iter_value_t_test {
 
 using T = int;
 
@@ -62,7 +91,8 @@ static_assert(hamon::is_same<hamon::iter_value_t<have_element<T      >      >, T
 static_assert(hamon::is_same<hamon::iter_value_t<have_element<T const>      >, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<have_element<T      > const>, T>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<have_element<T const> const>, T>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<my_iterator_1>, long const>::value, "");
+static_assert(hamon::is_same<hamon::iter_value_t<my_iterator_2>, char const>::value, "");
 
 }	// namespace iter_value_t_test
-
 }	// namespace hamon_iterator_test

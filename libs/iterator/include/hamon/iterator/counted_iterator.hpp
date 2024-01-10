@@ -29,7 +29,6 @@ using std::counted_iterator;
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/indirectly_swappable.hpp>
 #include <hamon/iterator/concepts/detail/iter_traits.hpp>
-#include <hamon/iterator/concepts/detail/is_iterator_traits_specialized.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
@@ -580,23 +579,6 @@ struct iterator_traits<
 			void
 	>;
 };
-
-namespace detail
-{
-
-template <typename I>
-struct is_iterator_traits_specialized<
-	detail::enable_iterator_traits_helper<
-		counted_iterator<I>,
-		hamon::enable_if_t<hamon::conjunction<
-			hamon::input_iterator_t<I>,
-			hamon::same_as_t<hamon::detail::iter_traits<I>, iterator_traits<I>>
-		>::value>>> : iterator_traits<I>
-{
-	static const bool value = true;
-};
-
-}	// namespace detail
 
 }	// namespace hamon
 

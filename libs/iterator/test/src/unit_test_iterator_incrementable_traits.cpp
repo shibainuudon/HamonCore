@@ -35,7 +35,7 @@ struct X
 
 struct Y
 {
-	friend auto operator-(Y const&, Y const&) -> char
+	friend auto operator-(Y const&, Y const&) -> unsigned char
 	{
 		return 0;
 	}
@@ -43,6 +43,9 @@ struct Y
 
 struct Z 
 {
+	friend auto operator-(Z const&, Z const&) -> void
+	{
+	}
 };
 
 using T = int;

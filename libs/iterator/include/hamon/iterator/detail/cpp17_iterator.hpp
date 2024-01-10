@@ -4,8 +4,8 @@
  *	@brief	cpp17_iterator の定義
  */
 
-#ifndef HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_ITERATOR_HPP
-#define HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_ITERATOR_HPP
+#ifndef HAMON_ITERATOR_DETAIL_CPP17_ITERATOR_HPP
+#define HAMON_ITERATOR_DETAIL_CPP17_ITERATOR_HPP
 
 #include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -21,24 +21,29 @@ namespace hamon
 namespace detail
 {
 
+// [iterator.traits]/2
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
-template <typename Iter>
+template <typename I>
 concept cpp17_iterator =
-	requires(Iter it)
+	requires(I i)
 	{
-		{ *it } -> hamon::detail::can_reference;
-		{ ++it } -> hamon::same_as<Iter&>;
-		{ *it++ } -> hamon::detail::can_reference;
+		{ *i } -> hamon::detail::can_reference;
+		{ ++i } -> hamon::same_as<I&>;
+		{ *i++ } -> hamon::detail::can_reference;
 	} &&
-	hamon::copyable<Iter>;
+	hamon::copyable<I>;
+
+template <typename T>
+using cpp17_iterator_t = hamon::bool_constant<cpp17_iterator<T>>;
 
 #else
 
 namespace cpp17_iterator_detail
 {
 
-template <typename Iter>
+template <typename I>
 struct cpp17_iterator_impl
 {
 private:
@@ -58,14 +63,17 @@ private:
 	static auto test(...) -> hamon::false_type;
 
 public:
-	using type = decltype(test<Iter>(0));
+	using type = decltype(test<I>(0));
 };
 
 }	// namespace cpp17_iterator_detail
 
-template <typename Iter>
+template <typename I>
 using cpp17_iterator =
-	typename cpp17_iterator_detail::cpp17_iterator_impl<Iter>::type;
+	typename cpp17_iterator_detail::cpp17_iterator_impl<I>::type;
+
+template <typename T>
+using cpp17_iterator_t = cpp17_iterator<T>;
 
 #endif
 
@@ -73,4 +81,4 @@ using cpp17_iterator =
 
 }	// namespace hamon
 
-#endif // HAMON_ITERATOR_CONCEPTS_DETAIL_CPP17_ITERATOR_HPP
+#endif // HAMON_ITERATOR_DETAIL_CPP17_ITERATOR_HPP
