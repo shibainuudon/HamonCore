@@ -15,7 +15,8 @@
 // そのため、C++バージョンで判定するしかない。
 #if HAMON_CXX_STANDARD >= 20 &&	\
 	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)) &&	\
-	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000)) &&	\
+	defined(__cpp_lib_three_way_comparison) && (__cpp_lib_three_way_comparison >= 201907)	// std::char_traits::comparison_category
 #  define HAMON_USE_STD_CHAR_TRAITS
 #endif
 
