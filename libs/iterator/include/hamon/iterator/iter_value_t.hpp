@@ -20,9 +20,11 @@ using std::iter_value_t;
 
 #else
 
-#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
-#include <hamon/iterator/concepts/detail/iter_traits.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 
 namespace hamon
 {
@@ -30,12 +32,16 @@ namespace hamon
 namespace detail
 {
 
-template <typename T>
+template <typename RI>
 using iter_value_t_impl =
-	typename detail::iter_traits<T, hamon::indirectly_readable_traits<T>>::value_type;
+	typename hamon::conditional_t<hamon::detail::is_iterator_traits_primary<RI>::value,
+		hamon::indirectly_readable_traits<RI>,	// [readable.traits]2.1
+		hamon::iterator_traits<RI>				// [readable.traits]2.2
+	>::value_type;
 
 }	// namespace detail
 
+// [readable.traits]/2
 template <typename T>
 using iter_value_t = detail::iter_value_t_impl<hamon::remove_cvref_t<T>>;
 
