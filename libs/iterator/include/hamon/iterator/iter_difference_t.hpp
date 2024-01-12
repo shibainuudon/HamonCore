@@ -20,9 +20,11 @@ using std::iter_difference_t;
 
 #else
 
-#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
-#include <hamon/iterator/concepts/detail/iter_traits.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 
 namespace hamon
 {
@@ -30,14 +32,18 @@ namespace hamon
 namespace detail
 {
 
-template <typename T>
-using iter_diff_t_impl =
-	typename detail::iter_traits<T, hamon::incrementable_traits<T>>::difference_type;
+template <typename RI>
+using iter_difference_t_impl =
+	typename hamon::conditional_t<hamon::detail::is_iterator_traits_primary<RI>::value,
+		hamon::incrementable_traits<RI>,	// [incrementable.traits]2.1
+		hamon::iterator_traits<RI>			// [incrementable.traits]2.2
+	>::difference_type;
 
 }	// namespace detail
 
+// [incrementable.traits]/2
 template <typename T>
-using iter_difference_t = detail::iter_diff_t_impl<hamon::remove_cvref_t<T>>;
+using iter_difference_t = detail::iter_difference_t_impl<hamon::remove_cvref_t<T>>;
 
 }	// namespace hamon
 
