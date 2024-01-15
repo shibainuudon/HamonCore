@@ -12,34 +12,32 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 
+// 25.3.4.1 General[iterator.concepts.general]
+
 namespace hamon
 {
 
 namespace detail
 {
 
-template <typename Iter, typename T, typename = void>
+// [iterator.concepts.general]/1
+
+template <typename I, typename = void>
 struct iter_traits_impl
 {
-	using type = hamon::iterator_traits<Iter>;
+	using type = hamon::iterator_traits<I>;
 };
 
-template <typename Iter, typename T>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires detail::is_iterator_traits_primary<Iter>::value
-#endif
-struct iter_traits_impl<Iter, T
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<detail::is_iterator_traits_primary<Iter>::value>
-#endif
->
+template <typename I>
+struct iter_traits_impl<I,
+	hamon::enable_if_t<detail::is_iterator_traits_primary<I>::value>>
 {
-	using type = T;
+	using type = I;
 };
 
-// ITER_TRAITS
-template <typename Iter, typename T = Iter>
-using iter_traits = typename iter_traits_impl<Iter, T>::type;
+// ITER_TRAITS(I)
+template <typename I>
+using iter_traits = typename iter_traits_impl<I>::type;
 
 }	// namespace detail
 

@@ -9,12 +9,13 @@
 
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/concepts/detail/iter_traits.hpp>
-#include <hamon/iterator/concepts/detail/has_iterator_category.hpp>
-#include <hamon/iterator/concepts/detail/has_iterator_concept.hpp>
 #include <hamon/iterator/detail/is_iterator_traits_primary.hpp>
-#include <hamon/type_traits/void_t.hpp>
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/type_identity.hpp>
 #include <hamon/config.hpp>
+
+// 25.3.4.1 General[iterator.concepts.general]
 
 namespace hamon
 {
@@ -22,78 +23,39 @@ namespace hamon
 namespace detail
 {
 
-namespace iter_concept_detail
-{
-
-template <typename Iter, typename = void>
-struct iter_concept_impl;
-
-// ITER_CONCEPT(I) is ITER_TRAITS(I)::iterator_concept if that is valid.
-template <typename Iter>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires requires { typename detail::iter_traits<Iter>::iterator_concept; }
-#endif
-struct iter_concept_impl<Iter
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<
-		has_iterator_concept<detail::iter_traits<Iter>>::value
-	>
-#endif
->
-{
-	using type = typename detail::iter_traits<Iter>::iterator_concept;
-};
-
-// Otherwise, ITER_TRAITS(I)::iterator_category if that is valid.
-template <typename Iter>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires (
-	!requires { typename detail::iter_traits<Iter>::iterator_concept; } &&
-	 requires { typename detail::iter_traits<Iter>::iterator_category; })
-#endif
-struct iter_concept_impl<Iter
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<
-		!has_iterator_concept<detail::iter_traits<Iter>>::value &&
-		 has_iterator_category<detail::iter_traits<Iter>>::value
-	>
-#endif
->
-{
-	using type = typename detail::iter_traits<Iter>::iterator_category;
-};
-
-// Otherwise, random_access_tag if iterator_traits<I> is not specialized.
-template <typename Iter>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-requires (
-	!requires { typename detail::iter_traits<Iter>::iterator_concept; } &&
-	!requires { typename detail::iter_traits<Iter>::iterator_category; } &&
-	detail::is_iterator_traits_primary<Iter>::value)
-#endif
-struct iter_concept_impl<Iter
-#if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	, hamon::enable_if_t<
-		!has_iterator_concept<detail::iter_traits<Iter>>::value &&
-		!has_iterator_category<detail::iter_traits<Iter>>::value &&
-		detail::is_iterator_traits_primary<Iter>::value
-	>
-#endif
->
-{
-	using type = hamon::random_access_iterator_tag;
-};
-
-// Otherwise, there is no ITER_CONCEPT(I) type.
-template <typename Iter, typename>
+template <typename I>
 struct iter_concept_impl
-{};
+{
+private:
+	// [iterator.concepts.general]/1.1
+	template <typename I2,
+		typename R = typename hamon::detail::iter_traits<I2>::iterator_concept>
+	static auto test(hamon::detail::overload_priority<2>)
+		-> hamon::type_identity<R>;
 
-}	// namespace iter_concept_detail
+	// [iterator.concepts.general]/1.2
+	template <typename I2,
+		typename R = typename hamon::detail::iter_traits<I2>::iterator_category>
+	static auto test(hamon::detail::overload_priority<1>)
+		-> hamon::type_identity<R>;
 
-// ITER_CONCEPT
-template <typename Iter>
-using iter_concept = typename iter_concept_detail::iter_concept_impl<Iter>::type;
+	// [iterator.concepts.general]/1.3
+	template <typename I2,
+		typename = typename hamon::enable_if_t<
+			detail::is_iterator_traits_primary<I2>::value>>
+	static auto test(hamon::detail::overload_priority<0>)
+		-> hamon::type_identity<hamon::random_access_iterator_tag>;
+
+	// [iterator.concepts.general]/1.4
+	// does not denote a type.
+
+public:
+	using type = typename decltype(test<I>(hamon::detail::overload_priority<2>{}))::type;
+};
+
+// ITER_CONCEPT(I)
+template <typename I>
+using iter_concept = typename iter_concept_impl<I>::type;
 
 }	// namespace detail
 
