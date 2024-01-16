@@ -22,17 +22,19 @@ using std::make_reverse_iterator;
 
 #else
 
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-// make_reverse_iterator
+// [reverse.iter.nonmember]/7
 template <typename Iterator>
-inline HAMON_CONSTEXPR hamon::reverse_iterator<Iterator>
-make_reverse_iterator(Iterator it)
+HAMON_CXX11_CONSTEXPR hamon::reverse_iterator<Iterator>
+make_reverse_iterator(Iterator i)
+HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iterator>::value)
 {
-	return hamon::reverse_iterator<Iterator>(it);
+	return hamon::reverse_iterator<Iterator>(i);
 }
 
 }	// namespace hamon
