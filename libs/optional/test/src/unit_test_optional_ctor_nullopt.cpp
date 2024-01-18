@@ -52,8 +52,8 @@ GTEST_TEST(OptionalTest, CtorNulloptTest)
 		hamon::optional<NoConstexprDefaultCtor> o = hamon::nullopt;
 		EXPECT_FALSE(o.has_value());
 #else
-		HAMON_CXX17_CONSTEXPR hamon::optional<NoConstexprDefaultCtor> o = hamon::nullopt;
-		HAMON_CXX17_CONSTEXPR_EXPECT_FALSE(o.has_value());
+		HAMON_CXX20_CONSTEXPR hamon::optional<NoConstexprDefaultCtor> o = hamon::nullopt;
+		HAMON_CXX20_CONSTEXPR_EXPECT_FALSE(o.has_value());
 #endif
 	}
 	{

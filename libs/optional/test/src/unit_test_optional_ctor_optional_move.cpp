@@ -84,10 +84,10 @@ GTEST_TEST(OptionalTest, CtorOptionalMoveTest)
 		EXPECT_TRUE(o2->n == 42);
 	}
 	{
-		HAMON_CXX20_CONSTEXPR hamon::optional<short> o1{(short)13};
-		HAMON_CXX20_CONSTEXPR hamon::optional<int> o2 {hamon::move(o1)};
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(o2.has_value());
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(*o2 == 13);
+		HAMON_CXX14_CONSTEXPR hamon::optional<short> o1{(short)13};
+		HAMON_CXX14_CONSTEXPR hamon::optional<int> o2 {hamon::move(o1)};
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(o2.has_value());
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(*o2 == 13);
 	}
 }
 

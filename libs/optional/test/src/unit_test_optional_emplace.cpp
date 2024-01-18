@@ -203,8 +203,8 @@ void ThrowOnCtorTest()
 
 GTEST_TEST(OptionalTest, EmplaceTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test2()));
 
 	// *this contains a value
 	{
