@@ -11,6 +11,8 @@
 
 #if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907)
 
+#define HAMON_USE_STD_CONSTRUCT_AT
+
 namespace hamon
 {
 
