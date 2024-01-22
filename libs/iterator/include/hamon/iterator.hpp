@@ -30,6 +30,8 @@
 #include <hamon/iterator/empty.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/front_insert_iterator.hpp>
+#include <hamon/iterator/front_inserter.hpp>
 #include <hamon/iterator/incrementable_traits.hpp>
 #include <hamon/iterator/indirectly_readable_traits.hpp>
 #include <hamon/iterator/indirect_result_t.hpp>
