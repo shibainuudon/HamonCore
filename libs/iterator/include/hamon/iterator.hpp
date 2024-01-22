@@ -15,7 +15,7 @@
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/cbegin.hpp>
 #include <hamon/iterator/cend.hpp>
-//#include <hamon/iterator/common_iterator.hpp>
+#include <hamon/iterator/common_iterator.hpp>
 #include <hamon/iterator/concepts.hpp>
 #include <hamon/iterator/config.hpp>
 #include <hamon/iterator/const_iterator.hpp>
@@ -57,7 +57,6 @@
 #include <hamon/iterator/move_iterator.hpp>
 #include <hamon/iterator/move_sentinel.hpp>
 #include <hamon/iterator/next.hpp>
-//#include <hamon/iterator/normal_iterator.hpp>
 //#include <hamon/iterator/ostreambuf_iterator.hpp>
 //#include <hamon/iterator/ostream_iterator.hpp>
 #include <hamon/iterator/output_iterator_tag.hpp>
@@ -71,6 +70,5 @@
 #include <hamon/iterator/size.hpp>
 #include <hamon/iterator/ssize.hpp>
 #include <hamon/iterator/unreachable_sentinel_t.hpp>
-//#include <hamon/iterator/unwrap_iterator.hpp>
 
 #endif // HAMON_ITERATOR_HPP
