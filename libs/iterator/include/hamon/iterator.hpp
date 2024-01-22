@@ -8,6 +8,7 @@
 #define HAMON_ITERATOR_HPP
 
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/back_insert_iterator.hpp>
 #include <hamon/iterator/back_inserter.hpp>
 #include <hamon/iterator/basic_const_iterator.hpp>
 #include <hamon/iterator/begin.hpp>
