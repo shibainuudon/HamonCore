@@ -31,7 +31,7 @@ using std::to_string;
 #include <hamon/limits.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/config.hpp>
-#include <cstdio>	// sprintf
+#include <cstdio>	// snprintf
 
 namespace hamon
 {
@@ -79,18 +79,14 @@ HAMON_CXX11_CONSTEXPR hamon::size_t to_string_buffer_size()
 	return to_string_buffer_size<T>(hamon::detail::overload_priority<2>{});
 }
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4996)
-
 template <typename T>
 hamon::string to_string_impl(const char* fmt, T val)
 {
-	char buf[to_string_buffer_size<T>()];
-	std::sprintf(buf, fmt, val);
+	auto constexpr size = to_string_buffer_size<T>();
+	char buf[size];
+	std::snprintf(buf, size, fmt, val);
 	return buf;
 }
-
-HAMON_WARNING_POP()
 
 #endif
 
