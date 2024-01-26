@@ -34,7 +34,7 @@ jobs:
       run:
         shell: bash
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Configure CMake
@@ -89,7 +89,7 @@ jobs:
           - config: { cxx: "clang++-10" }
             cxx_standard: 23
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       # Work around https://github.com/actions/runner-images/issues/8659
@@ -126,7 +126,7 @@ jobs:
         cxx_standard: [11, 14, 17, 20, 23]
         build_type: [Debug, Release]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Configure CMake
