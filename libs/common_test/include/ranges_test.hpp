@@ -149,36 +149,36 @@ template <typename T> using test_forward_sized_range       = test_sized_range<T,
 template <typename T> using test_input_sized_range         = test_sized_range<T, input_iterator_wrapper<T>>;
 template <typename T> using test_output_sized_range        = test_sized_range<T, output_iterator_wrapper<T>>;
 
-//template <typename T, hamon::size_t N, template <typename> class Iterator>
-//struct test_static_sized_range : public test_range<T, Iterator<T>>
-//{
-//	using test_range<T, Iterator<T>>::test_range;
-//
-//	static HAMON_CONSTEXPR hamon::size_t size() noexcept
-//	{
-//		return N;
-//	}
-//};
-//
-//template <typename T, hamon::size_t N> using test_contiguous_static_sized_range    = test_static_sized_range<T, N, contiguous_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_random_access_static_sized_range = test_static_sized_range<T, N, random_access_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_bidirectional_static_sized_range = test_static_sized_range<T, N, bidirectional_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_forward_static_sized_range       = test_static_sized_range<T, N, forward_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_input_static_sized_range         = test_static_sized_range<T, N, input_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_output_static_sized_range        = test_static_sized_range<T, N, output_iterator_wrapper>;
+template <typename T, hamon::size_t N, template <typename> class Iterator>
+struct test_static_sized_range : public test_range<T, Iterator<T>>
+{
+	using test_range<T, Iterator<T>>::test_range;
 
-//template <typename T, hamon::size_t N, template <typename> class Iterator>
-//struct test_static_sized_view : public test_static_sized_range<T, N, Iterator>, hamon::ranges::view_base
-//{
-//	using test_static_sized_range<T, N, Iterator>::test_static_sized_range;
-//};
-//
-//template <typename T, hamon::size_t N> using test_contiguous_static_sized_view    = test_static_sized_view<T, N, contiguous_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_random_access_static_sized_view = test_static_sized_view<T, N, random_access_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_bidirectional_static_sized_view = test_static_sized_view<T, N, bidirectional_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_forward_static_sized_view       = test_static_sized_view<T, N, forward_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_input_static_sized_view         = test_static_sized_view<T, N, input_iterator_wrapper>;
-//template <typename T, hamon::size_t N> using test_output_static_sized_view        = test_static_sized_view<T, N, output_iterator_wrapper>;
+	static HAMON_CONSTEXPR hamon::size_t size() noexcept
+	{
+		return N;
+	}
+};
+
+template <typename T, hamon::size_t N> using test_contiguous_static_sized_range    = test_static_sized_range<T, N, contiguous_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_random_access_static_sized_range = test_static_sized_range<T, N, random_access_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_bidirectional_static_sized_range = test_static_sized_range<T, N, bidirectional_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_forward_static_sized_range       = test_static_sized_range<T, N, forward_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_input_static_sized_range         = test_static_sized_range<T, N, input_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_output_static_sized_range        = test_static_sized_range<T, N, output_iterator_wrapper>;
+
+template <typename T, hamon::size_t N, template <typename> class Iterator>
+struct test_static_sized_view : public test_static_sized_range<T, N, Iterator>, hamon::ranges::view_base
+{
+	using test_static_sized_range<T, N, Iterator>::test_static_sized_range;
+};
+
+template <typename T, hamon::size_t N> using test_contiguous_static_sized_view    = test_static_sized_view<T, N, contiguous_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_random_access_static_sized_view = test_static_sized_view<T, N, random_access_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_bidirectional_static_sized_view = test_static_sized_view<T, N, bidirectional_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_forward_static_sized_view       = test_static_sized_view<T, N, forward_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_input_static_sized_view         = test_static_sized_view<T, N, input_iterator_wrapper>;
+template <typename T, hamon::size_t N> using test_output_static_sized_view        = test_static_sized_view<T, N, output_iterator_wrapper>;
 
 template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
 struct test_borrowed_range : public test_range<T, Iterator, Sentinel>
