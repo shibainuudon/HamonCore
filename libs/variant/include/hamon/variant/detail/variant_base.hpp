@@ -82,7 +82,14 @@ HAMON_WARNING_POP()
 	{
 		m_index = s_invalid_index;
 	}
-	
+
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	constexpr void begin_lifetime()
+	{
+		m_union.begin_lifetime();
+	}
+#endif
+
 private:
 	variadic_union<Types...> m_union;
 	index_type               m_index;

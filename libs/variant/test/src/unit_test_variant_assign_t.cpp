@@ -187,7 +187,7 @@ inline HAMON_CXX20_CONSTEXPR bool AssignTTest()
 
 GTEST_TEST(VariantTest, AssignTTest)
 {
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_UNION) && !defined(HAMON_APPLE_CLANG)
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_UNION)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(AssignTTest());
 #else
 	EXPECT_TRUE(AssignTTest());

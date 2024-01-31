@@ -8,6 +8,7 @@
 #define HAMON_VARIANT_DETAIL_VARIADIC_UNION_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/memory/construct_at.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <hamon/utility/forward.hpp>
@@ -23,6 +24,11 @@ namespace variant_detail
 template <bool TriviallyDestructible, typename... Types>
 union variadic_union_impl
 {
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	constexpr void begin_lifetime()
+	{
+	}
+#endif
 };
 
 template <typename Head, typename... Tail>
@@ -43,6 +49,14 @@ union variadic_union_impl<true, Head, Tail...>
 	variadic_union_impl(hamon::in_place_index_t<I>, Args&&... args)
 		: m_tail(hamon::in_place_index_t<I-1>{}, hamon::forward<Args>(args)...)
 	{}
+
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	constexpr void begin_lifetime()
+	{
+		hamon::construct_at(&m_tail);
+		m_tail.begin_lifetime();
+	}
+#endif
 
 	Head m_head;
 	variadic_union_impl<true, Tail...> m_tail;
@@ -66,6 +80,14 @@ union variadic_union_impl<false, Head, Tail...>
 	variadic_union_impl(hamon::in_place_index_t<I>, Args&&... args)
 		: m_tail(hamon::in_place_index_t<I-1>{}, hamon::forward<Args>(args)...)
 	{}
+
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	constexpr void begin_lifetime()
+	{
+		hamon::construct_at(&m_tail);
+		m_tail.begin_lifetime();
+	}
+#endif
 
 	Head m_head;
 	variadic_union_impl<false, Tail...> m_tail;

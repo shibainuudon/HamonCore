@@ -75,7 +75,7 @@ inline HAMON_CXX20_CONSTEXPR bool EmplaceIndexInitListArgsTest()
 
 GTEST_TEST(VariantTest, EmplaceIndexInitListArgsTest)
 {
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_UNION) && !defined(HAMON_APPLE_CLANG)
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_UNION)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(EmplaceIndexInitListArgsTest());
 #else
 	EXPECT_TRUE(EmplaceIndexInitListArgsTest());
