@@ -370,6 +370,7 @@
 #    define HAMON_HAS_CXX20_DEPRECATE_COMMA_IN_SUBSCRIPTING_EXPRESSIONS		// P1161R3
 #    define HAMON_HAS_CXX20_ADL_AND_FUNCTION_TEMPLATES						// P0846R0
 #    define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_CAST							// P1327R1
+#    define HAMON_HAS_CXX20_CONSTEXPR_UNION									// P1330R0
 #    if defined(__cpp_generic_lambdas) && (__cpp_generic_lambdas >= 201707)
 #      define HAMON_HAS_CXX20_GENERIC_LAMBDAS								// P0428R2
 #    endif
