@@ -696,6 +696,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			return hamon::visit<RValueReference>(hamon::ranges::iter_move, x.m_inner_it);
 		}
 
+#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <typename InnerIter2 = InnerIter,
 			typename = hamon::enable_if_t<
 				hamon::indirectly_swappable_t<InnerIter2, PatternIter>::value
@@ -705,6 +706,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		{
 			hamon::visit(hamon::ranges::iter_swap, x.m_inner_it, y.m_inner_it);
 		}
+#endif
 #endif
 	};
 
