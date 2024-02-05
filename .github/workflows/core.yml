@@ -15,3 +15,4 @@ jobs:
     with:
       src_dir: ''
       unity_build: 'ON'
+      disable_precompile_headers: 'ON'
