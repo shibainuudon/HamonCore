@@ -552,4 +552,74 @@ struct is_specialization_of_subrange<hamon::ranges::subrange<Iter, Sent, Kind>>
 
 #endif
 
+#include <hamon/ranges/concepts/borrowed_range.hpp>
+#include <hamon/ranges/concepts/sized_range.hpp>
+#include <hamon/ranges/utility/subrange_kind.hpp>
+#include <hamon/ranges/utility/detail/make_unsigned_like_t.hpp>
+#include <hamon/ranges/iterator_t.hpp>
+#include <hamon/ranges/range_difference_t.hpp>
+#include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/iterator/concepts/sized_sentinel_for.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
+
+namespace hamon {
+namespace ranges {
+
+#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
+	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
+	-> decltype(__VA_ARGS__)                \
+	{ return __VA_ARGS__; }
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
+>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_subrange(It i, Sent s)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	subrange<It, Sent>(hamon::move(i), hamon::move(s)))
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
+>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_subrange(It i, Sent s, detail::make_unsigned_like_t<hamon::iter_difference_t<It>> n)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	subrange<It, Sent, ranges::subrange_kind::sized>(hamon::move(i), hamon::move(s), hamon::move(n)))
+
+template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_subrange(Rng&& r)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	subrange<
+		hamon::ranges::iterator_t<Rng>,
+		hamon::ranges::sentinel_t<Rng>,
+		(hamon::ranges::sized_range_t<Rng>::value ||
+		 hamon::sized_sentinel_for_t<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>::value) ?
+			ranges::subrange_kind::sized :
+			ranges::subrange_kind::unsized
+	>(hamon::forward<Rng>(r)))
+
+template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_subrange(Rng&& r, detail::make_unsigned_like_t<hamon::ranges::range_difference_t<Rng>> n)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	subrange<
+		hamon::ranges::iterator_t<Rng>,
+		hamon::ranges::sentinel_t<Rng>,
+		ranges::subrange_kind::sized
+	>(hamon::forward<Rng>(r), hamon::move(n)))
+
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+
+}	// namespace ranges
+}	// namespace hamon
+
 #endif // HAMON_RANGES_UTILITY_SUBRANGE_HPP
