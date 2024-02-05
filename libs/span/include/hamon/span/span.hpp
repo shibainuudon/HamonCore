@@ -595,4 +595,72 @@ HAMON_RANGES_END_NAMESPACE
 
 #endif
 
+#include <hamon/iterator/concepts/contiguous_iterator.hpp>
+#include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/size_t.hpp>
+#include <hamon/ranges/concepts/contiguous_range.hpp>
+#include <hamon/ranges/range_reference_t.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/array.hpp>
+#include <hamon/config.hpp>
+#include <array>
+
+namespace hamon
+{
+
+#define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
+	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
+	-> decltype(__VA_ARGS__)                \
+	{ return __VA_ARGS__; }
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),
+	typename EndOrSize>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(It i, EndOrSize e)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	hamon::span<hamon::remove_reference_t<hamon::iter_reference_t<It>>>(
+		hamon::move(i), hamon::move(e)))
+
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(T(&a)[N])
+HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T, N>(a))
+
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(hamon::array<T, N>& a)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T, N>(a))
+
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(hamon::array<T, N> const& a)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T const, N>(a))
+
+#if !defined(HAMON_USE_STD_ARRAY)
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(std::array<T, N>& a)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T, N>(a))
+
+template <typename T, hamon::size_t N>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(std::array<T, N> const& a)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T const, N>(a))
+#endif
+
+template <HAMON_CONSTRAINED_PARAM(ranges::contiguous_range, Range)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+make_span(Range&& r)
+HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	hamon::span<hamon::remove_reference_t<ranges::range_reference_t<Range>>>(
+		hamon::forward<Range>(r)))
+
+#undef HAMON_NOEXCEPT_DECLTYPE_RETURN
+
+}	// namespace hamon
+
 #endif // HAMON_SPAN_SPAN_HPP
