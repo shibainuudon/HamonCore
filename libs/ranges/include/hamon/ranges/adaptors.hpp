@@ -11,6 +11,7 @@
 
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/as_rvalue_view.hpp>
+#include <hamon/ranges/adaptors/counted_view.hpp>
 #include <hamon/ranges/adaptors/drop_view.hpp>
 #include <hamon/ranges/adaptors/drop_while_view.hpp>
 #include <hamon/ranges/adaptors/filter_view.hpp>
