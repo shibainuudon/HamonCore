@@ -146,12 +146,19 @@ private:
 			return m_parent->m_value;
 		}
 
+	private:
+		HAMON_NODISCARD bool at_end() const HAMON_NOEXCEPT
+		{
+			// [range.istream.iterator]/5
+			return !*m_parent->m_stream;
+		}
+
+
 		HAMON_NODISCARD friend bool	// nodiscard as an extension
 		operator==(iterator const& x, hamon::default_sentinel_t)
 			HAMON_NOEXCEPT	// noexcept as an extension
 		{
-			// [range.istream.iterator]/5
-			return !*x.m_parent->m_stream;
+			return x.at_end();
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
@@ -181,15 +188,8 @@ private:
 		basic_istream_view* m_parent;
 	};
 
-#if defined(HAMON_MSVC) || \
-	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
-	// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
-	// 仕方なくpublicにする。
-public:
-#else
 private:
 	friend iterator;
-#endif
 
 	std::basic_istream<CharT, Traits>* m_stream;
 	Val m_value = Val();

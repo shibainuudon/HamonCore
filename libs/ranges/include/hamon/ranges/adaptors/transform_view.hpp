@@ -137,16 +137,10 @@ private:
 	template <bool Const>
 	struct iterator : public iterator_category_base<Const, hamon::ranges::detail::maybe_const<Const, V>>
 	{
-#if defined(HAMON_MSVC) || \
-	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
-		// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
-		// 仕方なくpublicにする。
-	public:
-#else
 	private:
 		friend iterator<!Const>;
 		friend sentinel<Const>;
-#endif
+
 		using Parent = hamon::ranges::detail::maybe_const<Const, transform_view>;
 		using Base = hamon::ranges::detail::maybe_const<Const, V>;
 		using I = hamon::ranges::iterator_t<Base>;
@@ -459,16 +453,25 @@ private:
 			return m_end;
 		}
 
+	private:
+		template <bool OtherConst>
+		HAMON_CXX11_CONSTEXPR bool
+		equal(iterator<OtherConst> const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(x.m_current == m_end)
+		{
+			// [range.transform.sentinel]/4
+			return x.m_current == m_end;
+		}
+
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
 			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(iterator<OtherConst> const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(x.m_current == y.m_end)	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(iterator<OtherConst> const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y.equal(x))			// noexcept as an extension
 		{
-			// [range.transform.sentinel]/4
-			return x.m_current == y.m_end;
+			return y.equal(x);
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
@@ -476,9 +479,9 @@ private:
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
 			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(iterator<OtherConst> const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(iterator<OtherConst> const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}
@@ -487,9 +490,9 @@ private:
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
 			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(sentinel const& x, iterator<OtherConst> const& y)
-			HAMON_NOEXCEPT_IF_EXPR(y == x)	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(sentinel const& x, iterator<OtherConst> const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y == x)				// noexcept as an extension
 		{
 			return y == x;
 		}
@@ -498,13 +501,22 @@ private:
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
 			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(sentinel const& x, iterator<OtherConst> const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(sentinel const& x, iterator<OtherConst> const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}
 #endif
+		template <bool OtherConst>
+		HAMON_CXX11_CONSTEXPR
+		hamon::ranges::range_difference_t<hamon::ranges::detail::maybe_const<OtherConst, V>>
+		subtract1(iterator<OtherConst> const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(x.m_current - m_end)
+		{
+			// [range.transform.sentinel]/5
+			return x.m_current - m_end;
+		}
 
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
@@ -513,10 +525,19 @@ private:
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<OtherV>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(x.m_current - y.m_end)	// noexcept as an extension
+			HAMON_NOEXCEPT_IF_EXPR(y.subtract1(x))		// noexcept as an extension
 		{
-			// [range.transform.sentinel]/5
-			return x.m_current - y.m_end;
+			return y.subtract1(x);
+		}
+
+		template <bool OtherConst>
+		HAMON_CXX11_CONSTEXPR
+		hamon::ranges::range_difference_t<hamon::ranges::detail::maybe_const<OtherConst, V>>
+		subtract2(iterator<OtherConst> const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(m_end - x.m_current)
+		{
+			// [range.transform.sentinel]/6
+			return m_end - x.m_current;
 		}
 
 		template <bool OtherConst,
@@ -526,10 +547,9 @@ private:
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<OtherV>
 		operator-(sentinel const& y, iterator<OtherConst> const& x)
-			HAMON_NOEXCEPT_IF_EXPR(y.m_end - x.m_current)	// noexcept as an extension
+			HAMON_NOEXCEPT_IF_EXPR(y.subtract2(x))		// noexcept as an extension
 		{
-			// [range.transform.sentinel]/6
-			return y.m_end - x.m_current;
+			return y.subtract2(x);
 		}
 	};
 

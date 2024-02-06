@@ -355,12 +355,6 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			return *m_parent->m_outer_it;
 		}
 
-#if defined(HAMON_MSVC) || \
-	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
-		// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
-		// 仕方なくpublicにする。
-	public:
-#endif
 		HAMON_CXX14_CONSTEXPR OuterIter&
 		outer() HAMON_NOEXCEPT
 		{
@@ -373,7 +367,6 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			return outer_const_impl(hamon::detail::overload_priority<1>{});
 		}
 
-	private:
 		// [range.join.with.iterator]/6
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<ref_is_glvalue<B2>::value>>
@@ -752,41 +745,49 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		using EqualityComparable = hamon::sentinel_for_t<
 			Sent,
 			hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<OtherConst, V>>>;
+		
+		template <bool OtherConst>
+		HAMON_CXX11_CONSTEXPR bool
+		equal(iterator<OtherConst> const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(bool(x.outer() == m_end))
+		{
+			// [range.join.with.sentinel]/3
+			return x.outer() == m_end;
+		}
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<EqualityComparable<OtherConst>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(iterator<OtherConst> const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(bool(x.outer() == y.m_end))		// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(iterator<OtherConst> const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y.equal(x))			// noexcept as an extension
 		{
-			// [range.join.with.sentinel]/3
-			return x.outer() == y.m_end;
+			return y.equal(x);
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<EqualityComparable<OtherConst>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(iterator<OtherConst> const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))		// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(iterator<OtherConst> const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<EqualityComparable<OtherConst>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(sentinel const& x, iterator<OtherConst> const& y)
-			HAMON_NOEXCEPT_IF_EXPR(y == x)		// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(sentinel const& x, iterator<OtherConst> const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y == x)				// noexcept as an extension
 		{
 			return y == x;
 		}
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<EqualityComparable<OtherConst>::value>>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(sentinel const& x, iterator<OtherConst> const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))		// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(sentinel const& x, iterator<OtherConst> const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}

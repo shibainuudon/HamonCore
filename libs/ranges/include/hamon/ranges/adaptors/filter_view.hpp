@@ -139,15 +139,7 @@ private:
 	private:
 		using I = hamon::ranges::iterator_t<V>;
 
-#if defined(HAMON_MSVC) || \
-	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
-		// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
-		// 仕方なくpublicにする。
-	public:
-#else
-	private:
 		friend sentinel;
-#endif
 
 		HAMON_NO_UNIQUE_ADDRESS I m_current = I();
 		filter_view* m_parent = nullptr;
@@ -373,12 +365,20 @@ private:
 			return m_end;
 		}
 
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(iterator const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(x.m_current == y.m_end)	// noexcept as an extension
+	private:
+		HAMON_CXX11_CONSTEXPR bool
+		equal(iterator const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(x.m_current == m_end)	// noexcept as an extension
 		{
 			// [range.filter.sentinel]/3
-			return x.m_current == y.m_end;
+			return x.m_current == m_end;
+		}
+
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
+		operator==(iterator const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y.equal(x))				// noexcept as an extension
+		{
+			return y.equal(x);
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)

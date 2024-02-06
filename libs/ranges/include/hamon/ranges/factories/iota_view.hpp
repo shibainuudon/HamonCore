@@ -211,16 +211,10 @@ private:
 	// [range.iota.iterator], class iota_view​::​iterator
 	struct iterator : detail::iota_view_iterator_category<W>
 	{
-#if defined(HAMON_MSVC) || \
-	defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)
-		// MSVCとGCC(12まで)は、friend指定してもエラーになってしまうので、
-		// 仕方なくpublicにする。
-	public:
-#else
 	private:
 		friend iota_view;
 		friend sentinel;
-#endif
+
 		W m_value = W();
 
 	public:
@@ -621,52 +615,66 @@ HAMON_WARNING_POP()
 			: m_bound(hamon::move(bound))
 		{}
 
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(iterator const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(x.m_value == y.m_bound)	// noexcept as an extension
+	private:
+		HAMON_CXX11_CONSTEXPR bool
+		equal(iterator const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(x.m_value == m_bound)
 		{
 			// [range.iota.sentinel]/2
-			return x.m_value == y.m_bound;
+			return x.m_value == m_bound;
+		}
+
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(iterator const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y.equal(x))			// noexcept as an extension
+		{
+			return y.equal(x);
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator==(sentinel const& x, iterator const& y)
-			HAMON_NOEXCEPT_IF_EXPR(y == x)	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator==(sentinel const& x, iterator const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y == x)				// noexcept as an extension
 		{
 			return y == x;
 		}
 
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(iterator const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(iterator const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}
 
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-		operator!=(sentinel const& x, iterator const& y)
-			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		bool operator!=(sentinel const& x, iterator const& y)
+			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
 		{
 			return !(x == y);
 		}
 #endif
-
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR iter_difference_t<W>	// nodiscard as an extension
-		operator-(iterator const& x, sentinel const& y)
-			HAMON_NOEXCEPT_IF_EXPR(x.m_value - y.m_bound)	// noexcept as an extension
-			//requires hamon::sized_sentinel_for<Bound, W>
+		HAMON_CXX11_CONSTEXPR iter_difference_t<W>
+		subtract(iterator const& x) const
+			HAMON_NOEXCEPT_IF_EXPR(x.m_value - m_bound)
 		{
 			// [range.iota.sentinel]/3
-			return x.m_value - y.m_bound;
+			return x.m_value - m_bound;
 		}
 
 		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR iter_difference_t<W>	// nodiscard as an extension
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		iter_difference_t<W>
+		operator-(iterator const& x, sentinel const& y)
+			HAMON_NOEXCEPT_IF_EXPR(y.subtract(x))		// noexcept as an extension
+		{
+			return y.subtract(x);
+		}
+
+		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		iter_difference_t<W>
 		operator-(sentinel const& x, iterator const& y)
-			HAMON_NOEXCEPT_IF_EXPR(y - x)	// noexcept as an extension
-			//requires hamon::sized_sentinel_for<Bound, W>
+			HAMON_NOEXCEPT_IF_EXPR(-(y - x))			// noexcept as an extension
 		{
 			// [range.iota.sentinel]/4
 			return -(y - x);
