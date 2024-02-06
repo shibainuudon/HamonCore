@@ -50,7 +50,7 @@ using std::basic_string;
 #include <istream>	// basic_istream
 #include <ostream>	// basic_ostream
 #include <memory>	// allocator, allocator_traits
-#include <cctype>	// isspace
+#include <locale>	// isspace
 
 namespace hamon
 {
