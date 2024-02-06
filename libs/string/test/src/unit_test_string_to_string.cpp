@@ -18,6 +18,7 @@
 #include <hamon/limits.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
+#include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
 namespace hamon_test
