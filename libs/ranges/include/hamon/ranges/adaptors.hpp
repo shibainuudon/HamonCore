@@ -10,6 +10,7 @@
 #define HAMON_RANGES_ADAPTORS_HPP
 
 #include <hamon/ranges/adaptors/all.hpp>
+#include <hamon/ranges/adaptors/as_const_view.hpp>
 #include <hamon/ranges/adaptors/as_rvalue_view.hpp>
 #include <hamon/ranges/adaptors/common_view.hpp>
 #include <hamon/ranges/adaptors/counted_view.hpp>
