@@ -13,6 +13,7 @@
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
+#include <streambuf>
 #include <iterator>
 #include <memory>
 
