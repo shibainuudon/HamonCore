@@ -399,6 +399,14 @@ public:
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, S)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
+	operator!=(S const& s) const
+	HAMON_NOEXCEPT_IF_EXPR(m_current == s)	// noexcept as an extension
+	{
+		return !(*this == s);
+	}
+
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current == y.m_current)	// noexcept as an extension
