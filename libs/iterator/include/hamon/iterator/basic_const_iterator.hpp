@@ -508,11 +508,6 @@ private:
 	>{};
 #endif
 
-	template <typename S>
-	struct SizedSentinel : public hamon::conjunction<
-		hamon::sized_sentinel_for_t<S, Iterator>
-	>{};
-
 public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
@@ -655,17 +650,6 @@ public:
 		return m_current - y;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
-		typename = hamon::enable_if_t<SizedSentinel<S>::value>>
-//		requires hamon::sized_sentinel_for<S, Iterator>
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
-	operator-(S const& x, basic_const_iterator const& y)
-	HAMON_NOEXCEPT_IF_EXPR(x - y.m_current)	// noexcept as an extension
-	{
-		// [const.iterators.ops]/26
-		return x - y.m_current;
-	}
-
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR rvalue_reference	// nodiscard as an extension
 	iter_move(basic_const_iterator const& i)
 	HAMON_NOEXCEPT_IF_EXPR(static_cast<rvalue_reference>(ranges::iter_move(i.m_current)))
@@ -673,6 +657,23 @@ public:
 		return static_cast<rvalue_reference>(ranges::iter_move(i.m_current));
 	}
 };
+
+// 仕様ではhidden friend関数だが、
+// sized_sentinel_forの中でbasic_const_iteratorの定義が必要になってしまうので、
+// フリー関数にする。
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<S, Iterator>::value>>
+//	requires hamon::sized_sentinel_for<S, Iterator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+hamon::iter_difference_t<Iterator>
+operator-(S const& x, basic_const_iterator<Iterator> const& y)
+HAMON_NOEXCEPT_IF_EXPR(x - y.base())	// noexcept as an extension
+{
+	// [const.iterators.ops]/26
+	return x - y.base();
+}
 
 namespace detail
 {
