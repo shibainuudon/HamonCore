@@ -16,6 +16,7 @@
 #include <hamon/ranges/adaptors/counted_view.hpp>
 #include <hamon/ranges/adaptors/drop_view.hpp>
 #include <hamon/ranges/adaptors/drop_while_view.hpp>
+#include <hamon/ranges/adaptors/elements_view.hpp>
 #include <hamon/ranges/adaptors/filter_view.hpp>
 #include <hamon/ranges/adaptors/join_view.hpp>
 #include <hamon/ranges/adaptors/join_with_view.hpp>
