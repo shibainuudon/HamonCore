@@ -7,6 +7,7 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/type_traits/is_detected.hpp>
+#include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
 namespace hamon_utility_test
