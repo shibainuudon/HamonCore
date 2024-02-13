@@ -68,6 +68,7 @@ using std::basic_const_iterator;
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -420,22 +421,6 @@ public:
 	{
 		return m_current != y.m_current;
 	}
-
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I)>
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-	operator==(I const& x, basic_const_iterator const& y)
-	HAMON_NOEXCEPT_IF_EXPR(x == y.m_current)	// noexcept as an extension
-	{
-		return x == y.m_current;
-	}
-
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I)>
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
-	operator!=(I const& x, basic_const_iterator const& y)
-	HAMON_NOEXCEPT_IF_EXPR(x != y.m_current)	// noexcept as an extension
-	{
-		return x != y.m_current;
-	}
 #endif
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
@@ -657,6 +642,33 @@ public:
 		return static_cast<rvalue_reference>(ranges::iter_move(i.m_current));
 	}
 };
+
+#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+// 仕様ではhidden friend関数だが、
+// sentinel_forの中でbasic_const_iteratorの定義が必要になってしまうので、
+// フリー関数にする。
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
+operator==(S const& x, basic_const_iterator<Iterator> const& y)
+HAMON_NOEXCEPT_IF_EXPR(x == hamon::declval<Iterator const&>())	// noexcept as an extension
+{
+	return y == x;
+}
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
+operator!=(S const& x, basic_const_iterator<Iterator> const& y)
+HAMON_NOEXCEPT_IF_EXPR(x != hamon::declval<Iterator const&>())	// noexcept as an extension
+{
+	return !(x == y);
+}
+#endif
 
 // 仕様ではhidden friend関数だが、
 // sized_sentinel_forの中でbasic_const_iteratorの定義が必要になってしまうので、
