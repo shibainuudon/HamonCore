@@ -30,5 +30,6 @@
 #include <hamon/ranges/adaptors/take_view.hpp>
 #include <hamon/ranges/adaptors/take_while_view.hpp>
 #include <hamon/ranges/adaptors/transform_view.hpp>
+#include <hamon/ranges/adaptors/zip_view.hpp>
 
 #endif // HAMON_RANGES_ADAPTORS_HPP
