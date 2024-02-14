@@ -21,6 +21,7 @@ namespace overview_test
 
 GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 {
+#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 	{
 		// [range.elements.overview]/2
 		// Example 1:
@@ -76,6 +77,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 			EXPECT_EQ(2, hamon::ranges::count_if(historical_figures | hamon::views::values, is_even));
 		}
 	}
+#endif
 }
 
 }	// namespace overview_test
