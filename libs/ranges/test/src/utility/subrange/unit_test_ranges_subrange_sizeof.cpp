@@ -95,7 +95,7 @@ GTEST_TEST(RangesTest, SubrangeSizeofTest)
 
 	// sentinelが空オブジェクトのときは、サイズが最適化される可能性がある
 #if defined(HAMON_HAS_CXX20_NO_UNIQUE_ADDRESS)
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1938))
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1939))
 	// int*, hamon::unreachable_sentinel_t
 	{
 		using Iter = int*;
