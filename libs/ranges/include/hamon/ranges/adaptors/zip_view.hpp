@@ -271,6 +271,19 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::forward<Tuple2>(t2),
 		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple1>>::value>{}))
 
+// zip_view::iteratorのprivateメンバに、
+// zip_transform_viewからアクセスする必要があるので、そのためのクラス
+struct zip_view_iterator_access
+{
+	template <typename Iterator>
+	static HAMON_CXX11_CONSTEXPR auto
+	get_current(Iterator& it) HAMON_NOEXCEPT
+	->decltype(it.m_current)
+	{
+		return it.m_current;
+	}
+};
+
 }	// namespace detail
 
 // 26.7.24.2 Class template zip_view[range.zip.view]
@@ -279,14 +292,19 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 template <hamon::ranges::input_range... Views>
 	requires (hamon::ranges::view<Views> && ...) && (sizeof...(Views) > 0)
 #else
+// C++20 Concepts が使えないとき、
+// テンプレートパラメータパックはテンプレートパラメータリストの最後でなければならないので、
+// enable_if で制約することができない。
 template <typename... Views>
 #endif
 class zip_view : public hamon::ranges::view_interface<zip_view<Views...>>
 {
 private:
+#if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	static_assert(hamon::conjunction<hamon::ranges::input_range_t<Views>...>::value, "");
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Views>...>::value, "");
 	static_assert(sizeof...(Views) > 0, "");
+#endif
 
 	HAMON_NO_UNIQUE_ADDRESS hamon::tuple<Views...> m_views;
 
@@ -302,9 +320,6 @@ private:
 	struct iterator_category_base<Const, false>
 	{};
 
-	template <bool Const>
-	class sentinel;
-
 	// [range.zip.iterator], class template zip_view​::​iterator
 	template <bool Const>
 	class iterator
@@ -312,8 +327,7 @@ private:
 	{
 	private:
 		friend zip_view;
-		friend sentinel<Const>;
-		friend sentinel<!Const>;
+		friend hamon::ranges::detail::zip_view_iterator_access;
 
 		template <bool C, typename V>
 		using IteratorT = hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C, V>>;
