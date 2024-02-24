@@ -39,6 +39,7 @@ using std::ranges::views::zip;
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
+#include <hamon/ranges/detail/tuple_transform.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -75,7 +76,6 @@ using std::ranges::views::zip;
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -195,23 +195,6 @@ using all_simple_view_t = hamon::conjunction<
 	hamon::ranges::detail::simple_view_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 #endif
-
-template <typename F>
-struct tuple_transform_fn
-{
-	F& m_f;
-
-	template <typename... Ts>
-	HAMON_CXX11_CONSTEXPR auto operator()(Ts&&... elements) const
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		hamon::tuple<hamon::invoke_result_t<F&, Ts>...>(
-			hamon::invoke(m_f, hamon::forward<Ts>(elements))...))
-};
-
-template <typename F, typename Tuple>
-HAMON_CXX11_CONSTEXPR auto tuple_transform(F&& f, Tuple&& t)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	hamon::apply(tuple_transform_fn<F>{f}, hamon::forward<Tuple>(t)))
 
 template <typename... Types>
 HAMON_CXX14_CONSTEXPR void swallow(Types...) HAMON_NOEXCEPT {}
