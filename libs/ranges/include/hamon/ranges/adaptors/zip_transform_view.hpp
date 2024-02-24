@@ -590,7 +590,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const
 		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
-			iterator<true>(*this, m_zip.begin()))
+			iterator<true>(*this, hamon::declval<V2&>().begin()))
 	{
 		return iterator<true>(*this, m_zip.begin());
 	}
