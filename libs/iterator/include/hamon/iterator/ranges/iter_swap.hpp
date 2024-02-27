@@ -63,8 +63,10 @@ template <typename X, typename Y>
 HAMON_CXX14_CONSTEXPR hamon::iter_value_t<X>
 iter_exchange_move(X&& x, Y&& y)
 noexcept(
-	noexcept(hamon::iter_value_t<X>(hamon::ranges::iter_move(x))) &&
-	noexcept(*x = hamon::ranges::iter_move(y))
+	// Visual Studio 2022 でのみ、"iter_moveのシンボルがあいまい"というエラーになるので(原因不明)、
+	// 仕方なくネームスペースを全て記述する。
+	noexcept(hamon::iter_value_t<X>(hamon::ranges::cpo::iter_move(x))) &&
+	noexcept(*x = hamon::ranges::cpo::iter_move(y))
 )
 {
 	hamon::iter_value_t<X> old(hamon::ranges::iter_move(x));
