@@ -96,7 +96,7 @@ private:
 	template <typename R,
 		typename = hamon::enable_if_t<ranges::sized_range_t<R>::value>>
 	static HAMON_CXX11_CONSTEXPR bool
-	empry_impl(R& r, hamon::detail::overload_priority<1>)
+	empty_impl(R& r, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF_EXPR(ranges::size(r) == 0)
 	{
 		return ranges::size(r) == 0;
@@ -104,7 +104,7 @@ private:
 
 	template <typename R>
 	static HAMON_CXX11_CONSTEXPR bool
-	empry_impl(R& r, hamon::detail::overload_priority<0>)
+	empty_impl(R& r, hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_IF_EXPR(bool(ranges::begin(r) == ranges::end(r)))
 	{
 		return ranges::begin(r) == ranges::end(r);
@@ -117,9 +117,9 @@ public:
 			ranges::forward_range_t<R>::value>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool	// nodiscard as an extension
 	empty()
-	HAMON_NOEXCEPT_IF_EXPR(empry_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
+	HAMON_NOEXCEPT_IF_EXPR(empty_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	{
-		return empry_impl(derived(), hamon::detail::overload_priority<1>{});
+		return empty_impl(derived(), hamon::detail::overload_priority<1>{});
 	}
 
 	template <typename R = D const,
@@ -128,9 +128,9 @@ public:
 			ranges::forward_range_t<R>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	empty() const
-	HAMON_NOEXCEPT_IF_EXPR(empry_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
+	HAMON_NOEXCEPT_IF_EXPR(empty_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
 	{
-		return empry_impl(derived(), hamon::detail::overload_priority<1>{});
+		return empty_impl(derived(), hamon::detail::overload_priority<1>{});
 	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D)>
