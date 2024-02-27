@@ -107,6 +107,23 @@ using adjacent_t = decltype(adjacent<N>);
 namespace hamon {
 namespace ranges {
 
+namespace detail {
+
+// adjacent_view::iteratorのprivateメンバに、
+// adjacent_transform_viewからアクセスする必要があるので、そのためのクラス
+struct adjacent_view_iterator_access
+{
+	template <typename Iterator>
+	static HAMON_CXX11_CONSTEXPR auto
+	get_current(Iterator& it) HAMON_NOEXCEPT
+	->decltype(it.m_current)
+	{
+		return it.m_current;
+	}
+};
+
+}	// namespace detail
+
 // 26.7.26.2 Class template adjacent_view[range.adjacent.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -132,6 +149,7 @@ private:
 	{
 	private:
 		friend adjacent_view;
+		friend hamon::ranges::detail::adjacent_view_iterator_access;
 
 		using Base = hamon::ranges::detail::maybe_const<Const, V>;
 		using BaseIter = hamon::ranges::iterator_t<Base>;

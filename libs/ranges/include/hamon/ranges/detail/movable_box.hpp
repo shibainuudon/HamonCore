@@ -174,9 +174,16 @@ private:
 	HAMON_NO_UNIQUE_ADDRESS T m_value = T();
 
 public:
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 	HAMON_CXX11_CONSTEXPR movable_box()
-//		requires hamon::default_initializable<T>	// TODO
+		requires hamon::default_initializable<T>
 	= default;
+#else
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, T2, T)>
+	HAMON_CXX11_CONSTEXPR movable_box()
+		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<T>::value)
+	{}
+#endif
 
 	HAMON_CXX11_CONSTEXPR explicit
 	movable_box(T const& t)
