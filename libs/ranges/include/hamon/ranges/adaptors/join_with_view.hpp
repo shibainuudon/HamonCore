@@ -9,9 +9,10 @@
 
 #include <hamon/ranges/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES)
+#if defined(HAMON_USE_STD_RANGES) && \
+	defined(__cpp_lib_ranges_join_with) && (__cpp_lib_ranges_join_with >= 202202L)
 
-#define HAMON_USE_STD_RANGES_join_with_VIEW
+#define HAMON_USE_STD_RANGES_JOIN_WITH_VIEW
 
 namespace hamon {
 namespace ranges {
