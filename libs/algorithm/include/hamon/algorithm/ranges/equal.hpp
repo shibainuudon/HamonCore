@@ -70,9 +70,7 @@ private:
 		Iter2 first2, Sent2 last2,
 		Pred pred, Proj1 proj1, Proj2 proj2)
 	{
-		auto d1 = ranges::distance(first1, last1);
-		auto d2 = ranges::distance(first2, last2);
-		if (d1 != d2)
+		if (last1 - first1 != last2 - first2)
 		{
 			return false;
 		}
@@ -154,9 +152,11 @@ public:
 		hamon::indirectly_comparable<Iter1, Iter2, Pred, Proj1, Proj2>)
 	{
 		return impl(hamon::detail::overload_priority<1>{},
-			first1, last1,
-			first2, last2,
-			pred, proj1, proj2);
+			hamon::move(first1), hamon::move(last1),
+			hamon::move(first2), hamon::move(last2),
+			hamon::move(pred),
+			hamon::move(proj1),
+			hamon::move(proj2));
 	}
 
 	template <
