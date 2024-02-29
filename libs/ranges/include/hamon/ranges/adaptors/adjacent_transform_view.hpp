@@ -173,6 +173,14 @@ private:
 	template <bool Const>
 	using InnerSentinel = hamon::ranges::sentinel_t<hamon::ranges::detail::maybe_const<Const, InnerView>>;
 
+	template <bool Const>
+	using RegularInvocable =
+		hamon::ranges::detail::regular_invocable_with_repeated_type_t<
+			hamon::ranges::detail::maybe_const<Const, F>&,
+			hamon::ranges::range_reference_t<hamon::ranges::detail::maybe_const<Const, V>>,
+			N
+		>;
+
 	// [range.adjacent.transform.iterator], class template adjacent_transform_view​::​iterator
 	template <bool Const>
 	class iterator
@@ -540,30 +548,36 @@ public:
 		HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
 			iterator<false>(*this, m_inner.begin()))
 
-	template <
-		HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, IV2, InnerView const),
-		typename V2 = V const, typename T = hamon::ranges::range_reference_t<V2>,
-		typename = hamon::enable_if_t<
-			hamon::ranges::detail::regular_invocable_with_repeated_type_t<F const&, T, N>::value>>
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, IV2, InnerView const),
+		bool Const = true, typename = hamon::enable_if_t<RegularInvocable<Const>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const
-		HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
-			iterator<true>(*this, m_inner.begin()))
+		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
+			iterator<true>(*this, hamon::declval<IV2&>().begin()))
+	{
+		return iterator<true>(*this, m_inner.begin());
+	}
 
 private:
 	template <typename This, bool Const = hamon::is_const<This>::value,
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::common_range, IV2)>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, IV2& inner, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
-			iterator<Const>(*this_, inner.end()))
+		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
+			iterator<Const>(*this_, hamon::declval<InnerSentinel<Const>>()))
+	{
+		return iterator<Const>(*this_, inner.end());
+	}
 
 	template <typename This, bool Const = hamon::is_const<This>::value,
-		typename IV2>
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::range, IV2)>
 	static HAMON_CXX11_CONSTEXPR sentinel<Const>
 	end_impl(This*, IV2& inner, hamon::detail::overload_priority<0>)
-		HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
-			sentinel<Const>(inner.end()))
+		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
+			sentinel<Const>(hamon::declval<InnerSentinel<Const>>()))
+	{
+		return sentinel<Const>(inner.end());
+	}
 
 public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
@@ -574,11 +588,8 @@ public:
 		return end_impl(this, m_inner, hamon::detail::overload_priority<1>{});
 	}
 
-	template <
-		HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, IV2, InnerView const),
-		typename V2 = V const, typename T = hamon::ranges::range_reference_t<V2>,
-		typename = hamon::enable_if_t<
-			hamon::ranges::detail::regular_invocable_with_repeated_type_t<F const&, T, N>::value>>
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, IV2, InnerView const),
+		bool Const = true, typename = hamon::enable_if_t<RegularInvocable<Const>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		end_impl(this, hamon::declval<IV2&>(), hamon::detail::overload_priority<1>{}))
