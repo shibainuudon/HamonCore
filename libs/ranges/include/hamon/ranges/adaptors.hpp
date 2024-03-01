@@ -29,6 +29,7 @@
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/adaptors/ref_view.hpp>
 #include <hamon/ranges/adaptors/reverse_view.hpp>
+#include <hamon/ranges/adaptors/slide_view.hpp>
 #include <hamon/ranges/adaptors/split_view.hpp>
 #include <hamon/ranges/adaptors/take_view.hpp>
 #include <hamon/ranges/adaptors/take_while_view.hpp>
