@@ -77,6 +77,7 @@ GTEST_TEST(RangesTest, ChunkViewCtorBaseNTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<long, test_forward_view>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<short, test_bidirectional_view>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<char, test_random_access_view>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 }
 
 }	// namespace ctor_base_n_test
