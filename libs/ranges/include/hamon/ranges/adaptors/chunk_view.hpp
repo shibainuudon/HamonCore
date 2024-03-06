@@ -34,6 +34,7 @@ using std::ranges::views::chunk;
 #include <hamon/ranges/adaptors/take_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/detail/non_propagating_cache.hpp>
+#include <hamon/ranges/adaptors/detail/div_ceil.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
@@ -102,17 +103,6 @@ using std::ranges::views::chunk;
 
 namespace hamon {
 namespace ranges {
-
-namespace detail {
-
-template <typename I>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-I div_ceil(I num, I denom) HAMON_NOEXCEPT	// noexcept as an extension
-{
-	return static_cast<I>((num / denom) + ((num % denom) ? 1 : 0));
-}
-
-}	// namespace detail
 
 // 26.7.28.2 Class template chunk_view for input ranges[range.chunk.view.input]
 
