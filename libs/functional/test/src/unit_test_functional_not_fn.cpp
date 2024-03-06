@@ -6,6 +6,7 @@
 
 #include <hamon/functional/not_fn.hpp>
 #include <hamon/functional/invoke.hpp>
+#include <hamon/functional/ranges/less.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
@@ -26,12 +27,14 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 namespace hamon_functional_not_fn_test
 {
 
-bool returns_true() { return true; }
+HAMON_CXX11_CONSTEXPR bool returns_true() { return true; }
 
 template <typename Ret = bool>
 struct MoveOnlyCallable
 {
 	MoveOnlyCallable(MoveOnlyCallable const&) = delete;
+	
+	HAMON_CXX14_CONSTEXPR
 	MoveOnlyCallable(MoveOnlyCallable&& other) noexcept
 		: value(other.value)
 	{
@@ -39,9 +42,11 @@ struct MoveOnlyCallable
 	}
 
 	template <typename... Args>
-	Ret operator()(Args&&...) { return Ret{value}; }
+	HAMON_CXX14_CONSTEXPR Ret
+	operator()(Args&&...) { return Ret{value}; }
 
-	explicit MoveOnlyCallable(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	MoveOnlyCallable(bool x) : value(x) {}
 
 	Ret value;
 };
@@ -49,9 +54,11 @@ struct MoveOnlyCallable
 template <typename Ret = bool>
 struct CopyCallable
 {
+	HAMON_CXX14_CONSTEXPR
 	CopyCallable(CopyCallable const& other)
 		: value(other.value) {}
 
+	HAMON_CXX14_CONSTEXPR
 	CopyCallable(CopyCallable&& other) noexcept
 		: value(other.value)
 	{
@@ -59,9 +66,11 @@ struct CopyCallable
 	}
 
 	template <typename... Args>
-	Ret operator()(Args&&...) { return Ret{value}; }
+	HAMON_CXX14_CONSTEXPR Ret
+	operator()(Args&&...) { return Ret{value}; }
 
-	explicit CopyCallable(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	CopyCallable(bool x) : value(x) {}
 
 	Ret value;
 };
@@ -69,9 +78,11 @@ struct CopyCallable
 template <typename Ret = bool>
 struct ConstCallable
 {
+	HAMON_CXX14_CONSTEXPR
 	ConstCallable(ConstCallable const& other)
 		: value(other.value) {}
 
+	HAMON_CXX14_CONSTEXPR
 	ConstCallable(ConstCallable&& other)
 		: value(other.value)
 	{
@@ -79,9 +90,11 @@ struct ConstCallable
 	}
 
 	template <typename... Args>
-	Ret operator()(Args&&...) const { return Ret{value}; }
+	HAMON_CXX14_CONSTEXPR Ret
+	operator()(Args&&...) const { return Ret{value}; }
 
-	explicit ConstCallable(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	ConstCallable(bool x) : value(x) {}
 
 	Ret value;
 };
@@ -89,16 +102,20 @@ struct ConstCallable
 template <typename Ret = bool>
 struct NoExceptCallable
 {
+	HAMON_CXX14_CONSTEXPR
 	NoExceptCallable(NoExceptCallable const& other)
 		: value(other.value) {}
 
 	template <typename... Args>
-	Ret operator()(Args&&...) noexcept { return Ret{value}; }
+	HAMON_CXX14_CONSTEXPR Ret
+	operator()(Args&&...) noexcept { return Ret{value}; }
 
 	template <typename... Args>
-	Ret operator()(Args&&...) const noexcept { return Ret{value}; }
+	HAMON_CXX14_CONSTEXPR Ret
+	operator()(Args&&...) const noexcept { return Ret{value}; }
 
-	explicit NoExceptCallable(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	NoExceptCallable(bool x) : value(x) {}
 
 	Ret value;
 };
@@ -111,9 +128,11 @@ struct CopyAssignableWrapper
 	CopyAssignableWrapper& operator=(CopyAssignableWrapper &&) = default;
 
 	template <typename... Args>
-	bool operator()(Args&&...) { return value; }
+	HAMON_CXX14_CONSTEXPR bool
+	operator()(Args&&...) { return value; }
 
-	explicit CopyAssignableWrapper(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	CopyAssignableWrapper(bool x) : value(x) {}
 
 	bool value;
 };
@@ -126,19 +145,23 @@ struct MoveAssignableWrapper
 	MoveAssignableWrapper& operator=(MoveAssignableWrapper &&) = default;
 
 	template <typename... Args>
-	bool operator()(Args&&...) { return value; }
+	HAMON_CXX14_CONSTEXPR bool
+	operator()(Args&&...) { return value; }
 
-	explicit MoveAssignableWrapper(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	MoveAssignableWrapper(bool x) : value(x) {}
 
 	bool value;
 };
 
 struct MemFunCallable
 {
-	explicit MemFunCallable(bool x) : value(x) {}
+	HAMON_CXX14_CONSTEXPR explicit
+	MemFunCallable(bool x) : value(x) {}
 
-	bool return_value() const { return value; }
-	bool return_value_nc() { return value; }
+	HAMON_CXX14_CONSTEXPR bool return_value() const { return value; }
+	HAMON_CXX14_CONSTEXPR bool return_value_nc() { return value; }
+
 	bool value;
 };
 
@@ -297,7 +320,8 @@ struct EvilBool
 	EvilBool(EvilBool const&) = default;
 	EvilBool(EvilBool&&) = default;
 
-	friend EvilBool operator!(EvilBool const& other)
+	friend EvilBool
+	operator!(EvilBool const& other)
 	{
 		++bang_called;
 		return EvilBool{!other.value};
@@ -308,7 +332,9 @@ private:
 	friend struct CopyCallable<EvilBool>;
 	friend struct NoExceptCallable<EvilBool>;
 
-	explicit EvilBool(bool x) : value(x) {}
+	explicit
+	EvilBool(bool x) : value(x) {}
+	
 	EvilBool& operator=(EvilBool const& other) = default;
 
 public:
@@ -322,14 +348,18 @@ struct ExplicitBool
 	ExplicitBool(ExplicitBool const&) = default;
 	ExplicitBool(ExplicitBool&&) = default;
 
-	explicit operator bool() const { return value; }
+	HAMON_CXX14_CONSTEXPR explicit
+	operator bool() const { return value; }
 
 private:
 	friend struct MoveOnlyCallable<ExplicitBool>;
 	friend struct CopyCallable<ExplicitBool>;
 
-	explicit ExplicitBool(bool x) : value(x) {}
-	ExplicitBool& operator=(bool x)
+	HAMON_CXX14_CONSTEXPR explicit
+	ExplicitBool(bool x) : value(x) {}
+	
+	HAMON_CXX14_CONSTEXPR ExplicitBool&
+	operator=(bool x)
 	{
 		value = x;
 		return *this;
@@ -354,7 +384,9 @@ struct NoExceptEvilBool
 	bool value;
 };
 
-void constructor_tests()
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+HAMON_CXX14_CONSTEXPR bool constructor_tests()
 {
 	{
 		using T = MoveOnlyCallable<bool>;
@@ -366,16 +398,16 @@ void constructor_tests()
 		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(hamon::move(value));
 		// test it was moved from
-		EXPECT_FALSE(value.value);
+		VERIFY(!value.value);
 		// test that ret() negates the original value 'true'
-		EXPECT_FALSE(ret());
-		EXPECT_FALSE(ret(0, 0.0, "blah"));
+		VERIFY(!ret());
+		VERIFY(!ret(0, 0.0, "blah"));
 		// Move ret and test that it was moved from and that ret2 got the
 		// original value.
 		auto ret2 = hamon::move(ret);
-		EXPECT_TRUE (ret());
-		EXPECT_FALSE(ret2());
-		EXPECT_FALSE(ret2(42));
+		VERIFY(ret());
+		VERIFY(!ret2());
+		VERIFY(!ret2(42));
 	}
 	{
 		using T = CopyCallable<bool>;
@@ -387,15 +419,15 @@ void constructor_tests()
 		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
 		// test that value is unchanged (copied not moved)
-		EXPECT_FALSE(value.value);
+		VERIFY(!value.value);
 		// test 'ret' has the original value
-		EXPECT_TRUE(ret());
-		EXPECT_TRUE(ret(42, 100));
+		VERIFY(ret());
+		VERIFY(ret(42, 100));
 		// move from 'ret' and check that 'ret2' has the original value.
 		auto ret2 = hamon::move(ret);
-		EXPECT_FALSE(ret());
-		EXPECT_TRUE(ret2());
-		EXPECT_TRUE(ret2("abc"));
+		VERIFY(!ret());
+		VERIFY(ret2());
+		VERIFY(ret2("abc"));
 	}
 	{
 		using T = CopyAssignableWrapper;
@@ -407,13 +439,13 @@ void constructor_tests()
 //		static_assert(hamon::is_move_assignable<RetT>::value, "");
 //		static_assert(hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(value);
-		EXPECT_FALSE(ret());
+		VERIFY(!ret());
 		auto ret2 = hamon::not_fn(value2);
-		EXPECT_TRUE(ret2());
+		VERIFY(ret2());
 #if 0
 		ret = ret2;
-		EXPECT_TRUE(ret());
-		EXPECT_TRUE(ret2());
+		VERIFY(ret());
+		VERIFY(ret2());
 #endif
 	}
 	{
@@ -426,86 +458,101 @@ void constructor_tests()
 //		static_assert( hamon::is_move_assignable<RetT>::value, "");
 //		static_assert(!hamon::is_copy_assignable<RetT>::value, "");
 		auto ret = hamon::not_fn(hamon::move(value));
-		EXPECT_FALSE(ret());
+		VERIFY(!ret());
 		auto ret2 = hamon::not_fn(hamon::move(value2));
-		EXPECT_TRUE(ret2());
+		VERIFY(ret2());
 #if 0
 		ret = hamon::move(ret2);
-		EXPECT_TRUE(ret());
+		VERIFY(ret());
 #endif
 	}
+
+	return true;
 }
 
-void return_type_tests()
+HAMON_CXX14_CONSTEXPR bool return_type_tests_1()
 {
 	{
 		using T = CopyCallable<bool>;
 		auto ret = hamon::not_fn(T{false});
 		static_assert(hamon::is_same<decltype(ret()), bool>::value, "");
 		static_assert(hamon::is_same<decltype(ret("abc")), bool>::value, "");
-		EXPECT_TRUE(ret());
+		VERIFY(ret());
 	}
 	{
 		using T = CopyCallable<ExplicitBool>;
 		auto ret = hamon::not_fn(T{true});
 		static_assert(hamon::is_same<decltype(ret()), bool>::value, "");
 		static_assert(hamon::is_same<decltype(ret(hamon::string("abc"))), bool>::value, "");
-		EXPECT_FALSE(ret());
+		VERIFY(!ret());
 	}
+	return true;
+}
+
+bool return_type_tests_2()
+{
 	{
 		using T = CopyCallable<EvilBool>;
 		auto ret = hamon::not_fn(T{false});
 		static_assert(hamon::is_same<decltype(ret()), EvilBool>::value, "");
 		EvilBool::bang_called = 0;
 		auto value_ret = ret();
-		EXPECT_EQ(EvilBool::bang_called, 1);
-		EXPECT_TRUE(value_ret.value);
+		VERIFY(EvilBool::bang_called == 1);
+		VERIFY(value_ret.value);
 		ret();
-		EXPECT_EQ(EvilBool::bang_called, 2);
+		VERIFY(EvilBool::bang_called == 2);
 	}
+
+	return true;
 }
 
 // Other tests only test using objects with call operators. Test various
 // other callable types here.
-void other_callable_types_test()
+HAMON_CXX14_CONSTEXPR bool other_callable_types_test_1()
 {
 	{ // test with function pointer
 		auto ret = hamon::not_fn(returns_true);
-		EXPECT_FALSE(ret());
-	}
-	{ // test with lambda
-		auto returns_value = [](bool value) { return value; };
-		auto ret = hamon::not_fn(returns_value);
-		EXPECT_FALSE(ret(true));
-		EXPECT_TRUE (ret(false));
+		VERIFY(!ret());
 	}
 	{ // test with pointer to member function
 		MemFunCallable mt(true);
 		const MemFunCallable mf(false);
 		auto ret = hamon::not_fn(&MemFunCallable::return_value);
-		EXPECT_FALSE(ret(mt));
-		EXPECT_TRUE (ret(mf));
-		EXPECT_FALSE(ret(&mt));
-		EXPECT_TRUE (ret(&mf));
+		VERIFY(!ret(mt));
+		VERIFY(ret(mf));
+		VERIFY(!ret(&mt));
+		VERIFY(ret(&mf));
 	}
 	{ // test with pointer to member function
 		MemFunCallable mt(true);
 		MemFunCallable mf(false);
 		auto ret = hamon::not_fn(&MemFunCallable::return_value_nc);
-		EXPECT_FALSE(ret(mt));
-		EXPECT_TRUE (ret(mf));
-		EXPECT_FALSE(ret(&mt));
-		EXPECT_TRUE (ret(&mf));
+		VERIFY(!ret(mt));
+		VERIFY(ret(mf));
+		VERIFY(!ret(&mt));
+		VERIFY(ret(&mf));
 	}
 	{ // test with pointer to member data
 		MemFunCallable mt(true);
 		const MemFunCallable mf(false);
 		auto ret = hamon::not_fn(&MemFunCallable::value);
-		EXPECT_FALSE(ret(mt));
-		EXPECT_TRUE (ret(mf));
-		EXPECT_FALSE(ret(&mt));
-		EXPECT_TRUE (ret(&mf));
+		VERIFY(!ret(mt));
+		VERIFY(ret(mf));
+		VERIFY(!ret(&mt));
+		VERIFY(ret(&mf));
 	}
+	return true;
+}
+
+HAMON_CXX17_CONSTEXPR bool other_callable_types_test_2()
+{
+	{ // test with lambda
+		auto returns_value = [](bool value) { return value; };
+		auto ret = hamon::not_fn(returns_value);
+		VERIFY(!ret(true));
+		VERIFY(ret(false));
+	}
+	return true;
 }
 
 void throws_in_constructor_test()
@@ -647,15 +694,42 @@ HAMON_WARNING_DISABLE_MSVC(26478)	// 定数変数の hamon::move は使用しな
 		const double y = 3.14;
 		hamon::string s = "abc";
 		obj(42, hamon::move(y), s, hamon::string{"foo"});
-		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::LValue);
+		EXPECT_TRUE((Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::LValue)));
 		hamon::move(obj)(42, hamon::move(y), s, hamon::string{"foo"});
-		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::RValue);
+		EXPECT_TRUE((Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::NonConst | CallType::RValue)));
 		c_obj(42, hamon::move(y), s, hamon::string{"foo"});
-		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::LValue);
+		EXPECT_TRUE((Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::LValue)));
 		hamon::move(c_obj)(42, hamon::move(y), s, hamon::string{"foo"});
-		Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::RValue);
+		EXPECT_TRUE((Fn::check_call<int&&, const double&&, hamon::string&, hamon::string&&>(CallType::Const  | CallType::RValue)));
 	}
 HAMON_WARNING_POP()
+}
+
+HAMON_CXX14_CONSTEXPR bool call_operator_forwarding_test_2()
+{
+	{
+		auto fn = hamon::not_fn(returns_true);
+		VERIFY(!fn());
+		VERIFY(!hamon::move(fn)());
+	}
+	{
+		auto const fn = hamon::not_fn(returns_true);
+		VERIFY(!fn());
+		VERIFY(!hamon::move(fn)());
+	}
+	{
+		auto fn = hamon::not_fn(hamon::ranges::less{});
+		VERIFY(!fn(1, 2));
+		VERIFY( fn(2, 1));
+		VERIFY(!hamon::move(fn)(1, 2));
+	}
+	{
+		auto const fn = hamon::not_fn(hamon::ranges::less{});
+		VERIFY(!fn(1, 2));
+		VERIFY( fn(2, 1));
+		VERIFY(!hamon::move(fn)(1, 2));
+	}
+	return true;
 }
 
 void call_operator_noexcept_test()
@@ -711,14 +785,19 @@ void test_lwg2767()
 	}
 }
 
+#undef VERIFY
+
 GTEST_TEST(FunctionalTest, NotFnTest)
 {
-	constructor_tests();
-	return_type_tests();
-	other_callable_types_test();
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(constructor_tests());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(return_type_tests_1());
+	                      EXPECT_TRUE(return_type_tests_2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(other_callable_types_test_1());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(other_callable_types_test_2());
 	throws_in_constructor_test();
 	call_operator_sfinae_test(); // somewhat of an extension
 	call_operator_forwarding_test();
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(call_operator_forwarding_test_2());
 	call_operator_noexcept_test();
 	test_lwg2767();
 }

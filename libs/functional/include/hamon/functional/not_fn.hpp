@@ -7,9 +7,10 @@
 #ifndef HAMON_FUNCTIONAL_NOT_FN_HPP
 #define HAMON_FUNCTIONAL_NOT_FN_HPP
 
+#include <hamon/functional/config.hpp>
 #include <functional>
 
-#if defined(__cpp_lib_not_fn) && (__cpp_lib_not_fn >= 201603)
+#if defined(__cpp_lib_not_fn) && (__cpp_lib_not_fn >= 201603) && defined(HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL)
 
 namespace hamon
 {
@@ -51,22 +52,26 @@ public:
 	not_fn_imp() = delete;
 
 	template <typename... Args>
-	auto operator()(Args&&... args) &
+	HAMON_CXX14_CONSTEXPR auto
+	operator()(Args&&... args) &
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			!hamon::invoke(m_fd, hamon::forward<Args>(args)...))
 
 	template <typename... Args>
-	auto operator()(Args&&... args) &&
+	HAMON_CXX14_CONSTEXPR auto
+	operator()(Args&&... args) &&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			!hamon::invoke(hamon::move(m_fd), hamon::forward<Args>(args)...))
 
 	template <typename... Args>
-	auto operator()(Args&&... args) const&
+	HAMON_CXX11_CONSTEXPR auto
+	operator()(Args&&... args) const&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			!hamon::invoke(m_fd, hamon::forward<Args>(args)...))
 
 	template <typename... Args>
-	auto operator()(Args&&... args) const&&
+	HAMON_CXX11_CONSTEXPR auto
+	operator()(Args&&... args) const&&
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			!hamon::invoke(hamon::move(m_fd), hamon::forward<Args>(args)...))
 
@@ -76,7 +81,8 @@ public:
 			!hamon::is_same<hamon::decay_t<F2>, not_fn_imp>::value
 		>
 	>
-	explicit not_fn_imp(F2&& fn)
+	HAMON_CXX11_CONSTEXPR explicit
+	not_fn_imp(F2&& fn)
 		: m_fd(hamon::forward<F2>(fn)) {}
 };
 
@@ -90,7 +96,7 @@ template <
 		hamon::is_constructible<hamon::decay_t<F>, F>::value
 	>
 >
-inline detail::not_fn_imp<F>
+HAMON_CXX11_CONSTEXPR detail::not_fn_imp<F>
 not_fn(F&& fn)
 HAMON_NOEXCEPT_IF((
 	hamon::is_nothrow_constructible<hamon::decay_t<F>, F&&>::value))
