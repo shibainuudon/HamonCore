@@ -14,6 +14,7 @@
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/as_const_view.hpp>
 #include <hamon/ranges/adaptors/as_rvalue_view.hpp>
+#include <hamon/ranges/adaptors/cartesian_product_view.hpp>
 #include <hamon/ranges/adaptors/chunk_by_view.hpp>
 #include <hamon/ranges/adaptors/chunk_view.hpp>
 #include <hamon/ranges/adaptors/common_view.hpp>

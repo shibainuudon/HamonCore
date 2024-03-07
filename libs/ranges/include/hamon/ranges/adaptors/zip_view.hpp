@@ -29,6 +29,7 @@ using std::ranges::views::zip;
 #else
 
 #include <hamon/ranges/adaptors/all.hpp>
+#include <hamon/ranges/adaptors/detail/all_random_access.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
@@ -40,6 +41,7 @@ using std::ranges::views::zip;
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
 #include <hamon/ranges/detail/tuple_transform.hpp>
+#include <hamon/ranges/detail/tuple_for_each.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -108,13 +110,6 @@ template <bool Const, typename... Views>
 using zip_is_common_t = hamon::bool_constant<zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>>;
 
 template <bool Const, typename... Views>
-concept all_random_access =
-	(hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_random_access_t = hamon::bool_constant<all_random_access<Const, Views...>>;
-
-template <bool Const, typename... Views>
 concept all_bidirectional =
 	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
 
@@ -171,10 +166,6 @@ template <bool Const, typename... Views>
 using zip_is_common_t = zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>;
 
 template <bool Const, typename... Views>
-using all_random_access_t = hamon::conjunction<
-	hamon::ranges::random_access_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
 using all_bidirectional_t = hamon::conjunction<
 	hamon::ranges::bidirectional_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
@@ -195,44 +186,6 @@ using all_simple_view_t = hamon::conjunction<
 	hamon::ranges::detail::simple_view_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 #endif
-
-template <typename... Types>
-HAMON_CXX14_CONSTEXPR void swallow(Types...) HAMON_NOEXCEPT {}
-
-template <typename F>
-struct tuple_for_each_fn
-{
-	F& m_f;
-
-	template <typename... Ts>
-	HAMON_CXX14_CONSTEXPR auto operator()(Ts&&... elements) const
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		swallow((hamon::invoke(m_f, hamon::forward<Ts>(elements)), 0)...))
-};
-
-template <typename F, typename Tuple>
-HAMON_CXX14_CONSTEXPR auto tuple_for_each(F&& f, Tuple&& t)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	hamon::apply(tuple_for_each_fn<F>{f}, hamon::forward<Tuple>(t)))
-
-template <typename F, typename Tuple1, typename Tuple2, hamon::size_t... I>
-HAMON_CXX14_CONSTEXPR auto
-tuple_for_each2_impl(F&& f, Tuple1&& t1, Tuple2&& t2, hamon::index_sequence<I...>)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	swallow((hamon::invoke(
-		hamon::forward<F>(f),
-		hamon::adl_get<I>(hamon::forward<Tuple1>(t1)),
-		hamon::adl_get<I>(hamon::forward<Tuple2>(t2))), 0)...))
-
-template <typename F, typename Tuple1, typename Tuple2>
-HAMON_CXX14_CONSTEXPR auto
-tuple_for_each2(F&& f, Tuple1&& t1, Tuple2&& t2)
-HAMON_NOEXCEPT_DECLTYPE_RETURN(
-	tuple_for_each2_impl(
-		hamon::forward<F>(f),
-		hamon::forward<Tuple1>(t1),
-		hamon::forward<Tuple2>(t2),
-		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple1>>::value>{}))
 
 template <typename F, typename Tuple1, typename Tuple2, hamon::size_t... I>
 HAMON_CXX11_CONSTEXPR auto
