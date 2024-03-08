@@ -16,6 +16,8 @@
 namespace hamon {
 namespace detail {
 
+// 25.3.4.4 Concept weakly_incrementable	[iterator.concept.winc]
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
