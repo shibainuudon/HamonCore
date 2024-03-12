@@ -12,7 +12,7 @@
 #include <hamon/ranges/utility/dangling.hpp>
 //#include <hamon/ranges/utility/elements_of.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
-//#include <hamon/ranges/utility/to.hpp>
+#include <hamon/ranges/utility/to.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 
 #endif // HAMON_RANGES_UTILITY_HPP

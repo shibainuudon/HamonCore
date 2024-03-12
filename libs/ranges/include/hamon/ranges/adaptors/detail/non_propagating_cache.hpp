@@ -36,6 +36,7 @@ struct non_propagating_cache : public hamon::optional<T>
 	// [range.nonprop.cache]/1.2
 	HAMON_CXX14_CONSTEXPR
 	non_propagating_cache(non_propagating_cache const&) noexcept
+		: base_type()
 	{}
 
 	// [range.nonprop.cache]/1.3
