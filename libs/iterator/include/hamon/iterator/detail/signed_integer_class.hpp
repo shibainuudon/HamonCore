@@ -9,6 +9,7 @@
 
 #include <hamon/detail/max_diff_type.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon {
 namespace detail {
@@ -23,6 +24,14 @@ struct signed_integer_class
 template <>
 struct signed_integer_class<hamon::detail::max_diff_type>
 	: public hamon::true_type {};
+
+#if defined(HAMON_STDLIB_DINKUMWARE) && defined(HAMON_HAS_CXX20_CONCEPTS)
+
+template <>
+struct signed_integer_class<std::_Signed128>
+	: public hamon::true_type {};
+
+#endif
 
 }	// namespace detail
 }	// namespace hamon
