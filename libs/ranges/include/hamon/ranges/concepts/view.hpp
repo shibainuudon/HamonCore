@@ -17,6 +17,7 @@
 #include <hamon/concepts/movable.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/negation.hpp>
 #endif
 
 namespace hamon
@@ -74,6 +75,26 @@ using view_t =
 	hamon::bool_constant<hamon::ranges::view<T>>;
 #else
 	hamon::ranges::view<T>;
+#endif
+
+// !view<T>
+
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+
+template <typename T>
+concept not_view = !hamon::ranges::view<T>;
+
+template <typename T>
+using not_view_t = hamon::bool_constant<hamon::ranges::not_view<T>>;
+
+#else
+
+template <typename T>
+using not_view = hamon::negation<hamon::ranges::view<T>>;
+
+template <typename T>
+using not_view_t = hamon::ranges::not_view<T>;
+
 #endif
 
 }	// namespace ranges
