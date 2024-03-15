@@ -93,7 +93,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 #undef VERIFY
 
-GTEST_TEST(RangesTest, ChunkByViewIteratorpost_decrementTest)
+GTEST_TEST(RangesTest, ChunkByViewIteratorPostDecrementTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
