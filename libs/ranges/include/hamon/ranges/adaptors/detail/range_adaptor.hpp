@@ -42,7 +42,7 @@ public:
 	template <typename R,
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F, R>
+			hamon::invocable_t<F&, R>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -51,7 +51,7 @@ public:
 	template <typename R,
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F, R>
+			hamon::invocable_t<F const&, R>
 		>::value>>
 	HAMON_CXX11_CONSTEXPR auto operator()(R&& r) const&
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -60,7 +60,7 @@ public:
 	template <typename R,
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F, R>
+			hamon::invocable_t<F&&, R>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &&
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -81,7 +81,7 @@ template <typename F>
 HAMON_CXX11_CONSTEXPR auto
 make_range_adaptor(F&& f)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		range_adaptor<F>(hamon::forward<F>(f)))
+		range_adaptor<hamon::decay_t<F>>(hamon::forward<F>(f)))
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
 
