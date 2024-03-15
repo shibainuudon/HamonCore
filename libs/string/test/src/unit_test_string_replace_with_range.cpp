@@ -12,6 +12,7 @@
 #include <hamon/config.hpp>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_test
 {
@@ -44,6 +45,21 @@ ReplaceWithRangeTest()
 		string s = Helper::abcde();
 		CharT const arr[] = {1, 2, 3};
 		auto& r = s.replace_with_range(s.begin() + 1, s.begin() + 3, arr);
+		VERIFY(&r == &s);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 6);
+		VERIFY(s[0] == Helper::abcde()[0]);
+		VERIFY(s[1] == 1);
+		VERIFY(s[2] == 2);
+		VERIFY(s[3] == 3);
+		VERIFY(s[4] == Helper::abcde()[3]);
+		VERIFY(s[5] == Helper::abcde()[4]);
+	}
+	{
+		string s = Helper::abcde();
+		CharT const arr[] = {1, 2, 3};
+		test_input_range<CharT const> rng(arr);
+		auto& r = s.replace_with_range(s.begin() + 1, s.begin() + 3, rng);
 		VERIFY(&r == &s);
 		VERIFY(GeneralCheck(s));
 		VERIFY(s.size() == 6);

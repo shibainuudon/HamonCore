@@ -37,6 +37,7 @@
 #include <initializer_list>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
+#include "ranges_test.hpp"
 
 HAMON_WARNING_PUSH()
 #if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 120000)
@@ -566,6 +567,18 @@ ConsTest()
 		VERIFY(s[1] == 1);
 		VERIFY(s[2] == 4);
 		VERIFY(s[3] == 2);
+	}
+	{
+		CharT const arr[] = {1,2,3,4,5};
+		test_input_range<CharT const> rng(arr);
+		string s(hamon::from_range, rng);
+		VERIFY(GeneralCheck(s));
+		VERIFY(s.size() == 5);
+		VERIFY(s[0] == 1);
+		VERIFY(s[1] == 2);
+		VERIFY(s[2] == 3);
+		VERIFY(s[3] == 4);
+		VERIFY(s[4] == 5);
 	}
 
 	// constexpr basic_string(initializer_list<charT>, const Allocator& = Allocator());

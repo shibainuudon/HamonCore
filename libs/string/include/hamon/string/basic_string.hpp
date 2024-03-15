@@ -458,9 +458,12 @@ public:
 		m_rep.NullTerminate();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.cons]/20
+private:
+	struct ctor_from_iter_tag {};
+
+	template <typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR
-	basic_string(InputIterator begin, InputIterator end, Allocator const& a = Allocator())
+	basic_string(ctor_from_iter_tag, Iterator begin, Sentinel end, Allocator const& a)
 		: m_allocator(a)
 	{
 		auto const size = static_cast<size_type>(hamon::ranges::distance(begin, end));
@@ -477,15 +480,22 @@ public:
 		m_rep.NullTerminate();
 	}
 
+public:
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.cons]/20
+	HAMON_CXX14_CONSTEXPR
+	basic_string(InputIterator begin, InputIterator end, Allocator const& a = Allocator())
+		: basic_string(ctor_from_iter_tag{}, begin, end, a)
+	{}
+
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR
 	basic_string(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
-		: basic_string(hamon::ranges::begin(rg), hamon::ranges::end(rg), a)	// [string.cons]/22
+		: basic_string(ctor_from_iter_tag{}, hamon::ranges::begin(rg), hamon::ranges::end(rg), a)	// [string.cons]/22
 	{}
 
 	HAMON_CXX14_CONSTEXPR
 	basic_string(std::initializer_list<CharT> il, Allocator const& a = Allocator())
-		: basic_string(il.begin(), il.end(), a)	// [string.cons]/23
+		: basic_string(ctor_from_iter_tag{}, il.begin(), il.end(), a)	// [string.cons]/23
 	{}
 
 	HAMON_CXX20_CONSTEXPR
