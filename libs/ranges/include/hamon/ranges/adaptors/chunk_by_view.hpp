@@ -338,10 +338,10 @@ private:
 	{
 		Pred& pred;
 
-		template <typename T>
-		HAMON_CXX11_CONSTEXPR auto operator()(T&& lhs, T&& rhs) const
+		template <typename T1, typename T2>
+		HAMON_CXX11_CONSTEXPR auto operator()(T1&& lhs, T2&& rhs) const
 			HAMON_NOEXCEPT_DECLTYPE_RETURN(
-				hamon::invoke(pred, hamon::forward<T>(rhs), hamon::forward<T>(lhs)))
+				hamon::invoke(pred, hamon::forward<T2>(rhs), hamon::forward<T1>(lhs)))
 	};
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
