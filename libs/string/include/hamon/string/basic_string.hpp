@@ -28,6 +28,8 @@ using std::basic_string;
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -459,17 +461,15 @@ public:
 	}
 
 private:
-	struct ctor_from_iter_tag {};
-
-	template <typename Iterator, typename Sentinel>
+	template <typename Iterator, typename Sentinel,
+		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<Iterator, Sentinel>::value>>
 	HAMON_CXX14_CONSTEXPR
-	basic_string(ctor_from_iter_tag, Iterator begin, Sentinel end, Allocator const& a)
+	basic_string(Iterator begin, Sentinel end, Allocator const& a, hamon::detail::overload_priority<1>)
 		: m_allocator(a)
 	{
 		auto const size = static_cast<size_type>(hamon::ranges::distance(begin, end));
 		m_rep.Allocate(m_allocator, size + 1);
 
-		//Traits::copy(this->data(), begin, size);
 		auto p = m_rep.GetData();
 		for (auto it = begin; it != end; ++it, (void)++p)
 		{
@@ -480,22 +480,34 @@ private:
 		m_rep.NullTerminate();
 	}
 
+	template <typename Iterator, typename Sentinel>
+	HAMON_CXX14_CONSTEXPR
+	basic_string(Iterator begin, Sentinel end, Allocator const& a, hamon::detail::overload_priority<0>)
+		: m_allocator(a)
+		, m_rep{}
+	{
+		for (auto it = begin; it != end; ++it)
+		{
+			push_back(static_cast<CharT>(*it));
+		}
+	}
+
 public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.cons]/20
 	HAMON_CXX14_CONSTEXPR
 	basic_string(InputIterator begin, InputIterator end, Allocator const& a = Allocator())
-		: basic_string(ctor_from_iter_tag{}, begin, end, a)
+		: basic_string(begin, end, a, hamon::detail::overload_priority<1>{})
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR
 	basic_string(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
-		: basic_string(ctor_from_iter_tag{}, hamon::ranges::begin(rg), hamon::ranges::end(rg), a)	// [string.cons]/22
+		: basic_string(hamon::ranges::begin(rg), hamon::ranges::end(rg), a, hamon::detail::overload_priority<1>{})	// [string.cons]/22
 	{}
 
 	HAMON_CXX14_CONSTEXPR
 	basic_string(std::initializer_list<CharT> il, Allocator const& a = Allocator())
-		: basic_string(ctor_from_iter_tag{}, il.begin(), il.end(), a)	// [string.cons]/23
+		: basic_string(il.begin(), il.end(), a, hamon::detail::overload_priority<1>{})	// [string.cons]/23
 	{}
 
 	HAMON_CXX20_CONSTEXPR
