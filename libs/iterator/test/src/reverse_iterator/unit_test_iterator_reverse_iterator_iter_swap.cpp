@@ -12,6 +12,7 @@
 
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
+#include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -42,17 +43,25 @@ struct TestIterator
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR TestIterator& operator++() noexcept { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR TestIterator& operator--() noexcept(NoExceptDecrement) { --m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator  operator--(int);
 	HAMON_CXX11_CONSTEXPR T& operator*() const noexcept(true) { return *m_ptr; }
 	HAMON_CXX11_CONSTEXPR TestIterator() noexcept(true) : m_ptr(nullptr) {}
 	HAMON_CXX11_CONSTEXPR TestIterator(TestIterator && other) noexcept(true) : m_ptr(other.m_ptr) {}
 	HAMON_CXX11_CONSTEXPR TestIterator(TestIterator const& other) noexcept(NoExceptCopy) : m_ptr(other.m_ptr) {}
+	HAMON_CXX14_CONSTEXPR TestIterator& operator=(TestIterator && other) noexcept(true) { m_ptr = other.m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator& operator=(TestIterator const& other) noexcept(NoExceptCopy) { m_ptr = other.m_ptr; return *this; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const TestIterator& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const TestIterator& rhs) const { return !(*this == rhs); }
 };
 
 template <bool NoExceptCopy, bool NoExceptDecrement, bool NoExceptIterSwap>
 HAMON_CXX14_CONSTEXPR void iter_swap(
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterSwap> const&,
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterSwap> const&) noexcept(NoExceptIterSwap);
+
+static_assert(hamon::bidirectional_iterator_t<TestIterator<true,  true,  true>>::value, "");
 
 static_assert( has_iter_swap<hamon::reverse_iterator<int*>, hamon::reverse_iterator<int*>>::value, "");
 static_assert( has_iter_swap<hamon::reverse_iterator<int*>, hamon::reverse_iterator<long*>>::value, "");

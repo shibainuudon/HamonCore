@@ -9,6 +9,7 @@
 
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
+#include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -30,16 +31,24 @@ struct TestIterator
 	using pointer           = T*;
 	using reference         = T&;
 	HAMON_CXX14_CONSTEXPR TestIterator& operator++() noexcept { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator  operator++(int) { auto t = *this; ++m_ptr; return t; }
 	HAMON_CXX14_CONSTEXPR TestIterator& operator--() noexcept(NoExceptDecrement) { --m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator  operator--(int);
 	HAMON_CXX11_CONSTEXPR T& operator*() const noexcept(true) { return *m_ptr; }
 	HAMON_CXX11_CONSTEXPR TestIterator() noexcept(true) : m_ptr(nullptr) {}
 	HAMON_CXX11_CONSTEXPR TestIterator(TestIterator && other) noexcept(true) : m_ptr(other.m_ptr) {}
 	HAMON_CXX11_CONSTEXPR TestIterator(TestIterator const& other) noexcept(NoExceptCopy) : m_ptr(other.m_ptr) {}
+	HAMON_CXX14_CONSTEXPR TestIterator& operator=(TestIterator && other) noexcept(true) { m_ptr = other.m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR TestIterator& operator=(TestIterator const& other) noexcept(NoExceptCopy) { m_ptr = other.m_ptr; return *this; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const TestIterator& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const TestIterator& rhs) const { return !(*this == rhs); }
 };
 
 template <bool NoExceptCopy, bool NoExceptDecrement, bool NoExceptIterMove>
 HAMON_CXX11_CONSTEXPR float&& iter_move(
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterMove> const&) noexcept(NoExceptIterMove);
+
+static_assert(hamon::bidirectional_iterator_t<TestIterator<true,  true,  true>>::value, "");
 
 static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(hamon::declval<hamon::reverse_iterator<int*>>())), int&&>::value, "");
 static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(hamon::declval<hamon::reverse_iterator<TestIterator<true, true, true>>>())), float&&>::value, "");
