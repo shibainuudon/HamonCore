@@ -32,6 +32,7 @@ using std::reverse_iterator;
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
+#include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
@@ -39,7 +40,6 @@ using std::reverse_iterator;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
-#include <hamon/iterator/prev.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/concepts/assignable_from.hpp>
@@ -158,7 +158,7 @@ public:
 		return *--tmp;
 #else
 		// gcc10までだと、なぜか↑のコードがconstexprにならない
-		return *hamon::prev(current);	// workaround
+		return *hamon::ranges::prev(current);	// workaround
 #endif
 	}
 
@@ -170,7 +170,7 @@ private:
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_convertible<I2, pointer>::value)
 	{
 		// [reverse.iter.elem]/2.1
-		return hamon::prev(current);
+		return hamon::ranges::prev(current);
 	}
 
 	template <typename I2,
@@ -183,7 +183,7 @@ private:
 			HAMON_NOEXCEPT_EXPR(pointer(hamon::declval<I2>().operator->())))
 	{
 		// [reverse.iter.elem]/2.2
-		return hamon::prev(current).operator->();
+		return hamon::ranges::prev(current).operator->();
 	}
 
 public:
@@ -294,7 +294,7 @@ public:
 		auto tmp = i.base();
 		return hamon::ranges::iter_move(--tmp);
 #else
-		return hamon::ranges::iter_move(hamon::prev(i.base()));
+		return hamon::ranges::iter_move(hamon::ranges::prev(i.base()));
 #endif
 	}
 
