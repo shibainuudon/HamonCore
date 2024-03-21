@@ -211,6 +211,9 @@ GTEST_TEST(RangesTest, AdaptorsTest)
 		EXPECT_TRUE(it == v.end());
 	}
 #endif
+
+	// MSVC-STLだと、バージョンによってはエラーになる
+#if !defined(HAMON_USE_STD_RANGES_ZIP_TRANSFORM_VIEW) && defined(HAMON_STDLIB_DINKUMWARE)
 	{
 		auto x = hamon::vector<char>{1,2,3};
 		auto y = hamon::list<short>{10,20,30,40};
@@ -219,6 +222,7 @@ GTEST_TEST(RangesTest, AdaptorsTest)
 			ranges::to<hamon::vector<int>>();
 		EXPECT_TRUE((v == hamon::vector<int>{33,22,11}));
 	}
+#endif
 	{
 		auto v = hamon::vector<int>{1,2,3,4,5} |
 			views::pairwise | views::take(3);
