@@ -25,8 +25,10 @@ using std::projected;
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/concepts/indirectly_regular_unary_invocable.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
+#include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -64,6 +66,27 @@ struct incrementable_traits<projected<I, Proj>>
 {
 	using difference_type = hamon::iter_difference_t<I>;
 };
+
+namespace detail
+{
+
+// 25.3.6.2 Indirect callable traits[indirectcallable.traits]
+
+template <
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::weakly_incrementable I,
+#else
+	typename I,
+#endif
+	typename Proj
+>
+struct indirect_value_impl<hamon::projected<I, Proj>>
+{
+	// [indirectcallable.traits]/1.1
+	using type = hamon::invoke_result_t<Proj&, hamon::detail::indirect_value_t<I>>;
+};
+
+}	// namespace detail
 
 }	// namespace hamon
 

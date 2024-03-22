@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirect_equivalence_relation.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -46,6 +47,23 @@ HAMON_INDIRECT_EQUIVALENCE_RELATION_TEST(true,  bool(*)(int, int), short*, char*
 HAMON_INDIRECT_EQUIVALENCE_RELATION_TEST(true,  Pred1, int*, int*);
 HAMON_INDIRECT_EQUIVALENCE_RELATION_TEST(false, Pred2, int*, int*);
 HAMON_INDIRECT_EQUIVALENCE_RELATION_TEST(false, Pred3, int*, int*);
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+struct Pred4
+{
+	bool operator()(MoveOnly, MoveOnly) const;
+};
+HAMON_INDIRECT_EQUIVALENCE_RELATION_TEST(true, Pred4, hamon::projected<int*, Proj>, hamon::projected<int*, Proj>);
 
 }	// namespace indirect_equivalence_relation_test
 

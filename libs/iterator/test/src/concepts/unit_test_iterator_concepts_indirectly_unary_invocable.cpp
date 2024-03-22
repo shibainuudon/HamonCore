@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_unary_invocable.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -77,6 +78,23 @@ HAMON_INDIRECTLY_UNARY_INVOCABLE_TEST(false, void (A::*)(),           A const*);
 HAMON_INDIRECTLY_UNARY_INVOCABLE_TEST(true,  void (A::*)() const,     A const*);
 HAMON_INDIRECTLY_UNARY_INVOCABLE_TEST(false, void (A::*)(long),       A const*);
 HAMON_INDIRECTLY_UNARY_INVOCABLE_TEST(false, void (A::*)(long) const, A const*);
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+struct Pred5
+{
+	bool operator()(MoveOnly) const;
+};
+HAMON_INDIRECTLY_UNARY_INVOCABLE_TEST(true, Pred5, hamon::projected<int*, Proj>);
 
 }	// namespace indirectly_unary_invocable_test
 

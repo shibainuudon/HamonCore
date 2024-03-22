@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
@@ -34,7 +35,7 @@ template <typename F, typename I>
 concept indirect_unary_predicate =
 	hamon::indirectly_readable<I> &&
 	hamon::copy_constructible<F> &&
-	hamon::predicate<F&, hamon::iter_value_t<I>&> &&
+	hamon::predicate<F&, hamon::detail::indirect_value_t<I>> &&
 	hamon::predicate<F&, hamon::iter_reference_t<I>> &&
 	hamon::predicate<F&, hamon::iter_common_reference_t<I>>;
 
@@ -50,7 +51,7 @@ private:
 	template <typename F2, typename I2,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_value_t<I2>&>::value>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::detail::indirect_value_t<I2>>::value>,
 		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_reference_t<I2>>::value>,
 		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_common_reference_t<I2>>::value>
 	>

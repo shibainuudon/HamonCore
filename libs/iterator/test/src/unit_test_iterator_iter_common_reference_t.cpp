@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/iter_common_reference_t.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
@@ -21,6 +22,19 @@ static_assert(hamon::is_same<hamon::iter_common_reference_t<hamon::vector<float>
 static_assert(hamon::is_same<hamon::iter_common_reference_t<hamon::vector<float>::const_iterator>, float const&>::value, "");
 static_assert(hamon::is_same<hamon::iter_common_reference_t<hamon::list<double>::iterator>, double&>::value, "");
 static_assert(hamon::is_same<hamon::iter_common_reference_t<hamon::list<double>::const_iterator>, double const&>::value, "");
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+static_assert(hamon::is_same<hamon::iter_common_reference_t<hamon::projected<int*, Proj>>, MoveOnly>::value, "");
 
 }	// namespace iter_common_reference_t_test
 

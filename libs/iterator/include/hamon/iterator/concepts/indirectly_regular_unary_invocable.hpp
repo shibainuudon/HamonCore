@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
@@ -36,11 +37,11 @@ template <typename F, typename I>
 concept indirectly_regular_unary_invocable =
 	hamon::indirectly_readable<I> &&
 	hamon::copy_constructible<F> &&
-	hamon::regular_invocable<F&, hamon::iter_value_t<I>&> &&
+	hamon::regular_invocable<F&, hamon::detail::indirect_value_t<I>> &&
 	hamon::regular_invocable<F&, hamon::iter_reference_t<I>> &&
 	hamon::regular_invocable<F&, hamon::iter_common_reference_t<I>> &&
 	hamon::common_reference_with<
-		hamon::invoke_result_t<F&, hamon::iter_value_t<I>&>,
+		hamon::invoke_result_t<F&, hamon::detail::indirect_value_t<I>>,
 		hamon::invoke_result_t<F&, hamon::iter_reference_t<I>>
 	>;
 
@@ -56,15 +57,15 @@ private:
 	template <typename F2, typename I2,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>::value>,
-		typename V = hamon::iter_value_t<I2>,
-		typename = hamon::enable_if_t<hamon::regular_invocable<F2&, V&>::value>,
+		typename V = hamon::detail::indirect_value_t<I2>,
+		typename = hamon::enable_if_t<hamon::regular_invocable<F2&, V>::value>,
 		typename R = hamon::iter_reference_t<I2>,
 		typename = hamon::enable_if_t<hamon::regular_invocable<F2&, R>::value>,
 		typename C = hamon::iter_common_reference_t<I2>,
 		typename = hamon::enable_if_t<hamon::regular_invocable<F2&, C>::value>,
 		typename = hamon::enable_if_t<
 			hamon::common_reference_with<
-				hamon::invoke_result_t<F2&, V&>,
+				hamon::invoke_result_t<F2&, V>,
 				hamon::invoke_result_t<F2&, R>
 			>::value
 		>

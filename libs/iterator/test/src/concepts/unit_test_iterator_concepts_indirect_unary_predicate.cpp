@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -66,6 +67,23 @@ HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, bool(*)(int, int), int*);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(true,  Pred1, int*);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, Pred2, int*);
 HAMON_INDIRECT_UNARY_PREDICATE_TEST(false, Pred3, int*);
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+struct Pred4
+{
+	bool operator()(MoveOnly) const;
+};
+HAMON_INDIRECT_UNARY_PREDICATE_TEST(true, Pred4, hamon::projected<int*, Proj>);
 
 }	// namespace indirect_unary_predicate_test
 

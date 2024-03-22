@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_RANGES_ITERATOR)
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_common_reference_t.hpp>
@@ -35,9 +36,9 @@ concept indirect_binary_predicate =
 	hamon::indirectly_readable<I1> &&
 	hamon::indirectly_readable<I2> &&
 	hamon::copy_constructible<F> &&
-	hamon::predicate<F&, hamon::iter_value_t<I1>&, hamon::iter_value_t<I2>&> &&
-	hamon::predicate<F&, hamon::iter_value_t<I1>&, hamon::iter_reference_t<I2>> &&
-	hamon::predicate<F&, hamon::iter_reference_t<I1>, hamon::iter_value_t<I2>&> &&
+	hamon::predicate<F&, hamon::detail::indirect_value_t<I1>, hamon::detail::indirect_value_t<I2>> &&
+	hamon::predicate<F&, hamon::detail::indirect_value_t<I1>, hamon::iter_reference_t<I2>> &&
+	hamon::predicate<F&, hamon::iter_reference_t<I1>, hamon::detail::indirect_value_t<I2>> &&
 	hamon::predicate<F&, hamon::iter_reference_t<I1>, hamon::iter_reference_t<I2>> &&
 	hamon::predicate<F&, hamon::iter_common_reference_t<I1>, hamon::iter_common_reference_t<I2>>;
 
@@ -54,17 +55,17 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>::value>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>::value>,
-		typename V1 = hamon::iter_value_t<J1>,
-		typename V2 = hamon::iter_value_t<J2>,
+		typename V1 = hamon::detail::indirect_value_t<J1>,
+		typename V2 = hamon::detail::indirect_value_t<J2>,
 		typename R1 = hamon::iter_reference_t<J1>,
 		typename R2 = hamon::iter_reference_t<J2>,
 		typename C1 = hamon::iter_common_reference_t<J1>,
 		typename C2 = hamon::iter_common_reference_t<J2>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, V1&, V2&>::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, V1&, R2 >::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, R1,  V2&>::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, R1,  R2 >::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, C1,  C2 >::value>
+		typename = hamon::enable_if_t<hamon::predicate<F2&, V1, V2>::value>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, V1, R2>::value>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, R1, V2>::value>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, R1, R2>::value>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, C1, C2>::value>
 	>
 	static auto test(int) -> hamon::true_type;
 

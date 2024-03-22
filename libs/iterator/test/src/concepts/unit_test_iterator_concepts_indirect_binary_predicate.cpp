@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -86,6 +87,23 @@ HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred2, X, X);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, int*, int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, hamon::vector<int>::iterator, hamon::vector<int>::iterator);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred3, X, X);
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+struct Pred4
+{
+	bool operator()(MoveOnly, MoveOnly) const;
+};
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true, Pred4, hamon::projected<int*, Proj>, hamon::projected<int*, Proj>);
 
 }	// namespace indirect_binary_predicate_test
 

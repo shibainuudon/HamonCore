@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
+#include <hamon/iterator/projected.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -76,6 +77,23 @@ HAMON_INDIRECT_STRICT_WEAK_ORDER_TEST(false, P1, S1[], S1[]);
 HAMON_INDIRECT_STRICT_WEAK_ORDER_TEST(false, P1, S1[2], S1[2]);
 
 HAMON_INDIRECT_STRICT_WEAK_ORDER_TEST(false, P1, int*, int*);
+
+// P2609R3
+
+struct MoveOnly
+{
+	MoveOnly(MoveOnly&&) = default;
+	MoveOnly(MoveOnly const&) = delete;
+};
+struct Proj
+{
+	MoveOnly operator()(int) const;
+};
+struct Pred4
+{
+	bool operator()(MoveOnly, MoveOnly) const;
+};
+HAMON_INDIRECT_STRICT_WEAK_ORDER_TEST(true, Pred4, hamon::projected<int*, Proj>, hamon::projected<int*, Proj>);
 
 }	// namespace indirect_strict_weak_order_test
 

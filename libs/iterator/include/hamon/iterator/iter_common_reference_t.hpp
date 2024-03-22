@@ -21,6 +21,7 @@ using std::iter_common_reference_t;
 #else
 
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/iterator/detail/indirect_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -33,7 +34,7 @@ namespace hamon
 
 template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_readable, T)>
 using iter_common_reference_t =
-	hamon::common_reference_t<hamon::iter_reference_t<T>, hamon::iter_value_t<T>&>;
+	hamon::common_reference_t<hamon::iter_reference_t<T>, hamon::detail::indirect_value_t<T>>;
 
 }	// namespace hamon
 
