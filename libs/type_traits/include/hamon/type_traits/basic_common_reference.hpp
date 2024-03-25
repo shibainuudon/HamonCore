@@ -33,7 +33,8 @@ template <
 	typename T,
 	typename U,
 	template <typename> class TQual,
-	template <typename> class UQual
+	template <typename> class UQual,
+	typename = void
 >
 struct basic_common_reference
 {};

@@ -34,67 +34,30 @@ namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
 
 // [utility.syn]
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <
 	typename T1, typename T2,
 	typename U1, typename U2,
 	template <typename> class TQual,
 	template <typename> class UQual
 >
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 requires requires
 {
 	typename hamon::detail::pair_basic_common_reference_impl<
 		T1, T2, U1, U2, TQual, UQual>;
 }
-struct basic_common_reference<
-	hamon::pair<T1, T2>, hamon::pair<U1, U2>, TQual, UQual>
-{
-	using type = hamon::detail::pair_basic_common_reference_impl<
-		T1, T2, U1, U2, TQual, UQual>;
-};
-
-#else
-
-namespace detail
-{
-
-template <
-	typename Pair1, typename Pair2,
-	template <typename> class TQual,
-	template <typename> class UQual,
-	typename = void
->
-struct pair_basic_common_reference {};
-
-template <
-	typename T1, typename T2,
-	typename U1, typename U2,
-	template <typename> class TQual,
-	template <typename> class UQual
->
-struct pair_basic_common_reference<
-	hamon::pair<T1, T2>, hamon::pair<U1, U2>, TQual, UQual,
-	hamon::void_t<hamon::detail::pair_basic_common_reference_impl<
-		T1, T2, U1, U2, TQual, UQual>>>
-{
-	using type = hamon::detail::pair_basic_common_reference_impl<
-		T1, T2, U1, U2, TQual, UQual>;
-};
-
-}	// namespace detail
-
-template <
-	typename T1, typename T2,
-	typename U1, typename U2,
-	template <typename> class TQual,
-	template <typename> class UQual
->
-struct basic_common_reference<hamon::pair<T1, T2>, hamon::pair<U1, U2>, TQual, UQual>
-	: public detail::pair_basic_common_reference<hamon::pair<T1, T2>, hamon::pair<U1, U2>, TQual, UQual>
-{};
-
 #endif
+struct basic_common_reference<
+	hamon::pair<T1, T2>, hamon::pair<U1, U2>, TQual, UQual
+#if !defined(HAMON_HAS_CXX20_CONCEPTS)
+	, hamon::void_t<hamon::detail::pair_basic_common_reference_impl<
+		T1, T2, U1, U2, TQual, UQual>>
+#endif
+>
+{
+	using type = hamon::detail::pair_basic_common_reference_impl<
+		T1, T2, U1, U2, TQual, UQual>;
+};
 
 }	// namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
 

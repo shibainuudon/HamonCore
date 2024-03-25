@@ -9,6 +9,7 @@
 #include <hamon/type_traits/is_trivially_copyable.hpp>
 #include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_copy_assignable.hpp>
+#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -18,6 +19,19 @@ namespace hamon_functional_test
 
 namespace reference_wrapper_test
 {
+
+// P2655R3
+static_assert(hamon::is_same<
+   hamon::common_reference_t<int&, hamon::reference_wrapper<int>>,
+   int&>::value, "");
+
+static_assert(hamon::is_same<
+   hamon::common_reference_t<int&, hamon::reference_wrapper<int>&>,
+   int&>::value, "");
+
+static_assert(hamon::is_same<
+   hamon::common_reference_t<int&, hamon::reference_wrapper<int> const&>,
+   int&>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

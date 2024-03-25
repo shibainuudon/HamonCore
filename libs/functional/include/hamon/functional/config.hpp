@@ -26,7 +26,10 @@
 #  define HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL
 #endif
 
-#if defined(HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL)
+#if defined(HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL) && \
+	defined(__cpp_lib_common_reference) && (__cpp_lib_common_reference >= 202302L) && \
+	defined(__cpp_lib_common_reference_wrapper) && (__cpp_lib_common_reference_wrapper >= 202302L) && \
+	HAMON_CXX_STANDARD >= 23
 #  define HAMON_USE_STD_REFERENCE_WRAPPER
 #endif
 
