@@ -41,6 +41,7 @@ using std::array;
 namespace hamon
 {
 
+// 24.3.7 Class template array[array]
 template <typename T, hamon::size_t N>
 struct array
 {
@@ -73,6 +74,7 @@ private:
 		swap(array<U, M>& lhs, array<U, M>& rhs)
 			HAMON_NOEXCEPT_IF(hamon::is_nothrow_swappable<U>::value)
 		{
+			// [array.members]/4
 			hamon::swap_ranges(lhs.begin(), lhs.end(), rhs.begin());
 		}
 	};
@@ -89,7 +91,7 @@ private:
 		}
 
 		static HAMON_CXX14_CONSTEXPR void
-		swap(array<U, 0>&, array<U, 0>&) HAMON_NOEXCEPT
+		swap(array<U, 0>&, array<U, 0>&) HAMON_NOEXCEPT	// [array.zero]/4
 		{
 			// do nothing
 		}
@@ -104,6 +106,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void fill(T const& u)
 	{
+		// [array.members]/3
 		hamon::fill_n(begin(), N, u);
 	}
 
@@ -116,84 +119,84 @@ public:
 
 	// iterators
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	begin() HAMON_NOEXCEPT
 	{
 		return iterator(data());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	begin() const HAMON_NOEXCEPT
 	{
 		return const_iterator(data());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	end() HAMON_NOEXCEPT
 	{
 		return iterator(data() + N);
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	end() const HAMON_NOEXCEPT
 	{
 		return const_iterator(data() + N);
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reverse_iterator
 	rbegin() HAMON_NOEXCEPT
 	{
 		return reverse_iterator(end());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	rbegin() const HAMON_NOEXCEPT
 	{
 		return const_reverse_iterator(end());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reverse_iterator
 	rend() HAMON_NOEXCEPT
 	{
 		return reverse_iterator(begin());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	rend() const HAMON_NOEXCEPT
 	{
 		return const_reverse_iterator(begin());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	cbegin() const HAMON_NOEXCEPT
 	{
 		return const_iterator(data());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	cend() const HAMON_NOEXCEPT
 	{
 		return const_iterator(data() + N);
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	crbegin() const HAMON_NOEXCEPT
 	{
 		return const_reverse_iterator(end());
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	crend() const HAMON_NOEXCEPT
 	{
@@ -209,7 +212,7 @@ public:
 		return N == 0;
 	}
 	
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR size_type
 	size() const HAMON_NOEXCEPT
 	{
@@ -217,7 +220,7 @@ public:
 		return N;
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR size_type
 	max_size() const HAMON_NOEXCEPT
 	{
@@ -226,16 +229,16 @@ public:
 
 	// element access
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reference
-	operator[](size_type n) HAMON_NOEXCEPT
+	operator[](size_type n) HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return m_elems[n];
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reference
-	operator[](size_type n) const HAMON_NOEXCEPT
+	operator[](size_type n) const HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return m_elems[n];
 	}
@@ -243,7 +246,7 @@ public:
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reference
 	at(size_type n)
 	{
@@ -253,7 +256,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです
 			(hamon::detail::throw_out_of_range("array::at"), (*this)[n]);
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reference
 	at(size_type n) const
 	{
@@ -265,42 +268,42 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです
 
 HAMON_WARNING_POP()
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reference
-	front() HAMON_NOEXCEPT
+	front() HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return (*this)[0];
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reference
-	front() const HAMON_NOEXCEPT
+	front() const HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return (*this)[0];
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR reference
-	back() HAMON_NOEXCEPT
+	back() HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return (*this)[N-1];
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_reference
-	back() const HAMON_NOEXCEPT
+	back() const HAMON_NOEXCEPT	// noexcept as an extension
 	{
 		return (*this)[N-1];
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR T*
 	data() HAMON_NOEXCEPT
 	{
 		return traits_type::ptr(m_elems);
 	}
 
-	HAMON_NODISCARD	// extension
+	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR T const*
 	data() const HAMON_NOEXCEPT
 	{
@@ -311,25 +314,26 @@ HAMON_WARNING_POP()
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 template <typename T, typename... U>
 array(T, U...)
-->array<hamon::enable_if_t<(hamon::is_same<T, U>::value && ...), T>, 1 + sizeof...(U)>;
+->array<hamon::enable_if_t<(hamon::is_same<T, U>::value && ...), T>, 1 + sizeof...(U)>;	// [array.cons]/2
 #endif
 
 template <typename T, hamon::size_t N,
 	typename = hamon::enable_if_t<
-		N == 0 || hamon::is_swappable<T>::value
+		N == 0 || hamon::is_swappable<T>::value	// [array.special]/1
 	>
 >
-inline HAMON_CXX14_CONSTEXPR void
-swap(array<T, N>& lhs, array<T, N>& rhs)
+HAMON_CXX14_CONSTEXPR void
+swap(array<T, N>& x, array<T, N>& y)
 HAMON_NOEXCEPT_IF_EXPR((
-	lhs.swap(rhs)))
+	x.swap(y)))
 {
-	lhs.swap(rhs);
+	// [array.special]/2
+	x.swap(y);
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator==(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::equal(lhs.begin(), lhs.end(), rhs.begin());
@@ -338,8 +342,8 @@ operator==(array<T, N> const& lhs, array<T, N> const& rhs)
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR hamon::detail::synth3way_t<T>
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR hamon::detail::synth3way_t<T>
 operator<=>(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::lexicographical_compare_three_way(
@@ -351,16 +355,16 @@ operator<=>(array<T, N> const& lhs, array<T, N> const& rhs)
 #else
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator!=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs == rhs);
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator<(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::lexicographical_compare(
@@ -369,24 +373,24 @@ operator<(array<T, N> const& lhs, array<T, N> const& rhs)
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator>(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return rhs < lhs;
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator<=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs > rhs);
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR bool
 operator>=(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return !(lhs < rhs);

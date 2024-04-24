@@ -42,7 +42,7 @@ namespace detail
 {
 
 template <typename T, hamon::size_t N, hamon::size_t... I>
-inline HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
+HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
 to_array_impl(T (&a)[N], hamon::index_sequence<I...>)
 {
 	// [array.creation]/3
@@ -50,7 +50,7 @@ to_array_impl(T (&a)[N], hamon::index_sequence<I...>)
 }
 
 template <typename T, hamon::size_t N, hamon::size_t... I>
-inline HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
+HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
 to_array_impl(T (&&a)[N], hamon::index_sequence<I...>)
 {
 	// [array.creation]/6
@@ -59,11 +59,13 @@ to_array_impl(T (&&a)[N], hamon::index_sequence<I...>)
 
 }	// namespace detail
 
+// 24.3.7.6 Array creation functions[array.creation]
+
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
 to_array(T (&a)[N])
-HAMON_NOEXCEPT_IF(hamon::is_nothrow_copy_constructible<T>::value)
+HAMON_NOEXCEPT_IF(hamon::is_nothrow_copy_constructible<T>::value)	// noexcept as an extension
 {
 	// [array.creation]/1
 	static_assert(!hamon::is_array<T>::value, "");
@@ -72,10 +74,10 @@ HAMON_NOEXCEPT_IF(hamon::is_nothrow_copy_constructible<T>::value)
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD	// extension
-inline HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
+HAMON_NODISCARD	// nodiscard as an extension
+HAMON_CXX11_CONSTEXPR hamon::array<hamon::remove_cv_t<T>, N>
 to_array(T (&&a)[N])
-HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<T>::value)
+HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<T>::value)	// noexcept as an extension
 {
 	// [array.creation]/4
 	static_assert(!hamon::is_array<T>::value, "");
