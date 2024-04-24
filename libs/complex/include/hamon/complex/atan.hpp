@@ -17,9 +17,10 @@ namespace hamon
 // [complex.transcendentals], transcendentals
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-atan(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+atan(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.transcendentals]/5
 	return complex<T>{0, -1} * hamon::atanh(complex<T>{0, 1} * x);
 }
 

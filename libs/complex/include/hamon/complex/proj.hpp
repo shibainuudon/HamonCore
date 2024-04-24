@@ -24,25 +24,28 @@ namespace hamon
 // [complex.value.ops], values
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-proj(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+proj(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.value.ops]/7
     return
 		hamon::isinf(hamon::real(x)) || hamon::isinf(hamon::imag(x)) ?
 			hamon::complex<T>(hamon::numeric_limits<T>::infinity(), hamon::copysign(T(), hamon::imag(x))) :
 		x;
 }
 
+// [cmplx.over]/2.1
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, Float)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<Float>
-proj(Float f)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<Float>	// nodiscard as an extension
+proj(Float f) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return hamon::proj(complex<Float>{f});
 }
 
+// [cmplx.over]/2.2
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integer)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<double>
-proj(Integer i)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<double>	// nodiscard as an extension
+proj(Integer i) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return hamon::proj(complex<double>{static_cast<double>(i)});
 }

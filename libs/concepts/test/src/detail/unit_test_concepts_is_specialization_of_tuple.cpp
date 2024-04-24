@@ -6,11 +6,13 @@
 
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/array.hpp>
+#include <hamon/complex.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/config.hpp>
 #include <array>
+#include <complex>
 #include <tuple>
 #include <utility>
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
@@ -28,6 +30,8 @@ namespace is_specialization_of_tuple_test
 
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::array<int, 3>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::array<float, 10>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::complex<float>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::complex<double>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::pair<int, float>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::pair<double, long>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(true,  std::tuple<int>);
@@ -38,6 +42,8 @@ HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, std::ranges::subrange<int*, int*, s
 
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::array<int, 3>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::array<float, 10>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::complex<float>);
+HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::complex<double>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::pair<int, float>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(false, hamon::pair<double, long>);
 HAMON_IS_SPECIALIZATION_OF_TUPLE_TEST(true,  hamon::tuple<int>);

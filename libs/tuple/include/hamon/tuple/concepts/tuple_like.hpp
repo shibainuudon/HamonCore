@@ -8,6 +8,7 @@
 #define HAMON_TUPLE_CONCEPTS_TUPLE_LIKE_HPP
 
 #include <hamon/concepts/detail/is_specialization_of_array.hpp>
+#include <hamon/concepts/detail/is_specialization_of_complex.hpp>
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
@@ -23,6 +24,7 @@ namespace hamon {
 template <typename T>
 concept tuple_like =
 	hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<T>>::value ||
+	hamon::detail::is_specialization_of_complex<hamon::remove_cvref_t<T>>::value ||
 	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>::value ||
 	hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>::value ||
 	hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<T>>::value;
@@ -39,6 +41,7 @@ namespace hamon {
 template <typename T>
 using tuple_like = hamon::disjunction<
 	hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<T>>,
+	hamon::detail::is_specialization_of_complex<hamon::remove_cvref_t<T>>,
 	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>,
 	hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>,
 	hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<T>>

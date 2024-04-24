@@ -28,8 +28,9 @@ namespace complex_detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
-asinh_unchecked(complex<T> const& x)
+asinh_unchecked(complex<T> const& x) HAMON_NOEXCEPT
 {
+	// [complex.transcendentals]/9
 	return hamon::log(x + hamon::sqrt((x * x) + T(1)));
 }
 
@@ -38,7 +39,7 @@ HAMON_CXX11_CONSTEXPR complex<T>
 asinh_impl(T x, T y,
 	T pi = hamon::numbers::pi_fn<T>(),
 	T nan = hamon::numeric_limits<T>::quiet_NaN(),
-	T inf = hamon::numeric_limits<T>::infinity())
+	T inf = hamon::numeric_limits<T>::infinity()) HAMON_NOEXCEPT
 {
 	return
 		// If z is (+0,+0), the result is (+0,+0)
@@ -77,8 +78,8 @@ asinh_impl(T x, T y,
 }	// namespace complex_detail
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-asinh(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+asinh(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return complex_detail::asinh_impl(x.real(), x.imag());
 }

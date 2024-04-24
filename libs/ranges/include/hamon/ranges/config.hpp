@@ -8,6 +8,7 @@
 #define HAMON_RANGES_CONFIG_HPP
 
 #include <hamon/config.hpp>
+#include <hamon/tuple/config.hpp>
 
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
 #  include <ranges>
@@ -15,6 +16,7 @@
 
 #if (defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202110)) && \
 	(defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)) && \
+	defined(HAMON_USE_STD_TUPLE) && \
 	!(defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE <= 13))    /* libcstdc++ の enable_view は参照型でもtrueになってしまう */
 
 #  define HAMON_USE_STD_RANGES

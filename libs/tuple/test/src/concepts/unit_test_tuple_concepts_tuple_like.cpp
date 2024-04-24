@@ -8,13 +8,15 @@
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/array/array.hpp>
+#include <hamon/complex.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <utility>
-#include <tuple>
 #include <array>
+#include <complex>
 #include <string>
+#include <tuple>
+#include <utility>
 #if (HAMON_CXX_STANDARD >= 20) && HAMON_HAS_INCLUDE(<ranges>)
 #  include <ranges>
 #endif
@@ -49,6 +51,8 @@ HAMON_TUPLE_LIKE_TEST(true, std::array<int, 1>);
 HAMON_TUPLE_LIKE_TEST(true, std::array<int, 2>);
 HAMON_TUPLE_LIKE_TEST(true, std::array<int, 3>);
 HAMON_TUPLE_LIKE_TEST(true, std::array<int, 10>);
+HAMON_TUPLE_LIKE_TEST(true, std::complex<float>);
+HAMON_TUPLE_LIKE_TEST(true, std::complex<double>);
 #if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911)
 HAMON_TUPLE_LIKE_TEST(true, std::ranges::subrange<int*, int*, std::ranges::subrange_kind::sized>);
 #endif
@@ -65,6 +69,8 @@ HAMON_TUPLE_LIKE_TEST(true, hamon::array<int, 1>);
 HAMON_TUPLE_LIKE_TEST(true, hamon::array<int, 2>);
 HAMON_TUPLE_LIKE_TEST(true, hamon::array<int, 3>);
 HAMON_TUPLE_LIKE_TEST(true, hamon::array<int, 10>);
+HAMON_TUPLE_LIKE_TEST(true, hamon::complex<float>);
+HAMON_TUPLE_LIKE_TEST(true, hamon::complex<double>);
 HAMON_TUPLE_LIKE_TEST(true, hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>);
 
 HAMON_TUPLE_LIKE_TEST(false, int);

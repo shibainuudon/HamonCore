@@ -19,9 +19,10 @@ namespace hamon
 // [complex.transcendentals], transcendentals
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-log(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+log(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.transcendentals]/16
 	return hamon::complex<T>(
 		hamon::log(hamon::abs(x)),
 		hamon::arg(x));

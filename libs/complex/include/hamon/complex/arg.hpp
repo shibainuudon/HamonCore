@@ -22,22 +22,25 @@ namespace hamon
 // [complex.value.ops], values
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T
-arg(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T	// nodiscard as an extension
+arg(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.value.ops]/4
 	return hamon::atan2(hamon::imag(x), hamon::real(x));
 }
 
+// [cmplx.over]/2.1
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, Float)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Float
-arg(Float f)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Float	// nodiscard as an extension
+arg(Float f) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return hamon::arg(complex<Float>{f});
 }
 
+// [cmplx.over]/2.2
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integer)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
-arg(Integer i)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double	// nodiscard as an extension
+arg(Integer i) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return hamon::arg(complex<double>{static_cast<double>(i)});
 }

@@ -30,8 +30,9 @@ namespace complex_detail
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
-sqrt_unchecked(complex<T> const& x)
+sqrt_unchecked(complex<T> const& x) HAMON_NOEXCEPT
 {
+	// [complex.transcendentals]/24
 	return hamon::polar(hamon::sqrt(hamon::abs(x)), hamon::arg(x) / T(2));
 }
 
@@ -39,7 +40,7 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR complex<T>
 sqrt_impl(T x, T y,
 	T nan = hamon::numeric_limits<T>::quiet_NaN(),
-	T inf = hamon::numeric_limits<T>::infinity())
+	T inf = hamon::numeric_limits<T>::infinity()) HAMON_NOEXCEPT
 {
 	return
 		// If z is (±0,+0), the result is (+0,+0)
@@ -75,8 +76,8 @@ sqrt_impl(T x, T y,
 }	// namespace complex_detail
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-sqrt(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+sqrt(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return complex_detail::sqrt_impl(x.real(), x.imag());
 }

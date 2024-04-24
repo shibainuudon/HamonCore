@@ -24,6 +24,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		config
 		limits
 		numbers
+		tuple
 		type_traits
 		common)
 

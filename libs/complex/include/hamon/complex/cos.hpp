@@ -17,9 +17,10 @@ namespace hamon
 // [complex.transcendentals], transcendentals
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>
-cos(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR complex<T>	// nodiscard as an extension
+cos(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.transcendentals]/13
 	return hamon::cosh(complex<T>{0, 1} * x);
 }
 

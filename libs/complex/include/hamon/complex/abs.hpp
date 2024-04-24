@@ -19,9 +19,10 @@ namespace hamon
 // [complex.value.ops], values
 
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T
-abs(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T	// nodiscard as an extension
+abs(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.value.ops]/3
 	return hamon::hypot(hamon::real(x), hamon::imag(x));
 }
 

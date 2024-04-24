@@ -18,22 +18,25 @@ namespace hamon
 
 // [complex.value.ops], values
 template <typename T>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T
-imag(complex<T> const& x)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T	// nodiscard as an extension
+imag(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 {
+	// [complex.value.ops]/2
 	return x.imag();
 }
 
+// [cmplx.over]/2.1
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, Float)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Float
-imag(Float)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Float	// nodiscard as an extension
+imag(Float) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return Float{};
 }
 
+// [cmplx.over]/2.2
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integer)>
-HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
-imag(Integer)
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double	// nodiscard as an extension
+imag(Integer) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	return 0.0;
 }
