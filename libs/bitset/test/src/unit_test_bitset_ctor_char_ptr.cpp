@@ -6,7 +6,7 @@
  *	template<class charT>
  *	constexpr explicit bitset(
  *		const charT* str,
- *		typename basic_string<charT>::size_type n = basic_string<charT>::npos,
+ *		typename basic_string_view<charT>::size_type n = basic_string_view<charT>::npos,
  *		charT zero = charT('0'),
  *		charT one = charT('1'));
  */
