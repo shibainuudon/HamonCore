@@ -9,7 +9,7 @@
 
 #include <hamon/concepts/config.hpp>
 
-#if (HAMON_CXX_STANDARD >= 17) && defined(HAMON_USE_STD_CONCEPTS)
+#if (HAMON_CXX_STANDARD >= 17) && defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_RANGES_ITERATOR)
 #    define HAMON_USE_STD_REVERSE_ITERATOR
 #endif
 
