@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	synth3way.hpp
+ *	@file	synth_three_way.hpp
  *
- *	@brief	synth3way の定義
+ *	@brief	synth_three_way の定義
  */
 
-#ifndef HAMON_COMPARE_DETAIL_SYNTH3WAY_HPP
-#define HAMON_COMPARE_DETAIL_SYNTH3WAY_HPP
+#ifndef HAMON_COMPARE_DETAIL_SYNTH_THREE_WAY_HPP
+#define HAMON_COMPARE_DETAIL_SYNTH_THREE_WAY_HPP
 
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/weak_ordering.hpp>
@@ -19,7 +19,9 @@ namespace hamon
 namespace detail
 {
 
-struct Synth3way
+// 16.4.2.1 Exposition-only functions[expos.only.func]
+
+struct synth_three_way_fn
 {
 private:
 	template <typename T, typename U>
@@ -77,14 +79,20 @@ public:
 	}
 };
 
+inline namespace cpo
+{
+
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-Synth3way synth3way = {};
+synth_three_way_fn synth_three_way{};
+
+}	// inline namespace cpo
 
 template <typename T, typename U = T>
-using synth3way_t = decltype(detail::synth3way(hamon::declval<T&>(), hamon::declval<U&>()));
+using synth_three_way_result =
+	decltype(hamon::detail::synth_three_way(hamon::declval<T&>(), hamon::declval<U&>()));
 
 }	// namespace detail
 
 }	// namespace hamon
 
-#endif // HAMON_COMPARE_DETAIL_SYNTH3WAY_HPP
+#endif // HAMON_COMPARE_DETAIL_SYNTH_THREE_WAY_HPP

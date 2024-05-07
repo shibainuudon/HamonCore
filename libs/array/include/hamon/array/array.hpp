@@ -27,7 +27,7 @@ using std::array;
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
-#include <hamon/compare/detail/synth3way.hpp>
+#include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -343,13 +343,13 @@ operator==(array<T, N> const& lhs, array<T, N> const& rhs)
 
 template <typename T, hamon::size_t N>
 HAMON_NODISCARD	// nodiscard as an extension
-HAMON_CXX11_CONSTEXPR hamon::detail::synth3way_t<T>
+HAMON_CXX11_CONSTEXPR hamon::detail::synth_three_way_result<T>
 operator<=>(array<T, N> const& lhs, array<T, N> const& rhs)
 {
 	return hamon::lexicographical_compare_three_way(
 		lhs.begin(), lhs.end(),
 		rhs.begin(), rhs.end(),
-		hamon::detail::synth3way);
+		hamon::detail::synth_three_way);
 }
 
 #else

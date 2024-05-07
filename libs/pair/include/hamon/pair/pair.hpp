@@ -26,7 +26,7 @@ using std::pair;
 
 #include <hamon/pair/detail/pair_constraint.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
-#include <hamon/compare/detail/synth3way.hpp>
+#include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_fwd.hpp>
@@ -704,16 +704,16 @@ template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR
 hamon::common_comparison_category_t<
-	hamon::detail::synth3way_t<T1, U1>,
-	hamon::detail::synth3way_t<T2, U2>>
+	hamon::detail::synth_three_way_result<T1, U1>,
+	hamon::detail::synth_three_way_result<T2, U2>>
 operator<=>(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	// [pairs.sprc]/3
-	if (auto c = hamon::detail::synth3way(x.first, y.first); c != 0)
+	if (auto c = hamon::detail::synth_three_way(x.first, y.first); c != 0)
 	{
 		return c;
 	}
-	return hamon::detail::synth3way(x.second, y.second);
+	return hamon::detail::synth_three_way(x.second, y.second);
 }
 
 #else

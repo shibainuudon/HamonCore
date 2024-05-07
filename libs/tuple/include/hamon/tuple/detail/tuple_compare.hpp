@@ -11,7 +11,7 @@
 #include <hamon/tuple/tuple_element.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/strong_ordering.hpp>
-#include <hamon/compare/detail/synth3way.hpp>
+#include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/index_sequence.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
@@ -45,7 +45,7 @@ struct tuple_compare
 	static HAMON_CXX14_CONSTEXPR Result
 	three_way(T const& t, U const& u)
 	{
-		auto c = hamon::detail::synth3way(hamon::adl_get<I>(t), hamon::adl_get<I>(u));
+		auto c = hamon::detail::synth_three_way(hamon::adl_get<I>(t), hamon::adl_get<I>(u));
 		if (c != 0)
 		{
 			return c;
@@ -97,7 +97,7 @@ tuple_less(TTuple const& t, UTuple const& u)
 
 template <typename... TTypes, typename UTuple, hamon::size_t... Is,
 	typename Result = hamon::common_comparison_category_t<
-		hamon::detail::synth3way_t<TTypes, hamon::tuple_element_t<Is, UTuple>>...
+		hamon::detail::synth_three_way_result<TTypes, hamon::tuple_element_t<Is, UTuple>>...
 	>
 >
 inline HAMON_CXX11_CONSTEXPR Result
