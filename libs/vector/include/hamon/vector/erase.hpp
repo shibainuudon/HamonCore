@@ -7,9 +7,11 @@
 #ifndef HAMON_VECTOR_ERASE_HPP
 #define HAMON_VECTOR_ERASE_HPP
 
-#include <vector>
+#include <hamon/vector/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(HAMON_USE_STD_VECTOR) && defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <vector>
 
 namespace hamon
 {
@@ -22,19 +24,23 @@ using std::erase;
 
 #include <hamon/vector/vector.hpp>
 #include <hamon/algorithm/remove.hpp>
+#include <hamon/iterator/distance.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-template <typename T, typename Alloc, typename U>
-inline HAMON_CXX14_CONSTEXPR
-typename hamon::vector<T, Alloc>::size_type
-erase(hamon::vector<T, Alloc>& c, U const& value)
+// [vector.erasure], erasure
+template <typename T, typename Allocator, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::vector<T, Allocator>::size_type
+erase(hamon::vector<T, Allocator>& c, U const& value)
 {
-	auto const sz = c.size();
-	c.erase(hamon::remove(c.begin(), c.end(), value), c.end());
-	return sz - c.size();
+	// [vector.erasure]/1
+	auto it = hamon::remove(c.begin(), c.end(), value);
+	auto r = hamon::distance(it, c.end());
+	c.erase(it, c.end());
+	return static_cast<typename hamon::vector<T, Allocator>::size_type>(r);
 }
 
 }	// namespace hamon
