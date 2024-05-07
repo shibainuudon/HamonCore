@@ -84,6 +84,7 @@ using adjacent_t = decltype(adjacent<N>);
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
