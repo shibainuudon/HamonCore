@@ -21,7 +21,7 @@
 #include <hamon/memory/make_obj_using_allocator.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/memory/uninitialized_construct_using_allocator.hpp>
-//#include <hamon/memory/uninitialized_copy.hpp>
+#include <hamon/memory/uninitialized_copy.hpp>
 //#include <hamon/memory/uninitialized_copy_n.hpp>
 //#include <hamon/memory/uninitialized_default_construct.hpp>
 //#include <hamon/memory/uninitialized_default_construct_n.hpp>
