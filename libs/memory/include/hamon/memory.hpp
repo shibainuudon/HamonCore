@@ -26,7 +26,7 @@
 //#include <hamon/memory/uninitialized_default_construct.hpp>
 //#include <hamon/memory/uninitialized_default_construct_n.hpp>
 #include <hamon/memory/uninitialized_fill.hpp>
-//#include <hamon/memory/uninitialized_fill_n.hpp>
+#include <hamon/memory/uninitialized_fill_n.hpp>
 //#include <hamon/memory/uninitialized_move.hpp>
 //#include <hamon/memory/uninitialized_move_n.hpp>
 //#include <hamon/memory/uninitialized_value_construct.hpp>
