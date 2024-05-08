@@ -50,7 +50,7 @@
 #include <hamon/memory/uninitialized_copy.hpp>
 #include <hamon/memory/uninitialized_copy_n.hpp>
 #include <hamon/memory/uninitialized_default_construct.hpp>
-//#include <hamon/memory/uninitialized_default_construct_n.hpp>
+#include <hamon/memory/uninitialized_default_construct_n.hpp>
 #include <hamon/memory/uninitialized_fill.hpp>
 #include <hamon/memory/uninitialized_fill_n.hpp>
 #include <hamon/memory/uninitialized_move.hpp>
