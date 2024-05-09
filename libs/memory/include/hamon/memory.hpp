@@ -56,7 +56,7 @@
 #include <hamon/memory/uninitialized_move.hpp>
 #include <hamon/memory/uninitialized_move_n.hpp>
 #include <hamon/memory/uninitialized_value_construct.hpp>
-//#include <hamon/memory/uninitialized_value_construct_n.hpp>
+#include <hamon/memory/uninitialized_value_construct_n.hpp>
 //#include <hamon/memory/unique_ptr.hpp>
 //#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/memory/uses_allocator_construction_args.hpp>
