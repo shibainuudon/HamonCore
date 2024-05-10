@@ -22,7 +22,7 @@
 //#include <hamon/memory/default_delete.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/destroy_at.hpp>
-//#include <hamon/memory/destroy_n.hpp>
+#include <hamon/memory/destroy_n.hpp>
 //#include <hamon/memory/dynamic_pointer_cast.hpp>
 //#include <hamon/memory/enable_shared_from_this.hpp>
 //#include <hamon/memory/get_deleter.hpp>
