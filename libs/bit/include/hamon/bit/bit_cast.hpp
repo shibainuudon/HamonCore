@@ -80,9 +80,10 @@ bit_cast(From const& src) HAMON_NOEXCEPT
 
 #else
 
-	To dst;
-	hamon::memcpy(&dst, &src, sizeof(To));
-	return dst;
+	alignas(To) unsigned char dst[sizeof(To)];
+	hamon::memcpy(dst, &src, sizeof(To));
+	return *(reinterpret_cast<To*>(&dst));
+
 #endif
 }
 
