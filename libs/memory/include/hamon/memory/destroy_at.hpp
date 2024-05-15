@@ -31,13 +31,14 @@ namespace hamon
 {
 
 template <typename T>
-void destroy_at(T* p);
+HAMON_CXX20_CONSTEXPR void destroy_at(T* p);
 
 namespace detail
 {
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_array<T>::value>>
-inline void destroy_at_impl(T* p, hamon::detail::overload_priority<1>)
+HAMON_CXX20_CONSTEXPR void
+destroy_at_impl(T* p, hamon::detail::overload_priority<1>)
 {
 	for (auto& x : *p)
 	{
@@ -46,7 +47,8 @@ inline void destroy_at_impl(T* p, hamon::detail::overload_priority<1>)
 }
 
 template <typename T>
-inline void destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
+HAMON_CXX20_CONSTEXPR void
+destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
 {
 	p->~T();
 }
@@ -54,9 +56,10 @@ inline void destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
 }	// namespace detail
 
 template <typename T>
-inline void destroy_at(T* p)
+HAMON_CXX20_CONSTEXPR void
+destroy_at(T* p)
 {
-	detail::destroy_at_impl(p, hamon::detail::overload_priority<1>{});
+	hamon::detail::destroy_at_impl(p, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace hamon

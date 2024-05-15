@@ -5,7 +5,9 @@
  */
 
 #include <hamon/memory/destroy_at.hpp>
+#include <hamon/memory/construct_at.hpp>
 #include <gtest/gtest.h>
+#include "constexpr_test.hpp"
 
 namespace hamon_memory_test
 {
@@ -24,6 +26,35 @@ struct X
 };
 
 int X::destruct_count = 0;
+
+struct S
+{
+	bool* m_destructed;
+
+	constexpr S(bool* p) : m_destructed(p) {}
+
+	HAMON_CXX20_CONSTEXPR ~S() { *m_destructed = true; }
+};
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
+HAMON_CXX20_CONSTEXPR
+#endif
+bool constexpr_test()
+{
+	std::allocator<S> alloc;
+	S* p = alloc.allocate(1);
+	bool destructed = false;
+	hamon::construct_at(p, &destructed);
+	VERIFY(!destructed);
+	hamon::destroy_at(p);
+	VERIFY( destructed);
+	alloc.deallocate(p, 1);
+	return true;
+}
+
+#undef VERIFY
 
 GTEST_TEST(MemoryTest, DestroyAtTest)
 {
@@ -48,6 +79,12 @@ GTEST_TEST(MemoryTest, DestroyAtTest)
 		int x = {};
 		hamon::destroy_at(&x);
 	}
+
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(constexpr_test());
+#else
+	EXPECT_TRUE(constexpr_test());
+#endif
 }
 
 }	// namespace destroy_at_test
