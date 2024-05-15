@@ -54,9 +54,10 @@ HAMON_CXX14_CONSTEXPR ForwardIterator
 destroy_n_impl(ForwardIterator first, Size n,
 	hamon::detail::overload_priority<0>)
 {
-	for (; n > 0; (void)++first, --n)
+	for (; n > 0; --n)
 	{
 		hamon::destroy_at(hamon::addressof(*first));
+		++first;
 	}
 
 	return first;
