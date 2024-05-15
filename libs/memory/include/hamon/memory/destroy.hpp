@@ -40,13 +40,13 @@ template <typename ForwardIterator,
 		hamon::is_trivially_destructible<ValueType>::value
 	>
 >
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR void
 destroy_impl(ForwardIterator, ForwardIterator, hamon::detail::overload_priority<1>)
 {
 }
 
 template <typename ForwardIterator>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR void
 destroy_impl(ForwardIterator first, ForwardIterator last, hamon::detail::overload_priority<0>)
 {
 	for (; first != last; ++first)
@@ -58,7 +58,7 @@ destroy_impl(ForwardIterator first, ForwardIterator last, hamon::detail::overloa
 }	// namespace detail
 
 template <typename ForwardIterator>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR void
 destroy(ForwardIterator first, ForwardIterator last)
 {
 	detail::destroy_impl(first, last, hamon::detail::overload_priority<1>{});
