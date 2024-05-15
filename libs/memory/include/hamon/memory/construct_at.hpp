@@ -11,7 +11,8 @@
 
 #if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907)
 
-#define HAMON_USE_STD_CONSTRUCT_AT
+// construct_at が constexpr であることを定義
+#define	HAMON_HAS_CONSTEXPR_CONSTRUCT_AT
 
 namespace hamon
 {

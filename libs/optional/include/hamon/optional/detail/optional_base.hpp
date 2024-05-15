@@ -188,7 +188,7 @@ struct construct_impl
 
 // construct_at()はC++20以降でのみconstexpr。
 // C++17までの場合でも、できるだけconstexprにするように頑張る。
-#if !defined(HAMON_USE_STD_CONSTRUCT_AT)
+#if !defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT)
 template <typename T>
 struct construct_impl<T, hamon::enable_if_t<
 	hamon::is_default_constructible<T>::value &&
