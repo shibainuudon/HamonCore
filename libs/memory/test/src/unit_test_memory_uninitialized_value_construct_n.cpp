@@ -17,6 +17,7 @@ namespace hamon_memory_test
 namespace uninitialized_value_construct_n_test
 {
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnCtor
 {
 	int value;
@@ -36,6 +37,7 @@ struct ThrowOnCtor
 };
 
 int ThrowOnCtor::count = 0;
+#endif
 
 GTEST_TEST(MemoryTest, UninitializedValueConstructNTest)
 {
@@ -65,6 +67,7 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNTest)
 		// メモリ解放
 		alloc.deallocate(p, size);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<ThrowOnCtor> alloc;
 		auto* p = alloc.allocate(10);
@@ -82,6 +85,7 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNTest)
 		alloc.deallocate(p, 10);
 		EXPECT_EQ(0, ThrowOnCtor::count);
 	}
+#endif
 }
 
 }	// namespace uninitialized_value_construct_n_test

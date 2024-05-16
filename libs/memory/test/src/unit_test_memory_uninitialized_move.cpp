@@ -38,6 +38,7 @@ struct Z
 	Z(Z&& z) : value(z.value) { z.value = -1; }
 };
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnMove
 {
 	int value;
@@ -73,6 +74,7 @@ struct ThrowOnMove
 
 int ThrowOnMove::count = 0;
 int ThrowOnMove::move_count = 0;
+#endif
 
 GTEST_TEST(MemoryTest, UninitializedMoveTest)
 {
@@ -130,6 +132,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveTest)
 		// メモリ解放
 		alloc.deallocate(p, size);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<ThrowOnMove> alloc;
 
@@ -161,6 +164,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveTest)
 		EXPECT_EQ(0, ThrowOnMove::move_count);
 	}
 	EXPECT_EQ(0, ThrowOnMove::count);
+#endif
 }
 
 }	// namespace uninitialized_move_test

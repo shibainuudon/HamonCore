@@ -55,10 +55,12 @@ struct S2
 	S2(S2&& x)
 		: value(x.value)
 	{
+#if !defined(HAMON_NO_EXCEPTIONS)
 		if (value == 0)
 		{
 			throw 0;
 		}
+#endif
 	}
 
 	S2& operator=(S2 const&) = delete;
@@ -112,6 +114,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveImplTest)
 		EXPECT_TRUE(p[2].value ==  0);
 		alloc.deallocate(p, 10);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
@@ -119,6 +122,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveImplTest)
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_move_impl(a, a + 3, p));
 		alloc.deallocate(p, 10);
 	}
+#endif
 }
 
 }	// namespace uninitialized_move_impl_test

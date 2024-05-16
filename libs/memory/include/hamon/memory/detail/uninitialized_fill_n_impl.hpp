@@ -82,7 +82,9 @@ uninitialized_fill_n_impl(
 	hamon::detail::overload_priority<0>)
 {
 	ForwardIterator current = first;
+#if !defined(HAMON_NO_EXCEPTIONS)
 	try
+#endif
 	{
 		for (; n > 0; --n)
 		{
@@ -91,11 +93,13 @@ uninitialized_fill_n_impl(
 		}
 		return current;
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
 		hamon::destroy(first, current);
 		throw;
 	}
+#endif
 }
 
 template <typename ForwardIterator, typename Size, typename T>

@@ -46,6 +46,7 @@ struct Z
 	Z(Z const& z) : value(z.value) {}
 };
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnCopy
 {
 	int value;
@@ -81,6 +82,7 @@ struct ThrowOnCopy
 
 int ThrowOnCopy::count = 0;
 int ThrowOnCopy::copy_count = 0;
+#endif
 
 GTEST_TEST(MemoryTest, UninitializedFillTest)
 {
@@ -122,6 +124,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 		// メモリ解放
 		alloc.deallocate(p, size);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<ThrowOnCopy> alloc;
 
@@ -150,6 +153,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 		EXPECT_EQ(0, ThrowOnCopy::copy_count);
 	}
 	EXPECT_EQ(0, ThrowOnCopy::count);
+#endif
 }
 
 }	// namespace uninitialized_fill_test

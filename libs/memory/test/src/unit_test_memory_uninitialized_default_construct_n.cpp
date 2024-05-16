@@ -24,6 +24,7 @@ struct X
 
 int X::count = 0;
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct ThrowOnCtor
 {
 	static int count;
@@ -43,6 +44,7 @@ struct ThrowOnCtor
 
 int ThrowOnCtor::count = 0;
 int ThrowOnCtor::count_limit = 100;
+#endif
 
 GTEST_TEST(MemoryTest, UninitializedDefaultConstructNTest)
 {
@@ -57,6 +59,7 @@ GTEST_TEST(MemoryTest, UninitializedDefaultConstructNTest)
 		hamon::destroy(a, a + 10);
 		EXPECT_EQ( 0, X::count);
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		ThrowOnCtor a[20] = {};
 		hamon::destroy(a, a + 20);
@@ -76,6 +79,7 @@ GTEST_TEST(MemoryTest, UninitializedDefaultConstructNTest)
 		EXPECT_ANY_THROW(hamon::uninitialized_default_construct_n(a, 10));
 		EXPECT_EQ(2, ThrowOnCtor::count);
 	}
+#endif
 	{
 		int a[30];
 		hamon::uninitialized_default_construct_n(a, 11);

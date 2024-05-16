@@ -35,6 +35,7 @@ struct S2
 	S2() : value(43) {}
 };
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 struct S3
 {
 	S3()
@@ -42,6 +43,7 @@ struct S3
 		throw 0;
 	}
 };
+#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -90,12 +92,14 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructImplTest)
 	EXPECT_TRUE(test());
 #endif
 
+#if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<S3> alloc;
 		auto* p = alloc.allocate(10);
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_value_construct_impl(p, p + 3));
 		alloc.deallocate(p, 10);
 	}
+#endif
 }
 
 }	// namespace uninitialized_value_construct_impl_test

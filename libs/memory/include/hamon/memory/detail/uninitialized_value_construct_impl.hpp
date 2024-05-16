@@ -47,18 +47,22 @@ uninitialized_value_construct_impl(
 	hamon::detail::overload_priority<0>)
 {
 	ForwardIterator current = first;
+#if !defined(HAMON_NO_EXCEPTIONS)
 	try
+#endif
 	{
 		for (; current != last; ++current)
 		{
 			hamon::construct_at(hamon::addressof(*current));
 		}
 	}
+#if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
 		hamon::destroy(first, current);
 		throw;
 	}
+#endif
 }
 
 template <typename ForwardIterator>
