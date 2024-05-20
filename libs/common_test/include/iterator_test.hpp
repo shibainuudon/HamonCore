@@ -21,6 +21,88 @@ namespace hamon_iterator_test
 {
 
 template <typename T>
+struct cpp17_input_iterator_wrapper
+{
+	T*	m_ptr;
+	using iterator_category = hamon::input_iterator_tag;
+	using value_type        = T;
+	using difference_type   = hamon::ptrdiff_t;
+	using pointer           = T*;
+	using reference         = T;
+	HAMON_CXX14_CONSTEXPR cpp17_input_iterator_wrapper& operator++() { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_input_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
+	HAMON_CXX11_CONSTEXPR T                             operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const cpp17_input_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const cpp17_input_iterator_wrapper& rhs) const { return !(*this == rhs); }
+};
+
+template <typename T>
+struct cpp17_forward_iterator_wrapper
+{
+	T*	m_ptr;
+	using iterator_category = hamon::forward_iterator_tag;
+	using value_type        = T;
+	using difference_type   = hamon::ptrdiff_t;
+	using pointer           = T*;
+	using reference         = T&;
+	HAMON_CXX14_CONSTEXPR cpp17_forward_iterator_wrapper& operator++() { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_forward_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
+	HAMON_CXX11_CONSTEXPR T&                              operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const cpp17_forward_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const cpp17_forward_iterator_wrapper& rhs) const { return !(*this == rhs); }
+};
+
+template <typename T>
+struct cpp17_bidirectional_iterator_wrapper
+{
+	T*	m_ptr;
+	using iterator_category = hamon::bidirectional_iterator_tag;
+	using value_type        = T;
+	using difference_type   = hamon::ptrdiff_t;
+	using pointer           = T*;
+	using reference         = T&;
+	HAMON_CXX14_CONSTEXPR cpp17_bidirectional_iterator_wrapper& operator++() { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_bidirectional_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
+	HAMON_CXX14_CONSTEXPR cpp17_bidirectional_iterator_wrapper& operator--() { --m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_bidirectional_iterator_wrapper  operator--(int);
+	HAMON_CXX11_CONSTEXPR T&                                    operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const cpp17_bidirectional_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const cpp17_bidirectional_iterator_wrapper& rhs) const { return !(*this == rhs); }
+};
+
+template <typename T>
+struct cpp17_random_access_iterator_wrapper
+{
+	T*	m_ptr;
+	using iterator_category = hamon::random_access_iterator_tag;
+	using value_type        = T;
+	using difference_type   = hamon::ptrdiff_t;
+	using pointer           = T*;
+	using reference         = T&;
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper& operator++() { ++m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper  operator++(int) { auto t = *this; ++m_ptr; return t; }
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper& operator+=(difference_type n) { m_ptr += n; return *this; }
+	HAMON_CXX11_CONSTEXPR cpp17_random_access_iterator_wrapper  operator+(difference_type n) const { return {m_ptr + n}; }
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper& operator--() { --m_ptr; return *this; }
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper  operator--(int) { auto t = *this; --m_ptr; return t; }
+	HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper& operator-=(difference_type n) { m_ptr -= n; return *this; }
+	HAMON_CXX11_CONSTEXPR cpp17_random_access_iterator_wrapper  operator-(difference_type n) const { return {m_ptr - n}; }
+	HAMON_CXX11_CONSTEXPR difference_type                       operator-(cpp17_random_access_iterator_wrapper const& rhs) const { return m_ptr - rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                                    operator*() const { return *m_ptr; }
+	HAMON_CXX11_CONSTEXPR T&                                    operator[](difference_type i) const { return m_ptr[i]; }
+	HAMON_CXX11_CONSTEXPR bool operator==(const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr == rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator!=(const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr != rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator< (const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr <  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator> (const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr >  rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator<=(const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr <= rhs.m_ptr; }
+	HAMON_CXX11_CONSTEXPR bool operator>=(const cpp17_random_access_iterator_wrapper& rhs) const { return m_ptr >= rhs.m_ptr; }
+};
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR cpp17_random_access_iterator_wrapper<T>
+operator+(hamon::ptrdiff_t, cpp17_random_access_iterator_wrapper<T> const&);
+
+template <typename T>
 struct weakly_incrementable_wrapper
 {
 	using difference_type = hamon::ptrdiff_t;
