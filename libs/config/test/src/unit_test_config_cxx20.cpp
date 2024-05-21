@@ -610,6 +610,10 @@ GTEST_TEST(ConfigTest, Cxx20CaptureCopyThisTest)
 #endif
 
 #if defined(HAMON_HAS_CXX20_DESIGNATED_INITIALIZERS)
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wmissing-field-initializers")
+
 GTEST_TEST(ConfigTest, Cxx20DesignatedInitializersTest)
 {
 	struct A { int x; int y; int z; };
@@ -637,6 +641,9 @@ GTEST_TEST(ConfigTest, Cxx20DesignatedInitializersTest)
 	U e ={.b = "asdf"};
 	EXPECT_STREQ("asdf", e.b);
 }
+
+HAMON_WARNING_POP()
+
 #endif
 
 #if defined(HAMON_HAS_CXX20_GENERIC_LAMBDAS)
