@@ -85,6 +85,10 @@ jobs:
             cxx_standard: 23
           - config: { cxx: "g++-9" }
             cxx_standard: 23
+          - config: { cxx: "clang++-17" }
+            cxx_standard: 23
+          - config: { cxx: "clang++-16" }
+            cxx_standard: 23
           - config: { cxx: "clang++-15" }
             cxx_standard: 23
           - config: { cxx: "clang++-14" }
