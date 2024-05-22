@@ -20,7 +20,7 @@ using std::is_pointer_interconvertible_base_of;
 }	// namespace hamon
 
 #elif (defined(HAMON_MSVC) && HAMON_MSVC >= 1920) ||	\
-	HAMON_HAS_BUILTIN(__is_pointer_interconvertible_base_of)
+	(HAMON_HAS_BUILTIN(__is_pointer_interconvertible_base_of) && !defined(HAMON_CLANG))
 
 #include <hamon/type_traits/bool_constant.hpp>
 
