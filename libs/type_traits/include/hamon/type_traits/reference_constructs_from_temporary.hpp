@@ -19,7 +19,7 @@ using std::reference_constructs_from_temporary;
 
 }	// namespace hamon
 
-#elif HAMON_HAS_BUILTIN(__reference_constructs_from_temporary)
+#elif HAMON_HAS_BUILTIN(__reference_constructs_from_temporary) && !defined(HAMON_CLANG)
 
 #include <hamon/type_traits/bool_constant.hpp>
 
