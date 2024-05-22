@@ -210,7 +210,6 @@ private:
 		}
 
 	public:
-
 		HAMON_CXX14_CONSTEXPR void Allocate(allocator_type& alloc, size_type size)
 		{
 			if (size >= GetMaxSize(alloc))
@@ -394,7 +393,12 @@ public:
 		{
 			m_rep = str.m_rep;
 			str.m_rep = Rep{};
-			Traits::move(this->data(), this->data() + pos, size);
+
+			if (pos != 0)
+			{
+				Traits::move(this->data(), this->data() + pos, size);
+			}
+
 			m_rep.SetSize(size);
 			m_rep.NullTerminate();
 		}
