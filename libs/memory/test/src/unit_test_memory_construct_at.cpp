@@ -58,7 +58,7 @@ struct S2
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-#if defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT)
+#if defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
 HAMON_CXX20_CONSTEXPR
 #endif
 bool constexpr_test()
@@ -122,7 +122,7 @@ GTEST_TEST(MemoryTest, ConstructAtTest)
 		hamon::destroy_at(&x);
 	}
 
-#if defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT)
+#if defined(HAMON_HAS_CONSTEXPR_CONSTRUCT_AT) && defined(HAMON_HAS_CONSTEXPR_BIT_CAST)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(constexpr_test());
 #else
 	EXPECT_TRUE(constexpr_test());
