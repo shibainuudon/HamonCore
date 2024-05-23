@@ -7,9 +7,12 @@
 #ifndef HAMON_UTILITY_FORWARD_LIKE_HPP
 #define HAMON_UTILITY_FORWARD_LIKE_HPP
 
+#include <hamon/config.hpp>
 #include <utility>
 
-#if defined(__cpp_lib_forward_like) && (__cpp_lib_forward_like >= 202207L)
+#if defined(__cpp_lib_forward_like) && (__cpp_lib_forward_like >= 202207L) && \
+	!(defined(HAMON_CLANG) && defined(HAMON_STDLIB_LIBSTDCPP3))
+// clang と libstdc++ の組み合わせだとコンパイルエラーになってしまう。
 
 namespace hamon
 {
@@ -24,7 +27,6 @@ using std::forward_like;
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/is_rvalue_reference.hpp>
 #include <hamon/type_traits/is_const.hpp>
-#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -44,7 +46,7 @@ using ForwardLike = OverrideRef<A&&, CopyConst<hamon::remove_reference_t<A>, ham
 }	// namespace detail
 
 template <typename T, typename U>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR auto
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 forward_like(U&& x) HAMON_NOEXCEPT
 -> detail::ForwardLike<T, U>
 {
