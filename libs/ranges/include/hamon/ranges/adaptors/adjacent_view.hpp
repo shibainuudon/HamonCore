@@ -125,6 +125,9 @@ struct adjacent_view_iterator_access
 
 }	// namespace detail
 
+inline namespace adjacent_view_ns
+{
+
 // 26.7.26.2 Class template adjacent_view[range.adjacent.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -475,7 +478,6 @@ private:
 			// [range.adjacent.iterator]/30
 			HAMON_NOEXCEPT_RETURN(x.m_current.back() - y.m_current.back())	// noexcept as an extension
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		auto iter_move(iterator const& i)
 			// [range.adjacent.iterator]/32
@@ -507,7 +509,6 @@ private:
 				hamon::ranges::iter_swap(l.m_current[i], r.m_current[i]);
 			}
 		}
-#endif
 	};
 
 	// [range.adjacent.sentinel], class template adjacent_view​::​sentinel
@@ -736,6 +737,8 @@ public:
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(  // noexcept as an extension
 		size_impl(m_base, hamon::detail::overload_priority<1>{}))
 };
+
+}	// inline namespace adjacent_view_ns
 
 // enable_borrowed_range の特殊化
 template <typename V, hamon::size_t N>

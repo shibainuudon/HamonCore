@@ -82,6 +82,9 @@ using std::ranges::views::filter;
 namespace hamon {
 namespace ranges {
 
+inline namespace filter_view_ns
+{
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <hamon::ranges::input_range V, hamon::indirect_unary_predicate<hamon::ranges::iterator_t<V>> Pred>
 	requires hamon::ranges::view<V> && hamon::is_object_v<Pred>
@@ -313,7 +316,6 @@ private:
 		}
 #endif
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_rvalue_reference_t<V>
 		iter_move(iterator const& i)
@@ -323,7 +325,6 @@ private:
 			return hamon::ranges::iter_move(i.m_current);
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <HAMON_CONSTRAINED_PARAM_D(hamon::indirectly_swappable, I2, I)>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& x, iterator const& y)
@@ -333,8 +334,6 @@ private:
 			// [range.filter.iterator]/16
 			hamon::ranges::iter_swap(x.m_current, y.m_current);
 		}
-#endif
-#endif
 	};
 
 	// [range.filter.sentinel], class filter_view​::​sentinel
@@ -525,6 +524,8 @@ template <typename R, typename Pred>
 filter_view(R&&, Pred) -> filter_view<views::all_t<R>, Pred>;
 
 #endif
+
+}	// inline namespace filter_view_ns
 
 // extension: deduction guides が使えないときのために追加
 template <typename R, typename Pred>

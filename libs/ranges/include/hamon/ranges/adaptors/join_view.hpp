@@ -118,6 +118,9 @@ struct join_view_inner_iter_base<V, true>
 
 }	// namespace detail
 
+inline namespace join_view_ns
+{
+
 // 26.7.14.3 Class template join_view​::​iterator[range.join.iterator]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -507,7 +510,6 @@ private:
 		}
 #endif
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		iter_move(iterator const& i)
 			HAMON_NOEXCEPT_IF_EXPR(ranges::iter_move(*i.m_inner))
@@ -516,7 +518,6 @@ private:
 			return ranges::iter_move(*i.m_inner);
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <HAMON_CONSTRAINED_PARAM_D(hamon::indirectly_swappable, InnerIter2, InnerIter)>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& x, iterator const& y)
@@ -525,8 +526,6 @@ private:
 			// [range.join.iterator]/19
 			return ranges::iter_swap(*x.m_inner, *y.m_inner);
 		}
-#endif
-#endif
 	};
 
 	// [range.join.sentinel], class template join_view​::​sentinel
@@ -762,6 +761,8 @@ template <typename R>
 explicit join_view(R&&)->join_view<hamon::views::all_t<R>>;
 
 #endif
+
+}	// inline namespace join_view_ns
 
 namespace views {
 

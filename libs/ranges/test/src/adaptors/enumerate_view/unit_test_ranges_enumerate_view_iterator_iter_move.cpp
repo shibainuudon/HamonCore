@@ -34,9 +34,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	EV ev{v};
 
 	auto it = ev.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<hamon::ptrdiff_t, int&&>>::value, "");
-#endif
 	auto x = hamon::ranges::iter_move(it);
 	VERIFY(hamon::adl_get<0>(x) == 0);
 	VERIFY(hamon::adl_get<1>(x) == 11);

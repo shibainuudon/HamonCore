@@ -99,6 +99,9 @@ using std::ranges::views::stride;
 namespace hamon {
 namespace ranges {
 
+inline namespace stride_view_ns
+{
+
 // 26.7.31.2 Class template stride_view[range.stride.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -462,7 +465,6 @@ private:
 			// [range.stride.iterator]/27
 			HAMON_NOEXCEPT_RETURN(-(y - x))		// noexcept as an extension
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_rvalue_reference_t<Base>
 		iter_move(iterator const& i)
@@ -480,7 +482,6 @@ private:
 			// [range.stride.iterator]/29
 			hamon::ranges::iter_swap(x.m_current, y.m_current);
 		}
-#endif
 	};
 
 public:
@@ -624,6 +625,8 @@ stride_view(R&&, hamon::ranges::range_difference_t<R>)
 	-> stride_view<hamon::views::all_t<R>>;
 
 #endif
+
+}	// inline namespace stride_view_ns
 
 // enable_borrowed_range の特殊化
 template <typename V>

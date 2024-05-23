@@ -37,9 +37,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	auto it1 = zv.begin() + 1;
 	auto it2 = zv.begin() + 2;
 	hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert(!noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
 
 	VERIFY(a1[0] == 42);
 	VERIFY(a1[1] == 44);
@@ -62,9 +60,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	auto it1 = zv.begin() + 3;
 	auto it2 = zv.begin() + 2;
 	hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert(noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
 
 	VERIFY(a1[0] == 10);
 	VERIFY(a1[1] == 20);

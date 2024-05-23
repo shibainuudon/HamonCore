@@ -181,6 +181,9 @@ using bidirectional_common_t = bidirectional_common<R>;
 
 }	// namespace detail
 
+inline namespace join_with_view_ns
+{
+
 // 26.7.15.2 Class template join_with_view[range.join.with.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -683,14 +686,12 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		}
 #endif
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		RValueReference iter_move(iterator const& x)
 		{
 			return hamon::visit<RValueReference>(hamon::ranges::iter_move, x.m_inner_it);
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <typename InnerIter2 = InnerIter,
 			typename = hamon::enable_if_t<
 				hamon::indirectly_swappable_t<InnerIter2, PatternIter>::value
@@ -700,8 +701,6 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		{
 			hamon::visit(hamon::ranges::iter_swap, x.m_inner_it, y.m_inner_it);
 		}
-#endif
-#endif
 	};
 
 	// [range.join.with.sentinel], class template join_with_view​::​sentinel
@@ -981,6 +980,8 @@ join_with_view(R&&, hamon::ranges::range_value_t<hamon::ranges::range_reference_
 	hamon::ranges::single_view<hamon::ranges::range_value_t<hamon::ranges::range_reference_t<R>>>>;
 
 #endif
+
+}	// inline namespace join_with_view_ns
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \

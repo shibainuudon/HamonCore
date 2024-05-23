@@ -36,9 +36,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	ZV zv(v1, v2);
 
 	auto it = zv.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<int&&, char&&>>::value, "");
-#endif
 	static_assert(!noexcept(hamon::ranges::iter_move(it)), "");
 	auto x = hamon::ranges::iter_move(it);
 	VERIFY(hamon::adl_get<0>(x) == 42);
@@ -54,10 +52,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	auto zv = hamon::views::zip(a1, a2);
 
 	auto it = zv.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<int&&, char&&>>::value, "");
 	static_assert(noexcept(hamon::ranges::iter_move(it)), "");
-#endif
 	auto x = hamon::ranges::iter_move(it);
 	VERIFY(hamon::adl_get<0>(x) == 42);
 	VERIFY(hamon::adl_get<1>(x) == 1);

@@ -222,6 +222,9 @@ struct zip_view_iterator_access
 
 }	// namespace detail
 
+inline namespace zip_view_ns
+{
+
 // 26.7.24.2 Class template zip_view[range.zip.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -694,7 +697,6 @@ private:
 				hamon::ranges::detail::tuple_transform2(distance_fn{}, x.m_current, y.m_current));
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		iter_move(iterator const& i)
 			// [range.zip.iterator]/22
@@ -730,7 +732,6 @@ private:
 			// [range.zip.iterator]/23
 			hamon::ranges::detail::tuple_for_each2(hamon::ranges::iter_swap, l.m_current, r.m_current);
 		}
-#endif
 	};
 
 	// [range.zip.sentinel], class template zip_view​::​sentinel
@@ -1083,6 +1084,8 @@ template <typename... Rs>
 zip_view(Rs&&...) -> zip_view<hamon::views::all_t<Rs>...>;
 
 #endif
+
+}	// inline namespace zip_view_ns
 
 // enable_borrowed_range の特殊化
 template <typename... Views>

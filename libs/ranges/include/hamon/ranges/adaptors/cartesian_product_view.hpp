@@ -233,6 +233,9 @@ HAMON_CXX11_CONSTEXPR auto cartesian_common_arg_end(R& r)
 
 }	// namespace detail
 
+inline namespace cartesian_product_view_ns
+{
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <hamon::ranges::input_range First, hamon::ranges::forward_range... Vs>
 	requires (hamon::ranges::view<First> && ... && hamon::ranges::view<Vs>)
@@ -604,7 +607,6 @@ private:
 			return -(i - s);
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		// [range.cartesian.iterator]/36
 		template <typename Seq>
 		struct is_iter_move_noexcept;
@@ -663,7 +665,6 @@ private:
 		{
 			hamon::ranges::detail::tuple_for_each2(hamon::ranges::iter_swap, l.m_current, r.m_current);
 		}
-#endif
 
 	private:
 		// [range.cartesian.iterator]/5
@@ -1004,6 +1005,8 @@ cartesian_product_view(First&&, Vs&&...)
 #endif
 
 #endif
+
+}	// inline namespace cartesian_product_view_ns
 
 namespace views {
 

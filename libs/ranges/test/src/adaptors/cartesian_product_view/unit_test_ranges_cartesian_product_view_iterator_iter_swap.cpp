@@ -57,9 +57,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		auto it2 = cv.begin();
 		it2++; it2++;
 		hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert(!noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
+
 		VERIFY(a[0] == 3);
 		VERIFY(a[1] == 2);
 		VERIFY(a[2] == 1);
@@ -74,9 +73,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		auto it2 = cv.begin();
 		it1++;
 		hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert( noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
+
 		VERIFY(a[0] == 2);
 		VERIFY(a[1] == 1);
 		VERIFY(a[2] == 3);
@@ -117,9 +115,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		auto it1 = cv.begin() + 1;
 		auto it2 = cv.begin() + 3;
 		hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert(!noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
 
 		VERIFY(a1[0] == 2);
 		VERIFY(a1[1] == 1);
@@ -146,9 +142,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	auto it1 = cv.begin() + 12;
 	auto it2 = cv.begin() + 1;
 	hamon::ranges::iter_swap(it1, it2);
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 	static_assert( noexcept(hamon::ranges::iter_swap(it1, it2)), "");
-#endif
 
 	VERIFY(a1[0] == 3);
 	VERIFY(a1[1] == 2);

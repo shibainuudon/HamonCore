@@ -122,6 +122,9 @@ using range_with_movable_references =
 
 }	// namespace detail
 
+inline namespace enumerate_view_ns
+{
+
 // 26.7.23.2 Class template enumerate_view[range.enumerate.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -421,7 +424,6 @@ private:
 			return x.m_pos - y.m_pos;
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::tuple<difference_type, BaseRvalueReference>
 		iter_move(iterator const& i) HAMON_NOEXCEPT_IF(
@@ -431,7 +433,6 @@ private:
 			return hamon::tuple<difference_type, BaseRvalueReference>(
 				i.m_pos, hamon::ranges::iter_move(i.m_current));
 		}
-#endif
 	};
 
 	// [range.enumerate.sentinel], class template enumerate_view​::​sentinel
@@ -676,6 +677,8 @@ template <typename R>
 enumerate_view(R&&) -> enumerate_view<hamon::views::all_t<R>>;
 
 #endif
+
+}	// inline namespace enumerate_view_ns
 
 // enable_borrowed_range の特殊化
 template <typename View>

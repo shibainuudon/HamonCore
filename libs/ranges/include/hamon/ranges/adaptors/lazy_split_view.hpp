@@ -147,6 +147,9 @@ struct lazy_split_view_base<V, true>
 
 }	// namespace detail
 
+inline namespace lazy_split_view_ns
+{
+
 // 26.7.16.2 Class template lazy_split_view[range.lazy.split.view]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -758,7 +761,6 @@ private:
 		}
 #endif
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		iter_move(inner_iterator const& i)
 			HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iter_move(i.base()))
@@ -767,7 +769,6 @@ private:
 			return hamon::ranges::iter_move(i.base());
 		}
 
-#if !(defined(HAMON_CLANG_VERSION) && defined(HAMON_STDLIB_DINKUMWARE))	// win-clangだと以下のコードがエラーになる
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
 				hamon::indirectly_swappable_t<hamon::ranges::iterator_t<B2>>::value>>
@@ -778,8 +779,6 @@ private:
 			// [range.lazy.split.inner]/8
 			hamon::ranges::iter_swap(x.base(), y.base());
 		}
-#endif
-#endif
 	};
 
 public:
@@ -947,6 +946,8 @@ lazy_split_view(R&&, hamon::ranges::range_value_t<R>)
 	hamon::ranges::single_view<hamon::ranges::range_value_t<R>>>;
 
 #endif
+
+}	// inline namespace lazy_split_view_ns
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \

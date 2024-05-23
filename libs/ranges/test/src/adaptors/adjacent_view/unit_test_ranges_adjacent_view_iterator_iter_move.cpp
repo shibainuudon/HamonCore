@@ -34,10 +34,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		AV av{v};
 
 		auto it = av.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert(!noexcept(hamon::ranges::iter_move(it)), "");
 		static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<int&&, int&&>>::value, "");
-#endif
 		auto x = hamon::ranges::iter_move(it);
 		VERIFY(x == hamon::make_tuple(1, 2));
 	}
@@ -50,10 +48,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		AV av{v};
 
 		auto it = av.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert(!noexcept(hamon::ranges::iter_move(it)), "");
 		static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<int const&&, int const&&, int const&&>>::value, "");
-#endif
 		auto x = hamon::ranges::iter_move(it);
 		VERIFY(x == hamon::make_tuple(10, 20, 30));
 	}
@@ -66,10 +62,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		AV av{v};
 
 		auto it = av.begin();
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		static_assert( noexcept(hamon::ranges::iter_move(it)), "");
 		static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(it)), hamon::tuple<int&&, int&&>>::value, "");
-#endif
 		auto x = hamon::ranges::iter_move(it);
 		VERIFY(x == hamon::make_tuple(1, 2));
 	}

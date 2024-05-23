@@ -104,6 +104,9 @@ using std::ranges::views::chunk;
 namespace hamon {
 namespace ranges {
 
+inline namespace chunk_view_ns
+{
+
 // 26.7.28.2 Class template chunk_view for input ranges[range.chunk.view.input]
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -429,7 +432,6 @@ private:
 			// [range.chunk.inner.iter]/10
 			HAMON_NOEXCEPT_RETURN(-(y - x))				// noexcept as an extension
 
-#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 		HAMON_CXX11_CONSTEXPR hamon::ranges::range_rvalue_reference_t<V>
 		iter_move_impl() const
 			HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iter_move(*m_parent->m_current))
@@ -437,6 +439,11 @@ private:
 			// [range.chunk.inner.iter]/11
 			return hamon::ranges::iter_move(*m_parent->m_current);
 		}
+
+		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+		hamon::ranges::range_rvalue_reference_t<V>
+		iter_move(inner_iterator const& i)
+			HAMON_NOEXCEPT_RETURN(i.iter_move_impl())
 
 		HAMON_CXX14_CONSTEXPR void
 		iter_swap_impl(inner_iterator const& y) const
@@ -446,11 +453,6 @@ private:
 			hamon::ranges::iter_swap(*m_parent->m_current, *y.m_parent->m_current);
 		}
 
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-		hamon::ranges::range_rvalue_reference_t<V>
-		iter_move(inner_iterator const& i)
-			HAMON_NOEXCEPT_RETURN(i.iter_move_impl())
-
 		template <typename V2 = V,
 			typename = hamon::enable_if_t<
 				hamon::indirectly_swappable_t<
@@ -459,7 +461,6 @@ private:
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(inner_iterator const& x, inner_iterator const& y)
 			HAMON_NOEXCEPT_RETURN(x.iter_swap_impl(y))
-#endif
 	};
 
 public:
@@ -961,6 +962,8 @@ template <typename R>
 chunk_view(R&&, hamon::ranges::range_difference_t<R>) -> chunk_view<hamon::views::all_t<R>>;
 
 #endif
+
+}	// inline namespace chunk_view_ns
 
 // enable_borrowed_range の特殊化
 template <typename V>
