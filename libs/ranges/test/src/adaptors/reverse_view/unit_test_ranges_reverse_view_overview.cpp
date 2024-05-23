@@ -48,12 +48,19 @@ GTEST_TEST(RangesTest, ReverseViewOverviewTest)
 			decltype(hamon::string_view{} | hamon::views::reverse | hamon::views::reverse)
 		>::value, "");
 
+HAMON_WARNING_PUSH()
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 140000)
+HAMON_WARNING_DISABLE_GCC("-Wdangling-reference")
+#endif
+
 		std::stringstream out;
 		for (char c : hamon::string_view("Hello") | hamon::views::reverse | hamon::views::reverse)
 		{
 			out << c;
 		}
 		EXPECT_EQ("Hello", out.str());
+
+HAMON_WARNING_POP()
 	}
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
