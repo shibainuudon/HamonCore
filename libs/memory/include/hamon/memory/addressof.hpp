@@ -11,6 +11,8 @@
 
 #if defined(__cpp_lib_addressof_constexpr) && (__cpp_lib_addressof_constexpr >= 201603)
 
+#define	HAMON_USE_STD_ADDRESSOF
+
 namespace hamon
 {
 

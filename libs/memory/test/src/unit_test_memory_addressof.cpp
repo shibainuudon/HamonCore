@@ -81,19 +81,19 @@ GTEST_TEST(MemoryTest, AddressofTest)
 	{
 		HAMON_CONSTEXPR B b {};
 		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(0, func(&b));
-#if defined(HAMON_APPLE_CLANG)
-		                      EXPECT_EQ(2, func(hamon::addressof(b)));
-#else
+#if defined(HAMON_USE_STD_ADDRESSOF)
 		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(2, func(hamon::addressof(b)));
+#else
+		                      EXPECT_EQ(2, func(hamon::addressof(b)));
 #endif
 	}
 	{
 		HAMON_CONSTEXPR C c {};
 		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(0, func(&c));
-#if defined(HAMON_APPLE_CLANG)
-		                      EXPECT_EQ(3, func(hamon::addressof(c)));
-#else
+#if defined(HAMON_USE_STD_ADDRESSOF)
 		HAMON_CXX17_CONSTEXPR_EXPECT_EQ(3, func(hamon::addressof(c)));
+#else
+		                      EXPECT_EQ(3, func(hamon::addressof(c)));
 #endif
 	}
 }
