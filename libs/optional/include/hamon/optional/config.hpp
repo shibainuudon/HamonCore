@@ -16,7 +16,8 @@
 #  endif
 
 #  if defined(__cpp_lib_optional) && (__cpp_lib_optional >= 202110L) &&	\
-      defined(__cpp_lib_three_way_comparison) && (__cpp_lib_three_way_comparison >= 201907L)
+      defined(__cpp_lib_three_way_comparison) && (__cpp_lib_three_way_comparison >= 201907L) && \
+	  !defined(HAMON_CLANG)
 #    define	HAMON_USE_STD_OPTIONAL
 #  endif
 
