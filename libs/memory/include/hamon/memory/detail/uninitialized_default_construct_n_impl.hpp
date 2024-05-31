@@ -24,29 +24,29 @@ namespace hamon
 namespace detail
 {
 
-template <typename ForwardIterator, typename Size,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Size,
+	typename ValueType = hamon::iter_value_t<Iter>,
 	typename = hamon::enable_if_t<
 		hamon::is_trivially_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR ForwardIterator
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_n_impl(
-	ForwardIterator first, Size n,
+	Iter first, Size n,
 	hamon::detail::overload_priority<2>)
 {
 	return hamon::next(first, n);
 }
 
-template <typename ForwardIterator, typename Size,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Size,
+	typename ValueType = hamon::iter_value_t<Iter>,
 	typename = hamon::enable_if_t<
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR ForwardIterator
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_n_impl(
-	ForwardIterator first, Size n,
+	Iter first, Size n,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
@@ -59,13 +59,13 @@ uninitialized_default_construct_n_impl(
 	return first;
 }
 
-template <typename ForwardIterator, typename Size>
-HAMON_CXX20_CONSTEXPR ForwardIterator
+template <typename Iter, typename Size>
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_n_impl(
-	ForwardIterator first, Size n,
+	Iter first, Size n,
 	hamon::detail::overload_priority<0>)
 {
-	ForwardIterator current = first;
+	Iter current = first;
 #if !defined(HAMON_NO_EXCEPTIONS)
 	try
 #endif
@@ -87,9 +87,9 @@ uninitialized_default_construct_n_impl(
 #endif
 }
 
-template <typename ForwardIterator, typename Size>
-HAMON_CXX20_CONSTEXPR ForwardIterator
-uninitialized_default_construct_n_impl(ForwardIterator first, Size n)
+template <typename Iter, typename Size>
+HAMON_CXX20_CONSTEXPR Iter
+uninitialized_default_construct_n_impl(Iter first, Size n)
 {
 	return hamon::detail::uninitialized_default_construct_n_impl(
 		first, n,

@@ -7,12 +7,21 @@
 #include <hamon/memory/detail/uninitialized_move_n_impl.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "iterator_test.hpp"
 
 namespace hamon_memory_test
 {
 
 namespace uninitialized_move_n_impl_test
 {
+
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
+#define MEMORY_TEST_CONSTEXPR				constexpr
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#else
+#define MEMORY_TEST_CONSTEXPR
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#endif
 
 struct S0
 {
@@ -69,19 +78,20 @@ struct S2
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T>
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-HAMON_CXX20_CONSTEXPR
-#endif
-bool test()
+template <typename T,
+	template <typename> class InputIteratorWrapper,
+	template <typename> class OutputIteratorWrapper>
+MEMORY_TEST_CONSTEXPR bool test2()
 {
 	{
+		using InputIterator  = InputIteratorWrapper<T>;
+		using OutputIterator = OutputIteratorWrapper<T>;
 		std::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T a[] = { T{10}, T{20}, T{30} };
-		auto ret = hamon::detail::uninitialized_move_n_impl(a, 3, p);
-		VERIFY(ret.first  == a + 3);
-		VERIFY(ret.second == p + 3);
+		auto ret = hamon::detail::uninitialized_move_n_impl(InputIterator{a}, 3, OutputIterator{p});
+		VERIFY(base(ret.first)  == a + 3);
+		VERIFY(base(ret.second) == p + 3);
 		VERIFY(p[0].value == 10);
 		VERIFY(p[1].value == 20);
 		VERIFY(p[2].value == 30);
@@ -90,19 +100,34 @@ bool test()
 	return true;
 }
 
+template <typename T, template <typename> class InputIteratorWrapper>
+MEMORY_TEST_CONSTEXPR bool test1()
+{
+	return
+		test2<T, InputIteratorWrapper, forward_iterator_wrapper>() &&
+		test2<T, InputIteratorWrapper, bidirectional_iterator_wrapper>() &&
+		test2<T, InputIteratorWrapper, random_access_iterator_wrapper>() &&
+		test2<T, InputIteratorWrapper, contiguous_iterator_wrapper>();
+}
+
+template <typename T>
+MEMORY_TEST_CONSTEXPR bool test()
+{
+	return
+		test1<T, input_iterator_wrapper>() &&
+		test1<T, forward_iterator_wrapper>() &&
+		test1<T, bidirectional_iterator_wrapper>() &&
+		test1<T, random_access_iterator_wrapper>() &&
+		test1<T, contiguous_iterator_wrapper>();
+}
+
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedMoveNImplTest)
 {
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S0>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S2>());
-#else
-	EXPECT_TRUE(test<S0>());
-	EXPECT_TRUE(test<S1>());
-	EXPECT_TRUE(test<S2>());
-#endif
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S0>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
 
 	{
 		std::allocator<S1> alloc;
@@ -126,6 +151,9 @@ GTEST_TEST(MemoryTest, UninitializedMoveNImplTest)
 	}
 #endif
 }
+
+#undef MEMORY_TEST_CONSTEXPR
+#undef MEMORY_TEST_CONSTEXPR_EXPECT_TRUE
 
 }	// namespace uninitialized_move_n_impl_test
 

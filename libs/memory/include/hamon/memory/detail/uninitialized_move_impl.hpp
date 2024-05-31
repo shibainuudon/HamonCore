@@ -10,7 +10,7 @@
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/destroy.hpp>
-#include <hamon/algorithm/move.hpp>
+#include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
@@ -29,18 +29,18 @@ namespace hamon
 namespace detail
 {
 
-template <typename InputIterator, typename ForwardIterator,
-	typename SrcType = hamon::iter_rvalue_reference_t<InputIterator>,
-	typename RefType = hamon::iter_reference_t<ForwardIterator>,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Sent, typename Out,
+	typename SrcType = hamon::iter_rvalue_reference_t<Iter>,
+	typename RefType = hamon::iter_reference_t<Out>,
+	typename ValueType = hamon::iter_value_t<Out>,
 	typename = hamon::enable_if_t<
 		hamon::is_trivially_assignable<RefType, SrcType>::value &&
 		hamon::is_trivially_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR ForwardIterator
+HAMON_CXX20_CONSTEXPR Out
 uninitialized_move_impl(
-	InputIterator first, InputIterator last, ForwardIterator result,
+	Iter first, Sent last, Out result,
 	hamon::detail::overload_priority<2>)
 {
 	// move関数であれば、可能ならmemmoveを使う等の最適化が期待できるが、
@@ -49,7 +49,7 @@ uninitialized_move_impl(
 	if (!hamon::is_constant_evaluated())
 #endif
 	{
-		return hamon::move(first, last, result);
+		return hamon::ranges::move(first, last, result).out;
 	}
 
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -58,16 +58,16 @@ uninitialized_move_impl(
 #endif
 }
 
-template <typename InputIterator, typename ForwardIterator,
-	typename SrcType = hamon::iter_rvalue_reference_t<InputIterator>,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Sent, typename Out,
+	typename SrcType = hamon::iter_rvalue_reference_t<Iter>,
+	typename ValueType = hamon::iter_value_t<Out>,
 	typename = hamon::enable_if_t<
 		hamon::is_nothrow_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR ForwardIterator
+HAMON_CXX20_CONSTEXPR Out
 uninitialized_move_impl(
-	InputIterator first, InputIterator last, ForwardIterator result,
+	Iter first, Sent last, Out result,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
@@ -79,13 +79,13 @@ uninitialized_move_impl(
 	return result;
 }
 
-template <typename InputIterator, typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR ForwardIterator
+template <typename Iter, typename Sent, typename Out>
+HAMON_CXX20_CONSTEXPR Out
 uninitialized_move_impl(
-	InputIterator first, InputIterator last, ForwardIterator result,
+	Iter first, Sent last, Out result,
 	hamon::detail::overload_priority<0>)
 {
-	ForwardIterator current = result;
+	Out current = result;
 #if !defined(HAMON_NO_EXCEPTIONS)
 	try
 #endif
@@ -106,10 +106,10 @@ uninitialized_move_impl(
 #endif
 }
 
-template <typename InputIterator, typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR ForwardIterator
+template <typename Iter, typename Sent, typename Out>
+HAMON_CXX20_CONSTEXPR Out
 uninitialized_move_impl(
-	InputIterator first, InputIterator last, ForwardIterator result)
+	Iter first, Sent last, Out result)
 {
 	return hamon::detail::uninitialized_move_impl(
 		first, last, result,

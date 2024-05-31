@@ -7,12 +7,21 @@
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "iterator_test.hpp"
 
 namespace hamon_memory_test
 {
 
 namespace uninitialized_value_construct_n_impl_test
 {
+
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
+#define MEMORY_TEST_CONSTEXPR				constexpr
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#else
+#define MEMORY_TEST_CONSTEXPR
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#endif
 
 struct S0
 {
@@ -47,35 +56,36 @@ struct S3
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-HAMON_CXX20_CONSTEXPR
-#endif
-bool test()
+template <template <typename> class IteratorWrapper>
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	{
+		using Iterator = IteratorWrapper<S0>;
 		std::allocator<S0> alloc;
 		auto* p = alloc.allocate(10);
-		auto ret = hamon::detail::uninitialized_value_construct_n_impl(p, 2);
-		VERIFY(ret == p + 2);
+		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 2);
+		VERIFY(base(ret) == p + 2);
 		VERIFY(p[0].value == 0);
 		VERIFY(p[1].value == 0);
 		alloc.deallocate(p, 10);
 	}
 	{
+		using Iterator = IteratorWrapper<S1>;
 		std::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
-		auto ret = hamon::detail::uninitialized_value_construct_n_impl(p, 3);
-		VERIFY(ret == p + 3);
+		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 3);
+		VERIFY(base(ret) == p + 3);
 		VERIFY(p[0].value == 42);
 		VERIFY(p[1].value == 42);
 		VERIFY(p[2].value == 42);
 		alloc.deallocate(p, 10);
 	}
 	{
+		using Iterator = IteratorWrapper<S2>;
 		std::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
-		auto ret = hamon::detail::uninitialized_value_construct_n_impl(p, 4);
-		VERIFY(ret == p + 4);
+		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 4);
+		VERIFY(base(ret) == p + 4);
 		VERIFY(p[0].value == 43);
 		VERIFY(p[1].value == 43);
 		VERIFY(p[2].value == 43);
@@ -85,15 +95,20 @@ bool test()
 	return true;
 }
 
+MEMORY_TEST_CONSTEXPR bool test()
+{
+	return
+		test1<forward_iterator_wrapper>() &&
+		test1<bidirectional_iterator_wrapper>() &&
+		test1<random_access_iterator_wrapper>() &&
+		test1<contiguous_iterator_wrapper>();
+}
+
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedValueConstructNImplTest)
 {
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
-#else
-	EXPECT_TRUE(test());
-#endif
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -104,6 +119,9 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNImplTest)
 	}
 #endif
 }
+
+#undef MEMORY_TEST_CONSTEXPR
+#undef MEMORY_TEST_CONSTEXPR_EXPECT_TRUE
 
 }	// namespace uninitialized_value_construct_n_impl_test
 

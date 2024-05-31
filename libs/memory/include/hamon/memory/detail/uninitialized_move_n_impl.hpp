@@ -29,18 +29,18 @@ namespace hamon
 namespace detail
 {
 
-template <typename InputIterator, typename Size, typename ForwardIterator,
-	typename SrcType = hamon::iter_rvalue_reference_t<InputIterator>,
-	typename RefType = hamon::iter_reference_t<ForwardIterator>,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Size, typename Out,
+	typename SrcType = hamon::iter_rvalue_reference_t<Iter>,
+	typename RefType = hamon::iter_reference_t<Out>,
+	typename ValueType = hamon::iter_value_t<Out>,
 	typename = hamon::enable_if_t<
 		hamon::is_trivially_assignable<RefType, SrcType>::value &&
 		hamon::is_trivially_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::pair<InputIterator, ForwardIterator>
+HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_n_impl(
-	InputIterator first, Size n, ForwardIterator result,
+	Iter first, Size n, Out result,
 	hamon::detail::overload_priority<2>)
 {
 	// constexprの文脈で未初期化領域に代入することはできない。
@@ -48,7 +48,7 @@ uninitialized_move_n_impl(
 	if (!hamon::is_constant_evaluated())
 #endif
 	{
-		// move_n(first, n, result); は無いので
+		// ranges::move_n(first, n, result); は無いので
 		for (; n > 0; --n)
 		{
 			*result = hamon::move(*first);
@@ -64,16 +64,16 @@ uninitialized_move_n_impl(
 #endif
 }
 
-template <typename InputIterator, typename Size, typename ForwardIterator,
-	typename SrcType = hamon::iter_rvalue_reference_t<InputIterator>,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Size, typename Out,
+	typename SrcType = hamon::iter_rvalue_reference_t<Iter>,
+	typename ValueType = hamon::iter_value_t<Out>,
 	typename = hamon::enable_if_t<
 		hamon::is_nothrow_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::pair<InputIterator, ForwardIterator>
+HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_n_impl(
-	InputIterator first, Size n, ForwardIterator result,
+	Iter first, Size n, Out result,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
@@ -86,13 +86,13 @@ uninitialized_move_n_impl(
 	return {first, result};
 }
 
-template <typename InputIterator, typename Size, typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR hamon::pair<InputIterator, ForwardIterator>
+template <typename Iter, typename Size, typename Out>
+HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_n_impl(
-	InputIterator first, Size n, ForwardIterator result,
+	Iter first, Size n, Out result,
 	hamon::detail::overload_priority<0>)
 {
-	ForwardIterator current = result;
+	Out current = result;
 #if !defined(HAMON_NO_EXCEPTIONS)
 	try
 #endif
@@ -114,10 +114,10 @@ uninitialized_move_n_impl(
 #endif
 }
 
-template <typename InputIterator, typename Size, typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR hamon::pair<InputIterator, ForwardIterator>
+template <typename Iter, typename Size, typename Out>
+HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_n_impl(
-	InputIterator first, Size count, ForwardIterator result)
+	Iter first, Size count, Out result)
 {
 	return hamon::detail::uninitialized_move_n_impl(
 		first, count, result,

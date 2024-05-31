@@ -7,12 +7,21 @@
 #include <hamon/memory/detail/uninitialized_fill_impl.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_memory_test
 {
 
 namespace uninitialized_fill_impl_test
 {
+
+#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
+#define MEMORY_TEST_CONSTEXPR				constexpr
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#else
+#define MEMORY_TEST_CONSTEXPR
+#define MEMORY_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#endif
 
 struct S0
 {
@@ -67,17 +76,18 @@ struct S2
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T>
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-HAMON_CXX20_CONSTEXPR
-#endif
-bool test()
+template <typename T,
+	template <typename> class RangeWrapper>
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	{
+		using Range = RangeWrapper<T>;
+		using Iter = typename Range::iterator;
+		using Sent = typename Range::sentinel;
 		std::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T const x{42};
-		hamon::detail::uninitialized_fill_impl(p, p + 3, x);
+		hamon::detail::uninitialized_fill_impl(Iter{p}, Sent{p + 3}, x);
 		VERIFY(p[0].value == 42);
 		VERIFY(p[1].value == 42);
 		VERIFY(p[2].value == 42);
@@ -86,30 +96,28 @@ bool test()
 	return true;
 }
 
+template <typename T>
+MEMORY_TEST_CONSTEXPR bool test()
+{
+	return
+		test1<T, test_forward_range>() &&
+		test1<T, test_bidirectional_range>() &&
+		test1<T, test_random_access_range>() &&
+		test1<T, test_contiguous_range>() &&
+		test1<T, test_forward_common_range>() &&
+		test1<T, test_bidirectional_common_range>() &&
+		test1<T, test_random_access_common_range>() &&
+		test1<T, test_contiguous_common_range>();
+}
+
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedFillImplTest)
 {
-#if defined(HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC)
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S0>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S2>());
-#else
-	EXPECT_TRUE(test<S0>());
-	EXPECT_TRUE(test<S1>());
-	EXPECT_TRUE(test<S2>());
-#endif
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S0>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
 
-	{
-		std::allocator<S1> alloc;
-		auto* p = alloc.allocate(10);
-		S1 const x{0};
-		hamon::detail::uninitialized_fill_impl(p, p + 3, x);
-		EXPECT_TRUE(p[0].value == 0);
-		EXPECT_TRUE(p[1].value == 0);
-		EXPECT_TRUE(p[2].value == 0);
-		alloc.deallocate(p, 10);
-	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		std::allocator<S2> alloc;
@@ -120,6 +128,9 @@ GTEST_TEST(MemoryTest, UninitializedFillImplTest)
 	}
 #endif
 }
+
+#undef MEMORY_TEST_CONSTEXPR
+#undef MEMORY_TEST_CONSTEXPR_EXPECT_TRUE
 
 }	// namespace uninitialized_fill_impl_test
 

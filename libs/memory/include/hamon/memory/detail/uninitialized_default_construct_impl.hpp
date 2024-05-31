@@ -23,30 +23,30 @@ namespace hamon
 namespace detail
 {
 
-template <typename ForwardIterator,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Sent,
+	typename ValueType = hamon::iter_value_t<Iter>,
 	typename = hamon::enable_if_t<
 		hamon::is_trivially_default_constructible<ValueType>::value
 	>
 >
 HAMON_CXX20_CONSTEXPR void
 uninitialized_default_construct_impl(
-	ForwardIterator first, ForwardIterator last,
+	Iter first, Sent last,
 	hamon::detail::overload_priority<2>)
 {
 	(void)first;
 	(void)last;
 }
 
-template <typename ForwardIterator,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
+template <typename Iter, typename Sent,
+	typename ValueType = hamon::iter_value_t<Iter>,
 	typename = hamon::enable_if_t<
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
 HAMON_CXX20_CONSTEXPR void
 uninitialized_default_construct_impl(
-	ForwardIterator first, ForwardIterator last,
+	Iter first, Sent last,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
@@ -56,13 +56,13 @@ uninitialized_default_construct_impl(
 	}
 }
 
-template <typename ForwardIterator>
+template <typename Iter, typename Sent>
 HAMON_CXX20_CONSTEXPR void
 uninitialized_default_construct_impl(
-	ForwardIterator first, ForwardIterator last,
+	Iter first, Sent last,
 	hamon::detail::overload_priority<0>)
 {
-	ForwardIterator current = first;
+	Iter current = first;
 #if !defined(HAMON_NO_EXCEPTIONS)
 	try
 #endif
@@ -81,10 +81,10 @@ uninitialized_default_construct_impl(
 #endif
 }
 
-template <typename ForwardIterator>
+template <typename Iter, typename Sent>
 HAMON_CXX20_CONSTEXPR void
 uninitialized_default_construct_impl(
-	ForwardIterator first, ForwardIterator last)
+	Iter first, Sent last)
 {
 	return hamon::detail::uninitialized_default_construct_impl(
 		first, last,
