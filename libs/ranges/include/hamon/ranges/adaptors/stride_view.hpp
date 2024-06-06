@@ -296,7 +296,8 @@ private:
 			if (n > 0)
 			{
 				// [range.stride.iterator]/13
-				HAMON_ASSERT(hamon::ranges::distance(m_current, m_end) > m_stride * (n - 1));
+				HAMON_ASSERT((!hamon::sized_sentinel_for_t<BaseSent, BaseIter>::value ||
+					hamon::ranges::distance(m_current, m_end) > m_stride * (n - 1)));
 
 				hamon::ranges::advance(m_current, m_stride * (n - 1));
 				m_missing = hamon::ranges::advance(m_current, m_stride, m_end);
