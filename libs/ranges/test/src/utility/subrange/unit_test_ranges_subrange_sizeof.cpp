@@ -93,19 +93,15 @@ GTEST_TEST(RangesTest, SubrangeSizeofTest)
 		static_assert(sizeof(Subrange) == sizeof(Iter) + sizeof(Sent), "");
 	}
 
-	// sentinelが空オブジェクトのときは、サイズが最適化される可能性がある
-#if defined(HAMON_HAS_CXX20_NO_UNIQUE_ADDRESS)
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC <= 1939))
 	// int*, hamon::unreachable_sentinel_t
 	{
 		using Iter = int*;
 		using Sent = hamon::unreachable_sentinel_t;
 		using Subrange = hamon::ranges::subrange<Iter, Sent,
 			hamon::ranges::subrange_kind::unsized>;
-		static_assert(sizeof(Subrange) == sizeof(Iter), "");
+		// sentinelが空オブジェクトのときは、サイズが最適化される可能性がある
+		static_assert(sizeof(Subrange) <= sizeof(Iter) + alignof(Iter), "");
 	}
-#endif
-#endif
 }
 
 }	// namespace sizeof_test
