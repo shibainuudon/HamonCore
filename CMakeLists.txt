@@ -37,6 +37,7 @@ set(SUBDIRECTORIES
 	deque
 	forward_list
 	functional
+	iomanip
 	ios
 	iterator
 	limits
