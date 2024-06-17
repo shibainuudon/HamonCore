@@ -40,6 +40,7 @@ using std::span;
 #include <hamon/ranges/data.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/size.hpp>
+#include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_const.hpp>
@@ -457,24 +458,38 @@ public:
 			*(data() + idx);				// [span.elem]/2
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
+	at(size_type idx) const
+	{
+		return
+			idx < size() ?
+			*(data() + idx) :	// [span.elem]/4
+			(hamon::detail::throw_out_of_range("span::at"), *(data() + idx));	// [span.elem]/5
+	}
+
+HAMON_WARNING_POP()
+
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
 	front() const HAMON_NOEXCEPT					// noexcept as an extension
 	{
-		return HAMON_ASSERT(!empty()),	// [span.elem]/3
-			*data();					// [span.elem]/4
+		return HAMON_ASSERT(!empty()),	// [span.elem]/6
+			*data();					// [span.elem]/7
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
 	back() const HAMON_NOEXCEPT						// noexcept as an extension
 	{
-		return HAMON_ASSERT(!empty()),	// [span.elem]/5
-			*(data() + (size() - 1));	// [span.elem]/6
+		return HAMON_ASSERT(!empty()),	// [span.elem]/9
+			*(data() + (size() - 1));	// [span.elem]/10
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR pointer	// nodiscard as an extension
 	data() const HAMON_NOEXCEPT
 	{
-		return m_impl.data();	// [span.elem]/7
+		return m_impl.data();	// [span.elem]/12
 	}
 
 	// [span.iterators], iterator support
