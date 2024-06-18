@@ -24,6 +24,7 @@ set(SUBDIRECTORIES
 	bitflags
 	bitset
 	charconv
+	chrono
 	cmath
 	compare
 	complex
