@@ -9,6 +9,7 @@
 
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
 
 #endif // HAMON_CHRONO_HPP
