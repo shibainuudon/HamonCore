@@ -28,6 +28,13 @@ namespace hamon {
 namespace chrono {
 
 // TODO
+//template <typename charT, typename traits, typename Rep, typename Period, typename Alloc = allocator<charT>>
+//basic_istream<charT, traits>&
+//from_stream(
+//	basic_istream<charT, traits>& is, const charT* fmt,
+//	duration<Rep, Period>& d,
+//	basic_string<charT, traits, Alloc>* abbrev = nullptr,
+//	minutes* offset = nullptr);
 
 }	// namespace chrono
 }	// namespace hamon
