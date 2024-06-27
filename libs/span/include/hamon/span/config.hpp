@@ -16,7 +16,9 @@
 #endif
 
 #if defined(__cpp_lib_span) && (__cpp_lib_span >= 202311L) && \
-	defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_RANGES)
+	defined(__cpp_lib_span_initializer_list) && (__cpp_lib_span_initializer_list >= 202311L) && \
+	defined(HAMON_USE_STD_CONCEPTS) && \
+	defined(HAMON_USE_STD_RANGES)
 #  define HAMON_USE_STD_SPAN
 #endif
 

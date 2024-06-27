@@ -55,6 +55,7 @@ using std::span;
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <array>
+#include <initializer_list>
 
 namespace hamon
 {
@@ -331,44 +332,80 @@ public:
 	{}
 #endif
 
+#if defined(HAMON_HAS_CXX20_CONDITIONAL_EXPLICIT)
+	template <typename E = element_type,
+		typename = hamon::enable_if_t<
+			hamon::is_const<E>::value	// [span.cons]/18
+		>
+	>
+	HAMON_CXX11_CONSTEXPR explicit(extent != hamon::dynamic_extent)
+	span(std::initializer_list<value_type> il)
+		: m_impl(il.begin(), il.size())		// [span.cons]/20
+	{
+		HAMON_ASSERT(extent == hamon::dynamic_extent || il.size() == extent);	// [span.cons]/19
+	}
+#else
+	template <typename E = element_type,
+		typename = hamon::enable_if_t<
+			hamon::is_const<E>::value	// [span.cons]/18
+		>,
+		hamon::size_t N = extent, hamon::enable_if_t<N != hamon::dynamic_extent>* = nullptr
+	>
+	HAMON_CXX11_CONSTEXPR explicit
+	span(std::initializer_list<value_type> il)
+		: m_impl(il.begin(), il.size())		// [span.cons]/20
+	{}
+
+	template <typename E = element_type,
+		typename = hamon::enable_if_t<
+			hamon::is_const<E>::value	// [span.cons]/18
+		>,
+		hamon::size_t N = extent, hamon::enable_if_t<N == hamon::dynamic_extent>* = nullptr
+	>
+	HAMON_CXX11_CONSTEXPR
+	span(std::initializer_list<value_type> il)
+		: m_impl(il.begin(), il.size())		// [span.cons]/20
+	{}
+#endif
+
 	HAMON_CXX11_CONSTEXPR span(span const& other) HAMON_NOEXCEPT = default;
 
 #if defined(HAMON_HAS_CXX20_CONDITIONAL_EXPLICIT)
 	template <typename OtherElementType, hamon::size_t OtherExtent,
 		typename = hamon::enable_if_t<
-			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/19.1
-			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/19.2
+			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/22.1
+			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/22.2
 		>
 	>
-	HAMON_CXX11_CONSTEXPR explicit(extent != hamon::dynamic_extent && OtherExtent == hamon::dynamic_extent)	// [span.cons]/23
+	HAMON_CXX11_CONSTEXPR explicit(extent != hamon::dynamic_extent && OtherExtent == hamon::dynamic_extent)	// [span.cons]/26
 	span(span<OtherElementType, OtherExtent> const& s) HAMON_NOEXCEPT
-		: m_impl(s.data(), s.size())	// [span.cons]/21, 22
+		: m_impl(s.data(), s.size())	// [span.cons]/24, 25
 	{
-		HAMON_ASSERT(extent == hamon::dynamic_extent || s.size() == extent);	// [span.cons]/20
+		HAMON_ASSERT(extent == hamon::dynamic_extent || s.size() == extent);	// [span.cons]/23
 	}
 #else
 	template <typename OtherElementType, hamon::size_t OtherExtent,
 		typename = hamon::enable_if_t<
-			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/19.1
-			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/19.2
+			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/22.1
+			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/22.2
 		>,
 		hamon::size_t N = extent, hamon::enable_if_t<N != hamon::dynamic_extent>* = nullptr
 	>
 	HAMON_CXX11_CONSTEXPR explicit
 	span(span<OtherElementType, OtherExtent> const& s) HAMON_NOEXCEPT
-		: m_impl(s.data(), s.size())	// [span.cons]/21, 22
+		: m_impl(s.data(), s.size())	// [span.cons]/24, 25
 	{}
 
 	template <typename OtherElementType, hamon::size_t OtherExtent,
 		typename = hamon::enable_if_t<
-			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/19.1
-			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/19.2
+			(extent == hamon::dynamic_extent || OtherExtent == hamon::dynamic_extent || extent == OtherExtent) && // [span.cons]/22.1
+			hamon::is_convertible<OtherElementType(*)[], element_type(*)[]>::value // [span.cons]/22.2
 		>,
 		hamon::size_t N = extent, hamon::enable_if_t<N == hamon::dynamic_extent>* = nullptr
 	>
 	HAMON_CXX11_CONSTEXPR
 	span(span<OtherElementType, OtherExtent> const& s) HAMON_NOEXCEPT
-		: m_impl(s.data(), s.size())	// [span.cons]/21, 22
+		: m_impl(s.data(), s.size())	// [span.cons]/24, 25
 	{}
 #endif
 
