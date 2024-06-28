@@ -2,11 +2,17 @@
  *	@file	unit_test_deque_erase_if.cpp
  *
  *	@brief	erase_if のテスト
+ *
+ *	template<class T, class Allocator, class Predicate>
+ *	constexpr typename deque<T, Allocator>::size_type
+ *	erase_if(deque<T, Allocator>& c, Predicate pred);
  */
 
-#include <hamon/deque/erase_if.hpp>
-#include <hamon/deque/deque.hpp>
+#include <hamon/deque.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/type_traits.hpp>
+#include <hamon/utility/declval.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -18,32 +24,52 @@ namespace erase_if_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
-EraseIfTest()
+struct IsEven
 {
+	template <typename T>
+	HAMON_CXX11_CONSTEXPR bool operator()(T x) const noexcept
 	{
-		hamon::deque<int> v = {3,1,4,5,2};
-		auto r = hamon::erase_if(v, [](int x) { return x % 2 == 0; });
+		return x % 2 == 0;
+	}
+};
+
+HAMON_CXX20_CONSTEXPR bool test()
+{
+	using T = int;
+	using Deque = hamon::deque<T>;
+	using SizeType = typename Deque::size_type;
+
+	static_assert(hamon::is_same<
+		decltype(hamon::erase_if(hamon::declval<Deque&>(), hamon::declval<IsEven>())),
+		SizeType
+	>::value, "");
+
+	static_assert(!noexcept(
+		hamon::erase_if(hamon::declval<Deque&>(), hamon::declval<IsEven>())), "");
+
+	{
+		Deque v = {3,1,4,5,2};
+		auto r = hamon::erase_if(v, IsEven{});
 		VERIFY(r == 2);
-		const int v2[] = {3,1,5,};
+		const T v2[] = {3,1,5,};
 		VERIFY(hamon::ranges::equal(v, v2));
 	}
 	{
-		hamon::deque<int> v = {3,1,4,1,5,9,2,6,5,3,5,};
-		auto r = hamon::erase_if(v, [](int x) { return x >= 5; });
+		Deque v = {3,1,4,1,5,9,2,6,5,3,5,};
+		auto r = hamon::erase_if(v, [](T x) { return x >= 5; });
 		VERIFY(r == 5);
-		const int v2[] = {3,1,4,1,2,3,};
+		const T v2[] = {3,1,4,1,2,3,};
 		VERIFY(hamon::ranges::equal(v, v2));
 	}
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(DequeTest, EraseIfTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 }
-
-#undef VERIFY
 
 }	// namespace erase_if_test
 

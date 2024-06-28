@@ -7,9 +7,11 @@
 #ifndef HAMON_DEQUE_ERASE_HPP
 #define HAMON_DEQUE_ERASE_HPP
 
-#include <deque>
+#include <hamon/deque/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(HAMON_USE_STD_DEQUE) && defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <deque>
 
 namespace hamon
 {
@@ -28,9 +30,9 @@ namespace hamon
 {
 
 template <typename T, typename Alloc, typename U>
-inline HAMON_CXX14_CONSTEXPR
+HAMON_CXX14_CONSTEXPR
 typename hamon::deque<T, Alloc>::size_type
-erase(hamon::deque<T, Alloc>& c, const U& value)
+erase(hamon::deque<T, Alloc>& c, U const& value)
 {
 	auto const sz = c.size();
 	c.erase(hamon::remove(c.begin(), c.end(), value), c.end());
