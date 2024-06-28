@@ -7,9 +7,11 @@
 #ifndef HAMON_DEQUE_ERASE_IF_HPP
 #define HAMON_DEQUE_ERASE_IF_HPP
 
-#include <deque>
+#include <hamon/deque/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(HAMON_USE_STD_DEQUE) && defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <deque>
 
 namespace hamon
 {

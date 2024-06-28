@@ -1,0 +1,156 @@
+﻿/**
+ *	@file	unit_test_deque_prepend_range.cpp
+ *
+ *	@brief	prepend_range のテスト
+ *
+ *	template<container-compatible-range<T> R>
+ *	void prepend_range(R&& rg);
+ */
+
+#include <hamon/deque.hpp>
+#include <hamon/type_traits.hpp>
+#include <hamon/utility/declval.hpp>
+#include <gtest/gtest.h>
+#include "constexpr_test.hpp"
+#include "ranges_test.hpp"
+
+namespace hamon_deque_test
+{
+
+namespace prepend_range_test
+{
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <template <typename> class RangeWrapper>
+HAMON_CXX20_CONSTEXPR bool test()
+{
+	using T = int;
+	using Allocator = std::allocator<T>;
+	using Deque = hamon::deque<T, Allocator>;
+	using Range = RangeWrapper<T>;
+
+	static_assert(hamon::is_same<
+		decltype(hamon::declval<Deque&>().prepend_range(hamon::declval<Range const&>())),
+		void
+	>::value, "");
+	static_assert(hamon::is_same<
+		decltype(hamon::declval<Deque&>().prepend_range(hamon::declval<Range&&>())),
+		void
+	>::value, "");
+
+	static_assert(!noexcept(
+		hamon::declval<Deque&>().prepend_range(hamon::declval<Range const&>())), "");
+	static_assert(!noexcept(
+		hamon::declval<Deque&>().prepend_range(hamon::declval<Range&&>())), "");
+
+	{
+		Deque v{1,2,3};
+
+		T a[] = {11,12,13,14};
+		Range r(a);
+
+		v.prepend_range(r);
+		VERIFY(v.size() == 7);
+		VERIFY(v[0] == 11);
+		VERIFY(v[1] == 12);
+		VERIFY(v[2] == 13);
+		VERIFY(v[3] == 14);
+		VERIFY(v[4] == 1);
+		VERIFY(v[5] == 2);
+		VERIFY(v[6] == 3);
+	}
+#if 0
+	{
+		Deque v;
+		v.push_back(1);
+		v.reserve(5);
+
+		// メモリの再確保が行われないときは、end()以外のイテレータは無効にならない
+		auto const it = v.begin();
+
+		T a[] = {11,12,13,14};
+		Range r(a);
+
+		v.prepend_range(r);
+		VERIFY(it == v.begin());
+		VERIFY(v.size() == 5);
+		VERIFY(v[0] == 1);
+		VERIFY(v[1] == 11);
+		VERIFY(v[2] == 12);
+		VERIFY(v[3] == 13);
+		VERIFY(v[4] == 14);
+	}
+#endif
+
+	return true;
+}
+
+#undef VERIFY
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+struct ThrowOnCopy
+{
+	struct Exception{};
+
+	int value;
+
+	ThrowOnCopy() : value(13)
+	{
+	}
+
+	ThrowOnCopy(int v) : value(v)
+	{
+	}
+
+	ThrowOnCopy(ThrowOnCopy const&)
+	{
+		throw Exception{};
+	}
+
+	ThrowOnCopy(ThrowOnCopy&& other) noexcept
+		: value(other.value)
+	{
+	}
+
+	ThrowOnCopy& operator=(ThrowOnCopy const&)
+	{
+		throw Exception{};
+	}
+};
+#endif
+
+GTEST_TEST(DequeTest, PrependRangeTest)
+{
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_input_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_forward_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_bidirectional_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_random_access_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_contiguous_range>());
+
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_input_sized_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_forward_sized_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_bidirectional_sized_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_random_access_sized_range>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_contiguous_sized_range>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	{
+		hamon::deque<ThrowOnCopy> v1(3);
+		hamon::deque<ThrowOnCopy> v2(2);
+
+		//auto const old_capacity = v2.capacity();
+		//auto const old_data = v2.data();
+		EXPECT_THROW(v2.prepend_range(v1), ThrowOnCopy::Exception);
+		//EXPECT_EQ(old_capacity, v2.capacity());
+		//EXPECT_EQ(old_data, v2.data());
+		EXPECT_EQ(2u, v2.size());
+		EXPECT_EQ(13, v2[0].value);
+		EXPECT_EQ(13, v2[1].value);
+	}
+#endif
+}
+
+}	// namespace prepend_range_test
+
+}	// namespace hamon_deque_test
