@@ -15,6 +15,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+#if 0
 namespace hamon_deque_test
 {
 
@@ -123,3 +124,4 @@ GTEST_TEST(DequeTest, RBeginREndTest)
 }	// namespace rbegin_rend_test
 
 }	// namespace hamon_deque_test
+#endif

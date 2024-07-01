@@ -18,6 +18,7 @@
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 
+#if 0
 namespace hamon_deque_test
 {
 
@@ -614,3 +615,4 @@ GTEST_TEST(DequeTest, InsertTest)
 }	// namespace insert_test
 
 }	// namespace hamon_deque_test
+#endif

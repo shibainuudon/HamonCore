@@ -25,24 +25,19 @@ using std::deque;
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
+#include <hamon/cmath/ranges/round_up.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/compare/strong_ordering.hpp>
+#include <hamon/compare.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/iterator/iterator_traits.hpp>
-#include <hamon/iterator/random_access_iterator_tag.hpp>
-#include <hamon/iterator/reverse_iterator.hpp>
-#include <hamon/memory/addressof.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
+#include <hamon/iterator.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/memory.hpp>
+#include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
+#include <hamon/ranges.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
-#include <hamon/ranges/from_range_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
-#include <hamon/stdexcept/out_of_range.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
-#include <hamon/utility/forward.hpp>
-#include <hamon/utility/move.hpp>
+#include <hamon/stdexcept.hpp>
+#include <hamon/type_traits.hpp>
+#include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
 #include <memory>	// allocator, allocator_traits
@@ -100,9 +95,12 @@ private:
 	template <typename U, typename Const>
 	struct Iterator
 	{
+	private:
 		friend Iterator<U, hamon::negation<Const>>;
 		friend class deque;
+		using deque_ptr = hamon::conditional_t<Const::value, deque const*, deque*>;
 
+	public:
 		using iterator_concept  = hamon::random_access_iterator_tag;
 		using iterator_category = hamon::random_access_iterator_tag;
 		using value_type        = U;
@@ -112,13 +110,15 @@ private:
 
 		HAMON_CXX11_CONSTEXPR
 		Iterator() HAMON_NOEXCEPT
-			: m_offset()
+			: m_deque()
+			, m_offset()
 		{}
 
 	private:
 		HAMON_CXX11_CONSTEXPR
-		Iterator(difference_type offset) HAMON_NOEXCEPT
-			: m_offset(offset)
+		Iterator(deque_ptr p, difference_type offset) HAMON_NOEXCEPT
+			: m_deque(p)
+			, m_offset(offset)
 		{}
 
 	public:
@@ -126,11 +126,15 @@ private:
 			typename = hamon::enable_if_t<C::value == Const::value || Const::value>>
 		HAMON_CXX11_CONSTEXPR
 		Iterator(Iterator<U, C> const& i) HAMON_NOEXCEPT
-			: m_offset(i.m_offset)
+			: m_deque(i.m_deque)
+			, m_offset(i.m_offset)
 		{}
 
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-		reference operator*() const HAMON_NOEXCEPT;
+		reference operator*() const HAMON_NOEXCEPT
+		{
+			return m_deque->subscript(m_offset);
+		}
 
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 		pointer operator->() const HAMON_NOEXCEPT
@@ -192,19 +196,19 @@ private:
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
 		operator+(Iterator const& i, difference_type n) HAMON_NOEXCEPT
 		{
-			return Iterator(i.m_offset + n);
+			return Iterator(i.m_deque, i.m_offset + n);
 		}
 
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
 		operator+(difference_type n, Iterator const& i) HAMON_NOEXCEPT
 		{
-			return Iterator(i.m_offset + n);
+			return Iterator(i.m_deque, i.m_offset + n);
 		}
 
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
 		operator-(Iterator const& i, difference_type n) HAMON_NOEXCEPT
 		{
-			return Iterator(i.m_offset - n);
+			return Iterator(i.m_deque, i.m_offset - n);
 		}
 
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type
@@ -257,6 +261,7 @@ private:
 		}
 #endif
 	private:
+		deque_ptr		m_deque;
 		difference_type m_offset;
 	};
 
@@ -276,66 +281,130 @@ public:
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
 
 private:
+	static const size_type BlockSize = 8;
+
 	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
+	T**		m_map{};
+	size_type	m_map_size{};
+	size_type	m_start_offset{};
+	size_type	m_end_offset{};
+
+private:
+	constexpr reference subscript(size_type n)
+	{
+		const auto i = m_start_offset + n;
+		return m_map[i / BlockSize][i % BlockSize];
+	}
+
+	constexpr const_reference subscript(size_type n) const
+	{
+		const auto i = m_start_offset + n;
+		return m_map[i / BlockSize][i % BlockSize];
+	}
+
+	constexpr size_type Capacity() const
+	{
+		return m_map_size * BlockSize;
+	}
+
+	template <typename... Args>
+	constexpr void EmplaceBack(Args&&... args)
+	{
+		if (m_end_offset == this->Capacity())
+		{
+			auto const new_map_size = m_map_size + 1;
+			auto new_map = new T*[new_map_size];
+			for (size_type i = 0; i < new_map_size; ++i)
+			{
+				if (i < m_map_size)
+				{
+					new_map[i] = m_map[i];
+				}
+				else
+				{
+					new_map[i] = m_allocator.allocate(BlockSize);
+				}
+			}
+
+			if (m_map != nullptr)
+			{
+				delete[] m_map;
+			}
+			m_map = new_map;
+			m_map_size = new_map_size;
+		}
+
+		AllocTraits::construct(m_allocator, &subscript(m_end_offset), hamon::forward<Args>(args)...);
+		++m_end_offset;
+	}
+
+	template <typename Iterator, typename Sentinel>
+	constexpr void ConstructIter(Iterator first, Sentinel last)
+	{
+		for (; first != last; ++first)
+		{
+			this->EmplaceBack(*first);
+		}
+	}
 
 public:
 	// [deque.cons], construct/copy/destroy
-	deque() : deque(Allocator()) {}
+	constexpr deque() : deque(Allocator()) {}
 
-	explicit
+	constexpr explicit
 	deque(Allocator const& a)
 		: m_allocator(a)
 	{}
 
-	explicit
+	constexpr explicit
 	deque(size_type n, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
-		(void)n;
+		this->resize(n);
 	}
 
+	constexpr
 	deque(size_type n, T const& value, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
-		(void)n;
-		(void)value;
+		this->resize(n, value);
 	}
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	constexpr
 	deque(InputIterator first, InputIterator last, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
-		(void)first;
-		(void)last;
+		this->ConstructIter(first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	constexpr
 	deque(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
-		(void)rg;
+		this->ConstructIter(hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
+	constexpr
 	deque(deque const& x)
 		: deque(x, AllocTraits::select_on_container_copy_construction(x.m_allocator))
 	{}
 
+	constexpr
 	deque(deque&& x)
 		: m_allocator(hamon::move(x.m_allocator))
 		// TODO
 	{}
 
+	constexpr
 	deque(deque const& x, type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
-		// TODO
-		(void)x;
+		this->ConstructIter(hamon::ranges::begin(x), hamon::ranges::end(x));
 	}
 
+	constexpr
 	deque(deque&& x, type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
@@ -343,16 +412,26 @@ public:
 		(void)x;
 	}
 
+	constexpr
 	deque(std::initializer_list<T> il, Allocator const& a = Allocator())
 		: deque(il.begin(), il.end(), a)
 	{}
 
+	constexpr
 	~deque()
 	{
-		// TODO
+		for (size_type i = 0; i < this->size(); ++i)
+		{
+			hamon::destroy_at(&subscript(i));
+		}
+		for (size_type i = 0; i < m_map_size; ++i)
+		{
+			AllocTraits::deallocate(m_allocator, m_map[i], BlockSize);
+		}
+		delete[] m_map;
 	}
 
-	deque& operator=(deque const& x)
+	constexpr deque& operator=(deque const& x)
 	{
 		if (hamon::addressof(x) == this)
 		{
@@ -364,7 +443,7 @@ public:
 		return *this;
 	}
 
-	deque& operator=(deque&& x)
+	constexpr deque& operator=(deque&& x)
 		noexcept(AllocTraits::is_always_equal::value)
 	{
 		if (hamon::addressof(x) == this)
@@ -377,14 +456,14 @@ public:
 		return *this;
 	}
 
-	deque& operator=(std::initializer_list<T> il)
+	constexpr deque& operator=(std::initializer_list<T> il)
 	{
 		this->assign(il);
 		return *this;
 	}
 
-	template <typename InputIterator>
-	void assign(InputIterator first, InputIterator last)
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	constexpr void assign(InputIterator first, InputIterator last)
 	{
 		// TODO
 		(void)first;
@@ -392,125 +471,150 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	void assign_range(R&& rg)
+	constexpr void assign_range(R&& rg)
 	{
 		// TODO
 		(void)rg;
 	}
 
-	void assign(size_type n, T const& t)
+	constexpr void assign(size_type n, T const& t)
 	{
 		// TODO
 		(void)n;
 		(void)t;
 	}
 
-	void assign(std::initializer_list<T> il)
+	constexpr void assign(std::initializer_list<T> il)
 	{
 		this->assign(il.begin(), il.end());
 	}
 
-	allocator_type get_allocator() const noexcept
+	constexpr allocator_type get_allocator() const noexcept
 	{
 		return m_allocator;
 	}
 
 	// iterators
-	iterator begin() noexcept
+	constexpr iterator begin() noexcept
 	{
-		// TODO
+		return iterator(this, 0);
 	}
 
-	const_iterator begin() const noexcept
+	constexpr const_iterator begin() const noexcept
 	{
-		// TODO
+		return const_iterator(this, 0);
 	}
 
-	iterator end() noexcept
+	constexpr iterator end() noexcept
 	{
-		// TODO
+		return iterator(this, this->size());
 	}
 
-	const_iterator end() const noexcept
+	constexpr const_iterator end() const noexcept
 	{
-		// TODO
+		return const_iterator(this, this->size());
 	}
 
-	reverse_iterator rbegin() noexcept
+	constexpr reverse_iterator rbegin() noexcept
 	{
 		return reverse_iterator(this->end());
 	}
 
-	const_reverse_iterator rbegin() const noexcept
+	constexpr const_reverse_iterator rbegin() const noexcept
 	{
 		return const_reverse_iterator(this->end());
 	}
 
-	reverse_iterator rend() noexcept
+	constexpr reverse_iterator rend() noexcept
 	{
 		return reverse_iterator(this->begin());
 	}
 
-	const_reverse_iterator rend() const noexcept
+	constexpr const_reverse_iterator rend() const noexcept
 	{
 		return const_reverse_iterator(this->begin());
 	}
 
-	const_iterator cbegin() const noexcept
+	constexpr const_iterator cbegin() const noexcept
 	{
 		return this->begin();
 	}
 
-	const_iterator cend() const noexcept
+	constexpr const_iterator cend() const noexcept
 	{
 		return this->end();
 	}
 
-	const_reverse_iterator crbegin() const noexcept
+	constexpr const_reverse_iterator crbegin() const noexcept
 	{
 		return this->rbegin();
 	}
 
-	const_reverse_iterator crend() const noexcept
+	constexpr const_reverse_iterator crend() const noexcept
 	{
 		return this->rend();
 	}
 
 	// [deque.capacity], capacity
-	[[nodiscard]] bool empty() const noexcept
+	[[nodiscard]] constexpr bool empty() const noexcept
 	{
 		return this->size() == 0;
 	}
 
-	size_type size() const noexcept;
+	constexpr size_type size() const noexcept
+	{
+		return m_end_offset - m_start_offset;
+	}
 
-	size_type max_size() const noexcept;
+	constexpr size_type max_size() const noexcept;
 
-	void resize(size_type sz);
+	constexpr void resize(size_type sz)
+	{
+		while (this->size() > sz)
+		{
+			this->pop_back();
+		}
 
-	void resize(size_type sz, T const& c);
+		while (this->size() < sz)
+		{
+			this->EmplaceBack();
+		}
+	}
 
-	void shrink_to_fit()
+	constexpr void resize(size_type sz, T const& c)
+	{
+		while (this->size() > sz)
+		{
+			this->pop_back();
+		}
+
+		while (this->size() < sz)
+		{
+			this->EmplaceBack(c);
+		}
+	}
+
+	constexpr void shrink_to_fit()
 	{
 		// TODO
 	}
 
 	// element access
-	reference operator[](size_type n)
+	constexpr reference operator[](size_type n)
 	{
 		return
 			HAMON_ASSERT(n < this->size()),
 			this->subscript(n);
 	}
 
-	const_reference operator[](size_type n) const
+	constexpr const_reference operator[](size_type n) const
 	{
 		return
 			HAMON_ASSERT(n < this->size()),
 			this->subscript(n);
 	}
 
-	reference at(size_type n)
+	constexpr reference at(size_type n)
 	{
 		return
 			n < this->size() ?
@@ -518,7 +622,7 @@ public:
 			(hamon::detail::throw_out_of_range("deque::at"), this->subscript(n));
 	}
 
-	const_reference at(size_type n) const
+	constexpr const_reference at(size_type n) const
 	{
 		return
 			n < this->size() ?
@@ -526,28 +630,28 @@ public:
 			(hamon::detail::throw_out_of_range("deque::at"), this->subscript(n));
 	}
 
-	reference front()
+	constexpr reference front()
 	{
 		return
 			HAMON_ASSERT(!this->empty()),
 			this->subscript(0);
 	}
 
-	const_reference front() const
+	constexpr const_reference front() const
 	{
 		return
 			HAMON_ASSERT(!this->empty()),
 			this->subscript(0);
 	}
 
-	reference back()
+	constexpr reference back()
 	{
 		return
 			HAMON_ASSERT(!this->empty()),
 			this->subscript(this->size() - 1);
 	}
 
-	const_reference back() const
+	constexpr const_reference back() const
 	{
 		return
 			HAMON_ASSERT(!this->empty()),
@@ -556,88 +660,92 @@ public:
 
 	// [deque.modifiers], modifiers
 	template <typename... Args>
-	reference emplace_front(Args&&... args);
+	constexpr reference emplace_front(Args&&... args);
 
 	template <typename... Args>
-	reference emplace_back(Args&&... args);
+	constexpr reference emplace_back(Args&&... args)
+	{
+		this->EmplaceBack(hamon::forward<Args>(args)...);
+		return this->back();
+	}
 
 	template <typename... Args>
-	iterator emplace(const_iterator position, Args&&... args);
+	constexpr iterator emplace(const_iterator position, Args&&... args);
 
-	void push_front(T const& x)
+	constexpr void push_front(T const& x)
 	{
 		this->emplace_front(x);
 	}
 
-	void push_front(T&& x)
+	constexpr void push_front(T&& x)
 	{
 		this->emplace_front(hamon::move(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	void prepend_range(R&& rg)
+	constexpr void prepend_range(R&& rg)
 	{
 		this->insert_range(this->cbegin(), hamon::forward<R>(rg));
 	}
 
-	void push_back(T const& x)
+	constexpr void push_back(T const& x)
 	{
-		this->emplace_back(x);
+		this->EmplaceBack(x);
 	}
 
-	void push_back(T&& x)
+	constexpr void push_back(T&& x)
 	{
-		this->emplace_back(hamon::move(x));
+		this->EmplaceBack(hamon::move(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	void append_range(R&& rg)
+	constexpr void append_range(R&& rg)
 	{
 		this->insert_range(this->cend(), hamon::forward<R>(rg));
 	}
 
-	iterator insert(const_iterator position, T const& x)
+	constexpr iterator insert(const_iterator position, T const& x)
 	{
 		return this->emplace(position, x);
 	}
 
-	iterator insert(const_iterator position, T&& x)
+	constexpr iterator insert(const_iterator position, T&& x)
 	{
 		return this->emplace(position, hamon::move(x));
 	}
 
-	iterator insert(const_iterator position, size_type n, T const& x);
+	constexpr iterator insert(const_iterator position, size_type n, T const& x);
 
-	template <typename InputIterator>
-	iterator insert(const_iterator position, InputIterator first, InputIterator last);
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	constexpr iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	iterator insert_range(const_iterator position, R&& rg);
+	constexpr iterator insert_range(const_iterator position, R&& rg);
 
-	iterator insert(const_iterator position, std::initializer_list<T> il)
+	constexpr iterator insert(const_iterator position, std::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}
 
-	void pop_front();
+	constexpr void pop_front();
 
-	void pop_back();
+	constexpr void pop_back()
+	{
+		AllocTraits::destroy(m_allocator, &this->subscript(m_end_offset - 1));
+		--m_end_offset;
+	}
 
-	iterator erase(const_iterator position)
+	constexpr iterator erase(const_iterator position)
 	{
 		return this->erase(position, position + 1);
 	}
 
-	iterator erase(const_iterator first, const_iterator last);
+	constexpr iterator erase(const_iterator first, const_iterator last);
 
-	void swap(deque&)
+	constexpr void swap(deque&)
 		noexcept(AllocTraits::is_always_equal::value);
 
-	void clear() noexcept;
-
-private:
-	reference subscript(size_type n);
-	const_reference subscript(size_type n) const;
+	constexpr void clear() noexcept;
 };
 
 HAMON_WARNING_POP()
@@ -653,18 +761,22 @@ using iter_value_type = typename hamon::iterator_traits<InputIterator>::value_ty
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
-template <typename InputIterator, typename Allocator = std::allocator<hamon::detail::iter_value_type<InputIterator>>>
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	typename Allocator = std::allocator<hamon::detail::iter_value_type<InputIterator>>>
 deque(InputIterator, InputIterator, Allocator = Allocator())
 ->deque<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
-template <hamon::ranges::input_range R, typename Allocator = std::allocator<hamon::ranges::range_value_t<R>>>
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	typename Allocator = std::allocator<hamon::ranges::range_value_t<R>>>
 deque(from_range_t, R&&, Allocator = Allocator())
 ->deque<hamon::ranges::range_value_t<R>, Allocator>;
 
 #endif
 
 template <typename T, typename Allocator>
-bool operator==(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator==(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return x.size() == y.size() &&
 		hamon::equal(x.begin(), x.end(), y.begin());
@@ -673,7 +785,7 @@ bool operator==(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename T, typename Allocator>
-hamon::detail::synth_three_way_result<T>
+constexpr hamon::detail::synth_three_way_result<T>
 operator<=>(deque<T, Allocator> const&x, deque<T, Allocator> const&y)
 {
 	return hamon::lexicographical_compare_three_way(
@@ -685,13 +797,13 @@ operator<=>(deque<T, Allocator> const&x, deque<T, Allocator> const&y)
 #else
 
 template <typename T, typename Allocator>
-bool operator!=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator!=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x == y);
 }
 
 template <typename T, typename Allocator>
-bool operator<(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator<(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return hamon::lexicographical_compare(
 		x.begin(), x.end(),
@@ -699,19 +811,19 @@ bool operator<(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 }
 
 template <typename T, typename Allocator>
-bool operator>(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator>(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return y < x;
 }
 
 template <typename T, typename Allocator>
-bool operator<=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator<=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x > y);
 }
 
 template <typename T, typename Allocator>
-bool operator>=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+constexpr bool operator>=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x < y);
 }
@@ -719,7 +831,7 @@ bool operator>=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 #endif
 
 template <typename T, typename Allocator>
-void swap(deque<T, Allocator>& x, deque<T, Allocator>& y)
+constexpr void swap(deque<T, Allocator>& x, deque<T, Allocator>& y)
 noexcept(noexcept(x.swap(y)))
 {
 	x.swap(y);

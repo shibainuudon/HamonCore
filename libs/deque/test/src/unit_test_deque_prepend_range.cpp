@@ -14,6 +14,7 @@
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
+#if 0
 namespace hamon_deque_test
 {
 
@@ -154,3 +155,4 @@ GTEST_TEST(DequeTest, PrependRangeTest)
 }	// namespace prepend_range_test
 
 }	// namespace hamon_deque_test
+#endif

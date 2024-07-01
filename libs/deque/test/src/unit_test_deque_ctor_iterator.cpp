@@ -110,9 +110,9 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, CtorIteratorTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<int>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<S1>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<S2>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S2>());
 }
 
 }	// namespace ctor_iterator_test

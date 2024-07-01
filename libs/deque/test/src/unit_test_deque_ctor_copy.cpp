@@ -54,7 +54,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, CtorCopyTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 }
 
 }	// namespace ctor_copy_test

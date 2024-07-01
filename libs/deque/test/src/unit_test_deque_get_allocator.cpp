@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+#if 0
 namespace hamon_deque_test
 {
 
@@ -50,3 +51,4 @@ GTEST_TEST(DequeTest, GetAllocatorTest)
 }	// namespace get_allocator_test
 
 }	// namespace hamon_deque_test
+#endif

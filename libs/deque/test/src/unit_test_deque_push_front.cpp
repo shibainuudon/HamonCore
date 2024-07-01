@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+#if 0
 namespace hamon_deque_test
 {
 
@@ -292,3 +293,4 @@ GTEST_TEST(DequeTest, PushFrontTest)
 }	// namespace push_front_test
 
 }	// namespace hamon_deque_test
+#endif

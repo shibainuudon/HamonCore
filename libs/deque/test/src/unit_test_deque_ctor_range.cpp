@@ -70,17 +70,17 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, CtorRangeTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_input_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_forward_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_bidirectional_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_random_access_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_contiguous_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_input_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_forward_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_bidirectional_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_random_access_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_contiguous_range>());
 
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_input_sized_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_forward_sized_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_bidirectional_sized_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_random_access_sized_range>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<test_contiguous_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_input_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_forward_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_bidirectional_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_random_access_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_contiguous_sized_range>());
 }
 
 }	// namespace ctor_range_test
