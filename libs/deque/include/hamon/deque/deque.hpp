@@ -423,12 +423,57 @@ private:
 	}
 
 	template <typename Iterator, typename Sentinel>
-	constexpr void ConstructIter(Iterator first, Sentinel last)
+	constexpr void AppendIter(Iterator first, Sentinel last)
 	{
 		for (; first != last; ++first)
 		{
 			this->EmplaceBack(*first);
 		}
+	}
+
+	constexpr void AppendFillN(size_type n, T const& t)
+	{
+		for (; n > 0; --n)
+		{
+			this->EmplaceBack(t);
+		}
+	}
+
+	constexpr void PopBackN(size_type n)
+	{
+		for (; n > 0; --n)
+		{
+			m_impl.PopBack(m_allocator);
+		}
+	}
+
+	template <typename Iterator, typename Sentinel>
+	constexpr void AssignIter(Iterator first, Sentinel last)
+	{
+		auto dst_first = this->begin();
+		auto dst_last = this->end();
+		for (; first != last && dst_first != dst_last;)
+		{
+			*dst_first = *first;
+			++dst_first;
+			++first;
+		}
+		this->PopBackN(dst_last - dst_first);
+		this->AppendIter(first, last);
+	}
+
+	constexpr void AssignFillN(size_type n, T const& t)
+	{
+		auto dst_first = this->begin();
+		auto dst_last = this->end();
+		for (; n > 0 && dst_first != dst_last;)
+		{
+			*dst_first = t;
+			++dst_first;
+			--n;
+		}
+		this->PopBackN(dst_last - dst_first);
+		this->AppendFillN(n, t);
 	}
 
 public:
@@ -460,7 +505,7 @@ public:
 	deque(InputIterator first, InputIterator last, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		this->ConstructIter(first, last);
+		this->AppendIter(first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -468,7 +513,7 @@ public:
 	deque(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		this->ConstructIter(hamon::ranges::begin(rg), hamon::ranges::end(rg));
+		this->AppendIter(hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -486,7 +531,7 @@ public:
 	deque(deque const& x, type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
-		this->ConstructIter(hamon::ranges::begin(x), hamon::ranges::end(x));
+		this->AppendIter(hamon::ranges::begin(x), hamon::ranges::end(x));
 	}
 
 	constexpr
@@ -544,23 +589,18 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void assign(InputIterator first, InputIterator last)
 	{
-		// TODO
-		(void)first;
-		(void)last;
+		this->AssignIter(first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void assign_range(R&& rg)
 	{
-		// TODO
-		(void)rg;
+		this->AssignIter(hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR void assign(size_type n, T const& t)
 	{
-		// TODO
-		(void)n;
-		(void)t;
+		this->AssignFillN(n, t);
 	}
 
 	HAMON_CXX14_CONSTEXPR void assign(std::initializer_list<T> il)
@@ -727,7 +767,11 @@ public:
 
 	// [deque.modifiers], modifiers
 	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR reference emplace_front(Args&&... args);
+	HAMON_CXX14_CONSTEXPR reference emplace_front(Args&&... args)
+	{
+		this->EmplaceFront(hamon::forward<Args>(args)...);
+		return this->front();
+	}
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR reference emplace_back(Args&&... args)
@@ -737,7 +781,14 @@ public:
 	}
 
 	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR iterator emplace(const_iterator position, Args&&... args);
+	HAMON_CXX14_CONSTEXPR iterator emplace(const_iterator position, Args&&... args)
+	{
+		auto const pos_offset = position - this->begin();
+
+		// TODO
+
+		return this->begin() + pos_offset;
+	}
 
 	HAMON_CXX14_CONSTEXPR void push_front(T const& x)
 	{
@@ -781,20 +832,38 @@ public:
 		return this->emplace(position, hamon::move(x));
 	}
 
-	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, size_type n, T const& x);
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, size_type n, T const& x)
+	{
+		auto const pos_offset = position - this->begin();
+		this->InsertFillN(pos_offset, n, x);
+		return this->begin() + pos_offset;
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, InputIterator first, InputIterator last);
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, InputIterator first, InputIterator last)
+	{
+		auto const pos_offset = position - this->begin();
+		this->InsertIter(pos_offset, first, last);
+		return this->begin() + pos_offset;
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	HAMON_CXX14_CONSTEXPR iterator insert_range(const_iterator position, R&& rg);
+	HAMON_CXX14_CONSTEXPR iterator insert_range(const_iterator position, R&& rg)
+	{
+		auto const pos_offset = position - this->begin();
+		this->InsertIter(pos_offset, hamon::ranges::begin(rg), hamon::ranges::end(rg));
+		return this->begin() + pos_offset;
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, std::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}
 
-	HAMON_CXX14_CONSTEXPR void pop_front();
+	HAMON_CXX14_CONSTEXPR void pop_front()
+	{
+		m_impl.PopFront(m_allocator);
+	}
 
 	HAMON_CXX14_CONSTEXPR void pop_back()
 	{
@@ -806,10 +875,19 @@ public:
 		return this->erase(position, position + 1);
 	}
 
-	HAMON_CXX14_CONSTEXPR iterator erase(const_iterator first, const_iterator last);
+	HAMON_CXX14_CONSTEXPR iterator erase(const_iterator first, const_iterator last)
+	{
+		auto const pos_offset = first - this->begin();
+		this->DestroyN(pos_offset, static_cast<size_type>(last - first));
+		return this->begin() + pos_offset;
+	}
 
-	HAMON_CXX14_CONSTEXPR void swap(deque&)
-		noexcept(AllocTraits::is_always_equal::value);
+	HAMON_CXX14_CONSTEXPR void swap(deque& x)
+		noexcept(AllocTraits::is_always_equal::value)
+	{
+		hamon::swap(m_allocator, x.m_allocator);
+		m_impl.Swap(x.m_impl);
+	}
 
 	HAMON_CXX14_CONSTEXPR void clear() noexcept
 	{

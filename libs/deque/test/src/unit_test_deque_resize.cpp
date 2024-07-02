@@ -15,7 +15,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -229,9 +228,9 @@ struct ThrowOnDefault
 
 GTEST_TEST(DequeTest, ResizeTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<unsigned int>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<char>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<unsigned int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 //	{
@@ -324,4 +323,3 @@ GTEST_TEST(DequeTest, ResizeTest)
 }	// namespace resize_test
 
 }	// namespace hamon_deque_test
-#endif

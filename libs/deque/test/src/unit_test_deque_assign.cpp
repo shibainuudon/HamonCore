@@ -16,7 +16,6 @@
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -395,33 +394,33 @@ GTEST_TEST(DequeTest, AssignTest)
 
 			v.assign(2, x);
 			EXPECT_EQ(1, S::default_ctor_count);
-			EXPECT_EQ(7, S::copy_ctor_count);
+			EXPECT_EQ(5, S::copy_ctor_count);
 			EXPECT_EQ(0, S::move_ctor_count);
 			EXPECT_EQ(2, S::copy_assign_count);
 			EXPECT_EQ(0, S::move_assign_count);
-			EXPECT_EQ(5, S::dtor_count);
+			EXPECT_EQ(3, S::dtor_count);
 
 			v.assign(5, x);
 			EXPECT_EQ(1, S::default_ctor_count);
-			EXPECT_EQ(12, S::copy_ctor_count);
+			EXPECT_EQ(8, S::copy_ctor_count);
 			EXPECT_EQ(0, S::move_ctor_count);
 			EXPECT_EQ(4, S::copy_assign_count);
 			EXPECT_EQ(0, S::move_assign_count);
-			EXPECT_EQ(7, S::dtor_count);
+			EXPECT_EQ(3, S::dtor_count);
 		}
 		EXPECT_EQ(1, S::default_ctor_count);
-		EXPECT_EQ(12, S::copy_ctor_count);
+		EXPECT_EQ(8, S::copy_ctor_count);
 		EXPECT_EQ(0, S::move_ctor_count);
 		EXPECT_EQ(4, S::copy_assign_count);
 		EXPECT_EQ(0, S::move_assign_count);
-		EXPECT_EQ(8, S::dtor_count);
+		EXPECT_EQ(4, S::dtor_count);
 	}
 	EXPECT_EQ(1, S::default_ctor_count);
-	EXPECT_EQ(12, S::copy_ctor_count);
+	EXPECT_EQ(8, S::copy_ctor_count);
 	EXPECT_EQ(0, S::move_ctor_count);
 	EXPECT_EQ(4, S::copy_assign_count);
 	EXPECT_EQ(0, S::move_assign_count);
-	EXPECT_EQ(13, S::dtor_count);
+	EXPECT_EQ(9, S::dtor_count);
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
@@ -511,4 +510,3 @@ GTEST_TEST(DequeTest, AssignTest)
 }	// namespace assign_test
 
 }	// namespace hamon_deque_test
-#endif
