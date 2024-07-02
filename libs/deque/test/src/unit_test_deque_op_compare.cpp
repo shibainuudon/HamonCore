@@ -16,7 +16,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -25,15 +24,16 @@ namespace op_compare_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-/*HAMON_CXX20_CONSTEXPR*/ bool test()
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test()
 {
 	{
-		hamon::deque<int> const v1 {1, 2, 3};
-		hamon::deque<int> const v2 {1, 2, 3};
-		hamon::deque<int> const v3 {0, 2, 3};
-		hamon::deque<int> const v4 {1, 2, 4};
-		hamon::deque<int> const v5 {1, 2};
-		hamon::deque<int> const v6 {1, 2, 3, 4};
+		hamon::deque<T> const v1 {1, 2, 3};
+		hamon::deque<T> const v2 {1, 2, 3};
+		hamon::deque<T> const v3 {0, 2, 3};
+		hamon::deque<T> const v4 {1, 2, 4};
+		hamon::deque<T> const v5 {1, 2};
+		hamon::deque<T> const v6 {1, 2, 3, 4};
 
 		VERIFY( (v1 == v1));
 		VERIFY( (v1 == v2));
@@ -102,8 +102,8 @@ namespace op_compare_test
 	}
 
 	{
-		hamon::deque<int> const v1;
-		hamon::deque<int> const v2;
+		hamon::deque<T> const v1;
+		hamon::deque<T> const v2;
 
 		VERIFY( (v1 == v1));
 		VERIFY( (v1 == v2));
@@ -142,10 +142,10 @@ namespace op_compare_test
 
 GTEST_TEST(DequeTest, OpCompareTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
 
 }	// namespace op_compare_test
 
 }	// namespace hamon_deque_test
-#endif

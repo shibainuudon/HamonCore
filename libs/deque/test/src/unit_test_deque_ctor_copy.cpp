@@ -20,9 +20,9 @@ namespace ctor_copy_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	using T = int;
 	using Allocator = std::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 
@@ -54,7 +54,9 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, CtorCopyTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<unsigned short>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<double>());
 }
 
 }	// namespace ctor_copy_test

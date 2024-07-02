@@ -15,7 +15,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -116,12 +115,11 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, RBeginREndTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<unsigned int>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<char>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<unsigned int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
 
 }	// namespace rbegin_rend_test
 
 }	// namespace hamon_deque_test
-#endif

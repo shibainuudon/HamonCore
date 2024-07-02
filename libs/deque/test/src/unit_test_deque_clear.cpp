@@ -12,7 +12,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -21,9 +20,9 @@ namespace clear_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-/*HAMON_CXX20_CONSTEXPR*/ bool test()
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test()
 {
-	using T = int;
 	using Deque = hamon::deque<T>;
 
 	static_assert(hamon::is_same<
@@ -50,10 +49,11 @@ namespace clear_test
 
 GTEST_TEST(DequeTest, ClearTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
 
 }	// namespace clear_test
 
 }	// namespace hamon_deque_test
-#endif

@@ -133,7 +133,7 @@ private:
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 		reference operator*() const HAMON_NOEXCEPT
 		{
-			return m_deque->subscript(m_offset);
+			return (*m_deque)[m_offset];
 		}
 
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
@@ -281,61 +281,145 @@ public:
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
 
 private:
-	static const size_type BlockSize = 8;
-
-	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
-	T**		m_map{};
-	size_type	m_map_size{};
-	size_type	m_start_offset{};
-	size_type	m_end_offset{};
-
-private:
-	constexpr reference subscript(size_type n)
+	struct Impl
 	{
-		const auto i = m_start_offset + n;
-		return m_map[i / BlockSize][i % BlockSize];
-	}
+	private:
+		static const size_type BlockSize = 8;
 
-	constexpr const_reference subscript(size_type n) const
-	{
-		const auto i = m_start_offset + n;
-		return m_map[i / BlockSize][i % BlockSize];
-	}
+		T**			m_map{};
+		size_type	m_map_size{};
+		size_type	m_start_offset{};
+		size_type	m_end_offset{};
 
-	constexpr size_type Capacity() const
-	{
-		return m_map_size * BlockSize;
-	}
+	public:
+		HAMON_CXX11_CONSTEXPR
+		Impl() HAMON_NOEXCEPT {}
 
-	template <typename... Args>
-	constexpr void EmplaceBack(Args&&... args)
-	{
-		if (m_end_offset == this->Capacity())
+		// コピー禁止
+		Impl(Impl const&) = delete;
+		Impl& operator=(Impl const&) = delete;
+
+		HAMON_CXX14_CONSTEXPR
+		Impl(Impl&& x) HAMON_NOEXCEPT
 		{
-			auto const new_map_size = m_map_size + 1;
-			auto new_map = new T*[new_map_size];
-			for (size_type i = 0; i < new_map_size; ++i)
+			m_map          = hamon::exchange(x.m_map,          nullptr);
+			m_map_size     = hamon::exchange(x.m_map_size,     size_type{0});
+			m_start_offset = hamon::exchange(x.m_start_offset, size_type{0});
+			m_end_offset   = hamon::exchange(x.m_end_offset,   size_type{0});
+		}
+
+		HAMON_CXX14_CONSTEXPR
+		Impl& operator=(Impl&& x) HAMON_NOEXCEPT
+		{
+			Impl(hamon::move(x)).Swap(*this);
+			return *this;
+		}
+
+		HAMON_CXX14_CONSTEXPR void
+		Swap(Impl& x) noexcept
+		{
+			hamon::swap(m_map,          x.m_map);
+			hamon::swap(m_map_size,     x.m_map_size);
+			hamon::swap(m_start_offset, x.m_start_offset);
+			hamon::swap(m_end_offset,   x.m_end_offset);
+		}
+
+		constexpr reference operator[](size_type n) noexcept
+		{
+			const auto i = m_start_offset + n;
+			return m_map[i / BlockSize][i % BlockSize];
+		}
+
+		constexpr const_reference operator[](size_type n) const noexcept
+		{
+			const auto i = m_start_offset + n;
+			return m_map[i / BlockSize][i % BlockSize];
+		}
+	private:
+		constexpr pointer GetPtr(size_type n) noexcept
+		{
+			const auto i = m_start_offset + n;
+			return &m_map[i / BlockSize][i % BlockSize];
+		}
+	public:
+		constexpr size_type Size() const noexcept
+		{
+			return m_end_offset - m_start_offset;
+		}
+	private:
+		constexpr size_type Capacity() const noexcept
+		{
+			return m_map_size * BlockSize;
+		}
+	public:
+		constexpr void Clear(allocator_type& allocator)
+		{
+			for (size_type i = 0; i < this->Size(); ++i)
 			{
-				if (i < m_map_size)
-				{
-					new_map[i] = m_map[i];
-				}
-				else
-				{
-					new_map[i] = m_allocator.allocate(BlockSize);
-				}
+				hamon::destroy_at(GetPtr(i));
+			}
+			for (size_type i = 0; i < m_map_size; ++i)
+			{
+				AllocTraits::deallocate(allocator, m_map[i], BlockSize);
 			}
 
 			if (m_map != nullptr)
 			{
-				delete[] m_map;
+				delete[] m_map;	// TODO
+				m_map = nullptr;
 			}
-			m_map = new_map;
-			m_map_size = new_map_size;
+			m_map_size = 0;
+			m_start_offset = 0;
+			m_end_offset = 0;
 		}
 
-		AllocTraits::construct(m_allocator, &subscript(m_end_offset), hamon::forward<Args>(args)...);
-		++m_end_offset;
+		template <typename... Args>
+		constexpr void EmplaceBack(allocator_type& allocator, Args&&... args)
+		{
+			if (m_end_offset == this->Capacity())
+			{
+				auto const new_map_size = m_map_size + 1;
+				auto new_map = new T*[new_map_size];
+				for (size_type i = 0; i < new_map_size; ++i)
+				{
+					if (i < m_map_size)
+					{
+						new_map[i] = m_map[i];
+					}
+					else
+					{
+						new_map[i] = allocator.allocate(BlockSize);
+					}
+				}
+
+				if (m_map != nullptr)
+				{
+					delete[] m_map;
+				}
+				m_map = new_map;
+				m_map_size = new_map_size;
+			}
+
+			AllocTraits::construct(allocator, GetPtr(m_end_offset), hamon::forward<Args>(args)...);
+			++m_end_offset;
+		}
+
+		constexpr void PopBack(allocator_type& allocator)
+		{
+			HAMON_ASSERT(m_start_offset < m_end_offset);
+			AllocTraits::destroy(allocator, GetPtr(m_end_offset - 1));
+			--m_end_offset;
+		}
+	};
+
+	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
+	Impl	m_impl;
+
+private:
+	template <typename... Args>
+	constexpr void EmplaceBack(Args&&... args)
+	{
+		m_impl.EmplaceBack(m_allocator, hamon::forward<Args>(args)...);
 	}
 
 	template <typename Iterator, typename Sentinel>
@@ -349,9 +433,10 @@ private:
 
 public:
 	// [deque.cons], construct/copy/destroy
-	constexpr deque() : deque(Allocator()) {}
+	HAMON_CXX11_CONSTEXPR
+	deque() : deque(Allocator()) {}
 
-	constexpr explicit
+	HAMON_CXX11_CONSTEXPR explicit
 	deque(Allocator const& a)
 		: m_allocator(a)
 	{}
@@ -386,15 +471,15 @@ public:
 		this->ConstructIter(hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	deque(deque const& x)
 		: deque(x, AllocTraits::select_on_container_copy_construction(x.m_allocator))
 	{}
 
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	deque(deque&& x)
 		: m_allocator(hamon::move(x.m_allocator))
-		// TODO
+		, m_impl(hamon::move(x.m_impl))
 	{}
 
 	constexpr
@@ -410,28 +495,22 @@ public:
 	{
 		// TODO
 		(void)x;
+
+		m_impl = hamon::move(x.m_impl);
 	}
 
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	deque(std::initializer_list<T> il, Allocator const& a = Allocator())
 		: deque(il.begin(), il.end(), a)
 	{}
 
-	constexpr
+	HAMON_CXX20_CONSTEXPR
 	~deque()
 	{
-		for (size_type i = 0; i < this->size(); ++i)
-		{
-			hamon::destroy_at(&subscript(i));
-		}
-		for (size_type i = 0; i < m_map_size; ++i)
-		{
-			AllocTraits::deallocate(m_allocator, m_map[i], BlockSize);
-		}
-		delete[] m_map;
+		this->clear();
 	}
 
-	constexpr deque& operator=(deque const& x)
+	HAMON_CXX14_CONSTEXPR deque& operator=(deque const& x)
 	{
 		if (hamon::addressof(x) == this)
 		{
@@ -443,7 +522,7 @@ public:
 		return *this;
 	}
 
-	constexpr deque& operator=(deque&& x)
+	HAMON_CXX14_CONSTEXPR deque& operator=(deque&& x)
 		noexcept(AllocTraits::is_always_equal::value)
 	{
 		if (hamon::addressof(x) == this)
@@ -456,14 +535,14 @@ public:
 		return *this;
 	}
 
-	constexpr deque& operator=(std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR deque& operator=(std::initializer_list<T> il)
 	{
 		this->assign(il);
 		return *this;
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr void assign(InputIterator first, InputIterator last)
+	HAMON_CXX14_CONSTEXPR void assign(InputIterator first, InputIterator last)
 	{
 		// TODO
 		(void)first;
@@ -471,104 +550,104 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	constexpr void assign_range(R&& rg)
+	HAMON_CXX14_CONSTEXPR void assign_range(R&& rg)
 	{
 		// TODO
 		(void)rg;
 	}
 
-	constexpr void assign(size_type n, T const& t)
+	HAMON_CXX14_CONSTEXPR void assign(size_type n, T const& t)
 	{
 		// TODO
 		(void)n;
 		(void)t;
 	}
 
-	constexpr void assign(std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR void assign(std::initializer_list<T> il)
 	{
 		this->assign(il.begin(), il.end());
 	}
 
-	constexpr allocator_type get_allocator() const noexcept
+	HAMON_CXX11_CONSTEXPR allocator_type get_allocator() const noexcept
 	{
 		return m_allocator;
 	}
 
 	// iterators
-	constexpr iterator begin() noexcept
+	HAMON_CXX14_CONSTEXPR iterator begin() noexcept
 	{
 		return iterator(this, 0);
 	}
 
-	constexpr const_iterator begin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator begin() const noexcept
 	{
 		return const_iterator(this, 0);
 	}
 
-	constexpr iterator end() noexcept
+	HAMON_CXX14_CONSTEXPR iterator end() noexcept
 	{
 		return iterator(this, this->size());
 	}
 
-	constexpr const_iterator end() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator end() const noexcept
 	{
 		return const_iterator(this, this->size());
 	}
 
-	constexpr reverse_iterator rbegin() noexcept
+	HAMON_CXX14_CONSTEXPR reverse_iterator rbegin() noexcept
 	{
 		return reverse_iterator(this->end());
 	}
 
-	constexpr const_reverse_iterator rbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator rbegin() const noexcept
 	{
 		return const_reverse_iterator(this->end());
 	}
 
-	constexpr reverse_iterator rend() noexcept
+	HAMON_CXX14_CONSTEXPR reverse_iterator rend() noexcept
 	{
 		return reverse_iterator(this->begin());
 	}
 
-	constexpr const_reverse_iterator rend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator rend() const noexcept
 	{
 		return const_reverse_iterator(this->begin());
 	}
 
-	constexpr const_iterator cbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator cbegin() const noexcept
 	{
 		return this->begin();
 	}
 
-	constexpr const_iterator cend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator cend() const noexcept
 	{
 		return this->end();
 	}
 
-	constexpr const_reverse_iterator crbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator crbegin() const noexcept
 	{
 		return this->rbegin();
 	}
 
-	constexpr const_reverse_iterator crend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator crend() const noexcept
 	{
 		return this->rend();
 	}
 
 	// [deque.capacity], capacity
-	[[nodiscard]] constexpr bool empty() const noexcept
+	[[nodiscard]] HAMON_CXX11_CONSTEXPR bool empty() const noexcept
 	{
 		return this->size() == 0;
 	}
 
-	constexpr size_type size() const noexcept
+	HAMON_CXX11_CONSTEXPR size_type size() const noexcept
 	{
-		return m_end_offset - m_start_offset;
+		return m_impl.Size();
 	}
 
-	constexpr size_type max_size() const noexcept;
+	HAMON_CXX11_CONSTEXPR size_type max_size() const noexcept;
 
-	constexpr void resize(size_type sz)
+	HAMON_CXX14_CONSTEXPR void resize(size_type sz)
 	{
 		while (this->size() > sz)
 		{
@@ -581,7 +660,7 @@ public:
 		}
 	}
 
-	constexpr void resize(size_type sz, T const& c)
+	HAMON_CXX14_CONSTEXPR void resize(size_type sz, T const& c)
 	{
 		while (this->size() > sz)
 		{
@@ -594,158 +673,148 @@ public:
 		}
 	}
 
-	constexpr void shrink_to_fit()
+	HAMON_CXX14_CONSTEXPR void shrink_to_fit()
 	{
 		// TODO
 	}
 
 	// element access
-	constexpr reference operator[](size_type n)
+	HAMON_CXX14_CONSTEXPR reference operator[](size_type n)
 	{
-		return
-			HAMON_ASSERT(n < this->size()),
-			this->subscript(n);
+		return HAMON_ASSERT(n < this->size()), m_impl[n];
 	}
 
-	constexpr const_reference operator[](size_type n) const
+	HAMON_CXX11_CONSTEXPR const_reference operator[](size_type n) const
 	{
-		return
-			HAMON_ASSERT(n < this->size()),
-			this->subscript(n);
+		return HAMON_ASSERT(n < this->size()), m_impl[n];
 	}
 
-	constexpr reference at(size_type n)
+	HAMON_CXX14_CONSTEXPR reference at(size_type n)
 	{
 		return
 			n < this->size() ?
-			this->subscript(n) :
-			(hamon::detail::throw_out_of_range("deque::at"), this->subscript(n));
+			m_impl[n] :
+			(hamon::detail::throw_out_of_range("deque::at"), m_impl[n]);
 	}
 
-	constexpr const_reference at(size_type n) const
+	HAMON_CXX11_CONSTEXPR const_reference at(size_type n) const
 	{
 		return
 			n < this->size() ?
-			this->subscript(n) :
-			(hamon::detail::throw_out_of_range("deque::at"), this->subscript(n));
+			m_impl[n] :
+			(hamon::detail::throw_out_of_range("deque::at"), m_impl[n]);
 	}
 
-	constexpr reference front()
+	HAMON_CXX14_CONSTEXPR reference front()
 	{
-		return
-			HAMON_ASSERT(!this->empty()),
-			this->subscript(0);
+		return HAMON_ASSERT(!this->empty()), m_impl[0];
 	}
 
-	constexpr const_reference front() const
+	HAMON_CXX11_CONSTEXPR const_reference front() const
 	{
-		return
-			HAMON_ASSERT(!this->empty()),
-			this->subscript(0);
+		return HAMON_ASSERT(!this->empty()), m_impl[0];
 	}
 
-	constexpr reference back()
+	HAMON_CXX14_CONSTEXPR reference back()
 	{
-		return
-			HAMON_ASSERT(!this->empty()),
-			this->subscript(this->size() - 1);
+		return HAMON_ASSERT(!this->empty()), m_impl[this->size() - 1];
 	}
 
-	constexpr const_reference back() const
+	HAMON_CXX11_CONSTEXPR const_reference back() const
 	{
-		return
-			HAMON_ASSERT(!this->empty()),
-			this->subscript(this->size() - 1);
+		return HAMON_ASSERT(!this->empty()), m_impl[this->size() - 1];
 	}
 
 	// [deque.modifiers], modifiers
 	template <typename... Args>
-	constexpr reference emplace_front(Args&&... args);
+	HAMON_CXX14_CONSTEXPR reference emplace_front(Args&&... args);
 
 	template <typename... Args>
-	constexpr reference emplace_back(Args&&... args)
+	HAMON_CXX14_CONSTEXPR reference emplace_back(Args&&... args)
 	{
 		this->EmplaceBack(hamon::forward<Args>(args)...);
 		return this->back();
 	}
 
 	template <typename... Args>
-	constexpr iterator emplace(const_iterator position, Args&&... args);
+	HAMON_CXX14_CONSTEXPR iterator emplace(const_iterator position, Args&&... args);
 
-	constexpr void push_front(T const& x)
+	HAMON_CXX14_CONSTEXPR void push_front(T const& x)
 	{
 		this->emplace_front(x);
 	}
 
-	constexpr void push_front(T&& x)
+	HAMON_CXX14_CONSTEXPR void push_front(T&& x)
 	{
 		this->emplace_front(hamon::move(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	constexpr void prepend_range(R&& rg)
+	HAMON_CXX14_CONSTEXPR void prepend_range(R&& rg)
 	{
 		this->insert_range(this->cbegin(), hamon::forward<R>(rg));
 	}
 
-	constexpr void push_back(T const& x)
+	HAMON_CXX14_CONSTEXPR void push_back(T const& x)
 	{
 		this->EmplaceBack(x);
 	}
 
-	constexpr void push_back(T&& x)
+	HAMON_CXX14_CONSTEXPR void push_back(T&& x)
 	{
 		this->EmplaceBack(hamon::move(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	constexpr void append_range(R&& rg)
+	HAMON_CXX14_CONSTEXPR void append_range(R&& rg)
 	{
 		this->insert_range(this->cend(), hamon::forward<R>(rg));
 	}
 
-	constexpr iterator insert(const_iterator position, T const& x)
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, T const& x)
 	{
 		return this->emplace(position, x);
 	}
 
-	constexpr iterator insert(const_iterator position, T&& x)
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, T&& x)
 	{
 		return this->emplace(position, hamon::move(x));
 	}
 
-	constexpr iterator insert(const_iterator position, size_type n, T const& x);
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, size_type n, T const& x);
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr iterator insert(const_iterator position, InputIterator first, InputIterator last);
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, InputIterator first, InputIterator last);
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
-	constexpr iterator insert_range(const_iterator position, R&& rg);
+	HAMON_CXX14_CONSTEXPR iterator insert_range(const_iterator position, R&& rg);
 
-	constexpr iterator insert(const_iterator position, std::initializer_list<T> il)
+	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, std::initializer_list<T> il)
 	{
 		return this->insert(position, il.begin(), il.end());
 	}
 
-	constexpr void pop_front();
+	HAMON_CXX14_CONSTEXPR void pop_front();
 
-	constexpr void pop_back()
+	HAMON_CXX14_CONSTEXPR void pop_back()
 	{
-		AllocTraits::destroy(m_allocator, &this->subscript(m_end_offset - 1));
-		--m_end_offset;
+		m_impl.PopBack(m_allocator);
 	}
 
-	constexpr iterator erase(const_iterator position)
+	HAMON_CXX14_CONSTEXPR iterator erase(const_iterator position)
 	{
 		return this->erase(position, position + 1);
 	}
 
-	constexpr iterator erase(const_iterator first, const_iterator last);
+	HAMON_CXX14_CONSTEXPR iterator erase(const_iterator first, const_iterator last);
 
-	constexpr void swap(deque&)
+	HAMON_CXX14_CONSTEXPR void swap(deque&)
 		noexcept(AllocTraits::is_always_equal::value);
 
-	constexpr void clear() noexcept;
+	HAMON_CXX14_CONSTEXPR void clear() noexcept
+	{
+		m_impl.Clear(m_allocator);
+	}
 };
 
 HAMON_WARNING_POP()
@@ -776,7 +845,8 @@ deque(from_range_t, R&&, Allocator = Allocator())
 #endif
 
 template <typename T, typename Allocator>
-constexpr bool operator==(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator==(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return x.size() == y.size() &&
 		hamon::equal(x.begin(), x.end(), y.begin());
@@ -785,7 +855,7 @@ constexpr bool operator==(deque<T, Allocator> const& x, deque<T, Allocator> cons
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 template <typename T, typename Allocator>
-constexpr hamon::detail::synth_three_way_result<T>
+HAMON_CXX11_CONSTEXPR hamon::detail::synth_three_way_result<T>
 operator<=>(deque<T, Allocator> const&x, deque<T, Allocator> const&y)
 {
 	return hamon::lexicographical_compare_three_way(
@@ -797,13 +867,15 @@ operator<=>(deque<T, Allocator> const&x, deque<T, Allocator> const&y)
 #else
 
 template <typename T, typename Allocator>
-constexpr bool operator!=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator!=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x == y);
 }
 
 template <typename T, typename Allocator>
-constexpr bool operator<(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator<(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return hamon::lexicographical_compare(
 		x.begin(), x.end(),
@@ -811,19 +883,22 @@ constexpr bool operator<(deque<T, Allocator> const& x, deque<T, Allocator> const
 }
 
 template <typename T, typename Allocator>
-constexpr bool operator>(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator>(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return y < x;
 }
 
 template <typename T, typename Allocator>
-constexpr bool operator<=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator<=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x > y);
 }
 
 template <typename T, typename Allocator>
-constexpr bool operator>=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
+HAMON_CXX11_CONSTEXPR bool
+operator>=(deque<T, Allocator> const& x, deque<T, Allocator> const& y)
 {
 	return !(x < y);
 }
@@ -831,7 +906,8 @@ constexpr bool operator>=(deque<T, Allocator> const& x, deque<T, Allocator> cons
 #endif
 
 template <typename T, typename Allocator>
-constexpr void swap(deque<T, Allocator>& x, deque<T, Allocator>& y)
+HAMON_CXX14_CONSTEXPR void
+swap(deque<T, Allocator>& x, deque<T, Allocator>& y)
 noexcept(noexcept(x.swap(y)))
 {
 	x.swap(y);

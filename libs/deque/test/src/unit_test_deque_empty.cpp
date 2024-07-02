@@ -12,7 +12,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-#if 0
 namespace hamon_deque_test
 {
 
@@ -48,12 +47,11 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(DequeTest, EmptyTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<int>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<unsigned char>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<unsigned char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
 
 }	// namespace empty_test
 
 }	// namespace hamon_deque_test
-#endif
