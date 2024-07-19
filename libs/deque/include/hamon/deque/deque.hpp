@@ -62,6 +62,9 @@ using std::deque;
 #include <initializer_list>
 #include <memory>	// allocator, allocator_traits
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 namespace hamon
 {
 
@@ -938,9 +941,6 @@ public:
 			this->begin()[static_cast<difference_type>(n)];
 	}
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
-
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	reference at(size_type n)
 	{
@@ -954,8 +954,6 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 		return n < this->size() ? (*this)[n] :
 			(hamon::detail::throw_out_of_range("deque::at"), (*this)[n]);
 	}
-
-HAMON_WARNING_POP()
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	reference front() HAMON_NOEXCEPT	// noexcept as an extension
@@ -1213,6 +1211,8 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 }
 
 }	// namespace hamon
+
+HAMON_WARNING_POP()
 
 #endif
 
