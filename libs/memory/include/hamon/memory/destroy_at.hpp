@@ -55,6 +55,8 @@ destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
 
 }	// namespace detail
 
+// 27.11.9 destroy[specialized.destroy]
+
 template <typename T>
 HAMON_CXX20_CONSTEXPR void
 destroy_at(T* p)

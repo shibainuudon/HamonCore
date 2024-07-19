@@ -28,6 +28,8 @@ using std::construct_at;
 namespace hamon
 {
 
+// 27.11.8 construct_at[specialized.construct]
+
 template <typename T, typename... Args>
 inline auto
 construct_at(T* p, Args&&... args)
