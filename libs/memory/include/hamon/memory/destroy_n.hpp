@@ -54,6 +54,8 @@ HAMON_CXX14_CONSTEXPR ForwardIterator
 destroy_n_impl(ForwardIterator first, Size n,
 	hamon::detail::overload_priority<0>)
 {
+	// [specialized.destroy]/4
+
 	for (; n > 0; --n)
 	{
 		hamon::destroy_at(hamon::addressof(*first));
@@ -65,9 +67,11 @@ destroy_n_impl(ForwardIterator first, Size n,
 
 }	// namespace detail
 
-template <typename ForwardIterator, typename Size>
-HAMON_CXX14_CONSTEXPR ForwardIterator
-destroy_n(ForwardIterator first, Size n)
+// 27.11.9 destroy[specialized.destroy]
+
+template <typename NoThrowForwardIterator, typename Size>
+HAMON_CXX14_CONSTEXPR NoThrowForwardIterator
+destroy_n(NoThrowForwardIterator first, Size n)
 {
 	return hamon::detail::destroy_n_impl(
 		first, n, hamon::detail::overload_priority<1>{});
