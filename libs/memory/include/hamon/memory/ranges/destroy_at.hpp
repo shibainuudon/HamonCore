@@ -41,7 +41,8 @@ struct destroy_at_fn
 {
 public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::destructible, T)>
-	HAMON_CXX14_CONSTEXPR void operator()(T* location) const noexcept
+	HAMON_CXX14_CONSTEXPR void
+	operator()(T* location) const HAMON_NOEXCEPT
 	{
 		hamon::destroy_at(location);
 	}

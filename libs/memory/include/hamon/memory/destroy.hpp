@@ -20,48 +20,19 @@ using std::destroy;
 
 #else
 
-#include <hamon/memory/destroy_at.hpp>
-#include <hamon/memory/addressof.hpp>
-#include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_trivially_destructible.hpp>
+#include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-namespace detail
-{
+// 27.11.9 destroy[specialized.destroy]
 
-template <typename ForwardIterator,
-	typename ValueType = hamon::iter_value_t<ForwardIterator>,
-	typename = hamon::enable_if_t<
-		hamon::is_trivially_destructible<ValueType>::value
-	>
->
+template <typename NoThrowForwardIterator>
 HAMON_CXX20_CONSTEXPR void
-destroy_impl(ForwardIterator, ForwardIterator, hamon::detail::overload_priority<1>)
+destroy(NoThrowForwardIterator first, NoThrowForwardIterator last)
 {
-}
-
-template <typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR void
-destroy_impl(ForwardIterator first, ForwardIterator last, hamon::detail::overload_priority<0>)
-{
-	for (; first != last; ++first)
-	{
-		hamon::destroy_at(hamon::addressof(*first));
-	}
-}
-
-}	// namespace detail
-
-template <typename ForwardIterator>
-HAMON_CXX20_CONSTEXPR void
-destroy(ForwardIterator first, ForwardIterator last)
-{
-	detail::destroy_impl(first, last, hamon::detail::overload_priority<1>{});
+	hamon::detail::destroy_impl(first, last);
 }
 
 }	// namespace hamon

@@ -8,7 +8,7 @@
 #define HAMON_MEMORY_RANGES_HPP
 
 #include <hamon/memory/ranges/construct_at.hpp>
-//#include <hamon/memory/ranges/destroy.hpp>
+#include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/memory/ranges/destroy_at.hpp>
 //#include <hamon/memory/ranges/destroy_n.hpp>
 //#include <hamon/memory/ranges/uninitialized_copy.hpp>
