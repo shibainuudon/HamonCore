@@ -65,7 +65,8 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Sent = typename Range::sentinel;
 		std::allocator<S0> alloc;
 		auto* p = alloc.allocate(10);
-		hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 3});
+		auto ret = hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 2});
+		VERIFY(ret == Iter{p + 2});
 		alloc.deallocate(p, 10);
 	}
 	{
@@ -74,7 +75,8 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Sent = typename Range::sentinel;
 		std::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
-		hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 3});
+		auto ret = hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 3});
+		VERIFY(ret == Iter{p + 3});
 		VERIFY(p[0].value == 42);
 		VERIFY(p[1].value == 42);
 		VERIFY(p[2].value == 42);
@@ -86,10 +88,12 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Sent = typename Range::sentinel;
 		std::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
-		hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 3});
+		auto ret = hamon::detail::uninitialized_default_construct_impl(Iter{p}, Sent{p + 4});
+		VERIFY(ret == Iter{p + 4});
 		VERIFY(p[0].value == 43);
 		VERIFY(p[1].value == 43);
 		VERIFY(p[2].value == 43);
+		VERIFY(p[3].value == 43);
 		alloc.deallocate(p, 10);
 	}
 	return true;

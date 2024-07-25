@@ -12,6 +12,7 @@
 #include <hamon/memory/destroy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/iterator/ranges/advance.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_trivially_default_constructible.hpp>
@@ -29,13 +30,13 @@ template <typename Iter, typename Sent,
 		hamon::is_trivially_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<2>)
 {
-	(void)first;
-	(void)last;
+	hamon::ranges::advance(first, last);
+	return first;
 }
 
 template <typename Iter, typename Sent,
@@ -44,7 +45,7 @@ template <typename Iter, typename Sent,
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<1>)
@@ -54,10 +55,11 @@ uninitialized_default_construct_impl(
 	{
 		hamon::construct_at(hamon::addressof(*first));
 	}
+	return first;
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<0>)
@@ -79,10 +81,11 @@ uninitialized_default_construct_impl(
 		throw;
 	}
 #endif
+	return current;
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last)
 {

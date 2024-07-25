@@ -25,11 +25,13 @@ using std::uninitialized_default_construct;
 namespace hamon
 {
 
-template <typename ForwardIterator>
+// 27.11.3 uninitialized_default_construct[uninitialized.construct.default]
+
+template <typename NoThrowForwardIterator>
 inline void
-uninitialized_default_construct(ForwardIterator first, ForwardIterator last)
+uninitialized_default_construct(NoThrowForwardIterator first, NoThrowForwardIterator last)
 {
-	return hamon::detail::uninitialized_default_construct_impl(first, last);
+	hamon::detail::uninitialized_default_construct_impl(first, last);
 }
 
 }	// namespace hamon
