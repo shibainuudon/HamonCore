@@ -25,9 +25,11 @@ using std::uninitialized_value_construct_n;
 namespace hamon
 {
 
-template <typename ForwardIterator, typename Size>
-inline ForwardIterator
-uninitialized_value_construct_n(ForwardIterator first, Size n)
+// 27.11.4 uninitialized_value_construct[uninitialized.construct.value]
+
+template <typename NoThrowForwardIterator, typename Size>
+inline NoThrowForwardIterator
+uninitialized_value_construct_n(NoThrowForwardIterator first, Size n)
 {
 	return hamon::detail::uninitialized_value_construct_n_impl(first, n);
 }
