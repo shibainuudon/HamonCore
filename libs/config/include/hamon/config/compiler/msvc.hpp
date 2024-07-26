@@ -1039,6 +1039,10 @@
 #if (_MSC_FULL_VER >= 194033812)
 #endif
 
+// Visual Studio 2022 Version 17.10.5
+#if (_MSC_FULL_VER >= 194033813)
+#endif
+
 #if (HAMON_CXX_STANDARD >= 17)
 #  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
 #    define HAMON_HAS_CXX17_CONSTEXPR
