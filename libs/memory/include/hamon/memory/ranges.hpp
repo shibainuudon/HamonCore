@@ -19,7 +19,7 @@
 //#include <hamon/memory/ranges/uninitialized_fill_n.hpp>
 //#include <hamon/memory/ranges/uninitialized_move.hpp>
 //#include <hamon/memory/ranges/uninitialized_move_n.hpp>
-//#include <hamon/memory/ranges/uninitialized_value_construct.hpp>
+#include <hamon/memory/ranges/uninitialized_value_construct.hpp>
 //#include <hamon/memory/ranges/uninitialized_value_construct_n.hpp>
 
 #endif // HAMON_MEMORY_RANGES_HPP

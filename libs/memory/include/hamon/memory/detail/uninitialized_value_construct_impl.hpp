@@ -7,9 +7,9 @@
 #ifndef HAMON_MEMORY_DETAIL_UNINITIALIZED_VALUE_CONSTRUCT_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_VALUE_CONSTRUCT_IMPL_HPP
 
-#include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/memory/destroy.hpp>
+#include <hamon/memory/ranges/construct_at.hpp>
+#include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -28,7 +28,7 @@ template <typename Iter, typename Sent,
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<1>)
@@ -36,12 +36,13 @@ uninitialized_value_construct_impl(
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
 	for (; first != last; ++first)
 	{
-		hamon::construct_at(hamon::addressof(*first));
+		hamon::ranges::construct_at(hamon::addressof(*first));
 	}
+	return first;
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<0>)
@@ -53,20 +54,21 @@ uninitialized_value_construct_impl(
 	{
 		for (; current != last; ++current)
 		{
-			hamon::construct_at(hamon::addressof(*current));
+			hamon::ranges::construct_at(hamon::addressof(*current));
 		}
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
-		hamon::destroy(first, current);
+		hamon::ranges::destroy(first, current);
 		throw;
 	}
 #endif
+	return current;
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_impl(
 	Iter first, Sent last)
 {
