@@ -11,7 +11,7 @@
 #include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/memory/ranges/destroy_at.hpp>
 #include <hamon/memory/ranges/destroy_n.hpp>
-//#include <hamon/memory/ranges/uninitialized_copy.hpp>
+#include <hamon/memory/ranges/uninitialized_copy.hpp>
 //#include <hamon/memory/ranges/uninitialized_copy_n.hpp>
 #include <hamon/memory/ranges/uninitialized_default_construct.hpp>
 #include <hamon/memory/ranges/uninitialized_default_construct_n.hpp>
