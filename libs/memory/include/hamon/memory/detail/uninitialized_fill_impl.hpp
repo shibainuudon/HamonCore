@@ -7,9 +7,9 @@
 #ifndef HAMON_MEMORY_DETAIL_UNINITIALIZED_FILL_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_FILL_IMPL_HPP
 
-#include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/memory/destroy.hpp>
+#include <hamon/memory/ranges/construct_at.hpp>
+#include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/algorithm/ranges/fill.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -69,7 +69,7 @@ uninitialized_fill_impl(
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
 	for (; first != last; ++first)
 	{
-		hamon::construct_at(hamon::addressof(*first), x);
+		hamon::ranges::construct_at(hamon::addressof(*first), x);
 	}
 	return first;
 }
@@ -87,14 +87,14 @@ uninitialized_fill_impl(
 	{
 		for (; current != last; ++current)
 		{
-			hamon::construct_at(hamon::addressof(*current), x);
+			hamon::ranges::construct_at(hamon::addressof(*current), x);
 		}
 		return current;
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
-		hamon::destroy(first, current);
+		hamon::ranges::destroy(first, current);
 		throw;
 	}
 #endif
