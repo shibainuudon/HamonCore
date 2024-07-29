@@ -26,9 +26,9 @@ using std::uninitialized_move_n;
 namespace hamon
 {
 
-template <typename InputIterator, typename Size, typename ForwardIterator>
-inline hamon::pair<InputIterator, ForwardIterator>
-uninitialized_move_n(InputIterator first, Size count, ForwardIterator result)
+template <typename InputIterator, typename Size, typename NoThrowForwardIterator>
+inline hamon::pair<InputIterator, NoThrowForwardIterator>
+uninitialized_move_n(InputIterator first, Size count, NoThrowForwardIterator result)
 {
 	return hamon::detail::uninitialized_move_n_impl(first, count, result);
 }
