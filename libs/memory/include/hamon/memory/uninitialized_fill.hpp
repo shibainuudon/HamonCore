@@ -25,11 +25,13 @@ using std::uninitialized_fill;
 namespace hamon
 {
 
-template <typename ForwardIterator, typename T>
+// 27.11.7 uninitialized_fill[uninitialized.fill]
+
+template <typename NoThrowForwardIterator, typename T>
 inline void
-uninitialized_fill(ForwardIterator first, ForwardIterator last, T const& x)
+uninitialized_fill(NoThrowForwardIterator first, NoThrowForwardIterator last, T const& x)
 {
-	return hamon::detail::uninitialized_fill_impl(first, last, x);
+	hamon::detail::uninitialized_fill_impl(first, last, x);
 }
 
 }	// namespace hamon

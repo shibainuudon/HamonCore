@@ -35,7 +35,7 @@ template <typename Iter, typename Sent, typename T,
 		hamon::is_trivially_constructible<ValueType, T const&>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<2>)
@@ -46,8 +46,7 @@ uninitialized_fill_impl(
 	if (!hamon::is_constant_evaluated())
 #endif
 	{
-		hamon::ranges::fill(first, last, x);
-		return;
+		return hamon::ranges::fill(first, last, x);
 	}
 
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -62,7 +61,7 @@ template <typename Iter, typename Sent, typename T,
 		hamon::is_nothrow_constructible<ValueType, T const&>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<1>)
@@ -72,10 +71,11 @@ uninitialized_fill_impl(
 	{
 		hamon::construct_at(hamon::addressof(*first), x);
 	}
+	return first;
 }
 
 template <typename Iter, typename Sent, typename T>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<0>)
@@ -89,6 +89,7 @@ uninitialized_fill_impl(
 		{
 			hamon::construct_at(hamon::addressof(*current), x);
 		}
+		return current;
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
@@ -100,7 +101,7 @@ uninitialized_fill_impl(
 }
 
 template <typename Iter, typename Sent, typename T>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX20_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Iter first, Sent last, T const& x)
 {
