@@ -91,7 +91,8 @@ MEMORY_TEST_CONSTEXPR bool test2()
 		T a[] = { T{10}, T{20}, T{30} };
 		InputRange r(a);
 		auto ret = hamon::detail::uninitialized_move_impl(r.begin(), r.end(), OutputIterator{p});
-		VERIFY(base(ret) == p + 3);
+		VERIFY(base(ret.in)  == a + 3);
+		VERIFY(base(ret.out) == p + 3);
 		VERIFY(p[0].value == 10);
 		VERIFY(p[1].value == 20);
 		VERIFY(p[2].value == 30);
@@ -139,7 +140,8 @@ GTEST_TEST(MemoryTest, UninitializedMoveImplTest)
 		auto* p = alloc.allocate(10);
 		S1 a[] = { 10, 20, 0 };
 		auto ret = hamon::detail::uninitialized_move_impl(a, a + 3, p);
-		EXPECT_TRUE(ret == p + 3);
+		EXPECT_TRUE(ret.in  == a + 3);
+		EXPECT_TRUE(ret.out == p + 3);
 		EXPECT_TRUE(p[0].value == 10);
 		EXPECT_TRUE(p[1].value == 20);
 		EXPECT_TRUE(p[2].value ==  0);

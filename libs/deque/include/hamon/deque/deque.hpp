@@ -509,7 +509,7 @@ private:
 					auto dst = this->Begin() + 1;
 					auto first = dst + 1;
 					auto last = dst + pos;
-					dst = hamon::detail::uninitialized_move_impl(first, last, dst);
+					dst = hamon::detail::uninitialized_move_impl(first, last, dst).out;
 					AllocTraits::construct(allocator, hamon::to_address(dst), hamon::forward<Args>(args)...);
 				}
 				else
@@ -518,7 +518,7 @@ private:
 					auto dst = this->RBegin() + 1;
 					auto first = dst + 1;
 					auto last = dst + (sz - pos);
-					dst = hamon::detail::uninitialized_move_impl(first, last, dst);
+					dst = hamon::detail::uninitialized_move_impl(first, last, dst).out;
 					AllocTraits::construct(allocator, hamon::to_address(dst), hamon::forward<Args>(args)...);
 				}
 			}

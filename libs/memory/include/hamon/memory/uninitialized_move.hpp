@@ -25,11 +25,13 @@ using std::uninitialized_move;
 namespace hamon
 {
 
-template <typename InputIterator, typename ForwardIterator>
-inline ForwardIterator
-uninitialized_move(InputIterator first, InputIterator last, ForwardIterator result)
+// 27.11.6 uninitialized_move[uninitialized.move]
+
+template <typename InputIterator, typename NoThrowForwardIterator>
+inline NoThrowForwardIterator
+uninitialized_move(InputIterator first, InputIterator last, NoThrowForwardIterator result)
 {
-	return hamon::detail::uninitialized_move_impl(first, last, result);
+	return hamon::detail::uninitialized_move_impl(first, last, result).out;
 }
 
 }	// namespace hamon
