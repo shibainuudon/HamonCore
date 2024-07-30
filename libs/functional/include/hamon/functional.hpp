@@ -18,7 +18,7 @@
 //#include <hamon/functional/boyer_moore_searcher.hpp>
 #include <hamon/functional/config.hpp>
 #include <hamon/functional/cref.hpp>
-//#include <hamon/functional/default_searcher.hpp>
+#include <hamon/functional/default_searcher.hpp>
 #include <hamon/functional/divides.hpp>
 #include <hamon/functional/equal_to.hpp>
 //#include <hamon/functional/function.hpp>

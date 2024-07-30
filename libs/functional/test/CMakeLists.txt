@@ -16,11 +16,13 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		algorithm
 		array
 		limits
 		list
 		random
 		string
+		string_view
 		utility
 		vector
 		common_test)
