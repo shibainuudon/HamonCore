@@ -8,15 +8,7 @@
 #define HAMON_STRING_U16STRING_HPP
 
 #include <hamon/string/basic_string.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX11_CHAR16_T)
-using u16string = hamon::basic_string<char16_t>;
-#endif
-
-}	// namespace hamon
+#include <hamon/string/literals.hpp>
+#include <hamon/string/typedefs.hpp>
 
 #endif // HAMON_STRING_U16STRING_HPP

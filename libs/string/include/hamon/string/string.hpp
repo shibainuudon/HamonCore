@@ -8,12 +8,7 @@
 #define HAMON_STRING_STRING_HPP
 
 #include <hamon/string/basic_string.hpp>
-
-namespace hamon
-{
-
-using string = hamon::basic_string<char>;
-
-}	// namespace hamon
+#include <hamon/string/literals.hpp>
+#include <hamon/string/typedefs.hpp>
 
 #endif // HAMON_STRING_STRING_HPP

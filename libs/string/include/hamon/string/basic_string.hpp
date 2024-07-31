@@ -23,11 +23,15 @@ using std::basic_string;
 
 #else
 
+#include <hamon/string/basic_string_fwd.hpp>
 #include <hamon/string/char_traits.hpp>
+#include <hamon/string/detail/is_allocator.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/cstddef/nullptr_t.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
@@ -44,9 +48,16 @@ using std::basic_string;
 #include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
-#include <hamon/type_traits.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/make_unsigned.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
+#include <hamon/config.hpp>
 #include <initializer_list>
 #include <ios>		// ios_base, streamsize
 #include <istream>	// basic_istream
@@ -57,21 +68,7 @@ using std::basic_string;
 namespace hamon
 {
 
-namespace detail
-{
-
-template <typename Alloc, typename = void, typename = void>
-struct is_allocator : hamon::false_type {};
-
-template <typename A>
-struct is_allocator<A,
-	hamon::void_t<typename A::value_type>,	// [container.reqmts]/69.1
-	hamon::void_t<decltype(hamon::declval<A&>().allocate(hamon::size_t{}))>>// [container.reqmts]/69.2
-	: hamon::true_type {};
-
-}	// namespace detail
-
-template <typename CharT, typename Traits = hamon::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+template <typename CharT, typename Traits/* = hamon::char_traits<CharT>*/, typename Allocator/* = std::allocator<CharT>*/>
 class basic_string
 {
 private:
@@ -269,7 +266,6 @@ private:
 		}
 	};
 
-	// [[msvc::no_unique_address]]	TODO
 	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
 	Rep	m_rep;
 

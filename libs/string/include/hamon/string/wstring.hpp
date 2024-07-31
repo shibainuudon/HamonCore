@@ -8,12 +8,7 @@
 #define HAMON_STRING_WSTRING_HPP
 
 #include <hamon/string/basic_string.hpp>
-
-namespace hamon
-{
-
-using wstring = hamon::basic_string<wchar_t>;
-
-}	// namespace hamon
+#include <hamon/string/literals.hpp>
+#include <hamon/string/typedefs.hpp>
 
 #endif // HAMON_STRING_WSTRING_HPP

@@ -7,6 +7,7 @@
 #ifndef HAMON_STRING_CHAR_TRAITS_HPP
 #define HAMON_STRING_CHAR_TRAITS_HPP
 
+#include <hamon/string/char_traits_fwd.hpp>
 #include <hamon/string/config.hpp>
 
 #if defined(HAMON_USE_STD_CHAR_TRAITS)
