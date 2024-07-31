@@ -8,13 +8,13 @@
 #define HAMON_MEMORY_DETAIL_TO_ADDRESS_IMPL_HPP
 
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_function.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 #define HAMON_NOEXCEPT_DECLTYPE_RETURN(...) \
 	HAMON_NOEXCEPT_IF_EXPR(__VA_ARGS__)     \
@@ -37,7 +37,7 @@ struct has_pointer_traits_to_address
 template <typename T>
 struct has_pointer_traits_to_address<T,
 	hamon::void_t<
-		decltype(std::pointer_traits<T>::to_address(hamon::declval<T const&>()))
+		decltype(hamon::pointer_traits<T>::to_address(hamon::declval<T const&>()))
 	>
 > : public hamon::true_type {};
 
@@ -65,9 +65,9 @@ private:
 	template <typename Ptr, typename = hamon::enable_if_t<has_pointer_traits_to_address<Ptr>::value>>
 	static HAMON_CONSTEXPR auto
 	impl(const Ptr& p, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
-	->decltype(std::pointer_traits<Ptr>::to_address(p))
+	->decltype(hamon::pointer_traits<Ptr>::to_address(p))
 	{
-		return std::pointer_traits<Ptr>::to_address(p);
+		return hamon::pointer_traits<Ptr>::to_address(p);
 	}
 
 	template <typename Ptr, typename = hamon::enable_if_t<has_operator_arrow<Ptr>::value>>

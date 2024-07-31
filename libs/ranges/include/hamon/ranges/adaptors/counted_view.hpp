@@ -36,6 +36,7 @@ using std::ranges::views::counted;
 #include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/span.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/decay.hpp>
@@ -47,7 +48,6 @@ using std::ranges::views::counted;
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <memory>
 
 namespace hamon {
 namespace ranges {
@@ -72,7 +72,7 @@ private:
 	template <typename T>
 	struct has_pointer_traits_to_address<T,
 		hamon::void_t<
-			decltype(std::pointer_traits<T>::to_address(hamon::declval<T const&>()))
+			decltype(hamon::pointer_traits<T>::to_address(hamon::declval<T const&>()))
 		>
 	> : public hamon::true_type {};
 

@@ -41,6 +41,7 @@ using std::deque;
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/detail/uninitialized_move_impl.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
+#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
@@ -137,7 +138,7 @@ private:
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 		pointer operator->() const HAMON_NOEXCEPT
 		{
-			return std::pointer_traits<pointer>::pointer_to(**this);
+			return hamon::pointer_traits<pointer>::pointer_to(**this);
 		}
 
 		HAMON_CXX14_CONSTEXPR Iterator&

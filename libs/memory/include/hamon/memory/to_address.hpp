@@ -7,10 +7,12 @@
 #ifndef HAMON_MEMORY_TO_ADDRESS_HPP
 #define HAMON_MEMORY_TO_ADDRESS_HPP
 
+#include <hamon/memory/pointer_traits.hpp>
 #include <memory>
 
 #if defined(__cpp_lib_to_address) && (__cpp_lib_to_address >= 201711) &&			\
-	defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 201811L)
+	defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 201811L) &&	\
+	defined(HAMON_USE_STD_POINTER_TRAITS)
 
 namespace hamon
 {

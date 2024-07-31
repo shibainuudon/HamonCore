@@ -38,7 +38,7 @@
 //#include <hamon/memory/owner_less.hpp>
 //#include <hamon/memory/owner_hash.hpp>
 //#include <hamon/memory/owner_equal.hpp>
-//#include <hamon/memory/pointer_traits.hpp>
+#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/memory/ranges.hpp>
 //#include <hamon/memory/reinterpret_pointer_cast.hpp>
 //#include <hamon/memory/shared_ptr.hpp>

@@ -5,9 +5,9 @@
  */
 
 #include <hamon/memory/to_address.hpp>
+#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "constexpr_test.hpp"
 
 namespace hamon_memory_test
@@ -89,7 +89,7 @@ private:
 
 }	// namespace hamon_memory_test
 
-namespace std
+namespace HAMON_POINTER_TRAITS_NAMESPACE
 {
 
 template<>
@@ -112,7 +112,7 @@ struct pointer_traits<hamon_memory_test::to_address_test::P4>
 	}
 };
 
-}	// namespace std
+}	// namespace HAMON_POINTER_TRAITS_NAMESPACE
 
 namespace hamon_memory_test
 {
