@@ -297,7 +297,7 @@ struct ThrowOnMove
 	void operator()(Args...) {}
 };
 
-#if !defined(HAMON_USE_STD_bind_back)
+#if !defined(HAMON_USE_STD_BIND_BACK)
 static_assert( noexcept(hamon::bind_back(NoThrow{})), "");
 static_assert( noexcept(hamon::bind_back(ThrowOnCopy{})), "");
 static_assert(!noexcept(hamon::bind_back(ThrowOnMove{})), "");

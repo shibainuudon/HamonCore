@@ -11,7 +11,7 @@
 
 #if defined(__cpp_lib_bind_back) && (__cpp_lib_bind_back >= 202306L)	// P2714R1
 
-#define HAMON_USE_STD_bind_back
+#define HAMON_USE_STD_BIND_BACK
 
 namespace hamon
 {
