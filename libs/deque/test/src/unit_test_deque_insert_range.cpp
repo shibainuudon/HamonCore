@@ -25,7 +25,7 @@ HAMON_CXX20_CONSTEXPR bool ValidReference(T const& t, Deque const& d)
 {
 	for (auto& x : d)
 	{
-		if (&t == &x)
+		if (t == x)
 		{
 			return true;
 		}

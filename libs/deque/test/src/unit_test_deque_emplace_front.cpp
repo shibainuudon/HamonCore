@@ -22,7 +22,7 @@ struct MoveOnly
 {
 	int value;
 	HAMON_CXX11_CONSTEXPR MoveOnly(int v) : value(v) {}
-	HAMON_CXX11_CONSTEXPR MoveOnly(MoveOnly const& x) : value(x.value) {} // = delete;	// TODO Visual Studio 2019 だけ？
+	HAMON_CXX11_CONSTEXPR MoveOnly(MoveOnly const& x) = delete;
 	HAMON_CXX11_CONSTEXPR MoveOnly(MoveOnly && x) noexcept : value(x.value) {}
 	HAMON_CXX14_CONSTEXPR MoveOnly& operator=(MoveOnly const&) = delete;
 	HAMON_CXX14_CONSTEXPR MoveOnly& operator=(MoveOnly && x) noexcept { value = x.value; return *this; }
