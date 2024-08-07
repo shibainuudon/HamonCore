@@ -44,7 +44,7 @@ using std::vector;
 #include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
 //#include <hamon/memory/allocator.hpp>	// TODO
-//#include <hamon/memory/allocator_traits.hpp>	// TODO
+#include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
 #include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
@@ -74,7 +74,7 @@ using std::vector;
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <memory>	// allocator, allocator_traits
+#include <memory>	// allocator
 
 namespace hamon
 {
@@ -129,7 +129,7 @@ template <typename T, typename Allocator = std::allocator<T>>
 class vector
 {
 private:
-	using AllocTraits = std::allocator_traits<Allocator>;
+	using AllocTraits = hamon::allocator_traits<Allocator>;
 
 	template <typename U, typename Const>
 	struct Iterator

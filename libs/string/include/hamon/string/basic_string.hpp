@@ -40,6 +40,7 @@ using std::basic_string;
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_value_t.hpp>
@@ -62,7 +63,7 @@ using std::basic_string;
 #include <ios>		// ios_base, streamsize
 #include <istream>	// basic_istream
 #include <ostream>	// basic_ostream
-#include <memory>	// allocator, allocator_traits
+#include <memory>	// allocator
 #include <locale>	// isspace
 
 namespace hamon
@@ -75,7 +76,7 @@ private:
 	static_assert(hamon::is_same<CharT, typename Allocator::value_type>::value, "[string.require]/3 Note 1");
 	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "[string.require]/3 Note 2");
 
-	using AllocTraits = std::allocator_traits<Allocator>;
+	using AllocTraits = hamon::allocator_traits<Allocator>;
 	using StringView = hamon::basic_string_view<CharT, Traits>;
 
 public:
@@ -2148,7 +2149,7 @@ template <
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
 	>,
-	typename SizeType = typename  std::allocator_traits<Allocator>::size_type
+	typename SizeType = typename hamon::allocator_traits<Allocator>::size_type
 >
 basic_string(basic_string_view<CharT, Traits>, SizeType, SizeType, Allocator const& = Allocator())
 	-> basic_string<CharT, Traits, Allocator>;

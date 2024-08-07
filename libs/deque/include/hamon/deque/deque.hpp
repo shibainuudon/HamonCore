@@ -38,6 +38,7 @@ using std::deque;
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/detail/uninitialized_move_impl.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
@@ -61,7 +62,7 @@ using std::deque;
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <memory>	// allocator, allocator_traits
+#include <memory>	// allocator
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -87,7 +88,7 @@ template <typename T, typename Allocator = std::allocator<T>>
 class deque
 {
 private:
-	using AllocTraits = std::allocator_traits<Allocator>;
+	using AllocTraits = hamon::allocator_traits<Allocator>;
 
 	struct Impl;
 
@@ -287,7 +288,7 @@ private:
 	{
 	private:
 		using MapAllocator = typename AllocTraits::template rebind_alloc<typename AllocTraits::pointer>;
-		using MapAllocTraits = std::allocator_traits<MapAllocator>;
+		using MapAllocTraits = hamon::allocator_traits<MapAllocator>;
 
 		static const size_type BlockSize = 8;
 
