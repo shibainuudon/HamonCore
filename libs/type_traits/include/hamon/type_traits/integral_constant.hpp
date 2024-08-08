@@ -45,6 +45,13 @@ struct integral_constant
 	HAMON_CONSTEXPR value_type operator()() const HAMON_NOEXCEPT { return value; }
 };
 
+#if !defined(HAMON_HAS_CXX17_INLINE_VARIABLES)
+
+template <typename T, T v>
+constexpr T integral_constant<T, v>::value;
+
+#endif
+
 }	// namespace hamon
 
 #endif
