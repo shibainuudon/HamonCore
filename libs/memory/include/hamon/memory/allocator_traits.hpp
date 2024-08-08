@@ -34,6 +34,10 @@ using std::allocator_traits;
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/config.hpp>
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4996)
 
 namespace hamon
 {
@@ -406,6 +410,8 @@ private:
 };
 
 }	// namespace hamon
+
+HAMON_WARNING_POP()
 
 #endif
 
