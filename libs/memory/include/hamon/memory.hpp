@@ -12,7 +12,7 @@
 //#include <hamon/memory/allocate_shared.hpp>
 //#include <hamon/memory/allocate_shared_for_overwrite.hpp>
 #include <hamon/memory/allocation_result.hpp>
-//#include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 //#include <hamon/memory/assume_aligned.hpp>

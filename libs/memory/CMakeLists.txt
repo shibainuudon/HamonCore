@@ -25,6 +25,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		detail
 		iterator	# iter_value_t
 		limits
+		new
 		pair
 		tuple
 		type_traits
