@@ -45,6 +45,7 @@ set(SUBDIRECTORIES
 	list
 	map
 	memory
+	new
 	numbers
 	numeric
 	optional

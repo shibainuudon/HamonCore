@@ -1,0 +1,16 @@
+name: new
+
+on:
+  push:
+    paths:
+      - libs/new/**
+      - .github/workflows/new.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/new
