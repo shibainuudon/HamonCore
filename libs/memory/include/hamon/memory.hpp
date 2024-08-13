@@ -19,7 +19,7 @@
 //#include <hamon/memory/bad_weak_ptr.hpp>
 #include <hamon/memory/construct_at.hpp>
 //#include <hamon/memory/const_pointer_cast.hpp>
-//#include <hamon/memory/default_delete.hpp>
+#include <hamon/memory/default_delete.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/destroy_n.hpp>
