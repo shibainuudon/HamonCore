@@ -417,7 +417,7 @@ public:
 	 */
 	template <
 		typename CharT = char,
-		typename Traits = std::char_traits<CharT>,
+		typename Traits = hamon::char_traits<CharT>,
 		typename Allocator = hamon::allocator<CharT>
 	>
 	HAMON_NODISCARD /*HAMON_CONSTEXPR*/
