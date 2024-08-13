@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_fill_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -84,7 +85,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Range = RangeWrapper<T>;
 		using Iter = typename Range::iterator;
 		using Sent = typename Range::sentinel;
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T const x{42};
 		hamon::detail::uninitialized_fill_impl(Iter{p}, Sent{p + 3}, x);
@@ -120,7 +121,7 @@ GTEST_TEST(MemoryTest, UninitializedFillImplTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		S2 const x{0};
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_fill_impl(p, p + 3, x));

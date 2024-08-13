@@ -19,6 +19,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/iterator.hpp>
 #include <gtest/gtest.h>
@@ -35,7 +36,7 @@ namespace types_test
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 	using value_type      = typename Deque::value_type;
 	using allocator_type  = typename Deque::allocator_type;

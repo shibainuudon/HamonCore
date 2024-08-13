@@ -10,6 +10,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/cstddef.hpp>
@@ -23,9 +24,9 @@ namespace op_assign_test
 {
 
 template <typename T>
-struct MyAllocator : std::allocator<T>
+struct MyAllocator : hamon::allocator<T>
 {
-	using base_type = std::allocator<T>;
+	using base_type = hamon::allocator<T>;
 
 	using value_type = T;
 	using size_type = hamon::size_t;
@@ -185,7 +186,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 GTEST_TEST(DequeTest, OpAssignTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, std::allocator>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, hamon::allocator>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int, MyAllocator>()));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
 }

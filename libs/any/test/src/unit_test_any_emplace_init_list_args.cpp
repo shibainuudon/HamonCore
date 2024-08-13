@@ -8,6 +8,7 @@
  */
 
 #include <hamon/any.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/utility/in_place_type_t.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
@@ -34,7 +35,7 @@ GTEST_TEST(AnyTest, EmplaceInitListArgsTest)
 		hamon::any a{};
 		EXPECT_FALSE(a.has_value());
 
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 		a.emplace<hamon::vector<int>>({3, 1, 4, 1}, alloc);
 		EXPECT_TRUE(a.has_value());
 		auto const& vec = hamon::any_cast<hamon::vector<int> const&>(a);

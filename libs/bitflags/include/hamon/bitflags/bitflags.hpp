@@ -8,6 +8,7 @@
 #define HAMON_BITFLAGS_BITFLAGS_HPP
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/type_traits/make_uint_least_n.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -417,7 +418,7 @@ public:
 	template <
 		typename CharT = char,
 		typename Traits = std::char_traits<CharT>,
-		typename Allocator = std::allocator<CharT>
+		typename Allocator = hamon::allocator<CharT>
 	>
 	HAMON_NODISCARD /*HAMON_CONSTEXPR*/
 	hamon::basic_string<CharT, Traits, Allocator>

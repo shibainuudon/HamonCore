@@ -7,6 +7,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -32,7 +33,7 @@ struct S2
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 
 	static_assert( hamon::is_constructible<Deque, Allocator const&>::value, "");

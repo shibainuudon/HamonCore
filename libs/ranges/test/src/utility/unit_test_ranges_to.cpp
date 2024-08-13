@@ -15,6 +15,7 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/list.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
 #include <hamon/type_traits.hpp>
@@ -606,12 +607,12 @@ struct myalloc
 
 	HAMON_NODISCARD constexpr T* allocate(std::size_t n) const
 	{
-		return std::allocator<T>{}.allocate(n);
+		return hamon::allocator<T>{}.allocate(n);
 	}
 
 	HAMON_CXX14_CONSTEXPR void deallocate(T* const p, const std::size_t n) const noexcept
 	{
-		std::allocator<T>{}.deallocate(p, n);
+		hamon::allocator<T>{}.deallocate(p, n);
 	}
 
 	template <typename U>

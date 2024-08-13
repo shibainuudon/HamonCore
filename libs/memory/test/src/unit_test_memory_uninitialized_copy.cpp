@@ -6,6 +6,7 @@
 
 #include <hamon/memory/uninitialized_copy.hpp>
 #include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -118,7 +119,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 	{
 		const Z v[] = { 1, 2, 3 };
 
-		std::allocator<Z> alloc;
+		hamon::allocator<Z> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -142,7 +143,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnCopy> alloc;
+		hamon::allocator<ThrowOnCopy> alloc;
 
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);

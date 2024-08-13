@@ -6,8 +6,9 @@
 
 #include <hamon/memory/uninitialized_move_n.hpp>
 #include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include <list>
 
 namespace hamon_memory_test
@@ -109,11 +110,11 @@ GTEST_TEST(MemoryTest, UninitializedMoveNTest)
 	{
 		Z v[] = { 1, 2, 3 };
 
-		std::allocator<Z> alloc;
+		hamon::allocator<Z> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		Z* p = alloc.allocate(size);
 
 		// 未初期化領域pを初期化しつつ範囲vから要素をムーブ
@@ -137,9 +138,9 @@ GTEST_TEST(MemoryTest, UninitializedMoveNTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnMove> alloc;
+		hamon::allocator<ThrowOnMove> alloc;
 
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
 		std::list<ThrowOnMove> v;

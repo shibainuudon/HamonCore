@@ -13,6 +13,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <gtest/gtest.h>
@@ -55,7 +56,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 	{
 		using Iterator = forward_iterator_wrapper<T>;
 		T a[] {10,20,30,40,50};
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		hamon::deque v(Iterator{a}, Iterator{a + 5}, alloc);
 		static_assert(hamon::is_same<decltype(v), hamon::deque<T>>::value, "");
 		VERIFY(v.size() == 5);
@@ -81,7 +82,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		using Range = test_input_range<T>;
 		T a[] {3,1,4,1};
 		Range r(a);
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		hamon::deque v(hamon::from_range, r, alloc);
 		static_assert(hamon::is_same<decltype(v), hamon::deque<T>>::value, "");
 		VERIFY(v.size() == 4);

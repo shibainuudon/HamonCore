@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
@@ -81,7 +82,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 {
 	{
 		using Iterator = IteratorWrapper<T>;
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T const x{42};
 		auto ret = hamon::detail::uninitialized_fill_n_impl(Iterator{p}, 3, x);
@@ -114,7 +115,7 @@ GTEST_TEST(MemoryTest, UninitializedFillNImplTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		S2 const x{0};
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_fill_n_impl(p, 3, x));

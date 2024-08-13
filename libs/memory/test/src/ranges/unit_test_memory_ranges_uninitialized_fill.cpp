@@ -6,6 +6,7 @@
 
 #include <hamon/memory/ranges/uninitialized_fill.hpp>
 #include <hamon/memory/ranges/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -101,7 +102,7 @@ bool test()
 	using I = typename Range::iterator;
 
 	{
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -126,7 +127,7 @@ bool test()
 		alloc.deallocate(p, size);
 	}
 	{
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -164,7 +165,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedFillTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnCopy> alloc;
+		hamon::allocator<ThrowOnCopy> alloc;
 
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);

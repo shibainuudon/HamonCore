@@ -10,6 +10,7 @@
 #include <hamon/serialization/detail/construct_data.hpp>
 #include <hamon/serialization/nvp.hpp>
 #include <hamon/serialization/access.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
 #include <hamon/map.hpp>
 #include <hamon/string.hpp>
@@ -51,7 +52,7 @@ private:
 	{
 		void* operator()(Archive& ia) const
 		{
-			std::allocator<T> alloc{};
+			hamon::allocator<T> alloc{};
 			T* p = alloc.allocate(1);
 			hamon::serialization::detail::construct_data<T> data{p};
 			ia >> make_nvp("value", data);

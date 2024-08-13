@@ -8,6 +8,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "iterator_test.hpp"
@@ -45,7 +46,7 @@ HAMON_CXX11_CONSTEXPR bool operator==(S2 const& lhs, S2 const& rhs)
 template <typename T, template <typename> class IteratorWrapper>
 HAMON_CXX20_CONSTEXPR bool test2()
 {
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 	using Iterator = IteratorWrapper<T>;
 //	using ConstIterator = IteratorWrapper<T const>;

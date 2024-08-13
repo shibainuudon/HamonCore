@@ -6,6 +6,7 @@
 
 #include <hamon/memory/uninitialized_fill.hpp>
 #include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 #include <gtest/gtest.h>
 
@@ -103,7 +104,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 		EXPECT_EQ( 0, assigned);
 	}
 	{
-		std::allocator<Z> alloc;
+		hamon::allocator<Z> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -126,7 +127,7 @@ GTEST_TEST(MemoryTest, UninitializedFillTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnCopy> alloc;
+		hamon::allocator<ThrowOnCopy> alloc;
 
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);

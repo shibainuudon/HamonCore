@@ -6,6 +6,7 @@
 
 #include <hamon/memory/ranges/uninitialized_value_construct.hpp>
 #include <hamon/memory/ranges/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -81,7 +82,7 @@ template <template <typename> class RangeWrapper>
 bool test()
 {
 	{
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -108,7 +109,7 @@ bool test()
 		alloc.deallocate(p, size);
 	}
 	{
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -150,7 +151,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedValueConstructTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnCtor> alloc;
+		hamon::allocator<ThrowOnCtor> alloc;
 		auto* p = alloc.allocate(10);
 		hamon::ranges::uninitialized_value_construct(p, p + 4);
 		EXPECT_EQ(4, ThrowOnCtor::count);

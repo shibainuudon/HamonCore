@@ -8,6 +8,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
@@ -26,7 +27,7 @@ template <template <typename> class RangeWrapper>
 HAMON_CXX20_CONSTEXPR bool test()
 {
 	using T = int;
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 	using Range = RangeWrapper<T>;
 

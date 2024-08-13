@@ -7,6 +7,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -43,7 +44,7 @@ HAMON_CXX11_CONSTEXPR bool operator==(S2 const& lhs, S2 const& rhs)
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Vector = hamon::vector<T, Allocator>;
 	using SizeType = typename Vector::size_type;
 

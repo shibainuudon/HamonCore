@@ -6,6 +6,7 @@
 
 #include <hamon/memory/ranges/destroy_at.hpp>
 #include <hamon/memory/ranges/construct_at.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -82,7 +83,7 @@ static_assert(!invocable_destroy_at<C>::value, "");
 
 MEMORY_TEST_CONSTEXPR bool constexpr_test()
 {
-	std::allocator<S> alloc;
+	hamon::allocator<S> alloc;
 	S* p = alloc.allocate(1);
 	bool destructed = false;
 	hamon::ranges::construct_at(p, &destructed);

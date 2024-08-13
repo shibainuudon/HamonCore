@@ -6,6 +6,7 @@
 
 #include <hamon/memory/ranges/uninitialized_move_n.hpp>
 #include <hamon/memory/ranges/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
@@ -111,7 +112,7 @@ bool test()
 		T a[] = {1,2,3};
 		IRange r1(a);
 
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
@@ -152,7 +153,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedMoveNTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnMove> alloc;
+		hamon::allocator<ThrowOnMove> alloc;
 
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
@@ -61,7 +62,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 {
 	{
 		using Iterator = IteratorWrapper<S0>;
-		std::allocator<S0> alloc;
+		hamon::allocator<S0> alloc;
 		auto* p = alloc.allocate(10);
 		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 2);
 		VERIFY(base(ret) == p + 2);
@@ -71,7 +72,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 	}
 	{
 		using Iterator = IteratorWrapper<S1>;
-		std::allocator<S1> alloc;
+		hamon::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
 		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 3);
 		VERIFY(base(ret) == p + 3);
@@ -82,7 +83,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 	}
 	{
 		using Iterator = IteratorWrapper<S2>;
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		auto ret = hamon::detail::uninitialized_value_construct_n_impl(Iterator{p}, 4);
 		VERIFY(base(ret) == p + 4);
@@ -112,7 +113,7 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNImplTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S3> alloc;
+		hamon::allocator<S3> alloc;
 		auto* p = alloc.allocate(10);
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_value_construct_n_impl(p, 3));
 		alloc.deallocate(p, 10);

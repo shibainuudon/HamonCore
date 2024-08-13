@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_copy_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -84,7 +85,7 @@ MEMORY_TEST_CONSTEXPR bool test2()
 	{
 		using InputRange  = InputRangeWrapper<T const>;
 		using OutputIterator = OutputIteratorWrapper<T>;
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T const a[] = { T{10}, T{20}, T{30} };
 		InputRange r(a);
@@ -134,7 +135,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyImplTest)
 	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
 
 	{
-		std::allocator<S1> alloc;
+		hamon::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
 		S1 const a[] = { 10, 20, 0 };
 		auto ret = hamon::detail::uninitialized_copy_impl(a, a + 3, p);
@@ -147,7 +148,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyImplTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		S2 const a[] = { 10, 20, 0 };
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_copy_impl(a, a + 3, p));

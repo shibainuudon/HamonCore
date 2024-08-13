@@ -6,6 +6,7 @@
 
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/construct_at.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -43,7 +44,7 @@ HAMON_CXX20_CONSTEXPR
 #endif
 bool constexpr_test()
 {
-	std::allocator<S> alloc;
+	hamon::allocator<S> alloc;
 	S* p = alloc.allocate(1);
 	bool destructed = false;
 	hamon::construct_at(p, &destructed);

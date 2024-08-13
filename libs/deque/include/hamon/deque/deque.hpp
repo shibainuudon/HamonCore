@@ -38,6 +38,7 @@ using std::deque;
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy_at.hpp>
 #include <hamon/memory/detail/uninitialized_move_impl.hpp>
@@ -62,7 +63,6 @@ using std::deque;
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <memory>	// allocator
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -84,7 +84,7 @@ using deque = std::deque<T, polymorphic_allocator<T>>;
 
 // 24.3.8 Class template deque[deque]
 
-template <typename T, typename Allocator = std::allocator<T>>
+template <typename T, typename Allocator = hamon::allocator<T>>
 class deque
 {
 private:
@@ -1124,13 +1124,13 @@ using iter_value_type = typename hamon::iterator_traits<InputIterator>::value_ty
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-	typename Allocator = std::allocator<hamon::detail::iter_value_type<InputIterator>>>
+	typename Allocator = hamon::allocator<hamon::detail::iter_value_type<InputIterator>>>
 deque(InputIterator, InputIterator, Allocator = Allocator())
 ->deque<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
-	typename Allocator = std::allocator<hamon::ranges::range_value_t<R>>>
+	typename Allocator = hamon::allocator<hamon::ranges::range_value_t<R>>>
 deque(from_range_t, R&&, Allocator = Allocator())
 ->deque<hamon::ranges::range_value_t<R>, Allocator>;
 

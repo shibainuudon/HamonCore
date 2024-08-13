@@ -9,7 +9,7 @@
 
 #include <hamon/string/char_traits_fwd.hpp>
 #include <hamon/string/config.hpp>
-#include <memory>	// std::allocator
+#include <hamon/memory/allocator.hpp>
 
 #if defined(HAMON_USE_STD_STRING)
 
@@ -27,7 +27,7 @@ using std::basic_string;
 namespace hamon
 {
 
-template <typename CharT, typename Traits = hamon::char_traits<CharT>, typename Allocator = std::allocator<CharT>>
+template <typename CharT, typename Traits = hamon::char_traits<CharT>, typename Allocator = hamon::allocator<CharT>>
 class basic_string;
 
 }	// namespace hamon

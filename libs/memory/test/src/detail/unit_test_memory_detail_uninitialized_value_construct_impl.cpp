@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_value_construct_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -63,7 +64,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Range = RangeWrapper<S0>;
 		using Iter = typename Range::iterator;
 		using Sent = typename Range::sentinel;
-		std::allocator<S0> alloc;
+		hamon::allocator<S0> alloc;
 		auto* p = alloc.allocate(10);
 		hamon::detail::uninitialized_value_construct_impl(Iter{p}, Sent{p + 3});
 		VERIFY(p[0].value == 0);
@@ -75,7 +76,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Range = RangeWrapper<S1>;
 		using Iter = typename Range::iterator;
 		using Sent = typename Range::sentinel;
-		std::allocator<S1> alloc;
+		hamon::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
 		hamon::detail::uninitialized_value_construct_impl(Iter{p}, Sent{p + 3});
 		VERIFY(p[0].value == 42);
@@ -87,7 +88,7 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		using Range = RangeWrapper<S2>;
 		using Iter = typename Range::iterator;
 		using Sent = typename Range::sentinel;
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		hamon::detail::uninitialized_value_construct_impl(Iter{p}, Sent{p + 3});
 		VERIFY(p[0].value == 43);
@@ -119,7 +120,7 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructImplTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S3> alloc;
+		hamon::allocator<S3> alloc;
 		auto* p = alloc.allocate(10);
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_value_construct_impl(p, p + 3));
 		alloc.deallocate(p, 10);

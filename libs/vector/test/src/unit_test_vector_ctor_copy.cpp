@@ -8,6 +8,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -23,7 +24,7 @@ namespace ctor_copy_test
 HAMON_CXX20_CONSTEXPR bool test()
 {
 	using T = int;
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Vector = hamon::vector<T, Allocator>;
 
 	{

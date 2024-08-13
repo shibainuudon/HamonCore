@@ -8,6 +8,7 @@
  */
 
 #include <hamon/optional.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/string.hpp>
@@ -218,7 +219,7 @@ GTEST_TEST(OptionalTest, EmplaceTest)
 		EXPECT_EQ(r, "XXX");
 	}
 	{
-		std::allocator<char> alloc;
+		hamon::allocator<char> alloc;
 		hamon::optional<hamon::string> o {"hello"};
 		EXPECT_TRUE(o.has_value());
 		auto& r = o.emplace({'A', 'B', 'C'}, alloc);
@@ -241,7 +242,7 @@ GTEST_TEST(OptionalTest, EmplaceTest)
 		EXPECT_EQ(r, "YYYY");
 	}
 	{
-		std::allocator<char> alloc;
+		hamon::allocator<char> alloc;
 		hamon::optional<hamon::string> o;
 		EXPECT_TRUE(!o.has_value());
 		auto& r = o.emplace({'X', 'Y', 'Z'}, alloc);

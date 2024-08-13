@@ -9,6 +9,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -124,7 +125,7 @@ GTEST_TEST(VariantTest, EmplaceIndexArgsTest)
 		static_assert( is_detected_emplace<V, 3, const char*>::value, "");
 		static_assert( is_detected_emplace<V, 3, hamon::size_t, char>::value, "");
 		static_assert(!is_detected_emplace<V, 3, const void*>::value, "");
-		static_assert( is_detected_emplace<V, 3, hamon::size_t, char, std::allocator<char>>::value, "");
+		static_assert( is_detected_emplace<V, 3, hamon::size_t, char, hamon::allocator<char>>::value, "");
 		static_assert( is_detected_emplace<V, 4, char>::value, "");
 		static_assert( is_detected_emplace<V, 4, int>::value, "");
 		static_assert(!is_detected_emplace<V, 4, void*>::value, "");

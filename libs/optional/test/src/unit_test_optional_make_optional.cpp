@@ -13,6 +13,7 @@
  */
 
 #include <hamon/optional.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/string.hpp>
@@ -47,7 +48,7 @@ GTEST_TEST(OptionalTest, MakeOptionalTest)
 		EXPECT_EQ("AAA", o.value());
 	}
 	{
-		std::allocator<char> alloc;
+		hamon::allocator<char> alloc;
 		auto o = hamon::make_optional<hamon::string>({ 'X', 'Y', 'Z' }, alloc);
 		static_assert(hamon::is_same<decltype(o), hamon::optional<hamon::string>>::value, "");
 		EXPECT_EQ("XYZ", o.value());

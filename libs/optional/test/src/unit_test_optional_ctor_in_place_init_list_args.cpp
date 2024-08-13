@@ -8,6 +8,7 @@
  */
 
 #include <hamon/optional.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
@@ -67,7 +68,7 @@ static_assert( hamon::is_nothrow_constructible<hamon::optional<Noexcept2>, hamon
 GTEST_TEST(OptionalTest, CtorInPlaceInitListArgsTest)
 {
 	{
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 		hamon::optional<hamon::vector<int>> t { hamon::in_place, {3, 1, 4}, alloc };
 		EXPECT_EQ(3, t.value()[0]);
 		EXPECT_EQ(1, t.value()[1]);

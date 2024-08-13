@@ -30,6 +30,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		detail
 		limits
 		map
+		memory
 		preprocessor
 		string
 		type_traits

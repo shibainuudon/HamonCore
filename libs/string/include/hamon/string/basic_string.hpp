@@ -40,6 +40,7 @@ using std::basic_string;
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
@@ -63,13 +64,12 @@ using std::basic_string;
 #include <ios>		// ios_base, streamsize
 #include <istream>	// basic_istream
 #include <ostream>	// basic_ostream
-#include <memory>	// allocator
 #include <locale>	// isspace
 
 namespace hamon
 {
 
-template <typename CharT, typename Traits/* = hamon::char_traits<CharT>*/, typename Allocator/* = std::allocator<CharT>*/>
+template <typename CharT, typename Traits/* = hamon::char_traits<CharT>*/, typename Allocator/* = hamon::allocator<CharT>*/>
 class basic_string
 {
 private:
@@ -2113,7 +2113,7 @@ HAMON_WARNING_POP()
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),	// [string.cons]/26
 	typename CharT = typename hamon::iterator_traits<InputIterator>::value_type,
-	typename Allocator = std::allocator<CharT>,
+	typename Allocator = hamon::allocator<CharT>,
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/26
 	>
@@ -2123,7 +2123,7 @@ basic_string(InputIterator, InputIterator, Allocator = Allocator())
 
 template <
 	HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
-	typename Allocator = std::allocator<ranges::range_value_t<R>>,
+	typename Allocator = hamon::allocator<ranges::range_value_t<R>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value
 	>
@@ -2134,7 +2134,7 @@ basic_string(hamon::from_range_t, R&&, Allocator = Allocator())
 template <
 	typename CharT,
 	typename Traits,
-	typename Allocator = std::allocator<CharT>,
+	typename Allocator = hamon::allocator<CharT>,
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
 	>
@@ -2145,7 +2145,7 @@ explicit basic_string(basic_string_view<CharT, Traits>, Allocator const& = Alloc
 template <
 	typename CharT,
 	typename Traits,
-	typename Allocator = std::allocator<CharT>,
+	typename Allocator = hamon::allocator<CharT>,
 	typename = hamon::enable_if_t<
 		hamon::detail::is_allocator<Allocator>::value	// [string.cons]/27
 	>,

@@ -13,6 +13,7 @@
  */
 
 #include <hamon/vector.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <gtest/gtest.h>
@@ -54,7 +55,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 	{
 		using Iterator = forward_iterator_wrapper<float>;
 		float a[] {10,20,30,40,50};
-		std::allocator<float> alloc;
+		hamon::allocator<float> alloc;
 		hamon::vector v(Iterator{a}, Iterator{a + 5}, alloc);
 		static_assert(hamon::is_same<decltype(v), hamon::vector<float>>::value, "");
 		VERIFY(v.size() == 5);
@@ -80,7 +81,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		using Range = test_input_range<int>;
 		int a[] {3,1,4,1};
 		Range r(a);
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 		hamon::vector v(hamon::from_range, r, alloc);
 		static_assert(hamon::is_same<decltype(v), hamon::vector<int>>::value, "");
 		VERIFY(v.size() == 4);

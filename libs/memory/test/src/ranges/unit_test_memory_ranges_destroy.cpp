@@ -6,6 +6,7 @@
 
 #include <hamon/memory/ranges/destroy.hpp>
 #include <hamon/memory/ranges/construct_at.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -106,7 +107,7 @@ MEMORY_TEST_CONSTEXPR bool constexpr_test()
 {
 	{
 		constexpr std::size_t num = 2;
-		std::allocator<S> alloc;
+		hamon::allocator<S> alloc;
 		S* p = alloc.allocate(num);
 		bool destructed[num] = {false, false};
 		for (std::size_t i = 0; i < num; ++i)
@@ -126,7 +127,7 @@ MEMORY_TEST_CONSTEXPR bool constexpr_test()
 	}
 	{
 		constexpr std::size_t num = 3;
-		std::allocator<S> alloc;
+		hamon::allocator<S> alloc;
 		S* p = alloc.allocate(num);
 		bool destructed[num] = {false, false, false};
 		for (std::size_t i = 0; i < num; ++i)

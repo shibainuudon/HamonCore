@@ -8,6 +8,7 @@
  */
 
 #include <hamon/deque.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -23,7 +24,7 @@ namespace ctor_copy_test
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
-	using Allocator = std::allocator<T>;
+	using Allocator = hamon::allocator<T>;
 	using Deque = hamon::deque<T, Allocator>;
 
 	{

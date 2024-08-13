@@ -25,6 +25,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		cstdint
 		debug
+		memory
 		string_view
 		type_traits
 		common)

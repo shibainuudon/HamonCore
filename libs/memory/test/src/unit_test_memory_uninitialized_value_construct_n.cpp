@@ -6,9 +6,9 @@
 
 #include <hamon/memory/uninitialized_value_construct_n.hpp>
 #include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/cstddef.hpp>
 #include <gtest/gtest.h>
-#include <memory>
-#include <cstddef>
 #include <list>
 
 namespace hamon_memory_test
@@ -46,11 +46,11 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNTest)
 		hamon::uninitialized_value_construct_n(v.begin(), 0);
 	}
 	{
-		std::allocator<int> alloc;
+		hamon::allocator<int> alloc;
 
 		// メモリ確保。
 		// この段階では、[p, p + size)の領域は未初期化
-		const std::size_t size = 3;
+		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
 		// 未初期化領域[p, p + size)を値構築
@@ -69,7 +69,7 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<ThrowOnCtor> alloc;
+		hamon::allocator<ThrowOnCtor> alloc;
 		auto* p = alloc.allocate(10);
 		hamon::uninitialized_value_construct_n(p, 4);
 		EXPECT_EQ(4, ThrowOnCtor::count);

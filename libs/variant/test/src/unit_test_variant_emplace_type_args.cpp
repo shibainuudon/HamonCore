@@ -9,6 +9,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -113,7 +114,7 @@ GTEST_TEST(VariantTest, EmplaceTypeArgsTest)
 		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, const char*>::value, "");
 		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, hamon::size_t, char>::value, "");
 		static_assert(!hamon::is_detected<invoke_emplace, V, hamon::string, const void*>::value, "");
-		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, hamon::size_t, char, std::allocator<char>>::value, "");
+		static_assert( hamon::is_detected<invoke_emplace, V, hamon::string, hamon::size_t, char, hamon::allocator<char>>::value, "");
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

@@ -6,6 +6,7 @@
 
 #include <hamon/memory/uninitialized_construct_using_allocator.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/array.hpp>
 #include <hamon/pair.hpp>
@@ -159,7 +160,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, Args&&...)
 	{
-		std::allocator<int> a{};
+		hamon::allocator<int> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{});
 		static_assert(hamon::is_same<decltype(t), int*>::value, "");
@@ -167,7 +168,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<FirstAlloc> a{};
+		hamon::allocator<FirstAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{});
 		static_assert(hamon::is_same<decltype(t), FirstAlloc*>::value, "");
@@ -175,7 +176,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<LastAlloc> a{};
+		hamon::allocator<LastAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{});
 		static_assert(hamon::is_same<decltype(t), LastAlloc*>::value, "");
@@ -183,7 +184,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<NoAlloc> a{};
+		hamon::allocator<NoAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{});
 		static_assert(hamon::is_same<decltype(t), NoAlloc*>::value, "");
@@ -191,7 +192,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<int> a{};
+		hamon::allocator<int> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 10);
 		static_assert(hamon::is_same<decltype(t), int*>::value, "");
@@ -199,7 +200,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<FirstAlloc> a{};
+		hamon::allocator<FirstAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 11);
 		static_assert(hamon::is_same<decltype(t), FirstAlloc*>::value, "");
@@ -207,7 +208,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<LastAlloc> a{};
+		hamon::allocator<LastAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 12);
 		static_assert(hamon::is_same<decltype(t), LastAlloc*>::value, "");
@@ -215,7 +216,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<NoAlloc> a{};
+		hamon::allocator<NoAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 13);
 		static_assert(hamon::is_same<decltype(t), NoAlloc*>::value, "");
@@ -223,7 +224,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<FirstAlloc> a{};
+		hamon::allocator<FirstAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 10, 11);
 		static_assert(hamon::is_same<decltype(t), FirstAlloc*>::value, "");
@@ -231,7 +232,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<LastAlloc> a{};
+		hamon::allocator<LastAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 12, 13);
 		static_assert(hamon::is_same<decltype(t), LastAlloc*>::value, "");
@@ -239,7 +240,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<NoAlloc> a{};
+		hamon::allocator<NoAlloc> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 14, 15);
 		static_assert(hamon::is_same<decltype(t), NoAlloc*>::value, "");
@@ -251,7 +252,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, piecewise_construct_t, Tuple1&&, Tuple2&&)
 	{
-		std::allocator<hamon::pair<int, FirstAlloc>> a{};
+		hamon::allocator<hamon::pair<int, FirstAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(
 			ptr,
@@ -265,7 +266,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<hamon::pair<LastAlloc, NoAlloc>> a{};
+		hamon::allocator<hamon::pair<LastAlloc, NoAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(
 			ptr,
@@ -281,7 +282,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&)
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{});
 		static_assert(hamon::is_same<decltype(t), hamon::pair<FirstAlloc, LastAlloc>*>::value, "");
@@ -292,7 +293,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, U&&, V&&)
 	{
-		std::allocator<hamon::pair<NoAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<NoAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, 5, 6);
 		static_assert(hamon::is_same<decltype(t), hamon::pair<NoAlloc, LastAlloc>*>::value, "");
@@ -305,7 +306,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, pair<U, V>&)
 	{
-		std::allocator<hamon::pair<FirstAlloc, NoAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, NoAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::pair<int, int> p{7, 8};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, p);
@@ -319,7 +320,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, const pair<U, V>&)
 	{
-		std::allocator<hamon::pair<LastAlloc, FirstAlloc>> a{};
+		hamon::allocator<hamon::pair<LastAlloc, FirstAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::pair<int, int> const p{7, 8};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, p);
@@ -333,7 +334,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, pair<U, V>&&)
 	{
-		std::allocator<hamon::pair<NoAlloc, FirstAlloc>> a{};
+		hamon::allocator<hamon::pair<NoAlloc, FirstAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::pair<int, int> p{7, 8};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, hamon::move(p));
@@ -347,7 +348,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, const pair<U, V>&&)
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::pair<int, int> const p{7, 8};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, hamon::move(p));
@@ -361,7 +362,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, PairLike&&)
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::array<int, 2> p{9, 10};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, p);
@@ -373,7 +374,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::array<int, 2> const p{11, 12};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, p);
@@ -385,7 +386,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::array<int, 2> p{13, 14};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, hamon::move(p));
@@ -397,7 +398,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
+		hamon::allocator<hamon::pair<FirstAlloc, LastAlloc>> a{};
 		auto* ptr = a.allocate(1);
 		hamon::array<int, 2> const p{15, 16};
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, hamon::move(p));
@@ -411,7 +412,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 
 	// (const Alloc&, U&&)
 	{
-		std::allocator<hamon::pair<int, int>> a{};
+		hamon::allocator<hamon::pair<int, int>> a{};
 		auto* ptr = a.allocate(1);
 		ConvertibleToPair ctp;
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, ctp);
@@ -421,7 +422,7 @@ GTEST_TEST(MemoryTest, UninitializedConstructUsingAllocatorTest)
 		a.deallocate(ptr, 1);
 	}
 	{
-		std::allocator<hamon::pair<int, int>> a{};
+		hamon::allocator<hamon::pair<int, int>> a{};
 		auto* ptr = a.allocate(1);
 		ConvertibleToPair ctp;
 		auto t = hamon::uninitialized_construct_using_allocator(ptr, MyAlloc{}, hamon::move(ctp));

@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/detail/uninitialized_move_n_impl.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "iterator_test.hpp"
@@ -86,7 +87,7 @@ MEMORY_TEST_CONSTEXPR bool test2()
 	{
 		using InputIterator  = InputIteratorWrapper<T>;
 		using OutputIterator = OutputIteratorWrapper<T>;
-		std::allocator<T> alloc;
+		hamon::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T a[] = { T{10}, T{20}, T{30} };
 		auto ret = hamon::detail::uninitialized_move_n_impl(InputIterator{a}, 3, OutputIterator{p});
@@ -130,7 +131,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveNImplTest)
 	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
 
 	{
-		std::allocator<S1> alloc;
+		hamon::allocator<S1> alloc;
 		auto* p = alloc.allocate(10);
 		S1 a[] = { 10, 20, 0 };
 		auto ret = hamon::detail::uninitialized_move_n_impl(a, 3, p);
@@ -143,7 +144,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveNImplTest)
 	}
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-		std::allocator<S2> alloc;
+		hamon::allocator<S2> alloc;
 		auto* p = alloc.allocate(10);
 		S2 a[] = { 10, 20, 0 };
 		EXPECT_ANY_THROW(hamon::detail::uninitialized_move_n_impl(a, 3, p));

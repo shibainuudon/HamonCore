@@ -42,6 +42,7 @@ using std::bitset;
 #include <hamon/iterator/rbegin.hpp>
 #include <hamon/iterator/rend.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/numeric/accumulate.hpp>
 #include <hamon/stdexcept/invalid_argument.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
@@ -56,7 +57,6 @@ using std::bitset;
 #include <ios>				// std::ios_base
 #include <istream>			// std::basic_istream
 #include <locale>			// std::use_facet, std::ctype
-#include <memory>			// std::allocator
 #include <ostream>			// std::basic_ostream
 
 HAMON_WARNING_PUSH()
@@ -976,7 +976,7 @@ public:
 	template <
 		typename CharT = char,
 		typename Traits = hamon::char_traits<CharT>,
-		typename Allocator = std::allocator<CharT>>
+		typename Allocator = hamon::allocator<CharT>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	hamon::basic_string<CharT, Traits, Allocator>
 	to_string(CharT zero = CharT('0'), CharT one = CharT('1')) const

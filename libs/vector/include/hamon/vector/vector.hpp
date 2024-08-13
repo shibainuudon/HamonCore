@@ -43,7 +43,7 @@ using std::vector;
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
-//#include <hamon/memory/allocator.hpp>	// TODO
+#include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
@@ -74,7 +74,6 @@ using std::vector;
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
-#include <memory>	// allocator
 
 namespace hamon
 {
@@ -125,7 +124,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 // 24.3.11 Class template vector[vector]
 
-template <typename T, typename Allocator = std::allocator<T>>
+template <typename T, typename Allocator = hamon::allocator<T>>
 class vector
 {
 private:
@@ -1433,13 +1432,13 @@ HAMON_WARNING_POP()
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-	typename Allocator = std::allocator<hamon::detail::iter_value_type<InputIterator>>>
+	typename Allocator = hamon::allocator<hamon::detail::iter_value_type<InputIterator>>>
 vector(InputIterator, InputIterator, Allocator = Allocator())
 	->vector<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
-	typename Allocator = std::allocator<hamon::ranges::range_value_t<R>>>
+	typename Allocator = hamon::allocator<hamon::ranges::range_value_t<R>>>
 vector(hamon::from_range_t, R&&, Allocator = Allocator())
 	->vector<hamon::ranges::range_value_t<R>, Allocator>;
 
