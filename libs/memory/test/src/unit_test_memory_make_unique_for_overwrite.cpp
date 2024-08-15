@@ -6,6 +6,7 @@
 
 #include <hamon/memory/make_unique_for_overwrite.hpp>
 #include <gtest/gtest.h>
+#include "constexpr_test.hpp"
 
 namespace hamon_memory_test
 {
@@ -35,10 +36,30 @@ private:
 
 unsigned int Foo::instances = 0;
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+HAMON_CXX20_CONSTEXPR
+bool test()
+{
+	{
+		auto up = hamon::make_unique_for_overwrite<int>();
+		VERIFY(up != nullptr);
+	}
+	{
+		auto up = hamon::make_unique_for_overwrite<int[]>(4);
+		VERIFY(up != nullptr);
+	}
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(MemoryTest, MakeUniqueForOverwriteTest)
 {
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+
 	using hamon::make_unique_for_overwrite;
-	using std::unique_ptr;
+	using hamon::unique_ptr;
 
 	{
 		unique_ptr<int[]> a1 = make_unique_for_overwrite<int[]>(3);

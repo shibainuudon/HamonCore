@@ -6,6 +6,7 @@
 
 #include <hamon/memory/make_unique.hpp>
 #include <gtest/gtest.h>
+#include "constexpr_test.hpp"
 
 namespace hamon_memory_test
 {
@@ -47,10 +48,26 @@ private:
 
 unsigned int Foo::instances = 0;
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+HAMON_CXX20_CONSTEXPR
+bool test1()
+{
+	{
+		auto up = hamon::make_unique<int>(42);
+		VERIFY(*up == 42);
+	}
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(MemoryTest, MakeUniqueArgsTest)
 {
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+
 	using hamon::make_unique;
-	using std::unique_ptr;
+	using hamon::unique_ptr;
 
 	EXPECT_EQ(0u, Foo::instances);
 	{
@@ -125,10 +142,29 @@ GTEST_TEST(MemoryTest, MakeUniqueArgsTest)
 	}
 }
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+HAMON_CXX20_CONSTEXPR
+bool test2()
+{
+	{
+		auto up = hamon::make_unique<int[]>(4);
+		VERIFY(up[0] == 0);
+		VERIFY(up[1] == 0);
+		VERIFY(up[2] == 0);
+		VERIFY(up[3] == 0);
+	}
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(MemoryTest, MakeUniqueArrayTest)
 {
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+
 	using hamon::make_unique;
-	using std::unique_ptr;
+	using hamon::unique_ptr;
 
 	{
 		unique_ptr<int[]> a1 = make_unique<int[]>(3);

@@ -19,10 +19,12 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		compare
 		concepts
 		config
 		cstddef
 		detail
+		functional
 		iterator	# iter_value_t
 		limits
 		new

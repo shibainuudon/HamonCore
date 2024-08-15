@@ -17,7 +17,7 @@ GTEST_TEST(RangesTest, P2609R3Test)
 	std::stringstream out;
 	hamon::ranges::for_each(
 		hamon::views::iota(0, 5),
-		[&](std::unique_ptr<int> v) {
+		[&](hamon::unique_ptr<int> v) {
 			out << *v << " ";
 		},
 		[](int v) {

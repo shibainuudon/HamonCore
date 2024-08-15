@@ -11,6 +11,8 @@
 
 #if defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 202202L)
 
+#define	HAMON_USE_STD_DEFAULT_DELETE
+
 namespace hamon
 {
 
