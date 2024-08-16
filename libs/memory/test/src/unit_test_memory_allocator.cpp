@@ -59,11 +59,11 @@ GTEST_TEST(MemoryTest, AllocatorTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		hamon::allocator<int> alloc;
-		EXPECT_THROW(alloc.allocate(hamon::size_t(-1)), hamon::bad_array_new_length);
+		EXPECT_THROW((void)alloc.allocate(hamon::size_t(-1)), hamon::bad_array_new_length);
 	}
 	{
 		hamon::allocator<int> alloc;
-		EXPECT_THROW(alloc.allocate_at_least(hamon::size_t(-1)), hamon::bad_array_new_length);
+		EXPECT_THROW((void)alloc.allocate_at_least(hamon::size_t(-1)), hamon::bad_array_new_length);
 	}
 #endif
 }

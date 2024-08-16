@@ -55,7 +55,8 @@ public:
 
 	HAMON_CXX14_CONSTEXPR allocator& operator=(allocator const&) = default;
 
-	HAMON_CXX14_CONSTEXPR T* allocate(hamon::size_t n)
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	T* allocate(hamon::size_t n)
 	{
 		// [allocator.members]/4
 		if (hamon::numeric_limits<size_t>::max() / sizeof(T) < n)
@@ -75,8 +76,8 @@ public:
 		return static_cast<T*>(::operator new(n * sizeof(T)));
 	}
 
-	HAMON_CXX14_CONSTEXPR hamon::allocation_result<T*>
-	allocate_at_least(hamon::size_t n)
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	hamon::allocation_result<T*> allocate_at_least(hamon::size_t n)
 	{
 		// [allocator.members]/7
 		return { allocate(n), n };
