@@ -1051,7 +1051,7 @@
 #if (_MSC_FULL_VER >= 194033813)
 #endif
 
-// Visual Studio 2022 Version 17.11.0
+// Visual Studio 2022 Version 17.11.(0-1)
 #if (_MSC_FULL_VER >= 194134120)
 #endif
 
