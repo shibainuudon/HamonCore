@@ -7,11 +7,9 @@
 #ifndef HAMON_MEMORY_DEFAULT_DELETE_HPP
 #define HAMON_MEMORY_DEFAULT_DELETE_HPP
 
-#include <memory>
+#include <hamon/memory/config.hpp>
 
-#if defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 202202L)
-
-#define	HAMON_USE_STD_DEFAULT_DELETE
+#if defined(HAMON_USE_STD_DEFAULT_DELETE)
 
 namespace hamon
 {

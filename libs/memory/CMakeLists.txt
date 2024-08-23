@@ -19,6 +19,7 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		atomic
 		compare
 		concepts
 		config
@@ -29,6 +30,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		limits
 		new
 		pair
+		static_typeinfo
 		tuple
 		type_traits
 		utility

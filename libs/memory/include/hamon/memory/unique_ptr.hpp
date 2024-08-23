@@ -7,13 +7,9 @@
 #ifndef HAMON_MEMORY_UNIQUE_PTR_HPP
 #define HAMON_MEMORY_UNIQUE_PTR_HPP
 
-#include <hamon/memory/default_delete.hpp>
-#include <memory>
+#include <hamon/memory/config.hpp>
 
-#if defined(HAMON_USE_STD_DEFAULT_DELETE) && \
-	defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 202202L)
-
-#define	HAMON_USE_STD_UNIQUE_PTR
+#if defined(HAMON_USE_STD_UNIQUE_PTR)
 
 namespace hamon
 {
@@ -24,6 +20,7 @@ using std::unique_ptr;
 
 #else
 
+#include <hamon/memory/default_delete.hpp>
 #include <hamon/compare/compare_three_way.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
