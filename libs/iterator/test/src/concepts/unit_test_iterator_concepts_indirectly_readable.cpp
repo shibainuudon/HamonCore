@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -54,7 +55,7 @@ HAMON_INDIRECTLY_READABLE_TEST(true,  void const         ** const);
 HAMON_INDIRECTLY_READABLE_TEST(true,  void       volatile** const);
 HAMON_INDIRECTLY_READABLE_TEST(true,  void const volatile** const);
 
-HAMON_INDIRECTLY_READABLE_TEST(true,  std::unique_ptr<int>);
+HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::unique_ptr<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  std::shared_ptr<int>);
 HAMON_INDIRECTLY_READABLE_TEST(false, hamon::vector<int>);
 HAMON_INDIRECTLY_READABLE_TEST(true,  hamon::vector<int>::iterator);

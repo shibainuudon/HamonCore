@@ -14,12 +14,12 @@
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/string.hpp>
-#include <memory>
 
 namespace hamon
 {
@@ -192,7 +192,7 @@ private:
 	//}
 
 private:
-	std::unique_ptr<detail::xml_iarchive_impl_base>	m_impl;
+	hamon::unique_ptr<detail::xml_iarchive_impl_base>	m_impl;
 };
 
 }	// namespace serialization

@@ -9,6 +9,7 @@
 #include <hamon/deque.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/memory.hpp>
 //#include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
@@ -85,7 +86,7 @@ HAMON_SORTABLE_TEST(false, hamon::vector<int>::const_iterator);
 HAMON_SORTABLE_TEST(false, std::istreambuf_iterator<char>);
 HAMON_SORTABLE_TEST(false, std::ostreambuf_iterator<char>);
 HAMON_SORTABLE_TEST(false, std::shared_ptr<int>);
-HAMON_SORTABLE_TEST(false, std::unique_ptr<int>);
+HAMON_SORTABLE_TEST(false, hamon::unique_ptr<int>);
 
 }	// namespace sortable_test
 

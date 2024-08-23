@@ -6,6 +6,7 @@
 
 #include <hamon/variant.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -34,24 +35,24 @@ static_assert( hamon::is_assignable<hamon::variant<hamon::string>, const char*>:
 static_assert(!hamon::is_assignable<hamon::variant<hamon::string, hamon::string>, const char*>::value, "ambiguous");
 static_assert(!hamon::is_assignable<hamon::variant<hamon::string, void*>, int>::value, "no matching operator=");
 static_assert(!hamon::is_assignable<hamon::variant<int>, float>::value, "narrowing conversion");
-static_assert( hamon::is_assignable<hamon::variant<std::unique_ptr<int>>, std::unique_ptr<int>>::value, "");
-static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>>, std::unique_ptr<int>>::value, "no matching operator=");
-static_assert(!hamon::is_assignable<hamon::variant<bool>, std::unique_ptr<int>>::value, "no explicit bool in operator=");
-static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>, bool>, std::unique_ptr<int>>::value, "no explicit bool in operator=");
+static_assert( hamon::is_assignable<hamon::variant<hamon::unique_ptr<int>>, hamon::unique_ptr<int>>::value, "");
+static_assert(!hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>>, hamon::unique_ptr<int>>::value, "no matching operator=");
+static_assert(!hamon::is_assignable<hamon::variant<bool>, hamon::unique_ptr<int>>::value, "no explicit bool in operator=");
+static_assert(!hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>, bool>, hamon::unique_ptr<int>>::value, "no explicit bool in operator=");
 
 //struct X
 //{
 //	operator void*();
 //};
-//static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>, bool>, X>::value, "no boolean conversion in operator=");
+//static_assert(!hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>, bool>, X>::value, "no boolean conversion in operator=");
 
 //#if defined(HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING)
-//static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>, bool>, void*>::value, "no boolean conversion in operator=");
+//static_assert(!hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>, bool>, void*>::value, "no boolean conversion in operator=");
 //#else
-//static_assert( hamon::is_assignable<hamon::variant<std::unique_ptr<char>, bool>, void*>::value, "");
+//static_assert( hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>, bool>, void*>::value, "");
 //#endif
 
-static_assert(!hamon::is_assignable<hamon::variant<std::unique_ptr<char>, hamon::false_type>, void*>::value, "no converted to bool in operator=");
+static_assert(!hamon::is_assignable<hamon::variant<hamon::unique_ptr<char>, hamon::false_type>, void*>::value, "no converted to bool in operator=");
 
 struct X {};
 struct Y { operator X(); };

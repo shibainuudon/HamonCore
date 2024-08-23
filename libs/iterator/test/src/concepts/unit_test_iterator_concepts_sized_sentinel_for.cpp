@@ -6,6 +6,7 @@
 
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -34,7 +35,7 @@ HAMON_SIZED_SENTINEL_FOR_TEST(true,  int const*,                         int con
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               int      * const);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               int const* const);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               void*);
-HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::unique_ptr<int>);
+HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::unique_ptr<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               std::shared_ptr<int>);
 HAMON_SIZED_SENTINEL_FOR_TEST(false, int*,                               hamon::vector<int>::iterator);
 HAMON_SIZED_SENTINEL_FOR_TEST(true,  hamon::vector<int>::iterator,       hamon::vector<int>::iterator);

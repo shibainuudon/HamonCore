@@ -10,7 +10,7 @@
 #include <hamon/serialization/detail/archive_base.hpp>
 #include <hamon/serialization/detail/binary_oarchive_impl.hpp>
 #include <hamon/serialization/detail/save_value.hpp>
-#include <memory>
+#include <hamon/memory/unique_ptr.hpp>
 
 namespace hamon
 {
@@ -47,7 +47,7 @@ private:
 		oa.m_impl->save(&t, sizeof(T));
 	}
 
-	std::unique_ptr<detail::binary_oarchive_impl_base>	m_impl;
+	hamon::unique_ptr<detail::binary_oarchive_impl_base>	m_impl;
 };
 
 }	// namespace serialization

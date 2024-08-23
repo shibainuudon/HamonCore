@@ -5,13 +5,13 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/memory/unique_ptr.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/string.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <memory>
 #include "constexpr_test.hpp"
 
 namespace hamon_variant_test
@@ -34,8 +34,8 @@ static_assert(!hamon::is_constructible<hamon::variant<long, long long>, int>::va
 static_assert( hamon::is_constructible<hamon::variant<hamon::string>, const char*>::value, "");
 static_assert(!hamon::is_constructible<hamon::variant<hamon::string, hamon::string>, const char*>::value, "ambiguous");
 static_assert(!hamon::is_constructible<hamon::variant<hamon::string, void*>, int>::value, "no matching constructor");
-static_assert(!hamon::is_constructible<hamon::variant<std::unique_ptr<int>, bool>, std::unique_ptr<char>>::value, "no explicit bool in constructor");
-static_assert(!hamon::is_constructible<hamon::variant<std::unique_ptr<int>, int>, void*>::value, "");
+static_assert(!hamon::is_constructible<hamon::variant<hamon::unique_ptr<int>, bool>, hamon::unique_ptr<char>>::value, "no explicit bool in constructor");
+static_assert(!hamon::is_constructible<hamon::variant<hamon::unique_ptr<int>, int>, void*>::value, "");
 
 struct X {};
 struct Y { operator X(); };
@@ -113,7 +113,7 @@ GTEST_TEST(VariantTest, CtorTTest)
 		EXPECT_EQ(hamon::adl_get<0>(v), "foo");
 	}
 	{
-		hamon::variant<float, std::unique_ptr<int>> v(nullptr);
+		hamon::variant<float, hamon::unique_ptr<int>> v(nullptr);
 		EXPECT_EQ(v.index(), 1u);
 		EXPECT_EQ(hamon::adl_get<1>(v), nullptr);
 	}

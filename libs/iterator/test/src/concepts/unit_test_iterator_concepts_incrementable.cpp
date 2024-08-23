@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/incrementable.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -45,7 +46,7 @@ HAMON_INCREMENTABLE_TEST(false, void const         * const);
 HAMON_INCREMENTABLE_TEST(false, void       volatile* const);
 HAMON_INCREMENTABLE_TEST(false, void const volatile* const);
 
-HAMON_INCREMENTABLE_TEST(false, std::unique_ptr<int>);
+HAMON_INCREMENTABLE_TEST(false, hamon::unique_ptr<int>);
 HAMON_INCREMENTABLE_TEST(false, std::shared_ptr<int>);
 HAMON_INCREMENTABLE_TEST(false, hamon::vector<int>);
 HAMON_INCREMENTABLE_TEST(true,  hamon::vector<int>::iterator);

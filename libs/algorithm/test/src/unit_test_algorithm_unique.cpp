@@ -10,6 +10,7 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/array.hpp>
 #include <hamon/list.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <memory>
@@ -30,7 +31,7 @@ bool pred1(const std::shared_ptr<int>& x, const std::shared_ptr<int>& y)
 
 struct pred2
 {
-	bool operator()(const std::unique_ptr<int>& x, const std::unique_ptr<int>& y) const
+	bool operator()(const hamon::unique_ptr<int>& x, const hamon::unique_ptr<int>& y) const
 	{
 		return *x == *y;
 	}
@@ -105,7 +106,7 @@ GTEST_TEST(AlgorithmTest, UniqueTest)
 		EXPECT_TRUE(a.empty());
 	}
 	{
-		hamon::list<std::unique_ptr<int>> a;
+		hamon::list<hamon::unique_ptr<int>> a;
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(1));
 		a.emplace_back(new int(1));

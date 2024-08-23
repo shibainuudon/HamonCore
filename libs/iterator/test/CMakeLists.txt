@@ -22,6 +22,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		forward_list
 		list
 		map
+		memory
 		set
 		string
 		string_view

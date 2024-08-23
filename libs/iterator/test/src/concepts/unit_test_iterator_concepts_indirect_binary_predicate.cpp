@@ -6,6 +6,7 @@
 
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -67,7 +68,7 @@ HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int&&);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int[]);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, int[2]);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(false, Pred1, int*, void*);
-HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, std::unique_ptr<int>);
+HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, hamon::unique_ptr<int>);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, int*, std::shared_ptr<int>);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       int*);
 HAMON_INDIRECT_BINARY_PREDICATE_TEST(true,  Pred1, hamon::vector<int>::iterator,       hamon::vector<int>::iterator);

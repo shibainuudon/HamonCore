@@ -5,6 +5,7 @@
  */
 
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
+#include <hamon/memory.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <memory>
@@ -32,7 +33,7 @@ HAMON_INDIRECTLY_WRITABLE_TEST(false, int const*,                       int);
 HAMON_INDIRECTLY_WRITABLE_TEST(true,  int      * const,                 int);
 HAMON_INDIRECTLY_WRITABLE_TEST(false, int const* const,                 int);
 HAMON_INDIRECTLY_WRITABLE_TEST(false, void*,                            int);
-HAMON_INDIRECTLY_WRITABLE_TEST(true,  std::unique_ptr<int>,             int);
+HAMON_INDIRECTLY_WRITABLE_TEST(true,  hamon::unique_ptr<int>,           int);
 HAMON_INDIRECTLY_WRITABLE_TEST(true,  std::shared_ptr<int>,             int);
 HAMON_INDIRECTLY_WRITABLE_TEST(false, hamon::vector<int>,                 int);
 HAMON_INDIRECTLY_WRITABLE_TEST(true,  hamon::vector<int>::iterator,       int);
