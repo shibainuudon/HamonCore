@@ -47,6 +47,7 @@ using std::unique_ptr;
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/is_reference.hpp>
+#include <hamon/type_traits/is_rvalue_reference.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/negation.hpp>
@@ -89,6 +90,8 @@ template <typename T, typename D = hamon::default_delete<T>>
 class unique_ptr
 {
 public:
+	static_assert(!hamon::is_rvalue_reference<D>::value, "[unique.ptr.single.general]/1");
+
 	using pointer      = typename hamon::detail::unique_ptr_pointer<T, D>::type;
 	using element_type = T;
 	using deleter_type = D;
@@ -330,6 +333,8 @@ template <typename T, typename D>
 class unique_ptr<T[], D>
 {
 public:
+	static_assert(!hamon::is_rvalue_reference<D>::value, "[unique.ptr.single.general]/1");
+
 	using pointer      = typename hamon::detail::unique_ptr_pointer<T, D>::type;
 	using element_type = T;
 	using deleter_type = D;

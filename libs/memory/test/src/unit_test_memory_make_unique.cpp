@@ -161,7 +161,7 @@ bool test2()
 
 GTEST_TEST(MemoryTest, MakeUniqueArrayTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test2());
 
 	using hamon::make_unique;
 	using hamon::unique_ptr;

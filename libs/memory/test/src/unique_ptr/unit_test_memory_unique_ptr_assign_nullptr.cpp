@@ -85,15 +85,11 @@ GTEST_TEST(UniquePtrTest, AssignNullptrTest)
 	type_traits_test<true,  hamon::unique_ptr<int, D1>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1&>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1 const&>>();
-	type_traits_test<true,  hamon::unique_ptr<int, D1&&>>();
-	type_traits_test<true,  hamon::unique_ptr<int, D1 const&&>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1*>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1 const*>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2&>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2 const&>>();
-	type_traits_test<true,  hamon::unique_ptr<int, D2&&>>();
-	type_traits_test<true,  hamon::unique_ptr<int, D2 const&&>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2*>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2 const*>>();
 
@@ -101,15 +97,11 @@ GTEST_TEST(UniquePtrTest, AssignNullptrTest)
 	type_traits_test<true,  hamon::unique_ptr<int[], D1>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1&>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1 const&>>();
-	type_traits_test<true,  hamon::unique_ptr<int[], D1&&>>();
-	type_traits_test<true,  hamon::unique_ptr<int[], D1 const&&>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1*>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1 const*>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2&>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2 const&>>();
-	type_traits_test<true,  hamon::unique_ptr<int[], D2&&>>();
-	type_traits_test<true,  hamon::unique_ptr<int[], D2 const&&>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2*>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2 const*>>();
 }
