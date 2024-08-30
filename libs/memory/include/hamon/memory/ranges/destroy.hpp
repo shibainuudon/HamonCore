@@ -10,7 +10,8 @@
 #include <hamon/config.hpp>
 #include <memory>
 
-#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20)
+#if defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 201911L) && (HAMON_CXX_STANDARD >= 20) &&	\
+	!defined(HAMON_STDLIB_LIBCPP)	/* libc++ の ranges::destroy は first と last が違う型の場合に対応していない*/
 
 namespace hamon
 {
