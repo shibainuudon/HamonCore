@@ -13,6 +13,7 @@
 #include <hamon/string.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
+#include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
 namespace hamon_test
