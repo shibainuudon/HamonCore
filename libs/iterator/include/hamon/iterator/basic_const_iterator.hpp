@@ -495,7 +495,7 @@ private:
 
 public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current < y)	// noexcept as an extension
@@ -506,7 +506,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current > y)	// noexcept as an extension
@@ -517,7 +517,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current <= y)	// noexcept as an extension
@@ -528,7 +528,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current >= y)	// noexcept as an extension
@@ -540,7 +540,7 @@ public:
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
-		typename = hamon::enable_if_t<ThreeWayComparable<I>::value>>
+		typename TWC = ThreeWayComparable<I>, typename = hamon::enable_if_t<TWC::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(I const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current <=> y)	// noexcept as an extension
@@ -553,7 +553,7 @@ public:
 #endif
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& x, basic_const_iterator const& y)
 	HAMON_NOEXCEPT_IF_EXPR(x < y.m_current)	// noexcept as an extension
@@ -564,7 +564,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& x, basic_const_iterator const& y)
 	HAMON_NOEXCEPT_IF_EXPR(x > y.m_current)	// noexcept as an extension
@@ -575,7 +575,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& x, basic_const_iterator const& y)
 	HAMON_NOEXCEPT_IF_EXPR(x <= y.m_current)	// noexcept as an extension
@@ -586,7 +586,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
-		typename = hamon::enable_if_t<TotallyOrdered<I>::value>>
+		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& x, basic_const_iterator const& y)
 	HAMON_NOEXCEPT_IF_EXPR(x >= y.m_current)	// noexcept as an extension
