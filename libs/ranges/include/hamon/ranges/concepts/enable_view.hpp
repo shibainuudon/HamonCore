@@ -44,8 +44,9 @@ namespace detail
 template <
 	typename O, typename Y
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
+	, typename OP = O*
 	, typename = hamon::enable_if_t<
-		hamon::is_convertible<O*, hamon::ranges::view_interface<Y>*>::value
+		hamon::is_convertible<OP, hamon::ranges::view_interface<Y>*>::value
 	>
 #endif
 >
