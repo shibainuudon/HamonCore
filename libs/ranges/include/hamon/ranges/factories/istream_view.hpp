@@ -239,17 +239,18 @@ public:
 		typename U,
 		typename CharT = typename U::char_type,
 		typename Traits = typename U::traits_type,
+		typename IStreamView = hamon::ranges::basic_istream_view<T, CharT, Traits>,
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::derived_from_t<U, std::basic_istream<CharT, Traits>>,
-			hamon::constructible_from_t<hamon::ranges::basic_istream_view<T, CharT, Traits>, U&>
+			hamon::constructible_from_t<IStreamView, U&>
 		>::value>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(U& e) const
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<T>::value)
-	-> hamon::ranges::basic_istream_view<T, CharT, Traits>
+	-> IStreamView
 	{
-		return hamon::ranges::basic_istream_view<T, CharT, Traits>(e);
+		return IStreamView(e);
 	}
 };
 
