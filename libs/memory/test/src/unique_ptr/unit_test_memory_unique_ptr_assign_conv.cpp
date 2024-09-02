@@ -52,6 +52,7 @@ struct Base
 
 struct Derived : Base
 {
+	HAMON_CXX20_CONSTEXPR virtual ~Derived() {}
 };
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
