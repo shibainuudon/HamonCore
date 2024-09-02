@@ -9,7 +9,8 @@
 
 #include <hamon/bit/config.hpp>
 
-#if defined(HAMON_HAS_CXX_LIB_BIT_CAST)
+#if defined(HAMON_HAS_CXX_LIB_BIT_CAST) &&	\
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
 
 // bit_cast が constexpr であることを定義
 #define	HAMON_HAS_CONSTEXPR_BIT_CAST
