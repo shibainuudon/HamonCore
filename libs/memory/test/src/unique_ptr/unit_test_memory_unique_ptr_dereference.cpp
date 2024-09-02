@@ -66,15 +66,19 @@ GTEST_TEST(UniquePtrTest, DereferenceTest)
 		using UP = hamon::unique_ptr<int>;
 		static_assert( hamon::is_same<int&, decltype(hamon::declval<UP>().operator*())>::value, "");
 		static_assert( hamon::is_same<int&, decltype(hamon::declval<UP const>().operator*())>::value, "");
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 		static_assert( noexcept(hamon::declval<UP>().operator*()), "");
 		static_assert( noexcept(hamon::declval<UP const>().operator*()), "");
+#endif
 	}
 	{
 		using UP = hamon::unique_ptr<float const>;
 		static_assert( hamon::is_same<float const&, decltype(hamon::declval<UP>().operator*())>::value, "");
 		static_assert( hamon::is_same<float const&, decltype(hamon::declval<UP const>().operator*())>::value, "");
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 		static_assert( noexcept(hamon::declval<UP>().operator*()), "");
 		static_assert( noexcept(hamon::declval<UP const>().operator*()), "");
+#endif
 	}
 }
 

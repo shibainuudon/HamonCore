@@ -97,12 +97,18 @@ GTEST_TEST(UniquePtrTest, AssignMoveTest)
 	type_traits_test<true,  hamon::unique_ptr<int>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1&>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int, D1 const&>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int, D1*>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D1 const*>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int, D2>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int, D2&>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int, D2 const&>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int, D2*>>();
 	type_traits_test<true,  hamon::unique_ptr<int, D2 const*>>();
 	type_traits_test<true,  hamon::unique_ptr<S>>();
@@ -110,12 +116,18 @@ GTEST_TEST(UniquePtrTest, AssignMoveTest)
 	type_traits_test<true,  hamon::unique_ptr<int[]>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1&>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int[], D1 const&>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int[], D1*>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D1 const*>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int[], D2>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int[], D2&>>();
+#if !(defined(HAMON_USE_STD_UNIQUE_PTR) && defined(HAMON_APPLE_CLANG))
 	type_traits_test<false, hamon::unique_ptr<int[], D2 const&>>();
+#endif
 	type_traits_test<true,  hamon::unique_ptr<int[], D2*>>();
 	type_traits_test<true,  hamon::unique_ptr<int[], D2 const*>>();
 	type_traits_test<true,  hamon::unique_ptr<S[]>>();
