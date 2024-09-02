@@ -30,7 +30,7 @@ HAMON_CXX20_CONSTEXPR
 bool test()
 {
 	{
-		auto p = new int[]{1,2,3};
+		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int[]> up(p);
 		static_assert( hamon::is_same<int&, decltype(up[0])>::value, "");
 #if !defined(HAMON_USE_STD_UNIQUE_PTR)
@@ -41,7 +41,7 @@ bool test()
 		VERIFY(up[2] == 3);
 	}
 	{
-		auto p = new int[]{1,2,3};
+		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int[]> const up(p);
 		static_assert( hamon::is_same<int&, decltype(up[0])>::value, "");
 #if !defined(HAMON_USE_STD_UNIQUE_PTR)
@@ -52,7 +52,7 @@ bool test()
 		VERIFY(up[2] == 3);
 	}
 	{
-		auto p = new int[]{1,2,3};
+		auto p = new int[3]{1,2,3};
 		hamon::unique_ptr<int const[]> up(p);
 		static_assert( hamon::is_same<int const&, decltype(up[0])>::value, "");
 #if !defined(HAMON_USE_STD_UNIQUE_PTR)

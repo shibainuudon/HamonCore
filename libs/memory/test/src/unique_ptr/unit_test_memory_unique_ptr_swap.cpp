@@ -68,8 +68,8 @@ bool test()
 		VERIFY(up2.get_deleter().value == 13);
 	}
 	{
-		hamon::unique_ptr<int[], D2> up1(new int[]{1,2,3}, D2{20});
-		hamon::unique_ptr<int[], D2> up2(new int[]{4,5}, D2{30});
+		hamon::unique_ptr<int[], D2> up1(new int[3]{1,2,3}, D2{20});
+		hamon::unique_ptr<int[], D2> up2(new int[2]{4,5}, D2{30});
 		VERIFY(up1[0] == 1);
 		VERIFY(up1[1] == 2);
 		VERIFY(up1[2] == 3);
