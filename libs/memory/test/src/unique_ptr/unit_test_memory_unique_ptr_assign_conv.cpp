@@ -60,6 +60,8 @@ struct Derived : Base
 HAMON_CXX20_CONSTEXPR
 bool test()
 {
+#if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000))
+	// gcc10までだとこの部分がconstexprにできない
 	{
 		auto p = new Derived();
 		hamon::unique_ptr<Derived> up1(p);
@@ -70,6 +72,7 @@ bool test()
 		VERIFY(up1.get() == nullptr);
 		VERIFY(up2.get() == p);
 	}
+#endif
 	{
 		auto p = new int[5];
 		hamon::unique_ptr<int[]> up1(p);
