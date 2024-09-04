@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/make_unique_for_overwrite.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -79,6 +80,8 @@ GTEST_TEST(MemoryTest, MakeUniqueForOverwriteTest)
 		EXPECT_EQ(0u, Foo::instances);
 	}
 
+#if !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 110000))
+	// clang-10 だと internal compiler error になってしまう
 	EXPECT_EQ(0u, Foo::instances);
 	{
 		unique_ptr<Foo[]> a1 = make_unique_for_overwrite<Foo[]>(3);
@@ -95,6 +98,7 @@ GTEST_TEST(MemoryTest, MakeUniqueForOverwriteTest)
 		EXPECT_EQ(4u, Foo::instances);
 	}
 	EXPECT_EQ(0u, Foo::instances);
+#endif
 }
 
 }	// namespace make_unique_for_overwrite_test
