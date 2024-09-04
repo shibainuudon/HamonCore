@@ -6,8 +6,12 @@
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
+#include <cstdint>
+#include <exception>	// terminate
+#include <memory>		// shared_ptr
 #include <new>			// destroying_delete_t
 #include <string>
+#include <tuple>
 #include <type_traits>
 #include <utility>
 #include <vector>

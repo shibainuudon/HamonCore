@@ -6,8 +6,12 @@
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <type_traits>
+#include <cstddef>
 #include <iostream>
+#include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace hamon_config_cxx23_test
 {
