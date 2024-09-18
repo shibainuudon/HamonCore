@@ -63,7 +63,7 @@ set(SUBDIRECTORIES
 	string_view
 	system_error
 	tuple
-	type_info
+	static_typeinfo
 	type_traits
 	units
 	unordered_map

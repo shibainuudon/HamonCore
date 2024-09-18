@@ -4,8 +4,8 @@
  *	@brief
  */
 
-#ifndef HAMON_TYPE_INFO_NAMEOF_HPP
-#define HAMON_TYPE_INFO_NAMEOF_HPP
+#ifndef HAMON_STATIC_TYPEINFO_NAMEOF_HPP
+#define HAMON_STATIC_TYPEINFO_NAMEOF_HPP
 
 #include <hamon/string_view/string_view.hpp>
 #include <hamon/config.hpp>
@@ -76,4 +76,4 @@ nameof() HAMON_NOEXCEPT
 
 }	// namespace hamon
 
-#endif // HAMON_TYPE_INFO_NAMEOF_HPP
+#endif // HAMON_STATIC_TYPEINFO_NAMEOF_HPP

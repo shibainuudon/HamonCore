@@ -1,13 +1,13 @@
 ﻿/**
- *	@file	type_info.hpp
+ *	@file	static_type_info.hpp
  *
  *	@brief
  */
 
-#ifndef HAMON_TYPE_INFO_TYPE_INFO_HPP
-#define HAMON_TYPE_INFO_TYPE_INFO_HPP
+#ifndef HAMON_STATIC_TYPEINFO_STATIC_TYPE_INFO_HPP
+#define HAMON_STATIC_TYPEINFO_STATIC_TYPE_INFO_HPP
 
-#include <hamon/type_info/detail/type_info_access_fwd.hpp>
+#include <hamon/static_typeinfo/detail/type_info_access_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/string_view/string_view.hpp>
 #include <hamon/functional/hash.hpp>
@@ -16,11 +16,11 @@
 namespace hamon
 {
 
-class type_info
+class static_type_info
 {
 private:
 	HAMON_CONSTEXPR
-	type_info(hamon::string_view name) HAMON_NOEXCEPT
+	static_type_info(hamon::string_view name) HAMON_NOEXCEPT
 		: m_name(name)
 	{}
 
@@ -38,14 +38,14 @@ public:
 	}
 
 	HAMON_NODISCARD friend HAMON_CONSTEXPR bool
-	operator==(type_info const& lhs, type_info const& rhs) HAMON_NOEXCEPT
+	operator==(static_type_info const& lhs, static_type_info const& rhs) HAMON_NOEXCEPT
 	{
 		return lhs.hash() == rhs.hash();
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	HAMON_NODISCARD friend HAMON_CONSTEXPR bool
-	operator!=(type_info const& lhs, type_info const& rhs) HAMON_NOEXCEPT
+	operator!=(static_type_info const& lhs, static_type_info const& rhs) HAMON_NOEXCEPT
 	{
 		return !(lhs == rhs);
 	}
@@ -60,4 +60,4 @@ private:
 
 }	// namespace hamon
 
-#endif // HAMON_TYPE_INFO_TYPE_INFO_HPP
+#endif // HAMON_STATIC_TYPEINFO_STATIC_TYPE_INFO_HPP

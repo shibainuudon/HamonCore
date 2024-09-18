@@ -1,10 +1,10 @@
-name: type_info
+name: static_typeinfo
 
 on:
   push:
     paths:
-      - libs/type_info/**
-      - .github/workflows/type_info.yml
+      - libs/static_typeinfo/**
+      - .github/workflows/static_typeinfo.yml
       - .github/workflows/build.yml
 
   workflow_dispatch:
@@ -13,4 +13,4 @@ jobs:
   build:
     uses: ./.github/workflows/build.yml
     with:
-      src_dir: libs/type_info
+      src_dir: libs/static_typeinfo
