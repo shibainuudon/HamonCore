@@ -665,4 +665,26 @@ const char str[] = u8"UTF-8 string";
 }	// namespace char8_t_compatibility_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE) && defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+namespace allow_static_assert_false_test
+{
+
+template <typename T>
+int f()
+{
+	if constexpr (sizeof(T) == sizeof(int))
+	{
+		return 0;
+	}
+	else
+	{
+		static_assert(false, "must be int-sized");
+	}
+}
+
+auto i = f<int>();
+
+}	// namespace allow_static_assert_false_test
+#endif
+
 }	// namespace hamon_config_cxx23_test
