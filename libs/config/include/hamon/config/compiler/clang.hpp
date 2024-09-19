@@ -487,6 +487,7 @@
 #  endif
 #  if (HAMON_CLANG_VERSION >= 150000)
 #    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES				// P2290R3	Delimited escape sequences
+#    define HAMON_HAS_CXX23_UTF8_SOURCE_FILE_ENCODING				// P2295R6	Support for UTF-8 as a portable source file encoding
 #    if defined(__cpp_auto_cast) && (__cpp_auto_cast >= 202110L)
 #      define HAMON_HAS_CXX23_AUTO_CAST								// P0849R8	auto(x): decay-copy in the language
 #    endif

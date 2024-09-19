@@ -554,6 +554,7 @@
 #    define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS	// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
 #    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES				// P2290R3	Delimited escape sequences
 #    define HAMON_HAS_CXX23_ASSUME									// P1774R8	Portable assumptions
+#    define HAMON_HAS_CXX23_UTF8_SOURCE_FILE_ENCODING				// P2295R6	Support for UTF-8 as a portable source file encoding
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
 #      define HAMON_HAS_CXX23_IMPLICIT_MOVE							// P2266R3	Simpler implicit move
 #    endif
