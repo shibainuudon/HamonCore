@@ -544,6 +544,9 @@
 #    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
 #      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES		// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
 #    endif
+#    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
+#      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
+#    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 130000)
 #    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT		// P2324R2	Labels at the end of compound statements
@@ -553,9 +556,6 @@
 #    define HAMON_HAS_CXX23_ASSUME									// P1774R8	Portable assumptions
 #    if defined(__cpp_implicit_move) && (__cpp_implicit_move >= 202207L)
 #      define HAMON_HAS_CXX23_IMPLICIT_MOVE							// P2266R3	Simpler implicit move
-#    endif
-#    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
-#      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202211L)
 #      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR				// P2589R1	static operator[]
