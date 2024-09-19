@@ -928,6 +928,9 @@
 
 // Visual Studio 2022 Version 17.2.0
 #if (_MSC_FULL_VER >= 193231328)
+# if (HAMON_CXX_STANDARD >= 23)
+#  define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER			// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
+# endif
 #endif
 
 // Visual Studio 2022 Version 17.2.2

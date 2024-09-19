@@ -227,6 +227,46 @@ GTEST_TEST(ConfigTest, Cxx23MixedStringLiteralConcatenationTest)
 }	// namespace mixed_string_literal_concatenation_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER)
+namespace explicit_this_parameter_test
+{
+struct X
+{
+	int foo(this X&)       { return 1; }
+	int foo(this X const&) { return 2; }
+	int foo(this X&&)      { return 3; }
+};
+
+struct D : X
+{
+	template <typename Self>
+	int bar(this Self&& self)
+	{
+		return std::forward<Self>(self).foo();
+	}
+};
+
+GTEST_TEST(ConfigTest, Cxx23ExplicitThisParameterTest)
+{
+	{
+		X x;
+		X const& r = x;
+		EXPECT_TRUE(x.foo() == 1);
+		EXPECT_TRUE(r.foo() == 2);
+		EXPECT_TRUE(std::move(x).foo() == 3);
+	}
+	{
+		D d;
+		D const& r = d;
+		EXPECT_TRUE(d.bar() == 1);
+		EXPECT_TRUE(r.bar() == 2);
+		EXPECT_TRUE(std::move(d).bar() == 3);
+	}
+}
+
+}	// namespace explicit_this_parameter_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE)
 namespace lambda_trailing_return_type_scope_test
 {

@@ -517,6 +517,11 @@
 #      define HAMON_HAS_CXX23_RELAXING_CONSTEXPR					// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
 #    endif
 #  endif
+#  if (HAMON_CLANG_VERSION >= 180000)
+#    if defined(__cpp_explicit_this_parameter) && (__cpp_explicit_this_parameter >= 202110L)
+#      define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
+#    endif
+#  endif
 #endif	// C++23
 
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
