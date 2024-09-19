@@ -1374,7 +1374,7 @@
 #define HAMON_HAS_CXX23_RELAXING_CONSTEXPR							// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
 #define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
 #define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
-#define HAMON_HAS_CXX23_											// P2582R1	Wording for class template argument deduction from inherited constructors
+#define HAMON_HAS_CXX23_INHERITED_CONSTRUCTOR_CTAD					// P2582R1	Wording for class template argument deduction from inherited constructors
 #define HAMON_HAS_CXX23_ASSUME										// P1774R8	Portable assumptions
 #define HAMON_HAS_CXX23_UTF8_SOURCE_FILE_ENCODING					// P2295R6	Support for UTF-8 as a portable source file encoding
 #define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L

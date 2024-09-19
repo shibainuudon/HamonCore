@@ -629,6 +629,55 @@ struct less {
 }	// namespace static_call_operator_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_INHERITED_CONSTRUCTOR_CTAD)
+namespace inherited_constructor_ctad_test
+{
+
+template <typename T>
+struct B
+{
+	B(T) {}
+};
+
+B(short) -> B<char>;
+
+template <typename T>
+struct C : public B<T>
+{
+	using B<T>::B;
+};
+
+template <typename T, typename U, typename V>
+struct F
+{
+	F(T, U, V) {}
+};
+
+template <typename T, typename U>
+struct G : F<U, T, int>
+{
+	using F<U, T, int>::F;
+};
+
+GTEST_TEST(ConfigTest, Cxx23InheritedConstructorCtadTest)
+{
+	{
+		C c(42);
+		static_assert(std::is_same<decltype(c), C<int>>::value, "");
+	}
+	{
+		C c(short(1));
+		static_assert(std::is_same<decltype(c), C<char>>::value, "");
+	}
+	{
+		G g(true, 'a', 1);
+		static_assert(std::is_same<decltype(g), G<char, bool>>::value, "");
+	}
+}
+
+}	// namespace inherited_constructor_ctad_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_ASSUME)
 namespace assume_test
 {
