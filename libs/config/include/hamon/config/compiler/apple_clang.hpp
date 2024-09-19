@@ -440,6 +440,7 @@
 #  if (HAMON_CLANG_VERSION >= 150000)	// 15.0.0
 #    define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
 #    define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS	// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
+#    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES				// P2290R3	Delimited escape sequences
 #  endif
 #endif	// C++23
 
