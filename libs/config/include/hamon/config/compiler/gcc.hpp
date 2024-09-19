@@ -526,9 +526,6 @@
 #    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL			// P1401R5	Narrowing contextual conversions to bool
 #    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS					// P2173R1	Attributes on lambda-expressions
 #  endif
-#  if (HAMON_GCC_VERSION >= 100000)
-#    define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS			// P2314R4	Character sets and encodings
-#  endif
 #  if (HAMON_GCC_VERSION >= 110000)
 #    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN					// P1102R2	Make () more optional for lambdas
 #    if defined(__cpp_size_t_suffix) && (__cpp_size_t_suffix >= 202006L)
@@ -587,6 +584,9 @@
 #define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 #define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR			// P2316R2	Consistent character literal encoding
+#if (HAMON_GCC_VERSION >= 100000)
+#  define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS				// P2314R4	Character sets and encodings
+#endif
 
 
 // Defect reports (DR)
