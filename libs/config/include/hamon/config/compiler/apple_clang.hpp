@@ -411,7 +411,6 @@
 
 // C++23
 #if (HAMON_CXX_STANDARD >= 23)
-#  define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
 #  if (HAMON_CLANG_VERSION >= 130106)	// 13.1.6
 #    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN					// P1102R2	Make () more optional for lambdas
 #    define HAMON_HAS_CXX23_ELIFDEF									// P2334R1	Add support for preprocessing directives elifdef and elifndef
@@ -437,6 +436,9 @@
 #    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202110L)
 #      define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES		// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions
 #    endif
+#  endif
+#  if (HAMON_CLANG_VERSION >= 150000)	// 15.0.0
+#    define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
 #  endif
 #endif	// C++23
 
