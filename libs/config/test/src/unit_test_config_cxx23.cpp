@@ -658,4 +658,11 @@ constexpr int k(int) {  // k<int> is not an immediate function
 }	// namespace consteval_propagate_up_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_CHAR8_T_COMPATIBILITY)
+namespace char8_t_compatibility_test
+{
+const char str[] = u8"UTF-8 string";
+}	// namespace char8_t_compatibility_test
+#endif
+
 }	// namespace hamon_config_cxx23_test
