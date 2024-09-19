@@ -1088,7 +1088,6 @@
 #endif
 
 #if (HAMON_CXX_STANDARD >= 23)
-#  define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT		// P1847R4	Make declaration order layout mandated
 #endif
 
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
@@ -1096,7 +1095,8 @@
 //#define HAMON_HAS_CXX11_PRAGMA_OPERATOR				// Pragma演算子
 #define HAMON_HAS_CXX20_TWOS_COMPLEMENT_SIGNED_INTEGERS		// P1236R1
 #define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR					// P0593R6
-#define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
+#define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT			// P1847R4	Make declaration order layout mandated
+#define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION	// P2201R1	Mixed string literal concatenation
 
 #if 0
 

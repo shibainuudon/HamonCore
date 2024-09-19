@@ -173,6 +173,34 @@ namespace trimming_whitespaces_before_line_splicing_test
 }	// namespace trimming_whitespaces_before_line_splicing_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT)
+namespace declaration_order_layout_test
+{
+struct S
+{
+protected:
+	int a;
+private:
+	int b;
+public:
+	int c;
+
+public:
+	int* addressof_a() { return &a; }
+	int* addressof_b() { return &b; }
+	int* addressof_c() { return &c; }
+};
+
+GTEST_TEST(ConfigTest, Cxx23DeclarationOrderLayoutTest)
+{
+	S s;
+	EXPECT_TRUE(s.addressof_a() < s.addressof_b());
+	EXPECT_TRUE(s.addressof_b() < s.addressof_c());
+}
+
+}	// namespace declaration_order_layout_test
+#endif
+
 #if !defined(HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION)
 namespace mixed_string_literal_concatenation_test
 {

@@ -412,7 +412,6 @@
 // C++23
 #if (HAMON_CXX_STANDARD >= 23)
 #  define HAMON_HAS_CXX23_WARNING									// P2437R1	Support for #warning
-#  define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
 #  define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS				// P2314R4	Character sets and encodings
 #  define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR		// P2316R2	Consistent character literal encoding
 #  if (HAMON_CLANG_VERSION >= 130106)	// 13.1.6
@@ -444,6 +443,7 @@
 #endif	// C++23
 
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
+#define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 
 
