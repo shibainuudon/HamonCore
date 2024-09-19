@@ -509,6 +509,9 @@
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202211L)
 #      define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR				// P2589R1	static operator[]
 #    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202211L)
+#      define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION	// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
+#    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 170000)
 #    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	Change scope of lambda trailing-return-type
