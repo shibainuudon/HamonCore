@@ -374,8 +374,8 @@ GTEST_TEST(ConfigTest, Cxx23AliasDeclarationInInitStatementTest)
 }	// namespace alias_declaration_in_init_statement_test
 #endif
 
-#if defined(HAMON_HAS_CXX23_DECAY_COPY)
-namespace decay_copy_test
+#if defined(HAMON_HAS_CXX23_AUTO_CAST)
+namespace auto_cast_test
 {
 
 template <typename Container>
@@ -384,7 +384,7 @@ void pop_front_alike(Container& x) {
 	std::erase(x.begin(), x.end(), auto{x.front()});
 }
 
-}	// namespace decay_copy_test
+}	// namespace auto_cast_test
 #endif
 
 #if defined(HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT)

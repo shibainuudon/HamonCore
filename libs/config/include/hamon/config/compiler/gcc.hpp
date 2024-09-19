@@ -540,7 +540,9 @@
 #  if (HAMON_GCC_VERSION >= 120000)
 #    define HAMON_HAS_CXX23_ELIFDEF									// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #    define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT		// P2360R0	Extend init-statement to allow alias-declaration
-#    define HAMON_HAS_CXX23_DECAY_COPY								// P0849R8	auto(x): decay-copy in the language
+#    if defined(__cpp_auto_cast) && (__cpp_auto_cast >= 202110L)
+#      define HAMON_HAS_CXX23_AUTO_CAST								// P0849R8	auto(x): decay-copy in the language
+#    endif
 #    if defined(__cpp_if_consteval) && (__cpp_if_consteval >= 202106L)
 #      define HAMON_HAS_CXX23_IF_CONSTEVAL							// P1938R3	if consteval
 #    endif

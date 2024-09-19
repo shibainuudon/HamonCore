@@ -489,8 +489,10 @@
 #    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 150000)
-#    define HAMON_HAS_CXX23_DECAY_COPY								// P0849R8	auto(x): decay-copy in the language
 #    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES				// P2290R3	Delimited escape sequences
+#    if defined(__cpp_auto_cast) && (__cpp_auto_cast >= 202110L)
+#      define HAMON_HAS_CXX23_AUTO_CAST								// P0849R8	auto(x): decay-copy in the language
+#    endif
 #    if defined(__cpp_multidimensional_subscript) && (__cpp_multidimensional_subscript >= 202110L)
 #      define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT			// P2128R6, CWG2507	Multidimensional subscript operator
 #    endif
