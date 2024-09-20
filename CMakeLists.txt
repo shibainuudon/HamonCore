@@ -18,6 +18,7 @@ set(SUBDIRECTORIES
 	algorithm
 	any
 	array
+	atomic
 	base64
 	bigint
 	bit
