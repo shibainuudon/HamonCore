@@ -580,6 +580,7 @@
 #  endif
 #  if (HAMON_CLANG_VERSION >= 160000)
 #    define HAMON_HAS_CXX23_EQUALITY_OPERATOR								// P2468R2	DR20: The Equality Operator You Are Looking For
+#    define HAMON_HAS_CXX23_CHAR8_T_COMPATIBILITY							// P2513R4	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
 #  endif
 #  if (HAMON_CLANG_VERSION >= 170000)
 #    if defined(__cpp_consteval) && (__cpp_consteval >= 202211L)

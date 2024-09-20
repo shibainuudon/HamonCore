@@ -801,7 +801,11 @@ constexpr int k(int) {  // k<int> is not an immediate function
 #if defined(HAMON_HAS_CXX23_CHAR8_T_COMPATIBILITY)
 namespace char8_t_compatibility_test
 {
-const char str[] = u8"UTF-8 string";
+void test()
+{
+	const char str[] = u8"UTF-8 string";
+	(void)str;
+}
 }	// namespace char8_t_compatibility_test
 #endif
 
