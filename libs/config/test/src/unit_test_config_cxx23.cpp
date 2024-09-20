@@ -809,10 +809,11 @@ void test()
 }	// namespace char8_t_compatibility_test
 #endif
 
-#if defined(HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE) && defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+#if defined(HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE)
 namespace allow_static_assert_false_test
 {
 
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 template <typename T>
 int f()
 {
@@ -825,8 +826,8 @@ int f()
 		static_assert(false, "must be int-sized");
 	}
 }
-
 auto i = f<int>();
+#endif
 
 }	// namespace allow_static_assert_false_test
 #endif

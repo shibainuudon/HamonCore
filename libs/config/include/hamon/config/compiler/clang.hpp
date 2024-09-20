@@ -561,6 +561,9 @@
 #if (HAMON_CLANG_VERSION >= 140000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31							// P1949R7
 #endif
+#if (HAMON_CLANG_VERSION >= 170000)
+#  define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE							// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
+#endif
 
 //#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE				// P0588R1
 

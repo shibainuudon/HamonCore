@@ -611,6 +611,9 @@
 #if (HAMON_GCC_VERSION >= 120000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31					// P1949R7
 #endif
+#if (HAMON_GCC_VERSION >= 130000)
+#  define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE					// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
+#endif
 #if (HAMON_GCC_VERSION >= 140000)
 #  define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
 #endif
