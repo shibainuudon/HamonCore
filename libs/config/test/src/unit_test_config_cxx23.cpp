@@ -492,6 +492,29 @@ GTEST_TEST(ConfigTest, Cxx23AttributesOnLambdasTest)
 }	// namespace attributes_on_lambdas_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR)
+namespace unknown_reference_in_constexpr_test
+{
+
+template <class T, std::size_t N>
+constexpr std::size_t size(const T (&)[N]) noexcept
+{
+	return N;
+}
+
+void check(int const (&param)[3])
+{
+	int local[] = {1, 2, 3};
+
+	constexpr auto s0 = size(local); // ok
+	constexpr auto s1 = size(param); // ng -> ok
+	(void)s0;
+	(void)s1;
+}
+
+}	// namespace unknown_reference_in_constexpr_test
+#endif
+
 #if defined(HAMON_HAS_CXX23_EQUALITY_OPERATOR)
 namespace equality_operator_test
 {

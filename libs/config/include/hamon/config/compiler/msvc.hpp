@@ -1386,7 +1386,7 @@
 #define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1	DR11: Allow Duplicate Attributes
 #define HAMON_HAS_CXX23_											// P2493R0	DR20: Missing feature test macros for C++20 core papers					__cpp_concepts >= 202002L
 #define HAMON_HAS_CXX23_											// P2460R2	DR98: Relax requirements on wchar_t to match existing practices
-#define HAMON_HAS_CXX23_											// P2280R4	DR11: Using unknown references in constant expressions
+#define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR				// P2280R4	DR11: Using unknown references in constant expressions
 #define HAMON_HAS_CXX23_EQUALITY_OPERATOR							// P2468R2	DR20: The Equality Operator You Are Looking For
 #define HAMON_HAS_CXX23_CHAR8_T_COMPATIBILITY						// P2513R4	DR20: char8_t Compatibility and Portability Fix							__cpp_char8_t >= 202207L
 #define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE					// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context

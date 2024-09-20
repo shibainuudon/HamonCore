@@ -611,6 +611,9 @@
 #if (HAMON_GCC_VERSION >= 120000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31					// P1949R7
 #endif
+#if (HAMON_GCC_VERSION >= 140000)
+#  define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
+#endif
 
 // DR17
 
