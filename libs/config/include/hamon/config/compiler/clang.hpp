@@ -526,6 +526,9 @@
 #  endif
 #  if (HAMON_CLANG_VERSION >= 190000)
 #    define HAMON_HAS_CXX23_ASSUME									// P1774R8	Portable assumptions
+#    if defined(__cpp_range_based_for) && (__cpp_range_based_for >= 202211L)
+#      define HAMON_HAS_CXX23_RANGE_BASED_FOR						// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#    endif
 #  endif
 #endif	// C++23
 

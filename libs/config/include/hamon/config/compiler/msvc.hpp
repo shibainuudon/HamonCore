@@ -1379,7 +1379,7 @@
 #define HAMON_HAS_CXX23_UTF8_SOURCE_FILE_ENCODING					// P2295R6	Support for UTF-8 as a portable source file encoding
 #define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
 #define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION		// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
-#define HAMON_HAS_CXX23_											// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#define HAMON_HAS_CXX23_RANGE_BASED_FOR								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
 #define HAMON_HAS_CXX23_											// P2615R1	DR20: Meaningful exports
 #define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP						// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31						// P1949R7	DR98: C++ Identifier Syntax using Unicode Standard Annex 31
