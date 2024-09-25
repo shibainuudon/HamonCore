@@ -13,6 +13,8 @@
 namespace hamon
 {
 
+// 33.5.4 Order and consistency[atomics.order]
+
 #if HAMON_CXX_STANDARD >= 20
 
 using std::memory_order;

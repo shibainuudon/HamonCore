@@ -1,16 +1,17 @@
 ﻿/**
  *	@file	atomic_compare_exchange_strong.hpp
  *
- *	@brief	atomic_compare_exchange_strong の実装
+ *	@brief	atomic_compare_exchange_strong の定義
  */
 
 #ifndef HAMON_ATOMIC_DETAIL_ATOMIC_COMPARE_EXCHANGE_STRONG_HPP
 #define HAMON_ATOMIC_DETAIL_ATOMIC_COMPARE_EXCHANGE_STRONG_HPP
 
+#include <hamon/atomic/memory_order.hpp>
+#include <hamon/atomic/detail/atomic_compare_exchange.hpp>
+#include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
-#if defined(HAMON_MSVC)
-#include <intrin.h>
-#endif
 
 namespace hamon
 {
@@ -18,15 +19,19 @@ namespace hamon
 namespace detail
 {
 
-bool atomic_compare_exchange_strong(long* ptr, long* expected, long desired)
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired,
+	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
-#if defined(HAMON_MSVC)
-	long previous = *expected;
-	*expected = _InterlockedCompareExchange(ptr, desired, previous);
-	return previous == *expected;
-#else
-	return __atomic_compare_exchange_n(ptr, expected, desired, false, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST);
-#endif
+	return hamon::detail::atomic_compare_exchange(
+		ptr, expected, desired, false, success_memorder, failure_memorder);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+bool atomic_compare_exchange_strong(T* ptr, T* expected, T desired)
+{
+	return atomic_compare_exchange_strong(ptr, expected, desired,
+		hamon::memory_order::seq_cst, hamon::memory_order::seq_cst);
 }
 
 }	// namespace detail
