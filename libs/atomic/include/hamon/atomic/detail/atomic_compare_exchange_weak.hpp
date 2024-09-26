@@ -30,7 +30,7 @@ bool atomic_compare_exchange_weak(T* ptr, T* expected, T desired,
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
 bool atomic_compare_exchange_weak(T* ptr, T* expected, T desired)
 {
-	return atomic_compare_exchange_weak(ptr, expected, desired,
+	return hamon::detail::atomic_compare_exchange_weak(ptr, expected, desired,
 		hamon::memory_order::seq_cst, hamon::memory_order::seq_cst);
 }
 

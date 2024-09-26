@@ -34,7 +34,7 @@ T atomic_fetch_sub(T* ptr, T val, hamon::memory_order order)
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
 T atomic_fetch_sub(T* ptr, T val)
 {
-	return atomic_fetch_sub(ptr, val, hamon::memory_order::seq_cst);
+	return hamon::detail::atomic_fetch_sub(ptr, val, hamon::memory_order::seq_cst);
 }
 
 }	// namespace detail
