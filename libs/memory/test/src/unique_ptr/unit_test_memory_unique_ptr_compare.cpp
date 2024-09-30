@@ -62,11 +62,44 @@ struct D
 	HAMON_CXX14_CONSTEXPR void operator()(T*) const {}
 };
 
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX20_CONSTEXPR
-bool test()
+bool test1()
+{
+	hamon::unique_ptr<int> up1(new int{42});
+	hamon::unique_ptr<int> up2(new int{42});
+	hamon::unique_ptr<int> up3;
+
+	VERIFY( (up1 == up1));
+	VERIFY(!(up1 == up2));
+	VERIFY(!(up1 == up3));
+
+	VERIFY(!(up1 != up1));
+	VERIFY( (up1 != up2));
+	VERIFY( (up1 != up3));
+
+	VERIFY(!(up1 == nullptr));
+	VERIFY(!(up2 == nullptr));
+	VERIFY( (up3 == nullptr));
+
+	VERIFY( (up1 != nullptr));
+	VERIFY( (up2 != nullptr));
+	VERIFY(!(up3 != nullptr));
+
+	VERIFY(!(nullptr == up1));
+	VERIFY(!(nullptr == up2));
+	VERIFY( (nullptr == up3));
+
+	VERIFY( (nullptr != up1));
+	VERIFY( (nullptr != up2));
+	VERIFY(!(nullptr != up3));
+
+	return true;
+}
+
+HAMON_CXX20_CONSTEXPR
+bool test2()
 {
 	int a[3]{};
 	hamon::unique_ptr<int, D> up1(&a[0]);
@@ -160,7 +193,13 @@ bool test()
 
 GTEST_TEST(UniquePtrTest, CompareTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+#if !defined(HAMON_CLANG_VERSION)
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+#else
+	// clangだとポインタの大小比較をconstexprにできない
+	EXPECT_TRUE(test2());
+#endif
 }
 
 }	// namespace compare_test

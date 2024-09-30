@@ -689,7 +689,7 @@ template <typename T1, typename D1, typename T2, typename D2>
 requires hamon::three_way_comparable_with<
 	typename unique_ptr<T1, D1>::pointer,
 	typename unique_ptr<T2, D2>::pointer>
-HAMON_NODISCARD	// nodiscard as an extension
+HAMON_NODISCARD	HAMON_CXX11_CONSTEXPR // nodiscard as an extension
 hamon::compare_three_way_result_t<
 	typename unique_ptr<T1, D1>::pointer,
 	typename unique_ptr<T2, D2>::pointer>

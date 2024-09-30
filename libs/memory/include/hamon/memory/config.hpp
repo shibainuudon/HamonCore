@@ -9,7 +9,10 @@
 
 #include <memory>
 
-#if defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 202202L)
+// P3037 constexpr std::shared_ptr が採用されるまで、
+// unique_ptr, shared_ptr は自前実装を使う。
+
+#if 0 && defined(__cpp_lib_constexpr_memory) && (__cpp_lib_constexpr_memory >= 202202L)
 
 #define	HAMON_USE_STD_DEFAULT_DELETE
 #define	HAMON_USE_STD_UNIQUE_PTR
