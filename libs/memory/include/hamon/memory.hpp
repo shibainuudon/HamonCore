@@ -33,8 +33,8 @@
 #include <hamon/memory/make_shared_for_overwrite.hpp>
 #include <hamon/memory/make_unique.hpp>
 #include <hamon/memory/make_unique_for_overwrite.hpp>
-//#include <hamon/memory/out_ptr.hpp>
-//#include <hamon/memory/out_ptr_t.hpp>
+#include <hamon/memory/out_ptr.hpp>
+#include <hamon/memory/out_ptr_t.hpp>
 #include <hamon/memory/owner_less.hpp>
 #include <hamon/memory/owner_hash.hpp>
 #include <hamon/memory/owner_equal.hpp>

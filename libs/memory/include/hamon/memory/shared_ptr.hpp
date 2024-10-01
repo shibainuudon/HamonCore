@@ -22,6 +22,7 @@
 #include <hamon/memory/detail/sp_convertible.hpp>
 #include <hamon/memory/detail/sp_compatible.hpp>
 #include <hamon/memory/detail/sp_ref_count.hpp>
+#include <hamon/memory/detail/is_specialization_of_shared_ptr.hpp>
 #include <hamon/compare/compare_three_way.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
@@ -29,6 +30,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/functional/ref.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -800,6 +802,14 @@ operator<<(std::basic_ostream<E, T>& os, shared_ptr<Y> const& p)
 //template <typename T> struct atomic<shared_ptr<T>>;
 //template <typename T> struct atomic<weak_ptr<T>>;
 
+namespace detail {
+
+// is_specialization_of_shared_ptr の特殊化
+template <typename T>
+struct is_specialization_of_shared_ptr<hamon::shared_ptr<T>>
+	: public hamon::true_type {};
+
+}	// namespace detail
 }	// namespace hamon
 
 #endif
