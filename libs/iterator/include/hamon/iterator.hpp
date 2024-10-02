@@ -62,6 +62,7 @@
 #include <hamon/iterator/output_iterator_tag.hpp>
 #include <hamon/iterator/prev.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/ranges.hpp>
 #include <hamon/iterator/rbegin.hpp>
