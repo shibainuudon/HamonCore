@@ -82,6 +82,45 @@ inline bool test03()
 	return true;
 }
 
+struct S
+{
+	int i;
+};
+
+struct Add
+{
+	HAMON_CXX11_CONSTEXPR S
+	operator()(S const& lhs, S const& rhs) const
+	{
+		return S{lhs.i + rhs.i};
+	}
+};
+
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	namespace ranges = hamon::ranges;
+
+	S const a[] {{1},{2},{3},{4}};
+	{
+		auto b = ranges::fold_right(ranges::begin(a), ranges::end(a), {0}, Add{});
+		VERIFY(b.i == 10);
+	}
+	{
+		auto b = ranges::fold_right(ranges::begin(a), ranges::end(a), {42}, Add{});
+		VERIFY(b.i == 52);
+	}
+	{
+		auto b = ranges::fold_right(a, {0}, Add{});
+		VERIFY(b.i == 10);
+	}
+	{
+		auto b = ranges::fold_right(a, {42}, Add{});
+		VERIFY(b.i == 52);
+	}
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesFoldRightTest)
@@ -93,6 +132,7 @@ GTEST_TEST(AlgorithmTest, RangesFoldRightTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<test_random_access_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<test_contiguous_range>());
 	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_fold_right_test

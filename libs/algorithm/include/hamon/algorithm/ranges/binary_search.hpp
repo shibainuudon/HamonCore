@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -36,6 +37,7 @@ using std::ranges::binary_search;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirect_strict_weak_order.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -49,14 +51,16 @@ namespace hamon
 namespace ranges
 {
 
+// 27.8.4.5 binary_search[binary.search]
+
 struct binary_search_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<Iter, Proj>,
+		typename T = hamon::projected_value_t<I, Proj>,
+		typename ProjectedIter = hamon::projected<I, Proj>,
 		HAMON_CONSTRAINED_PARAM_D(
 			hamon::indirect_strict_weak_order,
 			T const*,
@@ -65,7 +69,7 @@ struct binary_search_fn
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
-		Iter first, Sent last,
+		I first, S last,
 		T const& value, Comp comp = {}, Proj proj = {}) const
 	{
 		auto i = ranges::lower_bound(first, last, value, comp, proj);
@@ -79,10 +83,10 @@ struct binary_search_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, Range),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, R),
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,
 		HAMON_CONSTRAINED_PARAM_D(
 			hamon::indirect_strict_weak_order,
 			T const*,
@@ -91,7 +95,7 @@ struct binary_search_fn
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
-		Range&& r, T const& value, Comp comp = {}, Proj proj = {}) const
+		R&& r, T const& value, Comp comp = {}, Proj proj = {}) const
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

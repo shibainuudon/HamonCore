@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -22,10 +23,13 @@ using std::replace;
 
 #else
 
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.7.5 Replace[alg.replace]
 
 /**
  *	@brief		指定された値と一致する要素を指定された値に置き換える。
@@ -45,8 +49,9 @@ namespace hamon
  *
  *	@complexity	正確に last - first 回の比較を行う
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR void
+template <typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR void
 replace(
 	ForwardIterator first,
 	ForwardIterator last,

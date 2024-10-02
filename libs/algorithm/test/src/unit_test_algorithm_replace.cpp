@@ -19,9 +19,21 @@ namespace hamon_algorithm_test
 namespace replace_test
 {
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool ReplaceTest1()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		int a[] { 3,1,2,1,2 };
@@ -35,7 +47,7 @@ inline HAMON_CXX14_CONSTEXPR bool ReplaceTest1()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool ReplaceTest2()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		hamon::array<int, 6> a {{ 3,1,2,1,2,3 }};
@@ -50,10 +62,29 @@ inline HAMON_CXX14_CONSTEXPR bool ReplaceTest2()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	Point a[]
+	{
+		{1, 1}, {1, 2}, {1, 2}, {1, 3},
+	};
+
+	hamon::replace(hamon::begin(a), hamon::end(a), {1,2}, {2,1});
+	VERIFY(Point{1, 1} == a[0]);
+	VERIFY(Point{2, 1} == a[1]);
+	VERIFY(Point{2, 1} == a[2]);
+	VERIFY(Point{1, 3} == a[3]);
+
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, ReplaceTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceTest1());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 
 	{
 		hamon::vector<int> a { 3,1,4,1,5,9,2 };
@@ -86,8 +117,6 @@ GTEST_TEST(AlgorithmTest, ReplaceTest)
 		EXPECT_TRUE(a.empty());
 	}
 }
-
-#undef VERIFY
 
 }	// namespace replace_test
 

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -24,10 +25,13 @@ using std::binary_search;
 
 #include <hamon/algorithm/lower_bound.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.8.4.5 binary_search[binary.search]
 
 /**
  *	@brief		二分探索法による検索を行う
@@ -49,8 +53,11 @@ namespace hamon
  *
  *	@complexity	最大で log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T, typename Compare>
-inline HAMON_CXX14_CONSTEXPR bool
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type,
+	typename Compare>
+HAMON_CXX14_CONSTEXPR bool
 binary_search(
 	ForwardIterator first,
 	ForwardIterator last,
@@ -79,8 +86,10 @@ binary_search(
  *
  *	@complexity	最大で log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR bool
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR bool
 binary_search(
 	ForwardIterator first,
 	ForwardIterator last,

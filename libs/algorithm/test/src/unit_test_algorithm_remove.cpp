@@ -36,7 +36,7 @@ private:
 	int		m_value;
 };
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveTest1()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		int a[] = {1,2,3,1,3,1,2};
@@ -50,7 +50,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveTest1()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveTest2()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		int a[] = {1,2,3,1,3,1,2};
@@ -67,7 +67,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveTest2()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveTest3()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	{
 		hamon::array<int, 7> a = {{1,2,3,1,3,1,2}};
@@ -83,7 +83,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveTest3()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveTest4()
+inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	{
 		hamon::array<int, 4> a = {{1,1,1,1}};
@@ -94,12 +94,46 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveTest4()
 	return true;
 }
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test05()
+{
+	{
+		Point a[] =
+		{
+			{1, 2},
+			{2, 3},
+			{1, 2},
+			{1, 3},
+			{1, 2},
+			{3, 2},
+		};
+		auto ret = hamon::remove(hamon::begin(a), hamon::end(a), {1,2});
+		VERIFY(ret == hamon::next(hamon::begin(a), 3));
+		VERIFY(Point{2,3} == a[0]);
+		VERIFY(Point{1,3} == a[1]);
+		VERIFY(Point{3,2} == a[2]);
+	}
+	return true;
+}
+
 GTEST_TEST(AlgorithmTest, RemoveTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveTest1());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveTest2());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveTest3());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 
 	{
 		using T = movable_int;

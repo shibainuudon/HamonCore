@@ -19,70 +19,124 @@ namespace hamon_algorithm_test
 namespace find_test
 {
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test01()
+{
+	int const a[] {0,1,2};
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 0);
+		VERIFY(it == hamon::begin(a));
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 1);
+		VERIFY(it == hamon::begin(a) + 1);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 2);
+		VERIFY(it == hamon::begin(a) + 2);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 3);
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
+{
+	hamon::array<float, 8> const a{{3, 4, 4, 5, 5, 5, 3, 6}};
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 3.0f);
+		VERIFY(it == hamon::begin(a));
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 4.0f);
+		VERIFY(it == hamon::begin(a) + 1);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 5.0f);
+		VERIFY(it == hamon::begin(a) + 3);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 6.0f);
+		VERIFY(it == hamon::begin(a) + 7);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 0.0f);
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	int a[] {0,1,2};
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 0);
+		VERIFY(it == hamon::begin(a));
+		*it = 10;
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 2);
+		VERIFY(it == hamon::begin(a) + 2);
+		*it = 20;
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), 3);
+		VERIFY(it == hamon::end(a));
+	}
+	VERIFY(10 == a[0]);
+	VERIFY( 1 == a[1]);
+	VERIFY(20 == a[2]);
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	Point const a[]
+	{
+		{1, 2}, {1, 1}, {1, 2}, {2, 1},
+	};
+
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), {1, 1});
+		VERIFY(it == hamon::begin(a) + 1);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), {1, 2});
+		VERIFY(it == hamon::begin(a) + 0);
+	}
+	{
+		auto it = hamon::find(hamon::begin(a), hamon::end(a), {1, 3});
+		VERIFY(it == hamon::end(a));
+	}
+
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, FindTest)
 {
-	{
-		HAMON_STATIC_CONSTEXPR int a[] {0,1,2};
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 0);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 1);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 1);
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 2);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 2);
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 3);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
-		}
-	}
-	{
-		HAMON_STATIC_CONSTEXPR hamon::array<float, 8> a{{3, 4, 4, 5, 5, 5, 3, 6}};
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 3.0f);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 4.0f);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 1);
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 5.0f);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 3);
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 6.0f);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a) + 7);
-		}
-		{
-			HAMON_CXX14_CONSTEXPR_OR_CONST auto it = hamon::find(hamon::begin(a), hamon::end(a), 0.0f);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
-		}
-	}
-	{
-		int a[] {0,1,2};
-		{
-			auto it = hamon::find(hamon::begin(a), hamon::end(a), 0);
-			EXPECT_TRUE(it == hamon::begin(a));
-			*it = 10;
-		}
-		{
-			auto it = hamon::find(hamon::begin(a), hamon::end(a), 2);
-			EXPECT_TRUE(it == hamon::begin(a) + 2);
-			*it = 20;
-		}
-		{
-			auto it = hamon::find(hamon::begin(a), hamon::end(a), 3);
-			EXPECT_TRUE(it == hamon::end(a));
-		}
-		EXPECT_EQ(10, a[0]);
-		EXPECT_EQ( 1, a[1]);
-		EXPECT_EQ(20, a[2]);
-	}
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+
 	{
 		const hamon::vector<int> a {7, 8, 9};
 		{

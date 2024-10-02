@@ -5,6 +5,8 @@
  */
 
 #include <hamon/algorithm/ranges/upper_bound.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
@@ -81,7 +83,38 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(X const& lhs, X const& rhs)
+{
+	return lhs.i == rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(X const& lhs, X const& rhs)
+{
+	return lhs.i != rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(X const& lhs, X const& rhs)
+{
+	return lhs.i < rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>(X const& lhs, X const& rhs)
+{
+	return lhs.i > rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<=(X const& lhs, X const& rhs)
+{
+	return lhs.i <= rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>=(X const& lhs, X const& rhs)
+{
+	return lhs.i >= rhs.i;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -104,9 +137,26 @@ inline bool test02()
 		VERIFY(ranges::upper_bound(x, 1, pred, &X::i) == ranges::next(x, 7));
 		VERIFY(ranges::upper_bound(x, 0, pred, &X::i) == ranges::next(x, 7));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
-		hamon::forward_list<int> x {};
-		VERIFY(ranges::upper_bound(x, 0) == x.end());
+		X const x[] = { {0},{1},{1},{2},{2},{2},{4} };
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {0}) == ranges::next(x, 1));
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {1}) == ranges::next(x, 3));
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {2}) == ranges::next(x, 6));
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {3}) == ranges::next(x, 6));
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {4}) == ranges::next(x, 7));
+		VERIFY(ranges::upper_bound(ranges::begin(x), ranges::end(x), {5}) == ranges::next(x, 7));
+		VERIFY(ranges::upper_bound(x, {0}) == ranges::next(x, 1));
+		VERIFY(ranges::upper_bound(x, {1}) == ranges::next(x, 3));
+		VERIFY(ranges::upper_bound(x, {2}) == ranges::next(x, 6));
+		VERIFY(ranges::upper_bound(x, {3}) == ranges::next(x, 6));
+		VERIFY(ranges::upper_bound(x, {4}) == ranges::next(x, 7));
+		VERIFY(ranges::upper_bound(x, {5}) == ranges::next(x, 7));
 	}
 	return true;
 }
@@ -116,7 +166,17 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesUpperBoundTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+
+	{
+		hamon::forward_list<int> x {};
+		EXPECT_TRUE(hamon::ranges::upper_bound(x, 0) == x.end());
+	}
 }
 
 }	// namespace ranges_upper_bound_test

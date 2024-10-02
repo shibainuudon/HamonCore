@@ -89,6 +89,17 @@ inline bool Test02()
 
 struct Y { int i; int j; };
 
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Y const& lhs, Y const& rhs)
+{
+	return lhs.i == rhs.i && lhs.j == rhs.j;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(Y const& lhs, Y const& rhs)
+{
+	return !(lhs == rhs);
+}
+
 inline bool Test03()
 {
 	namespace ranges = hamon::ranges;
@@ -100,6 +111,23 @@ inline bool Test03()
 	VERIFY( ranges::contains(y, 2, &Y::j));
 	VERIFY( ranges::contains(y, 4, &Y::j));
 	VERIFY(!ranges::contains(y, 5, &Y::j));
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool Test04()
+{
+	namespace ranges = hamon::ranges;
+
+	Y y[] = { {1,2}, {2,4}, {3,6} };
+
+	VERIFY( ranges::contains(ranges::begin(y), ranges::end(y), {1,2}));
+	VERIFY( ranges::contains(ranges::begin(y), ranges::end(y), {2,4}));
+	VERIFY(!ranges::contains(ranges::begin(y), ranges::end(y), {1,4}));
+
+	VERIFY( ranges::contains(y, {1,2}));
+	VERIFY( ranges::contains(y, {2,4}));
+	VERIFY(!ranges::contains(y, {1,4}));
 
 	return true;
 }
@@ -239,6 +267,7 @@ GTEST_TEST(AlgorithmTest, RangesContainsTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test01());
 	EXPECT_TRUE(Test02());
 	EXPECT_TRUE(Test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(TestArray());
 	EXPECT_TRUE(TestVector());
 	EXPECT_TRUE(TestList());

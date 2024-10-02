@@ -8,13 +8,15 @@
 #define HAMON_ALGORITHM_CONTAINS_HPP
 
 #include <hamon/algorithm/find.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-template <typename InputIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR bool
+template <typename InputIterator,
+	typename T = typename hamon::iterator_traits<InputIterator>::value_type>
+HAMON_CXX14_CONSTEXPR bool
 contains(
 	InputIterator first,
 	InputIterator last,

@@ -28,7 +28,7 @@ using std::ranges::fold_left_first;
 
 #else
 
-#include <hamon/algorithm/ranges/fold_left.hpp>
+#include <hamon/algorithm/ranges/fold_left_first_with_iter.hpp>
 #include <hamon/algorithm/ranges/detail/indirectly_binary_left_foldable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -36,7 +36,6 @@ using std::ranges::fold_left_first;
 #include <hamon/functional/ref.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
-#include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
@@ -45,10 +44,7 @@ using std::ranges::fold_left_first;
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/utility/in_place_t.hpp>
-#include <hamon/optional.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -57,67 +53,49 @@ namespace hamon
 namespace ranges
 {
 
+// 27.6.18 Fold[alg.fold]
+
 struct fold_left_first_fn
 {
-private:
 	template <
-		typename Iter, typename Sent, typename F,
-		typename U = decltype(ranges::fold_left(
-			hamon::declval<Iter>(),
-			hamon::declval<Sent>(),
-			hamon::declval<hamon::iter_value_t<Iter>>(),
-			hamon::declval<F>()))
-	>
-	HAMON_CXX14_CONSTEXPR hamon::optional<U>
-	impl(Iter first, Sent last, F f) const
-	{
-		if (first == last)
-		{
-			return hamon::optional<U>();
-		}
-
-		return hamon::optional<U>(hamon::in_place,
-			ranges::fold_left(
-				ranges::next(first),
-				last,
-				hamon::iter_value_t<Iter>(*first),
-				hamon::move(f)));
-	}
-
-public:
-	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_left_foldable,
-			hamon::iter_value_t<Iter>, Iter, F)
+			hamon::iter_value_t<I>, I, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last, F f) const
+	operator()(I first, S last, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		decltype(impl(hamon::move(first), hamon::move(last), hamon::ref(f))),
+		decltype(ranges::fold_left_first_with_iter(
+			hamon::move(first), last, hamon::ref(f)).value),
 		hamon::constructible_from<
-			hamon::iter_value_t<Iter>,
-			hamon::iter_reference_t<Iter>>)
+			hamon::iter_value_t<I>,
+			hamon::iter_reference_t<I>>)
 	{
-		return impl(hamon::move(first), hamon::move(last), hamon::ref(f));
+		// [alg.fold]/2
+		return ranges::fold_left_first_with_iter(
+			hamon::move(first), last, hamon::ref(f)).value;
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_left_foldable,
-			ranges::range_value_t<Range>, ranges::iterator_t<Range>, F)
+			ranges::range_value_t<R>, ranges::iterator_t<R>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, F f) const
+	operator()(R&& r, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		decltype((*this)(ranges::begin(r), ranges::end(r), hamon::ref(f))),
+		decltype(ranges::fold_left_first_with_iter(
+			ranges::begin(r), ranges::end(r), hamon::ref(f)).value),
 		hamon::constructible_from<
-			ranges::range_value_t<Range>,
-			ranges::range_reference_t<Range>>)
+			ranges::range_value_t<R>,
+			ranges::range_reference_t<R>>)
 	{
-		return (*this)(ranges::begin(r), ranges::end(r), hamon::ref(f));
+		// [alg.fold]/2
+		return ranges::fold_left_first_with_iter(
+			ranges::begin(r), ranges::end(r), hamon::ref(f)).value;
 	}
 };
 

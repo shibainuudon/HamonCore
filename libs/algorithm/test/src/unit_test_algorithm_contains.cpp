@@ -20,9 +20,21 @@ namespace hamon_algorithm_test
 namespace contains_test
 {
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool testRawArray()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		int x[] = { 1,2,3,4,5 };
@@ -37,7 +49,7 @@ inline HAMON_CXX14_CONSTEXPR bool testRawArray()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool testArray()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		hamon::array<int, 5> x = { 3,1,4,1,5 };
@@ -49,6 +61,23 @@ inline HAMON_CXX14_CONSTEXPR bool testArray()
 		VERIFY( hamon::contains(hamon::begin(x), hamon::end(x), 5));
 		VERIFY(!hamon::contains(hamon::begin(x), hamon::end(x), 6));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	Point const a[]
+	{
+		{1, 2}, {1, 1}, {1, 2}, {2, 1},
+	};
+
+	VERIFY( hamon::contains(hamon::begin(a), hamon::end(a), {1, 1}));
+	VERIFY( hamon::contains(hamon::begin(a), hamon::end(a), {1, 2}));
+	VERIFY(!hamon::contains(hamon::begin(a), hamon::end(a), {1, 3}));
+	VERIFY( hamon::contains(hamon::begin(a), hamon::end(a), {2, 1}));
+	VERIFY(!hamon::contains(hamon::begin(a), hamon::end(a), {2, 2}));
+	VERIFY(!hamon::contains(hamon::begin(a), hamon::end(a), {2, 3}));
+
 	return true;
 }
 
@@ -107,8 +136,9 @@ inline bool testForwardList()
 
 GTEST_TEST(AlgorithmTest, ContainsTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(testRawArray());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(testArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	EXPECT_TRUE(testVector());
 	EXPECT_TRUE(testList());
 	EXPECT_TRUE(testForwardList());

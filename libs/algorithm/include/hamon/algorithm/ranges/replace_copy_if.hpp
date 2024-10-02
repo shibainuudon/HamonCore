@@ -30,6 +30,7 @@ using std::ranges::replace_copy_if;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -37,6 +38,7 @@ using std::ranges::replace_copy_if;
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/projected.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
@@ -53,29 +55,28 @@ namespace hamon
 namespace ranges
 {
 
-template <typename Iter, typename Out>
-using replace_copy_if_result = in_out_result<Iter, Out>;
+template <typename I, typename O>
+using replace_copy_if_result = in_out_result<I, O>;
 
 struct replace_copy_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
-		HAMON_CONSTRAINED_PARAM(hamon::output_iterator, T const&, Out),
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		typename O,
+		typename T = hamon::iter_value_t<O>,
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		typename ProjectedIter = hamon::projected<I, Proj>,
+		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last, Out result,
+		I first, S last, O result,
 		Pred pred, T const& new_value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		replace_copy_if_result<Iter HAMON_PP_COMMA() Out>,
-		hamon::indirectly_copyable<Iter, Out>)
+		replace_copy_if_result<I HAMON_PP_COMMA() O>,
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<I HAMON_PP_COMMA() O>,
+			hamon::output_iterator<O HAMON_PP_COMMA() T const&>))
 	{
 		for (; first != last; ++first, (void)++result)
 		{
@@ -93,23 +94,22 @@ struct replace_copy_if_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
-		typename T,
-		HAMON_CONSTRAINED_PARAM(hamon::output_iterator, T const&, Out),
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		typename O,
+		typename T = hamon::iter_value_t<O>,
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,
+		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Range&& r, Out result,
+		R&& r, O result,
 		Pred pred, T const& new_value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		replace_copy_if_result<
-			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
-		hamon::indirectly_copyable<ranges::iterator_t<Range>, Out>)
+			ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
+		HAMON_CONCEPTS_AND(
+			hamon::indirectly_copyable<ranges::iterator_t<R> HAMON_PP_COMMA() O>,
+			hamon::output_iterator<O HAMON_PP_COMMA() T const&>))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -28,15 +29,18 @@ using std::ranges::fill;
 #else
 
 #include <hamon/algorithm/ranges/fill_n.hpp>
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/ranges/concepts/output_range.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/utility/move.hpp>
@@ -46,6 +50,8 @@ namespace hamon
 
 namespace ranges
 {
+
+// 27.7.6 Fill[alg.fill]
 
 struct fill_fn
 {
@@ -93,12 +99,15 @@ private:
 
 public:
 	template <
-		typename T,
-		HAMON_CONSTRAINED_PARAM(hamon::output_iterator, T const&, Out),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Out, Sent)
+		typename O,
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, O, S),
+		typename T = hamon::iter_value_t<O>
 	>
-	HAMON_CXX14_CONSTEXPR Out operator()(
-		Out first, Sent last, T const& value) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		O first, S last, T const& value) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		O,
+		hamon::output_iterator<O, T const&>)
 	{
 		return impl(
 			hamon::move(first),
@@ -108,11 +117,14 @@ public:
 	}
 
 	template <
-		typename T,
-		HAMON_CONSTRAINED_PARAM(ranges::output_range, T const&, Range)
+		typename R,
+		typename T = ranges::range_value_t<R>
 	>
-	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
-	operator()(Range&& r, T const& value) const
+	HAMON_CXX14_CONSTEXPR auto
+	operator()(R&& r, T const& value) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		ranges::borrowed_iterator_t<R>,
+		ranges::output_range<R, T const&>)
 	{
 		return (*this)(ranges::begin(r), ranges::end(r), value);
 	}

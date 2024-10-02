@@ -53,7 +53,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -63,6 +63,12 @@ inline bool test02()
 		int const y[] = { 17, 17, 17, 4, 5, 6 };
 		VERIFY(ranges::equal(x, y, {}, &X::i, {}));
 	}
+	return true;
+}
+
+inline bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::vector<int> x(5);
 		auto res = ranges::fill_n(x.begin(), 2, 42);
@@ -73,12 +79,40 @@ inline bool test02()
 	return true;
 }
 
+struct Y { int i; int j; };
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Y const& lhs, Y const& rhs)
+{
+	return lhs.i == rhs.i && lhs.j == rhs.j;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	namespace ranges = hamon::ranges;
+	{
+		Y a[3]{};
+		auto res = ranges::fill_n(ranges::begin(a), 3, {10,20});
+		VERIFY(res == ranges::end(a));
+		VERIFY(a[0] == Y{10,20});
+		VERIFY(a[1] == Y{10,20});
+		VERIFY(a[2] == Y{10,20});
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesFillNTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#endif
+	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_fill_n_test

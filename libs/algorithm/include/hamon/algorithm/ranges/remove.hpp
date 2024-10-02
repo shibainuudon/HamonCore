@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -30,12 +31,15 @@ using std::ranges::remove;
 #include <hamon/algorithm/ranges/remove_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
+#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -51,6 +55,8 @@ namespace hamon
 
 namespace ranges
 {
+
+// 27.7.8 Remove[alg.remove]
 
 struct remove_fn
 {
@@ -69,18 +75,18 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::permutable, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<I, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last, T const& value, Proj proj = {}) const
+		I first, S last, T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::subrange<Iter>,
+		ranges::subrange<I>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
-			hamon::projected<Iter, Proj>,
+			hamon::projected<I, Proj>,
 			T const*>)
 	{
 		auto pred = Pred<T>{value};
@@ -91,20 +97,20 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R),
 		typename Proj = hamon::identity,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::permutable, Dummy, ranges::iterator_t<Range>)
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, T const& value, Proj proj = {}) const
+	operator()(R&& r, T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::borrowed_subrange_t<Range>,
-		hamon::indirect_binary_predicate<
-			ranges::equal_to,
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-			T const*>)
+		ranges::borrowed_subrange_t<R>,
+		HAMON_CONCEPTS_AND(
+			hamon::permutable<ranges::iterator_t<R>>,
+			hamon::indirect_binary_predicate<
+				ranges::equal_to HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<R> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				T const*>))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

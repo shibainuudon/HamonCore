@@ -20,9 +20,21 @@ namespace hamon_algorithm_test
 namespace fill_n_test
 {
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool FillNTestArray()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		int a1[3]{};
@@ -48,7 +60,7 @@ inline HAMON_CXX14_CONSTEXPR bool FillNTestArray()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool FillNTestStdArray()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		hamon::array<int, 4> a2{ { 1, 2, 3, 4 } };
@@ -63,10 +75,24 @@ inline HAMON_CXX14_CONSTEXPR bool FillNTestStdArray()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	{
+		Point a[3]{};
+		auto it = hamon::fill_n(hamon::begin(a), 3, {10, 20});
+		VERIFY(Point{10, 20} == a[0]);
+		VERIFY(Point{10, 20} == a[1]);
+		VERIFY(Point{10, 20} == a[2]);
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
 GTEST_TEST(AlgorithmTest, FillNTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FillNTestArray());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FillNTestStdArray());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 
 	{
 		hamon::vector<int> v1(5);

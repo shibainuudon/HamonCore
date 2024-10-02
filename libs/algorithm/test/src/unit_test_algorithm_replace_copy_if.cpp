@@ -21,7 +21,17 @@ namespace hamon_algorithm_test
 namespace replace_copy_if_test
 {
 
-#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
 
 HAMON_CONSTEXPR bool pred1(int a)
 {
@@ -36,7 +46,17 @@ struct pred2
 	}
 };
 
-inline HAMON_CXX14_CONSTEXPR bool ReplaceCopyIfTest1()
+struct pred3
+{
+	HAMON_CONSTEXPR bool operator()(Point const& p) const
+	{
+		return p == Point{1,2};
+	}
+};
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		const int a[] { 3,1,2,1,2 };
@@ -54,7 +74,7 @@ inline HAMON_CXX14_CONSTEXPR bool ReplaceCopyIfTest1()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool ReplaceCopyIfTest2()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		const int a[] { 3,1,2,1,2 };
@@ -70,10 +90,31 @@ inline HAMON_CXX14_CONSTEXPR bool ReplaceCopyIfTest2()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	Point const a[]
+	{
+		{1, 1}, {1, 2}, {1, 2}, {1, 3},
+	};
+	Point b[4]{};
+
+	auto ret = hamon::replace_copy_if(hamon::begin(a), hamon::end(a), hamon::begin(b), pred3{}, {2,1});
+	VERIFY(ret == hamon::end(b));
+	VERIFY(Point{1, 1} == b[0]);
+	VERIFY(Point{2, 1} == b[1]);
+	VERIFY(Point{2, 1} == b[2]);
+	VERIFY(Point{1, 3} == b[3]);
+
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, ReplaceCopyIfTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceCopyIfTest1());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ReplaceCopyIfTest2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 
 	{
 		const int a[] { 3,1,2,1,2 };
@@ -149,8 +190,6 @@ GTEST_TEST(AlgorithmTest, ReplaceCopyIfTest)
 		EXPECT_TRUE(b.empty());
 	}
 }
-
-#undef VERIFY
 
 }	// namespace replace_copy_if_test
 

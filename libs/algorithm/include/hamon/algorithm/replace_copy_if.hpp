@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -22,10 +23,13 @@ using std::replace_copy_if;
 
 #else
 
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.7.5 Replace[alg.replace]
 
 /**
  *	@brief		条件を満たす要素を指定された値に置き換え、その結果を出力の範囲へコピーする
@@ -56,9 +60,9 @@ template <
 	typename InputIterator,
 	typename OutputIterator,
 	typename Predicate,
-	typename T
+	typename T = typename hamon::iterator_traits<OutputIterator>::value_type
 >
-inline HAMON_CXX14_CONSTEXPR OutputIterator
+HAMON_CXX14_CONSTEXPR OutputIterator
 replace_copy_if(
 	InputIterator first,
 	InputIterator last,

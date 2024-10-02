@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -39,6 +40,7 @@ using std::ranges::search_n;
 #include <hamon/iterator/concepts/indirectly_comparable.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -55,6 +57,8 @@ namespace hamon
 
 namespace ranges
 {
+
+// 27.6.15 Search[alg.search]
 
 struct search_n_fn
 {
@@ -148,18 +152,18 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Pred = ranges::equal_to,
-		typename Proj = hamon::identity
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<I, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last, hamon::iter_difference_t<Iter> n,
+		I first, S last, hamon::iter_difference_t<I> n,
 		T const& value, Pred pred = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::subrange<Iter>,
-		hamon::indirectly_comparable<Iter, T const*, Pred, Proj>)
+		ranges::subrange<I>,
+		hamon::indirectly_comparable<I, T const*, Pred, Proj>)
 	{
 		if (n <= 0)
 		{
@@ -197,18 +201,18 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R),
 		typename Pred = ranges::equal_to,
-		typename Proj = hamon::identity
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Range&& r, ranges::range_difference_t<Range> n,
+		R&& r, ranges::range_difference_t<R> n,
 		T const& value, Pred pred = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::borrowed_subrange_t<Range>,
+		ranges::borrowed_subrange_t<R>,
 		hamon::indirectly_comparable<
-			ranges::iterator_t<Range>, T const*, Pred, Proj>)
+			ranges::iterator_t<R>, T const*, Pred, Proj>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

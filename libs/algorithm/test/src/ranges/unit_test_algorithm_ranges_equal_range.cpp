@@ -5,6 +5,8 @@
  */
 
 #include <hamon/algorithm/ranges/equal_range.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/forward_list.hpp>
@@ -114,7 +116,38 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(X const& lhs, X const& rhs)
+{
+	return lhs.i == rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(X const& lhs, X const& rhs)
+{
+	return lhs.i != rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(X const& lhs, X const& rhs)
+{
+	return lhs.i < rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>(X const& lhs, X const& rhs)
+{
+	return lhs.i > rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<=(X const& lhs, X const& rhs)
+{
+	return lhs.i <= rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>=(X const& lhs, X const& rhs)
+{
+	return lhs.i >= rhs.i;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -129,11 +162,33 @@ inline bool test02()
 		VERIFY(res.begin() == ranges::next(x, 2));
 		VERIFY(res.end()   == ranges::next(x, 4));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
+
+	X const x[] = { {0},{1},{1},{2},{2},{2} };
 	{
-		hamon::forward_list<int> x {};
-		auto res = ranges::equal_range(x, 1);
-		VERIFY(res.begin() == x.end());
-		VERIFY(res.end()   == x.end());
+		auto res = ranges::equal_range(ranges::begin(x), ranges::end(x), {1});
+		VERIFY(res.begin() == ranges::next(x, 1));
+		VERIFY(res.end()   == ranges::next(x, 3));
+	}
+	{
+		auto res = ranges::equal_range(ranges::begin(x), ranges::end(x), {2});
+		VERIFY(res.begin() == ranges::next(x, 3));
+		VERIFY(res.end()   == ranges::next(x, 6));
+	}
+	{
+		auto res = ranges::equal_range(x, {1});
+		VERIFY(res.begin() == ranges::next(x, 1));
+		VERIFY(res.end()   == ranges::next(x, 3));
+	}
+	{
+		auto res = ranges::equal_range(x, {2});
+		VERIFY(res.begin() == ranges::next(x, 3));
+		VERIFY(res.end()   == ranges::next(x, 6));
 	}
 	return true;
 }
@@ -143,7 +198,19 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesEqualRangeTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+
+	{
+		hamon::forward_list<int> x {};
+		auto res = hamon::ranges::equal_range(x, 1);
+		EXPECT_TRUE(res.begin() == x.end());
+		EXPECT_TRUE(res.end()   == x.end());
+	}
 }
 
 }	// namespace ranges_equal_range_test

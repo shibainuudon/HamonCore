@@ -16,12 +16,10 @@ namespace hamon_algorithm_test
 namespace ranges_replace_copy_if_test
 {
 
-#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
-
 template <int N>
 struct Less
 {
-	constexpr bool operator()(int x) const
+	HAMON_CXX11_CONSTEXPR bool operator()(int x) const
 	{
 		return x < N;
 	}
@@ -30,11 +28,13 @@ struct Less
 template <int N>
 struct Greater
 {
-	constexpr bool operator()(int x) const
+	HAMON_CXX11_CONSTEXPR bool operator()(int x) const
 	{
 		return x > N;
 	}
 };
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
@@ -96,13 +96,13 @@ struct X
 {
 	int i;
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(const X& a, const X& b)
 	{
 		return a.i == b.i;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(const X& a, const X& b)
 	{
 		return !(a == b);
@@ -114,20 +114,20 @@ struct Y
 	int i;
 	int j;
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(const Y& a, const Y& b)
 	{
 		return a.i == b.i && a.j == b.j;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(const Y& a, const Y& b)
 	{
 		return !(a == b);
 	}
 };
 
-inline bool test03()
+inline HAMON_CXX17_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -143,7 +143,7 @@ inline bool test03()
 	return true;
 }
 
-inline bool test04()
+inline HAMON_CXX17_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -169,14 +169,52 @@ inline bool test04()
 	return true;
 }
 
+struct Pred
+{
+	HAMON_CXX11_CONSTEXPR bool operator()(Y const& y) const
+	{
+		return y == Y{1,2};
+	}
+};
+
+inline HAMON_CXX14_CONSTEXPR bool test05()
+{
+	namespace ranges = hamon::ranges;
+	{
+		Y x[] = { {1,2}, {2,4}, {3,6} };
+		Y w[3] = {};
+		auto res = ranges::replace_copy_if(ranges::begin(x), ranges::end(x), ranges::begin(w), Pred{}, {4,5});
+		VERIFY(res.in == ranges::end(x));
+		VERIFY(res.out == ranges::end(w));
+		Y y[] = { {4,5}, {2,4}, {3,6} };
+		VERIFY(ranges::equal(w, y));
+	}
+	{
+		Y x[] = { {1,2}, {2,4}, {3,6} };
+		Y w[3] = {};
+		auto res = ranges::replace_copy_if(x, ranges::begin(w), Pred{}, {4,5});
+		VERIFY(res.in == ranges::end(x));
+		VERIFY(res.out == ranges::end(w));
+		Y y[] = { {4,5}, {2,4}, {3,6} };
+		VERIFY(ranges::equal(w, y));
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesReplaceCopyIfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test03());
 	EXPECT_TRUE(test04());
+#else
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test04());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }
 
 }	// namespace ranges_replace_copy_if_test

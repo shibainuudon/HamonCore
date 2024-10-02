@@ -23,7 +23,7 @@ namespace remove_copy_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest1()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		const int a[] = {1,2,3,1,3,1,2};
@@ -38,7 +38,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest1()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest2()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
 		const int a[] = {1,2,3,1,3,1,2};
@@ -56,7 +56,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest2()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest3()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	{
 		const hamon::array<int, 7> a = {{1,2,3,1,3,1,2}};
@@ -72,7 +72,7 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest3()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest4()
+inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	{
 		const hamon::array<int, 4> a = {{1,1,1,1}};
@@ -83,12 +83,47 @@ inline HAMON_CXX14_CONSTEXPR bool RemoveCopyTest4()
 	return true;
 }
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test05()
+{
+	{
+		Point const a[] =
+		{
+			{1, 2},
+			{2, 3},
+			{1, 2},
+			{1, 3},
+			{1, 2},
+			{3, 2},
+		};
+		Point b[5]{};
+		auto ret = hamon::remove_copy(hamon::begin(a), hamon::end(a), hamon::begin(b), {1,2});
+		VERIFY(ret == hamon::next(hamon::begin(b), 3));
+		VERIFY(Point{2,3} == b[0]);
+		VERIFY(Point{1,3} == b[1]);
+		VERIFY(Point{3,2} == b[2]);
+	}
+	return true;
+}
+
 GTEST_TEST(AlgorithmTest, RemoveCopyTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveCopyTest1());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveCopyTest2());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveCopyTest3());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RemoveCopyTest4());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 
 	{
 		const int a[] = {1,2,3,1,3,1,2};

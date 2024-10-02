@@ -10,7 +10,8 @@
 #include <hamon/algorithm/config.hpp>
 
 #if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_ranges_fold) && (__cpp_lib_ranges_fold >= 202207L)
+	defined(__cpp_lib_ranges_fold) && (__cpp_lib_ranges_fold >= 202207L) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -36,8 +37,10 @@ using std::ranges::fold_right;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
+#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -52,27 +55,30 @@ namespace hamon
 namespace ranges
 {
 
+// 27.6.18 Fold[alg.fold]
+
 struct fold_right_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		typename T = hamon::iter_value_t<I>,
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,
-			T, Iter, F)
+			T, I, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last, T init, F f) const
-	-> hamon::decay_t<hamon::invoke_result_t<F&, hamon::iter_reference_t<Iter>, T>>
+	operator()(I first, S last, T init, F f) const
+	-> hamon::decay_t<hamon::invoke_result_t<F&, hamon::iter_reference_t<I>, T>>
 	{
-		using U = hamon::decay_t<hamon::invoke_result_t<F&, hamon::iter_reference_t<Iter>, T>>;
+		// [alg.fold]/3
+		using U = hamon::decay_t<hamon::invoke_result_t<F&, hamon::iter_reference_t<I>, T>>;
 		if (first == last)
 		{
 			return U(hamon::move(init));
 		}
 
-		Iter tail = ranges::next(first, last);
+		I tail = ranges::next(first, last);
 		U accum = hamon::invoke(f, *--tail, hamon::move(init));
 		while (first != tail)
 		{
@@ -83,15 +89,15 @@ struct fold_right_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, Range),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, R),
+		typename T = ranges::range_value_t<R>,
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,
-			T, ranges::iterator_t<Range>, F)
+			T, ranges::iterator_t<R>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, T init, F f) const
-	-> hamon::decay_t<hamon::invoke_result_t<F&, ranges::range_reference_t<Range>, T>>
+	operator()(R&& r, T init, F f) const
+	-> hamon::decay_t<hamon::invoke_result_t<F&, ranges::range_reference_t<R>, T>>
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

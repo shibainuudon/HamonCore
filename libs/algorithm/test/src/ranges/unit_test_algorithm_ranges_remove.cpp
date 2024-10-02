@@ -47,7 +47,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -66,11 +66,39 @@ inline bool test02()
 		const int y[] = { 1, 2, 3 };
 		VERIFY(ranges::equal(x, x+3, y, y+3, {}, &X::i));
 	}
+	return true;
+}
+
+struct Y { int i; int j; };
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Y const& lhs, Y const& rhs)
+{
+	return lhs.i == rhs.i && lhs.j == rhs.j;
+}
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(Y const& lhs, Y const& rhs)
+{
+	return !(lhs == rhs);
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
-		hamon::forward_list<int> x = {};
-		auto res = ranges::remove(x, 0);
-		VERIFY(res.begin() == x.end());
-		VERIFY(res.end()   == x.end());
+		Y x[] = { {1,3}, {1,2}, {1,2}, {3,2}, {1,2}, };
+		auto res = ranges::remove(x, x+5, {1,2});
+		VERIFY(res.begin() == x+2 && res.end() == x+5);
+		VERIFY(x[0] == Y{1,3});
+		VERIFY(x[1] == Y{3,2});
+	}
+	{
+		Y x[] = { {1,3}, {1,2}, {1,2}, {3,2}, {1,2}, };
+		auto res = ranges::remove(x, {1,2});
+		VERIFY(res.begin() == x+2 && res.end() == x+5);
+		VERIFY(x[0] == Y{1,3});
+		VERIFY(x[1] == Y{3,2});
 	}
 	return true;
 }
@@ -80,7 +108,19 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesRemoveTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+
+	{
+		hamon::forward_list<int> x = {};
+		auto res = hamon::ranges::remove(x, 0);
+		EXPECT_TRUE(res.begin() == x.end());
+		EXPECT_TRUE(res.end()   == x.end());
+	}
 }
 
 }	// namespace ranges_remove_test

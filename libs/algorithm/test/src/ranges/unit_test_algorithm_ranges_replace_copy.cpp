@@ -54,13 +54,13 @@ struct X
 {
 	int i;
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(const X& a, const X& b)
 	{
 		return a.i == b.i;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(const X& a, const X& b)
 	{
 		return !(a == b);
@@ -72,20 +72,20 @@ struct Y
 	int i;
 	int j;
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(const Y& a, const Y& b)
 	{
 		return a.i == b.i && a.j == b.j;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(const Y& a, const Y& b)
 	{
 		return !(a == b);
 	}
 };
 
-inline bool test03()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -109,7 +109,7 @@ inline bool test03()
 	return true;
 }
 
-inline bool test04()
+inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -133,14 +133,51 @@ inline bool test04()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test05()
+{
+	namespace ranges = hamon::ranges;
+	{
+		X const x[6] = { {2}, {2}, {6}, {8}, {10}, {8} };
+		X w[5] = {};
+		auto res = ranges::replace_copy(x, x+5, w, {8}, {9});
+		VERIFY(res.in  == x+5);
+		VERIFY(res.out == w+5);
+		X const y[5] = { {2}, {2}, {6}, {9}, {10} };
+		VERIFY(ranges::equal(w, y));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test06()
+{
+	namespace ranges = hamon::ranges;
+	{
+		Y const x[] = { {3,2}, {2,4}, {3,6} };
+		Y w[3] = {};
+		auto res = ranges::replace_copy(x, w, {3,6}, {4,5});
+		VERIFY(res.in  == x+3);
+		VERIFY(res.out == w+3);
+		Y const y[] = { {3,2}, {2,4}, {4,5} };
+		VERIFY(ranges::equal(w, y));
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesReplaceCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test03());
 	EXPECT_TRUE(test04());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test06());
 }
 
 }	// namespace ranges_replace_copy_test

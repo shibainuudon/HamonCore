@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -24,11 +25,14 @@ using std::lower_bound;
 
 #include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.8.4.2 lower_bound[lower.bound]
 
 /**
  *	@brief		指定された要素以上の値が現れる最初の位置のイテレータを取得する
@@ -54,8 +58,11 @@ namespace hamon
  *
  *	@complexity	最大で log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T, typename Compare>
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type,
+	typename Compare>
+HAMON_CXX14_CONSTEXPR ForwardIterator
 lower_bound(ForwardIterator first, ForwardIterator last, T const& value, Compare comp)
 {
 	auto len = hamon::distance(first, last);
@@ -100,8 +107,10 @@ lower_bound(ForwardIterator first, ForwardIterator last, T const& value, Compare
  *
  *	@complexity	最大で log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR ForwardIterator
 lower_bound(ForwardIterator first, ForwardIterator last, T const& value)
 {
 	return hamon::lower_bound(

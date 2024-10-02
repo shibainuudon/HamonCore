@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -22,10 +23,13 @@ using std::find;
 
 #else
 
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.6.6 Find[alg.find]
 
 /**
  *	@brief		指定された値を検索する
@@ -42,12 +46,10 @@ namespace hamon
  *
  *	@complexity	最大で last - first 回比較を行う
  */
-template <typename InputIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR InputIterator
-find(
-	InputIterator first,
-	InputIterator last,
-	T const& value)
+template <typename InputIterator,
+	typename T = typename hamon::iterator_traits<InputIterator>::value_type>
+HAMON_CXX14_CONSTEXPR InputIterator
+find(InputIterator first, InputIterator last, T const& value)
 {
 	for (; first != last; ++first)
 	{

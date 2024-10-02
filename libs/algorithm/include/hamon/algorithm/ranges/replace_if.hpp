@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -36,6 +37,7 @@ using std::ranges::replace_if;
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
@@ -50,25 +52,24 @@ namespace hamon
 namespace ranges
 {
 
+// 27.7.5 Replace[alg.replace]
+
 struct replace_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		typename T = hamon::projected_value_t<I, Proj>,
+		typename ProjectedIter = hamon::projected<I, Proj>,
+		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last,
+		I first, S last,
 		Pred pred, T const& new_value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		Iter,
-		hamon::indirectly_writable<Iter, T const&>)
+		I,
+		hamon::indirectly_writable<I, T const&>)
 	{
 		for (; first != last; ++first)
 		{
@@ -82,20 +83,17 @@ struct replace_if_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
-		typename T,
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
 		typename Proj = hamon::identity,
-		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,
+		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, Pred pred, T const& new_value, Proj proj = {}) const
+	operator()(R&& r, Pred pred, T const& new_value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::borrowed_iterator_t<Range>,
-		hamon::indirectly_writable<ranges::iterator_t<Range>, T const&>)
+		ranges::borrowed_iterator_t<R>,
+		hamon::indirectly_writable<ranges::iterator_t<R>, T const&>)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

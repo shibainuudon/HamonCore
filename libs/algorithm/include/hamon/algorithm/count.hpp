@@ -10,7 +10,8 @@
 #include <hamon/algorithm/config.hpp>
 #include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM) && defined(HAMON_USE_STD_RANGES_ITERATOR)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -23,11 +24,13 @@ using std::count;
 
 #else
 
-#include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.6.11 Count[alg.count]
 
 /**
  *	@brief		指定された値と等値な要素の数を数える
@@ -43,11 +46,12 @@ namespace hamon
  *
  *	@complexity	正確に last - first 回の比較を行う
  */
-template <typename InputIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<InputIterator>
+template <typename InputIterator,
+	typename T = typename hamon::iterator_traits<InputIterator>::value_type>
+HAMON_CXX14_CONSTEXPR typename hamon::iterator_traits<InputIterator>::difference_type
 count(InputIterator first, InputIterator last, T const& value)
 {
-	hamon::iter_difference_t<InputIterator> ret = 0;
+	typename hamon::iterator_traits<InputIterator>::difference_type ret = 0;
 
 	for (; first != last; ++first)
 	{

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -22,10 +23,13 @@ using std::remove_copy;
 
 #else
 
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.7.8 Remove[alg.remove]
 
 /**
  *	@brief	指定された要素を取り除き、その結果を出力の範囲へコピーする
@@ -54,9 +58,9 @@ namespace hamon
 template <
 	typename InputIterator,
 	typename OutputIterator,
-	typename T
+	typename T = typename hamon::iterator_traits<InputIterator>::value_type
 >
-inline HAMON_CXX14_CONSTEXPR OutputIterator
+HAMON_CXX14_CONSTEXPR OutputIterator
 remove_copy(
 	InputIterator first,
 	InputIterator last,

@@ -27,60 +27,129 @@ HAMON_CONSTEXPR bool pred1(int x, int y)
 
 struct pred2
 {
-	HAMON_CONSTEXPR bool operator()(int x, int y) const
+	template <typename T>
+	HAMON_CONSTEXPR bool operator()(T x, T y) const
 	{
-		return x > y;
+		return y < x;
 	}
 };
 
+struct S
+{
+	int x;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(S const& lhs, S const& rhs)
+{
+	return lhs.x < rhs.x;
+}
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test01()
+{
+	int const a[] { 1,2,2,3,3,3,4,4,5,5,5 };
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 1);
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 0));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 1));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 3, pred1);
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 3));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 6));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 5);
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 8));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 11));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 0);
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 0));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 0));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 10);
+		VERIFY(ret.first  == hamon::end(a));
+		VERIFY(ret.second == hamon::end(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
+{
+	hamon::array<int, 9> const a {{ 5,5,4,2,2,2,1,0,0 }};
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 2, pred2());
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 3));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 6));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), -1, pred2());
+		VERIFY(ret.first  == hamon::end(a));
+		VERIFY(ret.second == hamon::end(a));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 6, pred2());
+		VERIFY(ret.first  == hamon::begin(a));
+		VERIFY(ret.second == hamon::begin(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	S const a[] { {1},{2},{2},{3},{3},{3}, };
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {1});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 0));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 1));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {2});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 1));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 3));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {3});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 3));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 6));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	S const a[] { {3},{2},{2},{2},{1},{1}, };
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {1}, pred2{});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 4));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 6));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {2}, pred2{});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 1));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 4));
+	}
+	{
+		auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), {3}, pred2{});
+		VERIFY(ret.first  == hamon::next(hamon::begin(a), 0));
+		VERIFY(ret.second == hamon::next(hamon::begin(a), 1));
+	}
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, EqualRangeTest)
 {
-	{
-		HAMON_STATIC_CONSTEXPR const int a[] { 1,2,2,3,3,3,4,4,5,5,5 };
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 1);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 0));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 1));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 3, pred1);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 3));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 6));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 5);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 8));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 11));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 0);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 0));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 0));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 10);
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::end(a));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::end(a));
-		}
-	}
-	{
-		HAMON_STATIC_CONSTEXPR hamon::array<int, 9> a {{ 5,5,4,2,2,2,1,0,0 }};
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 2, pred2());
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::next(hamon::begin(a), 3));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::next(hamon::begin(a), 6));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), -1, pred2());
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::end(a));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::end(a));
-		}
-		{
-			HAMON_CXX14_CONSTEXPR auto ret = hamon::equal_range(hamon::begin(a), hamon::end(a), 6, pred2());
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.first  == hamon::begin(a));
-			HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ret.second == hamon::begin(a));
-		}
-	}
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+
 	{
 		// ソートされていなくても区分化されていれば良い
 		const hamon::vector<int> a { 2,1,2,3,3,4,7,5,5 };

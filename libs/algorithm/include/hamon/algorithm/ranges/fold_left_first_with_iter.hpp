@@ -59,6 +59,8 @@ namespace hamon
 namespace ranges
 {
 
+// 27.6.18 Fold[alg.fold]
+
 template <typename I, typename T>
 using fold_left_first_with_iter_result = ranges::in_value_result<I, T>;
 
@@ -66,6 +68,7 @@ struct fold_left_first_with_iter_fn
 {
 private:
 	template <typename O, typename I, typename S, typename F,
+		// [alg.fold]/9
 		typename U = decltype(ranges::fold_left(
 			hamon::declval<I>(),
 			hamon::declval<S>(),
@@ -77,6 +80,7 @@ private:
 	HAMON_CXX14_CONSTEXPR Ret
 	impl(I&& first, S&& last, F f) const
 	{
+		// [alg.fold]/10
 		if (first == last)
 		{
 			return Ret{hamon::move(first), hamon::optional<U>()};
@@ -93,41 +97,41 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_left_foldable,
-			hamon::iter_value_t<Iter>, Iter, F)
+			hamon::iter_value_t<I>, I, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last, F f) const
+	operator()(I first, S last, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		decltype(impl<Iter>(
+		decltype(impl<I>(
 			hamon::move(first), hamon::move(last), hamon::ref(f))),
 		hamon::constructible_from<
-			hamon::iter_value_t<Iter>,
-			hamon::iter_reference_t<Iter>>)
+			hamon::iter_value_t<I>,
+			hamon::iter_reference_t<I>>)
 	{
-		return impl<Iter>(
+		return impl<I>(
 			hamon::move(first), hamon::move(last), hamon::ref(f));
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_left_foldable,
-			ranges::range_value_t<Range>, ranges::iterator_t<Range>, F)
+			ranges::range_value_t<R>, ranges::iterator_t<R>, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, F f) const
+	operator()(R&& r, F f) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		decltype(impl<ranges::borrowed_iterator_t<Range>>(
+		decltype(impl<ranges::borrowed_iterator_t<R>>(
 			ranges::begin(r), ranges::end(r), hamon::ref(f))),
 		hamon::constructible_from<
-			ranges::range_value_t<Range>,
-			ranges::range_reference_t<Range>>)
+			ranges::range_value_t<R>,
+			ranges::range_reference_t<R>>)
 	{
-		return impl<ranges::borrowed_iterator_t<Range>>(
+		return impl<ranges::borrowed_iterator_t<R>>(
 			ranges::begin(r), ranges::end(r), hamon::ref(f));
 	}
 };

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -23,11 +24,14 @@ using std::remove;
 #else
 
 #include <hamon/algorithm/find.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.7.8 Remove[alg.remove]
 
 /**
  *	@brief		指定された要素を取り除く
@@ -55,8 +59,9 @@ namespace hamon
  *
  *	@see	remove_erase
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
+template <typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR ForwardIterator
 remove(
 	ForwardIterator first,
 	ForwardIterator last,

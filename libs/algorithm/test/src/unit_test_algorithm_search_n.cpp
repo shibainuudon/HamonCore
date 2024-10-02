@@ -20,32 +20,98 @@ namespace hamon_algorithm_test
 namespace search_n_test
 {
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test01()
+{
+	const int a[] = { 1,2,3,2,1,3,3,2,3,3,1 };
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 0, 3);
+		VERIFY(it == hamon::begin(a));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 1, 3);
+		VERIFY(it == hamon::next(hamon::begin(a), 2));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 2, 3);
+		VERIFY(it == hamon::next(hamon::begin(a), 5));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 3, 3);
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
+{
+	const hamon::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 0, 3);
+		VERIFY(it == hamon::begin(a));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 1, 3);
+		VERIFY(it == hamon::next(hamon::begin(a), 2));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 2, 3);
+		VERIFY(it == hamon::next(hamon::begin(a), 5));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 3, 3);
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	Point const a[]
+	{
+		{1, 2}, {2, 1}, {2, 1}, {1, 1},
+	};
+
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 0, {1,3});
+		VERIFY(it == hamon::begin(a));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 1, {1,3});
+		VERIFY(it == hamon::end(a));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 2, {2,1});
+		VERIFY(it == hamon::next(hamon::begin(a), 1));
+	}
+	{
+		auto it = hamon::search_n(hamon::begin(a), hamon::end(a), 3, {2,1});
+		VERIFY(it == hamon::end(a));
+	}
+	return true;
+}
+
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, SearchNTest)
 {
-	{
-		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,2,1,3,3,2,3,3,1 };
-		HAMON_CXX14_CONSTEXPR const auto it =
-			hamon::search_n(hamon::begin(a), hamon::end(a), 0, 3);
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::begin(a));
-	}
-	{
-		HAMON_STATIC_CONSTEXPR const hamon::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
-		HAMON_CXX14_CONSTEXPR const auto it =
-			hamon::search_n(hamon::begin(a), hamon::end(a), 1, 3);
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 2));
-	}
-	{
-		HAMON_STATIC_CONSTEXPR const int a[] = { 1,2,3,2,1,3,3,2,3,3,1 };
-		HAMON_CXX14_CONSTEXPR const auto it =
-			hamon::search_n(hamon::begin(a), hamon::end(a), 2, 3);
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::next(hamon::begin(a), 5));
-	}
-	{
-		HAMON_STATIC_CONSTEXPR const hamon::array<int, 11> a = {{ 1,2,3,2,1,3,3,2,3,3,1 }};
-		HAMON_CXX14_CONSTEXPR const auto it =
-			hamon::search_n(hamon::begin(a), hamon::end(a), 3, 3);
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(it == hamon::end(a));
-	}
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+
 	{
 		const hamon::vector<int> a = { 1,2,3,2,2,1,2,2,2,3,4 };
 		auto const it = hamon::search_n(hamon::begin(a), hamon::end(a), 1, 2);

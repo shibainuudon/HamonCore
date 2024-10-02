@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -24,6 +25,7 @@ using std::search_n;
 
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
@@ -165,6 +167,8 @@ search_n_impl(
 
 }	// namespace detail
 
+// 27.6.15 Search[alg.search]
+
 /**
  *	@brief	あるシーケンスの中から、特定のサブシーケンスを探す
  *
@@ -192,10 +196,10 @@ search_n_impl(
 template <
 	typename ForwardIterator,
 	typename Size,
-	typename T,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type,
 	typename BinaryPredicate
 >
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
+HAMON_CXX14_CONSTEXPR ForwardIterator
 search_n(
 	ForwardIterator first,
 	ForwardIterator last,
@@ -233,9 +237,9 @@ search_n(
 template <
 	typename ForwardIterator,
 	typename Size,
-	typename T
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type
 >
-inline HAMON_CXX14_CONSTEXPR ForwardIterator
+HAMON_CXX14_CONSTEXPR ForwardIterator
 search_n(
 	ForwardIterator first,
 	ForwardIterator last,

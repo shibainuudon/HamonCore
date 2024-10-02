@@ -19,7 +19,6 @@ namespace ranges_count_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-
 inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	namespace ranges = hamon::ranges;
@@ -40,7 +39,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 struct X { int i; };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 
@@ -71,7 +70,18 @@ inline bool test02()
 
 struct Y { int i; int j; };
 
-inline bool test03()
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Y const& lhs, Y const& rhs)
+{
+	return lhs.i == rhs.i && lhs.j == rhs.j;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(Y const& lhs, Y const& rhs)
+{
+	return !(lhs == rhs);
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -82,13 +92,34 @@ inline bool test03()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	namespace ranges = hamon::ranges;
+
+	Y y[] = { {1,2}, {2,4}, {3,6}, {1,6} };
+
+	VERIFY(ranges::count(ranges::begin(y), ranges::end(y), {1,2}) == 1);
+	VERIFY(ranges::count(ranges::begin(y), ranges::end(y), {1,4}) == 0);
+
+	VERIFY(ranges::count(y, {1,2}) == 1);
+	VERIFY(ranges::count(y, {1,4}) == 0);
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesCountTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
 	EXPECT_TRUE(test03());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_count_test

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -40,6 +41,7 @@ using std::ranges::remove_copy;
 #include <hamon/iterator/concepts/indirectly_copyable.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -56,28 +58,30 @@ namespace hamon
 namespace ranges
 {
 
-template <typename Iter, typename Out>
-using remove_copy_result = in_out_result<Iter, Out>;
+// 27.7.8 Remove[alg.remove]
+
+template <typename I, typename O>
+using remove_copy_result = in_out_result<I, O>;
 
 struct remove_copy_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		typename T,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, O),
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<I, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last, Out result,
+		I first, S last, O result,
 		T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		remove_copy_result<Iter HAMON_PP_COMMA() Out>,
+		remove_copy_result<I HAMON_PP_COMMA() O>,
 		HAMON_CONCEPTS_AND(
-			hamon::indirectly_copyable<Iter HAMON_PP_COMMA() Out>,
+			hamon::indirectly_copyable<I HAMON_PP_COMMA() O>,
 			hamon::indirect_binary_predicate<
 				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<Iter HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				hamon::projected<I HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
 				T const*>
 		))
 	{
@@ -94,22 +98,22 @@ struct remove_copy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		typename T,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, O),
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Range&& r, Out result,
+		R&& r, O result,
 		T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		remove_copy_result<
-			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
+			ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
 		HAMON_CONCEPTS_AND(
-			hamon::indirectly_copyable<ranges::iterator_t<Range> HAMON_PP_COMMA() Out>,
+			hamon::indirectly_copyable<ranges::iterator_t<R> HAMON_PP_COMMA() O>,
 			hamon::indirect_binary_predicate<
 				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<R> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
 				T const*>))
 	{
 		return (*this)(

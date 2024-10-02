@@ -49,29 +49,32 @@ namespace ranges
 namespace detail
 {
 
+// 27.6.4 Contains[alg.contains]
+
 struct contains_subrange_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter1),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter2),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
+		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I1),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I1, S1),
+		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I2),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I2, S2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(
-		Iter1 first1, Sent1 last1,
-		Iter2 first2, Sent2 last2,
+		I1 first1, S1 last1,
+		I2 first2, S2 last2,
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirectly_comparable<
-			Iter1, Iter2, Pred, Proj1, Proj2>)
+			I1, I2, Pred, Proj1, Proj2>)
 	{
+		// [alg.contains]/2
 		return (first2 == last2) ||
 			!ranges::search(
 				first1, last1,
@@ -80,23 +83,23 @@ struct contains_subrange_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range1),
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range2),
+		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R1),
+		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(
-		Range1&& r1, Range2&& r2,
+		R1&& r1, R2&& r2,
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirectly_comparable<
-			ranges::iterator_t<Range1>,
-			ranges::iterator_t<Range2>,
+			ranges::iterator_t<R1>,
+			ranges::iterator_t<R2>,
 			Pred, Proj1, Proj2>)
 	{
 		return (*this)(

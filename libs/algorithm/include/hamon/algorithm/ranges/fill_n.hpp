@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -27,10 +28,12 @@ using std::ranges::fill_n;
 
 #else
 
+#include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
+#include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_scalar.hpp>
 #include <hamon/utility/move.hpp>
@@ -41,6 +44,8 @@ namespace hamon
 
 namespace ranges
 {
+
+// 27.7.6 Fill[alg.fill]
 
 struct fill_n_fn
 {
@@ -85,11 +90,14 @@ private:
 
 public:
 	template <
-		typename T,
-		HAMON_CONSTRAINED_PARAM(hamon::output_iterator, T const&, Out)
+		typename O,
+		typename T = hamon::iter_value_t<O>
 	>
-	HAMON_CXX14_CONSTEXPR Out operator()(
-		Out first, hamon::iter_difference_t<Out> n, T const& value) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		O first, hamon::iter_difference_t<O> n, T const& value) const
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+		O,
+		hamon::output_iterator<O, T const&>)
 	{
 		if (n <= 0)
 		{

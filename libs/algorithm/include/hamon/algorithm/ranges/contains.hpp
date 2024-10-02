@@ -9,7 +9,8 @@
 
 #include <algorithm>
 
-#if defined(__cpp_lib_ranges_contains) && (__cpp_lib_ranges_contains >= 202207L)
+#if defined(__cpp_lib_ranges_contains) && (__cpp_lib_ranges_contains >= 202207L) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 namespace hamon
 {
@@ -34,6 +35,7 @@ using std::ranges::contains;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -50,39 +52,42 @@ namespace ranges
 namespace detail
 {
 
+// 27.6.4 Contains[alg.contains]
+
 struct contains_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<I, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Iter first, Sent last, T const& value, Proj proj = {}) const
+	operator()(I first, S last, T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
-			hamon::projected<Iter, Proj>,
+			hamon::projected<I, Proj>,
 			T const*
 		>)
 	{
+		// [alg.contains]/1
 		return ranges::find(hamon::move(first), last, value, proj) != last;
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		typename T,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
+		typename Proj = hamon::identity,
+		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>
 	HAMON_CXX14_CONSTEXPR auto
-	operator()(Range&& r, T const& value, Proj proj = {}) const
+	operator()(R&& r, T const& value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
+			hamon::projected<ranges::iterator_t<R>, Proj>,
 			T const*
 		>)
 	{

@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -26,12 +27,15 @@ using std::equal_range;
 #include <hamon/algorithm/upper_bound.hpp>
 #include <hamon/iterator/advance.hpp>
 #include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.8.4.4 equal_range[equal.range]
 
 /**
  *	@brief		lower_bound()とupper_bound()の結果を組で取得する
@@ -52,8 +56,11 @@ namespace hamon
  *
  *	@complexity	最大で 2 * log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T, typename Compare>
-inline HAMON_CXX14_CONSTEXPR
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type,
+	typename Compare>
+HAMON_CXX14_CONSTEXPR
 hamon::pair<ForwardIterator, ForwardIterator>
 equal_range(
 	ForwardIterator first,
@@ -108,8 +115,10 @@ equal_range(
  *
  *	@complexity	最大で 2 * log2(last - first) + O(1) 回の比較を行う
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR
+template <
+	typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR
 hamon::pair<ForwardIterator, ForwardIterator>
 equal_range(
 	ForwardIterator first,

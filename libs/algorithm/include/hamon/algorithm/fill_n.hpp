@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -22,10 +23,13 @@ using std::fill_n;
 
 #else
 
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 27.7.6 Fill[alg.fill]
 
 /**
  *	@brief		指定された値を出力の範囲に指定された個数書き込む
@@ -51,9 +55,9 @@ namespace hamon
 template <
 	typename OutputIterator,
 	typename Size,
-	typename T
+	typename T = typename hamon::iterator_traits<OutputIterator>::value_type
 >
-inline HAMON_CXX14_CONSTEXPR OutputIterator
+HAMON_CXX14_CONSTEXPR OutputIterator
 fill_n(OutputIterator first, Size n, T const& value)
 {
 	while (n-- > 0)

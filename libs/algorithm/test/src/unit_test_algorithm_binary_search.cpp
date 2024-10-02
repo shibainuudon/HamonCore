@@ -26,48 +26,105 @@ HAMON_CONSTEXPR bool pred1(int x, int y)
 
 struct pred2
 {
-	HAMON_CONSTEXPR bool operator()(int x, int y) const
+	template <typename T>
+	HAMON_CONSTEXPR bool operator()(T x, T y) const
 	{
-		return x > y;
+		return y < x;
 	}
 };
 
-GTEST_TEST(AlgorithmTest, BinarySearchTest)
+struct S
+{
+	int x;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(S const& lhs, S const& rhs)
+{
+	return lhs.x < rhs.x;
+}
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
-		HAMON_STATIC_CONSTEXPR const int a[] { 1,2,3,4,5 };
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 5));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6));
+		int const a[] { 1,2,3,4,5 };
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 1)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 4)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 5)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 0)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 6)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR const int a[] { 1,1,2,3,3,3,4,4,5 };
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred1));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred1));
+		int const a[] { 1,1,2,3,3,3,4,4,5 };
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred1)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred1)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred1)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred1)));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred1)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred1)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred1)));
+	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
+{
+	{
+		hamon::array<int,5> const a {{ 3,1,4,6,5 }};
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 4)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 0)));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 6)));
 	}
 	{
-		HAMON_STATIC_CONSTEXPR hamon::array<int,5> a {{ 3,1,4,6,5 }};
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6));
+		hamon::array<int,5> const a {{ 5,4,3,2,1 }};
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred2())));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred2())));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred2())));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred2())));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred2())));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred2())));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred2())));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
 	{
-		HAMON_STATIC_CONSTEXPR hamon::array<int,5> a {{ 5,4,3,2,1 }};
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 2, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 3, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 4, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 5, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 0, pred2()));
-		HAMON_CXX14_CONSTEXPR_EXPECT_FALSE(hamon::binary_search(hamon::begin(a), hamon::end(a), 6, pred2()));
+		S const a[] { {1},{1},{2},{3},{3},{3}, };
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {1})));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {2})));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {3})));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), {0})));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), {4})));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test04()
+{
+	{
+		S const a[] { {3},{2},{2},{2},{1},{1}, };
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {1}, pred2{})));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {2}, pred2{})));
+		VERIFY( (hamon::binary_search(hamon::begin(a), hamon::end(a), {3}, pred2{})));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), {0}, pred2{})));
+		VERIFY(!(hamon::binary_search(hamon::begin(a), hamon::end(a), {4}, pred2{})));
+	}
+	return true;
+}
+
+#undef VERIFY
+
+GTEST_TEST(AlgorithmTest, BinarySearchTest)
+{
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+
 	{
 		const hamon::vector<int> a { 1,2,3,4,5 };
 		EXPECT_TRUE (hamon::binary_search(hamon::begin(a), hamon::end(a), 1, [](int x, int y) { return x < y; }));

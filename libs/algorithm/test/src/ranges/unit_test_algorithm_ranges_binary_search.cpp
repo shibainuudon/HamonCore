@@ -5,6 +5,8 @@
  */
 
 #include <hamon/algorithm/ranges/binary_search.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/forward_list.hpp>
 #include <gtest/gtest.h>
@@ -51,7 +53,38 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(X const& lhs, X const& rhs)
+{
+	return lhs.i == rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator!=(X const& lhs, X const& rhs)
+{
+	return lhs.i != rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<(X const& lhs, X const& rhs)
+{
+	return lhs.i < rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>(X const& lhs, X const& rhs)
+{
+	return lhs.i > rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator<=(X const& lhs, X const& rhs)
+{
+	return lhs.i <= rhs.i;
+}
+inline HAMON_CXX11_CONSTEXPR bool
+operator>=(X const& lhs, X const& rhs)
+{
+	return lhs.i >= rhs.i;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -75,9 +108,24 @@ inline bool test02()
 		VERIFY(true  == ranges::binary_search(x, 4, pred, &X::i));
 		VERIFY(false == ranges::binary_search(x, 3, pred, &X::i));
 	}
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
-		hamon::forward_list<int> x {};
-		VERIFY(false == ranges::binary_search(x, 0));
+		X const x[] { {1},{1},{2},{3},{3},{3}, };
+		VERIFY( (ranges::binary_search(ranges::begin(x), ranges::end(x), {1})));
+		VERIFY( (ranges::binary_search(ranges::begin(x), ranges::end(x), {2})));
+		VERIFY( (ranges::binary_search(ranges::begin(x), ranges::end(x), {3})));
+		VERIFY(!(ranges::binary_search(ranges::begin(x), ranges::end(x), {0})));
+		VERIFY(!(ranges::binary_search(ranges::begin(x), ranges::end(x), {4})));
+		VERIFY( (ranges::binary_search(x, {1})));
+		VERIFY( (ranges::binary_search(x, {2})));
+		VERIFY( (ranges::binary_search(x, {3})));
+		VERIFY(!(ranges::binary_search(x, {0})));
+		VERIFY(!(ranges::binary_search(x, {4})));
 	}
 	return true;
 }
@@ -87,7 +135,17 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesBinarySearchTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)
 	EXPECT_TRUE(test02());
+#else
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#endif
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+
+	{
+		hamon::forward_list<int> x {};
+		EXPECT_TRUE(false == hamon::ranges::binary_search(x, 0));
+	}
 }
 
 }	// namespace ranges_binary_search_test

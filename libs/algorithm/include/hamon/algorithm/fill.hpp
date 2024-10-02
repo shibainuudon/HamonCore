@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_ALGORITHM)
+#if defined(HAMON_USE_STD_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -24,6 +25,7 @@ using std::fill;
 
 #include <hamon/algorithm/fill_n.hpp>
 #include <hamon/iterator/iterator_category.hpp>
+#include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/config.hpp>
@@ -35,7 +37,7 @@ namespace detail
 {
 
 template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 fill_impl(
 	ForwardIterator first,
 	ForwardIterator last,
@@ -49,7 +51,7 @@ fill_impl(
 }
 
 template <typename RandomAccessIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 fill_impl(
 	RandomAccessIterator first,
 	RandomAccessIterator last,
@@ -60,6 +62,8 @@ fill_impl(
 }
 
 }	// namespace detail
+
+// 27.7.6 Fill[alg.fill]
 
 /**
  *	@brief		指定された値を出力の範囲に書き込む
@@ -77,8 +81,9 @@ fill_impl(
  *
  *	@complexity	正確に last - first 回の代入を行う
  */
-template <typename ForwardIterator, typename T>
-inline HAMON_CXX14_CONSTEXPR void
+template <typename ForwardIterator,
+	typename T = typename hamon::iterator_traits<ForwardIterator>::value_type>
+HAMON_CXX14_CONSTEXPR void
 fill(ForwardIterator first, ForwardIterator last, T const& value)
 {
 	using Category = hamon::iterator_category<ForwardIterator>*;

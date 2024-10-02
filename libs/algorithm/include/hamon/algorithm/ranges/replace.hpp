@@ -9,7 +9,8 @@
 
 #include <hamon/algorithm/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ALGORITHM)
+#if defined(HAMON_USE_STD_RANGES_ALGORITHM) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 #include <algorithm>
 
@@ -38,6 +39,7 @@ using std::ranges::replace;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/indirect_binary_predicate.hpp>
 #include <hamon/iterator/projected.hpp>
+#include <hamon/iterator/projected_value_t.hpp>
 #include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
@@ -53,27 +55,29 @@ namespace hamon
 namespace ranges
 {
 
+// 27.7.5 Replace[alg.replace]
+
 struct replace_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		typename T1,
-		typename T2,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		typename Proj = hamon::identity,
+		typename T1 = hamon::projected_value_t<I, Proj>,
+		typename T2 = T1
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Iter first, Sent last,
+		I first, S last,
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		Iter,
+		I,
 		HAMON_CONCEPTS_AND(
-			hamon::indirectly_writable<Iter HAMON_PP_COMMA() T2 const&>,
+			hamon::indirectly_writable<I HAMON_PP_COMMA() T2 const&>,
 			hamon::indirect_binary_predicate<
 				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<Iter HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				hamon::projected<I HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
 				T1 const*>))
 	{
 		for (; first != last; ++first)
@@ -88,23 +92,23 @@ struct replace_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
-		typename T1,
-		typename T2,
-		typename Proj = hamon::identity
+		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		typename Proj = hamon::identity,
+		typename T1 = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
+		typename T2 = T1
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
-		Range&& r,
+		R&& r,
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
-		ranges::borrowed_iterator_t<Range>,
+		ranges::borrowed_iterator_t<R>,
 		HAMON_CONCEPTS_AND(
-			hamon::indirectly_writable<ranges::iterator_t<Range> HAMON_PP_COMMA() T2 const&>,
+			hamon::indirectly_writable<ranges::iterator_t<R> HAMON_PP_COMMA() T2 const&>,
 			hamon::indirect_binary_predicate<
 				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
+				hamon::projected<ranges::iterator_t<R> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
 				T1 const*>))
 	{
 		return (*this)(
