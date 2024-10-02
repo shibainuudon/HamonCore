@@ -38,40 +38,42 @@ namespace hamon
 namespace ranges
 {
 
-template <typename Iter>
+// 27.5 Algorithm result types[algorithms.results]
+
+template <typename I>
 struct in_found_result
 {
-	HAMON_NO_UNIQUE_ADDRESS Iter in;
+	HAMON_NO_UNIQUE_ADDRESS I in;
 	bool found;
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename Iter2>
-	requires hamon::convertible_to<Iter const&, Iter2>
+	template <typename I2>
+	requires hamon::convertible_to<I const&, I2>
 #else
-	template <typename Iter2,
+	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<Iter const&, Iter2>::value
+			hamon::convertible_to<I const&, I2>::value
 		>
 	>
 #endif
 	HAMON_CXX14_CONSTEXPR
-	operator in_found_result<Iter2>() const&
+	operator in_found_result<I2>() const&
 	{
 		return { in, found };
 	}
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename Iter2>
-	requires hamon::convertible_to<Iter, Iter2>
+	template <typename I2>
+	requires hamon::convertible_to<I, I2>
 #else
-	template <typename Iter2,
+	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<Iter, Iter2>::value
+			hamon::convertible_to<I, I2>::value
 		>
 	>
 #endif
 	HAMON_CXX14_CONSTEXPR
-	operator in_found_result<Iter2>()&&
+	operator in_found_result<I2>()&&
 	{
 		return { hamon::move(in), found };
 	}

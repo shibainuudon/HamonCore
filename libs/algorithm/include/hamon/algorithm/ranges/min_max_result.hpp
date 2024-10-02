@@ -38,6 +38,8 @@ namespace hamon
 namespace ranges
 {
 
+// 27.5 Algorithm result types[algorithms.results]
+
 template <typename T>
 struct min_max_result
 {
@@ -54,7 +56,8 @@ struct min_max_result
 		>
 	>
 #endif
-	HAMON_CXX14_CONSTEXPR operator min_max_result<T2>() const&
+	HAMON_CXX14_CONSTEXPR
+	operator min_max_result<T2>() const&
 	{
 		return { min, max };
 	}
@@ -69,7 +72,8 @@ struct min_max_result
 		>
 	>
 #endif
-	HAMON_CXX14_CONSTEXPR operator min_max_result<T2>() &&
+	HAMON_CXX14_CONSTEXPR
+	operator min_max_result<T2>() &&
 	{
 		return { hamon::move(min), hamon::move(max) };
 	}

@@ -39,53 +39,55 @@ namespace hamon
 namespace ranges
 {
 
-template <typename Iter1, typename Iter2, typename Out>
+// 27.5 Algorithm result types[algorithms.results]
+
+template <typename I1, typename I2, typename O>
 struct in_in_out_result
 {
-	HAMON_NO_UNIQUE_ADDRESS Iter1 in1;
-	HAMON_NO_UNIQUE_ADDRESS Iter2 in2;
-	HAMON_NO_UNIQUE_ADDRESS Out   out;
+	HAMON_NO_UNIQUE_ADDRESS I1 in1;
+	HAMON_NO_UNIQUE_ADDRESS I2 in2;
+	HAMON_NO_UNIQUE_ADDRESS O  out;
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename IIter1, typename IIter2, typename OOut>
+	template <typename II1, typename II2, typename OO>
 	requires
-		hamon::convertible_to<Iter1 const&, IIter1> &&
-		hamon::convertible_to<Iter2 const&, IIter2> &&
-		hamon::convertible_to<Out const&, OOut>
+		hamon::convertible_to<I1 const&, II1> &&
+		hamon::convertible_to<I2 const&, II2> &&
+		hamon::convertible_to<O const&, OO>
 #else
 	template <
-		typename IIter1, typename IIter2, typename OOut,
+		typename II1, typename II2, typename OO,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<Iter1 const&, IIter1>,
-			hamon::convertible_to<Iter2 const&, IIter2>,
-			hamon::convertible_to<Out const&, OOut>
+			hamon::convertible_to<I1 const&, II1>,
+			hamon::convertible_to<I2 const&, II2>,
+			hamon::convertible_to<O const&, OO>
 		>::value>
 	>
 #endif
 	HAMON_CXX14_CONSTEXPR
-	operator in_in_out_result<IIter1, IIter2, OOut>() const&
+	operator in_in_out_result<II1, II2, OO>() const&
 	{
 		return { in1, in2, out };
 	}
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename IIter1, typename IIter2, typename OOut>
+	template <typename II1, typename II2, typename OO>
 	requires
-		hamon::convertible_to<Iter1, IIter1> &&
-		hamon::convertible_to<Iter2, IIter2> &&
-		hamon::convertible_to<Out, OOut>
+		hamon::convertible_to<I1, II1> &&
+		hamon::convertible_to<I2, II2> &&
+		hamon::convertible_to<O, OO>
 #else
 	template <
-		typename IIter1, typename IIter2, typename OOut,
+		typename II1, typename II2, typename OO,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<Iter1, IIter1>,
-			hamon::convertible_to<Iter2, IIter2>,
-			hamon::convertible_to<Out, OOut>
+			hamon::convertible_to<I1, II1>,
+			hamon::convertible_to<I2, II2>,
+			hamon::convertible_to<O, OO>
 		>::value>
 	>
 #endif
 	HAMON_CXX14_CONSTEXPR
-	operator in_in_out_result<IIter1, IIter2, OOut>() &&
+	operator in_in_out_result<II1, II2, OO>() &&
 	{
 		return { hamon::move(in1), hamon::move(in2), hamon::move(out) };
 	}

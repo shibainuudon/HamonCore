@@ -39,44 +39,48 @@ namespace hamon
 namespace ranges
 {
 
-template <typename Iter, typename F>
+// 27.5 Algorithm result types[algorithms.results]
+
+template <typename I, typename F>
 struct in_fun_result
 {
-	HAMON_NO_UNIQUE_ADDRESS Iter in;
-	HAMON_NO_UNIQUE_ADDRESS F    fun;
+	HAMON_NO_UNIQUE_ADDRESS I in;
+	HAMON_NO_UNIQUE_ADDRESS F fun;
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename Iter2, typename F2>
+	template <typename I2, typename F2>
 	requires
-		hamon::convertible_to<Iter const&, Iter2> &&
+		hamon::convertible_to<I const&, I2> &&
 		hamon::convertible_to<F const&, F2>
 #else
-	template <typename Iter2, typename F2,
+	template <typename I2, typename F2,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<Iter const&, Iter2>,
+			hamon::convertible_to<I const&, I2>,
 			hamon::convertible_to<F const&, F2>
 		>::value>
 	>
 #endif
-	HAMON_CXX14_CONSTEXPR operator in_fun_result<Iter2, F2>() const&
+	HAMON_CXX14_CONSTEXPR
+	operator in_fun_result<I2, F2>() const&
 	{
 		return { in, fun };
 	}
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	template <typename Iter2, typename F2>
+	template <typename I2, typename F2>
 	requires
-		hamon::convertible_to<Iter, Iter2> &&
+		hamon::convertible_to<I, I2> &&
 		hamon::convertible_to<F, F2>
 #else
-	template <typename Iter2, typename F2,
+	template <typename I2, typename F2,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<Iter, Iter2>,
+			hamon::convertible_to<I, I2>,
 			hamon::convertible_to<F, F2>
 		>::value>
 	>
 #endif
-	HAMON_CXX14_CONSTEXPR operator in_fun_result<Iter2, F2>() &&
+	HAMON_CXX14_CONSTEXPR
+	operator in_fun_result<I2, F2>() &&
 	{
 		return { hamon::move(in), hamon::move(fun) };
 	}
