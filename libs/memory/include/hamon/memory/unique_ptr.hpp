@@ -322,7 +322,7 @@ public:
 
 private:
 	pointer			m_ptr;
-	deleter_type	m_deleter;
+	HAMON_NO_UNIQUE_ADDRESS deleter_type m_deleter;
 };
 
 // 20.3.1.4 unique_ptr for array objects with a runtime length[unique.ptr.runtime]
@@ -615,7 +615,7 @@ public:
 
 private:
 	pointer			m_ptr;
-	deleter_type	m_deleter;
+	HAMON_NO_UNIQUE_ADDRESS deleter_type m_deleter;
 };
 
 // 20.3.1.6 Specialized algorithms[unique.ptr.special]
