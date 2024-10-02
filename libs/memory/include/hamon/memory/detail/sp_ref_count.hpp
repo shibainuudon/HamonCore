@@ -233,7 +233,7 @@ private:
 
 private:
 	T m_ptr;
-	D m_deleter;
+	HAMON_NO_UNIQUE_ADDRESS D m_deleter;
 };
 
 template <typename T, typename D, typename A>
@@ -300,8 +300,8 @@ private:
 
 private:
 	T m_ptr;
-	D m_deleter;
-	Alloc m_alloc;
+	HAMON_NO_UNIQUE_ADDRESS D m_deleter;
+	HAMON_NO_UNIQUE_ADDRESS Alloc m_alloc;
 };
 
 HAMON_WARNING_PUSH()
