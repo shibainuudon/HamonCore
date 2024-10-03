@@ -134,6 +134,35 @@ HAMON_CXX20_CONSTEXPR bool test3()
 	return true;
 }
 
+struct Point
+{
+	int x;
+	int y;
+};
+
+inline HAMON_CXX11_CONSTEXPR bool
+operator==(Point const& lhs, Point const& rhs)
+{
+	return lhs.x == rhs.x && lhs.y == rhs.y;
+}
+
+HAMON_CXX20_CONSTEXPR bool test4()
+{
+	hamon::deque<Point> d;
+	d.push_back(Point{1,2});
+	d.push_back(Point{2,3});
+	d.push_back(Point{1,3});
+	d.push_back(Point{1,2});
+	d.push_back(Point{3,2});
+	auto r = hamon::erase(d, {1,2});
+	VERIFY(r == 2);
+	VERIFY(d.size() == 3);
+	VERIFY(d[0] == Point{2,3});
+	VERIFY(d[1] == Point{1,3});
+	VERIFY(d[2] == Point{3,2});
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(DequeTest, EraseTest)
@@ -141,6 +170,7 @@ GTEST_TEST(DequeTest, EraseTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test4());
 }
 
 }	// namespace erase_test

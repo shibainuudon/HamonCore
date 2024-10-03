@@ -9,7 +9,8 @@
 
 #include <list>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
+	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
 
 namespace hamon
 {
@@ -27,12 +28,15 @@ using std::erase;
 namespace hamon
 {
 
-template <typename T, typename Alloc, typename U>
-inline HAMON_CXX14_CONSTEXPR
-typename hamon::list<T, Alloc>::size_type
-erase(hamon::list<T, Alloc>& c, U const& value)
+// 24.3.11.6 Erasure[list.erasure]
+
+template <typename T, typename Allocator, typename U = T>
+HAMON_CXX14_CONSTEXPR
+typename hamon::list<T, Allocator>::size_type
+erase(hamon::list<T, Allocator>& c, U const& value)
 {
-	using elem_type = typename hamon::list<T, Alloc>::value_type;
+	// [list.erasure]/1
+	using elem_type = typename hamon::list<T, Allocator>::value_type;
 	return hamon::erase_if(c, [&](elem_type& elem) { return elem == value; });
 }
 

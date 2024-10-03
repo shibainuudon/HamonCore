@@ -8,9 +8,11 @@
 #define HAMON_STRING_ERASE_IF_HPP
 
 #include <hamon/string/config.hpp>
-#include <string>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && defined(HAMON_USE_STD_STRING)
+#if defined(HAMON_USE_STD_STRING) && \
+	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <string>
 
 namespace hamon
 {
@@ -28,8 +30,10 @@ using std::erase_if;
 namespace hamon
 {
 
+// 23.4.4.5 Erasure[string.erasure]
+
 template <typename CharT, typename Traits, typename Allocator, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
+HAMON_CXX14_CONSTEXPR
 typename hamon::basic_string<CharT, Traits, Allocator>::size_type
 erase_if(hamon::basic_string<CharT, Traits, Allocator>& str, Predicate pred)
 {

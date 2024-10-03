@@ -26,12 +26,15 @@ using std::erase_if;
 namespace hamon
 {
 
-template <typename T, typename Alloc, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
-typename hamon::list<T, Alloc>::size_type
-erase_if(hamon::list<T, Alloc>& c, Predicate pred)
+// 24.3.11.6 Erasure[list.erasure]
+
+template <typename T, typename Allocator, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename hamon::list<T, Allocator>::size_type
+erase_if(hamon::list<T, Allocator>& c, Predicate pred)
 {
 #if defined(__cpp_lib_list_remove_return_type) && (__cpp_lib_list_remove_return_type >= 201806)
+	// [list.erasure]/2
 	return c.remove_if(pred);
 #else
 	auto const sz = c.size();
