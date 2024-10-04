@@ -9,7 +9,8 @@
 
 #include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_RANGES_ITERATOR)
+#if defined(HAMON_USE_STD_RANGES_ITERATOR) && \
+	defined(__cpp_lib_move_iterator_concept) && (__cpp_lib_move_iterator_concept >= 202207L)
 
 #include <iterator>
 
