@@ -2,6 +2,10 @@
  *	@file	unit_test_forward_list_erase_if.cpp
  *
  *	@brief	erase_if のテスト
+ *
+ *	template<class T, class Allocator, class Predicate>
+ *	typename forward_list<T, Allocator>::size_type
+ *	erase_if(forward_list<T, Allocator>& c, Predicate pred);
  */
 
 #include <hamon/forward_list/erase_if.hpp>
@@ -16,10 +20,19 @@ namespace hamon_forward_list_test
 namespace erase_if_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool
-EraseIfTest()
+FORWARD_LIST_TEST_CONSTEXPR bool
+test()
 {
 	{
 		hamon::forward_list<int> v = {3,1,4,5,2};
@@ -38,12 +51,15 @@ EraseIfTest()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(ForwardListTest, EraseIfTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test());
 }
 
-#undef VERIFY
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace erase_if_test
 

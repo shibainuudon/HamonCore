@@ -7,9 +7,12 @@
 #ifndef HAMON_FORWARD_LIST_ERASE_IF_HPP
 #define HAMON_FORWARD_LIST_ERASE_IF_HPP
 
-#include <forward_list>
+#include <hamon/forward_list/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(HAMON_USE_STD_FORWARD_LIST) && \
+	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <forward_list>
 
 namespace hamon
 {
@@ -34,7 +37,9 @@ HAMON_CXX14_CONSTEXPR
 typename hamon::forward_list<T, Allocator>::size_type
 erase_if(hamon::forward_list<T, Allocator>& c, Predicate pred)
 {
-#if defined(__cpp_lib_list_remove_return_type) && (__cpp_lib_list_remove_return_type >= 201806)
+// TODO
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	\
+	defined(__cpp_lib_list_remove_return_type) && (__cpp_lib_list_remove_return_type >= 201806)
 	// [forward.list.erasure]/2
 	return c.remove_if(pred);
 #else

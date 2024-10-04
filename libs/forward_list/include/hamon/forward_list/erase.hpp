@@ -7,10 +7,13 @@
 #ifndef HAMON_FORWARD_LIST_ERASE_HPP
 #define HAMON_FORWARD_LIST_ERASE_HPP
 
-#include <forward_list>
+#include <hamon/forward_list/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
+#if defined(HAMON_USE_STD_FORWARD_LIST) && \
+	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
 	defined(__cpp_lib_algorithm_default_value_type) && (__cpp_lib_algorithm_default_value_type >= 202403L)
+
+#include <forward_list>
 
 namespace hamon
 {
