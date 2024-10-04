@@ -2,6 +2,10 @@
  *	@file	unit_test_forward_list_erase.cpp
  *
  *	@brief	erase のテスト
+ *
+ *	template<class T, class Allocator, class U = T>
+ *	typename forward_list<T, Allocator>::size_type
+ *	erase(forward_list<T, Allocator>& c, const U& value);
  */
 
 #include <hamon/forward_list/erase.hpp>
@@ -16,9 +20,18 @@ namespace hamon_forward_list_test
 namespace erase_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool test1()
+FORWARD_LIST_TEST_CONSTEXPR bool test1()
 {
 	{
 		hamon::forward_list<int> v = {3,1,4,5,2};
@@ -43,19 +56,19 @@ struct Point
 	int y;
 };
 
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 operator==(Point const& lhs, Point const& rhs)
 {
 	return lhs.x == rhs.x && lhs.y == rhs.y;
 }
 
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 operator!=(Point const& lhs, Point const& rhs)
 {
 	return !(lhs == rhs);
 }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool test2()
+FORWARD_LIST_TEST_CONSTEXPR bool test2()
 {
 	hamon::forward_list<Point> v
 	{
@@ -81,9 +94,12 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool test2()
 
 GTEST_TEST(ForwardListTest, EraseTest)
 {
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(test1());
-	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(test2());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace erase_test
 
