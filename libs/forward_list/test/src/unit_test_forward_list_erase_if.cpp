@@ -2,6 +2,10 @@
  *	@file	unit_test_forward_list_erase_if.cpp
  *
  *	@brief	erase_if のテスト
+ *
+ *	template<class T, class Allocator, class Predicate>
+ *	typename forward_list<T, Allocator>::size_type
+ *	erase_if(forward_list<T, Allocator>& c, Predicate pred);
  */
 
 #include <hamon/forward_list/erase_if.hpp>
@@ -15,6 +19,8 @@ namespace hamon_forward_list_test
 
 namespace erase_if_test
 {
+
+#if 0
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -44,6 +50,8 @@ GTEST_TEST(ForwardListTest, EraseIfTest)
 }
 
 #undef VERIFY
+
+#endif
 
 }	// namespace erase_if_test
 

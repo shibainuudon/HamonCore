@@ -32,7 +32,7 @@ using std::deque;
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
-#include <hamon/iterator/iterator_traits.hpp>
+#include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -1110,15 +1110,6 @@ public:
 		m_impl.Clear(m_allocator);
 	}
 };
-
-namespace detail
-{
-
-// [sequences.general]/2
-template <typename InputIterator>
-using iter_value_type = typename hamon::iterator_traits<InputIterator>::value_type;  // exposition only
-
-}	// namespace detail
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
