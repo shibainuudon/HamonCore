@@ -681,6 +681,10 @@
 #if (_MSC_FULL_VER >= 192930154)
 #endif
 
+// Visual Studio 2019 Version 16.11.41
+#if (_MSC_FULL_VER >= 192930156)
+#endif
+
 // Visual Studio 2022 Preview version 17.0.0 Preview 1.(0-1)
 #if (_MSC_FULL_VER >= 192930130)
 #endif
@@ -1074,6 +1078,10 @@
 
 // Visual Studio 2022 Version 17.11.(0-4)
 #if (_MSC_FULL_VER >= 194134120)
+#endif
+
+// Visual Studio 2022 Version 17.11.5
+#if (_MSC_FULL_VER >= 194134123)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
