@@ -13,6 +13,7 @@
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "iterator_test.hpp"
 
 namespace hamon_forward_list_test
 {
@@ -20,27 +21,163 @@ namespace hamon_forward_list_test
 namespace assign_test
 {
 
-struct S1
-{
-	S1() = delete;
-};
-
-struct S2
-{
-	S2() {}
-};
-
-struct S3
-{
-	int x;
-	float y;
-};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+template <typename T, template <typename> class IteratorWrapper>
+HAMON_CXX20_CONSTEXPR bool test1()
 {
+	using ForwardList = hamon::forward_list<T>;
+	using Iterator = IteratorWrapper<T>;
+
+	{
+		ForwardList v;
+		Iterator it;
+		static_assert(hamon::is_same<decltype(v.assign(it, it)), void>::value, "");
+		static_assert(!noexcept(v.assign(it, it)), "");
+	}
+
+	{
+		T a[] = {T{1}, T{2}, T{3}, T{4}, T{5}};
+		ForwardList v;
+		VERIFY(v.empty());
+
+		v.assign(Iterator{a}, Iterator{a + 5});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(*it++ == T{4});
+			VERIFY(*it++ == T{5});
+			VERIFY(it == v.end());
+		}
+
+		v.assign(Iterator{a + 1}, Iterator{a + 4});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(*it++ == T{4});
+			VERIFY(it == v.end());
+		}
+
+		v.assign(Iterator{a}, Iterator{a});
+		VERIFY(v.empty());
+	}
+
+	return true;
+}
+
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test2()
+{
+	using ForwardList = hamon::forward_list<T>;
+	using SizeType = typename ForwardList::size_type;
+
+	{
+		ForwardList v;
+		SizeType const s{};
+		T const t{};
+		static_assert(hamon::is_same<decltype(v.assign(s, t)), void>::value, "");
+		static_assert(!noexcept(v.assign(s, t)), "");
+	}
+
+	{
+		ForwardList v;
+		VERIFY(v.empty());
+
+		v.assign(3, T{42});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{42});
+			VERIFY(*it++ == T{42});
+			VERIFY(*it++ == T{42});
+			VERIFY(it == v.end());
+		}
+
+		v.assign(5, T{13});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{13});
+			VERIFY(*it++ == T{13});
+			VERIFY(*it++ == T{13});
+			VERIFY(*it++ == T{13});
+			VERIFY(*it++ == T{13});
+			VERIFY(it == v.end());
+		}
+
+		v.assign(1, T{10});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{10});
+			VERIFY(it == v.end());
+		}
+
+		v.assign(0, T{99});
+		VERIFY(v.empty());
+	}
+
+	return true;
+}
+
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test3()
+{
+	using ForwardList = hamon::forward_list<T>;
+
+	{
+		ForwardList v;
+		std::initializer_list<T> il;
+		static_assert(hamon::is_same<decltype(v.assign(il)), void>::value, "");
+		static_assert(!noexcept(v.assign(il)), "");
+	}
+
+	{
+		ForwardList v;
+		VERIFY(v.empty());
+
+		v.assign({T{1},T{2},T{3}});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(it == v.end());
+		}
+
+		v.assign({T{10},T{11},T{12},T{13}});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{10});
+			VERIFY(*it++ == T{11});
+			VERIFY(*it++ == T{12});
+			VERIFY(*it++ == T{13});
+			VERIFY(it == v.end());
+		}
+
+		v.assign({T{5},T{6}});
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == T{5});
+			VERIFY(*it++ == T{6});
+			VERIFY(it == v.end());
+		}
+
+		{
+			std::initializer_list<T> il;
+			v.assign(il);
+			VERIFY(v.empty());
+		}
+	}
+
 	return true;
 }
 
@@ -48,12 +185,30 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, AssignTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<int>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<char>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<float>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<S1>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<S2>());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(test<S3>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  cpp17_input_iterator_wrapper>()));
+//	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, input_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   forward_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  bidirectional_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  random_access_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, contiguous_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   cpp17_input_iterator_wrapper>()));
+//	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  input_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<char,  forward_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<short, bidirectional_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int,   random_access_iterator_wrapper>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<long,  contiguous_iterator_wrapper>()));
+
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test2<float>()));
+
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<char>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<short>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<int>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<long>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test3<float>()));
 }
 
 }	// namespace assign_test
