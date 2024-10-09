@@ -203,6 +203,7 @@ HAMON_CXX20_CONSTEXPR bool test3()
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test4()
 {
+	// TODO
 	return true;
 }
 

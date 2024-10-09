@@ -27,6 +27,9 @@ using std::forward_list;
 #include <hamon/iterator.hpp>
 #include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/memory.hpp>
+#include <hamon/memory/detail/equals_allocator.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges.hpp>
 #include <hamon/type_traits.hpp>
@@ -429,18 +432,16 @@ public:
 			return *this;
 		}
 
-		if constexpr (NodeAllocTraits::propagate_on_container_copy_assignment::value/* &&
-			!NodeAllocTraits::is_always_equal::value*/)
+		if constexpr (NodeAllocTraits::propagate_on_container_copy_assignment::value)
 		{
-			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))	// TODO
-			//if (m_allocator != x.m_allocator)
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 			{
 				// アロケータを伝播させる場合は、
 				// 今のアロケータで確保した要素を破棄しなければいけない
 				m_impl.Clear(m_allocator);
 
 				// アロケータを伝播
-				hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);	// TODO
+				hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
 			}
 		}
 
@@ -458,11 +459,9 @@ public:
 			return *this;
 		}
 
-		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value/* &&
-			!NodeAllocTraits::is_always_equal::value*/)
+		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
 		{
-			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))	// TODO
-			//if (m_allocator != x.m_allocator)
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 			{
 				// アロケータを伝播させない場合は、
 				// 要素をムーブ代入しなければいけない。
@@ -478,7 +477,7 @@ public:
 		m_impl.Clear(m_allocator);
 
 		// アロケータを伝播
-		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);// TODO
+		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
 
 		// 要素をsteal
 		m_impl = hamon::move(x.m_impl);
