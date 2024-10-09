@@ -20,7 +20,8 @@ namespace hamon_forward_list_test
 
 namespace ctor_range_test
 {
-#if 0	// TODO
+
+#if 0
 struct S1
 {
 	int value;
@@ -32,10 +33,42 @@ operator==(S1 const& lhs, S1 const& rhs)
 	return lhs.value == rhs.value;
 }
 
+template <typename T>
+struct MyAllocator
+{
+	using value_type = T;
+
+	int id;
+
+	MyAllocator() : id(13) {}
+
+	MyAllocator(int i) : id(i) {}
+
+	template <typename U>
+	MyAllocator(MyAllocator<U> const& a) : id(a.id) {}
+
+	T* allocate(hamon::size_t n)
+	{
+		return static_cast<T*>(::operator new(n * sizeof(T)));
+	}
+
+	void deallocate(T* p, hamon::size_t n)
+	{
+		// [allocator.members]/11
+		::operator delete(p);
+		(void)n;
+	}
+
+	bool operator==(MyAllocator const& rhs) const
+	{
+		return id == rhs.id;
+	}
+};
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, template <typename> class RangeWrapper, typename Allocator>
-HAMON_CXX20_CONSTEXPR bool test1(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_imp2(Allocator const& alloc)
 {
 	using ForwardList = hamon::forward_list<T, Allocator>;
 	using Range = RangeWrapper<T>;
@@ -80,34 +113,53 @@ HAMON_CXX20_CONSTEXPR bool test1(Allocator const& alloc)
 }
 
 template <typename T, typename Allocator>
-HAMON_CXX20_CONSTEXPR bool test(Allocator const& alloc)
+HAMON_CXX20_CONSTEXPR bool test_impl(Allocator const& alloc)
 {
 	return
-		test1<T, test_input_range>(alloc) &&
-		test1<T, test_forward_range>(alloc) &&
-		test1<T, test_bidirectional_range>(alloc) &&
-		test1<T, test_random_access_range>(alloc) &&
-		test1<T, test_contiguous_range>(alloc) &&
-		test1<T, test_input_sized_range>(alloc) &&
-		test1<T, test_forward_sized_range>(alloc) &&
-		test1<T, test_bidirectional_sized_range>(alloc) &&
-		test1<T, test_random_access_sized_range>(alloc) &&
-		test1<T, test_contiguous_sized_range>(alloc);
+		test_imp2<T, test_input_range>(alloc) &&
+		test_imp2<T, test_forward_range>(alloc) &&
+		test_imp2<T, test_bidirectional_range>(alloc) &&
+		test_imp2<T, test_random_access_range>(alloc) &&
+		test_imp2<T, test_contiguous_range>(alloc) &&
+		test_imp2<T, test_input_sized_range>(alloc) &&
+		test_imp2<T, test_forward_sized_range>(alloc) &&
+		test_imp2<T, test_bidirectional_sized_range>(alloc) &&
+		test_imp2<T, test_random_access_sized_range>(alloc) &&
+		test_imp2<T, test_contiguous_sized_range>(alloc);
+}
+
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test1()
+{
+	hamon::allocator<T> alloc;
+	VERIFY(test_impl<T>(alloc));
+	return true;
+}
+
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test2()
+{
+	MyAllocator<T> alloc;
+	VERIFY(test_impl<T>(alloc));
+	return true;
 }
 
 #undef VERIFY
 
 GTEST_TEST(ForwardListTest, CtorRangeTest)
 {
-	{
-		hamon::allocator<char> alloc;
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>(alloc));
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>(alloc));
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>(alloc));
-		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>(alloc));
-	}
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<S1>());
+
+	EXPECT_TRUE(test2<int>());
+	EXPECT_TRUE(test2<char>());
+	EXPECT_TRUE(test2<float>());
+	EXPECT_TRUE(test2<S1>());
 }
 #endif
+
 }	// namespace ctor_range_test
 
 }	// namespace hamon_forward_list_test
