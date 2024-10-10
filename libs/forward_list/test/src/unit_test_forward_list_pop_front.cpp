@@ -22,6 +22,37 @@ namespace pop_front_test
 template <typename T>
 HAMON_CXX20_CONSTEXPR bool test()
 {
+	using ForwardList = hamon::forward_list<T>;
+
+	{
+		ForwardList v {1,2,3};
+
+		static_assert(hamon::is_same<decltype(v.pop_front()), void>::value, "");
+#if !defined(HAMON_USE_STD_FORWARD_LIST)
+//		static_assert(noexcept(v.pop_front()), "");
+#endif
+
+		v.pop_front();
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == 2);
+			VERIFY(*it++ == 3);
+			VERIFY(it == v.end());
+		}
+
+		v.pop_front();
+		VERIFY(!v.empty());
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == 3);
+			VERIFY(it == v.end());
+		}
+
+		v.pop_front();
+		VERIFY(v.empty());
+	}
+
 	return true;
 }
 
