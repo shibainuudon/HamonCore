@@ -43,12 +43,14 @@ template <typename T>
 HAMON_CXX20_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
-	//using Reference = typename ForwardList::reference;
 
 	ForwardList v;
 
-//	static_assert(hamon::is_same<decltype(v.emplace_front()), Reference>::value, "");
-//	static_assert(hamon::is_same<decltype(v.emplace_front(hamon::declval<T>())), Reference>::value, "");
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
+	using Reference = typename ForwardList::reference;
+	static_assert(hamon::is_same<decltype(v.emplace_front()), Reference>::value, "");
+	static_assert(hamon::is_same<decltype(v.emplace_front(hamon::declval<T>())), Reference>::value, "");
+#endif
 
 	static_assert(!noexcept(v.emplace_front()), "");
 	static_assert(!noexcept(v.emplace_front(hamon::declval<T>())), "");
@@ -56,16 +58,24 @@ HAMON_CXX20_CONSTEXPR bool test1()
 	VERIFY(v.empty());
 
 	{
-		/*auto& r =*/ v.emplace_front(T{10});
-		//VERIFY(&r == &v.front());
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
+		auto& r = v.emplace_front(T{10});
+		VERIFY(&r == &v.front());
+#else
+		v.emplace_front(T{10});
+#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == T{10});
 		VERIFY(it == v.end());
 	}
 	{
-		/*auto& r =*/ v.emplace_front(T{20});
-		//VERIFY(&r == &v.front());
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
+		auto& r = v.emplace_front(T{20});
+		VERIFY(&r == &v.front());
+#else
+		v.emplace_front(T{20});
+#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == T{20});
@@ -82,8 +92,12 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	VERIFY(v.empty());
 
 	{
-		/*auto& r =*/ v.emplace_front(1,2,3);
-		//VERIFY(&r == &v.front());
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
+		auto& r = v.emplace_front(1,2,3);
+		VERIFY(&r == &v.front());
+#else
+		v.emplace_front(1,2,3);
+#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == Vector3{1,2,3});
@@ -167,6 +181,7 @@ GTEST_TEST(ForwardListTest, EmplaceFrontTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)

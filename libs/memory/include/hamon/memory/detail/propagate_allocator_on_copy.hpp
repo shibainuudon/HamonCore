@@ -23,7 +23,7 @@ template <typename Allocator,
 		AllocTraits::propagate_on_container_copy_assignment::value
 	>* = nullptr>
 HAMON_CXX14_CONSTEXPR void
-propagate_allocator_on_copy(Allocator& x, Allocator& y)
+propagate_allocator_on_copy(Allocator& x, Allocator const& y)
 {
 	x = y;
 }
@@ -34,7 +34,7 @@ template <typename Allocator,
 		!AllocTraits::propagate_on_container_copy_assignment::value
 	>* = nullptr>
 HAMON_CXX14_CONSTEXPR void
-propagate_allocator_on_copy(Allocator&, Allocator&)
+propagate_allocator_on_copy(Allocator&, Allocator const&)
 {
 }
 

@@ -18,6 +18,9 @@ namespace hamon_forward_list_test
 namespace prepend_range_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	\
+	defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L)
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
@@ -34,6 +37,8 @@ GTEST_TEST(ForwardListTest, PrependRangeTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
+
+#endif
 
 }	// namespace prepend_range_test
 

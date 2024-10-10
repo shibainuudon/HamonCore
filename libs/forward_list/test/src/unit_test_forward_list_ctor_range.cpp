@@ -21,7 +21,9 @@ namespace hamon_forward_list_test
 namespace ctor_range_test
 {
 
-#if 0
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	\
+	defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L)
+
 struct S1
 {
 	int value;
@@ -158,6 +160,7 @@ GTEST_TEST(ForwardListTest, CtorRangeTest)
 	EXPECT_TRUE(test2<float>());
 	EXPECT_TRUE(test2<S1>());
 }
+
 #endif
 
 }	// namespace ctor_range_test

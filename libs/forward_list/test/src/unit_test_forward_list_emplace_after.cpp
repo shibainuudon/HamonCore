@@ -8,6 +8,7 @@
  */
 
 #include <hamon/forward_list/forward_list.hpp>
+#include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -21,8 +22,49 @@ namespace emplace_after_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+HAMON_CXX20_CONSTEXPR bool test1()
 {
+	using ForwardList = hamon::forward_list<T>;
+	using Iterator = typename ForwardList::iterator;
+	using ConstIterator = typename ForwardList::const_iterator;
+
+	{
+		ForwardList v;
+		ConstIterator it;
+		static_assert(hamon::is_same<decltype(v.emplace_after(it)), Iterator>::value, "");
+		static_assert(hamon::is_same<decltype(v.emplace_after(it, T{})), Iterator>::value, "");
+		static_assert(!noexcept(v.emplace_after(it)), "");
+		static_assert(!noexcept(v.emplace_after(it, T{})), "");
+	}
+
+	ForwardList v;
+	VERIFY(v.empty());
+
+	{
+		auto r = v.emplace_after(v.before_begin(), T{10});
+		VERIFY(r == v.begin());
+		auto it = v.begin();
+		VERIFY(*it++ == T{10});
+		VERIFY(it == v.end());
+	}
+	{
+		auto r = v.emplace_after(v.begin(), T{20});
+		VERIFY(r == hamon::next(v.begin(), 1));
+		auto it = v.begin();
+		VERIFY(*it++ == T{10});
+		VERIFY(*it++ == T{20});
+		VERIFY(it == v.end());
+	}
+	{
+		auto r = v.emplace_after(v.begin(), T{30});
+		VERIFY(r == hamon::next(v.begin(), 1));
+		auto it = v.begin();
+		VERIFY(*it++ == T{10});
+		VERIFY(*it++ == T{30});
+		VERIFY(*it++ == T{20});
+		VERIFY(it == v.end());
+	}
+
 	return true;
 }
 
@@ -30,9 +72,9 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, EmplaceAfterTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
 }
 
 }	// namespace emplace_after_test
