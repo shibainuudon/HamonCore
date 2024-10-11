@@ -344,6 +344,37 @@ public:
 			--size;
 		}
 	}
+
+	template <typename Allocator, typename Predicate>
+	HAMON_CXX14_CONSTEXPR
+	hamon::size_t RemoveIf(Allocator& alloc, Predicate pred)
+	{
+		auto prev = this->BeforeBegin();
+		auto end  = this->End();
+		hamon::size_t removed_count = 0;
+
+		while (prev != end)
+		{
+			auto curr = prev->m_next;
+
+			if (curr == end)
+			{
+				break;
+			}
+
+			if (pred(static_cast<Node*>(curr)->m_value))
+			{
+				this->EraseAfter(alloc, prev);
+				++removed_count;
+			}
+			else
+			{
+				prev = curr;
+			}
+		}
+
+		return removed_count;
+	}
 };
 
 }	// namespace detail
@@ -880,20 +911,20 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	size_type remove(T const& /*value*/)
+	size_type remove(T const& value)
 	{
-		// TODO
 		// [forward.list.ops]/13
 		// [forward.list.ops]/14
+		return this->remove_if([&](T const& x) { return x == value; });
 	}
 
 	template <typename Predicate>
 	HAMON_CXX14_CONSTEXPR
-	size_type remove_if(Predicate /*pred*/)
+	size_type remove_if(Predicate pred)
 	{
-		// TODO
 		// [forward.list.ops]/13
 		// [forward.list.ops]/14
+		return static_cast<size_type>(m_impl.RemoveIf(m_allocator, pred));
 	}
 
 	HAMON_CXX14_CONSTEXPR

@@ -37,8 +37,17 @@ HAMON_CXX14_CONSTEXPR
 typename hamon::forward_list<T, Allocator>::size_type
 erase_if(hamon::forward_list<T, Allocator>& c, Predicate pred)
 {
+// TODO
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	\
+	defined(__cpp_lib_list_remove_return_type) && (__cpp_lib_list_remove_return_type >= 201806)
 	// [forward.list.erasure]/2
 	return c.remove_if(pred);
+#else
+	using size_type = typename hamon::forward_list<T, Allocator>::size_type;
+	auto const sz = hamon::distance(c.begin(), c.end());
+	c.remove_if(pred);
+	return static_cast<size_type>(sz - hamon::distance(c.begin(), c.end()));
+#endif
 }
 
 }	// namespace hamon

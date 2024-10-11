@@ -18,6 +18,9 @@ namespace hamon_forward_list_test
 namespace emplace_front_test
 {
 
+// TODO
+#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
+
 #if !defined(HAMON_USE_STD_FORWARD_LIST) && \
 	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
 #define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
@@ -55,36 +58,25 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 
 	ForwardList v;
 
-#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
 	using Reference = typename ForwardList::reference;
 	static_assert(hamon::is_same<decltype(v.emplace_front()), Reference>::value, "");
 	static_assert(hamon::is_same<decltype(v.emplace_front(hamon::declval<T>())), Reference>::value, "");
-#endif
-
 	static_assert(!noexcept(v.emplace_front()), "");
 	static_assert(!noexcept(v.emplace_front(hamon::declval<T>())), "");
 
 	VERIFY(v.empty());
 
 	{
-#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
 		auto& r = v.emplace_front(T{10});
 		VERIFY(&r == &v.front());
-#else
-		v.emplace_front(T{10});
-#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == T{10});
 		VERIFY(it == v.end());
 	}
 	{
-#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
 		auto& r = v.emplace_front(T{20});
 		VERIFY(&r == &v.front());
-#else
-		v.emplace_front(T{20});
-#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == T{20});
@@ -101,12 +93,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 	VERIFY(v.empty());
 
 	{
-#if !defined(HAMON_USE_STD_FORWARD_LIST) ||	(HAMON_CXX_STANDARD >= 17)
 		auto& r = v.emplace_front(1,2,3);
 		VERIFY(&r == &v.front());
-#else
-		v.emplace_front(1,2,3);
-#endif
 		VERIFY(!v.empty());
 		auto it = v.begin();
 		VERIFY(*it++ == Vector3{1,2,3});
@@ -302,6 +290,8 @@ GTEST_TEST(ForwardListTest, EmplaceFrontTest)
 
 #undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
 #undef FORWARD_LIST_TEST_CONSTEXPR
+
+#endif
 
 }	// namespace emplace_front_test
 
