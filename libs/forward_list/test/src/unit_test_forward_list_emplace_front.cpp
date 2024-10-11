@@ -18,6 +18,15 @@ namespace hamon_forward_list_test
 namespace emplace_front_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 struct Vector3
 {
 	int x;
@@ -40,7 +49,7 @@ operator==(Vector3 const& lhs, Vector3 const& rhs)
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test1()
+FORWARD_LIST_TEST_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
 
@@ -86,7 +95,7 @@ HAMON_CXX20_CONSTEXPR bool test1()
 	return true;
 }
 
-HAMON_CXX20_CONSTEXPR bool test2()
+FORWARD_LIST_TEST_CONSTEXPR bool test2()
 {
 	hamon::forward_list<Vector3> v;
 	VERIFY(v.empty());
@@ -178,11 +187,11 @@ struct ThrowOnMove
 
 GTEST_TEST(ForwardListTest, EmplaceFrontTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	// 操作中に例外が発生した場合、副作用は発生しない
@@ -290,6 +299,9 @@ GTEST_TEST(ForwardListTest, EmplaceFrontTest)
 	}
 #endif
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace emplace_front_test
 

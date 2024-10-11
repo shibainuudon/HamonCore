@@ -20,6 +20,15 @@ namespace hamon_forward_list_test
 namespace ctor_move_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 template <typename T>
 struct MyAllocator1
 {
@@ -65,10 +74,21 @@ struct MyAllocator1
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
 	using Allocator = hamon::allocator<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
+
+	static_assert( hamon::is_constructible<ForwardList, ForwardList&&>::value, "");
+	static_assert( hamon::is_constructible<ForwardList, ForwardList&&, Allocator const&>::value, "");
+#if !defined(HAMON_USE_STD_FORWARD_LIST)
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, ForwardList&&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, ForwardList&&, Allocator const&>::value, "");
+#endif
+	static_assert( hamon::is_implicitly_constructible<ForwardList, ForwardList&&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<ForwardList, ForwardList&&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, ForwardList&&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, ForwardList&&, Allocator const&>::value, "");
 
 	{
 		Allocator alloc;
@@ -104,7 +124,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test2()
+FORWARD_LIST_TEST_CONSTEXPR bool test2()
 {
 	using Allocator = MyAllocator1<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
@@ -134,14 +154,17 @@ HAMON_CXX20_CONSTEXPR bool test2()
 
 GTEST_TEST(ForwardListTest, CtorMoveTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
 	EXPECT_TRUE(test2<float>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace ctor_move_test
 

@@ -16,12 +16,22 @@
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "iterator_test.hpp"
 
 namespace hamon_forward_list_test
 {
 
 namespace insert_after_test
 {
+
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
 
 struct S1
 {
@@ -37,23 +47,19 @@ operator==(S1 const& lhs, S1 const& rhs)
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test1()
+FORWARD_LIST_TEST_CONSTEXPR bool test1()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
 	using ConstIterator = typename ForwardList::const_iterator;
 
-	static_assert(hamon::is_same<
-		decltype(hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<T const&>())),
-		Iterator
-	>::value, "");
-	static_assert(!noexcept(
-		hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<T const&>())), "");
-
+	{
+		ForwardList v;
+		ConstIterator it;
+		T const t{};
+		static_assert(hamon::is_same<decltype(v.insert_after(it, t)), Iterator>::value, "");
+		static_assert(!noexcept(v.insert_after(it, t)), "");
+	}
 	{
 		ForwardList v;
 		VERIFY(v.empty());
@@ -94,23 +100,19 @@ HAMON_CXX20_CONSTEXPR bool test1()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test2()
+FORWARD_LIST_TEST_CONSTEXPR bool test2()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
 	using ConstIterator = typename ForwardList::const_iterator;
 
-	static_assert(hamon::is_same<
-		decltype(hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<T&&>())),
-		Iterator
-	>::value, "");
-	static_assert(!noexcept(
-		hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<T&&>())), "");
-
+	{
+		ForwardList v;
+		ConstIterator it;
+		T t{};
+		static_assert(hamon::is_same<decltype(v.insert_after(it, hamon::move(t))), Iterator>::value, "");
+		static_assert(!noexcept(v.insert_after(it, hamon::move(t))), "");
+	}
 	{
 		ForwardList v;
 		VERIFY(v.empty());
@@ -148,26 +150,21 @@ HAMON_CXX20_CONSTEXPR bool test2()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test3()
+FORWARD_LIST_TEST_CONSTEXPR bool test3()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
 	using ConstIterator = typename ForwardList::const_iterator;
 	using SizeType = typename ForwardList::size_type;
 
-	static_assert(hamon::is_same<
-		decltype(hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<SizeType>(),
-			hamon::declval<T const&>())),
-		Iterator
-	>::value, "");
-	static_assert(!noexcept(
-		hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<SizeType>(),
-			hamon::declval<T const&>())), "");
-
+	{
+		ForwardList v;
+		ConstIterator it;
+		SizeType s;
+		T const t{};
+		static_assert(hamon::is_same<decltype(v.insert_after(it, s, t)), Iterator>::value, "");
+		static_assert(!noexcept(v.insert_after(it, s, t)), "");
+	}
 	{
 		ForwardList v;
 		VERIFY(v.empty());
@@ -200,31 +197,71 @@ HAMON_CXX20_CONSTEXPR bool test3()
 	return true;
 }
 
-template <typename T>
-HAMON_CXX20_CONSTEXPR bool test4()
+template <typename T, template <typename> class IteratorWrapper>
+FORWARD_LIST_TEST_CONSTEXPR bool test4()
 {
-	// TODO
+	using ForwardList = hamon::forward_list<T>;
+	using Iterator = typename ForwardList::iterator;
+	using ConstIterator = typename ForwardList::const_iterator;
+	using InputIterator = IteratorWrapper<T>;
+
+	{
+		ForwardList v;
+		ConstIterator pos;
+		InputIterator first;
+		InputIterator last;
+		static_assert(hamon::is_same<decltype(v.insert_after(pos, first, last)), Iterator>::value, "");
+		static_assert(!noexcept(v.insert_after(pos, first, last)), "");
+	}
+	{
+		ForwardList v;
+		VERIFY(v.empty());
+
+		{
+			T a[] = {T{1},T{2},T{3}};
+			auto ret = v.insert_after(v.before_begin(), InputIterator{a}, InputIterator{a + 3});
+			VERIFY(ret == hamon::next(v.begin(), 2));
+			VERIFY(!v.empty());
+			auto it = v.begin();
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(it == v.end());
+		}
+		{
+			T a[] = {T{4},T{5},T{6},T{7}};
+			auto ret = v.insert_after(v.begin(), InputIterator{a}, InputIterator{a + 4});
+			VERIFY(ret == hamon::next(v.begin(), 4));
+			VERIFY(!v.empty());
+			auto it = v.begin();
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{4});
+			VERIFY(*it++ == T{5});
+			VERIFY(*it++ == T{6});
+			VERIFY(*it++ == T{7});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(it == v.end());
+		}
+	}
+
 	return true;
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test5()
+FORWARD_LIST_TEST_CONSTEXPR bool test5()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
 	using ConstIterator = typename ForwardList::const_iterator;
 
-	static_assert(hamon::is_same<
-		decltype(hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<std::initializer_list<T>>())),
-		Iterator
-	>::value, "");
-	static_assert(!noexcept(
-		hamon::declval<ForwardList&>().insert_after(
-			hamon::declval<ConstIterator>(),
-			hamon::declval<std::initializer_list<T>>())), "");
-
+	{
+		ForwardList v;
+		ConstIterator it;
+		std::initializer_list<T> il;
+		static_assert(hamon::is_same<decltype(v.insert_after(it, il)), Iterator>::value, "");
+		static_assert(!noexcept(v.insert_after(it, il)), "");
+	}
 	{
 		ForwardList v;
 		VERIFY(v.empty());
@@ -257,12 +294,17 @@ HAMON_CXX20_CONSTEXPR bool test5()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
 	VERIFY(test1<T>());
 	VERIFY(test2<T>());
 	VERIFY(test3<T>());
-	VERIFY(test4<T>());
+	VERIFY(test4<T, cpp17_input_iterator_wrapper>());
+//	VERIFY(test4<T, input_iterator_wrapper>());
+	VERIFY(test4<T, forward_iterator_wrapper>());
+	VERIFY(test4<T, bidirectional_iterator_wrapper>());
+	VERIFY(test4<T, random_access_iterator_wrapper>());
+	VERIFY(test4<T, contiguous_iterator_wrapper>());
 	VERIFY(test5<T>());
 	return true;
 }
@@ -271,11 +313,14 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, InsertAfterTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace insert_after_test
 

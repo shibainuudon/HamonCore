@@ -23,33 +23,45 @@ namespace hamon_forward_list_test
 namespace begin_end_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
 	using ConstIterator = typename ForwardList::const_iterator;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList&>().begin()), Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList&>().end()),   Iterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList const&>().begin()), ConstIterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList const&>().end()),   ConstIterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList&>().cbegin()), ConstIterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList&>().cend()),   ConstIterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList const&>().cbegin()), ConstIterator>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<ForwardList const&>().cend()),   ConstIterator>::value, "");
+	{
+		ForwardList v;
+		ForwardList const cv;
+		static_assert(hamon::is_same<decltype(v.begin()), Iterator>::value, "");
+		static_assert(hamon::is_same<decltype(v.end()),   Iterator>::value, "");
+		static_assert(hamon::is_same<decltype(cv.begin()), ConstIterator>::value, "");
+		static_assert(hamon::is_same<decltype(cv.end()),   ConstIterator>::value, "");
+		static_assert(hamon::is_same<decltype(v.cbegin()), ConstIterator>::value, "");
+		static_assert(hamon::is_same<decltype(v.cend()),   ConstIterator>::value, "");
+		static_assert(hamon::is_same<decltype(cv.cbegin()), ConstIterator>::value, "");
+		static_assert(hamon::is_same<decltype(cv.cend()),   ConstIterator>::value, "");
 
-	static_assert(noexcept(hamon::declval<ForwardList&>().begin()), "");
-	static_assert(noexcept(hamon::declval<ForwardList&>().end()), "");
-	static_assert(noexcept(hamon::declval<ForwardList const&>().begin()), "");
-	static_assert(noexcept(hamon::declval<ForwardList const&>().end()), "");
-	static_assert(noexcept(hamon::declval<ForwardList&>().cbegin()), "");
-	static_assert(noexcept(hamon::declval<ForwardList&>().cend()), "");
-	static_assert(noexcept(hamon::declval<ForwardList const&>().cbegin()), "");
-	static_assert(noexcept(hamon::declval<ForwardList const&>().cend()), "");
-
+		static_assert(noexcept(v.begin()), "");
+		static_assert(noexcept(v.end()), "");
+		static_assert(noexcept(cv.begin()), "");
+		static_assert(noexcept(cv.end()), "");
+		static_assert(noexcept(v.cbegin()), "");
+		static_assert(noexcept(v.cend()), "");
+		static_assert(noexcept(cv.cbegin()), "");
+		static_assert(noexcept(cv.cend()), "");
+	}
 	{
 		ForwardList v;
 		auto it = v.begin();
@@ -133,10 +145,13 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, BeginEndTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace begin_end_test
 

@@ -17,11 +17,40 @@ namespace hamon_forward_list_test
 namespace empty_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
+	using ForwardList = hamon::forward_list<T>;
+
+	{
+		ForwardList v;
+		ForwardList const cv;
+		static_assert(hamon::is_same<decltype(v.empty()), bool>::value, "");
+		static_assert(hamon::is_same<decltype(cv.empty()), bool>::value, "");
+		static_assert(noexcept(v.empty()), "");
+		static_assert(noexcept(cv.empty()), "");
+	}
+	{
+		ForwardList v;
+		VERIFY(v.empty());
+	}
+	{
+		ForwardList v{T{1}};
+		VERIFY(!v.empty());
+		v.clear();
+		VERIFY(v.empty());
+	}
 	return true;
 }
 
@@ -29,10 +58,13 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, EmptyTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace empty_test
 

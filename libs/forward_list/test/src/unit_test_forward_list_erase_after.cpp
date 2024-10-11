@@ -19,10 +19,19 @@ namespace hamon_forward_list_test
 namespace erase_after_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
 	using ForwardList = hamon::forward_list<T>;
 	using Iterator = typename ForwardList::iterator;
@@ -34,8 +43,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(v.erase_after(it)), Iterator>::value, "");
 		static_assert(hamon::is_same<decltype(v.erase_after(it, it)), Iterator>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-//		static_assert(noexcept(v.erase_after(it)), "");
-//		static_assert(noexcept(v.erase_after(it, it)), "");
+		static_assert(!noexcept(v.erase_after(it)), "");
+		static_assert(!noexcept(v.erase_after(it, it)), "");
 #endif
 	}
 	{
@@ -138,10 +147,13 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(ForwardListTest, EraseAfterTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace erase_after_test
 

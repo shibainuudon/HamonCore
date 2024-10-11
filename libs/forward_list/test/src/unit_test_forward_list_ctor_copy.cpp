@@ -19,6 +19,15 @@ namespace hamon_forward_list_test
 namespace ctor_copy_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 template <typename T>
 struct MyAllocator1
 {
@@ -102,10 +111,19 @@ struct MyAllocator2
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test1()
+FORWARD_LIST_TEST_CONSTEXPR bool test1()
 {
 	using Allocator = hamon::allocator<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
+
+	static_assert( hamon::is_constructible<ForwardList, ForwardList const&>::value, "");
+	static_assert( hamon::is_constructible<ForwardList, ForwardList const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, ForwardList const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<ForwardList, ForwardList const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<ForwardList, ForwardList const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<ForwardList, ForwardList const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, ForwardList const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<ForwardList, ForwardList const&, Allocator const&>::value, "");
 
 	{
 		Allocator alloc;
@@ -153,7 +171,7 @@ HAMON_CXX20_CONSTEXPR bool test1()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test2()
+FORWARD_LIST_TEST_CONSTEXPR bool test2()
 {
 	using Allocator = MyAllocator1<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
@@ -180,7 +198,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test3()
+FORWARD_LIST_TEST_CONSTEXPR bool test3()
 {
 	using Allocator = MyAllocator2<T>;
 	using ForwardList = hamon::forward_list<T, Allocator>;
@@ -210,9 +228,9 @@ HAMON_CXX20_CONSTEXPR bool test3()
 
 GTEST_TEST(ForwardListTest, CtorCopyTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
 
 	EXPECT_TRUE(test2<int>());
 	EXPECT_TRUE(test2<char>());
@@ -222,6 +240,9 @@ GTEST_TEST(ForwardListTest, CtorCopyTest)
 	EXPECT_TRUE(test3<char>());
 	EXPECT_TRUE(test3<float>());
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace ctor_copy_test
 

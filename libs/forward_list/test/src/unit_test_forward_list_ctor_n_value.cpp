@@ -18,6 +18,15 @@ namespace hamon_forward_list_test
 namespace ctor_n_value_test
 {
 
+#if !defined(HAMON_USE_STD_FORWARD_LIST) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう TODO
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             HAMON_CXX20_CONSTEXPR
+#else
+#define FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#define FORWARD_LIST_TEST_CONSTEXPR             /**/
+#endif
+
 struct S1
 {
 	int value;
@@ -76,7 +85,7 @@ struct MyAllocator
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename Allocator>
-HAMON_CXX20_CONSTEXPR bool test_impl(T const& value, Allocator const& alloc)
+FORWARD_LIST_TEST_CONSTEXPR bool test_impl(T const& value, Allocator const& alloc)
 {
 	using ForwardList = hamon::forward_list<T, Allocator>;
 	using SizeType = typename ForwardList::size_type;
@@ -122,7 +131,7 @@ HAMON_CXX20_CONSTEXPR bool test_impl(T const& value, Allocator const& alloc)
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test1(T const& value)
+FORWARD_LIST_TEST_CONSTEXPR bool test1(T const& value)
 {
 	hamon::allocator<T> alloc;
 	VERIFY(test_impl<T>(value, alloc));
@@ -130,7 +139,7 @@ HAMON_CXX20_CONSTEXPR bool test1(T const& value)
 }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test2(T const& value)
+FORWARD_LIST_TEST_CONSTEXPR bool test2(T const& value)
 {
 	MyAllocator<T> alloc;
 	VERIFY(test_impl<T>(value, alloc));
@@ -141,11 +150,11 @@ HAMON_CXX20_CONSTEXPR bool test2(T const& value)
 
 GTEST_TEST(ForwardListTest, CtorNValueTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>(10));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>(20));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>(0.5f));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<S1>(S1{10}));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<S2>(S2{1,2}));
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>(10));
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>(20));
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>(0.5f));
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<S1>(S1{10}));
+	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test1<S2>(S2{1,2}));
 
 	EXPECT_TRUE(test2<int>(1));
 	EXPECT_TRUE(test2<char>(2));
@@ -153,6 +162,9 @@ GTEST_TEST(ForwardListTest, CtorNValueTest)
 	EXPECT_TRUE(test2<S1>(S1{4}));
 	EXPECT_TRUE(test2<S2>(S2{5,6}));
 }
+
+#undef FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FORWARD_LIST_TEST_CONSTEXPR
 
 }	// namespace ctor_n_value_test
 
