@@ -42,6 +42,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		VERIFY(!v.empty());
 		v.clear();
 		VERIFY(v.empty());
+		v.clear();
+		VERIFY(v.empty());
 	}
 
 	return true;

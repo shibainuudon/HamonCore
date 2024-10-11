@@ -30,6 +30,7 @@ using std::forward_list;
 #include <hamon/memory/detail/equals_allocator.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges.hpp>
 #include <hamon/type_traits.hpp>
@@ -212,6 +213,8 @@ public:
 	{
 		using AllocTraits = hamon::allocator_traits<Allocator>;
 
+		HAMON_ASSERT(pos != nullptr);
+
 		NodeBase* current = pos;
 		NodeBase* next = pos->m_next;
 		for (SizeType i = 0; i < n; ++i)
@@ -231,6 +234,8 @@ public:
 	{
 		using AllocTraits = hamon::allocator_traits<Allocator>;
 
+		HAMON_ASSERT(pos != nullptr);
+
 		NodeBase* current = pos;
 		NodeBase* next = pos->m_next;
 		for (Iterator it = first; it != last; ++it)
@@ -246,27 +251,11 @@ public:
 
 	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR
-	NodeBase* EraseAfter(Allocator& alloc, NodeBase* pos)
-	{
-		using AllocTraits = hamon::allocator_traits<Allocator>;
-
-		NodeBase* current = pos->m_next;
-		{
-			NodeBase* next = current->m_next;
-			Node* p = static_cast<Node*>(current);
-			AllocTraits::destroy(alloc, p);
-			AllocTraits::deallocate(alloc, p, 1);
-			current = next;
-		}
-		pos->m_next = current;
-		return current;
-	}
-
-	template <typename Allocator>
-	HAMON_CXX14_CONSTEXPR
 	NodeBase* EraseAfter(Allocator& alloc, NodeBase* pos, NodeBase* last)
 	{
 		using AllocTraits = hamon::allocator_traits<Allocator>;
+
+		HAMON_ASSERT(pos != nullptr);
 
 		NodeBase* current = pos->m_next;
 		while (current != last)
@@ -283,6 +272,15 @@ public:
 
 	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR
+	NodeBase* EraseAfter(Allocator& alloc, NodeBase* pos)
+	{
+		HAMON_ASSERT(pos != nullptr);
+		HAMON_ASSERT(pos->m_next != nullptr);
+		return EraseAfter(alloc, pos, pos->m_next->m_next);
+	}
+
+	template <typename Allocator>
+	HAMON_CXX14_CONSTEXPR
 	void Clear(Allocator& alloc)
 	{
 		this->EraseAfter(alloc, this->BeforeBegin(), this->End());
@@ -293,24 +291,57 @@ public:
 	void Assign(Allocator& alloc, Iterator first, Sentinel last)
 	{
 		auto prev = this->BeforeBegin();
-		auto curr = this->Begin();
 		auto end  = this->End();
 
-		while (curr != end && first != last)
+		for (;;)
 		{
+			auto curr = prev->m_next;
+
+			if (first == last)
+			{
+				this->EraseAfter(alloc, prev, end);
+				return;
+			}
+
+			if (curr == end)
+			{
+				this->InsertRangeAfter(alloc, prev, first, last);
+				return;
+			}
+
 			static_cast<Node*>(curr)->m_value = *first;
-			prev = prev->m_next;
-			curr = curr->m_next;
+
+			prev = curr;
 			++first;
 		}
 
-		if (first != last)
+	}
+
+	template <typename Allocator, typename SizeType, typename... Args>
+	HAMON_CXX14_CONSTEXPR
+	void Resize(Allocator& alloc, SizeType size, Args&&... args)
+	{
+		auto prev = this->BeforeBegin();
+		auto end  = this->End();
+
+		for (;;)
 		{
-			this->InsertRangeAfter(alloc, prev, first, last);
-		}
-		else if (curr != end)
-		{
-			this->EraseAfter(alloc, prev, end);
+			auto curr = prev->m_next;
+
+			if (size == 0)
+			{
+				this->EraseAfter(alloc, prev, end);
+				return;
+			}
+
+			if (curr == end)
+			{
+				this->InsertNAfter(alloc, prev, size, hamon::forward<Args>(args)...);
+				return;
+			}
+
+			prev = curr;
+			--size;
 		}
 	}
 };
@@ -777,22 +808,25 @@ public:
 	void swap(forward_list& x)
 		noexcept(hamon::allocator_traits<Allocator>::is_always_equal::value)
 	{
-		hamon::swap(m_allocator, x.m_allocator);
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+		{
+			hamon::detail::propagate_allocator_on_swap(m_allocator, x.m_allocator);
+		}
 		hamon::swap(m_impl, x.m_impl);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void resize(size_type /*sz*/)
+	void resize(size_type sz)
 	{
-		// TODO
 		// [forward.list.modifiers]/34
+		m_impl.Resize(m_allocator, sz);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void resize(size_type /*sz*/, value_type const& /*c*/)
+	void resize(size_type sz, value_type const& c)
 	{
-		// TODO
 		// [forward.list.modifiers]/36
+		m_impl.Resize(m_allocator, sz, c);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -947,18 +981,22 @@ forward_list(hamon::from_range_t, R&&, Allocator = Allocator())
 
 #endif
 
+// TODO
 template <typename T, typename Allocator>
 HAMON_CXX14_CONSTEXPR
 bool operator==(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y);
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
+// TODO
 template <typename T, typename Allocator>
 HAMON_CXX14_CONSTEXPR
 hamon::detail::synth_three_way_result<T>
 operator<=>(forward_list<T, Allocator> const&x, forward_list<T, Allocator> const&y);
 
 #else
+
+// TODO
 
 #endif
 

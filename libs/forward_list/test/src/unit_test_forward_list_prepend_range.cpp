@@ -11,6 +11,7 @@
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
 
 namespace hamon_forward_list_test
 {
@@ -32,10 +33,63 @@ namespace prepend_range_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+template <typename T, template <typename> class RangeWrapper>
+FORWARD_LIST_TEST_CONSTEXPR bool test_impl()
+{
+	using ForwardList = hamon::forward_list<T>;
+	using Range = RangeWrapper<T>;
+
+	{
+		ForwardList v;
+		Range rg;
+		static_assert(hamon::is_same<decltype(v.prepend_range(rg)), void>::value, "");
+		static_assert(!noexcept(v.prepend_range(rg)), "");
+	}
+	{
+		ForwardList v;
+		VERIFY(v.empty());
+
+		{
+			T a[] = {{1},{2},{3},{4}};
+			Range r(a);
+			v.prepend_range(r);
+			auto it = v.begin();
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(*it++ == T{4});
+			VERIFY(it == v.end());
+		}
+		{
+			T a[] = {{10},{20}};
+			v.prepend_range(Range(a));
+			auto it = v.begin();
+			VERIFY(*it++ == T{10});
+			VERIFY(*it++ == T{20});
+			VERIFY(*it++ == T{1});
+			VERIFY(*it++ == T{2});
+			VERIFY(*it++ == T{3});
+			VERIFY(*it++ == T{4});
+			VERIFY(it == v.end());
+		}
+	}
+	return true;
+}
+
 template <typename T>
 FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
-	return true;
+	return
+		test_impl<T, test_input_range>() &&
+		test_impl<T, test_forward_range>() &&
+		test_impl<T, test_bidirectional_range>() &&
+		test_impl<T, test_random_access_range>() &&
+		test_impl<T, test_contiguous_range>() &&
+		test_impl<T, test_input_sized_range>() &&
+		test_impl<T, test_forward_sized_range>() &&
+		test_impl<T, test_bidirectional_sized_range>() &&
+		test_impl<T, test_random_access_sized_range>() &&
+		test_impl<T, test_contiguous_sized_range>();
 }
 
 #undef VERIFY

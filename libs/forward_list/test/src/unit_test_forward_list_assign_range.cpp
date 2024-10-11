@@ -49,15 +49,25 @@ FORWARD_LIST_TEST_CONSTEXPR bool test_impl()
 		ForwardList v;
 		VERIFY(v.empty());
 
-		T a[] = {{1},{2},{3},{4}};
-		Range r(a);
-		v.assign_range(r);
-		auto it = v.begin();
-		VERIFY(*it++ == a[0]);
-		VERIFY(*it++ == a[1]);
-		VERIFY(*it++ == a[2]);
-		VERIFY(*it++ == a[3]);
-		VERIFY(it == v.end());
+		{
+			T a[] = {{1},{2},{3},{4}};
+			Range r(a);
+			v.assign_range(r);
+			auto it = v.begin();
+			VERIFY(*it++ == a[0]);
+			VERIFY(*it++ == a[1]);
+			VERIFY(*it++ == a[2]);
+			VERIFY(*it++ == a[3]);
+			VERIFY(it == v.end());
+		}
+		{
+			T a[] = {{10},{20}};
+			v.assign_range(Range(a));
+			auto it = v.begin();
+			VERIFY(*it++ == a[0]);
+			VERIFY(*it++ == a[1]);
+			VERIFY(it == v.end());
+		}
 	}
 
 	return true;

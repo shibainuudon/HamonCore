@@ -53,8 +53,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(v.before_begin());
 			VERIFY(ret == v.begin());
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 2);
 			VERIFY(*it++ == 3);
@@ -66,8 +65,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(v.begin());
 			VERIFY(ret == hamon::next(v.begin(), 1));
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 2);
 			VERIFY(*it++ == 4);
@@ -78,8 +76,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(hamon::next(v.begin(), 1));
 			VERIFY(ret == hamon::next(v.begin(), 2));
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 2);
 			VERIFY(*it++ == 4);
@@ -89,8 +86,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(v.before_begin());
 			VERIFY(ret == v.begin());
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 4);
 			VERIFY(it == v.end());
@@ -108,8 +104,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(v.before_begin(), hamon::next(v.begin(), 2));
 			VERIFY(ret == v.begin());
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 3);
 			VERIFY(*it++ == 4);
@@ -123,8 +118,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		{
 			auto ret = v.erase_after(v.begin(), v.end());
 			VERIFY(ret == v.end());
-		}
-		{
+
 			auto it = v.begin();
 			VERIFY(*it++ == 1);
 			VERIFY(it == v.end());
@@ -133,6 +127,11 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 	{
 		ForwardList v{1,2,3,4,5};
 
+		{
+			auto ret = v.erase_after(v.before_begin(), v.end());
+			VERIFY(ret == v.end());
+			VERIFY(v.empty());
+		}
 		{
 			auto ret = v.erase_after(v.before_begin(), v.end());
 			VERIFY(ret == v.end());
