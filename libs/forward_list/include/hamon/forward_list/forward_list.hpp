@@ -375,6 +375,98 @@ public:
 
 		return removed_count;
 	}
+
+	template <typename Allocator, typename BinaryPredicate>
+	HAMON_CXX14_CONSTEXPR
+	hamon::size_t Unique(Allocator& alloc, BinaryPredicate binary_pred)
+	{
+		auto curr = this->Begin();
+		auto end  = this->End();
+		hamon::size_t removed_count = 0;
+
+		while (curr != end)
+		{
+			auto next = curr->m_next;
+
+			if (next == end)
+			{
+				break;
+			}
+
+			if (binary_pred(
+				static_cast<Node*>(curr)->m_value,
+				static_cast<Node*>(next)->m_value))
+			{
+				this->EraseAfter(alloc, curr);
+				++removed_count;
+			}
+			else
+			{
+				curr = next;
+			}
+		}
+
+		return removed_count;
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void SpliceAfter(NodeBase* pos, NodeBase* first)
+	{
+		auto next = first->m_next;
+		first->m_next = next->m_next;
+		next->m_next = pos->m_next;
+		pos->m_next = next;
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void SpliceAfter(NodeBase* pos, NodeBase* first, NodeBase* last)
+	{
+		if (first == last)
+		{
+			return;
+		}
+
+		if (first->m_next == last)
+		{
+			return;
+		}
+
+		auto prev_last = first->m_next;
+		while(prev_last->m_next != last)
+		{
+			prev_last = prev_last->m_next;
+		}
+
+		auto next = first->m_next;
+		first->m_next = prev_last->m_next;
+		prev_last->m_next = pos->m_next;
+		pos->m_next = next;
+	}
+
+	template <typename Compare>
+	HAMON_CXX14_CONSTEXPR
+	void Merge(forward_list_impl& x, Compare comp)
+	{
+		auto node1 = this->BeforeBegin();
+		auto node2 = x.BeforeBegin();
+		while (node1->m_next && node2->m_next)
+		{
+			if (comp(
+				static_cast<Node*>(node2->m_next)->m_value,
+				static_cast<Node*>(node1->m_next)->m_value))
+			{
+				this->SpliceAfter(node1, node2);
+			}
+
+			node1 = node1->m_next;
+		}
+
+		if (node2->m_next)
+		{
+			node1->m_next = node2->m_next;
+			node2->m_next = nullptr;
+		}
+	}
 };
 
 }	// namespace detail
@@ -869,45 +961,49 @@ public:
 
 	// [forward.list.ops], forward_list operations
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list& /*x*/)
+	void splice_after(const_iterator position, forward_list& x)
 	{
-		// TODO
 		// [forward.list.ops]/3
+		this->splice_after(position, x, x.before_begin(), x.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list&& /*x*/)
+	void splice_after(const_iterator position, forward_list&& x)
 	{
-		// TODO
 		// [forward.list.ops]/3
+		this->splice_after(position, x, x.before_begin(), x.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list& /*x*/, const_iterator /*i*/)
+	void splice_after(const_iterator position, forward_list& x, const_iterator i)
 	{
-		// TODO
+		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
+
 		// [forward.list.ops]/7
+		m_impl.SpliceAfter(m_impl.ToNode(position), x.m_impl.ToNode(i));
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list&& /*x*/, const_iterator /*i*/)
+	void splice_after(const_iterator position, forward_list&& x, const_iterator i)
 	{
-		// TODO
 		// [forward.list.ops]/7
+		this->splice_after(position, x, i);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list& /*x*/, const_iterator /*first*/, const_iterator /*last*/)
+	void splice_after(const_iterator position, forward_list& x, const_iterator first, const_iterator last)
 	{
-		// TODO
+		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
+
 		// [forward.list.ops]/11
+		m_impl.SpliceAfter(m_impl.ToNode(position), x.m_impl.ToNode(first), x.m_impl.ToNode(last));
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator /*position*/, forward_list&& /*x*/, const_iterator /*first*/, const_iterator /*last*/)
+	void splice_after(const_iterator position, forward_list&& x, const_iterator first, const_iterator last)
 	{
-		// TODO
 		// [forward.list.ops]/11
+		this->splice_after(position, x, first, last);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -936,11 +1032,11 @@ public:
 
 	template <typename BinaryPredicate>
 	HAMON_CXX14_CONSTEXPR
-	size_type unique(BinaryPredicate /*binary_pred*/)
+	size_type unique(BinaryPredicate binary_pred)
 	{
-		// TODO
 		// [forward.list.ops]/20
 		// [forward.list.ops]/21
+		return static_cast<size_type>(m_impl.Unique(m_allocator, binary_pred));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -959,18 +1055,23 @@ public:
 
 	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR
-	void merge(forward_list& /*x*/, Compare /*comp*/)
+	void merge(forward_list& x, Compare comp)
 	{
-		// TODO
 		// [forward.list.ops]/26
+		if (hamon::addressof(x) == this)
+		{
+			return;
+		}
+
+		m_impl.Merge(x.m_impl, comp);
 	}
 
 	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR
-	void merge(forward_list&& /*x*/, Compare /*comp*/)
+	void merge(forward_list&& x, Compare comp)
 	{
-		// TODO
 		// [forward.list.ops]/26
+		this->merge(x, comp);
 	}
 
 	HAMON_CXX14_CONSTEXPR
