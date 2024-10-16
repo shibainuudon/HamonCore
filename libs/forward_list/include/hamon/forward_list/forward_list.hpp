@@ -22,6 +22,7 @@ using std::forward_list;
 
 #else
 
+#include <hamon/algorithm.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/functional.hpp>
 #include <hamon/iterator.hpp>
@@ -671,6 +672,7 @@ public:
 			hamon::ranges::end(x));
 	}
 
+// TODO
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 #define HAMON_IF_CONSTEXPR	if constexpr
 #else
@@ -1210,22 +1212,64 @@ forward_list(hamon::from_range_t, R&&, Allocator = Allocator())
 
 #endif
 
-// TODO
 template <typename T, typename Allocator>
-HAMON_CXX14_CONSTEXPR
-bool operator==(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y);
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator==(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return hamon::equal(x.begin(), x.end(), y.begin(), y.end());
+}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-// TODO
 template <typename T, typename Allocator>
-HAMON_CXX14_CONSTEXPR
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 hamon::detail::synth_three_way_result<T>
-operator<=>(forward_list<T, Allocator> const&x, forward_list<T, Allocator> const&y);
+operator<=>(forward_list<T, Allocator> const&x, forward_list<T, Allocator> const&y)
+{
+	return hamon::lexicographical_compare_three_way(
+		x.begin(), x.end(),
+		y.begin(), y.end(),
+		hamon::detail::synth_three_way);
+}
 
 #else
 
-// TODO
+template <typename T, typename Allocator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator!=(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return !(x == y);
+}
+
+template <typename T, typename Allocator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator<(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return hamon::lexicographical_compare(
+		x.begin(), x.end(),
+		y.begin(), y.end());
+}
+
+template <typename T, typename Allocator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator>(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return y < x;
+}
+
+template <typename T, typename Allocator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator<=(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return !(x > y);
+}
+
+template <typename T, typename Allocator>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+bool operator>=(forward_list<T, Allocator> const& x, forward_list<T, Allocator> const& y)
+{
+	return !(x < y);
+}
 
 #endif
 
