@@ -166,7 +166,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test3()
 	{
 		ForwardList v;
 		ForwardList x;
-		auto comp = [](T x, T y){ return x < y; };
+		auto comp = [](T a, T b){ return a < b; };
 		static_assert(hamon::is_same<decltype(v.merge(x, comp)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert(!noexcept(v.merge(x, comp)), "");
@@ -203,7 +203,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test4()
 	{
 		ForwardList v;
 		ForwardList x;
-		auto comp = [](T x, T y){ return x < y; };
+		auto comp = [](T a, T b){ return a < b; };
 		static_assert(hamon::is_same<decltype(v.merge(hamon::move(x), comp)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
 		static_assert(!noexcept(v.merge(hamon::move(x), comp)), "");
