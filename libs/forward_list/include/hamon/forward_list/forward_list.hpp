@@ -272,8 +272,8 @@ sort(forward_list_node_base* x, D sz, Compare& comp)
 			hamon::detail::get_value<T>(x->m_next)))
 		{
 			auto next = x->m_next;
-			x->m_next = next->m_next;
-			next->m_next = nullptr;
+			x->m_next         = next->m_next;
+			next->m_next      = nullptr;
 			x->m_next->m_next = next;
 		}
 		return;
@@ -288,6 +288,25 @@ sort(forward_list_node_base* x, D sz, Compare& comp)
 	hamon::detail::sort<T>(x, sz1, comp);
 	hamon::detail::sort<T>(&y, sz2, comp);
 	hamon::detail::merge<T>(x, &y, comp);
+}
+
+inline HAMON_CXX14_CONSTEXPR void
+reverse(forward_list_node_base* x)
+{
+	auto curr = x->m_next;
+	if (curr != nullptr)
+	{
+		auto next = curr->m_next;
+		curr->m_next = nullptr;
+		while (next != nullptr)
+		{
+			auto t = next->m_next;
+			next->m_next = curr;
+			curr         = next;
+			next         = t;
+		}
+		x->m_next = curr;
+	}
 }
 
 template <typename T>
@@ -538,6 +557,12 @@ public:
 	void Sort(Compare comp)
 	{
 		hamon::detail::sort<T>(this->BeforeBegin(), hamon::detail::distance(this->Begin(), this->End()), comp);
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void Reverse()
+	{
+		hamon::detail::reverse(this->BeforeBegin());
 	}
 };
 
@@ -1164,8 +1189,8 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void reverse() noexcept
 	{
-		// TODO
 		// [forward.list.ops]/32
+		m_impl.Reverse();
 	}
 };
 

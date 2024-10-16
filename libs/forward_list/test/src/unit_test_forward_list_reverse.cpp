@@ -31,7 +31,72 @@ namespace reverse_test
 template <typename T>
 FORWARD_LIST_TEST_CONSTEXPR bool test()
 {
-	// TODO
+	using ForwardList = hamon::forward_list<T>;
+
+	{
+		ForwardList v;
+		static_assert(hamon::is_same<decltype(v.reverse()), void>::value, "");
+		static_assert(noexcept(v.reverse()), "");
+	}
+	{
+		ForwardList v;
+		v.reverse();
+		VERIFY(v.empty());
+	}
+	{
+		ForwardList v{3};
+		v.reverse();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{3});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{1,2};
+		v.reverse();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{1});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{2,1};
+		v.reverse();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{1,2,3};
+		v.reverse();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{1});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{8,7,5,9,0,1,3,2,6,4};
+		v.reverse();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{6});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{0});
+		VERIFY(*it++ == T{9});
+		VERIFY(*it++ == T{5});
+		VERIFY(*it++ == T{7});
+		VERIFY(*it++ == T{8});
+		VERIFY(it == v.end());
+	}
+
 	return true;
 }
 
