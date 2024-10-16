@@ -172,6 +172,125 @@ private:
 };
 
 template <typename T>
+HAMON_CXX11_CONSTEXPR
+T const& get_value(forward_list_node_base* x)
+{
+	return static_cast<forward_list_node<T>*>(x)->m_value;
+}
+
+template <typename SizeType>
+HAMON_CXX14_CONSTEXPR
+forward_list_node_base* next(forward_list_node_base* x, SizeType sz)
+{
+	for (; 0 < sz; --sz)
+	{
+		x = x->m_next;
+	}
+	return x;
+}
+
+inline HAMON_CXX14_CONSTEXPR
+hamon::size_t distance(forward_list_node_base* first, forward_list_node_base* last)
+{
+	hamon::size_t n = 0;
+	for (; first != last; first = first->m_next)
+	{
+		++n;
+	}
+	return n;
+}
+
+inline HAMON_CXX14_CONSTEXPR
+void splice_after(forward_list_node_base* pos, forward_list_node_base* first)
+{
+	auto next = first->m_next;
+	first->m_next = next->m_next;
+	next->m_next = pos->m_next;
+	pos->m_next = next;
+}
+
+inline HAMON_CXX14_CONSTEXPR
+void splice_after(forward_list_node_base* pos, forward_list_node_base* first, forward_list_node_base* last)
+{
+	if (first == last)
+	{
+		return;
+	}
+
+	if (first->m_next == last)
+	{
+		return;
+	}
+
+	auto prev_last = first->m_next;
+	while(prev_last->m_next != last)
+	{
+		prev_last = prev_last->m_next;
+	}
+
+	auto next = first->m_next;
+	first->m_next = prev_last->m_next;
+	prev_last->m_next = pos->m_next;
+	pos->m_next = next;
+}
+
+template <typename T, typename Compare>
+HAMON_CXX14_CONSTEXPR void
+merge(forward_list_node_base* x, forward_list_node_base* y, Compare comp)
+{
+	while (x->m_next && y->m_next)
+	{
+		if (comp(
+			hamon::detail::get_value<T>(y->m_next),
+			hamon::detail::get_value<T>(x->m_next)))
+		{
+			hamon::detail::splice_after(x, y);
+		}
+
+		x = x->m_next;
+	}
+
+	if (y->m_next)
+	{
+		x->m_next = y->m_next;
+		y->m_next = nullptr;
+	}
+}
+
+template <typename T, typename D, typename Compare>
+HAMON_CXX14_CONSTEXPR void
+sort(forward_list_node_base* x, D sz, Compare& comp)
+{
+	switch (sz)
+	{
+	case 0:
+	case 1:
+		return;
+	case 2:
+		if (comp(
+			hamon::detail::get_value<T>(x->m_next->m_next),
+			hamon::detail::get_value<T>(x->m_next)))
+		{
+			auto next = x->m_next;
+			x->m_next = next->m_next;
+			next->m_next = nullptr;
+			x->m_next->m_next = next;
+		}
+		return;
+	}
+
+	D const sz1 = sz / 2;
+	D const sz2 = sz - sz1;
+	auto t = hamon::detail::next(x, sz1);
+	forward_list_node_base y;
+	y.m_next = t->m_next;
+	t->m_next = nullptr;
+	hamon::detail::sort<T>(x, sz1, comp);
+	hamon::detail::sort<T>(&y, sz2, comp);
+	hamon::detail::merge<T>(x, &y, comp);
+}
+
+template <typename T>
 struct forward_list_impl
 {
 public:
@@ -350,14 +469,13 @@ public:
 	hamon::size_t RemoveIf(Allocator& alloc, Predicate pred)
 	{
 		auto prev = this->BeforeBegin();
-		auto end  = this->End();
 		hamon::size_t removed_count = 0;
 
-		while (prev != end)
+		while (prev)
 		{
 			auto curr = prev->m_next;
 
-			if (curr == end)
+			if (!curr)
 			{
 				break;
 			}
@@ -381,14 +499,13 @@ public:
 	hamon::size_t Unique(Allocator& alloc, BinaryPredicate binary_pred)
 	{
 		auto curr = this->Begin();
-		auto end  = this->End();
 		hamon::size_t removed_count = 0;
 
-		while (curr != end)
+		while (curr)
 		{
 			auto next = curr->m_next;
 
-			if (next == end)
+			if (!next)
 			{
 				break;
 			}
@@ -409,63 +526,18 @@ public:
 		return removed_count;
 	}
 
-	HAMON_CXX14_CONSTEXPR
-	void SpliceAfter(NodeBase* pos, NodeBase* first)
-	{
-		auto next = first->m_next;
-		first->m_next = next->m_next;
-		next->m_next = pos->m_next;
-		pos->m_next = next;
-	}
-
-	HAMON_CXX14_CONSTEXPR
-	void SpliceAfter(NodeBase* pos, NodeBase* first, NodeBase* last)
-	{
-		if (first == last)
-		{
-			return;
-		}
-
-		if (first->m_next == last)
-		{
-			return;
-		}
-
-		auto prev_last = first->m_next;
-		while(prev_last->m_next != last)
-		{
-			prev_last = prev_last->m_next;
-		}
-
-		auto next = first->m_next;
-		first->m_next = prev_last->m_next;
-		prev_last->m_next = pos->m_next;
-		pos->m_next = next;
-	}
-
 	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR
 	void Merge(forward_list_impl& x, Compare comp)
 	{
-		auto node1 = this->BeforeBegin();
-		auto node2 = x.BeforeBegin();
-		while (node1->m_next && node2->m_next)
-		{
-			if (comp(
-				static_cast<Node*>(node2->m_next)->m_value,
-				static_cast<Node*>(node1->m_next)->m_value))
-			{
-				this->SpliceAfter(node1, node2);
-			}
+		hamon::detail::merge<T>(this->BeforeBegin(), x.BeforeBegin(), comp);
+	}
 
-			node1 = node1->m_next;
-		}
-
-		if (node2->m_next)
-		{
-			node1->m_next = node2->m_next;
-			node2->m_next = nullptr;
-		}
+	template <typename Compare>
+	HAMON_CXX14_CONSTEXPR
+	void Sort(Compare comp)
+	{
+		hamon::detail::sort<T>(this->BeforeBegin(), hamon::detail::distance(this->Begin(), this->End()), comp);
 	}
 };
 
@@ -980,7 +1052,7 @@ public:
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
 
 		// [forward.list.ops]/7
-		m_impl.SpliceAfter(m_impl.ToNode(position), x.m_impl.ToNode(i));
+		hamon::detail::splice_after(m_impl.ToNode(position), x.m_impl.ToNode(i));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -996,7 +1068,7 @@ public:
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
 
 		// [forward.list.ops]/11
-		m_impl.SpliceAfter(m_impl.ToNode(position), x.m_impl.ToNode(first), x.m_impl.ToNode(last));
+		hamon::detail::splice_after(m_impl.ToNode(position), x.m_impl.ToNode(first), x.m_impl.ToNode(last));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -1083,10 +1155,10 @@ public:
 
 	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR
-	void sort(Compare /*comp*/)
+	void sort(Compare comp)
 	{
-		// TODO
 		// [forward.list.ops]/29
+		m_impl.Sort(comp);
 	}
 
 	HAMON_CXX14_CONSTEXPR
