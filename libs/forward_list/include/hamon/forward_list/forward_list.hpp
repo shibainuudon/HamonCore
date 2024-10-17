@@ -260,8 +260,114 @@ merge(forward_list_node_base* x, forward_list_node_base* y, Compare comp)
 
 template <typename T, typename D, typename Compare>
 HAMON_CXX14_CONSTEXPR void
-sort(forward_list_node_base* x, D sz, Compare& comp)
+sort(forward_list_node_base* x, D /*sz*/, Compare comp)
 {
+	// If `next' is nullptr, return immediately.
+	forward_list_node_base* __list = x->m_next;
+	if (!__list)
+	{
+		return;
+	}
+
+	unsigned long __insize = 1;
+
+	while (1)
+	{
+		forward_list_node_base* __p = __list;
+		__list = nullptr;
+		forward_list_node_base* __tail = nullptr;
+
+		// Count number of merges we do in this pass.
+		unsigned long __nmerges = 0;
+
+		while (__p)
+		{
+			++__nmerges;
+			// There exists a merge to be done.
+			// Step `insize' places along from p.
+			forward_list_node_base* __q = __p;
+			unsigned long __psize = 0;
+			for (unsigned long __i = 0; __i < __insize; ++__i)
+			{
+				++__psize;
+				__q = __q->m_next;
+				if (!__q)
+				{
+					break;
+				}
+			}
+
+			// If q hasn't fallen off end, we have two lists to merge.
+			unsigned long __qsize = __insize;
+
+			// Now we have two lists; merge them.
+			while (__psize > 0 || (__qsize > 0 && __q))
+			{
+				// Decide whether next node of merge comes from p or q.
+				forward_list_node_base* __e = nullptr;
+				if (__psize == 0)
+				{
+					// p is empty; e must come from q.
+					__e = __q;
+					__q = __q->m_next;
+					--__qsize;
+				}
+				else if (__qsize == 0 || !__q)
+				{
+					// q is empty; e must come from p.
+					__e = __p;
+					__p = __p->m_next;
+					--__psize;
+				}
+				else if (!comp(
+					hamon::detail::get_value<T>(__q),
+					hamon::detail::get_value<T>(__p)))
+				{
+					// First node of q is not lower; e must come from p.
+					__e = __p;
+					__p = __p->m_next;
+					--__psize;
+				}
+				else
+				{
+					// First node of q is lower; e must come from q.
+					__e = __q;
+					__q = __q->m_next;
+					--__qsize;
+				}
+
+				// Add the next node to the merged list.
+				if (__tail)
+				{
+					__tail->m_next = __e;
+				}
+				else
+				{
+					__list = __e;
+				}
+
+				__tail = __e;
+			}
+
+			// Now p has stepped `insize' places along, and q has too.
+			__p = __q;
+		}
+
+		__tail->m_next = nullptr;
+
+		// If we have done only one merge, we're finished.
+		// Allow for nmerges == 0, the empty list case.
+		if (__nmerges <= 1)
+		{
+			x->m_next = __list;
+			return;
+		}
+
+		// Otherwise repeat, merging lists twice the size.
+		__insize *= 2;
+	}
+
+#if 0
 	switch (sz)
 	{
 	case 0:
@@ -289,6 +395,7 @@ sort(forward_list_node_base* x, D sz, Compare& comp)
 	hamon::detail::sort<T>(x, sz1, comp);
 	hamon::detail::sort<T>(&y, sz2, comp);
 	hamon::detail::merge<T>(x, &y, comp);
+#endif
 }
 
 inline HAMON_CXX14_CONSTEXPR void
