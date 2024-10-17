@@ -53,8 +53,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(v.front()), Reference>::value, "");
 		static_assert(hamon::is_same<decltype(cv.front()), ConstReference>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.front()), "");
-		static_assert(!noexcept(cv.front()), "");
+		static_assert( noexcept(v.front()), "");
+		static_assert( noexcept(cv.front()), "");
 #endif
 	}
 	{

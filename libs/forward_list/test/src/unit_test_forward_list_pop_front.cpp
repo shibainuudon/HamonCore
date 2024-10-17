@@ -38,7 +38,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 		static_assert(hamon::is_same<decltype(v.pop_front()), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.pop_front()), "");
+		static_assert( noexcept(v.pop_front()), "");
 #endif
 
 		v.pop_front();

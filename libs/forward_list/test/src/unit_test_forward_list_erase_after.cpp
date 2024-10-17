@@ -43,8 +43,8 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 		static_assert(hamon::is_same<decltype(v.erase_after(it)), Iterator>::value, "");
 		static_assert(hamon::is_same<decltype(v.erase_after(it, it)), Iterator>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.erase_after(it)), "");
-		static_assert(!noexcept(v.erase_after(it, it)), "");
+		static_assert( noexcept(v.erase_after(it)), "");
+		static_assert( noexcept(v.erase_after(it, it)), "");
 #endif
 	}
 	{

@@ -88,7 +88,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1(Allocator const& alloc)
 
 		static_assert( hamon::is_constructible<ForwardList, Allocator const&>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!hamon::is_nothrow_constructible<ForwardList, Allocator const&>::value, "");
+		static_assert( hamon::is_nothrow_constructible<ForwardList, Allocator const&>::value, "");
 #endif
 		static_assert(!hamon::is_implicitly_constructible<ForwardList, Allocator const&>::value, "");
 		static_assert(!hamon::is_trivially_constructible<ForwardList, Allocator const&>::value, "");

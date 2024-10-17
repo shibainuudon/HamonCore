@@ -88,93 +88,9 @@ struct forward_list_node : public forward_list_node_base
 	{}
 };
 
-template <typename T, typename D, bool Const>
-struct forward_list_iterator
-{
-public:
-	using iterator_category = hamon::forward_iterator_tag;
-	using value_type        = T;
-	using difference_type   = D;
-	using pointer           = hamon::conditional_t<Const, value_type const*, value_type*>;
-	using reference         = hamon::conditional_t<Const, value_type const&, value_type&>;
-
-private:
-	using Node = forward_list_node<value_type>;
-
-private:
-	forward_list_node_base*	m_ptr;
-
-public:
-	HAMON_CXX11_CONSTEXPR
-	forward_list_iterator() HAMON_NOEXCEPT
-		: m_ptr(nullptr)
-	{}
-
-	HAMON_CXX11_CONSTEXPR
-	forward_list_iterator(forward_list_node_base* ptr) HAMON_NOEXCEPT
-		: m_ptr(ptr)
-	{}
-
-	template <bool C, typename = hamon::enable_if_t<C == Const || Const>>
-	HAMON_CXX11_CONSTEXPR
-	forward_list_iterator(forward_list_iterator<T, D, C> const& i) HAMON_NOEXCEPT
-		: m_ptr(i.m_ptr)
-	{}
-
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	reference operator*() const HAMON_NOEXCEPT
-	{
-#if HAMON_CXX_STANDARD >= 14
-		HAMON_ASSERT(m_ptr != nullptr);
-#endif
-		return static_cast<Node*>(m_ptr)->m_value;
-	}
-
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	pointer operator->() const HAMON_NOEXCEPT
-	{
-		return hamon::pointer_traits<pointer>::pointer_to(**this);
-	}
-
-	HAMON_CXX14_CONSTEXPR forward_list_iterator&
-	operator++() HAMON_NOEXCEPT
-	{
-		HAMON_ASSERT(m_ptr != nullptr);
-		m_ptr = m_ptr->m_next;
-		return *this;
-	}
-
-	HAMON_CXX14_CONSTEXPR forward_list_iterator
-	operator++(int) HAMON_NOEXCEPT
-	{
-		auto tmp = *this;
-		++*this;
-		return tmp;
-	}
-
-private:
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-	operator==(forward_list_iterator const& lhs, forward_list_iterator const& rhs) HAMON_NOEXCEPT
-	{
-		return lhs.m_ptr == rhs.m_ptr;
-	}
-
-#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-	operator!=(forward_list_iterator const& lhs, forward_list_iterator const& rhs) HAMON_NOEXCEPT
-	{
-		return !(lhs == rhs);
-	}
-#endif
-
-private:
-	friend struct forward_list_iterator<T, D, !Const>;
-	friend struct forward_list_impl<T>;
-};
-
 template <typename T>
 HAMON_CXX11_CONSTEXPR
-T const& get_value(forward_list_node_base* x)
+T& get_value(forward_list_node_base* x)
 {
 	return static_cast<forward_list_node<T>*>(x)->m_value;
 }
@@ -262,6 +178,7 @@ inplace_merge_after(forward_list_node_base* first, forward_list_node_base* middl
 	forward_list_node_base* x = first->m_next;
 	forward_list_node_base* y = middle;
 	forward_list_node_base* tail = nullptr;
+
 	while (x != middle || y != last)
 	{
 		forward_list_node_base* e = nullptr;
@@ -350,6 +267,90 @@ reverse_after(forward_list_node_base* x)
 		x->m_next = curr;
 	}
 }
+
+template <typename T, typename D, bool Const>
+struct forward_list_iterator
+{
+public:
+	using iterator_category = hamon::forward_iterator_tag;
+	using value_type        = T;
+	using difference_type   = D;
+	using pointer           = hamon::conditional_t<Const, value_type const*, value_type*>;
+	using reference         = hamon::conditional_t<Const, value_type const&, value_type&>;
+
+private:
+	using Node = forward_list_node<value_type>;
+
+private:
+	forward_list_node_base*	m_ptr;
+
+public:
+	HAMON_CXX11_CONSTEXPR
+	forward_list_iterator() HAMON_NOEXCEPT
+		: m_ptr(nullptr)
+	{}
+
+	HAMON_CXX11_CONSTEXPR
+	forward_list_iterator(forward_list_node_base* ptr) HAMON_NOEXCEPT
+		: m_ptr(ptr)
+	{}
+
+	template <bool C, typename = hamon::enable_if_t<C == Const || Const>>
+	HAMON_CXX11_CONSTEXPR
+	forward_list_iterator(forward_list_iterator<T, D, C> const& i) HAMON_NOEXCEPT
+		: m_ptr(i.m_ptr)
+	{}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	reference operator*() const HAMON_NOEXCEPT
+	{
+#if HAMON_CXX_STANDARD >= 14
+		HAMON_ASSERT(m_ptr != nullptr);
+#endif
+		return hamon::detail::get_value<T>(m_ptr);
+	}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	pointer operator->() const HAMON_NOEXCEPT
+	{
+		return hamon::pointer_traits<pointer>::pointer_to(**this);
+	}
+
+	HAMON_CXX14_CONSTEXPR forward_list_iterator&
+	operator++() HAMON_NOEXCEPT
+	{
+		HAMON_ASSERT(m_ptr != nullptr);
+		m_ptr = m_ptr->m_next;
+		return *this;
+	}
+
+	HAMON_CXX14_CONSTEXPR forward_list_iterator
+	operator++(int) HAMON_NOEXCEPT
+	{
+		auto tmp = *this;
+		++*this;
+		return tmp;
+	}
+
+private:
+	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
+	operator==(forward_list_iterator const& lhs, forward_list_iterator const& rhs) HAMON_NOEXCEPT
+	{
+		return lhs.m_ptr == rhs.m_ptr;
+	}
+
+#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
+	operator!=(forward_list_iterator const& lhs, forward_list_iterator const& rhs) HAMON_NOEXCEPT
+	{
+		return !(lhs == rhs);
+	}
+#endif
+
+private:
+	friend struct forward_list_iterator<T, D, !Const>;
+	friend struct forward_list_impl<T>;
+};
 
 template <typename T>
 struct forward_list_impl
@@ -490,7 +491,7 @@ public:
 				return;
 			}
 
-			static_cast<Node*>(curr)->m_value = *first;
+			hamon::detail::get_value<T>(curr) = *first;
 
 			prev = curr;
 			++first;
@@ -542,7 +543,7 @@ public:
 				break;
 			}
 
-			if (pred(static_cast<Node*>(curr)->m_value))
+			if (pred(hamon::detail::get_value<T>(curr)))
 			{
 				this->EraseAfter(alloc, prev);
 				++removed_count;
@@ -573,8 +574,8 @@ public:
 			}
 
 			if (binary_pred(
-				static_cast<Node*>(curr)->m_value,
-				static_cast<Node*>(next)->m_value))
+				hamon::detail::get_value<T>(curr),
+				hamon::detail::get_value<T>(next)))
 			{
 				this->EraseAfter(alloc, curr);
 				++removed_count;
@@ -586,26 +587,6 @@ public:
 		}
 
 		return removed_count;
-	}
-
-	template <typename Compare>
-	HAMON_CXX14_CONSTEXPR
-	void Merge(forward_list_impl& x, Compare comp)
-	{
-		hamon::detail::merge_after<T>(this->BeforeBegin(), x.BeforeBegin(), comp);
-	}
-
-	template <typename Compare>
-	HAMON_CXX14_CONSTEXPR
-	void Sort(Compare comp)
-	{
-		hamon::detail::sort_after<T>(this->BeforeBegin(), comp);
-	}
-
-	HAMON_CXX14_CONSTEXPR
-	void Reverse()
-	{
-		hamon::detail::reverse_after(this->BeforeBegin());
 	}
 };
 
@@ -639,10 +620,12 @@ public:
 
 	// [forward.list.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
-	forward_list() : forward_list(Allocator()) {}
+	forward_list() noexcept(hamon::is_nothrow_default_constructible<NodeAllocator>::value)	// noexcept as an extension
+		: forward_list(Allocator())
+	{}
 
 	HAMON_CXX11_CONSTEXPR explicit
-	forward_list(Allocator const& a)
+	forward_list(Allocator const& a) noexcept	// noexcept as an extension
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/1
@@ -698,7 +681,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	forward_list(forward_list&& x)
+	forward_list(forward_list&& x) noexcept	// noexcept as an extension
 		: m_allocator(hamon::move(x.m_allocator))
 		, m_impl(hamon::move(x.m_impl))
 	{}
@@ -723,6 +706,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list&& x, hamon::type_identity_t<Allocator> const& a)
+		noexcept(hamon::allocator_traits<Allocator>::is_always_equal::value)	// noexcept as an extension
 		: m_allocator(a)
 	{
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
@@ -852,67 +836,79 @@ public:
 		this->assign(il.begin(), il.end());
 	}
 
-	HAMON_CXX11_CONSTEXPR allocator_type get_allocator() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	allocator_type get_allocator() const noexcept
 	{
 		return static_cast<allocator_type>(m_allocator);
 	}
 
 	// [forward.list.iter], iterators
-	HAMON_CXX14_CONSTEXPR iterator before_begin() noexcept
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	iterator before_begin() noexcept
 	{
 		// [forward.list.iter]/2
 		return iterator(m_impl.BeforeBegin());
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator before_begin() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator before_begin() const noexcept
 	{
 		// [forward.list.iter]/2
 		return const_iterator(m_impl.BeforeBegin());
 	}
 
-	HAMON_CXX14_CONSTEXPR iterator begin() noexcept
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	iterator begin() noexcept
 	{
 		return iterator(m_impl.Begin());
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator begin() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator begin() const noexcept
 	{
 		return const_iterator(m_impl.Begin());
 	}
 
-	HAMON_CXX14_CONSTEXPR iterator end() noexcept
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	iterator end() noexcept
 	{
 		return iterator(m_impl.End());
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator end() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator end() const noexcept
 	{
 		return const_iterator(m_impl.End());
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator cbegin() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator cbegin() const noexcept
 	{
 		return this->begin();
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator cbefore_begin() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator cbefore_begin() const noexcept
 	{
 		// [forward.list.iter]/1
 		return this->before_begin();
 	}
 
-	HAMON_CXX11_CONSTEXPR const_iterator cend() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_iterator cend() const noexcept
 	{
 		return this->end();
 	}
 
 	// capacity
-	HAMON_CXX11_CONSTEXPR bool empty() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	bool empty() const noexcept
 	{
 		return this->begin() == this->end();
 	}
 
-	HAMON_CXX11_CONSTEXPR size_type max_size() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	size_type max_size() const noexcept
 	{
 		return hamon::min(
 			static_cast<size_type>(hamon::numeric_limits<difference_type>::max()),
@@ -920,14 +916,15 @@ public:
 	}
 
 	// [forward.list.access], element access
-	HAMON_CXX14_CONSTEXPR
-	reference front()
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	reference front() noexcept	// noexcept as an extension
 	{
 		// [forward.list.access]/1
 		return *this->begin();
 	}
 
-	HAMON_CXX11_CONSTEXPR const_reference front() const
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	const_reference front() const noexcept	// noexcept as an extension
 	{
 		// [forward.list.access]/1
 		return *this->begin();
@@ -970,7 +967,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void pop_front()
+	void pop_front() noexcept	// noexcept as an extension
 	{
 		// [forward.list.modifiers]/5
 		this->erase_after(this->before_begin());
@@ -1048,7 +1045,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	iterator erase_after(const_iterator position)
+	iterator erase_after(const_iterator position) noexcept	// noexcept as an extension
 	{
 		// [forward.list.modifiers]/26
 		// [forward.list.modifiers]/27
@@ -1058,7 +1055,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	iterator erase_after(const_iterator position, const_iterator last)
+	iterator erase_after(const_iterator position, const_iterator last) noexcept	// noexcept as an extension
 	{
 		// [forward.list.modifiers]/30
 		// [forward.list.modifiers]/31
@@ -1102,21 +1099,21 @@ public:
 
 	// [forward.list.ops], forward_list operations
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list& x)
+	void splice_after(const_iterator position, forward_list& x) noexcept	// noexcept as an extension
 	{
 		// [forward.list.ops]/3
 		this->splice_after(position, x, x.before_begin(), x.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list&& x)
+	void splice_after(const_iterator position, forward_list&& x) noexcept	// noexcept as an extension
 	{
 		// [forward.list.ops]/3
 		this->splice_after(position, x, x.before_begin(), x.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list& x, const_iterator i)
+	void splice_after(const_iterator position, forward_list& x, const_iterator i) noexcept	// noexcept as an extension
 	{
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
 
@@ -1125,14 +1122,14 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list&& x, const_iterator i)
+	void splice_after(const_iterator position, forward_list&& x, const_iterator i) noexcept	// noexcept as an extension
 	{
 		// [forward.list.ops]/7
 		this->splice_after(position, x, i);
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list& x, const_iterator first, const_iterator last)
+	void splice_after(const_iterator position, forward_list& x, const_iterator first, const_iterator last) noexcept	// noexcept as an extension
 	{
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
 
@@ -1141,7 +1138,7 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR
-	void splice_after(const_iterator position, forward_list&& x, const_iterator first, const_iterator last)
+	void splice_after(const_iterator position, forward_list&& x, const_iterator first, const_iterator last) noexcept	// noexcept as an extension
 	{
 		// [forward.list.ops]/11
 		this->splice_after(position, x, first, last);
@@ -1204,7 +1201,7 @@ public:
 			return;
 		}
 
-		m_impl.Merge(x.m_impl, comp);
+		hamon::detail::merge_after<T>(m_impl.BeforeBegin(), x.m_impl.BeforeBegin(), comp);
 	}
 
 	template <typename Compare>
@@ -1227,14 +1224,14 @@ public:
 	void sort(Compare comp)
 	{
 		// [forward.list.ops]/29
-		m_impl.Sort(comp);
+		hamon::detail::sort_after<T>(m_impl.BeforeBegin(), comp);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void reverse() noexcept
 	{
 		// [forward.list.ops]/32
-		m_impl.Reverse();
+		hamon::detail::reverse_after(m_impl.BeforeBegin());
 	}
 };
 

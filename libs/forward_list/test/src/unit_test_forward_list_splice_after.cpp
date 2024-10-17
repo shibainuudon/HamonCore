@@ -46,7 +46,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 		ForwardList x;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, x)), "");
+		static_assert( noexcept(v.splice_after(pos, x)), "");
 #endif
 	}
 	{
@@ -114,7 +114,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test2()
 		ForwardList x;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x))), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, hamon::move(x))), "");
+		static_assert( noexcept(v.splice_after(pos, hamon::move(x))), "");
 #endif
 	}
 	{
@@ -183,7 +183,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test3()
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x, i)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, x, i)), "");
+		static_assert( noexcept(v.splice_after(pos, x, i)), "");
 #endif
 	}
 	{
@@ -225,7 +225,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test4()
 		ConstIterator i;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x), i)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, hamon::move(x), i)), "");
+		static_assert( noexcept(v.splice_after(pos, hamon::move(x), i)), "");
 #endif
 	}
 	{
@@ -268,7 +268,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test5()
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, x, first, last)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, x, first, last)), "");
+		static_assert( noexcept(v.splice_after(pos, x, first, last)), "");
 #endif
 	}
 	{
@@ -375,7 +375,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test6()
 		ConstIterator last;
 		static_assert(hamon::is_same<decltype(v.splice_after(pos, hamon::move(x), first, last)), void>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-		static_assert(!noexcept(v.splice_after(pos, hamon::move(x), first, last)), "");
+		static_assert( noexcept(v.splice_after(pos, hamon::move(x), first, last)), "");
 #endif
 	}
 	{

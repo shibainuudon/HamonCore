@@ -51,7 +51,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 
 	static_assert( hamon::is_default_constructible<ForwardList>::value, "");
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
-	static_assert(!hamon::is_nothrow_default_constructible<ForwardList>::value, "");
+	static_assert( hamon::is_nothrow_default_constructible<ForwardList>::value, "");
 #endif
 	static_assert( hamon::is_implicitly_default_constructible<ForwardList>::value, "");
 	static_assert(!hamon::is_trivially_default_constructible<ForwardList>::value, "");
