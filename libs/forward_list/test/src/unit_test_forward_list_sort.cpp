@@ -84,11 +84,56 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 	{
-		ForwardList v{7,6,5,4,3,2,1,0};
+		ForwardList v{3,2,1};
 		v.sort();
 
 		auto it = v.begin();
-		VERIFY(*it++ == T{0});
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{5,4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{5});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{6,5,4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{5});
+		VERIFY(*it++ == T{6});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{7,6,5,4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
 		VERIFY(*it++ == T{1});
 		VERIFY(*it++ == T{2});
 		VERIFY(*it++ == T{3});
@@ -96,6 +141,53 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 		VERIFY(*it++ == T{5});
 		VERIFY(*it++ == T{6});
 		VERIFY(*it++ == T{7});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{8,7,6,5,4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{5});
+		VERIFY(*it++ == T{6});
+		VERIFY(*it++ == T{7});
+		VERIFY(*it++ == T{8});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{9,8,7,6,5,4,3,2,1};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{5});
+		VERIFY(*it++ == T{6});
+		VERIFY(*it++ == T{7});
+		VERIFY(*it++ == T{8});
+		VERIFY(*it++ == T{9});
+		VERIFY(it == v.end());
+	}
+	{
+		ForwardList v{5,3,9,2,8,7,6,1,4};
+		v.sort();
+
+		auto it = v.begin();
+		VERIFY(*it++ == T{1});
+		VERIFY(*it++ == T{2});
+		VERIFY(*it++ == T{3});
+		VERIFY(*it++ == T{4});
+		VERIFY(*it++ == T{5});
+		VERIFY(*it++ == T{6});
+		VERIFY(*it++ == T{7});
+		VERIFY(*it++ == T{8});
+		VERIFY(*it++ == T{9});
 		VERIFY(it == v.end());
 	}
 	{

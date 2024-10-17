@@ -185,20 +185,14 @@ forward_list_node_base* next(forward_list_node_base* x, SizeType sz)
 {
 	for (; 0 < sz; --sz)
 	{
+		if (x == nullptr)
+		{
+			break;
+		}
+
 		x = x->m_next;
 	}
 	return x;
-}
-
-inline HAMON_CXX14_CONSTEXPR
-hamon::size_t distance(forward_list_node_base* first, forward_list_node_base* last)
-{
-	hamon::size_t n = 0;
-	for (; first != last; first = first->m_next)
-	{
-		++n;
-	}
-	return n;
 }
 
 inline HAMON_CXX14_CONSTEXPR
@@ -237,7 +231,7 @@ void splice_after(forward_list_node_base* pos, forward_list_node_base* first, fo
 
 template <typename T, typename Compare>
 HAMON_CXX14_CONSTEXPR void
-merge(forward_list_node_base* x, forward_list_node_base* y, Compare comp)
+merge_after(forward_list_node_base* x, forward_list_node_base* y, Compare comp)
 {
 	while (x->m_next && y->m_next)
 	{
@@ -258,148 +252,88 @@ merge(forward_list_node_base* x, forward_list_node_base* y, Compare comp)
 	}
 }
 
-template <typename T, typename D, typename Compare>
-HAMON_CXX14_CONSTEXPR void
-sort(forward_list_node_base* x, D /*sz*/, Compare comp)
+// 2つの連続したソート済みイテレータ範囲 (first, middle) と [middle, last) をマージする。
+// マージした範囲のうち最後の要素を返す(lastの1つ前)
+template <typename T, typename Compare>
+HAMON_CXX14_CONSTEXPR forward_list_node_base*
+inplace_merge_after(forward_list_node_base* first, forward_list_node_base* middle, forward_list_node_base* last, Compare comp)
 {
-	// If `next' is nullptr, return immediately.
-	forward_list_node_base* __list = x->m_next;
-	if (!__list)
+	HAMON_ASSERT(first != nullptr);
+	forward_list_node_base* x = first->m_next;
+	forward_list_node_base* y = middle;
+	forward_list_node_base* tail = nullptr;
+	while (x != middle || y != last)
 	{
-		return;
-	}
-
-	unsigned long __insize = 1;
-
-	while (1)
-	{
-		forward_list_node_base* __p = __list;
-		__list = nullptr;
-		forward_list_node_base* __tail = nullptr;
-
-		// Count number of merges we do in this pass.
-		unsigned long __nmerges = 0;
-
-		while (__p)
+		forward_list_node_base* e = nullptr;
+		if (x == middle)
 		{
-			++__nmerges;
-			// There exists a merge to be done.
-			// Step `insize' places along from p.
-			forward_list_node_base* __q = __p;
-			unsigned long __psize = 0;
-			for (unsigned long __i = 0; __i < __insize; ++__i)
-			{
-				++__psize;
-				__q = __q->m_next;
-				if (!__q)
-				{
-					break;
-				}
-			}
-
-			// If q hasn't fallen off end, we have two lists to merge.
-			unsigned long __qsize = __insize;
-
-			// Now we have two lists; merge them.
-			while (__psize > 0 || (__qsize > 0 && __q))
-			{
-				// Decide whether next node of merge comes from p or q.
-				forward_list_node_base* __e = nullptr;
-				if (__psize == 0)
-				{
-					// p is empty; e must come from q.
-					__e = __q;
-					__q = __q->m_next;
-					--__qsize;
-				}
-				else if (__qsize == 0 || !__q)
-				{
-					// q is empty; e must come from p.
-					__e = __p;
-					__p = __p->m_next;
-					--__psize;
-				}
-				else if (!comp(
-					hamon::detail::get_value<T>(__q),
-					hamon::detail::get_value<T>(__p)))
-				{
-					// First node of q is not lower; e must come from p.
-					__e = __p;
-					__p = __p->m_next;
-					--__psize;
-				}
-				else
-				{
-					// First node of q is lower; e must come from q.
-					__e = __q;
-					__q = __q->m_next;
-					--__qsize;
-				}
-
-				// Add the next node to the merged list.
-				if (__tail)
-				{
-					__tail->m_next = __e;
-				}
-				else
-				{
-					__list = __e;
-				}
-
-				__tail = __e;
-			}
-
-			// Now p has stepped `insize' places along, and q has too.
-			__p = __q;
+			e = y;
+			y = y->m_next;
+		}
+		else if (y == last)
+		{
+			e = x;
+			x = x->m_next;
+		}
+		else if (comp(
+			hamon::detail::get_value<T>(y),
+			hamon::detail::get_value<T>(x)))
+		{
+			e = y;
+			y = y->m_next;
+		}
+		else
+		{
+			e = x;
+			x = x->m_next;
 		}
 
-		__tail->m_next = nullptr;
-
-		// If we have done only one merge, we're finished.
-		// Allow for nmerges == 0, the empty list case.
-		if (__nmerges <= 1)
+		if (tail)
 		{
-			x->m_next = __list;
-			return;
+			tail->m_next = e;
+		}
+		else
+		{
+			first->m_next = e;
 		}
 
-		// Otherwise repeat, merging lists twice the size.
-		__insize *= 2;
+		tail = e;
 	}
 
-#if 0
-	switch (sz)
+	HAMON_ASSERT(tail != nullptr);
+	tail->m_next = last;
+
+	return tail;
+}
+
+template <typename T, typename Compare>
+HAMON_CXX14_CONSTEXPR void
+sort_after(forward_list_node_base* x, Compare comp)
+{
+	hamon::size_t sz = 1;
+	for (;;)
 	{
-	case 0:
-	case 1:
-		return;
-	case 2:
-		if (comp(
-			hamon::detail::get_value<T>(x->m_next->m_next),
-			hamon::detail::get_value<T>(x->m_next)))
+		hamon::size_t merge_count = 0;
+		auto first = x;
+		while (first->m_next)
 		{
-			auto next = x->m_next;
-			x->m_next         = next->m_next;
-			next->m_next      = nullptr;
-			x->m_next->m_next = next;
+			auto middle = hamon::detail::next(first->m_next, sz);
+			auto last   = hamon::detail::next(middle, sz);
+			first = hamon::detail::inplace_merge_after<T>(first, middle, last, comp);
+			++merge_count;
 		}
-		return;
-	}
 
-	D const sz1 = sz / 2;
-	D const sz2 = sz - sz1;
-	auto t = hamon::detail::next(x, sz1);
-	forward_list_node_base y;
-	y.m_next = t->m_next;
-	t->m_next = nullptr;
-	hamon::detail::sort<T>(x, sz1, comp);
-	hamon::detail::sort<T>(&y, sz2, comp);
-	hamon::detail::merge<T>(x, &y, comp);
-#endif
+		if (merge_count <= 1)
+		{
+			break;
+		}
+
+		sz *= 2;
+	}
 }
 
 inline HAMON_CXX14_CONSTEXPR void
-reverse(forward_list_node_base* x)
+reverse_after(forward_list_node_base* x)
 {
 	auto curr = x->m_next;
 	if (curr != nullptr)
@@ -491,6 +425,7 @@ public:
 			current->m_next = node;
 			current = current->m_next;
 		}
+		HAMON_ASSERT(current != nullptr);
 		current->m_next = next;
 		return current;
 	}
@@ -657,20 +592,20 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void Merge(forward_list_impl& x, Compare comp)
 	{
-		hamon::detail::merge<T>(this->BeforeBegin(), x.BeforeBegin(), comp);
+		hamon::detail::merge_after<T>(this->BeforeBegin(), x.BeforeBegin(), comp);
 	}
 
 	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR
 	void Sort(Compare comp)
 	{
-		hamon::detail::sort<T>(this->BeforeBegin(), hamon::detail::distance(this->Begin(), this->End()), comp);
+		hamon::detail::sort_after<T>(this->BeforeBegin(), comp);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void Reverse()
 	{
-		hamon::detail::reverse(this->BeforeBegin());
+		hamon::detail::reverse_after(this->BeforeBegin());
 	}
 };
 
