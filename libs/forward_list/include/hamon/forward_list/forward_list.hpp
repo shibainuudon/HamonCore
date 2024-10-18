@@ -29,9 +29,9 @@
 #include <initializer_list>
 
 // TODO:
-// * 実装用のファイルを移動
-// * インクルードファイルの整理
 // * 例外を投げた時の対応
+// * 実装用のファイルをdetailフォルダに移動
+// * インクルードファイルの整理
 // * if constexpr
 
 HAMON_WARNING_PUSH()
@@ -1044,7 +1044,11 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void splice_after(const_iterator position, forward_list& x, const_iterator i) HAMON_NOEXCEPT	// noexcept as an extension
 	{
+		// [forward.list.ops]/6
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
+		// TODO
+		// * position が before_begin() または [begin(), end()) の間接参照可能なイテレータであること
+		// * i に続くイテレータが x 内の間接参照可能なイテレータであること
 
 		// [forward.list.ops]/7
 		Algo::splice_after(position.ptr(), i.ptr());
@@ -1060,7 +1064,12 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void splice_after(const_iterator position, forward_list& x, const_iterator first, const_iterator last) HAMON_NOEXCEPT	// noexcept as an extension
 	{
+		// [forward.list.ops]/10
 		HAMON_ASSERT(hamon::detail::equals_allocator(m_allocator, x.m_allocator));
+		// TODO
+		// * position が before_begin() または [begin(), end()) の間接参照可能なイテレータであること
+		// * (first, last) が x の有効な範囲で、全てのイテレータが間接参照可能であること
+		// * position が (first, last) の範囲内のイテレータでないこと
 
 		// [forward.list.ops]/11
 		Algo::splice_range_after(position.ptr(), first.ptr(), last.ptr());
