@@ -312,65 +312,55 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 #undef VERIFY
 
 #if !defined(HAMON_NO_EXCEPTIONS)
-struct ThrowOnCopy
+struct MayThrow
 {
 	struct Exception{};
 
 	int value;
+	static int s_instance_count;
+	static int s_instance_max_count;
 
-	ThrowOnCopy() : value(13)
+	MayThrow() : value(0)
 	{
+		Ctor();
 	}
 
-	ThrowOnCopy(int v) : value(v)
+	MayThrow(int v) : value(v)
 	{
+		Ctor();
 	}
 
-	ThrowOnCopy(ThrowOnCopy const&)
-	{
-		throw Exception{};
-	}
-
-	ThrowOnCopy(ThrowOnCopy&& other) noexcept
+	MayThrow(MayThrow const& other)
 		: value(other.value)
 	{
+		Ctor();
 	}
 
-	ThrowOnCopy& operator=(ThrowOnCopy const&)
+	MayThrow(MayThrow&& other)
+		: value(other.value)
 	{
-		throw Exception{};
+		Ctor();
+	}
+
+	~MayThrow()
+	{
+		--s_instance_count;
+	}
+
+private:
+	void Ctor()
+	{
+		if (s_instance_count >= s_instance_max_count)
+		{
+			throw Exception{};
+		}
+		++s_instance_count;
 	}
 };
 
-struct ThrowOnMove
-{
-	struct Exception{};
+int MayThrow::s_instance_count = 0;
+int MayThrow::s_instance_max_count = 0;
 
-	int value;
-
-	ThrowOnMove() : value(14)
-	{
-	}
-
-	ThrowOnMove(int v) : value(v)
-	{
-	}
-
-	ThrowOnMove(ThrowOnMove const& other)
-		: value(other.value)
-	{
-	}
-
-	ThrowOnMove(ThrowOnMove&&)
-	{
-		throw Exception{};
-	}
-
-	ThrowOnMove& operator=(ThrowOnMove&&)
-	{
-		throw Exception{};
-	}
-};
 #endif
 
 GTEST_TEST(ForwardListTest, InsertAfterTest)
@@ -380,44 +370,45 @@ GTEST_TEST(ForwardListTest, InsertAfterTest)
 	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
 	FORWARD_LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
 
+// 操作中に例外が発生した場合、副作用は発生しない
 #if !defined(HAMON_NO_EXCEPTIONS)
-	// 操作中に例外が発生した場合、副作用は発生しない
+	MayThrow::s_instance_count = 0;
+	MayThrow::s_instance_max_count = 0;
 	{
-		hamon::forward_list<ThrowOnCopy> v;
+		MayThrow::s_instance_max_count = 3;
 
-		ThrowOnCopy const t(1);
-		EXPECT_THROW(v.insert_after(v.before_begin(), t), ThrowOnCopy::Exception);
-		EXPECT_TRUE(v.empty());
+		hamon::forward_list<MayThrow> v;
 
-		v.insert_after(v.before_begin(), ThrowOnCopy(2));
-		EXPECT_TRUE(!v.empty());
+		MayThrow const t(1);
+		EXPECT_EQ(1, MayThrow::s_instance_count);
+
+		v.insert_after(v.before_begin(), t);
+		EXPECT_EQ(2, MayThrow::s_instance_count);
 		{
 			auto it = v.begin();
-			EXPECT_EQ(2, (it++)->value);
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		v.insert_after(v.before_begin(), t);
+		EXPECT_EQ(3, MayThrow::s_instance_count);
+		{
+			auto it = v.begin();
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		EXPECT_THROW(v.insert_after(v.before_begin(), t), MayThrow::Exception);
+		EXPECT_EQ(3, MayThrow::s_instance_count);
+		{
+			auto it = v.begin();
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_EQ(1, (it++)->value);
 			EXPECT_TRUE(it == v.end());
 		}
 	}
-	{
-		hamon::forward_list<ThrowOnCopy> v(2);
-
-		ThrowOnCopy const t(1);
-		EXPECT_THROW(v.insert_after(v.before_begin(), t), ThrowOnCopy::Exception);
-		{
-			auto it = v.begin();
-			EXPECT_EQ(13, (it++)->value);
-			EXPECT_EQ(13, (it++)->value);
-			EXPECT_TRUE(it == v.end());
-		}
-
-		v.insert_after(v.before_begin(), ThrowOnCopy(2));
-		{
-			auto it = v.begin();
-			EXPECT_EQ( 2, (it++)->value);
-			EXPECT_EQ(13, (it++)->value);
-			EXPECT_EQ(13, (it++)->value);
-			EXPECT_TRUE(it == v.end());
-		}
-	}
+	EXPECT_EQ(0, MayThrow::s_instance_count);
 #endif
 }
 

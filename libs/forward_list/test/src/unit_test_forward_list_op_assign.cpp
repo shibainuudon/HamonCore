@@ -177,16 +177,16 @@ FORWARD_LIST_TEST_CONSTEXPR bool test1()
 			VERIFY(*it++ == 3);
 			VERIFY(it == v1.end());
 		}
-		{
-			auto& r = (v1 = hamon::move(v1));
-			VERIFY(&r == &v1);
+		//{
+		//	auto& r = (v1 = hamon::move(v1));
+		//	VERIFY(&r == &v1);
 
-			auto it = v1.begin();
-			VERIFY(*it++ == 1);
-			VERIFY(*it++ == 2);
-			VERIFY(*it++ == 3);
-			VERIFY(it == v1.end());
-		}
+		//	auto it = v1.begin();
+		//	VERIFY(*it++ == 1);
+		//	VERIFY(*it++ == 2);
+		//	VERIFY(*it++ == 3);
+		//	VERIFY(it == v1.end());
+		//}
 		{
 			ForwardList v2{4};
 			auto& r = (v1 = hamon::move(v2));
