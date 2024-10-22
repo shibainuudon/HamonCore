@@ -1,14 +1,12 @@
 ﻿/**
- *	@file	unit_test_list_erase.cpp
+ *	@file	unit_test_list_remove.cpp
  *
- *	@brief	erase のテスト
+ *	@brief	remove のテスト
  *
- *	iterator erase(const_iterator position);
- *	iterator erase(const_iterator position, const_iterator last);
+ *	size_type remove(const T& value);
  */
 
 #include <hamon/list/list.hpp>
-#include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -16,7 +14,7 @@
 namespace hamon_list_test
 {
 
-namespace erase_test
+namespace remove_test
 {
 
 #if !defined(HAMON_USE_STD_LIST) && \
@@ -34,159 +32,171 @@ template <typename T>
 LIST_TEST_CONSTEXPR bool test()
 {
 	using List = hamon::list<T>;
-	using Iterator = typename List::iterator;
-	using ConstIterator = typename List::const_iterator;
+	using SizeType = typename List::size_type;
 
 	{
 		List v;
-		ConstIterator it{};
-		static_assert(hamon::is_same<decltype(v.erase(it)), Iterator>::value, "");
-		static_assert(hamon::is_same<decltype(v.erase(it, it)), Iterator>::value, "");
-#if !defined(HAMON_USE_STD_LIST)
-		static_assert( noexcept(v.erase(it)), "");
-		static_assert( noexcept(v.erase(it, it)), "");
-#endif
+		T const value{};
+		static_assert(hamon::is_same<decltype(v.remove(value)), SizeType>::value, "");
+		static_assert(!noexcept(v.remove(value)), "");
 	}
 	{
-		List v{1,2,3,4,5};
+		List v{3,1,4,1,5};
 		{
-			auto ret = v.erase(v.begin());
-			VERIFY(ret == v.begin());
-			VERIFY(v.size() == 4);
-			VERIFY(v.begin() != v.end());
-			VERIFY(v.rbegin() != v.rend());
-			{
-				auto it = v.begin();
-				VERIFY(*it++ == 2);
-				VERIFY(*it++ == 3);
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 5);
-				VERIFY(it == v.end());
-			}
-			{
-				auto it = v.rbegin();
-				VERIFY(*it++ == 5);
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 3);
-				VERIFY(*it++ == 2);
-				VERIFY(it == v.rend());
-			}
-		}
-		{
-			auto ret = v.erase(hamon::next(v.begin(), 1));
-			VERIFY(ret == hamon::next(v.begin(), 1));
+			auto ret = v.remove(1);
+			VERIFY(ret == 2);
 			VERIFY(v.size() == 3);
 			VERIFY(v.begin() != v.end());
 			VERIFY(v.rbegin() != v.rend());
 			{
 				auto it = v.begin();
-				VERIFY(*it++ == 2);
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 5);
+				VERIFY(*it++ == T{3});
+				VERIFY(*it++ == T{4});
+				VERIFY(*it++ == T{5});
 				VERIFY(it == v.end());
 			}
 			{
 				auto it = v.rbegin();
-				VERIFY(*it++ == 5);
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 2);
+				VERIFY(*it++ == T{5});
+				VERIFY(*it++ == T{4});
+				VERIFY(*it++ == T{3});
 				VERIFY(it == v.rend());
 			}
 		}
 		{
-			auto ret = v.erase(hamon::next(v.begin(), 2));
-			VERIFY(ret == hamon::next(v.begin(), 2));
+			auto ret = v.remove(1);
+			VERIFY(ret == 0);
+			VERIFY(v.size() == 3);
+			VERIFY(v.begin() != v.end());
+			VERIFY(v.rbegin() != v.rend());
+			{
+				auto it = v.begin();
+				VERIFY(*it++ == T{3});
+				VERIFY(*it++ == T{4});
+				VERIFY(*it++ == T{5});
+				VERIFY(it == v.end());
+			}
+			{
+				auto it = v.rbegin();
+				VERIFY(*it++ == T{5});
+				VERIFY(*it++ == T{4});
+				VERIFY(*it++ == T{3});
+				VERIFY(it == v.rend());
+			}
+		}
+		{
+			auto ret = v.remove(3);
+			VERIFY(ret == 1);
 			VERIFY(v.size() == 2);
 			VERIFY(v.begin() != v.end());
 			VERIFY(v.rbegin() != v.rend());
 			{
 				auto it = v.begin();
-				VERIFY(*it++ == 2);
-				VERIFY(*it++ == 4);
+				VERIFY(*it++ == T{4});
+				VERIFY(*it++ == T{5});
 				VERIFY(it == v.end());
 			}
 			{
 				auto it = v.rbegin();
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 2);
+				VERIFY(*it++ == T{5});
+				VERIFY(*it++ == T{4});
 				VERIFY(it == v.rend());
 			}
 		}
 		{
-			auto ret = v.erase(v.begin());
-			VERIFY(ret == v.begin());
+			auto ret = v.remove(5);
+			VERIFY(ret == 1);
 			VERIFY(v.size() == 1);
 			VERIFY(v.begin() != v.end());
 			VERIFY(v.rbegin() != v.rend());
 			{
 				auto it = v.begin();
-				VERIFY(*it++ == 4);
+				VERIFY(*it++ == T{4});
 				VERIFY(it == v.end());
 			}
 			{
 				auto it = v.rbegin();
-				VERIFY(*it++ == 4);
+				VERIFY(*it++ == T{4});
 				VERIFY(it == v.rend());
 			}
 		}
 		{
-			auto ret = v.erase(v.begin());
-			VERIFY(ret == v.end());
+			auto ret = v.remove(4);
+			VERIFY(ret == 1);
+			VERIFY(v.empty());
+			VERIFY(v.size() == 0);
+			VERIFY(v.begin() == v.end());
+			VERIFY(v.rbegin() == v.rend());
+		}
+		{
+			auto ret = v.remove(0);
+			VERIFY(ret == 0);
+			VERIFY(v.empty());
 			VERIFY(v.size() == 0);
 			VERIFY(v.begin() == v.end());
 			VERIFY(v.rbegin() == v.rend());
 		}
 	}
 	{
-		List v{1,2,3,4,5};
+		List v{1,1,1,2,2};
 		{
-			auto ret = v.erase(v.begin(), v.end());
-			VERIFY(ret == v.end());
+			auto ret = v.remove(1);
+			VERIFY(ret == 3);
+			VERIFY(v.size() == 2);
+			VERIFY(v.begin() != v.end());
+			VERIFY(v.rbegin() != v.rend());
+			{
+				auto it = v.begin();
+				VERIFY(*it++ == 2);
+				VERIFY(*it++ == 2);
+				VERIFY(it == v.end());
+			}
+			{
+				auto it = v.rbegin();
+				VERIFY(*it++ == 2);
+				VERIFY(*it++ == 2);
+				VERIFY(it == v.rend());
+			}
+		}
+		{
+			auto ret = v.remove(2);
+			VERIFY(ret == 2);
+			VERIFY(v.empty());
 			VERIFY(v.size() == 0);
 			VERIFY(v.begin() == v.end());
 			VERIFY(v.rbegin() == v.rend());
 		}
 	}
 	{
-		List v{1,2,3,4,5};
+		List v{1,1,1,2,2};
 		{
-			auto ret = v.erase(hamon::next(v.begin(), 1), v.end());
-			VERIFY(ret == v.end());
-			VERIFY(v.size() == 1);
+			auto ret = v.remove(2);
+			VERIFY(ret == 2);
+			VERIFY(v.size() == 3);
 			VERIFY(v.begin() != v.end());
 			VERIFY(v.rbegin() != v.rend());
 			{
 				auto it = v.begin();
 				VERIFY(*it++ == 1);
+				VERIFY(*it++ == 1);
+				VERIFY(*it++ == 1);
 				VERIFY(it == v.end());
 			}
 			{
 				auto it = v.rbegin();
+				VERIFY(*it++ == 1);
+				VERIFY(*it++ == 1);
 				VERIFY(*it++ == 1);
 				VERIFY(it == v.rend());
 			}
 		}
-	}
-	{
-		List v{1,2,3,4,5};
 		{
-			auto ret = v.erase(v.begin(), hamon::next(v.begin(), 3));
-			VERIFY(ret == v.begin());
-			VERIFY(v.size() == 2);
-			VERIFY(v.begin() != v.end());
-			VERIFY(v.rbegin() != v.rend());
-			{
-				auto it = v.begin();
-				VERIFY(*it++ == 4);
-				VERIFY(*it++ == 5);
-				VERIFY(it == v.end());
-			}
-			{
-				auto it = v.rbegin();
-				VERIFY(*it++ == 5);
-				VERIFY(*it++ == 4);
-				VERIFY(it == v.rend());
-			}
+			auto ret = v.remove(1);
+			VERIFY(ret == 3);
+			VERIFY(v.empty());
+			VERIFY(v.size() == 0);
+			VERIFY(v.begin() == v.end());
+			VERIFY(v.rbegin() == v.rend());
 		}
 	}
 
@@ -195,7 +205,7 @@ LIST_TEST_CONSTEXPR bool test()
 
 #undef VERIFY
 
-GTEST_TEST(ListTest, EraseTest)
+GTEST_TEST(ListTest, RemoveTest)
 {
 	LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
 	LIST_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
@@ -205,6 +215,6 @@ GTEST_TEST(ListTest, EraseTest)
 #undef LIST_TEST_CONSTEXPR_EXPECT_TRUE
 #undef LIST_TEST_CONSTEXPR
 
-}	// namespace erase_test
+}	// namespace remove_test
 
 }	// namespace hamon_list_test

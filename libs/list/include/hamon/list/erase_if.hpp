@@ -7,9 +7,12 @@
 #ifndef HAMON_LIST_ERASE_IF_HPP
 #define HAMON_LIST_ERASE_IF_HPP
 
-#include <list>
+#include <hamon/list/config.hpp>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(HAMON_USE_STD_LIST) && \
+	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+
+#include <list>
 
 namespace hamon
 {
@@ -33,14 +36,8 @@ HAMON_CXX14_CONSTEXPR
 typename hamon::list<T, Allocator>::size_type
 erase_if(hamon::list<T, Allocator>& c, Predicate pred)
 {
-#if defined(__cpp_lib_list_remove_return_type) && (__cpp_lib_list_remove_return_type >= 201806)
 	// [list.erasure]/2
 	return c.remove_if(pred);
-#else
-	auto const sz = c.size();
-	c.remove_if(pred);
-	return sz - c.size();
-#endif
 }
 
 }	// namespace hamon
