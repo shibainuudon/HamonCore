@@ -11,8 +11,8 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "ranges_test.hpp"
 
 namespace hamon_memory_test
@@ -158,7 +158,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedMoveNTest)
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
-		std::list<ThrowOnMove> v;
+		hamon::list<ThrowOnMove> v;
 		v.emplace_back(10);
 		v.emplace_back(11);
 		v.emplace_back(12);

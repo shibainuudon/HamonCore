@@ -11,8 +11,8 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "ranges_test.hpp"
 
 namespace hamon_memory_test
@@ -145,7 +145,7 @@ GTEST_TEST(MemoryTest, RangesUninitializedCopyNTest)
 		const std::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
-		const std::list<ThrowOnCopy> v = {10,11,12,13};
+		const hamon::list<ThrowOnCopy> v = {10,11,12,13};
 
 		EXPECT_EQ(4, ThrowOnCopy::count);
 		EXPECT_EQ(0, ThrowOnCopy::copy_count);

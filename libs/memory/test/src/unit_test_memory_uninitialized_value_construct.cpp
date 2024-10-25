@@ -8,8 +8,8 @@
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_memory_test
 {
@@ -42,7 +42,7 @@ int ThrowOnCtor::count = 0;
 GTEST_TEST(MemoryTest, UninitializedValueConstructTest)
 {
 	{
-		std::list<int> v;
+		hamon::list<int> v;
 		hamon::uninitialized_value_construct(v.begin(), v.end());
 	}
 	{

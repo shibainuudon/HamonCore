@@ -6,9 +6,9 @@
 
 #include <hamon/algorithm/ranges/contains_subrange.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include <list>
 #include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -116,9 +116,9 @@ inline bool TestList()
 {
 	namespace ranges = hamon::ranges;
 
-	std::list<int> x = { 1, 2, 3, 4, 5, 6 };
-	std::list<int> y = { 4, 5, 6 };
-	std::list<int> z = { 1, 2, 3, 5 };
+	hamon::list<int> x = { 1, 2, 3, 4, 5, 6 };
+	hamon::list<int> y = { 4, 5, 6 };
+	hamon::list<int> z = { 1, 2, 3, 5 };
 	VERIFY( ranges::contains_subrange(x, y));
 	VERIFY(!ranges::contains_subrange(x, z));
 

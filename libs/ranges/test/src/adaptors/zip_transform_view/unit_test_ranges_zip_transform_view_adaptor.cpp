@@ -8,10 +8,10 @@
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/list.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include <vector>
 #include <string>
 #include "constexpr_test.hpp"
@@ -159,7 +159,7 @@ GTEST_TEST(RangesTest, ZipTransformViewAdaptorTest)
 			"Charlie",
 			"Dave",
 		};
-		std::list<std::string> a2 =
+		hamon::list<std::string> a2 =
 		{
 			"The",
 			"quick",

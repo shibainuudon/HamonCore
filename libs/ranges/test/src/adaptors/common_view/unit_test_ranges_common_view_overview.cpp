@@ -13,10 +13,10 @@
 #include <hamon/iterator/counted_iterator.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/iterator/ssize.hpp>
+#include <hamon/list.hpp>
 #include <hamon/numeric/accumulate.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
-#include <list>
 #include "ranges_test.hpp"
 
 namespace hamon_ranges_test
@@ -69,7 +69,7 @@ GTEST_TEST(RangesTest, CommonViewOverviewTest)
 		EXPECT_EQ(1, c1[0]);
 	}
 	{
-		auto v2 = std::list{1, 2, 3, 4, 5};
+		auto v2 = hamon::list{1, 2, 3, 4, 5};
 		auto i2 = hamon::counted_iterator{v2.begin(), hamon::ssize(v2)};
 		auto r2 = hamon::ranges::subrange{i2, hamon::default_sentinel};
 //		auto e2 = hamon::accumulate(r2.begin(), r2.end(), 0); // error: "common range" required

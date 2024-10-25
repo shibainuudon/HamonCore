@@ -7,7 +7,6 @@
 #include <hamon/memory/uninitialized_default_construct_n.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_memory_test
 {

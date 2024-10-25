@@ -7,9 +7,9 @@
 #include <hamon/algorithm/ranges/contains.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/array.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include <list>
 #include <forward_list>
 #include <map>
 #include <set>
@@ -166,7 +166,7 @@ inline bool TestList()
 {
 	namespace ranges = hamon::ranges;
 
-	std::list<int> v { 1, 2, 3, 5 };
+	hamon::list<int> v { 1, 2, 3, 5 };
 	VERIFY(!ranges::contains(v, 0));
 	VERIFY( ranges::contains(v, 1));
 	VERIFY( ranges::contains(v, 2));

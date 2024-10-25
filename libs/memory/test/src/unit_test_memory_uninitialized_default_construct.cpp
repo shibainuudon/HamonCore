@@ -8,8 +8,8 @@
 #include <hamon/memory/destroy.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_memory_test
 {
@@ -88,7 +88,7 @@ GTEST_TEST(MemoryTest, UninitializedDefaultConstructTest)
 		hamon::destroy(a, a + 11);
 	}
 	{
-		std::list<int> a = {1,2,3};
+		hamon::list<int> a = {1,2,3};
 		hamon::uninitialized_default_construct(a.begin(), a.end());
 	}
 }

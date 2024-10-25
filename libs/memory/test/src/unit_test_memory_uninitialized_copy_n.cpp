@@ -8,9 +8,9 @@
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/list.hpp>
 #include <hamon/type_traits/is_trivial.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_memory_test
 {
@@ -102,7 +102,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyNTest)
 		EXPECT_TRUE(ret == b + size);
 	}
 	{
-		std::list<int> a = {10, 11, 12, 13};
+		hamon::list<int> a = {10, 11, 12, 13};
 		int b[10];
 
 		auto ret = hamon::uninitialized_copy_n(a.begin(), 4, b);
@@ -146,7 +146,7 @@ GTEST_TEST(MemoryTest, UninitializedCopyNTest)
 		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
-		const std::list<ThrowOnCopy> v = {10,11,12,13};
+		const hamon::list<ThrowOnCopy> v = {10,11,12,13};
 
 		EXPECT_EQ(4, ThrowOnCopy::count);
 		EXPECT_EQ(0, ThrowOnCopy::copy_count);

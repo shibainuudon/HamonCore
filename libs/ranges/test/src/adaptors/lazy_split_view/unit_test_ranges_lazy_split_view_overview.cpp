@@ -6,12 +6,12 @@
 
 #include <hamon/ranges/adaptors/lazy_split_view.hpp>
 #include <hamon/ranges/factories/istream_view.hpp>
+#include <hamon/list.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <string>
 #include <vector>
-#include <list>
 
 namespace hamon_ranges_test
 {
@@ -82,7 +82,7 @@ GTEST_TEST(RangesTest, LazySplitViewOverviewTest)
 	}
 	{
 		std::vector<int> v = {1, 2, 4, 4, 1, 1, 1, 10, 23, 67, 9, 1, 1, 1, 1111, 1, 1, 1, 1, 1, 1, 9, 0};
-		std::list<int> delimiter = {1, 1, 1};
+		hamon::list<int> delimiter = {1, 1, 1};
 		std::stringstream out;
 		for (auto inner_range : v | hamon::views::lazy_split(delimiter))
 		{

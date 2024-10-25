@@ -8,8 +8,8 @@
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/cstddef.hpp>
+#include <hamon/list.hpp>
 #include <gtest/gtest.h>
-#include <list>
 
 namespace hamon_memory_test
 {
@@ -93,7 +93,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveTest)
 		EXPECT_TRUE(ret == b + 10);
 	}
 	{
-		std::list<int> a = {10, 11, 12, 13};
+		hamon::list<int> a = {10, 11, 12, 13};
 		int b[10];
 
 		auto ret = hamon::uninitialized_move(a.begin(), a.end(), b);
@@ -140,7 +140,7 @@ GTEST_TEST(MemoryTest, UninitializedMoveTest)
 		const hamon::size_t size = 3;
 		auto* p = alloc.allocate(size);
 
-		std::list<ThrowOnMove> v;
+		hamon::list<ThrowOnMove> v;
 		v.emplace_back(10);
 		v.emplace_back(11);
 		v.emplace_back(12);
