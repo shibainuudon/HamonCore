@@ -93,26 +93,26 @@ GTEST_TEST(AlgorithmTest, RadixSortTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(RadixSortTest());
 
 	{
-		std::vector<unsigned int> a { 1,4,1,4,2,1,3,5 };
+		hamon::vector<unsigned int> a { 1,4,1,4,2,1,3,5 };
 		unsigned int tmp[16];
 		hamon::radix_sort(hamon::begin(a), hamon::end(a), hamon::begin(tmp));
-		std::vector<unsigned int> b { 1,1,1,2,3,4,4,5 };
+		hamon::vector<unsigned int> b { 1,1,1,2,3,4,4,5 };
 		EXPECT_TRUE(hamon::equal(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b)));
 	}
 	{
-		std::vector<unsigned int> a { 5,4,1,1,3, };
-		std::vector<unsigned int> tmp(5);
+		hamon::vector<unsigned int> a { 5,4,1,1,3, };
+		hamon::vector<unsigned int> tmp(5);
 		hamon::radix_sort(hamon::begin(a), hamon::end(a), hamon::begin(tmp));
-		std::vector<unsigned int> b { 1,1,3,4,5, };
+		hamon::vector<unsigned int> b { 1,1,3,4,5, };
 		EXPECT_TRUE(hamon::equal(
 			hamon::begin(a), hamon::end(a),
 			hamon::begin(b), hamon::end(b)));
 	}
 	{
-		std::vector<unsigned int> a;
-		std::vector<unsigned int> tmp;
+		hamon::vector<unsigned int> a;
+		hamon::vector<unsigned int> tmp;
 		hamon::radix_sort(hamon::begin(a), hamon::end(a), hamon::begin(tmp));
 		EXPECT_TRUE(a.empty());
 	}

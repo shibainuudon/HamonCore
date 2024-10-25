@@ -9,8 +9,8 @@
 #include <hamon/array.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <map>
 #include <set>
 #include <unordered_map>
@@ -151,7 +151,7 @@ inline bool TestVector()
 {
 	namespace ranges = hamon::ranges;
 
-	std::vector<int> v { 1, 3, 5 };
+	hamon::vector<int> v { 1, 3, 5 };
 	VERIFY(!ranges::contains(v, 0));
 	VERIFY( ranges::contains(v, 1));
 	VERIFY(!ranges::contains(v, 2));

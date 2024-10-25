@@ -6,8 +6,8 @@
 
 #include <hamon/ranges/adaptors/adjacent_transform_view.hpp>
 #include <hamon/functional/ranges/multiplies.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -22,7 +22,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewOverviewTest)
 	{
 		// [range.adjacent.transform.overview]/3
 		// Example 1:
-		std::vector<int> v = {1, 2, 3, 4};
+		hamon::vector<int> v = {1, 2, 3, 4};
 		std::stringstream out;
 		for (auto i : v | hamon::views::adjacent_transform<2>(hamon::ranges::multiplies()))
 		{

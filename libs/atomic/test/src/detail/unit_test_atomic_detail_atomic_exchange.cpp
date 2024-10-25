@@ -7,9 +7,9 @@
 #include <hamon/atomic/detail/atomic_exchange.hpp>
 #include <hamon/atomic/detail/atomic_store.hpp>
 #include <hamon/atomic/memory_order.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <thread>
-#include <vector>
 
 namespace hamon_atomic_test
 {
@@ -67,7 +67,7 @@ GTEST_TEST(Atomic, AtomicExchangeTest)
 			}
 		};
 
-		std::vector<std::thread> ts;
+		hamon::vector<std::thread> ts;
 		for (int i = 0; i < 10; ++i)
 		{
 			ts.emplace_back(f, i);

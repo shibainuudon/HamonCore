@@ -7,8 +7,8 @@
 #include <hamon/ranges/adaptors/join_view.hpp>
 #include <hamon/ranges/adaptors/transform_view.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <string>
 
 namespace hamon_ranges_test
@@ -35,7 +35,7 @@ struct Fn
 GTEST_TEST(RangesTest, JoinViewP2328R1Test)
 {
 	// P2328R1
-	std::vector<Person> v
+	hamon::vector<Person> v
 	{
 		{20, "Alice"},
 		{30, "Bob"},

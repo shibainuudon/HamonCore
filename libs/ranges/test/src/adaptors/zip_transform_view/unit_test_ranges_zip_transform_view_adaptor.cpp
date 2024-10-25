@@ -11,8 +11,8 @@
 #include <hamon/list.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <string>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -152,7 +152,7 @@ GTEST_TEST(RangesTest, ZipTransformViewAdaptorTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 
 	{
-		std::vector<std::string> a1 =
+		hamon::vector<std::string> a1 =
 		{
 			"Alice",
 			"Bob",

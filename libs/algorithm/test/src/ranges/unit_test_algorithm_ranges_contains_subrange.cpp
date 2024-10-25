@@ -8,8 +8,8 @@
 #include <hamon/array.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -103,9 +103,9 @@ inline bool TestVector()
 {
 	namespace ranges = hamon::ranges;
 
-	std::vector<int> x = { 1, 3, 5, 7, 9, 11, 13 };
-	std::vector<int> y = { 1, 3, 1 };
-	std::vector<int> z = { 5, 7, 9, 11 };
+	hamon::vector<int> x = { 1, 3, 5, 7, 9, 11, 13 };
+	hamon::vector<int> y = { 1, 3, 1 };
+	hamon::vector<int> z = { 5, 7, 9, 11 };
 	VERIFY(!ranges::contains_subrange(x, y));
 	VERIFY( ranges::contains_subrange(x, z));
 

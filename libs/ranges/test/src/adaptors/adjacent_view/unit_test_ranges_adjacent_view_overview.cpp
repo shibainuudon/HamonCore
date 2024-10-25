@@ -6,8 +6,8 @@
 
 #include <hamon/ranges/adaptors/adjacent_view.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -22,7 +22,7 @@ GTEST_TEST(RangesTest, AdjacentViewOverviewTest)
 	{
 		// [range.adjacent.overview]/2.2
 		// Example 1:
-		std::vector<int> v = { 1, 2, 3, 4 };
+		hamon::vector<int> v = { 1, 2, 3, 4 };
 		std::stringstream out;
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		for (auto i : v | hamon::views::adjacent<2>)

@@ -7,8 +7,8 @@
 #include <hamon/ranges/adaptors/as_const_view.hpp>
 #include <hamon/ranges/concepts/constant_range.hpp>
 #include <hamon/span.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 
 namespace hamon_ranges_test
 {
@@ -25,7 +25,7 @@ GTEST_TEST(RangesTest, AsConstViewOverviewTest)
 	{
 		// [range.as.const.overview]/3
 		// Example 1:
-		//std::vector<char> hammer = { 'm', 'c' };
+		//hamon::vector<char> hammer = { 'm', 'c' };
 		char hammer[] = { 'm', 'c' };
 		hamon::span<char> beat = hammer;
 		cant_touch_this(hamon::views::as_const(beat));

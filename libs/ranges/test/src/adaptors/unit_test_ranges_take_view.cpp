@@ -22,9 +22,9 @@
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -1328,7 +1328,7 @@ GTEST_TEST(RangesTest, TakeViewTest)
 	// Example 1:
 	{
 		std::stringstream ss;
-		std::vector<int> is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		hamon::vector<int> is {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 		for (int i : is | hamon::views::take(5))
 		{
 			ss << i << ' '; // prints 0 1 2 3 4

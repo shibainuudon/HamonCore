@@ -6,6 +6,7 @@
 
 #include <hamon/ranges/adaptors/cartesian_product_view.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <iterator>
@@ -22,7 +23,7 @@ GTEST_TEST(RangesTest, CartesianProductViewOverviewTest)
 	// [range.cartesian.overview]/3
 	// Example 1:
 	std::stringstream out;
-	std::vector<int> v {0, 1, 2};
+	hamon::vector<int> v {0, 1, 2};
 #if defined(HAMON_HAS_CXX17_STRUCTURED_BINDINGS)
 	for (auto&& [a, b, c] : hamon::views::cartesian_product(v, v, v))
 	{

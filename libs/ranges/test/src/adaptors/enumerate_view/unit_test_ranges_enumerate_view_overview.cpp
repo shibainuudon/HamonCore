@@ -6,8 +6,8 @@
 
 #include <hamon/ranges/adaptors/enumerate_view.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, EnumerateViewOverviewTest)
 	{
 		// [range.enumerate.overview]/2
 		// Example 1:
-		std::vector<int> vec {1, 2, 3};
+		hamon::vector<int> vec {1, 2, 3};
 		std::stringstream out;
 		for (auto [index, value] : hamon::views::enumerate(vec))
 		{
@@ -33,7 +33,7 @@ GTEST_TEST(RangesTest, EnumerateViewOverviewTest)
 	}
 #endif
 	{
-		std::vector<int> vec {10, 20, 30};
+		hamon::vector<int> vec {10, 20, 30};
 		std::stringstream out;
 		for (auto t : hamon::views::enumerate(vec))
 		{

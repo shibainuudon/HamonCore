@@ -7,8 +7,8 @@
 #include <hamon/ranges/adaptors/zip_view.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/list.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -26,7 +26,7 @@ GTEST_TEST(RangesTest, ZipViewOverviewTest)
 	{
 		// [range.zip.overview]/2
 		// Example 1:
-		std::vector v = {1, 2};
+		hamon::vector v = {1, 2};
 		hamon::list l = {'a', 'b', 'c'};
 
 		auto z = hamon::views::zip(v, l);

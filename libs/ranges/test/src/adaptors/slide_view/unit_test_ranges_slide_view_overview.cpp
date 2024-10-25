@@ -5,8 +5,8 @@
  */
 
 #include <hamon/ranges/adaptors/slide_view.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -20,7 +20,7 @@ GTEST_TEST(RangesTest, SlideViewOverviewTest)
 {
 	// [range.slide.overview]/2
 	// Example 1:
-	std::vector<int> v = { 1, 2, 3, 4 };
+	hamon::vector<int> v = { 1, 2, 3, 4 };
 	std::stringstream out;
 	for (auto i : v | hamon::views::slide(2))
 	{

@@ -6,8 +6,8 @@
 
 #include <hamon/ranges/adaptors/zip_transform_view.hpp>
 #include <hamon/functional/ranges/plus.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -22,8 +22,8 @@ GTEST_TEST(RangesTest, ZipTransformViewOverviewTest)
 	{
 		// [range.zip.transform.overview]/3
 		// Example 1:
-		std::vector<int> v1 = {1, 2};
-		std::vector<int> v2 = {4, 5, 6};
+		hamon::vector<int> v1 = {1, 2};
+		hamon::vector<int> v2 = {4, 5, 6};
 
 		std::stringstream out;
 		for (auto i : hamon::views::zip_transform(hamon::ranges::plus{}, v1, v2))

@@ -5,8 +5,8 @@
  */
 
 #include <hamon/ranges/adaptors/chunk_view.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, ChunkViewOverviewTest)
 		// Example 1:
 		std::stringstream out;
 
-		std::vector<int> v = {1, 2, 3, 4, 5};
+		hamon::vector<int> v = {1, 2, 3, 4, 5};
 		for (auto r : v | hamon::views::chunk(2))
 		{
 			out << '[';

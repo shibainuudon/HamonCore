@@ -7,9 +7,9 @@
 #include <hamon/ranges/adaptors/split_view.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
-#include <vector>
 
 namespace hamon_ranges_test
 {
@@ -32,8 +32,8 @@ GTEST_TEST(RangesTest, SplitViewOverviewTest)
 		EXPECT_EQ("the*quick*brown*fox*", out.str());
 	}
 	{
-		std::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-		std::vector<int> pattern = {};
+		hamon::vector<int> v = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+		hamon::vector<int> pattern = {};
 		std::stringstream out;
 		for (auto inner_range : v | hamon::views::split(pattern))
 		{

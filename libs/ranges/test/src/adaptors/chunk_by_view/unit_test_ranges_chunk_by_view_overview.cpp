@@ -6,8 +6,8 @@
 
 #include <hamon/ranges/adaptors/chunk_by_view.hpp>
 #include <hamon/functional/ranges/less_equal.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -21,7 +21,7 @@ GTEST_TEST(RangesTest, ChunkByViewOverviewTest)
 {
 	// [range.chunk.by.overview]/2
 	// Example 1:
-	std::vector<int> v = {1, 2, 2, 3, 0, 4, 5, 2};
+	hamon::vector<int> v = {1, 2, 2, 3, 0, 4, 5, 2};
 	std::stringstream out;
 
 	for (auto r : v | hamon::views::chunk_by(hamon::ranges::less_equal{}))

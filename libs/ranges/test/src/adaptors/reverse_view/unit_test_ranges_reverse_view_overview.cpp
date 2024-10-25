@@ -8,8 +8,8 @@
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/vector.hpp>
 #include <gtest/gtest.h>
-#include <vector>
 #include <sstream>
 
 namespace hamon_ranges_test
@@ -24,7 +24,7 @@ GTEST_TEST(RangesTest, ReverseViewOverviewTest)
 	{
 		// [range.reverse.overview]/3
 		// Example 1:
-		std::vector<int> is {0, 1, 2, 3, 4};
+		hamon::vector<int> is {0, 1, 2, 3, 4};
 		std::stringstream out;
 		for (int i : is | hamon::views::reverse)
 		{

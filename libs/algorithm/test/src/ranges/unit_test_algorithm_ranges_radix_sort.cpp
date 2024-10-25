@@ -215,12 +215,12 @@ GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 				for (auto n : n_tbl)
 				{
 					hamon::uniform_int_distribution<unsigned int> dist(min, max);
-					std::vector<unsigned int> v(n);
+					hamon::vector<unsigned int> v(n);
 					for (auto& x : v)
 					{
 						x = dist(rng);
 					}
-					std::vector<unsigned int> tmp(n);
+					hamon::vector<unsigned int> tmp(n);
 
 					{
 						auto t1 = std::chrono::high_resolution_clock::now();
