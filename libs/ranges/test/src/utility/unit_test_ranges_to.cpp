@@ -876,8 +876,8 @@ GTEST_TEST(RangesTest, ToTest)
 			int const expected[] = {2, 4, 6, 8};
 			EXPECT_TRUE(hamon::ranges::equal(vec, expected));
 		}
-		auto lst = vec | hamon::views::take(3) | hamon::ranges::to<hamon::list<double>>();
-		static_assert(hamon::is_same<decltype(lst), hamon::list<double>>::value, "");
+		auto lst = vec | hamon::views::take(3) | hamon::ranges::to<hamon::list<int>>();
+		static_assert(hamon::is_same<decltype(lst), hamon::list<int>>::value, "");
 		{
 			int const expected[] = {2, 4, 6};
 			EXPECT_TRUE(hamon::ranges::equal(lst, expected));
