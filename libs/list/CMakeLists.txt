@@ -28,6 +28,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		limits
 		memory
 		ranges
+		serialization
 		type_traits
 		utility
 		common)

@@ -17,14 +17,14 @@ namespace hamon
 namespace serialization
 {
 
-template <typename Archive, typename T>
-void save_value(Archive& oa, std::list<T> const& t)
+template <typename Archive, typename T, typename Allocator>
+void save_value(Archive& oa, std::list<T, Allocator> const& t)
 {
 	hamon::serialization::detail::save_vector(oa, t);
 }
 
-template <typename Archive, typename T>
-void load_value(Archive& ia, std::list<T>& t)
+template <typename Archive, typename T, typename Allocator>
+void load_value(Archive& ia, std::list<T, Allocator>& t)
 {
 	t.clear();
 	hamon::serialization::detail::load_vector(ia, t);
