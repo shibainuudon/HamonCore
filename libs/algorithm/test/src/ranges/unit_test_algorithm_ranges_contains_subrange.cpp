@@ -6,10 +6,10 @@
 
 #include <hamon/algorithm/ranges/contains_subrange.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include <forward_list>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -129,9 +129,9 @@ inline bool TestForwardList()
 {
 	namespace ranges = hamon::ranges;
 
-	std::forward_list<int> x = { 1, 2, 3, 4, 5, 6 };
-	std::forward_list<int> y = { 4, 5, 6, 7 };
-	std::forward_list<int> z = { 1, 2, 3 };
+	hamon::forward_list<int> x = { 1, 2, 3, 4, 5, 6 };
+	hamon::forward_list<int> y = { 4, 5, 6, 7 };
+	hamon::forward_list<int> z = { 1, 2, 3 };
 	VERIFY(!ranges::contains_subrange(x, y));
 	VERIFY( ranges::contains_subrange(x, z));
 

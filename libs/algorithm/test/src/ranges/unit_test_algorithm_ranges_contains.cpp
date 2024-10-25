@@ -7,10 +7,10 @@
 #include <hamon/algorithm/ranges/contains.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/array.hpp>
+#include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <gtest/gtest.h>
 #include <vector>
-#include <forward_list>
 #include <map>
 #include <set>
 #include <unordered_map>
@@ -181,7 +181,7 @@ inline bool TestForwardList()
 {
 	namespace ranges = hamon::ranges;
 
-	std::forward_list<int> v { 1, 2, 3, 4 };
+	hamon::forward_list<int> v { 1, 2, 3, 4 };
 	VERIFY(!ranges::contains(v, 0));
 	VERIFY( ranges::contains(v, 1));
 	VERIFY( ranges::contains(v, 2));
