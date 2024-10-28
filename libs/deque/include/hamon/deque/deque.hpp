@@ -41,6 +41,10 @@ using std::deque;
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy_at.hpp>
+#include <hamon/memory/detail/equals_allocator.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_move.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/memory/detail/uninitialized_move_impl.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <hamon/memory/pointer_traits.hpp>
@@ -696,7 +700,7 @@ public:
 	{}
 
 	HAMON_CXX11_CONSTEXPR
-	deque(deque&& x)
+	deque(deque&& x) HAMON_NOEXCEPT	// noexcept as an extension
 		: m_allocator(hamon::move(x.m_allocator))
 		, m_impl(hamon::move(x.m_impl))
 	{}
@@ -710,21 +714,16 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	deque(deque&& x, type_identity_t<Allocator> const& a)
+		HAMON_NOEXCEPT_IF(	// noexcept as an extension
+			hamon::allocator_traits<Allocator>::is_always_equal::value)
 		: m_allocator(a)
 	{
-#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (!AllocTraits::is_always_equal::value)
-#else
-		if           (!AllocTraits::is_always_equal::value)
-#endif
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
-			if (a != x.m_allocator)
-			{
-				m_impl.AppendIter(m_allocator,
-					hamon::make_move_iterator(hamon::ranges::begin(x)),
-					hamon::make_move_iterator(hamon::ranges::end(x)));
-				return;
-			}
+			m_impl.AppendIter(m_allocator,
+				hamon::make_move_iterator(hamon::ranges::begin(x)),
+				hamon::make_move_iterator(hamon::ranges::end(x)));
+			return;
 		}
 
 		m_impl = hamon::move(x.m_impl);
@@ -748,6 +747,23 @@ public:
 			return *this;
 		}
 
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (AllocTraits::propagate_on_container_copy_assignment::value)
+#else
+		if           (AllocTraits::propagate_on_container_copy_assignment::value)
+#endif
+		{
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+			{
+				// アロケータを伝播させる場合は、
+				// 今のアロケータで確保した要素を破棄しなければいけない
+				this->clear();
+
+				// アロケータを伝播
+				hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
+			}
+		}
+
 		m_impl.AssignIter(m_allocator, hamon::ranges::begin(x), hamon::ranges::end(x));
 
 		return *this;
@@ -761,28 +777,31 @@ public:
 			return *this;
 		}
 
-		constexpr bool no_propagate_allocators =
-			!AllocTraits::propagate_on_container_move_assignment::value &&
-			!AllocTraits::is_always_equal::value;
-
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (no_propagate_allocators)
+		if constexpr (!AllocTraits::propagate_on_container_move_assignment::value)
 #else
-		if           (no_propagate_allocators)
+		if           (!AllocTraits::propagate_on_container_move_assignment::value)
 #endif
 		{
-			if (m_allocator != x.m_allocator)
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 			{
+				// アロケータを伝播させない場合は、
+				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
 				m_impl.AssignIter(m_allocator,
 					hamon::make_move_iterator(hamon::ranges::begin(x)),
-					hamon::make_move_iterator(hamon::ranges::end(x)));
+					hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
 				return *this;
 			}
 		}
 
-		m_impl.Clear(m_allocator);
+		// 今の要素を破棄
+		this->clear();
+
+		// アロケータを伝播
+		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
+
+		// 要素をsteal
 		m_impl = hamon::move(x.m_impl);
-		m_allocator = hamon::move(x.m_allocator);
 
 		return *this;
 	}
@@ -1101,7 +1120,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void swap(deque& x)
 		HAMON_NOEXCEPT_IF(AllocTraits::is_always_equal::value)
 	{
-		hamon::swap(m_allocator, x.m_allocator);
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+		{
+			hamon::detail::propagate_allocator_on_swap(m_allocator, x.m_allocator);
+		}
 		m_impl.Swap(x.m_impl);
 	}
 
