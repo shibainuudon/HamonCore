@@ -1,0 +1,16 @@
+name: inplace_vector
+
+on:
+  push:
+    paths:
+      - libs/inplace_vector/**
+      - .github/workflows/inplace_vector.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/inplace_vector

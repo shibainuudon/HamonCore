@@ -39,6 +39,7 @@ set(SUBDIRECTORIES
 	deque
 	forward_list
 	functional
+	inplace_vector
 	iomanip
 	ios
 	iterator
