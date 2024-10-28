@@ -34,6 +34,7 @@ using std::vector;
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
@@ -46,6 +47,10 @@ using std::vector;
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/destroy.hpp>
+#include <hamon/memory/detail/equals_allocator.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_move.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
 #include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
 #include <hamon/memory/detail/uninitialized_move_n_impl.hpp>
@@ -77,15 +82,6 @@ using std::vector;
 
 namespace hamon
 {
-
-namespace detail
-{
-
-// [sequences.general]/2
-template <typename InputIterator>
-using iter_value_type = typename hamon::iterator_traits<InputIterator>::value_type;  // exposition only
-
-}	// namespace detail
 
 #if 0
 
@@ -525,7 +521,7 @@ private:
 		}
 
 		HAMON_CXX14_CONSTEXPR void
-		Swap(Impl& x) noexcept
+		Swap(Impl& x) HAMON_NOEXCEPT
 		{
 			hamon::swap(m_size,     x.m_size);
 			hamon::swap(m_capacity, x.m_capacity);
@@ -861,12 +857,12 @@ private:
 public:
 	// [vector.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
-	vector() noexcept(noexcept(Allocator()))
+	vector() HAMON_NOEXCEPT_IF_EXPR(Allocator())
 		: vector(Allocator())
 	{}
 
 	HAMON_CXX11_CONSTEXPR explicit
-	vector(Allocator const& a) noexcept
+	vector(Allocator const& a) HAMON_NOEXCEPT
 		: m_allocator(a)
 	{
 		// [vector.cons]/1
@@ -922,7 +918,7 @@ public:
 	{}
 
 	HAMON_CXX11_CONSTEXPR
-	vector(vector&& x) noexcept
+	vector(vector&& x) HAMON_NOEXCEPT
 		: m_allocator(hamon::move(x.m_allocator))
 		, m_impl(hamon::move(x.m_impl))
 	{}
@@ -937,22 +933,20 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	vector(vector&& x, hamon::type_identity_t<Allocator> const& a)
+		HAMON_NOEXCEPT_IF(	// noexcept as an extension
+			hamon::allocator_traits<Allocator>::is_always_equal::value)
 		: m_allocator(a)
 	{
-#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (!AllocTraits::is_always_equal::value)
-#else
-		if           (!AllocTraits::is_always_equal::value)
-#endif
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
-			if (a != x.m_allocator)
-			{
-				m_impl.Allocate(m_allocator, x.size());
-				m_impl.AppendMoveN(x.begin(), x.size());
-				return;
-			}
+			// アロケータが異なる場合は、
+			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
+			m_impl.Allocate(m_allocator, x.size());
+			m_impl.AppendMoveN(x.begin(), x.size());
+			return;
 		}
 
+		// 要素をsteal
 		m_impl = hamon::move(x.m_impl);
 	}
 
@@ -976,12 +970,31 @@ public:
 			return *this;
 		}
 
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (AllocTraits::propagate_on_container_copy_assignment::value)
+#else
+		if           (AllocTraits::propagate_on_container_copy_assignment::value)
+#endif
+		{
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+			{
+				// アロケータを伝播させる場合は、
+				// 今のアロケータで確保した要素を破棄しなければいけない
+				m_impl.Deallocate(m_allocator);
+
+				// アロケータを伝播
+				hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
+			}
+		}
+
+		// 要素をコピー代入
 		this->AssignCopyN(x.begin(), x.size());
+
 		return *this;
 	}
 
 	HAMON_CXX14_CONSTEXPR vector&
-	operator=(vector&& x) noexcept(
+	operator=(vector&& x) HAMON_NOEXCEPT_IF(
 		AllocTraits::propagate_on_container_move_assignment::value ||
 		AllocTraits::is_always_equal::value)
 	{
@@ -990,26 +1003,29 @@ public:
 			return *this;
 		}
 
-		constexpr bool no_propagate_allocators =
-			!AllocTraits::propagate_on_container_move_assignment::value &&
-			!AllocTraits::is_always_equal::value;
-
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (no_propagate_allocators)
+		if constexpr (!AllocTraits::propagate_on_container_move_assignment::value)
 #else
-		if           (no_propagate_allocators)
+		if           (!AllocTraits::propagate_on_container_move_assignment::value)
 #endif
 		{
-			if (m_allocator != x.m_allocator)
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 			{
+				// アロケータを伝播させない場合は、
+				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
 				this->AssignMoveN(x.begin(), x.size());
 				return *this;
 			}
 		}
 
+		// 今の要素を破棄
 		m_impl.Deallocate(m_allocator);
+
+		// アロケータを伝播
+		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
+
+		// 要素をsteal
 		m_impl = hamon::move(x.m_impl);
-		m_allocator = hamon::move(x.m_allocator);
 
 		return *this;
 	}
@@ -1049,105 +1065,105 @@ public:
 
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR allocator_type
-	get_allocator() const noexcept
+	get_allocator() const HAMON_NOEXCEPT
 	{
 		return m_allocator;
 	}
 
 	// iterators
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX14_CONSTEXPR iterator begin() noexcept
+	HAMON_CXX14_CONSTEXPR iterator begin() HAMON_NOEXCEPT
 	{
 		return iterator(m_impl.Begin());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_iterator begin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator begin() const HAMON_NOEXCEPT
 	{
 		return const_iterator(m_impl.Begin());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX14_CONSTEXPR iterator end() noexcept
+	HAMON_CXX14_CONSTEXPR iterator end() HAMON_NOEXCEPT
 	{
 		return iterator(m_impl.End());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_iterator end() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator end() const HAMON_NOEXCEPT
 	{
 		return const_iterator(m_impl.End());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX14_CONSTEXPR reverse_iterator rbegin() noexcept
+	HAMON_CXX14_CONSTEXPR reverse_iterator rbegin() HAMON_NOEXCEPT
 	{
 		return reverse_iterator(this->end());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_reverse_iterator rbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator rbegin() const HAMON_NOEXCEPT
 	{
 		return const_reverse_iterator(this->end());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX14_CONSTEXPR reverse_iterator rend() noexcept
+	HAMON_CXX14_CONSTEXPR reverse_iterator rend() HAMON_NOEXCEPT
 	{
 		return reverse_iterator(this->begin());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_reverse_iterator rend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator rend() const HAMON_NOEXCEPT
 	{
 		return const_reverse_iterator(this->begin());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_iterator cbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator cbegin() const HAMON_NOEXCEPT
 	{
 		return this->begin();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_iterator cend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_iterator cend() const HAMON_NOEXCEPT
 	{
 		return this->end();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_reverse_iterator crbegin() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator crbegin() const HAMON_NOEXCEPT
 	{
 		return this->rbegin();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR const_reverse_iterator crend() const noexcept
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator crend() const HAMON_NOEXCEPT
 	{
 		return this->rend();
 	}
 
 	// [vector.capacity], capacity
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	bool empty() const noexcept
+	bool empty() const HAMON_NOEXCEPT
 	{
 		return this->size() == 0;
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR size_type size() const noexcept
+	HAMON_CXX11_CONSTEXPR size_type size() const HAMON_NOEXCEPT
 	{
 		return m_impl.Size();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR size_type max_size() const noexcept
+	HAMON_CXX11_CONSTEXPR size_type max_size() const HAMON_NOEXCEPT
 	{
 		return m_impl.MaxSize(m_allocator);
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR size_type capacity() const noexcept
+	HAMON_CXX11_CONSTEXPR size_type capacity() const HAMON_NOEXCEPT
 	{
 		// [vector.capacity]/1
 		return m_impl.Capacity();
@@ -1304,13 +1320,13 @@ public:
 
 	// [vector.data], data access
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX14_CONSTEXPR T* data() noexcept
+	HAMON_CXX14_CONSTEXPR T* data() HAMON_NOEXCEPT
 	{
 		return m_impl.Begin();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	HAMON_CXX11_CONSTEXPR T const* data() const noexcept
+	HAMON_CXX11_CONSTEXPR T const* data() const HAMON_NOEXCEPT
 	{
 		return m_impl.Begin();
 	}
@@ -1412,15 +1428,18 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	swap(vector& x) noexcept(
+	swap(vector& x) HAMON_NOEXCEPT_IF(
 		AllocTraits::propagate_on_container_swap::value ||
 		AllocTraits::is_always_equal::value)
 	{
-		hamon::swap(m_allocator, x.m_allocator);
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+		{
+			hamon::detail::propagate_allocator_on_swap(m_allocator, x.m_allocator);
+		}
 		m_impl.Swap(x.m_impl);
 	}
 
-	HAMON_CXX14_CONSTEXPR void clear() noexcept
+	HAMON_CXX14_CONSTEXPR void clear() HAMON_NOEXCEPT
 	{
 		m_impl.DestroyAll();
 	}
@@ -1515,7 +1534,7 @@ operator>=(vector<T, Allocator> const& x, vector<T, Allocator> const& y)
 template <typename T, typename Allocator>
 HAMON_CXX14_CONSTEXPR void
 swap(vector<T, Allocator>& x, vector<T, Allocator>& y)
-noexcept(noexcept(x.swap(y)))
+HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 {
 	x.swap(y);
 }

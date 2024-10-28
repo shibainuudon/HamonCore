@@ -22,68 +22,121 @@ namespace ctor_move_test
 {
 
 template <typename T>
-struct MyAllocator : hamon::allocator<T>
+struct MyAllocator1
 {
-	using base_type = hamon::allocator<T>;
-
 	using value_type = T;
-	using size_type = hamon::size_t;
-	using difference_type = hamon::ptrdiff_t;
-	using pointer = T*;
-	using propagate_on_container_move_assignment = hamon::false_type;
 	using is_always_equal = hamon::false_type;
 
-	HAMON_CXX11_CONSTEXPR MyAllocator() noexcept
-		: base_type()
-	{}
+	int id;
 
-	HAMON_CXX11_CONSTEXPR MyAllocator(const MyAllocator&) noexcept
-		: base_type()
-	{}
+	MyAllocator1() : id(13) {}
+
+	MyAllocator1(int i) : id(i) {}
+
+	MyAllocator1(MyAllocator1 const& x) = default;
+
+	MyAllocator1(MyAllocator1&& x) : id(x.id) { x.id = 0; }
 
 	template <typename U>
-	HAMON_CXX11_CONSTEXPR MyAllocator(const MyAllocator<U>&) noexcept
-		: base_type()
-	{}
+	MyAllocator1(MyAllocator1<U> const& a) : id(a.id) {}
 
-	HAMON_CXX14_CONSTEXPR MyAllocator&
-	operator=(const MyAllocator&) noexcept { return *this; }
-
-	HAMON_CXX11_CONSTEXPR bool operator==(MyAllocator const&) const
+	T* allocate(hamon::size_t n)
 	{
-		return false;
+		return static_cast<T*>(::operator new(n * sizeof(T)));
 	}
 
-	HAMON_CXX11_CONSTEXPR bool operator!=(MyAllocator const& rhs) const
+	void deallocate(T* p, hamon::size_t n)
 	{
-		return !(*this == rhs);
+		// [allocator.members]/11
+		::operator delete(p);
+		(void)n;
+	}
+
+	bool operator==(MyAllocator1 const& rhs) const
+	{
+		return id == rhs.id;
+	}
+
+	bool operator!=(MyAllocator1 const& rhs) const
+	{
+		return id != rhs.id;
 	}
 };
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T, template <typename> class TAllocator>
-HAMON_CXX20_CONSTEXPR bool test()
+template <typename T>
+HAMON_CXX20_CONSTEXPR bool test1()
 {
-	using Allocator = TAllocator<T>;
+	using Allocator = hamon::allocator<T>;
+	using Vector = hamon::vector<T, Allocator>;
+
+	static_assert( hamon::is_constructible<Vector, Vector&&>::value, "");
+	static_assert( hamon::is_constructible<Vector, Vector&&, Allocator const&>::value, "");
+#if !defined(HAMON_USE_STD_VECTOR)
+	static_assert( hamon::is_nothrow_constructible<Vector, Vector&&>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Vector, Vector&&, Allocator const&>::value, "");
+#endif
+	static_assert( hamon::is_implicitly_constructible<Vector, Vector&&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Vector, Vector&&, Allocator const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Vector, Vector&&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Vector, Vector&&, Allocator const&>::value, "");
+
+	{
+		Allocator alloc;
+		Vector v1{{1,2,3}, alloc};
+		Vector v2{hamon::move(v1)};
+		VERIFY(v1.get_allocator() == alloc);
+		VERIFY(v2.get_allocator() == alloc);
+		VERIFY(v1.empty());
+		{
+			auto it = v2.begin();
+			VERIFY(*it++ == 1);
+			VERIFY(*it++ == 2);
+			VERIFY(*it++ == 3);
+			VERIFY(it == v2.end());
+		}
+	}
+	{
+		Allocator alloc;
+		Vector v1{1,2,3};
+		Vector v2{hamon::move(v1), alloc};
+		VERIFY(v2.get_allocator() == alloc);
+		VERIFY(v1.empty());
+		{
+			auto it = v2.begin();
+			VERIFY(*it++ == 1);
+			VERIFY(*it++ == 2);
+			VERIFY(*it++ == 3);
+			VERIFY(it == v2.end());
+		}
+	}
+
+	return true;
+}
+
+template <typename T>
+bool test2()
+{
+	using Allocator = MyAllocator1<T>;
 	using Vector = hamon::vector<T, Allocator>;
 
 	{
-		Vector v1{1,2,3};
+		Allocator alloc{42};
+		Vector v1{{1,2,3}, alloc};
 		Vector v2{hamon::move(v1)};
-		VERIFY(v2.size() == 3);
-		VERIFY(v2[0] == 1);
-		VERIFY(v2[1] == 2);
-		VERIFY(v2[2] == 3);
+		VERIFY(v1.get_allocator() != v2.get_allocator());
+		VERIFY(v1.get_allocator().id == 0);
+		VERIFY(v2.get_allocator().id == 42);
 	}
 	{
-		Vector v1{1,2,3};
-		Allocator alloc;
-		Vector v2{hamon::move(v1), alloc};
-		VERIFY(v2.size() == 3);
-		VERIFY(v2[0] == 1);
-		VERIFY(v2[1] == 2);
-		VERIFY(v2[2] == 3);
+		Allocator alloc1{42};
+		Allocator alloc2{43};
+		Vector v1{{1,2,3}, alloc1};
+		Vector v2{hamon::move(v1), alloc2};
+		VERIFY(v1.get_allocator() != v2.get_allocator());
+		VERIFY(v1.get_allocator().id == 42);
+		VERIFY(v2.get_allocator().id == 43);
 	}
 
 	return true;
@@ -93,10 +146,13 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(VectorTest, CtorMoveTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, hamon::allocator>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, MyAllocator>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<unsigned char, hamon::allocator>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<unsigned char, MyAllocator>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<float>());
+
+	EXPECT_TRUE(test2<int>());
+	EXPECT_TRUE(test2<char>());
+	EXPECT_TRUE(test2<float>());
 }
 
 }	// namespace ctor_move_test
