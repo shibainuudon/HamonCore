@@ -8,8 +8,6 @@
 #define HAMON_LIST_DETAIL_LIST_IMPL_HPP
 
 #include <hamon/memory/addressof.hpp>
-#include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/end.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -78,13 +76,6 @@ public:
 		Algo::assign_range(alloc, m_size, this->head(), this->tail(), first, last);	// may throw
 	}
 
-	template <typename Range>
-	HAMON_CXX14_CONSTEXPR void
-	assign_range(Allocator& alloc, Range&& rg)
-	{
-		this->assign_range(alloc, hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
-	}
-
 	HAMON_CXX14_CONSTEXPR void
 	assign_n(Allocator& alloc, SizeType n, T const& t)
 	{
@@ -98,10 +89,18 @@ public:
 		Algo::resize(alloc, m_size, this->head(), this->tail(), sz, hamon::forward<Args>(args)...);	// may throw
 	}
 
+	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR NodeBase*
-	insert_n(Allocator& alloc, NodeBase* pos, SizeType n, T const& x)
+	insert(Allocator& alloc, NodeBase* pos, Args&&... args)
 	{
-		return Algo::insert_n(alloc, m_size, pos, n, x);	// may throw
+		return Algo::insert(alloc, m_size, pos, hamon::forward<Args>(args)...);	// may throw
+	}
+
+	template <typename... Args>
+	HAMON_CXX14_CONSTEXPR NodeBase*
+	insert_n(Allocator& alloc, NodeBase* pos, SizeType n, Args&&... args)
+	{
+		return Algo::insert_n(alloc, m_size, pos, n, hamon::forward<Args>(args)...);	// may throw
 	}
 
 	template <typename Iterator, typename Sentinel>
@@ -109,48 +108,6 @@ public:
 	insert_range(Allocator& alloc, NodeBase* pos, Iterator first, Sentinel last)
 	{
 		return Algo::insert_range(alloc, m_size, pos, first, last);	// may throw
-	}
-
-	template <typename Range>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	insert_range(Allocator& alloc, NodeBase* pos, Range&& rg)
-	{
-		return this->insert_range(alloc, pos, hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
-	}
-
-	template <typename Range>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	prepend_range(Allocator& alloc, Range&& rg)
-	{
-		return this->insert_range(alloc, this->head(), hamon::forward<Range>(rg));	// may throw
-	}
-
-	template <typename Range>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	append_range(Allocator& alloc, Range&& rg)
-	{
-		return this->insert_range(alloc, this->tail(), hamon::forward<Range>(rg));	// may throw
-	}
-
-	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	emplace(Allocator& alloc, NodeBase* pos, Args&&... args)
-	{
-		return Algo::insert(alloc, m_size, pos, hamon::forward<Args>(args)...);	// may throw
-	}
-
-	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	emplace_front(Allocator& alloc, Args&&... args)
-	{
-		return this->emplace(alloc, this->head(), hamon::forward<Args>(args)...);	// may throw
-	}
-
-	template <typename... Args>
-	HAMON_CXX14_CONSTEXPR NodeBase*
-	emplace_back(Allocator& alloc, Args&&... args)
-	{
-		return this->emplace(alloc, this->tail(), hamon::forward<Args>(args)...);	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR NodeBase*
@@ -163,24 +120,6 @@ public:
 	erase_range(Allocator& alloc, NodeBase* pos, NodeBase* last)
 	{
 		return Algo::erase_range(alloc, m_size, pos, last);
-	}
-
-	HAMON_CXX14_CONSTEXPR void
-	pop_front(Allocator& alloc)
-	{
-		this->erase(alloc, this->head());
-	}
-
-	HAMON_CXX14_CONSTEXPR void
-	pop_back(Allocator& alloc)
-	{
-		this->erase(alloc, this->tail()->m_prev);
-	}
-
-	HAMON_CXX14_CONSTEXPR void
-	clear(Allocator& alloc)
-	{
-		this->erase_range(alloc, this->head(), this->tail());
 	}
 
 	HAMON_CXX14_CONSTEXPR void

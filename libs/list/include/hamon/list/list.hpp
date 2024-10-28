@@ -102,7 +102,7 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/4
-		m_impl.resize(m_allocator, n);	// may throw
+		m_impl.insert_n(m_allocator, m_impl.tail(), n);	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -110,7 +110,7 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/7
-		m_impl.resize(m_allocator, n, value);	// may throw
+		m_impl.insert_n(m_allocator, m_impl.tail(), n, value);	// may throw
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -119,7 +119,7 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/9
-		m_impl.assign_range(m_allocator, first, last);	// may throw
+		m_impl.insert_range(m_allocator, m_impl.tail(), first, last);	// may throw
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -128,14 +128,14 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/11
-		m_impl.assign_range(m_allocator, hamon::forward<R>(rg));	// may throw
+		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	list(list const& x)
 		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
 	{
-		m_impl.assign_range(m_allocator, x);	// may throw
+		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(x), hamon::ranges::end(x));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -148,7 +148,7 @@ public:
 	list(list const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
-		m_impl.assign_range(m_allocator, x);	// may throw
+		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(x), hamon::ranges::end(x));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -161,7 +161,7 @@ public:
 		{
 			// アロケータが異なる場合は、
 			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			m_impl.assign_range(m_allocator,
+			m_impl.insert_range(m_allocator, m_impl.tail(),
 				hamon::make_move_iterator(hamon::ranges::begin(x)),
 				hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
 			return;
@@ -208,7 +208,7 @@ public:
 		}
 
 		// 要素をコピー代入
-		m_impl.assign_range(m_allocator, x);	// may throw
+		m_impl.assign_range(m_allocator, hamon::ranges::begin(x), hamon::ranges::end(x));	// may throw
 
 		return *this;
 	}
@@ -270,7 +270,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
-		m_impl.assign_range(m_allocator, hamon::forward<R>(rg));	// may throw
+		m_impl.assign_range(m_allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
@@ -429,7 +429,7 @@ public:
 	HAMON_CXX14_CONSTEXPR reference
 	emplace_front(Args&&... args)
 	{
-		m_impl.emplace_front(m_allocator, hamon::forward<Args>(args)...);	// may throw
+		m_impl.insert(m_allocator, m_impl.head(), hamon::forward<Args>(args)...);	// may throw
 		return front();
 	}
 
@@ -437,77 +437,77 @@ public:
 	HAMON_CXX14_CONSTEXPR reference
 	emplace_back(Args&&... args)
 	{
-		m_impl.emplace_back(m_allocator, hamon::forward<Args>(args)...);	// may throw
+		m_impl.insert(m_allocator, m_impl.tail(), hamon::forward<Args>(args)...);	// may throw
 		return back();
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	push_front(T const& x)
 	{
-		m_impl.emplace_front(m_allocator, x);	// may throw
+		m_impl.insert(m_allocator, m_impl.head(), x);	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	push_front(T&& x)
 	{
-		m_impl.emplace_front(m_allocator, hamon::move(x));	// may throw
+		m_impl.insert(m_allocator, m_impl.head(), hamon::move(x));	// may throw
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	prepend_range(R&& rg)
 	{
-		m_impl.prepend_range(m_allocator, hamon::forward<R>(rg));	// may throw
+		m_impl.insert_range(m_allocator, m_impl.head(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	pop_front() HAMON_NOEXCEPT	// noexcept as an extension
 	{
-		m_impl.pop_front(m_allocator);
+		m_impl.erase(m_allocator, m_impl.head());
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	push_back(T const& x)
 	{
-		m_impl.emplace_back(m_allocator, x);	// may throw
+		m_impl.insert(m_allocator, m_impl.tail(), x);	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	push_back(T&& x)
 	{
-		m_impl.emplace_back(m_allocator, hamon::move(x));	// may throw
+		m_impl.insert(m_allocator, m_impl.tail(), hamon::move(x));	// may throw
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	append_range(R&& rg)
 	{
-		m_impl.append_range(m_allocator, hamon::forward<R>(rg));	// may throw
+		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	pop_back() HAMON_NOEXCEPT	// noexcept as an extension
 	{
-		m_impl.pop_back(m_allocator);
+		m_impl.erase(m_allocator, m_impl.tail()->m_prev);
 	}
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace(const_iterator position, Args&&... args)
 	{
-		return iterator{ m_impl.emplace(m_allocator, position.ptr(), hamon::forward<Args>(args)...) };	// may throw
+		return iterator{ m_impl.insert(m_allocator, position.ptr(), hamon::forward<Args>(args)...) };	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, T const& x)
 	{
-		return iterator{ m_impl.emplace(m_allocator, position.ptr(), x) };	// may throw
+		return iterator{ m_impl.insert(m_allocator, position.ptr(), x) };	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, T&& x)
 	{
-		return iterator{ m_impl.emplace(m_allocator, position.ptr(), hamon::move(x)) };	// may throw
+		return iterator{ m_impl.insert(m_allocator, position.ptr(), hamon::move(x)) };	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
@@ -527,7 +527,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator position, R&& rg)
 	{
-		return iterator{ m_impl.insert_range(m_allocator, position.ptr(), hamon::forward<R>(rg)) };	// may throw
+		return iterator{ m_impl.insert_range(m_allocator, position.ptr(), hamon::ranges::begin(rg), hamon::ranges::end(rg)) };	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
@@ -564,7 +564,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void clear() HAMON_NOEXCEPT
 	{
-		m_impl.clear(m_allocator);
+		m_impl.erase_range(m_allocator, m_impl.head(), m_impl.tail());
 	}
 
 	// [list.ops], list operations
