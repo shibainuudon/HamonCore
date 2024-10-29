@@ -215,6 +215,8 @@ bool test2()
 template <typename T>
 bool test3()
 {
+	// 標準ライブラリの実装によっては、propagate_on_container_swap::valueがfalseのときにエラーになる
+#if !defined(HAMON_USE_STD_VECTOR)
 	using Allocator = MyAllocator2<T>;
 	using Vector = hamon::vector<T, Allocator>;
 
@@ -222,10 +224,8 @@ bool test3()
 		Vector v;
 		static_assert(hamon::is_same<decltype(v.swap(v)), void>::value, "");
 		static_assert(hamon::is_same<decltype(swap(v, v)), void>::value, "");
-#if !defined(HAMON_USE_STD_VECTOR)
 		static_assert(!noexcept(v.swap(v)), "");
 		static_assert(!noexcept(swap(v, v)), "");
-#endif
 	}
 	{
 		Allocator alloc1{10};
@@ -261,6 +261,7 @@ bool test3()
 		VERIFY(v2[2] == 5);
 		VERIFY(v2[3] == 6);
 	}
+#endif
 
 	return true;
 }
