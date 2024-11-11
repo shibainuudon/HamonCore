@@ -27,11 +27,14 @@ using std::erase_if;
 namespace hamon
 {
 
+// 23.4.6.3 Erasure[set.erasure]
+
 template <typename Key, typename Compare, typename Alloc, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
+HAMON_CXX14_CONSTEXPR
 typename hamon::set<Key, Compare, Alloc>::size_type
 erase_if(hamon::set<Key, Compare, Alloc>& c, Predicate pred)
 {
+	// [set.erasure]/1
 	auto const sz = c.size();
 	for (auto i = c.begin(), last = c.end(); i != last; )
 	{
@@ -47,11 +50,14 @@ erase_if(hamon::set<Key, Compare, Alloc>& c, Predicate pred)
 	return sz - c.size();
 }
 
+// 23.4.7.3 Erasure[multiset.erasure]
+
 template <typename Key, typename Compare, typename Alloc, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
+HAMON_CXX14_CONSTEXPR
 typename hamon::multiset<Key, Compare, Alloc>::size_type
 erase_if(hamon::multiset<Key, Compare, Alloc>& c, Predicate pred)
 {
+	// [multiset.erasure]/1
 	auto const sz = c.size();
 	for (auto i = c.begin(), last = c.end(); i != last; )
 	{

@@ -172,10 +172,12 @@ static_assert(hamon::is_same<hamon::iterator_traits<it6>::reference,         int
 using it7 = hamon::map<int, float>::iterator;
 static_assert(!has_iterator_concept<hamon::iterator_traits<it7>>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it7>::value_type,        std::pair<int const, float>>::value, "");
 static_assert(hamon::is_same<hamon::iterator_traits<it7>::difference_type,   hamon::ptrdiff_t>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it7>::pointer,           std::pair<int const, float>*>::value, "");
-static_assert(hamon::is_same<hamon::iterator_traits<it7>::reference,         std::pair<int const, float>&>::value, "");
+#if !defined(HAMON_USE_STD_MAP)
+static_assert(hamon::is_same<hamon::iterator_traits<it7>::value_type,        hamon::pair<int const, float>>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it7>::pointer,           hamon::pair<int const, float>*>::value, "");
+static_assert(hamon::is_same<hamon::iterator_traits<it7>::reference,         hamon::pair<int const, float>&>::value, "");
+#endif
 
 // [iterator.traits]/3.1
 

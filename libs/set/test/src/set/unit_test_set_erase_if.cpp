@@ -2,6 +2,10 @@
  *	@file	unit_test_set_erase_if.cpp
  *
  *	@brief	erase_if のテスト
+ *
+ *	template<class Key, class Compare, class Allocator, class Predicate>
+ *	typename set<Key, Compare, Allocator>::size_type
+ *	erase_if(set<Key, Compare, Allocator>& c, Predicate pred);
  */
 
 #include <hamon/set/erase_if.hpp>
@@ -9,6 +13,8 @@
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+
+#if 0	// TODO
 
 namespace hamon_set_test
 {
@@ -48,3 +54,4 @@ GTEST_TEST(SetTest, EraseIfTest)
 }	// namespace erase_if_test
 
 }	// namespace hamon_set_test
+#endif

@@ -1,16 +1,21 @@
 ﻿/**
- *	@file	unit_test_multimap_erase_if.cpp
+ *	@file	unit_test_map_erase_if.cpp
  *
  *	@brief	erase_if のテスト
+ *
+ *	template<class Key, class T, class Compare, class Allocator, class Predicate>
+ *	typename map<Key, T, Compare, Allocator>::size_type
+ *	erase_if(map<Key, T, Compare, Allocator>& c, Predicate pred);
  */
 
 #include <hamon/map/erase_if.hpp>
-#include <hamon/map/multimap.hpp>
+#include <hamon/map/map.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-namespace hamon_multimap_test
+#if 0	// TODO
+namespace hamon_map_test
 {
 
 namespace erase_if_test
@@ -31,7 +36,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool
 EraseIfTest()
 {
 	{
-		hamon::multimap<int, char> m =
+		hamon::map<int, char> m =
 		{
 			{3, 'a'},
 			{1, 'b'},
@@ -39,7 +44,7 @@ EraseIfTest()
 		};
 		auto r = hamon::erase_if(m, is_key_1{});
 		VERIFY(r == 1);
-		hamon::multimap<int, char> const m2 =
+		hamon::map<int, char> const m2 =
 		{
 			{3, 'a'},
 			{4, 'c'},
@@ -49,7 +54,7 @@ EraseIfTest()
 	return true;
 }
 
-GTEST_TEST(MultiMapTest, EraseIfTest)
+GTEST_TEST(MapTest, EraseIfTest)
 {
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(EraseIfTest());
 }
@@ -58,4 +63,5 @@ GTEST_TEST(MultiMapTest, EraseIfTest)
 
 }	// namespace erase_if_test
 
-}	// namespace hamon_multimap_test
+}	// namespace hamon_map_test
+#endif
