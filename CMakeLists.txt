@@ -31,6 +31,7 @@ set(SUBDIRECTORIES
 	complex
 	concepts
 	config
+	container
 	cstddef
 	cstdint
 	cstdlib

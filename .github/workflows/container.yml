@@ -1,0 +1,16 @@
+name: container
+
+on:
+  push:
+    paths:
+      - libs/container/**
+      - .github/workflows/container.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/container
