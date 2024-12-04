@@ -90,9 +90,9 @@ struct MayThrow
 		}
 	}
 
-	friend bool operator<(MayThrow const& x, MayThrow const& y)
+	friend bool operator<(MayThrow const& lhs, MayThrow const& rhs)
 	{
-		return x.value < y.value;
+		return lhs.value < rhs.value;
 	}
 };
 #endif
@@ -112,7 +112,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 
 	{
 		auto r = v.emplace(Key{10});
-		VERIFY(r == v.begin());
+		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 1);
 		auto it = v.begin();
@@ -121,7 +121,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 	}
 	{
 		auto r = v.emplace(Key{10});
-		VERIFY(r == hamon::next(v.begin()));
+		VERIFY(r == hamon::next(v.begin(), 1));
 
 		VERIFY(v.size() == 2);
 		auto it = v.begin();
@@ -175,7 +175,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 
 	{
 		auto r = v.emplace(1);
-		VERIFY(r == v.begin());
+		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 1);
 		auto it = v.begin();
@@ -186,7 +186,7 @@ MULTISET_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(1);
-		VERIFY(r == hamon::next(v.begin()));
+		VERIFY(r == hamon::next(v.begin(), 1));
 
 		VERIFY(v.size() == 2);
 		auto it = v.begin();
@@ -268,6 +268,7 @@ GTEST_TEST(MultisetTest, EmplaceTest)
 {
 	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
 	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
 	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
@@ -320,6 +321,21 @@ GTEST_TEST(MultisetTest, EmplaceTest)
 			EXPECT_EQ(2, (it++)->value);
 			EXPECT_TRUE(it == v.end());
 		}
+
+		MayThrow x{0};
+		x.value = -1;
+		v.emplace(x);
+		EXPECT_EQ(3u, v.size());
+		{
+			auto it = v.begin();
+			EXPECT_EQ(-1, (it++)->value);
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_EQ(2, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		EXPECT_THROW(v.emplace(-1), MayThrow::Exception);
+		EXPECT_EQ(3u, v.size());
 	}
 #endif
 }

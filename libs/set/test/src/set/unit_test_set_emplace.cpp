@@ -90,9 +90,9 @@ struct MayThrow
 		}
 	}
 
-	friend bool operator<(MayThrow const& x, MayThrow const& y)
+	friend bool operator<(MayThrow const& lhs, MayThrow const& rhs)
 	{
-		return x.value < y.value;
+		return lhs.value < rhs.value;
 	}
 };
 #endif
@@ -117,7 +117,7 @@ SET_TEST_CONSTEXPR bool test1()
 
 	{
 		auto r = v.emplace(Key{10});
-		VERIFY(r.first  == v.begin());
+		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == true);
 
 		VERIFY(v.size() == 1);
@@ -127,14 +127,14 @@ SET_TEST_CONSTEXPR bool test1()
 	}
 	{
 		auto r = v.emplace(Key{10});
-		VERIFY(r.first  == v.begin());
+		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == false);
 
 		VERIFY(v.size() == 1);
 	}
 	{
 		auto r = v.emplace(Key{20});
-		VERIFY(r.first  == hamon::next(v.begin()));
+		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == true);
 
 		VERIFY(v.size() == 2);
@@ -145,7 +145,7 @@ SET_TEST_CONSTEXPR bool test1()
 	}
 	{
 		auto r = v.emplace(Key{15});
-		VERIFY(r.first  == hamon::next(v.begin()));
+		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == true);
 
 		VERIFY(v.size() == 3);
@@ -157,7 +157,7 @@ SET_TEST_CONSTEXPR bool test1()
 	}
 	{
 		auto r = v.emplace(Key{15});
-		VERIFY(r.first  == hamon::next(v.begin()));
+		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == false);
 		VERIFY(v.size() == 3);
 	}
@@ -184,7 +184,7 @@ SET_TEST_CONSTEXPR bool test2()
 
 	{
 		auto r = v.emplace(1);
-		VERIFY(r.first  == v.begin());
+		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == true);
 
 		VERIFY(v.size() == 1);
@@ -196,7 +196,7 @@ SET_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(1);
-		VERIFY(r.first  == v.begin());
+		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == false);
 
 		VERIFY(v.size() == 1);
@@ -272,6 +272,7 @@ GTEST_TEST(SetTest, EmplaceTest)
 {
 	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
 	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
 	SET_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 
 	S2::s_ctor_count = 0;
@@ -324,6 +325,21 @@ GTEST_TEST(SetTest, EmplaceTest)
 			EXPECT_EQ(2, (it++)->value);
 			EXPECT_TRUE(it == v.end());
 		}
+
+		MayThrow x{0};
+		x.value = -1;
+		v.emplace(x);
+		EXPECT_EQ(3u, v.size());
+		{
+			auto it = v.begin();
+			EXPECT_EQ(-1, (it++)->value);
+			EXPECT_EQ(1, (it++)->value);
+			EXPECT_EQ(2, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		EXPECT_THROW(v.emplace(-1), MayThrow::Exception);
+		EXPECT_EQ(3u, v.size());
 	}
 #endif
 }
