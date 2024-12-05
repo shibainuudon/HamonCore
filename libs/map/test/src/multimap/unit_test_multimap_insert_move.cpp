@@ -318,6 +318,11 @@ GTEST_TEST(MultimapTest, InsertMoveTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
+#if defined(HAMON_USE_STD_MAP)
+		namespace ns = std;
+#else
+		namespace ns = hamon;
+#endif
 		using Map = hamon::multimap<int, ThrowOnMove>;
 		using ValueType = typename Map::value_type;
 
@@ -331,9 +336,9 @@ GTEST_TEST(MultimapTest, InsertMoveTest)
 		}
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(1),
-			std::forward_as_tuple(10));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 
 		{

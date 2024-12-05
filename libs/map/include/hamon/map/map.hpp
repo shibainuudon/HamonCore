@@ -387,13 +387,13 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, x);
+		return m_impl.insert(m_comp, m_allocator, x);
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::move(x));
+		return m_impl.insert(m_comp, m_allocator, hamon::move(x));
 	}
 
 	template <typename P,

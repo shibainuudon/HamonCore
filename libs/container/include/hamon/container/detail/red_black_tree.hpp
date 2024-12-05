@@ -312,16 +312,16 @@ struct red_black_tree_algo
 		None,
 	};
 
-	template <typename Compare>
+	template <typename Compare, typename T>
 	static HAMON_CXX14_CONSTEXPR hamon::pair<Node*, InsertTo>
-	find_to_insert(Compare const& comp, Node* new_node, Node* root, bool multi) noexcept
+	find_to_insert(Compare const& comp, T const& value, Node* root, bool multi) noexcept
 	{
 		HAMON_ASSERT(root != nullptr);
 
 		auto p = root;
 		for (;;)
 		{
-			if (comp(new_node->m_value, p->m_value))
+			if (comp(value, p->m_value))
 			{
 				if (p->m_left == nullptr)
 				{
@@ -332,7 +332,7 @@ struct red_black_tree_algo
 					p = p->m_left;
 				}
 			}
-			else if (multi || comp(p->m_value, new_node->m_value))
+			else if (multi || comp(p->m_value, value))
 			{
 				if (p->m_right == nullptr)
 				{
@@ -821,7 +821,7 @@ public:
 			return {to_iterator(new_node), true};
 		}
 
-		auto r = Algo::find_to_insert(comp, new_node, m_root, Multi);
+		auto r = Algo::find_to_insert(comp, new_node->value(), m_root, Multi);
 		if (r.second != Algo::InsertTo::None)
 		{
 			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
@@ -835,13 +835,41 @@ public:
 		}
 	}
 
+	template <typename Compare, typename Allocator, typename U>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
+	insert(Compare const& comp, Allocator& alloc, U&& x)
+	{
+		if (m_root == nullptr)
+		{
+			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));
+			m_root = new_node;
+			m_leftmost = new_node;
+			m_rightmost = new_node;
+			m_size = 1;
+			return {to_iterator(new_node), true};
+		}
+
+		auto r = Algo::find_to_insert(comp, x, m_root, Multi);
+		if (r.second != Algo::InsertTo::None)
+		{
+			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));
+			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
+			++m_size;
+			return {to_iterator(new_node), true};
+		}
+		else
+		{
+			return {to_iterator(r.first), false};
+		}
+	}
+
 	template <typename Compare, typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(Compare const& comp, Allocator& alloc, Iterator first, Sentinel last)
 	{
 		for (; first != last; ++first)
 		{
-			this->emplace(comp, alloc, *first);
+			this->insert(comp, alloc, *first);
 		}
 	}
 

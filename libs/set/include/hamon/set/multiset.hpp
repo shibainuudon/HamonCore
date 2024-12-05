@@ -316,13 +316,13 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type const& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, x).first;
+		return m_impl.insert(m_comp, m_allocator, x).first;
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type&& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::move(x)).first;
+		return m_impl.insert(m_comp, m_allocator, hamon::move(x)).first;
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator

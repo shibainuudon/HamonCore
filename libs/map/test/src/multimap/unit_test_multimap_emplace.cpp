@@ -158,13 +158,19 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 
 MULTIMAP_TEST_CONSTEXPR bool test2()
 {
+#if defined(HAMON_USE_STD_MAP)
+	namespace ns = std;
+#else
+	namespace ns = hamon;
+#endif
+
 	hamon::multimap<int, S1> v;
 
 	{
 		auto r = v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(1),
-			std::forward_as_tuple(10, 20));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(10, 20));
 		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 1);
@@ -177,9 +183,9 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(3),
-			std::forward_as_tuple(30, 40));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(3),
+			ns::forward_as_tuple(30, 40));
 		VERIFY(r == hamon::next(v.begin(), 1));
 
 		VERIFY(v.size() == 2);
@@ -196,9 +202,9 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(2),
-			std::forward_as_tuple(50, 60));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(2),
+			ns::forward_as_tuple(50, 60));
 		VERIFY(r == hamon::next(v.begin(), 1));
 
 		VERIFY(v.size() == 3);
@@ -219,9 +225,9 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 	}
 	{
 		auto r = v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(3),
-			std::forward_as_tuple(70, 80));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(3),
+			ns::forward_as_tuple(70, 80));
 		VERIFY(r == hamon::next(v.begin(), 3));
 
 		VERIFY(v.size() == 4);
@@ -263,6 +269,12 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 
+#if defined(HAMON_USE_STD_MAP)
+	namespace ns = std;
+#else
+	namespace ns = hamon;
+#endif
+
 	S2::s_ctor_count = 0;
 	S2::s_dtor_count = 0;
 	{
@@ -272,25 +284,25 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 		EXPECT_EQ(0, S2::s_dtor_count);
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(0),
-			std::forward_as_tuple(10));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(0),
+			ns::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 		EXPECT_EQ(1, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(1),
-			std::forward_as_tuple(10));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(10));
 		EXPECT_EQ(2u, v.size());
 		EXPECT_EQ(2, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(0),
-			std::forward_as_tuple(20));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(0),
+			ns::forward_as_tuple(20));
 		EXPECT_EQ(3u, v.size());
 		EXPECT_EQ(3, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
@@ -304,35 +316,35 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 		EXPECT_TRUE(v.empty());
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(1),
-			std::forward_as_tuple(10));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(10));
 		EXPECT_EQ(1u, v.size());
 
 		v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(2),
-			std::forward_as_tuple(11));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(2),
+			ns::forward_as_tuple(11));
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(3),
-			std::forward_as_tuple(-10)),
+			ns::piecewise_construct,
+			ns::forward_as_tuple(3),
+			ns::forward_as_tuple(-10)),
 			MayThrow::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_THROW(v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(2),
-			std::forward_as_tuple(-10)),
+			ns::piecewise_construct,
+			ns::forward_as_tuple(2),
+			ns::forward_as_tuple(-10)),
 			MayThrow::Exception);
 		EXPECT_EQ(2u, v.size());
 
 		EXPECT_NO_THROW(v.emplace(
-			std::piecewise_construct,
-			std::forward_as_tuple(2),
-			std::forward_as_tuple(12)));
+			ns::piecewise_construct,
+			ns::forward_as_tuple(2),
+			ns::forward_as_tuple(12)));
 		EXPECT_EQ(3u, v.size());
 	}
 #endif
