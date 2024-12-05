@@ -63,6 +63,12 @@ struct MyAllocator
 	{
 		return id == rhs.id;
 	}
+
+	HAMON_CXX11_CONSTEXPR
+	bool operator!=(MyAllocator const& rhs) const
+	{
+		return id != rhs.id;
+	}
 };
 
 struct MyLess
@@ -94,13 +100,15 @@ SET_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 	using Set = hamon::set<Key, Compare, Allocator>;
 
 	static_assert( hamon::is_constructible<Set, Compare const&>::value, "");
+#if !defined(HAMON_USE_STD_SET)
 	static_assert(!hamon::is_nothrow_constructible<Set, Compare const&>::value, "");
+#endif
 	static_assert(!hamon::is_implicitly_constructible<Set, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, Compare const&>::value, "");
 
 	static_assert( hamon::is_constructible<Set, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, Compare const&, Allocator const&>::value, "");
 #if !defined(HAMON_USE_STD_SET)
+	static_assert(!hamon::is_nothrow_constructible<Set, Compare const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, Compare const&, Allocator const&>::value, "");
 #endif
 	static_assert(!hamon::is_trivially_constructible<Set, Compare const&, Allocator const&>::value, "");

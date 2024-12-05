@@ -70,6 +70,12 @@ struct MyAllocator
 	{
 		return id == rhs.id;
 	}
+
+	HAMON_CXX11_CONSTEXPR
+	bool operator!=(MyAllocator const& rhs) const
+	{
+		return id != rhs.id;
+	}
 };
 
 struct MyLess

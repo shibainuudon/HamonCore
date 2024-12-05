@@ -64,6 +64,12 @@ struct MyAllocator1
 	{
 		return id == rhs.id;
 	}
+
+	HAMON_CXX11_CONSTEXPR
+	bool operator!=(MyAllocator1 const& rhs) const
+	{
+		return id != rhs.id;
+	}
 };
 
 template <typename T>
@@ -102,6 +108,12 @@ struct MyAllocator2
 	bool operator==(MyAllocator2 const& rhs) const
 	{
 		return id == rhs.id;
+	}
+
+	HAMON_CXX11_CONSTEXPR
+	bool operator!=(MyAllocator2 const& rhs) const
+	{
+		return id != rhs.id;
 	}
 };
 
