@@ -34,10 +34,12 @@ struct S1
 
 	constexpr S1(int i) : x(i), y(0) {}
 	constexpr S1(int i, int j) : x(i), y(j) {}
-	S1(S1&&) = delete;
-	S1(S1 const&) = default;
-	S1& operator=(S1&&) = delete;
+
+	S1(S1&&)                 = delete;
+	S1(S1 const&)            = default;
+	S1& operator=(S1&&)      = delete;
 	S1& operator=(S1 const&) = delete;
+
 	friend constexpr bool operator<(S1 const& lhs, S1 const& rhs)
 	{
 		return lhs.x < rhs.x;
@@ -57,20 +59,19 @@ struct S2
 		++s_ctor_count;
 	}
 
-	S2(S2&&) = delete;
-
 	S2(S2 const& x) : value(x.value)
 	{
 		++s_copy_ctor_count;
 	}
 
-	S2& operator=(S2&&) = delete;
-	S2& operator=(S2 const&) = delete;
-
 	~S2()
 	{
 		++s_dtor_count;
 	}
+
+	S2(S2&&)                 = delete;
+	S2& operator=(S2&&)      = delete;
+	S2& operator=(S2 const&) = delete;
 
 	friend bool operator<(S2 const& lhs, S2 const& rhs)
 	{
@@ -97,8 +98,8 @@ struct ThrowOnCopy
 		throw Exception{};
 	}
 
-	ThrowOnCopy(ThrowOnCopy&&) = delete;
-	ThrowOnCopy& operator=(ThrowOnCopy&&) = delete;
+	ThrowOnCopy(ThrowOnCopy&&)                 = delete;
+	ThrowOnCopy& operator=(ThrowOnCopy&&)      = delete;
 	ThrowOnCopy& operator=(ThrowOnCopy const&) = delete;
 
 	friend bool operator<(ThrowOnCopy const& lhs, ThrowOnCopy const& rhs)

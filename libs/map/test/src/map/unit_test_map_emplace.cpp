@@ -33,9 +33,10 @@ struct S1
 	int y;
 
 	constexpr S1(int i, int j) : x(i), y(j) {}
-	S1(S1&&) = delete;
-	S1(S1 const&) = delete;
-	S1& operator=(S1&&) = delete;
+
+	S1(S1&&)                 = delete;
+	S1(S1 const&)            = delete;
+	S1& operator=(S1&&)      = delete;
 	S1& operator=(S1 const&) = delete;
 };
 
@@ -51,15 +52,15 @@ struct S2
 		++s_ctor_count;
 	}
 
-	S2(S2&&) = delete;
-	S2(S2 const&) = delete;
-	S2& operator=(S2&&) = delete;
-	S2& operator=(S2 const&) = delete;
-
 	~S2()
 	{
 		++s_dtor_count;
 	}
+
+	S2(S2&&)                 = delete;
+	S2(S2 const&)            = delete;
+	S2& operator=(S2&&)      = delete;
+	S2& operator=(S2 const&) = delete;
 };
 
 int S2::s_ctor_count = 0;

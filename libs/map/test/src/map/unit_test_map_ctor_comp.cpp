@@ -94,13 +94,15 @@ MAP_TEST_CONSTEXPR bool test_impl(Compare const& comp, Allocator const& alloc)
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 
 	static_assert( hamon::is_constructible<Map, Compare const&>::value, "");
+#if !defined(HAMON_USE_STD_MAP)
 	static_assert(!hamon::is_nothrow_constructible<Map, Compare const&>::value, "");
+#endif
 	static_assert(!hamon::is_implicitly_constructible<Map, Compare const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Compare const&>::value, "");
 
 	static_assert( hamon::is_constructible<Map, Compare const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, Compare const&, Allocator const&>::value, "");
 #if !defined(HAMON_USE_STD_MAP)
+	static_assert(!hamon::is_nothrow_constructible<Map, Compare const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, Compare const&, Allocator const&>::value, "");
 #endif
 	static_assert(!hamon::is_trivially_constructible<Map, Compare const&, Allocator const&>::value, "");
