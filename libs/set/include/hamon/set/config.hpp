@@ -9,13 +9,13 @@
 
 #include <set>
 
-#if 0
+#if 1
 
 #define HAMON_USE_STD_SET
 
 #endif
 
-#if 0
+#if 1
 
 #define HAMON_USE_STD_MULTISET
 

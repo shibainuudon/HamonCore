@@ -355,7 +355,7 @@ GTEST_TEST(MultimapTest, InsertCopyTest)
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
-#if defined(HAMON_USE_STD_MAP)
+#if defined(HAMON_USE_STD_MULTIMAP)
 		namespace ns = std;
 #else
 		namespace ns = hamon;

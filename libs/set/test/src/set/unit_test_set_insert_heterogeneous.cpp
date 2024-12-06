@@ -8,6 +8,7 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -25,11 +26,61 @@ namespace insert_heterogeneous_test
 #define SET_TEST_CONSTEXPR              /**/
 #endif
 
+struct HeterogeneousKey
+{
+	int value;
+	HAMON_CXX11_CONSTEXPR operator int() const { return -value; }
+};
+
+struct Compare
+{
+	using is_transparent = void;
+
+	HAMON_CXX11_CONSTEXPR bool
+	operator()(int lhs, int rhs) const
+	{
+		return lhs < rhs;
+	}
+
+	HAMON_CXX11_CONSTEXPR bool
+	operator()(int lhs, HeterogeneousKey rhs) const
+	{
+		return lhs < rhs.value;
+	}
+
+	HAMON_CXX11_CONSTEXPR bool
+	operator()(HeterogeneousKey lhs, int rhs) const
+	{
+		return lhs.value < rhs;
+	}
+};
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+SET_TEST_CONSTEXPR bool test1()
 {
+	using Set = hamon::set<int, Compare>;
+	using Iterator = typename Set::iterator;
+#if defined(HAMON_USE_STD_SET)
+	using Result = std::pair<Iterator, bool>;
+#else
+	using Result = hamon::pair<Iterator, bool>;
+#endif
+
+	Set v {1, -2};
+
+	static_assert(hamon::is_same<decltype(v.insert(hamon::declval<HeterogeneousKey>())), Result>::value, "");
+	static_assert(!noexcept(v.insert(hamon::declval<HeterogeneousKey>())), "");
+
+	v.insert(HeterogeneousKey{2});
+	VERIFY(v.size() == 2);
+	{
+		auto it = v.begin();
+		VERIFY(*it++ == -2);
+		VERIFY(*it++ ==  1);
+		VERIFY(it == v.end());
+	}
+
 	return true;
 }
 
@@ -37,6 +88,7 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, InsertHeterogeneousTest)
 {
+	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1());
 }
 
 #undef SET_TEST_CONSTEXPR_EXPECT_TRUE

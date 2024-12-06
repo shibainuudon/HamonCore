@@ -288,6 +288,10 @@ GTEST_TEST(MapTest, EmplaceTest)
 		EXPECT_EQ(0, S2::s_ctor_count);
 		EXPECT_EQ(0, S2::s_dtor_count);
 
+		// piecewise_construct を使っての挿入は、
+		// まず一時オブジェクトを作ってから検索するので、
+		// 実際に挿入されない場合でもコンストラクタが実行される
+
 		v.emplace(
 			ns::piecewise_construct,
 			ns::forward_as_tuple(0),
@@ -311,14 +315,33 @@ GTEST_TEST(MapTest, EmplaceTest)
 		EXPECT_EQ(2u, v.size());
 		EXPECT_EQ(3, S2::s_ctor_count);
 		EXPECT_EQ(1, S2::s_dtor_count);
+
+		// 引数が２つの場合は、１番目の引数をキーとして検索するので、
+		// 実際に挿入されるときだけコンストラクタが実行される
+		v.emplace(0, 30);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_EQ(3, S2::s_ctor_count);
+		EXPECT_EQ(1, S2::s_dtor_count);
+
+		v.emplace(2, 40);
+		EXPECT_EQ(3u, v.size());
+		EXPECT_EQ(4, S2::s_ctor_count);
+		EXPECT_EQ(1, S2::s_dtor_count);
 	}
-	EXPECT_EQ(3, S2::s_ctor_count);
-	EXPECT_EQ(3, S2::s_dtor_count);
+	EXPECT_EQ(4, S2::s_ctor_count);
+	EXPECT_EQ(4, S2::s_dtor_count);
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		hamon::map<int, MayThrow> v;
 		EXPECT_TRUE(v.empty());
+
+		EXPECT_THROW(v.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(-1)),
+			MayThrow::Exception);
+		EXPECT_EQ(0u, v.size());
 
 		v.emplace(
 			ns::piecewise_construct,
@@ -351,6 +374,15 @@ GTEST_TEST(MapTest, EmplaceTest)
 			ns::forward_as_tuple(2),
 			ns::forward_as_tuple(12)));
 		EXPECT_EQ(2u, v.size());
+
+		EXPECT_NO_THROW(v.emplace(1, -10));
+		EXPECT_EQ(2u, v.size());
+
+		EXPECT_THROW(v.emplace(3, -10), MayThrow::Exception);
+		EXPECT_EQ(2u, v.size());
+
+		EXPECT_NO_THROW(v.emplace(3, 10));
+		EXPECT_EQ(3u, v.size());
 	}
 #endif
 }

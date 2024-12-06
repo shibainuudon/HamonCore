@@ -374,6 +374,8 @@ struct red_black_tree_algo
 		balance(new_node, root);
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	template <typename Allocator, typename... Args>
 	static HAMON_CXX14_CONSTEXPR Node*
 	construct_node(Allocator& alloc, Args&&... args)
@@ -383,6 +385,7 @@ struct red_black_tree_algo
 		AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
 		return node;
 	}
+HAMON_WARNING_POP()
 
 	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR void
@@ -810,7 +813,7 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace(Compare const& comp, Allocator& alloc, Args&&... args)
 	{
-		auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);
+		auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
 
 		if (m_root == nullptr)
 		{
@@ -835,13 +838,15 @@ public:
 		}
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	template <typename Compare, typename Allocator, typename U>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(Compare const& comp, Allocator& alloc, U&& x)
 	{
 		if (m_root == nullptr)
 		{
-			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));
+			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));	// may throw
 			m_root = new_node;
 			m_leftmost = new_node;
 			m_rightmost = new_node;
@@ -852,7 +857,7 @@ public:
 		auto r = Algo::find_to_insert(comp, x, m_root, Multi);
 		if (r.second != Algo::InsertTo::None)
 		{
-			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));
+			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));	// may throw
 			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
 			++m_size;
 			return {to_iterator(new_node), true};
@@ -862,6 +867,7 @@ public:
 			return {to_iterator(r.first), false};
 		}
 	}
+HAMON_WARNING_POP()
 
 	template <typename Compare, typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void

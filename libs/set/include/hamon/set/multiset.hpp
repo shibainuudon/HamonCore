@@ -313,6 +313,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator position, Args&&... args);
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type const& x)
 	{
@@ -324,6 +326,7 @@ public:
 	{
 		return m_impl.insert(m_comp, m_allocator, hamon::move(x)).first;
 	}
+HAMON_WARNING_POP()
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x);

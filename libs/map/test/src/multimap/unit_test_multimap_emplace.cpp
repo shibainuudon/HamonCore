@@ -158,7 +158,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 
 MULTIMAP_TEST_CONSTEXPR bool test2()
 {
-#if defined(HAMON_USE_STD_MAP)
+#if defined(HAMON_USE_STD_MULTIMAP)
 	namespace ns = std;
 #else
 	namespace ns = hamon;
@@ -269,7 +269,7 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 
-#if defined(HAMON_USE_STD_MAP)
+#if defined(HAMON_USE_STD_MULTIMAP)
 	namespace ns = std;
 #else
 	namespace ns = hamon;
@@ -314,6 +314,13 @@ GTEST_TEST(MultimapTest, EmplaceTest)
 	{
 		hamon::multimap<int, MayThrow> v;
 		EXPECT_TRUE(v.empty());
+
+		EXPECT_THROW(v.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(-1)),
+			MayThrow::Exception);
+		EXPECT_EQ(0u, v.size());
 
 		v.emplace(
 			ns::piecewise_construct,

@@ -9,8 +9,13 @@
 
 #include <hamon/set/multiset.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "ranges_test.hpp"
+
+#if !defined(HAMON_USE_STD_MULTISET) || \
+	(defined(__cpp_lib_containers_ranges) && (__cpp_lib_containers_ranges >= 202202L))
 
 namespace hamon_multiset_test
 {
@@ -26,18 +31,170 @@ namespace insert_range_test
 #define MULTISET_TEST_CONSTEXPR              /**/
 #endif
 
+#if !defined(HAMON_NO_EXCEPTIONS)
+struct MayThrow
+{
+	struct Exception{};
+
+	int value;
+
+	MayThrow(int v) : value(v)
+	{}
+
+	MayThrow(MayThrow const& x)
+		: value(x.value)
+	{
+		if (x.value < 0)
+		{
+			throw Exception{};
+		}
+	}
+
+	MayThrow(MayThrow&&)                 = default;
+	MayThrow& operator=(MayThrow&&)      = delete;
+	MayThrow& operator=(MayThrow const&) = delete;
+
+	friend constexpr bool operator<(MayThrow const& lhs, MayThrow const& rhs)
+	{
+		return lhs.value < rhs.value;
+	}
+};
+#endif
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <typename Key, template <typename> class RangeWrapper>
+MULTISET_TEST_CONSTEXPR bool test_impl()
+{
+	using Set = hamon::multiset<Key>;
+	using ValueType = typename Set::value_type;
+	using Range = RangeWrapper<ValueType>;
+
+	Set v;
+
+	static_assert(hamon::is_same<decltype(v.insert_range(hamon::declval<Range>())), void>::value, "");
+	static_assert(!noexcept(v.insert_range(hamon::declval<Range>())), "");
+
+	{
+		Key a[] = { Key{3}, Key{2}, Key{3}, Key{1}, Key{2}, Key{3} };
+		Range r(a);
+		v.insert_range(r);
+		VERIFY(!v.empty());
+		VERIFY(v.size() == 6);
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == Key{1});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{3});
+			VERIFY(it == v.end());
+		}
+	}
+	{
+		Key a[] = { Key{2}, Key{4}, Key{0}, Key{1} };
+		v.insert_range(Range(a));
+		VERIFY(!v.empty());
+		VERIFY(v.size() == 10);
+		{
+			auto it = v.begin();
+			VERIFY(*it++ == Key{0});
+			VERIFY(*it++ == Key{1});
+			VERIFY(*it++ == Key{1});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{4});
+			VERIFY(it == v.end());
+		}
+	}
+
+	return true;
+}
 
 template <typename Key>
 MULTISET_TEST_CONSTEXPR bool test()
 {
-	return true;
+	return
+		test_impl<Key, test_input_range>() &&
+		test_impl<Key, test_forward_range>() &&
+		test_impl<Key, test_bidirectional_range>() &&
+		test_impl<Key, test_random_access_range>() &&
+		test_impl<Key, test_contiguous_range>() &&
+		test_impl<Key, test_input_sized_range>() &&
+		test_impl<Key, test_forward_sized_range>() &&
+		test_impl<Key, test_bidirectional_sized_range>() &&
+		test_impl<Key, test_random_access_sized_range>() &&
+		test_impl<Key, test_contiguous_sized_range>();
 }
 
 #undef VERIFY
 
 GTEST_TEST(MultisetTest, InsertRangeTest)
 {
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<int>());
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<char>());
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE(test<float>());
+
+#if !defined(HAMON_NO_EXCEPTIONS)
+	{
+		using Set = hamon::multiset<MayThrow>;
+
+		Set v;
+		EXPECT_EQ(0u, v.size());
+
+		{
+			MayThrow a[] =
+			{
+				MayThrow{ 40},
+				MayThrow{ 10},
+				MayThrow{-30},
+				MayThrow{ 20},
+			};
+			EXPECT_THROW(v.insert_range(a), MayThrow::Exception);
+		}
+		EXPECT_EQ(2u, v.size());
+		{
+			auto it = v.begin();
+			EXPECT_EQ(10, (it++)->value);
+			EXPECT_EQ(40, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		v.emplace(-20);
+		EXPECT_EQ(3u, v.size());
+		{
+			auto it = v.begin();
+			EXPECT_EQ(-20, (it++)->value);
+			EXPECT_EQ( 10, (it++)->value);
+			EXPECT_EQ( 40, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+
+		{
+			MayThrow a[] =
+			{
+				MayThrow{ 20},
+				MayThrow{-20},
+				MayThrow{ 30},
+			};
+			EXPECT_THROW(v.insert_range(a), MayThrow::Exception);
+		}
+		EXPECT_EQ(4u, v.size());
+		{
+			auto it = v.begin();
+			EXPECT_EQ(-20, (it++)->value);
+			EXPECT_EQ( 10, (it++)->value);
+			EXPECT_EQ( 20, (it++)->value);
+			EXPECT_EQ( 40, (it++)->value);
+			EXPECT_TRUE(it == v.end());
+		}
+	}
+#endif
 }
 
 #undef MULTISET_TEST_CONSTEXPR_EXPECT_TRUE
@@ -46,3 +203,5 @@ GTEST_TEST(MultisetTest, InsertRangeTest)
 }	// namespace insert_range_test
 
 }	// namespace hamon_multiset_test
+
+#endif
