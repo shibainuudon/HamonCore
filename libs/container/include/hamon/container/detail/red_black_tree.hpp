@@ -7,12 +7,14 @@
 #ifndef HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_HPP
 #define HAMON_CONTAINER_DETAIL_RED_BLACK_TREE_HPP
 
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -811,19 +813,43 @@ public:
 
 	template <typename Compare, typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	emplace(Compare const& comp, Allocator& alloc, Args&&... args)
+	emplace_hint(Compare const& comp, Allocator& alloc, const_iterator position, Args&&... args)
 	{
-		auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
+		(void)position;
+		return emplace(comp, alloc, hamon::forward<Args>(args)...);
+	}
 
-		if (m_root == nullptr)
+private:
+	template <typename Compare, typename Allocator, typename Arg0, typename... Args,
+		typename = hamon::enable_if_t<
+			hamon::is_same<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<Arg0>>::value
+			//hamon::is_invocable<Compare, T const&, Arg0>::value
+		>
+	>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
+	emplace_impl(hamon::detail::overload_priority<1>,
+		Compare const& comp, Allocator& alloc, Arg0&& arg0, Args&&... args)
+	{
+		auto r = Algo::find_to_insert(comp, arg0, m_root, Multi);
+		if (r.second != Algo::InsertTo::None)
 		{
-			m_root = new_node;
-			m_leftmost = new_node;
-			m_rightmost = new_node;
-			m_size = 1;
+			auto new_node = Algo::construct_node(alloc, hamon::forward<Arg0>(arg0), hamon::forward<Args>(args)...);	// may throw
+			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
+			++m_size;
 			return {to_iterator(new_node), true};
 		}
+		else
+		{
+			return {to_iterator(r.first), false};
+		}
+	}
 
+	template <typename Compare, typename Allocator, typename... Args>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
+	emplace_impl(hamon::detail::overload_priority<0>,
+		Compare const& comp, Allocator& alloc, Args&&... args)
+	{
+		auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
 		auto r = Algo::find_to_insert(comp, new_node->value(), m_root, Multi);
 		if (r.second != Algo::InsertTo::None)
 		{
@@ -838,15 +864,14 @@ public:
 		}
 	}
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
-	template <typename Compare, typename Allocator, typename U>
+public:
+	template <typename Compare, typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	insert(Compare const& comp, Allocator& alloc, U&& x)
+	emplace(Compare const& comp, Allocator& alloc, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
-			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));	// may throw
+			auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
 			m_root = new_node;
 			m_leftmost = new_node;
 			m_rightmost = new_node;
@@ -854,20 +879,9 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 			return {to_iterator(new_node), true};
 		}
 
-		auto r = Algo::find_to_insert(comp, x, m_root, Multi);
-		if (r.second != Algo::InsertTo::None)
-		{
-			auto new_node = Algo::construct_node(alloc, hamon::forward<U>(x));	// may throw
-			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
-			++m_size;
-			return {to_iterator(new_node), true};
-		}
-		else
-		{
-			return {to_iterator(r.first), false};
-		}
+		return emplace_impl(hamon::detail::overload_priority<1>{},
+			comp, alloc, hamon::forward<Args>(args)...);
 	}
-HAMON_WARNING_POP()
 
 	template <typename Compare, typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void
@@ -875,7 +889,7 @@ HAMON_WARNING_POP()
 	{
 		for (; first != last; ++first)
 		{
-			this->insert(comp, alloc, *first);
+			this->emplace(comp, alloc, *first);
 		}
 	}
 

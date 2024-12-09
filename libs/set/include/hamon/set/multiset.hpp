@@ -311,28 +311,37 @@ public:
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
-	emplace_hint(const_iterator position, Args&&... args);
+	emplace_hint(const_iterator position, Args&&... args)
+	{
+		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...).first;
+	}
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type const& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, x).first;
+		return m_impl.emplace(m_comp, m_allocator, x).first;
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type&& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, hamon::move(x)).first;
+		return m_impl.emplace(m_comp, m_allocator, hamon::move(x)).first;
 	}
 HAMON_WARNING_POP()
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type const& x);
+	insert(const_iterator position, value_type const& x)
+	{
+		return m_impl.emplace_hint(m_comp, m_allocator, position, x).first;
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type&& x);
+	insert(const_iterator position, value_type&& x)
+	{
+		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::move(x)).first;
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR

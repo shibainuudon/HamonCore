@@ -99,7 +99,11 @@ MAP_TEST_CONSTEXPR bool test1()
 
 	Map v;
 
+	static_assert(hamon::is_same<decltype(v.emplace(hamon::declval<ValueType&&>())), Result>::value, "");
+	static_assert(hamon::is_same<decltype(v.emplace(hamon::declval<ValueType const&>())), Result>::value, "");
 	static_assert(hamon::is_same<decltype(v.emplace(hamon::declval<Key>(), hamon::declval<T>())), Result>::value, "");
+	static_assert(!noexcept(v.emplace(hamon::declval<ValueType&&>())), "");
+	static_assert(!noexcept(v.emplace(hamon::declval<ValueType const&>())), "");
 	static_assert(!noexcept(v.emplace(hamon::declval<Key>(), hamon::declval<T>())), "");
 
 	{
@@ -113,7 +117,7 @@ MAP_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace(Key{1}, T{20});
+		auto r = v.emplace(ValueType{Key{1}, T{20}});
 		VERIFY(r.first  == hamon::next(v.begin(), 0));
 		VERIFY(r.second == false);
 
@@ -123,7 +127,8 @@ MAP_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace(Key{2}, T{20});
+		ValueType const x{Key{2}, T{20}};
+		auto r = v.emplace(x);
 		VERIFY(r.first  == hamon::next(v.begin(), 1));
 		VERIFY(r.second == true);
 
