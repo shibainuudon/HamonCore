@@ -22,29 +22,13 @@ namespace hamon
 namespace detail
 {
 
-template <typename Key, typename... Args>
-struct map_in_place_key_extractor
-	: public hamon::false_type {};
+template <typename Key, typename T, bool = hamon::pair_like_t<T>::value>
+struct is_same_key_pair
+	: public hamon::false_type{};
 
-template <typename Key, typename Value>
-struct map_in_place_key_extractor<Key, Key, Value>
-	: public hamon::true_type
-{
-	static constexpr Key const& extract(Key const& v, Value const&) noexcept
-	{
-		return v;
-	}
-};
-
-template <typename Key, typename PairLike>
-struct map_in_place_key_extractor<Key, PairLike>
-	: public hamon::pair_like_t<PairLike>
-{
-	static constexpr Key const& extract(PairLike const& v) noexcept
-	{
-		return hamon::get<0>(v);
-	}
-};
+template <typename Key, typename T>
+struct is_same_key_pair<Key, T, true>
+	: public hamon::is_same<Key, hamon::remove_cvref_t<hamon::tuple_element_t<0, T>>>{};
 
 template <typename Key, typename ValueType, typename SizeType, typename DifferenceType, bool Multi>
 struct map_traits
@@ -57,11 +41,9 @@ struct map_traits
 	template <typename Arg>
 	using in_place_comparable =
 		hamon::disjunction<
-			hamon::is_same<Key, hamon::remove_cvref_t<Arg>>,
-			hamon::pair_like_t<Arg>
+			hamon::is_same<hamon::remove_cvref_t<Key>, hamon::remove_cvref_t<Arg>>,
+			hamon::detail::is_same_key_pair<hamon::remove_cvref_t<Key>, hamon::remove_cvref_t<Arg>>
 		>;
-	//template <typename... Args>
-	//using in_place_key_extractor = map_in_place_key_extractor<Key, hamon::remove_cvref_t<Args>...>;
 };
 
 }	// namespace detail

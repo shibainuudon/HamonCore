@@ -943,6 +943,9 @@ public:
 		return Algo::upper_bound(m_root, x, comp);
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 private:
 	template <typename Compare, typename Allocator, typename Arg0, typename... Args,
 		typename = hamon::enable_if_t<Traits::template in_place_comparable<Arg0>::value>
@@ -1062,6 +1065,8 @@ public:
 		return emplace_hint_impl(hamon::detail::overload_priority<1>{},
 			comp, alloc, position, hamon::forward<Args>(args)...).first;
 	}
+
+HAMON_WARNING_POP()
 
 	template <typename Compare, typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void

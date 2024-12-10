@@ -88,7 +88,7 @@ struct MayThrow
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test1()
 {
-	using Map = hamon::map<Key, T>;
+	using Map = hamon::map<Key, T, hamon::less<>>;
 	using ValueType = typename Map::value_type;
 	using Iterator = typename Map::iterator;
 #if defined(HAMON_USE_STD_MAP)

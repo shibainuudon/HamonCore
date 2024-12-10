@@ -305,6 +305,9 @@ public:
 			static_cast<size_type>(NodeAllocTraits::max_size(m_allocator)));
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 	// modifiers
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
@@ -312,6 +315,8 @@ public:
 	{
 		return m_impl.emplace(m_comp, m_allocator, hamon::forward<Args>(args)...).first;
 	}
+
+HAMON_WARNING_POP()
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator

@@ -133,7 +133,6 @@ GTEST_TEST(MultimapTest, InsertInitializerListTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		using Map = hamon::multimap<int, MayThrow>;
-		using ValueType = typename Map::value_type;
 
 		Map v;
 		EXPECT_EQ(0u, v.size());
