@@ -123,8 +123,8 @@ MULTISET_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(v.end(), Key{10});
-		VERIFY(r == hamon::next(v.begin(), 1));
+		auto r = v.emplace_hint(v.begin(), Key{10});
+		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 2);
 		auto it = v.begin();
@@ -156,7 +156,7 @@ MULTISET_TEST_CONSTEXPR bool test1()
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(v.end(), Key{15});
+		auto r = v.emplace_hint(hamon::next(v.begin(), 2), Key{15});
 		VERIFY(r == hamon::next(v.begin(), 2));
 
 		VERIFY(v.size() == 5);
@@ -177,87 +177,174 @@ MULTISET_TEST_CONSTEXPR bool test2()
 	hamon::multiset<S1> v;
 
 	{
-		auto r = v.emplace_hint(v.end(), 1);
+		auto r = v.emplace_hint(v.end(), 1, 10);
 		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 1);
 		auto it = v.begin();
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 10);
 		++it;
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(v.end(), 1);
+		auto r = v.emplace_hint(v.end(), 1, 20);
 		VERIFY(r == hamon::next(v.begin(), 1));
 
 		VERIFY(v.size() == 2);
 		auto it = v.begin();
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 10);
 		++it;
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 20);
 		++it;
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(v.end(), 2, 10);
-		VERIFY(r == hamon::next(v.begin(), 2));
+		auto r = v.emplace_hint(v.begin(), 1, 30);
+		VERIFY(r == hamon::next(v.begin(), 0));
 
 		VERIFY(v.size() == 3);
 		auto it = v.begin();
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 30);
 		++it;
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
-		++it;
-		VERIFY(it->x == 2);
 		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 20);
 		++it;
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(hamon::next(v.begin(), 2), 2, 5);
+		auto r = v.emplace_hint(hamon::next(v.begin(), 2), 1, 40);
 		VERIFY(r == hamon::next(v.begin(), 2));
 
 		VERIFY(v.size() == 4);
 		auto it = v.begin();
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 30);
 		++it;
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
-		++it;
-		VERIFY(it->x == 2);
-		VERIFY(it->y == 5);
-		++it;
-		VERIFY(it->x == 2);
 		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 40);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 20);
 		++it;
 		VERIFY(it == v.end());
 	}
 	{
-		auto r = v.emplace_hint(v.end(), 0, 20);
-		VERIFY(r == hamon::next(v.begin(), 0));
+		auto r = v.emplace_hint(hamon::next(v.begin(), 3), 3, 50);
+		VERIFY(r == hamon::next(v.begin(), 4));
 
 		VERIFY(v.size() == 5);
 		auto it = v.begin();
-		VERIFY(it->x == 0);
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 30);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 40);
+		++it;
+		VERIFY(it->x == 1);
 		VERIFY(it->y == 20);
 		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 50);
+		++it;
+		VERIFY(it == v.end());
+	}
+	{
+		auto r = v.emplace_hint(hamon::next(v.begin(), 4), 3, 60);
+		VERIFY(r == hamon::next(v.begin(), 4));
+
+		VERIFY(v.size() == 6);
+		auto it = v.begin();
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
+		VERIFY(it->y == 30);
 		++it;
 		VERIFY(it->x == 1);
-		VERIFY(it->y == 0);
-		++it;
-		VERIFY(it->x == 2);
-		VERIFY(it->y == 5);
-		++it;
-		VERIFY(it->x == 2);
 		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 40);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 20);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 60);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 50);
+		++it;
+		VERIFY(it == v.end());
+	}
+	{
+		auto r = v.emplace_hint(hamon::next(v.begin(), 5), 3, 70);
+		VERIFY(r == hamon::next(v.begin(), 5));
+
+		VERIFY(v.size() == 7);
+		auto it = v.begin();
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 30);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 40);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 20);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 60);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 70);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 50);
+		++it;
+		VERIFY(it == v.end());
+	}
+	{
+		auto r = v.emplace_hint(hamon::next(v.begin(), 3), 2, 80);
+		VERIFY(r == hamon::next(v.begin(), 4));
+
+		VERIFY(v.size() == 8);
+		auto it = v.begin();
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 30);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 10);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 40);
+		++it;
+		VERIFY(it->x == 1);
+		VERIFY(it->y == 20);
+		++it;
+		VERIFY(it->x == 2);
+		VERIFY(it->y == 80);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 60);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 70);
+		++it;
+		VERIFY(it->x == 3);
+		VERIFY(it->y == 50);
 		++it;
 		VERIFY(it == v.end());
 	}

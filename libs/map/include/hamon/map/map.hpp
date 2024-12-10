@@ -13,6 +13,7 @@
 #if !defined(HAMON_USE_STD_MAP)
 
 #include <hamon/map/multimap_fwd.hpp>
+#include <hamon/map/detail/map_traits.hpp>
 #include <hamon/container/detail/red_black_tree.hpp>
 #include <hamon/container/detail/insert_return_type.hpp>
 #include <hamon/container/detail/node_handle.hpp>
@@ -84,7 +85,37 @@ public:
 	};
 
 private:
-	using Tree = hamon::detail::red_black_tree<false, value_type, size_type, difference_type>;
+	struct heterogeneous_compare
+	{
+		Compare comp;
+
+		HAMON_CXX11_CONSTEXPR
+		heterogeneous_compare(Compare c) : comp(c) {}
+
+		template <typename U>
+		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR U const&
+		get_key(U const& k) const noexcept
+		{
+			return k;
+		}
+
+		template <typename First, typename Second, template <typename, typename> class Pair>
+		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR First const&
+		get_key(Pair<First, Second> const& k) const noexcept
+		{
+			return k.first;
+		}
+
+		template <typename Lhs, typename Rhs>
+		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+		operator()(Lhs const& x, Rhs const& y) const
+		{
+			return comp(get_key(x), get_key(y));
+		}
+	};
+
+	using Traits = hamon::detail::map_traits<key_type, value_type, size_type, difference_type, false>;
+	using Tree = hamon::detail::red_black_tree<Traits>;
 	using TreeNode = typename Tree::node_type;
 	using NodeAllocator = typename hamon::allocator_traits<Allocator>::template rebind_alloc<TreeNode>;
 	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<TreeNode>;
@@ -377,23 +408,26 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace(Args&&... args)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::forward<Args>(args)...);
+		return m_impl.emplace(heterogeneous_compare{m_comp.comp}, m_allocator, hamon::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
-	emplace_hint(const_iterator position, Args&&... args);
+	emplace_hint(const_iterator position, Args&&... args)
+	{
+		return m_impl.emplace_hint(heterogeneous_compare{m_comp.comp}, m_allocator, position, hamon::forward<Args>(args)...);
+	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, x);
+		return this->emplace(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, hamon::move(x));
+		return this->emplace(hamon::move(x));
 	}
 
 	template <typename P,
@@ -410,10 +444,16 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type const& x);
+	insert(const_iterator position, value_type const& x)
+	{
+		return this->emplace_hint(position, x);
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type&& x);
+	insert(const_iterator position, value_type&& x)
+	{
+		return this->emplace_hint(position, hamon::move(x));
+	}
 
 	template <typename P,
 		// [map.modifiers]/1
@@ -432,14 +472,14 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
-		m_impl.insert_range(m_comp, m_allocator, first, last);
+		m_impl.insert_range(heterogeneous_compare{m_comp.comp}, m_allocator, first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{
-		m_impl.insert_range(m_comp, m_allocator,
+		m_impl.insert_range(heterogeneous_compare{m_comp.comp}, m_allocator,
 			hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 

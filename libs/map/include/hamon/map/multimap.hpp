@@ -13,6 +13,7 @@
 #if !defined(HAMON_USE_STD_MULTIMAP)
 
 #include <hamon/map/map_fwd.hpp>
+#include <hamon/map/detail/map_traits.hpp>
 #include <hamon/container/detail/red_black_tree.hpp>
 #include <hamon/container/detail/node_handle.hpp>
 #include <hamon/container/detail/iter_key_type.hpp>
@@ -81,7 +82,8 @@ public:
 	};
 
 private:
-	using Tree = hamon::detail::red_black_tree<true, value_type, size_type, difference_type>;
+	using Traits = hamon::detail::map_traits<key_type const, value_type, size_type, difference_type, true>;
+	using Tree = hamon::detail::red_black_tree<Traits>;
 	using TreeNode = typename Tree::node_type;
 	using NodeAllocator = typename hamon::allocator_traits<Allocator>::template rebind_alloc<TreeNode>;
 	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<TreeNode>;
@@ -330,36 +332,48 @@ public:
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
-	emplace_hint(const_iterator position, Args&&... args);
+	emplace_hint(const_iterator position, Args&&... args)
+	{
+		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...);
+	}
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type const& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, x).first;
+		return this->emplace(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type&& x)
 	{
-		return m_impl.insert(m_comp, m_allocator, hamon::move(x)).first;
+		return this->emplace(hamon::move(x));
 	}
-HAMON_WARNING_POP()
 
 	template <typename P>
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(P&& x);
+	insert(P&& x)
+	{
+		return this->emplace(hamon::forward<P>(x));
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type const& x);
+	insert(const_iterator position, value_type const& x)
+	{
+		return this->emplace_hint(position, x);
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, value_type&& x);
+	insert(const_iterator position, value_type&& x)
+	{
+		return this->emplace_hint(position, hamon::move(x));
+	}
 
 	template <typename P>
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator position, P&& x);
+	insert(const_iterator position, P&& x)
+	{
+		return this->emplace_hint(position, hamon::forward<P>(x));
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void

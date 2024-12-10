@@ -9,13 +9,13 @@
 
 #include <map>
 
-#if 1
+#if 0
 
 #define HAMON_USE_STD_MAP
 
 #endif
 
-#if 1
+#if 0
 
 #define HAMON_USE_STD_MULTIMAP
 

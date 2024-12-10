@@ -13,6 +13,7 @@
 #if !defined(HAMON_USE_STD_SET)
 
 #include <hamon/set/multiset_fwd.hpp>
+#include <hamon/set/detail/set_traits.hpp>
 #include <hamon/container/detail/red_black_tree.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/container/detail/node_handle.hpp>
@@ -41,6 +42,8 @@
 namespace hamon
 {
 
+// 23.4.6 Class template set[set]
+
 template <typename Key, typename Compare, typename Allocator>
 class set
 {
@@ -59,7 +62,8 @@ public:
 	using difference_type        = typename hamon::allocator_traits<Allocator>::difference_type;
 
 private:
-	using Tree = hamon::detail::red_black_tree<false, value_type, size_type, difference_type>;
+	using Traits = hamon::detail::set_traits<value_type, size_type, difference_type, false>;
+	using Tree = hamon::detail::red_black_tree<Traits>;
 	using TreeNode = typename Tree::node_type;
 	using NodeAllocator = typename hamon::allocator_traits<Allocator>::template rebind_alloc<TreeNode>;
 	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<TreeNode>;
@@ -315,45 +319,45 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator position, Args&&... args)
 	{
-		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...).first;
+		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...);
 	}
 
 	HAMON_CXX14_CONSTEXPR pair<iterator, bool>
 	insert(value_type const& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, x);
+		return this->emplace(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR pair<iterator, bool>
 	insert(value_type&& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::move(x));
+		return this->emplace(hamon::move(x));
 	}
 
 	template <typename K>
 	HAMON_CXX14_CONSTEXPR pair<iterator, bool>
 	insert(K&& x)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::forward<K>(x));
+		return this->emplace(hamon::forward<K>(x));
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x)
 	{
-		return m_impl.emplace_hint(m_comp, m_allocator, position, x).first;
+		return this->emplace_hint(position, x);
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type&& x)
 	{
-		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::move(x)).first;
+		return this->emplace_hint(position, hamon::move(x));
 	}
 
 	template <typename K>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, K&& x)
 	{
-		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<K>(x));
+		return this->emplace_hint(position, hamon::forward<K>(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
