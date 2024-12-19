@@ -28,8 +28,63 @@ namespace op_assign_initializer_list_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MULTIMAP_TEST_CONSTEXPR bool test()
+MULTIMAP_TEST_CONSTEXPR bool test1()
 {
+	using Map = hamon::multimap<Key, T>;
+	using ValueType = typename Map::value_type;
+	using IL = std::initializer_list<ValueType>;
+
+	static_assert( hamon::is_assignable<Map, IL>::value, "");
+	static_assert(!hamon::is_nothrow_assignable<Map, IL>::value, "");
+	static_assert(!hamon::is_trivially_assignable<Map, IL>::value, "");
+
+	Map v1;
+	VERIFY(v1.empty());
+
+	{
+		auto& r = (v1 =
+		{
+			{ Key{3}, T{10}},
+			{ Key{1}, T{20}},
+			{ Key{4}, T{30}},
+		});
+		VERIFY(&r == &v1);
+		VERIFY(v1.size() == 3);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == ValueType{Key{1}, T{20}});
+			VERIFY(*it++ == ValueType{Key{3}, T{10}});
+			VERIFY(*it++ == ValueType{Key{4}, T{30}});
+			VERIFY(it == v1.end());
+		}
+	}
+	{
+		auto& r = (v1 =
+		{
+			{ Key{1}, T{10}},
+			{ Key{2}, T{20}},
+			{ Key{1}, T{30}},
+			{ Key{4}, T{40}},
+			{ Key{1}, T{50}},
+		});
+		VERIFY(&r == &v1);
+		VERIFY(v1.size() == 5);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == ValueType{Key{1}, T{10}});
+			VERIFY(*it++ == ValueType{Key{1}, T{30}});
+			VERIFY(*it++ == ValueType{Key{1}, T{50}});
+			VERIFY(*it++ == ValueType{Key{2}, T{20}});
+			VERIFY(*it++ == ValueType{Key{4}, T{40}});
+			VERIFY(it == v1.end());
+		}
+	}
+	{
+		auto& r = (v1 = {});
+		VERIFY(&r == &v1);
+		VERIFY(v1.size() == 0);
+	}
+
 	return true;
 }
 
@@ -37,6 +92,15 @@ MULTIMAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MultimapTest, OpAssignInitializerListTest)
 {
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
 }
 
 #undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE

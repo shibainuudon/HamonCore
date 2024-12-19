@@ -1027,7 +1027,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 	template <typename Compare, typename Allocator, typename K, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	try_emplace_hint(Compare const& comp, Allocator& alloc, const_iterator position, K const& k, Args&&... args)
+	try_emplace_hint(Compare const& comp, Allocator& alloc, const_iterator hint, K const& k, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
@@ -1039,7 +1039,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 			return {to_iterator(new_node), true};
 		}
 
-		auto r = Algo::find_to_insert_hint(comp, k, m_root, Multi, position, this->cbegin(), this->cend());
+		auto r = Algo::find_to_insert_hint(comp, k, m_root, Multi, hint, this->cbegin(), this->cend());
 		if (r.second != Algo::ChildDir::None)
 		{
 			auto new_node = Algo::construct_node(alloc, hamon::forward<Args>(args)...);	// may throw

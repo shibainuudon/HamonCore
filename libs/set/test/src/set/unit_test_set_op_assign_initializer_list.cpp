@@ -28,8 +28,51 @@ namespace op_assign_initializer_list_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-SET_TEST_CONSTEXPR bool test()
+SET_TEST_CONSTEXPR bool test1()
 {
+	using Set = hamon::set<Key>;
+	using ValueType = typename Set::value_type;
+	using IL = std::initializer_list<ValueType>;
+
+	static_assert( hamon::is_assignable<Set, IL>::value, "");
+	static_assert(!hamon::is_nothrow_assignable<Set, IL>::value, "");
+	static_assert(!hamon::is_trivially_assignable<Set, IL>::value, "");
+
+	Set v1;
+	VERIFY(v1.empty());
+
+	{
+		auto& r = (v1 = {Key{3}, Key{1}, Key{4}});
+		VERIFY(&r == &v1);
+		VERIFY(v1.size() == 3);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == Key{1});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{4});
+			VERIFY(it == v1.end());
+		}
+	}
+	{
+		auto& r = (v1 = {Key{3}, Key{1}, Key{4}, Key{5}, Key{2}, Key{3}, Key{4}, Key{5}, Key{4}});
+		VERIFY(&r == &v1);
+		VERIFY(v1.size() == 5);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == Key{1});
+			VERIFY(*it++ == Key{2});
+			VERIFY(*it++ == Key{3});
+			VERIFY(*it++ == Key{4});
+			VERIFY(*it++ == Key{5});
+			VERIFY(it == v1.end());
+		}
+	}
+	{
+		auto& r = (v1 = {});
+		VERIFY(&r == &v1);
+		VERIFY(v1.empty());
+	}
+
 	return true;
 }
 
@@ -37,6 +80,9 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, OpAssignInitializerListTest)
 {
+	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<int>());
+	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<char>());
+	SET_TEST_CONSTEXPR_EXPECT_TRUE(test1<float>());
 }
 
 #undef SET_TEST_CONSTEXPR_EXPECT_TRUE

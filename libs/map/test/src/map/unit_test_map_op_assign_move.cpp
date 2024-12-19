@@ -9,6 +9,7 @@
  */
 
 #include <hamon/map/map.hpp>
+#include <hamon/functional.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -27,11 +28,294 @@ namespace op_assign_move_test
 #define MAP_TEST_CONSTEXPR              /**/
 #endif
 
+template <typename T>
+struct MyAllocator1
+{
+	using value_type = T;
+	using propagate_on_container_copy_assignment = hamon::true_type;
+	using propagate_on_container_move_assignment = hamon::false_type;
+	using is_always_equal = hamon::false_type;
+
+	int id;
+
+	MyAllocator1() : id(13) {}
+
+	MyAllocator1(int i) : id(i) {}
+
+	template <typename U>
+	MyAllocator1(MyAllocator1<U> const& a) : id(a.id) {}
+
+	T* allocate(hamon::size_t n)
+	{
+		return static_cast<T*>(::operator new(n * sizeof(T)));
+	}
+
+	void deallocate(T* p, hamon::size_t n)
+	{
+		// [allocator.members]/11
+		::operator delete(p);
+		(void)n;
+	}
+
+	bool operator==(MyAllocator1 const& rhs) const
+	{
+		return id == rhs.id;
+	}
+
+	bool operator!=(MyAllocator1 const& rhs) const
+	{
+		return id != rhs.id;
+	}
+};
+
+template <typename T>
+struct MyAllocator2
+{
+	using value_type = T;
+	using propagate_on_container_copy_assignment = hamon::false_type;
+	using propagate_on_container_move_assignment = hamon::true_type;
+	using is_always_equal = hamon::false_type;
+
+	int id;
+
+	MyAllocator2() : id(13) {}
+
+	MyAllocator2(int i) : id(i) {}
+
+	template <typename U>
+	MyAllocator2(MyAllocator2<U> const& a) : id(a.id) {}
+
+	T* allocate(hamon::size_t n)
+	{
+		return static_cast<T*>(::operator new(n * sizeof(T)));
+	}
+
+	void deallocate(T* p, hamon::size_t n)
+	{
+		// [allocator.members]/11
+		::operator delete(p);
+		(void)n;
+	}
+
+	bool operator==(MyAllocator2 const& rhs) const
+	{
+		return id == rhs.id;
+	}
+
+	bool operator!=(MyAllocator2 const& rhs) const
+	{
+		return id != rhs.id;
+	}
+};
+
+struct MyLess
+{
+	int id;
+
+	HAMON_CXX11_CONSTEXPR
+	MyLess() : id(0) {}
+
+	HAMON_CXX11_CONSTEXPR
+	MyLess(int i) : id(i) {}
+
+	template <typename T>
+	HAMON_CXX11_CONSTEXPR
+	bool operator()(T const& x, T const& y) const
+	{
+		return x < y;
+	}
+
+	HAMON_CXX11_CONSTEXPR
+	MyLess& operator=(MyLess const& rhs)
+	{
+		id = rhs.id;
+		return *this;
+	}
+
+	HAMON_CXX11_CONSTEXPR
+	bool operator==(MyLess const& rhs) const
+	{
+		return id == rhs.id;
+	}
+};
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
-MAP_TEST_CONSTEXPR bool test()
+MAP_TEST_CONSTEXPR bool test1()
 {
+	using Map = hamon::map<Key, T>;
+	using ValueType = typename Map::value_type;
+
+	static_assert( hamon::is_move_assignable<Map>::value, "");
+	static_assert( hamon::is_nothrow_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
+
+	Map v1;
+	VERIFY(v1.empty());
+
+	{
+		Map v2
+		{
+			{ Key{3}, T{10}},
+			{ Key{1}, T{20}},
+			{ Key{4}, T{30}},
+		};
+		auto& r = (v1 = hamon::move(v2));
+		VERIFY(&r == &v1);
+		VERIFY(&r != &v2);
+		VERIFY(v1.size() == 3);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == ValueType{Key{1}, T{20}});
+			VERIFY(*it++ == ValueType{Key{3}, T{10}});
+			VERIFY(*it++ == ValueType{Key{4}, T{30}});
+			VERIFY(it == v1.end());
+		}
+	}
+	//{
+	//	auto& r = (v1 = hamon::move(v1));
+	//	VERIFY(&r == &v1);
+	//	VERIFY(v1.size() == 3);
+	//	{
+	//		auto it = v1.begin();
+	//		VERIFY(*it++ == ValueType{Key{1}, T{20}});
+	//		VERIFY(*it++ == ValueType{Key{3}, T{10}});
+	//		VERIFY(*it++ == ValueType{Key{4}, T{30}});
+	//		VERIFY(it == v1.end());
+	//	}
+	//}
+	{
+		Map v2
+		{
+			{ Key{1}, T{10}},
+			{ Key{2}, T{20}},
+			{ Key{3}, T{30}},
+			{ Key{4}, T{40}},
+			{ Key{5}, T{50}},
+		};
+		auto& r = (v1 = hamon::move(v2));
+		VERIFY(&r == &v1);
+		VERIFY(&r != &v2);
+		VERIFY(v1.size() == 5);
+		{
+			auto it = v1.begin();
+			VERIFY(*it++ == ValueType{Key{1}, T{10}});
+			VERIFY(*it++ == ValueType{Key{2}, T{20}});
+			VERIFY(*it++ == ValueType{Key{3}, T{30}});
+			VERIFY(*it++ == ValueType{Key{4}, T{40}});
+			VERIFY(*it++ == ValueType{Key{5}, T{50}});
+			VERIFY(it == v1.end());
+		}
+	}
+	{
+		Map const v2;
+		auto& r = (v1 = hamon::move(v2));
+		VERIFY(&r == &v1);
+		VERIFY(&r != &v2);
+		VERIFY(v1.size() == 0);
+	}
+
+	return true;
+}
+
+template <typename Key, typename T>
+MAP_TEST_CONSTEXPR bool test2()
+{
+	using Compare = hamon::less<>;
+	using Allocator = MyAllocator1<std::pair<const Key, T>>;
+	using Map = hamon::map<Key, T, Compare, Allocator>;
+
+	static_assert( hamon::is_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
+
+	Map v1{Allocator{10}};
+	VERIFY(v1.empty());
+
+	{
+		Map v2
+		{
+			{
+				{ Key{3}, T{10} },
+				{ Key{1}, T{20} },
+				{ Key{4}, T{30} },
+			},
+			Allocator{20}
+		};
+		v1 = hamon::move(v2);
+
+		// アロケータを伝播しない
+		VERIFY(v1.get_allocator().id == 10);
+		VERIFY(v2.get_allocator().id == 20);
+	}
+
+	return true;
+}
+
+template <typename Key, typename T>
+MAP_TEST_CONSTEXPR bool test3()
+{
+	using Compare = hamon::less<>;
+	using Allocator = MyAllocator2<std::pair<const Key, T>>;
+	using Map = hamon::map<Key, T, Compare, Allocator>;
+
+	static_assert( hamon::is_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
+
+	Map v1{Allocator{10}};
+	VERIFY(v1.empty());
+
+	{
+		Map v2
+		{
+			{
+				{ Key{3}, T{10} },
+				{ Key{1}, T{20} },
+				{ Key{4}, T{30} },
+			},
+			Allocator{20}
+		};
+		v1 = hamon::move(v2);
+
+		// アロケータを伝播する
+		VERIFY(v1.get_allocator().id == 20);
+		VERIFY(v2.get_allocator().id == 20);
+	}
+
+	return true;
+}
+
+template <typename Key, typename T>
+MAP_TEST_CONSTEXPR bool test4()
+{
+	using Compare = MyLess;
+	using Map = hamon::map<Key, T, Compare>;
+
+	static_assert( hamon::is_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_nothrow_move_assignable<Map>::value, "");
+	static_assert(!hamon::is_trivially_move_assignable<Map>::value, "");
+
+	Map v1{Compare{10}};
+	VERIFY(v1.empty());
+
+	{
+		Map v2
+		{
+			{
+				{ Key{3}, T{10} },
+				{ Key{1}, T{20} },
+				{ Key{4}, T{30} },
+			},
+			Compare{20}
+		};
+		v1 = hamon::move(v2);
+
+		VERIFY(v1.key_comp().id == 20);
+		VERIFY(v2.key_comp().id == 20);
+	}
+
 	return true;
 }
 
@@ -39,6 +323,45 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, OpAssignMoveTest)
 {
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+
+	EXPECT_TRUE((test2<int, int>()));
+	EXPECT_TRUE((test2<int, char>()));
+	EXPECT_TRUE((test2<int, float>()));
+	EXPECT_TRUE((test2<char, int>()));
+	EXPECT_TRUE((test2<char, char>()));
+	EXPECT_TRUE((test2<char, float>()));
+	EXPECT_TRUE((test2<float, int>()));
+	EXPECT_TRUE((test2<float, char>()));
+	EXPECT_TRUE((test2<float, float>()));
+
+	EXPECT_TRUE((test3<int, int>()));
+	EXPECT_TRUE((test3<int, char>()));
+	EXPECT_TRUE((test3<int, float>()));
+	EXPECT_TRUE((test3<char, int>()));
+	EXPECT_TRUE((test3<char, char>()));
+	EXPECT_TRUE((test3<char, float>()));
+	EXPECT_TRUE((test3<float, int>()));
+	EXPECT_TRUE((test3<float, char>()));
+	EXPECT_TRUE((test3<float, float>()));
+
+	EXPECT_TRUE((test4<int, int>()));
+	EXPECT_TRUE((test4<int, char>()));
+	EXPECT_TRUE((test4<int, float>()));
+	EXPECT_TRUE((test4<char, int>()));
+	EXPECT_TRUE((test4<char, char>()));
+	EXPECT_TRUE((test4<char, float>()));
+	EXPECT_TRUE((test4<float, int>()));
+	EXPECT_TRUE((test4<float, char>()));
+	EXPECT_TRUE((test4<float, float>()));
 }
 
 #undef MAP_TEST_CONSTEXPR_EXPECT_TRUE

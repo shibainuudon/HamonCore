@@ -73,7 +73,6 @@ MAP_TEST_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<Key, T>;
 	using MappedType = typename Map::mapped_type;
-	using ValueType = typename Map::value_type;
 
 	{
 		Map const v;
@@ -122,6 +121,7 @@ GTEST_TEST(MapTest, AtTest)
 #if !defined(HAMON_NO_EXCEPTIONS)
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4834)	// 'nodiscard' 属性を持つ関数の戻り値を破棄しています
+HAMON_WARNING_DISABLE_CLANG("-Wunused-result")
 	{
 		hamon::map<int, float> v
 		{
