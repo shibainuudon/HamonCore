@@ -139,6 +139,49 @@ struct MyLess
 	}
 };
 
+struct S
+{
+	static int s_ctor_count;
+	static int s_copy_ctor_count;
+	static int s_move_ctor_count;
+	static int s_dtor_count;
+
+	int value;
+
+	S(int v) : value(v)
+	{
+		++s_ctor_count;
+	}
+
+	S(S const& x) : value(x.value)
+	{
+		++s_copy_ctor_count;
+	}
+
+	S(S&& x) noexcept : value(x.value)
+	{
+		++s_move_ctor_count;
+	}
+
+	~S()
+	{
+		++s_dtor_count;
+	}
+
+	S& operator=(S&&)      = delete;
+	S& operator=(S const&) = delete;
+
+	friend bool operator<(S const& lhs, S const& rhs)
+	{
+		return lhs.value < rhs.value;
+	}
+};
+
+int S::s_ctor_count = 0;
+int S::s_copy_ctor_count = 0;
+int S::s_move_ctor_count = 0;
+int S::s_dtor_count = 0;
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
@@ -304,6 +347,134 @@ GTEST_TEST(SetTest, OpAssignCopyTest)
 	EXPECT_TRUE(test4<int>());
 	EXPECT_TRUE(test4<char>());
 	EXPECT_TRUE(test4<float>());
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S, hamon::less<>, MyAllocator1<S>> v1{MyAllocator1<S>{10}};
+		hamon::set<S, hamon::less<>, MyAllocator1<S>> v2{MyAllocator1<S>{10}};
+
+		v1.emplace(1);
+		v1.emplace(1);
+		v1.emplace(2);
+		v1.emplace(3);
+
+		v2.emplace(2);
+		v2.emplace(5);
+
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(1, S::s_dtor_count);
+
+		v1 = v2;
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(2, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(4, S::s_dtor_count);
+	}
+	EXPECT_EQ(6, S::s_ctor_count);
+	EXPECT_EQ(2, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S, hamon::less<>, MyAllocator1<S>> v1{MyAllocator1<S>{10}};
+		hamon::set<S, hamon::less<>, MyAllocator1<S>> v2{MyAllocator1<S>{20}};
+
+		v1.emplace(1);
+		v1.emplace(1);
+		v1.emplace(2);
+		v1.emplace(3);
+
+		v2.emplace(2);
+		v2.emplace(5);
+
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(1, S::s_dtor_count);
+
+		v1 = v2;
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(2, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(4, S::s_dtor_count);
+	}
+	EXPECT_EQ(6, S::s_ctor_count);
+	EXPECT_EQ(2, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S, hamon::less<>, MyAllocator2<S>> v1{MyAllocator2<S>{10}};
+		hamon::set<S, hamon::less<>, MyAllocator2<S>> v2{MyAllocator2<S>{10}};
+
+		v1.emplace(1);
+		v1.emplace(1);
+		v1.emplace(2);
+		v1.emplace(3);
+
+		v2.emplace(2);
+		v2.emplace(5);
+
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(1, S::s_dtor_count);
+
+		v1 = v2;
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(2, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(4, S::s_dtor_count);
+	}
+	EXPECT_EQ(6, S::s_ctor_count);
+	EXPECT_EQ(2, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S, hamon::less<>, MyAllocator2<S>> v1{MyAllocator2<S>{10}};
+		hamon::set<S, hamon::less<>, MyAllocator2<S>> v2{MyAllocator2<S>{20}};
+
+		v1.emplace(1);
+		v1.emplace(1);
+		v1.emplace(2);
+		v1.emplace(3);
+
+		v2.emplace(2);
+		v2.emplace(5);
+
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(1, S::s_dtor_count);
+
+		v1 = v2;
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(2, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(4, S::s_dtor_count);
+	}
+	EXPECT_EQ(6, S::s_ctor_count);
+	EXPECT_EQ(2, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
 }
 
 #undef SET_TEST_CONSTEXPR_EXPECT_TRUE

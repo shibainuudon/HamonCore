@@ -56,9 +56,6 @@
 // * insert(nh)
 // * insert(hint, nh)
 // * merge
-// * operator=(map const&)
-// * operator=(map&&)
-// * operator=(initializer_list)
 // * value_compare
 
 namespace hamon
@@ -183,7 +180,7 @@ public:
 		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
 		, m_comp(x.m_comp)
 	{
-		this->insert_range(x);
+		this->insert_range(x);	// TODO もっと効率的にコピーできる
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -199,7 +196,7 @@ public:
 		: m_allocator(a)
 		, m_comp(x.m_comp)
 	{
-		this->insert_range(x);
+		this->insert_range(x);	// TODO もっと効率的にコピーできる
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -217,6 +214,7 @@ public:
 			m_impl.insert_range(this->hetero_comp(), m_allocator,
 				hamon::make_move_iterator(hamon::ranges::begin(x)),
 				hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
+			// TODO もっと効率的にムーブできる
 		}
 		else
 		{
@@ -232,15 +230,77 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR multimap&
-	operator=(multimap const& x);
+	operator=(multimap const& x)
+	{
+		if (hamon::addressof(x) == this)
+		{
+			return *this;
+		}
+
+		this->clear();
+		m_comp = x.m_comp;
+
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+		{
+			// アロケータを伝播
+			hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
+		}
+
+		this->insert_range(x);	// TODO もっと効率的にコピーできる
+
+		return *this;
+	}
 
 	HAMON_CXX14_CONSTEXPR multimap&
 	operator=(multimap&& x) noexcept(
 		hamon::allocator_traits<Allocator>::is_always_equal::value &&
-		hamon::is_nothrow_move_assignable<Compare>::value);
+		hamon::is_nothrow_move_assignable<Compare>::value)
+	{
+		if (hamon::addressof(x) == this)
+		{
+			return *this;
+		}
+
+		this->clear();
+		m_comp = x.m_comp;
+
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
+#else
+		if           (!NodeAllocTraits::propagate_on_container_move_assignment::value)
+#endif
+		{
+			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+			{
+				// アロケータを伝播させない場合は、
+				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
+				m_impl.insert_range(m_comp, m_allocator,
+					hamon::make_move_iterator(hamon::ranges::begin(x.m_impl)),
+					hamon::make_move_iterator(hamon::ranges::end(x.m_impl)));	// may throw
+				// TODO もっと効率的にムーブできる
+				return *this;
+			}
+		}
+
+		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
+		{
+			// アロケータを伝播
+			hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
+		}
+
+		// 要素をsteal
+		m_impl = hamon::move(x.m_impl);
+
+		return *this;
+	}
 
 	HAMON_CXX14_CONSTEXPR multimap&
-	operator=(std::initializer_list<value_type> il);
+	operator=(std::initializer_list<value_type> il)
+	{
+		this->clear();
+		this->insert(il);
+		return *this;
+	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	allocator_type get_allocator() const noexcept

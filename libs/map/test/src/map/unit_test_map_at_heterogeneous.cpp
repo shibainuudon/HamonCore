@@ -109,7 +109,6 @@ MAP_TEST_CONSTEXPR bool test2()
 {
 	using Map = hamon::map<Key, T, hamon::less<>>;
 	using MappedType = typename Map::mapped_type;
-	using ValueType = typename Map::value_type;
 
 	{
 		Map const v;

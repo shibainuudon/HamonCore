@@ -141,6 +141,44 @@ struct MyLess
 	}
 };
 
+struct S
+{
+	static int s_ctor_count;
+	static int s_copy_ctor_count;
+	static int s_move_ctor_count;
+	static int s_dtor_count;
+
+	int value;
+
+	S(int v) : value(v)
+	{
+		++s_ctor_count;
+	}
+
+	S(S const& x) : value(x.value)
+	{
+		++s_copy_ctor_count;
+	}
+
+	S(S&& x) noexcept : value(x.value)
+	{
+		++s_move_ctor_count;
+	}
+
+	~S()
+	{
+		++s_dtor_count;
+	}
+
+	S& operator=(S&&)      = delete;
+	S& operator=(S const&) = delete;
+};
+
+int S::s_ctor_count = 0;
+int S::s_copy_ctor_count = 0;
+int S::s_move_ctor_count = 0;
+int S::s_dtor_count = 0;
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key, typename T>
@@ -366,6 +404,141 @@ GTEST_TEST(MapTest, OpAssignMoveTest)
 	EXPECT_TRUE((test4<float, int>()));
 	EXPECT_TRUE((test4<float, char>()));
 	EXPECT_TRUE((test4<float, float>()));
+
+#if !defined(HAMON_USE_STD_MAP) || \
+	(defined(__cpp_lib_map_try_emplace) && (__cpp_lib_map_try_emplace >= 201411L))
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator1<std::pair<int const, S>>;
+		hamon::map<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		hamon::map<int, S, hamon::less<>, Allocator> v2{Allocator{10}};
+
+		v1.try_emplace(1, 10);
+		v1.try_emplace(1, 20);
+		v1.try_emplace(2, 30);
+		v1.try_emplace(3, 40);
+
+		v2.try_emplace(2, 50);
+		v2.try_emplace(5, 60);
+
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		v1 = hamon::move(v2);
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(3, S::s_dtor_count);
+	}
+	EXPECT_EQ(5, S::s_ctor_count);
+	EXPECT_EQ(0, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(5, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator1<std::pair<int const, S>>;
+		hamon::map<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		hamon::map<int, S, hamon::less<>, Allocator> v2{Allocator{20}};
+
+		v1.try_emplace(1, 10);
+		v1.try_emplace(1, 20);
+		v1.try_emplace(2, 30);
+		v1.try_emplace(3, 40);
+
+		v2.try_emplace(2, 50);
+		v2.try_emplace(5, 60);
+
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		v1 = hamon::move(v2);
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(2, S::s_move_ctor_count);
+		//EXPECT_EQ(3, S::s_dtor_count);
+	}
+	EXPECT_EQ(5, S::s_ctor_count);
+	EXPECT_EQ(0, S::s_copy_ctor_count);
+	EXPECT_EQ(2, S::s_move_ctor_count);
+	EXPECT_EQ(7, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator2<std::pair<int const, S>>;
+		hamon::map<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		hamon::map<int, S, hamon::less<>, Allocator> v2{Allocator{10}};
+
+		v1.try_emplace(1, 10);
+		v1.try_emplace(1, 20);
+		v1.try_emplace(2, 30);
+		v1.try_emplace(3, 40);
+
+		v2.try_emplace(2, 50);
+		v2.try_emplace(5, 60);
+
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		v1 = hamon::move(v2);
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(3, S::s_dtor_count);
+	}
+	EXPECT_EQ(5, S::s_ctor_count);
+	EXPECT_EQ(0, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(5, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator2<std::pair<int const, S>>;
+		hamon::map<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		hamon::map<int, S, hamon::less<>, Allocator> v2{Allocator{20}};
+
+		v1.try_emplace(1, 10);
+		v1.try_emplace(1, 20);
+		v1.try_emplace(2, 30);
+		v1.try_emplace(3, 40);
+
+		v2.try_emplace(2, 50);
+		v2.try_emplace(5, 60);
+
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		v1 = hamon::move(v2);
+		EXPECT_EQ(5, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(3, S::s_dtor_count);
+	}
+	EXPECT_EQ(5, S::s_ctor_count);
+	EXPECT_EQ(0, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(5, S::s_dtor_count);
+#endif
 }
 
 #undef MAP_TEST_CONSTEXPR_EXPECT_TRUE

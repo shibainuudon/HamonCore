@@ -7,6 +7,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/functional.hpp>
 #include <hamon/memory.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
@@ -30,6 +31,7 @@ template <typename T>
 struct MyAllocator1
 {
 	using value_type = T;
+	using is_always_equal = std::false_type;
 
 	int id;
 
@@ -68,6 +70,7 @@ template <typename T>
 struct MyAllocator2
 {
 	using value_type = T;
+	using is_always_equal = std::false_type;
 
 	int id;
 
@@ -131,6 +134,44 @@ struct MyLess
 		return id == rhs.id;
 	}
 };
+
+struct S
+{
+	static int s_ctor_count;
+	static int s_copy_ctor_count;
+	static int s_move_ctor_count;
+	static int s_dtor_count;
+
+	int value;
+
+	S(int v) : value(v)
+	{
+		++s_ctor_count;
+	}
+
+	S(S const& x) : value(x.value)
+	{
+		++s_copy_ctor_count;
+	}
+
+	S(S&& x) noexcept : value(x.value)
+	{
+		++s_move_ctor_count;
+	}
+
+	~S()
+	{
+		++s_dtor_count;
+	}
+
+	S& operator=(S&&)      = delete;
+	S& operator=(S const&) = delete;
+};
+
+int S::s_ctor_count = 0;
+int S::s_copy_ctor_count = 0;
+int S::s_move_ctor_count = 0;
+int S::s_dtor_count = 0;
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -252,6 +293,46 @@ MULTIMAP_TEST_CONSTEXPR bool test3()
 	return true;
 }
 
+bool test4()
+{
+	using Allocator = MyAllocator1<std::pair<int const, int>>;
+	using Map = hamon::multimap<int, int, hamon::less<>, Allocator>;
+	using ValueType = typename Map::value_type;
+
+	Map v1{Allocator{10}};
+	v1.emplace_hint(v1.end(),   1, 10);
+	v1.emplace_hint(v1.begin(), 2, 20);
+	v1.emplace_hint(v1.begin(), 1, 30);
+	v1.emplace_hint(v1.begin(), 3, 40);
+	v1.emplace_hint(v1.end(),   3, 50);
+	v1.emplace_hint(v1.begin(), 3, 60);
+
+	{
+		Map v2{v1, Allocator{10}};
+		auto it = v2.begin();
+		VERIFY(*it++ == ValueType{1, 30});
+		VERIFY(*it++ == ValueType{1, 10});
+		VERIFY(*it++ == ValueType{2, 20});
+		VERIFY(*it++ == ValueType{3, 60});
+		VERIFY(*it++ == ValueType{3, 40});
+		VERIFY(*it++ == ValueType{3, 50});
+		VERIFY(it == v2.end());
+	}
+	{
+		Map v2{v1, Allocator{20}};
+		auto it = v2.begin();
+		VERIFY(*it++ == ValueType{1, 30});
+		VERIFY(*it++ == ValueType{1, 10});
+		VERIFY(*it++ == ValueType{2, 20});
+		VERIFY(*it++ == ValueType{3, 60});
+		VERIFY(*it++ == ValueType{3, 40});
+		VERIFY(*it++ == ValueType{3, 50});
+		VERIFY(it == v2.end());
+	}
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(MultimapTest, CtorCopyAllocatorTest)
@@ -267,6 +348,62 @@ GTEST_TEST(MultimapTest, CtorCopyAllocatorTest)
 	EXPECT_TRUE(test3<int>());
 	EXPECT_TRUE(test3<char>());
 	EXPECT_TRUE(test3<float>());
+
+	EXPECT_TRUE(test4());
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator1<std::pair<int const, S>>;
+		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		v1.emplace(1, 10);
+		v1.emplace(1, 20);
+		v1.emplace(2, 30);
+		v1.emplace(3, 40);
+		EXPECT_EQ(4, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		hamon::multimap<int, S, hamon::less<>, Allocator> v2{v1, Allocator{10}};
+		EXPECT_EQ(4, S::s_ctor_count);
+		EXPECT_EQ(4, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+	}
+	EXPECT_EQ(4, S::s_ctor_count);
+	EXPECT_EQ(4, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
+
+	S::s_ctor_count = 0;
+	S::s_copy_ctor_count = 0;
+	S::s_move_ctor_count = 0;
+	S::s_dtor_count = 0;
+	{
+		using Allocator = MyAllocator1<std::pair<int const, S>>;
+		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		v1.emplace(1, 10);
+		v1.emplace(1, 20);
+		v1.emplace(2, 30);
+		v1.emplace(3, 40);
+		EXPECT_EQ(4, S::s_ctor_count);
+		EXPECT_EQ(0, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+
+		hamon::multimap<int, S, hamon::less<>, Allocator> v2{v1, Allocator{20}};
+		EXPECT_EQ(4, S::s_ctor_count);
+		EXPECT_EQ(4, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(0, S::s_dtor_count);
+	}
+	EXPECT_EQ(4, S::s_ctor_count);
+	EXPECT_EQ(4, S::s_copy_ctor_count);
+	EXPECT_EQ(0, S::s_move_ctor_count);
+	EXPECT_EQ(8, S::s_dtor_count);
 }
 
 #undef MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE
