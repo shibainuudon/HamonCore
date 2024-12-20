@@ -30,9 +30,9 @@ template <typename T>
 struct MyAllocator1
 {
 	using value_type = T;
-	using propagate_on_container_copy_assignment = hamon::true_type;
-	using propagate_on_container_move_assignment = hamon::false_type;
-	using is_always_equal = hamon::false_type;
+	using propagate_on_container_copy_assignment = std::true_type;
+	using propagate_on_container_move_assignment = std::false_type;
+	using is_always_equal = std::false_type;
 
 	int id;
 
@@ -70,9 +70,9 @@ template <typename T>
 struct MyAllocator2
 {
 	using value_type = T;
-	using propagate_on_container_copy_assignment = hamon::false_type;
-	using propagate_on_container_move_assignment = hamon::true_type;
-	using is_always_equal = hamon::false_type;
+	using propagate_on_container_copy_assignment = std::false_type;
+	using propagate_on_container_move_assignment = std::true_type;
+	using is_always_equal = std::false_type;
 
 	int id;
 
@@ -116,6 +116,8 @@ struct MyLess
 	HAMON_CXX11_CONSTEXPR
 	MyLess(int i) : id(i) {}
 
+	MyLess(MyLess const&) = default;
+
 	template <typename T>
 	HAMON_CXX11_CONSTEXPR
 	bool operator()(T const& x, T const& y) const
@@ -123,7 +125,7 @@ struct MyLess
 		return x < y;
 	}
 
-	HAMON_CXX11_CONSTEXPR
+	HAMON_CXX14_CONSTEXPR
 	MyLess& operator=(MyLess const& rhs)
 	{
 		id = rhs.id;
