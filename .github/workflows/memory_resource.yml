@@ -1,0 +1,16 @@
+name: memory_resource
+
+on:
+  push:
+    paths:
+      - libs/memory_resource/**
+      - .github/workflows/memory_resource.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/memory_resource
