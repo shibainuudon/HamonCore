@@ -40,6 +40,10 @@ struct greater
 	}
 };
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
+HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-float-conversion")
+
 /**
  *	@brief	greater のテンプレート引数がvoid (デフォルト)の場合の特殊化
  */
@@ -55,6 +59,8 @@ struct greater<void>
 		return hamon::forward<T>(lhs) > hamon::forward<U>(rhs);
 	}
 };
+
+HAMON_WARNING_POP()
 
 }	// namespace hamon
 
