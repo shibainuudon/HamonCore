@@ -113,17 +113,9 @@ HAMON_DECLTYPE_RETURN(
 namespace detail
 {
 
+// ネストしたpairのために前方宣言
 template <typename Alloc, typename T>
-struct UsesAllocatorConstructionArgs
-{
-	Alloc const& m_alloc;
-
-	template <typename... Args>
-	HAMON_CXX11_CONSTEXPR auto operator()(Args&&... args) const HAMON_NOEXCEPT
-	HAMON_DECLTYPE_RETURN(
-		hamon::uses_allocator_construction_args<T>(
-			m_alloc, hamon::forward<Args>(args)...))
-};
+struct UsesAllocatorConstructionArgs;
 
 }	// namespace detail
 
@@ -237,6 +229,23 @@ HAMON_DECLTYPE_RETURN(
 		hamon::piecewise_construct,
 		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::forward<P>(p))),
 		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::forward<P>(p)))))
+
+namespace detail
+{
+
+template <typename Alloc, typename T>
+struct UsesAllocatorConstructionArgs
+{
+	Alloc const& m_alloc;
+
+	template <typename... Args>
+	HAMON_CXX11_CONSTEXPR auto operator()(Args&&... args) const HAMON_NOEXCEPT
+	HAMON_DECLTYPE_RETURN(
+		hamon::uses_allocator_construction_args<T>(
+			m_alloc, hamon::forward<Args>(args)...))
+};
+
+}	// namespace detail
 
 // pair_constructorのための前方宣言
 template <typename T, typename Alloc, typename... Args>
