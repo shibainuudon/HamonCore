@@ -26,8 +26,8 @@
 #include <hamon/memory/dynamic_pointer_cast.hpp>
 #include <hamon/memory/enable_shared_from_this.hpp>
 #include <hamon/memory/get_deleter.hpp>
-//#include <hamon/memory/inout_ptr.hpp>
-//#include <hamon/memory/inout_ptr_t.hpp>
+#include <hamon/memory/inout_ptr.hpp>
+#include <hamon/memory/inout_ptr_t.hpp>
 #include <hamon/memory/make_obj_using_allocator.hpp>
 #include <hamon/memory/make_shared.hpp>
 #include <hamon/memory/make_shared_for_overwrite.hpp>
@@ -42,7 +42,7 @@
 #include <hamon/memory/ranges.hpp>
 #include <hamon/memory/reinterpret_pointer_cast.hpp>
 #include <hamon/memory/shared_ptr.hpp>
-//#include <hamon/memory/start_lifetime_as.hpp>
+#include <hamon/memory/start_lifetime_as.hpp>
 //#include <hamon/memory/start_lifetime_as_array.hpp>
 #include <hamon/memory/static_pointer_cast.hpp>
 #include <hamon/memory/to_address.hpp>
