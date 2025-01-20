@@ -63,7 +63,7 @@
 #include <hamon/type_traits/is_implicitly_copy_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_default_constructible.hpp>
 #include <hamon/type_traits/is_implicitly_move_constructible.hpp>
-//#include <hamon/type_traits/is_implicit_lifetime.hpp>	// since C++23
+#include <hamon/type_traits/is_implicit_lifetime.hpp>
 #include <hamon/type_traits/is_integral.hpp>
 #include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_invocable_r.hpp>
@@ -104,7 +104,7 @@
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_swappable_with.hpp>
-#include <hamon/type_traits/is_trivial.hpp>
+#include <hamon/type_traits/is_trivial.hpp>		// deprecated in C++26
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
@@ -117,8 +117,10 @@
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/is_union.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+//#include <hamon/type_traits/is_virtual_base_of.hpp> // since C++26
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/is_volatile.hpp>
+//#include <hamon/type_traits/is_within_lifetime.hpp> // since C++26
 #include <hamon/type_traits/make_int_fast_n.hpp>
 #include <hamon/type_traits/make_int_least_n.hpp>
 #include <hamon/type_traits/make_int_n.hpp>
