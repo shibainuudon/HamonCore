@@ -107,7 +107,7 @@ public:
 
 private:
 	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator m_allocator;
-	HAMON_NO_UNIQUE_ADDRESS value_compare m_comp;
+	HAMON_NO_UNIQUE_ADDRESS HeterogeneousCompare m_comp;
 	Tree                                  m_impl;
 
 public:
@@ -119,7 +119,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	map(Compare const& comp, Allocator const& a = Allocator())
 		: m_allocator(a)
-		, m_comp(value_compare(comp))
+		, m_comp(comp)
 		, m_impl()
 	{}
 
@@ -204,7 +204,7 @@ public:
 		{
 			// アロケータが異なる場合は、
 			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			m_impl.insert_range(this->hetero_comp(), m_allocator,
+			m_impl.insert_range(m_comp, m_allocator,
 				hamon::make_move_iterator(hamon::ranges::begin(x)),
 				hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
 			// TODO もっと効率的にムーブできる
@@ -255,7 +255,7 @@ public:
 		}
 
 		this->clear();
-		m_comp = x.m_comp;
+		m_comp = hamon::move(x.m_comp);
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
@@ -487,14 +487,14 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace(Args&&... args)
 	{
-		return m_impl.emplace(this->hetero_comp(), m_allocator, hamon::forward<Args>(args)...);
+		return m_impl.emplace(m_comp, m_allocator, hamon::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator position, Args&&... args)
 	{
-		return m_impl.emplace_hint(this->hetero_comp(), m_allocator, position, hamon::forward<Args>(args)...);
+		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...);
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
@@ -551,14 +551,14 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
-		m_impl.insert_range(this->hetero_comp(), m_allocator, first, last);
+		m_impl.insert_range(m_comp, m_allocator, first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{
-		m_impl.insert_range(this->hetero_comp(), m_allocator,
+		m_impl.insert_range(m_comp, m_allocator,
 			hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
@@ -632,7 +632,7 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type const& k, Args&&... args)
 	{
-		return m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		return m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(k),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...));
@@ -642,7 +642,7 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type&& k, Args&&... args)
 	{
-		return m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		return m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::move(k)),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...));
@@ -661,7 +661,7 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(K&& k, Args&&... args)
 	{
-		return m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		return m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::forward<K>(k)),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...));
@@ -671,7 +671,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type const& k, Args&&... args)
 	{
-		return m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		return m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(k),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...)).first;
@@ -681,7 +681,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type&& k, Args&&... args)
 	{
-		return m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		return m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::move(k)),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...)).first;
@@ -694,7 +694,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, K&& k, Args&&... args)
 	{
-		return m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		return m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::forward<K>(k)),
 			hamon::forward_as_tuple(hamon::forward<Args>(args)...)).first;
@@ -708,7 +708,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [map.modifiers]/18,19
-		auto r = m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		auto r = m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(k),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -727,7 +727,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [map.modifiers]/23,24
-		auto r = m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		auto r = m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::move(k)),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -749,7 +749,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [map.modifiers]/29,30
-		auto r = m_impl.try_emplace(this->hetero_comp(), m_allocator, k,
+		auto r = m_impl.try_emplace(m_comp, m_allocator, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::forward<K>(k)),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -767,7 +767,7 @@ public:
 		// [map.modifiers]/16
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
-		auto r = m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		auto r = m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(k),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -785,7 +785,7 @@ public:
 		// [map.modifiers]/21
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
-		auto r = m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		auto r = m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::move(k)),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -806,7 +806,7 @@ public:
 		// [map.modifiers]/27
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
-		auto r = m_impl.try_emplace_hint(this->hetero_comp(), m_allocator, hint, k,
+		auto r = m_impl.try_emplace_hint(m_comp, m_allocator, hint, k,
 			hamon::piecewise_construct,
 			hamon::forward_as_tuple(hamon::forward<K>(k)),
 			hamon::forward_as_tuple(hamon::forward<M>(obj)));
@@ -920,20 +920,20 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	value_compare value_comp() const
 	{
-		return m_comp;
+		return m_comp.comp;
 	}
 
 	// map operations
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator find(key_type const& x)
 	{
-		return m_impl.find(this->hetero_comp(), x);
+		return m_impl.find(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator find(key_type const& x) const
 	{
-		return m_impl.find(this->hetero_comp(), x);
+		return m_impl.find(m_comp, x);
 	}
 
 	template <typename K,
@@ -942,7 +942,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator find(K const& x)
 	{
-		return m_impl.find(this->hetero_comp(), x);
+		return m_impl.find(m_comp, x);
 	}
 
 	template <typename K,
@@ -951,13 +951,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator find(K const& x) const
 	{
-		return m_impl.find(this->hetero_comp(), x);
+		return m_impl.find(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	size_type count(key_type const& x) const
 	{
-		return m_impl.count(this->hetero_comp(), x);
+		return m_impl.count(m_comp, x);
 	}
 
 	template <typename K,
@@ -966,13 +966,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	size_type count(K const& x) const
 	{
-		return m_impl.count(this->hetero_comp(), x);
+		return m_impl.count(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool contains(key_type const& x) const
 	{
-		return m_impl.contains(this->hetero_comp(), x);
+		return m_impl.contains(m_comp, x);
 	}
 
 	template <typename K,
@@ -981,19 +981,19 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool contains(K const& x) const
 	{
-		return m_impl.contains(this->hetero_comp(), x);
+		return m_impl.contains(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator lower_bound(key_type const& x)
 	{
-		return m_impl.lower_bound(this->hetero_comp(), x);
+		return m_impl.lower_bound(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	const_iterator lower_bound(key_type const& x) const
 	{
-		return m_impl.lower_bound(this->hetero_comp(), x);
+		return m_impl.lower_bound(m_comp, x);
 	}
 
 	template <typename K,
@@ -1002,7 +1002,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator lower_bound(K const& x)
 	{
-		return m_impl.lower_bound(this->hetero_comp(), x);
+		return m_impl.lower_bound(m_comp, x);
 	}
 
 	template <typename K,
@@ -1011,19 +1011,19 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator lower_bound(K const& x) const
 	{
-		return m_impl.lower_bound(this->hetero_comp(), x);
+		return m_impl.lower_bound(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator upper_bound(key_type const& x)
 	{
-		return m_impl.upper_bound(this->hetero_comp(), x);
+		return m_impl.upper_bound(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator upper_bound(key_type const& x) const
 	{
-		return m_impl.upper_bound(this->hetero_comp(), x);
+		return m_impl.upper_bound(m_comp, x);
 	}
 
 	template <typename K,
@@ -1032,7 +1032,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator upper_bound(K const& x)
 	{
-		return m_impl.upper_bound(this->hetero_comp(), x);
+		return m_impl.upper_bound(m_comp, x);
 	}
 
 	template <typename K,
@@ -1041,21 +1041,21 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator upper_bound(K const& x) const
 	{
-		return m_impl.upper_bound(this->hetero_comp(), x);
+		return m_impl.upper_bound(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	hamon::pair<iterator, iterator>
 	equal_range(key_type const& x)
 	{
-		return m_impl.equal_range(this->hetero_comp(), x);
+		return m_impl.equal_range(m_comp, x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	hamon::pair<const_iterator, const_iterator>
 	equal_range(key_type const& x) const
 	{
-		return m_impl.equal_range(this->hetero_comp(), x);
+		return m_impl.equal_range(m_comp, x);
 	}
 
 	template <typename K,
@@ -1065,7 +1065,7 @@ public:
 	hamon::pair<iterator, iterator>
 	equal_range(K const& x)
 	{
-		return m_impl.equal_range(this->hetero_comp(), x);
+		return m_impl.equal_range(m_comp, x);
 	}
 
 	template <typename K,
@@ -1075,14 +1075,7 @@ public:
 	hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const
 	{
-		return m_impl.equal_range(this->hetero_comp(), x);
-	}
-
-private:
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	HeterogeneousCompare hetero_comp() const noexcept
-	{
-		return HeterogeneousCompare{m_comp.comp};
+		return m_impl.equal_range(m_comp, x);
 	}
 
 private:

@@ -27,10 +27,12 @@ namespace detail
 template <typename Compare>
 struct heterogeneous_compare
 {
-private:
-	Compare const& comp;
+public:
+	Compare comp;
 
-	template <typename T, typename = hamon::enable_if_t<hamon::pair_like_t<hamon::remove_cvref_t<T>>::value>>
+private:
+	template <typename T, typename = hamon::enable_if_t<
+		hamon::pair_like_t<hamon::remove_cvref_t<T>>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	get_key_impl(T const& t, hamon::detail::overload_priority<1>) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

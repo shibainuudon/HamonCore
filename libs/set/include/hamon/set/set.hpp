@@ -228,7 +228,7 @@ public:
 		}
 
 		this->clear();
-		m_comp = x.m_comp;
+		m_comp = hamon::move(x.m_comp);
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
