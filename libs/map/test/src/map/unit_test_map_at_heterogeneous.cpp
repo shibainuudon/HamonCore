@@ -197,6 +197,7 @@ HAMON_WARNING_POP()
 		hamon::map<HeavyKey, char, hamon::less<>> map2 {{{1}, 'a'}, {{2}, 'b'}};
 		assert(map2.at(LightKey {1}) == 'a');
 		assert(map2.at(LightKey {2}) == 'b');
+#if !defined(HAMON_NO_EXCEPTIONS)
 		try
 		{
 			(void)map2.at(LightKey {13});
@@ -205,6 +206,7 @@ HAMON_WARNING_POP()
 		catch (const hamon::out_of_range&)
 		{
 		}
+#endif
 	}
 }
 

@@ -25,11 +25,40 @@ namespace dtor_test
 #define SET_TEST_CONSTEXPR              /**/
 #endif
 
+struct S
+{
+	static int s_dtor_count;
+
+	int value;
+
+	S(int v) : value(v)
+	{
+	}
+
+	~S()
+	{
+		++s_dtor_count;
+	}
+
+	friend bool operator<(S const& lhs, S const& rhs)
+	{
+		return lhs.value < rhs.value;
+	}
+};
+
+int S::s_dtor_count = 0;
+
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
 SET_TEST_CONSTEXPR bool test()
 {
+	using Set = hamon::set<Key>;
+
+	static_assert( hamon::is_destructible<Set>::value, "");
+	static_assert( hamon::is_nothrow_destructible<Set>::value, "");
+	static_assert(!hamon::is_trivially_destructible<Set>::value, "");
+
 	return true;
 }
 
@@ -37,6 +66,34 @@ SET_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(SetTest, DtorTest)
 {
+	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
+	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
+	SET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S> v;
+	}
+	EXPECT_EQ(0, S::s_dtor_count);
+
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S> v;
+
+		v.emplace(10);
+		EXPECT_EQ(0, S::s_dtor_count);
+	}
+	EXPECT_EQ(1, S::s_dtor_count);
+
+	S::s_dtor_count = 0;
+	{
+		hamon::set<S> v;
+		v.emplace(10);
+		v.emplace(15);
+		v.emplace(20);
+		EXPECT_EQ(0, S::s_dtor_count);
+	}
+	EXPECT_EQ(3, S::s_dtor_count);
 }
 
 #undef SET_TEST_CONSTEXPR_EXPECT_TRUE

@@ -199,6 +199,39 @@ MULTISET_TEST_CONSTEXPR bool test1()
 		VERIFY(*it++ == 20);
 		VERIFY(it == v.end());
 	}
+	{
+		ValueType const x{15};
+		auto r = v.insert(hamon::next(v.begin(), 1), x);
+		VERIFY(r == hamon::next(v.begin(), 3));
+
+		VERIFY(v.size() == 7);
+		auto it = v.begin();
+		VERIFY(*it++ ==  5);
+		VERIFY(*it++ == 10);
+		VERIFY(*it++ == 10);
+		VERIFY(*it++ == 15);
+		VERIFY(*it++ == 15);
+		VERIFY(*it++ == 20);
+		VERIFY(*it++ == 20);
+		VERIFY(it == v.end());
+	}
+	{
+		ValueType const x{10};
+		auto r = v.insert(hamon::next(v.begin(), 5), x);
+		VERIFY(r == hamon::next(v.begin(), 3));
+
+		VERIFY(v.size() == 8);
+		auto it = v.begin();
+		VERIFY(*it++ ==  5);
+		VERIFY(*it++ == 10);
+		VERIFY(*it++ == 10);
+		VERIFY(*it++ == 10);
+		VERIFY(*it++ == 15);
+		VERIFY(*it++ == 15);
+		VERIFY(*it++ == 20);
+		VERIFY(*it++ == 20);
+		VERIFY(it == v.end());
+	}
 
 	return true;
 }

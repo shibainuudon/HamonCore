@@ -29,7 +29,7 @@ namespace erase_key_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename Key>
-MULTISET_TEST_CONSTEXPR bool test()
+MULTISET_TEST_CONSTEXPR bool test1()
 {
 	using Set = hamon::multiset<Key>;
 	using SizeType = typename Set::size_type;
@@ -75,6 +75,49 @@ MULTISET_TEST_CONSTEXPR bool test()
 	return true;
 }
 
+template <typename Key>
+MULTISET_TEST_CONSTEXPR bool test2()
+{
+	using Set = hamon::multiset<Key>;
+
+	Set v{
+		Key{1},
+		Key{2}, Key{2},
+		Key{3}, Key{3}, Key{3},
+		Key{4}, Key{4}, Key{4}, Key{4},
+		Key{5}, Key{5}, Key{5}, Key{5}, Key{5},
+	};
+	VERIFY(v.size() == 15);
+
+	{
+		auto r = v.erase(Key{1});
+		VERIFY(r == 1);
+		VERIFY(v.size() == 14);
+	}
+	{
+		auto r = v.erase(Key{2});
+		VERIFY(r == 2);
+		VERIFY(v.size() == 12);
+	}
+	{
+		auto r = v.erase(Key{3});
+		VERIFY(r == 3);
+		VERIFY(v.size() == 9);
+	}
+	{
+		auto r = v.erase(Key{4});
+		VERIFY(r == 4);
+		VERIFY(v.size() == 5);
+	}
+	{
+		auto r = v.erase(Key{5});
+		VERIFY(r == 5);
+		VERIFY(v.size() == 0);
+	}
+
+	return true;
+}
+
 #undef VERIFY
 
 struct S
@@ -110,9 +153,13 @@ int S::s_dtor_count = 0;
 
 GTEST_TEST(MultisetTest, EraseKeyTest)
 {
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<int>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<char>()));
-	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test<float>()));
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<int>()));
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<char>()));
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test1<float>()));
+
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<int>()));
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<char>()));
+	MULTISET_TEST_CONSTEXPR_EXPECT_TRUE((test2<float>()));
 
 	S::s_ctor_count = 0;
 	S::s_dtor_count = 0;

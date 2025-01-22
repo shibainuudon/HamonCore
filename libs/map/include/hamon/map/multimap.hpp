@@ -44,20 +44,7 @@
 #include <initializer_list>
 
 // TODO:
-// * dtor
-// * erase(position)
-// * erase(k)
-// * erase(K)
-// * erase(first, last)
-// * erase_if
-// * extract(position)
-// * extract(k)
-// * extract(K)
-// * insert(nh)
-// * insert(hint, nh)
-// * merge
-// * value_compare
-// * node_type
+// * インクルードファイルの整理
 
 namespace hamon
 {

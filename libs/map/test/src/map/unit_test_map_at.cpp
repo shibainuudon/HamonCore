@@ -163,6 +163,7 @@ HAMON_WARNING_POP()
 		hamon::map<int, char> map {{1, 'a'}, {2, 'b'}};
 		EXPECT_TRUE(map.at(1) == 'a');
 		EXPECT_TRUE(map.at(2) == 'b');
+#if !defined(HAMON_NO_EXCEPTIONS)
 		try
 		{
 			(void)map.at(13);
@@ -171,6 +172,7 @@ HAMON_WARNING_POP()
 		catch (const hamon::out_of_range&)
 		{
 		}
+#endif
 	}
 }
 

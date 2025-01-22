@@ -46,24 +46,8 @@
 #include <initializer_list>
 
 // TODO:
-// * dtor
-// * erase(position)
-// * erase(k)
-// * erase(K)
-// * erase(first, last)
-// * erase_if
-// * extract(position)
-// * extract(k)
-// * extract(K)
-// * insert(nh)
-// * insert(hint, nh)
-// * merge
-// * value_compare
-// * node_type
-
 // * インクルードファイルの整理
 // * red_black_tree の整理
-// * simple_allocator ではなく [container.reqmts]/69 の条件で制約する
 
 namespace hamon
 {
