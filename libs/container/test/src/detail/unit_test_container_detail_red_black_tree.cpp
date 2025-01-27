@@ -246,226 +246,225 @@ HAMON_CXX20_CONSTEXPR bool test1()
 	using Node = typename Tree::node_type;
 
 	hamon::allocator<Node> alloc;
-	hamon::less<> comp;
 
 	{
 		Tree t;
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
-		VERIFY(t.lower_bound(comp, 0) == t.end());
-		VERIFY(t.upper_bound(comp, 0) == t.end());
+		VERIFY(t.lower_bound(0) == t.end());
+		VERIFY(t.upper_bound(0) == t.end());
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10}));
-		VERIFY(t.lower_bound(comp,  9) != t.end());
-		VERIFY(t.lower_bound(comp, 10) != t.end());
-		VERIFY(t.lower_bound(comp, 11) == t.end());
-		VERIFY(t.upper_bound(comp,  9) != t.end());
-		VERIFY(t.upper_bound(comp, 10) == t.end());
-		VERIFY(t.upper_bound(comp, 11) == t.end());
-		VERIFY(*t.lower_bound(comp,  9) == 10);
-		VERIFY(*t.lower_bound(comp, 10) == 10);
-		VERIFY(*t.upper_bound(comp,  9) == 10);
+		VERIFY(t.lower_bound( 9) != t.end());
+		VERIFY(t.lower_bound(10) != t.end());
+		VERIFY(t.lower_bound(11) == t.end());
+		VERIFY(t.upper_bound( 9) != t.end());
+		VERIFY(t.upper_bound(10) == t.end());
+		VERIFY(t.upper_bound(11) == t.end());
+		VERIFY(*t.lower_bound( 9) == 10);
+		VERIFY(*t.lower_bound(10) == 10);
+		VERIFY(*t.upper_bound( 9) == 10);
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10}));
 
-		t.emplace(comp, alloc, 20);
+		t.emplace(alloc, 20);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10, 20}));
 
-		t.emplace(comp, alloc, 20);
+		t.emplace(alloc, 20);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10, 20}));
 
-		t.emplace(comp, alloc, 5);
+		t.emplace(alloc, 5);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {5, 10, 20}));
 
-		t.emplace(comp, alloc, 15);
+		t.emplace(alloc, 15);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 10, 15, 20}));
 
-		t.emplace(comp, alloc, 1);
+		t.emplace(alloc, 1);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 5, 10, 15, 20}));
 
-		t.emplace(comp, alloc, 7);
+		t.emplace(alloc, 7);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 5, 7, 10, 15, 20}));
 
-		t.emplace(comp, alloc, 23);
+		t.emplace(alloc, 23);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 5, 7, 10, 15, 20, 23}));
 
-		t.emplace(comp, alloc, 17);
+		t.emplace(alloc, 17);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 5, 7, 10, 15, 17, 20, 23}));
 
-		t.emplace(comp, alloc, 2);
+		t.emplace(alloc, 2);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 5, 7, 10, 15, 17, 20, 23}));
 
-		t.emplace(comp, alloc, 22);
+		t.emplace(alloc, 22);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 5, 7, 10, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc, 3);
+		t.emplace(alloc, 3);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 5, 7, 10, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc, 4);
+		t.emplace(alloc, 4);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 7, 10, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc,  1);
-		t.emplace(comp, alloc,  2);
-		t.emplace(comp, alloc,  3);
-		t.emplace(comp, alloc,  4);
-		t.emplace(comp, alloc,  5);
-		t.emplace(comp, alloc,  7);
-		t.emplace(comp, alloc, 10);
-		t.emplace(comp, alloc, 15);
-		t.emplace(comp, alloc, 17);
-		t.emplace(comp, alloc, 20);
-		t.emplace(comp, alloc, 22);
-		t.emplace(comp, alloc, 23);
+		t.emplace(alloc,  1);
+		t.emplace(alloc,  2);
+		t.emplace(alloc,  3);
+		t.emplace(alloc,  4);
+		t.emplace(alloc,  5);
+		t.emplace(alloc,  7);
+		t.emplace(alloc, 10);
+		t.emplace(alloc, 15);
+		t.emplace(alloc, 17);
+		t.emplace(alloc, 20);
+		t.emplace(alloc, 22);
+		t.emplace(alloc, 23);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 7, 10, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc, 11);
+		t.emplace(alloc, 11);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 7, 10, 11, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc, 11);
-		t.emplace(comp, alloc, 11);
-		t.emplace(comp, alloc, 11);
+		t.emplace(alloc, 11);
+		t.emplace(alloc, 11);
+		t.emplace(alloc, 11);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 7, 10, 11, 15, 17, 20, 22, 23}));
 
-		t.emplace(comp, alloc, 12);
+		t.emplace(alloc, 12);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 7, 10, 11, 12, 15, 17, 20, 22, 23}));
-		VERIFY(t.lower_bound(comp,  0) != t.end());
-		VERIFY(t.lower_bound(comp,  1) != t.end());
-		VERIFY(t.lower_bound(comp,  2) != t.end());
-		VERIFY(t.lower_bound(comp,  3) != t.end());
-		VERIFY(t.lower_bound(comp,  4) != t.end());
-		VERIFY(t.lower_bound(comp,  5) != t.end());
-		VERIFY(t.lower_bound(comp,  6) != t.end());
-		VERIFY(t.lower_bound(comp,  7) != t.end());
-		VERIFY(t.lower_bound(comp,  8) != t.end());
-		VERIFY(t.lower_bound(comp,  9) != t.end());
-		VERIFY(t.lower_bound(comp, 10) != t.end());
-		VERIFY(t.lower_bound(comp, 11) != t.end());
-		VERIFY(t.lower_bound(comp, 12) != t.end());
-		VERIFY(t.lower_bound(comp, 13) != t.end());
-		VERIFY(t.lower_bound(comp, 14) != t.end());
-		VERIFY(t.lower_bound(comp, 15) != t.end());
-		VERIFY(t.lower_bound(comp, 16) != t.end());
-		VERIFY(t.lower_bound(comp, 17) != t.end());
-		VERIFY(t.lower_bound(comp, 18) != t.end());
-		VERIFY(t.lower_bound(comp, 19) != t.end());
-		VERIFY(t.lower_bound(comp, 20) != t.end());
-		VERIFY(t.lower_bound(comp, 21) != t.end());
-		VERIFY(t.lower_bound(comp, 22) != t.end());
-		VERIFY(t.lower_bound(comp, 23) != t.end());
-		VERIFY(t.lower_bound(comp, 24) == t.end());
-		VERIFY(t.lower_bound(comp, 25) == t.end());
-		VERIFY(*t.lower_bound(comp,  0) ==  1);
-		VERIFY(*t.lower_bound(comp,  1) ==  1);
-		VERIFY(*t.lower_bound(comp,  2) ==  2);
-		VERIFY(*t.lower_bound(comp,  3) ==  3);
-		VERIFY(*t.lower_bound(comp,  4) ==  4);
-		VERIFY(*t.lower_bound(comp,  5) ==  5);
-		VERIFY(*t.lower_bound(comp,  6) ==  7);
-		VERIFY(*t.lower_bound(comp,  7) ==  7);
-		VERIFY(*t.lower_bound(comp,  8) == 10);
-		VERIFY(*t.lower_bound(comp,  9) == 10);
-		VERIFY(*t.lower_bound(comp, 10) == 10);
-		VERIFY(*t.lower_bound(comp, 11) == 11);
-		VERIFY(*t.lower_bound(comp, 12) == 12);
-		VERIFY(*t.lower_bound(comp, 13) == 15);
-		VERIFY(*t.lower_bound(comp, 14) == 15);
-		VERIFY(*t.lower_bound(comp, 15) == 15);
-		VERIFY(*t.lower_bound(comp, 16) == 17);
-		VERIFY(*t.lower_bound(comp, 17) == 17);
-		VERIFY(*t.lower_bound(comp, 18) == 20);
-		VERIFY(*t.lower_bound(comp, 19) == 20);
-		VERIFY(*t.lower_bound(comp, 20) == 20);
-		VERIFY(*t.lower_bound(comp, 21) == 22);
-		VERIFY(*t.lower_bound(comp, 22) == 22);
-		VERIFY(*t.lower_bound(comp, 23) == 23);
-		VERIFY(t.upper_bound(comp,  0) != t.end());
-		VERIFY(t.upper_bound(comp,  1) != t.end());
-		VERIFY(t.upper_bound(comp,  2) != t.end());
-		VERIFY(t.upper_bound(comp,  3) != t.end());
-		VERIFY(t.upper_bound(comp,  4) != t.end());
-		VERIFY(t.upper_bound(comp,  5) != t.end());
-		VERIFY(t.upper_bound(comp,  6) != t.end());
-		VERIFY(t.upper_bound(comp,  7) != t.end());
-		VERIFY(t.upper_bound(comp,  8) != t.end());
-		VERIFY(t.upper_bound(comp,  9) != t.end());
-		VERIFY(t.upper_bound(comp, 10) != t.end());
-		VERIFY(t.upper_bound(comp, 11) != t.end());
-		VERIFY(t.upper_bound(comp, 12) != t.end());
-		VERIFY(t.upper_bound(comp, 13) != t.end());
-		VERIFY(t.upper_bound(comp, 14) != t.end());
-		VERIFY(t.upper_bound(comp, 15) != t.end());
-		VERIFY(t.upper_bound(comp, 16) != t.end());
-		VERIFY(t.upper_bound(comp, 17) != t.end());
-		VERIFY(t.upper_bound(comp, 18) != t.end());
-		VERIFY(t.upper_bound(comp, 19) != t.end());
-		VERIFY(t.upper_bound(comp, 20) != t.end());
-		VERIFY(t.upper_bound(comp, 21) != t.end());
-		VERIFY(t.upper_bound(comp, 22) != t.end());
-		VERIFY(t.upper_bound(comp, 23) == t.end());
-		VERIFY(t.upper_bound(comp, 24) == t.end());
-		VERIFY(t.upper_bound(comp, 25) == t.end());
-		VERIFY(*t.upper_bound(comp,  0) == 1);
-		VERIFY(*t.upper_bound(comp,  1) == 2);
-		VERIFY(*t.upper_bound(comp,  2) == 3);
-		VERIFY(*t.upper_bound(comp,  3) == 4);
-		VERIFY(*t.upper_bound(comp,  4) == 5);
-		VERIFY(*t.upper_bound(comp,  5) == 7);
-		VERIFY(*t.upper_bound(comp,  6) == 7);
-		VERIFY(*t.upper_bound(comp,  7) == 10);
-		VERIFY(*t.upper_bound(comp,  8) == 10);
-		VERIFY(*t.upper_bound(comp,  9) == 10);
-		VERIFY(*t.upper_bound(comp, 10) == 11);
-		VERIFY(*t.upper_bound(comp, 11) == 12);
-		VERIFY(*t.upper_bound(comp, 12) == 15);
-		VERIFY(*t.upper_bound(comp, 13) == 15);
-		VERIFY(*t.upper_bound(comp, 14) == 15);
-		VERIFY(*t.upper_bound(comp, 15) == 17);
-		VERIFY(*t.upper_bound(comp, 16) == 17);
-		VERIFY(*t.upper_bound(comp, 17) == 20);
-		VERIFY(*t.upper_bound(comp, 18) == 20);
-		VERIFY(*t.upper_bound(comp, 19) == 20);
-		VERIFY(*t.upper_bound(comp, 20) == 22);
-		VERIFY(*t.upper_bound(comp, 21) == 22);
-		VERIFY(*t.upper_bound(comp, 22) == 23);
+		VERIFY(t.lower_bound( 0) != t.end());
+		VERIFY(t.lower_bound( 1) != t.end());
+		VERIFY(t.lower_bound( 2) != t.end());
+		VERIFY(t.lower_bound( 3) != t.end());
+		VERIFY(t.lower_bound( 4) != t.end());
+		VERIFY(t.lower_bound( 5) != t.end());
+		VERIFY(t.lower_bound( 6) != t.end());
+		VERIFY(t.lower_bound( 7) != t.end());
+		VERIFY(t.lower_bound( 8) != t.end());
+		VERIFY(t.lower_bound( 9) != t.end());
+		VERIFY(t.lower_bound(10) != t.end());
+		VERIFY(t.lower_bound(11) != t.end());
+		VERIFY(t.lower_bound(12) != t.end());
+		VERIFY(t.lower_bound(13) != t.end());
+		VERIFY(t.lower_bound(14) != t.end());
+		VERIFY(t.lower_bound(15) != t.end());
+		VERIFY(t.lower_bound(16) != t.end());
+		VERIFY(t.lower_bound(17) != t.end());
+		VERIFY(t.lower_bound(18) != t.end());
+		VERIFY(t.lower_bound(19) != t.end());
+		VERIFY(t.lower_bound(20) != t.end());
+		VERIFY(t.lower_bound(21) != t.end());
+		VERIFY(t.lower_bound(22) != t.end());
+		VERIFY(t.lower_bound(23) != t.end());
+		VERIFY(t.lower_bound(24) == t.end());
+		VERIFY(t.lower_bound(25) == t.end());
+		VERIFY(*t.lower_bound( 0) ==  1);
+		VERIFY(*t.lower_bound( 1) ==  1);
+		VERIFY(*t.lower_bound( 2) ==  2);
+		VERIFY(*t.lower_bound( 3) ==  3);
+		VERIFY(*t.lower_bound( 4) ==  4);
+		VERIFY(*t.lower_bound( 5) ==  5);
+		VERIFY(*t.lower_bound( 6) ==  7);
+		VERIFY(*t.lower_bound( 7) ==  7);
+		VERIFY(*t.lower_bound( 8) == 10);
+		VERIFY(*t.lower_bound( 9) == 10);
+		VERIFY(*t.lower_bound(10) == 10);
+		VERIFY(*t.lower_bound(11) == 11);
+		VERIFY(*t.lower_bound(12) == 12);
+		VERIFY(*t.lower_bound(13) == 15);
+		VERIFY(*t.lower_bound(14) == 15);
+		VERIFY(*t.lower_bound(15) == 15);
+		VERIFY(*t.lower_bound(16) == 17);
+		VERIFY(*t.lower_bound(17) == 17);
+		VERIFY(*t.lower_bound(18) == 20);
+		VERIFY(*t.lower_bound(19) == 20);
+		VERIFY(*t.lower_bound(20) == 20);
+		VERIFY(*t.lower_bound(21) == 22);
+		VERIFY(*t.lower_bound(22) == 22);
+		VERIFY(*t.lower_bound(23) == 23);
+		VERIFY(t.upper_bound( 0) != t.end());
+		VERIFY(t.upper_bound( 1) != t.end());
+		VERIFY(t.upper_bound( 2) != t.end());
+		VERIFY(t.upper_bound( 3) != t.end());
+		VERIFY(t.upper_bound( 4) != t.end());
+		VERIFY(t.upper_bound( 5) != t.end());
+		VERIFY(t.upper_bound( 6) != t.end());
+		VERIFY(t.upper_bound( 7) != t.end());
+		VERIFY(t.upper_bound( 8) != t.end());
+		VERIFY(t.upper_bound( 9) != t.end());
+		VERIFY(t.upper_bound(10) != t.end());
+		VERIFY(t.upper_bound(11) != t.end());
+		VERIFY(t.upper_bound(12) != t.end());
+		VERIFY(t.upper_bound(13) != t.end());
+		VERIFY(t.upper_bound(14) != t.end());
+		VERIFY(t.upper_bound(15) != t.end());
+		VERIFY(t.upper_bound(16) != t.end());
+		VERIFY(t.upper_bound(17) != t.end());
+		VERIFY(t.upper_bound(18) != t.end());
+		VERIFY(t.upper_bound(19) != t.end());
+		VERIFY(t.upper_bound(20) != t.end());
+		VERIFY(t.upper_bound(21) != t.end());
+		VERIFY(t.upper_bound(22) != t.end());
+		VERIFY(t.upper_bound(23) == t.end());
+		VERIFY(t.upper_bound(24) == t.end());
+		VERIFY(t.upper_bound(25) == t.end());
+		VERIFY(*t.upper_bound( 0) == 1);
+		VERIFY(*t.upper_bound( 1) == 2);
+		VERIFY(*t.upper_bound( 2) == 3);
+		VERIFY(*t.upper_bound( 3) == 4);
+		VERIFY(*t.upper_bound( 4) == 5);
+		VERIFY(*t.upper_bound( 5) == 7);
+		VERIFY(*t.upper_bound( 6) == 7);
+		VERIFY(*t.upper_bound( 7) == 10);
+		VERIFY(*t.upper_bound( 8) == 10);
+		VERIFY(*t.upper_bound( 9) == 10);
+		VERIFY(*t.upper_bound(10) == 11);
+		VERIFY(*t.upper_bound(11) == 12);
+		VERIFY(*t.upper_bound(12) == 15);
+		VERIFY(*t.upper_bound(13) == 15);
+		VERIFY(*t.upper_bound(14) == 15);
+		VERIFY(*t.upper_bound(15) == 17);
+		VERIFY(*t.upper_bound(16) == 17);
+		VERIFY(*t.upper_bound(17) == 20);
+		VERIFY(*t.upper_bound(18) == 20);
+		VERIFY(*t.upper_bound(19) == 20);
+		VERIFY(*t.upper_bound(20) == 22);
+		VERIFY(*t.upper_bound(21) == 22);
+		VERIFY(*t.upper_bound(22) == 23);
 
 		t.erase(alloc, t.begin());
 		VERIFY(tree_invariant(t));
@@ -548,52 +547,52 @@ HAMON_CXX20_CONSTEXPR bool test1()
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10}));
 
-		t.emplace(comp, alloc, 9);
+		t.emplace(alloc, 9);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {9, 10}));
 
-		t.emplace(comp, alloc, 8);
+		t.emplace(alloc, 8);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {8, 9, 10}));
 
-		t.emplace(comp, alloc, 7);
+		t.emplace(alloc, 7);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 6);
+		t.emplace(alloc, 6);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {6, 7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 5);
+		t.emplace(alloc, 5);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 6, 7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 4);
+		t.emplace(alloc, 4);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {4, 5, 6, 7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 3);
+		t.emplace(alloc, 3);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {3, 4, 5, 6, 7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 2);
+		t.emplace(alloc, 2);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {2, 3, 4, 5, 6, 7, 8, 9, 10}));
 
-		t.emplace(comp, alloc, 1);
+		t.emplace(alloc, 1);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
@@ -609,52 +608,52 @@ HAMON_CXX20_CONSTEXPR bool test1()
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
 
-		t.emplace(comp, alloc, 1);
+		t.emplace(alloc, 1);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {1}));
 
-		t.emplace(comp, alloc, 2);
+		t.emplace(alloc, 2);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {1, 2}));
 
-		t.emplace(comp, alloc, 3);
+		t.emplace(alloc, 3);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {1, 2, 3}));
 
-		t.emplace(comp, alloc, 4);
+		t.emplace(alloc, 4);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4}));
 
-		t.emplace(comp, alloc, 5);
+		t.emplace(alloc, 5);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5}));
 
-		t.emplace(comp, alloc, 6);
+		t.emplace(alloc, 6);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6}));
 
-		t.emplace(comp, alloc, 7);
+		t.emplace(alloc, 7);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6, 7}));
 
-		t.emplace(comp, alloc, 8);
+		t.emplace(alloc, 8);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6, 7, 8}));
 
-		t.emplace(comp, alloc, 9);
+		t.emplace(alloc, 9);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6, 7, 8, 9}));
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 4);
 		VERIFY(tree_equal(t, {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}));
@@ -674,7 +673,6 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	using Node = typename Tree::node_type;
 
 	hamon::allocator<Node> alloc;
-	hamon::less<> comp;
 
 	{
 		Tree t;
@@ -682,47 +680,47 @@ HAMON_CXX20_CONSTEXPR bool test2()
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10}));
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {10, 10}));
 
-		t.emplace(comp, alloc, 5);
+		t.emplace(alloc, 5);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 2);
 		VERIFY(tree_equal(t, {5, 10, 10}));
 
-		t.emplace(comp, alloc, 15);
+		t.emplace(alloc, 15);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 10, 10, 15}));
 
-		t.emplace(comp, alloc, 5);
+		t.emplace(alloc, 5);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 5, 10, 10, 15}));
 
-		t.emplace(comp, alloc, 6);
+		t.emplace(alloc, 6);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 5, 6, 10, 10, 15}));
 
-		t.emplace(comp, alloc, 10);
+		t.emplace(alloc, 10);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 5, 6, 10, 10, 10, 15}));
 
-		t.emplace(comp, alloc, 12);
+		t.emplace(alloc, 12);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 5, 6, 10, 10, 10, 12, 15}));
 
-		t.emplace(comp, alloc, 15);
+		t.emplace(alloc, 15);
 		VERIFY(tree_invariant(t));
 		VERIFY(tree_black_height(t) == 3);
 		VERIFY(tree_equal(t, {5, 5, 6, 10, 10, 10, 12, 15, 15}));

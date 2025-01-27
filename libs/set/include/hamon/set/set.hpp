@@ -66,14 +66,13 @@ public:
 	using difference_type        = typename hamon::allocator_traits<Allocator>::difference_type;
 
 private:
-	using Tree = hamon::detail::red_black_tree<false, value_type, key_type, size_type, difference_type>;
+	using Tree = hamon::detail::red_black_tree<false, key_type, value_type, Compare, size_type, difference_type>;
 	using TreeNode = typename Tree::node_type;
 	using NodeAllocator = typename hamon::allocator_traits<Allocator>::template rebind_alloc<TreeNode>;
 	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<TreeNode>;
 
 private:
 	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator m_allocator;
-	HAMON_NO_UNIQUE_ADDRESS Compare       m_comp;
 	Tree                                  m_impl;
 
 public:
@@ -92,8 +91,7 @@ public:
 	explicit HAMON_CXX11_CONSTEXPR
 	set(Compare const& comp, Allocator const& a = Allocator())
 		: m_allocator(a)
-		, m_comp(comp)
-		, m_impl()
+		, m_impl(comp)
 	{}
 
 	explicit HAMON_CXX11_CONSTEXPR
@@ -144,7 +142,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	set(set const& x)
 		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
-		, m_comp(x.m_comp)
+		, m_impl(x.m_impl.m_comp)
 	{
 		this->insert_range(x);	// TODO もっと効率的にコピーできる
 	}
@@ -153,14 +151,13 @@ public:
 	set(set&& x) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_move_constructible<Compare>::value)
 		: m_allocator(hamon::move(x.m_allocator))
-		, m_comp(hamon::move(x.m_comp))
 		, m_impl(hamon::move(x.m_impl))
 	{}
 
 	HAMON_CXX14_CONSTEXPR
 	set(set const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
-		, m_comp(x.m_comp)
+		, m_impl(x.m_impl.m_comp)
 	{
 		this->insert_range(x);	// TODO もっと効率的にコピーできる
 	}
@@ -171,13 +168,13 @@ public:
 			hamon::allocator_traits<Allocator>::is_always_equal::value &&
 			hamon::is_nothrow_move_constructible<Compare>::value)
 		: m_allocator(a)
-		, m_comp(hamon::move(x.m_comp))
+		, m_impl(hamon::move(x.m_impl.m_comp))
 	{
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
 			// アロケータが異なる場合は、
 			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			m_impl.insert_range(m_comp, m_allocator,
+			m_impl.insert_range(m_allocator,
 				hamon::make_move_iterator(hamon::ranges::begin(x.m_impl)),
 				hamon::make_move_iterator(hamon::ranges::end(x.m_impl)));	// may throw
 			// TODO もっと効率的にムーブできる
@@ -204,7 +201,7 @@ public:
 		}
 
 		this->clear();
-		m_comp = x.m_comp;
+		m_impl.m_comp = x.m_impl.m_comp;
 
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
@@ -228,7 +225,7 @@ public:
 		}
 
 		this->clear();
-		m_comp = hamon::move(x.m_comp);
+		m_impl.m_comp = hamon::move(x.m_impl.m_comp);
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
@@ -240,7 +237,7 @@ public:
 			{
 				// アロケータを伝播させない場合は、
 				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-				m_impl.insert_range(m_comp, m_allocator,
+				m_impl.insert_range(m_allocator,
 					hamon::make_move_iterator(hamon::ranges::begin(x.m_impl)),
 					hamon::make_move_iterator(hamon::ranges::end(x.m_impl)));	// may throw
 				// TODO もっと効率的にムーブできる
@@ -373,14 +370,14 @@ public:
 	HAMON_CXX14_CONSTEXPR pair<iterator, bool>
 	emplace(Args&&... args)
 	{
-		return m_impl.emplace(m_comp, m_allocator, hamon::forward<Args>(args)...);
+		return m_impl.emplace(m_allocator, hamon::forward<Args>(args)...);
 	}
 
 	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator position, Args&&... args)
 	{
-		return m_impl.emplace_hint(m_comp, m_allocator, position, hamon::forward<Args>(args)...);
+		return m_impl.emplace_hint(m_allocator, position, hamon::forward<Args>(args)...);
 	}
 
 	HAMON_CXX14_CONSTEXPR pair<iterator, bool>
@@ -436,15 +433,14 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void insert(InputIterator first, InputIterator last)
 	{
-		m_impl.insert_range(m_comp, m_allocator, first, last);
+		m_impl.insert_range(m_allocator, first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	void insert_range(R&& rg)
 	{
-		m_impl.insert_range(m_comp, m_allocator,
-			hamon::ranges::begin(rg), hamon::ranges::end(rg));
+		m_impl.insert_range(m_allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -494,7 +490,7 @@ public:
 	HAMON_CXX14_CONSTEXPR insert_return_type
 	insert(node_type&& nh)
 	{
-		auto r = m_impl.insert_node(m_comp, nh.ptr());
+		auto r = m_impl.insert_node(nh.ptr());
 		if (r.second)
 		{
 			nh.release();
@@ -505,7 +501,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, node_type&& nh)
 	{
-		auto r = m_impl.insert_node_hint(m_comp, hint, nh.ptr());
+		auto r = m_impl.insert_node_hint(hint, nh.ptr());
 		if (r.second)
 		{
 			nh.release();
@@ -567,7 +563,6 @@ public:
 		{
 			hamon::detail::propagate_allocator_on_swap(m_allocator, x.m_allocator);
 		}
-		hamon::swap(m_comp, x.m_comp);
 		hamon::swap(m_impl, x.m_impl);
 	}
 
@@ -581,7 +576,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(set<Key, C2, Allocator>& source)
 	{
-		m_impl.merge(m_comp, source.m_impl, source.m_comp);
+		m_impl.merge(source.m_impl);
 	}
 
 	template <typename C2>
@@ -595,7 +590,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(multiset<Key, C2, Allocator>& source)
 	{
-		m_impl.merge(m_comp, source.m_impl, source.m_comp);
+		m_impl.merge(source.m_impl);
 	}
 
 	template <typename C2>
@@ -609,26 +604,26 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	key_compare key_comp() const
 	{
-		return m_comp;
+		return m_impl.m_comp;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	value_compare value_comp() const
 	{
-		return m_comp;
+		return m_impl.m_comp;
 	}
 
 	// set operations
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator find(key_type const& x)
 	{
-		return m_impl.find(m_comp, x);
+		return m_impl.find(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator find(key_type const& x) const
 	{
-		return m_impl.find(m_comp, x);
+		return m_impl.find(x);
 	}
 
 	template <typename K,
@@ -637,7 +632,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator find(K const& x)
 	{
-		return m_impl.find(m_comp, x);
+		return m_impl.find(x);
 	}
 
 	template <typename K,
@@ -646,13 +641,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator find(K const& x) const
 	{
-		return m_impl.find(m_comp, x);
+		return m_impl.find(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	size_type count(key_type const& x) const
 	{
-		return m_impl.count(m_comp, x);
+		return m_impl.count(x);
 	}
 
 	template <typename K,
@@ -661,13 +656,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	size_type count(K const& x) const
 	{
-		return m_impl.count(m_comp, x);
+		return m_impl.count(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool contains(key_type const& x) const
 	{
-		return m_impl.contains(m_comp, x);
+		return m_impl.contains(x);
 	}
 
 	template <typename K,
@@ -676,19 +671,19 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool contains(K const& x) const
 	{
-		return m_impl.contains(m_comp, x);
+		return m_impl.contains(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator lower_bound(key_type const& x)
 	{
-		return m_impl.lower_bound(m_comp, x);
+		return m_impl.lower_bound(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator lower_bound(key_type const& x) const
 	{
-		return m_impl.lower_bound(m_comp, x);
+		return m_impl.lower_bound(x);
 	}
 
 	template <typename K,
@@ -697,7 +692,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator lower_bound(K const& x)
 	{
-		return m_impl.lower_bound(m_comp, x);
+		return m_impl.lower_bound(x);
 	}
 
 	template <typename K,
@@ -706,19 +701,19 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator lower_bound(K const& x) const
 	{
-		return m_impl.lower_bound(m_comp, x);
+		return m_impl.lower_bound(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator upper_bound(key_type const& x)
 	{
-		return m_impl.upper_bound(m_comp, x);
+		return m_impl.upper_bound(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator upper_bound(key_type const& x) const
 	{
-		return m_impl.upper_bound(m_comp, x);
+		return m_impl.upper_bound(x);
 	}
 
 	template <typename K,
@@ -727,7 +722,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator upper_bound(K const& x)
 	{
-		return m_impl.upper_bound(m_comp, x);
+		return m_impl.upper_bound(x);
 	}
 
 	template <typename K,
@@ -736,21 +731,21 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator upper_bound(K const& x) const
 	{
-		return m_impl.upper_bound(m_comp, x);
+		return m_impl.upper_bound(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	pair<iterator, iterator>
 	equal_range(key_type const& x)
 	{
-		return m_impl.equal_range(m_comp, x);
+		return m_impl.equal_range(x);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	pair<const_iterator, const_iterator>
 	equal_range(key_type const& x) const
 	{
-		return m_impl.equal_range(m_comp, x);
+		return m_impl.equal_range(x);
 	}
 
 	template <typename K,
@@ -760,7 +755,7 @@ public:
 	pair<iterator, iterator>
 	equal_range(K const& x)
 	{
-		return m_impl.equal_range(m_comp, x);
+		return m_impl.equal_range(x);
 	}
 
 	template <typename K,
@@ -770,7 +765,7 @@ public:
 	pair<const_iterator, const_iterator>
 	equal_range(K const& x) const
 	{
-		return m_impl.equal_range(m_comp, x);
+		return m_impl.equal_range(x);
 	}
 
 private:

@@ -13,6 +13,7 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/functional/less.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
@@ -36,8 +37,10 @@ namespace hamon
 namespace detail
 {
 
-template <bool Multi, typename ValueType,
-	typename KeyType = ValueType,
+template <bool Multi,
+	typename KeyType,
+	typename ValueType = KeyType,
+	typename Compare = hamon::less<>,
 	typename SizeType = hamon::size_t,
 	typename DifferenceType = hamon::ptrdiff_t>
 struct red_black_tree
@@ -55,7 +58,8 @@ public:
 	using iterator       = hamon::detail::red_black_tree_iterator<red_black_tree, false>;
 	using const_iterator = hamon::detail::red_black_tree_iterator<red_black_tree, true>;
 
-private:
+public:
+	HAMON_NO_UNIQUE_ADDRESS Compare m_comp;
 	Node* m_root{};
 	Node* m_leftmost{};
 	Node* m_rightmost{};
@@ -64,11 +68,17 @@ private:
 public:
 	red_black_tree() = default;
 
+	explicit HAMON_CXX14_CONSTEXPR
+	red_black_tree(Compare const& comp)
+		: m_comp(comp)
+	{}
+
 	red_black_tree(red_black_tree const&) = delete;
 
 	HAMON_CXX14_CONSTEXPR
 	red_black_tree(red_black_tree&& x)
-		: m_root(hamon::exchange(x.m_root, nullptr))
+		: m_comp(hamon::move(x.m_comp))
+		, m_root(hamon::exchange(x.m_root, nullptr))
 		, m_leftmost(hamon::exchange(x.m_leftmost, nullptr))
 		, m_rightmost(hamon::exchange(x.m_rightmost, nullptr))
 		, m_size(hamon::exchange(x.m_size, size_type{}))
@@ -86,6 +96,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	swap(red_black_tree& x) HAMON_NOEXCEPT
 	{
+		hamon::swap(m_comp,      x.m_comp);
 		hamon::swap(m_root,      x.m_root);
 		hamon::swap(m_leftmost,  x.m_leftmost);
 		hamon::swap(m_rightmost, x.m_rightmost);
@@ -154,51 +165,51 @@ public:
 		return to_const_iterator(nullptr);
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR iterator
-	find(Compare const& comp, K const& x) const
+	find(K const& x) const
 	{
-		auto r = this->lower_bound(comp, x);
-		if (r != this->end() && !comp(x, *r))
+		auto r = this->lower_bound(x);
+		if (r != this->end() && !m_comp(x, *r))
 		{
 			return r;
 		}
 		return this->end();
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR size_type
-	count(Compare const& comp, K const& x) const
+	count(K const& x) const
 	{
 		if (Multi)
 		{
-			auto r = this->equal_range(comp, x);
+			auto r = this->equal_range(x);
 			return static_cast<size_type>(
 				hamon::ranges::distance(r.first, r.second));
 		}
 		else
 		{
-			return this->contains(comp, x) ? 1 : 0;
+			return this->contains(x) ? 1 : 0;
 		}
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	contains(Compare const& comp, K const& x) const
+	contains(K const& x) const
 	{
-		return this->find(comp, x) != this->end();
+		return this->find(x) != this->end();
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR iterator
-	lower_bound(Compare const& comp, K const& x) const
+	lower_bound(K const& x) const
 	{
 		if (m_root == nullptr)
 		{
 			return this->end();
 		}
 
-		auto r = Algo::lower_bound(m_root, x, comp);
+		auto r = Algo::lower_bound(m_root, x, m_comp);
 		if (r.second == Algo::ChildDir::Right)
 		{
 			return to_iterator(Algo::next(r.first));
@@ -206,16 +217,16 @@ public:
 		return to_iterator(r.first);
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR iterator
-	upper_bound(Compare const& comp, K const& x) const
+	upper_bound(K const& x) const
 	{
 		if (m_root == nullptr)
 		{
 			return this->end();
 		}
 
-		auto r = Algo::upper_bound(m_root, x, comp);
+		auto r = Algo::upper_bound(m_root, x, m_comp);
 		if (r.second == Algo::ChildDir::Right)
 		{
 			return to_iterator(Algo::next(r.first));
@@ -223,16 +234,16 @@ public:
 		return to_iterator(r.first);
 	}
 
-	template <typename Compare, typename K>
+	template <typename K>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
 	pair<iterator, iterator>
-	equal_range(Compare const& comp, K const& x) const
+	equal_range(K const& x) const
 	{
 		// TODO unique な場合はもっと効率的に実装できる
 		return
 		{
-			this->lower_bound(comp, x),
-			this->upper_bound(comp, x)
+			this->lower_bound(x),
+			this->upper_bound(x)
 		};
 	}
 
@@ -260,9 +271,8 @@ private:
 	}
 
 public:
-	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	insert_node(Compare const& comp, Node* node)
+	insert_node(Node* node)
 	{
 		if (node == nullptr)
 		{
@@ -278,7 +288,7 @@ public:
 			return {to_iterator(node), true};
 		}
 
-		auto r = Algo::find_to_insert(comp, node->value(), m_root, Multi);
+		auto r = Algo::find_to_insert(m_comp, node->value(), m_root, Multi);
 		if (r.second != Algo::ChildDir::None)
 		{
 			Algo::insert_at(r.first, r.second, node, m_root, m_leftmost, m_rightmost);
@@ -291,9 +301,8 @@ public:
 		}
 	}
 
-	template <typename Compare>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	insert_node_hint(Compare const& comp, const_iterator hint, Node* node)
+	insert_node_hint(const_iterator hint, Node* node)
 	{
 		if (node == nullptr)
 		{
@@ -309,7 +318,7 @@ public:
 			return {to_iterator(node), true};
 		}
 
-		auto r = Algo::find_to_insert_hint(comp, node->value(), m_root, Multi, hint, this->cbegin(), this->cend());
+		auto r = Algo::find_to_insert_hint(m_comp, node->value(), m_root, Multi, hint, this->cbegin(), this->cend());
 		if (r.second != Algo::ChildDir::None)
 		{
 			Algo::insert_at(r.first, r.second, node, m_root, m_leftmost, m_rightmost);
@@ -322,9 +331,9 @@ public:
 		}
 	}
 
-	template <typename Compare, typename Allocator, typename K, typename... Args>
+	template <typename Allocator, typename K, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	try_emplace(Compare const& comp, Allocator& alloc, K const& k, Args&&... args)
+	try_emplace(Allocator& alloc, K const& k, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
@@ -336,7 +345,7 @@ public:
 			return {to_iterator(new_node), true};
 		}
 
-		auto r = Algo::find_to_insert(comp, k, m_root, Multi);
+		auto r = Algo::find_to_insert(m_comp, k, m_root, Multi);
 		if (r.second != Algo::ChildDir::None)
 		{
 			auto new_node = construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
@@ -350,9 +359,9 @@ public:
 		}
 	}
 
-	template <typename Compare, typename Allocator, typename K, typename... Args>
+	template <typename Allocator, typename K, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	try_emplace_hint(Compare const& comp, Allocator& alloc, const_iterator hint, K const& k, Args&&... args)
+	try_emplace_hint(Allocator& alloc, const_iterator hint, K const& k, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
@@ -364,7 +373,7 @@ public:
 			return {to_iterator(new_node), true};
 		}
 
-		auto r = Algo::find_to_insert_hint(comp, k, m_root, Multi, hint, this->cbegin(), this->cend());
+		auto r = Algo::find_to_insert_hint(m_comp, k, m_root, Multi, hint, this->cbegin(), this->cend());
 		if (r.second != Algo::ChildDir::None)
 		{
 			auto new_node = construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
@@ -379,7 +388,7 @@ public:
 	}
 
 private:
-	template <typename Compare, typename Allocator, typename Arg0, typename... Args,
+	template <typename Allocator, typename Arg0, typename... Args,
 		typename = hamon::enable_if_t<
 			hamon::disjunction<
 				hamon::is_same<hamon::remove_cvref_t<Arg0>, hamon::remove_cvref_t<value_type>>,
@@ -389,9 +398,9 @@ private:
 	>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace_impl(hamon::detail::overload_priority<1>,
-		Compare const& comp, Allocator& alloc, Arg0&& arg0, Args&&... args)
+		Allocator& alloc, Arg0&& arg0, Args&&... args)
 	{
-		auto r = Algo::find_to_insert(comp, hamon::forward<Arg0>(arg0), m_root, Multi);
+		auto r = Algo::find_to_insert(m_comp, hamon::forward<Arg0>(arg0), m_root, Multi);
 		if (r.second != Algo::ChildDir::None)
 		{
 			auto new_node = construct_node(alloc, hamon::forward<Arg0>(arg0), hamon::forward<Args>(args)...);	// may throw
@@ -405,13 +414,13 @@ private:
 		}
 	}
 
-	template <typename Compare, typename Allocator, typename... Args>
+	template <typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace_impl(hamon::detail::overload_priority<0>,
-		Compare const& comp, Allocator& alloc, Args&&... args)
+		Allocator& alloc, Args&&... args)
 	{
 		auto new_node = construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
-		auto r = Algo::find_to_insert(comp, new_node->value(), m_root, Multi);
+		auto r = Algo::find_to_insert(m_comp, new_node->value(), m_root, Multi);
 		if (r.second != Algo::ChildDir::None)
 		{
 			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
@@ -425,7 +434,7 @@ private:
 		}
 	}
 
-	template <typename Compare, typename Allocator, typename Arg0, typename... Args,
+	template <typename Allocator, typename Arg0, typename... Args,
 		typename = hamon::enable_if_t<
 			hamon::disjunction<
 				hamon::is_same<hamon::remove_cvref_t<Arg0>, hamon::remove_cvref_t<value_type>>,
@@ -435,9 +444,9 @@ private:
 	>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace_hint_impl(hamon::detail::overload_priority<1>,
-		Compare const& comp, Allocator& alloc, const_iterator position, Arg0&& arg0, Args&&... args)
+		Allocator& alloc, const_iterator position, Arg0&& arg0, Args&&... args)
 	{
-		auto r = Algo::find_to_insert_hint(comp, hamon::forward<Arg0>(arg0), m_root, Multi, position, this->cbegin(), this->cend());
+		auto r = Algo::find_to_insert_hint(m_comp, hamon::forward<Arg0>(arg0), m_root, Multi, position, this->cbegin(), this->cend());
 		if (r.second != Algo::ChildDir::None)
 		{
 			auto new_node = construct_node(alloc, hamon::forward<Arg0>(arg0), hamon::forward<Args>(args)...);	// may throw
@@ -451,13 +460,13 @@ private:
 		}
 	}
 
-	template <typename Compare, typename Allocator, typename... Args>
+	template <typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace_hint_impl(hamon::detail::overload_priority<0>,
-		Compare const& comp, Allocator& alloc, const_iterator position, Args&&... args)
+		Allocator& alloc, const_iterator position, Args&&... args)
 	{
 		auto new_node = construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
-		auto r = Algo::find_to_insert_hint(comp, new_node->value(), m_root, Multi, position, this->cbegin(), this->cend());
+		auto r = Algo::find_to_insert_hint(m_comp, new_node->value(), m_root, Multi, position, this->cbegin(), this->cend());
 		if (r.second != Algo::ChildDir::None)
 		{
 			Algo::insert_at(r.first, r.second, new_node, m_root, m_leftmost, m_rightmost);
@@ -472,9 +481,9 @@ private:
 	}
 
 public:
-	template <typename Compare, typename Allocator, typename... Args>
+	template <typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
-	emplace(Compare const& comp, Allocator& alloc, Args&&... args)
+	emplace(Allocator& alloc, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
@@ -487,12 +496,12 @@ public:
 		}
 
 		return emplace_impl(hamon::detail::overload_priority<1>{},
-			comp, alloc, hamon::forward<Args>(args)...);
+			alloc, hamon::forward<Args>(args)...);
 	}
 
-	template <typename Compare, typename Allocator, typename... Args>
+	template <typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
-	emplace_hint(Compare const& comp, Allocator& alloc, const_iterator position, Args&&... args)
+	emplace_hint(Allocator& alloc, const_iterator position, Args&&... args)
 	{
 		if (m_root == nullptr)
 		{
@@ -505,18 +514,18 @@ public:
 		}
 
 		return emplace_hint_impl(hamon::detail::overload_priority<1>{},
-			comp, alloc, position, hamon::forward<Args>(args)...).first;
+			alloc, position, hamon::forward<Args>(args)...).first;
 	}
 
 HAMON_WARNING_POP()
 
-	template <typename Compare, typename Allocator, typename Iterator, typename Sentinel>
+	template <typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void
-	insert_range(Compare const& comp, Allocator& alloc, Iterator first, Sentinel last)
+	insert_range(Allocator& alloc, Iterator first, Sentinel last)
 	{
 		for (; first != last; ++first)
 		{
-			this->emplace(comp, alloc, *first);
+			this->emplace(alloc, *first);
 		}
 	}
 
@@ -615,18 +624,18 @@ public:
 		m_size = 0;
 	}
 
-	template <typename Compare, typename Tree, typename Compare2>
+	template <typename Tree>
 	HAMON_CXX14_CONSTEXPR void
-	merge(Compare const& comp, Tree& tree, Compare2 const& comp2)
+	merge(Tree& tree)
 	{
 		for (auto it = tree.begin(); it != tree.end(); )
 		{
 			auto next = hamon::next(it);
 			auto node = tree.extract(it);
-			auto r = this->insert_node(comp, node);
+			auto r = this->insert_node(node);
 			if (!r.second)
 			{
-				tree.insert_node_hint(comp2, next, node);
+				tree.insert_node_hint(next, node);
 			}
 			it = next;
 		}
