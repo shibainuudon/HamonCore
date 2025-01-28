@@ -46,18 +46,18 @@ template <bool Multi,
 	typename DifferenceType = hamon::ptrdiff_t>
 struct red_black_tree
 {
-public:
-	using value_type = ValueType;
-	using key_type = KeyType;
-	using size_type = SizeType;
-	using difference_type = DifferenceType;
 private:
-	using Node = red_black_tree_node<value_type>;
+	using Node = red_black_tree_node<ValueType>;
 	using Algo = red_black_tree_algo<Node>;
+
 public:
-	using node_type = Node;
-	using iterator       = hamon::detail::red_black_tree_iterator<red_black_tree, false>;
-	using const_iterator = hamon::detail::red_black_tree_iterator<red_black_tree, true>;
+	using value_type      = ValueType;
+	using key_type        = KeyType;
+	using size_type       = SizeType;
+	using difference_type = DifferenceType;
+	using node_type       = Node;
+	using iterator        = hamon::detail::red_black_tree_iterator<red_black_tree, false>;
+	using const_iterator  = hamon::detail::red_black_tree_iterator<red_black_tree, true>;
 
 private:
 	HAMON_NO_UNIQUE_ADDRESS Compare m_comp;
@@ -77,7 +77,7 @@ public:
 	red_black_tree(red_black_tree const&) = delete;
 
 	HAMON_CXX14_CONSTEXPR
-	red_black_tree(red_black_tree&& x)
+	red_black_tree(red_black_tree&& x) HAMON_NOEXCEPT
 		: m_comp(hamon::move(x.m_comp))
 		, m_root(hamon::exchange(x.m_root, nullptr))
 		, m_leftmost(hamon::exchange(x.m_leftmost, nullptr))

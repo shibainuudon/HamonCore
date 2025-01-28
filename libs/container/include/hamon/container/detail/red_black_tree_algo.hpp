@@ -192,13 +192,17 @@ struct red_black_tree_algo
 	{
 		HAMON_ASSERT(p != nullptr);
 		HAMON_ASSERT(p->m_right != nullptr);
+
 		Node* y = p->m_right;
 		p->m_right = y->m_left;
+
 		if (p->m_right != nullptr)
 		{
 			p->m_right->m_parent = p;
 		}
+
 		y->m_parent = p->m_parent;
+
 		if (p->m_parent)
 		{
 			if (p->is_left_child())
@@ -210,6 +214,7 @@ struct red_black_tree_algo
 				p->m_parent->m_right = y;
 			}
 		}
+
 		y->m_left = p;
 		p->m_parent = y;
 	}
@@ -219,13 +224,17 @@ struct red_black_tree_algo
 	{
 		HAMON_ASSERT(p != nullptr);
 		HAMON_ASSERT(p->m_left != nullptr);
+
 		Node* y = p->m_left;
 		p->m_left = y->m_right;
+
 		if (p->m_left != nullptr)
 		{
 			p->m_left->m_parent = p;
 		}
+
 		y->m_parent = p->m_parent;
+
 		if (p->m_parent)
 		{
 			if (p->is_left_child())
@@ -237,6 +246,7 @@ struct red_black_tree_algo
 				p->m_parent->m_right = y;
 			}
 		}
+
 		y->m_right = p;
 		p->m_parent = y;
 	}

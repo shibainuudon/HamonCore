@@ -240,7 +240,7 @@ tree_equal(Tree const& t, std::initializer_list<T> il)
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-HAMON_CXX20_CONSTEXPR bool test1()
+HAMON_CXX20_CONSTEXPR bool test_unique()
 {
 	using Tree = hamon::detail::red_black_tree<false, int>;
 	using Node = typename Tree::node_type;
@@ -663,11 +663,112 @@ HAMON_CXX20_CONSTEXPR bool test1()
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
 	}
+	{
+		Tree t;
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 1);
+		VERIFY(tree_equal(t, {}));
+
+		t.emplace_hint(alloc, t.begin(), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10}));
+
+		t.emplace_hint(alloc, t.begin(), 20);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20}));
+
+		t.emplace_hint(alloc, t.begin(), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20}));
+
+		t.emplace_hint(alloc, t.end(), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20}));
+
+		t.emplace_hint(alloc, t.begin(), 20);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20}));
+
+		t.emplace_hint(alloc, t.end(), 20);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20}));
+
+		t.emplace_hint(alloc, t.begin(), 30);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 20, 30}));
+
+		t.emplace_hint(alloc, t.end(), 40);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {10, 20, 30, 40}));
+
+		t.emplace_hint(alloc, t.begin(), 0);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 10, 20, 30, 40}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 1), 5);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 5, 10, 20, 30, 40}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 2), 15);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 5, 10, 15, 20, 30, 40}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 2), 13);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 5, 10, 13, 15, 20, 30, 40}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 2), 8);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 5, 8, 10, 13, 15, 20, 30, 40}));
+
+		t.erase(alloc, hamon::next(t.begin(), 0));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 8, 10, 13, 15, 20, 30, 40}));
+
+		t.erase(alloc, hamon::next(t.begin(), 3));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 8, 10, 15, 20, 30, 40}));
+
+		t.erase(alloc, hamon::next(t.begin(), 5));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 8, 10, 15, 20, 40}));
+
+		t.erase(alloc, hamon::next(t.begin(), 5));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 8, 10, 15, 20}));
+
+		t.erase(alloc, hamon::next(t.begin(), 4));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 8, 10, 15}));
+
+		t.clear(alloc);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 1);
+		VERIFY(tree_equal(t, {}));
+	}
 
 	return true;
 }
 
-HAMON_CXX20_CONSTEXPR bool test2()
+HAMON_CXX20_CONSTEXPR bool test_multi()
 {
 	using Tree = hamon::detail::red_black_tree<true, int>;
 	using Node = typename Tree::node_type;
@@ -730,6 +831,102 @@ HAMON_CXX20_CONSTEXPR bool test2()
 		VERIFY(tree_black_height(t) == 1);
 		VERIFY(tree_equal(t, {}));
 	}
+	{
+		Tree t;
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 1);
+		VERIFY(tree_equal(t, {}));
+
+		t.emplace_hint(alloc, t.end(), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10}));
+
+		t.emplace_hint(alloc, t.end(), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {10, 10}));
+
+		t.emplace_hint(alloc, t.end(), 5);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 2);
+		VERIFY(tree_equal(t, {5, 10, 10}));
+
+		t.emplace_hint(alloc, t.begin(), 5);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 5, 10, 10}));
+
+		t.emplace_hint(alloc, t.begin(), 7);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 5, 7, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 2), 7);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 5, 7, 7, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 2), 8);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 5, 7, 7, 8, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 1), 6);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {5, 5, 6, 7, 7, 8, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 1), 4);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {4, 5, 5, 6, 7, 7, 8, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 7), 9);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {4, 5, 5, 6, 7, 7, 8, 9, 10, 10}));
+
+		t.emplace_hint(alloc, hamon::next(t.begin(), 7), 10);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.emplace(alloc, 0);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 3);
+		VERIFY(tree_equal(t, {0, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.emplace(alloc, 1);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 4);
+		VERIFY(tree_equal(t, {0, 1, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.emplace(alloc, 2);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 4);
+		VERIFY(tree_equal(t, {0, 1, 2, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.emplace(alloc, 2);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 4);
+		VERIFY(tree_equal(t, {0, 1, 2, 2, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.emplace(alloc, 3);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 4);
+		VERIFY(tree_equal(t, {0, 1, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 10}));
+
+		t.erase(alloc, hamon::next(t.begin(), 15));
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 4);
+		VERIFY(tree_equal(t, {0, 1, 2, 2, 3, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10}));
+
+		t.clear(alloc);
+		VERIFY(tree_invariant(t));
+		VERIFY(tree_black_height(t) == 1);
+		VERIFY(tree_equal(t, {}));
+	}
 
 	return true;
 }
@@ -738,8 +935,8 @@ HAMON_CXX20_CONSTEXPR bool test2()
 
 GTEST_TEST(ContainerTest, RedBlackTreeTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_unique());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test_multi());
 }
 
 }	// namespace red_black_tree_test
