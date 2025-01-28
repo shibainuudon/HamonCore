@@ -25,7 +25,9 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		container
 		functional
 		iterator
+		limits
 		memory
+		pair
 		ranges
 		type_traits
 		utility

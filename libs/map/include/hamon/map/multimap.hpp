@@ -24,27 +24,43 @@
 #include <hamon/container/detail/range_mapped_type.hpp>
 #include <hamon/container/detail/has_is_transparent.hpp>
 
+#include <hamon/algorithm/equal.hpp>
+#include <hamon/algorithm/lexicographical_compare_three_way.hpp>
+#include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/reverse_iterator.hpp>
+#include <hamon/limits/numeric_limits.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/equals_allocator.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
+#include <hamon/pair/pair.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
-
-#include <hamon/algorithm.hpp>
-#include <hamon/iterator.hpp>
-#include <hamon/memory.hpp>
-#include <hamon/pair.hpp>
-#include <hamon/ranges.hpp>
-#include <hamon/type_traits.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/ranges/end.hpp>
+#include <hamon/ranges/from_range_t.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/is_nothrow_move_assignable.hpp>
+#include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/type_identity.hpp>
+#include <hamon/utility/forward.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/utility/swap.hpp>
+#include <hamon/config.hpp>
 #include <initializer_list>
-
-// TODO:
-// * インクルードファイルの整理
 
 namespace hamon
 {
@@ -164,9 +180,8 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	multimap(multimap const& x)
 		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
-		, m_impl(x.m_impl.m_comp)
 	{
-		this->insert_range(x);	// TODO もっと効率的にコピーできる
+		m_impl.copy_from(m_allocator, x.m_impl);
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -179,9 +194,8 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	multimap(multimap const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
-		, m_impl(x.m_impl.m_comp)
 	{
-		this->insert_range(x);	// TODO もっと効率的にコピーできる
+		m_impl.copy_from(m_allocator, x.m_impl);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -190,16 +204,12 @@ public:
 			hamon::allocator_traits<Allocator>::is_always_equal::value &&
 			hamon::is_nothrow_move_constructible<Compare>::value)
 		: m_allocator(a)
-		, m_impl(hamon::move(x.m_impl.m_comp))
 	{
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
-			// アロケータが異なる場合は、
-			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			m_impl.insert_range(m_allocator,
-				hamon::make_move_iterator(hamon::ranges::begin(x)),
-				hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
-			// TODO もっと効率的にムーブできる
+			// アロケータが異なる場合は要素をstealすることはできないので、
+			// 要素をムーブ代入しなければいけない。
+			m_impl.move_from(m_allocator, x.m_impl);	// may throw
 		}
 		else
 		{
@@ -223,7 +233,6 @@ public:
 		}
 
 		this->clear();
-		m_impl.m_comp = x.m_impl.m_comp;
 
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
@@ -231,7 +240,7 @@ public:
 			hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
 		}
 
-		this->insert_range(x);	// TODO もっと効率的にコピーできる
+		m_impl.copy_from(m_allocator, x.m_impl);
 
 		return *this;
 	}
@@ -247,7 +256,6 @@ public:
 		}
 
 		this->clear();
-		m_impl.m_comp = hamon::move(x.m_impl.m_comp);
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
@@ -257,12 +265,9 @@ public:
 		{
 			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 			{
-				// アロケータを伝播させない場合は、
-				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-				m_impl.insert_range(m_allocator,
-					hamon::make_move_iterator(hamon::ranges::begin(x.m_impl)),
-					hamon::make_move_iterator(hamon::ranges::end(x.m_impl)));	// may throw
-				// TODO もっと効率的にムーブできる
+				// アロケータを伝播させない場合は要素をstealすることはできないので、
+				// 要素をムーブ代入しなければいけない。
+				m_impl.move_from(m_allocator, x.m_impl);	// may throw
 				return *this;
 			}
 		}
@@ -422,9 +427,7 @@ HAMON_WARNING_POP()
 	template <typename P,
 		// [multimap.modifiers]/1
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<value_type, P&&>::value
-		>
-	>
+			hamon::is_constructible<value_type, P&&>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(P&& x)
 	{
@@ -446,9 +449,7 @@ HAMON_WARNING_POP()
 	template <typename P,
 		// [multimap.modifiers]/1
 		typename = hamon::enable_if_t<
-			hamon::is_constructible<value_type, P&&>::value
-		>
-	>
+			hamon::is_constructible<value_type, P&&>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, P&& x)
 	{
@@ -499,9 +500,7 @@ HAMON_WARNING_POP()
 			!hamon::disjunction<
 				hamon::is_convertible<K&&, iterator>,
 				hamon::is_convertible<K&&, const_iterator>
-			>::value
-		>
-	>
+			>::value>>
 	HAMON_CXX14_CONSTEXPR node_type
 	extract(K&& x)
 	{
@@ -553,9 +552,7 @@ HAMON_WARNING_POP()
 			!hamon::disjunction<
 				hamon::is_convertible<K&&, iterator>,
 				hamon::is_convertible<K&&, const_iterator>
-			>::value
-		>
-	>
+			>::value>>
 	HAMON_CXX14_CONSTEXPR size_type
 	erase(K&& x)
 	{
@@ -621,13 +618,13 @@ HAMON_WARNING_POP()
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	key_compare key_comp() const
 	{
-		return m_impl.m_comp.comp;
+		return m_impl.comp().comp;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	value_compare value_comp() const
 	{
-		return m_impl.m_comp.comp;
+		return m_impl.comp().comp;
 	}
 
 	// map operations

@@ -11,6 +11,7 @@
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -53,7 +54,11 @@ private:
 
 public:
 	HAMON_CXX11_CONSTEXPR
-	heterogeneous_compare(Compare const& c) noexcept
+	heterogeneous_compare()
+		: comp() {}
+
+	HAMON_CXX11_CONSTEXPR
+	heterogeneous_compare(Compare const& c)
 		: comp(c) {}
 
 	template <typename Lhs, typename Rhs>

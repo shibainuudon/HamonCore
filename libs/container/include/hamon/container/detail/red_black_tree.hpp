@@ -18,6 +18,7 @@
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/prev.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
+#include <hamon/iterator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/pair/pair.hpp>
@@ -58,7 +59,7 @@ public:
 	using iterator       = hamon::detail::red_black_tree_iterator<red_black_tree, false>;
 	using const_iterator = hamon::detail::red_black_tree_iterator<red_black_tree, true>;
 
-public:
+private:
 	HAMON_NO_UNIQUE_ADDRESS Compare m_comp;
 	Node* m_root{};
 	Node* m_leftmost{};
@@ -101,6 +102,12 @@ public:
 		hamon::swap(m_leftmost,  x.m_leftmost);
 		hamon::swap(m_rightmost, x.m_rightmost);
 		hamon::swap(m_size,      x.m_size);
+	}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Compare const&
+	comp() const noexcept
+	{
+		return m_comp;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Node*
@@ -639,6 +646,20 @@ public:
 			}
 			it = next;
 		}
+	}
+
+	template <typename Allocator>
+	HAMON_CXX14_CONSTEXPR void copy_from(Allocator& alloc, red_black_tree const& tree)
+	{
+		this->m_comp = tree.m_comp;
+		this->insert_range(alloc, tree.begin(), tree.end());
+	}
+
+	template <typename Allocator>
+	HAMON_CXX14_CONSTEXPR void move_from(Allocator& alloc, red_black_tree const& tree)
+	{
+		this->m_comp = hamon::move(tree.m_comp);
+		this->insert_range(alloc, hamon::make_move_iterator(tree.begin()), hamon::make_move_iterator(tree.end()));
 	}
 };
 

@@ -8,6 +8,7 @@
  */
 
 #include <hamon/map/map.hpp>
+#include <hamon/array.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/tuple.hpp>

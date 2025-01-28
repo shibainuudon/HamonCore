@@ -8,6 +8,8 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/pair.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>

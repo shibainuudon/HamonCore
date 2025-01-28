@@ -8,6 +8,7 @@
 
 #include <hamon/map/map.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>

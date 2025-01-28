@@ -7,6 +7,7 @@
  */
 
 #include <hamon/map/multimap.hpp>
+#include <hamon/array.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/tuple.hpp>
