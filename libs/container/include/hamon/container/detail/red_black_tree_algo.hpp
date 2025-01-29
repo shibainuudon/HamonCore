@@ -639,7 +639,7 @@ struct red_black_tree_algo
 							w->m_color = Node::Color::Red;//__is_black_ = false;
 							x              = w->m_parent;
 							// x can no longer be null
-							if (x == root || !x->is_black())
+							if (!x->is_black() || x == root || x->m_parent == nullptr)
 							{
 								x->m_color = Node::Color::Black;//__is_black_ = true;
 								break;
