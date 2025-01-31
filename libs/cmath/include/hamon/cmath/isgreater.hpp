@@ -7,6 +7,19 @@
 #ifndef HAMON_CMATH_ISGREATER_HPP
 #define HAMON_CMATH_ISGREATER_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::isgreater;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
@@ -21,7 +34,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 isgreater_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -45,7 +58,7 @@ isgreater_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *			ただし、isgreaterはxとyが順序付けられていない場合に浮動小数点例外を生成しない。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isgreater(FloatType x, FloatType y) HAMON_NOEXCEPT
 {
 	return detail::isgreater_impl(x, y);
@@ -55,7 +68,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
 	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
 >
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isgreater(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2>;
@@ -63,5 +76,7 @@ isgreater(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_ISGREATER_HPP

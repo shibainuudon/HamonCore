@@ -7,6 +7,19 @@
 #ifndef HAMON_CMATH_SIGNBIT_HPP
 #define HAMON_CMATH_SIGNBIT_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::signbit;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/config.hpp>
@@ -22,7 +35,7 @@ namespace hamon
  *	これはconstexpr関数にするための制限。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 signbit(Arithmetic arg) HAMON_NOEXCEPT
 {
 	// argがNANのときのために
@@ -31,5 +44,7 @@ signbit(Arithmetic arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_SIGNBIT_HPP

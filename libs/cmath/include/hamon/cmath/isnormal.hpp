@@ -7,6 +7,19 @@
 #ifndef HAMON_CMATH_ISNORMAL_HPP
 #define HAMON_CMATH_ISNORMAL_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::isnormal;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/issubnormal.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -23,7 +36,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 isnormal_impl(FloatType x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -57,7 +70,7 @@ isnormal_impl(FloatType x) HAMON_NOEXCEPT
  *	@note	ArithmeticTypeが整数型のときはdoubleにキャストしてから調べる。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isnormal(Arithmetic arg) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;
@@ -65,5 +78,7 @@ isnormal(Arithmetic arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_ISNORMAL_HPP

@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_LDEXP_HPP
 #define HAMON_CMATH_LDEXP_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::ldexp;
+using std::ldexpf;
+using std::ldexpl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -16,7 +31,6 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -47,7 +61,7 @@ ldexp_unchecked(long double x, int exp) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 ldexp_unchecked(T x, int exp) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -65,7 +79,7 @@ ldexp_unchecked(T x, int exp) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 ldexp_impl(FloatType x, int exp) HAMON_NOEXCEPT
 {
 	return
@@ -90,10 +104,17 @@ ldexp_impl(FloatType x, int exp) HAMON_NOEXCEPT
  *	x が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 ldexp(FloatType x, int exp) HAMON_NOEXCEPT
 {
 	return detail::ldexp_impl(x, exp);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+ldexp(IntegralType x, int exp) HAMON_NOEXCEPT
+{
+	return detail::ldexp_impl(static_cast<double>(x), exp);
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -108,13 +129,8 @@ ldexpl(long double x, int exp) HAMON_NOEXCEPT
 	return detail::ldexp_impl(x, exp);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-ldexp(IntegralType x, int exp) HAMON_NOEXCEPT
-{
-	return detail::ldexp_impl(static_cast<double>(x), exp);
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_LDEXP_HPP

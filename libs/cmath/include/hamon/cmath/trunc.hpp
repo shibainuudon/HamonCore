@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_TRUNC_HPP
 #define HAMON_CMATH_TRUNC_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::trunc;
+using std::truncf;
+using std::truncl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -45,7 +60,7 @@ trunc_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 trunc_unchecked(T x) HAMON_NOEXCEPT
 {
 	return x < 0 ?
@@ -56,7 +71,7 @@ trunc_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 trunc_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -81,10 +96,17 @@ trunc_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 trunc(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::trunc_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+trunc(IntegralType arg) HAMON_NOEXCEPT
+{
+	return static_cast<double>(arg);
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -99,13 +121,8 @@ truncl(long double arg) HAMON_NOEXCEPT
 	return detail::trunc_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-trunc(IntegralType arg) HAMON_NOEXCEPT
-{
-	return static_cast<double>(arg);
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_TRUNC_HPP

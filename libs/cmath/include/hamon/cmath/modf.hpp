@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_MODF_HPP
 #define HAMON_CMATH_MODF_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::modf;
+using std::modff;
+using std::modfl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -17,7 +32,6 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -26,7 +40,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR T
+HAMON_CXX14_CONSTEXPR T
 modf_unchecked(T x, T* iptr) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -40,7 +54,7 @@ modf_unchecked(T x, T* iptr) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CXX14_CONSTEXPR FloatType
+HAMON_CXX14_CONSTEXPR FloatType
 modf_impl(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
 {
 	if (hamon::iszero(x))
@@ -78,14 +92,14 @@ modf_impl(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
  *	x が NaN の場合、NaN を返し、*iptrに NaN がセットされる。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX14_CONSTEXPR FloatType
+HAMON_CXX14_CONSTEXPR FloatType
 modf(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
 {
 	return detail::modf_impl(x, iptr);
 }
 
 template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CXX14_CONSTEXPR double
+HAMON_CXX14_CONSTEXPR double
 modf(IntegralType x, double* iptr) HAMON_NOEXCEPT
 {
 	return detail::modf_impl(static_cast<double>(x), iptr);
@@ -104,5 +118,7 @@ modfl(long double x, long double* iptr) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_MODF_HPP

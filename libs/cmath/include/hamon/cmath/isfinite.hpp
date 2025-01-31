@@ -7,6 +7,19 @@
 #ifndef HAMON_CMATH_ISFINITE_HPP
 #define HAMON_CMATH_ISFINITE_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::isfinite;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/arithmetic.hpp>
@@ -21,7 +34,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR bool
+HAMON_CXX11_CONSTEXPR bool
 isfinite_impl(FloatType x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_USE_BUILTIN_CMATH_FUNCTION)
@@ -43,7 +56,7 @@ isfinite_impl(FloatType x) HAMON_NOEXCEPT
  *	@note	argが整数型のときはdoubleにキャストしてから調べる。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isfinite(Arithmetic arg) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;
@@ -51,5 +64,7 @@ isfinite(Arithmetic arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_ISFINITE_HPP

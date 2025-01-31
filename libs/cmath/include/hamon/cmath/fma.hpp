@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_FMA_HPP
 #define HAMON_CMATH_FMA_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::fma;
+using std::fmaf;
+using std::fmal;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -18,7 +33,6 @@
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -49,7 +63,7 @@ fma_unchecked(long double x, long double y, long double z) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 fma_unchecked(T x, T y, T z) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -64,7 +78,7 @@ fma_unchecked(T x, T y, T z) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 fma_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {
 	return
@@ -101,10 +115,22 @@ fma_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	zがNaNで、x*y が 0*inf または inf*0 でない場合、NaNを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 fma(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {
 	return detail::fma_impl(x, y, z);
+}
+
+template <
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
+	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
+>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
+fma(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
+{
+	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;
+	return detail::fma_impl(static_cast<type>(x), static_cast<type>(y), static_cast<type>(z));
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -119,18 +145,8 @@ fmal(long double x, long double y, long double z) HAMON_NOEXCEPT
 	return detail::fma_impl(x, y, z);
 }
 
-template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
->
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
-fma(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT
-{
-	using type = hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>;
-	return detail::fma_impl(static_cast<type>(x), static_cast<type>(y), static_cast<type>(z));
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_FMA_HPP

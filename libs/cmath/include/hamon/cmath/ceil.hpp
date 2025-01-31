@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_CEIL_HPP
 #define HAMON_CMATH_CEIL_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::ceil;
+using std::ceilf;
+using std::ceill;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/trunc.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -46,7 +61,7 @@ ceil_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 ceil_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 {
 	return
@@ -56,7 +71,7 @@ ceil_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 ceil_unchecked(T x) HAMON_NOEXCEPT
 {
 	return ceil_unchecked_1(x, trunc_unchecked(x));
@@ -65,7 +80,7 @@ ceil_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 ceil_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -80,10 +95,17 @@ ceil_impl(FloatType x) HAMON_NOEXCEPT
  *	@brief	std::ceil のconstexpr版
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 ceil(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::ceil_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+ceil(IntegralType arg) HAMON_NOEXCEPT
+{
+	return static_cast<double>(arg);
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -98,13 +120,8 @@ ceill(long double arg) HAMON_NOEXCEPT
 	return detail::ceil_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-ceil(IntegralType arg) HAMON_NOEXCEPT
-{
-	return static_cast<double>(arg);
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_CEIL_HPP

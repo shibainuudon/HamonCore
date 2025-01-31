@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_LOGB_HPP
 #define HAMON_CMATH_LOGB_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::logb;
+using std::logbf;
+using std::logbl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -22,7 +37,6 @@
 #include <hamon/numbers/ln10.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -31,7 +45,7 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 log_a(T x, T y)
 {
 	return
@@ -63,7 +77,7 @@ logb_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
@@ -73,7 +87,7 @@ logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_li
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
@@ -83,7 +97,7 @@ logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_li
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
@@ -93,7 +107,7 @@ logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_li
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
@@ -103,7 +117,7 @@ logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_li
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return
@@ -121,14 +135,14 @@ logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_2(T x, T x0, T exp)
 {
 	return logb_unchecked_ct_3(x, x0, x / x0, exp);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct_1(T x, T exp, T radix = hamon::numeric_limits<T>::radix)
 {
 	return logb_unchecked_ct_2(
@@ -136,7 +150,7 @@ logb_unchecked_ct_1(T x, T exp, T radix = hamon::numeric_limits<T>::radix)
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct(T x, T radix = hamon::numeric_limits<T>::radix) HAMON_NOEXCEPT
 {
 	return x < 0 ?
@@ -145,7 +159,7 @@ logb_unchecked_ct(T x, T radix = hamon::numeric_limits<T>::radix) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 logb_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -160,7 +174,7 @@ logb_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 logb_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -187,10 +201,17 @@ logb_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 logb(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::logb_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+logb(IntegralType arg) HAMON_NOEXCEPT
+{
+	return detail::logb_impl(static_cast<double>(arg));
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -205,13 +226,8 @@ logbl(long double arg) HAMON_NOEXCEPT
 	return detail::logb_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-logb(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::logb_impl(static_cast<double>(arg));
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_LOGB_HPP

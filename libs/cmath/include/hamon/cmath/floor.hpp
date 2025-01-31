@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_FLOOR_HPP
 #define HAMON_CMATH_FLOOR_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::floor;
+using std::floorf;
+using std::floorl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
@@ -46,7 +61,7 @@ floor_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 {
 	return
@@ -56,7 +71,7 @@ floor_unchecked_1(T x, T x0) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 floor_unchecked(T x) HAMON_NOEXCEPT
 {
 	return floor_unchecked_1(x, trunc_unchecked(x));
@@ -65,7 +80,7 @@ floor_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 floor_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -88,10 +103,17 @@ floor_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 floor(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::floor_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+floor(IntegralType arg) HAMON_NOEXCEPT
+{
+	return detail::floor_impl(static_cast<double>(arg));
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -106,13 +128,8 @@ floorl(long double arg) HAMON_NOEXCEPT
 	return detail::floor_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-floor(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::floor_impl(static_cast<double>(arg));
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_FLOOR_HPP

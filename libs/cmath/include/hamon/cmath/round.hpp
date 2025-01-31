@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_ROUND_HPP
 #define HAMON_CMATH_ROUND_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::round;
+using std::roundf;
+using std::roundl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
@@ -17,7 +32,6 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -48,7 +62,7 @@ round_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 round_unchecked_ct_1(T x, T x0) HAMON_NOEXCEPT
 {
 	return hamon::fabs(x - x0) < T(0.5) ?
@@ -57,14 +71,14 @@ round_unchecked_ct_1(T x, T x0) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 round_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return round_unchecked_ct_1(x, trunc_unchecked(x));
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 round_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -79,7 +93,7 @@ round_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 round_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -107,10 +121,17 @@ round_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN  の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 round(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::round_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+round(IntegralType arg) HAMON_NOEXCEPT
+{
+	return detail::round_impl(static_cast<double>(arg));
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -125,13 +146,8 @@ roundl(long double arg) HAMON_NOEXCEPT
 	return detail::round_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-round(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::round_impl(static_cast<double>(arg));
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_ROUND_HPP

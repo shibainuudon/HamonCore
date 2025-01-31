@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_LROUND_HPP
 #define HAMON_CMATH_LROUND_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::lround;
+using std::lroundf;
+using std::lroundl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/round.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -17,7 +32,6 @@
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -48,7 +62,7 @@ lround_unchecked(long double x) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR long
+HAMON_CXX11_CONSTEXPR long
 lround_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -63,7 +77,7 @@ lround_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR long
+HAMON_CXX11_CONSTEXPR long
 lround_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -93,7 +107,7 @@ lround_impl(FloatType x) HAMON_NOEXCEPT
  *	x が NaN の場合、numeric_limits<long>::min() を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR long
 lround(Arithmetic arg) HAMON_NOEXCEPT
 {
 	using type = hamon::float_promote_t<Arithmetic>;
@@ -113,5 +127,7 @@ lroundl(long double arg) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_LROUND_HPP

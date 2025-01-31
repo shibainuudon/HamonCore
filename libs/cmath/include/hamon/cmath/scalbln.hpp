@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_SCALBLN_HPP
 #define HAMON_CMATH_SCALBLN_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::scalbln;
+using std::scalblnf;
+using std::scalblnl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -17,7 +32,6 @@
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -48,14 +62,14 @@ scalbln_unchecked(long double x, long exp) HAMON_NOEXCEPT
 #else
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 scalbln_unchecked_ct(T x, long exp)
 {
 	return x * hamon::detail::pow_n(T(hamon::numeric_limits<T>::radix), exp);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 scalbln_unchecked(T x, long exp) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -70,7 +84,7 @@ scalbln_unchecked(T x, long exp) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 scalbln_impl(FloatType x, long exp) HAMON_NOEXCEPT
 {
 	return
@@ -95,10 +109,17 @@ scalbln_impl(FloatType x, long exp) HAMON_NOEXCEPT
  *	x が NaN だった場合、NaN を返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 scalbln(FloatType x, long exp) HAMON_NOEXCEPT
 {
 	return detail::scalbln_impl(x, exp);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+scalbln(IntegralType x, long exp) HAMON_NOEXCEPT
+{
+	return detail::scalbln_impl(static_cast<double>(x), exp);
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -113,13 +134,8 @@ scalblnl(long double x, long exp) HAMON_NOEXCEPT
 	return detail::scalbln_impl(x, exp);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-scalbln(IntegralType x, long exp) HAMON_NOEXCEPT
-{
-	return detail::scalbln_impl(static_cast<double>(x), exp);
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_SCALBLN_HPP

@@ -7,6 +7,21 @@
 #ifndef HAMON_CMATH_FREXP_HPP
 #define HAMON_CMATH_FREXP_HPP
 
+#include <cmath>
+
+#if defined(__cpp_lib_constexpr_cmath) && (__cpp_lib_constexpr_cmath >= 202202L)
+
+namespace hamon
+{
+
+using std::frexp;
+using std::frexpf;
+using std::frexpl;
+
+}	// namespace hamon
+
+#else
+
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -17,7 +32,6 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
-#include <cmath>
 
 namespace hamon
 {
@@ -26,7 +40,7 @@ namespace detail
 {
 
 template <typename FloatType>
-inline HAMON_CXX14_CONSTEXPR FloatType
+HAMON_CXX14_CONSTEXPR FloatType
 frexp_unchecked(FloatType x, int* exp) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -40,7 +54,7 @@ frexp_unchecked(FloatType x, int* exp) HAMON_NOEXCEPT
 }
 
 template <typename FloatType>
-inline HAMON_CXX14_CONSTEXPR FloatType
+HAMON_CXX14_CONSTEXPR FloatType
 frexp_impl(FloatType x, int* exp) HAMON_NOEXCEPT
 {
 	if (hamon::iszero(x))
@@ -72,10 +86,17 @@ frexp_impl(FloatType x, int* exp) HAMON_NOEXCEPT
  *	arg が NaN の場合、NaN を返し、*expの値は不定
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-inline HAMON_CXX14_CONSTEXPR FloatType
+HAMON_CXX14_CONSTEXPR FloatType
 frexp(FloatType arg, int* exp) HAMON_NOEXCEPT
 {
 	return detail::frexp_impl(arg, exp);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_CXX14_CONSTEXPR double
+frexp(IntegralType arg, int* exp) HAMON_NOEXCEPT
+{
+	return detail::frexp_impl(static_cast<double>(arg), exp);
 }
 
 inline HAMON_CXX14_CONSTEXPR float
@@ -90,13 +111,8 @@ frexpl(long double arg, int* exp) HAMON_NOEXCEPT
 	return detail::frexp_impl(arg, exp);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-inline HAMON_CXX14_CONSTEXPR double
-frexp(IntegralType arg, int* exp) HAMON_NOEXCEPT
-{
-	return detail::frexp_impl(static_cast<double>(arg), exp);
-}
-
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_CMATH_FREXP_HPP
