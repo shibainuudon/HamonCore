@@ -541,7 +541,7 @@ HAMON_WARNING_POP()
 	{
 		auto z = const_cast<Node*>(position.m_node);
 
-		auto root = Algo::erase(m_root, z);
+		Algo::erase(z, m_root);
 		--m_size;
 		if (m_size == 0)
 		{
@@ -552,7 +552,6 @@ HAMON_WARNING_POP()
 		else
 		{
 			// TODO
-			m_root = root->root();
 			m_leftmost = m_root->leftmost();
 			m_rightmost = m_root->rightmost();
 		}
@@ -566,7 +565,7 @@ HAMON_WARNING_POP()
 		auto z = const_cast<Node*>(position.m_node);
 		auto ret = z->next();
 
-		auto root = Algo::erase(m_root, z);
+		Algo::erase(z, m_root);
 		destruct_node(alloc, z);
 
 		--m_size;
@@ -579,14 +578,6 @@ HAMON_WARNING_POP()
 		else
 		{
 			// TODO
-			if (root == z)
-			{
-				m_root = m_rightmost->root();
-			}
-			else
-			{
-				m_root = root->root();
-			}
 			m_leftmost = m_root->leftmost();
 			m_rightmost = m_root->rightmost();
 		}
