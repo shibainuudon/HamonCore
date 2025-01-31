@@ -527,7 +527,7 @@ struct red_black_tree_algo
 		// y is either z, or if z has two children, __tree_next(z).
 		// y will have at most one child.
 		// y will be the initial hole in the tree (make the hole at a leaf)
-		Node* y = (z->m_left == nullptr || z->m_right == nullptr) ? z : z->next()/*std::__tree_next(z)*/;
+		Node* y = (z->m_left == nullptr || z->m_right == nullptr) ? z : z->next();
 		// x is y's possibly null single child
 		Node* x = y->m_left != nullptr ? y->m_left : y->m_right;
 		// w is x's possibly null uncle (will become x's sibling)
@@ -561,7 +561,7 @@ struct red_black_tree_algo
 		{
 			// z->m_left != nulptr but z->m_right might == x == nullptr
 			y->m_parent = z->m_parent;
-			if (z->is_left_child())//std::__tree_is_left_child(z))
+			if (z->is_left_child())
 			{
 				y->m_parent->m_left = y;
 			}
@@ -584,8 +584,7 @@ struct red_black_tree_algo
 		}
 
 
-		// There is no need to rebalance if we removed a red, or if we removed
-		//     the last node.
+		// There is no need to rebalance if we removed a red, or if we removed the last node.
 		if (removed_black && root != nullptr)
 		{
 			// Rebalance:
@@ -602,7 +601,6 @@ struct red_black_tree_algo
 			// if (x == root || x != nullptr && !x->__is_black_)
 			if (x != nullptr)
 			{
-				//x->__is_black_ = true;
 				x->m_color = Node::Color::Black;
 			}
 			else
@@ -614,31 +612,32 @@ struct red_black_tree_algo
 				//     with a non-null black child).
 				while (true)
 				{
-					if (!w->is_left_child()/*std::__tree_is_left_child(w)*/) // if x is left child
+					if (!w->is_left_child()) // if x is left child
 					{
 						if (!w->is_black())
 						{
 							w->m_color = Node::Color::Black;
-							w->m_parent->m_color = Node::Color::Red;//__is_black_ = false;
-							rotate_left(w->m_parent, root);//std::__tree_left_rotate(w->m_parent);
+							w->m_parent->m_color = Node::Color::Red;
+							rotate_left(w->m_parent, root);
 							// x is still valid
 							// reset sibling, and it still can't be null
 							w = w->m_left->m_right;
 						}
+
 						// w->__is_black_ is now true, w may have null children
 						if ((w->m_left == nullptr || w->m_left->is_black()) &&
 							(w->m_right == nullptr || w->m_right->is_black()))
 						{
-							w->m_color = Node::Color::Red;//__is_black_ = false;
-							x              = w->m_parent;
+							w->m_color = Node::Color::Red;
+							x = w->m_parent;
 							// x can no longer be null
 							if (!x->is_black() || x == root || x->m_parent == nullptr)
 							{
-								x->m_color = Node::Color::Black;//__is_black_ = true;
+								x->m_color = Node::Color::Black;
 								break;
 							}
 							// reset sibling, and it still can't be null
-							w = x->is_left_child()/*std::__tree_is_left_child(x)*/ ? x->m_parent->m_right : x->m_parent->m_left;
+							w = x->sibling();
 							// continue;
 						}
 						else // w has a red child
@@ -646,18 +645,18 @@ struct red_black_tree_algo
 							if (w->m_right == nullptr || w->m_right->is_black())
 							{
 								// w left child is non-null and red
-								w->m_left->m_color = Node::Color::Black;//__is_black_ = true;
-								w->m_color = Node::Color::Red;//__is_black_          = false;
-								rotate_right(w, root);//std::__tree_right_rotate(w);
+								w->m_left->m_color = Node::Color::Black;
+								w->m_color = Node::Color::Red;
+								rotate_right(w, root);
 								// w is known not to be root, so root hasn't changed
 								// reset sibling, and it still can't be null
 								w = w->m_parent;
 							}
 							// w has a right red child, left child may be null
-							w->m_color                    = w->m_parent->m_color;
-							w->m_parent->m_color = Node::Color::Black;//__is_black_ = true;
-							w->m_right->m_color = Node::Color::Black;//__is_black_          = true;
-							rotate_left(w->m_parent, root);//std::__tree_left_rotate(w->m_parent);
+							w->m_color = w->m_parent->m_color;
+							w->m_parent->m_color = Node::Color::Black;
+							w->m_right->m_color  = Node::Color::Black;
+							rotate_left(w->m_parent, root);
 							break;
 						}
 					}
@@ -665,27 +664,28 @@ struct red_black_tree_algo
 					{
 						if (!w->is_black())
 						{
-							w->m_color = Node::Color::Black;//__is_black_                    = true;
-							w->m_parent->m_color = Node::Color::Red;//__is_black_ = false;
-							rotate_right(w->m_parent, root);//std::__tree_right_rotate(w->m_parent);
+							w->m_color = Node::Color::Black;
+							w->m_parent->m_color = Node::Color::Red;
+							rotate_right(w->m_parent, root);
 							// x is still valid
 							// reset sibling, and it still can't be null
 							w = w->m_right->m_left;
 						}
+
 						// w->__is_black_ is now true, w may have null children
 						if ((w->m_left == nullptr || w->m_left->is_black()) &&
 							(w->m_right == nullptr || w->m_right->is_black()))
 						{
-							w->m_color = Node::Color::Red;//__is_black_ = false;
-							x              = w->m_parent;
+							w->m_color = Node::Color::Red;
+							x = w->m_parent;
 							// x can no longer be null
 							if (!x->is_black() || x == root || x->m_parent == nullptr)
 							{
-								x->m_color = Node::Color::Black;//__is_black_ = true;
+								x->m_color = Node::Color::Black;
 								break;
 							}
 							// reset sibling, and it still can't be null
-							w = x->is_left_child()/*std::__tree_is_left_child(x)*/ ? x->m_parent->m_right : x->m_parent->m_left;
+							w = x->sibling();
 							// continue;
 						}
 						else // w has a red child
@@ -693,18 +693,18 @@ struct red_black_tree_algo
 							if (w->m_left == nullptr || w->m_left->is_black())
 							{
 								// w right child is non-null and red
-								w->m_right->m_color = Node::Color::Black;//__is_black_ = true;
-								w->m_color = Node::Color::Red;//__is_black_           = false;
-								rotate_left(w, root);//std::__tree_left_rotate(w);
+								w->m_right->m_color = Node::Color::Black;
+								w->m_color = Node::Color::Red;
+								rotate_left(w, root);
 								// w is known not to be root, so root hasn't changed
 								// reset sibling, and it still can't be null
 								w = w->m_parent;
 							}
 							// w has a left red child, right child may be null
 							w->m_color = w->m_parent->m_color;
-							w->m_parent->m_color = Node::Color::Black;//__is_black_ = true;
-							w->m_left->m_color = Node::Color::Black;//__is_black_           = true;
-							rotate_right(w->m_parent, root);//std::__tree_right_rotate(w->m_parent);
+							w->m_parent->m_color = Node::Color::Black;
+							w->m_left->m_color   = Node::Color::Black;
+							rotate_right(w->m_parent, root);
 							break;
 						}
 					}
