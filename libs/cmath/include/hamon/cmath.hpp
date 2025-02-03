@@ -97,7 +97,7 @@
 #include <hamon/cmath/radians_to_degrees.hpp>
 #include <hamon/cmath/ranges.hpp>
 #include <hamon/cmath/remainder.hpp>
-//#include <hamon/cmath/remquo.hpp>
+#include <hamon/cmath/remquo.hpp>
 #include <hamon/cmath/repeat.hpp>
 //#include <hamon/cmath/riemann_zeta.hpp>
 //#include <hamon/cmath/rint.hpp>
