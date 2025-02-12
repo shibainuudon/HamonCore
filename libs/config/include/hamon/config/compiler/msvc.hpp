@@ -1138,6 +1138,9 @@
 
 // Visual Studio 2022 Version 17.13.0
 #if (_MSC_FULL_VER >= 194334808)
+#  if (HAMON_CXX_STANDARD >= 23)
+#    define HAMON_HAS_CXX23_SIZE_T_SUFFIX	// P0330R8	Literal Suffix for (signed) size_t		__cpp_size_t_suffix >= 202011L
+#  endif
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
