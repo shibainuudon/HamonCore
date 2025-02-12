@@ -689,7 +689,7 @@
 #if (_MSC_FULL_VER >= 192930157)
 #endif
 
-// Visual Studio 2019 Version 16.11.43
+// Visual Studio 2019 Version 16.11.(43-44)
 #if (_MSC_FULL_VER >= 192930158)
 #endif
 
@@ -933,6 +933,10 @@
 #if (_MSC_FULL_VER >= 194334808)
 #endif
 
+// Visual Studio 2022 Preview Version 17.14.0 Preview 1.0
+#if (_MSC_FULL_VER >= 194434823)
+#endif
+
 // Visual Studio 2022 Version 17.0.(0-1)
 #if (_MSC_FULL_VER >= 193030705)
 # define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR		// P2316R2	Consistent character literal encoding
@@ -1130,6 +1134,10 @@
 
 // Visual Studio 2022 Version 17.12.4
 #if (_MSC_FULL_VER >= 194234436)
+#endif
+
+// Visual Studio 2022 Version 17.13.0
+#if (_MSC_FULL_VER >= 194334808)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
