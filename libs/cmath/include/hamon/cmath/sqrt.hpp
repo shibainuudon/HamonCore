@@ -46,8 +46,29 @@ sqrt_unchecked(long double x) HAMON_NOEXCEPT
 
 #else
 
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
+
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX14_CONSTEXPR T
+sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	T s = x > 1 ? x : T(1);
+	for (;;)
+	{
+		T const s1 = (x / s + s) / 2;
+		if (s <= s1)
+		{
+			break;
+		}
+		s = s1;
+	}
+	return s;
+}
+
+#else
+
+template <typename T>
+HAMON_CXX11_CONSTEXPR T
 sqrt_unchecked_ct_2(T x, T s, T s2) HAMON_NOEXCEPT
 {
 	return !(s < s2) ?
@@ -56,21 +77,23 @@ sqrt_unchecked_ct_2(T x, T s, T s2) HAMON_NOEXCEPT
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 sqrt_unchecked_ct_1(T x, T s) HAMON_NOEXCEPT
 {
 	return detail::sqrt_unchecked_ct_2(x, (x / s + s) / 2, s);
 }
 
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 sqrt_unchecked_ct(T x) HAMON_NOEXCEPT
 {
 	return detail::sqrt_unchecked_ct_1(x, x > 1 ? x : T(1));
 }
 
+#endif
+
 template <typename T>
-inline HAMON_CXX11_CONSTEXPR T
+HAMON_CXX11_CONSTEXPR T
 sqrt_unchecked(T x) HAMON_NOEXCEPT
 {
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -85,7 +108,7 @@ sqrt_unchecked(T x) HAMON_NOEXCEPT
 #endif
 
 template <typename FloatType>
-inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_CXX11_CONSTEXPR FloatType
 sqrt_impl(FloatType x) HAMON_NOEXCEPT
 {
 	return
@@ -113,10 +136,17 @@ sqrt_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が NaN の場合、NaNを返す。
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 sqrt(FloatType arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
+}
+
+template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
+sqrt(IntegralType arg) HAMON_NOEXCEPT
+{
+	return detail::sqrt_impl(static_cast<double>(arg));
 }
 
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR float
@@ -129,13 +159,6 @@ HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR long double
 sqrtl(long double arg) HAMON_NOEXCEPT
 {
 	return detail::sqrt_impl(arg);
-}
-
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
-HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
-sqrt(IntegralType arg) HAMON_NOEXCEPT
-{
-	return detail::sqrt_impl(static_cast<double>(arg));
 }
 
 }	// namespace hamon
