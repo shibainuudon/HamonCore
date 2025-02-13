@@ -22,6 +22,7 @@ using std::logbl;
 
 #else
 
+#include <hamon/cmath/fabs.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
@@ -76,87 +77,77 @@ logb_unchecked(long double x) HAMON_NOEXCEPT
 
 #else
 
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR T
+logb_unchecked_ct(T x) HAMON_NOEXCEPT
+{
+	T const radix = hamon::numeric_limits<T>::radix;
+	x = hamon::fabs(x);
+	T exp = hamon::trunc(log_a(radix, x));
+	T x0 = hamon::detail::pow_n(radix, static_cast<hamon::intmax_t>(exp));
+	T base = x / x0;
+
+	for (;;)
+	{
+		if (base < 1)
+		{
+			base = x / (x0 / radix);
+			x0 *= radix;
+			exp -= 1;
+		}
+		else if (base >= radix)
+		{
+			base = x / (x0 * radix);
+			x0 /= radix;
+			exp += 1;
+		}
+		else
+		{
+			return exp;
+		}
+	}
+}
+
+#else
+
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_neg_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
+logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix)
 {
 	return
 		base < 1 ?
-			logb_unchecked_ct_3_neg_lo(x, x0 * radix, x / (x0 / radix), exp - 1) :
+			logb_unchecked_ct_3(x, x0 * radix, x / (x0 / radix), exp - 1, radix) :
+		base >= radix ?
+			logb_unchecked_ct_3(x, x0 / radix, x / (x0 * radix), exp + 1, radix) :
 		exp;
 }
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_neg_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
+logb_unchecked_ct_2(T x, T x0, T exp, T radix)
 {
-	return
-		!(base < radix) ?
-			logb_unchecked_ct_3_neg_hi(x, x0 / radix, x / (x0 * radix), exp + 1) :
-		exp;
+	return logb_unchecked_ct_3(x, x0, x / x0, exp, radix);
 }
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_pos_lo(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
-{
-	return
-		base < 1 ?
-			logb_unchecked_ct_3_pos_lo(x, x0 * radix, x / (x0 / radix), exp - 1) :
-		exp;
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3_pos_hi(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
-{
-	return
-		!(base < radix) ?
-			logb_unchecked_ct_3_pos_hi(x, x0 / radix, x / (x0 * radix), exp + 1) :
-		exp;
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_3(T x, T x0, T base, T exp, T radix = hamon::numeric_limits<T>::radix)
-{
-	return
-		x < 1 ?
-			base < 1 ?
-				logb_unchecked_ct_3_neg_lo(x, x0 * radix, x / (x0 / radix), exp - 1) :
-			!(base < radix) ?
-				logb_unchecked_ct_3_neg_hi(x, x0 / radix, x / (x0 * radix), exp + 1) :
-			exp :
-		base < 1 ?
-			logb_unchecked_ct_3_pos_lo(x, x0 * radix, x / (x0 / radix), exp - 1) :
-		!(base < radix) ?
-			logb_unchecked_ct_3_pos_hi(x, x0 / radix, x / (x0 * radix), exp + 1) :
-		exp;
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_2(T x, T x0, T exp)
-{
-	return logb_unchecked_ct_3(x, x0, x / x0, exp);
-}
-
-template <typename T>
-HAMON_CXX11_CONSTEXPR T
-logb_unchecked_ct_1(T x, T exp, T radix = hamon::numeric_limits<T>::radix)
+logb_unchecked_ct_1(T x, T exp, T radix)
 {
 	return logb_unchecked_ct_2(
-		x, hamon::detail::pow_n(radix, /*hamon::itrunc*/static_cast<hamon::intmax_t>(exp)), exp);
+		x, hamon::detail::pow_n(radix, static_cast<hamon::intmax_t>(exp)), exp, radix);
 }
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T
 logb_unchecked_ct(T x, T radix = hamon::numeric_limits<T>::radix) HAMON_NOEXCEPT
 {
-	return x < 0 ?
-		logb_unchecked_ct_1(-x, hamon::trunc(log_a(radix, -x))) :
-		logb_unchecked_ct_1( x, hamon::trunc(log_a(radix,  x)));
+	return logb_unchecked_ct_1(
+		hamon::fabs(x), hamon::trunc(log_a(radix, hamon::fabs(x))), radix);
 }
+
+#endif
 
 template <typename T>
 HAMON_CXX11_CONSTEXPR T

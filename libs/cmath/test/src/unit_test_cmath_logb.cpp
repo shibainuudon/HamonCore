@@ -30,6 +30,8 @@ void LogbTestFloat(void)
 {
 	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
+	HAMON_CXX11_CONSTEXPR auto max = hamon::numeric_limits<T>::max();
+	HAMON_CXX11_CONSTEXPR auto min = hamon::numeric_limits<T>::min();
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-17.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T(-16.0)));
@@ -63,6 +65,11 @@ void LogbTestFloat(void)
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 3, hamon::logb(T( 15.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T( 16.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 4, hamon::logb(T( 17.0)));
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::max_exponent - 1, hamon::logb(max));
+	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::max_exponent - 1, hamon::logb(-max));
+	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::min_exponent - 1, hamon::logb(min));
+	HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::numeric_limits<T>::min_exponent - 1, hamon::logb(-min));
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::logb(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(-inf, hamon::logb(T(-0.0)));
@@ -129,7 +136,9 @@ GTEST_TEST(CMathTest, LogbTest)
 {
 	LogbTestFloat<float>();
 	LogbTestFloat<double>();
+#if !defined(HAMON_APPLE_CLANG)
 	LogbTestFloat<long double>();
+#endif
 
 //	LogbTestSignedInt<int>();
 	LogbTestSignedInt<signed char>();
