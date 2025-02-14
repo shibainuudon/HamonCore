@@ -89,7 +89,7 @@
 #include <hamon/cmath/lrint.hpp>
 #include <hamon/cmath/lround.hpp>
 #include <hamon/cmath/modf.hpp>
-//#include <hamon/cmath/nan.hpp>
+#include <hamon/cmath/nan.hpp>
 #include <hamon/cmath/nearbyint.hpp>
 #include <hamon/cmath/nextafter.hpp>
 #include <hamon/cmath/nexttoward.hpp>
