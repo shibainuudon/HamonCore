@@ -121,7 +121,7 @@
 #include <hamon/cmath/step.hpp>
 #include <hamon/cmath/tan.hpp>
 #include <hamon/cmath/tanh.hpp>
-//#include <hamon/cmath/tgamma.hpp>
+#include <hamon/cmath/tgamma.hpp>
 #include <hamon/cmath/trunc.hpp>
 
 #endif // HAMON_CMATH_HPP
