@@ -78,7 +78,7 @@
 #include <hamon/cmath/ldexp.hpp>
 //#include <hamon/cmath/legendre.hpp>
 #include <hamon/cmath/lerp.hpp>
-//#include <hamon/cmath/lgamma.hpp>
+#include <hamon/cmath/lgamma.hpp>
 #include <hamon/cmath/llrint.hpp>
 #include <hamon/cmath/llround.hpp>
 #include <hamon/cmath/log.hpp>
