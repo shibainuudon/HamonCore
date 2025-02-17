@@ -13,7 +13,7 @@
 #include <hamon/cmath/almost_equal.hpp>
 #include <hamon/cmath/asin.hpp>
 #include <hamon/cmath/asinh.hpp>
-//#include <hamon/cmath/assoc_laguerre.hpp>
+#include <hamon/cmath/assoc_laguerre.hpp>
 //#include <hamon/cmath/assoc_legendre.hpp>
 #include <hamon/cmath/atan.hpp>
 #include <hamon/cmath/atan2.hpp>
