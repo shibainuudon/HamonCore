@@ -33,7 +33,7 @@
 //#include <hamon/cmath/cyl_neumann.hpp>
 //#include <hamon/cmath/decompose_float.hpp>
 #include <hamon/cmath/degrees_to_radians.hpp>
-//#include <hamon/cmath/double_factorial.hpp>
+#include <hamon/cmath/double_factorial.hpp>
 //#include <hamon/cmath/ellint_1.hpp>
 //#include <hamon/cmath/ellint_2.hpp>
 //#include <hamon/cmath/ellint_3.hpp>
