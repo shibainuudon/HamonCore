@@ -22,7 +22,7 @@
 #include <hamon/cmath/cbrt.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/cmath/comp_ellint_1.hpp>
-//#include <hamon/cmath/comp_ellint_2.hpp>
+#include <hamon/cmath/comp_ellint_2.hpp>
 //#include <hamon/cmath/comp_ellint_3.hpp>
 #include <hamon/cmath/copysign.hpp>
 #include <hamon/cmath/cos.hpp>
