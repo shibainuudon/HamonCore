@@ -18,7 +18,7 @@
 #include <hamon/cmath/atan.hpp>
 #include <hamon/cmath/atan2.hpp>
 #include <hamon/cmath/atanh.hpp>
-//#include <hamon/cmath/beta.hpp>
+#include <hamon/cmath/beta.hpp>
 #include <hamon/cmath/cbrt.hpp>
 #include <hamon/cmath/ceil.hpp>
 //#include <hamon/cmath/comp_ellint_1.hpp>
