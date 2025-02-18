@@ -76,7 +76,7 @@
 #include <hamon/cmath/is_positive.hpp>
 #include <hamon/cmath/laguerre.hpp>
 #include <hamon/cmath/ldexp.hpp>
-//#include <hamon/cmath/legendre.hpp>
+#include <hamon/cmath/legendre.hpp>
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/cmath/lgamma.hpp>
 #include <hamon/cmath/llrint.hpp>
