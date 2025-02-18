@@ -36,7 +36,7 @@
 #include <hamon/cmath/double_factorial.hpp>
 #include <hamon/cmath/ellint_1.hpp>
 #include <hamon/cmath/ellint_2.hpp>
-//#include <hamon/cmath/ellint_3.hpp>
+#include <hamon/cmath/ellint_3.hpp>
 #include <hamon/cmath/erf.hpp>
 #include <hamon/cmath/erfc.hpp>
 #include <hamon/cmath/exp.hpp>
