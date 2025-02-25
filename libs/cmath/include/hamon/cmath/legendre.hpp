@@ -15,7 +15,6 @@
 #include <hamon/limits.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
-#include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
 
@@ -29,22 +28,40 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR T
 legendre_unchecked_2(unsigned int n, T x)
 {
-	T p0 = 1;
+	if (x == +T(1))
+	{
+		return +T(1);
+	}
+
+	if (x == -T(1))
+	{
+		return (n % 2 == 1 ? -T(1) : +T(1));
+	}
+
+	T p_lm2 = T(1);
 	if (n == 0)
 	{
-		return p0;
+		return p_lm2;
 	}
 
-	T p1 = x;
-
-	for (unsigned int c = 1; c < n; ++c)
+	T p_lm1 = x;
+	if (n == 1)
 	{
-		using hamon::swap;
-		swap(p0, p1);
-		p1 = ((T(2) * c + T(1)) * x * p0 - c * p1) / (c + T(1));
+		return p_lm1;
 	}
 
-	return p1;
+	T p_l = 0;
+	for (unsigned int ll = 2; ll <= n; ++ll)
+	{
+		// This arrangement is supposed to be better for roundoff
+		// protection, Arfken, 2nd Ed, Eq 12.17a.
+		p_l = T(2) * x * p_lm1 - p_lm2 -
+			(x * p_lm1 - p_lm2) / T(ll);
+		p_lm2 = p_lm1;
+		p_lm1 = p_l;
+	}
+
+	return p_l;
 }
 
 template <typename T>

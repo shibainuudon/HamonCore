@@ -115,7 +115,7 @@
 #include <hamon/cmath/sinh.hpp>
 #include <hamon/cmath/smoothstep.hpp>
 #include <hamon/cmath/sph_bessel.hpp>
-//#include <hamon/cmath/sph_legendre.hpp>
+#include <hamon/cmath/sph_legendre.hpp>
 //#include <hamon/cmath/sph_neumann.hpp>
 #include <hamon/cmath/sqrt.hpp>
 #include <hamon/cmath/step.hpp>
