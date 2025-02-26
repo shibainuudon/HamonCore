@@ -19,12 +19,12 @@ namespace detail
 {
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 sph_bessel_jn(unsigned int n, T x, T& j_n, T& n_n, T& jp_n, T& np_n)
 {
 	const T nu = T(n) + T(0.5L);
 
-	T J_nu, N_nu, Jp_nu, Np_nu;
+	T J_nu{}, N_nu{}, Jp_nu{}, Np_nu{};
 	hamon::detail::bessel_jn(nu, x, J_nu, N_nu, Jp_nu, Np_nu);
 
 	const T factor = hamon::sqrt(hamon::numbers::pi_fn<T>() / 2) / hamon::sqrt(x);
