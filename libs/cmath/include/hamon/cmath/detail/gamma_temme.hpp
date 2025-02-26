@@ -36,8 +36,6 @@ gamma_temme(T mu, T& gam1, T& gam2, T& gampl, T& gammi)
 	}
 
 	gam2 = (gammi + gampl) / (T(2));
-
-	return;
 }
 
 }	// namespace detail

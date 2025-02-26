@@ -131,7 +131,7 @@ bessel_jn(T nu, T x, T& Jnu, T& Nnu, T& Jpnu, T& Npnu)
 		Jnul = eps;
 	}
 	T f = Jpnul / Jnul;
-	T Nmu, Nnu1, Npmu, Jmu;
+	T Nmu{}, Nnu1{}, Npmu{}, Jmu{};
 	if (x < x_min)
 	{
 		const T x2 = x / T(2);
@@ -140,7 +140,7 @@ bessel_jn(T nu, T x, T& Jnu, T& Nnu, T& Jpnu, T& Npnu)
 		T d = -hamon::log(x2);
 		T e = mu * d;
 		T fact2 = (hamon::abs(e) < eps ? T(1) : hamon::sinh(e) / e);
-		T gam1, gam2, gampl, gammi;
+		T gam1{}, gam2{}, gampl{}, gammi{};
 		hamon::detail::gamma_temme(mu, gam1, gam2, gampl, gammi);
 		T ff = (T(2) / hamon::numbers::pi_fn<T>()) * fact1 * (gam1 * hamon::cosh(e) + gam2 * fact2 * d);
 		e = hamon::exp(e);
