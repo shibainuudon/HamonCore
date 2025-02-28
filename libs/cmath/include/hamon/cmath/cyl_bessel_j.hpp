@@ -52,6 +52,18 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR T
 cyl_bessel_j_unchecked(T nu, T x)
 {
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+#if defined(__cpp_lib_math_special_functions) && (__cpp_lib_math_special_functions >= 201603)
+	if (!hamon::is_constant_evaluated())
+	{
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4244)
+		return std::cyl_bessel_j(nu, x);
+HAMON_WARNING_POP()
+	}
+#endif
+#endif
+
 	using value_type = hamon::float_promote_t<double, T>;
 	return static_cast<T>(cyl_bessel_j_unchecked_2(
 		static_cast<value_type>(nu), static_cast<value_type>(x)));
@@ -84,7 +96,7 @@ cyl_bessel_j_impl(T nu, T x)
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR FloatType
-cyl_bessel_jf(FloatType nu, FloatType x) HAMON_NOEXCEPT
+cyl_bessel_j(FloatType nu, FloatType x) HAMON_NOEXCEPT
 {
 	return detail::cyl_bessel_j_impl(nu, x);
 }
