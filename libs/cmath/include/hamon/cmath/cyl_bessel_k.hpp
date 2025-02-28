@@ -81,7 +81,7 @@ cyl_bessel_k_impl(T nu, T x)
  */
 template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR FloatType
-cyl_bessel_kf(FloatType nu, FloatType x) HAMON_NOEXCEPT
+cyl_bessel_k(FloatType nu, FloatType x) HAMON_NOEXCEPT
 {
 	return detail::cyl_bessel_k_impl(nu, x);
 }
