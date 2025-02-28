@@ -28,7 +28,7 @@
 #include <hamon/cmath/cos.hpp>
 #include <hamon/cmath/cosh.hpp>
 #include <hamon/cmath/cyl_bessel_i.hpp>
-//#include <hamon/cmath/cyl_bessel_j.hpp>
+#include <hamon/cmath/cyl_bessel_j.hpp>
 #include <hamon/cmath/cyl_bessel_k.hpp>
 //#include <hamon/cmath/cyl_neumann.hpp>
 //#include <hamon/cmath/decompose_float.hpp>
