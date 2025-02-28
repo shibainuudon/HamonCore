@@ -75,12 +75,6 @@ cyl_bessel_i_impl(T nu, T x)
 
 }	// namespace detail
 
-}	// namespace hamon
-
-
-namespace hamon
-{
-
 /**
  *	@brief	第一種変形ベッセル関数 (modified Bessel functions of the first kind) を計算する。
  *
