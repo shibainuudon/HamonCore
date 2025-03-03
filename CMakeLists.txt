@@ -60,6 +60,7 @@ set(SUBDIRECTORIES
 	ratio
 	serialization
 	set
+	shared_mutex
 	span
 	stdexcept
 	string
