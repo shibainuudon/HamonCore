@@ -10,6 +10,7 @@
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/is_clock.hpp>
+#include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/sys_time.hpp>
@@ -93,9 +94,6 @@ from_stream(basic_istream<charT, traits>& is, const charT* fmt,
 			file_time<Duration>& tp,
 			basic_string<charT, traits, Alloc>* abbrev = nullptr,
 			minutes* offset = nullptr);
-
-// [time.clock.steady], class steady_clock
-class steady_clock;
 
 // [time.clock.hires], class high_resolution_clock
 class high_resolution_clock;
