@@ -161,7 +161,9 @@ public:
 		{
 			while (true)
 			{
-				std::cv_status status = m_gate1.wait_until(lk, abs_time);
+				using std_duration = std::chrono::duration<typename Duration::rep, typename Duration::period>;
+				using std_time_point = std::chrono::time_point<std::chrono::steady_clock, std_duration>;
+				std::cv_status status = m_gate1.wait_until(lk, std_time_point{std_duration{abs_time.time_since_epoch().count()}});
 				if ((m_state & kWriteEntered) == 0 &&
 					(m_state & kNReaders) < kNReaders)
 				{

@@ -27,6 +27,7 @@ using std::shared_lock;
 #include <hamon/memory/addressof.hpp>
 #include <hamon/system_error/system_error.hpp>
 #include <hamon/system_error/errc.hpp>
+#include <hamon/system_error/make_error_code.hpp>
 #include <hamon/utility/swap.hpp>
 
 namespace hamon
@@ -126,13 +127,13 @@ public:
 		// [thread.lock.shared.locking]/4.1
 		if (pm == nullptr)
 		{
-			hamon::detail::throw_system_error(hamon::errc::operation_not_permitted);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::operation_not_permitted));
 		}
 
 		// [thread.lock.shared.locking]/4.2
 		if (owns)
 		{
-			hamon::detail::throw_system_error(hamon::errc::resource_deadlock_would_occur);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::resource_deadlock_would_occur));
 		}
 
 		// [thread.lock.shared.locking]/1
@@ -146,13 +147,13 @@ public:
 		// [thread.lock.shared.locking]/9.1
 		if (pm == nullptr)
 		{
-			hamon::detail::throw_system_error(hamon::errc::operation_not_permitted);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::operation_not_permitted));
 		}
 
 		// [thread.lock.shared.locking]/9.2
 		if (owns)
 		{
-			hamon::detail::throw_system_error(hamon::errc::resource_deadlock_would_occur);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::resource_deadlock_would_occur));
 		}
 
 		// [thread.lock.shared.locking]/5,6
@@ -168,13 +169,13 @@ public:
 		// [thread.lock.shared.locking]/15.1
 		if (pm == nullptr)
 		{
-			hamon::detail::throw_system_error(hamon::errc::operation_not_permitted);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::operation_not_permitted));
 		}
 
 		// [thread.lock.shared.locking]/15.2
 		if (owns)
 		{
-			hamon::detail::throw_system_error(hamon::errc::resource_deadlock_would_occur);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::resource_deadlock_would_occur));
 		}
 
 		// [thread.lock.shared.locking]/11,12
@@ -190,13 +191,13 @@ public:
 		// [thread.lock.shared.locking]/21.1
 		if (pm == nullptr)
 		{
-			hamon::detail::throw_system_error(hamon::errc::operation_not_permitted);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::operation_not_permitted));
 		}
 
 		// [thread.lock.shared.locking]/21.2
 		if (owns)
 		{
-			hamon::detail::throw_system_error(hamon::errc::resource_deadlock_would_occur);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::resource_deadlock_would_occur));
 		}
 
 		// [thread.lock.shared.locking]/17,18
@@ -211,7 +212,7 @@ public:
 		// [thread.lock.shared.locking]/25
 		if (!owns)
 		{
-			hamon::detail::throw_system_error(hamon::errc::operation_not_permitted);
+			hamon::detail::throw_system_error(hamon::make_error_code(hamon::errc::operation_not_permitted));
 		}
 
 		// [thread.lock.shared.locking]/22

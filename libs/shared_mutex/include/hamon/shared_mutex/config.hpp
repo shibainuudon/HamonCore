@@ -15,7 +15,7 @@
 
 #if defined(__cpp_lib_shared_timed_mutex) && (__cpp_lib_shared_timed_mutex >= 201402L) && \
 	defined(__cpp_lib_shared_mutex) && (__cpp_lib_shared_mutex >= 201505L)
-//#  define HAMON_USE_STD_SHARED_MUTEX
+#  define HAMON_USE_STD_SHARED_MUTEX
 #endif
 
 #endif // HAMON_SHARED_MUTEX_CONFIG_HPP
