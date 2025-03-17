@@ -50,5 +50,3 @@ using sys_days = hamon::chrono::sys_time<hamon::chrono::days>;
 #endif
 
 #endif // HAMON_CHRONO_SYS_DAYS_HPP
-
-

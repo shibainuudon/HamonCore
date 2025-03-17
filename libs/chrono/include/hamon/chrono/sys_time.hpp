@@ -64,5 +64,3 @@ using sys_time = hamon::chrono::time_point<hamon::chrono::system_clock, Duration
 #endif
 
 #endif // HAMON_CHRONO_SYS_TIME_HPP
-
-

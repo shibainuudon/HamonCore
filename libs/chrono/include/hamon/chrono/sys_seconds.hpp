@@ -39,5 +39,3 @@ using sys_seconds = hamon::chrono::sys_time<hamon::chrono::seconds>;
 #endif
 
 #endif // HAMON_CHRONO_SYS_SECONDS_HPP
-
-

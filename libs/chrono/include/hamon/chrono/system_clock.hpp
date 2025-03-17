@@ -25,20 +25,11 @@ using std::chrono::system_clock;
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/config.hpp>
 #include <ctime>
-
-#if defined(HAMON_PLATFORM_WIN32)
-#if !defined(WIN32_LEAN_AND_MEAN)
-#define WIN32_LEAN_AND_MEAN
-#endif
-#if !defined(NOMINMAX)
-#define NOMINMAX
-#endif
-#include <windows.h>
-#endif
 
 namespace hamon {
 namespace chrono {

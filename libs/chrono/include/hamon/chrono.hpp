@@ -10,6 +10,9 @@
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/is_clock.hpp>
+#include <hamon/chrono/local_days.hpp>
+#include <hamon/chrono/local_seconds.hpp>
+#include <hamon/chrono/local_time.hpp>
 #include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
@@ -97,23 +100,6 @@ from_stream(basic_istream<charT, traits>& is, const charT* fmt,
 
 // [time.clock.hires], class high_resolution_clock
 class high_resolution_clock;
-
-// [time.clock.local], local time
-struct local_t {};
-template<class Duration>
-using local_time  = time_point<local_t, Duration>;
-using local_seconds = local_time<seconds>;
-using local_days    = local_time<days>;
-
-template<class charT, class traits, class Duration>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const local_time<Duration>& tp);
-template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			local_time<Duration>& tp,
-			basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
 
 // [time.clock.cast], time_point conversions
 template<class DestClock, class SourceClock>
