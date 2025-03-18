@@ -15,6 +15,7 @@
 #include <hamon/chrono/local_days.hpp>
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
+#include <hamon/chrono/month.hpp>
 #include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
@@ -109,26 +110,6 @@ struct clock_time_conversion;
 
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
-
-// [time.cal.month], class month
-class month;
-
-constexpr bool operator==(const month& x, const month& y) noexcept;
-constexpr strong_ordering operator<=>(const month& x, const month& y) noexcept;
-
-constexpr month  operator+(const month&  x, const months& y) noexcept;
-constexpr month  operator+(const months& x, const month& y) noexcept;
-constexpr month  operator-(const month&  x, const months& y) noexcept;
-constexpr months operator-(const month&  x, const month& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const month& m);
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			month& m, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
 
 // [time.cal.year], class year
 class year;
@@ -635,26 +616,11 @@ inline constexpr weekday Thursday {4};
 inline constexpr weekday Friday {5};
 inline constexpr weekday Saturday {6};
 
-inline constexpr month January {1};
-inline constexpr month February {2};
-inline constexpr month March {3};
-inline constexpr month April {4};
-inline constexpr month May {5};
-inline constexpr month June {6};
-inline constexpr month July {7};
-inline constexpr month August {8};
-inline constexpr month September {9};
-inline constexpr month October {10};
-inline constexpr month November {11};
-inline constexpr month December {12};
-
 }
 
 namespace std::inline literals::inline chrono_literals
 {
 
-// [time.cal.day.nonmembers], non-member functions
-constexpr chrono::day  operator""d(unsigned long long d) noexcept;
 
 // [time.cal.year.nonmembers], non-member functions
 constexpr chrono::year operator""y(unsigned long long y) noexcept;
