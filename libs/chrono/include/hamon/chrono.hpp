@@ -23,6 +23,7 @@
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
+#include <hamon/chrono/year.hpp>
 
 #if 0
 
@@ -110,27 +111,6 @@ struct clock_time_conversion;
 
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
-
-// [time.cal.year], class year
-class year;
-
-constexpr bool operator==(const year& x, const year& y) noexcept;
-constexpr strong_ordering operator<=>(const year& x, const year& y) noexcept;
-
-constexpr year  operator+(const year&  x, const years& y) noexcept;
-constexpr year  operator+(const years& x, const year&  y) noexcept;
-constexpr year  operator-(const year&  x, const years& y) noexcept;
-constexpr years operator-(const year&  x, const year&  y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year& y);
-
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			year& y, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
 
 // [time.cal.wd], class weekday
 class weekday;
@@ -616,19 +596,6 @@ inline constexpr weekday Thursday {4};
 inline constexpr weekday Friday {5};
 inline constexpr weekday Saturday {6};
 
-}
-
-namespace std::inline literals::inline chrono_literals
-{
-
-
-// [time.cal.year.nonmembers], non-member functions
-constexpr chrono::year operator""y(unsigned long long y) noexcept;
-
-}
-
-namespace std::chrono {
-using namespace literals::chrono_literals;
 }
 
 namespace std {
