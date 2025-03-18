@@ -10,6 +10,7 @@
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/is_clock.hpp>
+#include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/local_days.hpp>
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
@@ -107,9 +108,6 @@ struct clock_time_conversion;
 
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
-
-// [time.cal.last], class last_spec
-struct last_spec;
 
 // [time.cal.day], class day
 class day;
