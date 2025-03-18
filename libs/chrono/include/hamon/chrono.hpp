@@ -8,6 +8,7 @@
 #define HAMON_CHRONO_HPP
 
 #include <hamon/chrono/config.hpp>
+#include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
@@ -108,26 +109,6 @@ struct clock_time_conversion;
 
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
-
-// [time.cal.day], class day
-class day;
-
-constexpr bool operator==(const day& x, const day& y) noexcept;
-constexpr strong_ordering operator<=>(const day& x, const day& y) noexcept;
-
-constexpr day  operator+(const day&  x, const days& y) noexcept;
-constexpr day  operator+(const days& x, const day&  y) noexcept;
-constexpr day  operator-(const day&  x, const days& y) noexcept;
-constexpr days operator-(const day&  x, const day&  y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const day& d);
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			day& d, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
 
 // [time.cal.month], class month
 class month;
