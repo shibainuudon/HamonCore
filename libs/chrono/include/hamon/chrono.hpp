@@ -16,6 +16,7 @@
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
 #include <hamon/chrono/month.hpp>
+#include <hamon/chrono/month_day.hpp>
 #include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
@@ -113,32 +114,6 @@ struct clock_time_conversion;
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
 
-// [time.cal.md], class month_day
-class month_day;
-
-constexpr bool operator==(const month_day& x, const month_day& y) noexcept;
-constexpr strong_ordering operator<=>(const month_day& x, const month_day& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const month_day& md);
-
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			month_day& md, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
-
-// [time.cal.mdlast], class month_day_last
-class month_day_last;
-
-constexpr bool operator==(const month_day_last& x, const month_day_last& y) noexcept;
-constexpr strong_ordering operator<=>(const month_day_last& x,
-									  const month_day_last& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const month_day_last& mdl);
 
 // [time.cal.mwd], class month_weekday
 class month_weekday;
@@ -283,24 +258,6 @@ constexpr year_month
 operator/(const year& y, const month& m) noexcept;
 constexpr year_month
 operator/(const year& y, int m) noexcept;
-constexpr month_day
-operator/(const month& m, const day& d) noexcept;
-constexpr month_day
-operator/(const month& m, int d) noexcept;
-constexpr month_day
-operator/(int m, const day& d) noexcept;
-constexpr month_day
-operator/(const day& d, const month& m) noexcept;
-constexpr month_day
-operator/(const day& d, int m) noexcept;
-constexpr month_day_last
-operator/(const month& m, last_spec) noexcept;
-constexpr month_day_last
-operator/(int m, last_spec) noexcept;
-constexpr month_day_last
-operator/(last_spec, const month& m) noexcept;
-constexpr month_day_last
-operator/(last_spec, int m) noexcept;
 constexpr month_weekday
 operator/(const month& m, const weekday_indexed& wdi) noexcept;
 constexpr month_weekday
