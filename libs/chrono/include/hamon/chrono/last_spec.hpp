@@ -17,6 +17,7 @@ namespace hamon {
 namespace chrono {
 
 using std::chrono::last_spec;
+using std::chrono::last;
 
 }	// namespace chrono
 }	// namespace hamon
@@ -33,6 +34,9 @@ struct last_spec
 {
 	explicit last_spec() = default;
 };
+
+// calendrical constants
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR last_spec last {};
 
 }	// namespace chrono
 }	// namespace hamon

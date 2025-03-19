@@ -23,6 +23,7 @@
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
+#include <hamon/chrono/weekday.hpp>
 #include <hamon/chrono/year.hpp>
 
 #if 0
@@ -111,44 +112,6 @@ struct clock_time_conversion;
 
 template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
-
-// [time.cal.wd], class weekday
-class weekday;
-
-constexpr bool operator==(const weekday& x, const weekday& y) noexcept;
-
-constexpr weekday operator+(const weekday& x, const days&    y) noexcept;
-constexpr weekday operator+(const days&    x, const weekday& y) noexcept;
-constexpr weekday operator-(const weekday& x, const days&    y) noexcept;
-constexpr days    operator-(const weekday& x, const weekday& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const weekday& wd);
-
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			weekday& wd, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
-
-// [time.cal.wdidx], class weekday_indexed
-class weekday_indexed;
-
-constexpr bool operator==(const weekday_indexed& x, const weekday_indexed& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const weekday_indexed& wdi);
-
-// [time.cal.wdlast], class weekday_last
-class weekday_last;
-
-constexpr bool operator==(const weekday_last& x, const weekday_last& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const weekday_last& wdl);
 
 // [time.cal.md], class month_day
 class month_day;
@@ -584,17 +547,6 @@ template<class charT, class traits, class Alloc, class Parsable>
 unspecified
 parse(const basic_string<charT, traits, Alloc>& fmt, Parsable& tp,
 	  basic_string<charT, traits, Alloc>& abbrev, minutes& offset);
-
-// calendrical constants
-inline constexpr last_spec last {};
-
-inline constexpr weekday Sunday {0};
-inline constexpr weekday Monday {1};
-inline constexpr weekday Tuesday {2};
-inline constexpr weekday Wednesday {3};
-inline constexpr weekday Thursday {4};
-inline constexpr weekday Friday {5};
-inline constexpr weekday Saturday {6};
 
 }
 
