@@ -17,6 +17,7 @@
 #include <hamon/chrono/local_time.hpp>
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/month_day.hpp>
+#include <hamon/chrono/month_weekday.hpp>
 #include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
@@ -115,23 +116,6 @@ template<class DestClock, class SourceClock, class Duration>
 auto clock_cast(const time_point<SourceClock, Duration>& t);
 
 
-// [time.cal.mwd], class month_weekday
-class month_weekday;
-
-constexpr bool operator==(const month_weekday& x, const month_weekday& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const month_weekday& mwd);
-
-// [time.cal.mwdlast], class month_weekday_last
-class month_weekday_last;
-
-constexpr bool operator==(const month_weekday_last& x, const month_weekday_last& y) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const month_weekday_last& mwdl);
 
 // [time.cal.ym], class year_month
 class year_month;
@@ -258,22 +242,6 @@ constexpr year_month
 operator/(const year& y, const month& m) noexcept;
 constexpr year_month
 operator/(const year& y, int m) noexcept;
-constexpr month_weekday
-operator/(const month& m, const weekday_indexed& wdi) noexcept;
-constexpr month_weekday
-operator/(int m, const weekday_indexed& wdi) noexcept;
-constexpr month_weekday
-operator/(const weekday_indexed& wdi, const month& m) noexcept;
-constexpr month_weekday
-operator/(const weekday_indexed& wdi, int m) noexcept;
-constexpr month_weekday_last
-operator/(const month& m, const weekday_last& wdl) noexcept;
-constexpr month_weekday_last
-operator/(int m, const weekday_last& wdl) noexcept;
-constexpr month_weekday_last
-operator/(const weekday_last& wdl, const month& m) noexcept;
-constexpr month_weekday_last
-operator/(const weekday_last& wdl, int m) noexcept;
 constexpr year_month_day
 operator/(const year_month& ym, const day& d) noexcept;
 constexpr year_month_day
