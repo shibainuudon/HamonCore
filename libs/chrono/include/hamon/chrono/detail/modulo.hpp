@@ -19,6 +19,22 @@ modulo(long long n, int m) HAMON_NOEXCEPT
 	return n - ((n >= 0 ? n : n - m + 1) / m) * m;
 }
 
+struct div_mod_result
+{
+	long long div;
+	long long mod;
+};
+
+inline HAMON_CXX11_CONSTEXPR div_mod_result
+div_mod(long long n, int m) HAMON_NOEXCEPT
+{
+	return
+	{
+		(n >= 0 ? n : n - m + 1) / m,
+		n - ((n >= 0 ? n : n - m + 1) / m) * m
+	};
+}
+
 }	// namespace detail
 }	// namespace chrono
 }	// namespace hamon

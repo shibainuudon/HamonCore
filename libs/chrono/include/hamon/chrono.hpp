@@ -27,6 +27,7 @@
 #include <hamon/chrono/treat_as_floating_point.hpp>
 #include <hamon/chrono/weekday.hpp>
 #include <hamon/chrono/year.hpp>
+#include <hamon/chrono/year_month.hpp>
 
 #if 0
 
@@ -117,29 +118,6 @@ auto clock_cast(const time_point<SourceClock, Duration>& t);
 
 
 
-// [time.cal.ym], class year_month
-class year_month;
-
-constexpr bool operator==(const year_month& x, const year_month& y) noexcept;
-constexpr strong_ordering operator<=>(const year_month& x, const year_month& y) noexcept;
-
-constexpr year_month operator+(const year_month& ym, const months& dm) noexcept;
-constexpr year_month operator+(const months& dm, const year_month& ym) noexcept;
-constexpr year_month operator-(const year_month& ym, const months& dm) noexcept;
-constexpr months operator-(const year_month& x, const year_month& y) noexcept;
-constexpr year_month operator+(const year_month& ym, const years& dy) noexcept;
-constexpr year_month operator+(const years& dy, const year_month& ym) noexcept;
-constexpr year_month operator-(const year_month& ym, const years& dy) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year_month& ym);
-
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			year_month& ym, basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
 
 // [time.cal.ymd], class year_month_day
 class year_month_day;
@@ -238,10 +216,6 @@ basic_ostream<charT, traits>&
 operator<<(basic_ostream<charT, traits>& os, const year_month_weekday_last& ymwdl);
 
 // [time.cal.operators], civil calendar conventional syntax operators
-constexpr year_month
-operator/(const year& y, const month& m) noexcept;
-constexpr year_month
-operator/(const year& y, int m) noexcept;
 constexpr year_month_day
 operator/(const year_month& ym, const day& d) noexcept;
 constexpr year_month_day
