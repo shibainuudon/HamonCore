@@ -28,6 +28,7 @@
 #include <hamon/chrono/weekday.hpp>
 #include <hamon/chrono/year.hpp>
 #include <hamon/chrono/year_month.hpp>
+#include <hamon/chrono/year_month_day.hpp>
 
 #if 0
 
@@ -119,55 +120,7 @@ auto clock_cast(const time_point<SourceClock, Duration>& t);
 
 
 
-// [time.cal.ymd], class year_month_day
-class year_month_day;
 
-constexpr bool operator==(const year_month_day& x, const year_month_day& y) noexcept;
-constexpr strong_ordering operator<=>(const year_month_day& x,
-									  const year_month_day& y) noexcept;
-
-constexpr year_month_day operator+(const year_month_day& ymd, const months& dm) noexcept;
-constexpr year_month_day operator+(const months& dm, const year_month_day& ymd) noexcept;
-constexpr year_month_day operator+(const year_month_day& ymd, const years& dy) noexcept;
-constexpr year_month_day operator+(const years& dy, const year_month_day& ymd) noexcept;
-constexpr year_month_day operator-(const year_month_day& ymd, const months& dm) noexcept;
-constexpr year_month_day operator-(const year_month_day& ymd, const years& dy) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year_month_day& ymd);
-
-template<class charT, class traits, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			year_month_day& ymd,
-			basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
-
-// [time.cal.ymdlast], class year_month_day_last
-class year_month_day_last;
-
-constexpr bool operator==(const year_month_day_last& x,
-						  const year_month_day_last& y) noexcept;
-constexpr strong_ordering operator<=>(const year_month_day_last& x,
-									  const year_month_day_last& y) noexcept;
-
-constexpr year_month_day_last
-operator+(const year_month_day_last& ymdl, const months& dm) noexcept;
-constexpr year_month_day_last
-operator+(const months& dm, const year_month_day_last& ymdl) noexcept;
-constexpr year_month_day_last
-operator+(const year_month_day_last& ymdl, const years& dy) noexcept;
-constexpr year_month_day_last
-operator+(const years& dy, const year_month_day_last& ymdl) noexcept;
-constexpr year_month_day_last
-operator-(const year_month_day_last& ymdl, const months& dm) noexcept;
-constexpr year_month_day_last
-operator-(const year_month_day_last& ymdl, const years& dy) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year_month_day_last& ymdl);
 
 // [time.cal.ymwd], class year_month_weekday
 class year_month_weekday;
@@ -216,28 +169,6 @@ basic_ostream<charT, traits>&
 operator<<(basic_ostream<charT, traits>& os, const year_month_weekday_last& ymwdl);
 
 // [time.cal.operators], civil calendar conventional syntax operators
-constexpr year_month_day
-operator/(const year_month& ym, const day& d) noexcept;
-constexpr year_month_day
-operator/(const year_month& ym, int d) noexcept;
-constexpr year_month_day
-operator/(const year& y, const month_day& md) noexcept;
-constexpr year_month_day
-operator/(int y, const month_day& md) noexcept;
-constexpr year_month_day
-operator/(const month_day& md, const year& y) noexcept;
-constexpr year_month_day
-operator/(const month_day& md, int y) noexcept;
-constexpr year_month_day_last
-operator/(const year_month& ym, last_spec) noexcept;
-constexpr year_month_day_last
-operator/(const year& y, const month_day_last& mdl) noexcept;
-constexpr year_month_day_last
-operator/(int y, const month_day_last& mdl) noexcept;
-constexpr year_month_day_last
-operator/(const month_day_last& mdl, const year& y) noexcept;
-constexpr year_month_day_last
-operator/(const month_day_last& mdl, int y) noexcept;
 constexpr year_month_weekday
 operator/(const year_month& ym, const weekday_indexed& wdi) noexcept;
 constexpr year_month_weekday
