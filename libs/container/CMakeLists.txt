@@ -19,12 +19,21 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		algorithm
+		bit
 		compare
+		concepts
 		config
+		cstddef
+		debug
+		detail
 		functional
 		iterator
+		limits
 		memory
 		optional
+		pair
+		ranges
 		type_traits
 		utility
 		common)
