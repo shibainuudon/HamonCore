@@ -7,9 +7,11 @@
 #ifndef HAMON_UNORDERED_MAP_ERASE_IF_HPP
 #define HAMON_UNORDERED_MAP_ERASE_IF_HPP
 
+#include <hamon/unordered_map/config.hpp>
 #include <unordered_map>
 
-#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+#if defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
+	defined(HAMON_USE_STD_UNORDERED_MAP) && defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 
 namespace hamon
 {
@@ -27,12 +29,15 @@ using std::erase_if;
 namespace hamon
 {
 
-template <typename Key, typename T, typename Hash, typename CPred, typename Alloc, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
-typename hamon::unordered_map<Key, T, Hash, CPred, Alloc>::size_type
-erase_if(hamon::unordered_map<Key, T, Hash, CPred, Alloc>& c, Predicate pred)
+// 23.5.3.5 Erasure[unord.map.erasure]
+
+template <typename K, typename T, typename H, typename P, typename A, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename unordered_map<K, T, H, P, A>::size_type
+erase_if(unordered_map<K, T, H, P, A>& c, Predicate pred)
 {
-	auto const sz = c.size();
+	// [unord.map.erasure]/1
+	auto original_size = c.size();
 	for (auto i = c.begin(), last = c.end(); i != last; )
 	{
 		if (pred(*i))
@@ -44,15 +49,18 @@ erase_if(hamon::unordered_map<Key, T, Hash, CPred, Alloc>& c, Predicate pred)
 			++i;
 		}
 	}
-	return sz - c.size();
+	return original_size - c.size();
 }
 
-template <typename Key, typename T, typename Hash, typename CPred, typename Alloc, typename Predicate>
-inline HAMON_CXX14_CONSTEXPR
-typename hamon::unordered_multimap<Key, T, Hash, CPred, Alloc>::size_type
-erase_if(hamon::unordered_multimap<Key, T, Hash, CPred, Alloc>& c, Predicate pred)
+// 23.5.4.4 Erasure[unord.multimap.erasure]
+
+template <typename K, typename T, typename H, typename P, typename A, typename Predicate>
+HAMON_CXX14_CONSTEXPR
+typename unordered_multimap<K, T, H, P, A>::size_type
+erase_if(unordered_multimap<K, T, H, P, A>& c, Predicate pred)
 {
-	auto const sz = c.size();
+	// [unord.multimap.erasure]/1
+	auto original_size = c.size();
 	for (auto i = c.begin(), last = c.end(); i != last; )
 	{
 		if (pred(*i))
@@ -64,7 +72,7 @@ erase_if(hamon::unordered_multimap<Key, T, Hash, CPred, Alloc>& c, Predicate pre
 			++i;
 		}
 	}
-	return sz - c.size();
+	return original_size - c.size();
 }
 
 }	// namespace hamon
