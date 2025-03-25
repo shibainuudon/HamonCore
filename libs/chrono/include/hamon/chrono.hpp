@@ -29,6 +29,7 @@
 #include <hamon/chrono/year.hpp>
 #include <hamon/chrono/year_month.hpp>
 #include <hamon/chrono/year_month_day.hpp>
+#include <hamon/chrono/year_month_weekday.hpp>
 
 #if 0
 
@@ -122,73 +123,6 @@ auto clock_cast(const time_point<SourceClock, Duration>& t);
 
 
 
-// [time.cal.ymwd], class year_month_weekday
-class year_month_weekday;
-
-constexpr bool operator==(const year_month_weekday& x,
-						  const year_month_weekday& y) noexcept;
-
-constexpr year_month_weekday
-operator+(const year_month_weekday& ymwd, const months& dm) noexcept;
-constexpr year_month_weekday
-operator+(const months& dm, const year_month_weekday& ymwd) noexcept;
-constexpr year_month_weekday
-operator+(const year_month_weekday& ymwd, const years& dy) noexcept;
-constexpr year_month_weekday
-operator+(const years& dy, const year_month_weekday& ymwd) noexcept;
-constexpr year_month_weekday
-operator-(const year_month_weekday& ymwd, const months& dm) noexcept;
-constexpr year_month_weekday
-operator-(const year_month_weekday& ymwd, const years& dy) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year_month_weekday& ymwd);
-
-// [time.cal.ymwdlast], class year_month_weekday_last
-class year_month_weekday_last;
-
-constexpr bool operator==(const year_month_weekday_last& x,
-						  const year_month_weekday_last& y) noexcept;
-
-constexpr year_month_weekday_last
-operator+(const year_month_weekday_last& ymwdl, const months& dm) noexcept;
-constexpr year_month_weekday_last
-operator+(const months& dm, const year_month_weekday_last& ymwdl) noexcept;
-constexpr year_month_weekday_last
-operator+(const year_month_weekday_last& ymwdl, const years& dy) noexcept;
-constexpr year_month_weekday_last
-operator+(const years& dy, const year_month_weekday_last& ymwdl) noexcept;
-constexpr year_month_weekday_last
-operator-(const year_month_weekday_last& ymwdl, const months& dm) noexcept;
-constexpr year_month_weekday_last
-operator-(const year_month_weekday_last& ymwdl, const years& dy) noexcept;
-
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const year_month_weekday_last& ymwdl);
-
-// [time.cal.operators], civil calendar conventional syntax operators
-constexpr year_month_weekday
-operator/(const year_month& ym, const weekday_indexed& wdi) noexcept;
-constexpr year_month_weekday
-operator/(const year& y, const month_weekday& mwd) noexcept;
-constexpr year_month_weekday
-operator/(int y, const month_weekday& mwd) noexcept;
-constexpr year_month_weekday
-operator/(const month_weekday& mwd, const year& y) noexcept;
-constexpr year_month_weekday
-operator/(const month_weekday& mwd, int y) noexcept;
-constexpr year_month_weekday_last
-operator/(const year_month& ym, const weekday_last& wdl) noexcept;
-constexpr year_month_weekday_last
-operator/(const year& y, const month_weekday_last& mwdl) noexcept;
-constexpr year_month_weekday_last
-operator/(int y, const month_weekday_last& mwdl) noexcept;
-constexpr year_month_weekday_last
-operator/(const month_weekday_last& mwdl, const year& y) noexcept;
-constexpr year_month_weekday_last
-operator/(const month_weekday_last& mwdl, int y) noexcept;
 
 // [time.hms], class template hh_mm_ss
 template<class Duration> class hh_mm_ss;
