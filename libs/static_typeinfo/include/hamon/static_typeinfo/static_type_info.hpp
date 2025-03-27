@@ -10,7 +10,7 @@
 #include <hamon/static_typeinfo/detail/type_info_access_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/string_view/string_view.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/ranges/hash.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -34,7 +34,7 @@ public:
 	HAMON_NODISCARD HAMON_CONSTEXPR
 	hamon::size_t hash() const HAMON_NOEXCEPT
 	{
-		return hamon::hash(m_name);
+		return hamon::ranges::hash(m_name);
 	}
 
 	HAMON_NODISCARD friend HAMON_CONSTEXPR bool

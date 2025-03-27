@@ -49,6 +49,8 @@ HAMON_WARNING_DISABLE_GCC("-Wshift-count-overflow")
 
 namespace hamon
 {
+namespace ranges
+{
 
 template <typename... T>
 HAMON_CXX11_CONSTEXPR hamon::size_t
@@ -154,14 +156,14 @@ private:
 	};
 
 	// (1) メンバーのhash関数が呼び出せるならx.hash()
-	template <HAMON_CONSTRAINED_PARAM(detail::has_member_hash, RawT), typename T>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::has_member_hash, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<10>)
 	HAMON_HASH_RETURN(
 		hamon::forward<T>(x).hash())
 
 	// (2) ADL経由でhash関数が呼び出せるならhash(x)
-	template <HAMON_CONSTRAINED_PARAM(detail::has_adl_hash, RawT), typename T>
+	template <HAMON_CONSTRAINED_PARAM(hamon::detail::has_adl_hash, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<9>)
 	HAMON_HASH_RETURN(
@@ -257,10 +259,11 @@ hash_t hash{};
 
 }	// inline namespace cpo
 
+}	// namespace ranges
 }	// namespace hamon
 
 HAMON_WARNING_POP()
 
-#include <hamon/functional/hash_combine.hpp>
+#include <hamon/functional/ranges/hash_combine.hpp>
 
 #endif // HAMON_FUNCTIONAL_HASH_HPP

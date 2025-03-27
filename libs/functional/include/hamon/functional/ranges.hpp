@@ -15,6 +15,8 @@
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/functional/ranges/greater_equal.hpp>
+#include <hamon/functional/ranges/hash.hpp>
+#include <hamon/functional/ranges/hash_combine.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/ranges/less_equal.hpp>
 #include <hamon/functional/ranges/logical_and.hpp>

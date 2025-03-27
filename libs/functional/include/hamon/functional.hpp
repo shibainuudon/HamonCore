@@ -24,8 +24,7 @@
 //#include <hamon/functional/function.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/greater_equal.hpp>
-#include <hamon/functional/hash.hpp>
-#include <hamon/functional/hash_combine.hpp>
+//#include <hamon/functional/hash.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/invoke_r.hpp>

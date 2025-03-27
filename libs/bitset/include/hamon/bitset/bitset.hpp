@@ -36,7 +36,7 @@ using std::bitset;
 #include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/cstring/strlen.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/ranges/hash.hpp>
 #include <hamon/iterator/begin.hpp>
 #include <hamon/iterator/end.hpp>
 #include <hamon/iterator/rbegin.hpp>
@@ -392,7 +392,7 @@ public:
 	HAMON_CXX11_CONSTEXPR hamon::size_t
 	hash() const HAMON_NOEXCEPT
 	{
-		return hamon::hash(m_value);
+		return hamon::ranges::hash(m_value);
 	}
 
 private:

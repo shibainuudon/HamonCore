@@ -5,7 +5,7 @@
  */
 
 #include <hamon/qvm/matrix.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/ranges/hash.hpp>
 #include "constexpr_test.hpp"
 #include "matrix_test.hpp"
 
@@ -37,14 +37,14 @@ TYPED_TEST(MatrixTest, HashTest)
 		HAMON_CONSTEXPR matrix3x3 const m7 { 1, 2, 3, 4,-5, 6, 7, 8, 9, };
 		HAMON_CONSTEXPR matrix3x3 const m8 { 1, 2, 3, 4, 5, 6, 7, 8,-9, };
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) == hamon::hash(m1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) == hamon::hash(m2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m4));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m5));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m6));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m7));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m8));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) == hamon::ranges::hash(m1));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) == hamon::ranges::hash(m2));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m3));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m4));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m5));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m6));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m7));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m8));
 	}
 	{
 		HAMON_CONSTEXPR matrix3x4 const m1 { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, };
@@ -56,14 +56,14 @@ TYPED_TEST(MatrixTest, HashTest)
 		HAMON_CONSTEXPR matrix3x4 const m7 { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 19, 21, };
 		HAMON_CONSTEXPR matrix3x4 const m8 { 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 10, };
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) == hamon::hash(m1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) == hamon::hash(m2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m4));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m5));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m6));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m7));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(m1) != hamon::hash(m8));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) == hamon::ranges::hash(m1));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) == hamon::ranges::hash(m2));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m3));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m4));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m5));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m6));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m7));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(m1) != hamon::ranges::hash(m8));
 	}
 }
 

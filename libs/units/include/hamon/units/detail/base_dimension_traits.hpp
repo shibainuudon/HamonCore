@@ -8,7 +8,7 @@
 #define HAMON_UNITS_DETAIL_BASE_DIMENSION_TRAITS_HPP
 
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/ranges/hash.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -20,7 +20,7 @@ namespace units
 template <typename T>
 constexpr hamon::size_t get_type_hash() noexcept
 {
-	return hamon::hash(HAMON_CURRENT_FUNCTION);
+	return hamon::ranges::hash(HAMON_CURRENT_FUNCTION);
 }
 
 template <typename BaseDimension>

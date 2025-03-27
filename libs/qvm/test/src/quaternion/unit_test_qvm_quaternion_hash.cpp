@@ -5,7 +5,7 @@
  */
 
 #include <hamon/qvm/quaternion.hpp>
-#include <hamon/functional/hash.hpp>
+#include <hamon/functional/ranges/hash.hpp>
 #include "constexpr_test.hpp"
 #include "quaternion_test.hpp"
 
@@ -34,12 +34,12 @@ TYPED_TEST(QuaternionTest, HashTest)
 		HAMON_CONSTEXPR quaternion const q5(1, 2,-3, 4);
 		HAMON_CONSTEXPR quaternion const q6(1, 2, 3, 1);
 
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) == hamon::hash(q1));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) == hamon::hash(q2));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) != hamon::hash(q3));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) != hamon::hash(q4));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) != hamon::hash(q5));
-		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::hash(q1) != hamon::hash(q6));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) == hamon::ranges::hash(q1));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) == hamon::ranges::hash(q2));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) != hamon::ranges::hash(q3));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) != hamon::ranges::hash(q4));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) != hamon::ranges::hash(q5));
+		HAMON_BIT_CAST_CONSTEXPR_EXPECT_TRUE(hamon::ranges::hash(q1) != hamon::ranges::hash(q6));
 	}
 }
 
