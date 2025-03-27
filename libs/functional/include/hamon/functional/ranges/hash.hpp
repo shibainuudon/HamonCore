@@ -247,6 +247,8 @@ public:
 	operator()(T&& x) const
 	HAMON_HASH_RETURN(
 		impl<hamon::remove_cvref_t<T>>(hamon::forward<T>(x), hamon::detail::overload_priority<10>{}))
+
+	using is_transparent = void;
 };
 
 #undef HAMON_HASH_RETURN
