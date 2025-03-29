@@ -33,9 +33,13 @@ inline void* aligned_alloc(hamon::size_t alignment, hamon::size_t size)
 	// size should not be zero
 	return ::_aligned_malloc(size, alignment);
 #else
+	// alignment should be an integral multiple of sizeof(void*)
+	hamon::size_t rounded_alignment = (alignment + sizeof(void*) - 1) & ~(sizeof(void*) - 1);
+
 	// size should be an integral multiple of alignment
-	hamon::size_t rounded_size = (size + alignment - 1) & ~(alignment - 1);
-	return ::aligned_alloc(alignment, rounded_size);
+	hamon::size_t rounded_size = (size + rounded_alignment - 1) & ~(rounded_alignment - 1);
+
+	return ::aligned_alloc(rounded_alignment, rounded_size);
 #endif
 }
 

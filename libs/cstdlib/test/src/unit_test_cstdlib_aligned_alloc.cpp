@@ -26,4 +26,28 @@ GTEST_TEST(CStdLibTest, AlignedAllocTest)
 		EXPECT_TRUE(reinterpret_cast<hamon::uintptr_t>(p) % align == 0);
 		hamon::aligned_free(p);
 	}
+	{
+		hamon::size_t align = alignof(int);
+		hamon::size_t size = sizeof(int) * 4;
+		int* p = static_cast<int*>(hamon::aligned_alloc(align, size));
+		EXPECT_TRUE(p != nullptr);
+		EXPECT_TRUE(reinterpret_cast<hamon::uintptr_t>(p) % align == 0);
+		hamon::aligned_free(p);
+	}
+	{
+		hamon::size_t align = alignof(short);
+		hamon::size_t size = sizeof(short) * 5;
+		short* p = static_cast<short*>(hamon::aligned_alloc(align, size));
+		EXPECT_TRUE(p != nullptr);
+		EXPECT_TRUE(reinterpret_cast<hamon::uintptr_t>(p) % align == 0);
+		hamon::aligned_free(p);
+	}
+	{
+		hamon::size_t align = alignof(char);
+		hamon::size_t size = sizeof(char) * 13;
+		char* p = static_cast<char*>(hamon::aligned_alloc(align, size));
+		EXPECT_TRUE(p != nullptr);
+		EXPECT_TRUE(reinterpret_cast<hamon::uintptr_t>(p) % align == 0);
+		hamon::aligned_free(p);
+	}
 }
