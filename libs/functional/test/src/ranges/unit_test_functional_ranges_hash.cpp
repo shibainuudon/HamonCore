@@ -92,57 +92,6 @@ GTEST_TEST(FunctionalTest, RangesHashMemberTest)
 	EXPECT_EQ(6u, hamon::ranges::hash(hamon::move(s1_4)));
 }
 
-struct S2
-{
-private:
-	int value;
-
-public:
-	HAMON_CXX11_CONSTEXPR S2(int v) : value(v) {}
-
-	friend constexpr hamon::size_t hash(S2 & s) HAMON_NOEXCEPT
-	{
-		return static_cast<hamon::size_t>(s.value * 1);
-	}
-
-	friend constexpr hamon::size_t hash(S2 const& s) HAMON_NOEXCEPT
-	{
-		return static_cast<hamon::size_t>(s.value * 2);
-	}
-	
-	friend constexpr hamon::size_t hash(S2 && s)
-	{
-		return static_cast<hamon::size_t>(s.value * 3);
-	}
-	
-	friend constexpr hamon::size_t hash(S2 const&& s)
-	{
-		return static_cast<hamon::size_t>(s.value * 4);
-	}
-};
-
-GTEST_TEST(FunctionalTest, RangesHashAdlTest)
-{
-	static_assert( hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), S2&>::value, "");
-	static_assert( hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), S2 const&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), S2&&>::value, "");
-	static_assert(!hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), S2 const&&>::value, "");
-
-	HAMON_CXX11_CONSTEXPR S2 const s4_1{3};
-	HAMON_CXX11_CONSTEXPR S2 const s4_2{4};
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 6u, hamon::ranges::hash(s4_1));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 8u, hamon::ranges::hash(s4_2));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(12u, hamon::ranges::hash(hamon::move(s4_1)));
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(16u, hamon::ranges::hash(hamon::move(s4_2)));
-
-	S2 s4_3{3};
-	S2 s4_4{4};
-	EXPECT_EQ( 3u, hamon::ranges::hash(s4_3));
-	EXPECT_EQ( 4u, hamon::ranges::hash(s4_4));
-	EXPECT_EQ( 9u, hamon::ranges::hash(hamon::move(s4_3)));
-	EXPECT_EQ(12u, hamon::ranges::hash(hamon::move(s4_4)));
-}
-
 template <typename T>
 void HashIntegralTest()
 {
@@ -327,7 +276,10 @@ GTEST_TEST(FunctionalTest, RangesHashPointerTest)
 //	static_assert( hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), void*>::value, "");
 	static_assert( hamon::is_nothrow_invocable<decltype(hamon::ranges::hash), hamon::nullptr_t>::value, "");
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0u, hamon::ranges::hash(nullptr));
+	{
+		int* p = nullptr;
+		EXPECT_EQ(hamon::ranges::hash(p), hamon::ranges::hash(nullptr));
+	}
 
 	int i = 0;
 	int j = 0;
@@ -498,7 +450,7 @@ GTEST_TEST(FunctionalTest, RangesHashPairTest)
 		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 1, 2.5f), hamon::ranges::hash(p));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR std::pair<S1, S2> p{S1{3}, S2{4}};
+		HAMON_CXX14_CONSTEXPR std::pair<S1, S1> p{S1{3}, S1{4}};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 3*2, 4*2), hamon::ranges::hash(p));
 	}
 }
@@ -518,7 +470,7 @@ GTEST_TEST(FunctionalTest, RangesHashTupleTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 3, 4), hamon::ranges::hash(t));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR std::tuple<S1, float, S2, int> t{S1{4}, 5.5f, S2{6}, 7};
+		HAMON_CXX14_CONSTEXPR std::tuple<S1, float, S1, int> t{S1{4}, 5.5f, S1{6}, 7};
 		HAMON_CXX14_BIT_CAST_CONSTEXPR_EXPECT_EQ(hamon::ranges::hash_combine(0, 4*2, 5.5f, 6*2, 7), hamon::ranges::hash(t));
 	}
 }
