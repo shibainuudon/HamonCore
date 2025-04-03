@@ -39,3 +39,6 @@ build/
 
 # CMake
 CMakeUserPresets.json
+
+# OS generated files
+.DS_Store
