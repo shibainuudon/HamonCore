@@ -48,12 +48,12 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-template <typename Set, typename K, typename = void>
+template <typename Map, typename K, typename = void>
 struct is_at_invocable
 	: public hamon::false_type {};
 
-template <typename Set, typename K>
-struct is_at_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().at(hamon::declval<K>()))>>
+template <typename Map, typename K>
+struct is_at_invocable<Map, K, hamon::void_t<decltype(hamon::declval<Map>().at(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
 template <typename T>

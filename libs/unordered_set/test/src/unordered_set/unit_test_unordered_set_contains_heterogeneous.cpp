@@ -13,6 +13,7 @@
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "unordered_set_test_helper.hpp"
 
 // P0458R2
 #if !defined(HAMON_USE_STD_UNORDERED_SET) || (HAMON_CXX_STANDARD >= 20)
@@ -54,34 +55,12 @@ template <typename Set, typename K>
 struct is_contains_invocable<Set, K, hamon::void_t<decltype(hamon::declval<Set>().contains(hamon::declval<K>()))>>
 	: public hamon::true_type {};
 
-struct S
-{
-	int value;
-
-	friend constexpr bool operator==(S const& lhs, S const& rhs)
-	{
-		return lhs.value == rhs.value;
-	}
-
-	friend constexpr bool operator==(S const& lhs, int rhs)
-	{
-		return lhs.value == rhs;
-	}
-
-	friend constexpr bool operator==(int lhs, S const& rhs)
-	{
-		return lhs == rhs.value;
-	}
-
-	constexpr hamon::size_t hash() const { return hamon::hash<int>{}(value); }
-};
-
 UNORDERED_SET_TEST_CONSTEXPR bool test2()
 {
-	using Set1 = hamon::unordered_set<S>;
-	using Set2 = hamon::unordered_set<S, decltype(hamon::ranges::hash)>;
-	using Set3 = hamon::unordered_set<S, hamon::hash<S>, hamon::equal_to<>>;
-	using Set4 = hamon::unordered_set<S, decltype(hamon::ranges::hash), hamon::equal_to<>>;
+	using Set1 = hamon::unordered_set<TransparentKey>;
+	using Set2 = hamon::unordered_set<TransparentKey, decltype(hamon::ranges::hash)>;
+	using Set3 = hamon::unordered_set<TransparentKey, hamon::hash<TransparentKey>, hamon::equal_to<>>;
+	using Set4 = hamon::unordered_set<TransparentKey, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 
 	static_assert(!is_contains_invocable<Set1&, int>::value, "");
 	static_assert(!is_contains_invocable<Set2&, int>::value, "");

@@ -45,14 +45,31 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
+template <typename Map, typename K, typename = void>
+struct is_op_subscript_invocable
+	: public hamon::false_type {};
+
+template <typename Map, typename K>
+struct is_op_subscript_invocable<Map, K, hamon::void_t<decltype(hamon::declval<Map>()[hamon::declval<K>()])>>
+	: public hamon::true_type {};
+
 template <typename T>
 UNORDERED_MAP_TEST_CONSTEXPR bool test2()
 {
-	using Map = hamon::unordered_map<TransparentKey, T, decltype(hamon::ranges::hash), hamon::equal_to<>>;
-	using MappedType = typename Map::mapped_type;
+	using Map1 = hamon::unordered_map<TransparentKey, T>;
+	using Map2 = hamon::unordered_map<TransparentKey, T, decltype(hamon::ranges::hash)>;
+	using Map3 = hamon::unordered_map<TransparentKey, T, hamon::hash<TransparentKey>, hamon::equal_to<>>;
+	using Map4 = hamon::unordered_map<TransparentKey, T, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>()[hamon::declval<int>()]), MappedType&>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>()[hamon::declval<int>()]), "");
+	static_assert(!is_op_subscript_invocable<Map1&, int>::value, "");
+	static_assert(!is_op_subscript_invocable<Map2&, int>::value, "");
+	static_assert(!is_op_subscript_invocable<Map3&, int>::value, "");
+	static_assert( is_op_subscript_invocable<Map4&, int>::value, "");
+
+	static_assert(!is_op_subscript_invocable<Map1 const&, int>::value, "");
+	static_assert(!is_op_subscript_invocable<Map2 const&, int>::value, "");
+	static_assert(!is_op_subscript_invocable<Map3 const&, int>::value, "");
+	static_assert(!is_op_subscript_invocable<Map4 const&, int>::value, "");
 
 	return true;
 }

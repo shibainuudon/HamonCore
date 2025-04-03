@@ -13,6 +13,7 @@
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "unordered_multimap_test_helper.hpp"
 
 // P0458R2
 #if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP) || (HAMON_CXX_STANDARD >= 20)
@@ -46,37 +47,31 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-struct S
-{
-	int value;
+template <typename Map, typename K, typename = void>
+struct is_contains_invocable
+	: public hamon::false_type {};
 
-	friend constexpr bool operator<(S const& lhs, S const& rhs)
-	{
-		return lhs.value < rhs.value;
-	}
-
-	friend constexpr bool operator<(S const& lhs, int rhs)
-	{
-		return lhs.value < rhs;
-	}
-
-	friend constexpr bool operator<(int lhs, S const& rhs)
-	{
-		return lhs < rhs.value;
-	}
-
-	constexpr hamon::size_t hash() const { return hamon::hash<int>{}(value); }
-};
+template <typename Map, typename K>
+struct is_contains_invocable<Map, K, hamon::void_t<decltype(hamon::declval<Map>().contains(hamon::declval<K>()))>>
+	: public hamon::true_type {};
 
 template <typename T>
 UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
 {
-	using Map = hamon::unordered_multimap<S, T, decltype(hamon::ranges::hash), hamon::equal_to<>>;
+	using Map1 = hamon::unordered_multimap<TransparentKey, T>;
+	using Map2 = hamon::unordered_multimap<TransparentKey, T, decltype(hamon::ranges::hash)>;
+	using Map3 = hamon::unordered_multimap<TransparentKey, T, hamon::hash<TransparentKey>, hamon::equal_to<>>;
+	using Map4 = hamon::unordered_multimap<TransparentKey, T, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().contains(hamon::declval<int>())), bool>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().contains(hamon::declval<int>())), bool>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&>().contains(hamon::declval<int>())), "");
-	static_assert(!noexcept(hamon::declval<Map const&>().contains(hamon::declval<int>())), "");
+	static_assert(!is_contains_invocable<Map1&, int>::value, "");
+	static_assert(!is_contains_invocable<Map2&, int>::value, "");
+	static_assert(!is_contains_invocable<Map3&, int>::value, "");
+	static_assert( is_contains_invocable<Map4&, int>::value, "");
+
+	static_assert(!is_contains_invocable<Map1 const&, int>::value, "");
+	static_assert(!is_contains_invocable<Map2 const&, int>::value, "");
+	static_assert(!is_contains_invocable<Map3 const&, int>::value, "");
+	static_assert( is_contains_invocable<Map4 const&, int>::value, "");
 
 	return true;
 }

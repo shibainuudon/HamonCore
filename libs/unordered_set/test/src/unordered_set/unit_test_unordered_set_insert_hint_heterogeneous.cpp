@@ -12,6 +12,7 @@
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "unordered_set_test_helper.hpp"
 
 #if !defined(HAMON_USE_STD_UNORDERED_SET) || \
 	(defined(__cpp_lib_associative_heterogeneous_insertion) && (__cpp_lib_associative_heterogeneous_insertion >= 202306L))
@@ -45,53 +46,31 @@ UNORDERED_SET_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-template <typename Set, typename K, typename = void>
+template <typename Set, typename I, typename K, typename = void>
 struct is_insert_invocable
 	: public hamon::false_type {};
 
-template <typename Set, typename K>
-struct is_insert_invocable<Set, K, hamon::void_t<
-	decltype(hamon::declval<Set>().insert(hamon::declval<typename Set::const_iterator>(), hamon::declval<K>()))>>
+template <typename Set, typename I, typename K>
+struct is_insert_invocable<Set, I, K, hamon::void_t<
+	decltype(hamon::declval<Set>().insert(hamon::declval<I>(), hamon::declval<K>()))>>
 	: public hamon::true_type {};
-
-struct S
-{
-	int value;
-
-	friend constexpr bool operator==(S const& lhs, S const& rhs)
-	{
-		return lhs.value == rhs.value;
-	}
-
-	friend constexpr bool operator==(S const& lhs, int rhs)
-	{
-		return lhs.value == rhs;
-	}
-
-	friend constexpr bool operator==(int lhs, S const& rhs)
-	{
-		return lhs == rhs.value;
-	}
-
-	constexpr hamon::size_t hash() const { return hamon::hash<int>{}(value); }
-};
 
 UNORDERED_SET_TEST_CONSTEXPR bool test2()
 {
-	using Set1 = hamon::unordered_set<S>;
-	using Set2 = hamon::unordered_set<S, decltype(hamon::ranges::hash)>;
-	using Set3 = hamon::unordered_set<S, hamon::hash<S>, hamon::equal_to<>>;
-	using Set4 = hamon::unordered_set<S, decltype(hamon::ranges::hash), hamon::equal_to<>>;
+	using Set1 = hamon::unordered_set<TransparentKey>;
+	using Set2 = hamon::unordered_set<TransparentKey, decltype(hamon::ranges::hash)>;
+	using Set3 = hamon::unordered_set<TransparentKey, hamon::hash<TransparentKey>, hamon::equal_to<>>;
+	using Set4 = hamon::unordered_set<TransparentKey, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 
-	static_assert(!is_insert_invocable<Set1&, int>::value, "");
-	static_assert(!is_insert_invocable<Set2&, int>::value, "");
-	static_assert(!is_insert_invocable<Set3&, int>::value, "");
-	static_assert( is_insert_invocable<Set4&, int>::value, "");
+	static_assert(!is_insert_invocable<Set1&, typename Set1::const_iterator, int>::value, "");
+	static_assert(!is_insert_invocable<Set2&, typename Set2::const_iterator, int>::value, "");
+	static_assert(!is_insert_invocable<Set3&, typename Set3::const_iterator, int>::value, "");
+	static_assert( is_insert_invocable<Set4&, typename Set4::const_iterator, int>::value, "");
 
-	static_assert(!is_insert_invocable<Set1 const&, int>::value, "");
-	static_assert(!is_insert_invocable<Set2 const&, int>::value, "");
-	static_assert(!is_insert_invocable<Set3 const&, int>::value, "");
-	static_assert(!is_insert_invocable<Set4 const&, int>::value, "");
+	static_assert(!is_insert_invocable<Set1 const&, typename Set1::const_iterator, int>::value, "");
+	static_assert(!is_insert_invocable<Set2 const&, typename Set2::const_iterator, int>::value, "");
+	static_assert(!is_insert_invocable<Set3 const&, typename Set3::const_iterator, int>::value, "");
+	static_assert(!is_insert_invocable<Set4 const&, typename Set4::const_iterator, int>::value, "");
 
 	return true;
 }
