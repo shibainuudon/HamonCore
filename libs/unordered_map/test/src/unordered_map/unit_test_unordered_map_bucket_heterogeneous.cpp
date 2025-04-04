@@ -36,7 +36,7 @@ namespace bucket_heterogeneous_test
 template <typename Key, typename T>
 UNORDERED_MAP_TEST_CONSTEXPR bool test1()
 {
-	using Map = hamon::unordered_map<Key, T>;
+	using Map = hamon::unordered_map<Key, T, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 	using SizeType = typename Map::size_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().bucket(hamon::declval<int>())), SizeType>::value, "");

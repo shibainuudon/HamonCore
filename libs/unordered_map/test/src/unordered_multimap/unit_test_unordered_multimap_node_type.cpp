@@ -58,7 +58,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 
 	static_assert( hamon::is_move_assignable<NodeType>::value, "");
 #if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
-	static_assert( hamon::is_nothrow_move_assignable<NodeType>::value, "");
+	static_assert(!hamon::is_nothrow_move_assignable<NodeType>::value, "");
 #endif
 	static_assert(!hamon::is_trivially_move_assignable<NodeType>::value, "");
 
@@ -73,9 +73,9 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 #if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
 	static_assert( noexcept(hamon::declval<NodeType const&>().empty()), "");
 	static_assert( noexcept(hamon::declval<NodeType const&>().operator bool()), "");
-	static_assert( noexcept(hamon::declval<NodeType const&>().get_allocator()), "");
-	static_assert( noexcept(hamon::declval<NodeType const&>().key()), "");
-	static_assert( noexcept(hamon::declval<NodeType const&>().mapped()), "");
+	static_assert(!noexcept(hamon::declval<NodeType const&>().get_allocator()), "");
+	static_assert(!noexcept(hamon::declval<NodeType const&>().key()), "");
+	static_assert(!noexcept(hamon::declval<NodeType const&>().mapped()), "");
 	static_assert( noexcept(hamon::declval<NodeType&>().swap(hamon::declval<NodeType&>())), "");
 	static_assert( noexcept(swap(hamon::declval<NodeType&>(), hamon::declval<NodeType&>())), "");
 #endif

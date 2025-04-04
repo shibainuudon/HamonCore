@@ -13,6 +13,8 @@
 #if !defined(HAMON_USE_STD_UNORDERED_MAP)
 
 #include <hamon/unordered_map/unordered_multimap_fwd.hpp>
+
+#include <hamon/container/detail/has_is_transparent.hpp>
 #include <hamon/container/detail/hash_table.hpp>
 #include <hamon/container/detail/insert_return_type.hpp>
 #include <hamon/container/detail/iter_key_type.hpp>
@@ -33,6 +35,9 @@
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges/from_range_t.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/type_identity.hpp>
@@ -259,7 +264,15 @@ public:
 	HAMON_CXX14_CONSTEXPR node_type
 	extract(key_type const& x);
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred),
+		typename = hamon::enable_if_t<
+			!hamon::disjunction<
+				hamon::is_convertible<K&&, iterator>,
+				hamon::is_convertible<K&&, const_iterator>
+			>::value>>
 	HAMON_CXX14_CONSTEXPR node_type
 	extract(K&& x);
 
@@ -277,7 +290,10 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type&& k, Args&&... args);
 
-	template <typename K, typename... Args>
+	template <typename K, typename... Args,
+		// [unord.map.modifiers]/13
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(K&& k, Args&&... args);
 
@@ -289,7 +305,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type&& k, Args&&... args);
 
-	template <typename K, typename... Args>
+	template <typename K, typename... Args,
+		// [unord.map.modifiers]/13
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, K&& k, Args&&... args);
 
@@ -301,7 +320,10 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert_or_assign(key_type&& k, M&& obj);
 
-	template <typename K, typename M>
+	template <typename K, typename M,
+		// [unord.map.modifiers]/28
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert_or_assign(K&& k, M&& obj);
 
@@ -313,7 +335,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_or_assign(const_iterator hint, key_type&& k, M&& obj);
 
-	template <typename K, typename M>
+	template <typename K, typename M,
+		// [unord.map.modifiers]/28
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_or_assign(const_iterator hint, K&& k, M&& obj);
 
@@ -326,7 +351,15 @@ public:
 	HAMON_CXX14_CONSTEXPR size_type
 	erase(key_type const& k);
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred),
+		typename = hamon::enable_if_t<
+			!hamon::disjunction<
+				hamon::is_convertible<K&&, iterator>,
+				hamon::is_convertible<K&&, const_iterator>
+			>::value>>
 	HAMON_CXX14_CONSTEXPR size_type
 	erase(K&& x);
 
@@ -372,25 +405,37 @@ public:
 	constexpr const_iterator
 	find(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR iterator
 	find(K const& k);
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr const_iterator
 	find(K const& k) const;
 
 	constexpr size_type
 	count(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr size_type
 	count(K const& k) const;
 
 	constexpr bool
 	contains(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr bool
 	contains(K const& k) const;
 
@@ -400,11 +445,17 @@ public:
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(K const& k);
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& k) const;
 
@@ -415,7 +466,10 @@ public:
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](key_type&& k);
 
-	template <typename K>
+	template <typename K,
+		// [unord.map.elem]/3
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](K&& k);
 
@@ -425,11 +479,17 @@ public:
 	constexpr const mapped_type&
 	at(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.map.elem]/7
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	at(K const& k);
 
-	template <typename K>
+	template <typename K,
+		// [unord.map.elem]/7
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr const mapped_type&
 	at(K const& k) const;
 
@@ -446,7 +506,10 @@ public:
 	constexpr size_type
 	bucket(key_type const& k) const;
 
-	template <typename K>
+	template <typename K,
+		// [unord.req.general]/247
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
 	constexpr size_type
 	bucket(K const& k) const;
 

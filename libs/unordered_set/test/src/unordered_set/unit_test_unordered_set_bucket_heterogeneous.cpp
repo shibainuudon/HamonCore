@@ -36,7 +36,7 @@ namespace bucket_heterogeneous_test
 template <typename Key>
 UNORDERED_SET_TEST_CONSTEXPR bool test1()
 {
-	using Set = hamon::unordered_set<Key>;
+	using Set = hamon::unordered_set<Key, decltype(hamon::ranges::hash), hamon::equal_to<>>;
 	using SizeType = typename Set::size_type;
 
 	static_assert(hamon::is_same<decltype(hamon::declval<Set&>().bucket(hamon::declval<int>())), SizeType>::value, "");
