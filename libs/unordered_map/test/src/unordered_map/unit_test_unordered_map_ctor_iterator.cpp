@@ -63,29 +63,32 @@ UNORDERED_MAP_TEST_CONSTEXPR bool test_impl()
 	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+
+#if !(defined(HAMON_USE_STD_UNORDERED_MAP) && (HAMON_CXX_STANDARD < 14))
+	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, Iterator, Iterator, SizeType, Hasher const&, Allocator const&>::value, "");
+#endif
 
 #if 0
 	ValueType a[] =
