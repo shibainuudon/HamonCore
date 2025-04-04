@@ -28,9 +28,10 @@ namespace insert_hint_heterogeneous_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
+template <typename Key, typename T>
+UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test1()
 {
-	using Map = hamon::unordered_multimap<int, double>;
+	using Map = hamon::unordered_multimap<Key, T>;
 	using Iterator = typename Map::iterator;
 	using ConstIterator = typename Map::const_iterator;
 
@@ -87,11 +88,55 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	return true;
 }
 
+template <typename Map, typename I, typename P, typename = void>
+struct is_insert_invocable
+	: public hamon::false_type {};
+
+template <typename Map, typename I, typename P>
+struct is_insert_invocable<Map, I, P, hamon::void_t<decltype(hamon::declval<Map>().insert(hamon::declval<I>(), hamon::declval<P>()))>>
+	: public hamon::true_type {};
+
+struct S1
+{
+	explicit S1(int);
+};
+
+struct S2
+{
+	explicit S2(S1 const&);
+};
+
+UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test2()
+{
+	using Map1 = hamon::unordered_multimap<int, S1>;
+	using Map2 = hamon::unordered_multimap<int, S2>;
+
+	static_assert( is_insert_invocable<Map1&, typename Map1::const_iterator, std::pair<int, int>>::value, "");
+	static_assert(!is_insert_invocable<Map2&, typename Map2::const_iterator, std::pair<int, int>>::value, "");
+	static_assert( is_insert_invocable<Map2&, typename Map2::const_iterator, std::pair<int, S1>>::value, "");
+
+	static_assert(!is_insert_invocable<Map1 const&, typename Map1::const_iterator, std::pair<int, int>>::value, "");
+	static_assert(!is_insert_invocable<Map2 const&, typename Map2::const_iterator, std::pair<int, int>>::value, "");
+	static_assert(!is_insert_invocable<Map2 const&, typename Map2::const_iterator, std::pair<int, S1>>::value, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(UnorderedMultimapTest, InsertHintHeterogeneousTest)
 {
-	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, char>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, int>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, char>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<char, float>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, char>()));
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+
+	UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 }
 
 #undef UNORDERED_MULTIMAP_TEST_CONSTEXPR_EXPECT_TRUE

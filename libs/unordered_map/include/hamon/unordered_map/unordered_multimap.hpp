@@ -36,11 +36,13 @@
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
 
@@ -262,9 +264,16 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type&& obj);
 
-	template <typename P>
+	template <typename P,
+		// [unord.multimap.modifiers]/1
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<value_type, P&&>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(P&& obj);
+	insert(P&& obj)
+	{
+		// [unord.multimap.modifiers]/2
+		return emplace(hamon::forward<P>(obj));
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, value_type const& obj);
@@ -272,9 +281,16 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, value_type&& obj);
 
-	template <typename P>
+	template <typename P,
+		// [unord.multimap.modifiers]/3
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<value_type, P&&>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
-	insert(const_iterator hint, P&& obj);
+	insert(const_iterator hint, P&& obj)
+	{
+		// [unord.multimap.modifiers]/3
+		return emplace_hint(hint, hamon::forward<P>(obj));
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
