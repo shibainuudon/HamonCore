@@ -15,8 +15,8 @@
 #include "constexpr_test.hpp"
 #include "unordered_map_test_helper.hpp"
 
-// P0458R2
-#if !defined(HAMON_USE_STD_UNORDERED_MAP) || (HAMON_CXX_STANDARD >= 20)
+#if !defined(HAMON_USE_STD_UNORDERED_MAP) || \
+	defined(__cpp_lib_generic_unordered_lookup) && (__cpp_lib_generic_unordered_lookup >= 201811L)
 
 namespace hamon_unordered_map_test
 {

@@ -58,29 +58,32 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+
+#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && (HAMON_CXX_STANDARD < 14))
+	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, std::initializer_list<ValueType>, SizeType, Hasher const&, Allocator const&>::value, "");
+#endif
 
 #if 0
 	{
