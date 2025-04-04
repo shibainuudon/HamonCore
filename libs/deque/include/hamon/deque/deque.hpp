@@ -31,6 +31,7 @@ using std::deque;
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
@@ -51,7 +52,6 @@ using std::deque;
 #include <hamon/memory/to_address.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>

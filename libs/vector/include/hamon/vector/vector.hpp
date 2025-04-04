@@ -30,6 +30,7 @@ using std::vector;
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
@@ -59,7 +60,6 @@ using std::vector;
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
-#include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>

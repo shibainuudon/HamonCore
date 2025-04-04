@@ -47,7 +47,7 @@ using std::basic_string;
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/ranges/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/type_traits/enable_if.hpp>

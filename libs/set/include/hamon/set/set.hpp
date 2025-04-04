@@ -13,6 +13,7 @@
 #if !defined(HAMON_USE_STD_SET)
 
 #include <hamon/set/multiset_fwd.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/red_black_tree.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/container/detail/node_handle.hpp>
@@ -41,7 +42,6 @@
 #include <hamon/pair/pair.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>

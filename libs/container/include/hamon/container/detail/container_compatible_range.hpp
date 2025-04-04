@@ -4,8 +4,8 @@
  *	@brief	container_compatible_range の定義
  */
 
-#ifndef HAMON_RANGES_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP
-#define HAMON_RANGES_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP
+#ifndef HAMON_CONTAINER_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP
+#define HAMON_CONTAINER_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP
 
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
@@ -38,4 +38,4 @@ using container_compatible_range = hamon::conjunction<
 }	// namespace detail
 }	// namespace hamon
 
-#endif // HAMON_RANGES_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP
+#endif // HAMON_CONTAINER_DETAIL_CONTAINER_COMPATIBLE_RANGE_HPP

@@ -21,6 +21,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/iter_value_type.hpp>
@@ -33,7 +34,6 @@
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
-#include <hamon/ranges/detail/container_compatible_range.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
