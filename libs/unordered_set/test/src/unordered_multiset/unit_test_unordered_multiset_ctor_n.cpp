@@ -50,28 +50,31 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	static_assert( hamon::is_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_constructible<Set, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Set, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)
+#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)	// TODO
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
 #endif
-	static_assert( hamon::is_implicitly_constructible<Set, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+
+#if !(defined(HAMON_USE_STD_UNORDERED_MULTISET) && (HAMON_CXX_STANDARD < 14))
+	static_assert( hamon::is_constructible<Set, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Set, SizeType, Hasher const&, Allocator const&>::value, "");
+#endif
 
 	return true;
 }

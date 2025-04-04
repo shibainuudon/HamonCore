@@ -50,28 +50,31 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::is_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert( hamon::is_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert( hamon::is_constructible<Map, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Allocator const&>::value, "");
-	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)
+#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)	// TODO
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
 #endif
-	static_assert( hamon::is_implicitly_constructible<Map, SizeType, Allocator const&>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
+
+#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && (HAMON_CXX_STANDARD < 14))
+	static_assert( hamon::is_constructible<Map, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Allocator const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, SizeType, Allocator const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType, Allocator const&>::value, "");
 	static_assert(!hamon::is_trivially_constructible<Map, SizeType, Hasher const&, Allocator const&>::value, "");
+#endif
 
 #if 0
 	{
