@@ -54,7 +54,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Map, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTIMAP)	// TODO
+#if !(defined(HAMON_USE_STD_UNORDERED_MULTIMAP) && defined(HAMON_STDLIB_DINKUMWARE))
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Map, SizeType, Hasher const&, KeyEqual const&>::value, "");

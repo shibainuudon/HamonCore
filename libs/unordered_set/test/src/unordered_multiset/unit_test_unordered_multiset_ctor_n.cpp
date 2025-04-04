@@ -54,7 +54,7 @@ UNORDERED_MULTISET_TEST_CONSTEXPR bool test()
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
 	static_assert(!hamon::is_nothrow_constructible<Set, SizeType, Hasher const&, KeyEqual const&, Allocator const&>::value, "");
-#if !defined(HAMON_USE_STD_UNORDERED_MULTISET)	// TODO
+#if !(defined(HAMON_USE_STD_UNORDERED_MULTISET) && defined(HAMON_STDLIB_DINKUMWARE))
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType, Hasher const&>::value, "");
 	static_assert(!hamon::is_implicitly_constructible<Set, SizeType, Hasher const&, KeyEqual const&>::value, "");
