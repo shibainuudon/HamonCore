@@ -18,10 +18,17 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
 		array
+		compare
 		complex
+		container
+		iterator
+		memory
 		numeric
 		pair
+		ranges
 		span
 		string
 		string_view
+		type_traits
+		utility
 		common_test)
