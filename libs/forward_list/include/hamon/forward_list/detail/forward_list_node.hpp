@@ -26,14 +26,13 @@ struct forward_list_node_base
 		: m_next{nullptr}
 	{}
 
-	forward_list_node_base(forward_list_node_base const&) = default;
+	forward_list_node_base(forward_list_node_base const&) = delete;
+	forward_list_node_base& operator=(forward_list_node_base const&) = delete;
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list_node_base(forward_list_node_base&& x) HAMON_NOEXCEPT
 		: m_next{hamon::exchange(x.m_next, nullptr)}
 	{}
-
-	forward_list_node_base& operator=(forward_list_node_base const&) = default;
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list_node_base& operator=(forward_list_node_base&& x) HAMON_NOEXCEPT
@@ -46,6 +45,8 @@ struct forward_list_node_base
 template <typename T>
 struct forward_list_node : public forward_list_node_base
 {
+	using value_type = T;
+
 	T	m_value;
 
 	template <typename... Args>

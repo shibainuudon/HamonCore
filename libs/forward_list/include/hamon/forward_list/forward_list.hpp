@@ -12,9 +12,7 @@
 
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
 
-#include <hamon/forward_list/detail/forward_list_algo.hpp>
-#include <hamon/forward_list/detail/forward_list_iterator.hpp>
-#include <hamon/forward_list/detail/forward_list_node.hpp>
+#include <hamon/forward_list/detail/forward_list_impl.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
@@ -52,24 +50,6 @@ namespace hamon
 template <typename T, typename Allocator>
 class forward_list
 {
-private:
-	using NodeBase = hamon::detail::forward_list_node_base;
-	using Node     = hamon::detail::forward_list_node<T>;
-	using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<Node>;
-	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<Node>;
-	using Algo = hamon::detail::forward_list_algo<T, NodeAllocator>;
-
-private:
-	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator	m_allocator;
-	NodeBase	m_head{};
-
-private:
-	HAMON_CXX11_CONSTEXPR NodeBase*
-	before_head() const HAMON_NOEXCEPT
-	{
-		return const_cast<NodeBase*>(hamon::addressof(m_head));
-	}
-
 public:
 	// types
 	using value_type      = T;
@@ -80,11 +60,24 @@ public:
 	using const_reference = value_type const&;
 	using size_type       = typename hamon::allocator_traits<Allocator>::size_type;
 	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
-	using iterator        = hamon::detail::forward_list_iterator<T, Allocator, false>;
-	using const_iterator  = hamon::detail::forward_list_iterator<T, Allocator, true>;
 
 	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
+private:
+	using Impl            = hamon::detail::forward_list_impl<T, difference_type>;
+	using Node            = typename Impl::node_type;
+	using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<Node>;
+	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<Node>;
+
+public:
+	using iterator        = typename Impl::iterator;
+	using const_iterator  = typename Impl::const_iterator;
+
+private:
+	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator	m_allocator;
+	Impl	m_impl{};
+
+public:
 	// [forward.list.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
 	forward_list() HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -104,7 +97,7 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/4
-		Algo::insert_n_after(m_allocator, this->before_head(), n);
+		m_impl.insert_n_after(m_allocator, this->before_begin(), n);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -112,7 +105,7 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/7
-		Algo::insert_n_after(m_allocator, this->before_head(), n, value);
+		m_impl.insert_n_after(m_allocator, this->before_begin(), n, value);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -121,7 +114,7 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/9
-		Algo::insert_range_after(m_allocator, this->before_head(), first, last);
+		m_impl.insert_range_after(m_allocator, this->before_begin(), first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -130,27 +123,27 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/11
-		Algo::insert_range_after(m_allocator, this->before_head(), hamon::forward<R>(rg));
+		m_impl.insert_range_after(m_allocator, this->before_begin(), hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list const& x)
 		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
 	{
-		Algo::insert_range_after(m_allocator, this->before_head(), x);
+		m_impl.insert_range_after(m_allocator, this->before_begin(), x);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list&& x) HAMON_NOEXCEPT	// noexcept as an extension
 		: m_allocator(hamon::move(x.m_allocator))
-		, m_head(hamon::move(x.m_head))
+		, m_impl(hamon::move(x.m_impl))
 	{}
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
-		Algo::insert_range_after(m_allocator, this->before_head(), x);
+		m_impl.insert_range_after(m_allocator, this->before_begin(), x);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -163,14 +156,14 @@ public:
 		{
 			// アロケータが異なる場合は、
 			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			Algo::insert_range_after(m_allocator, this->before_head(),
+			m_impl.insert_range_after(m_allocator, this->before_begin(),
 				hamon::make_move_iterator(hamon::ranges::begin(x)),
 				hamon::make_move_iterator(hamon::ranges::end(x)));
 			return;
 		}
 
 		// 要素をsteal
-		m_head = hamon::move(x.m_head);
+		m_impl = hamon::move(x.m_impl);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -181,7 +174,7 @@ public:
 	HAMON_CXX20_CONSTEXPR
 	~forward_list()
 	{
-		clear();
+		this->clear();
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -210,7 +203,7 @@ public:
 		}
 
 		// 要素をコピー代入
-		Algo::assign_range_after(m_allocator, this->before_head(), x);
+		m_impl.assign_range(m_allocator, x);
 
 		return *this;
 	}
@@ -234,7 +227,7 @@ public:
 			{
 				// アロケータを伝播させない場合は、
 				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-				Algo::assign_range_after(m_allocator, this->before_head(),
+				m_impl.assign_range(m_allocator,
 					hamon::make_move_iterator(hamon::ranges::begin(x)),
 					hamon::make_move_iterator(hamon::ranges::end(x)));
 				return *this;
@@ -248,7 +241,7 @@ public:
 		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
 
 		// 要素をsteal
-		m_head = hamon::move(x.m_head);
+		m_impl = hamon::move(x.m_impl);
 
 		return *this;
 	}
@@ -268,7 +261,7 @@ public:
 	void assign(InputIterator first, InputIterator last)
 	{
 		// [sequence.reqmts]/58
-		Algo::assign_range_after(m_allocator, this->before_head(), first, last);
+		m_impl.assign_range(m_allocator, first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -276,7 +269,7 @@ public:
 	void assign_range(R&& rg)
 	{
 		// [sequence.reqmts]/62
-		Algo::assign_range_after(m_allocator, this->before_head(), hamon::forward<R>(rg));
+		m_impl.assign_range(m_allocator, hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -305,38 +298,38 @@ public:
 	iterator before_begin() HAMON_NOEXCEPT
 	{
 		// [forward.list.iter]/2
-		return iterator(this->before_head());
+		return m_impl.before_begin();
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator before_begin() const HAMON_NOEXCEPT
 	{
 		// [forward.list.iter]/2
-		return const_iterator(this->before_head());
+		return m_impl.before_begin();
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator begin() HAMON_NOEXCEPT
 	{
-		return iterator(m_head.m_next);
+		return m_impl.begin();
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator begin() const HAMON_NOEXCEPT
 	{
-		return const_iterator(m_head.m_next);
+		return m_impl.begin();
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator end() HAMON_NOEXCEPT
 	{
-		return iterator(nullptr);
+		return m_impl.end();
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	const_iterator end() const HAMON_NOEXCEPT
 	{
-		return const_iterator(nullptr);
+		return m_impl.end();
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
@@ -394,7 +387,7 @@ public:
 	reference emplace_front(Args&&... args)
 	{
 		// [forward.list.modifiers]/2
-		Algo::insert_after(m_allocator, this->before_head(), hamon::forward<Args>(args)...);
+		m_impl.insert_after(m_allocator, this->before_begin(), hamon::forward<Args>(args)...);
 		return front();
 	}
 
@@ -402,14 +395,14 @@ public:
 	void push_front(T const& x)
 	{
 		// [forward.list.modifiers]/3
-		Algo::insert_after(m_allocator, this->before_head(), x);
+		m_impl.insert_after(m_allocator, this->before_begin(), x);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void push_front(T&& x)
 	{
 		// [forward.list.modifiers]/3
-		Algo::insert_after(m_allocator, this->before_head(), hamon::move(x));
+		m_impl.insert_after(m_allocator, this->before_begin(), hamon::move(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -417,7 +410,7 @@ public:
 	void prepend_range(R&& rg)
 	{
 		// [forward.list.modifiers]/4
-		Algo::insert_range_after(m_allocator, this->before_head(), hamon::forward<R>(rg));
+		m_impl.insert_range_after(m_allocator, this->before_begin(), hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -432,28 +425,28 @@ public:
 	iterator emplace_after(const_iterator position, Args&&... args)
 	{
 		// [forward.list.modifiers]/23
-		return iterator{Algo::insert_after(m_allocator, position.ptr(), hamon::forward<Args>(args)...)};
+		return m_impl.insert_after(m_allocator, position, hamon::forward<Args>(args)...);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, T const& x)
 	{
 		// [forward.list.modifiers]/7
-		return iterator{Algo::insert_after(m_allocator, position.ptr(), x)};
+		return m_impl.insert_after(m_allocator, position, x);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, T&& x)
 	{
 		// [forward.list.modifiers]/10
-		return iterator{Algo::insert_after(m_allocator, position.ptr(), hamon::move(x))};
+		return m_impl.insert_after(m_allocator, position, hamon::move(x));
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, size_type n, T const& x)
 	{
 		// [forward.list.modifiers]/13
-		return iterator{Algo::insert_n_after(m_allocator, position.ptr(), n, x)};
+		return m_impl.insert_n_after(m_allocator, position, n, x);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -461,7 +454,7 @@ public:
 	iterator insert_after(const_iterator position, InputIterator first, InputIterator last)
 	{
 		// [forward.list.modifiers]/16
-		return iterator{Algo::insert_range_after(m_allocator, position.ptr(), first, last)};
+		return m_impl.insert_range_after(m_allocator, position, first, last);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -476,7 +469,7 @@ public:
 	iterator insert_range_after(const_iterator position, R&& rg)
 	{
 		// [forward.list.modifiers]/19
-		return iterator{Algo::insert_range_after(m_allocator, position.ptr(), hamon::forward<R>(rg))};
+		return m_impl.insert_range_after(m_allocator, position, hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -485,7 +478,7 @@ public:
 	{
 		// [forward.list.modifiers]/26
 		// [forward.list.modifiers]/27
-		return iterator{Algo::erase_after(m_allocator, position.ptr())};
+		return m_impl.erase_after(m_allocator, position);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -494,7 +487,7 @@ public:
 	{
 		// [forward.list.modifiers]/30
 		// [forward.list.modifiers]/31
-		return iterator{Algo::erase_range_after(m_allocator, position.ptr(), last.ptr())};
+		return m_impl.erase_range_after(m_allocator, position, last);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -505,28 +498,28 @@ public:
 		{
 			hamon::detail::propagate_allocator_on_swap(m_allocator, x.m_allocator);
 		}
-		hamon::swap(m_head, x.m_head);
+		hamon::swap(m_impl, x.m_impl);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void resize(size_type sz)
 	{
 		// [forward.list.modifiers]/34
-		Algo::resize_after(m_allocator, this->before_head(), sz);
+		m_impl.resize(m_allocator, sz);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void resize(size_type sz, value_type const& c)
 	{
 		// [forward.list.modifiers]/36
-		Algo::resize_after(m_allocator, this->before_head(), sz, c);
+		m_impl.resize(m_allocator, sz, c);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void clear() HAMON_NOEXCEPT
 	{
 		// [forward.list.modifiers]/37
-		Algo::clear_after(m_allocator, this->before_head());
+		m_impl.clear(m_allocator);
 	}
 
 	// [forward.list.ops], forward_list operations
@@ -557,7 +550,7 @@ public:
 		// * i に続くイテレータが x 内の間接参照可能なイテレータであること
 
 		// [forward.list.ops]/7
-		Algo::splice_after(position.ptr(), i.ptr());
+		m_impl.splice_after(position, i);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -580,7 +573,7 @@ public:
 		// * position が (first, last) の範囲内のイテレータでないこと
 
 		// [forward.list.ops]/11
-		Algo::splice_range_after(position.ptr(), first.ptr(), last.ptr());
+		m_impl.splice_range_after(position, first, last);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -605,7 +598,7 @@ public:
 	{
 		// [forward.list.ops]/13
 		// [forward.list.ops]/14
-		return Algo::remove_if_after(m_allocator, this->before_head(), pred);
+		return static_cast<size_type>(m_impl.remove_if(m_allocator, pred));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -621,7 +614,7 @@ public:
 	{
 		// [forward.list.ops]/20
 		// [forward.list.ops]/21
-		return Algo::unique_after(m_allocator, this->before_head(), binary_pred);
+		return static_cast<size_type>(m_impl.unique(m_allocator, binary_pred));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -648,7 +641,7 @@ public:
 			return;
 		}
 
-		Algo::merge_after(this->before_head(), x.before_head(), comp);
+		m_impl.merge(x.m_impl, comp);
 	}
 
 	template <typename Compare>
@@ -671,14 +664,14 @@ public:
 	void sort(Compare comp)
 	{
 		// [forward.list.ops]/29
-		Algo::sort_after(this->before_head(), comp);
+		m_impl.sort(comp);
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	void reverse() HAMON_NOEXCEPT
 	{
 		// [forward.list.ops]/32
-		Algo::reverse_after(this->before_head());
+		m_impl.reverse();
 	}
 };
 
