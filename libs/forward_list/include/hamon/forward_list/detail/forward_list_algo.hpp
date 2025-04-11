@@ -11,6 +11,8 @@
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
@@ -53,11 +55,28 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	insert_after(Allocator& alloc, forward_list_node_base* pos, Args&&... args)
 	{
-		using AllocTraits = hamon::allocator_traits<Allocator>;
+		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
 
 		HAMON_ASSERT(pos != nullptr);
-		auto node = AllocTraits::allocate(alloc, 1);	// may throw
-		AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
+
+		forward_list_node<T>* node = nullptr;
+#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
+	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+		if (hamon::is_constant_evaluated())
+		{
+			node = new forward_list_node<T>(hamon::forward<Args>(args)...);	// may throw
+		}
+		else
+		// Visual Studio 2019 かつ、constexprに評価されたときのみ、
+		// ↓のallocator_traitsを使うバージョンだと内部コンパイルエラーになる。
+ 		// 原因はわからないが、new で構築すればエラーは起こらなくなる。
+#endif
+		{
+			using AllocTraits = hamon::allocator_traits<Allocator>;
+			node = AllocTraits::allocate(alloc, 1);	// may throw
+			AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
+		}
+
 		auto next = pos->m_next;
 		pos->m_next = node;
 		node->m_next = next;
