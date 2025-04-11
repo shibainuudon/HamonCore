@@ -44,6 +44,20 @@ private:
 	}
 
 public:
+	template <typename Allocator, typename... Args>
+	static HAMON_CXX14_CONSTEXPR
+	node_type* construct_node(Allocator& alloc, Args&&... args)
+	{
+		return Algo::construct_node(alloc, hamon::forward<Args>(args)...);
+	}
+
+	template <typename Allocator>
+	static HAMON_CXX14_CONSTEXPR
+	void destroy_node(Allocator& alloc, hamon::detail::forward_list_node_base* node)
+	{
+		Algo::destroy_node(alloc, node);
+	}
+
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
 	iterator before_begin() HAMON_NOEXCEPT
 	{
@@ -78,6 +92,13 @@ public:
 	const_iterator end() const HAMON_NOEXCEPT
 	{
 		return const_iterator(nullptr);
+	}
+
+	template <typename Allocator>
+	HAMON_CXX14_CONSTEXPR iterator
+	insert_after(Allocator& alloc, const_iterator pos, node_type* node)
+	{
+		return iterator{Algo::insert_after(alloc, pos.ptr(), node)};
 	}
 
 	template <typename Allocator, typename... Args>

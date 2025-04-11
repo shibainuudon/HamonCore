@@ -48,6 +48,50 @@ struct forward_list_algo
 		return x;
 	}
 
+	template <typename Allocator, typename... Args>
+	static HAMON_CXX14_CONSTEXPR
+	forward_list_node<T>* construct_node(Allocator& alloc, Args&&... args)
+	{
+		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
+
+#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
+	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+		if (hamon::is_constant_evaluated())
+		{
+			return new forward_list_node<T>(hamon::forward<Args>(args)...);	// may throw
+		}
+		// Visual Studio 2019 かつ、constexprに評価されたときのみ、
+		// ↓のallocator_traitsを使うバージョンだと内部コンパイルエラーになる。
+ 		// 原因はわからないが、new で構築すればエラーは起こらなくなる。
+#endif
+
+		using AllocTraits = hamon::allocator_traits<Allocator>;
+		auto node = AllocTraits::allocate(alloc, 1);	// may throw
+		AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
+		return node;
+	}
+
+	template <typename Allocator>
+	static HAMON_CXX14_CONSTEXPR
+	void destroy_node(Allocator& alloc, forward_list_node_base* node)
+	{
+		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
+		using AllocTraits = hamon::allocator_traits<Allocator>;
+		auto p = static_cast<forward_list_node<T>*>(node);
+		AllocTraits::destroy(alloc, p);
+		AllocTraits::deallocate(alloc, p, 1);
+	}
+
+	template <typename Allocator, typename... Args>
+	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
+	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, forward_list_node<T>* node)
+	{
+		auto next = pos->m_next;
+		pos->m_next = node;
+		node->m_next = next;
+		return node;
+	}
+
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
@@ -55,32 +99,9 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	insert_after(Allocator& alloc, forward_list_node_base* pos, Args&&... args)
 	{
-		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
-
 		HAMON_ASSERT(pos != nullptr);
-
-		forward_list_node<T>* node = nullptr;
-#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
-	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-		if (hamon::is_constant_evaluated())
-		{
-			node = new forward_list_node<T>(hamon::forward<Args>(args)...);	// may throw
-		}
-		else
-		// Visual Studio 2019 かつ、constexprに評価されたときのみ、
-		// ↓のallocator_traitsを使うバージョンだと内部コンパイルエラーになる。
- 		// 原因はわからないが、new で構築すればエラーは起こらなくなる。
-#endif
-		{
-			using AllocTraits = hamon::allocator_traits<Allocator>;
-			node = AllocTraits::allocate(alloc, 1);	// may throw
-			AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
-		}
-
-		auto next = pos->m_next;
-		pos->m_next = node;
-		node->m_next = next;
-		return node;
+		auto node = construct_node(alloc, hamon::forward<Args>(args)...);	// may throw
+		return insert_after(alloc, pos, node);
 	}
 
 HAMON_WARNING_POP()
@@ -139,17 +160,13 @@ HAMON_WARNING_POP()
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	erase_range_after(Allocator& alloc, forward_list_node_base* pos, forward_list_node_base* last) HAMON_NOEXCEPT
 	{
-		using AllocTraits = hamon::allocator_traits<Allocator>;
-
 		HAMON_ASSERT(pos != nullptr);
 
 		auto current = pos->m_next;
 		while (current != last)
 		{
 			auto next = current->m_next;
-			auto p = static_cast<forward_list_node<T>*>(current);
-			AllocTraits::destroy(alloc, p);
-			AllocTraits::deallocate(alloc, p, 1);
+			destroy_node(alloc, current);
 			current = next;
 		}
 		pos->m_next = last;
