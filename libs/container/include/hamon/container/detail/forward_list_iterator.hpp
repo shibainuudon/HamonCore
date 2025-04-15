@@ -7,8 +7,8 @@
 #ifndef HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ITERATOR_HPP
 #define HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ITERATOR_HPP
 
-#include <hamon/forward_list/detail/forward_list_node.hpp>
-#include <hamon/forward_list/detail/forward_list_algo.hpp>
+#include <hamon/container/detail/forward_list_node.hpp>
+#include <hamon/container/detail/forward_list_algo.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/type_traits/conditional.hpp>

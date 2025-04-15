@@ -12,13 +12,13 @@
 
 #if !defined(HAMON_USE_STD_FORWARD_LIST)
 
-#include <hamon/forward_list/detail/forward_list_impl.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/container/detail/forward_list_impl.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>

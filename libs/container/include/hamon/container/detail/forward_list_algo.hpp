@@ -7,7 +7,7 @@
 #ifndef HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ALGO_HPP
 #define HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ALGO_HPP
 
-#include <hamon/forward_list/detail/forward_list_node.hpp>
+#include <hamon/container/detail/forward_list_node.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
