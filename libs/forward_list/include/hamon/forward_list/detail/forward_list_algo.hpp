@@ -48,6 +48,9 @@ struct forward_list_algo
 		return x;
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 	template <typename Allocator, typename... Args>
 	static HAMON_CXX14_CONSTEXPR
 	forward_list_node<T>* construct_node(Allocator& alloc, Args&&... args)
@@ -70,6 +73,8 @@ struct forward_list_algo
 		AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
 		return node;
 	}
+
+HAMON_WARNING_POP()
 
 	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR
