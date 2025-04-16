@@ -17,7 +17,6 @@
 			}
 		},
 
-		// target
 		{
 			"name": "windows",
 			"inherits": [ "base" ],
@@ -49,12 +48,7 @@
 			},
 			"cacheVariables": {
 				"CMAKE_SYSTEM_NAME": "Android",
-				//"CMAKE_SYSTEM_VERSION": 21,
-				//"CMAKE_ANDROID_ARCH_ABI": ("armeabi-v7a", "arm64-v8a", "x86", "x86_64" のどれか)
 				"CMAKE_ANDROID_NDK": "$env{ANDROID_NDK}",
-				//"CMAKE_ANDROID_NDK_DEPRECATED_HEADERS": true,
-				//"CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION": "",
-				//"CMAKE_ANDROID_STL_TYPE": ""
 				"CMAKE_TOOLCHAIN_FILE": {
 					"type": "FILEPATH",
 					"value": "$env{ANDROID_NDK}/build/cmake/android.toolchain.cmake"
@@ -62,7 +56,6 @@
 			}
 		},
 
-		// toolset
 		{
 			"name": "msvc",
 			"hidden": true,
@@ -127,7 +120,6 @@
 			}
 		},
 
-		// architecture
 		{
 			"name": "x64",
 			"hidden": true,
@@ -145,7 +137,6 @@
 			}
 		},
 
-		// CMAKE_CXX_STANDARD
 		{
 			"name": "c++11",
 			"hidden": true,
@@ -182,7 +173,6 @@
 			}
 		},
 
-		// CMAKE_BUILD_TYPE
 		{
 			"name": "debug",
 			"hidden": true,
@@ -198,7 +188,6 @@
 			}
 		},
 
-		// Windows MSVC x64
 		{
 			"name": "win-msvc-x64-c++14-debug",
 			"inherits": [ "windows", "msvc", "x64", "c++14", "debug" ]
@@ -232,7 +221,6 @@
 			"inherits": [ "windows", "msvc", "x64", "c++23", "release" ]
 		},
 
-		// Windows MSVC x86
 		{
 			"name": "win-msvc-x86-c++14-debug",
 			"inherits": [ "windows", "msvc", "x86", "c++14", "debug" ]
@@ -266,7 +254,6 @@
 			"inherits": [ "windows", "msvc", "x86", "c++23", "release" ]
 		},
 
-		// Windows Clang x64
 		{
 			"name": "win-clang-x64-c++14-debug",
 			"inherits": [ "windows", "clang-cl", "x64", "c++14", "debug" ]
@@ -300,7 +287,6 @@
 			"inherits": [ "windows", "clang-cl", "x64", "c++23", "release" ]
 		},
 
-		// Windows Emscripten
 		{
 			"name": "win-emscripten-c++11-debug",
 			"inherits": [ "windows", "emscripten", "c++11", "debug" ]
@@ -342,7 +328,6 @@
 			"inherits": [ "windows", "emscripten", "c++23", "release" ]
 		},
 
-		// Linux GCC
 		{
 			"name": "linux-gcc-c++11-debug",
 			"inherits": [ "linux", "gcc", "c++11", "debug" ]
@@ -384,7 +369,6 @@
 			"inherits": [ "linux", "gcc", "c++23", "release" ]
 		},
 
-		// Linux Clang
 		{
 			"name": "linux-clang-c++11-debug",
 			"inherits": [ "linux", "clang", "c++11", "debug" ]
@@ -426,7 +410,6 @@
 			"inherits": [ "linux", "clang", "c++23", "release" ]
 		},
 
-		// Linux Emscripten
 		{
 			"name": "linux-emscripten-c++11-debug",
 			"inherits": [ "linux", "emscripten", "c++11", "debug" ]
@@ -468,7 +451,6 @@
 			"inherits": [ "linux", "emscripten", "c++23", "release" ]
 		},
 
-		// Android
 		{
 			"name": "android-c++11-debug",
 			"inherits": [ "android", "c++11", "debug" ]
