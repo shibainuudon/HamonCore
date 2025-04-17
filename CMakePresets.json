@@ -38,6 +38,16 @@
 			}
 		},
 		{
+			"name": "mac",
+			"inherits": [ "base" ],
+			"hidden": true,
+			"vendor": {
+				"microsoft.com/VisualStudioSettings/CMake/1.0": {
+					"hostOS": [ "macOS" ]
+				}
+			}
+		},
+		{
 			"name": "android",
 			"inherits": [ "base" ],
 			"hidden": true,
@@ -449,6 +459,47 @@
 		{
 			"name": "linux-emscripten-c++23-release",
 			"inherits": [ "linux", "emscripten", "c++23", "release" ]
+		},
+
+		{
+			"name": "mac-clang-c++11-debug",
+			"inherits": [ "mac", "clang", "c++11", "debug" ]
+		},
+		{
+			"name": "mac-clang-c++11-release",
+			"inherits": [ "mac", "clang", "c++11", "release" ]
+		},
+		{
+			"name": "mac-clang-c++14-debug",
+			"inherits": [ "mac", "clang", "c++14", "debug" ]
+		},
+		{
+			"name": "mac-clang-c++14-release",
+			"inherits": [ "mac", "clang", "c++14", "release" ]
+		},
+		{
+			"name": "mac-clang-c++17-debug",
+			"inherits": [ "mac", "clang", "c++17", "debug" ]
+		},
+		{
+			"name": "mac-clang-c++17-release",
+			"inherits": [ "mac", "clang", "c++17", "release" ]
+		},
+		{
+			"name": "mac-clang-c++20-debug",
+			"inherits": [ "mac", "clang", "c++20", "debug" ]
+		},
+		{
+			"name": "mac-clang-c++20-release",
+			"inherits": [ "mac", "clang", "c++20", "release" ]
+		},
+		{
+			"name": "mac-clang-c++23-debug",
+			"inherits": [ "mac", "clang", "c++23", "debug" ]
+		},
+		{
+			"name": "mac-clang-c++23-release",
+			"inherits": [ "mac", "clang", "c++23", "release" ]
 		},
 
 		{
