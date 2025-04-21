@@ -945,6 +945,10 @@
 #if (_MSC_FULL_VER >= 194434918)
 #endif
 
+// Visual Studio 2022 Preview Version 17.14.0 Preview 3.0
+#if (_MSC_FULL_VER >= 194435109)
+#endif
+
 // Visual Studio 2022 Version 17.0.(0-1)
 #if (_MSC_FULL_VER >= 193030705)
 # define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR		// P2316R2	Consistent character literal encoding
