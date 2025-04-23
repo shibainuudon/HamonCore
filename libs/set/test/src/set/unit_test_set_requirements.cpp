@@ -6,6 +6,7 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/container/detail/container_requirements.hpp>
+#include <hamon/container/detail/reversible_container_requirements.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_set_test
@@ -17,7 +18,9 @@ namespace requirements_test
 template <typename T>
 void test()
 {
+	// [set.overview]/2
 	hamon::detail::container_requirements<hamon::set<T>, T>();
+	hamon::detail::reversible_container_requirements<hamon::set<T>, T>();
 }
 
 GTEST_TEST(SetTest, RequirementsTest)

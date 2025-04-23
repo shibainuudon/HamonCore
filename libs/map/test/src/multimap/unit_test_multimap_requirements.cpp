@@ -6,6 +6,7 @@
 
 #include <hamon/map/multimap.hpp>
 #include <hamon/container/detail/container_requirements.hpp>
+#include <hamon/container/detail/reversible_container_requirements.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_multimap_test
@@ -17,11 +18,15 @@ namespace requirements_test
 template <typename Key, typename T>
 void test()
 {
-#if defined(HAMON_USE_STD_MULTIMAP)
-	hamon::detail::container_requirements<hamon::multimap<Key, T>, std::pair<const Key, T>>();
+#if defined(HAMON_USE_STD_MAP)
+	using Pair = std::pair<const Key, T>;
 #else
-	hamon::detail::container_requirements<hamon::multimap<Key, T>, hamon::pair<const Key, T>>();
+	using Pair = hamon::pair<const Key, T>;
 #endif
+
+	// [multimap.overview]/2
+	hamon::detail::container_requirements<hamon::multimap<Key, T>, Pair>();
+	hamon::detail::reversible_container_requirements<hamon::multimap<Key, T>, Pair>();
 }
 
 GTEST_TEST(MultimapTest, RequirementsTest)

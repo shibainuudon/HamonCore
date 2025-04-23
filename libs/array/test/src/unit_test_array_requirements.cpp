@@ -6,6 +6,7 @@
 
 #include <hamon/array/array.hpp>
 #include <hamon/container/detail/container_requirements.hpp>
+#include <hamon/container/detail/reversible_container_requirements.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_array_test
@@ -17,7 +18,9 @@ namespace requirements_test
 template <typename T, hamon::size_t N>
 void test_impl()
 {
+	// [array.overview]/3
 	hamon::detail::container_requirements<hamon::array<T, N>, T>();
+	hamon::detail::reversible_container_requirements<hamon::array<T, N>, T>();
 }
 
 template <typename T>

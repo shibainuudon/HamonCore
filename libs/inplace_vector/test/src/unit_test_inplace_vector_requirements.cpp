@@ -6,6 +6,7 @@
 
 #include <hamon/inplace_vector.hpp>
 #include <hamon/container/detail/container_requirements.hpp>
+#include <hamon/container/detail/reversible_container_requirements.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_inplace_vector_test
@@ -17,7 +18,9 @@ namespace requirements_test
 template <typename T, hamon::size_t N>
 void test_impl()
 {
+	// [inplace.vector.overview]/2
 	hamon::detail::container_requirements<hamon::inplace_vector<T, N>, T>();
+	hamon::detail::reversible_container_requirements<hamon::inplace_vector<T, N>, T>();
 }
 
 template <typename T>
