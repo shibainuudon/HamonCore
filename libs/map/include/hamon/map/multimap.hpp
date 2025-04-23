@@ -55,6 +55,7 @@
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -84,6 +85,9 @@ public:
 	using size_type              = typename hamon::allocator_traits<Allocator>::size_type;
 	using difference_type        = typename hamon::allocator_traits<Allocator>::difference_type;
 
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
+
+public:
 	class value_compare
 	{
 		friend class multimap;

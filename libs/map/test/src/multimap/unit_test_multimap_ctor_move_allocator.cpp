@@ -244,7 +244,7 @@ template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test1_2()
 {
 	MyLess comp{13};
-	hamon::allocator<std::pair<const Key, T>> alloc;
+	hamon::allocator<typename hamon::multimap<Key, T>::value_type> alloc;
 	VERIFY(test_impl<Key, T>(comp, alloc));
 
 	return true;
@@ -254,7 +254,7 @@ template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test2_2()
 {
 	MyLess comp{14};
-	MyAllocator1<std::pair<const Key, T>> alloc{42};
+	MyAllocator1<typename hamon::multimap<Key, T>::value_type> alloc{42};
 	VERIFY(test_impl<Key, T>(comp, alloc));
 
 	return true;
@@ -264,7 +264,7 @@ template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test3_2()
 {
 	MyLess comp{15};
-	MyAllocator2<std::pair<const Key, T>> alloc{42};
+	MyAllocator2<typename hamon::multimap<Key, T>::value_type> alloc{42};
 	VERIFY(test_impl<Key, T>(comp, alloc));
 
 	return true;
@@ -302,7 +302,7 @@ MULTIMAP_TEST_CONSTEXPR bool test3()
 
 bool test4()
 {
-	using Allocator = MyAllocator1<std::pair<int const, int>>;
+	using Allocator = MyAllocator1<typename hamon::multimap<int, int>::value_type>;
 	using Map = hamon::multimap<int, int, hamon::less<>, Allocator>;
 	using ValueType = typename Map::value_type;
 
@@ -366,13 +366,15 @@ GTEST_TEST(MultimapTest, CtorMoveAllocatorTest)
 
 	EXPECT_TRUE(test4());
 
+	using Allocator = MyAllocator1<typename hamon::multimap<int, S>::value_type>;
+	using Map = hamon::multimap<int, S, hamon::less<>, Allocator>;
+
 	S::s_ctor_count = 0;
 	S::s_copy_ctor_count = 0;
 	S::s_move_ctor_count = 0;
 	S::s_dtor_count = 0;
 	{
-		using Allocator = MyAllocator1<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		Map v1{Allocator{10}};
 		v1.emplace(1, 10);
 		v1.emplace(1, 20);
 		v1.emplace(2, 30);
@@ -382,7 +384,7 @@ GTEST_TEST(MultimapTest, CtorMoveAllocatorTest)
 		EXPECT_EQ(0, S::s_move_ctor_count);
 		EXPECT_EQ(0, S::s_dtor_count);
 
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{hamon::move(v1), Allocator{10}};
+		Map v2{hamon::move(v1), Allocator{10}};
 		EXPECT_EQ(4, S::s_ctor_count);
 		EXPECT_EQ(0, S::s_copy_ctor_count);
 		EXPECT_EQ(0, S::s_move_ctor_count);
@@ -398,8 +400,7 @@ GTEST_TEST(MultimapTest, CtorMoveAllocatorTest)
 	S::s_move_ctor_count = 0;
 	S::s_dtor_count = 0;
 	{
-		using Allocator = MyAllocator1<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		Map v1{Allocator{10}};
 		v1.emplace(1, 10);
 		v1.emplace(1, 20);
 		v1.emplace(2, 30);
@@ -409,7 +410,7 @@ GTEST_TEST(MultimapTest, CtorMoveAllocatorTest)
 		EXPECT_EQ(0, S::s_move_ctor_count);
 		EXPECT_EQ(0, S::s_dtor_count);
 
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{hamon::move(v1), Allocator{20}};
+		Map v2{hamon::move(v1), Allocator{20}};
 		EXPECT_EQ(4, S::s_ctor_count);
 		EXPECT_EQ(0, S::s_copy_ctor_count);
 		EXPECT_EQ(4, S::s_move_ctor_count);

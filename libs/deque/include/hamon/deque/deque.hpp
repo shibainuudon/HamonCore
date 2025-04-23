@@ -60,6 +60,7 @@ using std::deque;
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
@@ -286,6 +287,8 @@ public:
 	using const_iterator         = Iterator<T, hamon::true_type>;         // see [container.requirements]
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
+
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 private:
 	struct Impl

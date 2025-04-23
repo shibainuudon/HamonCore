@@ -88,7 +88,8 @@ MAP_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test1_2()
 {
-	hamon::allocator<std::pair<const Key, T>> alloc;
+	using ValueType = typename hamon::map<Key, T>::value_type;
+	hamon::allocator<ValueType> alloc;
 	VERIFY(test_impl<Key, T>(alloc));
 
 	return true;
@@ -97,7 +98,8 @@ MAP_TEST_CONSTEXPR bool test1_2()
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test2_2()
 {
-	MyAllocator<std::pair<const Key, T>> alloc{42};
+	using ValueType = typename hamon::map<Key, T>::value_type;
+	MyAllocator<ValueType> alloc{42};
 	VERIFY(test_impl<Key, T>(alloc));
 
 	return true;

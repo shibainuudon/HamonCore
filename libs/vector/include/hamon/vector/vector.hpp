@@ -70,6 +70,7 @@ using std::vector;
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/exchange.hpp>
@@ -306,6 +307,8 @@ public:
 	using const_iterator         = Iterator<T, hamon::true_type>;         // see [container.requirements]
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
+
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 private:
 	struct Impl

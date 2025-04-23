@@ -43,6 +43,7 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -79,6 +80,8 @@ public:
 	using const_iterator         = hamon::detail::list_iterator<T, Allocator, true>;
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
+
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 private:
 	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator	m_allocator;

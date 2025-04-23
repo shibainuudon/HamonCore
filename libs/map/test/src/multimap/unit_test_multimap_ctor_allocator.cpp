@@ -105,7 +105,7 @@ MULTIMAP_TEST_CONSTEXPR bool test_impl(Allocator const& alloc)
 template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test1_2()
 {
-	hamon::allocator<std::pair<const Key, T>> alloc;
+	hamon::allocator<typename hamon::multimap<Key, T>::value_type> alloc;
 	VERIFY(test_impl<Key, T>(alloc));
 
 	return true;
@@ -114,7 +114,7 @@ MULTIMAP_TEST_CONSTEXPR bool test1_2()
 template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test2_2()
 {
-	MyAllocator<std::pair<const Key, T>> alloc{42};
+	MyAllocator<typename hamon::multimap<Key, T>::value_type> alloc{42};
 	VERIFY(test_impl<Key, T>(alloc));
 
 	return true;

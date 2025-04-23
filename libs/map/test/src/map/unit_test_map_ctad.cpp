@@ -62,13 +62,15 @@ namespace ctad_test
 template <typename Key, typename T, template <typename> class IteratorWrapper>
 MAP_TEST_CONSTEXPR bool test1_impl()
 {
-	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
-	using Set = hamon::map<Key, T, Compare, Allocator>;
-	using ValueType = typename Set::value_type;
-	using Iterator = IteratorWrapper<ValueType>;
+	using DefaultValueType = typename hamon::map<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::map<Key, T>::allocator_type;
 	using DefaultCompare = typename hamon::map<Key, T>::key_compare;
+
+	using Compare = hamon::less<>;
+	using Allocator = hamon::allocator<DefaultValueType>;
+	using Map = hamon::map<Key, T, Compare, Allocator>;
+	using ValueType = typename Map::value_type;
+	using Iterator = IteratorWrapper<ValueType>;
 
 	ValueType a[] =
 	{
@@ -118,13 +120,15 @@ MAP_TEST_CONSTEXPR bool test1()
 template <typename Key, typename T, template <typename> class RangeWrapper>
 MAP_TEST_CONSTEXPR bool test2_impl()
 {
-	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
-	using Set = hamon::map<Key, T, Compare, Allocator>;
-	using ValueType = typename Set::value_type;
-	using Range = RangeWrapper<ValueType>;
+	using DefaultValueType = typename hamon::map<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::map<Key, T>::allocator_type;
 	using DefaultCompare = typename hamon::map<Key, T>::key_compare;
+
+	using Compare = hamon::less<>;
+	using Allocator = hamon::allocator<DefaultValueType>;
+	using Map = hamon::map<Key, T, Compare, Allocator>;
+	using ValueType = typename Map::value_type;
+	using Range = RangeWrapper<ValueType>;
 
 	ValueType a[] =
 	{
@@ -181,10 +185,12 @@ MAP_TEST_CONSTEXPR bool test2()
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test3()
 {
-	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
+	using DefaultValueType = typename hamon::map<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::map<Key, T>::allocator_type;
 	using DefaultCompare = typename hamon::map<Key, T>::key_compare;
+
+	using Compare = hamon::less<>;
+	using Allocator = hamon::allocator<DefaultValueType>;
 #if defined(HAMON_USE_STD_MAP)
 	using ValueType = std::pair<Key, T>;
 #else

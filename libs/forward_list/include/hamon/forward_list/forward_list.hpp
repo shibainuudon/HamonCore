@@ -39,6 +39,7 @@
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -81,6 +82,8 @@ public:
 	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
 	using iterator        = hamon::detail::forward_list_iterator<T, Allocator, false>;
 	using const_iterator  = hamon::detail::forward_list_iterator<T, Allocator, true>;
+
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 	// [forward.list.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR

@@ -490,7 +490,7 @@ MAP_TEST_CONSTEXPR bool test_impl_2(Compare const& comp, Allocator const& alloc)
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test1_2()
 {
-	hamon::allocator<std::pair<const Key, T>> alloc;
+	hamon::allocator<typename hamon::map<Key, T>::value_type> alloc;
 	{
 		MyLess comp{13};
 		VERIFY(test_impl_1<Key, T>(comp, alloc));
@@ -506,7 +506,7 @@ MAP_TEST_CONSTEXPR bool test1_2()
 template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test2_2()
 {
-	MyAllocator<std::pair<const Key, T>> alloc{42};
+	MyAllocator<typename hamon::map<Key, T>::value_type> alloc{42};
 	{
 		MyLess comp{15};
 		VERIFY(test_impl_1<Key, T>(comp, alloc));

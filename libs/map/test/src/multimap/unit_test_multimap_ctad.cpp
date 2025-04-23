@@ -62,13 +62,15 @@ namespace ctad_test
 template <typename Key, typename T, template <typename> class IteratorWrapper>
 MULTIMAP_TEST_CONSTEXPR bool test1_impl()
 {
+	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
+	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
+	using DefaultCompare = typename hamon::multimap<Key, T>::key_compare;
+
 	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
+	using Allocator = hamon::allocator<DefaultValueType>;
 	using Set = hamon::multimap<Key, T, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
 	using Iterator = IteratorWrapper<ValueType>;
-	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
-	using DefaultCompare = typename hamon::multimap<Key, T>::key_compare;
 
 	ValueType a[] =
 	{
@@ -118,13 +120,15 @@ MULTIMAP_TEST_CONSTEXPR bool test1()
 template <typename Key, typename T, template <typename> class RangeWrapper>
 MULTIMAP_TEST_CONSTEXPR bool test2_impl()
 {
+	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
+	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
+	using DefaultCompare = typename hamon::multimap<Key, T>::key_compare;
+
 	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
+	using Allocator = hamon::allocator<DefaultValueType>;
 	using Set = hamon::multimap<Key, T, Compare, Allocator>;
 	using ValueType = typename Set::value_type;
 	using Range = RangeWrapper<ValueType>;
-	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
-	using DefaultCompare = typename hamon::multimap<Key, T>::key_compare;
 
 	ValueType a[] =
 	{
@@ -181,10 +185,12 @@ MULTIMAP_TEST_CONSTEXPR bool test2()
 template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test3()
 {
-	using Compare = hamon::less<>;
-	using Allocator = hamon::allocator<std::pair<const Key, T>>;
+	using DefaultValueType = typename hamon::multimap<Key, T>::value_type;
 	using DefaultAllocator = typename hamon::multimap<Key, T>::allocator_type;
 	using DefaultCompare = typename hamon::multimap<Key, T>::key_compare;
+
+	using Compare = hamon::less<>;
+	using Allocator = hamon::allocator<DefaultValueType>;
 #if defined(HAMON_USE_STD_MULTIMAP)
 	using ValueType = std::pair<Key, T>;
 #else

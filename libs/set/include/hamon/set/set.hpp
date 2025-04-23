@@ -51,6 +51,7 @@
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -79,6 +80,8 @@ public:
 	using const_reference        = value_type const&;
 	using size_type              = typename hamon::allocator_traits<Allocator>::size_type;
 	using difference_type        = typename hamon::allocator_traits<Allocator>::difference_type;
+
+	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 private:
 	using Tree = hamon::detail::red_black_tree<false, key_type, value_type, Compare, size_type, difference_type>;

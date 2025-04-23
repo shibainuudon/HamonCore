@@ -246,7 +246,7 @@ template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test1_2()
 {
 	MyLess comp{13};
-	hamon::allocator<std::pair<const Key, T>> alloc;
+	hamon::allocator<typename hamon::map<Key, T>::value_type> alloc;
 	VERIFY(test_impl<Key, T>(comp, alloc, true));
 
 	return true;
@@ -256,7 +256,7 @@ template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test2_2()
 {
 	MyLess comp{14};
-	MyAllocator1<std::pair<const Key, T>> alloc{42};
+	MyAllocator1<typename hamon::map<Key, T>::value_type> alloc{42};
 	VERIFY(test_impl<Key, T>(comp, alloc, true));
 
 	return true;
@@ -266,7 +266,7 @@ template <typename Key, typename T>
 MAP_TEST_CONSTEXPR bool test3_2()
 {
 	MyLess comp{15};
-	MyAllocator2<std::pair<const Key, T>> alloc{42};
+	MyAllocator2<typename hamon::map<Key, T>::value_type> alloc{42};
 	VERIFY(test_impl<Key, T>(comp, alloc, false));
 
 	return true;
@@ -320,13 +320,16 @@ GTEST_TEST(MapTest, CtorCopyTest)
 
 #if !defined(HAMON_USE_STD_MAP) || \
 	(defined(__cpp_lib_map_try_emplace) && (__cpp_lib_map_try_emplace >= 201411L))
+
+	using Allocator = MyAllocator1<typename hamon::map<int, S>::value_type>;
+	using Map = hamon::map<int, S, hamon::less<>, Allocator>;
+
 	S::s_ctor_count = 0;
 	S::s_copy_ctor_count = 0;
 	S::s_move_ctor_count = 0;
 	S::s_dtor_count = 0;
 	{
-		using Allocator = MyAllocator1<std::pair<int const, S>>;
-		hamon::map<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
+		Map v1{Allocator{10}};
 		v1.try_emplace(1, 10);
 		v1.try_emplace(1, 20);
 		v1.try_emplace(2, 30);
@@ -336,7 +339,7 @@ GTEST_TEST(MapTest, CtorCopyTest)
 		EXPECT_EQ(0, S::s_move_ctor_count);
 		EXPECT_EQ(0, S::s_dtor_count);
 
-		hamon::map<int, S, hamon::less<>, Allocator> v2{v1};
+		Map v2{v1};
 		EXPECT_EQ(3, S::s_ctor_count);
 		EXPECT_EQ(3, S::s_copy_ctor_count);
 		EXPECT_EQ(0, S::s_move_ctor_count);

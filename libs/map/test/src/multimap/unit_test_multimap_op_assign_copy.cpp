@@ -264,7 +264,7 @@ template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test2()
 {
 	using Compare = hamon::less<>;
-	using Allocator = MyAllocator1<std::pair<const Key, T>>;
+	using Allocator = MyAllocator1<typename hamon::multimap<Key, T>::value_type>;
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
 
 	static_assert( hamon::is_copy_assignable<Map>::value, "");
@@ -298,7 +298,7 @@ template <typename Key, typename T>
 MULTIMAP_TEST_CONSTEXPR bool test3()
 {
 	using Compare = hamon::less<>;
-	using Allocator = MyAllocator2<std::pair<const Key, T>>;
+	using Allocator = MyAllocator2<typename hamon::multimap<Key, T>::value_type>;
 	using Map = hamon::multimap<Key, T, Compare, Allocator>;
 
 	static_assert( hamon::is_copy_assignable<Map>::value, "");
@@ -362,7 +362,7 @@ MULTIMAP_TEST_CONSTEXPR bool test4()
 
 bool test5()
 {
-	using Allocator = MyAllocator1<std::pair<int const, int>>;
+	using Allocator = MyAllocator1<typename hamon::multimap<int, int>::value_type>;
 	using Map = hamon::multimap<int, int, hamon::less<>, Allocator>;
 	using ValueType = typename Map::value_type;
 
@@ -459,137 +459,142 @@ GTEST_TEST(MultimapTest, OpAssignCopyTest)
 	EXPECT_TRUE(test5());
 
 #if !defined(HAMON_USE_STD_MULTIMAP)
-	S::s_ctor_count = 0;
-	S::s_copy_ctor_count = 0;
-	S::s_move_ctor_count = 0;
-	S::s_dtor_count = 0;
 	{
-		using Allocator = MyAllocator1<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{Allocator{10}};
+		using Allocator = MyAllocator1<typename hamon::multimap<int, S>::value_type>;
+		using Map = hamon::multimap<int, S, hamon::less<>, Allocator>;
 
-		v1.emplace(1, 10);
-		v1.emplace(1, 20);
-		v1.emplace(2, 30);
-		v1.emplace(3, 40);
+		S::s_ctor_count = 0;
+		S::s_copy_ctor_count = 0;
+		S::s_move_ctor_count = 0;
+		S::s_dtor_count = 0;
+		{
+			Map v1{Allocator{10}};
+			Map v2{Allocator{10}};
 
-		v2.emplace(2, 50);
-		v2.emplace(5, 60);
+			v1.emplace(1, 10);
+			v1.emplace(1, 20);
+			v1.emplace(2, 30);
+			v1.emplace(3, 40);
 
-		EXPECT_EQ(6, S::s_ctor_count);
-		EXPECT_EQ(0, S::s_copy_ctor_count);
-		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(0, S::s_dtor_count);
+			v2.emplace(2, 50);
+			v2.emplace(5, 60);
 
-		v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(0, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(0, S::s_dtor_count);
+
+			v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(2, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(4, S::s_dtor_count);
+		}
 		EXPECT_EQ(6, S::s_ctor_count);
 		EXPECT_EQ(2, S::s_copy_ctor_count);
 		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(4, S::s_dtor_count);
-	}
-	EXPECT_EQ(6, S::s_ctor_count);
-	EXPECT_EQ(2, S::s_copy_ctor_count);
-	EXPECT_EQ(0, S::s_move_ctor_count);
-	EXPECT_EQ(8, S::s_dtor_count);
+		EXPECT_EQ(8, S::s_dtor_count);
 
-	S::s_ctor_count = 0;
-	S::s_copy_ctor_count = 0;
-	S::s_move_ctor_count = 0;
-	S::s_dtor_count = 0;
-	{
-		using Allocator = MyAllocator1<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{Allocator{20}};
+		S::s_ctor_count = 0;
+		S::s_copy_ctor_count = 0;
+		S::s_move_ctor_count = 0;
+		S::s_dtor_count = 0;
+		{
+			Map v1{Allocator{10}};
+			Map v2{Allocator{20}};
 
-		v1.emplace(1, 10);
-		v1.emplace(1, 20);
-		v1.emplace(2, 30);
-		v1.emplace(3, 40);
+			v1.emplace(1, 10);
+			v1.emplace(1, 20);
+			v1.emplace(2, 30);
+			v1.emplace(3, 40);
 
-		v2.emplace(2, 50);
-		v2.emplace(5, 60);
+			v2.emplace(2, 50);
+			v2.emplace(5, 60);
 
-		EXPECT_EQ(6, S::s_ctor_count);
-		EXPECT_EQ(0, S::s_copy_ctor_count);
-		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(0, S::s_dtor_count);
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(0, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(0, S::s_dtor_count);
 
-		v1 = v2;
-		EXPECT_EQ(6, S::s_ctor_count);
-		EXPECT_EQ(2, S::s_copy_ctor_count);
-		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(4, S::s_dtor_count);
-	}
-	EXPECT_EQ(6, S::s_ctor_count);
-	EXPECT_EQ(2, S::s_copy_ctor_count);
-	EXPECT_EQ(0, S::s_move_ctor_count);
-	EXPECT_EQ(8, S::s_dtor_count);
-
-	S::s_ctor_count = 0;
-	S::s_copy_ctor_count = 0;
-	S::s_move_ctor_count = 0;
-	S::s_dtor_count = 0;
-	{
-		using Allocator = MyAllocator2<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{Allocator{10}};
-
-		v1.emplace(1, 10);
-		v1.emplace(1, 20);
-		v1.emplace(2, 30);
-		v1.emplace(3, 40);
-
-		v2.emplace(2, 50);
-		v2.emplace(5, 60);
-
-		EXPECT_EQ(6, S::s_ctor_count);
-		EXPECT_EQ(0, S::s_copy_ctor_count);
-		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(0, S::s_dtor_count);
-
-		v1 = v2;
+			v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(2, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(4, S::s_dtor_count);
+		}
 		EXPECT_EQ(6, S::s_ctor_count);
 		EXPECT_EQ(2, S::s_copy_ctor_count);
 		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(4, S::s_dtor_count);
+		EXPECT_EQ(8, S::s_dtor_count);
 	}
-	EXPECT_EQ(6, S::s_ctor_count);
-	EXPECT_EQ(2, S::s_copy_ctor_count);
-	EXPECT_EQ(0, S::s_move_ctor_count);
-	EXPECT_EQ(8, S::s_dtor_count);
-
-	S::s_ctor_count = 0;
-	S::s_copy_ctor_count = 0;
-	S::s_move_ctor_count = 0;
-	S::s_dtor_count = 0;
 	{
-		using Allocator = MyAllocator2<std::pair<int const, S>>;
-		hamon::multimap<int, S, hamon::less<>, Allocator> v1{Allocator{10}};
-		hamon::multimap<int, S, hamon::less<>, Allocator> v2{Allocator{20}};
+		using Allocator = MyAllocator2<typename hamon::multimap<int, S>::value_type>;
+		using Map = hamon::multimap<int, S, hamon::less<>, Allocator>;
 
-		v1.emplace(1, 10);
-		v1.emplace(1, 20);
-		v1.emplace(2, 30);
-		v1.emplace(3, 40);
+		S::s_ctor_count = 0;
+		S::s_copy_ctor_count = 0;
+		S::s_move_ctor_count = 0;
+		S::s_dtor_count = 0;
+		{
+			Map v1{Allocator{10}};
+			Map v2{Allocator{10}};
 
-		v2.emplace(2, 50);
-		v2.emplace(5, 60);
+			v1.emplace(1, 10);
+			v1.emplace(1, 20);
+			v1.emplace(2, 30);
+			v1.emplace(3, 40);
 
-		EXPECT_EQ(6, S::s_ctor_count);
-		EXPECT_EQ(0, S::s_copy_ctor_count);
-		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(0, S::s_dtor_count);
+			v2.emplace(2, 50);
+			v2.emplace(5, 60);
 
-		v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(0, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(0, S::s_dtor_count);
+
+			v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(2, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(4, S::s_dtor_count);
+		}
 		EXPECT_EQ(6, S::s_ctor_count);
 		EXPECT_EQ(2, S::s_copy_ctor_count);
 		EXPECT_EQ(0, S::s_move_ctor_count);
-		EXPECT_EQ(4, S::s_dtor_count);
+		EXPECT_EQ(8, S::s_dtor_count);
+
+		S::s_ctor_count = 0;
+		S::s_copy_ctor_count = 0;
+		S::s_move_ctor_count = 0;
+		S::s_dtor_count = 0;
+		{
+			Map v1{Allocator{10}};
+			Map v2{Allocator{20}};
+
+			v1.emplace(1, 10);
+			v1.emplace(1, 20);
+			v1.emplace(2, 30);
+			v1.emplace(3, 40);
+
+			v2.emplace(2, 50);
+			v2.emplace(5, 60);
+
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(0, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(0, S::s_dtor_count);
+
+			v1 = v2;
+			EXPECT_EQ(6, S::s_ctor_count);
+			EXPECT_EQ(2, S::s_copy_ctor_count);
+			EXPECT_EQ(0, S::s_move_ctor_count);
+			EXPECT_EQ(4, S::s_dtor_count);
+		}
+		EXPECT_EQ(6, S::s_ctor_count);
+		EXPECT_EQ(2, S::s_copy_ctor_count);
+		EXPECT_EQ(0, S::s_move_ctor_count);
+		EXPECT_EQ(8, S::s_dtor_count);
 	}
-	EXPECT_EQ(6, S::s_ctor_count);
-	EXPECT_EQ(2, S::s_copy_ctor_count);
-	EXPECT_EQ(0, S::s_move_ctor_count);
-	EXPECT_EQ(8, S::s_dtor_count);
 #endif
 }
 

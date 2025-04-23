@@ -41,9 +41,10 @@ namespace types_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename Key, typename T, typename Compare, typename Allocator>
+template <typename Key, typename T, typename Compare, template <typename> class TAllocator>
 MAP_TEST_CONSTEXPR bool test()
 {
+	using Allocator = TAllocator<typename hamon::map<Key, T>::value_type>;
 	using Map = hamon::map<Key, T, Compare, Allocator>;
 	using AllocTraits = hamon::allocator_traits<Allocator>;
 
@@ -73,9 +74,9 @@ MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(MapTest, TypesTest)
 {
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char, hamon::less<int>, hamon::allocator<std::pair<const int, char>>>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float, hamon::less<>, hamon::allocator<std::pair<const char, float>>>()));
-	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int, hamon::greater<>, hamon::allocator<std::pair<const float, int>>>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<int, char, hamon::less<int>, hamon::allocator>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<char, float, hamon::less<>, std::allocator>()));
+	MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<float, int, hamon::greater<>, hamon::allocator>()));
 }
 
 #undef MAP_TEST_CONSTEXPR_EXPECT_TRUE
