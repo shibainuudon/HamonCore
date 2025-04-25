@@ -15,7 +15,6 @@
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
-#include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/forward_list_impl.hpp>
@@ -25,7 +24,6 @@
 #include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
-#include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/equals_allocator.hpp>
@@ -50,6 +48,10 @@ namespace hamon
 template <typename T, typename Allocator>
 class forward_list
 {
+private:
+	using AllocTraits     = hamon::allocator_traits<Allocator>;
+	using Impl            = hamon::detail::forward_list_impl<T, Allocator>;
+
 public:
 	// types
 	using value_type      = T;
@@ -58,30 +60,22 @@ public:
 	using const_pointer   = typename hamon::allocator_traits<Allocator>::const_pointer;
 	using reference       = value_type&;
 	using const_reference = value_type const&;
-	using size_type       = typename hamon::allocator_traits<Allocator>::size_type;
-	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
+	using size_type       = typename Impl::size_type;
+	using difference_type = typename Impl::difference_type;
+	using iterator        = typename Impl::iterator;
+	using const_iterator  = typename Impl::const_iterator;
 
 	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 private:
-	using Impl            = hamon::detail::forward_list_impl<T, difference_type>;
-	using Node            = typename Impl::node_type;
-	using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<Node>;
-	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<Node>;
-
-public:
-	using iterator        = typename Impl::iterator;
-	using const_iterator  = typename Impl::const_iterator;
-
-private:
-	HAMON_NO_UNIQUE_ADDRESS	NodeAllocator	m_allocator;
+	HAMON_NO_UNIQUE_ADDRESS	Allocator	m_allocator;
 	Impl	m_impl{};
 
 public:
 	// [forward.list.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
 	forward_list() HAMON_NOEXCEPT_IF(	// noexcept as an extension
-		hamon::is_nothrow_default_constructible<NodeAllocator>::value)
+		hamon::is_nothrow_default_constructible<Allocator>::value)
 		: forward_list(Allocator())
 	{}
 
@@ -128,7 +122,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list const& x)
-		: m_allocator(NodeAllocTraits::select_on_container_copy_construction(x.m_allocator))
+		: m_allocator(AllocTraits::select_on_container_copy_construction(x.m_allocator))
 	{
 		m_impl.insert_range_after(m_allocator, this->before_begin(), x);
 	}
@@ -149,7 +143,7 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	forward_list(forward_list&& x, hamon::type_identity_t<Allocator> const& a)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
-			hamon::allocator_traits<Allocator>::is_always_equal::value)
+			AllocTraits::is_always_equal::value)
 		: m_allocator(a)
 	{
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
@@ -186,9 +180,9 @@ public:
 		}
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (NodeAllocTraits::propagate_on_container_copy_assignment::value)
+		if constexpr (AllocTraits::propagate_on_container_copy_assignment::value)
 #else
-		if           (NodeAllocTraits::propagate_on_container_copy_assignment::value)
+		if           (AllocTraits::propagate_on_container_copy_assignment::value)
 #endif
 		{
 			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
@@ -210,7 +204,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	forward_list& operator=(forward_list&& x)
-		HAMON_NOEXCEPT_IF(hamon::allocator_traits<Allocator>::is_always_equal::value)
+		HAMON_NOEXCEPT_IF(AllocTraits::is_always_equal::value)
 	{
 		if (hamon::addressof(x) == this)
 		{
@@ -218,9 +212,9 @@ public:
 		}
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (!NodeAllocTraits::propagate_on_container_move_assignment::value)
+		if constexpr (!AllocTraits::propagate_on_container_move_assignment::value)
 #else
-		if           (!NodeAllocTraits::propagate_on_container_move_assignment::value)
+		if           (!AllocTraits::propagate_on_container_move_assignment::value)
 #endif
 		{
 			if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
@@ -361,9 +355,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	size_type max_size() const HAMON_NOEXCEPT
 	{
-		return hamon::min(
-			static_cast<size_type>(hamon::numeric_limits<difference_type>::max()),
-			static_cast<size_type>(NodeAllocTraits::max_size(m_allocator)));
+		return m_impl.max_size(m_allocator);
 	}
 
 	// [forward.list.access], element access
@@ -492,7 +484,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	void swap(forward_list& x)
-		HAMON_NOEXCEPT_IF(hamon::allocator_traits<Allocator>::is_always_equal::value)
+		HAMON_NOEXCEPT_IF(AllocTraits::is_always_equal::value)
 	{
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{

@@ -12,7 +12,6 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
-#include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
@@ -26,10 +25,12 @@ namespace detail
 template <typename T>
 struct forward_list_algo
 {
+	using node_type = hamon::detail::forward_list_node<T>;
+
 	static HAMON_CXX11_CONSTEXPR
 	T& get_value(forward_list_node_base* x) HAMON_NOEXCEPT
 	{
-		return static_cast<forward_list_node<T>*>(x)->m_value;
+		return static_cast<node_type*>(x)->m_value;
 	}
 
 	template <typename SizeType>
@@ -48,29 +49,39 @@ struct forward_list_algo
 		return x;
 	}
 
+	template <typename SizeType, typename Allocator>
+	static HAMON_CXX14_CONSTEXPR
+	SizeType max_size(Allocator const& alloc)
+	{
+		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
+		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
+		return NodeAllocTraits::max_size(NodeAllocator{alloc});
+	}
+
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 	template <typename Allocator, typename... Args>
 	static HAMON_CXX14_CONSTEXPR
-	forward_list_node<T>* construct_node(Allocator& alloc, Args&&... args)
+	node_type* construct_node(Allocator& alloc, Args&&... args)
 	{
-		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
+		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
+		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
 
 #if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
 	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
-			return new forward_list_node<T>(hamon::forward<Args>(args)...);	// may throw
+			return new node_type(hamon::forward<Args>(args)...);	// may throw
 		}
 		// Visual Studio 2019 かつ、constexprに評価されたときのみ、
 		// ↓のallocator_traitsを使うバージョンだと内部コンパイルエラーになる。
  		// 原因はわからないが、new で構築すればエラーは起こらなくなる。
 #endif
 
-		using AllocTraits = hamon::allocator_traits<Allocator>;
-		auto node = AllocTraits::allocate(alloc, 1);	// may throw
-		AllocTraits::construct(alloc, node, hamon::forward<Args>(args)...);	// may throw
+		NodeAllocator node_alloc{alloc};
+		auto node = NodeAllocTraits::allocate(node_alloc, 1);	// may throw
+		NodeAllocTraits::construct(node_alloc, node, hamon::forward<Args>(args)...);	// may throw
 		return node;
 	}
 
@@ -80,16 +91,18 @@ HAMON_WARNING_POP()
 	static HAMON_CXX14_CONSTEXPR
 	void destroy_node(Allocator& alloc, forward_list_node_base* node)
 	{
-		static_assert(hamon::is_same<typename Allocator::value_type, forward_list_node<T>>::value, "");
-		using AllocTraits = hamon::allocator_traits<Allocator>;
-		auto p = static_cast<forward_list_node<T>*>(node);
-		AllocTraits::destroy(alloc, p);
-		AllocTraits::deallocate(alloc, p, 1);
+		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
+		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
+
+		NodeAllocator node_alloc{alloc};
+		auto p = static_cast<node_type*>(node);
+		NodeAllocTraits::destroy(node_alloc, p);
+		NodeAllocTraits::deallocate(node_alloc, p, 1);
 	}
 
 	template <typename Allocator, typename... Args>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
-	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, forward_list_node<T>* node)
+	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, node_type* node)
 	{
 		auto next = pos->m_next;
 		pos->m_next = node;

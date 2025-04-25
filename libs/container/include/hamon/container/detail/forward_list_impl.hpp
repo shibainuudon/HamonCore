@@ -7,9 +7,11 @@
 #ifndef HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_IMPL_HPP
 #define HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_IMPL_HPP
 
+#include <hamon/algorithm/min.hpp>
 #include <hamon/container/detail/forward_list_node.hpp>
 #include <hamon/container/detail/forward_list_iterator.hpp>
 #include <hamon/container/detail/forward_list_algo.hpp>
+#include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -22,13 +24,15 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, typename DifferenceType>
+template <typename T, typename Allocator>
 struct forward_list_impl
 {
 public:
-	using node_type      = hamon::detail::forward_list_node<T>;
-	using iterator       = hamon::detail::forward_list_iterator<T, DifferenceType, false>;
-	using const_iterator = hamon::detail::forward_list_iterator<T, DifferenceType, true>;
+	using size_type       = typename hamon::allocator_traits<Allocator>::size_type;
+	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
+	using node_type       = hamon::detail::forward_list_node<T>;
+	using iterator        = hamon::detail::forward_list_iterator<T, difference_type, false>;
+	using const_iterator  = hamon::detail::forward_list_iterator<T, difference_type, true>;
 
 private:
 	using Algo = hamon::detail::forward_list_algo<T>;
@@ -44,14 +48,13 @@ private:
 	}
 
 public:
-	template <typename Allocator, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR
 	node_type* construct_node(Allocator& alloc, Args&&... args)
 	{
 		return Algo::construct_node(alloc, hamon::forward<Args>(args)...);
 	}
 
-	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR
 	void destroy_node(Allocator& alloc, hamon::detail::forward_list_node_base* node)
 	{
@@ -100,7 +103,14 @@ public:
 		return access::make<const_iterator>(nullptr);
 	}
 
-	template <typename Allocator>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	size_type max_size(Allocator const& alloc) const HAMON_NOEXCEPT
+	{
+		return hamon::min(
+			static_cast<size_type>(hamon::numeric_limits<difference_type>::max()),
+			Algo::template max_size<size_type>(alloc));
+	}
+
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_after(Allocator& alloc, const_iterator pos, node_type* node)
 	{
@@ -109,7 +119,7 @@ public:
 			Algo::insert_after(alloc, access::ptr(pos), node));
 	}
 
-	template <typename Allocator, typename... Args>
+	template <typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_after(Allocator& alloc, const_iterator pos, Args&&... args)
 	{
@@ -118,7 +128,7 @@ public:
 			Algo::insert_after(alloc, access::ptr(pos), hamon::forward<Args>(args)...));
 	}
 
-	template <typename Allocator, typename SizeType, typename... Args>
+	template <typename SizeType, typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_n_after(Allocator& alloc, const_iterator pos, SizeType n, Args&&... args)
 	{
@@ -127,7 +137,7 @@ public:
 			Algo::insert_n_after(alloc, access::ptr(pos), n, hamon::forward<Args>(args)...));
 	}
 
-	template <typename Allocator, typename Iterator, typename Sentinel>
+	template <typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range_after(Allocator& alloc, const_iterator pos, Iterator first, Sentinel last)
 	{
@@ -136,28 +146,27 @@ public:
 			Algo::insert_range_after(alloc, access::ptr(pos), first, last));
 	}
 
-	template <typename Allocator, typename Range>
+	template <typename Range>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range_after(Allocator& alloc, const_iterator pos, Range&& rg)
 	{
 		return this->insert_range_after(alloc, pos, hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
-	template <typename Allocator, typename Iterator, typename Sentinel>
+	template <typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(Allocator& alloc, Iterator first, Sentinel last)
 	{
 		Algo::assign_range_after(alloc, this->before_head(), first, last);
 	}
 
-	template <typename Allocator, typename Range>
+	template <typename Range>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(Allocator& alloc, Range&& rg)
 	{
 		this->assign_range(alloc, hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 
-	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR iterator
 	erase_range_after(Allocator& alloc, const_iterator pos, const_iterator last) HAMON_NOEXCEPT
 	{
@@ -166,7 +175,6 @@ public:
 			Algo::erase_range_after(alloc, access::ptr(pos), access::ptr(last)));
 	}
 
-	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR iterator
 	erase_after(Allocator& alloc, const_iterator pos) HAMON_NOEXCEPT
 	{
@@ -175,14 +183,13 @@ public:
 			Algo::erase_after(alloc, access::ptr(pos)));
 	}
 
-	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR void
 	clear(Allocator& alloc) HAMON_NOEXCEPT
 	{
 		this->erase_range_after(alloc, this->before_begin(), this->end());
 	}
 
-	template <typename Allocator, typename SizeType, typename... Args>
+	template <typename SizeType, typename... Args>
 	HAMON_CXX14_CONSTEXPR void
 	resize(Allocator& alloc, SizeType size, Args&&... args)
 	{
@@ -203,14 +210,14 @@ public:
 		Algo::splice_range_after(access::ptr(pos), access::ptr(first), access::ptr(last));
 	}
 
-	template <typename Allocator, typename Predicate>
+	template <typename Predicate>
 	HAMON_CXX14_CONSTEXPR hamon::size_t
 	remove_if(Allocator& alloc, Predicate pred)
 	{
 		return Algo::remove_if_after(alloc, this->before_head(), pred);
 	}
 
-	template <typename Allocator, typename BinaryPredicate>
+	template <typename BinaryPredicate>
 	HAMON_CXX14_CONSTEXPR hamon::size_t
 	unique(Allocator& alloc, BinaryPredicate binary_pred)
 	{
