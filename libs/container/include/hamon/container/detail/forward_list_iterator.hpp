@@ -24,13 +24,13 @@ namespace detail
 
 struct forward_list_iterator_access;
 
-template <typename T, typename DifferenceType, bool Const>
+template <typename T, typename Allocator, bool Const>
 struct forward_list_iterator
 {
 public:
 	using iterator_category = hamon::forward_iterator_tag;
 	using value_type        = T;
-	using difference_type   = DifferenceType;
+	using difference_type   = typename hamon::allocator_traits<Allocator>::difference_type;
 	using pointer           = hamon::conditional_t<Const, value_type const*, value_type*>;
 	using reference         = hamon::conditional_t<Const, value_type const&, value_type&>;
 
@@ -57,7 +57,7 @@ public:
 
 	template <bool C, typename = hamon::enable_if_t<C == Const || Const>>
 	HAMON_CXX11_CONSTEXPR
-	forward_list_iterator(forward_list_iterator<T, DifferenceType, C> const& i) HAMON_NOEXCEPT
+	forward_list_iterator(forward_list_iterator<T, Allocator, C> const& i) HAMON_NOEXCEPT
 		: m_ptr(i.m_ptr)
 	{}
 
@@ -108,7 +108,7 @@ private:
 #endif
 
 private:
-	friend struct forward_list_iterator<T, DifferenceType, !Const>;
+	friend struct forward_list_iterator<T, Allocator, !Const>;
 	friend struct forward_list_iterator_access;
 };
 
@@ -121,10 +121,10 @@ struct forward_list_iterator_access
 		return Iterator{ptr};
 	}
 
-	template <typename T, typename D, bool C>
+	template <typename T, typename A, bool C>
 	static HAMON_CXX11_CONSTEXPR
-	typename forward_list_iterator<T, D, C>::NodeBase*
-	ptr(forward_list_iterator<T, D, C> const& it)
+	typename forward_list_iterator<T, A, C>::NodeBase*
+	ptr(forward_list_iterator<T, A, C> const& it)
 	{
 		return it.m_ptr;
 	}

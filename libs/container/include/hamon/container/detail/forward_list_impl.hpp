@@ -31,8 +31,8 @@ public:
 	using size_type       = typename hamon::allocator_traits<Allocator>::size_type;
 	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
 	using node_type       = hamon::detail::forward_list_node<T>;
-	using iterator        = hamon::detail::forward_list_iterator<T, difference_type, false>;
-	using const_iterator  = hamon::detail::forward_list_iterator<T, difference_type, true>;
+	using iterator        = hamon::detail::forward_list_iterator<T, Allocator, false>;
+	using const_iterator  = hamon::detail::forward_list_iterator<T, Allocator, true>;
 
 private:
 	using Algo = hamon::detail::forward_list_algo<T>;
