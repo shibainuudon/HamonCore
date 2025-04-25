@@ -116,7 +116,7 @@ struct forward_list_iterator_access
 {
 	template <typename Iterator>
 	static HAMON_CXX11_CONSTEXPR Iterator
-	make(typename Iterator::NodeBase* ptr)
+	make(typename Iterator::NodeBase* ptr) HAMON_NOEXCEPT
 	{
 		return Iterator{ptr};
 	}
@@ -124,11 +124,19 @@ struct forward_list_iterator_access
 	template <typename T, typename A, bool C>
 	static HAMON_CXX11_CONSTEXPR
 	typename forward_list_iterator<T, A, C>::NodeBase*
-	ptr(forward_list_iterator<T, A, C> const& it)
+	ptr(forward_list_iterator<T, A, C> const& it) HAMON_NOEXCEPT
 	{
 		return it.m_ptr;
 	}
 };
+
+template <typename T, typename A>
+HAMON_CXX11_CONSTEXPR forward_list_iterator<T, A, false>
+const_iterator_cast(forward_list_iterator<T, A, true> const& x) HAMON_NOEXCEPT
+{
+	using access = hamon::detail::forward_list_iterator_access;
+	return access::make<forward_list_iterator<T, A, false>>(access::ptr(x));
+}
 
 }	// namespace detail
 
