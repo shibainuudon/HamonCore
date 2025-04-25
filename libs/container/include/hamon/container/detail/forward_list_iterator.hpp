@@ -22,8 +22,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename T, typename DifferenceType>
-struct forward_list_impl;
+struct forward_list_iterator_access;
 
 template <typename T, typename DifferenceType, bool Const>
 struct forward_list_iterator
@@ -41,10 +40,6 @@ private:
 
 private:
 	NodeBase*	m_ptr;
-
-private:
-	HAMON_CXX11_CONSTEXPR NodeBase*
-	ptr() const HAMON_NOEXCEPT { return m_ptr; }
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
@@ -114,7 +109,25 @@ private:
 
 private:
 	friend struct forward_list_iterator<T, DifferenceType, !Const>;
-	friend struct forward_list_impl<T, DifferenceType>;
+	friend struct forward_list_iterator_access;
+};
+
+struct forward_list_iterator_access
+{
+	template <typename Iterator>
+	static HAMON_CXX11_CONSTEXPR Iterator
+	make(typename Iterator::NodeBase* ptr)
+	{
+		return Iterator{ptr};
+	}
+
+	template <typename T, typename D, bool C>
+	static HAMON_CXX11_CONSTEXPR
+	typename forward_list_iterator<T, D, C>::NodeBase*
+	ptr(forward_list_iterator<T, D, C> const& it)
+	{
+		return it.m_ptr;
+	}
 };
 
 }	// namespace detail

@@ -61,65 +61,79 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
 	iterator before_begin() HAMON_NOEXCEPT
 	{
-		return iterator(this->before_head());
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(this->before_head());
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	const_iterator before_begin() const HAMON_NOEXCEPT
 	{
-		return const_iterator(this->before_head());
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<const_iterator>(this->before_head());
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
 	iterator begin() HAMON_NOEXCEPT
 	{
-		return iterator(m_head.m_next);
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(m_head.m_next);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	const_iterator begin() const HAMON_NOEXCEPT
 	{
-		return const_iterator(m_head.m_next);
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<const_iterator>(m_head.m_next);
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
 	iterator end() HAMON_NOEXCEPT
 	{
-		return iterator(nullptr);
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(nullptr);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	const_iterator end() const HAMON_NOEXCEPT
 	{
-		return const_iterator(nullptr);
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<const_iterator>(nullptr);
 	}
 
 	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_after(Allocator& alloc, const_iterator pos, node_type* node)
 	{
-		return iterator{Algo::insert_after(alloc, pos.ptr(), node)};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::insert_after(alloc, access::ptr(pos), node));
 	}
 
 	template <typename Allocator, typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_after(Allocator& alloc, const_iterator pos, Args&&... args)
 	{
-		return iterator{Algo::insert_after(alloc, pos.ptr(), hamon::forward<Args>(args)...)};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::insert_after(alloc, access::ptr(pos), hamon::forward<Args>(args)...));
 	}
 
 	template <typename Allocator, typename SizeType, typename... Args>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_n_after(Allocator& alloc, const_iterator pos, SizeType n, Args&&... args)
 	{
-		return iterator{Algo::insert_n_after(alloc, pos.ptr(), n, hamon::forward<Args>(args)...)};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::insert_n_after(alloc, access::ptr(pos), n, hamon::forward<Args>(args)...));
 	}
 
 	template <typename Allocator, typename Iterator, typename Sentinel>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range_after(Allocator& alloc, const_iterator pos, Iterator first, Sentinel last)
 	{
-		return iterator{Algo::insert_range_after(alloc, pos.ptr(), first, last)};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::insert_range_after(alloc, access::ptr(pos), first, last));
 	}
 
 	template <typename Allocator, typename Range>
@@ -147,14 +161,18 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	erase_range_after(Allocator& alloc, const_iterator pos, const_iterator last) HAMON_NOEXCEPT
 	{
-		return iterator{Algo::erase_range_after(alloc, pos.ptr(), last.ptr())};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::erase_range_after(alloc, access::ptr(pos), access::ptr(last)));
 	}
 
 	template <typename Allocator>
 	HAMON_CXX14_CONSTEXPR iterator
 	erase_after(Allocator& alloc, const_iterator pos) HAMON_NOEXCEPT
 	{
-		return iterator{Algo::erase_after(alloc, pos.ptr())};
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::erase_after(alloc, access::ptr(pos)));
 	}
 
 	template <typename Allocator>
@@ -174,13 +192,15 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	splice_after(const_iterator pos, const_iterator first) HAMON_NOEXCEPT
 	{
-		Algo::splice_after(pos.ptr(), first.ptr());
+		using access = hamon::detail::forward_list_iterator_access;
+		Algo::splice_after(access::ptr(pos), access::ptr(first));
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	splice_range_after(const_iterator pos, const_iterator first, const_iterator last) HAMON_NOEXCEPT
 	{
-		Algo::splice_range_after(pos.ptr(), first.ptr(), last.ptr());
+		using access = hamon::detail::forward_list_iterator_access;
+		Algo::splice_range_after(access::ptr(pos), access::ptr(first), access::ptr(last));
 	}
 
 	template <typename Allocator, typename Predicate>
