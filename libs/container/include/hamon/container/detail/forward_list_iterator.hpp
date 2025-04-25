@@ -67,7 +67,7 @@ public:
 #if HAMON_CXX_STANDARD >= 14
 		HAMON_ASSERT(m_ptr != nullptr);
 #endif
-		return hamon::detail::forward_list_algo<T>::get_value(m_ptr);
+		return hamon::detail::forward_list_algo<T, Allocator>::get_value(m_ptr);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR

@@ -7,7 +7,9 @@
 #ifndef HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ALGO_HPP
 #define HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_ALGO_HPP
 
+#include <hamon/algorithm/min.hpp>
 #include <hamon/container/detail/forward_list_node.hpp>
+#include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -22,10 +24,15 @@ namespace hamon
 namespace detail
 {
 
-template <typename T>
+template <typename T, typename Allocator>
 struct forward_list_algo
 {
-	using node_type = hamon::detail::forward_list_node<T>;
+	using node_type       = hamon::detail::forward_list_node<T>;
+	using size_type       = typename hamon::allocator_traits<Allocator>::size_type;
+	using difference_type = typename hamon::allocator_traits<Allocator>::difference_type;
+
+	using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
+	using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
 
 	static HAMON_CXX11_CONSTEXPR
 	T& get_value(forward_list_node_base* x) HAMON_NOEXCEPT
@@ -33,9 +40,8 @@ struct forward_list_algo
 		return static_cast<node_type*>(x)->m_value;
 	}
 
-	template <typename SizeType>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
-	next(forward_list_node_base* x, SizeType sz) HAMON_NOEXCEPT
+	next(forward_list_node_base* x, size_type sz) HAMON_NOEXCEPT
 	{
 		for (; 0 < sz; --sz)
 		{
@@ -49,25 +55,21 @@ struct forward_list_algo
 		return x;
 	}
 
-	template <typename SizeType, typename Allocator>
 	static HAMON_CXX14_CONSTEXPR
-	SizeType max_size(Allocator const& alloc)
+	size_type max_size(Allocator const& alloc)
 	{
-		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
-		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
-		return NodeAllocTraits::max_size(NodeAllocator{alloc});
+		return hamon::min(
+			static_cast<size_type>(hamon::numeric_limits<difference_type>::max()),
+			static_cast<size_type>(NodeAllocTraits::max_size(NodeAllocator{alloc})));
 	}
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
-	template <typename Allocator, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR
 	node_type* construct_node(Allocator& alloc, Args&&... args)
 	{
-		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
-		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
-
 #if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
 	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
@@ -87,20 +89,16 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 HAMON_WARNING_POP()
 
-	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR
 	void destroy_node(Allocator& alloc, forward_list_node_base* node)
 	{
-		using NodeAllocator   = typename hamon::allocator_traits<Allocator>::template rebind_alloc<node_type>;
-		using NodeAllocTraits = typename hamon::allocator_traits<Allocator>::template rebind_traits<node_type>;
-
 		NodeAllocator node_alloc{alloc};
 		auto p = static_cast<node_type*>(node);
 		NodeAllocTraits::destroy(node_alloc, p);
 		NodeAllocTraits::deallocate(node_alloc, p, 1);
 	}
 
-	template <typename Allocator, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, node_type* node)
 	{
@@ -113,7 +111,7 @@ HAMON_WARNING_POP()
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
-	template <typename Allocator, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	insert_after(Allocator& alloc, forward_list_node_base* pos, Args&&... args)
 	{
@@ -124,9 +122,9 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 HAMON_WARNING_POP()
 
-	template <typename Allocator, typename SizeType, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX20_CONSTEXPR forward_list_node_base*
-	insert_n_after(Allocator& alloc, forward_list_node_base* pos, SizeType n, Args&&... args)
+	insert_n_after(Allocator& alloc, forward_list_node_base* pos, size_type n, Args&&... args)
 	{
 		HAMON_ASSERT(pos != nullptr);
 		auto current = pos;
@@ -134,7 +132,7 @@ HAMON_WARNING_POP()
 		try
 #endif
 		{
-			for (SizeType i = 0; i < n; ++i)
+			for (size_type i = 0; i < n; ++i)
 			{
 				current = insert_after(alloc, current, hamon::forward<Args>(args)...);
 			}
@@ -149,7 +147,7 @@ HAMON_WARNING_POP()
 #endif
 	}
 
-	template <typename Allocator, typename Iterator, typename Sentinel>
+	template <typename Iterator, typename Sentinel>
 	static HAMON_CXX20_CONSTEXPR forward_list_node_base*
 	insert_range_after(Allocator& alloc, forward_list_node_base* pos, Iterator first, Sentinel last)
 	{
@@ -174,7 +172,6 @@ HAMON_WARNING_POP()
 #endif
 	}
 
-	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	erase_range_after(Allocator& alloc, forward_list_node_base* pos, forward_list_node_base* last) HAMON_NOEXCEPT
 	{
@@ -191,7 +188,6 @@ HAMON_WARNING_POP()
 		return current;
 	}
 
-	template <typename Allocator>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
 	erase_after(Allocator& alloc, forward_list_node_base* pos) HAMON_NOEXCEPT
 	{
@@ -200,7 +196,7 @@ HAMON_WARNING_POP()
 		return erase_range_after(alloc, pos, pos->m_next->m_next);
 	}
 
-	template <typename Allocator, typename Iterator, typename Sentinel>
+	template <typename Iterator, typename Sentinel>
 	static HAMON_CXX14_CONSTEXPR void
 	assign_range_after(Allocator& alloc, forward_list_node_base* pos, Iterator first, Sentinel last)
 	{
@@ -229,9 +225,9 @@ HAMON_WARNING_POP()
 		}
 	}
 
-	template <typename Allocator, typename SizeType, typename... Args>
+	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR void
-	resize_after(Allocator& alloc, forward_list_node_base* pos, SizeType size, Args&&... args)
+	resize_after(Allocator& alloc, forward_list_node_base* pos, size_type size, Args&&... args)
 	{
 		auto prev = pos;
 
@@ -256,7 +252,7 @@ HAMON_WARNING_POP()
 		}
 	}
 
-	template <typename Allocator, typename Predicate>
+	template <typename Predicate>
 	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	remove_if_after(Allocator& alloc, forward_list_node_base* pos, Predicate pred)
 	{
@@ -286,7 +282,7 @@ HAMON_WARNING_POP()
 		return removed_count;
 	}
 
-	template <typename Allocator, typename BinaryPredicate>
+	template <typename BinaryPredicate>
 	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	unique_after(Allocator& alloc, forward_list_node_base* pos, BinaryPredicate binary_pred)
 	{
@@ -428,10 +424,10 @@ HAMON_WARNING_POP()
 	static HAMON_CXX14_CONSTEXPR void
 	sort_after(forward_list_node_base* x, Compare comp)
 	{
-		hamon::size_t sz = 1;
+		size_type sz = 1;
 		for (;;)
 		{
-			hamon::size_t merge_count = 0;
+			size_type merge_count = 0;
 			auto first = x;
 			while (first->m_next)
 			{

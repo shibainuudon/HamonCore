@@ -7,11 +7,9 @@
 #ifndef HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_IMPL_HPP
 #define HAMON_FORWARD_LIST_DETAIL_FORWARD_LIST_IMPL_HPP
 
-#include <hamon/algorithm/min.hpp>
 #include <hamon/container/detail/forward_list_node.hpp>
 #include <hamon/container/detail/forward_list_iterator.hpp>
 #include <hamon/container/detail/forward_list_algo.hpp>
-#include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -35,7 +33,7 @@ public:
 	using const_iterator  = hamon::detail::forward_list_iterator<T, Allocator, true>;
 
 private:
-	using Algo = hamon::detail::forward_list_algo<T>;
+	using Algo = hamon::detail::forward_list_algo<T, Allocator>;
 
 private:
 	hamon::detail::forward_list_node_base	m_head{};
@@ -106,9 +104,7 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	size_type max_size(Allocator const& alloc) const HAMON_NOEXCEPT
 	{
-		return hamon::min(
-			static_cast<size_type>(hamon::numeric_limits<difference_type>::max()),
-			Algo::template max_size<size_type>(alloc));
+		return Algo::max_size(alloc);
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
