@@ -54,6 +54,18 @@ struct forward_list_node : public forward_list_node_base
 	forward_list_node(Args&&... args)
 		: m_value{hamon::forward<Args>(args)...}
 	{}
+
+	HAMON_CXX14_CONSTEXPR T&
+	value() HAMON_NOEXCEPT
+	{
+		return m_value;
+	}
+
+	HAMON_CXX11_CONSTEXPR T const&
+	value() const HAMON_NOEXCEPT
+	{
+		return m_value;
+	}
 };
 
 }	// namespace detail
