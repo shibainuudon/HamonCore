@@ -192,6 +192,13 @@ public:
 		Algo::resize_after(alloc, this->before_head(), size, hamon::forward<Args>(args)...);
 	}
 
+	HAMON_CXX14_CONSTEXPR node_type*
+	extract_after(const_iterator pos) HAMON_NOEXCEPT
+	{
+		using access = hamon::detail::forward_list_iterator_access;
+		return static_cast<node_type*>(Algo::extract_after(access::ptr(pos)));
+	}
+
 	HAMON_CXX14_CONSTEXPR void
 	splice_after(const_iterator pos, const_iterator first) HAMON_NOEXCEPT
 	{

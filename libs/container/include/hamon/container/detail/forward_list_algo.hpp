@@ -312,6 +312,18 @@ HAMON_WARNING_POP()
 		return removed_count;
 	}
 
+	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
+	extract_after(forward_list_node_base* pos) HAMON_NOEXCEPT
+	{
+		HAMON_ASSERT(pos != nullptr);
+		HAMON_ASSERT(pos->m_next != nullptr);
+
+		auto next = pos->m_next;
+		pos->m_next = next->m_next;
+		next->m_next = nullptr;
+		return next;
+	}
+
 	static HAMON_CXX14_CONSTEXPR void
 	splice_after(forward_list_node_base* pos, forward_list_node_base* first) HAMON_NOEXCEPT
 	{
