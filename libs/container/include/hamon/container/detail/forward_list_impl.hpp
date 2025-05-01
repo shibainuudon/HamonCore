@@ -108,6 +108,14 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
+	insert_node_after(const_iterator pos, node_type* node)
+	{
+		using access = hamon::detail::forward_list_iterator_access;
+		return access::make<iterator>(
+			Algo::insert_node_after(access::ptr(pos), node));
+	}
+
+	HAMON_CXX14_CONSTEXPR iterator
 	insert_after(Allocator& alloc, const_iterator pos, node_type* node)
 	{
 		using access = hamon::detail::forward_list_iterator_access;

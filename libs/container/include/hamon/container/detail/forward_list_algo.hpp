@@ -98,14 +98,19 @@ HAMON_WARNING_POP()
 		NodeAllocTraits::deallocate(node_alloc, p, 1);
 	}
 
-	template <typename... Args>
 	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
-	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, node_type* node)
+	insert_node_after(forward_list_node_base* pos, node_type* node)
 	{
 		auto next = pos->m_next;
 		pos->m_next = node;
 		node->m_next = next;
 		return node;
+	}
+
+	static HAMON_CXX14_CONSTEXPR forward_list_node_base*
+	insert_after(Allocator& /*alloc*/, forward_list_node_base* pos, node_type* node)
+	{
+		return insert_node_after(pos, node);
 	}
 
 HAMON_WARNING_PUSH()
