@@ -40,6 +40,7 @@ set(SUBDIRECTORIES
 	deque
 	forward_list
 	functional
+	hive
 	inplace_vector
 	iomanip
 	ios
