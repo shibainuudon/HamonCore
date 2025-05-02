@@ -38,6 +38,7 @@ using std::allocator_traits;
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4996)
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-declarations")
 
 namespace hamon
 {
