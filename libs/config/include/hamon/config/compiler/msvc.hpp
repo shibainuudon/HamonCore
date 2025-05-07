@@ -1159,6 +1159,7 @@
 #if (_MSC_FULL_VER >= 194334808)
 #  if (HAMON_CXX_STANDARD >= 23)
 #    define HAMON_HAS_CXX23_SIZE_T_SUFFIX	// P0330R8	Literal Suffix for (signed) size_t		__cpp_size_t_suffix >= 202011L
+#    define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES				// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
 #  endif
 #endif
 
