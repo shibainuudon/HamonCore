@@ -1142,6 +1142,9 @@
 
 // Visual Studio 2022 Version 17.12.(0-1)
 #if (_MSC_FULL_VER >= 194234433)
+#  if (HAMON_CXX_STANDARD >= 23)
+#    define HAMON_HAS_CXX23_MULTIDIMENSIONAL_SUBSCRIPT					// P2128R6, CWG2507	Multidimensional subscript operator								__cpp_multidimensional_subscript >= 202110L
+#  endif
 #endif
 
 // Visual Studio 2022 Version 17.12.(2-3)
