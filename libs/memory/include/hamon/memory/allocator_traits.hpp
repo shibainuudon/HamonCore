@@ -259,59 +259,6 @@ struct allocator_traits
 	template <typename T>
 	using rebind_traits = allocator_traits<rebind_alloc<T>>;
 
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	pointer allocate(Alloc& a, size_type n)
-	{
-		// [allocator.traits.members]/1
-		return a.allocate(n);
-	}
-
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	pointer allocate(Alloc& a, size_type n, const_void_pointer hint)
-	{
-		return allocate_hint_impl(a, n, hint, hamon::detail::overload_priority<1>{});
-	}
-
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	hamon::allocation_result<pointer, size_type>
-	allocate_at_least(Alloc& a, size_type n)
-	{
-		return allocate_at_least_impl(a, n, hamon::detail::overload_priority<1>{});
-	}
-
-	static HAMON_CXX14_CONSTEXPR void
-	deallocate(Alloc& a, pointer p, size_type n)
-	{
-		// [allocator.traits.members]/4
-		a.deallocate(p, n);
-	}
-
-	template <typename T, typename... Args>
-	static HAMON_CXX14_CONSTEXPR void
-	construct(Alloc& a, T* p, Args&&... args)
-	{
-		construct_impl(hamon::detail::overload_priority<1>{}, a, p, hamon::forward<Args>(args)...);
-	}
-
-	template <typename T>
-	static HAMON_CXX14_CONSTEXPR void
-	destroy(Alloc& a, T* p)
-	{
-		destroy_impl(a, p, hamon::detail::overload_priority<1>{});
-	}
-
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	size_type max_size(Alloc const& a) HAMON_NOEXCEPT
-	{
-		return max_size_impl(a, hamon::detail::overload_priority<1>{});
-	}
-
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	Alloc select_on_container_copy_construction(Alloc const& rhs)
-	{
-		return select_on_container_copy_construction_impl(rhs, hamon::detail::overload_priority<1>{});
-	}
-
 private:
 	// [allocator.traits.members]/2
 	template <typename A2>
@@ -355,10 +302,11 @@ private:
 	}
 
 	template <typename A2, typename T, typename... Args>
-	static HAMON_CXX14_CONSTEXPR void
+	static HAMON_CXX14_CONSTEXPR auto
 	construct_impl(hamon::detail::overload_priority<0>, A2&, T* p, Args&&... args)
+	->decltype(hamon::construct_at(p, hamon::forward<Args>(args)...))
 	{
-		hamon::construct_at(p, hamon::forward<Args>(args)...);
+		return hamon::construct_at(p, hamon::forward<Args>(args)...);
 	}
 
 	// [allocator.traits.members]/7
@@ -371,10 +319,11 @@ private:
 	}
 
 	template <typename A2, typename T>
-	static HAMON_CXX14_CONSTEXPR void
+	static HAMON_CXX14_CONSTEXPR auto
 	destroy_impl(A2&, T* p, hamon::detail::overload_priority<0>)
+	->decltype(hamon::destroy_at(p))
 	{
-		hamon::destroy_at(p);
+		return hamon::destroy_at(p);
 	}
 
 	// [allocator.traits.members]/8
@@ -407,6 +356,62 @@ private:
 	select_on_container_copy_construction_impl(A2 const& rhs, hamon::detail::overload_priority<0>)
 	{
 		return rhs;
+	}
+
+public:
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	pointer allocate(Alloc& a, size_type n)
+	{
+		// [allocator.traits.members]/1
+		return a.allocate(n);
+	}
+
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	pointer allocate(Alloc& a, size_type n, const_void_pointer hint)
+	{
+		return allocate_hint_impl(a, n, hint, hamon::detail::overload_priority<1>{});
+	}
+
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	hamon::allocation_result<pointer, size_type>
+	allocate_at_least(Alloc& a, size_type n)
+	{
+		return allocate_at_least_impl(a, n, hamon::detail::overload_priority<1>{});
+	}
+
+	static HAMON_CXX14_CONSTEXPR void
+	deallocate(Alloc& a, pointer p, size_type n)
+	{
+		// [allocator.traits.members]/4
+		a.deallocate(p, n);
+	}
+
+	template <typename T, typename... Args>
+	static HAMON_CXX14_CONSTEXPR auto
+	construct(Alloc& a, T* p, Args&&... args)
+	->decltype(construct_impl(hamon::detail::overload_priority<1>{}, a, p, hamon::forward<Args>(args)...))
+	{
+		return construct_impl(hamon::detail::overload_priority<1>{}, a, p, hamon::forward<Args>(args)...);
+	}
+
+	template <typename T>
+	static HAMON_CXX14_CONSTEXPR auto
+	destroy(Alloc& a, T* p)
+	->decltype(destroy_impl(a, p, hamon::detail::overload_priority<1>{}))
+	{
+		return destroy_impl(a, p, hamon::detail::overload_priority<1>{});
+	}
+
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	size_type max_size(Alloc const& a) HAMON_NOEXCEPT
+	{
+		return max_size_impl(a, hamon::detail::overload_priority<1>{});
+	}
+
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	Alloc select_on_container_copy_construction(Alloc const& rhs)
+	{
+		return select_on_container_copy_construction_impl(rhs, hamon::detail::overload_priority<1>{});
 	}
 };
 
