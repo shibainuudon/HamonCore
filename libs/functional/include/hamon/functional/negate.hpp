@@ -35,6 +35,7 @@ template <typename T = void>
 struct negate
 {
 	HAMON_CONSTEXPR T operator()(T const& arg) const
+		HAMON_NOEXCEPT_IF_EXPR(-arg)
 	{
 		return -arg;
 	}
@@ -50,6 +51,7 @@ struct negate<void>
 
 	template <typename T>
 	HAMON_CONSTEXPR auto operator()(T&& arg) const
+		HAMON_NOEXCEPT_IF_EXPR(-hamon::forward<T>(arg))
 	->decltype(-hamon::forward<T>(arg))
 	{
 		return -hamon::forward<T>(arg);

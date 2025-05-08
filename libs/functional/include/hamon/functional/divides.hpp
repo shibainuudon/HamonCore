@@ -35,6 +35,7 @@ template <typename T = void>
 struct divides
 {
 	HAMON_CONSTEXPR T operator()(T const& lhs, T const& rhs) const
+		HAMON_NOEXCEPT_IF_EXPR(lhs / rhs)
 	{
 		return lhs / rhs;
 	}
@@ -50,6 +51,7 @@ struct divides<void>
 
 	template <typename T, typename U>
 	HAMON_CONSTEXPR auto operator()(T&& lhs, U&& rhs) const
+		HAMON_NOEXCEPT_IF_EXPR(hamon::forward<T>(lhs) / hamon::forward<U>(rhs))
 	->decltype(hamon::forward<T>(lhs) / hamon::forward<U>(rhs))
 	{
 		return hamon::forward<T>(lhs) / hamon::forward<U>(rhs);
