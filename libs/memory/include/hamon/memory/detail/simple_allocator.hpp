@@ -72,6 +72,14 @@ using not_simple_allocator = hamon::negation<simple_allocator<Alloc>>;
 
 #endif
 
+template <typename Alloc>
+using simple_allocator_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::detail::simple_allocator<Alloc>>;
+#else
+	hamon::detail::simple_allocator<Alloc>;
+#endif
+
 }	// namespace detail
 
 }	// namespace hamon

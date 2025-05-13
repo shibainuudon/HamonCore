@@ -55,6 +55,7 @@ set(SUBDIRECTORIES
 	optional
 	pair
 	preprocessor
+	queue
 	qvm
 	random
 	ranges
