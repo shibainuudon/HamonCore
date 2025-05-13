@@ -1,0 +1,16 @@
+name: queue
+
+on:
+  push:
+    paths:
+      - libs/queue/**
+      - .github/workflows/queue.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/queue
