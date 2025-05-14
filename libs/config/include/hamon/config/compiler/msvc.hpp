@@ -1181,6 +1181,9 @@
 
 // Visual Studio 2022 Version 17.14.0
 #if (_MSC_FULL_VER >= 194435207)
+#  if (HAMON_CXX_STANDARD >= 23)
+#    define HAMON_HAS_CXX23_LAMBDA_WITHOUT_PAREN		// P1102R2	Down with ()!
+#  endif
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
