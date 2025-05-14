@@ -1187,6 +1187,7 @@
 //#    define HAMON_HAS_CXX23_IF_CONSTEVAL				// P1938R3	if consteval				__cpp_if_consteval >= 202106L
 #    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL				// P1401R5	Narrowing contextual conversions to bool
 #    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS						// P2173R1	Attributes on lambda-expressions
+#    define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
 #  endif
 #endif
 
