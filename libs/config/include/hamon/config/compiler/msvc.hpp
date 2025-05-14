@@ -1186,6 +1186,7 @@
 // MSVC 19.44 で "if consteval" 自体は実装されたが、その中でconsteval関数を呼び出すことができない
 //#    define HAMON_HAS_CXX23_IF_CONSTEVAL				// P1938R3	if consteval				__cpp_if_consteval >= 202106L
 #    define HAMON_HAS_CXX23_NARROWING_CONVERSIONS_TO_BOOL				// P1401R5	Narrowing contextual conversions to bool
+#    define HAMON_HAS_CXX23_ATTRIBUTES_ON_LAMBDAS						// P2173R1	Attributes on lambda-expressions
 #  endif
 #endif
 
