@@ -65,12 +65,13 @@ set(SUBDIRECTORIES
 	set
 	shared_mutex
 	span
+	stack
+	static_typeinfo
 	stdexcept
 	string
 	string_view
 	system_error
 	tuple
-	static_typeinfo
 	type_traits
 	units
 	unordered_map

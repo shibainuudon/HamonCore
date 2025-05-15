@@ -1,0 +1,16 @@
+name: stack
+
+on:
+  push:
+    paths:
+      - libs/stack/**
+      - .github/workflows/stack.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/stack
