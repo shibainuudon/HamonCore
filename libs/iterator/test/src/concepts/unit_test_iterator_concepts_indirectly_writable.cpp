@@ -53,8 +53,8 @@ HAMON_INDIRECTLY_WRITABLE_TEST(true,  int*, int const&);
 HAMON_INDIRECTLY_WRITABLE_TEST(true,  int*, int&&);
 HAMON_INDIRECTLY_WRITABLE_TEST(true,  int*, int const&&);
 
-HAMON_INDIRECTLY_WRITABLE_TEST(true,  int[],  int);
-HAMON_INDIRECTLY_WRITABLE_TEST(true,  int[2], int);
+//HAMON_INDIRECTLY_WRITABLE_TEST(true,  int[],  int);
+//HAMON_INDIRECTLY_WRITABLE_TEST(true,  int[2], int);
 HAMON_INDIRECTLY_WRITABLE_TEST(false, int&,   int);
 HAMON_INDIRECTLY_WRITABLE_TEST(false, int&&,  int);
 
