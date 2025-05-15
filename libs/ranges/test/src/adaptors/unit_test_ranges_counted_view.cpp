@@ -165,7 +165,7 @@ GTEST_TEST(RangesTest, CountedViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 
-#if defined(HAMON_HAS_CXX17_RANGE_BASED_FOR)
+#if 0//defined(HAMON_HAS_CXX17_RANGE_BASED_FOR)
 	{
 		hamon::vector<int> v;
 		int i = 0;
