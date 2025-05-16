@@ -1,0 +1,16 @@
+name: mutex
+
+on:
+  push:
+    paths:
+      - libs/mutex/**
+      - .github/workflows/mutex.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/mutex

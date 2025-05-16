@@ -49,6 +49,7 @@ set(SUBDIRECTORIES
 	map
 	memory
 	memory_resource
+	mutex
 	new
 	numbers
 	numeric
