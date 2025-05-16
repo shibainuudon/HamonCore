@@ -154,6 +154,7 @@ template <typename T, typename Alloc, typename U, typename V,
 		hamon::detail::is_cv_pair<T>::value>>		// [allocator.uses.construction]/11
 HAMON_CXX11_CONSTEXPR auto
 uses_allocator_construction_args(Alloc const& alloc, U&& u, V&& v) HAMON_NOEXCEPT
+#if 0
 HAMON_DECLTYPE_RETURN(
 	// [allocator.uses.construction]/12
 	hamon::uses_allocator_construction_args<T>(
@@ -161,6 +162,13 @@ HAMON_DECLTYPE_RETURN(
 		hamon::piecewise_construct,
 		hamon::forward_as_tuple(hamon::forward<U>(u)),
 		hamon::forward_as_tuple(hamon::forward<V>(v))))
+#else
+// 上記と同等
+HAMON_DECLTYPE_RETURN(
+	hamon::make_tuple(hamon::piecewise_construct,
+		hamon::uses_allocator_construction_args<typename T::first_type> (alloc, hamon::forward<U>(u)),
+		hamon::uses_allocator_construction_args<typename T::second_type>(alloc, hamon::forward<V>(v))))
+#endif
 
 template <typename T, typename Alloc, typename U, typename V,
 	typename = hamon::enable_if_t<
