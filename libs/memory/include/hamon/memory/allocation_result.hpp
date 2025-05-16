@@ -30,6 +30,13 @@ struct allocation_result
 {
 	Pointer ptr;
 	SizeType count;
+
+#if defined(HAMON_APPLE_CLANG) && (HAMON_CXX_STANDARD >= 23)
+	constexpr operator std::allocation_result<Pointer>() noexcept
+	{
+		return {ptr, count};
+	}
+#endif
 };
 
 }	// namespace hamon
