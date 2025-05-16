@@ -19,7 +19,8 @@ using std::reference_converts_from_temporary;
 
 }	// namespace hamon
 
-#elif HAMON_HAS_BUILTIN(__reference_converts_from_temporary)
+#elif HAMON_HAS_BUILTIN(__reference_converts_from_temporary) && \
+	!(defined(_MSC_VER) && defined(__clang__))	// clang-cl(MSVC1944) は __reference_converts_from_temporary を持っていても正しい値を返さない
 
 #include <hamon/type_traits/bool_constant.hpp>
 
