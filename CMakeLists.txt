@@ -38,6 +38,7 @@ set(SUBDIRECTORIES
 	cstring
 	debug
 	deque
+	expected
 	forward_list
 	functional
 	inplace_vector
