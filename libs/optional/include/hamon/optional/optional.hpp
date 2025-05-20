@@ -26,7 +26,6 @@ using std::optional;
 #include <hamon/optional/nullopt.hpp>
 #include <hamon/optional/bad_optional_access.hpp>
 #include <hamon/optional/detail/is_specialization_of_optional.hpp>
-#include <hamon/optional/detail/converts_from_any_cvref.hpp>
 #include <hamon/optional/detail/optional_base.hpp>
 #include <hamon/optional/detail/optional_constraint.hpp>
 #include <hamon/optional/detail/transform_impl.hpp>
@@ -35,6 +34,7 @@ using std::optional;
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/cstdlib/abort.hpp>
+#include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -277,7 +277,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::is_constructible<T, U const&>,							// [optional.assign]/19.1
 			hamon::is_assignable<T&, U const&>,								// [optional.assign]/19.2
-			hamon::negation<optional_detail::converts_from_any_cvref<T, optional<U>>>,	// [optional.assign]/19.3
+			hamon::negation<hamon::detail::converts_from_any_cvref<T, optional<U>>>,	// [optional.assign]/19.3
 			hamon::negation<hamon::is_assignable<T&, optional<U>&>>,		// [optional.assign]/19.4
 			hamon::negation<hamon::is_assignable<T&, optional<U>&&>>,		// [optional.assign]/19.5
 			hamon::negation<hamon::is_assignable<T&, optional<U> const&>>,	// [optional.assign]/19.6
@@ -297,7 +297,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::is_constructible<T, U>,									// [optional.assign]/24.1
 			hamon::is_assignable<T&, U>,									// [optional.assign]/24.2
-			hamon::negation<optional_detail::converts_from_any_cvref<T, optional<U>>>,// [optional.assign]/24.3
+			hamon::negation<hamon::detail::converts_from_any_cvref<T, optional<U>>>,// [optional.assign]/24.3
 			hamon::negation<hamon::is_assignable<T&, optional<U>&>>,		// [optional.assign]/24.4
 			hamon::negation<hamon::is_assignable<T&, optional<U>&&>>,		// [optional.assign]/24.5
 			hamon::negation<hamon::is_assignable<T&, optional<U> const&>>,	// [optional.assign]/24.6

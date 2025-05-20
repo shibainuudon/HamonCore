@@ -1,6 +1,6 @@
 ﻿cmake_minimum_required(VERSION 3.20)
 
-set(TARGET_NAME_BASE optional)
+set(TARGET_NAME_BASE expected)
 
 set(TARGET_NAME hamon_${TARGET_NAME_BASE})
 set(TARGET_ALIAS_NAME Hamon::${TARGET_NAME_BASE})
@@ -21,7 +21,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		concepts
 		config
-		cstddef
 		cstdlib
 		debug
 		detail

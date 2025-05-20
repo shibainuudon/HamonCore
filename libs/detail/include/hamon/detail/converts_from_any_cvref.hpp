@@ -4,8 +4,8 @@
  *	@brief	converts_from_any_cvref の定義
  */
 
-#ifndef HAMON_OPTIONAL_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP
-#define HAMON_OPTIONAL_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP
+#ifndef HAMON_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP
+#define HAMON_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP
 
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
@@ -14,7 +14,7 @@
 namespace hamon
 {
 
-namespace optional_detail
+namespace detail
 {
 
 // [optional.ctor]/1
@@ -26,8 +26,8 @@ using converts_from_any_cvref = hamon::disjunction<
 	hamon::is_constructible<T, W const>,  hamon::is_convertible<W const,  T>
 >;
 
-}	// namespace optional_detail
+}	// namespace detail
 
 }	// namespace hamon
 
-#endif // HAMON_OPTIONAL_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP
+#endif // HAMON_DETAIL_CONVERTS_FROM_ANY_CVREF_HPP

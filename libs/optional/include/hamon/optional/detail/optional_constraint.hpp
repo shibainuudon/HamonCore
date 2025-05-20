@@ -9,7 +9,7 @@
 
 #include <hamon/optional/optional_fwd.hpp>
 #include <hamon/optional/detail/is_specialization_of_optional.hpp>
-#include <hamon/optional/detail/converts_from_any_cvref.hpp>
+#include <hamon/detail/converts_from_any_cvref.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
@@ -62,7 +62,7 @@ struct optional_constraint
 			hamon::is_constructible<T, U const&>,		// [optional.ctor]/28.1
 			hamon::negation<hamon::conjunction<			// [optional.ctor]/28.2
 				hamon::negation<hamon::is_same<hamon::remove_cv_t<T>, bool>>,
-				optional_detail::converts_from_any_cvref<T, hamon::optional<U>>
+				hamon::detail::converts_from_any_cvref<T, hamon::optional<U>>
 			>>
 		>::value;
 
@@ -80,7 +80,7 @@ struct optional_constraint
 			hamon::is_constructible<T, U>,				// [optional.ctor]/33.1
 			hamon::negation<hamon::conjunction<			// [optional.ctor]/33.2
 				hamon::negation<hamon::is_same<hamon::remove_cv_t<T>, bool>>,
-				optional_detail::converts_from_any_cvref<T, hamon::optional<U>>
+				hamon::detail::converts_from_any_cvref<T, hamon::optional<U>>
 			>>
 		>::value;
 
