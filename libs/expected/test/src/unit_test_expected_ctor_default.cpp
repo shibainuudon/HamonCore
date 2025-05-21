@@ -54,10 +54,12 @@ static_assert( hamon::is_default_constructible<hamon::expected<DefaultConstructi
 static_assert(!hamon::is_default_constructible<hamon::expected<NonDefaultConstructible, DefaultConstructible>>::value, "");
 static_assert(!hamon::is_default_constructible<hamon::expected<NonDefaultConstructible, NonDefaultConstructible>>::value, "");
 
+#if !defined(HAMON_USE_STD_EXPECTED)
 static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<DefaultConstructible,        DefaultConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<DefaultConstructible,        NothrowDefaultConstructible>>::value, "");
-static_assert( hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, DefaultConstructible>>::value, "");
-static_assert( hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, NothrowDefaultConstructible>>::value, "");
+static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, DefaultConstructible>>::value, "");
+static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, NothrowDefaultConstructible>>::value, "");
+#endif
 
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<DefaultConstructible,          DefaultConstructible>>::value, "");
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<DefaultConstructible,          TriviallyDefaultConstructible>>::value, "");

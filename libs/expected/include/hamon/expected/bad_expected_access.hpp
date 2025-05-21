@@ -45,12 +45,12 @@ template <>
 class bad_expected_access<void> : public std::exception
 {
 protected:
-	constexpr bad_expected_access()                                      noexcept = default;
-	constexpr bad_expected_access(bad_expected_access const&)            noexcept = default;
-	constexpr bad_expected_access(bad_expected_access&&)                 noexcept = default;
-	constexpr bad_expected_access& operator=(bad_expected_access const&) noexcept = default;
-	constexpr bad_expected_access& operator=(bad_expected_access&&)      noexcept = default;
-	constexpr ~bad_expected_access();
+	/*constexpr*/ bad_expected_access()                                      noexcept = default;
+	/*constexpr*/ bad_expected_access(bad_expected_access const&)            noexcept = default;
+	/*constexpr*/ bad_expected_access(bad_expected_access&&)                 noexcept = default;
+	/*constexpr*/ bad_expected_access& operator=(bad_expected_access const&) noexcept = default;
+	/*constexpr*/ bad_expected_access& operator=(bad_expected_access&&)      noexcept = default;
+	/*constexpr*/ ~bad_expected_access() override                                     = default;
 
 public:
 	constexpr const char*
@@ -69,8 +69,8 @@ public:
 		: unex(hamon::move(e))	// [expected.bad]/2
 	{}
 
-	constexpr const char*
-	what() const noexcept override;
+	//constexpr const char*
+	//what() const noexcept override;
 
 	constexpr E&
 	error() & noexcept
