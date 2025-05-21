@@ -22,7 +22,8 @@ enum class parse_error
 	overflow
 };
 
-auto parse_number(hamon::string_view str) -> hamon::expected<double, parse_error>
+auto parse_number(hamon::string_view str)
+	-> hamon::expected<double, parse_error>
 {
 	const char* begin = str.data();
 	char* end;

@@ -22,7 +22,10 @@ using std::bad_expected_access;
 
 #else
 
+#include <hamon/cstdlib/abort.hpp>
+#include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 #include <exception>
 
 namespace hamon
@@ -37,6 +40,25 @@ template <>
 class bad_expected_access<void>;
 
 // 22.8.4 Class template bad_expected_access[expected.bad]
+
+template <>
+class bad_expected_access<void> : public std::exception
+{
+protected:
+	constexpr bad_expected_access()                                      noexcept = default;
+	constexpr bad_expected_access(bad_expected_access const&)            noexcept = default;
+	constexpr bad_expected_access(bad_expected_access&&)                 noexcept = default;
+	constexpr bad_expected_access& operator=(bad_expected_access const&) noexcept = default;
+	constexpr bad_expected_access& operator=(bad_expected_access&&)      noexcept = default;
+	constexpr ~bad_expected_access();
+
+public:
+	constexpr const char*
+	what() const noexcept override
+	{
+		return "bad access to hamon::expected";
+	}
+};
 
 template <typename E>
 class bad_expected_access : public bad_expected_access<void>
@@ -78,20 +100,22 @@ private:
 	E unex;             // exposition only
 };
 
-template <>
-class bad_expected_access<void> : public std::exception
+namespace detail
 {
-protected:
-	constexpr bad_expected_access() noexcept;
-	constexpr bad_expected_access(bad_expected_access const&) noexcept;
-	constexpr bad_expected_access(bad_expected_access&&) noexcept;
-	constexpr bad_expected_access& operator=(bad_expected_access const&) noexcept;
-	constexpr bad_expected_access& operator=(bad_expected_access&&) noexcept;
-	constexpr ~bad_expected_access();
 
-public:
-	constexpr const char* what() const noexcept override;
-};
+template <typename E, typename Arg>
+HAMON_NORETURN inline void
+throw_bad_expected_access(Arg&& arg)
+{
+#if !defined(HAMON_NO_EXCEPTIONS)
+	throw hamon::bad_expected_access<E>(hamon::forward<Arg>(arg));
+#else
+	(void)arg;
+	hamon::abort();
+#endif
+}
+
+}	// namespace detail
 
 }	// namespace hamon
 

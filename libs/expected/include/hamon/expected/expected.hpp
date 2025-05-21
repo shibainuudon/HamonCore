@@ -22,23 +22,78 @@ using std::expected;
 
 #else
 
+#include <hamon/expected/bad_expected_access.hpp>
+#include <hamon/expected/unexpect.hpp>
 #include <hamon/expected/unexpected.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/type_traits/is_copy_constructible.hpp>
 #include <hamon/type_traits/is_default_constructible.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/utility/as_const.hpp>
 #include <hamon/utility/in_place_t.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/assert.hpp>
 #include <initializer_list>
+
+#include <hamon/memory/destroy_at.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/utility/forward.hpp>
 
 namespace hamon
 {
 
-// in-place construction of unexpected values
-struct unexpect_t
+namespace detail
 {
-	explicit unexpect_t() = default;
+
+template <typename T>
+struct is_specialization_of_expected
+	: public hamon::false_type {};
+
+template <typename T>
+struct is_specialization_of_unexpected
+	: public hamon::false_type {};
+
+
+template <typename T, typename E>
+struct expected_impl
+{
+	bool has_val;
+	union
+	{
+		T val;
+		E unex;
+	};
+
+	template <typename... Args>
+	constexpr explicit
+	expected_impl(hamon::in_place_t, Args&&... args)
+		: has_val(true)
+		, val(hamon::forward<Args>(args)...)
+	{}
+
+	template <typename... Args>
+	constexpr explicit
+	expected_impl(hamon::unexpect_t, Args&&... args)
+		: has_val(false)
+		, unex(hamon::forward<Args>(args)...)
+	{}
+
+	constexpr void destroy()
+	{
+		if (has_val)
+		{
+			hamon::destroy_at(hamon::addressof(val));
+		}
+		else
+		{
+			hamon::destroy_at(hamon::addressof(unex));
+		}
+	}
 };
-inline constexpr unexpect_t unexpect {};
+
+}	// namespace detail
 
 // 22.8.6 Class template expected[expected.expected]
 
@@ -56,38 +111,63 @@ public:
 	// [expected.object.cons], constructors
 	constexpr expected()
 		requires(hamon::is_default_constructible_v<T>)	// [expected.object.cons]/2
-		: has_val(true)	// [expected.object.cons]/4
-		, val()	// [expected.object.cons]/3
+		: m_impl(hamon::in_place)	// [expected.object.cons]/3
 	{}
 
-	constexpr expected(expected const&);
-	constexpr expected(expected&&) noexcept(see below);
+	constexpr expected(expected const& rhs);
+
+	constexpr expected(expected&& rhs) ;//noexcept(see below);
 
 	template <typename U, typename G,
 		typename UF = U const&,
 		typename GF = G const&
 	>
 	constexpr explicit(!hamon::is_convertible_v<UF, T> || !hamon::is_convertible_v<GF, E>)
-	expected(expected<U, G> const&);
+	expected(expected<U, G> const& rhs);
 
 	template <typename U, typename G,
 		typename UF = U,
 		typename GF = G
 	>
 	constexpr explicit(!hamon::is_convertible_v<UF, T> || !hamon::is_convertible_v<GF, E>)
-	expected(expected<U, G>&&);
+	expected(expected<U, G>&& rhs);
 
-	template <typename U = hamon::remove_cv_t<T>>
+	template <typename U = hamon::remove_cv_t<T>,
+		typename = hamon::enable_if_t<hamon::conjunction<
+			hamon::negation<hamon::is_same<hamon::remove_cvref_t<U>, hamon::in_place_t>>,
+			hamon::negation<hamon::is_same<hamon::expected<T, E>, hamon::remove_cvref_t<U>>>,
+			hamon::negation<hamon::detail::is_specialization_of_unexpected<hamon::remove_cvref_t<U>>>,
+			hamon::is_constructible<T, U>,
+			hamon::negation<hamon::conjunction<
+				hamon::is_same<hamon::remove_cv_t<T>, bool>,
+				hamon::detail::is_specialization_of_expected<hamon::remove_cvref_t<U>>
+			>>
+		>::value>
+	>
 	constexpr explicit(!hamon::is_convertible_v<U, T>)
-	expected(U&& v);
+	expected(U&& v)
+		: m_impl(hamon::in_place, hamon::forward<U>(v))
+	{}
 
-	template <typename G>
+	template <typename G,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<E, G const&>::value
+		>
+	>
 	constexpr explicit(!hamon::is_convertible_v<G const&, E>)
-	expected(unexpected<G> const&);
+	expected(unexpected<G> const& e)
+		: m_impl(hamon::unexpect, e.error())
+	{}
 
-	template <typename G>
+	template <typename G,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<E, G>::value
+		>
+	>
 	constexpr explicit(!hamon::is_convertible_v<G, E>)
-	expected(unexpected<G>&&);
+	expected(unexpected<G>&& e)
+		: m_impl(hamon::unexpect, hamon::move(e.error()))
+	{}
 
 	template <typename... Args>
 	constexpr explicit
@@ -106,15 +186,22 @@ public:
 	expected(hamon::unexpect_t, std::initializer_list<U>, Args&&...);
 
 	// [expected.object.dtor], destructor
-	constexpr
-	~expected();
+	constexpr ~expected()
+		requires(hamon::is_trivially_destructible<T>::value && hamon::is_trivially_destructible<E>::value)
+	= default;
+
+	constexpr ~expected()
+		requires(!hamon::is_trivially_destructible<T>::value || !hamon::is_trivially_destructible<E>::value)
+	{
+		m_impl.destroy();
+	}
 
 	// [expected.object.assign], assignment
 	constexpr expected&
 	operator=(expected const&);
 
 	constexpr expected&
-	operator=(expected&&) noexcept(see below);
+	operator=(expected&&) noexcept;//(see below);
 
 	template <typename U = hamon::remove_cv_t<T>>
 	constexpr expected&
@@ -139,7 +226,7 @@ public:
 	// [expected.object.swap], swap
 	constexpr void
 	swap(expected&)
-		noexcept(see below);
+		noexcept;//(see below);
 
 	friend constexpr void
 	swap(expected& x, expected& y)
@@ -147,52 +234,152 @@ public:
 
 	// [expected.object.obs], observers
 	constexpr T const*
-	operator->() const noexcept;
+	operator->() const noexcept
+	{
+		// [expected.object.obs]/1
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/2
+		return hamon::addressof(m_impl.val);
+	}
 
 	constexpr T*
-	operator->() noexcept;
+	operator->() noexcept
+	{
+		// [expected.object.obs]/1
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/2
+		return hamon::addressof(m_impl.val);
+	}
 
 	constexpr T const&
-	operator*() const& noexcept;
+	operator*() const& noexcept
+	{
+		// [expected.object.obs]/3
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/4
+		return m_impl.val;
+	}
 
 	constexpr T&
-	operator*() & noexcept;
+	operator*() & noexcept
+	{
+		// [expected.object.obs]/3
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/4
+		return m_impl.val;
+	}
 
 	constexpr T const&&
-	operator*() const&& noexcept;
+	operator*() const&& noexcept
+	{
+		// [expected.object.obs]/5
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/6
+		return hamon::move(m_impl.val);
+	}
 
 	constexpr T&&
-	operator*() && noexcept;
+	operator*() && noexcept
+	{
+		// [expected.object.obs]/5
+		HAMON_ASSERT(this->has_value());
+
+		// [expected.object.obs]/6
+		return hamon::move(m_impl.val);
+	}
 
 	constexpr explicit
-	operator bool() const noexcept;
+	operator bool() const noexcept
+	{
+		// [expected.object.obs]/7
+		return m_impl.has_val;
+	}
 
 	constexpr bool
-	has_value() const noexcept;
+	has_value() const noexcept
+	{
+		// [expected.object.obs]/7
+		return m_impl.has_val;
+	}
 
 	constexpr T const&
-	value() const&;
+	value() const&
+	{
+		static_assert(hamon::is_copy_constructible<E>::value, "");
+		if (!this->has_value())
+		{
+			hamon::detail::throw_bad_expected_access<E>(hamon::as_const(this->error()));
+		}
+		return m_impl.val;
+	}
 
 	constexpr T&
-	value() &;
+	value() &
+	{
+		static_assert(hamon::is_copy_constructible<E>::value, "");
+		if (!this->has_value())
+		{
+			hamon::detail::throw_bad_expected_access<E>(hamon::as_const(this->error()));
+		}
+		return m_impl.val;
+	}
 
 	constexpr T const&&
-	value() const&&;
+	value() const&&
+	{
+		static_assert(hamon::is_copy_constructible<E>::value, "");
+		static_assert(hamon::is_constructible<E, decltype(hamon::move(this->error()))>::value, "");
+		if (!this->has_value())
+		{
+			hamon::detail::throw_bad_expected_access<E>(hamon::move(this->error()));
+		}
+		return hamon::move(m_impl.val);
+	}
 
 	constexpr T&&
-	value() &&;
+	value() &&
+	{
+		static_assert(hamon::is_copy_constructible<E>::value, "");
+		static_assert(hamon::is_constructible<E, decltype(hamon::move(this->error()))>::value, "");
+		if (!this->has_value())
+		{
+			hamon::detail::throw_bad_expected_access<E>(hamon::move(this->error()));
+		}
+		return hamon::move(m_impl.val);
+	}
 
 	constexpr E const&
-	error() const& noexcept;
+	error() const& noexcept
+	{
+		HAMON_ASSERT(!this->has_value());
+		return m_impl.unex;
+	}
 
 	constexpr E&
-	error() & noexcept;
+	error() & noexcept
+	{
+		HAMON_ASSERT(!this->has_value());
+		return m_impl.unex;
+	}
 
 	constexpr E const&&
-	error() const&& noexcept;
+	error() const&& noexcept
+	{
+		HAMON_ASSERT(!this->has_value());
+		return hamon::move(m_impl.unex);
+	}
 
 	constexpr E&&
-	error() && noexcept;
+	error() && noexcept
+	{
+		HAMON_ASSERT(!this->has_value());
+		return hamon::move(m_impl.unex);
+	}
 
 	template <typename U = hamon::remove_cv_t<T>>
 	constexpr T
@@ -290,12 +477,7 @@ public:
 	operator==(expected const&, unexpected<E2> const&);
 
 private:
-	bool has_val;       // exposition only
-	union
-	{
-		T val;            // exposition only
-		E unex;           // exposition only
-	};
+	hamon::detail::expected_impl<T, E>	m_impl;
 };
 
 // 22.8.7 Partial specialization of expected for void types[expected.void]
@@ -315,7 +497,7 @@ public:
 	// [expected.void.cons], constructors
 	constexpr expected() noexcept;
 	constexpr expected(expected const&);
-	constexpr expected(expected&&) noexcept(see below);
+	constexpr expected(expected&&) noexcept;//(see below);
 
 	template <typename U, typename G>
 	constexpr explicit(!hamon::is_convertible_v<G const&, E>)
@@ -354,7 +536,7 @@ public:
 	operator=(expected const&);
 
 	constexpr expected&
-	operator=(expected&&) noexcept(see below);
+	operator=(expected&&) noexcept;//(see below);
 
 	template <typename G>
 	constexpr expected&
@@ -369,7 +551,7 @@ public:
 
 	// [expected.void.swap], swap
 	constexpr void
-	swap(expected&) noexcept(see below);
+	swap(expected&) noexcept;//(see below);
 
 	friend constexpr void
 	swap(expected& x, expected& y)
