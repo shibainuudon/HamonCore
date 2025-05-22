@@ -53,7 +53,7 @@ protected:
 	/*constexpr*/ ~bad_expected_access() override                                     = default;
 
 public:
-	constexpr const char*
+	HAMON_CXX20_CONSTEXPR const char*
 	what() const noexcept override
 	{
 		return "bad access to hamon::expected";
@@ -72,7 +72,7 @@ public:
 	//constexpr const char*
 	//what() const noexcept override;
 
-	constexpr E&
+	HAMON_CXX14_CONSTEXPR E&
 	error() & noexcept
 	{
 		return unex;	// [expected.bad]/3
@@ -84,7 +84,7 @@ public:
 		return unex;	// [expected.bad]/3
 	}
 
-	constexpr E&&
+	HAMON_CXX14_CONSTEXPR E&&
 	error() && noexcept
 	{
 		return hamon::move(unex);	// [expected.bad]/4

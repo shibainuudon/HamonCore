@@ -50,23 +50,27 @@ struct ExplicitlyCopyConstructible
 static_assert( hamon::is_copy_constructible<ExplicitlyCopyConstructible>::value, "");
 static_assert(!hamon::is_implicitly_copy_constructible<ExplicitlyCopyConstructible>::value, "");
 
+static_assert( hamon::is_copy_constructible<hamon::expected<int, int>>::value, "");
 static_assert( hamon::is_copy_constructible<hamon::expected<CopyConstructible,    CopyConstructible>>::value, "");
 static_assert(!hamon::is_copy_constructible<hamon::expected<CopyConstructible,    NonCopyConstructible>>::value, "");
 static_assert(!hamon::is_copy_constructible<hamon::expected<NonCopyConstructible, CopyConstructible>>::value, "");
 static_assert(!hamon::is_copy_constructible<hamon::expected<NonCopyConstructible, NonCopyConstructible>>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
+#if 1//!defined(HAMON_USE_STD_EXPECTED)
+static_assert( hamon::is_nothrow_copy_constructible<hamon::expected<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<CopyConstructible,        CopyConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<CopyConstructible,        NothrowCopyConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<NothrowCopyConstructible, CopyConstructible>>::value, "");
-static_assert(!hamon::is_nothrow_copy_constructible<hamon::expected<NothrowCopyConstructible, NothrowCopyConstructible>>::value, "");
+static_assert( hamon::is_nothrow_copy_constructible<hamon::expected<NothrowCopyConstructible, NothrowCopyConstructible>>::value, "");
 #endif
 
+static_assert( hamon::is_trivially_copy_constructible<hamon::expected<int, int>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::expected<CopyConstructible,          CopyConstructible>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::expected<CopyConstructible,          TriviallyCopyConstructible>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::expected<TriviallyCopyConstructible, CopyConstructible>>::value, "");
 static_assert( hamon::is_trivially_copy_constructible<hamon::expected<TriviallyCopyConstructible, TriviallyCopyConstructible>>::value, "");
 
+static_assert( hamon::is_implicitly_copy_constructible<hamon::expected<int, int>>::value, "");
 static_assert( hamon::is_implicitly_copy_constructible<hamon::expected<CopyConstructible,           CopyConstructible>>::value, "");
 static_assert( hamon::is_implicitly_copy_constructible<hamon::expected<CopyConstructible,           ExplicitlyCopyConstructible>>::value, "");
 static_assert( hamon::is_implicitly_copy_constructible<hamon::expected<ExplicitlyCopyConstructible, CopyConstructible>>::value, "");
@@ -109,7 +113,7 @@ HAMON_CXX14_CONSTEXPR bool test2()
 		VERIFY(y.value() == T{43});
 	}
 	{
-		hamon::expected<T, hamon::string> x = hamon::unexpected{"Oops"};
+		hamon::expected<T, hamon::string> x = hamon::unexpected<hamon::string>{"Oops"};
 		hamon::expected<T, hamon::string> y = x;
 		VERIFY(!x.has_value());
 		VERIFY(!y.has_value());

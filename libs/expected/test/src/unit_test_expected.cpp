@@ -31,14 +31,14 @@ auto parse_number(hamon::string_view str)
 
 	if (begin == end)
 	{
-		return hamon::unexpected(parse_error::invalid_input);
+		return hamon::unexpected<parse_error>(parse_error::invalid_input);
 	}
 	else if (hamon::isinf(retval))
 	{
-		return hamon::unexpected(parse_error::overflow);
+		return hamon::unexpected<parse_error>(parse_error::overflow);
 	}
 
-	str.remove_prefix(end - begin);
+	str.remove_prefix(static_cast<hamon::size_t>(end - begin));
 	return retval;
 }
 

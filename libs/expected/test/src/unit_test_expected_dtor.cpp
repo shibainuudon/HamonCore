@@ -30,11 +30,13 @@ struct TriviallyDestructible
 static_assert( hamon::is_destructible<TriviallyDestructible>::value, "");
 static_assert( hamon::is_trivially_destructible<TriviallyDestructible>::value, "");
 
+static_assert( hamon::is_destructible<hamon::expected<int, int>>::value, "");
 static_assert( hamon::is_destructible<hamon::expected<Destructible,          Destructible>>::value, "");
 static_assert( hamon::is_destructible<hamon::expected<Destructible,          TriviallyDestructible>>::value, "");
 static_assert( hamon::is_destructible<hamon::expected<TriviallyDestructible, Destructible>>::value, "");
 static_assert( hamon::is_destructible<hamon::expected<TriviallyDestructible, TriviallyDestructible>>::value, "");
 
+static_assert( hamon::is_trivially_destructible<hamon::expected<int, int>>::value, "");
 static_assert(!hamon::is_trivially_destructible<hamon::expected<Destructible,          Destructible>>::value, "");
 static_assert(!hamon::is_trivially_destructible<hamon::expected<Destructible,          TriviallyDestructible>>::value, "");
 static_assert(!hamon::is_trivially_destructible<hamon::expected<TriviallyDestructible, Destructible>>::value, "");

@@ -23,6 +23,8 @@ using std::unexpect;
 
 #else
 
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
@@ -32,7 +34,7 @@ struct unexpect_t
 	explicit unexpect_t() = default;
 };
 
-inline constexpr unexpect_t unexpect {};
+HAMON_INLINE_VAR HAMON_CONSTEXPR unexpect_t unexpect {};
 
 }	// namespace hamon
 

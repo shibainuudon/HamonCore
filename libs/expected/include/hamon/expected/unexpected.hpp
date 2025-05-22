@@ -82,10 +82,10 @@ public:
 		: unex(il, hamon::forward<Args>(args)...)	// [expected.un.cons]/8
 	{}
 
-	constexpr unexpected&
+	HAMON_CXX14_CONSTEXPR unexpected&
 	operator=(unexpected const&) = default;
 
-	constexpr unexpected&
+	HAMON_CXX14_CONSTEXPR unexpected&
 	operator=(unexpected&&) = default;
 
 	constexpr E const&
@@ -94,7 +94,7 @@ public:
 		return unex;	// [expected.un.obs]/1
 	}
 
-	constexpr E&
+	HAMON_CXX14_CONSTEXPR E&
 	error() & noexcept
 	{
 		return unex;	// [expected.un.obs]/1
@@ -106,17 +106,17 @@ public:
 		return hamon::move(unex);	// [expected.un.obs]/2
 	}
 
-	constexpr E&&
+	HAMON_CXX14_CONSTEXPR E&&
 	error() && noexcept
 	{
 		return hamon::move(unex);	// [expected.un.obs]/2
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	swap(unexpected& other)
-		noexcept(hamon::is_nothrow_swappable_v<E>)
+		noexcept(hamon::is_nothrow_swappable<E>::value)
 	{
-		static_assert(hamon::is_swappable_v<E>, "[expected.un.swap]/1");
+		static_assert(hamon::is_swappable<E>::value, "[expected.un.swap]/1");
 
 		// [expected.un.swap]/2
 		using std::swap;
@@ -131,10 +131,10 @@ public:
 		return x.error() == y.error();
 	}
 
-	friend constexpr void
+	friend HAMON_CXX14_CONSTEXPR void
 	swap(unexpected& x, unexpected& y)
 		noexcept(noexcept(x.swap(y)))
-		requires(hamon::is_swappable_v<E>)	// [expected.un.swap]/3
+//		requires(hamon::is_swappable_v<E>)	// [expected.un.swap]/3
 	{
 		// [expected.un.swap]/4
 		x.swap(y);
@@ -144,8 +144,12 @@ private:
 	E unex;             // exposition only
 };
 
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+
 template <typename E>
 unexpected(E) -> unexpected<E>;
+
+#endif
 
 }	// namespace hamon
 

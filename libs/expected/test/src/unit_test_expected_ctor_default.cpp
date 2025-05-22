@@ -49,23 +49,27 @@ struct ExplicitlyDefaultConstructible
 static_assert( hamon::is_default_constructible<ExplicitlyDefaultConstructible>::value, "");
 static_assert(!hamon::is_implicitly_default_constructible<ExplicitlyDefaultConstructible>::value, "");
 
+static_assert( hamon::is_default_constructible<hamon::expected<int, int>>::value, "");
 static_assert( hamon::is_default_constructible<hamon::expected<DefaultConstructible,    DefaultConstructible>>::value, "");
 static_assert( hamon::is_default_constructible<hamon::expected<DefaultConstructible,    NonDefaultConstructible>>::value, "");
 static_assert(!hamon::is_default_constructible<hamon::expected<NonDefaultConstructible, DefaultConstructible>>::value, "");
 static_assert(!hamon::is_default_constructible<hamon::expected<NonDefaultConstructible, NonDefaultConstructible>>::value, "");
 
-#if !defined(HAMON_USE_STD_EXPECTED)
+#if 1//!defined(HAMON_USE_STD_EXPECTED)
+static_assert( hamon::is_nothrow_default_constructible<hamon::expected<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<DefaultConstructible,        DefaultConstructible>>::value, "");
 static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<DefaultConstructible,        NothrowDefaultConstructible>>::value, "");
-static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, DefaultConstructible>>::value, "");
-static_assert(!hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, NothrowDefaultConstructible>>::value, "");
+static_assert( hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, DefaultConstructible>>::value, "");
+static_assert( hamon::is_nothrow_default_constructible<hamon::expected<NothrowDefaultConstructible, NothrowDefaultConstructible>>::value, "");
 #endif
 
+static_assert(!hamon::is_trivially_default_constructible<hamon::expected<int, int>>::value, "");
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<DefaultConstructible,          DefaultConstructible>>::value, "");
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<DefaultConstructible,          TriviallyDefaultConstructible>>::value, "");
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<TriviallyDefaultConstructible, DefaultConstructible>>::value, "");
 static_assert(!hamon::is_trivially_default_constructible<hamon::expected<TriviallyDefaultConstructible, TriviallyDefaultConstructible>>::value, "");
 
+static_assert( hamon::is_implicitly_default_constructible<hamon::expected<int, int>>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<hamon::expected<DefaultConstructible,           DefaultConstructible>>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<hamon::expected<DefaultConstructible,           ExplicitlyDefaultConstructible>>::value, "");
 static_assert( hamon::is_implicitly_default_constructible<hamon::expected<ExplicitlyDefaultConstructible, DefaultConstructible>>::value, "");
