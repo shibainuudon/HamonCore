@@ -160,6 +160,8 @@ struct expected_union<T, E, true>
 
 struct expected_access
 {
+	// (1) expected_union を構築して返す
+	// "値のコピー省略を保証[P0135R1]"が実装されていない場合はコピー/ムーブが発生する
 	template <typename T, typename E, typename Expected>
 	static HAMON_CXX14_CONSTEXPR expected_union<T, E>
 	make_union(Expected&& rhs)
@@ -174,6 +176,8 @@ struct expected_access
 		}
 	}
 
+	// (2) 受け取った expected_union& に構築する
+	// construct_atを使っているため、C++20以降でないとconstexprにできない
 	template <typename T, typename E, typename Expected>
 	static HAMON_CXX14_CONSTEXPR void
 	make_union(expected_union<T, E>& dst, Expected&& rhs)
@@ -187,14 +191,25 @@ struct expected_access
 			hamon::construct_at(hamon::addressof(dst), hamon::unexpect, hamon::forward<Expected>(rhs).unex);
 		}
 	}
+
+	// expected<T, E>のコピー/ムーブコンストラクタにおいて、
+	//  * "値のコピー省略を保証[P0135R1]"が実装されている、もしくは
+	//  * TとEが両方ともTriviallyMoveConstructibleであるとき、
+	// (1)を使う。
+	// そうでないときは(2)を使う。
+	// 
+	// これにより、
+	//  * C++14ではTriviallyMoveConstructibleならconstexpr
+	//  * C++17以降では常にconstexpr
+	// にできる。
 };
 
 template <typename T, typename E, bool =
 #if defined(HAMON_HAS_CXX17_GUARANTEED_COPY_ELISION)
 	true
 #else
-	hamon::is_move_constructible<T>::value &&
-	hamon::is_move_constructible<E>::value
+	hamon::is_trivially_move_constructible<T>::value &&
+	hamon::is_trivially_move_constructible<E>::value
 #endif
 >
 struct expected_impl : expected_union<T, E>
@@ -527,7 +542,7 @@ public:
 	{
 		// [expected.object.assign]/17
 		this->destroy();
-		this->has_value = true;
+		this->has_val = true;
 		return *hamon::construct_at(hamon::addressof(this->val), hamon::forward<Args>(args)...);
 	}
 
@@ -541,7 +556,7 @@ public:
 	{
 		// [expected.object.assign]/19
 		this->destroy();
-		this->has_value = true;
+		this->has_val = true;
 		return *hamon::construct_at(hamon::addressof(this->val), il, hamon::forward<Args>(args)...);
 	}
 
