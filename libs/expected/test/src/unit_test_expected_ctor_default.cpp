@@ -21,13 +21,15 @@ namespace ctor_default_test
 
 struct DefaultConstructible
 {
-	DefaultConstructible();
+	int value;
+	constexpr DefaultConstructible() : value(42) {}
 };
 static_assert(hamon::is_default_constructible<DefaultConstructible>::value, "");
 
 struct NonDefaultConstructible
 {
-	NonDefaultConstructible() = delete;
+	int value;
+	constexpr NonDefaultConstructible(int v) : value(v) {}
 };
 static_assert(!hamon::is_default_constructible<NonDefaultConstructible>::value, "");
 
@@ -78,7 +80,7 @@ static_assert( hamon::is_implicitly_default_constructible<hamon::expected<Explic
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T, typename E>
-HAMON_CXX14_CONSTEXPR bool test()
+HAMON_CXX14_CONSTEXPR bool test1()
 {
 	hamon::expected<T, E> e;
 	VERIFY(e.has_value());
@@ -86,16 +88,26 @@ HAMON_CXX14_CONSTEXPR bool test()
 	return true;
 }
 
+HAMON_CXX14_CONSTEXPR bool test2()
+{
+	hamon::expected<DefaultConstructible, NonDefaultConstructible> e;
+	VERIFY(e.has_value());
+	VERIFY(e.value().value == 42);
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(ExpectedTest, CtorDefaultTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int, int>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int, float>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<float, int>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<float, float>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<int, hamon::string>()));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test<hamon::string, int>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1<int, int>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1<int, float>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1<float, int>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test1<float, float>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<int, hamon::string>()));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE((test1<hamon::string, int>()));
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test2()));
 }
 
 }	// namespace ctor_default_test
