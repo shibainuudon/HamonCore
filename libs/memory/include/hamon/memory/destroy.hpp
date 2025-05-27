@@ -29,7 +29,7 @@ namespace hamon
 // 27.11.9 destroy[specialized.destroy]
 
 template <typename NoThrowForwardIterator>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 destroy(NoThrowForwardIterator first, NoThrowForwardIterator last)
 {
 	hamon::detail::destroy_impl(first, last);

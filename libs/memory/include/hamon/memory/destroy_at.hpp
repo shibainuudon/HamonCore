@@ -25,43 +25,66 @@ using std::destroy_at;
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
 #include <hamon/detail/overload_priority.hpp>
 
 namespace hamon
 {
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR void destroy_at(T* p);
+HAMON_CXX14_CONSTEXPR void destroy_at(T* p);
 
 namespace detail
 {
 
-template <typename T, typename = hamon::enable_if_t<hamon::is_array<T>::value>>
-HAMON_CXX20_CONSTEXPR void
-destroy_at_impl(T* p, hamon::detail::overload_priority<1>)
+template <typename T,
+	bool = hamon::is_array<T>::value,
+	bool = hamon::is_trivially_destructible<T>::value
+>
+struct destroy_at_impl;
+
+template <typename T, bool B>
+struct destroy_at_impl<T, true, B>
 {
-	for (auto& x : *p)
+	static HAMON_CXX14_CONSTEXPR void
+	invoke(T* p)
 	{
-		hamon::destroy_at(hamon::addressof(x));
+		for (auto& x : *p)
+		{
+			hamon::destroy_at(hamon::addressof(x));
+		}
 	}
-}
+};
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR void
-destroy_at_impl(T* p, hamon::detail::overload_priority<0>)
+struct destroy_at_impl<T, false, false>
 {
-	p->~T();
-}
+	static HAMON_CXX20_CONSTEXPR void
+	invoke(T* p)
+	{
+		p->~T();
+	}
+};
+
+template <typename T>
+struct destroy_at_impl<T, false, true>
+{
+	static HAMON_CXX14_CONSTEXPR void
+	invoke(T*)
+	{
+		// do nothing
+	}
+};
 
 }	// namespace detail
 
 // 27.11.9 destroy[specialized.destroy]
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 destroy_at(T* p)
 {
-	hamon::detail::destroy_at_impl(p, hamon::detail::overload_priority<1>{});
+	hamon::detail::destroy_at_impl<T>::invoke(p);
 }
 
 }	// namespace hamon
