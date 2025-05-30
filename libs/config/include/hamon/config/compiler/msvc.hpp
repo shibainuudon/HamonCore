@@ -961,8 +961,16 @@
 #if (_MSC_FULL_VER >= 194435207)
 #endif
 
+// Visual Studio 2022 Preview Version 17.14.1 Preview 1.0
+#if (_MSC_FULL_VER >= 194435207)
+#endif
+
 // Visual Studio 2022 Preview Version 17.14.2 Preview 1.0
 #if (_MSC_FULL_VER >= 194435207)
+#endif
+
+// Visual Studio 2022 Preview Version 17.14.3 Preview 1.0
+#if (_MSC_FULL_VER >= 194435208)
 #endif
 
 // Visual Studio 2022 Version 17.0.(0-1)
@@ -1194,6 +1202,10 @@
 #    define HAMON_HAS_CXX23_STATIC_CALL_OPERATOR						// P1169R4	static operator()														__cpp_static_call_operator >= 202207L
 #    define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
 #  endif
+#endif
+
+// Visual Studio 2022 Version 17.14.3
+#if (_MSC_FULL_VER >= 194435208)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
