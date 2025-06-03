@@ -27,13 +27,9 @@ jobs:
       matrix:
         config:
         - { os: windows-2022, generator: "Visual Studio 17 2022" }
-        - { os: windows-2019, generator: "Visual Studio 16 2019" }
         architecture: [x64, Win32]
         cxx_standard: [14, 17, 20, 23]
         build_type: [Debug, Release]
-        exclude:
-          - config: { generator: "Visual Studio 16 2019" }
-            cxx_standard: 23
     defaults:
       run:
         shell: bash
