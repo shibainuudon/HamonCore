@@ -23,23 +23,84 @@ using std::construct_at;
 
 #else
 
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/memory/detail/voidify.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_array.hpp>
+#include <hamon/type_traits/is_trivially_destructible.hpp>
+#include <hamon/type_traits/is_trivially_move_assignable.hpp>
+#include <hamon/type_traits/is_trivially_move_constructible.hpp>
+#include <hamon/type_traits/is_unbounded_array.hpp>
+#include <hamon/type_traits/void_t.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/config.hpp>
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 namespace hamon
 {
 
-// 27.11.8 construct_at[specialized.construct]
+namespace detail
+{
+
+template <typename T, typename... Args,
+	typename = hamon::enable_if_t<hamon::is_array<T>::value>>
+HAMON_CXX14_CONSTEXPR T*
+construct_at_impl(hamon::detail::overload_priority<2>, T* location, Args&&...)
+HAMON_NOEXCEPT_IF_EXPR(::new (hamon::detail::voidify(*location)) T[1]())	// noexcept as an extension
+{
+	// [specialized.construct]/2
+	static_assert(sizeof...(Args) == 0, "");
+
+	// [specialized.construct]/3
+	return ::new (hamon::detail::voidify(*location)) T[1]();
+}
+
+// Extension:
+//  T が TriviallyMoveAssignable かつ TriviallyMoveConstructible かつ TriviallyDestructible なとき、
+//  placement new を使わずに構築することで、C++14でもconstexprにできる。
+template <typename T, typename... Args,
+	typename = hamon::enable_if_t<
+		hamon::is_trivially_move_assignable<T>::value &&
+		hamon::is_trivially_move_constructible<T>::value &&
+		hamon::is_trivially_destructible<T>::value>>
+HAMON_CXX14_CONSTEXPR T*
+construct_at_impl(hamon::detail::overload_priority<1>, T* location, Args&&... args)
+HAMON_NOEXCEPT_IF_EXPR(T(hamon::forward<Args>(args)...))	// noexcept as an extension
+{
+	*location = T(hamon::forward<Args>(args)...);
+	return location;
+}
 
 template <typename T, typename... Args>
-inline auto
-construct_at(T* p, Args&&... args)
-noexcept(noexcept(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...)))
-->decltype(::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...))
+HAMON_CXX14_CONSTEXPR T*
+construct_at_impl(hamon::detail::overload_priority<0>, T* location, Args&&... args)
+HAMON_NOEXCEPT_IF_EXPR(::new (hamon::detail::voidify(*location)) T(hamon::forward<Args>(args)...))	// noexcept as an extension
 {
-	return ::new(const_cast<void*>(static_cast<const volatile void*>(p))) T(hamon::forward<Args>(args)...);
+	// [specialized.construct]/3
+	return ::new (hamon::detail::voidify(*location)) T(hamon::forward<Args>(args)...);
+}
+
+}	// namespace detail
+
+// 26.11.8 construct_at[specialized.construct]
+
+template <typename T, typename... Args,
+	// [specialized.construct]/1
+	typename = hamon::enable_if_t<!hamon::is_unbounded_array<T>::value>,
+	typename = hamon::void_t<decltype(::new (hamon::declval<void*>()) T(hamon::declval<Args>()...))>>
+HAMON_CXX14_CONSTEXPR T*
+construct_at(T* location, Args&&... args) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
+	hamon::detail::construct_at_impl(hamon::detail::overload_priority<2>{}, location, hamon::forward<Args>(args)...))
+{
+	return hamon::detail::construct_at_impl(hamon::detail::overload_priority<2>{}, location, hamon::forward<Args>(args)...);
 }
 
 }	// namespace hamon
+
+HAMON_WARNING_POP()
 
 #endif
 

@@ -34,7 +34,7 @@ namespace ranges
 namespace detail
 {
 
-// 27.11.8 construct_at[specialized.construct]
+// 26.11.8 construct_at[specialized.construct]
 
 struct construct_at_fn
 {
