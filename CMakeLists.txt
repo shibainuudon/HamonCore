@@ -39,6 +39,7 @@ set(SUBDIRECTORIES
 	debug
 	deque
 	expected
+	flat_map
 	forward_list
 	functional
 	inplace_vector
