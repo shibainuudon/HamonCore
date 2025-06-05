@@ -1,0 +1,128 @@
+﻿/**
+ *	@file	unit_test_flat_map_extract.cpp
+ *
+ *	@brief	extract のテスト
+ *
+ *	constexpr containers extract() &&;
+ */
+
+#include <hamon/flat_map/flat_map.hpp>
+#include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/functional/greater.hpp>
+#include <hamon/functional/less.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/void_t.hpp>
+#include <hamon/utility/declval.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/vector.hpp>
+#include <hamon/deque.hpp>
+#include <gtest/gtest.h>
+#include "constexpr_test.hpp"
+#include "flat_map_test_helper.hpp"
+
+namespace hamon_flat_map_test
+{
+
+namespace extract_test
+{
+
+#if !defined(HAMON_USE_STD_FLAT_MAP)
+#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
+#else
+#define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  EXPECT_TRUE
+#define FLAT_MAP_TEST_CONSTEXPR              /**/
+#endif
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+template <typename KeyContainer, typename MappedContainer>
+FLAT_MAP_TEST_CONSTEXPR bool test()
+{
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+
+	{
+		using Map = hamon::flat_map<Key, T, hamon::less<Key>, KeyContainer, MappedContainer>;
+		using Containers = typename Map::containers;
+
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&&>().extract()), Containers>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&&>().extract()), "");
+
+		Map v
+		{
+			{Key{3}, T{10}},
+			{Key{1}, T{20}},
+			{Key{4}, T{30}},
+		};
+
+		VERIFY(v.size() == 3);
+		VERIFY(!v.empty());
+
+		auto c = hamon::move(v).extract();
+
+		VERIFY(v.size() == 0);
+		VERIFY(v.empty());
+
+		VERIFY(c.keys.size() == 3);
+		VERIFY(c.values.size() == 3);
+
+		Key const keys_expected[] = {Key{1}, Key{3}, Key{4}};
+		VERIFY(hamon::ranges::equal(c.keys, keys_expected));
+
+		T const values_expected[] = {T{20}, T{10}, T{30}};
+		VERIFY(hamon::ranges::equal(c.values, values_expected));
+	}
+	{
+		using Map = hamon::flat_map<Key, T, hamon::greater<Key>, KeyContainer, MappedContainer>;
+		using Containers = typename Map::containers;
+
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&&>().extract()), Containers>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&&>().extract()), "");
+
+		Map v
+		{
+			{Key{3}, T{10}},
+			{Key{1}, T{20}},
+			{Key{4}, T{30}},
+		};
+
+		VERIFY(v.size() == 3);
+		VERIFY(!v.empty());
+
+		auto c = hamon::move(v).extract();
+
+		VERIFY(v.size() == 0);
+		VERIFY(v.empty());
+
+		VERIFY(c.keys.size() == 3);
+		VERIFY(c.values.size() == 3);
+
+		Key const keys_expected[] = {Key{4}, Key{3}, Key{1}};
+		VERIFY(hamon::ranges::equal(c.keys, keys_expected));
+
+		T const values_expected[] = {T{30}, T{10}, T{20}};
+		VERIFY(hamon::ranges::equal(c.values, values_expected));
+	}
+
+	return true;
+}
+
+#undef VERIFY
+
+GTEST_TEST(FlatMapTest, ExtractTest)
+{
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+}
+
+#undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
+#undef FLAT_MAP_TEST_CONSTEXPR
+
+}	// namespace extract_test
+
+}	// namespace hamon_flat_map_test
