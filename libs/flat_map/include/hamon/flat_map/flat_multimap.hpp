@@ -28,6 +28,7 @@
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/pair.hpp>
 #include <hamon/memory.hpp>
+#include <hamon/memory/detail/simple_allocator.hpp>
 #include <hamon/ranges.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
@@ -51,11 +52,11 @@ struct flat_multimap_iterator;
 }	// namespace detail
 
 template <
-	class Key,
-	class T,
-	class Compare = hamon::less<Key>,
-	class KeyContainer = hamon::vector<Key>,
-	class MappedContainer = hamon::vector<T>
+	typename Key,
+	typename T,
+	typename Compare = hamon::less<Key>,
+	typename KeyContainer = hamon::vector<Key>,
+	typename MappedContainer = hamon::vector<T>
 >
 class flat_multimap
 {
@@ -115,14 +116,29 @@ public:
 	flat_multimap(
 		key_container_type key_cont,
 		mapped_container_type mapped_cont,
-		key_compare const& comp = key_compare());
+		key_compare const& comp = key_compare())
+		// [flat.multimap.cons]/1
+		: c{hamon::move(key_cont), hamon::move(mapped_cont)}
+		, compare(comp)
+	{
+		// [flat.multimap.cons]/1
+		auto zv = hamon::views::zip(c.keys, c.values);
+		hamon::ranges::sort(zv, this->value_comp());
+	}
 
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
 		key_container_type key_cont,
 		mapped_container_type mapped_cont,
-		key_compare const& comp = key_compare());
+		key_compare const& comp = key_compare())
+		// [flat.multimap.cons]/3
+		: c{hamon::move(key_cont), hamon::move(mapped_cont)}
+		, compare(comp)
+	{
+		// TODO
+		// assert is_sorted(c.keys, this->compare)
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	constexpr
@@ -182,8 +198,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr explicit
 	flat_multimap(Alloc const& a);
 
@@ -191,8 +206,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		key_compare const& comp,
@@ -202,8 +216,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		key_container_type const& key_cont,
@@ -214,8 +227,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		key_container_type const& key_cont,
@@ -227,8 +239,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -240,8 +251,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -254,8 +264,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		flat_multimap const&,
@@ -265,8 +274,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		flat_multimap&&,
@@ -278,8 +286,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		InputIterator first,
@@ -292,8 +299,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		InputIterator first,
@@ -307,8 +313,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -322,8 +327,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -338,8 +342,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::from_range_t,
@@ -352,8 +355,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::from_range_t,
@@ -365,8 +367,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		std::initializer_list<value_type> il,
@@ -376,8 +377,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		std::initializer_list<value_type> il,
@@ -388,8 +388,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -400,8 +399,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.multimap.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_multimap(
 		hamon::sorted_equivalent_t,
@@ -460,11 +458,15 @@ public:
 	max_size() const noexcept;
 
 	// modifiers
-	template <typename... Args>
+	template <typename... Args,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<hamon::pair<key_type, mapped_type>, Args...>::value>>
 	constexpr iterator
 	emplace(Args&&... args);
 
-	template <typename... Args>
+	template <typename... Args,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<hamon::pair<key_type, mapped_type>, Args...>::value>>
 	constexpr iterator
 	emplace_hint(const_iterator position, Args&&... args);
 
@@ -492,13 +494,23 @@ public:
 		return emplace_hint(position, hamon::move(x));
 	}
 
-	template <class P>
+	template <typename P,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<hamon::pair<key_type, mapped_type>, P>::value>>
 	constexpr iterator
-	insert(P&& x);
+	insert(P&& x)
+	{
+		return emplace(hamon::forward<P>(x));
+	}
 
-	template <class P>
+	template <typename P,
+		typename = hamon::enable_if_t<
+			hamon::is_constructible<hamon::pair<key_type, mapped_type>, P>::value>>
 	constexpr iterator
-	insert(const_iterator position, P&&);
+	insert(const_iterator position, P&& x)
+	{
+		return emplace_hint(position, hamon::forward<P>(x));
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	constexpr void
@@ -539,7 +551,8 @@ public:
 	constexpr size_type
 	erase(key_type const& x);
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr size_type
 	erase(K&& x);
 
@@ -578,25 +591,29 @@ public:
 	constexpr const_iterator
 	find(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr iterator
 	find(K const& x);
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
 	find(K const& x) const;
 
 	constexpr size_type
 	count(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr size_type
 	count(K const& x) const;
 
 	constexpr bool
 	contains(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr bool
 	contains(K const& x) const;
 
@@ -606,11 +623,13 @@ public:
 	constexpr const_iterator
 	lower_bound(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr iterator
 	lower_bound(K const& x);
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
 	lower_bound(K const& x) const;
 
@@ -620,11 +639,13 @@ public:
 	constexpr const_iterator
 	upper_bound(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr iterator
 	upper_bound(K const& x);
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
 	upper_bound(K const& x) const;
 
@@ -634,11 +655,13 @@ public:
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(key_type const& x) const;
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr hamon::pair<iterator, iterator>
 	equal_range(K const& x);
 
-	template <typename K>
+	template <typename K,
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const;
 
@@ -661,9 +684,17 @@ private:
 };
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Compare = hamon::less<typename KeyContainer::value_type>
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Compare = hamon::less<typename KeyContainer::value_type>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
+		hamon::is_invocable<Compare const&,
+			typename KeyContainer::value_type const&,
+			typename KeyContainer::value_type const&>
+	>::value>
 >
 flat_multimap(
 	KeyContainer,
@@ -677,9 +708,15 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Allocator
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Allocator,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		std::uses_allocator<KeyContainer, Allocator>,
+		std::uses_allocator<MappedContainer, Allocator>
+	>::value>
 >
 flat_multimap(
 	KeyContainer,
@@ -693,10 +730,21 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Compare,
-	class Allocator>
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Compare,
+	typename Allocator,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
+		std::uses_allocator<KeyContainer, Allocator>,
+		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::is_invocable<Compare const&,
+			typename KeyContainer::value_type const&,
+			typename KeyContainer::value_type const&>
+	>::value>
+>
 flat_multimap(
 	KeyContainer,
 	MappedContainer,
@@ -710,9 +758,17 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Compare = hamon::less<typename KeyContainer::value_type>
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Compare = hamon::less<typename KeyContainer::value_type>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
+		hamon::is_invocable<Compare const&,
+			typename KeyContainer::value_type const&,
+			typename KeyContainer::value_type const&>
+	>::value>
 >
 flat_multimap(
 	hamon::sorted_equivalent_t,
@@ -727,9 +783,15 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Allocator
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Allocator,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		std::uses_allocator<KeyContainer, Allocator>,
+		std::uses_allocator<MappedContainer, Allocator>
+	>::value>
 >
 flat_multimap(
 	hamon::sorted_equivalent_t,
@@ -744,10 +806,20 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class KeyContainer,
-	class MappedContainer,
-	class Compare,
-	class Allocator
+	typename KeyContainer,
+	typename MappedContainer,
+	typename Compare,
+	typename Allocator,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
+		std::uses_allocator<KeyContainer, Allocator>,
+		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::is_invocable<Compare const&,
+			typename KeyContainer::value_type const&,
+			typename KeyContainer::value_type const&>
+	>::value>
 >
 flat_multimap(
 	hamon::sorted_equivalent_t,
@@ -763,8 +835,12 @@ flat_multimap(
 	MappedContainer>;
 
 template <
-	class InputIterator,
-	class Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>
+	typename InputIterator,
+	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::detail::cpp17_input_iterator_t<InputIterator>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
+	>::value>
 >
 flat_multimap(
 	InputIterator,
@@ -776,8 +852,12 @@ flat_multimap(
 	Compare>;
 
 template <
-	class InputIterator,
-	class Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>
+	typename InputIterator,
+	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::detail::cpp17_input_iterator_t<InputIterator>,
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
+	>::value>
 >
 flat_multimap(
 	hamon::sorted_equivalent_t,
@@ -791,8 +871,12 @@ flat_multimap(
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
-	class Compare = hamon::less<hamon::detail::range_key_type<R>>,
-	class Allocator = hamon::allocator<byte>
+	typename Compare = hamon::less<hamon::detail::range_key_type<R>>,
+	typename Allocator = hamon::allocator<hamon::byte>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
+		hamon::detail::simple_allocator_t<Allocator>
+	>::value>
 >
 flat_multimap(
 	hamon::from_range_t, R&&,
@@ -807,7 +891,10 @@ flat_multimap(
 
 template <
 	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
-	class Allocator
+	typename Allocator,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::detail::simple_allocator_t<Allocator>
+	>::value>
 >
 flat_multimap(
 	hamon::from_range_t, R&&,
@@ -820,9 +907,12 @@ flat_multimap(
 	hamon::vector<hamon::detail::range_mapped_type<R>, hamon::detail::alloc_rebind<Allocator, hamon::detail::range_mapped_type<R>>>>;
 
 template <
-	class Key,
-	class T,
-	class Compare = hamon::less<Key>
+	typename Key,
+	typename T,
+	typename Compare = hamon::less<Key>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
+	>::value>
 >
 flat_multimap(
 	std::initializer_list<hamon::pair<Key, T>>,
@@ -833,9 +923,12 @@ flat_multimap(
 	Compare>;
 
 template <
-	class Key,
-	class T,
-	class Compare = hamon::less<Key>
+	typename Key,
+	typename T,
+	typename Compare = hamon::less<Key>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
+	>::value>
 >
 flat_multimap(
 	hamon::sorted_equivalent_t,
@@ -846,16 +939,24 @@ flat_multimap(
 	T,
 	Compare>;
 
-//template <class Key, class T, class Compare, class KeyContainer, class MappedContainer, class Allocator>
-//struct uses_allocator<flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>, Allocator>
-//	: hamon::bool_constant<uses_allocator_v<KeyContainer, Allocator> && uses_allocator_v<MappedContainer, Allocator>> {};
-
 // [flat.multimap.erasure], erasure for flat_multimap
-template <class Key, class T, class Compare, class KeyContainer, class MappedContainer, class Predicate>
+template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Predicate>
 constexpr typename flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>::size_type
 erase_if(flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate pred);
 
 }	// namespace hamon
+
+namespace std
+{
+
+template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Allocator>
+struct uses_allocator<hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>, Allocator>
+	: hamon::bool_constant<
+		std::uses_allocator<KeyContainer, Allocator>::value &&
+		std::uses_allocator<MappedContainer, Allocator>::value>
+{};
+
+}	// namespace std
 
 #endif
 
