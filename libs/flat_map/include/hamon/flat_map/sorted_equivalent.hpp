@@ -27,6 +27,10 @@ using std::sorted_equivalent;
 namespace hamon
 {
 
+// 23.6.7 Header <flat_map> synopsis[flat.map.syn]
+
+struct sorted_equivalent_t { explicit sorted_equivalent_t() = default; };
+inline constexpr sorted_equivalent_t sorted_equivalent{};
 
 }	// namespace hamon
 

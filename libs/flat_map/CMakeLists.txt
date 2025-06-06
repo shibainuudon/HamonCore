@@ -19,6 +19,7 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		algorithm
 		compare
 		concepts
 		config
@@ -30,6 +31,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		memory
 		pair
 		ranges
+		stdexcept
 		type_traits
 		utility
 		vector
