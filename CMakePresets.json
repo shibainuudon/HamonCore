@@ -13,7 +13,8 @@
 			"binaryDir": "${sourceDir}/build/${presetName}",
 			"cacheVariables": {
 				"CMAKE_INSTALL_PREFIX": "${sourceDir}/install/${presetName}",
-				"CMAKE_UNITY_BUILD": "ON"
+				"CMAKE_UNITY_BUILD": "ON",
+				"CMAKE_UNITY_BUILD_BATCH_SIZE": "16"
 			}
 		},
 

@@ -10,6 +10,10 @@ on:
         default: 'OFF'
         required: false
         type: string
+      unity_build_batch_size:
+        default: 8
+        required: false
+        type: number
       disable_precompile_headers:
         default: 'OFF'
         required: false
@@ -44,6 +48,7 @@ jobs:
             -G "${{matrix.config.generator}}" \
             -A "${{matrix.architecture}}" \
             -DCMAKE_UNITY_BUILD="${{inputs.unity_build}}" \
+            -DCMAKE_UNITY_BUILD_BATCH_SIZE="${{inputs.unity_build_batch_size}}" \
             -DCMAKE_DISABLE_PRECOMPILE_HEADERS="${{inputs.disable_precompile_headers}}" \
             -DCMAKE_CXX_STANDARD="${{matrix.cxx_standard}}" \
             -DCMAKE_BUILD_TYPE="${{matrix.build_type}}"
@@ -94,6 +99,7 @@ jobs:
           cmake "$SRC_DIR" \
             -B "$BUILD_DIR" \
             -DCMAKE_UNITY_BUILD="${{inputs.unity_build}}" \
+            -DCMAKE_UNITY_BUILD_BATCH_SIZE="${{inputs.unity_build_batch_size}}" \
             -DCMAKE_DISABLE_PRECOMPILE_HEADERS="${{inputs.disable_precompile_headers}}" \
             -DCMAKE_CXX_COMPILER=${{matrix.config.cxx}} \
             -DCMAKE_C_COMPILER=${{matrix.config.cc}} \
@@ -125,6 +131,7 @@ jobs:
           cmake "$SRC_DIR" \
             -B "$BUILD_DIR" \
             -DCMAKE_UNITY_BUILD="${{inputs.unity_build}}" \
+            -DCMAKE_UNITY_BUILD_BATCH_SIZE="${{inputs.unity_build_batch_size}}" \
             -DCMAKE_DISABLE_PRECOMPILE_HEADERS="${{inputs.disable_precompile_headers}}" \
             -DCMAKE_CXX_COMPILER=${{matrix.config.cxx}} \
             -DCMAKE_C_COMPILER=${{matrix.config.cc}} \
