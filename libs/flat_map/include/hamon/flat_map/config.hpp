@@ -15,8 +15,8 @@
 #  include <flat_map>
 #endif
 
-#if defined(__cpp_lib_flat_map)           && (__cpp_lib_flat_map           >= 202207L) && \
-	defined(__cpp_lib_constexpr_flat_map) && (__cpp_lib_constexpr_flat_map >= 202502L)
+#if defined(__cpp_lib_flat_map)           && (__cpp_lib_flat_map           >= 202207L)/* && \
+	defined(__cpp_lib_constexpr_flat_map) && (__cpp_lib_constexpr_flat_map >= 202502L)*/
 
 #  define HAMON_USE_STD_FLAT_MAP
 

@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_FLAT_MAP)
 
+#include <hamon/algorithm.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/alloc_rebind.hpp>
@@ -126,7 +127,7 @@ public:
 		hamon::ranges::sort(zv, this->value_comp());
 	}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_multimap(
 		hamon::sorted_equivalent_t,
 		key_container_type key_cont,
@@ -164,7 +165,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_multimap(hamon::from_range_t, R&& rg)
 		: flat_multimap(hamon::from_range, hamon::forward<R>(rg), key_compare())
 	{}
@@ -177,14 +178,14 @@ public:
 		insert_range(hamon::forward<R>(rg));
 	}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_multimap(
 		std::initializer_list<value_type> il,
 		key_compare const& comp = key_compare())
 		: flat_multimap(il.begin(), il.end(), comp)
 	{}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_multimap(
 		hamon::sorted_equivalent_t,
 		std::initializer_list<value_type> il,
@@ -407,7 +408,7 @@ public:
 		key_compare const& comp,
 		Alloc const& a);
 
-	flat_multimap&
+	HAMON_CXX14_CONSTEXPR flat_multimap&
 	operator=(std::initializer_list<value_type>);
 
 	// iterators

@@ -132,7 +132,7 @@ public:
 		c.values.erase(c.values.begin() + dist, c.values.end());
 	}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
 		key_container_type key_cont,
@@ -170,7 +170,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(hamon::from_range_t, R&& rg)
 		: flat_map(hamon::from_range, hamon::forward<R>(rg), key_compare())
 	{}
@@ -183,14 +183,14 @@ public:
 		insert_range(hamon::forward<R>(rg));
 	}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		std::initializer_list<value_type> il,
 		key_compare const& comp = key_compare())
 		: flat_map(il.begin(), il.end(), comp)
 	{}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
 		std::initializer_list<value_type> il,
@@ -204,8 +204,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr explicit
 	flat_map(Alloc const& a);
 
@@ -213,8 +212,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(key_compare const& comp, Alloc const& a);
 
@@ -222,8 +220,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		key_container_type const& key_cont,
@@ -234,8 +231,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		key_container_type const& key_cont,
@@ -247,8 +243,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -260,8 +255,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -274,8 +268,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(flat_map const&, Alloc const& a);
 
@@ -283,8 +276,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(flat_map&&, Alloc const& a);
 
@@ -294,8 +286,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		InputIterator first,
@@ -308,8 +299,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		InputIterator first,
@@ -323,8 +313,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -338,8 +327,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -354,8 +342,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::from_range_t, R&& rg,
@@ -367,8 +354,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::from_range_t, R&& rg,
@@ -379,8 +365,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		std::initializer_list<value_type> il,
@@ -390,8 +375,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		std::initializer_list<value_type> il,
@@ -402,8 +386,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -414,8 +397,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			std::uses_allocator<key_container_type, Alloc>,
 			std::uses_allocator<mapped_container_type, Alloc>
-		>::value>
-	>
+		>::value>>
 	constexpr
 	flat_map(
 		hamon::sorted_unique_t,
@@ -498,8 +480,7 @@ public:
 
 	template <typename K,
 		// [flat.map.access]/3
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
-	>
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](K&& x)
 	{
@@ -537,8 +518,7 @@ public:
 
 	template <typename K,
 		// [flat.map.access]/8
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
-	>
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	at(K const& x)
 	{
@@ -555,8 +535,7 @@ public:
 
 	template <typename K,
 		// [flat.map.access]/8
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
-	>
+		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR mapped_type const&
 	at(K const& x) const
 	{
@@ -812,9 +791,7 @@ public:
 
 	template <typename... Args,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/15
-			hamon::is_constructible<mapped_type, Args...>::value
-		>
-	>
+			hamon::is_constructible<mapped_type, Args...>::value>>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type const& k, Args&&... args)
 	{
@@ -839,9 +816,7 @@ public:
 
 	template <typename... Args,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/15
-			hamon::is_constructible<mapped_type, Args...>::value
-		>
-	>
+			hamon::is_constructible<mapped_type, Args...>::value>>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type&& k, Args&&... args)
 	{
@@ -872,24 +847,19 @@ public:
 			hamon::is_constructible<mapped_type, Args...>,					// [flat.map.modifiers]/19.3
 			hamon::negation<hamon::is_convertible<K&&, const_iterator>>,	// [flat.map.modifiers]/19.4
 			hamon::negation<hamon::is_convertible<K&&, iterator>>
-		>::value>
-	>
+		>::value>>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(K&& k, Args&&... args);
 
 	template <typename... Args,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/15
-			hamon::is_constructible<mapped_type, Args...>::value
-		>
-	>
+			hamon::is_constructible<mapped_type, Args...>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type const& k, Args&&... args);
 
 	template <typename... Args,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/15
-			hamon::is_constructible<mapped_type, Args...>::value
-		>
-	>
+			hamon::is_constructible<mapped_type, Args...>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type&& k, Args&&... args);
 
@@ -899,8 +869,7 @@ public:
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::is_constructible<key_type, K>,							// [flat.map.modifiers]/19.2
 			hamon::is_constructible<mapped_type, Args...>					// [flat.map.modifiers]/19.3
-		>::value>
-	>
+		>::value>>
 	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, K&& k, Args&&... args);
 
