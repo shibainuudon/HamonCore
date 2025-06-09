@@ -114,7 +114,7 @@ public:
 		: c(), compare(comp)
 	{}
 
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		key_container_type key_cont,
 		mapped_container_type mapped_cont,
@@ -147,7 +147,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		InputIterator first,
 		InputIterator last,
@@ -158,7 +158,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
 		InputIterator first,
@@ -176,7 +176,7 @@ public:
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
-	constexpr
+	HAMON_CXX14_CONSTEXPR
 	flat_map(hamon::from_range_t, R&& rg, key_compare const& comp)
 		: flat_map(comp)
 	{
@@ -423,29 +423,29 @@ public:
 		key_compare const& comp,
 		Alloc const& a);
 
-	constexpr flat_map&
+	HAMON_CXX14_CONSTEXPR flat_map&
 	operator=(std::initializer_list<value_type>);
 
 	// iterators
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	begin() noexcept;
 
 	constexpr const_iterator
 	begin() const noexcept;
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	end() noexcept;
 
 	constexpr const_iterator
 	end() const noexcept;
 
-	constexpr reverse_iterator
+	HAMON_CXX14_CONSTEXPR reverse_iterator
 	rbegin() noexcept;
 
 	constexpr const_reverse_iterator
 	rbegin() const noexcept;
 
-	constexpr reverse_iterator
+	HAMON_CXX14_CONSTEXPR reverse_iterator
 	rend() noexcept;
 
 	constexpr const_reverse_iterator
@@ -482,14 +482,14 @@ public:
 	}
 
 	// [flat.map.access], element access
-	constexpr mapped_type&
+	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](key_type const& x)
 	{
 		// [flat.map.access]/1
 		return try_emplace(x).first->second;
 	}
 
-	constexpr mapped_type&
+	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](key_type&& x)
 	{
 		// [flat.map.access]/2
@@ -500,14 +500,14 @@ public:
 		// [flat.map.access]/3
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
 	>
-	constexpr mapped_type&
+	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](K&& x)
 	{
 		// [flat.map.access]/4
 		return try_emplace(hamon::forward<K>(x)).first->second;
 	}
 
-	constexpr mapped_type&
+	HAMON_CXX14_CONSTEXPR mapped_type&
 	at(key_type const& x)
 	{
 		auto it = this->find(x);
@@ -521,7 +521,7 @@ public:
 		return it->second;
 	}
 
-	constexpr mapped_type const&
+	HAMON_CXX14_CONSTEXPR mapped_type const&
 	at(key_type const& x) const
 	{
 		auto it = this->find(x);
@@ -539,7 +539,7 @@ public:
 		// [flat.map.access]/8
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
 	>
-	constexpr mapped_type&
+	HAMON_CXX14_CONSTEXPR mapped_type&
 	at(K const& x)
 	{
 		auto it = this->find(x);
@@ -557,7 +557,7 @@ public:
 		// [flat.map.access]/8
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)
 	>
-	constexpr mapped_type const&
+	HAMON_CXX14_CONSTEXPR mapped_type const&
 	at(K const& x) const
 	{
 		auto it = this->find(x);
@@ -575,7 +575,7 @@ public:
 	template <typename... Args,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/1
 			hamon::is_constructible<hamon::pair<key_type, mapped_type>, Args...>::value>>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	emplace(Args&&... args)
 	{
 		// [flat.map.modifiers]/2
@@ -603,28 +603,28 @@ public:
 	template <typename... Args,
 		typename = hamon::enable_if_t<
 			hamon::is_constructible<hamon::pair<key_type, mapped_type>, Args...>::value>>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator position, Args&&... args);
 
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& x)
 	{
 		return emplace(x);
 	}
 
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& x)
 	{
 		return emplace(hamon::move(x));
 	}
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x)
 	{
 		return emplace_hint(position, x);
 	}
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type&& x)
 	{
 		return emplace_hint(position, hamon::move(x));
@@ -633,7 +633,7 @@ public:
 	template <typename P,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/4
 			hamon::is_constructible<hamon::pair<key_type, mapped_type>, P>::value>>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(P&& x)
 	{
 		// [flat.map.modifiers]/5
@@ -643,7 +643,7 @@ public:
 	template <typename P,
 		typename = hamon::enable_if_t<	// [flat.map.modifiers]/4
 			hamon::is_constructible<hamon::pair<key_type, mapped_type>, P>::value>>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, P&& x)
 	{
 		// [flat.map.modifiers]/5
@@ -651,7 +651,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
 		// [flat.map.modifiers]/6
@@ -696,7 +696,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	insert(hamon::sorted_unique_t, InputIterator first, InputIterator last)
 	{
 		// [flat.map.modifiers]/9
@@ -736,7 +736,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{
 		// [flat.map.modifiers]/12
@@ -773,19 +773,19 @@ public:
 		c.values.erase(c.values.begin() + dist, c.values.end());
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	insert(std::initializer_list<value_type> il)
 	{
 		insert(il.begin(), il.end());
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	insert(hamon::sorted_unique_t, std::initializer_list<value_type> il)
 	{
 		insert(hamon::sorted_unique, il.begin(), il.end());
 	}
 
-	constexpr containers
+	HAMON_CXX14_CONSTEXPR containers
 	extract() &&
 	{
 		// [flat.map.modifiers]/34
@@ -796,7 +796,7 @@ public:
 		hamon::move(c);
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	replace(key_container_type&& key_cont, mapped_container_type&& mapped_cont)
 	{
 		// [flat.map.modifiers]/36
@@ -815,7 +815,7 @@ public:
 			hamon::is_constructible<mapped_type, Args...>::value
 		>
 	>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type const& k, Args&&... args)
 	{
 		// [flat.map.modifiers]/16
@@ -842,7 +842,7 @@ public:
 			hamon::is_constructible<mapped_type, Args...>::value
 		>
 	>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(key_type&& k, Args&&... args)
 	{
 		// [flat.map.modifiers]/16
@@ -874,7 +874,7 @@ public:
 			hamon::negation<hamon::is_convertible<K&&, iterator>>
 		>::value>
 	>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace(K&& k, Args&&... args);
 
 	template <typename... Args,
@@ -882,7 +882,7 @@ public:
 			hamon::is_constructible<mapped_type, Args...>::value
 		>
 	>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type const& k, Args&&... args);
 
 	template <typename... Args,
@@ -890,7 +890,7 @@ public:
 			hamon::is_constructible<mapped_type, Args...>::value
 		>
 	>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, key_type&& k, Args&&... args);
 
 	template <typename K, typename... Args,
@@ -901,7 +901,7 @@ public:
 			hamon::is_constructible<mapped_type, Args...>					// [flat.map.modifiers]/19.3
 		>::value>
 	>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	try_emplace(const_iterator hint, K&& k, Args&&... args);
 
 	template <typename M,
@@ -910,7 +910,7 @@ public:
 			hamon::is_assignable<mapped_type&, M>,
 			hamon::is_constructible<mapped_type, M>
 		>::value>>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert_or_assign(key_type const& k, M&& obj);
 
 	template <typename M,
@@ -919,7 +919,7 @@ public:
 			hamon::is_assignable<mapped_type&, M>,
 			hamon::is_constructible<mapped_type, M>
 		>::value>>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert_or_assign(key_type&& k, M&& obj);
 
 	template <typename K, typename M,
@@ -930,7 +930,7 @@ public:
 			hamon::is_assignable<mapped_type&, M>,				// [flat.map.modifiers]/28.3
 			hamon::is_constructible<mapped_type, M>				// [flat.map.modifiers]/28.4
 		>::value>>
-	constexpr hamon::pair<iterator, bool>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert_or_assign(K&& k, M&& obj);
 
 	template <typename M,
@@ -939,7 +939,7 @@ public:
 			hamon::is_assignable<mapped_type&, M>,
 			hamon::is_constructible<mapped_type, M>
 		>::value>>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert_or_assign(const_iterator hint, key_type const& k, M&& obj);
 
 	template <typename M,
@@ -948,7 +948,7 @@ public:
 			hamon::is_assignable<mapped_type&, M>,
 			hamon::is_constructible<mapped_type, M>
 		>::value>>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert_or_assign(const_iterator hint, key_type&& k, M&& obj);
 
 	template <typename K, typename M,
@@ -959,27 +959,27 @@ public:
 			hamon::is_assignable<mapped_type&, M>,				// [flat.map.modifiers]/28.3
 			hamon::is_constructible<mapped_type, M>				// [flat.map.modifiers]/28.4
 		>::value>>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	insert_or_assign(const_iterator hint, K&& k, M&& obj);
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	erase(iterator position);
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	erase(const_iterator position);
 
-	constexpr size_type
+	HAMON_CXX14_CONSTEXPR size_type
 	erase(key_type const& x);
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
-	constexpr size_type
+	HAMON_CXX14_CONSTEXPR size_type
 	erase(K&& x);
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	erase(const_iterator first, const_iterator last);
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	swap(flat_map& y) noexcept
 	{
 		// [flat.map.modifiers]/33
@@ -988,7 +988,7 @@ public:
 		hamon::ranges::swap(c.values, y.c.values);
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	clear() noexcept;
 
 	// observers
@@ -1011,7 +1011,7 @@ public:
 	}
 
 	// map operations
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	find(key_type const& x);
 
 	constexpr const_iterator
@@ -1019,7 +1019,7 @@ public:
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	find(K const& x);
 
 	template <typename K,
@@ -1043,7 +1043,7 @@ public:
 	constexpr bool
 	contains(K const& x) const;
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	lower_bound(key_type const& x);
 
 	constexpr const_iterator
@@ -1051,7 +1051,7 @@ public:
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	lower_bound(K const& x);
 
 	template <typename K,
@@ -1059,7 +1059,7 @@ public:
 	constexpr const_iterator
 	lower_bound(K const& x) const;
 
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	upper_bound(key_type const& x);
 
 	constexpr const_iterator
@@ -1067,7 +1067,7 @@ public:
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
-	constexpr iterator
+	HAMON_CXX14_CONSTEXPR iterator
 	upper_bound(K const& x);
 
 	template <typename K,
@@ -1075,7 +1075,7 @@ public:
 	constexpr const_iterator
 	upper_bound(K const& x) const;
 
-	constexpr hamon::pair<iterator, iterator>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(key_type const& x);
 
 	constexpr hamon::pair<const_iterator, const_iterator>
@@ -1083,7 +1083,7 @@ public:
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
-	constexpr hamon::pair<iterator, iterator>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(K const& x);
 
 	template <typename K,
@@ -1091,14 +1091,17 @@ public:
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const;
 
-	constexpr friend bool
-	operator==(flat_map const& x, flat_map const& y);
+	//constexpr friend bool
+	//operator==(flat_map const& x, flat_map const& y);
 
-	constexpr friend
-	hamon::detail::synth_three_way_result<value_type>
-	operator<=>(flat_map const& x, flat_map const& y);
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	//constexpr friend
+	//hamon::detail::synth_three_way_result<value_type>
+	//operator<=>(flat_map const& x, flat_map const& y);
+#else
+#endif
 
-	constexpr friend void
+	HAMON_CXX14_CONSTEXPR friend void
 	swap(flat_map& x, flat_map& y) noexcept
 	{
 		x.swap(y);
@@ -1124,6 +1127,8 @@ private:
 		key_compare comp;
 	};
 };
+
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
 	typename KeyContainer,
@@ -1381,9 +1386,11 @@ flat_map(
 	T,
 	Compare>;
 
+#endif
+
 // [flat.map.erasure], erasure for flat_map
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Predicate>
-constexpr typename flat_map<Key, T, Compare, KeyContainer, MappedContainer>::size_type
+HAMON_CXX14_CONSTEXPR typename flat_map<Key, T, Compare, KeyContainer, MappedContainer>::size_type
 erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate pred);
 
 }	// namespace hamon

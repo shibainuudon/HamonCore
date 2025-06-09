@@ -23,13 +23,15 @@ using std::sorted_unique;
 
 #else
 
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
 // 23.6.7 Header <flat_map> synopsis[flat.map.syn]
 
 struct sorted_unique_t { explicit sorted_unique_t() = default; };
-inline constexpr sorted_unique_t sorted_unique{};
+HAMON_INLINE_VAR constexpr sorted_unique_t sorted_unique{};
 
 }	// namespace hamon
 
