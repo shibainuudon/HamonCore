@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_FLAT_MAP)
 
+#include <hamon/flat_map/detail/flat_map_iterator.hpp>
 #include <hamon/algorithm.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -40,18 +41,6 @@
 namespace hamon
 {
 
-namespace detail
-{
-
-template <
-	typename KeyContainer,
-	typename MappedContainer,
-	bool Constant
->
-struct flat_multimap_iterator;
-
-}	// namespace detail
-
 template <
 	typename Key,
 	typename T,
@@ -71,8 +60,8 @@ public:
 	using const_reference        = hamon::pair<key_type const&, mapped_type const&>;
 	using size_type              = hamon::size_t;
 	using difference_type        = hamon::ptrdiff_t;
-	using iterator               = hamon::detail::flat_multimap_iterator<KeyContainer, MappedContainer, false>;
-	using const_iterator         = hamon::detail::flat_multimap_iterator<KeyContainer, MappedContainer, true>;
+	using iterator               = hamon::detail::flat_map_iterator<flat_multimap, KeyContainer, MappedContainer, false>;
+	using const_iterator         = hamon::detail::flat_map_iterator<flat_multimap, KeyContainer, MappedContainer, true>;
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
 	using key_container_type     = KeyContainer;

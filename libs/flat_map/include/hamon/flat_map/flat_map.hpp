@@ -13,6 +13,7 @@
 
 #if !defined(HAMON_USE_STD_FLAT_MAP)
 
+#include <hamon/flat_map/detail/flat_map_iterator.hpp>
 #include <hamon/algorithm.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
@@ -41,18 +42,6 @@
 namespace hamon
 {
 
-namespace detail
-{
-
-template <
-	typename KeyContainer,
-	typename MappedContainer,
-	bool Constant
->
-struct flat_map_iterator;
-
-}	// namespace detail
-
 template <
 	typename Key,
 	typename T,
@@ -72,8 +61,8 @@ public:
 	using const_reference        = hamon::pair<key_type const&, mapped_type const&>;
 	using size_type              = hamon::size_t;
 	using difference_type        = hamon::ptrdiff_t;
-	using iterator               = hamon::detail::flat_map_iterator<KeyContainer, MappedContainer, false>;
-	using const_iterator         = hamon::detail::flat_map_iterator<KeyContainer, MappedContainer, true>;
+	using iterator               = hamon::detail::flat_map_iterator<flat_map, KeyContainer, MappedContainer, false>;
+	using const_iterator         = hamon::detail::flat_map_iterator<flat_map, KeyContainer, MappedContainer, true>;
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
 	using key_container_type     = KeyContainer;
@@ -82,6 +71,8 @@ public:
 	class value_compare
 	{
 	private:
+		friend flat_map;
+
 		key_compare comp;
 
 		constexpr
@@ -154,7 +145,7 @@ public:
 		key_compare const& comp = key_compare())
 		: c(), compare(comp)
 	{
-		insert(first, last);
+		this->insert(first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -166,7 +157,7 @@ public:
 		key_compare const& comp = key_compare())
 		: c(), compare(comp)
 	{
-		insert(hamon::sorted_unique, first, last);
+		this->insert(hamon::sorted_unique, first, last);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
@@ -180,7 +171,7 @@ public:
 	flat_map(hamon::from_range_t, R&& rg, key_compare const& comp)
 		: flat_map(comp)
 	{
-		insert_range(hamon::forward<R>(rg));
+		this->insert_range(hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -410,44 +401,83 @@ public:
 
 	// iterators
 	HAMON_CXX14_CONSTEXPR iterator
-	begin() noexcept;
+	begin() noexcept
+	{
+		return iterator(c.keys.begin(), c.values.begin());
+	}
 
 	constexpr const_iterator
-	begin() const noexcept;
+	begin() const noexcept
+	{
+		return const_iterator(c.keys.begin(), c.values.begin());
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	end() noexcept;
+	end() noexcept
+	{
+		return iterator(c.keys.end(), c.values.end());
+	}
 
 	constexpr const_iterator
-	end() const noexcept;
+	end() const noexcept
+	{
+		return const_iterator(c.keys.end(), c.values.end());
+	}
 
 	HAMON_CXX14_CONSTEXPR reverse_iterator
-	rbegin() noexcept;
+	rbegin() noexcept
+	{
+		return reverse_iterator(this->end());
+	}
 
 	constexpr const_reverse_iterator
-	rbegin() const noexcept;
+	rbegin() const noexcept
+	{
+		return const_reverse_iterator(this->end());
+	}
 
 	HAMON_CXX14_CONSTEXPR reverse_iterator
-	rend() noexcept;
+	rend() noexcept
+	{
+		return reverse_iterator(this->begin());
+	}
 
 	constexpr const_reverse_iterator
-	rend() const noexcept;
+	rend() const noexcept
+	{
+		return const_reverse_iterator(this->begin());
+	}
 
 	constexpr const_iterator
-	cbegin() const noexcept;
+	cbegin() const noexcept
+	{
+		return this->begin();
+	}
 
 	constexpr const_iterator
-	cend() const noexcept;
+	cend() const noexcept
+	{
+		return this->end();
+	}
 
 	constexpr const_reverse_iterator
-	crbegin() const noexcept;
+	crbegin() const noexcept
+	{
+		return const_reverse_iterator(this->end());
+	}
 
 	constexpr const_reverse_iterator
-	crend() const noexcept;
+	crend() const noexcept
+	{
+		return const_reverse_iterator(this->begin());
+	}
 
 	// [flat.map.capacity], capacity
 	constexpr bool
-	empty() const noexcept;
+	empty() const noexcept
+	{
+		return c.keys.empty();
+	}
 
 	constexpr size_type
 	size() const noexcept
@@ -468,14 +498,14 @@ public:
 	operator[](key_type const& x)
 	{
 		// [flat.map.access]/1
-		return try_emplace(x).first->second;
+		return this->try_emplace(x).first->second;
 	}
 
 	HAMON_CXX14_CONSTEXPR mapped_type&
 	operator[](key_type&& x)
 	{
 		// [flat.map.access]/2
-		return try_emplace(hamon::move(x)).first->second;
+		return this->try_emplace(hamon::move(x)).first->second;
 	}
 
 	template <typename K,
@@ -485,7 +515,7 @@ public:
 	operator[](K&& x)
 	{
 		// [flat.map.access]/4
-		return try_emplace(hamon::forward<K>(x)).first->second;
+		return this->try_emplace(hamon::forward<K>(x)).first->second;
 	}
 
 	HAMON_CXX14_CONSTEXPR mapped_type&
@@ -588,25 +618,25 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& x)
 	{
-		return emplace(x);
+		return this->emplace(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& x)
 	{
-		return emplace(hamon::move(x));
+		return this->emplace(hamon::move(x));
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x)
 	{
-		return emplace_hint(position, x);
+		return this->emplace_hint(position, x);
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type&& x)
 	{
-		return emplace_hint(position, hamon::move(x));
+		return this->emplace_hint(position, hamon::move(x));
 	}
 
 	template <typename P,
@@ -616,7 +646,7 @@ public:
 	insert(P&& x)
 	{
 		// [flat.map.modifiers]/5
-		return emplace(hamon::forward<P>(x));
+		return this->emplace(hamon::forward<P>(x));
 	}
 
 	template <typename P,
@@ -626,7 +656,7 @@ public:
 	insert(const_iterator position, P&& x)
 	{
 		// [flat.map.modifiers]/5
-		return emplace_hint(position, hamon::forward<P>(x));
+		return this->emplace_hint(position, hamon::forward<P>(x));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -755,13 +785,13 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	insert(std::initializer_list<value_type> il)
 	{
-		insert(il.begin(), il.end());
+		this->insert(il.begin(), il.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	insert(hamon::sorted_unique_t, std::initializer_list<value_type> il)
 	{
-		insert(hamon::sorted_unique, il.begin(), il.end());
+		this->insert(hamon::sorted_unique, il.begin(), il.end());
 	}
 
 	HAMON_CXX14_CONSTEXPR containers
@@ -958,14 +988,24 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	clear() noexcept;
+	clear() noexcept
+	{
+		c.keys.clear();
+		c.values.clear();
+	}
 
 	// observers
 	constexpr key_compare
-	key_comp() const;
+	key_comp() const
+	{
+		return this->compare;
+	}
 
 	constexpr value_compare
-	value_comp() const;
+	value_comp() const
+	{
+		return value_compare(this->compare);
+	}
 
 	constexpr key_container_type const&
 	keys() const noexcept
@@ -981,68 +1021,136 @@ public:
 
 	// map operations
 	HAMON_CXX14_CONSTEXPR iterator
-	find(key_type const& x);
+	find(key_type const& x)
+	{
+		auto it = this->lower_bound(x);
+		if (it == this->end() || this->compare(x, it->first))
+		{
+			return this->end();
+		}
+		return it;
+	}
 
 	constexpr const_iterator
-	find(key_type const& x) const;
+	find(key_type const& x) const
+	{
+		auto it = this->lower_bound(x);
+		if (it == this->end() || this->compare(x, it->first))
+		{
+			return this->end();
+		}
+		return it;
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR iterator
-	find(K const& x);
+	find(K const& x)
+	{
+		auto it = this->lower_bound(x);
+		if (it == this->end() || this->compare(x, it->first))
+		{
+			return this->end();
+		}
+		return it;
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
-	find(K const& x) const;
+	find(K const& x) const
+	{
+		auto it = this->lower_bound(x);
+		if (it == this->end() || this->compare(x, it->first))
+		{
+			return this->end();
+		}
+		return it;
+	}
 
 	constexpr size_type
-	count(key_type const& x) const;
+	count(key_type const& x) const
+	{
+		return this->contains(x) ? 1 : 0;
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr size_type
-	count(K const& x) const;
+	count(K const& x) const
+	{
+		return this->contains(x) ? 1 : 0;
+	}
 
 	constexpr bool
-	contains(key_type const& x) const;
+	contains(key_type const& x) const
+	{
+		return this->find(x) != this->end();
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr bool
-	contains(K const& x) const;
+	contains(K const& x) const
+	{
+		return this->find(x) != this->end();
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	lower_bound(key_type const& x);
+	lower_bound(key_type const& x)
+	{
+		return binary_search<iterator>(*this, hamon::ranges::lower_bound, x);
+	}
 
 	constexpr const_iterator
-	lower_bound(key_type const& x) const;
+	lower_bound(key_type const& x) const
+	{
+		return binary_search<const_iterator>(*this, hamon::ranges::lower_bound, x);
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR iterator
-	lower_bound(K const& x);
+	lower_bound(K const& x)
+	{
+		return binary_search<iterator>(*this, hamon::ranges::lower_bound, x);
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
-	lower_bound(K const& x) const;
+	lower_bound(K const& x) const
+	{
+		return binary_search<const_iterator>(*this, hamon::ranges::lower_bound, x);
+	}
 
 	HAMON_CXX14_CONSTEXPR iterator
-	upper_bound(key_type const& x);
+	upper_bound(key_type const& x)
+	{
+		return binary_search<iterator>(*this, hamon::ranges::upper_bound, x);
+	}
 
 	constexpr const_iterator
-	upper_bound(key_type const& x) const;
+	upper_bound(key_type const& x) const
+	{
+		return binary_search<const_iterator>(*this, hamon::ranges::upper_bound, x);
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR iterator
-	upper_bound(K const& x);
+	upper_bound(K const& x)
+	{
+		return binary_search<iterator>(*this, hamon::ranges::upper_bound, x);
+	}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr const_iterator
-	upper_bound(K const& x) const;
+	upper_bound(K const& x) const
+	{
+		return binary_search<const_iterator>(*this, hamon::ranges::upper_bound, x);
+	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(key_type const& x);
@@ -1060,13 +1168,22 @@ public:
 	constexpr hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const;
 
-	//constexpr friend bool
-	//operator==(flat_map const& x, flat_map const& y);
+	constexpr friend bool
+	operator==(flat_map const& x, flat_map const& y)
+	{
+		return hamon::ranges::equal(x, y);
+	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	//constexpr friend
-	//hamon::detail::synth_three_way_result<value_type>
-	//operator<=>(flat_map const& x, flat_map const& y);
+	constexpr friend
+	hamon::detail::synth_three_way_result<value_type>
+	operator<=>(flat_map const& x, flat_map const& y)
+	{
+		return hamon::lexicographical_compare_three_way(
+			x.begin(), x.end(),
+			y.begin(), y.end(),
+			hamon::detail::synth_three_way);
+	}
 #else
 #endif
 
@@ -1074,6 +1191,18 @@ public:
 	swap(flat_map& x, flat_map& y) noexcept
 	{
 		x.swap(y);
+	}
+
+private:
+	template <typename Res, typename Self, typename F, typename K>
+	static constexpr Res binary_search(Self&& self, F search_fn, K const& x)
+	{
+		auto key_iter = search_fn(self.c.keys, x, self.compare);
+		auto mapped_iter = self.c.values.begin() +
+			static_cast<hamon::ranges::range_difference_t<mapped_container_type>>(
+				hamon::ranges::distance(self.c.keys.begin(), key_iter));
+
+		return Res(hamon::move(key_iter), hamon::move(mapped_iter));
 	}
 
 private:
