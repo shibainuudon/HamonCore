@@ -63,9 +63,9 @@ public:
 
 	constexpr
 	flat_map_iterator(flat_map_iterator<Owner, KeyContainer, MappedContainer, !Const> i)
-		requires Const &&
-			hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
-			hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
+		//requires Const &&
+		//	hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
+		//	hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
 		: m_key_iter(hamon::move(i.m_key_iter))
 		, m_mapped_iter(hamon::move(i.m_mapped_iter))
 	{}

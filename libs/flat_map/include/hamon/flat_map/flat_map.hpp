@@ -1153,32 +1153,32 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
-	equal_range(key_type const& x)
+	equal_range(key_type const& x);/*
 	{
 		return equal_range_impl<iterator>(*this, x);
-	}
+	}*/
 
 	constexpr hamon::pair<const_iterator, const_iterator>
-	equal_range(key_type const& x) const
+	equal_range(key_type const& x) const;/*
 	{
 		return equal_range_impl<const_iterator>(*this, x);
-	}
+	}*/
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
-	equal_range(K const& x)
+	equal_range(K const& x);/*
 	{
 		return equal_range_impl<iterator>(*this, x);
-	}
+	}*/
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr hamon::pair<const_iterator, const_iterator>
-	equal_range(K const& x) const
+	equal_range(K const& x) const;/*
 	{
 		return equal_range_impl<const_iterator>(*this, x);
-	}
+	}*/
 
 	constexpr friend bool
 	operator==(flat_map const& x, flat_map const& y)

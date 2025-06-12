@@ -558,10 +558,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
-		if constexpr (hamon::sized_sentinel_for<InputIterator, InputIterator>)
-		{
+//		if constexpr (hamon::sized_sentinel_for<InputIterator, InputIterator>)
+//		{
 //			__reserve(last - first);
-		}
+//		}
 
 //		__append_sort_merge</*WasSorted = */ false>(hamon::move(first), hamon::move(last));
 
@@ -594,27 +594,27 @@ public:
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
-	insert(hamon::sorted_equivalent_t, InputIterator first, InputIterator last)
-	{
-		if constexpr (hamon::sized_sentinel_for<InputIterator, InputIterator>)
-		{
-//			__reserve(last - first);
-		}
-
-		__append_sort_merge</*WasSorted = */ true>(hamon::move(first), hamon::move(last));
-	}
+	insert(hamon::sorted_equivalent_t, InputIterator first, InputIterator last);
+//	{
+//		if constexpr (hamon::sized_sentinel_for<InputIterator, InputIterator>)
+//		{
+////			__reserve(last - first);
+//		}
+//
+//		__append_sort_merge</*WasSorted = */ true>(hamon::move(first), hamon::move(last));
+//	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
-	insert_range(R&& rg)
-	{
-		if constexpr (hamon::ranges::sized_range<R>)
-		{
-			//__reserve(hamon::ranges::size(rg));
-		}
+	insert_range(R&& rg);
+	//{
+	//	if constexpr (hamon::ranges::sized_range<R>)
+	//	{
+	//		//__reserve(hamon::ranges::size(rg));
+	//	}
 
-		__append_sort_merge</*WasSorted = */ false>(ranges::begin(rg), ranges::end(rg));
-	}
+	//	__append_sort_merge</*WasSorted = */ false>(ranges::begin(rg), ranges::end(rg));
+	//}
 
 	HAMON_CXX14_CONSTEXPR void
 	insert(std::initializer_list<value_type> il)
@@ -878,32 +878,32 @@ public:
 	}
 
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
-	equal_range(key_type const& x)
-	{
-		return equal_range_impl<iterator>(*this, x);
-	}
+	equal_range(key_type const& x);
+	//{
+	//	return equal_range_impl<iterator>(*this, x);
+	//}
 
 	constexpr hamon::pair<const_iterator, const_iterator>
-	equal_range(key_type const& x) const
-	{
-		return equal_range_impl<const_iterator>(*this, x);
-	}
+	equal_range(key_type const& x) const;
+	//{
+	//	return equal_range_impl<const_iterator>(*this, x);
+	//}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
-	equal_range(K const& x)
-	{
-		return equal_range_impl<iterator>(*this, x);
-	}
+	equal_range(K const& x);
+	//{
+	//	return equal_range_impl<iterator>(*this, x);
+	//}
 
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	constexpr hamon::pair<const_iterator, const_iterator>
-	equal_range(K const& x) const
-	{
-		return equal_range_impl<const_iterator>(*this, x);
-	}
+	equal_range(K const& x) const;
+	//{
+	//	return equal_range_impl<const_iterator>(*this, x);
+	//}
 
 	constexpr friend bool
 	operator==(flat_multimap const& x, flat_multimap const& y)
