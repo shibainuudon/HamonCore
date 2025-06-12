@@ -7,7 +7,25 @@
 #ifndef HAMON_ALGORITHM_SORT_HPP
 #define HAMON_ALGORITHM_SORT_HPP
 
+#include <hamon/algorithm/config.hpp>
+
+#if defined(HAMON_USE_STD_ALGORITHM)
+
 #include <algorithm>
+
+namespace hamon
+{
+
+using std::sort;
+
+}	// namespace hamon
+
+#else
+
+#include <hamon/algorithm/detail/sort_impl.hpp>
+#include <hamon/functional/less.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -29,8 +47,22 @@ namespace hamon
  *
  *	@complexity	N log N (N == last - first) 回の比較
  */
-using std::sort;
+template <typename RandomAccessIterator, typename Compare>
+HAMON_CXX14_CONSTEXPR void
+sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
+{
+	hamon::detail::sort_impl(hamon::move(first), hamon::move(last), comp);
+}
+
+template <typename RandomAccessIterator>
+HAMON_CXX14_CONSTEXPR void
+sort(RandomAccessIterator first, RandomAccessIterator last)
+{
+	hamon::detail::sort_impl(hamon::move(first), hamon::move(last), hamon::less<>{});
+}
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_ALGORITHM_SORT_HPP

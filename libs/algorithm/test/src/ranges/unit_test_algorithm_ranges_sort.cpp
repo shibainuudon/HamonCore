@@ -7,6 +7,7 @@
 #include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
+#include <hamon/ranges/adaptors/zip_view.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -52,7 +53,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -72,12 +73,31 @@ inline bool test02()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
+	{
+		int x[] = {3, 1, 2};
+		char y[] = {'a', 'b', 'c'};
+		auto rg = ranges::views::zip(x, y);
+		ranges::sort(rg);
+		VERIFY(hamon::get<0>(rg[0]) == 1);
+		VERIFY(hamon::get<0>(rg[1]) == 2);
+		VERIFY(hamon::get<0>(rg[2]) == 3);
+		VERIFY(hamon::get<1>(rg[0]) == 'b');
+		VERIFY(hamon::get<1>(rg[1]) == 'c');
+		VERIFY(hamon::get<1>(rg[2]) == 'a');
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(AlgorithmTest, RangesSortTest)
 {
-	EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_sort_test

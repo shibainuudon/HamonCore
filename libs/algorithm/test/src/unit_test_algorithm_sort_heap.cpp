@@ -70,6 +70,8 @@ inline HAMON_CXX14_CONSTEXPR bool SortHeapTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(AlgorithmTest, SortHeapTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SortHeapTest1());
