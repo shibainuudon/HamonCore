@@ -63,9 +63,9 @@ public:
 
 	constexpr
 	flat_map_iterator(flat_map_iterator<Owner, KeyContainer, MappedContainer, !Const> i)
-		requires Const &&
-			hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
-			hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
+		//requires Const &&
+		//	hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
+		//	hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
 		: m_key_iter(hamon::move(i.m_key_iter))
 		, m_mapped_iter(hamon::move(i.m_mapped_iter))
 	{}
@@ -134,44 +134,54 @@ public:
 	}
 
 	friend constexpr bool
-	operator==(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator==(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return x.m_key_iter == y.m_key_iter;
 	}
 
+#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	friend constexpr bool
-	operator<(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator!=(flat_map_iterator const& x, flat_map_iterator const& y)
+	{
+		return !(x == y);
+	}
+#endif
+
+	friend constexpr bool
+	operator<(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return x.m_key_iter < y.m_key_iter;
 	}
 
 	friend constexpr bool
-	operator>(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator>(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return y < x;
 	}
 
 	friend constexpr bool
-	operator<=(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator<=(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return !(y < x);
 	}
 
 	friend constexpr bool
-	operator>=(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator>=(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return !(x < y);
 	}
 
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	friend constexpr auto
-	operator<=>(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator<=>(flat_map_iterator const& x, flat_map_iterator const& y)
 		requires three_way_comparable<key_iterator>
 	{
 		return x.m_key_iter <=> y.m_key_iter;
 	}
+#endif
 
 	friend constexpr flat_map_iterator
-	operator+(const flat_map_iterator& i, difference_type n)
+	operator+(flat_map_iterator const& i, difference_type n)
 	{
 		auto tmp = i;
 		tmp += n;
@@ -179,13 +189,13 @@ public:
 	}
 
 	friend constexpr flat_map_iterator
-	operator+(difference_type n, const flat_map_iterator& i)
+	operator+(difference_type n, flat_map_iterator const& i)
 	{
 		return i + n;
 	}
 
 	friend constexpr flat_map_iterator
-	operator-(const flat_map_iterator& i, difference_type n)
+	operator-(flat_map_iterator const& i, difference_type n)
 	{
 		auto tmp = i;
 		tmp -= n;
@@ -193,7 +203,7 @@ public:
 	}
 
 	friend constexpr difference_type
-	operator-(const flat_map_iterator& x, const flat_map_iterator& y)
+	operator-(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return difference_type(x.m_key_iter - y.m_key_iter);
 	}
