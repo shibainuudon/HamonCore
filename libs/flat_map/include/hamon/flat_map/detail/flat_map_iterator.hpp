@@ -63,9 +63,9 @@ public:
 
 	constexpr
 	flat_map_iterator(flat_map_iterator<Owner, KeyContainer, MappedContainer, !Const> i)
-		//requires Const &&
-		//	hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
-		//	hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
+		requires Const &&
+			hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
+			hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
 		: m_key_iter(hamon::move(i.m_key_iter))
 		, m_mapped_iter(hamon::move(i.m_mapped_iter))
 	{}
@@ -76,59 +76,68 @@ public:
 		, m_mapped_iter(hamon::move(mapped_iter))
 	{}
 
-	constexpr reference operator*() const
+	constexpr reference
+	operator*() const
 	{
 		return reference(*m_key_iter, *m_mapped_iter);
 	}
 
-	constexpr arrow_proxy operator->() const
+	constexpr arrow_proxy
+	operator->() const
 	{
-		return arrow_proxy {**this};
+		return arrow_proxy{**this};
 	}
 
-	constexpr flat_map_iterator& operator++()
+	constexpr flat_map_iterator&
+	operator++()
 	{
 		++m_key_iter;
 		++m_mapped_iter;
 		return *this;
 	}
 
-	constexpr flat_map_iterator operator++(int)
+	constexpr flat_map_iterator
+	operator++(int)
 	{
 		flat_map_iterator tmp(*this);
 		++*this;
 		return tmp;
 	}
 
-	constexpr flat_map_iterator& operator--()
+	constexpr flat_map_iterator&
+	operator--()
 	{
 		--m_key_iter;
 		--m_mapped_iter;
 		return *this;
 	}
 
-	constexpr flat_map_iterator operator--(int)
+	constexpr flat_map_iterator
+	operator--(int)
 	{
 		flat_map_iterator tmp(*this);
 		--*this;
 		return tmp;
 	}
 
-	constexpr flat_map_iterator& operator+=(difference_type x)
+	constexpr flat_map_iterator&
+	operator+=(difference_type x)
 	{
 		m_key_iter += x;
 		m_mapped_iter += x;
 		return *this;
 	}
 
-	constexpr flat_map_iterator& operator-=(difference_type x)
+	constexpr flat_map_iterator&
+	operator-=(difference_type x)
 	{
 		m_key_iter -= x;
 		m_mapped_iter -= x;
 		return *this;
 	}
 
-	constexpr reference operator[](difference_type n) const
+	constexpr reference
+	operator[](difference_type n) const
 	{
 		return *(*this + n);
 	}
@@ -174,7 +183,7 @@ public:
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	friend constexpr auto
 	operator<=>(flat_map_iterator const& x, flat_map_iterator const& y)
-		requires three_way_comparable<key_iterator>
+		requires hamon::three_way_comparable<key_iterator>
 	{
 		return x.m_key_iter <=> y.m_key_iter;
 	}
