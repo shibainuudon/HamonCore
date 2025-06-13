@@ -59,7 +59,8 @@ struct inplace_merge_fn
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>
-	auto operator()(Iter first, Iter middle, Sent last,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Iter first, Iter middle, Sent last,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
@@ -79,7 +80,8 @@ struct inplace_merge_fn
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>
-	auto operator()(Range&& r, ranges::iterator_t<Range> middle,
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, ranges::iterator_t<Range> middle,
 		Comp comp = {}, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
