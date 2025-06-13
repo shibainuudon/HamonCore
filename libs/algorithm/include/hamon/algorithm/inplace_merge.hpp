@@ -9,6 +9,22 @@
 
 #include <algorithm>
 
+#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 202306L)
+
+namespace hamon
+{
+
+using std::inplace_merge;
+
+}	// namespace hamon
+
+#else
+
+#include <hamon/algorithm/detail/inplace_merge_impl.hpp>
+#include <hamon/functional/less.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
@@ -33,8 +49,22 @@ namespace hamon
  *
  *	@complexity	N log(N) （N は last - first）回程度比較する
  */
-using std::inplace_merge;
+template <typename BidirectionalIterator, typename Compare>
+HAMON_CXX14_CONSTEXPR void
+inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, BidirectionalIterator last, Compare comp)
+{
+	hamon::detail::inplace_merge_impl(hamon::move(first), hamon::move(middle), hamon::move(last), comp);
+}
+
+template <typename BidirectionalIterator>
+HAMON_CXX14_CONSTEXPR void
+inplace_merge(BidirectionalIterator first, BidirectionalIterator middle, BidirectionalIterator last)
+{
+	hamon::detail::inplace_merge_impl(hamon::move(first), hamon::move(middle), hamon::move(last), hamon::less<>{});
+}
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_ALGORITHM_INPLACE_MERGE_HPP
