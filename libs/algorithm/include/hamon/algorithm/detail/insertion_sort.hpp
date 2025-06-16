@@ -20,7 +20,7 @@ namespace detail
 {
 
 template <typename RandomAccessIterator, typename Compare>
-inline HAMON_CXX14_CONSTEXPR void
+HAMON_CXX14_CONSTEXPR void
 insertion_sort(RandomAccessIterator first, RandomAccessIterator last, Compare comp)
 {
 	if (first == last)
