@@ -398,7 +398,11 @@ private:
 
 	public:
 		iterator() = default;
-		
+
+#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930)
+		iterator& operator=(iterator const&) = default;
+#endif
+
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
 				hamon::bool_constant<C2>,
