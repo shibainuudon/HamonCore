@@ -7,7 +7,7 @@
 #ifndef HAMON_ALGORITHM_DETAIL_UNGUARDED_PARTITION_PIVOT_HPP
 #define HAMON_ALGORITHM_DETAIL_UNGUARDED_PARTITION_PIVOT_HPP
 
-#include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -29,28 +29,28 @@ move_median_to_first(
 	{
 		if (comp(*b, *c))
 		{
-			hamon::iter_swap(result, b);
+			hamon::ranges::iter_swap(result, b);
 		}
 		else if (comp(*a, *c))
 		{
-			hamon::iter_swap(result, c);
+			hamon::ranges::iter_swap(result, c);
 		}
 		else
 		{
-			hamon::iter_swap(result, a);
+			hamon::ranges::iter_swap(result, a);
 		}
 	}
 	else if (comp(*a, *c))
 	{
-		hamon::iter_swap(result, a);
+		hamon::ranges::iter_swap(result, a);
 	}
 	else if (comp(*b, *c))
 	{
-		hamon::iter_swap(result, c);
+		hamon::ranges::iter_swap(result, c);
 	}
 	else
 	{
-		hamon::iter_swap(result, b);
+		hamon::ranges::iter_swap(result, b);
 	}
 }
 
@@ -80,7 +80,7 @@ unguarded_partition(
 			return first;
 		}
 
-		hamon::iter_swap(first, last);
+		hamon::ranges::iter_swap(first, last);
 		++first;
 	}
 }

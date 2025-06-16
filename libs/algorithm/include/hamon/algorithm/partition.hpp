@@ -22,10 +22,10 @@ using std::partition;
 
 #else
 
-#include <hamon/concepts/swap.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -61,7 +61,7 @@ partition_impl(
 	{
 		if (pred(*p))
 		{
-			hamon::ranges::swap(*first, *p);
+			hamon::ranges::iter_swap(first, p);
 			++first;
 		}
 	}
@@ -102,7 +102,7 @@ partition_impl(
 		}
 		while (!pred(*last));
 
-		hamon::ranges::swap(*first, *last);
+		hamon::ranges::iter_swap(first, last);
 		++first;
 	}
 }

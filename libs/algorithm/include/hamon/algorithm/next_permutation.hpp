@@ -23,8 +23,8 @@ using std::next_permutation;
 #else
 
 #include <hamon/algorithm/reverse.hpp>
-#include <hamon/concepts/swap.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 
 namespace hamon
 {
@@ -75,7 +75,7 @@ next_permutation(
 				;
 			}
 
-			hamon::ranges::swap(*i, *j);
+			hamon::ranges::iter_swap(i, j);
 			hamon::reverse(ip1, last);
 			return true;
 		}

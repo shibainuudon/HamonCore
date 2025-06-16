@@ -22,7 +22,7 @@ using std::swap_ranges;
 
 #else
 
-#include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -62,7 +62,7 @@ swap_ranges(
 {
 	while (first1 != last1)
 	{
-		hamon::iter_swap(first1++, first2++);
+		hamon::ranges::iter_swap(first1++, first2++);
 	}
 
 	return first2;
@@ -72,7 +72,7 @@ swap_ranges(
 
 #endif
 
-#include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -113,7 +113,7 @@ swap_ranges(
 {
 	while (first1 != last1 && first2 != last2)
 	{
-		hamon::iter_swap(first1++, first2++);
+		hamon::ranges::iter_swap(first1++, first2++);
 	}
 
 	return first2;

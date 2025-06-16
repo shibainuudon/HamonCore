@@ -22,12 +22,12 @@ using std::nth_element;
 
 #else
 
-#include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/algorithm/detail/heap_select.hpp>
 #include <hamon/algorithm/detail/unguarded_partition_pivot.hpp>
 #include <hamon/algorithm/detail/lg.hpp>
 #include <hamon/algorithm/detail/insertion_sort.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -51,7 +51,7 @@ introselect(
 		{
 			hamon::detail::heap_select(first, nth + 1, last, comp);
 			// Place the nth largest element in its final position.
-			hamon::iter_swap(first, nth);
+			hamon::ranges::iter_swap(first, nth);
 			return;
 		}
 

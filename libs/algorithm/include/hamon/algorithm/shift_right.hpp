@@ -24,11 +24,11 @@ using std::shift_right;
 
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
-#include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/utility/move.hpp>
 
@@ -93,7 +93,7 @@ shift_right_impl(
 				hamon::move(hamon::move(first), hamon::move(cursor), hamon::move(dest_head));
 				return result;
 			}
-			hamon::iter_swap(cursor, dest_head);
+			hamon::ranges::iter_swap(cursor, dest_head);
 			++dest_head;
 			++dest_tail;
 			++cursor;

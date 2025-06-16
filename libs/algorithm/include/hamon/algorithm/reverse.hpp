@@ -22,7 +22,7 @@ using std::reverse;
 
 #else
 
-#include <hamon/algorithm/iter_swap.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -51,7 +51,7 @@ reverse(
 {
 	for (; first != last && first != --last; ++first)
 	{
-		hamon::iter_swap(first, last);
+		hamon::ranges::iter_swap(first, last);
 	}
 }
 

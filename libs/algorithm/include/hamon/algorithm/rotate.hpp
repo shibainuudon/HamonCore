@@ -25,7 +25,6 @@ using std::rotate;
 #include <hamon/algorithm/move.hpp>
 #include <hamon/algorithm/move_backward.hpp>
 #include <hamon/algorithm/swap_ranges.hpp>
-#include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/iterator/bidirectional_iterator_tag.hpp>
 #include <hamon/iterator/iterator_category.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -33,6 +32,7 @@ using std::rotate;
 #include <hamon/iterator/prev.hpp>
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/numeric/gcd.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -82,7 +82,7 @@ rotate_forward(
 
 	for (;;)
 	{
-		hamon::iter_swap(first, i);
+		hamon::ranges::iter_swap(first, i);
 		++first;
 
 		if (++i == last)
@@ -104,7 +104,7 @@ rotate_forward(
 
 		for (;;)
 		{
-			hamon::iter_swap(first, i);
+			hamon::ranges::iter_swap(first, i);
 			++first;
 
 			if (++i == last)

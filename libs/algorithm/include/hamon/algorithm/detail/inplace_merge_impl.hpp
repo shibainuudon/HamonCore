@@ -7,12 +7,12 @@
 #ifndef HAMON_ALGORITHM_DETAIL_INPLACE_MERGE_IMPL_HPP
 #define HAMON_ALGORITHM_DETAIL_INPLACE_MERGE_IMPL_HPP
 
-#include <hamon/algorithm/iter_swap.hpp>
 #include <hamon/algorithm/lower_bound.hpp>
 #include <hamon/algorithm/rotate.hpp>
 #include <hamon/algorithm/upper_bound.hpp>
 #include <hamon/iterator/advance.hpp>
 #include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -40,7 +40,7 @@ inplace_merge_without_buffer(
 	{
 		if (comp(*middle, *first))
 		{
-			hamon::iter_swap(first, middle);
+			hamon::ranges::iter_swap(first, middle);
 		}
 		return;
 	}
