@@ -11,7 +11,7 @@
 #include <hamon/ranges/config.hpp>
 #include <algorithm>
 
-#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 201806)
+#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 201806) && defined(HAMON_USE_STD_RANGES)
 #  define HAMON_USE_STD_ALGORITHM
 #endif
 
