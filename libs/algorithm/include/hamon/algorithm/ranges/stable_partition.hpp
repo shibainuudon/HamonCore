@@ -63,7 +63,7 @@ struct stable_partition_fn
 		HAMON_CONSTRAINED_PARAM(
 			hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
-	auto operator()(
+	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
 		Pred pred, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
@@ -84,7 +84,8 @@ struct stable_partition_fn
 			hamon::projected<ranges::iterator_t<Range>, Proj>,
 			Pred)
 	>
-	auto operator()(Range&& r, Pred pred, Proj proj = {}) const
+	HAMON_CXX14_CONSTEXPR auto operator()(
+		Range&& r, Pred pred, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)

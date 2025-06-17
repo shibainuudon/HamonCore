@@ -9,6 +9,21 @@
 
 #include <algorithm>
 
+#if defined(__cpp_lib_constexpr_algorithms) && (__cpp_lib_constexpr_algorithms >= 202306L)
+
+namespace hamon
+{
+
+using std::stable_partition;
+
+}	// namespace hamon
+
+#else
+
+#include <hamon/algorithm/detail/stable_partition_impl.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
+
 namespace hamon
 {
 
@@ -37,8 +52,15 @@ namespace hamon
  *
  *	@note		条件を満たす・満たさない両グループ内での要素間の相対順序は保たれる。
  */
-using std::stable_partition;
+template <typename BidirectionalIterator, typename Predicate>
+HAMON_CXX14_CONSTEXPR BidirectionalIterator
+stable_partition(BidirectionalIterator first, BidirectionalIterator last, Predicate pred)
+{
+	return hamon::detail::stable_partition_impl(hamon::move(first), hamon::move(last), pred);
+}
 
 }	// namespace hamon
+
+#endif
 
 #endif // HAMON_ALGORITHM_STABLE_PARTITION_HPP
