@@ -15,7 +15,7 @@
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/allocator_traits.hpp>
-//#include <hamon/memory/assume_aligned.hpp>
+#include <hamon/memory/assume_aligned.hpp>
 #include <hamon/memory/bad_weak_ptr.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/const_pointer_cast.hpp>
