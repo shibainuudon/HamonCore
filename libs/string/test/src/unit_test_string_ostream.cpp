@@ -12,6 +12,7 @@
 #include <hamon/string/basic_string.hpp>
 #include <hamon/config.hpp>
 #include <sstream>
+#include <iomanip>
 #include "constexpr_test.hpp"
 #include "string_test_helper.hpp"
 
