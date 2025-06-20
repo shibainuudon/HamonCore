@@ -8,6 +8,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
+#include <iomanip>
 
 namespace hamon_test
 {
