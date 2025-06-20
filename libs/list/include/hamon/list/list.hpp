@@ -23,10 +23,10 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
-#include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>

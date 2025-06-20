@@ -15,7 +15,8 @@ namespace hamon
 namespace detail
 {
 
-// 23.4.1 General[associative.general]
+// 23.3.1 General[sequences.general]/2
+// 23.4.1 General[associative.general]/2
 
 template <typename InputIterator>
 using iter_value_type =

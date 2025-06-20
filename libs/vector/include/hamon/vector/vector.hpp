@@ -31,11 +31,11 @@ using std::vector;
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
-#include <hamon/iterator/detail/iter_value_type.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
