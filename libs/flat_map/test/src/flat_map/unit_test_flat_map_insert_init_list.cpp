@@ -39,6 +39,90 @@ namespace insert_init_list_test
 template <typename KeyContainer, typename MappedContainer, typename Compare>
 FLAT_MAP_TEST_CONSTEXPR bool test()
 {
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
+	using ValueType = typename Map::value_type;
+
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().insert(hamon::sorted_unique, hamon::declval<std::initializer_list<ValueType>>())), void>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::declval<std::initializer_list<ValueType>>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().insert(hamon::sorted_unique, hamon::declval<std::initializer_list<ValueType>>())), "");
+
+	{
+		Map v;
+		v.insert({
+			{Key{1}, T{10}},
+			{Key{3}, T{20}},
+			{Key{2}, T{30}},
+		});
+		VERIFY(v.size() == 3);
+		VERIFY(v[Key{1}] == T{10});
+		VERIFY(v[Key{2}] == T{30});
+		VERIFY(v[Key{3}] == T{20});
+		v.insert({
+			{Key{5}, T{40}},
+			{Key{1}, T{50}},
+			{Key{2}, T{60}},
+			{Key{4}, T{70}},
+		});
+		VERIFY(v.size() == 5);
+		VERIFY(v[Key{1}] == T{10});
+		VERIFY(v[Key{2}] == T{30});
+		VERIFY(v[Key{3}] == T{20});
+		VERIFY(v[Key{4}] == T{70});
+		VERIFY(v[Key{5}] == T{40});
+	}
+	{
+		hamon::flat_map<Key, T, hamon::less<Key>, KeyContainer, MappedContainer> v;
+		v.insert(hamon::sorted_unique, {
+			{Key{1}, T{10}},
+			{Key{2}, T{20}},
+			{Key{3}, T{30}},
+		});
+		VERIFY(v.size() == 3);
+		VERIFY(v[Key{1}] == T{10});
+		VERIFY(v[Key{2}] == T{20});
+		VERIFY(v[Key{3}] == T{30});
+		v.insert(hamon::sorted_unique, {
+			{Key{1}, T{40}},
+			{Key{4}, T{50}},
+			{Key{5}, T{60}},
+		});
+		VERIFY(v.size() == 5);
+		VERIFY(v[Key{1}] == T{10});
+		VERIFY(v[Key{2}] == T{20});
+		VERIFY(v[Key{3}] == T{30});
+		VERIFY(v[Key{4}] == T{50});
+		VERIFY(v[Key{5}] == T{60});
+	}
+	{
+		hamon::flat_map<Key, T, hamon::greater<Key>, KeyContainer, MappedContainer> v;
+		v.insert(hamon::sorted_unique, {
+			{Key{4}, T{10}},
+			{Key{2}, T{20}},
+			{Key{1}, T{30}},
+		});
+		VERIFY(v.size() == 3);
+		VERIFY(v[Key{1}] == T{30});
+		VERIFY(v[Key{2}] == T{20});
+		VERIFY(v[Key{4}] == T{10});
+		v.insert(hamon::sorted_unique, {
+			{Key{5}, T{40}},
+			{Key{4}, T{50}},
+			{Key{3}, T{60}},
+			{Key{2}, T{70}},
+			{Key{1}, T{80}},
+			{Key{0}, T{90}},
+		});
+		VERIFY(v.size() == 6);
+		VERIFY(v[Key{0}] == T{90});
+		VERIFY(v[Key{1}] == T{30});
+		VERIFY(v[Key{2}] == T{20});
+		VERIFY(v[Key{3}] == T{60});
+		VERIFY(v[Key{4}] == T{10});
+		VERIFY(v[Key{5}] == T{40});
+	}
 
 	return true;
 }

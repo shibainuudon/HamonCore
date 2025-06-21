@@ -825,15 +825,17 @@ public:
 		for (; first != last; ++first)
 		{
 			value_type value = *first;
-			c.keys.insert(c.keys.end(), hamon::move(value.first));
-			c.values.insert(c.values.end(), hamon::move(value.second));
+			c.keys.emplace/*insert*/(c.keys.end(), hamon::move(value.first));
+			c.values.emplace/*insert*/(c.values.end(), hamon::move(value.second));
 		}
 
 		auto zv = hamon::views::zip(c.keys, c.values);
 
+		using Diff = hamon::ranges::range_difference_t<decltype(zv)>;
+
 		// Then, merges the sorted range of newly added elements and the sorted range of pre-existing elements
 		// into a single sorted range
-		hamon::ranges::inplace_merge(zv.begin(), zv.begin() + old_size, zv.end(), this->value_comp());
+		hamon::ranges::inplace_merge(zv.begin(), zv.begin() + static_cast<Diff>(old_size), zv.end(), this->value_comp());
 
 		// and finally erases the duplicate elements
 		auto it = hamon::ranges::unique(zv, key_equiv(this->compare)).begin();
@@ -861,17 +863,19 @@ public:
 		// Adds elements to c
 		for (const auto& e : rg)
 		{
-			c.keys.insert(c.keys.end(), e.first);
-			c.values.insert(c.values.end(), e.second);
+			c.keys.emplace/*insert*/(c.keys.end(), e.first);
+			c.values.emplace/*insert*/(c.values.end(), e.second);
 		}
 
 		auto zv = hamon::views::zip(c.keys, c.values);
 
+		using Diff = hamon::ranges::range_difference_t<decltype(zv)>;
+
 		// Then, sorts the range of newly inserted elements with respect to value_comp()
-		hamon::ranges::sort(zv.begin() + old_size, zv.end(), this->value_comp());
+		hamon::ranges::sort(zv.begin() + static_cast<Diff>(old_size), zv.end(), this->value_comp());
 
 		// merges the resulting sorted range and the sorted range of pre-existing elements into a single sorted range
-		hamon::ranges::inplace_merge(zv.begin(), zv.begin() + old_size, zv.end(), this->value_comp());
+		hamon::ranges::inplace_merge(zv.begin(), zv.begin() + static_cast<Diff>(old_size), zv.end(), this->value_comp());
 
 		// and finally erases the duplicate elements
 		auto it = hamon::ranges::unique(zv, key_equiv(this->compare)).begin();

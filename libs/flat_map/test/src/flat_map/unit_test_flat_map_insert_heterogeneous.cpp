@@ -80,7 +80,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::make_pair(1.0f, short{30}));
+			auto r = v.insert(std::make_pair(short{1}, 30.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -118,7 +118,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::make_tuple(1.0f, short{30}));
+			auto r = v.insert(std::make_tuple(short{1}, 30.0f));
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -156,7 +156,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		VERIFY(v[Key{1}] == T{10});
 		VERIFY(v[Key{2}] == T{20});
 		{
-			auto r = v.insert(std::array<double, 2>{1.0, 30.0});
+			auto r = v.insert(std::array<short, 2>{1, 30});
 			VERIFY(r.first->first == Key{1});
 			VERIFY(r.first->second == T{10});
 			VERIFY(r.second == false);
@@ -195,11 +195,11 @@ FLAT_MAP_TEST_CONSTEXPR bool test2()
 
 GTEST_TEST(FlatMapTest, InsertHeterogeneousTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::less<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::greater<>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<char>, hamon::vector<double>, hamon::less<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<short>, hamon::deque<float>, hamon::less<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<int>, hamon::vector<double>, hamon::greater<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<long>, hamon::deque<float>, hamon::greater<long>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<double>, hamon::less<int>>()));
 
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
 }
