@@ -109,6 +109,17 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	}
 	{
 		Vector v {1,2,3,4,5};
+		auto ret = v.erase(v.begin(), v.begin());
+		VERIFY(ret == v.begin());
+		VERIFY(v.size() == 5);
+		VERIFY(v[0] == 1);
+		VERIFY(v[1] == 2);
+		VERIFY(v[2] == 3);
+		VERIFY(v[3] == 4);
+		VERIFY(v[4] == 5);
+	}
+	{
+		Vector v {1,2,3,4,5};
 		auto const old_capacity = v.capacity();
 		auto ret = v.erase(v.begin(), v.end());
 		VERIFY(ret == v.begin());

@@ -500,11 +500,14 @@ private:
 		HAMON_CXX14_CONSTEXPR void DestroyN(Diff pos_offset, size_type n)
 		{
 			HAMON_ASSERT(m_size >= n);
-			auto const first = this->Begin() + pos_offset;
-			auto const last  = first + n;
-			hamon::destroy(first, last);
-			Impl::UninitializedMoveN(last, this->End() - last, first);
-			m_size -= n;
+			if (n != 0)
+			{
+				auto const first = this->Begin() + pos_offset;
+				auto const last  = first + n;
+				hamon::destroy(first, last);
+				Impl::UninitializedMoveN(last, this->End() - last, first);
+				m_size -= n;
+			}
 		}
 
 		HAMON_CXX14_CONSTEXPR void DestroyAll() HAMON_NOEXCEPT
