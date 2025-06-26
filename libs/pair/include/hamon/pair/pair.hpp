@@ -718,43 +718,43 @@ operator<=>(pair<T1, T2> const& x, pair<U1, U2> const& y)
 
 #else
 
-template <typename T1, typename T2>
+template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
-operator<(pair<T1, T2> const& x, pair<T1, T2> const& y)
+operator<(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	return x.first < y.first ||
 		(!(y.first < x.first) && x.second < y.second);
 }
 
-template <typename T1, typename T2>
+template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
-operator!=(pair<T1, T2> const& x, pair<T1, T2> const& y)
+operator!=(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	return !(x == y);
 }
 
-template <typename T1, typename T2>
+template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
-operator>(pair<T1, T2> const& x, pair<T1, T2> const& y)
+operator>(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	return y < x;
 }
 
-template <typename T1, typename T2>
+template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
-operator<=(pair<T1, T2> const& x, pair<T1, T2> const& y)
+operator<=(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	return !(y < x);
 }
 
-template <typename T1, typename T2>
+template <typename T1, typename T2, typename U1, typename U2>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
-operator>=(pair<T1, T2> const& x, pair<T1, T2> const& y)
+operator>=(pair<T1, T2> const& x, pair<U1, U2> const& y)
 {
 	return !(x < y);
 }
