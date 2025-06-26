@@ -10,7 +10,7 @@
 #include <hamon/algorithm/config.hpp>
 
 #if defined(HAMON_USE_STD_RANGES_ALGORITHM) &&	\
-	defined(__cpp_lib_find_last) && (__cpp_lib_find_last >= 202207L)
+	defined(__cpp_lib_ranges_find_last) && (__cpp_lib_ranges_find_last >= 202207L)
 
 #include <algorithm>
 
