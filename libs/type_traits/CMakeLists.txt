@@ -25,8 +25,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstdint
 		functional
 		preprocessor
-		utility
-		common)
+		utility)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
 option(HAMON_BUILD_SAMPLES "Build samples" ON)

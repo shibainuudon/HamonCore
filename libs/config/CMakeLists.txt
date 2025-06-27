@@ -17,9 +17,9 @@ add_library(${TARGET_ALIAS_NAME} ALIAS ${TARGET_NAME})
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake)
 include(AddSubLibrary)
 
-add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
-	INTERFACE
-		common)
+#add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
+#	INTERFACE
+#		)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
 option(HAMON_BUILD_SAMPLES "Build samples" ON)

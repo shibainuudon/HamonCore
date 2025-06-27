@@ -24,8 +24,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		cstddef
 		cstdint
 		cstring
-		type_traits
-		common)
+		type_traits)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
 option(HAMON_COVERAGE "Coverage" OFF)
