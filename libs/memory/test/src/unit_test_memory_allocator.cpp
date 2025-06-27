@@ -5,6 +5,7 @@
  */
 
 #include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator_traits.hpp>
 #include <hamon/config.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/new.hpp>
@@ -16,6 +17,11 @@ namespace hamon_memory_test
 
 namespace allocator_test
 {
+
+// 20.2.10.1 General[default.allocator.general]/2
+// allocator_traits<allocator<T>>::is_always_equal::value is true for any T.
+static_assert(hamon::allocator_traits<hamon::allocator<int>>::is_always_equal::value, "");
+static_assert(hamon::allocator_traits<hamon::allocator<float>>::is_always_equal::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
