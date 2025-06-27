@@ -7,16 +7,37 @@
 #ifndef HAMON_SYSTEM_ERROR_SYSTEM_ERROR_HPP
 #define HAMON_SYSTEM_ERROR_SYSTEM_ERROR_HPP
 
-#include <hamon/system_error/error_code.hpp>
-#include <hamon/system_error/error_category.hpp>
-#include <hamon/cstdlib/abort.hpp>
-#include <hamon/config.hpp>
+#include <hamon/system_error/config.hpp>
+
+#if defined(HAMON_USE_STD_SYSTEM_ERROR)
+
 #include <system_error>
 
 namespace hamon
 {
 
 using std::system_error;
+
+}	// namespace hamon
+
+#else
+
+namespace hamon
+{
+
+// TODO
+
+}	// namespace hamon
+
+#endif
+
+#include <hamon/system_error/error_code.hpp>
+#include <hamon/system_error/error_category.hpp>
+#include <hamon/cstdlib/abort.hpp>
+#include <hamon/config.hpp>
+
+namespace hamon
+{
 
 namespace detail
 {

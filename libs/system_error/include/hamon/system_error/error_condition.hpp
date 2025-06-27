@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	system_category.hpp
+ *	@file	error_condition.hpp
  *
- *	@brief	system_category の定義
+ *	@brief	error_condition の定義
  */
 
-#ifndef HAMON_SYSTEM_ERROR_SYSTEM_CATEGORY_HPP
-#define HAMON_SYSTEM_ERROR_SYSTEM_CATEGORY_HPP
+#ifndef HAMON_SYSTEM_ERROR_ERROR_CONDITION_HPP
+#define HAMON_SYSTEM_ERROR_ERROR_CONDITION_HPP
 
 #include <hamon/system_error/config.hpp>
 
@@ -16,7 +16,7 @@
 namespace hamon
 {
 
-using std::system_category;
+using std::error_condition;
 
 }	// namespace hamon
 
@@ -31,4 +31,4 @@ namespace hamon
 
 #endif
 
-#endif // HAMON_SYSTEM_ERROR_SYSTEM_CATEGORY_HPP
+#endif // HAMON_SYSTEM_ERROR_ERROR_CONDITION_HPP
