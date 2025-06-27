@@ -5,7 +5,7 @@
  */
 
 #include <hamon/ratio/ratio_gcd.hpp>
-#include <hamon/ratio.hpp>
+#include <hamon/ratio/ratio.hpp>
 #include <gtest/gtest.h>
 
 GTEST_TEST(RatioTest, RatioGcdTest)

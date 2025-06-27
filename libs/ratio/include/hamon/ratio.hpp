@@ -7,6 +7,7 @@
 #ifndef HAMON_RATIO_HPP
 #define HAMON_RATIO_HPP
 
+#include <hamon/ratio/config.hpp>
 #include <hamon/ratio/ratio.hpp>
 #include <hamon/ratio/ratio_add.hpp>
 #include <hamon/ratio/ratio_divide.hpp>
