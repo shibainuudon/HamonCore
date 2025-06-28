@@ -62,6 +62,7 @@ set(SUBDIRECTORIES
 	random
 	ranges
 	ratio
+	scoped_allocator
 	serialization
 	set
 	shared_mutex

@@ -1,0 +1,16 @@
+name: scoped_allocator
+
+on:
+  push:
+    paths:
+      - libs/scoped_allocator/**
+      - .github/workflows/scoped_allocator.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/scoped_allocator
