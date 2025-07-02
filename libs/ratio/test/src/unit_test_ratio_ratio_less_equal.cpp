@@ -57,6 +57,41 @@ GTEST_TEST(RatioTest, RatioLessEqualTest)
 		using r2 = hamon::ratio<-5, 8>;
 		HAMON_RATIO_LESS_EQUAL_TEST(false, r1, r2);
 	}
+	{
+		using r1 = hamon::ratio<1, 1>;
+		using r2 = hamon::ratio<1, -1>;
+		HAMON_RATIO_LESS_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFELL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFELL, 1>;
+		HAMON_RATIO_LESS_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_LESS_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFELL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_LESS_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFELL>;
+		HAMON_RATIO_LESS_EQUAL_TEST(true, r1, r2);
+	}
 }
 
 #undef HAMON_RATIO_LESS_EQUAL_TEST

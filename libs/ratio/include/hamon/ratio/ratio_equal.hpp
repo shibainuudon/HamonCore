@@ -23,10 +23,17 @@ using std::ratio_equal;
 
 #else
 
+#include <hamon/type_traits/bool_constant.hpp>
+
 namespace hamon
 {
 
-// TODO
+// 21.4.5 Comparison of ratios[ratio.comparison]
+
+template <typename R1, typename R2>
+struct ratio_equal
+	: public hamon::bool_constant<R1::num == R2::num && R1::den == R2::den>
+{};
 
 }	// namespace hamon
 

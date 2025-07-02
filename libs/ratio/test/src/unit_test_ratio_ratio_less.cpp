@@ -57,6 +57,81 @@ GTEST_TEST(RatioTest, RatioLessTest)
 		using r2 = hamon::ratio<-5, 8>;
 		HAMON_RATIO_LESS_TEST(false, r1, r2);
 	}
+	{
+		using r1 = hamon::ratio<1, 1>;
+		using r2 = hamon::ratio<1, -1>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFELL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFELL, 1>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFELL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFELL>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFELL>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFDLL, 0x7FFFFFFFFFFFFFFCLL>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFDLL, 0x7FFFFFFFFFFFFFFCLL>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFELL>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<-0x7FFFFFFFFFFFFFFDLL, 0x7FFFFFFFFFFFFFFCLL>;
+		using r2 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFELL>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFELL>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFELL, 0x7FFFFFFFFFFFFFFDLL>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<641981, 1339063>;
+		using r2 = hamon::ratio<1291640, 2694141LL>;
+		HAMON_RATIO_LESS_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1291640, 2694141LL>;
+		using r2 = hamon::ratio<641981, 1339063>;
+		HAMON_RATIO_LESS_TEST(true, r1, r2);
+	}
 }
 
 #undef HAMON_RATIO_LESS_TEST

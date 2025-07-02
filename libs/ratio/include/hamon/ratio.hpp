@@ -20,5 +20,6 @@
 #include <hamon/ratio/ratio_multiply.hpp>
 #include <hamon/ratio/ratio_not_equal.hpp>
 #include <hamon/ratio/ratio_subtract.hpp>
+#include <hamon/ratio/si.hpp>
 
 #endif // HAMON_RATIO_HPP

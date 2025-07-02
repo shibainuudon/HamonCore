@@ -49,4 +49,14 @@ GTEST_TEST(RatioTest, RatioDivideTest)
 		static_assert(r::num == 3, "");
 		static_assert(r::den == 2, "");
 	}
+
+	// 56987354/467584654 ÷ 544668/22145 = 630992477165/127339199162436
+	{
+		using r1 = hamon::ratio<56987354, 467584654>;
+		using r2 = hamon::ratio<544668, 22145>;
+		using r = hamon::ratio_divide<r1, r2>;
+
+		static_assert(r::num == 630992477165LL, "");
+		static_assert(r::den == 127339199162436LL, "");
+	}
 }

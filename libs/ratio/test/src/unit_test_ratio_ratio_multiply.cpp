@@ -39,4 +39,39 @@ GTEST_TEST(RatioTest, RatioMultiplyTest)
 		static_assert(r::num == -5, "");
 		static_assert(r::den == 14, "");
 	}
+
+	// 56987354/467584654 * 544668/22145 = 15519594064236/5177331081415
+	{
+		using r1 = hamon::ratio<56987354, 467584654>;
+		using r2 = hamon::ratio<544668, 22145>;
+		using r = hamon::ratio_multiply<r1, r2>;
+
+		static_assert(r::num == 15519594064236LL, "");
+		static_assert(r::den == 5177331081415LL, "");
+	}
+
+	{
+		using r1 = hamon::ratio<0>;
+		using r2 = hamon::ratio<0>;
+		using r = hamon::ratio_multiply<r1, r2>;
+
+		static_assert(r::num == 0, "");
+		static_assert(r::den == 1, "");
+	}
+	{
+		using r1 = hamon::ratio<1>;
+		using r2 = hamon::ratio<0>;
+		using r = hamon::ratio_multiply<r1, r2>;
+
+		static_assert(r::num == 0, "");
+		static_assert(r::den == 1, "");
+	}
+	{
+		using r1 = hamon::ratio<0>;
+		using r2 = hamon::ratio<1>;
+		using r = hamon::ratio_multiply<r1, r2>;
+
+		static_assert(r::num == 0, "");
+		static_assert(r::den == 1, "");
+	}
 }

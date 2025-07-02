@@ -62,6 +62,46 @@ GTEST_TEST(RatioTest, RatioNotEqualTest)
 		using r2 = hamon::ratio<-1, 3>;
 		HAMON_RATIO_NOT_EQUAL_TEST(true, r1, r2);
 	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_NOT_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_NOT_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_NOT_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		using r2 = hamon::ratio<-0x7FFFFFFFFFFFFFFFLL, 1>;
+		HAMON_RATIO_NOT_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_NOT_EQUAL_TEST(false, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, -0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_NOT_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, 0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, -0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_NOT_EQUAL_TEST(true, r1, r2);
+	}
+	{
+		using r1 = hamon::ratio<1, -0x7FFFFFFFFFFFFFFFLL>;
+		using r2 = hamon::ratio<1, -0x7FFFFFFFFFFFFFFFLL>;
+		HAMON_RATIO_NOT_EQUAL_TEST(false, r1, r2);
+	}
 }
 
 #undef HAMON_RATIO_NOT_EQUAL_TEST

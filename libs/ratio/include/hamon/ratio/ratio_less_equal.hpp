@@ -23,10 +23,18 @@ using std::ratio_less_equal;
 
 #else
 
+#include <hamon/ratio/ratio_less.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+
 namespace hamon
 {
 
-// TODO
+// 21.4.5 Comparison of ratios[ratio.comparison]
+
+template <typename R1, typename R2>
+struct ratio_less_equal
+	: public hamon::bool_constant<!hamon::ratio_less<R2, R1>::value>
+{};
 
 }	// namespace hamon
 
