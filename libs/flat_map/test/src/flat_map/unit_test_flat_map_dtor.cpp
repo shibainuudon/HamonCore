@@ -7,10 +7,7 @@
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/is_same.hpp>
-#include <hamon/type_traits/void_t.hpp>
-#include <hamon/utility/declval.hpp>
+#include <hamon/type_traits/is_nothrow_destructible.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
@@ -36,7 +33,12 @@ namespace dtor_test
 template <typename KeyContainer, typename MappedContainer, typename Compare>
 FLAT_MAP_TEST_CONSTEXPR bool test()
 {
-	// TODO
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
+
+	static_assert(hamon::is_nothrow_destructible<Map>::value, "");
+
 	return true;
 }
 

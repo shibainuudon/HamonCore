@@ -1778,7 +1778,22 @@ flat_map(
 // [flat.map.erasure], erasure for flat_map
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Predicate>
 HAMON_CXX14_CONSTEXPR typename flat_map<Key, T, Compare, KeyContainer, MappedContainer>::size_type
-erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate pred);
+erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate pred)
+{
+	auto original_size = c.size();
+	for (auto i = c.cbegin(); i != c.cend(); )
+	{
+		if (pred(*i))
+		{
+			i = c.erase(i);
+		}
+		else
+		{
+			++i;
+		}
+	}
+	return original_size - c.size();
+}
 
 }	// namespace hamon
 

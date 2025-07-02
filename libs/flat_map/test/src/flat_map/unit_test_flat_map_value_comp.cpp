@@ -8,6 +8,7 @@
 
 #include <hamon/flat_map/flat_map.hpp>
 #include <hamon/functional/less.hpp>
+#include <hamon/functional/greater.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
@@ -37,15 +38,40 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 {
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
-	using Map = hamon::flat_map<Key, T, hamon::less<Key>, KeyContainer, MappedContainer>;
-	using ValueCompare = typename Map::value_compare;
+	{
+		using Compare = hamon::less<Key>;
+		using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
+		using ValueCompare = typename Map::value_compare;
 
-	static_assert(hamon::is_same<decltype(hamon::declval<Map&      >().value_comp()), ValueCompare>::value, "");
-	static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().value_comp()), ValueCompare>::value, "");
-	static_assert(!noexcept(hamon::declval<Map&      >().value_comp()), "");
-	static_assert(!noexcept(hamon::declval<Map const&>().value_comp()), "");
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&      >().value_comp()), ValueCompare>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().value_comp()), ValueCompare>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&      >().value_comp()), "");
+		static_assert(!noexcept(hamon::declval<Map const&>().value_comp()), "");
 
-	// TODO:
+		Map v;
+		auto vc = v.value_comp();
+		VERIFY( vc({Key{1}, T{2}}, {Key{2}, T{1}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{3}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{1}}));
+		VERIFY(!vc({Key{2}, T{1}}, {Key{1}, T{2}}));
+	}
+	{
+		using Compare = hamon::greater<Key>;
+		using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
+		using ValueCompare = typename Map::value_compare;
+
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&      >().value_comp()), ValueCompare>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().value_comp()), ValueCompare>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&      >().value_comp()), "");
+		static_assert(!noexcept(hamon::declval<Map const&>().value_comp()), "");
+
+		Map v;
+		auto vc = v.value_comp();
+		VERIFY(!vc({Key{1}, T{2}}, {Key{2}, T{1}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{3}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{1}}));
+		VERIFY( vc({Key{2}, T{1}}, {Key{1}, T{2}}));
+	}
 
 	return true;
 }
