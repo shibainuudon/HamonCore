@@ -15,7 +15,7 @@
 #include <hamon/qvm/vector/vector.hpp>
 #include <hamon/qvm/matrix/matrix.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/detail/is_trivially_or_implicitly_constructible.hpp>
 #include <hamon/cmath/ranges/sin.hpp>
 #include <hamon/cmath/ranges/cos.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -80,7 +80,7 @@ public:
 	template <
 		typename U,
 		typename = hamon::enable_if_t<
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_CONSTEXPR

@@ -52,6 +52,12 @@ struct Explicit
 	explicit Explicit(Explicit&&);
 };
 
+// explicit かつトリビアル な move コンストラクタを持つ
+struct ExplicitTrivial
+{
+	explicit ExplicitTrivial(ExplicitTrivial&&) = default;
+};
+
 // explicit な move コンストラクタを持つクラスをメンバに持つ
 struct ExplicitMember
 {
@@ -74,6 +80,7 @@ HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(true,  Trivial);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(true,  Implicit);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(true,  ImplicitMember);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(false, Explicit);
+HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(false, ExplicitTrivial);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(true,  ExplicitMember);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(false, NonMovable);
 HAMON_IS_IMPLICITLY_MOVE_CONSTRUCTIBLE_TEST(false, NonMovableMember);

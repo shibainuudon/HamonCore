@@ -52,6 +52,12 @@ struct Explicit
 	explicit Explicit(const Explicit&);
 };
 
+// explicit かつトリビアル な copy コンストラクタを持つ
+struct ExplicitTrivial
+{
+	explicit ExplicitTrivial(const ExplicitTrivial&) = default;
+};
+
 // explicit な copy コンストラクタを持つクラスをメンバに持つ
 struct ExplicitMember
 {
@@ -74,6 +80,7 @@ HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(true,  Trivial);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(true,  Implicit);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(true,  ImplicitMember);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(false, Explicit);
+HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(false, ExplicitTrivial);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(true,  ExplicitMember);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(false, NonCopyable);
 HAMON_IS_IMPLICITLY_COPY_CONSTRUCTIBLE_TEST(false, NonCopyableMember);

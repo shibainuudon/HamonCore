@@ -10,8 +10,8 @@
 #include <hamon/memory/detail/uses_allocator_construction_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/detail/is_trivially_or_implicitly_constructible.hpp>
 
 namespace hamon
 {
@@ -30,13 +30,13 @@ struct is_implicitly_uses_allocator_constructible_impl
 	using type =
 		hamon::conditional_t<
 			hamon::is_same<args_type, hamon::detail::uses_allocator_construction_type::NoAlloc>::value,
-			hamon::is_implicitly_constructible<T, Args...>,
+			hamon::detail::is_trivially_or_implicitly_constructible<T, Args...>,
 		hamon::conditional_t<
 			hamon::is_same<args_type, hamon::detail::uses_allocator_construction_type::FirstAlloc>::value,
-			hamon::is_implicitly_constructible<T, hamon::allocator_arg_t, Alloc const&, Args...>,
+			hamon::detail::is_trivially_or_implicitly_constructible<T, hamon::allocator_arg_t, Alloc const&, Args...>,
 		hamon::conditional_t<
 			hamon::is_same<args_type, hamon::detail::uses_allocator_construction_type::LastAlloc>::value,
-			hamon::is_implicitly_constructible<T, Args..., Alloc const&>,
+			hamon::detail::is_trivially_or_implicitly_constructible<T, Args..., Alloc const&>,
 			hamon::false_type
 		>>>;
 };

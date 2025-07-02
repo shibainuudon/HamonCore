@@ -8,7 +8,6 @@
 #define HAMON_TYPE_TRAITS_IS_IMPLICITLY_CONSTRUCTIBLE_HPP
 
 #include <hamon/type_traits/is_constructible.hpp>
-#include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -42,7 +41,7 @@ bool is_implicitly_constructible_v = is_implicitly_constructible<T, Args...>::va
 namespace detail
 {
 
-template <bool, typename T, typename... Args>
+template <typename T, typename... Args>
 struct is_implicitly_constructible_impl
 {
 private:
@@ -60,17 +59,9 @@ public:
 	using type = decltype(test<T, Args...>(0));
 };
 
-template <typename T, typename... Args>
-struct is_implicitly_constructible_impl<true, T, Args...>
-	: public hamon::true_type
-{};
-
 template <bool, typename T, typename... Args>
 struct is_implicitly_constructible
-	: public is_implicitly_constructible_impl<
-		hamon::is_trivially_constructible<T, Args...>::value,
-		T, Args...
-	>::type
+	: public is_implicitly_constructible_impl<T, Args...>::type
 {};
 
 template <typename T, typename... Args>

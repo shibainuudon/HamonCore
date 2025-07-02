@@ -26,7 +26,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/detail/is_trivially_or_implicitly_constructible.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/config.hpp>
 
@@ -122,7 +122,7 @@ public:
 			(sizeof...(Args) != 1) &&
 			(sizeof...(Args) == Row * Col) &&
 			hamon::conjunction<
-				hamon::is_implicitly_constructible<T, Args>...
+				hamon::detail::is_trivially_or_implicitly_constructible<T, Args>...
 			>::value
 		>* = nullptr
 	>
@@ -138,7 +138,7 @@ public:
 		hamon::enable_if_t<
 			(sizeof...(Vecs) == Row) &&
 			hamon::conjunction<
-				hamon::is_implicitly_constructible<row_type, Vecs>...
+				hamon::detail::is_trivially_or_implicitly_constructible<row_type, Vecs>...
 			>::value
 		>* = nullptr
 	>
@@ -153,7 +153,7 @@ public:
 	template <
 		typename U,
 		typename = hamon::enable_if_t<
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_CONSTEXPR
@@ -186,7 +186,7 @@ public:
 	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N == Row) && (N == Col)) &&
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
@@ -278,7 +278,7 @@ public:
 	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N+1 == Row) && (N+1 == Col)) &&
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix
@@ -301,7 +301,7 @@ public:
 	template <typename U, hamon::size_t N,
 		typename = hamon::enable_if_t<
 			((N+1 == Row) && (N+1 == Col)) &&
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_NODISCARD static HAMON_CONSTEXPR matrix

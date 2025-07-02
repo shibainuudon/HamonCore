@@ -13,10 +13,9 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
-#include <hamon/type_traits/is_implicitly_constructible.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/accumulation.hpp>
+#include <hamon/type_traits/detail/is_trivially_or_implicitly_constructible.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -92,7 +91,7 @@ public:
 			(sizeof...(Args) != 1) &&
 			(sizeof...(Args) == N) &&
 			hamon::conjunction<
-				hamon::is_implicitly_constructible<T, Args>...
+				hamon::detail::is_trivially_or_implicitly_constructible<T, Args>...
 			>::value
 		>* = nullptr
 	>
@@ -129,7 +128,7 @@ public:
 	template <
 		typename U,
 		typename = hamon::enable_if_t<
-			hamon::is_implicitly_constructible<T, U>::value
+			hamon::detail::is_trivially_or_implicitly_constructible<T, U>::value
 		>
 	>
 	HAMON_CONSTEXPR
