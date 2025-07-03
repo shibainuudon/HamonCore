@@ -49,6 +49,20 @@
 namespace hamon
 {
 
+// TODO:
+// * 例外を投げたときのテスト
+// * emplace_hint の実装とテスト(特にflat_multimap)
+// * テストケースの追加(cpprefjpを参考に)
+// * ソート済み範囲を渡したときのASSERT
+// * コピーコンストラクタ
+// * ムーブコンストラクタ
+// * コピー代入演算子
+// * ムーブ代入演算子
+// * 例外指定の見直し
+// * nodiscard指定の見直し
+// * #include の整理
+// * erase_if の効率化
+
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer>
 class flat_map
 {

@@ -1,13 +1,19 @@
 ﻿/**
- *	@file	unit_test_flat_multimap_dtor.cpp
+ *	@file	unit_test_flat_multimap_ctor_move_alloc.cpp
  *
- *	@brief	デストラクタのテスト
+ *	@brief	ムーブとアロケータを引数に取るコンストラクタのテスト
+ *
+ *	template<class Alloc>
+ *	constexpr flat_multimap(flat_multimap&&, const Alloc& a);
  */
 
 #include <hamon/flat_map/flat_multimap.hpp>
 #include <hamon/functional/greater.hpp>
 #include <hamon/functional/less.hpp>
-#include <hamon/type_traits/is_nothrow_destructible.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_implicitly_constructible.hpp>
+#include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
@@ -17,7 +23,7 @@
 namespace hamon_flat_multimap_test
 {
 
-namespace dtor_test
+namespace ctor_move_alloc_test
 {
 
 #if !defined(HAMON_USE_STD_FLAT_MAP)
@@ -36,26 +42,46 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	using Key = typename KeyContainer::value_type;
 	using T = typename MappedContainer::value_type;
 	using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+	using Alloc = hamon::allocator<char>;
 
-	static_assert(hamon::is_nothrow_destructible<Map>::value, "");
+	static_assert( hamon::is_constructible<Map, Map&&, Alloc const&>::value, "");
+	static_assert(!hamon::is_nothrow_constructible<Map, Map&&, Alloc const&>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Map, Map&&, Alloc const&>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Map, Map&&, Alloc const&>::value, "");
+
+	{
+		Map v1
+		{
+			{Key{1}, T{10}},
+			{Key{3}, T{20}},
+			{Key{3}, T{30}},
+			{Key{2}, T{40}},
+		};
+		Alloc const alloc;
+		Map v2(hamon::move(v1), alloc);
+		VERIFY(v2.size() == 4);
+		VERIFY(v2.count(Key{1}) == 1);
+		VERIFY(v2.count(Key{2}) == 1);
+		VERIFY(v2.count(Key{3}) == 2);
+	}
 
 	return true;
 }
 
 #undef VERIFY
 
-GTEST_TEST(FlatMultimapTest, DtorTest)
+GTEST_TEST(FlatMultimapTest, CtorMoveAllocTest)
 {
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<float>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
 #undef FLAT_MAP_TEST_CONSTEXPR
 
-}	// namespace dtor_test
+}	// namespace ctor_move_alloc_test
 
 }	// namespace hamon_flat_multimap_test

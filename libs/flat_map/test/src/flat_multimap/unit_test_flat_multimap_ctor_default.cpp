@@ -2,6 +2,8 @@
  *	@file	unit_test_flat_multimap_ctor_default.cpp
  *
  *	@brief	デフォルトコンストラクタのテスト
+ *
+ *	constexpr flat_multimap();
  */
 
 #include <hamon/flat_map/flat_multimap.hpp>

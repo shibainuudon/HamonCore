@@ -40,6 +40,92 @@ namespace erase_if_test
 template <typename KeyContainer, typename MappedContainer, typename Compare>
 FLAT_MAP_TEST_CONSTEXPR bool test()
 {
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+	using ConstReference = typename Map::const_reference;
+	using ValueType = typename Map::value_type;
+	using SizeType = typename Map::size_type;
+
+	struct F1
+	{
+		constexpr bool operator()(ConstReference x) const noexcept
+		{
+			return x.first < 3;
+		}
+	};
+
+	struct F2
+	{
+		constexpr bool operator()(ValueType x) const
+		{
+			return x.first == 3;
+		}
+	};
+
+	static_assert(hamon::is_same<decltype(hamon::erase_if(hamon::declval<Map&>(), F1{})), SizeType>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::erase_if(hamon::declval<Map&>(), F2{})), SizeType>::value, "");
+	static_assert(!noexcept(hamon::erase_if(hamon::declval<Map&>(), F1{})), "");
+	static_assert(!noexcept(hamon::erase_if(hamon::declval<Map&>(), F2{})), "");
+
+	{
+		Map v
+		{
+			{Key{3}, T{10}},
+			{Key{1}, T{20}},
+			{Key{4}, T{30}},
+			{Key{5}, T{40}},
+			{Key{2}, T{50}},
+			{Key{1}, T{60}},
+		};
+
+		auto r = hamon::erase_if(v, F1{});
+		VERIFY(r == 3);
+		VERIFY(v.size() == 3);
+		VERIFY(v.count(Key{1}) == 0);
+		VERIFY(v.count(Key{2}) == 0);
+		VERIFY(v.count(Key{3}) == 1);
+		VERIFY(v.count(Key{4}) == 1);
+		VERIFY(v.count(Key{5}) == 1);
+	}
+	{
+		Map v
+		{
+			{Key{3}, T{10}},
+			{Key{1}, T{20}},
+			{Key{4}, T{30}},
+			{Key{5}, T{40}},
+			{Key{2}, T{50}},
+			{Key{1}, T{60}},
+		};
+
+		auto r = hamon::erase_if(v, F2{});
+		VERIFY(r == 1);
+		VERIFY(v.size() == 5);
+		VERIFY(v.count(Key{1}) == 2);
+		VERIFY(v.count(Key{2}) == 1);
+		VERIFY(v.count(Key{3}) == 0);
+		VERIFY(v.count(Key{4}) == 1);
+		VERIFY(v.count(Key{5}) == 1);
+	}
+	{
+		Map v;
+		auto r = hamon::erase_if(v, F1{});
+		VERIFY(r == 0);
+		VERIFY(v.size() == 0);
+	}
+	{
+		Map v
+		{
+			{Key{3}, T{10}},
+			{Key{1}, T{20}},
+			{Key{4}, T{30}},
+		};
+
+		auto r = hamon::erase_if(v, [](ValueType){return true;});
+		VERIFY(r == 3);
+		VERIFY(v.size() == 0);
+	}
 
 	return true;
 }

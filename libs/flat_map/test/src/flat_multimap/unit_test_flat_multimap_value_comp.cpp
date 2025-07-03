@@ -35,9 +35,45 @@ namespace value_comp_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename KeyContainer, typename MappedContainer, typename Compare>
+template <typename KeyContainer, typename MappedContainer>
 FLAT_MAP_TEST_CONSTEXPR bool test()
 {
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	{
+		using Compare = hamon::less<Key>;
+		using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+		using ValueCompare = typename Map::value_compare;
+
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&      >().value_comp()), ValueCompare>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().value_comp()), ValueCompare>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&      >().value_comp()), "");
+		static_assert(!noexcept(hamon::declval<Map const&>().value_comp()), "");
+
+		Map v;
+		auto vc = v.value_comp();
+		VERIFY( vc({Key{1}, T{2}}, {Key{2}, T{1}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{3}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{1}}));
+		VERIFY(!vc({Key{2}, T{1}}, {Key{1}, T{2}}));
+	}
+	{
+		using Compare = hamon::greater<Key>;
+		using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+		using ValueCompare = typename Map::value_compare;
+
+		static_assert(hamon::is_same<decltype(hamon::declval<Map&      >().value_comp()), ValueCompare>::value, "");
+		static_assert(hamon::is_same<decltype(hamon::declval<Map const&>().value_comp()), ValueCompare>::value, "");
+		static_assert(!noexcept(hamon::declval<Map&      >().value_comp()), "");
+		static_assert(!noexcept(hamon::declval<Map const&>().value_comp()), "");
+
+		Map v;
+		auto vc = v.value_comp();
+		VERIFY(!vc({Key{1}, T{2}}, {Key{2}, T{1}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{3}}));
+		VERIFY(!vc({Key{1}, T{2}}, {Key{1}, T{1}}));
+		VERIFY( vc({Key{2}, T{1}}, {Key{1}, T{2}}));
+	}
 
 	return true;
 }
@@ -46,11 +82,11 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultimapTest, ValueCompTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
