@@ -10,9 +10,9 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -24,32 +24,32 @@ namespace duration_common_type_test
 GTEST_TEST(DurationTest, CommonTypeTest)
 {
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<1>>;
-		using Duration2 = hamon::chrono::duration<int, std::ratio<1>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<1>>;
+		using Duration2 = hamon::chrono::duration<int, hamon::ratio<1>>;
 		using CT = hamon::common_type_t<Duration1, Duration2>;
 		static_assert(hamon::is_same<int, typename CT::rep>::value, "");
 		static_assert(1 == CT::period::num, "");
 		static_assert(1 == CT::period::den, "");
 	}
 	{
-		using Duration1 = hamon::chrono::duration<int,   std::ratio<3, 4>>;
-		using Duration2 = hamon::chrono::duration<float, std::ratio<2, 3>>;
+		using Duration1 = hamon::chrono::duration<int,   hamon::ratio<3, 4>>;
+		using Duration2 = hamon::chrono::duration<float, hamon::ratio<2, 3>>;
 		using CT = hamon::common_type_t<Duration1, Duration2>;
 		static_assert(hamon::is_same<float, typename CT::rep>::value, "");
 		static_assert( 1 == CT::period::num, "");
 		static_assert(12 == CT::period::den, "");
 	}
 	{
-		using Duration1 = hamon::chrono::duration<char, std::ratio<630>>;
-		using Duration2 = hamon::chrono::duration<int,  std::ratio<300>>;
+		using Duration1 = hamon::chrono::duration<char, hamon::ratio<630>>;
+		using Duration2 = hamon::chrono::duration<int,  hamon::ratio<300>>;
 		using CT = hamon::common_type_t<Duration1, Duration2>;
 		static_assert(hamon::is_same<int, typename CT::rep>::value, "");
 		static_assert(30 == CT::period::num, "");
 		static_assert( 1 == CT::period::den, "");
 	}
 	{
-		using Duration1 = hamon::chrono::duration<float,  std::ratio<100>>;
-		using Duration2 = hamon::chrono::duration<double, std::ratio<1, 1000>>;
+		using Duration1 = hamon::chrono::duration<float,  hamon::ratio<100>>;
+		using Duration2 = hamon::chrono::duration<double, hamon::ratio<1, 1000>>;
 		using CT = hamon::common_type_t<Duration1, Duration2>;
 		static_assert(hamon::is_same<double, typename CT::rep>::value, "");
 		static_assert(   1 == CT::period::num, "");

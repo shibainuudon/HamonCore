@@ -8,10 +8,10 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -40,8 +40,8 @@ GTEST_TEST(DurationTest, FloorTest)
 {
 	using hamon::chrono::floor;
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using ToDuration = hamon::chrono::duration<int, std::ratio<1>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using ToDuration = hamon::chrono::duration<int, hamon::ratio<1>>;
 		static_assert(hamon::is_same<
 			decltype(floor<ToDuration>(hamon::declval<Duration>())),
 			ToDuration
@@ -83,8 +83,8 @@ GTEST_TEST(DurationTest, FloorTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(Duration{ 3900}).count(),  3);
 	}
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using ToDuration = hamon::chrono::duration<float, std::ratio<1>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using ToDuration = hamon::chrono::duration<float, hamon::ratio<1>>;
 		static_assert(hamon::is_same<
 			decltype(floor<ToDuration>(hamon::declval<Duration>())),
 			ToDuration

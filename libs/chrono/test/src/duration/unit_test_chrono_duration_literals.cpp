@@ -23,9 +23,9 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -39,17 +39,17 @@ GTEST_TEST(DurationTest, LiteralsTest)
 	{
 		using namespace hamon::literals::chrono_literals;
 		static_assert(hamon::is_same<decltype(1_h), hamon::chrono::hours>::value, "");
-		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, std::ratio<3600>>>::value, "");
+		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, hamon::ratio<3600>>>::value, "");
 		static_assert(hamon::is_same<decltype(3_min), hamon::chrono::minutes>::value, "");
-		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, std::ratio<60>>>::value, "");
+		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, hamon::ratio<60>>>::value, "");
 		static_assert(hamon::is_same<decltype(5_s), hamon::chrono::seconds>::value, "");
 		static_assert(hamon::is_same<decltype(6.0_s), hamon::chrono::duration<double>>::value, "");
 		static_assert(hamon::is_same<decltype(7_ms), hamon::chrono::milliseconds>::value, "");
-		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, std::milli>>::value, "");
+		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, hamon::milli>>::value, "");
 		static_assert(hamon::is_same<decltype(9_us), hamon::chrono::microseconds>::value, "");
-		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, std::micro>>::value, "");
+		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, hamon::micro>>::value, "");
 		static_assert(hamon::is_same<decltype(11_ns), hamon::chrono::nanoseconds>::value, "");
-		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, std::nano>>::value, "");
+		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, hamon::nano>>::value, "");
 
 		{
 			HAMON_CXX11_CONSTEXPR auto aday = 24_h;
@@ -63,17 +63,17 @@ GTEST_TEST(DurationTest, LiteralsTest)
 	{
 		using namespace hamon::chrono_literals;
 		static_assert(hamon::is_same<decltype(1_h), hamon::chrono::hours>::value, "");
-		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, std::ratio<3600>>>::value, "");
+		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, hamon::ratio<3600>>>::value, "");
 		static_assert(hamon::is_same<decltype(3_min), hamon::chrono::minutes>::value, "");
-		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, std::ratio<60>>>::value, "");
+		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, hamon::ratio<60>>>::value, "");
 		static_assert(hamon::is_same<decltype(5_s), hamon::chrono::seconds>::value, "");
 		static_assert(hamon::is_same<decltype(6.0_s), hamon::chrono::duration<double>>::value, "");
 		static_assert(hamon::is_same<decltype(7_ms), hamon::chrono::milliseconds>::value, "");
-		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, std::milli>>::value, "");
+		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, hamon::milli>>::value, "");
 		static_assert(hamon::is_same<decltype(9_us), hamon::chrono::microseconds>::value, "");
-		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, std::micro>>::value, "");
+		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, hamon::micro>>::value, "");
 		static_assert(hamon::is_same<decltype(11_ns), hamon::chrono::nanoseconds>::value, "");
-		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, std::nano>>::value, "");
+		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, hamon::nano>>::value, "");
 
 		{
 			HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::chrono::minutes(60), 1_h);
@@ -86,24 +86,24 @@ GTEST_TEST(DurationTest, LiteralsTest)
 			HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::chrono::microseconds(4500), 4.5_ms);
 			HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::chrono::nanoseconds(5000), 5_us);
 			HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::chrono::nanoseconds(5500), 5.5_us);
-			HAMON_CXX11_CONSTEXPR_EXPECT_EQ((hamon::chrono::duration<int, std::pico>(6000)), 6_ns);
-			HAMON_CXX11_CONSTEXPR_EXPECT_EQ((hamon::chrono::duration<int, std::pico>(6500)), 6.5_ns);
+			HAMON_CXX11_CONSTEXPR_EXPECT_EQ((hamon::chrono::duration<int, hamon::pico>(6000)), 6_ns);
+			HAMON_CXX11_CONSTEXPR_EXPECT_EQ((hamon::chrono::duration<int, hamon::pico>(6500)), 6.5_ns);
 		}
 	}
 	{
 		using namespace hamon::literals;
 		static_assert(hamon::is_same<decltype(1_h), hamon::chrono::hours>::value, "");
-		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, std::ratio<3600>>>::value, "");
+		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, hamon::ratio<3600>>>::value, "");
 		static_assert(hamon::is_same<decltype(3_min), hamon::chrono::minutes>::value, "");
-		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, std::ratio<60>>>::value, "");
+		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, hamon::ratio<60>>>::value, "");
 		static_assert(hamon::is_same<decltype(5_s), hamon::chrono::seconds>::value, "");
 		static_assert(hamon::is_same<decltype(6.0_s), hamon::chrono::duration<double>>::value, "");
 		static_assert(hamon::is_same<decltype(7_ms), hamon::chrono::milliseconds>::value, "");
-		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, std::milli>>::value, "");
+		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, hamon::milli>>::value, "");
 		static_assert(hamon::is_same<decltype(9_us), hamon::chrono::microseconds>::value, "");
-		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, std::micro>>::value, "");
+		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, hamon::micro>>::value, "");
 		static_assert(hamon::is_same<decltype(11_ns), hamon::chrono::nanoseconds>::value, "");
-		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, std::nano>>::value, "");
+		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, hamon::nano>>::value, "");
 
 		{
 			HAMON_CXX11_CONSTEXPR_EXPECT_EQ(1_h + 1.5_h, 150_min);
@@ -117,32 +117,32 @@ GTEST_TEST(DurationTest, LiteralsTest)
 	{
 		using namespace hamon::chrono;
 		static_assert(hamon::is_same<decltype(1_h), hamon::chrono::hours>::value, "");
-		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, std::ratio<3600>>>::value, "");
+		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, hamon::ratio<3600>>>::value, "");
 		static_assert(hamon::is_same<decltype(3_min), hamon::chrono::minutes>::value, "");
-		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, std::ratio<60>>>::value, "");
+		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, hamon::ratio<60>>>::value, "");
 		static_assert(hamon::is_same<decltype(5_s), hamon::chrono::seconds>::value, "");
 		static_assert(hamon::is_same<decltype(6.0_s), hamon::chrono::duration<double>>::value, "");
 		static_assert(hamon::is_same<decltype(7_ms), hamon::chrono::milliseconds>::value, "");
-		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, std::milli>>::value, "");
+		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, hamon::milli>>::value, "");
 		static_assert(hamon::is_same<decltype(9_us), hamon::chrono::microseconds>::value, "");
-		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, std::micro>>::value, "");
+		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, hamon::micro>>::value, "");
 		static_assert(hamon::is_same<decltype(11_ns), hamon::chrono::nanoseconds>::value, "");
-		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, std::nano>>::value, "");
+		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, hamon::nano>>::value, "");
 	}
 	{
 		using namespace hamon;
 		static_assert(hamon::is_same<decltype(1_h), hamon::chrono::hours>::value, "");
-		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, std::ratio<3600>>>::value, "");
+		static_assert(hamon::is_same<decltype(2.0_h), hamon::chrono::duration<double, hamon::ratio<3600>>>::value, "");
 		static_assert(hamon::is_same<decltype(3_min), hamon::chrono::minutes>::value, "");
-		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, std::ratio<60>>>::value, "");
+		static_assert(hamon::is_same<decltype(4.0_min), hamon::chrono::duration<double, hamon::ratio<60>>>::value, "");
 		static_assert(hamon::is_same<decltype(5_s), hamon::chrono::seconds>::value, "");
 		static_assert(hamon::is_same<decltype(6.0_s), hamon::chrono::duration<double>>::value, "");
 		static_assert(hamon::is_same<decltype(7_ms), hamon::chrono::milliseconds>::value, "");
-		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, std::milli>>::value, "");
+		static_assert(hamon::is_same<decltype(8.0_ms), hamon::chrono::duration<double, hamon::milli>>::value, "");
 		static_assert(hamon::is_same<decltype(9_us), hamon::chrono::microseconds>::value, "");
-		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, std::micro>>::value, "");
+		static_assert(hamon::is_same<decltype(10.0_us), hamon::chrono::duration<double, hamon::micro>>::value, "");
 		static_assert(hamon::is_same<decltype(11_ns), hamon::chrono::nanoseconds>::value, "");
-		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, std::nano>>::value, "");
+		static_assert(hamon::is_same<decltype(12.0_ns), hamon::chrono::duration<double, hamon::nano>>::value, "");
 	}
 }
 

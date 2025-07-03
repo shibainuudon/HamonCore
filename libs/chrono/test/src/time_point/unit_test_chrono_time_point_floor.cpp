@@ -9,6 +9,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -43,9 +44,9 @@ GTEST_TEST(TimePointTest, FloorTest)
 {
 	using hamon::chrono::floor;
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
 		using TimePoint = hamon::chrono::time_point<MyClock, Duration>;
-		using ToDuration = hamon::chrono::duration<int, std::ratio<1>>;
+		using ToDuration = hamon::chrono::duration<int, hamon::ratio<1>>;
 		using ToTimePoint = hamon::chrono::time_point<MyClock, ToDuration>;
 		static_assert(hamon::is_same<
 			decltype(floor<ToDuration>(hamon::declval<TimePoint>())),
@@ -88,9 +89,9 @@ GTEST_TEST(TimePointTest, FloorTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(floor<ToDuration>(TimePoint{Duration{ 3900}}).time_since_epoch().count(),  3);
 	}
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
 		using TimePoint = hamon::chrono::time_point<MyClock, Duration>;
-		using ToDuration = hamon::chrono::duration<float, std::ratio<1>>;
+		using ToDuration = hamon::chrono::duration<float, hamon::ratio<1>>;
 		using ToTimePoint = hamon::chrono::time_point<MyClock, ToDuration>;
 		static_assert(hamon::is_same<
 			decltype(floor<ToDuration>(hamon::declval<TimePoint>())),

@@ -8,10 +8,10 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -40,8 +40,8 @@ GTEST_TEST(DurationTest, RoundTest)
 {
 	using hamon::chrono::round;
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using ToDuration = hamon::chrono::duration<int, std::ratio<1>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using ToDuration = hamon::chrono::duration<int, hamon::ratio<1>>;
 		static_assert(hamon::is_same<
 			decltype(round<ToDuration>(hamon::declval<Duration>())),
 			ToDuration

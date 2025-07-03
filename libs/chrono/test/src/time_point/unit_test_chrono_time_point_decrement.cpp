@@ -9,6 +9,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -56,10 +57,10 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(TimePointTest, DecrementTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<int, std::ratio<60>>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<long, std::milli>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<float, std::ratio<1, 30>>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<double, std::ratio<120>>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<int, hamon::ratio<60>>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<long, hamon::milli>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<float, hamon::ratio<1, 30>>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<double, hamon::ratio<120>>>()));
 }
 
 }	// namespace time_point_decrement_test

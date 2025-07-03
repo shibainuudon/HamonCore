@@ -8,9 +8,9 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -52,8 +52,8 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(DurationTest, ModAssignTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int, std::ratio<60>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long, std::milli>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<int, hamon::ratio<60>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<long, hamon::milli>()));
 }
 
 }	// namespace duration_mod_assign_test

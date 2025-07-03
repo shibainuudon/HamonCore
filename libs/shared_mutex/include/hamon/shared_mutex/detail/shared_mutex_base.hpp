@@ -71,7 +71,8 @@ public:
 	bool try_lock_until(hamon::chrono::time_point<Clock, Duration> const& abs_time)
 	{
 		// TODO hamon::chrono::time_point から std::chrono::time_point への変換を簡単にする
-		using std_duration = std::chrono::duration<typename Duration::rep, typename Duration::period>;
+		using std_period = std::ratio<Duration::period::num, Duration::period::den>;
+		using std_duration = std::chrono::duration<typename Duration::rep, std_period>;
 		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
 		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
 
@@ -161,7 +162,8 @@ public:
 	bool try_lock_shared_until(hamon::chrono::time_point<Clock, Duration> const& abs_time)
 	{
 		// TODO hamon::chrono::time_point から std::chrono::time_point への変換を簡単にする
-		using std_duration = std::chrono::duration<typename Duration::rep, typename Duration::period>;
+		using std_period = std::ratio<Duration::period::num, Duration::period::den>;
+		using std_duration = std::chrono::duration<typename Duration::rep, std_period>;
 		using std_time_point = std::chrono::time_point<std::chrono::system_clock, std_duration>;
 		auto const std_abs_time = std_time_point{std_duration{abs_time.time_since_epoch().count()}};
 

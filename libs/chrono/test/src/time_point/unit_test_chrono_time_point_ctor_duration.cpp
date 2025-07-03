@@ -8,6 +8,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -46,7 +47,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(TimePointTest, CtorDurationTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<int, std::ratio<1, 1000>>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<int, hamon::ratio<1, 1000>>>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test<MyClock, hamon::chrono::duration<float>>()));
 }
 

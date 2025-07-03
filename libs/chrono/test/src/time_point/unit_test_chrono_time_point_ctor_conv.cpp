@@ -9,6 +9,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -32,27 +33,27 @@ HAMON_CXX14_CONSTEXPR bool test_integer()
 {
 	using hamon::chrono::duration;
 	using hamon::chrono::time_point;
-	using Duration = duration<Rep, std::micro>;
+	using Duration = duration<Rep, hamon::micro>;
 	using TimePoint = time_point<Clock, Duration>;
 
-	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::nano>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::micro>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::nano>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::micro>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::milli>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::nano>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::micro>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::milli>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::nano>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::micro>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::milli>>>::value, "");
 
 #if !defined(HAMON_USE_STD_CHRONO)
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
 #endif
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
 
 	{
-		using Duration2 = duration<int, std::milli>;
+		using Duration2 = duration<int, hamon::milli>;
 		using TimePoint2 = time_point<Clock, Duration2>;
 		TimePoint2 ms(Duration2{3});
 		TimePoint tp{ms};
@@ -66,51 +67,51 @@ HAMON_CXX14_CONSTEXPR bool test_float()
 {
 	using hamon::chrono::duration;
 	using hamon::chrono::time_point;
-	using Duration = duration<Rep, std::micro>;
+	using Duration = duration<Rep, hamon::micro>;
 	using TimePoint = time_point<Clock, Duration>;
 
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::nano>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::micro>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::nano>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::micro>>>::value, "");
-	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, std::milli>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::nano>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::micro>>>::value, "");
-	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, std::milli>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
+	static_assert( hamon::is_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::nano>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::micro>>>::value, "");
+	static_assert(!hamon::is_constructible<TimePoint, time_point<MyClock2, duration<int, hamon::milli>>>::value, "");
 
 #if !defined(HAMON_USE_STD_CHRONO)
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, std::nano>>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, std::micro>>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, std::nano>>>::value, "");
-//	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, std::micro>>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, std::milli>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
+//	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
 #endif
 
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, std::nano>>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, std::micro>>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, std::nano>>>::value, "");
-//	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, std::micro>>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, std::milli>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
+//	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
 
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, std::nano>>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, std::micro>>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, std::milli>>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, std::nano>>>::value, "");
-//	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, std::micro>>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, std::milli>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, hamon::nano>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, hamon::micro>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<int, hamon::milli>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, hamon::nano>>>::value, "");
+//	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, hamon::micro>>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<TimePoint, time_point<Clock, duration<float, hamon::milli>>>::value, "");
 
 	{
-		using Duration2 = duration<int, std::milli>;
+		using Duration2 = duration<int, hamon::milli>;
 		using TimePoint2 = time_point<Clock, Duration2>;
 		TimePoint2 ms(Duration2{3});
 		TimePoint tp{ms};
 		VERIFY(tp.time_since_epoch().count() == 3000);
 	}
 	{
-		using Duration2 = duration<int, std::nano>;
+		using Duration2 = duration<int, hamon::nano>;
 		using TimePoint2 = time_point<Clock, Duration2>;
 		TimePoint2 ns(Duration2{500});
 		TimePoint tp{ns};

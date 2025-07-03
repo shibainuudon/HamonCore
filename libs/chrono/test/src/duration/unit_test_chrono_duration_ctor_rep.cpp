@@ -8,9 +8,9 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -93,11 +93,11 @@ HAMON_CXX14_CONSTEXPR bool test_float()
 
 GTEST_TEST(DurationTest, CtorRepTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<int,   std::ratio<60>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<short, std::milli>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<long,  std::ratio<1, 30>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_float<float,  std::ratio<60>>()));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_float<double, std::milli>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<int,   hamon::ratio<60>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<short, hamon::milli>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_integer<long,  hamon::ratio<1, 30>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_float<float,  hamon::ratio<60>>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test_float<double, hamon::milli>()));
 }
 
 }	// namespace duration_ctor_rep_test

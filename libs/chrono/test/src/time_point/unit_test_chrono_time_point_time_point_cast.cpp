@@ -10,6 +10,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -44,8 +45,8 @@ GTEST_TEST(TimePointTest, TimePointCastTest)
 {
 	using hamon::chrono::time_point_cast;
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using Duration2 = hamon::chrono::duration<int, std::ratio<1>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using Duration2 = hamon::chrono::duration<int, hamon::ratio<1>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		using TimePoint2 = hamon::chrono::time_point<MyClock, Duration2>;
 		static_assert(hamon::is_same<
@@ -89,8 +90,8 @@ GTEST_TEST(TimePointTest, TimePointCastTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(time_point_cast<Duration2>(TimePoint1{Duration1{ 3900}}).time_since_epoch().count(),  3);
 	}
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using Duration2 = hamon::chrono::duration<float, std::ratio<1>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using Duration2 = hamon::chrono::duration<float, hamon::ratio<1>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		using TimePoint2 = hamon::chrono::time_point<MyClock, Duration2>;
 		static_assert(hamon::is_same<
@@ -113,14 +114,14 @@ GTEST_TEST(TimePointTest, TimePointCastTest)
 		}
 	}
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<17>>;
-		using Duration2 = hamon::chrono::duration<int, std::ratio<23>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<17>>;
+		using Duration2 = hamon::chrono::duration<int, hamon::ratio<23>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(time_point_cast<Duration2>(TimePoint1{Duration1{100}}).time_since_epoch().count(), 73);
 	}
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<17>>;
-		using Duration2 = hamon::chrono::duration<float, std::ratio<23>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<17>>;
+		using Duration2 = hamon::chrono::duration<float, hamon::ratio<23>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(time_point_cast<Duration2>(TimePoint1{Duration1{100}}).time_since_epoch().count(), 100.f / 23 * 17);	// ≒ 73.91304347826087
 	}

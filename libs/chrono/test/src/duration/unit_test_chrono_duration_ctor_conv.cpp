@@ -8,9 +8,9 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -25,26 +25,26 @@ template <typename Rep>
 HAMON_CXX14_CONSTEXPR bool test_integer()
 {
 	using hamon::chrono::duration;
-	using Duration = duration<Rep, std::micro>;
+	using Duration = duration<Rep, hamon::micro>;
 
-	static_assert(!hamon::is_constructible<Duration, duration<int, std::nano>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<int, std::micro>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert(!hamon::is_constructible<Duration, duration<float, std::nano>>::value, "");
-	static_assert(!hamon::is_constructible<Duration, duration<float, std::micro>>::value, "");
-	static_assert(!hamon::is_constructible<Duration, duration<float, std::milli>>::value, "");
+	static_assert(!hamon::is_constructible<Duration, duration<int, hamon::nano>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<int, hamon::micro>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert(!hamon::is_constructible<Duration, duration<float, hamon::nano>>::value, "");
+	static_assert(!hamon::is_constructible<Duration, duration<float, hamon::micro>>::value, "");
+	static_assert(!hamon::is_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, std::milli>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, hamon::milli>>::value, "");
 
 	{
-		duration<int, std::milli> ms(3);
-		duration<Rep, std::micro> us(ms);
+		duration<int, hamon::milli> ms(3);
+		duration<Rep, hamon::micro> us(ms);
 		VERIFY(ms.count() == 3);
 		VERIFY(us.count() == 3000);
 
-//		duration<int, std::milli> ms2(us);	// error
+//		duration<int, hamon::milli> ms2(us);	// error
 	}
 
 	return true;
@@ -54,50 +54,50 @@ template <typename Rep>
 HAMON_CXX14_CONSTEXPR bool test_float()
 {
 	using hamon::chrono::duration;
-	using Duration = duration<Rep, std::micro>;
+	using Duration = duration<Rep, hamon::micro>;
 
-	static_assert( hamon::is_constructible<Duration, duration<int, std::nano>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<int, std::micro>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<float, std::nano>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<float, std::micro>>::value, "");
-	static_assert( hamon::is_constructible<Duration, duration<float, std::milli>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<int, hamon::nano>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<int, hamon::micro>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<float, hamon::nano>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<float, hamon::micro>>::value, "");
+	static_assert( hamon::is_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, std::nano>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, std::micro>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, std::nano>>::value, "");
-//	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, std::micro>>::value, "");
-	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, std::milli>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::nano>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::micro>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::nano>>::value, "");
+//	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::micro>>::value, "");
+	static_assert( hamon::is_nothrow_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, std::nano>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, std::micro>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, std::nano>>::value, "");
-//	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, std::micro>>::value, "");
-	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, std::milli>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::nano>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::micro>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, hamon::nano>>::value, "");
+//	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, hamon::micro>>::value, "");
+	static_assert(!hamon::is_trivially_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, std::nano>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, std::micro>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, std::milli>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, std::nano>>::value, "");
-//	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, std::micro>>::value, "");
-	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, std::milli>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, hamon::nano>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, hamon::micro>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<int, hamon::milli>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, hamon::nano>>::value, "");
+//	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, hamon::micro>>::value, "");
+	static_assert( hamon::is_implicitly_constructible<Duration, duration<float, hamon::milli>>::value, "");
 
 	{
-		duration<int, std::milli> ms(3);
-		duration<Rep, std::micro> us(ms);
+		duration<int, hamon::milli> ms(3);
+		duration<Rep, hamon::micro> us(ms);
 		VERIFY(ms.count() == 3);
 		VERIFY(us.count() == 3000);
 	}
 	{
-		duration<float, std::micro> ms(4000);
-		duration<Rep, std::milli> us(ms);
+		duration<float, hamon::micro> ms(4000);
+		duration<Rep, hamon::milli> us(ms);
 		VERIFY(ms.count() == 4000);
 		VERIFY(us.count() == 4);
 	}
 	{
-		duration<int, std::ratio<1, 2>> d1(1);
+		duration<int, hamon::ratio<1, 2>> d1(1);
 		duration<Rep> d2(d1);
 		VERIFY(d1.count() == 1);
 		VERIFY(d2.count() == 0.5);

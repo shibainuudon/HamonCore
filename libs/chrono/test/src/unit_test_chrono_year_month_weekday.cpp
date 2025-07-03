@@ -7,6 +7,7 @@
 #include <hamon/chrono/year_month_weekday.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/compare.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -87,7 +88,7 @@ HAMON_CXX14_CONSTEXPR bool test1()
 	VERIFY(chrono::year_month_day{chrono::sys_days{date}} == 2018_y/10/14);
 
 	// monthsとyearsのどちらにも暗黙変換できるとき
-	using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+	using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 
 	date += decades{2};
 	VERIFY(date.year() == chrono::year{2038});
@@ -170,7 +171,7 @@ HAMON_CXX14_CONSTEXPR bool test2()
 	VERIFY(chrono::year_month_day{chrono::sys_days{date}} == 2018_y/11/25);
 
 	// monthsとyearsのどちらにも暗黙変換できるとき
-	using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+	using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 
 	date += decades{2};
 	VERIFY(date.year() == chrono::year{2038});
@@ -338,7 +339,7 @@ GTEST_TEST(ChronoTest, YearMonthWeekdayTest)
 
 		// monthsとyearsのどちらにも暗黙変換できるとき
 		{
-			using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+			using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/1/chrono::Sunday[1] + decades{1} == 2030_y/1/chrono::Sunday[1]);
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(decades{2} + 2020_y/1/chrono::Sunday[1] == 2040_y/1/chrono::Sunday[1]);
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/1/chrono::Sunday[1] - decades{3} == 1990_y/1/chrono::Sunday[1]);
@@ -475,7 +476,7 @@ GTEST_TEST(ChronoTest, YearMonthWeekdayTest)
 
 		// monthsとyearsのどちらにも暗黙変換できるとき
 		{
-			using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+			using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/1/chrono::Sunday[chrono::last] + decades{1} == 2030_y/1/chrono::Sunday[chrono::last]);
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(decades{2} + 2020_y/1/chrono::Sunday[chrono::last] == 2040_y/1/chrono::Sunday[chrono::last]);
 			HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/1/chrono::Sunday[chrono::last] - decades{3} == 1990_y/1/chrono::Sunday[chrono::last]);

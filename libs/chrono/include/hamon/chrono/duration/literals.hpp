@@ -8,6 +8,7 @@
 #define HAMON_CHRONO_DURATION_LITERALS_HPP
 
 #include <hamon/chrono/duration/typedefs.hpp>
+#include <hamon/ratio.hpp>
 
 // 29.5.9 Suffixes for duration literals[time.duration.literals]
 
@@ -31,11 +32,11 @@ operator"" _h(unsigned long long hours) HAMON_NOEXCEPT	// noexcept as an extensi
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-chrono::duration<double, std::ratio<3600, 1>>
+chrono::duration<double, hamon::ratio<3600, 1>>
 operator"" _h(long double hours) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [time.duration.literals]/5
-	return chrono::duration<double, std::ratio<3600, 1>>(hours);
+	return chrono::duration<double, hamon::ratio<3600, 1>>(hours);
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
@@ -47,11 +48,11 @@ operator"" _min(unsigned long long minutes) HAMON_NOEXCEPT	// noexcept as an ext
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-chrono::duration<double, std::ratio<60, 1>>
+chrono::duration<double, hamon::ratio<60, 1>>
 operator"" _min(long double minutes) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [time.duration.literals]/6
-	return chrono::duration<double, std::ratio<60, 1>>(minutes);
+	return chrono::duration<double, hamon::ratio<60, 1>>(minutes);
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
@@ -79,11 +80,11 @@ operator"" _ms(unsigned long long msec) HAMON_NOEXCEPT	// noexcept as an extensi
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-chrono::duration<double, std::milli>
+chrono::duration<double, hamon::milli>
 operator"" _ms(long double msec) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [time.duration.literals]/9
-	return chrono::duration<double, std::milli>(msec);
+	return chrono::duration<double, hamon::milli>(msec);
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
@@ -95,11 +96,11 @@ operator"" _us(unsigned long long usec) HAMON_NOEXCEPT	// noexcept as an extensi
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-chrono::duration<double, std::micro>
+chrono::duration<double, hamon::micro>
 operator"" _us(long double usec) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [time.duration.literals]/10
-	return chrono::duration<double, std::micro>(usec);
+	return chrono::duration<double, hamon::micro>(usec);
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
@@ -111,11 +112,11 @@ operator"" _ns(unsigned long long nsec) HAMON_NOEXCEPT	// noexcept as an extensi
 }
 
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-chrono::duration<double, std::nano>
+chrono::duration<double, hamon::nano>
 operator"" _ns(long double nsec) HAMON_NOEXCEPT	// noexcept as an extension
 {
 	// [time.duration.literals]/11
-	return chrono::duration<double, std::nano>(nsec);
+	return chrono::duration<double, hamon::nano>(nsec);
 }
 
 }	// inline namespace chrono_literals

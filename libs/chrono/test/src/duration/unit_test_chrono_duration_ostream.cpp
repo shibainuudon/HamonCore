@@ -9,6 +9,7 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 
@@ -30,51 +31,51 @@ void test(Rep v, CharT const* str)
 
 GTEST_TEST(DurationTest, OStreamTest)
 {
-	test<std::atto> (1, "1as");
-	test<std::femto>(2.5, "2.5fs");
-	test<std::pico> (3, "3ps");
-	test<std::nano> (4.5f, "4.5ns");
-	test<std::micro>(5, "5us");
-	test<std::milli>(6, "6ms");
-	test<std::centi>(7, "7cs");
-	test<std::deci> (8, "8ds");
-	test<std::ratio<1>>(9, "9s");
-	test<std::deca> (10, "10das");
-	test<std::hecto>(11, "11hs");
-	test<std::kilo> (12, "12ks");
-	test<std::mega> (13, "13Ms");
-	test<std::giga> (14, "14Gs");
-	test<std::tera> (15, "15Ts");
-	test<std::peta> (16, "16Ps");
-	test<std::exa>  (17, "17Es");
-	test<std::ratio<60>>   (18, "18min");
-	test<std::ratio<3600>> (19, "19h");
-	test<std::ratio<86400>>(20, "20d");
-	test<std::ratio<30>>   (21, "21[30]s");
-	test<std::ratio<3, 4>> (22, "22[3/4]s");
+	test<hamon::atto> (1, "1as");
+	test<hamon::femto>(2.5, "2.5fs");
+	test<hamon::pico> (3, "3ps");
+	test<hamon::nano> (4.5f, "4.5ns");
+	test<hamon::micro>(5, "5us");
+	test<hamon::milli>(6, "6ms");
+	test<hamon::centi>(7, "7cs");
+	test<hamon::deci> (8, "8ds");
+	test<hamon::ratio<1>>(9, "9s");
+	test<hamon::deca> (10, "10das");
+	test<hamon::hecto>(11, "11hs");
+	test<hamon::kilo> (12, "12ks");
+	test<hamon::mega> (13, "13Ms");
+	test<hamon::giga> (14, "14Gs");
+	test<hamon::tera> (15, "15Ts");
+	test<hamon::peta> (16, "16Ps");
+	test<hamon::exa>  (17, "17Es");
+	test<hamon::ratio<60>>   (18, "18min");
+	test<hamon::ratio<3600>> (19, "19h");
+	test<hamon::ratio<86400>>(20, "20d");
+	test<hamon::ratio<30>>   (21, "21[30]s");
+	test<hamon::ratio<3, 4>> (22, "22[3/4]s");
 
-	test<std::atto> (1, L"1as");
-	test<std::femto>(2.5, L"2.5fs");
-	test<std::pico> (3, L"3ps");
-	test<std::nano> (4.5f, L"4.5ns");
-	test<std::micro>(5, L"5us");
-	test<std::milli>(6, L"6ms");
-	test<std::centi>(7, L"7cs");
-	test<std::deci> (8, L"8ds");
-	test<std::ratio<1>>(9, L"9s");
-	test<std::deca> (10, L"10das");
-	test<std::hecto>(11, L"11hs");
-	test<std::kilo> (12, L"12ks");
-	test<std::mega> (13, L"13Ms");
-	test<std::giga> (14, L"14Gs");
-	test<std::tera> (15, L"15Ts");
-	test<std::peta> (16, L"16Ps");
-	test<std::exa>  (17, L"17Es");
-	test<std::ratio<60>>   (18, L"18min");
-	test<std::ratio<3600>> (19, L"19h");
-	test<std::ratio<86400>>(20, L"20d");
-	test<std::ratio<61>>   (21, L"21[61]s");
-	test<std::ratio<17, 1000>> (22, L"22[17/1000]s");
+	test<hamon::atto> (1, L"1as");
+	test<hamon::femto>(2.5, L"2.5fs");
+	test<hamon::pico> (3, L"3ps");
+	test<hamon::nano> (4.5f, L"4.5ns");
+	test<hamon::micro>(5, L"5us");
+	test<hamon::milli>(6, L"6ms");
+	test<hamon::centi>(7, L"7cs");
+	test<hamon::deci> (8, L"8ds");
+	test<hamon::ratio<1>>(9, L"9s");
+	test<hamon::deca> (10, L"10das");
+	test<hamon::hecto>(11, L"11hs");
+	test<hamon::kilo> (12, L"12ks");
+	test<hamon::mega> (13, L"13Ms");
+	test<hamon::giga> (14, L"14Gs");
+	test<hamon::tera> (15, L"15Ts");
+	test<hamon::peta> (16, L"16Ps");
+	test<hamon::exa>  (17, L"17Es");
+	test<hamon::ratio<60>>   (18, L"18min");
+	test<hamon::ratio<3600>> (19, L"19h");
+	test<hamon::ratio<86400>>(20, L"20d");
+	test<hamon::ratio<61>>   (21, L"21[61]s");
+	test<hamon::ratio<17, 1000>> (22, L"22[17/1000]s");
 }
 
 }	// namespace duration_ostream_test

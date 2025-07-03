@@ -14,6 +14,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -31,9 +32,9 @@ struct MyClock
 GTEST_TEST(TimePointTest, SubTest)
 {
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using Duration2 = hamon::chrono::duration<float, std::ratio<1>>;
-		using CommonDuration = hamon::chrono::duration<float, std::ratio<1, 1000>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using Duration2 = hamon::chrono::duration<float, hamon::ratio<1>>;
+		using CommonDuration = hamon::chrono::duration<float, hamon::ratio<1, 1000>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		using TimePoint2 = hamon::chrono::time_point<MyClock, Duration2>;
 
@@ -56,9 +57,9 @@ GTEST_TEST(TimePointTest, SubTest)
 			(TimePoint1{Duration1{2}} - TimePoint2{Duration2{3}}).count());
 	}
 	{
-		using Duration1 = hamon::chrono::duration<double, std::ratio<200>>;
-		using Duration2 = hamon::chrono::duration<short, std::ratio<1, 1000>>;
-		using CommonDuration = hamon::chrono::duration<double, std::ratio<1, 1000>>;
+		using Duration1 = hamon::chrono::duration<double, hamon::ratio<200>>;
+		using Duration2 = hamon::chrono::duration<short, hamon::ratio<1, 1000>>;
+		using CommonDuration = hamon::chrono::duration<double, hamon::ratio<1, 1000>>;
 		using TimePoint1 = hamon::chrono::time_point<MyClock, Duration1>;
 		using TimePoint2 = hamon::chrono::time_point<MyClock, Duration2>;
 

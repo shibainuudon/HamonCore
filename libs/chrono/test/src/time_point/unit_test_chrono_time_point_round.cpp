@@ -9,6 +9,7 @@
 
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
@@ -43,9 +44,9 @@ GTEST_TEST(TimePointTest, RoundTest)
 {
 	using hamon::chrono::round;
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
 		using TimePoint = hamon::chrono::time_point<MyClock, Duration>;
-		using ToDuration = hamon::chrono::duration<int, std::ratio<1>>;
+		using ToDuration = hamon::chrono::duration<int, hamon::ratio<1>>;
 		using ToTimePoint = hamon::chrono::time_point<MyClock, ToDuration>;
 		static_assert(hamon::is_same<
 			decltype(round<ToDuration>(hamon::declval<TimePoint>())),

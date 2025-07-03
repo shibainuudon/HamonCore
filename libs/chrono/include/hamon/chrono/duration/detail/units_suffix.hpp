@@ -9,8 +9,8 @@
 
 #include <hamon/chrono/detail/statically_widen.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/ratio.hpp>
 #include <sstream>	// basic_ostringstream
-#include <ratio>
 
 namespace hamon {
 namespace chrono {
@@ -64,26 +64,26 @@ struct units_suffix_impl<PERIOD::num, PERIOD::den>                 \
 }
 
 // [time.duration.io]/1.1-1.20
-HAMON_UNITS_SUFFIX(std::atto,         "as");
-HAMON_UNITS_SUFFIX(std::femto,        "fs");
-HAMON_UNITS_SUFFIX(std::pico,         "ps");
-HAMON_UNITS_SUFFIX(std::nano,         "ns");
-HAMON_UNITS_SUFFIX(std::micro,        "us");
-HAMON_UNITS_SUFFIX(std::milli,        "ms");
-HAMON_UNITS_SUFFIX(std::centi,        "cs");
-HAMON_UNITS_SUFFIX(std::deci,         "ds");
-HAMON_UNITS_SUFFIX(std::ratio<1>,     "s");
-HAMON_UNITS_SUFFIX(std::deca,         "das");
-HAMON_UNITS_SUFFIX(std::hecto,        "hs");
-HAMON_UNITS_SUFFIX(std::kilo,         "ks");
-HAMON_UNITS_SUFFIX(std::mega,         "Ms");
-HAMON_UNITS_SUFFIX(std::giga,         "Gs");
-HAMON_UNITS_SUFFIX(std::tera,         "Ts");
-HAMON_UNITS_SUFFIX(std::peta,         "Ps");
-HAMON_UNITS_SUFFIX(std::exa,          "Es");
-HAMON_UNITS_SUFFIX(std::ratio<60>,    "min");
-HAMON_UNITS_SUFFIX(std::ratio<3600>,  "h");
-HAMON_UNITS_SUFFIX(std::ratio<86400>, "d");
+HAMON_UNITS_SUFFIX(hamon::atto,         "as");
+HAMON_UNITS_SUFFIX(hamon::femto,        "fs");
+HAMON_UNITS_SUFFIX(hamon::pico,         "ps");
+HAMON_UNITS_SUFFIX(hamon::nano,         "ns");
+HAMON_UNITS_SUFFIX(hamon::micro,        "us");
+HAMON_UNITS_SUFFIX(hamon::milli,        "ms");
+HAMON_UNITS_SUFFIX(hamon::centi,        "cs");
+HAMON_UNITS_SUFFIX(hamon::deci,         "ds");
+HAMON_UNITS_SUFFIX(hamon::ratio<1>,     "s");
+HAMON_UNITS_SUFFIX(hamon::deca,         "das");
+HAMON_UNITS_SUFFIX(hamon::hecto,        "hs");
+HAMON_UNITS_SUFFIX(hamon::kilo,         "ks");
+HAMON_UNITS_SUFFIX(hamon::mega,         "Ms");
+HAMON_UNITS_SUFFIX(hamon::giga,         "Gs");
+HAMON_UNITS_SUFFIX(hamon::tera,         "Ts");
+HAMON_UNITS_SUFFIX(hamon::peta,         "Ps");
+HAMON_UNITS_SUFFIX(hamon::exa,          "Es");
+HAMON_UNITS_SUFFIX(hamon::ratio<60>,    "min");
+HAMON_UNITS_SUFFIX(hamon::ratio<3600>,  "h");
+HAMON_UNITS_SUFFIX(hamon::ratio<86400>, "d");
 
 #undef HAMON_UNITS_SUFFIX
 

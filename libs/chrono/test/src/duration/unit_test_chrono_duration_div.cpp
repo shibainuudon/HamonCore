@@ -13,10 +13,10 @@
  */
 
 #include <hamon/chrono/duration.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <gtest/gtest.h>
-#include <ratio>
 #include "constexpr_test.hpp"
 
 namespace hamon_chrono_test
@@ -28,15 +28,15 @@ namespace duration_div_test
 GTEST_TEST(DurationTest, DivTest)
 {
 	{
-		using Duration = hamon::chrono::duration<int, std::ratio<1, 1000>>;
+		using Duration = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
 
 		static_assert(hamon::is_same<
 			decltype(hamon::declval<Duration>() / hamon::declval<short>()),
-			hamon::chrono::duration<int, std::ratio<1, 1000>>
+			hamon::chrono::duration<int, hamon::ratio<1, 1000>>
 		>::value, "");
 		static_assert(hamon::is_same<
 			decltype(hamon::declval<Duration>() / hamon::declval<float>()),
-			hamon::chrono::duration<float, std::ratio<1, 1000>>
+			hamon::chrono::duration<float, hamon::ratio<1, 1000>>
 		>::value, "");
 #if !defined(HAMON_USE_STD_CHRONO)
 		static_assert(noexcept(hamon::declval<Duration>() / hamon::declval<int>()), "");
@@ -53,8 +53,8 @@ GTEST_TEST(DurationTest, DivTest)
 		}
 	}
 	{
-		using Duration1 = hamon::chrono::duration<int, std::ratio<1, 1000>>;
-		using Duration2 = hamon::chrono::duration<float, std::ratio<1, 1000>>;
+		using Duration1 = hamon::chrono::duration<int, hamon::ratio<1, 1000>>;
+		using Duration2 = hamon::chrono::duration<float, hamon::ratio<1, 1000>>;
 
 		static_assert(hamon::is_same<
 			decltype(hamon::declval<Duration1>() / hamon::declval<Duration2>()),

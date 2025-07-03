@@ -7,6 +7,7 @@
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/config.hpp>
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
@@ -32,7 +33,7 @@ namespace hamon_chrono_test
 struct Clock1
 {
 	using rep = int;
-	using period = std::ratio<1>;
+	using period = hamon::ratio<1>;
 	using duration = hamon::chrono::duration<rep, period>;
 	using time_point = hamon::chrono::time_point<Clock1, duration>;
 	static constexpr bool is_steady = false;

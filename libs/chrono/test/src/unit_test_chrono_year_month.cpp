@@ -7,6 +7,7 @@
 #include <hamon/chrono/year_month.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/compare.hpp>
+#include <hamon/ratio.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -60,7 +61,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	VERIFY(ym.ok());
 
 	// monthsとyearsのどちらにも暗黙変換できるとき
-	using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+	using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 
 	ym += decades{3};
 	VERIFY(ym.year() == chrono::year{2052});
@@ -224,7 +225,7 @@ GTEST_TEST(ChronoTest, YearMonthTest)
 
 	// monthsとyearsのどちらにも暗黙変換できるとき
 	{
-		using decades = chrono::duration<int, std::ratio_multiply<chrono::years::period, std::ratio<10>>>;
+		using decades = chrono::duration<int, hamon::ratio_multiply<chrono::years::period, hamon::ratio<10>>>;
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/3 + decades{1} == 2030_y/3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(decades{2} + 2020_y/3 == 2040_y/3);
 		HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(2020_y/3 - decades{3} == 1990_y/3);
