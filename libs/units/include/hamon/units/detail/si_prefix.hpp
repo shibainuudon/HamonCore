@@ -7,11 +7,11 @@
 #ifndef HAMON_UNITS_DETAIL_SI_PREFIX_HPP
 #define HAMON_UNITS_DETAIL_SI_PREFIX_HPP
 
+#include <hamon/ratio.hpp>
 #include <cstdint>	// INTMAX_MAX
-#include <ratio>
 
 #define HAMON_UNITS_SI_PREFIX_2(Name, Ratio) \
-	template <typename T> using Ratio ## Name = decltype(Name<T>() * std::Ratio())
+	template <typename T> using Ratio ## Name = decltype(Name<T>() * hamon::Ratio())
 
 #if (INTMAX_MAX / 1000000000) >= 1000000000000		// INTMAX_MAX >= (1000000000000000000000)
 #define HAMON_UNITS_SI_PREFIX_ZEPTO(Name)	HAMON_UNITS_SI_PREFIX_2(Name, zepto);
