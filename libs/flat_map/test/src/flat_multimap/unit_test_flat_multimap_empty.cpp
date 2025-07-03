@@ -50,6 +50,8 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	{
 		Map v;
 		VERIFY(v.empty() == true);
+		v.insert({Key{42}, T{10}});
+		VERIFY(v.empty() == false);
 	}
 	{
 		Map const v;

@@ -69,6 +69,73 @@ public:
 	}
 };
 
+template <typename T>
+struct UseAllocContainer
+{
+private:
+	using Container = hamon::vector<T>;
+
+	Container m_cont;
+
+public:
+	using value_type = T;
+	using allocator_type = typename Container::allocator_type;
+	using size_type = typename Container::size_type;
+	using iterator = typename Container::iterator;
+	using const_iterator = typename Container::const_iterator;
+
+	HAMON_CXX14_CONSTEXPR iterator       begin()       { return m_cont.begin(); }
+	HAMON_CXX11_CONSTEXPR const_iterator begin() const { return m_cont.begin(); }
+	HAMON_CXX14_CONSTEXPR iterator       end()         { return m_cont.end(); }
+	HAMON_CXX11_CONSTEXPR const_iterator end() const   { return m_cont.end(); }
+
+	HAMON_CXX11_CONSTEXPR bool empty() const noexcept { return m_cont.empty(); }
+	HAMON_CXX11_CONSTEXPR size_type size() const noexcept { return m_cont.size(); }
+	HAMON_CXX11_CONSTEXPR size_type max_size() const noexcept { return m_cont.max_size(); }
+
+	UseAllocContainer() = default;
+
+	HAMON_CXX14_CONSTEXPR
+	UseAllocContainer(std::initializer_list<T> il)
+		: m_cont(il)
+	{}
+
+	HAMON_CXX14_CONSTEXPR
+	UseAllocContainer(allocator_type const& a)
+		: m_cont(a)
+	{}
+
+	HAMON_CXX14_CONSTEXPR
+	UseAllocContainer(UseAllocContainer const& c, allocator_type const& a)
+		: m_cont(c.m_cont, a)
+	{}
+
+	template <typename... Args>
+	HAMON_CXX14_CONSTEXPR iterator
+	emplace(const_iterator pos, Args&&... args)
+	{
+		return m_cont.emplace(pos, hamon::forward<Args>(args)...);
+	}
+
+	HAMON_CXX14_CONSTEXPR iterator
+	erase(const_iterator pos)
+	{
+		return m_cont.erase(pos);
+	}
+
+	HAMON_CXX14_CONSTEXPR iterator
+	erase(const_iterator first, const_iterator last)
+	{
+		return m_cont.erase(first, last);
+	}
+
+	HAMON_CXX14_CONSTEXPR void
+	clear()
+	{
+		return m_cont.clear();
+	}
+};
+
 struct TransparentKey
 {
 	int value;

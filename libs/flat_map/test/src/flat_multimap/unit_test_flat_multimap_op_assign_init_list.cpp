@@ -15,7 +15,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
 
@@ -87,6 +89,26 @@ GTEST_TEST(FlatMultimapTest, OpAssignInitListTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+
+	{
+		hamon::flat_multimap<hamon::string, int> fm;
+		EXPECT_TRUE(fm.empty());
+
+		fm =
+		{
+			{hamon::string("Carol"), 4},
+			{hamon::string("Alice"), 3},
+			{hamon::string("Bob"),   1},
+			{hamon::string("Alice"), 1},
+		};
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second  << ", ";
+		}
+		EXPECT_EQ("Alice:3, Alice:1, Bob:1, Carol:4, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

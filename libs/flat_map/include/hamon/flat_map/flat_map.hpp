@@ -44,14 +44,23 @@
 #include <hamon/vector.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
-#include <memory>	// uses_allocator
 
 namespace hamon
 {
 
+// TODO:
+// * コピー代入演算子のテスト
+// * ムーブ代入演算子のテスト
+// * 例外を投げたときのテスト
+// * 例外指定の見直し
+// * nodiscard指定の見直し
+// * erase_if の効率化
+// * #include の整理
+
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer>
 class flat_map
 {
+private:
 	// [flat.map.overview]/7
 	static_assert(hamon::detail::cpp17_random_access_iterator_t<typename KeyContainer::iterator>::value, "");
 	static_assert(noexcept(hamon::declval<KeyContainer>().size()), "");
@@ -86,15 +95,15 @@ public:
 	private:
 		friend flat_map;
 
-		HAMON_NO_UNIQUE_ADDRESS key_compare comp;
+		key_compare comp;
 
-		constexpr
+		HAMON_CXX11_CONSTEXPR
 		value_compare(key_compare c)
 			: comp(c)
 		{}
 
 	public:
-		constexpr bool
+		HAMON_CXX11_CONSTEXPR bool
 		operator()(const_reference x, const_reference y) const
 		{
 			return comp(x.first, y.first);
@@ -108,7 +117,7 @@ public:
 	};
 
 	// [flat.map.cons], constructors
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	flat_map() HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_default_constructible<KeyContainer>::value &&
 		hamon::is_nothrow_default_constructible<MappedContainer>::value &&
@@ -117,9 +126,35 @@ public:
 	{}
 
 	flat_map(flat_map const&) = default;
-	flat_map(flat_map&&) = default;
 
-	constexpr explicit
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4297)	// 例外をスローしないはずだがそれをする関数。
+HAMON_WARNING_DISABLE_GCC("-Wterminate")
+
+	HAMON_CXX20_CONSTEXPR
+	flat_map(flat_map&& other) HAMON_NOEXCEPT_IF(	// noexcept as an extension
+		hamon::is_nothrow_move_constructible<KeyContainer>::value &&
+		hamon::is_nothrow_move_constructible<MappedContainer>::value &&
+		hamon::is_nothrow_move_constructible<Compare>::value)
+#if !defined(HAMON_NO_EXCEPTIONS)
+	try
+#endif
+		: c(hamon::move(other.c))
+		, compare(hamon::move(other.compare))
+	{
+		other.clear();
+	}
+#if !defined(HAMON_NO_EXCEPTIONS)
+	catch (...)
+	{
+		other.clear();
+		throw;
+	}
+#endif
+
+HAMON_WARNING_POP()
+
+	HAMON_CXX11_CONSTEXPR explicit
 	flat_map(key_compare const& comp)
 		: c(), compare(comp)
 	{}
@@ -213,8 +248,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR explicit
 	flat_map(Alloc const& a)
@@ -223,8 +258,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(key_compare const& comp, Alloc const& a)
@@ -235,8 +270,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -248,8 +283,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -269,8 +304,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -283,8 +318,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -306,8 +341,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(flat_map const& x, Alloc const& a)
@@ -318,8 +353,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX20_CONSTEXPR
 	flat_map(flat_map&& x, Alloc const& a)
@@ -344,8 +379,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -359,8 +394,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -379,8 +414,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -395,8 +430,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -416,8 +451,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -430,8 +465,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -447,8 +482,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -459,8 +494,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -472,8 +507,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -485,8 +520,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -533,7 +568,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	begin() const noexcept
 	{
 		return const_iterator(c.keys.begin(), c.values.begin());
@@ -547,7 +582,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	end() const noexcept
 	{
 		return const_iterator(c.keys.end(), c.values.end());
@@ -561,7 +596,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_reverse_iterator
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	rbegin() const noexcept
 	{
 		return const_reverse_iterator(this->end());
@@ -575,35 +610,35 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_reverse_iterator
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	rend() const noexcept
 	{
 		return const_reverse_iterator(this->begin());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	cbegin() const noexcept
 	{
 		return this->begin();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	cend() const noexcept
 	{
 		return this->end();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_reverse_iterator
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	crbegin() const noexcept
 	{
 		return const_reverse_iterator(this->end());
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_reverse_iterator
+	HAMON_CXX11_CONSTEXPR const_reverse_iterator
 	crend() const noexcept
 	{
 		return const_reverse_iterator(this->begin());
@@ -611,14 +646,14 @@ public:
 
 	// [flat.map.capacity], capacity
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr bool
+	HAMON_CXX11_CONSTEXPR bool
 	empty() const noexcept
 	{
 		return c.keys.empty();
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr size_type
+	HAMON_CXX11_CONSTEXPR size_type
 	size() const noexcept
 	{
 		// [flat.map.capacity]/1
@@ -626,7 +661,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr size_type
+	HAMON_CXX11_CONSTEXPR size_type
 	max_size() const noexcept
 	{
 		// [flat.map.capacity]/1
@@ -997,6 +1032,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	erase(iterator position)
 	{
+		// TODO: erase_pos_impl
 		auto gd = hamon::detail::make_exception_guard([&]() noexcept { clear(); });
 		auto key_iter    = c.keys.erase(position.m_key_iter);
 		auto mapped_iter = c.values.erase(position.m_mapped_iter);
@@ -1007,6 +1043,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	erase(const_iterator position)
 	{
+		// TODO: erase_pos_impl
 		auto gd = hamon::detail::make_exception_guard([&]() noexcept { clear(); });
 		auto key_iter    = c.keys.erase(position.m_key_iter);
 		auto mapped_iter = c.values.erase(position.m_mapped_iter);
@@ -1017,6 +1054,7 @@ public:
 	HAMON_CXX14_CONSTEXPR size_type
 	erase(key_type const& x)
 	{
+		// TODO: erase_key_impl
 		auto it = this->find(x);
 		if (it != this->end())
 		{
@@ -1031,6 +1069,7 @@ public:
 	HAMON_CXX14_CONSTEXPR size_type
 	erase(K&& x)
 	{
+		// TODO: erase_key_impl
 		auto it = this->find(hamon::forward<K>(x));
 		if (it != this->end())
 		{
@@ -1068,28 +1107,28 @@ public:
 
 	// observers
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr key_compare
+	HAMON_CXX11_CONSTEXPR key_compare
 	key_comp() const
 	{
 		return this->compare;
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr value_compare
+	HAMON_CXX11_CONSTEXPR value_compare
 	value_comp() const
 	{
 		return value_compare(this->compare);
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr key_container_type const&
+	HAMON_CXX11_CONSTEXPR key_container_type const&
 	keys() const noexcept
 	{
 		return c.keys;
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr mapped_container_type const&
+	HAMON_CXX11_CONSTEXPR mapped_container_type const&
 	values() const noexcept
 	{
 		return c.values;
@@ -1129,7 +1168,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr size_type
+	HAMON_CXX11_CONSTEXPR size_type
 	count(key_type const& x) const
 	{
 		return this->contains(x) ? 1 : 0;
@@ -1138,14 +1177,14 @@ public:
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr size_type
+	HAMON_CXX11_CONSTEXPR size_type
 	count(K const& x) const
 	{
 		return this->contains(x) ? 1 : 0;
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr bool
+	HAMON_CXX11_CONSTEXPR bool
 	contains(key_type const& x) const
 	{
 		return this->find(x) != this->end();
@@ -1154,7 +1193,7 @@ public:
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr bool
+	HAMON_CXX11_CONSTEXPR bool
 	contains(K const& x) const
 	{
 		return this->find(x) != this->end();
@@ -1168,7 +1207,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	lower_bound(key_type const& x) const
 	{
 		return binary_search(*this, hamon::ranges::lower_bound, x);
@@ -1186,7 +1225,7 @@ public:
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	lower_bound(K const& x) const
 	{
 		return binary_search(*this, hamon::ranges::lower_bound, x);
@@ -1200,7 +1239,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	upper_bound(key_type const& x) const
 	{
 		return binary_search(*this, hamon::ranges::upper_bound, x);
@@ -1218,7 +1257,7 @@ public:
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr const_iterator
+	HAMON_CXX11_CONSTEXPR const_iterator
 	upper_bound(K const& x) const
 	{
 		return binary_search(*this, hamon::ranges::upper_bound, x);
@@ -1232,7 +1271,7 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr hamon::pair<const_iterator, const_iterator>
+	HAMON_CXX11_CONSTEXPR hamon::pair<const_iterator, const_iterator>
 	equal_range(key_type const& x) const
 	{
 		return equal_range_impl(*this, x);
@@ -1250,14 +1289,14 @@ public:
 	template <typename K,
 		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr hamon::pair<const_iterator, const_iterator>
+	HAMON_CXX11_CONSTEXPR hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const
 	{
 		return equal_range_impl(*this, x);
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator==(flat_map const& x, flat_map const& y)
 	{
 		return hamon::ranges::equal(x, y);
@@ -1265,7 +1304,7 @@ public:
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend auto
+	HAMON_CXX11_CONSTEXPR friend auto
 //	hamon::detail::synth_three_way_result<value_type>
 	operator<=>(flat_map const& x, flat_map const& y)
 	{
@@ -1276,14 +1315,14 @@ public:
 	}
 #else
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator!=(flat_map const& x, flat_map const& y)
 	{
 		return !(x == y);
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator<(flat_map const& x, flat_map const& y)
 	{
 		return hamon::lexicographical_compare(
@@ -1292,21 +1331,21 @@ public:
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator>(flat_map const& x, flat_map const& y)
 	{
 		return y < x;
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator<=(flat_map const& x, flat_map const& y)
 	{
 		return !(x > y);
 	}
 
 	HAMON_NODISCARD	// nodiscard as an extension
-	constexpr friend bool
+	HAMON_CXX11_CONSTEXPR friend bool
 	operator>=(flat_map const& x, flat_map const& y)
 	{
 		return !(x < y);
@@ -1392,31 +1431,57 @@ private:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace_impl(K&& k, Args&&... args)
 	{
-		// TODO: strong exception safety guarantee
-
 		auto key_iter = hamon::ranges::lower_bound(c.keys, k, this->compare);
-		auto mapped_iter = corresponding_mapped_it(*this, key_iter);
-
-		bool inserted = false;
-		if (key_iter == c.keys.end() || this->compare(k, *key_iter))
-		{
-			key_iter = c.keys.emplace(key_iter, hamon::forward<K>(k));
-			mapped_iter = c.values.emplace(mapped_iter, hamon::forward<Args>(args)...);
-			inserted = true;
-		}
-
-		return hamon::pair<iterator, bool>{
-			iterator{hamon::move(key_iter), hamon::move(mapped_iter)},
-			inserted};
+		return this->try_emplace_pos(hamon::move(key_iter), hamon::forward<K>(k), hamon::forward<Args>(args)...);
 	}
 
 	template <typename K, typename... Args>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	try_emplace_hint_impl(const_iterator hint, K&& k, Args&&... args)
 	{
-		// TODO
-		(void)hint;
+		auto prev_larger  = hint != cbegin() && !this->compare((hint - 1)->first, k);
+		auto next_smaller = hint != cend() && this->compare(hint->first, k);
+
+		if (!prev_larger && !next_smaller)
+		{
+			// hint correct
+			auto key_iter = this->c.keys.begin() + (hint - this->cbegin());
+			return this->try_emplace_pos(hamon::move(key_iter), hamon::forward<K>(k), hamon::forward<Args>(args)...);
+		}
+
 		return this->try_emplace_impl(hamon::forward<K>(k), hamon::forward<Args>(args)...);
+	}
+
+	template <typename KeyIter, typename K, typename... Args>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
+	try_emplace_pos(KeyIter&& key_iter, K&& k, Args&&... args)
+	{
+		auto mapped_iter = corresponding_mapped_it(*this, key_iter);
+
+		if (key_iter == c.keys.end() || this->compare(k, *key_iter))
+		{
+			return this->emplace_exact_pos(
+				hamon::move(key_iter), hamon::move(mapped_iter),
+				hamon::forward<K>(k), hamon::forward<Args>(args)...);
+		}
+
+		return hamon::pair<iterator, bool>{
+			iterator{hamon::move(key_iter), hamon::move(mapped_iter)},
+			false};
+	}
+
+	template <typename KeyIter, typename MappedIter, typename K, typename... Args>
+	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
+	emplace_exact_pos(KeyIter&& key_iter, MappedIter&& mapped_iter, K&& k, Args&&... args)
+	{
+		auto gd = hamon::detail::make_exception_guard([&]() noexcept { clear(); });
+		key_iter = c.keys.emplace(key_iter, hamon::forward<K>(k));
+		mapped_iter = c.values.emplace(mapped_iter, hamon::forward<Args>(args)...);
+		gd.complete();
+
+		return hamon::pair<iterator, bool>{
+			iterator{hamon::move(key_iter), hamon::move(mapped_iter)},
+			true};
 	}
 
 	template <typename K, typename M>
@@ -1495,23 +1560,27 @@ private:
 
 private:
 	containers c;
-	HAMON_NO_UNIQUE_ADDRESS key_compare compare;
+
+#if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000))
+	HAMON_NO_UNIQUE_ADDRESS	// gcc12 で no_unique_address を指定すると constexpr にならなくなってしまう 
+#endif
+	key_compare compare;
 
 	struct key_equiv
 	{
-		constexpr
+		HAMON_CXX11_CONSTEXPR
 		key_equiv(key_compare c)
 			: comp(c)
 		{}
 
-		constexpr bool
+		HAMON_CXX11_CONSTEXPR bool
 		operator()(const_reference x, const_reference y) const
 		{
 			return !comp(x.first, y.first) && !comp(y.first, x.first);
 		}
 
 	private:
-		HAMON_NO_UNIQUE_ADDRESS key_compare comp;
+		key_compare comp;
 	};
 };
 
@@ -1548,8 +1617,8 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>
 	>::value>
 >
 flat_map(
@@ -1572,8 +1641,8 @@ template <
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>,
 		hamon::is_invocable<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
@@ -1623,8 +1692,8 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>
 	>::value>
 >
 flat_map(
@@ -1648,8 +1717,8 @@ template <
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>,
 		hamon::is_invocable<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
@@ -1795,19 +1864,14 @@ erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate 
 	return original_size - c.size();
 }
 
-}	// namespace hamon
-
-namespace std
-{
-
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Allocator>
 struct uses_allocator<hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>, Allocator>
 	: hamon::bool_constant<
-		std::uses_allocator<KeyContainer, Allocator>::value &&
-		std::uses_allocator<MappedContainer, Allocator>::value>
+		hamon::uses_allocator<KeyContainer, Allocator>::value &&
+		hamon::uses_allocator<MappedContainer, Allocator>::value>
 {};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif
 

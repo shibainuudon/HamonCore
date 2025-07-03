@@ -19,6 +19,7 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
@@ -122,6 +123,20 @@ GTEST_TEST(FlatMapTest, InsertOrAssignTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+
+	{
+		hamon::flat_map<hamon::string, int> fm;
+
+		auto r1 = fm.insert_or_assign("foo", 42);
+		EXPECT_TRUE(r1.first->first == "foo");
+		EXPECT_TRUE(r1.first->second == 42);
+		EXPECT_TRUE(r1.second == true);
+
+		auto r2 = fm.insert_or_assign("foo", 0);
+		EXPECT_TRUE(r2.first->first == "foo");
+		EXPECT_TRUE(r2.first->second == 0);
+		EXPECT_TRUE(r2.second == false);
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

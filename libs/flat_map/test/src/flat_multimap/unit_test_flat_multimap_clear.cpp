@@ -52,8 +52,10 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		{Key{1}, T{30}},
 	};
 	VERIFY(!v.empty());
+	VERIFY(v.size() == 3);
 	v.clear();
 	VERIFY(v.empty());
+	VERIFY(v.size() == 0);
 
 	return true;
 }

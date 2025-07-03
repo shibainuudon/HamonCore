@@ -17,6 +17,7 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -159,6 +160,39 @@ GTEST_TEST(FlatMapTest, ErasePositionTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+
+	{
+		hamon::flat_map<int, char> fm =
+		{
+			{3, 'a'},
+			{1, 'b'},
+			{4, 'c'},
+		};
+
+		// イテレート中に要素削除をするような場合には、
+		// 範囲for文は使用できない
+		for (auto it = fm.begin(); it != fm.end();)
+		{
+			// 条件一致した要素を削除する
+			if (it->first == 1)
+			{
+				// 削除された要素の次を指すイテレータが返される。
+				it = fm.erase(it);
+			}
+			// 要素削除をしない場合に、イテレータを進める
+			else
+			{
+				++it;
+			}
+		}
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second << ", ";
+		}
+		EXPECT_EQ("3:a, 4:c, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

@@ -49,6 +49,12 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	{
 		Map v;
 		VERIFY(v.size() == 0);
+		v.insert({Key{1}, T{10}});
+		VERIFY(v.size() == 1);
+		v.insert({Key{2}, T{10}});
+		VERIFY(v.size() == 2);
+		v.insert({Key{2}, T{20}});
+		VERIFY(v.size() == 2);
 	}
 	{
 		Map const v;

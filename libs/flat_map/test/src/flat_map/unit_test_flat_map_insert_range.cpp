@@ -17,6 +17,7 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 #include "flat_map_test_helper.hpp"
@@ -114,6 +115,29 @@ GTEST_TEST(FlatMapTest, InsertRangeTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<>>()));
+
+	{
+		hamon::flat_map<int, char> fm =
+		{
+			{3, 'a'}
+		};
+
+		hamon::flat_map<int, char> fm2 =
+		{
+			{ 5, 'd'},
+			{15, 'e'},
+			{ 3, 'h'},
+		};
+
+		fm.insert_range(fm2);
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second << ", ";
+		}
+		EXPECT_EQ("3:a, 5:d, 15:e, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

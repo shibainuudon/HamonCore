@@ -20,6 +20,7 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/memory.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
@@ -217,6 +218,24 @@ GTEST_TEST(FlatMapTest, TryEmplaceTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
 
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+
+	{
+		hamon::flat_map<int, hamon::unique_ptr<int>> fm;
+
+		auto u1 = hamon::make_unique<int>(114);
+		auto r1 = fm.try_emplace(42, hamon::move(u1));
+		EXPECT_TRUE(u1.get() == nullptr);
+		EXPECT_TRUE(r1.first->first == 42);
+		EXPECT_TRUE(*r1.first->second == 114);
+		EXPECT_TRUE(r1.second == true);
+
+		auto u2 = hamon::make_unique<int>(514);
+		auto r2 = fm.try_emplace(42, hamon::move(u2));
+		EXPECT_TRUE(u2.get() != nullptr);
+		EXPECT_TRUE(r2.first->first == 42);
+		EXPECT_TRUE(*r2.first->second == 114);
+		EXPECT_TRUE(r2.second == false);
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

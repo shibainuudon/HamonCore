@@ -2,6 +2,8 @@
  *	@file	unit_test_flat_multimap_ctor_default.cpp
  *
  *	@brief	デフォルトコンストラクタのテスト
+ *
+ *	constexpr flat_multimap();
  */
 
 #include <hamon/flat_map/flat_multimap.hpp>
@@ -34,7 +36,9 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	using Map = hamon::flat_multimap<Key, T>;
 
 	static_assert( hamon::is_default_constructible<Map>::value, "");
-	static_assert(!hamon::is_nothrow_default_constructible<Map>::value, "");
+#if !defined(HAMON_USE_STD_FLAT_MAP)
+	//static_assert(!hamon::is_nothrow_default_constructible<Map>::value, "");
+#endif
 	static_assert( hamon::is_implicitly_default_constructible<Map>::value, "");
 	static_assert(!hamon::is_trivially_default_constructible<Map>::value, "");
 

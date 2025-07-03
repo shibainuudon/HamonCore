@@ -181,6 +181,59 @@ GTEST_TEST(FlatMultimapTest, RBeginREndTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+
+	{
+		hamon::flat_multimap<int, char> fm =
+		{
+			{10, 'A'}, {11, 'B'}, {12, 'C'},
+			{10, 'a'}, {11, 'b'}, {12, 'c'},
+		};
+
+		{
+			auto i = fm.rbegin();
+			EXPECT_TRUE(i->first == 12);
+			EXPECT_TRUE(i->second == 'c');
+			++i;
+			EXPECT_TRUE(i->first == 12);
+			EXPECT_TRUE(i->second == 'C');
+			++i;
+			EXPECT_TRUE(i->first == 11);
+			EXPECT_TRUE(i->second == 'b');
+			++i;
+			EXPECT_TRUE(i->first == 11);
+			EXPECT_TRUE(i->second == 'B');
+			++i;
+			EXPECT_TRUE(i->first == 10);
+			EXPECT_TRUE(i->second == 'a');
+			++i;
+			EXPECT_TRUE(i->first == 10);
+			EXPECT_TRUE(i->second == 'A');
+			++i;
+			EXPECT_TRUE(i == fm.rend());
+		}
+		{
+			auto i = fm.crbegin();
+			EXPECT_TRUE(i->first == 12);
+			EXPECT_TRUE(i->second == 'c');
+			++i;
+			EXPECT_TRUE(i->first == 12);
+			EXPECT_TRUE(i->second == 'C');
+			++i;
+			EXPECT_TRUE(i->first == 11);
+			EXPECT_TRUE(i->second == 'b');
+			++i;
+			EXPECT_TRUE(i->first == 11);
+			EXPECT_TRUE(i->second == 'B');
+			++i;
+			EXPECT_TRUE(i->first == 10);
+			EXPECT_TRUE(i->second == 'a');
+			++i;
+			EXPECT_TRUE(i->first == 10);
+			EXPECT_TRUE(i->second == 'A');
+			++i;
+			EXPECT_TRUE(i == fm.crend());
+		}
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

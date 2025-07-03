@@ -7,11 +7,15 @@
 #ifndef HAMON_FLAT_MAP_DETAIL_FLAT_MAP_ITERATOR_HPP
 #define HAMON_FLAT_MAP_DETAIL_FLAT_MAP_ITERATOR_HPP
 
-#include <hamon/concepts.hpp>
-#include <hamon/iterator.hpp>
-#include <hamon/memory.hpp>
-#include <hamon/type_traits.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/compare/concepts/three_way_comparable.hpp>
+#include <hamon/concepts/convertible_to.hpp>
+#include <hamon/iterator/random_access_iterator_tag.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -66,25 +70,25 @@ public:
 			hamon::convertible_to_t<typename KeyContainer::iterator, key_iterator>,
 			hamon::convertible_to_t<typename MappedContainer::iterator, mapped_iterator>
 		>::value>>
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	flat_map_iterator(flat_map_iterator<Owner, KeyContainer, MappedContainer, C> i)
 		: m_key_iter(hamon::move(i.m_key_iter))
 		, m_mapped_iter(hamon::move(i.m_mapped_iter))
 	{}
 
-	constexpr
+	HAMON_CXX11_CONSTEXPR
 	flat_map_iterator(key_iterator key_iter, mapped_iterator mapped_iter)
 		: m_key_iter(hamon::move(key_iter))
 		, m_mapped_iter(hamon::move(mapped_iter))
 	{}
 
-	constexpr reference
+	HAMON_CXX11_CONSTEXPR reference
 	operator*() const
 	{
 		return reference(*m_key_iter, *m_mapped_iter);
 	}
 
-	constexpr arrow_proxy
+	HAMON_CXX11_CONSTEXPR arrow_proxy
 	operator->() const
 	{
 		return arrow_proxy{**this};
@@ -138,52 +142,52 @@ public:
 		return *this;
 	}
 
-	constexpr reference
+	HAMON_CXX11_CONSTEXPR reference
 	operator[](difference_type n) const
 	{
 		return *(*this + n);
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return x.m_key_iter == y.m_key_iter;
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return !(x == y);
 	}
 #endif
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator<(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return x.m_key_iter < y.m_key_iter;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator>(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return y < x;
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator<=(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return !(y < x);
 	}
 
-	friend constexpr bool
+	friend HAMON_CXX11_CONSTEXPR bool
 	operator>=(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return !(x < y);
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	friend constexpr auto
+	friend HAMON_CXX11_CONSTEXPR auto
 	operator<=>(flat_map_iterator const& x, flat_map_iterator const& y)
 		requires hamon::three_way_comparable<key_iterator>
 	{
@@ -199,7 +203,7 @@ public:
 		return tmp;
 	}
 
-	friend constexpr flat_map_iterator
+	friend HAMON_CXX11_CONSTEXPR flat_map_iterator
 	operator+(difference_type n, flat_map_iterator const& i)
 	{
 		return i + n;
@@ -213,7 +217,7 @@ public:
 		return tmp;
 	}
 
-	friend constexpr difference_type
+	friend HAMON_CXX11_CONSTEXPR difference_type
 	operator-(flat_map_iterator const& x, flat_map_iterator const& y)
 	{
 		return difference_type(x.m_key_iter - y.m_key_iter);

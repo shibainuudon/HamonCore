@@ -15,6 +15,7 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
@@ -95,6 +96,23 @@ GTEST_TEST(FlatMultimapTest, ContainsHeterogeneousTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<long>>()));
+
+	{
+		hamon::flat_multimap<hamon::string, int, hamon::less<>> fm =
+		{
+			{"Alice", 3},
+			{"Bob",   1},
+			{"Carol", 4},
+			{"Alice", 2},
+		};
+
+		// lessのvoidに対する特殊化を使用することで、
+		// 文字列リテラルをcontains()関数の引数として渡した際に、
+		// string型の一時オブジェクトが生成されない。
+		EXPECT_TRUE (fm.contains((const char*)"Alice"));
+		EXPECT_TRUE (fm.contains((const char*)"Bob"));
+		EXPECT_FALSE(fm.contains((const char*)"Eve"));
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

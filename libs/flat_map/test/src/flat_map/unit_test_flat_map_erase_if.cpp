@@ -17,7 +17,9 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -134,6 +136,29 @@ GTEST_TEST(FlatMapTest, EraseIfTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<>>()));
+
+	{
+		using value_type = typename hamon::flat_map<hamon::string, int>::value_type;
+
+		hamon::flat_map<hamon::string, int> fm =
+		{
+			{"A", 3},
+			{"B", 1},
+			{"B", 4},
+			{"C", 5},
+		};
+
+		// コンテナfmから、キーが"B"の要素をすべて削除する
+		auto num = hamon::erase_if(fm, [](const value_type& x) { return x.first == "B"; });
+		EXPECT_TRUE(num == 1);
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second << ", ";
+		}
+		EXPECT_EQ("A:3, C:5, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

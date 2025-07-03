@@ -17,6 +17,7 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
@@ -118,6 +119,30 @@ GTEST_TEST(FlatMapTest, ExtractTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+
+	{
+		hamon::flat_map<hamon::string, int> fm =
+		{
+			{"Bob",   1},
+			{"Alice", 3},
+			{"Carol", 4},
+		};
+
+		EXPECT_TRUE(fm.size() == 3);
+
+		auto c = hamon::move(fm).extract();
+
+		EXPECT_TRUE(fm.size() == 0);
+
+		EXPECT_TRUE(c.keys.size() == 3);
+		EXPECT_TRUE(c.keys[0] == "Alice");
+		EXPECT_TRUE(c.keys[1] == "Bob");
+		EXPECT_TRUE(c.keys[2] == "Carol");
+		EXPECT_TRUE(c.values.size() == 3);
+		EXPECT_TRUE(c.values[0] == 3);
+		EXPECT_TRUE(c.values[1] == 1);
+		EXPECT_TRUE(c.values[2] == 4);
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

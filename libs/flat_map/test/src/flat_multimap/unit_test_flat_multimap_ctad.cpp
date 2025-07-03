@@ -67,7 +67,11 @@
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "iterator_test.hpp"
+#include "ranges_test.hpp"
 #include "flat_multimap_test_helper.hpp"
+
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 namespace hamon_flat_multimap_test
 {
@@ -86,8 +90,261 @@ namespace ctad_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename KeyContainer, typename MappedContainer, typename Compare>
-FLAT_MAP_TEST_CONSTEXPR bool test()
+FLAT_MAP_TEST_CONSTEXPR bool test1()
 {
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using DefaultCompare = typename hamon::flat_multimap<Key, T>::key_compare;
+	using Alloc = hamon::allocator<char>;
+
+	// (key_cont, mapped_cont)
+	{
+		KeyContainer const key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		hamon::flat_multimap v{key_cont, mapped_cont};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, DefaultCompare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (key_cont, mapped_cont, comp)
+	{
+		KeyContainer const key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Compare const comp;
+		hamon::flat_multimap v{key_cont, mapped_cont, comp};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (key_cont, mapped_cont, alloc)
+	{
+		KeyContainer const key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Alloc const alloc;
+		hamon::flat_multimap v{key_cont, mapped_cont, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, DefaultCompare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (key_cont, mapped_cont, comp, alloc)
+	{
+		KeyContainer const key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Compare const comp;
+		Alloc const alloc;
+		hamon::flat_multimap v{key_cont, mapped_cont, comp, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>>::value, "");
+	}
+
+	// (sorted_equivalent, key_cont, mapped_cont)
+	{
+		KeyContainer key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		hamon::ranges::sort(key_cont, DefaultCompare{});
+		hamon::flat_multimap v{hamon::sorted_equivalent, key_cont, mapped_cont};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, DefaultCompare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (sorted_equivalent, key_cont, mapped_cont, comp)
+	{
+		KeyContainer key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Compare const comp;
+		hamon::ranges::sort(key_cont, comp);
+		hamon::flat_multimap v{hamon::sorted_equivalent, key_cont, mapped_cont, comp};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (sorted_equivalent, key_cont, mapped_cont, alloc)
+	{
+		KeyContainer key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Alloc const alloc;
+		hamon::ranges::sort(key_cont, DefaultCompare{});
+		hamon::flat_multimap v{hamon::sorted_equivalent, key_cont, mapped_cont, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, DefaultCompare, KeyContainer, MappedContainer>>::value, "");
+	}
+	// (sorted_equivalent, key_cont, mapped_cont, comp, alloc)
+	{
+		KeyContainer key_cont {Key{3}, Key{1}, Key{4}};
+		MappedContainer const mapped_cont {T{10}, T{20}, T{30}};
+		Compare const comp;
+		Alloc const alloc;
+		hamon::ranges::sort(key_cont, comp);
+		hamon::flat_multimap v{hamon::sorted_equivalent, key_cont, mapped_cont, comp, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>>::value, "");
+	}
+
+	return true;
+}
+
+template <typename KeyContainer, typename MappedContainer, typename Compare, template <typename> class IteratorWrapper>
+FLAT_MAP_TEST_CONSTEXPR bool test2_impl()
+{
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using ValueType = typename hamon::flat_multimap<Key, T>::value_type;
+	using InputIterator = IteratorWrapper<ValueType>;
+
+	ValueType a[] =
+	{
+		{Key{1}, T{10}},
+		{Key{2}, T{20}},
+		{Key{4}, T{30}},
+	};
+
+	// (first, last)
+	{
+		hamon::flat_multimap v{InputIterator{a}, InputIterator{a + 3}};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+	// (first, last, comp)
+	{
+		Compare const comp;
+		hamon::flat_multimap v{InputIterator{a}, InputIterator{a + 3}, comp};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare>>::value, "");
+	}
+
+	// (sorted_equivalent, first, last)
+	{
+		hamon::flat_multimap v{hamon::sorted_equivalent, InputIterator{a}, InputIterator{a + 3}};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+	// (sorted_equivalent, first, last, comp)
+	{
+		hamon::less<> const comp;
+		hamon::flat_multimap v{hamon::sorted_equivalent, InputIterator{a}, InputIterator{a + 3}, comp};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, hamon::less<>>>::value, "");
+	}
+
+	return true;
+}
+
+template <typename KeyContainer, typename MappedContainer, typename Compare>
+FLAT_MAP_TEST_CONSTEXPR bool test2()
+{
+	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, cpp17_input_iterator_wrapper>());
+//	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, input_iterator_wrapper>());
+	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, forward_iterator_wrapper>());
+	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, bidirectional_iterator_wrapper>());
+	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, random_access_iterator_wrapper>());
+	VERIFY(test2_impl<KeyContainer, MappedContainer, Compare, contiguous_iterator_wrapper>());
+
+	return true;
+}
+
+template <typename KeyContainer, typename MappedContainer, typename Compare, template <typename> class RangeWrapper>
+FLAT_MAP_TEST_CONSTEXPR bool test3_impl()
+{
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using ValueType = typename hamon::flat_multimap<Key, T>::value_type;
+	using Range = RangeWrapper<ValueType>;
+	using Alloc = hamon::allocator<char>;
+
+	ValueType a[] =
+	{
+		{Key{1}, T{10}},
+		{Key{2}, T{20}},
+		{Key{4}, T{30}},
+	};
+
+	// (from_range, rg)
+	{
+		hamon::flat_multimap v{hamon::from_range, Range{a}};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+	// (from_range, rg, compare)
+	{
+		Compare const comp;
+		hamon::flat_multimap v{hamon::from_range, Range{a}, comp};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare>>::value, "");
+	}
+	// (from_range, rg, compare, alloc)
+	{
+		Compare const comp;
+		Alloc const alloc;
+		hamon::flat_multimap v{hamon::from_range, Range{a}, comp, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare>>::value, "");
+	}
+	// (from_range, rg, alloc)
+	{
+		Alloc const alloc;
+		hamon::flat_multimap v{hamon::from_range, Range{a}, alloc};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+
+	return true;
+}
+
+template <typename KeyContainer, typename MappedContainer, typename Compare>
+FLAT_MAP_TEST_CONSTEXPR bool test3()
+{
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_input_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_forward_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_bidirectional_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_random_access_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_contiguous_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_input_sized_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_forward_sized_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_bidirectional_sized_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_random_access_sized_range>());
+	VERIFY(test3_impl<KeyContainer, MappedContainer, Compare, test_contiguous_sized_range>());
+
+	return true;
+}
+
+template <typename KeyContainer, typename MappedContainer, typename Compare>
+FLAT_MAP_TEST_CONSTEXPR bool test4()
+{
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using ValueType = typename hamon::flat_multimap<Key, T>::value_type;
+
+	// (initializer_list)
+	{
+		hamon::flat_multimap v
+		{
+			ValueType{Key{1}, T{10}},
+			ValueType{Key{3}, T{20}},
+			ValueType{Key{2}, T{30}},
+		};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+	// (initializer_list, comp)
+	{
+		Compare const comp;
+		hamon::flat_multimap v
+		{
+			{
+				ValueType{Key{1}, T{10}},
+				ValueType{Key{3}, T{20}},
+				ValueType{Key{2}, T{30}},
+			},
+			comp
+		};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, Compare>>::value, "");
+	}
+
+	// (sorted_equivalent, initializer_list)
+	{
+		hamon::flat_multimap v
+		{
+			hamon::sorted_equivalent,
+			{
+				ValueType{Key{1}, T{10}},
+				ValueType{Key{2}, T{20}},
+				ValueType{Key{3}, T{30}},
+			}
+		};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T>>::value, "");
+	}
+	// (sorted_equivalent, initializer_list, comp)
+	{
+		hamon::flat_multimap v
+		{
+			hamon::sorted_equivalent,
+			{
+				ValueType{Key{4}, T{10}},
+				ValueType{Key{2}, T{20}},
+				ValueType{Key{1}, T{30}},
+			},
+			hamon::greater<>{}
+		};
+		static_assert(hamon::is_same<decltype(v), hamon::flat_multimap<Key, T, hamon::greater<>>>::value, "");
+	}
 
 	return true;
 }
@@ -96,11 +353,29 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 
 GTEST_TEST(FlatMultimapTest, CtadTest)
 {
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector<float>, hamon::deque<char>, hamon::greater<float>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
-	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test1<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test2<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test3<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
+
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<int>, hamon::vector<double>, hamon::less<int>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::vector<float>, hamon::deque<char>, hamon::greater<>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test4<UseAllocContainer<int>, UseAllocContainer<char>, hamon::less<>>()));
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
@@ -109,3 +384,5 @@ GTEST_TEST(FlatMultimapTest, CtadTest)
 }	// namespace ctad_test
 
 }	// namespace hamon_flat_multimap_test
+
+#endif

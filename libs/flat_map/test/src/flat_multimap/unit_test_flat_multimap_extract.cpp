@@ -13,8 +13,10 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
@@ -116,6 +118,30 @@ GTEST_TEST(FlatMultimapTest, ExtractTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>>()));
+
+	{
+		hamon::flat_multimap<hamon::string, int> fm =
+		{
+			{"Alice", 3},
+			{"Carol", 4},
+			{"Bob",   1},
+		};
+
+		EXPECT_TRUE(fm.size() == 3);
+
+		auto c = hamon::move(fm).extract();
+
+		EXPECT_TRUE(fm.size() == 0);
+
+		EXPECT_TRUE(c.keys.size() == 3);
+		EXPECT_TRUE(c.keys[0] == "Alice");
+		EXPECT_TRUE(c.keys[1] == "Bob");
+		EXPECT_TRUE(c.keys[2] == "Carol");
+		EXPECT_TRUE(c.values.size() == 3);
+		EXPECT_TRUE(c.values[0] == 3);
+		EXPECT_TRUE(c.values[1] == 1);
+		EXPECT_TRUE(c.values[2] == 4);
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

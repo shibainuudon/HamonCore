@@ -17,7 +17,9 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_map_test_helper.hpp"
 
@@ -223,6 +225,49 @@ GTEST_TEST(FlatMapTest, EmplaceTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
 
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+
+	{
+#if defined(HAMON_USE_STD_FLAT_MAP)
+		namespace ns = std;
+#else
+		namespace ns = hamon;
+#endif
+
+		struct Point
+		{
+			int x, y;
+			Point(int x_, int y_) : x(x_), y(y_) {}
+		};
+
+		hamon::flat_map<hamon::string, Point> fm;
+
+		fm.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(static_cast<hamon::size_t>(3), 'C'), // キーの型std::stringのコンストラクタ引数を渡す
+			ns::forward_as_tuple(1, 2));  // 値の型Pointのコンストラクタ引数を渡す
+
+		fm.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(static_cast<hamon::size_t>(3), 'A'),
+			ns::forward_as_tuple(3, 4));
+
+		fm.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(static_cast<hamon::size_t>(3), 'C'),
+			ns::forward_as_tuple(7, 8));
+
+		fm.emplace(
+			ns::piecewise_construct,
+			ns::forward_as_tuple(static_cast<hamon::size_t>(3), 'B'),
+			ns::forward_as_tuple(5, 6));
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":(" << p.second.x << ", " << p.second.y << ')' << ", ";
+		}
+		EXPECT_EQ("AAA:(3, 4), BBB:(5, 6), CCC:(1, 2), ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

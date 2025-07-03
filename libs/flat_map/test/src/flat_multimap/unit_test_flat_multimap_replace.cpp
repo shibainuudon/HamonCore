@@ -13,9 +13,12 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
 
@@ -83,6 +86,24 @@ GTEST_TEST(FlatMultimapTest, ReplaceTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 //	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+
+	{
+		hamon::vector<hamon::string> keys = {"Alice", "Bob", "Carol"};
+		hamon::vector<int> values = {3, 1, 4};
+
+		hamon::flat_multimap<hamon::string, int> fm;
+		EXPECT_TRUE(fm.size() == 0);
+
+		fm.replace(hamon::move(keys), hamon::move(values));
+		EXPECT_TRUE(fm.size() == 3);
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second << ", ";
+		}
+		EXPECT_EQ("Alice:3, Bob:1, Carol:4, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

@@ -17,6 +17,7 @@
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
+#include <sstream>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
 
@@ -104,6 +105,34 @@ GTEST_TEST(FlatMultimapTest, InsertTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+
+	{
+		hamon::flat_multimap<int, char> fm;
+
+		// 単一要素を挿入する
+		fm.insert({3, 'a'});
+		fm.insert({3, 'a'});
+
+		hamon::flat_multimap<int, char> fm2 =
+		{
+			{ 5, 'd'},
+			{15, 'e'},
+		};
+
+		// シーケンスを挿入する
+		fm.insert(fm2.begin(), fm2.end());
+
+		// 挿入するシーケンスがソート済みかつ重複要素がないことがわかっている場合、
+		// 以下のように指定した方が高速になる
+		fm.insert(hamon::sorted_equivalent, fm2.begin(), fm2.end());
+
+		std::stringstream ss;
+		for (const auto& p : fm)
+		{
+			ss << p.first << ":" << p.second << ", ";
+		}
+		EXPECT_EQ("3:a, 3:a, 5:d, 5:d, 15:e, 15:e, ", ss.str());
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

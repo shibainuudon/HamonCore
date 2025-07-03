@@ -19,6 +19,7 @@
 #include <hamon/utility/declval.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
+#include <hamon/string.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "flat_multimap_test_helper.hpp"
@@ -162,6 +163,26 @@ GTEST_TEST(FlatMultimapTest, EqualRangeHeterogeneousTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::vector<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<TransparentKey>, hamon::deque<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<TransparentKey>, MinSequenceContainer<long>>()));
+
+	{
+		hamon::flat_multimap<hamon::string, int, hamon::less<>> fm =
+		{
+			{"A", 3},
+			{"B", 1},
+			{"B", 4},
+			{"C", 5},
+		};
+
+		auto ret = fm.equal_range((const char*)"B");
+		auto it = ret.first;
+		EXPECT_TRUE(it->first == "B");
+		EXPECT_TRUE(it->second == 1);
+		++it;
+		EXPECT_TRUE(it->first == "B");
+		EXPECT_TRUE(it->second == 4);
+		++it;
+		EXPECT_TRUE(it == ret.second);
+	}
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

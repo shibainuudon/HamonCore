@@ -14,6 +14,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/deque.hpp>
 #include <gtest/gtest.h>
@@ -39,7 +40,236 @@ namespace emplace_hint_test
 template <typename KeyContainer, typename MappedContainer, typename Compare>
 FLAT_MAP_TEST_CONSTEXPR bool test()
 {
+	using Key = typename KeyContainer::value_type;
+	using T = typename MappedContainer::value_type;
+	using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+	using ValueType = typename Map::value_type;
+	using Iterator = typename Map::iterator;
+	using ConstIterator = typename Map::const_iterator;
 
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<ValueType const&>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<ValueType&&>())), Iterator>::value, "");
+	static_assert(hamon::is_same<decltype(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<Key>(), hamon::declval<T>())), Iterator>::value, "");
+	static_assert(!noexcept(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<ValueType const&>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<ValueType&&>())), "");
+	static_assert(!noexcept(hamon::declval<Map&>().emplace_hint(hamon::declval<ConstIterator>(), hamon::declval<Key>(), hamon::declval<T>())), "");
+
+	Map v;
+	VERIFY(v.size() == 0);
+	{
+		auto r = v.emplace_hint(v.cbegin(), Key{1}, T{10});
+		VERIFY(r->first == Key{1});
+		VERIFY(r->second == T{10});
+	}
+	VERIFY(v.size() == 1);
+	{
+		auto r = v.emplace_hint(v.cbegin(), Key{1}, T{20});
+		VERIFY(r->first == Key{1});
+		VERIFY(r->second == T{20});
+	}
+	VERIFY(v.size() == 2);
+	{
+		ValueType const t{Key{2}, T{30}};
+		auto r = v.emplace_hint(v.cbegin(), t);
+		VERIFY(r->first == Key{2});
+		VERIFY(r->second == T{30});
+	}
+	VERIFY(v.size() == 3);
+	{
+		ValueType const t{Key{2}, T{40}};
+		auto r = v.emplace_hint(v.cbegin(), t);
+		VERIFY(r->first == Key{2});
+		VERIFY(r->second == T{40});
+	}
+	VERIFY(v.size() == 4);
+	{
+		ValueType t{Key{2}, T{50}};
+		auto r = v.emplace_hint(v.cbegin(), hamon::move(t));
+		VERIFY(r->first == Key{2});
+		VERIFY(r->second == T{50});
+	}
+	VERIFY(v.size() == 5);
+	{
+		ValueType t{Key{0}, T{60}};
+		auto r = v.emplace_hint(v.cbegin(), hamon::move(t));
+		VERIFY(r->first == Key{0});
+		VERIFY(r->second == T{60});
+	}
+	VERIFY(v.size() == 6);
+
+	return true;
+}
+
+template <typename Void, typename T, typename... Args>
+struct is_emplace_hint_invocable_impl
+	: hamon::false_type {};
+
+template <typename T, typename... Args>
+struct is_emplace_hint_invocable_impl<
+	hamon::void_t<decltype(hamon::declval<T>().emplace_hint(hamon::declval<Args>()...))>, T, Args...>
+	: hamon::true_type {};
+
+template <typename T, typename... Args>
+using is_emplace_hint_invocable = is_emplace_hint_invocable_impl<void, T, Args...>;
+
+struct S1
+{
+	int x;
+	int y;
+
+	constexpr S1(int i, int j) : x(i), y(j) {}
+};
+
+FLAT_MAP_TEST_CONSTEXPR bool test2()
+{
+#if defined(HAMON_USE_STD_FLAT_MAP)
+	namespace ns = std;
+#else
+	namespace ns = hamon;
+#endif
+
+	using Map = hamon::flat_multimap<int, S1>;
+	using ConstIterator = typename Map::const_iterator;
+
+	static_assert( is_emplace_hint_invocable<Map&, ConstIterator, int, S1>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map&, ConstIterator, int, int>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map&, ConstIterator, int, int, int>::value, "");
+	static_assert( is_emplace_hint_invocable<Map&, ConstIterator, ns::piecewise_construct_t, ns::tuple<int>, ns::tuple<int, int>>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map const&, ConstIterator, int, S1>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map const&, ConstIterator, int, int>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map const&, ConstIterator, int, int, int>::value, "");
+	static_assert(!is_emplace_hint_invocable<Map const&, ConstIterator, ns::piecewise_construct_t, ns::tuple<int>, ns::tuple<int, int>>::value, "");
+
+	Map v;
+
+	{
+		auto r = v.emplace_hint(v.end(),
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(10, 20));
+		VERIFY(r->first == 1);
+		VERIFY(r->second.x == 10);
+		VERIFY(r->second.y == 20);
+
+		VERIFY(v.size() == 1);
+//		VERIFY(v.at(1).x == 10);
+//		VERIFY(v.at(1).y == 20);
+	}
+	{
+		auto r = v.emplace_hint(v.cend(),
+			ns::piecewise_construct,
+			ns::forward_as_tuple(1),
+			ns::forward_as_tuple(30, 40));
+		VERIFY(r->first == 1);
+		VERIFY(r->second.x == 30);
+		VERIFY(r->second.y == 40);
+
+		VERIFY(v.size() == 2);
+//		VERIFY(v.at(1).x == 10);
+//		VERIFY(v.at(1).y == 20);
+	}
+	{
+		auto r = v.emplace_hint(v.cend(),
+			ns::piecewise_construct,
+			ns::forward_as_tuple(2),
+			ns::forward_as_tuple(50, 60));
+		VERIFY(r->first == 2);
+		VERIFY(r->second.x == 50);
+		VERIFY(r->second.y == 60);
+
+		VERIFY(v.size() == 3);
+//		VERIFY(v.at(1).x == 10);
+//		VERIFY(v.at(1).y == 20);
+//		VERIFY(v.at(2).x == 50);
+//		VERIFY(v.at(2).y == 60);
+	}
+
+	return true;
+}
+
+FLAT_MAP_TEST_CONSTEXPR bool test3()
+{
+	using Key = int;
+	using T = float;
+	using Map = hamon::flat_multimap<Key, T>;
+	{
+		Map v
+		{
+			{Key{1}, T{10}},
+			{Key{2}, T{20}},
+			{Key{3}, T{30}},
+		};
+
+		v.emplace_hint(v.begin(), Key{2}, T{40});
+		VERIFY(v.size() == 4);
+		{
+			auto it = v.begin();
+			VERIFY(it[0].first == Key{1});
+			VERIFY(it[1].first == Key{2});
+			VERIFY(it[2].first == Key{2});
+			VERIFY(it[3].first == Key{3});
+			VERIFY(it[0].second == T{10});
+			VERIFY(it[1].second == T{40});
+			VERIFY(it[2].second == T{20});
+			VERIFY(it[3].second == T{30});
+		}
+
+		v.emplace_hint(v.begin() + 3, Key{2}, T{50});
+		VERIFY(v.size() == 5);
+		{
+			auto it = v.begin();
+			VERIFY(it[0].first == Key{1});
+			VERIFY(it[1].first == Key{2});
+			VERIFY(it[2].first == Key{2});
+			VERIFY(it[3].first == Key{2});
+			VERIFY(it[4].first == Key{3});
+			VERIFY(it[0].second == T{10});
+			VERIFY(it[1].second == T{40});
+			VERIFY(it[2].second == T{20});
+			VERIFY(it[3].second == T{50});
+			VERIFY(it[4].second == T{30});
+		}
+
+		v.emplace_hint(v.begin() + 2, Key{2}, T{60});
+		VERIFY(v.size() == 6);
+		{
+			auto it = v.begin();
+			VERIFY(it[0].first == Key{1});
+			VERIFY(it[1].first == Key{2});
+			VERIFY(it[2].first == Key{2});
+			VERIFY(it[3].first == Key{2});
+			VERIFY(it[4].first == Key{2});
+			VERIFY(it[5].first == Key{3});
+			VERIFY(it[0].second == T{10});
+			VERIFY(it[1].second == T{40});
+			VERIFY(it[2].second == T{60});
+			VERIFY(it[3].second == T{20});
+			VERIFY(it[4].second == T{50});
+			VERIFY(it[5].second == T{30});
+		}
+
+		v.emplace_hint(v.end(), Key{2}, T{70});
+		VERIFY(v.size() == 7);
+		{
+			auto it = v.begin();
+			VERIFY(it[0].first == Key{1});
+			VERIFY(it[1].first == Key{2});
+			VERIFY(it[2].first == Key{2});
+			VERIFY(it[3].first == Key{2});
+			VERIFY(it[4].first == Key{2});
+			VERIFY(it[5].first == Key{2});
+			VERIFY(it[6].first == Key{3});
+			VERIFY(it[0].second == T{10});
+			VERIFY(it[1].second == T{40});
+			VERIFY(it[2].second == T{60});
+			VERIFY(it[3].second == T{20});
+			VERIFY(it[4].second == T{50});
+			VERIFY(it[5].second == T{70});
+			VERIFY(it[6].second == T{30});
+		}
+	}
 	return true;
 }
 
@@ -52,6 +282,10 @@ GTEST_TEST(FlatMultimapTest, EmplaceHintTest)
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<char>, hamon::vector<long>, hamon::less<char>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::deque<double>, hamon::deque<float>, hamon::greater<double>>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<MinSequenceContainer<int>, MinSequenceContainer<char>, hamon::less<int>>()));
+
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test2());
+
+	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE(test3());
 }
 
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE

@@ -4,11 +4,11 @@
  *	@brief	key_cont と mapped_cont を引数に取るコンストラクタのテスト
  *
  *	constexpr flat_map(key_container_type key_cont, mapped_container_type mapped_cont,
- *                     const key_compare& comp = key_compare());
+ *		const key_compare& comp = key_compare());
  *
  *  constexpr flat_map(sorted_unique_t, key_container_type key_cont,
- *                     mapped_container_type mapped_cont,
- *                     const key_compare& comp = key_compare());
+ *		mapped_container_type mapped_cont,
+ *		const key_compare& comp = key_compare());
  */
 
 #include <hamon/flat_map/flat_map.hpp>
