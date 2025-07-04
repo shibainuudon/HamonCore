@@ -80,7 +80,7 @@ namespace hamon_flat_map_test
 namespace ctad_test
 {
 
-#if !defined(HAMON_USE_STD_FLAT_MAP)
+#if !defined(HAMON_USE_STD_FLAT_MAP) && !(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 150000))
 #define FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE  HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
 #define FLAT_MAP_TEST_CONSTEXPR              HAMON_CXX20_CONSTEXPR
 #else
