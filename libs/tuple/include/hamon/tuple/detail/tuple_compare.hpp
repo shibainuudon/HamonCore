@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
@@ -83,7 +84,7 @@ template <typename... TTypes, typename UTuple>
 inline HAMON_CXX11_CONSTEXPR bool
 tuple_eq(tuple<TTypes...> const& t, UTuple const& u)
 {
-	static_assert(sizeof...(TTypes) == std::tuple_size<UTuple>::value, "[tuple.rel]/2");
+	static_assert(sizeof...(TTypes) == hamon::tuple_size<UTuple>::value, "[tuple.rel]/2");
 	return tuple_detail::tuple_compare<sizeof...(TTypes)>::equal(t, u);
 }
 
@@ -91,8 +92,8 @@ template <typename TTuple, typename UTuple>
 inline HAMON_CXX11_CONSTEXPR bool
 tuple_less(TTuple const& t, UTuple const& u)
 {
-	static_assert(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value, "");
-	return tuple_detail::tuple_compare<std::tuple_size<TTuple>::value>::less(t, u);
+	static_assert(hamon::tuple_size<TTuple>::value == hamon::tuple_size<UTuple>::value, "");
+	return tuple_detail::tuple_compare<hamon::tuple_size<TTuple>::value>::less(t, u);
 }
 
 template <typename... TTypes, typename UTuple, hamon::size_t... Is,
@@ -109,9 +110,9 @@ tuple_3way_impl(tuple<TTypes...> const& t, UTuple const& u, hamon::index_sequenc
 template <typename... TTypes, typename UTuple>
 inline HAMON_CXX11_CONSTEXPR auto
 tuple_3way(tuple<TTypes...> const& t, UTuple const& u)
-->decltype(tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{}))
+->decltype(tuple_3way_impl(t, u, hamon::make_index_sequence<hamon::tuple_size<UTuple>::value>{}))
 {
-	return tuple_3way_impl(t, u, hamon::make_index_sequence<std::tuple_size<UTuple>::value>{});
+	return tuple_3way_impl(t, u, hamon::make_index_sequence<hamon::tuple_size<UTuple>::value>{});
 }
 
 }	// namespace tuple_detail

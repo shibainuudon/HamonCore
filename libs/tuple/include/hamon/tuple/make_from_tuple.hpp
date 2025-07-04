@@ -21,6 +21,7 @@ using std::make_from_tuple;
 #else
 
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -43,7 +44,7 @@ namespace hamon
 namespace tuple_detail
 {
 
-template <typename T, typename Tuple, hamon::size_t N = std::tuple_size<hamon::remove_reference_t<Tuple>>::value>
+template <typename T, typename Tuple, hamon::size_t N = hamon::tuple_size<hamon::remove_reference_t<Tuple>>::value>
 struct make_from_tuple_dangling_check
 {
 	HAMON_STATIC_CONSTEXPR bool value = true;
@@ -86,7 +87,7 @@ make_from_tuple(Tuple&& t)
 HAMON_NOEXCEPT_RETURN(
 	tuple_detail::make_from_tuple_impl<T>(
 		hamon::forward<Tuple>(t),
-		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
+		hamon::make_index_sequence<hamon::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
 
 #undef HAMON_NOEXCEPT_RETURN
 

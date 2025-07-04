@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/concepts/detail/is_specialization_of_tuple.hpp>
@@ -30,7 +31,7 @@ template <
 	typename UTuple,
 	template <typename> class TQual,
 	template <typename> class UQual,
-    typename Indices = hamon::make_index_sequence<std::tuple_size<TTuple>::value>,
+    typename Indices = hamon::make_index_sequence<hamon::tuple_size<TTuple>::value>,
 	typename = void>
 struct tuple_like_common_reference;
 
@@ -73,7 +74,7 @@ requires
 	 hamon::detail::is_specialization_of_tuple<UTuple>::value) &&	// [tuple.common.ref]/2.1
 	hamon::is_same_v<TTuple, hamon::decay_t<TTuple>> &&		// [tuple.common.ref]2.2
 	hamon::is_same_v<UTuple, hamon::decay_t<UTuple>> &&		// [tuple.common.ref]2.3
-	(std::tuple_size_v<TTuple> == std::tuple_size_v<UTuple>) &&	// [tuple.common.ref]2.4
+	(hamon::tuple_size_v<TTuple> == hamon::tuple_size_v<UTuple>) &&	// [tuple.common.ref]2.4
 	requires { typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type; }	// [tuple.common.ref]2.5
 struct basic_common_reference<TTuple, UTuple, TQual, UQual>
 {
@@ -106,7 +107,7 @@ struct tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual,
 	hamon::enable_if_t<
 		hamon::is_same<TTuple, hamon::decay_t<TTuple>>::value &&		// [tuple.common.ref]2.2
 		hamon::is_same<UTuple, hamon::decay_t<UTuple>>::value &&		// [tuple.common.ref]2.3
-		(std::tuple_size<TTuple>::value == std::tuple_size<UTuple>::value)	// [tuple.common.ref]2.4
+		(hamon::tuple_size<TTuple>::value == hamon::tuple_size<UTuple>::value)	// [tuple.common.ref]2.4
 	>,
 	hamon::void_t<typename hamon::detail::tuple_like_common_reference<TTuple, UTuple, TQual, UQual>::type>	// [tuple.common.ref]2.5
 >

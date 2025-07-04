@@ -15,6 +15,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/next.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/extent.hpp>
@@ -28,7 +29,6 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/config.hpp>
 #include <functional>	// std::hash
-#include <tuple>		// std::tuple_size
 
 namespace hamon
 {
@@ -114,7 +114,7 @@ private:
 	HAMON_HASH_RETURN(
 		hash_combine_tuple(
 			hamon::forward<T>(x),
-			hamon::make_index_sequence<std::tuple_size<RawT>::value>{}))
+			hamon::make_index_sequence<hamon::tuple_size<RawT>::value>{}))
 
 	// (4) range なら begin(x)からend(x)までループしてhash_combine
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, RawT), typename T>

@@ -205,7 +205,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::forward<F>(f),
 		hamon::forward<Tuple1>(t1),
 		hamon::forward<Tuple2>(t2),
-		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple1>>::value>{}))
+		hamon::make_index_sequence<hamon::tuple_size<hamon::remove_reference_t<Tuple1>>::value>{}))
 
 // zip_view::iteratorのprivateメンバに、
 // zip_transform_viewからアクセスする必要があるので、そのためのクラス

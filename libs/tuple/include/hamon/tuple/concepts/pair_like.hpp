@@ -7,11 +7,11 @@
 #ifndef HAMON_TUPLE_CONCEPTS_PAIR_LIKE_HPP
 #define HAMON_TUPLE_CONCEPTS_PAIR_LIKE_HPP
 
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
-#include <tuple>
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -20,7 +20,7 @@ namespace hamon {
 // [tuple.like], concept tuple-like
 template <typename T>
 concept pair_like =
-	hamon::tuple_like<T> && std::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
+	hamon::tuple_like<T> && hamon::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
 
 }	// namespace hamon
 
@@ -38,7 +38,7 @@ struct pair_like_impl
 	template <
 		typename U,
 		typename = hamon::enable_if_t<hamon::tuple_like<U>::value>,
-		typename S = std::tuple_size<hamon::remove_cvref_t<U>>
+		typename S = hamon::tuple_size<hamon::remove_cvref_t<U>>
 	>
 	static auto test(int) -> hamon::bool_constant<S::value == 2>;
 

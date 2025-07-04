@@ -38,7 +38,7 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR bool test()
 {
 	using Complex = hamon::complex<T>;
-	static_assert(std::tuple_size<Complex>::value == 2, "");
+	static_assert(hamon::tuple_size<Complex>::value == 2, "");
 	static_assert(hamon::is_same<hamon::tuple_element_t<0, Complex>, T>::value, "");
 	static_assert(hamon::is_same<hamon::tuple_element_t<1, Complex>, T>::value, "");
 

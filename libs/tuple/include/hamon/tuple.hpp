@@ -23,6 +23,7 @@
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/tuple_init_type.hpp>
 #include <hamon/tuple/tuple_last_type.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/tuple_sort_type.hpp>
 
 #endif // HAMON_TUPLE_HPP

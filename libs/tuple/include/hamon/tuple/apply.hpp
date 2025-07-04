@@ -21,6 +21,7 @@ using std::apply;
 #else
 
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -60,7 +61,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	tuple_detail::apply_impl(
 		hamon::forward<F>(f),
 		hamon::forward<Tuple>(t),
-		hamon::make_index_sequence<std::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
+		hamon::make_index_sequence<hamon::tuple_size<hamon::remove_reference_t<Tuple>>::value>{}))
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
 

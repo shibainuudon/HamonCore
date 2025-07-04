@@ -22,6 +22,7 @@ using std::tuple_cat;
 #else
 
 #include <hamon/tuple/tuple_element.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -48,7 +49,7 @@ struct tuple_cat_result<hamon::tuple<Elems...>, T, Tuples...>
 {
 private:
 	using U = hamon::remove_cvref_t<T>;	// [tuple.creation]/7.2
-	using S = std::tuple_size<U>;		// [tuple.creation]/7.4
+	using S = hamon::tuple_size<U>;		// [tuple.creation]/7.4
 
 	template <typename>
 	struct impl;
@@ -104,7 +105,7 @@ public:
 	{
 		using U = hamon::remove_reference_t<T>;
 		return impl(
-			hamon::make_index_sequence<std::tuple_size<U>::value>{},
+			hamon::make_index_sequence<hamon::tuple_size<U>::value>{},
 			hamon::forward<T>(tp),
 			hamon::forward<Tuples>(tpls)...,
 			hamon::forward<CTypes>(celems)...);

@@ -105,7 +105,7 @@ namespace ranges {
 
 template <typename T, hamon::size_t N>
 concept has_tuple_element =
-	hamon::tuple_like<T> && N < std::tuple_size<T>::value;
+	hamon::tuple_like<T> && N < hamon::tuple_size<T>::value;
 
 template <typename T, hamon::size_t N>
 concept returnable_element =
@@ -117,7 +117,7 @@ concept returnable_element =
 template <typename T, hamon::size_t N>
 using has_tuple_element = hamon::bool_constant<
 	hamon::tuple_like_t<T>::value &&
-	(N < std::tuple_size<T>::value)
+	(N < hamon::tuple_size<T>::value)
 >;
 
 template <typename T, hamon::size_t N>

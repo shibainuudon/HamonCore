@@ -21,6 +21,7 @@ using std::tuple;
 #else
 
 #include <hamon/tuple/tuple_fwd.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/detail/tuple_impl.hpp>
 #include <hamon/tuple/detail/tuple_constraint.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
@@ -1339,7 +1340,7 @@ public:
 
 	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
 		typename = hamon::enable_if_t<
-			std::tuple_size<hamon::remove_cvref_t<UTuple>>::value == 0>>
+			hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value == 0>>
 	HAMON_CXX11_CONSTEXPR
 	tuple(hamon::allocator_arg_t, Alloc const&, UTuple&&) HAMON_NOEXCEPT
 	{}

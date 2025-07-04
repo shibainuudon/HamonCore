@@ -9,6 +9,7 @@
 
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/adl_get.hpp>
+#include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
@@ -300,7 +301,7 @@ public:
 	struct TupleLikeCtor : public TupleLikeCtorImpl<
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/29.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/29.2
-		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/29.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/29.3
 		UTuple
 	>{};
 
@@ -398,7 +399,7 @@ public:
 	struct TupleLikeAssign : public TupleLikeAssignImpl<
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/39.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/39.2
-		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/39.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/39.3
 		UTuple
 	>{};
 
@@ -435,7 +436,7 @@ public:
 	struct TupleLikeAssignConst : public TupleLikeAssignConstImpl<
 		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/42.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/42.2
-		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/42.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/42.3
 		UTuple
 	>{};
 
@@ -532,7 +533,7 @@ public:
 	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
 	struct AllocUTupleCtor : public AllocUTupleCtorImpl<
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&
-		sizeof...(Types) == std::tuple_size<hamon::remove_cvref_t<UTuple>>::value,
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,
 		Alloc,
 		UTuple
 	>{};
