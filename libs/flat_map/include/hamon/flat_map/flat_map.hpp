@@ -62,6 +62,7 @@ namespace hamon
 // * nodiscard指定の見直し
 // * #include の整理
 // * erase_if の効率化
+// * HAMON_NO_UNIQUE_ADDRESS の指定(gcc12だとconstexprにできなくなってしまう問題がある)
 
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer>
 class flat_map
@@ -100,7 +101,7 @@ public:
 	private:
 		friend flat_map;
 
-		HAMON_NO_UNIQUE_ADDRESS key_compare comp;
+		key_compare comp;
 
 		constexpr
 		value_compare(key_compare c)
@@ -1509,7 +1510,7 @@ private:
 
 private:
 	containers c;
-	HAMON_NO_UNIQUE_ADDRESS key_compare compare;
+	key_compare compare;
 
 	struct key_equiv
 	{
@@ -1525,7 +1526,7 @@ private:
 		}
 
 	private:
-		HAMON_NO_UNIQUE_ADDRESS key_compare comp;
+		key_compare comp;
 	};
 };
 
