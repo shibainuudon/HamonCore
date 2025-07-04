@@ -25,6 +25,7 @@
 #include <hamon/iterator/back_inserter.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
+#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
@@ -42,7 +43,6 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <memory>	// uses_allocator
 
 namespace hamon
 {
@@ -95,35 +95,35 @@ public:
 		: c(hamon::ranges::to<Container>(hamon::forward<R>(rg)))	// [queue.cons]/4
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR explicit
 	queue(Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, Alloc const&>::value)
 		: c(a)	// [queue.cons.alloc]/2
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(container_type const& cont, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type const&, Alloc const&>::value)
 		: c(cont, a)	// [queue.cons.alloc]/3
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(container_type&& cont, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type&&, Alloc const&>::value)
 		: c(hamon::move(cont), a)	// [queue.cons.alloc]/4
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(queue const& q, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type const&, Alloc const&>::value)
 		: c(q.c, a)	// [queue.cons.alloc]/5
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(queue&& q, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type&&, Alloc const&>::value)
@@ -131,7 +131,7 @@ public:
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(InputIterator first, InputIterator last, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, InputIterator, InputIterator, Alloc const&>::value)
@@ -139,7 +139,7 @@ public:
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(hamon::from_range_t, R&& rg, Alloc const& a)
 		: c(hamon::ranges::to<Container>(hamon::forward<R>(rg), a))	// [queue.cons.alloc]/8
@@ -286,7 +286,7 @@ queue(hamon::from_range_t, R&&)
 template <typename Container, typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>,
-		std::uses_allocator<Container, Allocator>									// [container.adaptors.general]/6.5
+		hamon::uses_allocator<Container, Allocator>									// [container.adaptors.general]/6.5
 	>::value>
 >
 queue(Container, Allocator)
@@ -399,6 +399,10 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);	// [queue.special]/2
 }
 
+template <typename T, typename Container, typename Alloc>
+struct uses_allocator<queue<T, Container>, Alloc>
+    : uses_allocator<Container, Alloc>::type {};
+
 #if 0	// TODO
 
 // [container.adaptors.format], formatter specialization for queue
@@ -408,15 +412,6 @@ struct formatter<queue<T, Container>, charT>;
 #endif
 
 }	// namespace hamon
-
-namespace std
-{
-
-template <typename T, typename Container, typename Alloc>
-struct uses_allocator<hamon::queue<T, Container>, Alloc>
-    : uses_allocator<Container, Alloc>::type {};
-
-}	// namespace std
 
 #endif
 

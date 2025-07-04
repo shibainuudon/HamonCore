@@ -26,6 +26,7 @@
 #include <hamon/iterator/back_inserter.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
+#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
@@ -43,7 +44,6 @@
 #include <hamon/utility/swap.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
-#include <memory>	// uses_allocator
 
 namespace hamon
 {
@@ -155,7 +155,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR explicit
 	priority_queue(Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, Alloc const&>::value &&
@@ -163,7 +163,7 @@ public:
 		: c(a), comp()	// [priqueue.cons.alloc]/2
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	priority_queue(Compare const& compare, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, Alloc const&>::value &&
@@ -171,7 +171,7 @@ public:
 		: c(a), comp(compare)	// [priqueue.cons.alloc]/3
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(Compare const& compare, Container const& cont, Alloc const& a)
 		: c(cont, a), comp(compare)	// [priqueue.cons.alloc]/4
@@ -180,7 +180,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(Compare const& compare, Container&& cont, Alloc const& a)
 		: c(hamon::move(cont), a), comp(compare)	// [priqueue.cons.alloc]/5
@@ -189,7 +189,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	priority_queue(priority_queue const& q, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type const&, Alloc const&>::value &&
@@ -197,7 +197,7 @@ public:
 		: c(q.c, a), comp(q.comp)	// [priqueue.cons.alloc]/6
 	{}
 
-	template <typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+	template <typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	priority_queue(priority_queue&& q, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<container_type, container_type&&, Alloc const&>::value &&
@@ -206,7 +206,7 @@ public:
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Alloc const& a)
 		: c(first, last, a), comp()	// [priqueue.cons.alloc]/8
@@ -216,7 +216,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Alloc const& a)
 		: c(first, last, a), comp(compare)	// [priqueue.cons.alloc]/9
@@ -226,7 +226,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Container const& cont, Alloc const& a)
 		: c(cont, a), comp(compare)	// [priqueue.cons.alloc]/10
@@ -237,7 +237,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Container&& cont, Alloc const& a)
 		: c(hamon::move(cont), a), comp(compare)	// [priqueue.cons.alloc]/11
@@ -248,7 +248,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(hamon::from_range_t, R&& rg, Compare const& compare, Alloc const& a)
 		: c(hamon::ranges::to<Container>(hamon::forward<R>(rg), a)), comp(compare)	// [priqueue.cons.alloc]/12
@@ -258,7 +258,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R),
-		typename Alloc, typename = hamon::enable_if_t<std::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
+		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(hamon::from_range_t, R&& rg, Alloc const& a)
 		: c(hamon::ranges::to<Container>(hamon::forward<R>(rg), a)), comp()	// [priqueue.cons.alloc]/13
@@ -399,7 +399,7 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
 		hamon::detail::simple_allocator_t<Allocator>,
-		std::uses_allocator<Container, Allocator>
+		hamon::uses_allocator<Container, Allocator>
 	>::value>,
 	typename T = typename Container::value_type
 >
@@ -435,7 +435,7 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
 		hamon::detail::simple_allocator_t<Allocator>,
-		std::uses_allocator<Container, Allocator>
+		hamon::uses_allocator<Container, Allocator>
 	>::value>,
 	typename T = typename Container::value_type
 >
@@ -483,6 +483,10 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);
 }
 
+template <typename T, typename Container, typename Compare, typename Alloc>
+struct uses_allocator<priority_queue<T, Container, Compare>, Alloc>
+	: uses_allocator<Container, Alloc>::type {};
+
 #if 0	// TODO
 
 // [container.adaptors.format], formatter specialization for priority_queue
@@ -492,15 +496,6 @@ struct formatter<priority_queue<T, Container, Compare>, charT>;
 #endif
 
 }	// namespace hamon
-
-namespace std
-{
-
-template <typename T, typename Container, typename Compare, typename Alloc>
-struct uses_allocator<hamon::priority_queue<T, Container, Compare>, Alloc>
-	: uses_allocator<Container, Alloc>::type {};
-
-}	// namespace std
 
 #endif
 

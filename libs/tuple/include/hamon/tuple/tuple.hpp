@@ -27,6 +27,7 @@ using std::tuple;
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -1559,6 +1560,11 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 	x.swap(y);
 }
 
+// Tuple traits	[tuple.traits]
+// uses_allocator の特殊化
+template <typename... Types, typename Alloc>
+struct uses_allocator<hamon::tuple<Types...>, Alloc> : hamon::true_type {};
+
 }	// namespace hamon
 
 // is_specialization_of_tuple の特殊化
@@ -1580,18 +1586,6 @@ struct is_specialization_of_tuple<hamon::tuple<Types...>>
 
 // common_type の特殊化
 #include <hamon/tuple/detail/common_type.hpp>
-
-// uses_allocator の特殊化
-#include <memory>
-
-namespace std
-{
-
-// Tuple traits	[tuple.traits]
-template <typename... Types, typename Alloc>
-struct uses_allocator<hamon::tuple<Types...>, Alloc> : std::true_type {};
-
-}	// namespace std
 
 #endif
 

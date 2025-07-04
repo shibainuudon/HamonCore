@@ -58,7 +58,7 @@
 #include <hamon/memory/uninitialized_value_construct.hpp>
 #include <hamon/memory/uninitialized_value_construct_n.hpp>
 #include <hamon/memory/unique_ptr.hpp>
-//#include <hamon/memory/uses_allocator.hpp>
+#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/memory/uses_allocator_construction_args.hpp>
 #include <hamon/memory/weak_ptr.hpp>
 

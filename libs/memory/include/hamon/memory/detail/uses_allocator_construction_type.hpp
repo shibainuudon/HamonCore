@@ -8,11 +8,11 @@
 #define HAMON_MEMORY_DETAIL_USES_ALLOCATOR_CONSTRUCTION_TYPE_HPP
 
 #include <hamon/memory/allocator_arg_t.hpp>
+#include <hamon/memory/uses_allocator.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/config.hpp>
-#include <memory>	// uses_allocator
 
 namespace hamon
 {
@@ -40,7 +40,7 @@ struct uses_allocator_construction_type
 	template <typename T, typename Alloc, typename... Args>
 	using type =
 		hamon::conditional_t<
-			!std::uses_allocator<hamon::remove_cv_t<T>, Alloc>::value,
+			!hamon::uses_allocator<hamon::remove_cv_t<T>, Alloc>::value,
 			hamon::conditional_t<
 				hamon::is_constructible<T, Args...>::value,
 				NoAlloc,		// [allocator.uses.construction]/2.1
