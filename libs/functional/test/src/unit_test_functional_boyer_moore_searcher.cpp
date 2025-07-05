@@ -1,10 +1,10 @@
 ﻿/**
- *	@file	unit_test_functional_default_searcher.cpp
+ *	@file	unit_test_functional_boyer_moore_searcher.cpp
  *
- *	@brief	default_searcher のテスト
+ *	@brief	boyer_moore_searcher のテスト
  */
 
-#include <hamon/functional/default_searcher.hpp>
+#include <hamon/functional/boyer_moore_searcher.hpp>
 #include <hamon/algorithm/search.hpp>
 #include <hamon/string_view.hpp>
 #include <gtest/gtest.h>
@@ -13,7 +13,7 @@
 namespace hamon_functional_test
 {
 
-namespace default_searcher_test
+namespace boyer_moore_searcher_test
 {
 
 inline HAMON_CXX11_CONSTEXPR char tolower(char c)
@@ -31,11 +31,12 @@ struct icmp
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-HAMON_CXX14_CONSTEXPR bool test()
+inline HAMON_CXX20_CONSTEXPR bool test()
 {
 #if !defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	using I = hamon::string_view::iterator;
 #endif
+	using Hash = hamon::hash<hamon::string_view::value_type>;
 
 	{
 		hamon::string_view in =
@@ -44,9 +45,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		{
 			hamon::string_view needle = "pisci";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher    searcher{needle.begin(), needle.end()};
+			hamon::boyer_moore_searcher    searcher{needle.begin(), needle.end()};
 #else
-			hamon::default_searcher<I> searcher{needle.begin(), needle.end()};
+			hamon::boyer_moore_searcher<I> searcher{needle.begin(), needle.end()};
 #endif
 			auto ret = searcher(in.begin(), in.end());
 			VERIFY(ret.first  != in.end());
@@ -62,9 +63,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		{
 			hamon::string_view needle = "pisco";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher    searcher{needle.begin(), needle.end()};
+			hamon::boyer_moore_searcher    searcher{needle.begin(), needle.end()};
 #else
-			hamon::default_searcher<I> searcher{needle.begin(), needle.end()};
+			hamon::boyer_moore_searcher<I> searcher{needle.begin(), needle.end()};
 #endif
 			auto ret = searcher(in.begin(), in.end());
 			VERIFY(ret.first  == in.end());
@@ -79,9 +80,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		{
 			hamon::string_view pattern = "ab";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher    searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher    searcher{pattern.begin(), pattern.end()};
 #else
-			hamon::default_searcher<I> searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher<I> searcher{pattern.begin(), pattern.end()};
 #endif
 			auto ret = searcher(text.begin(), text.end());
 			VERIFY(ret.first  != text.end());
@@ -97,9 +98,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 		{
 			hamon::string_view pattern = "aba";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher          searcher{pattern.begin(), pattern.end(), icmp{}};
+			hamon::boyer_moore_searcher    searcher{pattern.begin(), pattern.end()};
 #else
-			hamon::default_searcher<I, icmp> searcher{pattern.begin(), pattern.end(), icmp{}};
+			hamon::boyer_moore_searcher<I> searcher{pattern.begin(), pattern.end()};
 #endif
 			auto ret = searcher(text.begin(), text.end());
 			VERIFY(ret.first  != text.end());
@@ -115,9 +116,34 @@ HAMON_CXX14_CONSTEXPR bool test()
 		{
 			hamon::string_view pattern = "abab";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher    searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher                searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
 #else
-			hamon::default_searcher<I> searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher<I, Hash, icmp> searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
+#endif
+			auto ret = searcher(text.begin(), text.end());
+			VERIFY(ret.first  == text.end());
+			VERIFY(ret.second == text.end());
+
+			auto it = hamon::search(text.begin(), text.end(), searcher);
+			VERIFY(it == text.end());
+		}
+		{
+			hamon::string_view pattern = "";
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+			hamon::boyer_moore_searcher                searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
+#else
+			hamon::boyer_moore_searcher<I, Hash, icmp> searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
+#endif
+			auto ret = searcher(text.begin(), text.end());
+			VERIFY(ret.first  == text.begin());
+			VERIFY(ret.second == text.begin());
+		}
+		{
+			hamon::string_view pattern = "babcabaabaaca";
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+			hamon::boyer_moore_searcher                searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
+#else
+			hamon::boyer_moore_searcher<I, Hash, icmp> searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
 #endif
 			auto ret = searcher(text.begin(), text.end());
 			VERIFY(ret.first  == text.end());
@@ -129,12 +155,12 @@ HAMON_CXX14_CONSTEXPR bool test()
 	}
 	{
 		hamon::string_view text = "abcABC";
-		hamon::string_view pattern = "AB";
 		{
+			hamon::string_view pattern = "AB";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher    searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher    searcher{pattern.begin(), pattern.end()};
 #else
-			hamon::default_searcher<I> searcher{pattern.begin(), pattern.end()};
+			hamon::boyer_moore_searcher<I> searcher{pattern.begin(), pattern.end()};
 #endif
 			auto ret = searcher(text.begin(), text.end());
 			VERIFY(ret.first  != text.end());
@@ -143,10 +169,11 @@ HAMON_CXX14_CONSTEXPR bool test()
 			VERIFY((ret.second - text.begin()) == 5);
 		}
 		{
+			hamon::string_view pattern = "AB";
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-			hamon::default_searcher          searcher{pattern.begin(), pattern.end(), icmp{}};
+			hamon::boyer_moore_searcher                searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
 #else
-			hamon::default_searcher<I, icmp> searcher{pattern.begin(), pattern.end(), icmp{}};
+			hamon::boyer_moore_searcher<I, Hash, icmp> searcher{pattern.begin(), pattern.end(), Hash{}, icmp{}};
 #endif
 			auto ret = searcher(text.begin(), text.end());
 			VERIFY(ret.first  != text.end());
@@ -155,17 +182,46 @@ HAMON_CXX14_CONSTEXPR bool test()
 			VERIFY((ret.second - text.begin()) == 2);
 		}
 	}
+	{
+		hamon::string_view text = "";
+		{
+			hamon::string_view pattern = "a";
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+			hamon::boyer_moore_searcher    searcher{pattern.begin(), pattern.end()};
+#else
+			hamon::boyer_moore_searcher<I> searcher{pattern.begin(), pattern.end()};
+#endif
+			auto ret = searcher(text.begin(), text.end());
+			VERIFY(ret.first  == text.end());
+			VERIFY(ret.second == text.end());
+		}
+		{
+			hamon::string_view pattern = "";
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+			hamon::boyer_moore_searcher    searcher{pattern.begin(), pattern.end()};
+#else
+			hamon::boyer_moore_searcher<I> searcher{pattern.begin(), pattern.end()};
+#endif
+			auto ret = searcher(text.begin(), text.end());
+			VERIFY(ret.first  == text.end());
+			VERIFY(ret.second == text.end());
+		}
+	}
 
 	return true;
 }
 
 #undef VERIFY
 
-GTEST_TEST(FunctionalTest, DefaultSearcherTest)
+GTEST_TEST(FunctionalTest, BoyerMooreSearcherTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+#else
+	EXPECT_TRUE(test());
+#endif
 }
 
-}	// namespace default_searcher_test
+}	// namespace boyer_moore_searcher_test
 
 }	// namespace hamon_functional_test
