@@ -22,9 +22,9 @@ GTEST_TEST(FlatMultimapTest, UsesAllocatorTest)
 	using Map3 = hamon::flat_multimap<int, float, hamon::less<int>, MinSequenceContainer<int>, UseAllocContainer<float>>;
 	using Alloc = hamon::allocator<char>;
 
-	static_assert( std::uses_allocator<Map1, Alloc>::value, "");
-	static_assert(!std::uses_allocator<Map2, Alloc>::value, "");
-	static_assert(!std::uses_allocator<Map3, Alloc>::value, "");
+	static_assert( hamon::uses_allocator<Map1, Alloc>::value, "");
+	static_assert(!hamon::uses_allocator<Map2, Alloc>::value, "");
+	static_assert(!hamon::uses_allocator<Map3, Alloc>::value, "");
 }
 
 }	// namespace uses_allocator_test

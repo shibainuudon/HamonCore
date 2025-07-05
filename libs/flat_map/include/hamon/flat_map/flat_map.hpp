@@ -44,7 +44,6 @@
 #include <hamon/vector.hpp>
 #include <hamon/assert.hpp>
 #include <initializer_list>
-#include <memory>	// uses_allocator
 
 namespace hamon
 {
@@ -228,8 +227,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR explicit
 	flat_map(Alloc const& a)
@@ -238,8 +237,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(key_compare const& comp, Alloc const& a)
@@ -250,8 +249,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -263,8 +262,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -284,8 +283,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -298,8 +297,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -321,8 +320,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(flat_map const& x, Alloc const& a)
@@ -333,8 +332,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX20_CONSTEXPR
 	flat_map(flat_map&& x, Alloc const& a)
@@ -359,8 +358,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -374,8 +373,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -394,8 +393,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -410,8 +409,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -431,8 +430,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -445,8 +444,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -462,8 +461,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -474,8 +473,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -487,8 +486,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -500,8 +499,8 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
-			std::uses_allocator<key_container_type, Alloc>,
-			std::uses_allocator<mapped_container_type, Alloc>
+			hamon::uses_allocator<key_container_type, Alloc>,
+			hamon::uses_allocator<mapped_container_type, Alloc>
 		>::value>>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
@@ -1563,8 +1562,8 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>
 	>::value>
 >
 flat_map(
@@ -1587,8 +1586,8 @@ template <
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>,
 		hamon::is_invocable<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
@@ -1638,8 +1637,8 @@ template <
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>
 	>::value>
 >
 flat_map(
@@ -1663,8 +1662,8 @@ template <
 		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		std::uses_allocator<KeyContainer, Allocator>,
-		std::uses_allocator<MappedContainer, Allocator>,
+		hamon::uses_allocator<KeyContainer, Allocator>,
+		hamon::uses_allocator<MappedContainer, Allocator>,
 		hamon::is_invocable<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
@@ -1810,19 +1809,14 @@ erase_if(flat_map<Key, T, Compare, KeyContainer, MappedContainer>& c, Predicate 
 	return original_size - c.size();
 }
 
-}	// namespace hamon
-
-namespace std
-{
-
 template <typename Key, typename T, typename Compare, typename KeyContainer, typename MappedContainer, typename Allocator>
 struct uses_allocator<hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>, Allocator>
 	: hamon::bool_constant<
-		std::uses_allocator<KeyContainer, Allocator>::value &&
-		std::uses_allocator<MappedContainer, Allocator>::value>
+		hamon::uses_allocator<KeyContainer, Allocator>::value &&
+		hamon::uses_allocator<MappedContainer, Allocator>::value>
 {};
 
-}	// namespace std
+}	// namespace hamon
 
 #endif
 
