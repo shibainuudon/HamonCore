@@ -19,6 +19,8 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		algorithm
+		array
 		bit
 		concepts
 		config
@@ -32,6 +34,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		ranges
 		tuple
 		type_traits
+		unordered_map
 		utility)
 
 option(HAMON_BUILD_TESTING "Build tests" ON)
