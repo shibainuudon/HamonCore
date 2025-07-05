@@ -52,6 +52,10 @@ public:
 		, m_table(sz, hash, pred)
 	{}
 
+	HAMON_CXX20_CONSTEXPR
+	~boyer_moore_searcher_skip_table()
+	{}
+
 	HAMON_CXX14_CONSTEXPR
 	void insert(key_type const& key, value_type val)
 	{
