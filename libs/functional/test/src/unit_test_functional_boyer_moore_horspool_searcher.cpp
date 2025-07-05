@@ -215,7 +215,11 @@ inline HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(FunctionalTest, BoyerMooreHorspoolSearcherTest)
 {
+#if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000))	/* gcc12までだとconstexprにできない */
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
+#else
+	EXPECT_TRUE(test());
+#endif
 }
 
 }	// namespace boyer_moore_horspool_searcher_test

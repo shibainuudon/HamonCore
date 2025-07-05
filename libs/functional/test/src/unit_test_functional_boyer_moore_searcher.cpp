@@ -215,7 +215,8 @@ inline HAMON_CXX20_CONSTEXPR bool test()
 
 GTEST_TEST(FunctionalTest, BoyerMooreSearcherTest)
 {
-#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))// MSVCでconstexprにすると内部コンパイラエラーになってしまう
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930)) && /* MSVCでconstexprにすると内部コンパイラエラーになってしまう */	\
+	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000))	/* gcc12までだとconstexprにできない */
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test());
 #else
 	EXPECT_TRUE(test());
