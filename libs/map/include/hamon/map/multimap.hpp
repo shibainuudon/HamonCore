@@ -924,14 +924,6 @@ swap(multimap<Key, T, Compare, Allocator>& x, multimap<Key, T, Compare, Allocato
 	x.swap(y);
 }
 
-namespace pmr
-{
-#if 0	// TODO
-template <typename Key, typename T, typename Compare = hamon::less<Key>>
-using multimap = hamon::multimap<Key, T, Compare, hamon::polymorphic_allocator<hamon::pair<Key const, T>>>;
-#endif
-}	// namespace pmr
-
 }	// namespace hamon
 
 #endif

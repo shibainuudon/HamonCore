@@ -1208,14 +1208,6 @@ swap(map<Key, T, Compare, Allocator>& x, map<Key, T, Compare, Allocator>& y)
 	x.swap(y);
 }
 
-namespace pmr
-{
-#if 0	// TODO
-template <typename Key, typename T, typename Compare = hamon::less<Key>>
-using map = hamon::map<Key, T, Compare, hamon::polymorphic_allocator<hamon::pair<Key const, T>>>;
-#endif
-}	// namespace pmr
-
 }	// namespace hamon
 
 #endif
