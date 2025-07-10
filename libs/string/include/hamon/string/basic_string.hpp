@@ -43,6 +43,10 @@ using std::basic_string;
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/construct_at.hpp>
+#include <hamon/memory/detail/equals_allocator.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_move.hpp>
+#include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -246,6 +250,8 @@ private:
 			{
 				AllocTraits::deallocate(alloc, this->GetData(), this->GetCapacity());
 				m_large.data = nullptr;
+				m_large.capacity = 0;
+				IsLarge(false);
 			}
 		}
 
@@ -518,15 +524,6 @@ public:
 	}
 
 private:
-	HAMON_CXX14_CONSTEXPR void PropagateOnCopyAssign(basic_string const& str)
-	{
-		(void)str;
-		if (AllocTraits::propagate_on_container_copy_assignment::value)
-		{
-			// TODO
-		}
-	}
-
 	HAMON_CXX14_CONSTEXPR void CopyAssign(CharT const* s, size_type n)
 	{
 		if (n + 1 > m_rep.GetCapacity())
@@ -540,33 +537,25 @@ private:
 		m_rep.NullTerminate();
 	}
 
-	HAMON_CXX14_CONSTEXPR void PropagateOnMoveAssign(basic_string& str)
-	{
-		if (AllocTraits::propagate_on_container_move_assignment::value)
-		{
-			m_allocator = hamon::move(str.m_allocator);
-		}
-	}
-
-	HAMON_CXX14_CONSTEXPR void MoveAssign(basic_string& str)
-	{
-		PropagateOnMoveAssign(str);
-
-		m_rep.Deallocate(m_allocator);
-		m_rep = str.m_rep;
-		str.m_rep = Rep{};
-	}
-
 public:
 	HAMON_CXX14_CONSTEXPR basic_string&
 	operator=(basic_string const& str)
 	{
 		// [string.cons]/28
-		if (this != hamon::addressof(str))
+		if (hamon::addressof(str) == this)
 		{
-			PropagateOnCopyAssign(str);
-			CopyAssign(str.data(), str.size());
+			return *this;
 		}
+
+		if (!hamon::detail::equals_allocator(m_allocator, str.m_allocator))
+		{
+			m_rep.Deallocate(m_allocator);
+
+			// アロケータを伝播
+			hamon::detail::propagate_allocator_on_copy(m_allocator, str.m_allocator);
+		}
+
+		CopyAssign(str.data(), str.size());
 
 		// [string.cons]/29
 		return *this;
@@ -579,7 +568,38 @@ public:
 			AllocTraits::is_always_equal::value)
 	{
 		// [string.cons]/30
-		MoveAssign(str);
+
+		if (hamon::addressof(str) == this)
+		{
+			return *this;
+		}
+
+		m_rep.Deallocate(m_allocator);
+
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (!AllocTraits::propagate_on_container_move_assignment::value)
+#else
+		if           (!AllocTraits::propagate_on_container_move_assignment::value)
+#endif
+		{
+			if (!hamon::detail::equals_allocator(m_allocator, str.m_allocator))
+			{
+				// アロケータを伝播させない場合は要素をstealすることはできないので、
+				// 要素をコピーしなければいけない。
+				CopyAssign(str.data(), str.size());
+				return *this;
+			}
+		}
+
+		if (!hamon::detail::equals_allocator(m_allocator, str.m_allocator))
+		{
+			// アロケータを伝播
+			hamon::detail::propagate_allocator_on_move(m_allocator, str.m_allocator);
+		}
+
+		// 要素をsteal
+		m_rep = str.m_rep;
+		str.m_rep = Rep{};
 
 		// [string.cons]/31
 		return *this;
@@ -1625,9 +1645,9 @@ HAMON_WARNING_POP()
 			AllocTraits::propagate_on_container_swap::value ||
 			get_allocator() == str.get_allocator());
 
-		if (AllocTraits::propagate_on_container_swap::value)
+		if (!hamon::detail::equals_allocator(m_allocator, str.m_allocator))
 		{
-			hamon::swap(m_allocator, str.m_allocator);
+			hamon::detail::propagate_allocator_on_swap(m_allocator, str.m_allocator);
 		}
 		hamon::swap(m_rep, str.m_rep);
 	}

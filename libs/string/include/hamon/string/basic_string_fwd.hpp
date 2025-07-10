@@ -27,11 +27,25 @@ using std::basic_string;
 namespace hamon
 {
 
-template <typename CharT, typename Traits = hamon::char_traits<CharT>, typename Allocator = hamon::allocator<CharT>>
+template <
+	typename CharT,
+	typename Traits = hamon::char_traits<CharT>,
+	typename Allocator = hamon::allocator<CharT>>
 class basic_string;
 
 }	// namespace hamon
 
 #endif
+
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
+
+namespace hamon {
+namespace pmr {
+
+template <typename charT, typename traits = hamon::char_traits<charT>>
+using basic_string = hamon::basic_string<charT, traits, hamon::pmr::polymorphic_allocator<charT>>;
+
+}	// namespace pmr
+}	// namespace hamon
 
 #endif // HAMON_STRING_BASIC_STRING_FWD_HPP

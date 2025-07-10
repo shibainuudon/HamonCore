@@ -27,6 +27,23 @@ using u32string = hamon::basic_string<char32_t>;
 #endif
 using wstring   = hamon::basic_string<wchar_t>;
 
+namespace pmr
+{
+
+using string    = hamon::pmr::basic_string<char>;
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+using u8string  = hamon::pmr::basic_string<char8_t>;
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+using u16string = hamon::pmr::basic_string<char16_t>;
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+using u32string = hamon::pmr::basic_string<char32_t>;
+#endif
+using wstring   = hamon::pmr::basic_string<wchar_t>;
+
+}	// namespace pmr
+
 }	// namespace hamon
 
 #endif // HAMON_STRING_TYPEDEFS_HPP

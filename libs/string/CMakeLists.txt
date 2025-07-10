@@ -28,6 +28,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		debug
 		functional
 		memory
+		memory_resource
 		string_view
 		type_traits)
 
