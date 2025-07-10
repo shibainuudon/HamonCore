@@ -18,6 +18,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
 		algorithm
 		deque
+		memory_resource
 		string
 		type_traits
 		vector
