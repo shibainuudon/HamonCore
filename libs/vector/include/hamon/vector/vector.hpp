@@ -7,20 +7,10 @@
 #ifndef HAMON_VECTOR_VECTOR_HPP
 #define HAMON_VECTOR_VECTOR_HPP
 
+#include <hamon/vector/vector_fwd.hpp>
 #include <hamon/vector/config.hpp>
 
-#if defined(HAMON_USE_STD_VECTOR)
-
-#include <vector>
-
-namespace hamon
-{
-
-using std::vector;
-
-}	// namespace hamon
-
-#else
+#if !defined(HAMON_USE_STD_VECTOR)
 
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
@@ -86,11 +76,6 @@ namespace hamon
 
 #if 0
 
-namespace pmr {
-template <typename T>
-using vector = std::vector<T, polymorphic_allocator<T>>;
-}
-
 // [vector.bool], specialization of vector for bool
 // [vector.bool.pspc], partial class template specialization vector<bool, Allocator>
 template <typename Allocator>
@@ -121,7 +106,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 
 // 24.3.11 Class template vector[vector]
 
-template <typename T, typename Allocator = hamon::allocator<T>>
+template <typename T, typename Allocator>
 class vector
 {
 private:
