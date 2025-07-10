@@ -1354,18 +1354,6 @@ swap(
 	x.swap(y);
 }
 
-namespace pmr
-{
-
-template <
-	typename Key,
-	typename Hash = hamon::hash<Key>,
-	typename Pred = hamon::equal_to<Key>>
-using unordered_set =
-	hamon::unordered_set<Key, Hash, Pred, hamon::pmr::polymorphic_allocator<Key>>;
-
-}	// namespace pmr
-
 }	// namespace hamon
 
 #endif
