@@ -34,4 +34,15 @@ class forward_list;
 
 #endif
 
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
+
+namespace hamon {
+namespace pmr {
+
+template <typename T>
+using forward_list = hamon::forward_list<T, hamon::pmr::polymorphic_allocator<T>>;
+
+}	// namespace pmr
+}	// namespace hamon
+
 #endif // HAMON_FORWARD_LIST_FORWARD_LIST_FWD_HPP

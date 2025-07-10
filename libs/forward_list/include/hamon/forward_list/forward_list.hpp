@@ -752,16 +752,6 @@ swap(forward_list<T, Allocator>& x, forward_list<T, Allocator>& y)
 	x.swap(y);
 }
 
-#if 0	// TODO
-namespace pmr
-{
-
-template <class T>
-using forward_list = hamon::forward_list<T, polymorphic_allocator<T>>;
-
-}	// namespace pmr
-#endif
-
 }	// namespace hamon
 
 #endif
