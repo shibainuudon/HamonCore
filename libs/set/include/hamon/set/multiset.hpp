@@ -871,14 +871,6 @@ swap(multiset<Key, Compare, Allocator>& x, multiset<Key, Compare, Allocator>& y)
 	x.swap(y);
 }
 
-namespace pmr
-{
-#if 0	// TODO
-template <typename Key, typename Compare = hamon::less<Key>>
-using multiset = hamon::multiset<Key, Compare, hamon::polymorphic_allocator<Key>>;
-#endif
-}	// namespace pmr
-
 }	// namespace hamon
 
 #endif

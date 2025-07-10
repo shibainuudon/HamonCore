@@ -901,14 +901,6 @@ swap(set<Key, Compare, Allocator>& x, set<Key, Compare, Allocator>& y)
 	x.swap(y);
 }
 
-namespace pmr
-{
-#if 0	// TODO
-template <typename Key, typename Compare = hamon::less<Key>>
-using set = hamon::set<Key, Compare, hamon::polymorphic_allocator<Key>>;
-#endif
-}	// namespace pmr
-
 }	// namespace hamon
 
 #endif
