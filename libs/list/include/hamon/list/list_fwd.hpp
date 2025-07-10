@@ -35,4 +35,15 @@ class list;
 
 #endif
 
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
+
+namespace hamon {
+namespace pmr {
+
+template <typename T>
+using list = hamon::list<T, hamon::pmr::polymorphic_allocator<T>>;
+
+}	// namespace pmr
+}	// namespace hamon
+
 #endif // HAMON_LIST_LIST_FWD_HPP

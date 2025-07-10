@@ -795,16 +795,6 @@ swap(list<T, Allocator>& x, list<T, Allocator>& y)
 	x.swap(y);
 }
 
-#if 0	// TODO
-namespace pmr
-{
-
-template <typename T>
-using list = hamon::list<T, polymorphic_allocator<T>>;
-
-}	// namespace pmr
-#endif
-
 }	// namespace hamon
 
 // シリアライズ対応

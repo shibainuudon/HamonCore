@@ -1,17 +1,19 @@
 ﻿/**
- *	@file	unit_test_list.cpp
+ *	@file	unit_test_list_pmr.cpp
  *
- *	@brief	list のテスト
+ *	@brief	pmr::list のテスト
  */
 
 #include <hamon/list.hpp>
 #include <hamon/algorithm/for_each.hpp>
+#include <hamon/memory_resource/monotonic_buffer_resource.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 
-GTEST_TEST(ListTest, ListTest)
+GTEST_TEST(ListTest, PmrTest)
 {
-	hamon::list<int> ls;
+	hamon::pmr::monotonic_buffer_resource mr;
+	hamon::pmr::list<int> ls(&mr);
 
 	// 先頭から要素を追加
 	ls.push_front(1);
