@@ -9,6 +9,7 @@
 
 #include <hamon/deque/config.hpp>
 #include <hamon/deque/deque.hpp>
+#include <hamon/deque/deque_fwd.hpp>
 #include <hamon/deque/erase.hpp>
 #include <hamon/deque/erase_if.hpp>
 

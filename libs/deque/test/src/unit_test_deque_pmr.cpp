@@ -1,17 +1,19 @@
 ﻿/**
- *	@file	unit_test_deque.cpp
+ *	@file	unit_test_deque_pmr.cpp
  *
- *	@brief	deque のテスト
+ *	@brief	pmr::deque のテスト
  */
 
 #include <hamon/deque.hpp>
 #include <hamon/algorithm/for_each.hpp>
+#include <hamon/memory_resource/monotonic_buffer_resource.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 
-GTEST_TEST(DequeTest, DequeTest)
+GTEST_TEST(DequeTest, PmrTest)
 {
-	hamon::deque<int> deq;
+	hamon::pmr::monotonic_buffer_resource mr;
+	hamon::pmr::deque<int> deq(&mr);
 
 	deq.push_front(3);  // 先頭に要素を追加
 	deq.push_back(1);   // 末尾に要素を追加

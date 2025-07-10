@@ -7,20 +7,10 @@
 #ifndef HAMON_DEQUE_DEQUE_HPP
 #define HAMON_DEQUE_DEQUE_HPP
 
+#include <hamon/deque/deque_fwd.hpp>
 #include <hamon/deque/config.hpp>
 
-#if defined(HAMON_USE_STD_DEQUE)
-
-#include <deque>
-
-namespace hamon
-{
-
-using std::deque;
-
-}	// namespace hamon
-
-#else
+#if !defined(HAMON_USE_STD_DEQUE)
 
 #include <hamon/deque/detail/deque_impl.hpp>
 #include <hamon/algorithm/equal.hpp>
@@ -61,21 +51,9 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 namespace hamon
 {
 
-#if 0
-
-// 24.3.3 Header <deque> synopsis[deque.syn]
-
-namespace pmr
-{
-template <typename T>
-using deque = std::deque<T, polymorphic_allocator<T>>;
-}
-
-#endif
-
 // 24.3.8 Class template deque[deque]
 
-template <typename T, typename Allocator = hamon::allocator<T>>
+template <typename T, typename Allocator>
 class deque
 {
 private:
