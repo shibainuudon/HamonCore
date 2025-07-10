@@ -19,6 +19,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		array
 		functional
 		memory
+		memory_resource
 		pair
 		ranges
 		string

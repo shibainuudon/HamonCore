@@ -8,6 +8,9 @@
 #define HAMON_UNORDERED_MAP_UNORDERED_MAP_FWD_HPP
 
 #include <hamon/unordered_map/config.hpp>
+#include <hamon/functional/hash.hpp>
+#include <hamon/functional/equal_to.hpp>
+#include <hamon/pair/pair_fwd.hpp>
 
 #if defined(HAMON_USE_STD_UNORDERED_MAP)
 
@@ -22,10 +25,7 @@ using std::unordered_map;
 
 #else
 
-#include <hamon/functional/hash.hpp>
-#include <hamon/functional/equal_to.hpp>
 #include <hamon/memory/allocator.hpp>
-#include <hamon/pair/pair_fwd.hpp>
 
 namespace hamon
 {
@@ -43,5 +43,23 @@ class unordered_map;
 }	// namespace hamon
 
 #endif
+
+#include <hamon/memory_resource/polymorphic_allocator.hpp>
+
+namespace hamon {
+namespace pmr {
+
+template <
+	typename Key,
+	typename T,
+	typename Hash = hamon::hash<Key>,
+	typename Pred = hamon::equal_to<Key>
+>
+using unordered_map =
+	hamon::unordered_map<Key, T, Hash, Pred,
+		hamon::pmr::polymorphic_allocator<hamon::pair<Key const, T>>>;
+
+}	// namespace pmr
+}	// namespace hamon
 
 #endif // HAMON_UNORDERED_MAP_UNORDERED_MAP_FWD_HPP

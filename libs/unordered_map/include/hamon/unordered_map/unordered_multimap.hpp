@@ -51,7 +51,6 @@
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
-#include <hamon/memory_resource/polymorphic_allocator.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
@@ -1363,21 +1362,6 @@ swap(
 	// [container.reqmts]/51
 	x.swap(y);
 }
-
-namespace pmr
-{
-
-template <
-	typename Key,
-	typename T,
-	typename Hash = hamon::hash<Key>,
-	typename Pred = hamon::equal_to<Key>
->
-using unordered_multimap =
-	hamon::unordered_multimap<Key, T, Hash, Pred,
-		hamon::pmr::polymorphic_allocator<hamon::pair<Key const, T>>>;
-
-}	// namespace pmr
 
 }	// namespace hamon
 
