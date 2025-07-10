@@ -1,10 +1,10 @@
 ﻿/**
- *	@file	unit_test_flat_multimap_ctor_move.cpp
+ *	@file	unit_test_flat_map_op_assign_move.cpp
  *
- *	@brief	ムーブコンストラクタのテスト
+ *	@brief	ムーブ代入演算子のテスト
  */
 
-#include <hamon/flat_map/flat_multimap.hpp>
+#include <hamon/flat_map/flat_map.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/vector.hpp>
@@ -13,12 +13,12 @@
 #include <vector>
 #include <deque>
 #include "constexpr_test.hpp"
-#include "flat_multimap_test_helper.hpp"
+#include "flat_map_test_helper.hpp"
 
-namespace hamon_flat_multimap_test
+namespace hamon_flat_map_test
 {
 
-namespace ctor_move_test
+namespace op_assign_move_test
 {
 
 #if !defined(HAMON_USE_STD_FLAT_MAP)
@@ -42,15 +42,14 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		using MappedContainerAllocator = TestAllocator2<T>;
 		using KeyContainer = TKeyContainer<Key, KeyContainerAllocator>;
 		using MappedContainer = TMappedContainer<T, MappedContainerAllocator>;
-		using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+		using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
 
-		static_assert( hamon::is_constructible<Map, Map&&>::value, "");
-		static_assert( hamon::is_nothrow_constructible<Map, Map&&>::value ==
-			(hamon::is_nothrow_move_constructible<Compare>::value &&
-			 hamon::is_nothrow_move_constructible<KeyContainer>::value &&
-			 hamon::is_nothrow_move_constructible<MappedContainer>::value), "");
-		static_assert( hamon::is_implicitly_constructible<Map, Map&&>::value, "");
-		static_assert(!hamon::is_trivially_constructible<Map, Map&&>::value, "");
+		static_assert( hamon::is_assignable<Map, Map&&>::value, "");
+		static_assert( hamon::is_nothrow_assignable<Map, Map&&>::value ==
+			(hamon::is_nothrow_move_assignable<Compare>::value &&
+			 hamon::is_nothrow_move_assignable<KeyContainer>::value &&
+			 hamon::is_nothrow_move_assignable<MappedContainer>::value), "");
+		static_assert(!hamon::is_trivially_assignable<Map, Map&&>::value, "");
 
 		KeyContainerAllocator key_alloc{13};
 		MappedContainerAllocator mapped__alloc{14};
@@ -58,7 +57,13 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		MappedContainer mapped_cont({T{10}, T{20}, T{30}}, mapped__alloc);
 		Compare comp{15};
 		Map v1(key_cont, mapped_cont, comp);
-		Map v2 = hamon::move(v1);
+		Map v2;
+		VERIFY(v2.key_comp()               != comp);
+		VERIFY(v2.keys()                   != key_cont);
+		VERIFY(v2.values()                 != mapped_cont);
+		VERIFY(v2.keys().get_allocator()   == key_alloc);
+		VERIFY(v2.values().get_allocator() != mapped__alloc);
+		v2 = hamon::move(v1);
 		VERIFY(v2.key_comp()               == comp);
 		VERIFY(v2.keys()                   == key_cont);
 		VERIFY(v2.values()                 == mapped_cont);
@@ -73,15 +78,14 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		using MappedContainerAllocator = TestAllocator4<T>;
 		using KeyContainer = TKeyContainer<Key, KeyContainerAllocator>;
 		using MappedContainer = TMappedContainer<T, MappedContainerAllocator>;
-		using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+		using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
 
-		static_assert( hamon::is_constructible<Map, Map&&>::value, "");
-		static_assert( hamon::is_nothrow_constructible<Map, Map&&>::value ==
-			(hamon::is_nothrow_move_constructible<Compare>::value &&
-			 hamon::is_nothrow_move_constructible<KeyContainer>::value &&
-			 hamon::is_nothrow_move_constructible<MappedContainer>::value), "");
-		static_assert( hamon::is_implicitly_constructible<Map, Map&&>::value, "");
-		static_assert(!hamon::is_trivially_constructible<Map, Map&&>::value, "");
+		static_assert( hamon::is_assignable<Map, Map&&>::value, "");
+		static_assert( hamon::is_nothrow_assignable<Map, Map&&>::value ==
+			(hamon::is_nothrow_move_assignable<Compare>::value &&
+			 hamon::is_nothrow_move_assignable<KeyContainer>::value &&
+			 hamon::is_nothrow_move_assignable<MappedContainer>::value), "");
+		static_assert(!hamon::is_trivially_assignable<Map, Map&&>::value, "");
 
 		KeyContainerAllocator key_alloc{13};
 		MappedContainerAllocator mapped__alloc{14};
@@ -89,12 +93,18 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		MappedContainer mapped_cont({T{10}, T{20}, T{30}}, mapped__alloc);
 		Compare comp{15};
 		Map v1(key_cont, mapped_cont, comp);
-		Map v2 = hamon::move(v1);
+		Map v2;
+		VERIFY(v2.key_comp()               != comp);
+		VERIFY(v2.keys()                   != key_cont);
+		VERIFY(v2.values()                 != mapped_cont);
+		VERIFY(v2.keys().get_allocator()   != key_alloc);
+		VERIFY(v2.values().get_allocator() != mapped__alloc);
+		v2 = hamon::move(v1);
 		VERIFY(v2.key_comp()               == comp);
 		VERIFY(v2.keys()                   == key_cont);
 		VERIFY(v2.values()                 == mapped_cont);
 		VERIFY(v2.keys().get_allocator()   != key_alloc);
-		VERIFY(v2.values().get_allocator() == mapped__alloc);
+		VERIFY(v2.values().get_allocator() != mapped__alloc);
 	}
 	{
 		using Key = long;
@@ -104,15 +114,14 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		using MappedContainerAllocator = TestAllocator6<T>;
 		using KeyContainer = TKeyContainer<Key, KeyContainerAllocator>;
 		using MappedContainer = TMappedContainer<T, MappedContainerAllocator>;
-		using Map = hamon::flat_multimap<Key, T, Compare, KeyContainer, MappedContainer>;
+		using Map = hamon::flat_map<Key, T, Compare, KeyContainer, MappedContainer>;
 
-		static_assert( hamon::is_constructible<Map, Map&&>::value, "");
-		static_assert( hamon::is_nothrow_constructible<Map, Map&&>::value ==
-			(hamon::is_nothrow_move_constructible<Compare>::value &&
-			 hamon::is_nothrow_move_constructible<KeyContainer>::value &&
-			 hamon::is_nothrow_move_constructible<MappedContainer>::value), "");
-		static_assert( hamon::is_implicitly_constructible<Map, Map&&>::value, "");
-		static_assert(!hamon::is_trivially_constructible<Map, Map&&>::value, "");
+		static_assert( hamon::is_assignable<Map, Map&&>::value, "");
+		static_assert( hamon::is_nothrow_assignable<Map, Map&&>::value ==
+			(hamon::is_nothrow_move_assignable<Compare>::value &&
+			 hamon::is_nothrow_move_assignable<KeyContainer>::value &&
+			 hamon::is_nothrow_move_assignable<MappedContainer>::value), "");
+		static_assert(!hamon::is_trivially_assignable<Map, Map&&>::value, "");
 
 		KeyContainerAllocator key_alloc{13};
 		MappedContainerAllocator mapped__alloc{14};
@@ -120,19 +129,25 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 		MappedContainer mapped_cont({T{10}, T{20}, T{30}}, mapped__alloc);
 		Compare comp{15};
 		Map v1(key_cont, mapped_cont, comp);
-		Map v2 = hamon::move(v1);
+		Map v2;
+		VERIFY(v2.key_comp()               != comp);
+		VERIFY(v2.keys()                   != key_cont);
+		VERIFY(v2.values()                 != mapped_cont);
+		VERIFY(v2.keys().get_allocator()   != key_alloc);
+		VERIFY(v2.values().get_allocator() != mapped__alloc);
+		v2 = hamon::move(v1);
 		VERIFY(v2.key_comp()               == comp);
 		VERIFY(v2.keys()                   == key_cont);
 		VERIFY(v2.values()                 == mapped_cont);
 		VERIFY(v2.keys().get_allocator()   == key_alloc);
-		VERIFY(v2.values().get_allocator() == mapped__alloc);
+		VERIFY(v2.values().get_allocator() != mapped__alloc);
 	}
 	return true;
 }
 
 #undef VERIFY
 
-GTEST_TEST(FlatMultimapTest, CtorMoveTest)
+GTEST_TEST(FlatMapTest, OpAssignMoveTest)
 {
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::vector>()));
 	FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE((test<hamon::vector, hamon::deque>()));
@@ -148,6 +163,6 @@ GTEST_TEST(FlatMultimapTest, CtorMoveTest)
 #undef FLAT_MAP_TEST_CONSTEXPR_EXPECT_TRUE
 #undef FLAT_MAP_TEST_CONSTEXPR
 
-}	// namespace ctor_move_test
+}	// namespace op_assign_move_test
 
-}	// namespace hamon_flat_multimap_test
+}	// namespace hamon_flat_map_test
