@@ -307,6 +307,9 @@ private:
 		return hamon::construct_at(p, hamon::forward<Args>(args)...);
 	}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wdeprecated-declarations")	// ‘void std::pmr::polymorphic_allocator::destroy()' is deprecated: use 'allocator_traits::destroy' instead
+
 	// [allocator.traits.members]/7
 	template <typename A2, typename T>
 	static HAMON_CXX14_CONSTEXPR auto
@@ -315,6 +318,8 @@ private:
 	{
 		return a.destroy(p);
 	}
+
+HAMON_WARNING_POP()
 
 	template <typename A2, typename T>
 	static HAMON_CXX14_CONSTEXPR auto
