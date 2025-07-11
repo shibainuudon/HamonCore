@@ -121,16 +121,16 @@ GTEST_TEST(FlatMapTest, PmrTest)
 
 		EXPECT_TRUE(m.key_comp() == C(5));
 		EXPECT_TRUE((m == M {{1, 1}, {2, 2}, {3, 3}}));
-		auto [ks, vs] = hamon::move(m).extract();
-		EXPECT_TRUE(ks.get_allocator().resource() == hamon::pmr::get_default_resource());
-		EXPECT_TRUE(vs.get_allocator().resource() == hamon::pmr::get_default_resource());
+		auto c = hamon::move(m).extract();
+		EXPECT_TRUE(c.keys.get_allocator().resource() == hamon::pmr::get_default_resource());
+		EXPECT_TRUE(c.values.get_allocator().resource() == hamon::pmr::get_default_resource());
 
 		// mo is unchanged
 		EXPECT_TRUE(mo.key_comp() == C(5));
 		EXPECT_TRUE((mo == M {{1, 1}, {2, 2}, {3, 3}}));
-		auto [kso, vso] = hamon::move(mo).extract();
-		EXPECT_TRUE(kso.get_allocator().resource() == &mr);
-		EXPECT_TRUE(vso.get_allocator().resource() == &mr);
+		auto co = hamon::move(mo).extract();
+		EXPECT_TRUE(co.keys.get_allocator().resource() == &mr);
+		EXPECT_TRUE(co.values.get_allocator().resource() == &mr);
 	}
 	{
 		//  flat_map(initializer_list<value_type> il, const Alloc& a);
@@ -156,15 +156,15 @@ GTEST_TEST(FlatMapTest, PmrTest)
 	}
 	{
 		// flat_map(InputIterator first, InputIterator last, const Allocator& a);
-		using P      = hamon::pair<int, short>;
-		P ar[]       = {{1, 1}, {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {2, 7}, {3, 8}, {3, 9}};
-		P expected[] = {{1, 1}, {2, 4}, {3, 6}};
+		using P = hamon::pair<int, short>;
+		P ar[] = {{1, 1}, {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {2, 7}, {3, 8}, {3, 9}};
+		int expected[] = {1, 2, 3};
 		{
 			//  cpp17 iterator
 			using M = hamon::flat_map<int, short, hamon::less<int>, hamon::pmr::vector<int>, hamon::pmr::vector<short>>;
 			hamon::pmr::monotonic_buffer_resource mr;
-			M m(cpp17_input_iterator_wrapper<P>(ar), cpp17_input_iterator_wrapper<P>(ar + 9), &mr);
-			EXPECT_TRUE(hamon::ranges::equal(m.keys(), expected | hamon::views::elements<0>));
+			M m(cpp17_input_iterator_wrapper<P>{ar}, cpp17_input_iterator_wrapper<P>{ar + 9}, &mr);
+			EXPECT_TRUE(hamon::ranges::equal(m.keys(), expected));
 			EXPECT_TRUE(m.keys().get_allocator().resource() == &mr);
 			EXPECT_TRUE(m.values().get_allocator().resource() == &mr);
 		}
@@ -180,8 +180,8 @@ GTEST_TEST(FlatMapTest, PmrTest)
 	{
 		// flat_map(flat_map&&, const allocator_type&);
 		hamon::pair<int, int> expected[] = {{1, 1}, {2, 2}, {3, 1}};
-		using C                        = TestLess<int>;
-		using M                        = hamon::flat_map<int, int, C, hamon::pmr::vector<int>, hamon::pmr::deque<int>>;
+		using C = TestLess<int>;
+		using M = hamon::flat_map<int, int, C, hamon::pmr::vector<int>, hamon::pmr::deque<int>>;
 		hamon::pmr::monotonic_buffer_resource mr1;
 		hamon::pmr::monotonic_buffer_resource mr2;
 		M mo = M({{1, 1}, {3, 1}, {1, 1}, {2, 2}}, C(5), &mr1);
@@ -209,29 +209,10 @@ GTEST_TEST(FlatMapTest, PmrTest)
 		EXPECT_TRUE((vs[0].values() == hamon::pmr::vector<int>{1, 2, 1}));
 	}
 	{
-		//// flat_map& operator=(flat_map&&);
-		//using M =
-		//	hamon::flat_map<hamon::pmr::string, int, hamon::less<>, hamon::pmr::vector<hamon::pmr::string>, hamon::pmr::vector<int>>;
-		//hamon::pmr::monotonic_buffer_resource mr1;
-		//hamon::pmr::monotonic_buffer_resource mr2;
-		//M mo = M({{"short", 1},
-		//		  {"very long string that definitely won't fit in the SSO buffer and therefore becomes empty on move", 2}},
-		//		 &mr1);
-		//M m  = M({{"don't care", 3}}, &mr2);
-		//m    = hamon::move(mo);
-		//EXPECT_TRUE(m.size() == 2);
-		//EXPECT_TRUE(hamon::is_sorted(m.begin(), m.end(), m.value_comp()));
-		//EXPECT_TRUE(m.begin()->first.get_allocator().resource() == &mr2);
-
-		//EXPECT_TRUE(hamon::is_sorted(mo.begin(), mo.end(), mo.value_comp()));
-		//mo.insert({"foo", 1});
-		//EXPECT_TRUE(mo.begin()->first.get_allocator().resource() == &mr1);
-	}
-	{
 		//  flat_map(from_range_t, R&&, const Alloc&);
-		using P      = hamon::pair<int, short>;
-		P ar[]       = {{1, 1}, {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {2, 7}, {3, 8}, {3, 9}};
-		P expected[] = {{1, 1}, {2, 4}, {3, 6}};
+		using P = hamon::pair<int, short>;
+		P ar[] = {{1, 1}, {1, 2}, {1, 3}, {2, 4}, {2, 5}, {3, 6}, {2, 7}, {3, 8}, {3, 9}};
+		int expected[] = {1, 2, 3};
 		{
 		  // input_range
 			using M    = hamon::flat_map<int, short, hamon::less<int>, hamon::pmr::vector<int>, hamon::pmr::vector<short>>;
@@ -239,8 +220,8 @@ GTEST_TEST(FlatMapTest, PmrTest)
 			using Sent = test_sentinel<Iter>;
 			using R    = hamon::ranges::subrange<Iter, Sent>;
 			hamon::pmr::monotonic_buffer_resource mr;
-			M m(hamon::from_range, R(Iter(ar), Sent(Iter(ar + 9))), &mr);
-			EXPECT_TRUE(hamon::ranges::equal(m.keys(), expected | hamon::views::elements<0>));
+			M m(hamon::from_range, R(Iter{ar}, Sent{Iter{ar + 9}}), &mr);
+			EXPECT_TRUE(hamon::ranges::equal(m.keys(), expected));
 			EXPECT_TRUE(m.keys().get_allocator().resource() == &mr);
 			EXPECT_TRUE(m.values().get_allocator().resource() == &mr);
 		}
@@ -288,7 +269,7 @@ GTEST_TEST(FlatMapTest, PmrTest)
 		hamon::pmr::monotonic_buffer_resource mr;
 		using P = hamon::pair<int, int>;
 		P ar[]  = {{1, 1}, {2, 2}, {4, 4}, {5, 5}};
-		M m(hamon::sorted_unique, cpp17_input_iterator_wrapper<P>(ar), cpp17_input_iterator_wrapper<P>(ar + 4), C(3), &mr);
+		M m(hamon::sorted_unique, cpp17_input_iterator_wrapper<P>{ar}, cpp17_input_iterator_wrapper<P>{ar + 4}, C(3), &mr);
 		EXPECT_TRUE((m == M {{1, 1}, {2, 2}, {4, 4}, {5, 5}}));
 		EXPECT_TRUE(m.key_comp() == C(3));
 		EXPECT_TRUE(m.keys().get_allocator().resource() == &mr);
@@ -314,7 +295,7 @@ GTEST_TEST(FlatMapTest, PmrTest)
 		hamon::pmr::monotonic_buffer_resource mr;
 		using P = hamon::pair<int, int>;
 		P ar[]  = {{1, 1}, {2, 2}, {4, 4}, {5, 5}};
-		M m(hamon::sorted_unique, cpp17_input_iterator_wrapper<P>(ar), cpp17_input_iterator_wrapper<P>(ar + 4), C(3), &mr);
+		M m(hamon::sorted_unique, cpp17_input_iterator_wrapper<P>{ar}, cpp17_input_iterator_wrapper<P>{ar + 4}, C(3), &mr);
 		EXPECT_TRUE((m == M {{1, 1}, {2, 2}, {4, 4}, {5, 5}}));
 		EXPECT_TRUE(m.key_comp() == C(3));
 		EXPECT_TRUE(m.keys().get_allocator().resource() == &mr);
@@ -323,9 +304,9 @@ GTEST_TEST(FlatMapTest, PmrTest)
 	{
 		// flat_map(InputIterator first, InputIterator last, const Alloc& a);
 		using C = TestLess<int>;
-		using M = hamon::flat_map<int, int, C, hamon::pmr::vector<int>, hamon::pmr::vector<int>>;
+		using M = hamon::flat_map<int, hamon::pmr::string, C, hamon::pmr::vector<int>, hamon::pmr::vector<hamon::pmr::string>>;
 		hamon::pmr::monotonic_buffer_resource mr;
-		hamon::pair<int, int> ar[1] = {{42, 42}};
+		hamon::pair<int, hamon::pmr::string> ar[1] = {{42, "very long string that definitely won't fit in the SSO buffer and therefore becomes empty on move"}};
 		M m(hamon::sorted_unique, ar, ar, C(4), &mr);
 		EXPECT_TRUE(m == M {});
 		EXPECT_TRUE(m.key_comp() == C(4));
