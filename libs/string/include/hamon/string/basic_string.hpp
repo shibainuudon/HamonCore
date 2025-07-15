@@ -298,7 +298,8 @@ public:
 
 	HAMON_CXX14_CONSTEXPR
 	basic_string(basic_string&& str) HAMON_NOEXCEPT
-		: m_rep(hamon::move(str.m_rep))
+		: m_allocator(hamon::move(str.m_allocator))
+		, m_rep(hamon::move(str.m_rep))
 	{
 		// [string.cons]/3
 		str.m_rep = Rep{};
