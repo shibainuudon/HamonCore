@@ -1560,11 +1560,6 @@ HAMON_NOEXCEPT_IF_EXPR((x.swap(y)))
 	x.swap(y);
 }
 
-// Tuple traits	[tuple.traits]
-// uses_allocator の特殊化
-template <typename... Types, typename Alloc>
-struct uses_allocator<hamon::tuple<Types...>, Alloc> : hamon::true_type {};
-
 }	// namespace hamon
 
 // is_specialization_of_tuple の特殊化
@@ -1586,6 +1581,18 @@ struct is_specialization_of_tuple<hamon::tuple<Types...>>
 
 // common_type の特殊化
 #include <hamon/tuple/detail/common_type.hpp>
+
+// uses_allocator の特殊化
+#include <memory>
+
+namespace std
+{
+
+// Tuple traits	[tuple.traits]
+template <typename... Types, typename Alloc>
+struct uses_allocator<hamon::tuple<Types...>, Alloc> : std::true_type {};
+
+}	// namespace std
 
 #endif
 

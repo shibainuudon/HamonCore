@@ -387,10 +387,6 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);	// [stack.special]/2
 }
 
-template <typename T, typename Container, typename Alloc>
-struct uses_allocator<stack<T, Container>, Alloc>
-	: uses_allocator<Container, Alloc>::type {};
-
 #if 0	// TODO
 
 // [container.adaptors.format], formatter specialization for stack
@@ -400,6 +396,15 @@ struct formatter<stack<T, Container>, charT>;
 #endif
 
 }	// namespace hamon
+
+namespace std
+{
+
+template <typename T, typename Container, typename Alloc>
+struct uses_allocator<hamon::stack<T, Container>, Alloc>
+	: uses_allocator<Container, Alloc>::type {};
+
+}	// namespace std
 
 #endif
 

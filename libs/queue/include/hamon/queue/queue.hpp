@@ -399,10 +399,6 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);	// [queue.special]/2
 }
 
-template <typename T, typename Container, typename Alloc>
-struct uses_allocator<queue<T, Container>, Alloc>
-    : uses_allocator<Container, Alloc>::type {};
-
 #if 0	// TODO
 
 // [container.adaptors.format], formatter specialization for queue
@@ -412,6 +408,15 @@ struct formatter<queue<T, Container>, charT>;
 #endif
 
 }	// namespace hamon
+
+namespace std
+{
+
+template <typename T, typename Container, typename Alloc>
+struct uses_allocator<hamon::queue<T, Container>, Alloc>
+    : uses_allocator<Container, Alloc>::type {};
+
+}	// namespace std
 
 #endif
 

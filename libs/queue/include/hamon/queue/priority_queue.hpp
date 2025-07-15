@@ -483,10 +483,6 @@ HAMON_NOEXCEPT_IF_EXPR(x.swap(y))
 	x.swap(y);
 }
 
-template <typename T, typename Container, typename Compare, typename Alloc>
-struct uses_allocator<priority_queue<T, Container, Compare>, Alloc>
-	: uses_allocator<Container, Alloc>::type {};
-
 #if 0	// TODO
 
 // [container.adaptors.format], formatter specialization for priority_queue
@@ -496,6 +492,15 @@ struct formatter<priority_queue<T, Container, Compare>, charT>;
 #endif
 
 }	// namespace hamon
+
+namespace std
+{
+
+template <typename T, typename Container, typename Compare, typename Alloc>
+struct uses_allocator<hamon::priority_queue<T, Container, Compare>, Alloc>
+	: uses_allocator<Container, Alloc>::type {};
+
+}	// namespace std
 
 #endif
 
