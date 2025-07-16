@@ -17,53 +17,32 @@
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
-#include <hamon/algorithm/max.hpp>
-#include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
-#include <hamon/detail/overload_priority.hpp>
-#include <hamon/iterator/concepts/forward_iterator.hpp>
+#include <hamon/functional/cref.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
-#include <hamon/iterator/iterator_traits.hpp>
-#include <hamon/iterator/iter_const_reference_t.hpp>
-#include <hamon/iterator/iter_rvalue_reference_t.hpp>
-#include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/ranges/distance.hpp>
+#include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
-#include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
-#include <hamon/memory/destroy.hpp>
 #include <hamon/memory/detail/equals_allocator.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_copy.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
-#include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
-#include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
-#include <hamon/memory/detail/uninitialized_move_n_impl.hpp>
-#include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/factories/repeat_view.hpp>
 #include <hamon/ranges/from_range_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
-#include <hamon/stdexcept/length_error.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_constructible.hpp>
-#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_same.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/type_identity.hpp>
-#include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
-#include <hamon/utility/swap.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
@@ -132,328 +111,6 @@ private:
 	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
 	Impl	m_impl;
 
-private:
-	HAMON_CXX11_CONSTEXPR size_type
-	GrowCapacity(size_type requested_size) const
-	{
-		// メモリを再確保する場合、指数的にサイズを大きくすることによって、
-		// 要素の挿入が償却定数時間になる。
-		// 今のサイズの何倍にするのがいいかは議論がある。
-		// https://www.kmonos.net/wlog/111.html
-		// https://inamori.hateblo.jp/entry/20100718/p1
-		// https://groups.google.com/g/comp.lang.c++.moderated/c/asH_VojWKJw
-//		return hamon::max(m_impl.Size() + m_impl.Size(), requested_size);	// 2倍
-		return hamon::max(m_impl.Size() + m_impl.Size() / 2, requested_size);	// 1.5倍
-	}
-
-	template <typename Iterator>
-	HAMON_CXX14_CONSTEXPR void AssignCopyN(Iterator first, size_type n)
-	{
-		auto const new_size = n;
-
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendCopyN(first, new_size);
-			tmp.Swap(m_impl);
-			tmp.DestroyAll();
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			auto dst_first = m_impl.Begin();
-			auto dst_last = m_impl.End();
-			for (; n > 0 && dst_first != dst_last; --n)
-			{
-				*dst_first = *first;
-				++dst_first;
-				++first;
-			}
-
-			m_impl.PopBackN(static_cast<size_type>(dst_last - dst_first));
-			m_impl.AppendCopyN(first, n);
-		}
-	}
-
-	template <typename Iterator, typename Sentinel>
-	HAMON_CXX14_CONSTEXPR void AssignCopy(Iterator first, Sentinel last)
-	{
-		auto dst_first = m_impl.Begin();
-		auto dst_last = m_impl.End();
-		for (; first != last && dst_first != dst_last;)
-		{
-			*dst_first = *first;
-			++dst_first;
-			++first;
-		}
-
-		m_impl.PopBackN(static_cast<size_type>(dst_last - dst_first));
-		this->InsertCopy(m_impl.Size(), first, last);
-	}
-
-	template <typename Iterator>
-	HAMON_CXX14_CONSTEXPR void AssignMoveN(Iterator first, size_type n)
-	{
-		auto const new_size = n;
-
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendMoveN(first, new_size);
-			tmp.Swap(m_impl);
-			tmp.DestroyAll();
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			auto dst_first = m_impl.Begin();
-			auto dst_last = m_impl.End();
-			for (; n > 0 && dst_first != dst_last; --n)
-			{
-				*dst_first = hamon::move(*first);
-				++dst_first;
-				++first;
-			}
-
-			m_impl.PopBackN(static_cast<size_type>(dst_last - dst_first));
-			m_impl.AppendMoveN(first, n);
-		}
-	}
-
-	HAMON_CXX14_CONSTEXPR void AssignFillN(size_type n, T const& value)
-	{
-		auto const new_size = n;
-
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendFillN(new_size, value);
-			tmp.Swap(m_impl);
-			tmp.DestroyAll();
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			auto dst_first = m_impl.Begin();
-			auto dst_last = m_impl.End();
-			for (; n > 0 && dst_first != dst_last; --n)
-			{
-				*dst_first = value;
-				++dst_first;
-			}
-
-			m_impl.PopBackN(static_cast<size_type>(dst_last - dst_first));
-			m_impl.AppendFillN(n, value);
-		}
-	}
-
-	template <typename Diff, typename... Args>
-	HAMON_CXX14_CONSTEXPR void Emplace(Diff pos_offset, Args&&... args)
-	{
-		auto const new_size = m_impl.Size() + 1;
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			// メモリの再確保が必要な場合、強い例外保証のために
-			// 一時変数に構築してからswapする。
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendMoveN(m_impl.Begin(), static_cast<size_type>(pos_offset));
-			tmp.AppendEmplace(m_allocator, hamon::forward<Args>(args)...);
-			tmp.AppendMoveN(m_impl.Begin() + pos_offset, m_impl.Size() - static_cast<size_type>(pos_offset));
-			tmp.Swap(m_impl);
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			m_impl.Emplace(m_allocator, pos_offset, hamon::forward<Args>(args)...);
-		}
-	}
-
-	template <typename Diff, typename Iterator>
-	HAMON_CXX14_CONSTEXPR void InsertCopyN(Diff pos_offset, Iterator first, size_type n)
-	{
-		auto const new_size = m_impl.Size() + n;
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			// メモリの再確保が必要な場合、強い例外保証のために
-			// 一時変数に構築してからswapする。
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendMoveN(m_impl.Begin(), static_cast<size_type>(pos_offset));
-			tmp.AppendCopyN(first, n);
-			tmp.AppendMoveN(m_impl.Begin() + pos_offset, m_impl.Size() - static_cast<size_type>(pos_offset));
-			tmp.Swap(m_impl);
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			m_impl.InsertCopyN(pos_offset, first, n);
-		}
-	}
-
-	template <typename Diff, typename Iterator, typename Sentinel>
-	HAMON_CXX14_CONSTEXPR void InsertCopy(Diff pos_offset, Iterator first, Sentinel last)
-	{
-		for (; first != last; ++first)
-		{
-			this->Emplace(pos_offset, *first);
-			++pos_offset;
-		}
-	}
-
-	template <typename Diff>
-	HAMON_CXX14_CONSTEXPR void InsertFillN(Diff pos_offset, size_type n, T const& x)
-	{
-		auto const new_size = m_impl.Size() + n;
-		if (new_size > m_impl.Capacity())
-		{
-			auto const new_capacity = GrowCapacity(new_size);
-
-			// メモリの再確保が必要な場合、強い例外保証のために
-			// 一時変数に構築してからswapする。
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendMoveN(m_impl.Begin(), static_cast<size_type>(pos_offset));
-			tmp.AppendFillN(n, x);
-			tmp.AppendMoveN(m_impl.Begin() + pos_offset, m_impl.Size() - static_cast<size_type>(pos_offset));
-			tmp.Swap(m_impl);
-			tmp.Deallocate(m_allocator);
-		}
-		else
-		{
-			m_impl.InsertFillN(pos_offset, n, x);
-		}
-	}
-
-	template <typename InputIterator,
-		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<InputIterator>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	ConstructIter(InputIterator first, InputIterator last, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(first, last));
-		m_impl.Allocate(m_allocator, n);
-		m_impl.AppendCopyN(first, n);
-	}
-
-	template <typename InputIterator>
-	HAMON_CXX14_CONSTEXPR void
-	ConstructIter(InputIterator first, InputIterator last, hamon::detail::overload_priority<0>)
-	{
-		for (; first != last; ++first)
-		{
-			this->push_back(*first);
-		}
-	}
-
-	template <typename R,
-		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<R>::value ||
-			hamon::ranges::sized_range_t<R>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	ConstructRange(R&& rg, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(rg));
-		m_impl.Allocate(m_allocator, n);
-		m_impl.AppendCopyN(hamon::ranges::begin(rg), n);
-	}
-
-	template <typename R>
-	HAMON_CXX14_CONSTEXPR void
-	ConstructRange(R&& rg, hamon::detail::overload_priority<0>)
-	{
-		for (auto first = hamon::ranges::begin(rg); first != hamon::ranges::end(rg); ++first)
-		{
-			this->push_back(*first);
-		}
-	}
-
-	template <typename InputIterator,
-		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<InputIterator>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	AssignIter(InputIterator first, InputIterator last, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(first, last));
-		this->AssignCopyN(first, n);
-	}
-
-	template <typename InputIterator>
-	HAMON_CXX14_CONSTEXPR void
-	AssignIter(InputIterator first, InputIterator last, hamon::detail::overload_priority<0>)
-	{
-		this->AssignCopy(first, last);
-	}
-
-	template <typename R,
-		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<R>::value ||
-			hamon::ranges::sized_range_t<R>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	AssignRange(R&& rg, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(rg));
-		this->AssignCopyN(hamon::ranges::begin(rg), n);
-	}
-
-	template <typename R>
-	HAMON_CXX14_CONSTEXPR void
-	AssignRange(R&& rg, hamon::detail::overload_priority<0>)
-	{
-		this->AssignCopy(hamon::ranges::begin(rg), hamon::ranges::end(rg));
-	}
-
-	template <typename Diff, typename InputIterator,
-		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<InputIterator>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	InsertIter(Diff pos_offset, InputIterator first, InputIterator last, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(first, last));
-		this->InsertCopyN(pos_offset, first, n);
-	}
-
-	template <typename Diff, typename InputIterator>
-	HAMON_CXX14_CONSTEXPR void
-	InsertIter(Diff pos_offset, InputIterator first, InputIterator last, hamon::detail::overload_priority<0>)
-	{
-		this->InsertCopy(pos_offset, first, last);
-	}
-
-	template <typename Diff, typename R,
-		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<R>::value ||
-			hamon::ranges::sized_range_t<R>::value>>
-	HAMON_CXX14_CONSTEXPR void
-	InsertRange(Diff pos_offset, R&& rg, hamon::detail::overload_priority<1>)
-	{
-		auto const n = static_cast<size_type>(hamon::ranges::distance(rg));
-		this->InsertCopyN(pos_offset, hamon::ranges::begin(rg), n);
-	}
-
-	template <typename Diff, typename R>
-	HAMON_CXX14_CONSTEXPR void
-	InsertRange(Diff pos_offset, R&& rg, hamon::detail::overload_priority<0>)
-	{
-		this->InsertCopy(pos_offset, hamon::ranges::begin(rg), hamon::ranges::end(rg));
-	}
-
 public:
 	// [vector.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
@@ -477,8 +134,7 @@ public:
 		// Preconditions: T is Cpp17DefaultInsertable into *this.
 
 		// [vector.cons]/4
-		m_impl.Allocate(m_allocator, n);
-		m_impl.AppendDefaultN(n);
+		this->resize(n);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -490,8 +146,7 @@ public:
 		// Preconditions: T is Cpp17CopyInsertable into *this.
 
 		// [vector.cons]/7
-		m_impl.Allocate(m_allocator, n);
-		m_impl.AppendFillN(n, value);
+		this->resize(n, value);
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -500,7 +155,7 @@ public:
 		: m_allocator(a)
 	{
 		// [vector.cons]/9,10
-		this->ConstructIter(first, last, hamon::detail::overload_priority<1>{});
+		this->insert(this->cend(), hamon::move(first), hamon::move(last));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
@@ -509,7 +164,7 @@ public:
 		: m_allocator(a)
 	{
 		// [vector.cons]/11,12
-		this->ConstructRange(hamon::forward<R>(rg), hamon::detail::overload_priority<1>{});
+		this->append_range(hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX11_CONSTEXPR
@@ -527,8 +182,7 @@ public:
 	vector(vector const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
-		m_impl.Allocate(m_allocator, x.size());
-		m_impl.AppendCopyN(x.begin(), x.size());
+		this->append_range(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -541,8 +195,8 @@ public:
 		{
 			// アロケータが異なる場合は、
 			// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-			m_impl.Allocate(m_allocator, x.size());
-			m_impl.AppendMoveN(x.begin(), x.size());
+			m_impl.Reserve(m_allocator, x.size());
+			m_impl.AppendMoveIfNoexceptN(m_allocator, x.begin(), x.size());
 			return;
 		}
 
@@ -558,8 +212,7 @@ public:
 	HAMON_CXX20_CONSTEXPR
 	~vector()
 	{
-		m_impl.DestroyAll();
-		m_impl.Deallocate(m_allocator);
+		m_impl.Destroy(m_allocator);
 	}
 
 	HAMON_CXX14_CONSTEXPR vector&
@@ -580,7 +233,7 @@ public:
 			{
 				// アロケータを伝播させる場合は、
 				// 今のアロケータで確保した要素を破棄しなければいけない
-				m_impl.Deallocate(m_allocator);
+				m_impl.Destroy(m_allocator);
 
 				// アロケータを伝播
 				hamon::detail::propagate_allocator_on_copy(m_allocator, x.m_allocator);
@@ -588,7 +241,7 @@ public:
 		}
 
 		// 要素をコピー代入
-		this->AssignCopyN(x.begin(), x.size());
+		m_impl.AssignIter(m_allocator, x.begin(), x.end());
 
 		return *this;
 	}
@@ -613,13 +266,15 @@ public:
 			{
 				// アロケータを伝播させない場合は、
 				// 要素をムーブ代入しなければいけない = 要素をstealすることはできない。
-				this->AssignMoveN(x.begin(), x.size());
+				m_impl.AssignIter(m_allocator,
+					hamon::make_move_iterator(hamon::ranges::begin(x)),
+					hamon::make_move_iterator(hamon::ranges::end(x)));	// may throw
 				return *this;
 			}
 		}
 
 		// 今の要素を破棄
-		m_impl.Deallocate(m_allocator);
+		m_impl.Destroy(m_allocator);
 
 		// アロケータを伝播
 		hamon::detail::propagate_allocator_on_move(m_allocator, x.m_allocator);
@@ -641,20 +296,20 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign(InputIterator first, InputIterator last)
 	{
-		this->AssignIter(first, last, hamon::detail::overload_priority<1>{});
+		m_impl.AssignIter(m_allocator, hamon::move(first), hamon::move(last));
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
-		this->AssignRange(hamon::forward<R>(rg), hamon::detail::overload_priority<1>{});
+		m_impl.AssignRange(m_allocator, hamon::forward<R>(rg));
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	assign(size_type n, T const& u)
 	{
-		this->AssignFillN(n, u);
+		m_impl.AssignRange(m_allocator, hamon::views::repeat(hamon::cref(u), n));
 	}
 
 	HAMON_CXX14_CONSTEXPR void
@@ -771,83 +426,24 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type sz)
 	{
-		if (sz < this->size())
-		{
-			m_impl.PopBackN(this->size() - sz);
-		}
-		else if (sz > this->size())
-		{
-			auto const old_size = this->size();
-			auto const new_size = sz;
-			if (new_size > this->capacity())
-			{
-				auto const new_capacity = GrowCapacity(new_size);
-
-				Impl tmp;
-				tmp.Allocate(m_allocator, new_capacity);
-				tmp.AppendMoveN(m_impl.Begin(), old_size);
-				tmp.AppendDefaultN(new_size - old_size);
-				tmp.Swap(m_impl);
-				tmp.Deallocate(m_allocator);
-			}
-			else
-			{
-				m_impl.AppendDefaultN(new_size - old_size);
-			}
-		}
+		m_impl.Resize(m_allocator, sz);
 	}
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type sz, T const& c)
 	{
-		if (sz < this->size())
-		{
-			m_impl.PopBackN(this->size() - sz);
-		}
-		else if (sz > this->size())
-		{
-			auto const old_size = this->size();
-			auto const new_size = sz;
-			if (new_size > this->capacity())
-			{
-				auto const new_capacity = GrowCapacity(new_size);
-
-				Impl tmp;
-				tmp.Allocate(m_allocator, new_capacity);
-				tmp.AppendMoveN(m_impl.Begin(), old_size);
-				tmp.AppendFillN(new_size - old_size, c);
-				tmp.Swap(m_impl);
-				tmp.Deallocate(m_allocator);
-			}
-			else
-			{
-				m_impl.AppendFillN(new_size - old_size, c);
-			}
-		}
+		m_impl.Resize(m_allocator, sz, c);
 	}
 
 	HAMON_CXX14_CONSTEXPR void reserve(size_type n)
 	{
-		if (n > this->capacity())
-		{
-			auto const new_capacity = n;
-
-			Impl tmp;
-			tmp.Allocate(m_allocator, new_capacity);
-			tmp.AppendMoveN(m_impl.Begin(), m_impl.Size());
-			tmp.Swap(m_impl);
-			tmp.Deallocate(m_allocator);
-		}
+		m_impl.Reserve(m_allocator, n);
 	}
 
 	HAMON_CXX14_CONSTEXPR void shrink_to_fit()
 	{
 		if (this->size() < this->capacity())
 		{
-			Impl tmp;
-			tmp.Allocate(m_allocator, m_impl.Size());
-			tmp.AppendMoveN(m_impl.Begin(), m_impl.Size());
-			tmp.Swap(m_impl);
-			tmp.Deallocate(m_allocator);
+			m_impl.Reallocate(m_allocator, this->size());
 		}
 	}
 
@@ -957,7 +553,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void pop_back()
 	{
-		m_impl.PopBackN(1);
+		m_impl.PopBackN(m_allocator, 1);
 	}
 
 	template <typename... Args>
@@ -965,7 +561,7 @@ public:
 	emplace(const_iterator position, Args&&... args)
 	{
 		auto const pos_offset = position - this->begin();
-		this->Emplace(pos_offset, hamon::forward<Args>(args)...);
+		m_impl.Emplace(m_allocator, pos_offset, hamon::forward<Args>(args)...);
 		return this->begin() + pos_offset;
 	}
 
@@ -985,7 +581,7 @@ public:
 	insert(const_iterator position, size_type n, T const& x)
 	{
 		auto const pos_offset = position - this->begin();
-		this->InsertFillN(pos_offset, n, x);
+		m_impl.InsertRange(m_allocator, pos_offset, hamon::views::repeat(hamon::cref(x), n));
 		return this->begin() + pos_offset;
 	}
 
@@ -994,7 +590,7 @@ public:
 	insert(const_iterator position, InputIterator first, InputIterator last)
 	{
 		auto const pos_offset = position - this->begin();
-		this->InsertIter(pos_offset, first, last, hamon::detail::overload_priority<1>{});
+		m_impl.InsertIter(m_allocator, pos_offset, hamon::move(first), hamon::move(last));
 		return this->begin() + pos_offset;
 	}
 
@@ -1003,7 +599,7 @@ public:
 	insert_range(const_iterator position, R&& rg)
 	{
 		auto const pos_offset = position - this->begin();
-		this->InsertRange(pos_offset, hamon::forward<R>(rg), hamon::detail::overload_priority<1>{});
+		m_impl.InsertRange(m_allocator, pos_offset, hamon::forward<R>(rg));
 		return this->begin() + pos_offset;
 	}
 
@@ -1023,7 +619,7 @@ public:
 	erase(const_iterator first, const_iterator last)
 	{
 		auto const pos_offset = first - this->begin();
-		m_impl.DestroyN(pos_offset, static_cast<size_type>(last - first));
+		m_impl.EraseN(m_allocator, pos_offset, static_cast<size_type>(last - first));
 		return this->begin() + pos_offset;
 	}
 
@@ -1041,7 +637,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void clear() HAMON_NOEXCEPT
 	{
-		m_impl.DestroyAll();
+		m_impl.Clear(m_allocator);
 	}
 };
 

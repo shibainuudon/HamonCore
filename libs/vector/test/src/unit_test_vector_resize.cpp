@@ -249,6 +249,57 @@ struct ThrowOnDefault
 	}
 };
 
+struct ThrowOnCountDown
+{
+	struct Exception{};
+
+	int value;
+
+	static int s_count_down;
+
+	ThrowOnCountDown()
+		: value(17)
+	{
+		--s_count_down;
+		if (s_count_down < 0)
+		{
+			throw Exception{};
+		}
+	}
+
+	ThrowOnCountDown(int v)
+		: value(v)
+	{
+		--s_count_down;
+		if (s_count_down < 0)
+		{
+			throw Exception{};
+		}
+	}
+
+	ThrowOnCountDown(ThrowOnCountDown const& other)
+		: value(other.value)
+	{
+		--s_count_down;
+		if (s_count_down < 0)
+		{
+			throw Exception{};
+		}
+	}
+
+	ThrowOnCountDown(ThrowOnCountDown&& other)
+		: value(other.value)
+	{
+		--s_count_down;
+		if (s_count_down < 0)
+		{
+			throw Exception{};
+		}
+	}
+};
+
+int ThrowOnCountDown::s_count_down = 0;
+
 #endif
 
 GTEST_TEST(VectorTest, ResizeTest)
@@ -341,6 +392,56 @@ GTEST_TEST(VectorTest, ResizeTest)
 		EXPECT_EQ(13, v[0].value);
 		EXPECT_EQ(13, v[1].value);
 		EXPECT_EQ(13, v[2].value);
+	}
+	{
+		ThrowOnCountDown::s_count_down = 3;
+		hamon::vector<ThrowOnCountDown> v;
+		v.resize(3);
+		EXPECT_EQ(3u, v.size());
+		EXPECT_EQ(17, v[0].value);
+		EXPECT_EQ(17, v[1].value);
+		EXPECT_EQ(17, v[2].value);
+	}
+	{
+		ThrowOnCountDown::s_count_down = 3;
+		hamon::vector<ThrowOnCountDown> v;
+		EXPECT_THROW(v.resize(4), ThrowOnCountDown::Exception);
+		EXPECT_EQ(0u, v.size());
+	}
+	{
+		ThrowOnCountDown::s_count_down = 3;
+		hamon::vector<ThrowOnCountDown> v;
+		v.resize(2);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_THROW(v.resize(3), ThrowOnCountDown::Exception);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_EQ(17, v[0].value);
+		EXPECT_EQ(17, v[1].value);
+	}
+	{
+		ThrowOnCountDown::s_count_down = 3;
+		hamon::vector<ThrowOnCountDown> v;
+		v.reserve(10);
+		v.resize(2);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_THROW(v.resize(4), ThrowOnCountDown::Exception);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_EQ(17, v[0].value);
+		EXPECT_EQ(17, v[1].value);
+	}
+	{
+		ThrowOnCountDown::s_count_down = 1;
+		ThrowOnCountDown x(42);
+
+		ThrowOnCountDown::s_count_down = 3;
+		hamon::vector<ThrowOnCountDown> v;
+		v.reserve(10);
+		v.resize(2);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_THROW(v.resize(4, x), ThrowOnCountDown::Exception);
+		EXPECT_EQ(2u, v.size());
+		EXPECT_EQ(17, v[0].value);
+		EXPECT_EQ(17, v[1].value);
 	}
 #endif
 }

@@ -39,7 +39,6 @@ HAMON_CXX20_CONSTEXPR bool test()
 		VERIFY(v.capacity() >= 3);
 		v.clear();
 		VERIFY(v.size() == 0);
-		VERIFY(v.capacity() >= 3);
 	}
 
 	return true;

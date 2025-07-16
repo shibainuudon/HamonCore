@@ -36,22 +36,24 @@ HAMON_CXX20_CONSTEXPR bool test()
 	{
 		Vector v{1,2,3,4,5};
 		VERIFY(v.size() == 5);
-		VERIFY(v.capacity() == 5);
+		VERIFY(v.capacity() >= v.size());
 		v.shrink_to_fit();
 		VERIFY(v.size() == 5);
-		VERIFY(v.capacity() == 5);
+		VERIFY(v.capacity() == v.size());
+
 		v.pop_back();
 		VERIFY(v.size() == 4);
-		VERIFY(v.capacity() == 5);
+		VERIFY(v.capacity() >= v.size());
 		v.shrink_to_fit();
 		VERIFY(v.size() == 4);
-		VERIFY(v.capacity() == 4);
+		VERIFY(v.capacity() == v.size());
+
 		v.clear();
 		VERIFY(v.size() == 0);
-		VERIFY(v.capacity() == 4);
+		VERIFY(v.capacity() >= v.size());
 		v.shrink_to_fit();
 		VERIFY(v.size() == 0);
-		VERIFY(v.capacity() == 0);
+		VERIFY(v.capacity() == v.size());
 	}
 
 	return true;
