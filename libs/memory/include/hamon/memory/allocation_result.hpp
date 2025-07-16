@@ -21,6 +21,7 @@ using std::allocation_result;
 #else
 
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
