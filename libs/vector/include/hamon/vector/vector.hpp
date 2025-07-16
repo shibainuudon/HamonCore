@@ -12,25 +12,23 @@
 
 #if !defined(HAMON_USE_STD_VECTOR)
 
+#include <hamon/vector/detail/vector_iterator.hpp>
 #include <hamon/algorithm/equal.hpp>
 #include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/compare/strong_ordering.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
-#include <hamon/iterator/contiguous_iterator_tag.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits/numeric_limits.hpp>
@@ -55,8 +53,6 @@
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/stdexcept/out_of_range.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -112,172 +108,6 @@ class vector
 private:
 	using AllocTraits = hamon::allocator_traits<Allocator>;
 
-	template <typename U, typename Const>
-	struct Iterator
-	{
-		friend Iterator<U, hamon::negation<Const>>;
-		friend class vector;
-
-		using iterator_concept  = hamon::contiguous_iterator_tag;
-		using iterator_category = hamon::random_access_iterator_tag;
-		using value_type        = U;
-		using difference_type   = typename AllocTraits::difference_type;
-		using pointer           = hamon::conditional_t<Const::value, U const*, U*>;
-		using reference         = hamon::conditional_t<Const::value, U const&, U&>;
-
-		HAMON_CXX11_CONSTEXPR
-		Iterator() HAMON_NOEXCEPT
-			: m_ptr()
-		{}
-
-	private:
-		HAMON_CXX11_CONSTEXPR
-		Iterator(pointer ptr) HAMON_NOEXCEPT
-			: m_ptr(ptr)
-		{}
-
-	public:
-		template <typename C,
-			typename = hamon::enable_if_t<C::value == Const::value || Const::value>>
-		HAMON_CXX11_CONSTEXPR
-		Iterator(Iterator<U, C> const& i) HAMON_NOEXCEPT
-			: m_ptr(const_cast<pointer>(i.m_ptr))
-		{}
-
-		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-		reference operator*() const HAMON_NOEXCEPT
-		{
-			return *m_ptr;
-		}
-
-		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-		pointer operator->() const HAMON_NOEXCEPT
-		{
-			return m_ptr;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator&
-		operator++() HAMON_NOEXCEPT
-		{
-			++m_ptr;
-			return *this;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator
-		operator++(int) HAMON_NOEXCEPT
-		{
-			auto tmp = *this;
-			++*this;
-			return tmp;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator&
-		operator--() HAMON_NOEXCEPT
-		{
-			--m_ptr;
-			return *this;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator
-		operator--(int) HAMON_NOEXCEPT
-		{
-			auto tmp = *this;
-			--*this;
-			return tmp;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator&
-		operator+=(difference_type n) HAMON_NOEXCEPT
-		{
-			m_ptr += n;
-			return *this;
-		}
-
-		HAMON_CXX14_CONSTEXPR Iterator&
-		operator-=(difference_type n) HAMON_NOEXCEPT
-		{
-			m_ptr -= n;
-			return *this;
-		}
-
-		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference
-		operator[](difference_type n) const HAMON_NOEXCEPT
-		{
-			return m_ptr[n];
-		}
-
-	private:
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
-		operator+(Iterator const& i, difference_type n) HAMON_NOEXCEPT
-		{
-			return Iterator(i.m_ptr + n);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
-		operator+(difference_type n, Iterator const& i) HAMON_NOEXCEPT
-		{
-			return Iterator(i.m_ptr + n);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR Iterator
-		operator-(Iterator const& i, difference_type n) HAMON_NOEXCEPT
-		{
-			return Iterator(i.m_ptr - n);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type
-		operator-(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return static_cast<difference_type>(lhs.m_ptr - rhs.m_ptr);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator==(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return lhs.m_ptr == rhs.m_ptr;
-		}
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR hamon::strong_ordering
-		operator<=>(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return lhs.m_ptr <=> rhs.m_ptr;
-		}
-#else
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator!=(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return !(lhs == rhs);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator<(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return lhs.m_ptr < rhs.m_ptr;
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator>(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return rhs < lhs;
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator<=(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return !(rhs < lhs);
-		}
-
-		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool
-		operator>=(Iterator const& lhs, Iterator const& rhs) HAMON_NOEXCEPT
-		{
-			return !(lhs < rhs);
-		}
-#endif
-	private:
-		pointer m_ptr;
-	};
-
 public:
 	// types
 	using value_type             = T;
@@ -286,10 +116,10 @@ public:
 	using const_pointer          = typename AllocTraits::const_pointer;
 	using reference              = value_type&;
 	using const_reference        = value_type const&;
-	using size_type              = typename AllocTraits::size_type;       // see [container.requirements]
-	using difference_type        = typename AllocTraits::difference_type; // see [container.requirements]
-	using iterator               = Iterator<T, hamon::false_type>;        // see [container.requirements]
-	using const_iterator         = Iterator<T, hamon::true_type>;         // see [container.requirements]
+	using size_type              = typename AllocTraits::size_type;
+	using difference_type        = typename AllocTraits::difference_type;
+	using iterator               = hamon::detail::vector_iterator<T, Allocator, false>;
+	using const_iterator         = hamon::detail::vector_iterator<T, Allocator, true>;
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;
 
