@@ -14,8 +14,6 @@
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
-#include <hamon/memory/destroy_at.hpp>
-#include <hamon/memory/detail/uninitialized_move_impl.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/utility/exchange.hpp>
@@ -168,7 +166,7 @@ public:
 	{
 		for (difference_type i = m_start; i < m_end; ++i)
 		{
-			hamon::destroy_at(GetPtr(i));
+			AllocTraits::destroy(allocator, GetPtr(i));
 		}
 
 		for (size_type i = 0; i < m_map_size; ++i)
@@ -272,7 +270,7 @@ public:
 				auto dst = this->Begin() + 1;
 				auto first = dst + 1;
 				auto last = dst + pos;
-				dst = hamon::detail::uninitialized_move_impl(first, last, dst).out;
+				dst = hamon::move(first, last, dst);
 				AllocTraits::construct(allocator, hamon::to_address(dst), hamon::forward<Args>(args)...);
 			}
 			else
@@ -281,7 +279,7 @@ public:
 				auto dst = this->RBegin() + 1;
 				auto first = dst + 1;
 				auto last = dst + (sz - pos);
-				dst = hamon::detail::uninitialized_move_impl(first, last, dst).out;
+				dst = hamon::move(first, last, dst);
 				AllocTraits::construct(allocator, hamon::to_address(dst), hamon::forward<Args>(args)...);
 			}
 		}
