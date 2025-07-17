@@ -8,8 +8,9 @@
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_COPY_N_IMPL_HPP
 
 #include <hamon/memory/construct_at.hpp>
-#include <hamon/memory/addressof.hpp>
-#include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator_traits.hpp>
+#include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/algorithm/ranges/copy_n.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
@@ -28,7 +29,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename Iter, typename Size, typename Out,
+template <typename Allocator, typename Iter, typename Size, typename Out,
 	typename SrcType = hamon::iter_const_reference_t<Iter>,
 	typename RefType = hamon::iter_reference_t<Out>,
 	typename ValueType = hamon::iter_value_t<Out>,
@@ -39,9 +40,11 @@ template <typename Iter, typename Size, typename Out,
 >
 HAMON_CXX20_CONSTEXPR Out
 uninitialized_copy_n_impl(
-	Iter first, Size n, Out result,
+	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<2>)
 {
+	(void)allocator;
+
 	// copy_n関数であれば、可能ならmemmoveを使う等の最適化が期待できるが、
 	// constexprの文脈で未初期化領域に代入することはできない。
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
@@ -55,11 +58,11 @@ uninitialized_copy_n_impl(
 
 #if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	return uninitialized_copy_n_impl(
-		first, n, result, hamon::detail::overload_priority<1>{});
+		allocator, first, n, result, hamon::detail::overload_priority<1>{});
 #endif
 }
 
-template <typename Iter, typename Size, typename Out,
+template <typename Allocator, typename Iter, typename Size, typename Out,
 	typename SrcType = hamon::iter_const_reference_t<Iter>,
 	typename ValueType = hamon::iter_value_t<Out>,
 	typename = hamon::enable_if_t<
@@ -68,23 +71,23 @@ template <typename Iter, typename Size, typename Out,
 >
 HAMON_CXX20_CONSTEXPR Out
 uninitialized_copy_n_impl(
-	Iter first, Size n, Out result,
+	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
 	for (; n > 0; --n)
 	{
-		hamon::construct_at(hamon::addressof(*result), *first);
+		hamon::allocator_traits<Allocator>::construct(allocator, hamon::addressof(*result), *first);
 		++first;
 		++result;
 	}
 	return result;
 }
 
-template <typename Iter, typename Size, typename Out>
+template <typename Allocator, typename Iter, typename Size, typename Out>
 HAMON_CXX20_CONSTEXPR Out
 uninitialized_copy_n_impl(
-	Iter first, Size n, Out result,
+	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<0>)
 {
 	Out current = result;
@@ -94,7 +97,7 @@ uninitialized_copy_n_impl(
 	{
 		for (; n > 0; --n)
 		{
-			hamon::construct_at(hamon::addressof(*current), *first);
+			hamon::allocator_traits<Allocator>::construct(allocator, hamon::addressof(*current), *first);
 			++first;
 			++current;
 		}
@@ -103,20 +106,27 @@ uninitialized_copy_n_impl(
 #if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
-		hamon::destroy(result, current);
+		hamon::detail::destroy_impl(allocator, result, current);
 		throw;
 	}
 #endif
 }
 
-template <typename Iter, typename Size, typename Out>
+template <typename Allocator, typename Iter, typename Size, typename Out>
 HAMON_CXX20_CONSTEXPR Out
-uninitialized_copy_n_impl(
-	Iter first, Size n, Out result)
+uninitialized_copy_n_impl(Allocator& allocator, Iter first, Size n, Out result)
 {
 	return hamon::detail::uninitialized_copy_n_impl(
-		first, n, result,
+		allocator, first, n, result,
 		hamon::detail::overload_priority<2>{});
+}
+
+template <typename Iter, typename Size, typename Out>
+HAMON_CXX20_CONSTEXPR Out
+uninitialized_copy_n_impl(Iter first, Size n, Out result)
+{
+	hamon::allocator<hamon::iter_value_t<Out>> alloc;
+	return hamon::detail::uninitialized_copy_n_impl(alloc, first, n, result);
 }
 
 }	// namespace detail
