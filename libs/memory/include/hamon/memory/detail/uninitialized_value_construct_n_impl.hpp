@@ -7,9 +7,10 @@
 #ifndef HAMON_MEMORY_DETAIL_UNINITIALIZED_VALUE_CONSTRUCT_N_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_VALUE_CONSTRUCT_N_IMPL_HPP
 
-#include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/memory/destroy.hpp>
+#include <hamon/memory/allocator.hpp>
+#include <hamon/memory/allocator_traits.hpp>
+#include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -22,7 +23,7 @@ namespace hamon
 namespace detail
 {
 
-template <typename Iter, typename Size,
+template <typename Allocator, typename Iter, typename Size,
 	typename ValueType = hamon::iter_value_t<Iter>,
 	typename = hamon::enable_if_t<
 		hamon::is_nothrow_default_constructible<ValueType>::value
@@ -30,22 +31,22 @@ template <typename Iter, typename Size,
 >
 HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_n_impl(
-	Iter first, Size n,
+	Allocator& allocator, Iter first, Size n,
 	hamon::detail::overload_priority<1>)
 {
 	// コンストラクタが例外を投げないのであれば、try-catchなどを省略できる。
 	for (; n > 0; --n)
 	{
-		hamon::construct_at(hamon::addressof(*first));
+		hamon::allocator_traits<Allocator>::construct(allocator, hamon::addressof(*first));
 		++first;
 	}
 	return first;
 }
 
-template <typename Iter, typename Size>
+template <typename Allocator, typename Iter, typename Size>
 HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_n_impl(
-	Iter first, Size n,
+	Allocator& allocator, Iter first, Size n,
 	hamon::detail::overload_priority<0>)
 {
 	Iter current = first;
@@ -55,7 +56,7 @@ uninitialized_value_construct_n_impl(
 	{
 		for (; n > 0; --n)
 		{
-			hamon::construct_at(hamon::addressof(*current));
+			hamon::allocator_traits<Allocator>::construct(allocator, hamon::addressof(*current));
 			++current;
 		}
 		return current;
@@ -63,19 +64,27 @@ uninitialized_value_construct_n_impl(
 #if !defined(HAMON_NO_EXCEPTIONS)
 	catch(...)
 	{
-		hamon::destroy(first, current);
+		hamon::detail::destroy_impl(allocator, first, current);
 		throw;
 	}
 #endif
+}
+
+template <typename Allocator, typename Iter, typename Size>
+HAMON_CXX20_CONSTEXPR Iter
+uninitialized_value_construct_n_impl(Allocator& allocator, Iter first, Size n)
+{
+	return hamon::detail::uninitialized_value_construct_n_impl(
+		allocator, first, n,
+		hamon::detail::overload_priority<1>{});
 }
 
 template <typename Iter, typename Size>
 HAMON_CXX20_CONSTEXPR Iter
 uninitialized_value_construct_n_impl(Iter first, Size n)
 {
-	return hamon::detail::uninitialized_value_construct_n_impl(
-		first, n,
-		hamon::detail::overload_priority<1>{});
+	hamon::allocator<hamon::iter_value_t<Iter>> alloc;
+	return hamon::detail::uninitialized_value_construct_n_impl(alloc, first, n);
 }
 
 }	// namespace detail
