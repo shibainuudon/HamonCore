@@ -40,6 +40,7 @@ set(SUBDIRECTORIES
 	deque
 	expected
 	flat_map
+	flat_set
 	forward_list
 	functional
 	inplace_vector

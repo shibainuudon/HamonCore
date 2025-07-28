@@ -1,0 +1,16 @@
+name: flat_set
+
+on:
+  push:
+    paths:
+      - libs/flat_set/**
+      - .github/workflows/flat_set.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/flat_set
