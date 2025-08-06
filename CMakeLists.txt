@@ -43,6 +43,7 @@ set(SUBDIRECTORIES
 	flat_set
 	forward_list
 	functional
+	hive
 	inplace_vector
 	iomanip
 	ios
