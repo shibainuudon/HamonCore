@@ -40,6 +40,7 @@ set(SUBDIRECTORIES
 	debug
 	deque
 	expected
+	filesystem
 	flat_map
 	flat_set
 	forward_list
