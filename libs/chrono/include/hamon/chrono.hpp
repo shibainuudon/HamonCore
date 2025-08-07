@@ -20,6 +20,7 @@
 #include <hamon/chrono/month_weekday.hpp>
 #include <hamon/chrono/steady_clock.hpp>
 #include <hamon/chrono/sys_days.hpp>
+#include <hamon/chrono/sys_info.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/sys_time.hpp>
 #include <hamon/chrono/system_clock.hpp>
@@ -156,10 +157,10 @@ class nonexistent_local_time;
 class ambiguous_local_time;
 
 // [time.zone.info], information classes
-struct sys_info;
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const sys_info& si);
+//struct sys_info;
+//template<class charT, class traits>
+//basic_ostream<charT, traits>&
+//operator<<(basic_ostream<charT, traits>& os, const sys_info& si);
 
 struct local_info;
 template<class charT, class traits>
