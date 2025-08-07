@@ -63,21 +63,28 @@ public:
 	using pointer                = typename allocator_traits<Allocator>::pointer;
 	using const_pointer          = typename allocator_traits<Allocator>::const_pointer;
 	using reference              = value_type&;
-	using const_reference        = const value_type&;
+	using const_reference        = value_type const&;
 	using size_type              = typename allocator_traits<Allocator>::size_type;			// implementation-defined;  // see [container.requirements]
 	using difference_type        = typename allocator_traits<Allocator>::difference_type;	// implementation-defined;  // see [container.requirements]
-	using iterator               = hamon::detail::hive_iterator<T, false>;					// implementation-defined;  // see [container.requirements]
-	using const_iterator         = hamon::detail::hive_iterator<T, true>;					// implementation-defined;  // see [container.requirements]
+	using iterator               = hamon::detail::hive_iterator<hive, false>;				// implementation-defined;  // see [container.requirements]
+	using const_iterator         = hamon::detail::hive_iterator<hive, true>;				// implementation-defined;  // see [container.requirements]
 	using reverse_iterator       = hamon::reverse_iterator<iterator>;													// see [container.requirements]
 	using const_reverse_iterator = hamon::reverse_iterator<const_iterator>;												// see [container.requirements]
 
+private:
+	HAMON_NO_UNIQUE_ADDRESS	allocator_type m_allocator;
+
+
+public:
 	// [hive.cons], construct/copy/destroy
 	constexpr
 	hive() noexcept(noexcept(Allocator()))
 		: hive(Allocator()) {}
 
 	constexpr explicit
-	hive(Allocator const&) noexcept;
+	hive(Allocator const& a) noexcept
+		: m_allocator(a)
+	{}
 
 	constexpr explicit
 	hive(hive_limits block_limits)
