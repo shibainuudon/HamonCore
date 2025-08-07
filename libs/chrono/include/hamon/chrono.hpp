@@ -13,6 +13,7 @@
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/local_days.hpp>
+#include <hamon/chrono/local_info.hpp>
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
 #include <hamon/chrono/month.hpp>
@@ -155,17 +156,6 @@ string remote_version();
 // [time.zone.exception], exception classes
 class nonexistent_local_time;
 class ambiguous_local_time;
-
-// [time.zone.info], information classes
-//struct sys_info;
-//template<class charT, class traits>
-//basic_ostream<charT, traits>&
-//operator<<(basic_ostream<charT, traits>& os, const sys_info& si);
-
-struct local_info;
-template<class charT, class traits>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const local_info& li);
 
 // [time.zone.timezone], class time_zone
 enum class choose { earliest, latest };
