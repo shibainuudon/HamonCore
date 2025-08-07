@@ -41,6 +41,7 @@ set(SUBDIRECTORIES
 	expected
 	flat_map
 	flat_set
+	format
 	forward_list
 	functional
 	inplace_vector
