@@ -7,6 +7,6 @@
 #include <hamon/format.hpp>
 #include <gtest/gtest.h>
 
-GTEST_TEST(FormatTest, FormatTest)
+GTEST_TEST(FormatTest, OverviewTest)
 {
 }

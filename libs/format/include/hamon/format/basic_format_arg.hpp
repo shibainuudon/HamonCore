@@ -43,7 +43,7 @@ private:
 		int, unsigned int, long long int, unsigned long long int,
 		float, double, long double,
 		const char_type*, hamon::basic_string_view<char_type>,
-		const void*, handle> value;                                         // exposition only
+		const void*/*TODO: , handle*/> value;                                         // exposition only
 
 	template <typename T>
 	explicit basic_format_arg(T& v) noexcept;                 // exposition only

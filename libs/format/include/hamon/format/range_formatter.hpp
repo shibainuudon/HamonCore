@@ -25,6 +25,7 @@ using std::range_formatter;
 #include <hamon/format/formattable.hpp>
 #include <hamon/format/formatter.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/string_view.hpp>
@@ -40,16 +41,37 @@ template <typename T, typename charT = char>
 class range_formatter
 {
 	hamon::formatter<T, charT> underlying_;                                          // exposition only
-	//hamon::basic_string_view<charT> separator_ = STATICALLY-WIDEN<charT>(", ");      // exposition only
-	//hamon::basic_string_view<charT> opening-bracket_ = STATICALLY-WIDEN<charT>("["); // exposition only
-	//hamon::basic_string_view<charT> closing-bracket_ = STATICALLY-WIDEN<charT>("]"); // exposition only
+	hamon::basic_string_view<charT> separator_       = HAMON_STATICALLY_WIDEN(charT, ", ");      // exposition only
+	hamon::basic_string_view<charT> opening_bracket_ = HAMON_STATICALLY_WIDEN(charT, "["); // exposition only
+	hamon::basic_string_view<charT> closing_bracket_ = HAMON_STATICALLY_WIDEN(charT, "]"); // exposition only
 
 public:
-	constexpr void set_separator(hamon::basic_string_view<charT> sep) noexcept;
-	constexpr void set_brackets(hamon::basic_string_view<charT> opening,
-								hamon::basic_string_view<charT> closing) noexcept;
-	constexpr hamon::formatter<T, charT>& underlying() noexcept { return underlying_; }
-	constexpr const hamon::formatter<T, charT>& underlying() const noexcept { return underlying_; }
+	constexpr void
+	set_separator(hamon::basic_string_view<charT> sep) noexcept
+	{
+		// [format.range.formatter]/7
+		separator_ = sep;
+	}
+
+	constexpr void
+	set_brackets(hamon::basic_string_view<charT> opening, hamon::basic_string_view<charT> closing) noexcept
+	{
+		// [format.range.formatter]/8
+		opening_bracket_ = opening;
+		closing_bracket_ = closing;
+	}
+
+	constexpr hamon::formatter<T, charT>&
+	underlying() noexcept
+	{
+		return underlying_;
+	}
+
+	constexpr hamon::formatter<T, charT> const&
+	underlying() const noexcept
+	{
+		return underlying_;
+	}
 
 	template <typename ParseContext>
 	constexpr typename ParseContext::iterator

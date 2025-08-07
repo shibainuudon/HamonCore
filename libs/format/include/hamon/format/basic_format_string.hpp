@@ -40,7 +40,11 @@ private:
 public:
 	template <typename T>
 		requires hamon::convertible_to<T const&, hamon::basic_string_view<charT>>
-	consteval basic_format_string(T const& s);
+	consteval basic_format_string(T const& s)
+		: str(s)
+	{
+		// TODO
+	}
 
 	basic_format_string(hamon::detail::runtime_format_string<charT> s)
 		noexcept : str(s.str) {}

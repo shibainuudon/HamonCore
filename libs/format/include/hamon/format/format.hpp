@@ -39,28 +39,28 @@ template <typename... Args>
 hamon::string format(hamon::format_string<Args...> fmt, Args&&... args)
 {
 	// [format.functions]/2
-	return hamon::vformat(fmt.str, hamon::make_format_args(args...));
+	return hamon::vformat(fmt.get(), hamon::make_format_args(args...));
 }
 
 template <typename... Args>
 hamon::wstring format(hamon::wformat_string<Args...> fmt, Args&&... args)
 {
 	// [format.functions]/3
-	return hamon::vformat(fmt.str, hamon::make_wformat_args(args...));
+	return hamon::vformat(fmt.get(), hamon::make_wformat_args(args...));
 }
 
 template <typename... Args>
 hamon::string format(std::locale const& loc, hamon::format_string<Args...> fmt, Args&&... args)
 {
 	// [format.functions]/4
-	return hamon::vformat(loc, fmt.str, hamon::make_format_args(args...));
+	return hamon::vformat(loc, fmt.get(), hamon::make_format_args(args...));
 }
 
 template <typename... Args>
 hamon::wstring format(std::locale const& loc, hamon::wformat_string<Args...> fmt, Args&&... args)
 {
 	// [format.functions]/5
-	return hamon::vformat(loc, fmt.str, hamon::make_wformat_args(args...));
+	return hamon::vformat(loc, fmt.get(), hamon::make_wformat_args(args...));
 }
 
 }	// namespace hamon

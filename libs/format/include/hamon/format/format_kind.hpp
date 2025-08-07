@@ -35,7 +35,7 @@ namespace hamon
 // 28.5.7.1 Variable template format_kind[format.range.fmtkind]
 
 template <typename R>
-constexpr hamon::range_format format_kind;// = unspecified;
+constexpr hamon::range_format format_kind = hamon::range_format::disabled;// = unspecified;
 
 template <hamon::ranges::input_range R>
 	requires hamon::same_as<R, hamon::remove_cvref_t<R>>

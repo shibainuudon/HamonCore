@@ -22,6 +22,7 @@ using std::make_format_args;
 
 #else
 
+#include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/format_context.hpp>
 #include <hamon/format/detail/format_arg_store.hpp>
 
@@ -32,7 +33,13 @@ namespace hamon
 
 template <typename Context = hamon::format_context, typename... Args>
 hamon::detail::format_arg_store<Context, Args...>
-make_format_args(Args&... fmt_args);
+make_format_args(Args&... fmt_args)
+{
+	return
+	{
+		hamon::basic_format_arg<Context>(fmt_args)...
+	};
+}
 
 }	// namespace hamon
 
