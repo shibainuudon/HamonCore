@@ -30,6 +30,7 @@ using std::chrono::weekday_last;
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/detail/modulo.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

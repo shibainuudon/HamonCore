@@ -35,6 +35,7 @@ using std::chrono::year_month_day_last;
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/detail/civil.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

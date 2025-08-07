@@ -28,6 +28,7 @@ using std::chrono::year_month;
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

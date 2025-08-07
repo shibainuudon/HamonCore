@@ -28,6 +28,7 @@ using std::chrono::month_day_last;
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

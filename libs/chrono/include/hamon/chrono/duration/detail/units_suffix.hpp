@@ -7,8 +7,8 @@
 #ifndef HAMON_CHRONO_DURATION_DETAIL_UNITS_SUFFIX_HPP
 #define HAMON_CHRONO_DURATION_DETAIL_UNITS_SUFFIX_HPP
 
-#include <hamon/chrono/detail/statically_widen.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/ratio.hpp>
 #include <sstream>	// basic_ostringstream
 

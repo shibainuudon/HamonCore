@@ -1,14 +1,15 @@
 ﻿/**
  *	@file	statically_widen.hpp
  *
- *	@brief	statically_widen の定義
+ *	@brief	STATICALLY-WIDEN の定義
  */
 
-#ifndef HAMON_CHRONO_DETAIL_STATICALLY_WIDEN_HPP
-#define HAMON_CHRONO_DETAIL_STATICALLY_WIDEN_HPP
+#ifndef HAMON_DETAIL_STATICALLY_WIDEN_HPP
+#define HAMON_DETAIL_STATICALLY_WIDEN_HPP
+
+#include <hamon/config.hpp>
 
 namespace hamon {
-namespace chrono {
 namespace detail {
 
 // 29.1 General[time.general]
@@ -37,10 +38,9 @@ struct statically_widen<wchar_t>
 };
 
 #define HAMON_STATICALLY_WIDEN(C, S) \
-	hamon::chrono::detail::statically_widen<C>::invoke(S, L##S)
+	hamon::detail::statically_widen<C>::invoke(S, L##S)
 
 }	// namespace detail
-}	// namespace chrono
 }	// namespace hamon
 
-#endif // HAMON_CHRONO_DETAIL_STATICALLY_WIDEN_HPP
+#endif // HAMON_DETAIL_STATICALLY_WIDEN_HPP

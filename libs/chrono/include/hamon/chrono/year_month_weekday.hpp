@@ -33,6 +33,7 @@ using std::chrono::year_month_weekday_last;
 #include <hamon/chrono/year_month.hpp>
 #include <hamon/chrono/month_weekday.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

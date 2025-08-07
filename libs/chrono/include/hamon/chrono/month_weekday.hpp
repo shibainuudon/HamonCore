@@ -26,6 +26,7 @@ using std::chrono::month_weekday_last;
 
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/weekday.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

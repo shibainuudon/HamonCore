@@ -25,6 +25,8 @@ using std::chrono::day;
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/detail/statically_widen.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon {
 namespace chrono {

@@ -26,7 +26,7 @@ using std::chrono::sys_time;
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
-#include <hamon/chrono/detail/statically_widen.hpp>
+#include <hamon/detail/statically_widen.hpp>
 #include <ostream>	// basic_ostream
 #include <istream>	// basic_istream
 
