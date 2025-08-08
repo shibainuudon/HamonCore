@@ -52,15 +52,15 @@ public:
 
 	constexpr const_iterator begin() const noexcept;
 	constexpr const_iterator end() const noexcept;
-	constexpr void advance_to(const_iterator it);
+	HAMON_CXX14_CONSTEXPR void advance_to(const_iterator it);
 
-	constexpr size_t next_arg_id();
-	constexpr void check_arg_id(size_t id);
+	HAMON_CXX14_CONSTEXPR size_t next_arg_id();
+	HAMON_CXX14_CONSTEXPR void check_arg_id(size_t id);
 
 	template <typename... Ts>
-	constexpr void check_dynamic_spec(size_t id) noexcept;
-	constexpr void check_dynamic_spec_integral(size_t id) noexcept;
-	constexpr void check_dynamic_spec_string(size_t id) noexcept;
+	HAMON_CXX14_CONSTEXPR void check_dynamic_spec(size_t id) noexcept;
+	HAMON_CXX14_CONSTEXPR void check_dynamic_spec_integral(size_t id) noexcept;
+	HAMON_CXX14_CONSTEXPR void check_dynamic_spec_string(size_t id) noexcept;
 };
 
 }	// namespace hamon

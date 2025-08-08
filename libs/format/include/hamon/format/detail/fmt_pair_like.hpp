@@ -18,11 +18,11 @@ namespace hamon
 namespace detail
 {
 
-template <typename T>
-concept fmt_pair_like =
-	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>::value ||
-	(hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>::value &&
-	 hamon::tuple_size<hamon::remove_cvref_t<T>>::value == 2);
+//template <typename T>
+//concept fmt_pair_like =
+//	hamon::detail::is_specialization_of_pair<hamon::remove_cvref_t<T>>::value ||
+//	(hamon::detail::is_specialization_of_tuple<hamon::remove_cvref_t<T>>::value &&
+//	 hamon::tuple_size<hamon::remove_cvref_t<T>>::value == 2);
 
 }	// namespace detail
 

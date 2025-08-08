@@ -28,8 +28,8 @@ namespace hamon
 
 // 28.5.6.2 Formatter locking[format.formatter.locking]
 
-template <typename T>
-constexpr bool enable_nonlocking_formatter_optimization = false;
+//template <typename T>
+//constexpr bool enable_nonlocking_formatter_optimization = false;
 
 }	// namespace hamon
 

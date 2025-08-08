@@ -42,9 +42,9 @@ public:
 	hamon::basic_format_arg<Context> get(hamon::size_t i) const noexcept;
 };
 
-template <typename Context, typename... Args>
-basic_format_args(hamon::detail::format_arg_store<Context, Args...>)
-	->basic_format_args<Context>;
+//template <typename Context, typename... Args>
+//basic_format_args(hamon::detail::format_arg_store<Context, Args...>)
+//	->basic_format_args<Context>;
 
 }	// namespace hamon
 

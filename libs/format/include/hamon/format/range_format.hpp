@@ -22,8 +22,13 @@ using std::range_format;
 
 #else
 
+#include <hamon/config.hpp>
+
 namespace hamon
 {
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wshadow")
 
 // [format.range.fmtkind], variable template format_kind
 enum class range_format
@@ -35,6 +40,8 @@ enum class range_format
 	string,
 	debug_string,
 };
+
+HAMON_WARNING_POP()
 
 }	// namespace hamon
 

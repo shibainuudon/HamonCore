@@ -39,11 +39,11 @@ using fmt_iter_for = charT*;
 
 // 28.5.6.3 Concept formattable[format.formattable]
 
-template <typename T, typename charT>
-concept formattable =
-	hamon::detail::formattable_with<
-		hamon::remove_reference_t<T>,
-		hamon::basic_format_context<hamon::detail::fmt_iter_for<charT>, charT>>;
+//template <typename T, typename charT>
+//concept formattable =
+//	hamon::detail::formattable_with<
+//		hamon::remove_reference_t<T>,
+//		hamon::basic_format_context<hamon::detail::fmt_iter_for<charT>, charT>>;
 
 }	// namespace hamon
 

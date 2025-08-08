@@ -29,17 +29,17 @@ namespace hamon
 namespace hamon
 {
 
-hamon::detail::runtime_format_string<char>
-runtime_format(hamon::string_view fmt) noexcept
-{
-	return fmt;
-}
-
-hamon::detail::runtime_format_string<wchar_t>
-runtime_format(hamon::wstring_view fmt) noexcept
-{
-	return fmt;
-}
+//hamon::detail::runtime_format_string<char>
+//runtime_format(hamon::string_view fmt) noexcept
+//{
+//	return fmt;
+//}
+//
+//hamon::detail::runtime_format_string<wchar_t>
+//runtime_format(hamon::wstring_view fmt) noexcept
+//{
+//	return fmt;
+//}
 
 }	// namespace hamon
 

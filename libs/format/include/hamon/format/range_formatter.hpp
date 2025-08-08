@@ -37,7 +37,7 @@ namespace hamon
 // 28.5.7.2 Class template range_formatter[format.range.formatter]
 
 template <typename T, typename charT = char>
-	requires hamon::same_as<hamon::remove_cvref_t<T>, T> && hamon::formattable<T, charT>
+//	requires hamon::same_as<hamon::remove_cvref_t<T>, T> && hamon::formattable<T, charT>
 class range_formatter
 {
 	hamon::formatter<T, charT> underlying_;                                          // exposition only
@@ -46,14 +46,14 @@ class range_formatter
 	hamon::basic_string_view<charT> closing_bracket_ = HAMON_STATICALLY_WIDEN(charT, "]"); // exposition only
 
 public:
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	set_separator(hamon::basic_string_view<charT> sep) noexcept
 	{
 		// [format.range.formatter]/7
 		separator_ = sep;
 	}
 
-	constexpr void
+	HAMON_CXX14_CONSTEXPR void
 	set_brackets(hamon::basic_string_view<charT> opening, hamon::basic_string_view<charT> closing) noexcept
 	{
 		// [format.range.formatter]/8
@@ -61,7 +61,7 @@ public:
 		closing_bracket_ = closing;
 	}
 
-	constexpr hamon::formatter<T, charT>&
+	HAMON_CXX14_CONSTEXPR hamon::formatter<T, charT>&
 	underlying() noexcept
 	{
 		return underlying_;
@@ -74,14 +74,14 @@ public:
 	}
 
 	template <typename ParseContext>
-	constexpr typename ParseContext::iterator
+	HAMON_CXX14_CONSTEXPR typename ParseContext::iterator
 	parse(ParseContext& ctx);
 
-	template <hamon::ranges::input_range R, typename FormatContext>
-	requires hamon::formattable<hamon::ranges::range_reference_t<R>, charT> &&
-		hamon::same_as<hamon::remove_cvref_t<hamon::ranges::range_reference_t<R>>, T>
-	typename FormatContext::iterator
-	format(R&& r, FormatContext& ctx) const;
+	//template <hamon::ranges::input_range R, typename FormatContext>
+	//requires hamon::formattable<hamon::ranges::range_reference_t<R>, charT> &&
+	//	hamon::same_as<hamon::remove_cvref_t<hamon::ranges::range_reference_t<R>>, T>
+	//typename FormatContext::iterator
+	//format(R&& r, FormatContext& ctx) const;
 };
 
 }	// namespace hamon

@@ -20,22 +20,22 @@ namespace detail
 
 // 28.5.6.3 Concept formattable[format.formattable]
 
-template <
-	typename T,
-	typename Context,
-	typename Formatter = typename Context::template formatter_type<hamon::remove_const_t<T>>>
-concept formattable_with =
-	hamon::semiregular<Formatter> &&
-	requires(
-		Formatter& f,
-		Formatter const& cf,
-		T&& t,
-		Context fc,
-		hamon::basic_format_parse_context<typename Context::char_type> pc)
-{
-	{ f.parse(pc) } -> hamon::same_as<typename decltype(pc)::iterator>;
-	{ cf.format(t, fc) } -> hamon::same_as<typename Context::iterator>;
-};
+//template <
+//	typename T,
+//	typename Context,
+//	typename Formatter = typename Context::template formatter_type<hamon::remove_const_t<T>>>
+//concept formattable_with =
+//	hamon::semiregular<Formatter> &&
+//	requires(
+//		Formatter& f,
+//		Formatter const& cf,
+//		T&& t,
+//		Context fc,
+//		hamon::basic_format_parse_context<typename Context::char_type> pc)
+//{
+//	{ f.parse(pc) } -> hamon::same_as<typename decltype(pc)::iterator>;
+//	{ cf.format(t, fc) } -> hamon::same_as<typename Context::iterator>;
+//};
 
 }	// namespace detail
 

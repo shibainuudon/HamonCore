@@ -34,23 +34,23 @@ namespace hamon
 template <typename charT, typename... Args>
 struct basic_format_string
 {
-private:
-	hamon::basic_string_view<charT> str;
-
-public:
-	template <typename T>
-		requires hamon::convertible_to<T const&, hamon::basic_string_view<charT>>
-	consteval basic_format_string(T const& s)
-		: str(s)
-	{
-		// TODO
-	}
-
-	basic_format_string(hamon::detail::runtime_format_string<charT> s)
-		noexcept : str(s.str) {}
-
-	constexpr hamon::basic_string_view<charT>
-	get() const noexcept { return str; }
+//private:
+//	hamon::basic_string_view<charT> str;
+//
+//public:
+//	template <typename T>
+//		requires hamon::convertible_to<T const&, hamon::basic_string_view<charT>>
+//	consteval basic_format_string(T const& s)
+//		: str(s)
+//	{
+//		// TODO
+//	}
+//
+//	basic_format_string(hamon::detail::runtime_format_string<charT> s)
+//		noexcept : str(s.str) {}
+//
+//	constexpr hamon::basic_string_view<charT>
+//	get() const noexcept { return str; }
 };
 
 }	// namespace hamon
