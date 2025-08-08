@@ -15,6 +15,8 @@ namespace hamon
 namespace detail
 {
 
+// 28.5.1 Header <format> synopsis[format.syn]
+
 template <typename charT>
 struct runtime_format_string
 {

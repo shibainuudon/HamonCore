@@ -18,6 +18,8 @@ namespace hamon
 namespace detail
 {
 
+// 28.5.6.3 Concept formattable[format.formattable]
+
 template <
 	typename T,
 	typename Context,
