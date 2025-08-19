@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+	<Type Name="hamon::vector&lt;*&gt;">
+		<Intrinsic Name="size" Expression="(size_t)(m_impl.m_size)" />
+		<Intrinsic Name="capacity" Expression="(size_t)(m_impl.m_capacity)" />
+		<DisplayString>{{ size={size()} }}</DisplayString>
+		<Expand>
+			<Item Name="[capacity]" ExcludeView="simple">capacity()</Item>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<ArrayItems>
+				<Size>size()</Size>
+				<ValuePointer>m_impl.m_data</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
+
+	<Type Name="hamon::detail::vector_iterator&lt;*&gt;">
+		<SmartPointer Usage="Indexable">m_ptr,na</SmartPointer>
+		<Expand>
+			<Item Name="[ptr]">m_ptr</Item>
+		</Expand>
+	</Type>
+
+</AutoVisualizer>
