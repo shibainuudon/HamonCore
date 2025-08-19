@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::list&lt;*&gt;">
+		<DisplayString>{{ size={m_impl.m_size} }}</DisplayString>
+		<Expand>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<LinkedListItems>
+				<Size>m_impl.m_size</Size>
+				<HeadPointer>m_impl.m_node.m_next</HeadPointer>
+				<NextPointer>m_next</NextPointer>
+				<ValueNode>((hamon::detail::list_node&lt;$T1&gt;*)this)-&gt;m_value</ValueNode>
+			</LinkedListItems>
+		</Expand>
+	</Type>
+
+	<Type Name="hamon::detail::list_iterator&lt;*&gt;">
+		<SmartPointer Usage="Minimal">&amp;((hamon::detail::list_node&lt;$T1&gt;*)m_ptr)-&gt;m_value,na</SmartPointer>
+	</Type>
+</AutoVisualizer>
