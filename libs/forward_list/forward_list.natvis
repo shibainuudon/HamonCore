@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+	<Type Name="hamon::forward_list&lt;*&gt;">
+		<DisplayString Condition="m_impl.m_head.m_next == 0">empty</DisplayString>
+		<DisplayString Condition="m_impl.m_head.m_next != 0">non-empty</DisplayString>
+		<Expand>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<LinkedListItems>
+				<HeadPointer>m_impl.m_head.m_next</HeadPointer>
+				<NextPointer>m_next</NextPointer>
+				<ValueNode>((hamon::detail::forward_list_node&lt;$T1&gt;*)this)->m_value</ValueNode>
+			</LinkedListItems>
+		</Expand>
+	</Type>
+
+	<Type Name="hamon::detail::forward_list_iterator&lt;*&gt;">
+		<SmartPointer Usage="Minimal">&amp;((Node*)m_ptr)-&gt;m_value,na</SmartPointer>
+		<DisplayString Condition="m_ptr == 0">end</DisplayString>
+		<DisplayString Condition="m_ptr != 0">{**this}</DisplayString>
+	</Type>
+</AutoVisualizer>
