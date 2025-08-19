@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+	<Type Name="hamon::deque&lt;*&gt;">
+		<Intrinsic Name="size" Expression="(size_t)(m_impl.m_end - m_impl.m_start)" />
+		<DisplayString>{{ size={size()} }}</DisplayString>
+		<Expand>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<IndexListItems>
+				<Size>size()</Size>
+				<ValueNode>m_impl.m_map[(($i + m_impl.m_start) / m_impl.BlockSize) % m_impl.m_map_size][($i + m_impl.m_start) % m_impl.BlockSize]</ValueNode>
+			</IndexListItems>
+		</Expand>
+	</Type>
+
+	<Type Name="hamon::detail::deque_iterator&lt;*&gt;">
+		<Intrinsic Name="size" Expression="(size_t)(m_deque-&gt;m_end - m_deque-&gt;m_start)" />
+		<Intrinsic Name="start" Expression="m_deque-&gt;m_start" />
+		<Intrinsic Name="map_size" Expression="m_deque-&gt;m_map_size" />
+		<Intrinsic Name="block_size" Expression="m_deque-&gt;BlockSize" />
+		<DisplayString Condition="m_offset &lt; start() + size()">{m_deque-&gt;m_map[(m_offset / block_size()) % map_size()][m_offset % block_size()]}</DisplayString>
+		<DisplayString Condition="m_offset &gt;= start() + size()">end</DisplayString>
+		<Expand>
+			<Item Condition="m_offset &lt; start() + size()" Name="[index]">m_offset - start()</Item>
+			<Item Condition="m_offset &lt; start() + size()" Name="[ptr]">&amp;m_deque-&gt;m_map[(m_offset / block_size()) % map_size()][m_offset % block_size()]</Item>
+		</Expand>
+	</Type>
+
+</AutoVisualizer>
