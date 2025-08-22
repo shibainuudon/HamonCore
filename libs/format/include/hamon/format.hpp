@@ -7,21 +7,24 @@
 #ifndef HAMON_FORMAT_HPP
 #define HAMON_FORMAT_HPP
 
+#include <hamon/format/basic_format_context.hpp>
 #include <hamon/format/basic_format_string.hpp>
 #include <hamon/format/config.hpp>
 #include <hamon/format/format.hpp>
+#include <hamon/format/format_context.hpp>
 #include <hamon/format/format_string.hpp>
 #include <hamon/format/make_format_args.hpp>
 #include <hamon/format/make_wformat_args.hpp>
+#include <hamon/format/wformat_context.hpp>
 #include <hamon/format/wformat_string.hpp>
 
 #if 0
 
 namespace std {
 // [format.context], class template basic_format_context
-template<class Out, class charT> class basic_format_context;
-using format_context = basic_format_context<unspecified, char>;
-using wformat_context = basic_format_context<unspecified, wchar_t>;
+//template<class Out, class charT> class basic_format_context;
+//using format_context = basic_format_context<unspecified, char>;
+//using wformat_context = basic_format_context<unspecified, wchar_t>;
 
 // [format.args], class template basic_format_args
 template<class Context> class basic_format_args;

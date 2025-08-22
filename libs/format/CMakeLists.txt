@@ -21,6 +21,9 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		concepts
 		config
+		cstddef
+		iterator
+		optional
 		string
 		string_view
 		type_traits)
