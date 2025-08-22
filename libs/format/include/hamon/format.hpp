@@ -8,8 +8,11 @@
 #define HAMON_FORMAT_HPP
 
 #include <hamon/format/basic_format_string.hpp>
+#include <hamon/format/config.hpp>
 #include <hamon/format/format.hpp>
 #include <hamon/format/format_string.hpp>
+#include <hamon/format/make_format_args.hpp>
+#include <hamon/format/make_wformat_args.hpp>
 #include <hamon/format/wformat_string.hpp>
 
 #if 0
@@ -175,12 +178,12 @@ template<class Context> class basic_format_arg;
 // [format.arg.store], class template format-arg-store
 template<class Context, class... Args> class format-arg-store;        // exposition only
 
-template<class Context = format_context, class... Args>
-format-arg-store<Context, Args...>
-make_format_args(Args&... fmt_args);
-template<class... Args>
-format-arg-store<wformat_context, Args...>
-make_wformat_args(Args&... args);
+//template<class Context = format_context, class... Args>
+//format-arg-store<Context, Args...>
+//make_format_args(Args&... fmt_args);
+//template<class... Args>
+//format-arg-store<wformat_context, Args...>
+//make_wformat_args(Args&... args);
 
 // [format.error], class format_error
 class format_error;
