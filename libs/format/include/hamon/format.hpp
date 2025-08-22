@@ -15,6 +15,7 @@
 #include <hamon/format/config.hpp>
 #include <hamon/format/format.hpp>
 #include <hamon/format/format_context.hpp>
+#include <hamon/format/format_error.hpp>
 #include <hamon/format/format_string.hpp>
 #include <hamon/format/make_format_args.hpp>
 #include <hamon/format/make_wformat_args.hpp>
@@ -192,7 +193,7 @@ template<class Context, class... Args> class format-arg-store;        // exposit
 //make_wformat_args(Args&... args);
 
 // [format.error], class format_error
-class format_error;
+//class format_error;
 }
 
 #endif
