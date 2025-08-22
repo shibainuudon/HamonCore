@@ -19,6 +19,7 @@
 #include <hamon/format/format_string.hpp>
 #include <hamon/format/make_format_args.hpp>
 #include <hamon/format/make_wformat_args.hpp>
+#include <hamon/format/vformat.hpp>
 #include <hamon/format/wformat_context.hpp>
 #include <hamon/format/wformat_string.hpp>
 
@@ -65,10 +66,10 @@ runtime-format-string<wchar_t> runtime_format(wstring_view fmt) noexcept { retur
 //template<class... Args>
 //wstring format(const locale& loc, wformat_string<Args...> fmt, Args&&... args);
 
-string vformat(string_view fmt, format_args args);
-wstring vformat(wstring_view fmt, wformat_args args);
-string vformat(const locale& loc, string_view fmt, format_args args);
-wstring vformat(const locale& loc, wstring_view fmt, wformat_args args);
+//string vformat(string_view fmt, format_args args);
+//wstring vformat(wstring_view fmt, wformat_args args);
+//string vformat(const locale& loc, string_view fmt, format_args args);
+//wstring vformat(const locale& loc, wstring_view fmt, wformat_args args);
 
 template<class Out, class... Args>
 Out format_to(Out out, format_string<Args...> fmt, Args&&... args);
