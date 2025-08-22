@@ -10,6 +10,7 @@
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/basic_format_args.hpp>
 #include <hamon/format/basic_format_context.hpp>
+#include <hamon/format/basic_format_parse_context.hpp>
 #include <hamon/format/basic_format_string.hpp>
 #include <hamon/format/config.hpp>
 #include <hamon/format/format.hpp>
@@ -135,7 +136,7 @@ using fmt-maybe-const =                                             // expositio
 conditional_t<const-formattable-range<R, charT>, const R, R>;
 
 // [format.parse.ctx], class template basic_format_parse_context
-template<class charT> class basic_format_parse_context;
+//template<class charT> class basic_format_parse_context;
 using format_parse_context = basic_format_parse_context<char>;
 using wformat_parse_context = basic_format_parse_context<wchar_t>;
 
