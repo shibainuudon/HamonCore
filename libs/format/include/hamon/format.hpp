@@ -7,7 +7,10 @@
 #ifndef HAMON_FORMAT_HPP
 #define HAMON_FORMAT_HPP
 
+#include <hamon/format/basic_format_string.hpp>
 #include <hamon/format/format.hpp>
+#include <hamon/format/format_string.hpp>
+#include <hamon/format/wformat_string.hpp>
 
 #if 0
 
@@ -23,24 +26,24 @@ using format_args = basic_format_args<format_context>;
 using wformat_args = basic_format_args<wformat_context>;
 
 // [format.fmt.string], class template basic_format_string
-template<class charT, class... Args>
-struct basic_format_string;
+//template<class charT, class... Args>
+//struct basic_format_string;
 
-template<class charT> struct runtime-format-string {                  // exposition only
-private:
-	basic_string_view<charT> str;                                       // exposition only
-public:
-	runtime-format-string(basic_string_view<charT> s) noexcept : str(s) {}
-	runtime-format-string(const runtime-format-string&) = delete;
-	runtime-format-string& operator=(const runtime-format-string&) = delete;
-};
+//template<class charT> struct runtime-format-string {                  // exposition only
+//private:
+//	basic_string_view<charT> str;                                       // exposition only
+//public:
+//	runtime-format-string(basic_string_view<charT> s) noexcept : str(s) {}
+//	runtime-format-string(const runtime-format-string&) = delete;
+//	runtime-format-string& operator=(const runtime-format-string&) = delete;
+//};
 runtime-format-string<char> runtime_format(string_view fmt) noexcept { return fmt; }
 runtime-format-string<wchar_t> runtime_format(wstring_view fmt) noexcept { return fmt; }
 
-template<class... Args>
-using format_string = basic_format_string<char, type_identity_t<Args>...>;
-template<class... Args>
-using wformat_string = basic_format_string<wchar_t, type_identity_t<Args>...>;
+//template<class... Args>
+//using format_string = basic_format_string<char, type_identity_t<Args>...>;
+//template<class... Args>
+//using wformat_string = basic_format_string<wchar_t, type_identity_t<Args>...>;
 
 // [format.functions], formatting functions
 //template<class... Args>

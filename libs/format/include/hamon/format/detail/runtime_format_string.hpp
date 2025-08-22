@@ -15,17 +15,17 @@ namespace hamon
 namespace detail
 {
 
-//template <typename charT>
-//struct runtime_format_string
-//{
-//private:
-//	hamon::basic_string_view<charT> str;
-//public:
-//	runtime_format_string(hamon::basic_string_view<charT> s) noexcept : str(s) {}
-//
-//	runtime_format_string(runtime_format_string const&) = delete;
-//	runtime_format_string& operator=(runtime_format_string const&) = delete;
-//};
+template <typename charT>
+struct runtime_format_string
+{
+private:
+	hamon::basic_string_view<charT> str;
+public:
+	runtime_format_string(hamon::basic_string_view<charT> s) noexcept : str(s) {}
+
+	runtime_format_string(runtime_format_string const&) = delete;
+	runtime_format_string& operator=(runtime_format_string const&) = delete;
+};
 
 }	// namespace detail
 
