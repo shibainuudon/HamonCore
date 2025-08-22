@@ -7,6 +7,7 @@
 #ifndef HAMON_FORMAT_HPP
 #define HAMON_FORMAT_HPP
 
+#include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/basic_format_args.hpp>
 #include <hamon/format/basic_format_context.hpp>
 #include <hamon/format/basic_format_string.hpp>
@@ -177,7 +178,7 @@ constexpr bool enable_nonlocking_formatter_optimization<R> = false;
 
 // [format.arguments], arguments
 // [format.arg], class template basic_format_arg
-template<class Context> class basic_format_arg;
+//template<class Context> class basic_format_arg;
 
 // [format.arg.store], class template format-arg-store
 template<class Context, class... Args> class format-arg-store;        // exposition only
