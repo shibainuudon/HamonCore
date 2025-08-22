@@ -79,7 +79,7 @@ public:
 		{}
 
 	public:
-		void format(hamon::basic_format_parse_context<char_type>&, Context& ctx) const
+		void format(hamon::basic_format_parse_context<char_type>& parse_ctx, Context& format_ctx) const
 		{
 			// [format.arg]/14
 			format_(parse_ctx, format_ctx, ptr_);
@@ -140,7 +140,7 @@ private:
 		else if constexpr (
 			(hamon::detail::is_specialization_of_basic_string_view<TD>::value ||
 			 hamon::detail::is_specialization_of_basic_string<TD>::value) &&
-			hamon::is_same<TD​::​value_type, char_type>::value)
+			hamon::is_same<TD::value_type, char_type>::value)
 		{
 			value = hamon::basic_string_view<char_type>(v.data(), v.size());
 		}
@@ -174,9 +174,10 @@ public:
 	explicit operator bool() const noexcept
 	{
 		// [format.arg]/7
-		return !hamon::holds_alternative<hamon::monostate>(value)
+		return !hamon::holds_alternative<hamon::monostate>(value);
 	}
 
+#if 0	// TODO
 	template <typename Visitor>
 	decltype(auto) visit(this basic_format_arg arg, Visitor&& vis)
 	{
@@ -190,6 +191,7 @@ public:
 		// [format.arg]/9
 		return arg.value.visit<R>(hamon::forward<Visitor>(vis));
 	}
+#endif
 };
 
 }	// namespace hamon

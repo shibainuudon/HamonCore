@@ -70,13 +70,13 @@ public:
 	iterator out()
 	{
 		// [format.context]/8
-		return hamon::​move(out_);
+		return hamon::move(out_);
 	}
 
 	void advance_to(iterator it)
 	{
 		// [format.context]/9
-		out_ = hamon::​move(it);
+		out_ = hamon::move(it);
 	}
 };
 
