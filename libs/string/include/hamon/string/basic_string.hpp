@@ -2664,6 +2664,19 @@ operator<<(
 
 }	// namespace hamon
 
+#include <hamon/string/detail/is_specialization_of_basic_string.hpp>
+
+namespace hamon {
+namespace detail {
+
+// is_specialization_of_basic_string の特殊化
+template <typename CharT, typename Traits, typename Allocator>
+struct is_specialization_of_basic_string<hamon::basic_string<CharT, Traits, Allocator>>
+	: public hamon::true_type {};
+
+}	// namespace detail
+}	// namespace hamon
+
 #endif
 
 #endif // HAMON_STRING_BASIC_STRING_HPP

@@ -21,4 +21,5 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		limits
 		type_traits
 		utility
+		vector
 		common_test)
