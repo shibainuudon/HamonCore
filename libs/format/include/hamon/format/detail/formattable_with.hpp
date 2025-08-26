@@ -18,6 +18,8 @@ namespace hamon
 namespace detail
 {
 
+#if 0
+
 // 28.5.6.3 Concept formattable[format.formattable]
 
 template <
@@ -32,6 +34,8 @@ concept formattable_with =
 		{ f.parse(pc) } -> hamon::same_as<typename decltype(pc)::iterator>;
 		{ cf.format(t, fc) } -> hamon::same_as<typename Context::iterator>;
 	};
+
+#endif
 
 }	// namespace detail
 

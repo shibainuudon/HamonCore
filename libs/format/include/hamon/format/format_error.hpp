@@ -22,6 +22,8 @@ using std::format_error;
 
 #else
 
+#if 0
+
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <stdexcept>
@@ -63,6 +65,8 @@ throw_format_error(char const* msg)
 }	// namespace detail
 
 }	// namespace hamon
+
+#endif
 
 #endif
 

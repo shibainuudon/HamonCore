@@ -16,14 +16,23 @@ namespace hamon
 namespace detail
 {
 
+#if 0
+
 // 28.5.8.2 Class template format-arg-store[format.arg.store]
 
 template <typename Context, typename... Args>
 class format_arg_store
 {
 public:
+	format_arg_store(Args&... __args) noexcept
+		: args{hamon::basic_format_arg<Context>(__args)...}
+	{
+	}
+
 	hamon::array<hamon::basic_format_arg<Context>, sizeof...(Args)> args;
 };
+
+#endif
 
 }	// namespace detail
 

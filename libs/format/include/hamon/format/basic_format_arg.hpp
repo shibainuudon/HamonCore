@@ -22,6 +22,7 @@ using std::basic_format_arg;
 
 #else
 
+#if 0
 #include <hamon/format/basic_format_parse_context.hpp>
 #include <hamon/format/detail/formattable_with.hpp>
 #include <hamon/format/detail/is_signed_integer.hpp>
@@ -93,7 +94,7 @@ private:
 		float, double, long double,
 		const char_type*, hamon::basic_string_view<char_type>,
 		const void*, handle> value;
-
+public:	// TODO
 	template <typename T>
 	requires hamon::detail::formattable_with<T, Context>	// [format.arg]/4
 	explicit basic_format_arg(T& v) noexcept
@@ -195,6 +196,7 @@ public:
 };
 
 }	// namespace hamon
+#endif
 
 #endif
 

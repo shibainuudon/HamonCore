@@ -13,13 +13,18 @@
 #include <hamon/format/basic_format_parse_context.hpp>
 #include <hamon/format/basic_format_string.hpp>
 #include <hamon/format/config.hpp>
+#include <hamon/format/enable_nonlocking_formatter_optimization.hpp>
 #include <hamon/format/format.hpp>
+#include <hamon/format/format_args.hpp>
 #include <hamon/format/format_context.hpp>
 #include <hamon/format/format_error.hpp>
 #include <hamon/format/format_string.hpp>
+#include <hamon/format/formatter.hpp>
 #include <hamon/format/make_format_args.hpp>
 #include <hamon/format/make_wformat_args.hpp>
 #include <hamon/format/vformat.hpp>
+#include <hamon/format/vformat_to.hpp>
+#include <hamon/format/wformat_args.hpp>
 #include <hamon/format/wformat_context.hpp>
 #include <hamon/format/wformat_string.hpp>
 
@@ -33,8 +38,8 @@ namespace std {
 
 // [format.args], class template basic_format_args
 //template<class Context> class basic_format_args;
-using format_args = basic_format_args<format_context>;
-using wformat_args = basic_format_args<wformat_context>;
+//using format_args = basic_format_args<format_context>;
+//using wformat_args = basic_format_args<wformat_context>;
 
 // [format.fmt.string], class template basic_format_string
 //template<class charT, class... Args>
@@ -80,14 +85,14 @@ Out format_to(Out out, const locale& loc, format_string<Args...> fmt, Args&&... 
 template<class Out, class... Args>
 Out format_to(Out out, const locale& loc, wformat_string<Args...> fmt, Args&&... args);
 
-template<class Out>
-Out vformat_to(Out out, string_view fmt, format_args args);
-template<class Out>
-Out vformat_to(Out out, wstring_view fmt, wformat_args args);
-template<class Out>
-Out vformat_to(Out out, const locale& loc, string_view fmt, format_args args);
-template<class Out>
-Out vformat_to(Out out, const locale& loc, wstring_view fmt, wformat_args args);
+//template<class Out>
+//Out vformat_to(Out out, string_view fmt, format_args args);
+//template<class Out>
+//Out vformat_to(Out out, wstring_view fmt, wformat_args args);
+//template<class Out>
+//Out vformat_to(Out out, const locale& loc, string_view fmt, format_args args);
+//template<class Out>
+//Out vformat_to(Out out, const locale& loc, wstring_view fmt, wformat_args args);
 
 template<class Out> struct format_to_n_result {
 	Out out;
@@ -118,11 +123,11 @@ template<class... Args>
 size_t formatted_size(const locale& loc, wformat_string<Args...> fmt, Args&&... args);
 
 // [format.formatter], formatter
-template<class T, class charT = char> struct formatter;
+//template<class T, class charT = char> struct formatter;
 
 // [format.formatter.locking], formatter locking
-template<class T>
-constexpr bool enable_nonlocking_formatter_optimization = false;
+//template<class T>
+//constexpr bool enable_nonlocking_formatter_optimization = false;
 
 // [format.formattable], concept formattable
 template<class T, class charT>

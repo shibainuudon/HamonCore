@@ -22,6 +22,8 @@ using std::basic_format_parse_context;
 
 #else
 
+#if 0
+
 #include <hamon/format/format_error.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -148,6 +150,8 @@ public:
 };
 
 }	// namespace hamon
+
+#endif
 
 #endif
 

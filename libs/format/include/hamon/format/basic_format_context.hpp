@@ -22,6 +22,8 @@ using std::basic_format_context;
 
 #else
 
+#if 0
+
 #include <hamon/format/basic_format_args.hpp>
 #include <hamon/format/formatter.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -81,6 +83,8 @@ public:
 };
 
 }	// namespace hamon
+
+#endif
 
 #endif
 

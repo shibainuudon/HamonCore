@@ -22,6 +22,8 @@ using std::format_context;
 
 #else
 
+#if 0
+
 #include <hamon/format/basic_format_context.hpp>
 #include <hamon/format/detail/output_buffer.hpp>
 #include <hamon/iterator/back_insert_iterator.hpp>
@@ -34,6 +36,8 @@ namespace hamon
 using format_context = hamon::basic_format_context<hamon::back_insert_iterator<hamon::detail::output_buffer<char>>, char>;
 
 }	// namespace hamon
+
+#endif
 
 #endif
 

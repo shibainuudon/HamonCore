@@ -22,6 +22,8 @@ using std::basic_format_string;
 
 #else
 
+#if 0
+
 #include <hamon/format/detail/runtime_format_string.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/string_view.hpp>
@@ -58,6 +60,8 @@ public:
 };
 
 }	// namespace hamon
+
+#endif
 
 #endif
 

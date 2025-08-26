@@ -22,6 +22,8 @@ using std::basic_format_args;
 
 #else
 
+#if 0
+
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/detail/format_arg_store.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -63,6 +65,8 @@ basic_format_args(hamon::detail::format_arg_store<Context, Args...>)
 	-> basic_format_args<Context>;
 
 }	// namespace hamon
+
+#endif
 
 #endif
 
