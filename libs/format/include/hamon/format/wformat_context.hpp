@@ -22,10 +22,8 @@ using std::wformat_context;
 
 #else
 
-#if 0
-
 #include <hamon/format/basic_format_context.hpp>
-#include <hamon/format/detail/output_buffer.hpp>
+#include <hamon/format/__format/__output_buffer.hpp>
 #include <hamon/iterator/back_insert_iterator.hpp>
 
 namespace hamon
@@ -33,11 +31,9 @@ namespace hamon
 
 // [format.context], class template basic_format_context
 
-using wformat_context = hamon::basic_format_context<hamon::back_insert_iterator<hamon::detail::output_buffer<wchar_t>>, wchar_t>;
+using wformat_context = hamon::basic_format_context<hamon::back_insert_iterator<__format::__output_buffer<wchar_t>>, wchar_t>;
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

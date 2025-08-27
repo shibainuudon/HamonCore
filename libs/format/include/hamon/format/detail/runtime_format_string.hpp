@@ -15,8 +15,9 @@ namespace hamon
 namespace detail
 {
 
-#if 0
+// 28.5.1 Header <format> synopsis[format.syn]
 
+// runtime-format-string
 template <typename charT>
 struct runtime_format_string
 {
@@ -28,8 +29,6 @@ public:
 	runtime_format_string(runtime_format_string const&) = delete;
 	runtime_format_string& operator=(runtime_format_string const&) = delete;
 };
-
-#endif
 
 }	// namespace detail
 

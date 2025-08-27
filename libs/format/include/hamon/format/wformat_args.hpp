@@ -22,8 +22,6 @@ using std::wformat_args;
 
 #else
 
-#if 0
-
 #include <hamon/format/basic_format_args.hpp>
 #include <hamon/format/wformat_context.hpp>
 
@@ -35,8 +33,6 @@ namespace hamon
 using wformat_args = hamon::basic_format_args<hamon::wformat_context>;
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

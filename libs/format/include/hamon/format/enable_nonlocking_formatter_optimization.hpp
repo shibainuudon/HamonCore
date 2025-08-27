@@ -22,8 +22,6 @@ using std::enable_nonlocking_formatter_optimization;
 
 #else
 
-#if 0
-
 namespace hamon
 {
 
@@ -32,8 +30,6 @@ template <typename T>
 constexpr bool enable_nonlocking_formatter_optimization = false;
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

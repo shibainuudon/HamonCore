@@ -22,14 +22,23 @@ using std::basic_format_string;
 
 #else
 
-#if 0
-
+#include <hamon/format/basic_format_parse_context.hpp>
 #include <hamon/format/detail/runtime_format_string.hpp>
+#include <hamon/format/__format/__compile_time_basic_format_context.hpp>
+#include <hamon/format/__format/__compile_time_handle.hpp>
+#include <hamon/format/__format/__arg_t.hpp>
+#include <hamon/format/__format/__determine_arg_t.hpp>
+#include <hamon/format/__format/__vformat_to.hpp>
+#include <hamon/array.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 
 namespace hamon
 {
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4127)	// 条件式が定数です。
 
 // 28.5.4 Class template basic_format_string[format.fmt.string]
 
@@ -39,6 +48,22 @@ struct basic_format_string
 private:
 	hamon::basic_string_view<charT> str;
 
+	using Context = __format::__compile_time_basic_format_context<charT>;
+
+	static constexpr hamon::array<__format::__arg_t, sizeof...(Args)> __types_ {
+		__format::__determine_arg_t<Context, hamon::remove_cvref_t<Args>>()...};
+
+	static constexpr hamon::array<__format::__compile_time_handle<charT>, sizeof...(Args)> __handles_ {[] {
+		using T = hamon::remove_cvref_t<Args>;
+		__format::__compile_time_handle<charT> __handle;
+		if (__format::__determine_arg_t<Context, T>() == __format::__arg_t::__handle)
+		{
+			__handle.template __enable<T>();
+		}
+
+		return __handle;
+	}()...};
+
 public:
 	template <typename T>
 	requires hamon::convertible_to<T const&, hamon::basic_string_view<charT>>	// [format.fmt.string]/1
@@ -47,9 +72,9 @@ public:
 		: str(s)	// [format.fmt.string]/2
 	{
 		// [format.fmt.string]/3
-		// TODO
-//		__format::_Checking_scanner<charT, hamon::remove_cvref_t<Args>...> __scanner(str);
-//		__scanner._M_scan();
+		__format::__vformat_to(
+			hamon::basic_format_parse_context<charT>{str, sizeof...(Args)},
+			Context{__types_.data(), __handles_.data(), sizeof...(Args)});
 	}
 
 	basic_format_string(hamon::detail::runtime_format_string<charT> s) noexcept
@@ -59,9 +84,9 @@ public:
 	get() const noexcept { return str; }
 };
 
-}	// namespace hamon
+HAMON_WARNING_POP()
 
-#endif
+}	// namespace hamon
 
 #endif
 

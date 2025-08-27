@@ -22,8 +22,6 @@ using std::make_format_args;
 
 #else
 
-#if 0
-
 #include <hamon/format/format_context.hpp>
 #include <hamon/format/detail/format_arg_store.hpp>
 
@@ -46,8 +44,6 @@ make_format_args(Args&... fmt_args)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

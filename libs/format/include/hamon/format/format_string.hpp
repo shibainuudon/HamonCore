@@ -22,8 +22,6 @@ using std::format_string;
 
 #else
 
-#if 0
-
 #include <hamon/format/basic_format_string.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 
@@ -36,8 +34,6 @@ template <typename... Args>
 using format_string = hamon::basic_format_string<char, hamon::type_identity_t<Args>...>;
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

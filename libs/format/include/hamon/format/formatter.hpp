@@ -22,264 +22,108 @@ using std::formatter;
 
 #else
 
-#if 0
-
+#include <hamon/format/__format/__fmt_char_type.hpp>
+#include <hamon/format/__format/__formatter_bool.hpp>
+#include <hamon/format/__format/__formatter_char.hpp>
+#include <hamon/format/__format/__formatter_floating_point.hpp>
+#include <hamon/format/__format/__formatter_integer.hpp>
+#include <hamon/format/__format/__formatter_pointer.hpp>
+#include <hamon/format/__format/__formatter_string.hpp>
 #include <hamon/format/enable_nonlocking_formatter_optimization.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
-#include <hamon/type_traits/is_same.hpp>
 
 namespace hamon
 {
 
-namespace detail
+struct __disabled_formatter
 {
-
-// [format.formatter.spec]/7
-// If F is a disabled specialization of formatter, these values are false:
-// - is_default_constructible_v<F>,
-// - is_copy_constructible_v<F>,
-// - is_move_constructible_v<F>,
-// - is_copy_assignable_v<F>, and
-// - is_move_assignable_v<F>.
-struct disabled_formatter
-{
-	disabled_formatter()                                     = delete;
-	disabled_formatter(const disabled_formatter&)            = delete;
-	disabled_formatter& operator=(const disabled_formatter&) = delete;
+	__disabled_formatter()                                       = delete;
+	__disabled_formatter(const __disabled_formatter&)            = delete;
+	__disabled_formatter& operator=(const __disabled_formatter&) = delete;
 };
 
-template <typename charT>
-struct formatter_char
-{
-	static_assert(hamon::is_same<charT, char>::value || hamon::is_same<charT, wchar_t>::value, "");
-};
+/// The default formatter template.
+///
+/// [format.formatter.spec]/5
+/// If F is a disabled specialization of formatter, these values are false:
+/// - is_default_constructible_v<F>,
+/// - is_copy_constructible_v<F>,
+/// - is_move_constructible_v<F>,
+/// - is_copy_assignable_v<F>, and
+/// - is_move_assignable_v<F>.
+template <class _Tp, class _CharT>
+struct formatter : __disabled_formatter {};
 
-template <typename charT>
-struct formatter_string
+template <class _Tp>
+constexpr void __set_debug_format(_Tp& __formatter)
 {
-	static_assert(hamon::is_same<charT, char>::value || hamon::is_same<charT, wchar_t>::value, "");
-};
-
-template <typename charT>
-struct formatter_integer
-{
-	static_assert(hamon::is_same<charT, char>::value || hamon::is_same<charT, wchar_t>::value, "");
-
-	template <typename ParseContext>
-	constexpr typename ParseContext::iterator
-	parse(ParseContext& __ctx);/*
+	if constexpr (requires { __formatter.set_debug_format(); })
 	{
-		typename ParseContext::iterator __result = __parser_.__parse(__ctx, __format_spec::__fields_integral);
-		__format_spec::__process_parsed_integer(__parser_, "an integer");
-		return __result;
-	}*/
+		__formatter.set_debug_format();
+	}
+}
 
-	template <integral _Tp, typename FormatContext>
-	typename FormatContext::iterator
-	format(_Tp __value, FormatContext& __ctx) const;/*
-	{
-		__format_spec::__parsed_specifications<_CharT> __specs = __parser_.__get_parsed_std_specifications(__ctx);
 
-		if (__specs.__std_.__type_ == __format_spec::__type::__char)
-		{
-			return __formatter::__format_char(__value, __ctx.out(), __specs);
-		}
 
-		using _Type = __make_32_64_or_128_bit_t<_Tp>;
-		static_assert(!is_void<_Type>::value, "unsupported integral type used in __formatter_integer::__format");
-
-		// Reduce the number of instantiation of the integer formatter
-		return __formatter::__format_integer(static_cast<_Type>(__value), __ctx, __specs);
-	}*/
-
-//	__format_spec::__parser<_CharT> __parser_;
-};
-
-template <typename charT>
-struct formatter_floating_point
-{
-	static_assert(hamon::is_same<charT, char>::value || hamon::is_same<charT, wchar_t>::value, "");
-};
-
-}	// namespace detail
-
-// 28.5.6 Formatter[format.formatter]
-
-// 28.5.6.4 Formatter specializations[format.formatter.spec]
-
-template <typename T, typename charT = char>
-struct formatter : hamon::detail::disabled_formatter{};
-
-// [format.formatter.spec]/2.1
-template <>
-struct formatter<char, char>
-	: public hamon::detail::formatter_char<char> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<bool, _CharT> : public __format::__formatter_bool<_CharT> {};
 
 template <>
-struct formatter<char, wchar_t>
-	: public hamon::detail::formatter_char<wchar_t> {};
+inline constexpr bool enable_nonlocking_formatter_optimization<bool> = true;
+
 
 template <>
-struct formatter<wchar_t, wchar_t>
-	: public hamon::detail::formatter_char<wchar_t> {};
+struct formatter<char, char> : public __format::__formatter_char<char> {};
+
+template <>
+struct formatter<char, wchar_t> : public __format::__formatter_char<wchar_t> {};
+
+template <>
+struct formatter<wchar_t, wchar_t> : public __format::__formatter_char<wchar_t> {};
 
 template <>
 inline constexpr bool enable_nonlocking_formatter_optimization<char> = true;
 template <>
 inline constexpr bool enable_nonlocking_formatter_optimization<wchar_t> = true;
 
-// [format.formatter.spec]/2.2
-template <>
-struct formatter<char*, char>
-	: public hamon::detail::formatter_string<char>
-{
-};
+template <__format::__fmt_char_type _CharT>
+struct formatter<float, _CharT> : public __format::__formatter_floating_point<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<double, _CharT> : public __format::__formatter_floating_point<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<long double, _CharT> : public __format::__formatter_floating_point<_CharT> {};
 
 template <>
-struct formatter<const char*, char>
-	: public hamon::detail::formatter_string<char>
-{
-};
+inline constexpr bool enable_nonlocking_formatter_optimization<float> = true;
+template <>
+inline constexpr bool enable_nonlocking_formatter_optimization<double> = true;
+template <>
+inline constexpr bool enable_nonlocking_formatter_optimization<long double> = true;
 
-template <hamon::size_t N>
-struct formatter<char[N], char>
-	: public hamon::detail::formatter_string<char>
-{
-};
+// Signed integral types.
+template <__format::__fmt_char_type _CharT>
+struct formatter<signed char, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<short, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<int, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<long, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<long long, _CharT> : public __format::__formatter_integer<_CharT> {};
 
-template <typename traits, typename Allocator>
-struct formatter<hamon::basic_string<char, traits, Allocator>, char>
-	: public hamon::detail::formatter_string<char>
-{
-};
-
-template <typename traits>
-struct formatter<hamon::basic_string_view<char, traits>, char>
-	: public hamon::detail::formatter_string<char>
-{
-};
-
-template <>
-struct formatter<wchar_t*, wchar_t>
-	: public hamon::detail::formatter_string<wchar_t>
-{
-};
-
-template <>
-struct formatter<const wchar_t*, wchar_t>
-	: public hamon::detail::formatter_string<wchar_t>
-{
-};
-
-template <hamon::size_t N>
-struct formatter<wchar_t[N], wchar_t>
-	: public hamon::detail::formatter_string<wchar_t>
-{
-};
-
-template <typename traits, typename Allocator>
-struct formatter<hamon::basic_string<wchar_t, traits, Allocator>, wchar_t>
-	: public hamon::detail::formatter_string<wchar_t>
-{
-};
-
-template <typename traits>
-struct formatter<hamon::basic_string_view<wchar_t, traits>, wchar_t>
-	: public hamon::detail::formatter_string<wchar_t>
-{
-};
-
-
-// [format.formatter.spec]/4.1
-template <>
-struct formatter<char*, wchar_t>
-	: hamon::detail::disabled_formatter{};
-
-template <>
-struct formatter<const char*, wchar_t>
-	: hamon::detail::disabled_formatter{};
-
-template <hamon::size_t N>
-struct formatter<char[N], wchar_t>
-	: hamon::detail::disabled_formatter{};
-
-template <typename traits, typename Allocator>
-struct formatter<hamon::basic_string<char, traits, Allocator>, wchar_t>
-	: hamon::detail::disabled_formatter{};
-
-template <typename traits>
-struct formatter<hamon::basic_string_view<char, traits>, wchar_t>
-	: hamon::detail::disabled_formatter{};
-
-
-template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<char*> = true;
-template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<const char*> = true;
-template <hamon::size_t N>
-inline constexpr bool enable_nonlocking_formatter_optimization<char[N]> = true;
-template <typename traits, typename Allocator>
-inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string<char, traits, Allocator>> = true;
-template <typename traits>
-inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string_view<char, traits>> = true;
-
-template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<wchar_t*> = true;
-template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<const wchar_t*> = true;
-template <hamon::size_t N>
-inline constexpr bool enable_nonlocking_formatter_optimization<wchar_t[N]> = true;
-template <typename traits, typename Allocator>
-inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string<wchar_t, traits, Allocator>> = true;
-template <typename traits>
-inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string_view<wchar_t, traits>> = true;
-
-// [format.formatter.spec]/2.3
-
-template <>
-struct formatter<signed char, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<short, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<int, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<long, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<long long, char> : public hamon::detail::formatter_integer<char> {};
-
-template <>
-struct formatter<unsigned char, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<unsigned short, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<unsigned, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<unsigned long, char> : public hamon::detail::formatter_integer<char> {};
-template <>
-struct formatter<unsigned long long, char> : public hamon::detail::formatter_integer<char> {};
-
-template <>
-struct formatter<signed char, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<short, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<int, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<long, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<long long, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-
-template <>
-struct formatter<unsigned char, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<unsigned short, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<unsigned, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<unsigned long, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
-template <>
-struct formatter<unsigned long long, wchar_t> : public hamon::detail::formatter_integer<wchar_t> {};
+// Unsigned integral types.
+template <__format::__fmt_char_type _CharT>
+struct formatter<unsigned char, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<unsigned short, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<unsigned, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<unsigned long, _CharT> : public __format::__formatter_integer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<unsigned long long, _CharT> : public __format::__formatter_integer<_CharT> {};
 
 template <>
 inline constexpr bool enable_nonlocking_formatter_optimization<signed char> = true;
@@ -303,30 +147,140 @@ inline constexpr bool enable_nonlocking_formatter_optimization<unsigned long> = 
 template <>
 inline constexpr bool enable_nonlocking_formatter_optimization<unsigned long long> = true;
 
-template <>
-struct formatter<float, char> : public hamon::detail::formatter_floating_point<char> {};
-template <>
-struct formatter<double, char> : public hamon::detail::formatter_floating_point<char> {};
-template <>
-struct formatter<long double, char> : public hamon::detail::formatter_floating_point<char> {};
+// [format.formatter.spec]/2.4
+// For each charT, the pointer type specializations template<>
+// - struct formatter<nullptr_t, charT>;
+// - template<> struct formatter<void*, charT>;
+// - template<> struct formatter<const void*, charT>;
+template <__format::__fmt_char_type _CharT>
+struct formatter<nullptr_t, _CharT> : public __format::__formatter_pointer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<void*, _CharT> : public __format::__formatter_pointer<_CharT> {};
+template <__format::__fmt_char_type _CharT>
+struct formatter<const void*, _CharT> : public __format::__formatter_pointer<_CharT> {};
 
 template <>
-struct formatter<float, wchar_t> : public hamon::detail::formatter_floating_point<wchar_t> {};
+inline constexpr bool enable_nonlocking_formatter_optimization<nullptr_t> = true;
 template <>
-struct formatter<double, wchar_t> : public hamon::detail::formatter_floating_point<wchar_t> {};
+inline constexpr bool enable_nonlocking_formatter_optimization<void*> = true;
 template <>
-struct formatter<long double, wchar_t> : public hamon::detail::formatter_floating_point<wchar_t> {};
+inline constexpr bool enable_nonlocking_formatter_optimization<const void*> = true;
+
+// Formatter const char*.
+template <__format::__fmt_char_type _CharT>
+struct formatter<const _CharT*, _CharT> : public __format::__formatter_string<_CharT>
+{
+	using _Base = __format::__formatter_string<_CharT>;
+
+	template <class _FormatContext>
+	typename _FormatContext::iterator format(const _CharT* __str, _FormatContext& __ctx) const
+	{
+//		_LIBCPP_ASSERT_INTERNAL(__str, "The basic_format_arg constructor should have prevented an invalid pointer.");
+
+		// Converting the input to a basic_string_view means the data is looped over twice;
+		// - once to determine the length, and
+		// - once to process the data.
+		//
+		// This sounds slower than writing the output directly. However internally
+		// the output algorithms have optimizations for "bulk" operations, which
+		// makes this faster than a single-pass character-by-character output.
+		return _Base::format(hamon::basic_string_view<_CharT>(__str), __ctx);
+	}
+};
+
+// Formatter char*.
+template <__format::__fmt_char_type _CharT>
+struct formatter<_CharT*, _CharT> : public formatter<const _CharT*, _CharT>
+{
+	using _Base = formatter<const _CharT*, _CharT>;
+
+	template <class _FormatContext>
+	typename _FormatContext::iterator format(_CharT* __str, _FormatContext& __ctx) const
+	{
+		return _Base::format(__str, __ctx);
+	}
+};
+
+// Formatter char[].
+template <__format::__fmt_char_type _CharT, size_t _Size>
+struct formatter<_CharT[_Size], _CharT> : public __format::__formatter_string<_CharT>
+{
+	using _Base = __format::__formatter_string<_CharT>;
+
+	template <class _FormatContext>
+	typename _FormatContext::iterator
+	format(const _CharT (&__str)[_Size], _FormatContext& __ctx) const
+	{
+		const _CharT* const __pzero = char_traits<_CharT>::find(__str, _Size, _CharT {});
+//		_LIBCPP_ASSERT_VALID_INPUT_RANGE(__pzero != nullptr, "formatting a non-null-terminated array");
+		return _Base::format(hamon::basic_string_view<_CharT>(__str, static_cast<size_t>(__pzero - __str)), __ctx);
+	}
+};
+
+// Formatter std::string.
+template <__format::__fmt_char_type _CharT, class _Traits, class _Allocator>
+struct formatter<hamon::basic_string<_CharT, _Traits, _Allocator>, _CharT> : public __format::__formatter_string<_CharT>
+{
+	using _Base = __format::__formatter_string<_CharT>;
+
+	template <class _FormatContext>
+	typename _FormatContext::iterator
+	format(const hamon::basic_string<_CharT, _Traits, _Allocator>& __str, _FormatContext& __ctx) const
+	{
+		// Drop _Traits and _Allocator to have one std::basic_string formatter.
+		return _Base::format(hamon::basic_string_view<_CharT>(__str.data(), __str.size()), __ctx);
+	}
+};
+
+// Formatter std::string_view.
+template <__format::__fmt_char_type _CharT, class _Traits>
+struct formatter<hamon::basic_string_view<_CharT, _Traits>, _CharT> : public __format::__formatter_string<_CharT>
+{
+	using _Base = __format::__formatter_string<_CharT>;
+
+	template <class _FormatContext>
+	typename _FormatContext::iterator
+	format(hamon::basic_string_view<_CharT, _Traits> __str, _FormatContext& __ctx) const
+	{
+		// Drop _Traits to have one std::basic_string_view formatter.
+		return _Base::format(hamon::basic_string_view<_CharT>(__str.data(), __str.size()), __ctx);
+	}
+};
 
 template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<float> = true;
+struct formatter<char*, wchar_t> : __disabled_formatter {};
 template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<double> = true;
+struct formatter<const char*, wchar_t> : __disabled_formatter {};
+template <size_t _Size>
+struct formatter<char[_Size], wchar_t> : __disabled_formatter {};
+template <class _Traits, class _Allocator>
+struct formatter<hamon::basic_string<char, _Traits, _Allocator>, wchar_t> : __disabled_formatter {};
+template <class _Traits>
+struct formatter<hamon::basic_string_view<char, _Traits>, wchar_t> : __disabled_formatter {};
+
 template <>
-inline constexpr bool enable_nonlocking_formatter_optimization<long double> = true;
+inline constexpr bool enable_nonlocking_formatter_optimization<char*> = true;
+template <>
+inline constexpr bool enable_nonlocking_formatter_optimization<const char*> = true;
+template <size_t _Size>
+inline constexpr bool enable_nonlocking_formatter_optimization<char[_Size]> = true;
+template <class _Traits, class _Allocator>
+inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string<char, _Traits, _Allocator>> = true;
+template <class _Traits>
+inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string_view<char, _Traits>> = true;
+
+template <>
+inline constexpr bool enable_nonlocking_formatter_optimization<wchar_t*> = true;
+template <>
+inline constexpr bool enable_nonlocking_formatter_optimization<const wchar_t*> = true;
+template <size_t _Size>
+inline constexpr bool enable_nonlocking_formatter_optimization<wchar_t[_Size]> = true;
+template <class _Traits, class _Allocator>
+inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string<wchar_t, _Traits, _Allocator>> = true;
+template <class _Traits>
+inline constexpr bool enable_nonlocking_formatter_optimization<hamon::basic_string_view<wchar_t, _Traits>> = true;
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

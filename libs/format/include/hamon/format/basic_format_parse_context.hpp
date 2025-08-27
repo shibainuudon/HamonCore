@@ -22,8 +22,6 @@ using std::basic_format_parse_context;
 
 #else
 
-#if 0
-
 #include <hamon/format/format_error.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -50,7 +48,7 @@ private:
 	size_t num_args_;
 
 private:
-#if 0
+public:	// TODO
 	constexpr explicit
 	basic_format_parse_context(hamon::basic_string_view<charT> fmt, hamon::size_t num_args) noexcept
 		: begin_(fmt.begin())
@@ -59,7 +57,6 @@ private:
 		, next_arg_id_(0)
 		, num_args_(num_args)
 	{}
-#endif
 
 public:
 	constexpr explicit
@@ -150,8 +147,6 @@ public:
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif
 

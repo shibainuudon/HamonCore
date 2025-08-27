@@ -22,10 +22,6 @@ using std::format;
 
 #else
 
-#include <hamon/format/detail/impl.hpp>
-
-#if 0
-
 #include <hamon/format/format_string.hpp>
 #include <hamon/format/make_format_args.hpp>
 #include <hamon/format/make_wformat_args.hpp>
@@ -72,8 +68,6 @@ format(std::locale const& loc, hamon::wformat_string<Args...> fmt, Args&&... arg
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif
 
