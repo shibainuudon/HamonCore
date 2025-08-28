@@ -335,7 +335,7 @@ private:
 		case __rule::__GB12_GB13_regional_indicator:
 			return __evaluate_GB12_GB13_regional_indicator(__next_code_point, __next_property);
 		}
-		__libcpp_unreachable();
+		HAMON_UNREACHABLE();
 	}
 
 	constexpr bool __evaluate_none(char32_t __next_code_point, __EGC_property __next_property) {
@@ -452,7 +452,7 @@ private:
 			__active_rule_ = __rule::__none;
 			return __evaluate_none(__next_code_point, __next_property);
 		}
-		__libcpp_unreachable();
+		HAMON_UNREACHABLE();
 	}
 
 	[[nodiscard]] constexpr bool
@@ -486,7 +486,7 @@ private:
 			__active_rule_ = __rule::__none;
 			return __evaluate_none(__next_code_point, __next_property);
 		}
-		__libcpp_unreachable();
+		HAMON_UNREACHABLE();
 	}
 
 	[[nodiscard]] constexpr bool
