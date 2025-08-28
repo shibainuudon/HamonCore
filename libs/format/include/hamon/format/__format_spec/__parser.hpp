@@ -8,6 +8,11 @@
 #define HAMON_FORMAT___FORMAT_SPEC___PARSER_HPP
 
 #include <hamon/format/__format_spec/__throw_invalid_option_format_error.hpp>
+#include <hamon/format/__format_spec/__throw_invalid_type_format_error.hpp>
+#include <hamon/format/__format_spec/__parsed_specifications.hpp>
+#include <hamon/format/__format_spec/__create_type_mask.hpp>
+#include <hamon/format/__format_spec/__parse_arg_id.hpp>
+#include <hamon/format/__format_spec/__substitute_arg_id.hpp>
 #include <hamon/format/format_error.hpp>
 
 namespace hamon
@@ -463,9 +468,9 @@ private:
 
 		__format::__parse_number_result __r = __format::__parse_number(__begin, __end);
 		__width_                            = __r.__value;
-		_LIBCPP_ASSERT_INTERNAL(__width_ != 0,
-								"A zero value isn't allowed and should be impossible, "
-								"due to validations in this function");
+		//_LIBCPP_ASSERT_INTERNAL(__width_ != 0,
+		//						"A zero value isn't allowed and should be impossible, "
+		//						"due to validations in this function");
 		__begin = __r.__last;
 		return true;
 	}

@@ -1,11 +1,11 @@
 ﻿/**
- *	@file	__fields_integral.hpp
+ *	@file	__fields_floating_point.hpp
  *
- *	@brief	__fields_integral の定義
+ *	@brief	__fields_floating_point の定義
  */
 
-#ifndef HAMON_FORMAT___FORMAT_SPEC___FIELDS_INTEGRAL_HPP
-#define HAMON_FORMAT___FORMAT_SPEC___FIELDS_INTEGRAL_HPP
+#ifndef HAMON_FORMAT___FORMAT_SPEC___FIELDS_FLOATING_POINT_HPP
+#define HAMON_FORMAT___FORMAT_SPEC___FIELDS_FLOATING_POINT_HPP
 
 #include <hamon/format/__format_spec/__fields.hpp>
 
@@ -16,11 +16,12 @@ namespace __format_spec
 {
 
 inline constexpr __format_spec::__fields
-__fields_integral
+__fields_floating_point
 {
     .__sign_                 = true,
     .__alternate_form_       = true,
     .__zero_padding_         = true,
+    .__precision_            = true,
     .__locale_specific_form_ = true,
     .__type_                 = true,
     .__consume_all_          = true
@@ -30,4 +31,4 @@ __fields_integral
 
 }	// namespace hamon
 
-#endif // HAMON_FORMAT___FORMAT_SPEC___FIELDS_INTEGRAL_HPP
+#endif // HAMON_FORMAT___FORMAT_SPEC___FIELDS_FLOATING_POINT_HPP

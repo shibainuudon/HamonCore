@@ -19,8 +19,6 @@ namespace hamon
 namespace __format
 {
 
-inline constexpr uint32_t __number_max = INT32_MAX;
-
 namespace __detail
 {
 

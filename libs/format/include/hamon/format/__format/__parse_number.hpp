@@ -8,6 +8,7 @@
 #define HAMON_FORMAT___FORMAT___PARSE_NUMBER_HPP
 
 #include <hamon/format/__format/__parse_number_result.hpp>
+#include <hamon/format/__format/__number_max.hpp>
 #include <hamon/format/format_error.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
@@ -31,7 +32,7 @@ __parse_number(_Iterator __begin, _Iterator __end_input)
 	constexpr uint32_t __number_max = INT32_MAX;
 
 	using _CharT = hamon::iter_value_t<_Iterator>;
-//	static_assert(__format::__number_max == INT32_MAX, "The algorithm is implemented based on this value.");
+	static_assert(__format::__number_max == INT32_MAX, "The algorithm is implemented based on this value.");
 	/*
 	 * Limit the input to 9 digits, otherwise we need two checks during every
 	 * iteration:

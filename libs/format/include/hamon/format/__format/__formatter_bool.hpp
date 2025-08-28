@@ -21,7 +21,7 @@ namespace hamon
 namespace __format
 {
 
-template <__fmt_char_type _CharT>
+template <__format::__fmt_char_type _CharT>
 struct __formatter_bool
 {
 public:
