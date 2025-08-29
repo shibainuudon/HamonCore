@@ -16,6 +16,9 @@
 namespace hamon
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4715)	// 値を返さないコントロール パスがあります。
+
 // This function is not user observable, so it can directly use the non-standard
 // types of the "variant". See __arg_t for more details.
 template <class _Visitor, class _Context>
@@ -60,6 +63,8 @@ decltype(auto) __visit_format_arg(_Visitor&& __vis, hamon::basic_format_arg<_Con
 
 	HAMON_UNREACHABLE();
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace hamon
 
