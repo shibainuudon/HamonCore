@@ -66,7 +66,8 @@ __parse_number(_Iterator __begin, _Iterator __end_input)
 			hamon::detail::throw_format_error("The numeric value of the format specifier is too large");
 		}
 
-		__value = __v;
+//		__value = __v;
+		__value = static_cast<uint32_t>(__v);	// TODO
 	}
 
 	return {__begin, __value};

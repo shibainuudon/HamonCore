@@ -379,10 +379,10 @@ private:
 	template <contiguous_iterator _Iterator>
 	constexpr bool __parse_fill_align(_Iterator& __begin, _Iterator __end)
 	{
-		_LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(
-			__begin != __end,
-			"when called with an empty input the function will cause "
-			"undefined behavior by evaluating data not in the input");
+		//_LIBCPP_ASSERT_VALID_ELEMENT_ACCESS(
+		//	__begin != __end,
+		//	"when called with an empty input the function will cause "
+		//	"undefined behavior by evaluating data not in the input");
 		if (__begin + 1 != __end)
 		{
 			if (__parse_alignment(*(__begin + 1)))
