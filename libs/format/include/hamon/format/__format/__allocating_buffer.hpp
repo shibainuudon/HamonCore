@@ -82,7 +82,7 @@ private:
 
 	void __prepare_write(size_t __size_hint)
 	{
-		__grow_buffer(hamon::max<size_t>(this->__capacity() + __size_hint, this->__capacity() * 1.6));
+		__grow_buffer(hamon::max<size_t>(this->__capacity() + __size_hint, static_cast<size_t>(this->__capacity() * 1.6)));
 	}
 
 	static void __prepare_write(__format::__output_buffer<_CharT>& __buffer, size_t __size_hint)

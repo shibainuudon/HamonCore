@@ -11,6 +11,7 @@
 #include <hamon/format/__format/__signed_integer.hpp>
 #include <hamon/format/__format/__unsigned_integer.hpp>
 #include <hamon/format/detail/formattable_with.hpp>
+#include <hamon/format/detail/__is_bounded_array_of.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
@@ -20,12 +21,6 @@ namespace hamon
 
 namespace __format
 {
-
-template <class _Arr, class _Elem>
-inline constexpr bool __is_bounded_array_of = false;
-
-template <class _Elem, size_t _Len>
-inline constexpr bool __is_bounded_array_of<_Elem[_Len], _Elem> = true;
 
 /// \returns The @c __arg_t based on the type of the formatting argument.
 ///
@@ -95,7 +90,7 @@ consteval __arg_t __determine_arg_t() {
 
 // Char array
 template <class _Context, class _Tp>
-  requires __is_bounded_array_of<_Tp, typename _Context::char_type>
+  requires hamon::detail::__is_bounded_array_of<_Tp, typename _Context::char_type>
 consteval __arg_t __determine_arg_t() {
   return __arg_t::__string_view;
 }
