@@ -30,16 +30,40 @@ using std::vformat;
 #include <hamon/string_view.hpp>
 #include <locale>
 
+#include <hamon/format/__format/__try_constant_folding.hpp>
+#include <hamon/format/__format/__allocating_buffer.hpp>
+#include <hamon/utility/move.hpp>
+
 namespace hamon
 {
 
 // 28.5.5 Formatting functions[format.functions]
 
 inline hamon::string
-vformat(hamon::string_view fmt, hamon::format_args args);
+vformat(hamon::string_view fmt, hamon::format_args args)
+{
+	auto __result = __format::__try_constant_folding(fmt, args);
+	if (__result.has_value())
+	{
+		return *hamon::move(__result);
+	}
+	__format::__allocating_buffer<char> __buffer;
+	hamon::vformat_to(__buffer.__make_output_iterator(), fmt, args);
+	return hamon::string{__buffer.__view()};
+}
 
 inline hamon::wstring
-vformat(hamon::wstring_view fmt, hamon::wformat_args args);
+vformat(hamon::wstring_view fmt, hamon::wformat_args args)
+{
+	auto __result = __format::__try_constant_folding(fmt, args);
+	if (__result.has_value())
+	{
+		return *hamon::move(__result);
+	}
+	__format::__allocating_buffer<wchar_t> __buffer;
+	hamon::vformat_to(__buffer.__make_output_iterator(), fmt, args);
+	return hamon::wstring{__buffer.__view()};
+}
 
 inline hamon::string
 vformat(std::locale const& loc, hamon::string_view fmt, hamon::format_args args);

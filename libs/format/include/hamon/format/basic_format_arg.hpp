@@ -169,7 +169,7 @@ public:	// TODO
 public:
 	basic_format_arg() noexcept
 		// [format.arg]/3
-		: value(hamon::monostate)
+		: value()//hamon::monostate)
 	{}
 
 	explicit operator bool() const noexcept
