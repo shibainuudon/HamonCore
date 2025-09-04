@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+	<!-- defined(HAMON_BASIC_STRING_CONPACT_LAYOUT) -->
+	<Type Name="hamon::basic_string&lt;*&gt;">
+		<Intrinsic Name="size" Expression="m_rep.m_small.size" />
+		<Intrinsic Name="isLarge" Expression="m_rep.m_small.is_large" />
+		<DisplayString Condition="isLarge()">{m_rep.m_large.data,na}</DisplayString>
+		<DisplayString Condition="!isLarge()">{m_rep.m_small.data,na}</DisplayString>
+		<StringView Condition="isLarge()">m_rep.m_large.data,na</StringView>
+		<StringView Condition="!isLarge()">m_rep.m_small.data,na</StringView>
+		<Expand>
+			<Item Name="[size]" ExcludeView="simple">size()</Item>
+			<Item Name="[capacity]" Condition="isLarge()" ExcludeView="simple">m_rep.m_large.capacity</Item>
+			<Item Name="[capacity]" Condition="!isLarge()" ExcludeView="simple">m_rep.kSmallBufferSize</Item>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<ArrayItems>
+				<Size>size()</Size>
+				<ValuePointer Condition="isLarge()">m_rep.m_large.data</ValuePointer>
+				<ValuePointer Condition="!isLarge()">m_rep.m_small.data</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
+
+	<!-- !defined(HAMON_BASIC_STRING_CONPACT_LAYOUT) -->
+	<Type Name="hamon::basic_string&lt;*&gt;">
+		<Intrinsic Name="size" Expression="m_rep.m_small.size" />
+		<Intrinsic Name="isLarge" Expression="m_rep.m_is_large" />
+		<DisplayString Condition="isLarge()">{m_rep.m_large.data,na}</DisplayString>
+		<DisplayString Condition="!isLarge()">{m_rep.m_small.data,na}</DisplayString>
+		<StringView Condition="isLarge()">m_rep.m_large.data,na</StringView>
+		<StringView Condition="!isLarge()">m_rep.m_small.data,na</StringView>
+		<Expand>
+			<Item Name="[size]" ExcludeView="simple">size()</Item>
+			<Item Name="[capacity]" Condition="isLarge()" ExcludeView="simple">m_rep.m_large.capacity</Item>
+			<Item Name="[capacity]" Condition="!isLarge()" ExcludeView="simple">m_rep.kSmallBufferSize</Item>
+			<Item Name="[allocator]" ExcludeView="simple">m_allocator</Item>
+			<ArrayItems>
+				<Size>size()</Size>
+				<ValuePointer Condition="isLarge()">m_rep.m_large.data</ValuePointer>
+				<ValuePointer Condition="!isLarge()">m_rep.m_small.data</ValuePointer>
+			</ArrayItems>
+		</Expand>
+	</Type>
+
+</AutoVisualizer>
