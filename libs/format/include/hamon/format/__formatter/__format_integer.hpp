@@ -70,7 +70,8 @@ typename _FormatContext::iterator __format_integer(
 #  if 1//_LIBCPP_HAS_LOCALIZATION
 	if (__specs.__std_.__locale_specific_form_)
 	{
-		const auto& __np  = std::use_facet<std::numpunct<_CharT>>(__ctx.locale());
+		auto loc = __ctx.locale();
+		const auto& __np  = std::use_facet<std::numpunct<_CharT>>(loc);
 //		hamon::string __grouping = __np.grouping();
 		hamon::string __grouping = __np.grouping().c_str();
 		ptrdiff_t __size  = __last - __first;

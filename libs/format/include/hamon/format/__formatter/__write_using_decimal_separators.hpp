@@ -27,6 +27,12 @@ namespace hamon
 namespace __formatter
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4267)	// '' から '' に変換しました。データが失われているかもしれません。
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
+HAMON_WARNING_DISABLE_CLANG("-Wsign-conversion")
+HAMON_WARNING_DISABLE_CLANG("-Wshorten-64-to-32")
+
 template <class _OutIt, hamon::contiguous_iterator _Iterator, class _CharT>
 	requires hamon::same_as<char, hamon::iter_value_t<_Iterator>>
 _OutIt __write_using_decimal_separators(
@@ -109,6 +115,8 @@ _OutIt __write_using_decimal_separators(
 
 	return __formatter::__fill(hamon::move(__out_it), __padding.__after_, __specs.__fill_);
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace __formatter
 

@@ -42,7 +42,8 @@ __format_bool(bool __value, _FormatContext& __ctx, __format_spec::__parsed_speci
 #  if 1//_LIBCPP_HAS_LOCALIZATION
 	if (__specs.__std_.__locale_specific_form_)
 	{
-		const auto& __np = std::use_facet<std::numpunct<_CharT>>(__ctx.locale());
+		auto loc = __ctx.locale();
+		const auto& __np = std::use_facet<std::numpunct<_CharT>>(loc);
 		//hamon::basic_string<_CharT> __str = __value ? __np.truename() : __np.falsename();
 		hamon::basic_string<_CharT> __str = __value ? __np.truename().c_str() : __np.falsename().c_str();
 		return __formatter::__write_string_no_precision(hamon::basic_string_view<_CharT>{__str}, __ctx.out(), __specs);

@@ -18,6 +18,8 @@ namespace __formatter
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4244)	// '' から '' への変換です。データが失われる可能性があります。
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
+HAMON_WARNING_DISABLE_CLANG("-Wimplicit-int-conversion")
 
 /**
  * Determines the required grouping based on the size of the input.

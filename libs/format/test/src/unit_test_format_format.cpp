@@ -2,6 +2,15 @@
  *	@file	unit_test_format_format.cpp
  *
  *	@brief	format のテスト
+ *
+ *	template<class... Args>
+ *	string format(format_string<Args...> fmt, Args&&... args);
+ *	template<class... Args>
+ *	wstring format(wformat_string<Args...> fmt, Args&&... args);
+ *	template<class... Args>
+ *	string format(const locale& loc, format_string<Args...> fmt, Args&&... args);
+ *	template<class... Args>
+ *	wstring format(const locale& loc, wformat_string<Args...> fmt, Args&&... args);
  */
 
 #include <hamon/format/format.hpp>
@@ -174,6 +183,7 @@ template <typename CharT>
 	VERIFY(SV("1234567890\t1234567890") ==
 		hamon::format(std::locale(), SV("{}{}{}{}{}{}{}{}{}{}\t{}{}{}{}{}{}{}{}{}{}"),
 			1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0));
+
 	return true;
 }
 
@@ -183,6 +193,9 @@ template <typename CharT>
 	// *** copy ***
 	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") ==
 		  hamon::format(SV("{}"), SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
+
+	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") ==
+		  hamon::format(std::locale(), SV("{}"), SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
 
 	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 		"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") ==
@@ -257,6 +270,11 @@ template <typename CharT>
 	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 		"X") ==
 		hamon::format(SV("{}X"),
+			SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
+
+	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+		"X") ==
+		hamon::format(std::locale(), SV("{}X"),
 			SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
 
 	VERIFY(SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
@@ -339,6 +357,11 @@ template <typename CharT>
 			SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
 
 	VERIFY(SV("X"
+		"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") ==
+		hamon::format(std::locale(), SV("X{}"),
+			SV("0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
+
+	VERIFY(SV("X"
 		"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 		"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef") ==
 		hamon::format(SV("X{}"),
@@ -409,6 +432,7 @@ template <typename CharT>
 			   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 			   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
 			   "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef")));
+
 	return true;
 }
 
@@ -416,7 +440,11 @@ template <typename CharT>
 /*HAMON_CXX20_CONSTEXPR*/ bool test_buffer_fill()
 {
 	// *** fill ***
-	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") == hamon::format(SV("{:|<64}"), SV("")));
+	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
+		hamon::format(SV("{:|<64}"), SV("")));
+
+	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
+		hamon::format(std::locale(), SV("{:|<64}"), SV("")));
 
 	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
@@ -461,6 +489,10 @@ template <typename CharT>
 	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 		"X") ==
 		hamon::format(SV("{:|<64}X"), SV("")));
+
+	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+		"X") ==
+		hamon::format(std::locale(), SV("{:|<64}X"), SV("")));
 
 	VERIFY(SV("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
@@ -511,6 +543,10 @@ template <typename CharT>
 		hamon::format(SV("X{:|<64}"), SV("")));
 
 	VERIFY(SV("X"
+		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
+		hamon::format(std::locale(), SV("X{:|<64}"), SV("")));
+
+	VERIFY(SV("X"
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
 		hamon::format(SV("X{:|<128}"), SV("")));
@@ -551,6 +587,7 @@ template <typename CharT>
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 		"||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||") ==
 		hamon::format(SV("X{:|<1024}"), SV("")));
+
 	return true;
 }
 
@@ -957,29 +994,35 @@ template <typename CharT>
 		CharT buffer[] = {CharT('0'), CharT('9'), CharT('a'), CharT('z'), CharT('A'), CharT('Z'), CharT('!'), 0};
 		CharT* data = buffer;
 		VERIFY(SV("hello 09azAZ!") == hamon::format(SV("hello {}"), data));
+		VERIFY(SV("hello 09azAZ!") == hamon::format(std::locale(), SV("hello {}"), data));
 	}
 	{
 		CharT buffer[] = {CharT('0'), CharT('9'), CharT('a'), CharT('z'), CharT('A'), CharT('Z'), CharT('!'), 0};
 		const CharT* data = buffer;
 		VERIFY(SV("hello 09azAZ!") == hamon::format(SV("hello {}"), data));
+		VERIFY(SV("hello 09azAZ!") == hamon::format(std::locale(), SV("hello {}"), data));
 	}
 	{
 		// https://github.com/llvm/llvm-project/issues/115935
 		// Contents after the embedded null character are discarded.
 		CharT buffer[] = {CharT('a'), CharT('b'), CharT('c'), 0, CharT('d'), CharT('e'), CharT('f'), 0};
 		VERIFY(SV("hello abc") == hamon::format(SV("hello {}"), buffer));
+		VERIFY(SV("hello abc") == hamon::format(std::locale(), SV("hello {}"), buffer));
 		// Even when the last element of the array is not null character.
 		CharT buffer2[] = {CharT('a'), CharT('b'), CharT('c'), 0, CharT('d'), CharT('e'), CharT('f')};
 		VERIFY(SV("hello abc") == hamon::format(SV("hello {}"), buffer2));
+		VERIFY(SV("hello abc") == hamon::format(std::locale(), SV("hello {}"), buffer2));
 	}
 	{
 		hamon::basic_string<CharT> data = STR("world");
 		VERIFY(SV("hello world") == hamon::format(SV("hello {}"), data));
+		VERIFY(SV("hello world") == hamon::format(std::locale(), SV("hello {}"), data));
 	}
 	{
 		hamon::basic_string<CharT> buffer = STR("world");
 		hamon::basic_string_view<CharT> data = buffer;
 		VERIFY(SV("hello world") == hamon::format(SV("hello {}"), data));
+		VERIFY(SV("hello world") == hamon::format(std::locale(), SV("hello {}"), data));
 	}
 
 	CharT world[] = {CharT('w'), CharT('o'), CharT('r'), CharT('l'), CharT('d'), 0};
@@ -1393,6 +1436,12 @@ template <typename CharT>
 	VERIFY(SV("hello 42") == hamon::format(SV("hello {}"), static_cast<long>(42)));
 	VERIFY(SV("hello 42") == hamon::format(SV("hello {}"), static_cast<long long>(42)));
 
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<signed char>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<short>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<int>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<long>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<long long>(42)));
+
 	VERIFY(test_integer<CharT, signed char>());
 	VERIFY(test_integer<CharT, short>());
 	VERIFY(test_integer<CharT, int>());
@@ -1454,6 +1503,12 @@ template <typename CharT>
 	VERIFY(SV("hello 42") == hamon::format(SV("hello {}"), static_cast<unsigned>(42)));
 	VERIFY(SV("hello 42") == hamon::format(SV("hello {}"), static_cast<unsigned long>(42)));
 	VERIFY(SV("hello 42") == hamon::format(SV("hello {}"), static_cast<unsigned long long>(42)));
+
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<unsigned char>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<unsigned short>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<unsigned>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<unsigned long>(42)));
+	VERIFY(SV("hello 42") == hamon::format(std::locale(), SV("hello {}"), static_cast<unsigned long long>(42)));
 
 	VERIFY(test_integer<CharT, unsigned char>());
 	VERIFY(test_integer<CharT, unsigned short>());
@@ -3244,6 +3299,21 @@ template <typename CharT>
 	VERIFY(SV("answer is '0XAA55'") == hamon::format(SV("answer is '{:X}'"), status::foobar));
 	VERIFY(SV("answer is 'foobar'") == hamon::format(SV("answer is '{:s}'"), status::foobar));
 
+	VERIFY(SV("answer is '0xaaaa'") == hamon::format(std::locale(), SV("answer is '{}'"),   status::foo));
+	VERIFY(SV("answer is '0xaaaa'") == hamon::format(std::locale(), SV("answer is '{:x}'"), status::foo));
+	VERIFY(SV("answer is '0XAAAA'") == hamon::format(std::locale(), SV("answer is '{:X}'"), status::foo));
+	VERIFY(SV("answer is 'foo'")    == hamon::format(std::locale(), SV("answer is '{:s}'"), status::foo));
+
+	VERIFY(SV("answer is '0x5555'") == hamon::format(std::locale(), SV("answer is '{}'"),   status::bar));
+	VERIFY(SV("answer is '0x5555'") == hamon::format(std::locale(), SV("answer is '{:x}'"), status::bar));
+	VERIFY(SV("answer is '0X5555'") == hamon::format(std::locale(), SV("answer is '{:X}'"), status::bar));
+	VERIFY(SV("answer is 'bar'")    == hamon::format(std::locale(), SV("answer is '{:s}'"), status::bar));
+
+	VERIFY(SV("answer is '0xaa55'") == hamon::format(std::locale(), SV("answer is '{}'"),   status::foobar));
+	VERIFY(SV("answer is '0xaa55'") == hamon::format(std::locale(), SV("answer is '{:x}'"), status::foobar));
+	VERIFY(SV("answer is '0XAA55'") == hamon::format(std::locale(), SV("answer is '{:X}'"), status::foobar));
+	VERIFY(SV("answer is 'foobar'") == hamon::format(std::locale(), SV("answer is '{:s}'"), status::foobar));
+
 	// P2418 Changed the argument from a const reference to a forwarding reference.
 	// This mainly affects handle classes, however since we use an abstraction
 	// layer here it's "tricky" to verify whether this test would do the "right"
@@ -3289,6 +3359,7 @@ template <typename CharT>
 }
 
 #undef SV
+#undef STR
 
 #undef VERIFY
 
