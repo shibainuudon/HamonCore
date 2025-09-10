@@ -18,6 +18,9 @@ namespace char_traits_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
+#if 0
+// char_traits<T> for T not equal to char, wchar_t, char8_t, char16_t or char32_t is non-standard and
+// is provided for a temporary period. It will be removed in LLVM 19, so please migrate off of it.
 struct C
 {
 	unsigned char c;
@@ -36,7 +39,7 @@ struct C
 
 HAMON_CXX11_CONSTEXPR bool operator==(C const& c1, C const& c2) { return c1.c == c2.c; }
 HAMON_CXX11_CONSTEXPR bool operator< (C const& c1, C const& c2) { return c1.c <  c2.c; }
-
+#endif
 
 template <typename T>
 class CharTraitsTest : public ::testing::Test {};
@@ -52,8 +55,10 @@ using CharTraitsTestTypes = ::testing::Types<
 	char8_t,
 #endif
 	char,
-	wchar_t,
-	C
+	wchar_t
+#if 0
+	, C
+#endif
 >;
 
 TYPED_TEST_SUITE(CharTraitsTest, CharTraitsTestTypes);
