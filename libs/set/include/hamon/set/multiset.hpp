@@ -20,6 +20,7 @@
 #include <hamon/container/detail/has_is_transparent.hpp>
 
 #include <hamon/algorithm/equal.hpp>
+#include <hamon/algorithm/lexicographical_compare.hpp>
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
