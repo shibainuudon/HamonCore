@@ -204,12 +204,8 @@ bool test2()
 GTEST_TEST(SharedPtrTest, CompareTest)
 {
 	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1());
-#if !defined(HAMON_CLANG_VERSION)
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test2());
-#else
-	// clangだとポインタの大小比較をconstexprにできない
+	// ポインタの大小比較はconstexprにできない
 	EXPECT_TRUE(test2());
-#endif
 }
 
 #undef MEMORY_TEST_CONSTEXPR_EXPECT_TRUE

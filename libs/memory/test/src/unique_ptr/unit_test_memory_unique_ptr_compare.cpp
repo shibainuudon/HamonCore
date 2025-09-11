@@ -194,12 +194,8 @@ bool test2()
 GTEST_TEST(UniquePtrTest, CompareTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
-#if !defined(HAMON_CLANG_VERSION)
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
-#else
-	// clangだとポインタの大小比較をconstexprにできない
+	// ポインタの大小比較はconstexprにできない
 	EXPECT_TRUE(test2());
-#endif
 }
 
 }	// namespace compare_test
