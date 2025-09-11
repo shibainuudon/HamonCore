@@ -39,7 +39,7 @@ HAMON_CXX20_CONSTEXPR bool test1()
 		Iterator
 	>::value, "");
 
-#if 0
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::declval<Vector&>().erase(hamon::declval<ConstIterator>())), "");
 #endif
@@ -88,7 +88,7 @@ HAMON_CXX20_CONSTEXPR bool test2()
 		Iterator
 	>::value, "");
 
-#if 0
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::declval<Vector&>().erase(hamon::declval<ConstIterator>(), hamon::declval<ConstIterator>())), "");
 #endif
@@ -140,8 +140,10 @@ HAMON_CXX20_CONSTEXPR bool test3()
 		SizeType
 	>::value, "");
 
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::erase(hamon::declval<Vector&>(), hamon::declval<T const&>())), "");
+#endif
 
 	{
 		Vector v = {3,1,4,5,2};

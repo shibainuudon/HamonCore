@@ -30,8 +30,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 		void
 	>::value, "");
 
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::declval<Vector&>().shrink_to_fit()), "");
+#endif
 
 	{
 		Vector v{1,2,3,4,5};

@@ -44,8 +44,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 		SizeType
 	>::value, "");
 
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::erase_if(hamon::declval<Vector&>(), hamon::declval<IsEven>())), "");
+#endif
 
 	{
 		Vector v = {3,1,4,5,2};

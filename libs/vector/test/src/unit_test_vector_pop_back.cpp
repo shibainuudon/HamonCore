@@ -30,7 +30,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 		void
 	>::value, "");
 
-#if 0
+#if !defined(HAMON_USE_STD_VECTOR)
 	static_assert(!noexcept(
 		hamon::declval<Vector&>().pop_back()), "");
 #endif
