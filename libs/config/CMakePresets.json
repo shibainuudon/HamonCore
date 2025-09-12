@@ -33,6 +33,10 @@
 			"vendor": {
 				"microsoft.com/VisualStudioSettings/CMake/1.0": {
 					"hostOS": [ "Linux" ]
+				},
+				"microsoft.com/VisualStudioRemoteSettings/CMake/2.0": {
+					"sourceRootDir": "$ms{localSourceDir}\\..\\..",
+					"remoteSourceRootDir": "$env{HOME}/.vs/$ms{projectDirName}"
 				}
 			}
 		},
