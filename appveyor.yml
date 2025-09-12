@@ -1,0 +1,36 @@
+﻿version: 0.0.{build}
+
+skip_commits:
+  files:
+    - .github/**/*
+    - .editorconfig
+    - .gitignore
+    - LICENSE
+    - README.md
+
+image:
+  - Visual Studio 2022
+  - Visual Studio 2019
+
+environment:
+  matrix:
+    - CXX_STANDARD: 23
+    - CXX_STANDARD: 20
+    - CXX_STANDARD: 17
+    - CXX_STANDARD: 14
+
+platform:
+  - x64
+  - Win32
+
+configuration:
+  - Debug
+  - Release
+
+before_build:
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2022" (set CMAKE_GENERATOR="Visual Studio 17 2022")
+  - if "%APPVEYOR_BUILD_WORKER_IMAGE%" == "Visual Studio 2019" (set CMAKE_GENERATOR="Visual Studio 16 2019")
+  - cmake . -B build -G %CMAKE_GENERATOR% -A "%PLATFORM%" -DCMAKE_UNITY_BUILD=ON -DCMAKE_UNITY_BUILD_BATCH_SIZE=16 -DCMAKE_CXX_STANDARD="%CXX_STANDARD%" -DCMAKE_BUILD_TYPE="%CONFIGURATION%"
+
+build_script:
+  - cmake --build build --config %CONFIGURATION%
