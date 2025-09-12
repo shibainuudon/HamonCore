@@ -42,8 +42,8 @@ EndsWithTest()
 		using string_view = hamon::basic_string_view<CharT>;
 		auto p = Helper::abcd();
 		string const s = p;
-		static_assert(noexcept(s.ends_with(string_view{p})), "");
-		static_assert(hamon::is_same<decltype(s.ends_with(string_view{p})), bool>::value, "");
+		static_assert(noexcept(s.ends_with(string_view{})), "");
+		static_assert(hamon::is_same<decltype(s.ends_with(string_view{})), bool>::value, "");
 		VERIFY(!(s.ends_with(string_view{Helper::abcde()})));
 		VERIFY( (s.ends_with(string_view{Helper::abcd()})));
 		VERIFY(!(s.ends_with(string_view{Helper::abc()})));
@@ -55,8 +55,8 @@ EndsWithTest()
 		using string_view = std::basic_string_view<CharT>;
 		auto p = Helper::abcd();
 		string const s = p;
-//		static_assert(noexcept(s.ends_with(string_view{p})), "");
-		static_assert(hamon::is_same<decltype(s.ends_with(string_view{p})), bool>::value, "");
+//		static_assert(noexcept(s.ends_with(string_view{})), "");
+		static_assert(hamon::is_same<decltype(s.ends_with(string_view{})), bool>::value, "");
 		VERIFY(!(s.ends_with(string_view{Helper::abcde()})));
 		VERIFY( (s.ends_with(string_view{Helper::abcd()})));
 		VERIFY(!(s.ends_with(string_view{Helper::abc()})));
