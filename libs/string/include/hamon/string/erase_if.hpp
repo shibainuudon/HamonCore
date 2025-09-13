@@ -8,9 +8,11 @@
 #define HAMON_STRING_ERASE_IF_HPP
 
 #include <hamon/string/config.hpp>
+#include <hamon/config.hpp>
 
 #if defined(HAMON_USE_STD_STRING) && \
-	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002)
+	defined(__cpp_lib_erase_if) && (__cpp_lib_erase_if >= 202002) && \
+	!defined(HAMON_APPLE_CLANG) /* Apple Clang の erase_if はconstexpr指定されていないので使わない */
 
 #include <string>
 
@@ -25,7 +27,6 @@ using std::erase_if;
 
 #include <hamon/algorithm/remove_if.hpp>
 #include <hamon/string/basic_string.hpp>
-#include <hamon/config.hpp>
 
 namespace hamon
 {
