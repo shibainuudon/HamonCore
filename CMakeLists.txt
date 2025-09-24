@@ -81,6 +81,7 @@ set(SUBDIRECTORIES
 	unordered_map
 	unordered_set
 	utility
+	valarray
 	variant
 	vector)
 
