@@ -23,14 +23,18 @@ class __direct_iterator_buffer : public __format::__output_buffer<_CharT>
 {
 public:
 	[[nodiscard]] explicit __direct_iterator_buffer(_OutIt __out_it)
-		: __direct_iterator_buffer {__out_it, nullptr} {}
+		: __direct_iterator_buffer{ __out_it, nullptr }
+	{
+	}
 
 	[[nodiscard]]
 	explicit __direct_iterator_buffer(_OutIt __out_it, __format::__max_output_size* __max_output_size)
-		: __output_buffer<_CharT>{/*std::__unwrap_iter*/(__out_it), __buffer_size, __prepare_write, __max_output_size},
-		__out_it_(__out_it) {}
+		: __output_buffer<_CharT>{/*std::__unwrap_iter*/(__out_it), __buffer_size, __prepare_write, __max_output_size }
+		, __out_it_(__out_it)
+	{
+	}
 
-	[[nodiscard]] _OutIt __out_it() && { return __out_it_ + this->__size(); }
+	[[nodiscard]] _OutIt __out_it()&& { return __out_it_ + this->__size(); }
 
 private:
 	// The function format_to expects a buffer large enough for the output. The
@@ -42,7 +46,7 @@ private:
 	_OutIt __out_it_;
 
 	static void
-	__prepare_write([[maybe_unused]] __format::__output_buffer<_CharT>& __buffer, [[maybe_unused]] size_t __size_hint)
+		__prepare_write([[maybe_unused]] __format::__output_buffer<_CharT>& __buffer, [[maybe_unused]] size_t __size_hint)
 	{
 		hamon::detail::throw_length_error("__direct_iterator_buffer");
 	}

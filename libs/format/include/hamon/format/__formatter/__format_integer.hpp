@@ -67,7 +67,6 @@ typename _FormatContext::iterator __format_integer(
 
 	_Iterator __last = __formatter::__to_buffer(__first, __end, __value, __base);
 
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 	if (__specs.__std_.__locale_specific_form_)
 	{
 		auto loc = __ctx.locale();
@@ -91,7 +90,7 @@ typename _FormatContext::iterator __format_integer(
 				__specs);
 		}
 	}
-#  endif
+
 	auto __out_it = __ctx.out();
 	if (__specs.__alignment_ != __format_spec::__alignment::__zero_padding)
 	{

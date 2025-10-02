@@ -39,7 +39,6 @@ template <class _CharT, class _FormatContext>
 typename _FormatContext::iterator
 __format_bool(bool __value, _FormatContext& __ctx, __format_spec::__parsed_specifications<_CharT> __specs)
 {
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 	if (__specs.__std_.__locale_specific_form_)
 	{
 		auto loc = __ctx.locale();
@@ -48,7 +47,7 @@ __format_bool(bool __value, _FormatContext& __ctx, __format_spec::__parsed_speci
 		hamon::basic_string<_CharT> __str = __value ? __np.truename().c_str() : __np.falsename().c_str();
 		return __formatter::__write_string_no_precision(hamon::basic_string_view<_CharT>{__str}, __ctx.out(), __specs);
 	}
-#  endif
+
 	hamon::basic_string_view<_CharT> __str =
 		__value ? __formatter::__bool_strings<_CharT>::__true : __formatter::__bool_strings<_CharT>::__false;
 	return __formatter::__write(__str.begin(), __str.end(), __ctx.out(), __specs);

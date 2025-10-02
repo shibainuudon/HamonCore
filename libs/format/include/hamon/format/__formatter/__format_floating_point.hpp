@@ -122,12 +122,10 @@ __format_floating_point(_Tp __value, _FormatContext& __ctx, __format_spec::__par
 		}
 	}
 
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 	if (__specs.__std_.__locale_specific_form_)
 	{
 		return __formatter::__format_locale_specific_form(__ctx.out(), __buffer, __result, __ctx.locale(), __specs);
 	}
-#  endif
 
 	ptrdiff_t __size         = __result.__last - __buffer.begin();
 	int __num_trailing_zeros = __buffer.__num_trailing_zeros();

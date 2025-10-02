@@ -15,8 +15,6 @@
 namespace hamon
 {
 
-//#  if _LIBCPP_HAS_LOCALIZATION
-
 /**
  * Helper to create a basic_format_context.
  *
@@ -34,8 +32,6 @@ __format_context_create(
 	return hamon::basic_format_context(hamon::move(__out_it), __args, __loc);
 }
 
-//#  else
-
 template <class _OutIt, class _CharT>
 hamon::basic_format_context<_OutIt, _CharT>
 __format_context_create(
@@ -44,8 +40,6 @@ __format_context_create(
 {
 	return hamon::basic_format_context(hamon::move(__out_it), __args);
 }
-
-//#  endif
 
 }	// namespace hamon
 

@@ -29,7 +29,6 @@ namespace __formatter
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wsign-conversion")
 
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 template <class _OutIt, class _Fp, class _CharT>
 _OutIt __format_locale_specific_form(
 	_OutIt __out_it,
@@ -136,7 +135,6 @@ _OutIt __format_locale_specific_form(
 	// alignment
 	return __formatter::__fill(hamon::move(__out_it), __padding.__after_, __specs.__fill_);
 }
-#  endif // _LIBCPP_HAS_LOCALIZATION
 
 HAMON_WARNING_POP()
 

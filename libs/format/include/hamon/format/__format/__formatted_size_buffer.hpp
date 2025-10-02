@@ -29,13 +29,20 @@ public:
 
 	[[nodiscard]] __formatted_size_buffer()
 		: _Base{ nullptr, 0, __prepare_write, hamon::addressof(__max_output_size_) }
-	{}
+	{
+	}
 
-	[[nodiscard]] auto __make_output_iterator() { return _Base::__make_output_iterator(); }
+	[[nodiscard]] auto __make_output_iterator()
+	{
+		return _Base::__make_output_iterator();
+	}
 
 	// This function does not need to be r-value qualified, however this is
 	// consistent with similar objects.
-	[[nodiscard]] size_t __result() && { return __max_output_size_.__code_units_written(); }
+	[[nodiscard]] size_t __result() &&
+	{
+		return __max_output_size_.__code_units_written();
+	}
 
 private:
 	__max_output_size __max_output_size_{ 0 };

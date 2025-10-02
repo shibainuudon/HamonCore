@@ -12,33 +12,35 @@
 namespace hamon
 {
 
-namespace __extended_grapheme_custer_property_boundary {
+namespace __extended_grapheme_custer_property_boundary
+{
 
-enum class __property : uint8_t {
-  // Values generated from the data files.
-  __CR,
-  __Control,
-  __Extend,
-  __Extended_Pictographic,
-  __L,
-  __LF,
-  __LV,
-  __LVT,
-  __Prepend,
-  __Regional_Indicator,
-  __SpacingMark,
-  __T,
-  __V,
-  __ZWJ,
+enum class __property : uint8_t
+{
+	// Values generated from the data files.
+	__CR,
+	__Control,
+	__Extend,
+	__Extended_Pictographic,
+	__L,
+	__LF,
+	__LV,
+	__LVT,
+	__Prepend,
+	__Regional_Indicator,
+	__SpacingMark,
+	__T,
+	__V,
+	__ZWJ,
 
-  // The properies below aren't stored in the "database".
+	// The properies below aren't stored in the "database".
 
-  // Text position properties.
-  __sot,
-  __eot,
+	// Text position properties.
+	__sot,
+	__eot,
 
-  // The code unit has none of above properties.
-  __none
+	// The code unit has none of above properties.
+	__none
 };
 
 /// The entries of the extended grapheme cluster bondary property table.
@@ -61,8 +63,8 @@ enum class __property : uint8_t {
 /// this approach uses less space for the data and is about 4% faster in the
 /// following benchmark.
 /// libcxx/benchmarks/std_format_spec_string_unicode.bench.cpp
-// clang-format off
-inline constexpr uint32_t __entries[1501] = {
+inline constexpr uint32_t __entries[1501] =
+{
     0x00000091,
     0x00005005,
     0x00005811,
@@ -1563,8 +1565,8 @@ inline constexpr uint32_t __entries[1501] = {
     0x707387f1,
     0x707787f1,
     0x707b87f1,
-    0x707f80f1};
-// clang-format on
+    0x707f80f1
+};
 
 /// Returns the extended grapheme cluster bondary property of a code point.
 [[nodiscard]] constexpr __property __get_property(const char32_t __code_point) noexcept
@@ -1587,17 +1589,21 @@ inline constexpr uint32_t __entries[1501] = {
 	// correct entry.
 	ptrdiff_t __i = hamon::ranges::upper_bound(__entries, (__code_point << 11) | 0x7ffu) - __entries;
 	if (__i == 0)
+	{
 		return __property::__none;
+	}
 
 	--__i;
 	uint32_t __upper_bound = (__entries[__i] >> 11) + ((__entries[__i] >> 4) & 0x7f);
 	if (__code_point <= __upper_bound)
+	{
 		return static_cast<__property>(__entries[__i] & 0xf);
+	}
 
 	return __property::__none;
 }
 
-} // namespace __extended_grapheme_custer_property_boundary
+}	// namespace __extended_grapheme_custer_property_boundary
 
 }	// namespace hamon
 

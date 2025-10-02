@@ -17,10 +17,7 @@ namespace __format
 
 /// The character type specializations of \ref formatter.
 template <class _CharT>
-concept __fmt_char_type =
-    same_as<_CharT, char>
-    || same_as<_CharT, wchar_t>
-    ;
+concept __fmt_char_type = same_as<_CharT, char> || same_as<_CharT, wchar_t>;
 
 }	// namespace __format
 

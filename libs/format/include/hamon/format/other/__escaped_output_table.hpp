@@ -12,8 +12,8 @@
 namespace hamon
 {
 
-namespace __escaped_output_table {
-// clang-format off
+namespace __escaped_output_table
+{
 
 /// The entries of the characters to escape in format's debug string.
 ///
@@ -47,7 +47,8 @@ namespace __escaped_output_table {
 /// - bits [14, 31] The lower bound code point of the range. The upper bound of
 ///   the range is lower bound + size. Note the code expects code units the fit
 ///   into 18 bits, instead of the 21 bits needed for the full Unicode range.
-inline constexpr uint32_t __entries[735] = {
+inline constexpr uint32_t __entries[735] =
+{
     0x00000020 /* 00000000 - 00000020 [   33] */,
     0x001fc021 /* 0000007f - 000000a0 [   34] */,
     0x002b4000 /* 000000ad - 000000ad [    1] */,
@@ -782,7 +783,8 @@ inline constexpr uint32_t __entries[735] = {
     0xbaf8400e /* 0002ebe1 - 0002ebef [   15] */,
     0xbb9789a1 /* 0002ee5e - 0002f7ff [ 2466] */,
     0xbe8785e1 /* 0002fa1e - 0002ffff [ 1506] */,
-    0xc4d2c004 /* 0003134b - 0003134f [    5] */};
+    0xc4d2c004 /* 0003134b - 0003134f [    5] */
+};
 
 /// Returns whether the code unit needs to be escaped.
 ///
@@ -798,26 +800,30 @@ inline constexpr uint32_t __entries[735] = {
 /// \\pre The code point is a valid Unicode code point.
 [[nodiscard]] constexpr bool __needs_escape(const char32_t __code_point) noexcept
 {
-
 	// The entries in the gap at the end.
 	if (__code_point >= 0x000e0100 && __code_point <= 0x000e01ef)
+	{
 		return false;
+	}
 
 	// The entries at the end.
 	if (__code_point >= 0x000323b0)
+	{
 		return true;
+	}
 
 	ptrdiff_t __i = hamon::ranges::upper_bound(__entries, (__code_point << 14) | 0x3fffu) - __entries;
 	if (__i == 0)
+	{
 		return false;
+	}
 
 	--__i;
 	uint32_t __upper_bound = (__entries[__i] >> 14) + (__entries[__i] & 0x3fffu);
 	return __code_point <= __upper_bound;
 }
 
-// clang-format on
-} // namespace __escaped_output_table
+}	// namespace __escaped_output_table
 
 }	// namespace hamon
 

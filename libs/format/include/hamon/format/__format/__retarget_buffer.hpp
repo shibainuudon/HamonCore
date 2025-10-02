@@ -234,9 +234,7 @@ public:
 	template <class _Context>
 	explicit basic_format_context(iterator __out_it, _Context& __ctx)
 		: __out_it_(hamon::move(__out_it)),
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 		__loc_([](void* __c) { return static_cast<_Context*>(__c)->locale(); }),
-#  endif
 		__ctx_(hamon::addressof(__ctx)),
 		__arg_([](void* __c, size_t __id) {
 		auto __visitor = [&](auto __arg) -> hamon::basic_format_arg<basic_format_context> {
@@ -269,18 +267,15 @@ public:
 	{
 		return __arg_(__ctx_, __id);
 	}
-#  if 1//_LIBCPP_HAS_LOCALIZATION
+
 	std::locale locale() { return __loc_(__ctx_); }
-#  endif
 	iterator out() { return hamon::move(__out_it_); }
 	void advance_to(iterator __it) { __out_it_ = hamon::move(__it); }
 
 private:
 	iterator __out_it_;
 
-#  if 1//_LIBCPP_HAS_LOCALIZATION
 	std::locale(*__loc_)(void* __ctx);
-#  endif
 
 	void* __ctx_;
 	hamon::basic_format_arg<basic_format_context>(*__arg_)(void* __ctx, size_t __id);
