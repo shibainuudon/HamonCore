@@ -184,7 +184,10 @@ public:
 					return __consume_result_error;
 				}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 				return {__value};
+HAMON_WARNING_POP()
 			}
 
 		case 3:
@@ -212,7 +215,10 @@ public:
 					return __consume_result_error;
 				}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 				return {__value};
+HAMON_WARNING_POP()
 			}
 
 		case 4:
@@ -242,7 +248,10 @@ public:
 					return __consume_result_error;
 				}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 				return {__value};
+HAMON_WARNING_POP()
 			}
 		}
 		// An invalid number of leading ones can be garbage or a code unit in the
@@ -322,7 +331,10 @@ public:
 			}
 		}
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wconversion")
 		return {__value};
+HAMON_WARNING_POP()
 	}
 
 private:

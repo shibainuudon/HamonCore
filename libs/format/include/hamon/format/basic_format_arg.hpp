@@ -22,35 +22,35 @@ using std::basic_format_arg;
 
 #else
 
-//#include <hamon/format/basic_format_parse_context.hpp>
-//#include <hamon/format/detail/formattable_with.hpp>
-//#include <hamon/format/detail/is_signed_integer.hpp>
-//#include <hamon/format/detail/is_unsigned_integer.hpp>
-//#include <hamon/format/detail/is_standard_floating_point.hpp>
-//#include <hamon/memory/addressof.hpp>
-//#include <hamon/string_view.hpp>
-//#include <hamon/string_view/detail/is_specialization_of_basic_string_view.hpp>
-//#include <hamon/string/detail/is_specialization_of_basic_string.hpp>
-//#include <hamon/type_traits/conditional.hpp>
-//#include <hamon/type_traits/decay.hpp>
-//#include <hamon/type_traits/is_null_pointer.hpp>
-//#include <hamon/type_traits/is_same.hpp>
-//#include <hamon/type_traits/is_void.hpp>
-//#include <hamon/type_traits/remove_const.hpp>
-//#include <hamon/type_traits/remove_pointer.hpp>
-//#include <hamon/utility/forward.hpp>
-//#include <hamon/variant.hpp>
-
-#include <hamon/format/__format/__arg_t.hpp>
-#include <hamon/format/detail/__basic_format_arg_value.hpp>
-#include <hamon/format/other/__visit_format_arg.hpp>
 #include <hamon/format/basic_format_parse_context.hpp>
+#include <hamon/format/detail/formattable_with.hpp>
+#include <hamon/format/detail/is_signed_integer.hpp>
+#include <hamon/format/detail/is_unsigned_integer.hpp>
+#include <hamon/format/detail/is_standard_floating_point.hpp>
+#include <hamon/memory/addressof.hpp>
+#include <hamon/string_view.hpp>
+#include <hamon/string_view/detail/is_specialization_of_basic_string_view.hpp>
+#include <hamon/string/detail/is_specialization_of_basic_string.hpp>
+#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/is_null_pointer.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_void.hpp>
+#include <hamon/type_traits/remove_const.hpp>
+#include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/utility/forward.hpp>
+#include <hamon/variant.hpp>
+
+//#include <hamon/format/__format/__arg_t.hpp>
+//#include <hamon/format/detail/__basic_format_arg_value.hpp>
+//#include <hamon/format/other/__visit_format_arg.hpp>
+//#include <hamon/format/basic_format_parse_context.hpp>
+//#include <hamon/utility/forward.hpp>
 
 namespace hamon
 {
 
-#if 0
+#if 1
 
 // 28.5.8.1 Class template basic_format_arg[format.arg]
 
@@ -63,6 +63,8 @@ private:
 public:
 	class handle
 	{
+		friend basic_format_arg;
+
 		const void* ptr_;
 
 		void (*format_)(hamon::basic_format_parse_context<char_type>&, Context&, const void*);
@@ -147,11 +149,14 @@ public:	// TODO
 		}
 		// [format.arg]/6.8
 		else if constexpr (
-			(hamon::detail::is_specialization_of_basic_string_view<TD>::value ||
-			 hamon::detail::is_specialization_of_basic_string<TD>::value) &&
-			hamon::is_same<TD::value_type, char_type>::value)
+			hamon::detail::is_specialization_of_basic_string_view<TD>::value ||
+			hamon::detail::is_specialization_of_basic_string<TD>::value)
 		{
-			value = hamon::basic_string_view<char_type>(v.data(), v.size());
+			// TODO
+//			if constexpr (hamon::is_same<TD::value_type, char_type>::value)
+			{
+				value = hamon::basic_string_view<char_type>(v.data(), v.size());
+			}
 		}
 		// [format.arg]/6.9
 		else if constexpr (
@@ -186,7 +191,7 @@ public:
 		return !hamon::holds_alternative<hamon::monostate>(value);
 	}
 
-#if 0	// TODO
+#if defined(HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER)
 	template <typename Visitor>
 	decltype(auto) visit(this basic_format_arg arg, Visitor&& vis)
 	{
@@ -200,10 +205,22 @@ public:
 		// [format.arg]/9
 		return arg.value.visit<R>(hamon::forward<Visitor>(vis));
 	}
+#else
+	template <typename Visitor>
+	decltype(auto) visit(Visitor&& vis)
+	{
+		return hamon::visit(hamon::forward<Visitor>(vis), value);
+	}
+
+	template <typename R, typename Visitor>
+	R visit(Visitor&& vis)
+	{
+		return hamon::visit<R>(hamon::forward<Visitor>(vis), value);
+	}
 #endif
 };
 
-#endif
+#else
 
 template <class _Context>
 class basic_format_arg
@@ -215,52 +232,18 @@ public:
 
 	explicit operator bool() const noexcept { return __type_ != __format::__arg_t::__none; }
 
-#  if defined(HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER)//_LIBCPP_STD_VER >= 26 && _LIBCPP_HAS_EXPLICIT_THIS_PARAMETER
+#if defined(HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER)
 
-	// This function is user facing, so it must wrap the non-standard types of
-	// the "variant" in a handle to stay conforming. See __arg_t for more details.
 	template <class _Visitor>
 	decltype(auto) visit(this basic_format_arg __arg, _Visitor&& __vis)
 	{
-//		switch (__arg.__type_)
-		{
-//#    if _LIBCPP_HAS_INT128
-//		case __format::__arg_t::__i128: {
-//				typename hamon::detail::__basic_format_arg_value<_Context>::__handle __h {__arg.__value_.__i128_};
-//				return std::invoke(std::forward<_Visitor>(__vis), typename basic_format_arg<_Context>::handle {__h});
-//			}
-//
-//		case __format::__arg_t::__u128: {
-//				typename hamon::detail::__basic_format_arg_value<_Context>::__handle __h {__arg.__value_.__u128_};
-//				return std::invoke(std::forward<_Visitor>(__vis), typename basic_format_arg<_Context>::handle {__h});
-//			}
-//#    endif
-//		default:
-			return hamon::__visit_format_arg(hamon::forward<_Visitor>(__vis), __arg);
-		}
+		return hamon::__visit_format_arg(hamon::forward<_Visitor>(__vis), __arg);
 	}
 
-	// This function is user facing, so it must wrap the non-standard types of
-	// the "variant" in a handle to stay conforming. See __arg_t for more details.
 	template <class _Rp, class _Visitor>
 	_Rp visit(this basic_format_arg __arg, _Visitor&& __vis)
 	{
-//		switch (__arg.__type_)
-		{
-//#    if _LIBCPP_HAS_INT128
-//		case __format::__arg_t::__i128: {
-//				typename hamon::detail::__basic_format_arg_value<_Context>::__handle __h {__arg.__value_.__i128_};
-//				return std::invoke_r<_Rp>(std::forward<_Visitor>(__vis), typename basic_format_arg<_Context>::handle {__h});
-//			}
-//
-//		case __format::__arg_t::__u128: {
-//				typename hamon::detail::__basic_format_arg_value<_Context>::__handle __h {__arg.__value_.__u128_};
-//				return std::invoke_r<_Rp>(std::forward<_Visitor>(__vis), typename basic_format_arg<_Context>::handle {__h});
-//			}
-//#    endif
-//		default:
-			return hamon::__visit_format_arg<_Rp>(hamon::forward<_Visitor>(__vis), __arg);
-		}
+		return hamon::__visit_format_arg<_Rp>(hamon::forward<_Visitor>(__vis), __arg);
 	}
 
 #else
@@ -271,15 +254,13 @@ public:
 		return hamon::__visit_format_arg(hamon::forward<_Visitor>(__vis), *this);
 	}
 
-	// This function is user facing, so it must wrap the non-standard types of
-	// the "variant" in a handle to stay conforming. See __arg_t for more details.
 	template <class _Rp, class _Visitor>
 	_Rp visit(_Visitor&& __vis)
 	{
 		return hamon::__visit_format_arg<_Rp>(hamon::forward<_Visitor>(__vis), *this);
 	}
 
-#  endif // _LIBCPP_STD_VER >= 26 && _LIBCPP_HAS_EXPLICIT_THIS_PARAMETER
+#endif
 
 private:
 	using char_type = typename _Context::char_type;
@@ -318,6 +299,8 @@ public:
 private:
 	typename hamon::detail::__basic_format_arg_value<_Context>::__handle& __handle_;
 };
+
+#endif
 
 }	// namespace hamon
 

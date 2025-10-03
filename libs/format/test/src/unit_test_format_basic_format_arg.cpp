@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "noexcept_test.hpp"
+#include "format_test_helper.hpp"
 
 namespace hamon_format_test
 {
@@ -243,11 +244,7 @@ void test()
 	test<Context, long long, long long>(hamon::numeric_limits<long>::max());
 	test<Context, long long, long long>(hamon::numeric_limits<long long>::max());
 
-	//#ifndef TEST_HAS_NO_INT128
-	//	test_handle<Context, __int128_t>(0);
-	//#endif // TEST_HAS_NO_INT128
-
-		// Test unsigned integer types.
+	// Test unsigned integer types.
 
 	test<Context, unsigned, unsigned char>(0);
 	test<Context, unsigned, unsigned char>(hamon::numeric_limits<unsigned char>::max());
@@ -277,11 +274,7 @@ void test()
 	test<Context, unsigned long long, unsigned long long>(hamon::numeric_limits<unsigned long>::max());
 	test<Context, unsigned long long, unsigned long long>(hamon::numeric_limits<unsigned long long>::max());
 
-	//#ifndef TEST_HAS_NO_INT128
-	//	test_handle<Context, __uint128_t>(0);
-	//#endif // TEST_HAS_NO_INT128
-
-		// Test floating point types.
+	// Test floating point types.
 
 	test<Context, float, float>(-hamon::numeric_limits<float>::max());
 	test<Context, float, float>(-hamon::numeric_limits<float>::min());
@@ -368,6 +361,9 @@ void test()
 	test<Context, const void*>(static_cast<void*>(&i));
 	const int ci = 0;
 	test<Context, const void*>(static_cast<const void*>(&ci));
+
+	// Test handle types
+	test_handle<Context>(status::foo);
 }
 
 }	// namespace visit_test
@@ -589,10 +585,6 @@ void test()
 	test<Context, long long, ExpectedResultType, long long>(hamon::numeric_limits<long>::max(), visited);
 	test<Context, long long, ExpectedResultType, long long>(hamon::numeric_limits<long long>::max(), visited);
 
-//#ifndef TEST_HAS_NO_INT128
-//	test_handle<Context, __int128_t, ExpectedResultType>(0, visited);
-//#endif // TEST_HAS_NO_INT128
-
 	// Test unsigned integer types.
 
 	test<Context, unsigned, ExpectedResultType, unsigned char>(0, visited);
@@ -630,10 +622,6 @@ void test()
 		hamon::numeric_limits<unsigned long>::max(), visited);
 	test<Context, unsigned long long, ExpectedResultType, unsigned long long>(
 		hamon::numeric_limits<unsigned long long>::max(), visited);
-
-//#ifndef TEST_HAS_NO_INT128
-//	test_handle<Context, __uint128_t, ExpectedResultType>(0, visited);
-//#endif // TEST_HAS_NO_INT128
 
 	// Test floating point types.
 
@@ -721,6 +709,9 @@ void test()
 	test<Context, const void*, ExpectedResultType>(static_cast<void*>(&i), visited);
 	const int ci = 0;
 	test<Context, const void*, ExpectedResultType>(static_cast<const void*>(&ci), visited);
+
+	// Test handle types
+	test_handle<Context, status, ExpectedResultType>(status::foo, visited);
 }
 
 }	// namespace visit_r_test

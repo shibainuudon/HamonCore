@@ -12,7 +12,7 @@
 #include <hamon/format/__format/__compile_time_basic_format_context.hpp>
 #include <hamon/format/__format/__arg_t.hpp>
 #include <hamon/format/__format/__compile_time_visit_format_arg.hpp>
-#include <hamon/format/other/__visit_format_arg.hpp>
+//#include <hamon/format/other/__visit_format_arg.hpp>
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/format_error.hpp>
 #include <hamon/format/formatter.hpp>
@@ -70,7 +70,8 @@ __handle_replacement_field(_Iterator __begin, _Iterator __end, _ParseCtx& __pars
 	}
 	else
 	{
-		hamon::__visit_format_arg(
+		auto arg = __ctx.arg(__r.__value);
+		arg.visit(
 			[&](auto __arg) {
 				if constexpr (hamon::same_as<decltype(__arg), monostate>)
 				{
@@ -89,8 +90,7 @@ __handle_replacement_field(_Iterator __begin, _Iterator __end, _ParseCtx& __pars
 					}
 					__ctx.advance_to(__formatter.format(__arg, __ctx));
 				}
-			},
-			__ctx.arg(__r.__value));
+			});
 	}
 
 	__begin = __parse_ctx.begin();

@@ -26,13 +26,13 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
-#include <hamon/format/detail/__basic_format_arg_value.hpp>
+//#include <hamon/format/detail/__basic_format_arg_value.hpp>
 #include <hamon/format/__format/__determine_arg_t.hpp>
 #include <hamon/format/formatter.hpp>
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/basic_format_context.hpp>
 #include <hamon/format/format_error.hpp>
-#include <hamon/format/other/__visit_format_arg.hpp>
+//#include <hamon/format/other/__visit_format_arg.hpp>
 #include <hamon/concepts/same_as.hpp>
 
 namespace hamon
@@ -249,17 +249,14 @@ public:
 				hamon::detail::throw_format_error("Re-targeting handle not supported");
 			}
 			else
-				return hamon::basic_format_arg<basic_format_context>{
-					__format::__determine_arg_t<basic_format_context, decltype(__arg)>(),
-					hamon::detail::__basic_format_arg_value<basic_format_context>(__arg)};
+			{
+				//return hamon::basic_format_arg<basic_format_context>{
+				//	__format::__determine_arg_t<basic_format_context, decltype(__arg)>(),
+				//	hamon::detail::__basic_format_arg_value<basic_format_context>(__arg)};
+				return hamon::basic_format_arg<basic_format_context>{__arg};
+			}
 		};
-#  if _LIBCPP_STD_VER >= 26 && _LIBCPP_HAS_EXPLICIT_THIS_PARAMETER
 		return static_cast<_Context*>(__c)->arg(__id).visit(hamon::move(__visitor));
-#  else
-//		_LIBCPP_SUPPRESS_DEPRECATED_PUSH
-			return hamon::__visit_format_arg(hamon::move(__visitor), static_cast<_Context*>(__c)->arg(__id));
-//		_LIBCPP_SUPPRESS_DEPRECATED_POP
-#  endif // _LIBCPP_STD_VER >= 26 && _LIBCPP_HAS_EXPLICIT_THIS_PARAMETER
 	}) {
 	}
 

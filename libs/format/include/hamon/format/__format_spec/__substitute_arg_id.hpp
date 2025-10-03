@@ -8,7 +8,7 @@
 #define HAMON_FORMAT___FORMAT_SPEC___SUBSTITUTE_ARG_ID_HPP
 
 #include <hamon/format/__format/__number_max.hpp>
-#include <hamon/format/other/__visit_format_arg.hpp>
+//#include <hamon/format/other/__visit_format_arg.hpp>
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/format/format_error.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -42,7 +42,7 @@ constexpr hamon::uint32_t __substitute_arg_id(hamon::basic_format_arg<_Context> 
 	// This means the 128-bit will not be valid anymore.
 	// TODO FMT Verify this resolution is accepted and add a test to verify
 	//          128-bit integrals fail and switch to visit_format_arg.
-	return hamon::__visit_format_arg(
+	return __format_arg.visit(
 		[](auto __arg) -> hamon::uint32_t {
 			  using _Type = decltype(__arg);
 			  if constexpr (hamon::same_as<_Type, hamon::monostate>)
@@ -83,8 +83,7 @@ constexpr hamon::uint32_t __substitute_arg_id(hamon::basic_format_arg<_Context> 
 			  {
 				  hamon::detail::throw_format_error("Replacement argument isn't a standard signed or unsigned integer type");
 			  }
-		},
-		__format_arg);
+		});
 }
 
 HAMON_WARNING_POP()

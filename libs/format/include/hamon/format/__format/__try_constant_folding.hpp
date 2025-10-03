@@ -10,7 +10,7 @@
 #include <hamon/format/basic_format_args.hpp>
 #include <hamon/format/basic_format_context.hpp>
 #include <hamon/format/__format/__output_buffer.hpp>
-#include <hamon/format/other/__visit_format_arg.hpp>
+//#include <hamon/format/other/__visit_format_arg.hpp>
 #include <hamon/algorithm/ranges/find_first_of.hpp>
 #include <hamon/array.hpp>
 #include <hamon/detail/statically_widen.hpp>
@@ -50,18 +50,18 @@ __try_constant_folding(
 	{
 		if (auto __arg = __args.get(0); true/*__builtin_constant_p(__arg.__type_)*/)
 		{
-			return hamon::__visit_format_arg(
-				[]<class _Tp>(_Tp&& __argument) -> hamon::optional<hamon::basic_string<_CharT>> {
-				if constexpr (hamon::is_same_v<hamon::remove_cvref_t<_Tp>, hamon::basic_string_view<_CharT>>)
+			return __arg.visit(
+				[]<class _Tp>(_Tp&& __argument) -> hamon::optional<hamon::basic_string<_CharT>>
 				{
-					return hamon::basic_string<_CharT>{__argument};
-				}
-				else
-				{
-					return nullopt;
-				}
-			},
-				__arg);
+					if constexpr (hamon::is_same_v<hamon::remove_cvref_t<_Tp>, hamon::basic_string_view<_CharT>>)
+					{
+						return hamon::basic_string<_CharT>{__argument};
+					}
+					else
+					{
+						return nullopt;
+					}
+				});
 		}
 	}
 

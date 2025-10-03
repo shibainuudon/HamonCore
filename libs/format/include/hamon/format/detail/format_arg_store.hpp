@@ -10,7 +10,7 @@
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/array.hpp>
 
-#include <hamon/format/__format/__create_format_arg.hpp>
+//#include <hamon/format/__format/__create_format_arg.hpp>
 
 namespace hamon
 {
@@ -25,7 +25,7 @@ class format_arg_store
 {
 public:
 	format_arg_store(Args&... __args) noexcept
-		: args{__format::__create_format_arg<Context>(__args)... }
+		: args{hamon::basic_format_arg<Context>(__args)... }
 	{}
 
 	hamon::array<hamon::basic_format_arg<Context>, sizeof...(Args)> args;
