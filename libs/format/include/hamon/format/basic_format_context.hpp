@@ -86,6 +86,7 @@ public:
 	}
 
 private:
+	// TODO
 	template <class _OtherOutIt, class _OtherCharT>
 	friend basic_format_context<_OtherOutIt, _OtherCharT>
 	__format_context_create(_OtherOutIt, hamon::basic_format_args<basic_format_context<_OtherOutIt, _OtherCharT>>, std::locale const&);
@@ -95,6 +96,7 @@ private:
 		Out __out_it, hamon::basic_format_args<basic_format_context> __args, std::locale const& __loc)
 		: args_(__args), out_(hamon::move(__out_it)), loc_(__loc) {}
 
+	// TODO
 	template <class _OtherOutIt, class _OtherCharT>
 	friend basic_format_context<_OtherOutIt, _OtherCharT>
 	__format_context_create(_OtherOutIt, hamon::basic_format_args<basic_format_context<_OtherOutIt, _OtherCharT>>);

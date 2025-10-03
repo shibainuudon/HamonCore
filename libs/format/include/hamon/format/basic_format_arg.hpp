@@ -41,16 +41,8 @@ using std::basic_format_arg;
 #include <hamon/utility/forward.hpp>
 #include <hamon/variant.hpp>
 
-//#include <hamon/format/__format/__arg_t.hpp>
-//#include <hamon/format/detail/__basic_format_arg_value.hpp>
-//#include <hamon/format/other/__visit_format_arg.hpp>
-//#include <hamon/format/basic_format_parse_context.hpp>
-//#include <hamon/utility/forward.hpp>
-
 namespace hamon
 {
-
-#if 1
 
 // 28.5.8.1 Class template basic_format_arg[format.arg]
 
@@ -106,7 +98,7 @@ private:
 
 public:	// TODO
 	template <typename T>
-	requires hamon::detail::formattable_with<T, Context>	// [format.arg]/4
+		requires hamon::detail::formattable_with<T, Context>	// [format.arg]/4
 	explicit basic_format_arg(T& v) noexcept
 	{
 		// [format.arg]/6
@@ -219,88 +211,6 @@ public:
 	}
 #endif
 };
-
-#else
-
-template <class _Context>
-class basic_format_arg
-{
-public:
-	class handle;
-
-	basic_format_arg() noexcept : __type_ {__format::__arg_t::__none} {}
-
-	explicit operator bool() const noexcept { return __type_ != __format::__arg_t::__none; }
-
-#if defined(HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER)
-
-	template <class _Visitor>
-	decltype(auto) visit(this basic_format_arg __arg, _Visitor&& __vis)
-	{
-		return hamon::__visit_format_arg(hamon::forward<_Visitor>(__vis), __arg);
-	}
-
-	template <class _Rp, class _Visitor>
-	_Rp visit(this basic_format_arg __arg, _Visitor&& __vis)
-	{
-		return hamon::__visit_format_arg<_Rp>(hamon::forward<_Visitor>(__vis), __arg);
-	}
-
-#else
-
-	template <class _Visitor>
-	decltype(auto) visit(_Visitor&& __vis)
-	{
-		return hamon::__visit_format_arg(hamon::forward<_Visitor>(__vis), *this);
-	}
-
-	template <class _Rp, class _Visitor>
-	_Rp visit(_Visitor&& __vis)
-	{
-		return hamon::__visit_format_arg<_Rp>(hamon::forward<_Visitor>(__vis), *this);
-	}
-
-#endif
-
-private:
-	using char_type = typename _Context::char_type;
-
-	// TODO FMT Implement constrain [format.arg]/4
-	// Constraints: The template specialization
-	//   typename Context::template formatter_type<T>
-	// meets the Formatter requirements ([formatter.requirements]).  The extent
-	// to which an implementation determines that the specialization meets the
-	// Formatter requirements is unspecified, except that as a minimum the
-	// expression
-	//   typename Context::template formatter_type<T>()
-	//    .format(declval<const T&>(), declval<Context&>())
-	// shall be well-formed when treated as an unevaluated operand.
-
-public:
-	hamon::detail::__basic_format_arg_value<_Context> __value_;
-	__format::__arg_t __type_;
-
-	explicit basic_format_arg(__format::__arg_t __type, hamon::detail::__basic_format_arg_value<_Context> __value) noexcept
-		: __value_(__value), __type_(__type) {}
-};
-
-template <class _Context>
-class basic_format_arg<_Context>::handle
-{
-public:
-	void format(hamon::basic_format_parse_context<char_type>& __parse_ctx, _Context& __ctx) const
-	{
-		__handle_.__format_(__parse_ctx, __ctx, __handle_.__ptr_);
-	}
-
-	explicit handle(typename hamon::detail::__basic_format_arg_value<_Context>::__handle& __handle) noexcept
-		: __handle_(__handle) {}
-
-private:
-	typename hamon::detail::__basic_format_arg_value<_Context>::__handle& __handle_;
-};
-
-#endif
 
 }	// namespace hamon
 

@@ -48,22 +48,6 @@ struct basic_format_string
 private:
 	hamon::basic_string_view<charT> str;
 
-	//using Context = __format::__compile_time_basic_format_context<charT>;
-
-	//static constexpr hamon::array<__format::__arg_t, sizeof...(Args)> __types_ {
-	//	__format::__determine_arg_t<Context, hamon::remove_cvref_t<Args>>()...};
-
-	//static constexpr hamon::array<__format::__compile_time_handle<charT>, sizeof...(Args)> __handles_ {[] {
-	//	using T = hamon::remove_cvref_t<Args>;
-	//	__format::__compile_time_handle<charT> __handle;
-	//	if (__format::__determine_arg_t<Context, T>() == __format::__arg_t::__handle)
-	//	{
-	//		__handle.template __enable<T>();
-	//	}
-
-	//	return __handle;
-	//}()...};
-
 public:
 	template <typename T>
 	requires hamon::convertible_to<T const&, hamon::basic_string_view<charT>>	// [format.fmt.string]/1
