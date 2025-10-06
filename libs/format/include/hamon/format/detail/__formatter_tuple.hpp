@@ -139,7 +139,7 @@ struct __formatter_tuple
 		__ctx.advance_to(hamon::ranges::copy(__opening_bracket_, __ctx.out()).out);
 
 		hamon::detail::__for_each_index_sequence(hamon::make_index_sequence<sizeof...(_Args)>(), [&]<size_t _Index> {
-			if constexpr (_Index)
+			if constexpr (_Index != 0u)
 			{
 				__ctx.advance_to(hamon::ranges::copy(__separator_, __ctx.out()).out);
 			}

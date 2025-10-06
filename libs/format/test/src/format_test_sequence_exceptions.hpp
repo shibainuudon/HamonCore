@@ -1228,7 +1228,7 @@ void test_with_ranges_impl(ExceptionTest check_exception, Array input)
 	auto make_range = [](auto& in)
 	{
 		using Diff = hamon::iter_difference_t<Iterator>;
-		hamon::counted_iterator it(Iterator(in.data()), static_cast<Diff>(in.size()));
+		hamon::counted_iterator it(Iterator{in.data()}, static_cast<Diff>(in.size()));
 		hamon::ranges::subrange range{ hamon::move(it), hamon::default_sentinel };
 		return range;
 	};

@@ -28,54 +28,68 @@ using std::format_kind;
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/detail/overload_priority.hpp>
 
 namespace hamon
 {
 
+namespace detail
+{
+
+// [format.range.fmtkind]/2.1
+template <typename R>
+	requires hamon::same_as<hamon::remove_cvref_t<hamon::ranges::range_reference_t<R>>, R>
+constexpr hamon::range_format get_format_kind_2(hamon::detail::overload_priority<3>)
+{
+	return hamon::range_format::disabled;
+}
+
+// [format.range.fmtkind]/2.2.1
+template <typename R,
+	typename = typename R::key_type,
+	typename = typename R::mapped_type,
+	typename = hamon::enable_if<hamon::detail::__fmt_pair_like<hamon::remove_cvref_t<hamon::ranges::range_reference_t<R>>>>
+>
+constexpr hamon::range_format get_format_kind_2(hamon::detail::overload_priority<2>)
+{
+	return hamon::range_format::map;
+}
+
+// [format.range.fmtkind]/2.2.2
+template <typename R,
+	typename = typename R::key_type
+>
+constexpr hamon::range_format get_format_kind_2(hamon::detail::overload_priority<1>)
+{
+	return hamon::range_format::set;
+}
+
+// [format.range.fmtkind]/2.3
+template <typename R>
+constexpr hamon::range_format get_format_kind_2(hamon::detail::overload_priority<0>)
+{
+	return hamon::range_format::sequence;
+}
+
+// [format.range.fmtkind]/1
+// A program that instantiates the primary template of format_kind is ill-formed.
+template <typename R>
+constexpr hamon::range_format get_format_kind();
+
+// [format.range.fmtkind]/2
+template <hamon::ranges::input_range R>
+	requires hamon::same_as<R, hamon::remove_cvref_t<R>>
+constexpr hamon::range_format get_format_kind()
+{
+	return get_format_kind_2<R>(hamon::detail::overload_priority<3>{});
+}
+
+}	// namespace detail
+
 // 28.5.7.1 Variable template format_kind[format.range.fmtkind]
 
-template <class _Rp>
-constexpr hamon::range_format format_kind = [] {
-	// [format.range.fmtkind]/1
-	// A program that instantiates the primary template of format_kind is ill-formed.
-	static_assert(sizeof(_Rp) != sizeof(_Rp), "create a template specialization of format_kind for your type");
-	return hamon::range_format::disabled;
-}();
-
-template <hamon::ranges::input_range _Rp>
-	requires hamon::same_as<_Rp, hamon::remove_cvref_t<_Rp>>
-inline constexpr hamon::range_format format_kind<_Rp> = [] {
-	// [format.range.fmtkind]/2
-
-	// 2.1 If same_as<remove_cvref_t<ranges::range_reference_t<R>>, R> is true,
-	// Otherwise format_kind<R> is range_format::disabled.
-	if constexpr (hamon::same_as<hamon::remove_cvref_t<hamon::ranges::range_reference_t<_Rp>>, _Rp>)
-	{
-		return hamon::range_format::disabled;
-	}
-	// 2.2 Otherwise, if the qualified-id R::key_type is valid and denotes a type:
-	else if constexpr (requires { typename _Rp::key_type; })
-	{
-		// 2.2.1 If the qualified-id R::mapped_type is valid and denotes a type ...
-		if constexpr (requires { typename _Rp::mapped_type; } &&
-			// 2.2.1 ... If either U is a specialization of pair or U is a specialization
-			// of tuple and tuple_size_v<U> == 2
-			hamon::detail::__fmt_pair_like<hamon::remove_cvref_t<hamon::ranges::range_reference_t<_Rp>>>)
-		{
-			return hamon::range_format::map;
-		}
-		else
-		{
-			// 2.2.2 Otherwise format_kind<R> is range_format::set.
-			return hamon::range_format::set;
-		}
-	}
-	else
-	{
-		// 2.3 Otherwise, format_kind<R> is range_format::sequence.
-		return hamon::range_format::sequence;
-	}
-}();
+template <typename R>
+constexpr hamon::range_format format_kind = hamon::detail::get_format_kind<R>();
 
 }	// namespace hamon
 
