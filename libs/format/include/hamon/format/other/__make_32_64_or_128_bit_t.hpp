@@ -32,12 +32,7 @@ using __make_32_64_or_128_bit_t =
     __copy_unsigned_t<_Tp,
         hamon::conditional_t<sizeof(_Tp) <= sizeof(int32_t),    int32_t,
         hamon::conditional_t<sizeof(_Tp) <= sizeof(int64_t),    int64_t,
-#if 0//_LIBCPP_HAS_INT128
-        hamon::conditional_t<sizeof(_Tp) <= sizeof(__int128_t), __int128_t,
-        /* else */                                         void>
-#else
         /* else */                                         void
-#endif
     > > >;
 // clang-format on
 

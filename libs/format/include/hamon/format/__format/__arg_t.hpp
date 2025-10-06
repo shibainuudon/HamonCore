@@ -22,10 +22,8 @@ enum class __arg_t : hamon::uint8_t
 	__char_type,
 	__int,
 	__long_long,
-//	__i128, // extension
 	__unsigned,
 	__unsigned_long_long,
-//	__u128, // extension
 	__float,
 	__double,
 	__long_double,

@@ -10,8 +10,6 @@
 #include <hamon/format/basic_format_arg.hpp>
 #include <hamon/array.hpp>
 
-//#include <hamon/format/__format/__create_format_arg.hpp>
-
 namespace hamon
 {
 
