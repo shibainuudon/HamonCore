@@ -11,6 +11,11 @@
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/get_leap_second_info.hpp>
+#include <hamon/chrono/gps_clock.hpp>
+#include <hamon/chrono/gps_clock_fwd.hpp>
+#include <hamon/chrono/gps_seconds.hpp>
+#include <hamon/chrono/gps_time.hpp>
+#include <hamon/chrono/gps_time_fwd.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/leap_second_info.hpp>
@@ -92,21 +97,21 @@ namespace std::chrono
 //			minutes* offset = nullptr);
 
 // [time.clock.gps], class gps_clock
-class gps_clock;
-
-template<class Duration>
-using gps_time  = time_point<gps_clock, Duration>;
-using gps_seconds = gps_time<seconds>;
-
-template<class charT, class traits, class Duration>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const gps_time<Duration>& t);
-template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			gps_time<Duration>& tp,
-			basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
+//class gps_clock;
+//
+//template<class Duration>
+//using gps_time  = time_point<gps_clock, Duration>;
+//using gps_seconds = gps_time<seconds>;
+//
+//template<class charT, class traits, class Duration>
+//basic_ostream<charT, traits>&
+//operator<<(basic_ostream<charT, traits>& os, const gps_time<Duration>& t);
+//template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
+//basic_istream<charT, traits>&
+//from_stream(basic_istream<charT, traits>& is, const charT* fmt,
+//			gps_time<Duration>& tp,
+//			basic_string<charT, traits, Alloc>* abbrev = nullptr,
+//			minutes* offset = nullptr);
 
 // [time.clock.file], type file_clock
 using file_clock = see below;
