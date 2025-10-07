@@ -20,6 +20,7 @@
 #include <hamon/chrono/gps_seconds.hpp>
 #include <hamon/chrono/gps_time.hpp>
 #include <hamon/chrono/gps_time_fwd.hpp>
+#include <hamon/chrono/high_resolution_clock.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/leap_second_info.hpp>
@@ -133,8 +134,8 @@ namespace std::chrono
 //			basic_string<charT, traits, Alloc>* abbrev = nullptr,
 //			minutes* offset = nullptr);
 
-// [time.clock.hires], class high_resolution_clock
-class high_resolution_clock;
+//// [time.clock.hires], class high_resolution_clock
+//class high_resolution_clock;
 
 // [time.clock.cast], time_point conversions
 template<class DestClock, class SourceClock>
