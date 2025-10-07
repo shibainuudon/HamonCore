@@ -10,6 +10,10 @@
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/file_clock.hpp>
+#include <hamon/chrono/file_clock_fwd.hpp>
+#include <hamon/chrono/file_time.hpp>
+#include <hamon/chrono/file_time_fwd.hpp>
 #include <hamon/chrono/get_leap_second_info.hpp>
 #include <hamon/chrono/gps_clock.hpp>
 #include <hamon/chrono/gps_clock_fwd.hpp>
@@ -114,20 +118,20 @@ namespace std::chrono
 //			minutes* offset = nullptr);
 
 // [time.clock.file], type file_clock
-using file_clock = see below;
+//using file_clock = see below;
 
-template<class Duration>
-using file_time = time_point<file_clock, Duration>;
+//template<class Duration>
+//using file_time = time_point<file_clock, Duration>;
 
-template<class charT, class traits, class Duration>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const file_time<Duration>& tp);
-template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			file_time<Duration>& tp,
-			basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
+//template<class charT, class traits, class Duration>
+//basic_ostream<charT, traits>&
+//operator<<(basic_ostream<charT, traits>& os, const file_time<Duration>& tp);
+//template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
+//basic_istream<charT, traits>&
+//from_stream(basic_istream<charT, traits>& is, const charT* fmt,
+//			file_time<Duration>& tp,
+//			basic_string<charT, traits, Alloc>* abbrev = nullptr,
+//			minutes* offset = nullptr);
 
 // [time.clock.hires], class high_resolution_clock
 class high_resolution_clock;
