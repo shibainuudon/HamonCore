@@ -10,8 +10,10 @@
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/get_leap_second_info.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
+#include <hamon/chrono/leap_second_info.hpp>
 #include <hamon/chrono/local_days.hpp>
 #include <hamon/chrono/local_info.hpp>
 #include <hamon/chrono/local_seconds.hpp>
@@ -62,10 +64,10 @@ namespace std::chrono
 //			basic_string<charT, traits, Alloc>* abbrev = nullptr,
 //			minutes* offset = nullptr);
 
-struct leap_second_info;
+//struct leap_second_info;
 
-template<class Duration>
-leap_second_info get_leap_second_info(const utc_time<Duration>& ut);
+//template<class Duration>
+//leap_second_info get_leap_second_info(const utc_time<Duration>& ut);
 
 // [time.clock.tai], class tai_clock
 class tai_clock;
