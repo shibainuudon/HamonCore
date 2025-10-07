@@ -7,21 +7,10 @@
 #ifndef HAMON_CHRONO_SYS_TIME_HPP
 #define HAMON_CHRONO_SYS_TIME_HPP
 
+#include <hamon/chrono/sys_time_fwd.hpp>
 #include <hamon/chrono/config.hpp>
 
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::sys_time;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
+#if !defined(HAMON_USE_STD_CHRONO)
 
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/time_point.hpp>
@@ -32,11 +21,6 @@ using std::chrono::sys_time;
 
 namespace hamon {
 namespace chrono {
-
-// [time.clock.system], class system_clock
-
-template <typename Duration>
-using sys_time = hamon::chrono::time_point<hamon::chrono::system_clock, Duration>;
 
 // 29.7.2.3 Non-member functions[time.clock.system.nonmembers]
 // TODO

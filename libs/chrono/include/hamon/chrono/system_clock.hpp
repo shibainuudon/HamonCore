@@ -7,21 +7,10 @@
 #ifndef HAMON_CHRONO_SYSTEM_CLOCK_HPP
 #define HAMON_CHRONO_SYSTEM_CLOCK_HPP
 
+#include <hamon/chrono/system_clock_fwd.hpp>
 #include <hamon/chrono/config.hpp>
 
-#if defined(HAMON_USE_STD_CHRONO)
-
-#include <chrono>
-
-namespace hamon {
-namespace chrono {
-
-using std::chrono::system_clock;
-
-}	// namespace chrono
-}	// namespace hamon
-
-#else
+#if !defined(HAMON_USE_STD_CHRONO)
 
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>

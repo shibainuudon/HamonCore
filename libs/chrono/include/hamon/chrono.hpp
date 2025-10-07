@@ -24,9 +24,16 @@
 #include <hamon/chrono/sys_info.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/sys_time.hpp>
+#include <hamon/chrono/sys_time_fwd.hpp>
 #include <hamon/chrono/system_clock.hpp>
+#include <hamon/chrono/system_clock_fwd.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
+#include <hamon/chrono/utc_clock.hpp>
+#include <hamon/chrono/utc_clock_fwd.hpp>
+#include <hamon/chrono/utc_seconds.hpp>
+#include <hamon/chrono/utc_time.hpp>
+#include <hamon/chrono/utc_time_fwd.hpp>
 #include <hamon/chrono/weekday.hpp>
 #include <hamon/chrono/year.hpp>
 #include <hamon/chrono/year_month.hpp>
@@ -39,21 +46,21 @@ namespace std::chrono
 {
 
 // [time.clock.utc], class utc_clock
-class utc_clock;
+//class utc_clock;
 
-template<class Duration>
-using utc_time  = time_point<utc_clock, Duration>;
-using utc_seconds = utc_time<seconds>;
+//template<class Duration>
+//using utc_time  = time_point<utc_clock, Duration>;
+//using utc_seconds = utc_time<seconds>;
 
-template<class charT, class traits, class Duration>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const utc_time<Duration>& t);
-template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
-basic_istream<charT, traits>&
-from_stream(basic_istream<charT, traits>& is, const charT* fmt,
-			utc_time<Duration>& tp,
-			basic_string<charT, traits, Alloc>* abbrev = nullptr,
-			minutes* offset = nullptr);
+//template<class charT, class traits, class Duration>
+//basic_ostream<charT, traits>&
+//operator<<(basic_ostream<charT, traits>& os, const utc_time<Duration>& t);
+//template<class charT, class traits, class Duration, class Alloc = allocator<charT>>
+//basic_istream<charT, traits>&
+//from_stream(basic_istream<charT, traits>& is, const charT* fmt,
+//			utc_time<Duration>& tp,
+//			basic_string<charT, traits, Alloc>* abbrev = nullptr,
+//			minutes* offset = nullptr);
 
 struct leap_second_info;
 
