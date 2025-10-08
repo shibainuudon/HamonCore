@@ -1248,8 +1248,12 @@
 #if (_MSC_FULL_VER >= 194435217)
 #endif
 
-// Visual Studio 2026 Version: 18.0.0 Insiders
+// Visual Studio 2026 Version: 18.0.0 Insiders [11010.61],[11012.119],[11018.127]
 #if (_MSC_FULL_VER >= 195035503)
+#endif
+
+// Visual Studio 2026 Version: 18.0.0 Insiders [11104.47]
+#if (_MSC_FULL_VER >= 195035615)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
