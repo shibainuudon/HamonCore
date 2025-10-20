@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_HPP
 #define HAMON_CHRONO_HPP
 
+#include <hamon/chrono/choose.hpp>
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/day.hpp>
 #include <hamon/chrono/duration.hpp>
@@ -41,6 +42,7 @@
 #include <hamon/chrono/tai_seconds.hpp>
 #include <hamon/chrono/tai_time_fwd.hpp>
 #include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/utc_clock_fwd.hpp>
@@ -177,12 +179,12 @@ string remote_version();
 class nonexistent_local_time;
 class ambiguous_local_time;
 
-// [time.zone.timezone], class time_zone
-enum class choose { earliest, latest };
-class time_zone;
-
-bool operator==(const time_zone& x, const time_zone& y) noexcept;
-strong_ordering operator<=>(const time_zone& x, const time_zone& y) noexcept;
+//// [time.zone.timezone], class time_zone
+//enum class choose { earliest, latest };
+//class time_zone;
+//
+//bool operator==(const time_zone& x, const time_zone& y) noexcept;
+//strong_ordering operator<=>(const time_zone& x, const time_zone& y) noexcept;
 
 // [time.zone.zonedtraits], class template zoned_traits
 template<class T> struct zoned_traits;
