@@ -154,16 +154,16 @@ operator>=(sys_time<Duration> const& x, leap_second const& y) noexcept
 	return !(x < y);
 }
 
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename Duration>
-requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>
-HAMON_NODISCARD constexpr auto
-operator<=>(leap_second const& x, sys_time<Duration> const& y) noexcept
-{
-	// [time.zone.leap.nonmembers]/12
-	return x.date() <=> y;
-}
-#endif
+//#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+//template <typename Duration>
+//requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>
+//HAMON_NODISCARD constexpr auto
+//operator<=>(leap_second const& x, sys_time<Duration> const& y) noexcept
+//{
+//	// [time.zone.leap.nonmembers]/12
+//	return x.date() <=> y;
+//}
+//#endif
 
 }	// namespace chrono
 }	// namespace hamon
