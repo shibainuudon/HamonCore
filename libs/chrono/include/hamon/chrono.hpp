@@ -22,6 +22,7 @@
 #include <hamon/chrono/high_resolution_clock.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
+#include <hamon/chrono/leap_second.hpp>
 #include <hamon/chrono/leap_second_info.hpp>
 #include <hamon/chrono/local_days.hpp>
 #include <hamon/chrono/local_info.hpp>
@@ -204,33 +205,33 @@ basic_ostream<charT, traits>&
 operator<<(basic_ostream<charT, traits>& os,
 		   const zoned_time<Duration, TimeZonePtr>& t);
 
-// [time.zone.leap], leap second support
-class leap_second;
-
-constexpr bool operator==(const leap_second& x, const leap_second& y);
-constexpr strong_ordering operator<=>(const leap_second& x, const leap_second& y);
-
-template<class Duration>
-constexpr bool operator==(const leap_second& x, const sys_time<Duration>& y);
-template<class Duration>
-constexpr bool operator< (const leap_second& x, const sys_time<Duration>& y);
-template<class Duration>
-constexpr bool operator< (const sys_time<Duration>& x, const leap_second& y);
-template<class Duration>
-constexpr bool operator> (const leap_second& x, const sys_time<Duration>& y);
-template<class Duration>
-constexpr bool operator> (const sys_time<Duration>& x, const leap_second& y);
-template<class Duration>
-constexpr bool operator<=(const leap_second& x, const sys_time<Duration>& y);
-template<class Duration>
-constexpr bool operator<=(const sys_time<Duration>& x, const leap_second& y);
-template<class Duration>
-constexpr bool operator>=(const leap_second& x, const sys_time<Duration>& y);
-template<class Duration>
-constexpr bool operator>=(const sys_time<Duration>& x, const leap_second& y);
-template<class Duration>
-requires three_way_comparable_with<sys_seconds, sys_time<Duration>>
-constexpr auto operator<=>(const leap_second& x, const sys_time<Duration>& y);
+//// [time.zone.leap], leap second support
+//class leap_second;
+//
+//constexpr bool operator==(const leap_second& x, const leap_second& y);
+//constexpr strong_ordering operator<=>(const leap_second& x, const leap_second& y);
+//
+//template<class Duration>
+//constexpr bool operator==(const leap_second& x, const sys_time<Duration>& y);
+//template<class Duration>
+//constexpr bool operator< (const leap_second& x, const sys_time<Duration>& y);
+//template<class Duration>
+//constexpr bool operator< (const sys_time<Duration>& x, const leap_second& y);
+//template<class Duration>
+//constexpr bool operator> (const leap_second& x, const sys_time<Duration>& y);
+//template<class Duration>
+//constexpr bool operator> (const sys_time<Duration>& x, const leap_second& y);
+//template<class Duration>
+//constexpr bool operator<=(const leap_second& x, const sys_time<Duration>& y);
+//template<class Duration>
+//constexpr bool operator<=(const sys_time<Duration>& x, const leap_second& y);
+//template<class Duration>
+//constexpr bool operator>=(const leap_second& x, const sys_time<Duration>& y);
+//template<class Duration>
+//constexpr bool operator>=(const sys_time<Duration>& x, const leap_second& y);
+//template<class Duration>
+//requires three_way_comparable_with<sys_seconds, sys_time<Duration>>
+//constexpr auto operator<=>(const leap_second& x, const sys_time<Duration>& y);
 
 //// [time.zone.link], class time_zone_link
 //class time_zone_link;
