@@ -46,6 +46,7 @@
 #include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
+#include <hamon/chrono/tzdb.hpp>
 #include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/utc_clock_fwd.hpp>
 #include <hamon/chrono/utc_seconds.hpp>
@@ -164,7 +165,7 @@ constexpr hours make12(const hours& h) noexcept;
 constexpr hours make24(const hours& h, bool is_pm) noexcept;
 
 // [time.zone.db], time zone database
-struct tzdb;
+//struct tzdb;
 class tzdb_list;
 
 // [time.zone.db.access], time zone database access
