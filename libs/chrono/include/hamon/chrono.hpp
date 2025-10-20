@@ -43,6 +43,7 @@
 #include <hamon/chrono/tai_time_fwd.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/time_zone.hpp>
+#include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/treat_as_floating_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/utc_clock_fwd.hpp>
@@ -231,11 +232,11 @@ template<class Duration>
 requires three_way_comparable_with<sys_seconds, sys_time<Duration>>
 constexpr auto operator<=>(const leap_second& x, const sys_time<Duration>& y);
 
-// [time.zone.link], class time_zone_link
-class time_zone_link;
-
-bool operator==(const time_zone_link& x, const time_zone_link& y);
-strong_ordering operator<=>(const time_zone_link& x, const time_zone_link& y);
+//// [time.zone.link], class time_zone_link
+//class time_zone_link;
+//
+//bool operator==(const time_zone_link& x, const time_zone_link& y);
+//strong_ordering operator<=>(const time_zone_link& x, const time_zone_link& y);
 
 // [time.format], formatting
 template<class Duration> struct local-time-format-t;        // exposition only
