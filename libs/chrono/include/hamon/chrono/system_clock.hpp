@@ -7,23 +7,53 @@
 #ifndef HAMON_CHRONO_SYSTEM_CLOCK_HPP
 #define HAMON_CHRONO_SYSTEM_CLOCK_HPP
 
-#include <hamon/chrono/system_clock_fwd.hpp>
 #include <hamon/chrono/config.hpp>
 
-#if !defined(HAMON_USE_STD_CHRONO)
+#if defined(HAMON_USE_STD_CHRONO)
 
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/detail/windows.hpp>
-#include <hamon/cstdint.hpp>
-#include <hamon/ratio.hpp>
-#include <hamon/config.hpp>
-#include <ctime>
+#include <chrono>
 
 namespace hamon {
 namespace chrono {
 
-// 29.7.2 Class system_clock[time.clock.system]
+using std::chrono::system_clock;
+using std::chrono::sys_time;
+using std::chrono::sys_seconds;
+using std::chrono::sys_days;
+
+}	// namespace chrono
+}	// namespace hamon
+
+#else
+
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/treat_as_floating_point.hpp>
+#include <hamon/chrono/detail/windows.hpp>
+#include <hamon/cstdint.hpp>
+#include <hamon/detail/statically_widen.hpp>
+#include <hamon/ratio.hpp>
+#include <hamon/system_error/generic_category.hpp>
+#include <hamon/system_error/system_error.hpp>
+#include <hamon/config.hpp>
+#include <ctime>
+#include <ostream>	// basic_ostream
+#include <istream>	// basic_istream
+
+namespace hamon {
+namespace chrono {
+
+// [time.clock.system], class system_clock
+
+class system_clock;
+
+template <typename Duration>
+using sys_time = hamon::chrono::time_point<hamon::chrono::system_clock, Duration>;
+
+using sys_seconds = hamon::chrono::sys_time<hamon::chrono::seconds>;
+using sys_days = hamon::chrono::sys_time<hamon::chrono::days>;
+
+// 30.7.2 Class system_clock[time.clock.system]
 
 class system_clock
 {
@@ -61,7 +91,7 @@ private:
 		struct timespec tp;
 		if (0 != clock_gettime(CLOCK_REALTIME, &tp))
 		{
-			//__throw_system_error(errno, "clock_gettime(CLOCK_REALTIME) failed");
+			hamon::detail::throw_system_error(errno, hamon::generic_category(), "clock_gettime(CLOCK_REALTIME) failed");
 		}
 		return seconds(tp.tv_sec) + nanoseconds(tp.tv_nsec);
 	}
@@ -84,6 +114,36 @@ public:
 		return time_point{hamon::chrono::seconds{t}};
 	}
 };
+
+// 30.7.2.3 Non-member functions[time.clock.system.nonmembers]
+
+// TODO
+//template <typename charT, typename traits, typename Duration>
+//requires (!hamon::chrono::treat_as_floating_point<typename Duration::rep>::value && Duration{1} < days{1})	// [time.clock.system.nonmembers]/1
+//std::basic_ostream<charT, traits>&
+//operator<<(std::basic_ostream<charT, traits>& os, sys_time<Duration> const& tp)
+//{
+//	// [time.clock.system.nonmembers]/2
+//	return os << format(os.getloc(), HAMON_STATICALLY_WIDEN(charT, "{:L%F %T}"), tp);
+//}
+
+// TODO
+//template <typename charT, typename traits>
+//std::basic_ostream<charT, traits>&
+//operator<<(std::basic_ostream<charT, traits>& os, sys_days const& dp)
+//{
+//	// [time.clock.system.nonmembers]/4,5
+//	return os << year_month_day{dp};
+//}
+
+// TODO
+//template <typename charT, typename traits, typename Duration, typename Alloc = allocator<charT>>
+//std::basic_istream<charT, traits>&
+//from_stream(
+//	std::basic_istream<charT, traits>& is, charT const* fmt,
+//	sys_time<Duration>& tp,
+//	basic_string<charT, traits, Alloc>* abbrev = nullptr,
+//	minutes* offset = nullptr);
 
 }	// namespace chrono
 }	// namespace hamon

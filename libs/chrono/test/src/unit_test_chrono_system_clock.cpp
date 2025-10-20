@@ -5,40 +5,44 @@
  */
 
 #include <hamon/chrono/system_clock.hpp>
-#include <hamon/config.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/is_signed.hpp>
 #include <gtest/gtest.h>
-#include <thread>
 
 namespace hamon_chrono_test
 {
 
 GTEST_TEST(ChronoTest, SystemClockTest)
 {
-	using system_clock = hamon::chrono::system_clock;
-	using time_point = typename system_clock::time_point;
+	using Clock = hamon::chrono::system_clock;
+	using rep        = typename Clock::rep;
+	using period     = typename Clock::period;
+	using duration   = typename Clock::duration;
+	using time_point = typename Clock::time_point;
 
+	static_assert(hamon::is_same<rep, typename duration::rep>::value, "");
+	static_assert(hamon::is_same<period, typename duration::period>::value, "");
+	static_assert(hamon::is_same<duration, typename time_point::duration>::value, "");
+	static_assert(Clock::is_steady || !Clock::is_steady, "");
+
+	static_assert(hamon::is_signed<rep>::value, "");
+
+	static_assert(noexcept(Clock::now()), "");
+	static_assert(hamon::is_same<time_point, decltype(Clock::now())>::value, "");
 	{
-		auto tp = system_clock::now();
-		EXPECT_TRUE(tp != time_point{});
-		auto tt = system_clock::to_time_t(tp);
-		EXPECT_TRUE(tt != 0);
-		auto tp2 = system_clock::from_time_t(tt);
-		EXPECT_TRUE(tp2 != time_point{});
+		Clock::time_point t1 = Clock::now();
+		EXPECT_TRUE(t1.time_since_epoch().count() != 0);
+		EXPECT_TRUE(Clock::time_point::min() < t1);
+		EXPECT_TRUE(Clock::time_point::max() > t1);
 	}
-
-#if 0
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4996)
-	for (int i = 0; i < 10; ++i)
 	{
-		auto tp = system_clock::now();
-		auto tt = system_clock::to_time_t(tp);
-		std::cout << ctime(&tt);
-
-		std::this_thread::sleep_for(std::chrono::seconds(1));
+		Clock::time_point t1 = Clock::from_time_t(Clock::to_time_t(Clock::now()));
+		(void)t1;
 	}
-HAMON_WARNING_POP()
-#endif
+	{
+		std::time_t t1 = Clock::to_time_t(Clock::now());
+		(void)t1;
+	}
 }
 
 }	// namespace hamon_chrono_test
