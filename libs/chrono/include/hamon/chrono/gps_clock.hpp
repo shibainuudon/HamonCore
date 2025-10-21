@@ -15,7 +15,7 @@
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/utc_clock.hpp>
-#include <hamon/chrono/utc_time_fwd.hpp>
+#include <hamon/chrono/utc_time.hpp>
 #include <hamon/chrono/gps_time_fwd.hpp>
 #include <hamon/type_traits/common_type.hpp>
 
