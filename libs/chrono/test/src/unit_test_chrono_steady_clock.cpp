@@ -5,37 +5,33 @@
  */
 
 #include <hamon/chrono/steady_clock.hpp>
-#include <hamon/chrono/system_clock.hpp>
-#include <hamon/chrono/time_point.hpp>
-#include <hamon/config.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <gtest/gtest.h>
-#include <thread>
 
 namespace hamon_chrono_test
 {
 
 GTEST_TEST(ChronoTest, SteadyClockTest)
 {
-	using steady_clock = hamon::chrono::steady_clock;
-	using time_point = typename steady_clock::time_point;
+	using Clock = hamon::chrono::steady_clock;
+	using rep        = typename Clock::rep;
+	using period     = typename Clock::period;
+	using duration   = typename Clock::duration;
+	using time_point = typename Clock::time_point;
 
+	static_assert(hamon::is_same<rep, typename duration::rep>::value, "");
+	static_assert(hamon::is_same<period, typename duration::period>::value, "");
+	static_assert(hamon::is_same<duration, typename time_point::duration>::value, "");
+	static_assert(Clock::is_steady, "");
+
+	static_assert(noexcept(Clock::now()), "");
+	static_assert(hamon::is_same<time_point, decltype(Clock::now())>::value, "");
 	{
-		auto tp = steady_clock::now();
-		EXPECT_TRUE(tp != time_point{});
+		auto t1 = Clock::now();
+		auto t2 = Clock::now();
+		EXPECT_TRUE(t2 >= t1);
+		EXPECT_TRUE(t2 != time_point{});
 	}
-
-#if 0
-	{
-		auto begin = steady_clock::now();
-		for (int i = 0; i < 10; ++i)
-		{
-			auto tp = steady_clock::now();
-			std::cout << hamon::chrono::duration_cast<hamon::chrono::milliseconds>(tp - begin).count() << " ms\n";
-
-			std::this_thread::sleep_for(std::chrono::seconds(1));
-		}
-	}
-#endif
 }
 
 }	// namespace hamon_chrono_test
