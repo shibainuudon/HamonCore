@@ -40,10 +40,8 @@
 #include <hamon/chrono/sys_time.hpp>
 #include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/tai_clock.hpp>
-#include <hamon/chrono/tai_clock_fwd.hpp>
 #include <hamon/chrono/tai_seconds.hpp>
-#include <hamon/chrono/tai_seconds.hpp>
-#include <hamon/chrono/tai_time_fwd.hpp>
+#include <hamon/chrono/tai_time.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/time_zone_link.hpp>
