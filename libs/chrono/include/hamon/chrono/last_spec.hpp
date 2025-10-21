@@ -24,6 +24,7 @@ using std::chrono::last;
 
 #else
 
+#include <hamon/config.hpp>
 
 namespace hamon {
 namespace chrono {
