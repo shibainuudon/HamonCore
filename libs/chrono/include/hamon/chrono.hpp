@@ -14,6 +14,7 @@
 #include <hamon/chrono/file_clock.hpp>
 #include <hamon/chrono/file_time.hpp>
 #include <hamon/chrono/get_leap_second_info.hpp>
+#include <hamon/chrono/get_tzdb_list.hpp>
 #include <hamon/chrono/gps_clock.hpp>
 #include <hamon/chrono/gps_clock_fwd.hpp>
 #include <hamon/chrono/gps_seconds.hpp>
@@ -171,7 +172,7 @@ constexpr hours make24(const hours& h, bool is_pm) noexcept;
 
 // [time.zone.db.access], time zone database access
 const tzdb& get_tzdb();
-tzdb_list& get_tzdb_list();
+//tzdb_list& get_tzdb_list();
 const time_zone* locate_zone(string_view tz_name);
 const time_zone* current_zone();
 
