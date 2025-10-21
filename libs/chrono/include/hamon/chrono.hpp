@@ -17,10 +17,8 @@
 #include <hamon/chrono/get_tzdb.hpp>
 #include <hamon/chrono/get_tzdb_list.hpp>
 #include <hamon/chrono/gps_clock.hpp>
-#include <hamon/chrono/gps_clock_fwd.hpp>
 #include <hamon/chrono/gps_seconds.hpp>
 #include <hamon/chrono/gps_time.hpp>
-#include <hamon/chrono/gps_time_fwd.hpp>
 #include <hamon/chrono/high_resolution_clock.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
