@@ -12,10 +12,11 @@
 
 GTEST_TEST(FilesystemPathTest, CtorDefaultTest)
 {
-	static_assert( hamon::is_default_constructible<hamon::filesystem::path>::value, "");
-	static_assert( hamon::is_nothrow_default_constructible<hamon::filesystem::path>::value, "");
-	static_assert(!hamon::is_trivially_default_constructible<hamon::filesystem::path>::value, "");
-	static_assert( hamon::is_implicitly_default_constructible<hamon::filesystem::path>::value, "");
-	hamon::filesystem::path p;
+	namespace fs = hamon::filesystem;
+	static_assert( hamon::is_default_constructible<fs::path>::value, "");
+	static_assert( hamon::is_nothrow_default_constructible<fs::path>::value, "");
+	static_assert(!hamon::is_trivially_default_constructible<fs::path>::value, "");
+	static_assert( hamon::is_implicitly_default_constructible<fs::path>::value, "");
+	fs::path p;
 	EXPECT_TRUE(p.empty());
 }
