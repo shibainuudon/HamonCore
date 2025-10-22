@@ -13,12 +13,12 @@
 
 GTEST_TEST(FilesystemPathTest, CtorMoveTest)
 {
-	static_assert( hamon::is_move_constructible<hamon::filesystem::path>::value, "");
-	static_assert( hamon::is_nothrow_move_constructible<hamon::filesystem::path>::value, "");
-	static_assert(!hamon::is_trivially_move_constructible<hamon::filesystem::path>::value, "");
-	static_assert( hamon::is_implicitly_move_constructible<hamon::filesystem::path>::value, "");
-	const hamon::filesystem::path::string_type s(L"foo");
-	const hamon::filesystem::path p(s);
-	hamon::filesystem::path p2(hamon::move(p));
-	EXPECT_TRUE(p2.native() == s);
+	namespace fs = hamon::filesystem;
+	static_assert( hamon::is_move_constructible<fs::path>::value, "");
+	static_assert( hamon::is_nothrow_move_constructible<fs::path>::value, "");
+	static_assert(!hamon::is_trivially_move_constructible<fs::path>::value, "");
+	static_assert( hamon::is_implicitly_move_constructible<fs::path>::value, "");
+	fs::path p = "foo/bar/baz";
+	fs::path p2(hamon::move(p));
+	EXPECT_TRUE(p2.string<char>() == "foo/bar/baz");
 }

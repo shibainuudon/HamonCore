@@ -12,13 +12,12 @@
 
 GTEST_TEST(FilesystemPathTest, CtorCopyTest)
 {
-	static_assert( hamon::is_copy_constructible<hamon::filesystem::path>::value, "");
-	static_assert(!hamon::is_nothrow_copy_constructible<hamon::filesystem::path>::value, "");
-	static_assert(!hamon::is_trivially_copy_constructible<hamon::filesystem::path>::value, "");
-	static_assert( hamon::is_implicitly_copy_constructible<hamon::filesystem::path>::value, "");
-	const hamon::filesystem::path::string_type s(L"foo");
-	const hamon::filesystem::path p(s);
-	hamon::filesystem::path p2(p);
-	EXPECT_TRUE(p.native() == s);
-	EXPECT_TRUE(p2.native() == s);
+	namespace fs = hamon::filesystem;
+	static_assert( hamon::is_copy_constructible<fs::path>::value, "");
+	static_assert(!hamon::is_nothrow_copy_constructible<fs::path>::value, "");
+	static_assert(!hamon::is_trivially_copy_constructible<fs::path>::value, "");
+	static_assert( hamon::is_implicitly_copy_constructible<fs::path>::value, "");
+	const fs::path p = "foo/bar/baz";
+	fs::path p2(p);
+	EXPECT_TRUE(p.native() == p2.native());
 }

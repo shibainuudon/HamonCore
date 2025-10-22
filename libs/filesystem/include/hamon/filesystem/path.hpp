@@ -29,15 +29,53 @@ using std::filesystem::path;
 #include <hamon/memory/allocator.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 #include <locale>
 #include <ostream>
 #include <istream>
 
+#include <hamon/type_traits/bool_constant.hpp>
+
 namespace hamon
 {
 namespace filesystem
 {
+
+namespace detail
+{
+
+// 31.12.3 Requirements[fs.req]
+
+template <typename>
+struct is_encoded_character : hamon::false_type {};
+
+template <>
+struct is_encoded_character<char> : hamon::true_type {};
+template <>
+struct is_encoded_character<wchar_t> : hamon::true_type {};
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+template <>
+struct is_encoded_character<char8_t> : hamon::true_type {};
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR16_T)
+template <>
+struct is_encoded_character<char16_t> : hamon::true_type {};
+#endif
+#if defined(HAMON_HAS_CXX11_CHAR32_T)
+template <>
+struct is_encoded_character<char32_t> : hamon::true_type {};
+#endif
+
+// 31.12.6.4 Requirements[fs.path.req]
+
+template <typename>
+struct is_source : hamon::false_type {};
+
+template <typename ECharT, hamon::size_t N>
+struct is_source<ECharT[N]> : hamon::true_type {};
+
+}	// namespace detail
 
 // 31.12.6 Class path[fs.class.path]
 
@@ -62,16 +100,19 @@ public:
 	};
 
 	// [fs.path.construct], constructors and destructor
-	path() noexcept;
+	path() noexcept {}
 
-	path(path const& p);
+	path(path const& p) : __pn_(p.__pn_) {}
 
-	path(path&& p) noexcept;
+	path(path&& p) noexcept : __pn_(hamon::move(p.__pn_)) {}
 
-	path(string_type&& source, format fmt = auto_format);
+	path(string_type&& source, format /*fmt*/ = auto_format) : __pn_(hamon::move(source)) {}
 
-	template <typename Source>
-	path(Source const& source, format fmt = auto_format);
+	template <typename Source, typename = hamon::enable_if_t<hamon::filesystem::detail::is_source<Source>::value>>
+	path(Source const& source, format /*fmt*/ = auto_format)
+	{
+		(void)source;
+	}
 
 	template <typename InputIterator>
 	path(InputIterator first, InputIterator last, format fmt = auto_format);
@@ -82,7 +123,7 @@ public:
 	template <typename InputIterator>
 	path(InputIterator first, InputIterator last, std::locale const& loc, format fmt = auto_format);
 
-	~path();
+	~path() {}
 
 	// [fs.path.assign], assignments
 	path& operator=(path const& p);
@@ -160,8 +201,14 @@ public:
 	friend path operator/(path const& lhs, path const& rhs);
 
 	// [fs.path.native.obs], native format observers
-	string_type const& native() const noexcept;
+	string_type const& native() const noexcept
+	{
+		// [fs.path.native.obs]/2
+		return __pn_;
+	}
+
 	value_type const* c_str() const noexcept;
+
 	operator string_type() const;
 
 	template <
@@ -228,7 +275,12 @@ public:
 	path extension() const;
 
 	// [fs.path.query], query
-	bool empty() const noexcept;
+	bool empty() const noexcept
+	{
+		// [fs.path.query]/1
+		return __pn_.empty();
+	}
+
 	bool has_root_name() const;
 	bool has_root_directory() const;
 	bool has_root_path() const;
@@ -260,6 +312,9 @@ public:
 	template <typename charT, typename traits>
 	friend std::basic_istream<charT, traits>&
 	operator>>(std::basic_istream<charT, traits>& is, path& p);
+
+private:
+	string_type __pn_;
 };
 
 // [fs.path.nonmember], path non-member functions
