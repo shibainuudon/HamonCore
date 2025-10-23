@@ -26,6 +26,7 @@ using std::chrono::leap_second;
 #include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/sys_time.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/config.hpp>
@@ -43,7 +44,8 @@ public:
 
 	// unspecified additional constructors
 	explicit constexpr
-	leap_second(sys_seconds date, seconds value)
+	leap_second(hamon::chrono::detail::private_ctor_tag,
+		sys_seconds date, seconds value)
 		: m_date(date), m_value(value)
 	{}
 
@@ -74,12 +76,46 @@ operator==(leap_second const& x, leap_second const& y) noexcept
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+
 HAMON_NODISCARD inline constexpr hamon::strong_ordering
 operator<=>(leap_second const& x, leap_second const& y) noexcept
 {
 	// [time.zone.leap.nonmembers]/2
 	return x.date() <=> y.date();
 }
+
+#else
+
+HAMON_NODISCARD inline bool
+operator!=(leap_second const& x, leap_second const& y) noexcept
+{
+	return !(x == y);
+}
+
+HAMON_NODISCARD inline bool
+operator<(leap_second const& x, leap_second const& y) noexcept
+{
+	return x.date() < y.date();
+}
+
+HAMON_NODISCARD inline bool
+operator>(leap_second const& x, leap_second const& y) noexcept
+{
+	return y < x;
+}
+
+HAMON_NODISCARD inline bool
+operator<=(leap_second const& x, leap_second const& y) noexcept
+{
+	return !(x > y);
+}
+
+HAMON_NODISCARD inline bool
+operator>=(leap_second const& x, leap_second const& y) noexcept
+{
+	return !(x < y);
+}
+
 #endif
 
 template <typename Duration>
@@ -154,6 +190,7 @@ operator>=(sys_time<Duration> const& x, leap_second const& y) noexcept
 	return !(x < y);
 }
 
+// TODO
 //#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 //template <typename Duration>
 //requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>

@@ -24,6 +24,7 @@ using std::chrono::get_tzdb_list;
 #else
 
 #include <hamon/chrono/tzdb_list.hpp>
+#include <hamon/chrono/detail/private_ctor_tag.hpp>
 
 namespace hamon {
 namespace chrono {
@@ -32,7 +33,7 @@ namespace chrono {
 
 inline hamon::chrono::tzdb_list& get_tzdb_list()
 {
-	static hamon::chrono::tzdb_list result;
+	static hamon::chrono::tzdb_list result{hamon::chrono::detail::private_ctor_tag{}};
 
 	// [time.zone.db.access]/3
 	return result;

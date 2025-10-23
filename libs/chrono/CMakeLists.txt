@@ -19,12 +19,14 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		cctype
 		config
 		cstdint
 		detail
 		forward_list
 		iterator
 		limits
+		memory
 		ratio
 		string
 		string_view

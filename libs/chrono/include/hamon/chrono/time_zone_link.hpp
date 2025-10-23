@@ -23,6 +23,7 @@ using std::chrono::time_zone_link;
 
 #else
 
+#include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
@@ -41,7 +42,8 @@ public:
 
 	// unspecified additional constructors
 	explicit
-	time_zone_link(hamon::string_view name, hamon::string_view target)
+	time_zone_link(hamon::chrono::detail::private_ctor_tag,
+		hamon::string_view name, hamon::string_view target)
 		: m_name{ name }, m_target{ target } {}
 
 	HAMON_NODISCARD hamon::string_view name() const noexcept
@@ -67,19 +69,53 @@ private:
 // 30.11.9.3 Non-member functions[time.zone.link.nonmembers]
 
 HAMON_NODISCARD inline bool
-operator==(time_zone_link const& x, time_zone_link const& y)
+operator==(time_zone_link const& x, time_zone_link const& y) noexcept
 {
 	// [time.zone.link.nonmembers]/1
 	return x.name() == y.name();
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+
 HAMON_NODISCARD inline hamon::strong_ordering
-operator<=>(time_zone_link const& x, time_zone_link const& y)
+operator<=>(time_zone_link const& x, time_zone_link const& y) noexcept
 {
 	// [time.zone.link.nonmembers]/2
 	return x.name() <=> y.name();
 }
+
+#else
+
+HAMON_NODISCARD inline bool
+operator!=(time_zone_link const& x, time_zone_link const& y) noexcept
+{
+	return !(x == y);
+}
+
+HAMON_NODISCARD inline bool
+operator<(time_zone_link const& x, time_zone_link const& y) noexcept
+{
+	return x.name() < y.name();
+}
+
+HAMON_NODISCARD inline bool
+operator>(time_zone_link const& x, time_zone_link const& y) noexcept
+{
+	return y < x;
+}
+
+HAMON_NODISCARD inline bool
+operator<=(time_zone_link const& x, time_zone_link const& y) noexcept
+{
+	return !(x > y);
+}
+
+HAMON_NODISCARD inline bool
+operator>=(time_zone_link const& x, time_zone_link const& y) noexcept
+{
+	return !(x < y);
+}
+
 #endif
 
 }	// namespace chrono

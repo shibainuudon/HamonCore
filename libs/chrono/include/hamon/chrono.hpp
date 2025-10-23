@@ -28,6 +28,7 @@
 #include <hamon/chrono/local_info.hpp>
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
+#include <hamon/chrono/locate_zone.hpp>
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/month_day.hpp>
 #include <hamon/chrono/month_weekday.hpp>
@@ -168,7 +169,7 @@ constexpr hours make24(const hours& h, bool is_pm) noexcept;
 // [time.zone.db.access], time zone database access
 //const tzdb& get_tzdb();
 //tzdb_list& get_tzdb_list();
-const time_zone* locate_zone(string_view tz_name);
+//const time_zone* locate_zone(string_view tz_name);
 const time_zone* current_zone();
 
 // [time.zone.db.remote], remote time zone database support

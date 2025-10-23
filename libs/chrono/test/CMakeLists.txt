@@ -16,5 +16,17 @@ target_link_libraries(${TARGET_NAME}
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 	INTERFACE
+		algorithm
+		cmath
+		compare
+		concepts
+		config
+		iterator
+		ranges
+		ratio
+		stdexcept
+		string
+		string_view
 		type_traits
+		vector
 		common_test)

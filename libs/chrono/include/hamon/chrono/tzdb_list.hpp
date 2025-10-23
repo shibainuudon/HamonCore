@@ -25,7 +25,11 @@ using std::chrono::tzdb_list;
 
 #include <hamon/chrono/tzdb.hpp>
 #include <hamon/chrono/detail/init_tzdb.hpp>
+#include <hamon/chrono/detail/tz.hpp>
+#include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/forward_list.hpp>
+#include <hamon/iterator/distance.hpp>
+#include <hamon/iterator/next.hpp>
 #include <hamon/config.hpp>
 #include <mutex>
 
@@ -41,9 +45,9 @@ public:
 	tzdb_list& operator=(tzdb_list const&) = delete;
 
 	// unspecified additional constructors
-	tzdb_list()
+	explicit tzdb_list(hamon::chrono::detail::private_ctor_tag)
 	{
-		chrono::detail::init_tzdb(m_tzdb.emplace_front());
+		chrono::detail::init_tzdb(m_tzdb.emplace_front(), m_rules.emplace_front());
 	}
 
 	using const_iterator = hamon::forward_list<hamon::chrono::tzdb>::const_iterator;
@@ -61,6 +65,7 @@ public:
 #if !defined(HAMON_NO_THREADS)
 		std::unique_lock<std::mutex> lk{ m_mutex };
 #endif
+		m_rules.erase_after(hamon::next(m_rules.cbegin(), hamon::distance(m_tzdb.cbegin(), p)));
 		return m_tzdb.erase_after(p);
 	}
 
@@ -95,6 +100,7 @@ private:
 	mutable std::mutex m_mutex;
 #endif
 	hamon::forward_list<hamon::chrono::tzdb> m_tzdb;
+	hamon::forward_list<detail::tz::rules_storage_type> m_rules;
 };
 
 }	// namespace chrono
