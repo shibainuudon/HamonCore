@@ -24,6 +24,7 @@ set(SUBDIRECTORIES
 	bit
 	bitflags
 	bitset
+	cctype
 	charconv
 	chrono
 	cmath

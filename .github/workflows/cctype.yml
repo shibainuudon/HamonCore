@@ -1,0 +1,16 @@
+name: cctype
+
+on:
+  push:
+    paths:
+      - libs/cctype/**
+      - .github/workflows/cctype.yml
+      - .github/workflows/build.yml
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yml
+    with:
+      src_dir: libs/cctype
