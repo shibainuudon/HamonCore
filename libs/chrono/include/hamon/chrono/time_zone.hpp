@@ -60,7 +60,7 @@ public:
 		, m_continuations(hamon::move(continuations))
 		, m_rules_db(hamon::addressof(rules_db)) {}
 
-	hamon::string_view name() const noexcept
+	HAMON_NODISCARD hamon::string_view name() const HAMON_NOEXCEPT
 	{
 		return m_name;
 	}
@@ -100,7 +100,7 @@ private:
 // 30.11.5.3 Non-member functions[time.zone.nonmembers]
 
 HAMON_NODISCARD inline bool
-operator==(time_zone const& x, time_zone const& y) noexcept
+operator==(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.nonmembers]/1
 	return x.name() == y.name();
@@ -109,7 +109,7 @@ operator==(time_zone const& x, time_zone const& y) noexcept
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 HAMON_NODISCARD inline hamon::strong_ordering
-operator<=>(time_zone const& x, time_zone const& y) noexcept
+operator<=>(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.nonmembers]/2
 	return x.name() <=> y.name();
@@ -118,31 +118,31 @@ operator<=>(time_zone const& x, time_zone const& y) noexcept
 #else
 
 HAMON_NODISCARD inline bool
-operator!=(time_zone const& x, time_zone const& y) noexcept
+operator!=(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	return !(x == y);
 }
 
 HAMON_NODISCARD inline bool
-operator<(time_zone const& x, time_zone const& y) noexcept
+operator<(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	return x.name() < y.name();
 }
 
 HAMON_NODISCARD inline bool
-operator>(time_zone const& x, time_zone const& y) noexcept
+operator>(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	return y < x;
 }
 
 HAMON_NODISCARD inline bool
-operator<=(time_zone const& x, time_zone const& y) noexcept
+operator<=(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	return !(x > y);
 }
 
 HAMON_NODISCARD inline bool
-operator>=(time_zone const& x, time_zone const& y) noexcept
+operator>=(time_zone const& x, time_zone const& y) HAMON_NOEXCEPT
 {
 	return !(x < y);
 }
