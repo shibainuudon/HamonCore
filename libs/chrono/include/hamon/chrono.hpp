@@ -8,6 +8,7 @@
 #define HAMON_CHRONO_HPP
 
 #include <hamon/chrono/choose.hpp>
+#include <hamon/chrono/clock_cast.hpp>
 #include <hamon/chrono/clock_time_conversion.hpp>
 #include <hamon/chrono/config.hpp>
 #include <hamon/chrono/day.hpp>
@@ -141,8 +142,8 @@ namespace std::chrono
 //template<class DestClock, class SourceClock>
 //struct clock_time_conversion;
 
-template<class DestClock, class SourceClock, class Duration>
-auto clock_cast(const time_point<SourceClock, Duration>& t);
+//template<class DestClock, class SourceClock, class Duration>
+//auto clock_cast(const time_point<SourceClock, Duration>& t);
 
 
 

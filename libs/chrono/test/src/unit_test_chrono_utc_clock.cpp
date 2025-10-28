@@ -8,8 +8,10 @@
 #include <hamon/chrono/utc_seconds.hpp>
 #include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/sys_time.hpp>
+#include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/year_month_day.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/clock_cast.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_signed.hpp>
@@ -405,6 +407,21 @@ void from_sys_test()
 	test_leap_seconds(chrono::sys_days{ chrono::January / 1 / 2024 } + 1_ns, 27_s);
 }
 
+void clock_cast_test()
+{
+	using namespace hamon::chrono;
+
+	// [time.clock.utc.overview]
+
+	auto epoch = sys_seconds{ sys_days{1970_y / January / 1} };
+	auto utc_epoch = clock_cast<utc_clock>(epoch);
+	EXPECT_TRUE(utc_epoch.time_since_epoch() == 0_s);
+
+	auto y2k = sys_seconds{ sys_days{2000_y / January / 1} };
+	auto utc_y2k = clock_cast<utc_clock>(y2k);
+	EXPECT_TRUE(utc_y2k.time_since_epoch() == 946684822_s);
+}
+
 GTEST_TEST(ChronoTest, UtcClockTest)
 {
 	using Clock = hamon::chrono::utc_clock;
@@ -445,6 +462,7 @@ GTEST_TEST(ChronoTest, UtcClockTest)
 
 	to_sys_test();
 	from_sys_test();
+	clock_cast_test();
 }
 
 }	// namespace utc_clock_test

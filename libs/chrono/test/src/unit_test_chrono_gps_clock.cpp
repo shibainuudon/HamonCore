@@ -10,6 +10,9 @@
 #include <hamon/chrono/utc_time.hpp>
 #include <hamon/chrono/sys_days.hpp>
 #include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/year_month_weekday.hpp>
+#include <hamon/chrono/tai_seconds.hpp>
+#include <hamon/chrono/clock_cast.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_signed.hpp>
@@ -174,6 +177,28 @@ void from_utc_test()
 	test_transition(chrono::sys_days{ chrono::January / 1 / 2017 }, 17_s);
 }
 
+void clock_cast_test()
+{
+	using namespace hamon::chrono;
+	{
+		gps_seconds gps_epoch{ 0_s };
+		utc_seconds gps_as_utc{ sys_days{1980_y / January / Sunday[1]}.time_since_epoch() + 9_s };
+
+		EXPECT_TRUE(clock_cast<utc_clock>(gps_epoch) == gps_as_utc);
+		EXPECT_TRUE(gps_epoch == clock_cast<gps_clock>(gps_as_utc));
+
+		tai_seconds tai_epoch{ 0_s };
+		EXPECT_TRUE(clock_cast<tai_clock>(clock_cast<gps_clock>(tai_epoch)) == tai_epoch);
+	}
+	{
+		sys_days d{ 2022_y / November / 12 };
+		EXPECT_TRUE(clock_cast<system_clock>(clock_cast<gps_clock>(d)) == d);
+		gps_seconds t(1234567_s);
+		EXPECT_TRUE(clock_cast<gps_clock>(clock_cast<system_clock>(t)) == t);
+		EXPECT_TRUE(clock_cast<gps_clock>(clock_cast<utc_clock>(t)) == t);
+	}
+}
+
 GTEST_TEST(ChronoTest, GpsClockTest)
 {
 	using Clock = hamon::chrono::gps_clock;
@@ -208,6 +233,7 @@ GTEST_TEST(ChronoTest, GpsClockTest)
 
 	to_utc_test();
 	from_utc_test();
+	clock_cast_test();
 }
 
 }	// namespace gps_clock_test
