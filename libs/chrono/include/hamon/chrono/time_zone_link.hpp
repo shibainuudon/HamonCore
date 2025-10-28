@@ -46,13 +46,13 @@ public:
 		hamon::string_view name, hamon::string_view target)
 		: m_name{ name }, m_target{ target } {}
 
-	HAMON_NODISCARD hamon::string_view name() const noexcept
+	HAMON_NODISCARD hamon::string_view name() const HAMON_NOEXCEPT
 	{
 		// [time.zone.link.members]/1
 		return m_name;
 	}
 
-	HAMON_NODISCARD hamon::string_view target() const noexcept
+	HAMON_NODISCARD hamon::string_view target() const HAMON_NOEXCEPT
 	{
 		// [time.zone.link.members]/2
 		return m_target;
@@ -69,7 +69,7 @@ private:
 // 30.11.9.3 Non-member functions[time.zone.link.nonmembers]
 
 HAMON_NODISCARD inline bool
-operator==(time_zone_link const& x, time_zone_link const& y) noexcept
+operator==(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.link.nonmembers]/1
 	return x.name() == y.name();
@@ -78,7 +78,7 @@ operator==(time_zone_link const& x, time_zone_link const& y) noexcept
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
 HAMON_NODISCARD inline hamon::strong_ordering
-operator<=>(time_zone_link const& x, time_zone_link const& y) noexcept
+operator<=>(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.link.nonmembers]/2
 	return x.name() <=> y.name();
@@ -87,31 +87,31 @@ operator<=>(time_zone_link const& x, time_zone_link const& y) noexcept
 #else
 
 HAMON_NODISCARD inline bool
-operator!=(time_zone_link const& x, time_zone_link const& y) noexcept
+operator!=(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	return !(x == y);
 }
 
 HAMON_NODISCARD inline bool
-operator<(time_zone_link const& x, time_zone_link const& y) noexcept
+operator<(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	return x.name() < y.name();
 }
 
 HAMON_NODISCARD inline bool
-operator>(time_zone_link const& x, time_zone_link const& y) noexcept
+operator>(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	return y < x;
 }
 
 HAMON_NODISCARD inline bool
-operator<=(time_zone_link const& x, time_zone_link const& y) noexcept
+operator<=(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	return !(x > y);
 }
 
 HAMON_NODISCARD inline bool
-operator>=(time_zone_link const& x, time_zone_link const& y) noexcept
+operator>=(time_zone_link const& x, time_zone_link const& y) HAMON_NOEXCEPT
 {
 	return !(x < y);
 }
