@@ -43,19 +43,21 @@ public:
 	leap_second& operator=(leap_second const&) = default;
 
 	// unspecified additional constructors
-	explicit constexpr
+	explicit HAMON_CXX11_CONSTEXPR
 	leap_second(hamon::chrono::detail::private_ctor_tag,
 		sys_seconds date, seconds value)
 		: m_date(date), m_value(value)
 	{}
 
-	HAMON_NODISCARD constexpr sys_seconds date() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR sys_seconds
+	date() const HAMON_NOEXCEPT
 	{
 		// [time.zone.leap.members]/1
 		return m_date;
 	}
 
-	HAMON_NODISCARD constexpr seconds value() const noexcept
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR seconds
+	value() const HAMON_NOEXCEPT
 	{
 		// [time.zone.leap.members]/2
 		return m_value;
@@ -64,12 +66,27 @@ public:
 private:
 	sys_seconds m_date;
 	seconds m_value;
+
+	// この関数は規格ではフリー関数になっているが、
+	// three_way_comparable_with の部分で再帰的になっており、
+	// コンパイルが無限ループになることがある。
+	// それを避けるため、hidden friend関数として定義する。
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	template <typename Duration>
+	requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>
+	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto
+	operator<=>(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
+	{
+		// [time.zone.leap.nonmembers]/12
+		return x.date() <=> y;
+	}
+#endif
 };
 
 // 30.11.8.3 Non-member functions[time.zone.leap.nonmembers]
 
-HAMON_NODISCARD inline constexpr bool
-operator==(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator==(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/1
 	return x.date() == y.date();
@@ -77,8 +94,8 @@ operator==(leap_second const& x, leap_second const& y) noexcept
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-HAMON_NODISCARD inline constexpr hamon::strong_ordering
-operator<=>(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::strong_ordering
+operator<=>(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/2
 	return x.date() <=> y.date();
@@ -86,32 +103,32 @@ operator<=>(leap_second const& x, leap_second const& y) noexcept
 
 #else
 
-HAMON_NODISCARD inline bool
-operator!=(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator!=(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	return !(x == y);
 }
 
-HAMON_NODISCARD inline bool
-operator<(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator<(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	return x.date() < y.date();
 }
 
-HAMON_NODISCARD inline bool
-operator>(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator>(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	return y < x;
 }
 
-HAMON_NODISCARD inline bool
-operator<=(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator<=(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	return !(x > y);
 }
 
-HAMON_NODISCARD inline bool
-operator>=(leap_second const& x, leap_second const& y) noexcept
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
+operator>=(leap_second const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	return !(x < y);
 }
@@ -119,88 +136,101 @@ operator>=(leap_second const& x, leap_second const& y) noexcept
 #endif
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator==(leap_second const& x, sys_time<Duration> const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator==(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/3
 	return x.date() == y;
 }
 
+#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator<(leap_second const& x, sys_time<Duration> const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator==(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
+{
+	return y == x;
+}
+
+template <typename Duration>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator!=(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
+{
+	return !(x == y);
+}
+
+template <typename Duration>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator!=(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
+{
+	return !(x == y);
+}
+
+#endif
+
+template <typename Duration>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator<(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/4
 	return x.date() < y;
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator<(sys_time<Duration> const& x, leap_second const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator<(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/5
 	return x < y.date();
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator>(leap_second const& x, sys_time<Duration> const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator>(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/6
 	return y < x;
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator>(sys_time<Duration> const& x, leap_second const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator>(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/7
 	return y < x;
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator<=(leap_second const& x, sys_time<Duration> const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator<=(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/8
 	return !(y < x);
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator<=(sys_time<Duration> const& x, leap_second const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator<=(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/9
 	return !(y < x);
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator>=(leap_second const& x, sys_time<Duration> const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator>=(leap_second const& x, sys_time<Duration> const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/10
 	return !(x < y);
 }
 
 template <typename Duration>
-HAMON_NODISCARD constexpr bool
-operator>=(sys_time<Duration> const& x, leap_second const& y) noexcept
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+operator>=(sys_time<Duration> const& x, leap_second const& y) HAMON_NOEXCEPT
 {
 	// [time.zone.leap.nonmembers]/11
 	return !(x < y);
 }
-
-// TODO
-//#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-//template <typename Duration>
-//requires hamon::three_way_comparable_with<sys_seconds, sys_time<Duration>>
-//HAMON_NODISCARD constexpr auto
-//operator<=>(leap_second const& x, sys_time<Duration> const& y) noexcept
-//{
-//	// [time.zone.leap.nonmembers]/12
-//	return x.date() <=> y;
-//}
-//#endif
 
 }	// namespace chrono
 }	// namespace hamon
