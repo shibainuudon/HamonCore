@@ -23,7 +23,9 @@
 #include <hamon/chrono/gps_time.hpp>
 #include <hamon/chrono/hh_mm_ss.hpp>
 #include <hamon/chrono/high_resolution_clock.hpp>
+#include <hamon/chrono/is_am.hpp>
 #include <hamon/chrono/is_clock.hpp>
+#include <hamon/chrono/is_pm.hpp>
 #include <hamon/chrono/last_spec.hpp>
 #include <hamon/chrono/leap_second.hpp>
 #include <hamon/chrono/leap_second_info.hpp>
@@ -32,6 +34,8 @@
 #include <hamon/chrono/local_seconds.hpp>
 #include <hamon/chrono/local_time.hpp>
 #include <hamon/chrono/locate_zone.hpp>
+#include <hamon/chrono/make12.hpp>
+#include <hamon/chrono/make24.hpp>
 #include <hamon/chrono/month.hpp>
 #include <hamon/chrono/month_day.hpp>
 #include <hamon/chrono/month_weekday.hpp>
@@ -159,11 +163,11 @@ namespace std::chrono
 //basic_ostream<charT, traits>&
 //operator<<(basic_ostream<charT, traits>& os, const hh_mm_ss<Duration>& hms);
 
-// [time.12], 12/24 hour functions
-constexpr bool is_am(const hours& h) noexcept;
-constexpr bool is_pm(const hours& h) noexcept;
-constexpr hours make12(const hours& h) noexcept;
-constexpr hours make24(const hours& h, bool is_pm) noexcept;
+//// [time.12], 12/24 hour functions
+//constexpr bool is_am(const hours& h) noexcept;
+//constexpr bool is_pm(const hours& h) noexcept;
+//constexpr hours make12(const hours& h) noexcept;
+//constexpr hours make24(const hours& h, bool is_pm) noexcept;
 
 // [time.zone.db], time zone database
 //struct tzdb;
