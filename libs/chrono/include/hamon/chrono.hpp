@@ -21,6 +21,7 @@
 #include <hamon/chrono/gps_clock.hpp>
 #include <hamon/chrono/gps_seconds.hpp>
 #include <hamon/chrono/gps_time.hpp>
+#include <hamon/chrono/hh_mm_ss.hpp>
 #include <hamon/chrono/high_resolution_clock.hpp>
 #include <hamon/chrono/is_clock.hpp>
 #include <hamon/chrono/last_spec.hpp>
@@ -151,12 +152,12 @@ namespace std::chrono
 
 
 
-// [time.hms], class template hh_mm_ss
-template<class Duration> class hh_mm_ss;
-
-template<class charT, class traits, class Duration>
-basic_ostream<charT, traits>&
-operator<<(basic_ostream<charT, traits>& os, const hh_mm_ss<Duration>& hms);
+//// [time.hms], class template hh_mm_ss
+//template<class Duration> class hh_mm_ss;
+//
+//template<class charT, class traits, class Duration>
+//basic_ostream<charT, traits>&
+//operator<<(basic_ostream<charT, traits>& os, const hh_mm_ss<Duration>& hms);
 
 // [time.12], 12/24 hour functions
 constexpr bool is_am(const hours& h) noexcept;
