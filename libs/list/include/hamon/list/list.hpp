@@ -23,6 +23,7 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/cpp17_default_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
@@ -104,6 +105,9 @@ public:
 	list(size_type n, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
+		// [list.cons]/3
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+
 		// [list.cons]/4
 		m_impl.insert_n(m_allocator, m_impl.tail(), n);	// may throw
 	}
@@ -391,6 +395,9 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	resize(size_type sz)
 	{
+		// [list.capacity]/1
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+
 		// [list.capacity]/2
 		m_impl.resize(m_allocator, sz);	// may throw
 	}

@@ -20,6 +20,8 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/cpp17_default_insertable.hpp>
+#include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -129,9 +131,8 @@ public:
 	vector(size_type n, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
 		// [vector.cons]/3
-		// Preconditions: T is Cpp17DefaultInsertable into *this.
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
 
 		// [vector.cons]/4
 		this->resize(n);
@@ -426,6 +427,10 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type sz)
 	{
+		// [vector.capacity]/14
+		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+
 		m_impl.Resize(m_allocator, sz);
 	}
 

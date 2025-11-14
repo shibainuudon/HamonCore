@@ -23,12 +23,14 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/cpp17_default_insertable.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/allocator.hpp>
 #include <hamon/new/bad_alloc.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
@@ -77,6 +79,9 @@ public:
 	HAMON_CXX14_CONSTEXPR explicit
 	inplace_vector(size_type n)
 	{
+		// [inplace.vector.cons]/1
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, hamon::allocator<T>>::value, "");
+
 		// [inplace.vector.cons]/2
 		this->AppendN(n);
 	}
@@ -281,6 +286,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void resize(size_type sz)
 	{
+		// [inplace.vector.capacity]/2
+		static_assert(hamon::detail::cpp17_default_insertable_t<T, hamon::allocator<T>>::value, "");
+
 		this->Resize(sz);
 	}
 
