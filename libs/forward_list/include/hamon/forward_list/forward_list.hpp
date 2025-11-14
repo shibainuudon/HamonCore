@@ -20,6 +20,7 @@
 #include <hamon/container/detail/forward_list_impl.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
+#include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
@@ -92,7 +93,7 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/3
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
 
 		// [forward.list.cons]/4
 		m_impl.insert_n_after(m_allocator, this->before_begin(), n);
@@ -150,6 +151,9 @@ public:
 			AllocTraits::is_always_equal::value)
 		: m_allocator(a)
 	{
+		// [container.alloc.reqmts]/18
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
 			// アロケータが異なる場合は、
@@ -210,6 +214,10 @@ public:
 	forward_list& operator=(forward_list&& x)
 		HAMON_NOEXCEPT_IF(AllocTraits::is_always_equal::value)
 	{
+		// [container.alloc.reqmts]/26
+		static_assert(AllocTraits::propagate_on_container_move_assignment::value ||
+			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -397,6 +405,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void push_front(T&& x)
 	{
+		// [sequence.reqmts]/94
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/3
 		m_impl.insert_after(m_allocator, this->before_begin(), hamon::move(x));
 	}
@@ -434,6 +445,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, T&& x)
 	{
+		// [forward.list.modifiers]/9
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/10
 		return m_impl.insert_after(m_allocator, position, hamon::move(x));
 	}
@@ -501,7 +515,7 @@ public:
 	void resize(size_type sz)
 	{
 		// [forward.list.modifiers]/33
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
 
 		// [forward.list.modifiers]/34
 		m_impl.resize(m_allocator, sz);

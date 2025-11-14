@@ -35,7 +35,7 @@ struct S1
 	constexpr S1(int i) : x(i), y(0) {}
 	constexpr S1(int i, int j) : x(i), y(j) {}
 
-	S1(S1&&)                 = delete;
+	S1(S1&&)                 = default;
 	S1(S1 const&)            = default;
 	S1& operator=(S1&&)      = delete;
 	S1& operator=(S1 const&) = delete;
@@ -69,7 +69,7 @@ struct S2
 		++s_dtor_count;
 	}
 
-	S2(S2&&)                 = delete;
+	S2(S2&&)                 = default;
 	S2& operator=(S2&&)      = delete;
 	S2& operator=(S2 const&) = delete;
 
@@ -98,7 +98,7 @@ struct ThrowOnCopy
 		throw Exception{};
 	}
 
-	ThrowOnCopy(ThrowOnCopy&&)                 = delete;
+	ThrowOnCopy(ThrowOnCopy&&)                 = default;
 	ThrowOnCopy& operator=(ThrowOnCopy&&)      = delete;
 	ThrowOnCopy& operator=(ThrowOnCopy const&) = delete;
 

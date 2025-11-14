@@ -350,6 +350,9 @@ public:
 		: m_allocator(a)
 		, m_impl(x.hash_function(), x.key_eq())
 	{
+		// [container.alloc.reqmts]/18
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
 			// アロケータが異なる場合は要素をstealすることはできないので、
@@ -402,6 +405,10 @@ public:
 		hamon::is_nothrow_move_assignable<Hash>::value &&
 		hamon::is_nothrow_move_assignable<Pred>::value)
 	{
+		// [container.alloc.reqmts]/26
+		static_assert(AllocTraits::propagate_on_container_move_assignment::value ||
+			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -558,9 +565,9 @@ HAMON_WARNING_POP()
 	insert(value_type const& obj)
 	{
 		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/99");
+			value_type, allocator_type>::value, "[unord.req.general]/97");
 
-		// [unord.req.general]/100
+		// [unord.req.general]/98
 		return this->emplace(obj);	// may throw
 	}
 
@@ -568,9 +575,9 @@ HAMON_WARNING_POP()
 	insert(value_type&& obj)
 	{
 		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/99");
+			value_type, allocator_type>::value, "[unord.req.general]/97");
 
-		// [unord.req.general]/100
+		// [unord.req.general]/98
 		return this->emplace(hamon::move(obj));	// may throw
 	}
 
@@ -589,9 +596,9 @@ HAMON_WARNING_POP()
 	insert(const_iterator hint, value_type const& obj)
 	{
 		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/104");
+			value_type, allocator_type>::value, "[unord.req.general]/102");
 
-		// [unord.req.general]/105
+		// [unord.req.general]/103
 		return this->emplace_hint(hint, obj);	// may throw
 	}
 
@@ -599,9 +606,9 @@ HAMON_WARNING_POP()
 	insert(const_iterator hint, value_type&& obj)
 	{
 		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/104");
+			value_type, allocator_type>::value, "[unord.req.general]/102");
 
-		// [unord.req.general]/105
+		// [unord.req.general]/103
 		return this->emplace_hint(hint, hamon::move(obj));	// may throw
 	}
 

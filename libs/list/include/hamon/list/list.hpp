@@ -24,6 +24,7 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
+#include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/equal_to.hpp>
 #include <hamon/functional/less.hpp>
@@ -106,7 +107,7 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/3
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
 
 		// [list.cons]/4
 		m_impl.insert_n(m_allocator, m_impl.tail(), n);	// may throw
@@ -164,6 +165,9 @@ public:
 			hamon::allocator_traits<Allocator>::is_always_equal::value)
 		: m_allocator(a)
 	{
+		// [container.alloc.reqmts]/18
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
 			// アロケータが異なる場合は、
@@ -224,6 +228,10 @@ public:
 	operator=(list&& x)
 		HAMON_NOEXCEPT_IF(hamon::allocator_traits<Allocator>::is_always_equal::value)
 	{
+		// [container.alloc.reqmts]/26
+		static_assert(NodeAllocTraits::propagate_on_container_move_assignment::value ||
+			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -396,7 +404,7 @@ public:
 	resize(size_type sz)
 	{
 		// [list.capacity]/1
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
 
 		// [list.capacity]/2
 		m_impl.resize(m_allocator, sz);	// may throw
@@ -460,6 +468,9 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	push_front(T&& x)
 	{
+		// [sequence.reqmts]/94
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.insert(m_allocator, m_impl.head(), hamon::move(x));	// may throw
 	}
 
@@ -485,6 +496,9 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	push_back(T&& x)
 	{
+		// [sequence.reqmts]/106
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.insert(m_allocator, m_impl.tail(), hamon::move(x));	// may throw
 	}
 
@@ -517,6 +531,9 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, T&& x)
 	{
+		// [sequence.reqmts]/29
+		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+
 		return iterator{ m_impl.insert(m_allocator, position.ptr(), hamon::move(x)) };	// may throw
 	}
 
