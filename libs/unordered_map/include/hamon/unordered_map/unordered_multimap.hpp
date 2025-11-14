@@ -17,7 +17,7 @@
 #include <hamon/algorithm/is_permutation.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-//#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 //#include <hamon/concepts/detail/cpp17_hash.hpp>
@@ -338,6 +338,9 @@ public:
 	unordered_multimap(unordered_multimap const& x, hamon::type_identity_t<Allocator> const& a)
 		: unordered_multimap(x.bucket_count(), x.hash_function(), x.key_eq(), a)
 	{
+		// [container.alloc.reqmts]/13
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.copy_from(m_allocator, x.m_impl);	// may throw
 	}
 
@@ -377,6 +380,10 @@ public:
 	HAMON_CXX14_CONSTEXPR unordered_multimap&
 	operator=(unordered_multimap const& x)
 	{
+		// [container.alloc.reqmts]/22
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		//static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;

@@ -17,8 +17,10 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/container/detail/forward_list_impl.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/cpp17_copy_insertable.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
@@ -103,6 +105,9 @@ public:
 	forward_list(size_type n, T const& value, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
+		// [forward.list.cons]/6
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.cons]/7
 		m_impl.insert_n_after(m_allocator, this->before_begin(), n, value);
 	}
@@ -142,6 +147,9 @@ public:
 	forward_list(forward_list const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
+		// [container.alloc.reqmts]/13
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.insert_range_after(m_allocator, this->before_begin(), x);
 	}
 
@@ -182,6 +190,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	forward_list& operator=(forward_list const& x)
 	{
+		// [container.alloc.reqmts]/22
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -256,9 +268,13 @@ public:
 	forward_list& operator=(std::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
-		this->assign(il.begin(), il.end());
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
 
 		// [sequence.reqmts]/18
+		this->assign(il.begin(), il.end());
+
+		// [sequence.reqmts]/19
 		return *this;
 	}
 
@@ -281,6 +297,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void assign(size_type n, T const& t)
 	{
+		// [sequence.reqmts]/67
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		// [sequence.reqmts]/66
 		this->clear();
 		this->insert_after(before_begin(), n, t);
@@ -398,6 +418,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void push_front(T const& x)
 	{
+		// [sequence.reqmts]/90
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/3
 		m_impl.insert_after(m_allocator, this->before_begin(), x);
 	}
@@ -438,6 +461,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, T const& x)
 	{
+		// [forward.list.modifiers]/6
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/7
 		return m_impl.insert_after(m_allocator, position, x);
 	}
@@ -455,6 +481,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_after(const_iterator position, size_type n, T const& x)
 	{
+		// [forward.list.modifiers]/12
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/13
 		return m_impl.insert_n_after(m_allocator, position, n, x);
 	}
@@ -524,6 +553,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void resize(size_type sz, value_type const& c)
 	{
+		// [forward.list.modifiers]/35
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		// [forward.list.modifiers]/36
 		m_impl.resize(m_allocator, sz, c);
 	}

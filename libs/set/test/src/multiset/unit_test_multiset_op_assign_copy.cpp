@@ -168,8 +168,8 @@ struct S
 		++s_dtor_count;
 	}
 
-	S& operator=(S&&)      = delete;
-	S& operator=(S const&) = delete;
+	S& operator=(S&&)      = default;
+	S& operator=(S const&) = default;
 
 	friend bool operator<(S const& lhs, S const& rhs)
 	{

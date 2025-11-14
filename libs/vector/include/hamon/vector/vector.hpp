@@ -19,7 +19,10 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_move_assignable.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
+#include <hamon/container/detail/cpp17_copy_insertable.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
@@ -143,9 +146,8 @@ public:
 	vector(size_type n, T const& value, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
-		// TODO
 		// [vector.cons]/6
-		// Preconditions: T is Cpp17CopyInsertable into *this.
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
 
 		// [vector.cons]/7
 		this->resize(n, value);
@@ -197,6 +199,9 @@ public:
 	vector(vector const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
+		// [container.alloc.reqmts]/13
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		this->append_range(x);
 	}
 
@@ -236,6 +241,10 @@ public:
 	HAMON_CXX14_CONSTEXPR vector&
 	operator=(vector const& x)
 	{
+		// [container.alloc.reqmts]/22
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -310,7 +319,14 @@ public:
 	HAMON_CXX14_CONSTEXPR vector&
 	operator=(std::initializer_list<T> il)
 	{
+		// [sequence.reqmts]/17
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
+		// [sequence.reqmts]/18
 		this->assign(il);
+
+		// [sequence.reqmts]/19
 		return *this;
 	}
 
@@ -344,6 +360,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign(size_type n, T const& u)
 	{
+		// [sequence.reqmts]/67
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		m_impl.AssignRange(m_allocator, hamon::views::repeat(hamon::cref(u), n));
 	}
 
@@ -470,6 +490,9 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type sz, T const& c)
 	{
+		// [vector.capacity]/17
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.Resize(m_allocator, sz, c);
 	}
 
@@ -585,6 +608,9 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void push_back(T const& x)
 	{
+		// [sequence.reqmts]/102
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		this->emplace_back(x);
 	}
 
@@ -625,6 +651,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, T const& x)
 	{
+		// [sequence.reqmts]/25
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		return this->emplace(position, x);
 	}
 
@@ -633,6 +663,7 @@ public:
 	{
 		// [sequence.reqmts]/29
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
 
 		return this->emplace(position, hamon::move(x));
 	}
@@ -640,6 +671,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, size_type n, T const& x)
 	{
+		// [sequence.reqmts]/33
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		auto const pos_offset = position - this->begin();
 		m_impl.InsertRange(m_allocator, pos_offset, hamon::views::repeat(hamon::cref(x), n));
 		return this->begin() + pos_offset;

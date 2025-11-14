@@ -28,6 +28,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -178,6 +179,9 @@ public:
 	set(set const& x, hamon::type_identity_t<Allocator> const& a)
 		: m_allocator(a)
 	{
+		// [container.alloc.reqmts]/13
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+
 		m_impl.copy_from(m_allocator, x.m_impl);
 	}
 
@@ -213,6 +217,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	set& operator=(set const& x)
 	{
+		// [container.alloc.reqmts]/22
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		if (hamon::addressof(x) == this)
 		{
 			return *this;
@@ -277,6 +285,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	set& operator=(std::initializer_list<value_type> il)
 	{
+		// [associative.reqmts.general]/38
+		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+
 		this->clear();
 		this->insert(il);
 		return *this;

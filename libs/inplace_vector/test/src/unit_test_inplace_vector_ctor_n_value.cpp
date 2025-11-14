@@ -22,7 +22,7 @@ struct S
 	int m_value;
 	S() = delete;
 	S(int v) : m_value(v) {}
-	S(S &&) = delete;
+	S(S &&);
 	S(S const&) = default;
 	S& operator=(S &&) = delete;
 	S& operator=(S const&) = delete;

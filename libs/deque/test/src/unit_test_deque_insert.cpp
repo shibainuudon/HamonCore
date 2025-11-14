@@ -769,6 +769,8 @@ struct ThrowOnMove
 	{
 	}
 
+	ThrowOnMove& operator=(ThrowOnMove const&) = default;
+
 	ThrowOnMove(ThrowOnMove&&)
 	{
 		throw Exception{};

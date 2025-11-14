@@ -520,6 +520,8 @@ struct MayThrow
 		--s_instance_count;
 	}
 
+	MayThrow& operator=(MayThrow const&) = default;
+
 private:
 	void Ctor()
 	{
