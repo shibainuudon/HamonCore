@@ -146,6 +146,9 @@ struct ThrowOnCopy
 		: value(other.value)
 	{
 	}
+
+	ThrowOnCopy& operator=(ThrowOnCopy const&) = default;
+	ThrowOnCopy& operator=(ThrowOnCopy&&) = default;
 };
 
 struct ThrowOnMove
@@ -171,6 +174,9 @@ struct ThrowOnMove
 	{
 		throw Exception{};
 	}
+
+	ThrowOnMove& operator=(ThrowOnMove const&) = default;
+	ThrowOnMove& operator=(ThrowOnMove&&) = default;
 };
 #endif
 

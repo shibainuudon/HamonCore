@@ -21,12 +21,14 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
+#include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/cpp17_copy_insertable.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
+#include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/container/detail/iter_value_type.hpp>
 #include <hamon/functional/equal_to.hpp>
@@ -132,6 +134,10 @@ public:
 	list(InputIterator first, InputIterator last, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
+		// [sequence.reqmts]/8
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+
 		// [list.cons]/9
 		m_impl.insert_range(m_allocator, m_impl.tail(), first, last);	// may throw
 	}
@@ -141,6 +147,10 @@ public:
 	list(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
 	{
+		// [sequence.reqmts]/11
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		// [list.cons]/11
 		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
@@ -297,6 +307,11 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign(InputIterator first, InputIterator last)
 	{
+		// [sequence.reqmts]/58
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+
+		// [sequence.reqmts]/59
 		m_impl.assign_range(m_allocator, first, last);	// may throw
 	}
 
@@ -304,6 +319,14 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
+		// [sequence.reqmts]/61
+		static_assert(hamon::assignable_from_t<value_type&, hamon::ranges::range_reference_t<R>>::value, "");
+
+		// [sequence.reqmts]/62
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
+		// [sequence.reqmts]/63
 		m_impl.assign_range(m_allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
@@ -314,12 +337,14 @@ public:
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
 
+		// [sequence.reqmts]/68
 		m_impl.assign_n(m_allocator, n, t);	// may throw
 	}
 
 	HAMON_CXX14_CONSTEXPR void
 	assign(std::initializer_list<T> il)
 	{
+		// [sequence.reqmts]/65
 		this->assign(il.begin(), il.end());	// may throw
 	}
 
@@ -473,6 +498,10 @@ public:
 	HAMON_CXX14_CONSTEXPR reference
 	emplace_front(Args&&... args)
 	{
+		// [sequence.reqmts]/80
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, Args&&...>::value, "");
+
 		m_impl.insert(m_allocator, m_impl.head(), hamon::forward<Args>(args)...);	// may throw
 		return front();
 	}
@@ -481,6 +510,10 @@ public:
 	HAMON_CXX14_CONSTEXPR reference
 	emplace_back(Args&&... args)
 	{
+		// [sequence.reqmts]/85
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, Args&&...>::value, "");
+
 		m_impl.insert(m_allocator, m_impl.tail(), hamon::forward<Args>(args)...);	// may throw
 		return back();
 	}
@@ -507,6 +540,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	prepend_range(R&& rg)
 	{
+		// [sequence.reqmts]/98
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		m_impl.insert_range(m_allocator, m_impl.head(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
@@ -538,6 +575,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	append_range(R&& rg)
 	{
+		// [sequence.reqmts]/110
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		m_impl.insert_range(m_allocator, m_impl.tail(), hamon::ranges::begin(rg), hamon::ranges::end(rg));	// may throw
 	}
 
@@ -551,6 +592,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace(const_iterator position, Args&&... args)
 	{
+		// [sequence.reqmts]/21
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, Args&&...>::value, "");
+
 		return iterator{ m_impl.insert(m_allocator, position.ptr(), hamon::forward<Args>(args)...) };	// may throw
 	}
 
@@ -586,6 +631,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, InputIterator first, InputIterator last)
 	{
+		// [sequence.reqmts]/37
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+
 		return iterator{ m_impl.insert_range(m_allocator, position.ptr(), first, last) };	// may throw
 	}
 
@@ -593,6 +642,10 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator position, R&& rg)
 	{
+		// [sequence.reqmts]/41
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		return iterator{ m_impl.insert_range(m_allocator, position.ptr(), hamon::ranges::begin(rg), hamon::ranges::end(rg)) };	// may throw
 	}
 

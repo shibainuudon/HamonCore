@@ -19,6 +19,7 @@
 #include <hamon/container/detail/node_handle.hpp>
 #include <hamon/container/detail/has_is_transparent.hpp>
 #include <hamon/container/detail/cpp17_copy_insertable.hpp>
+#include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 
 #include <hamon/algorithm/equal.hpp>
@@ -28,6 +29,7 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -124,6 +126,10 @@ public:
 	multiset(InputIterator first, InputIterator last, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: multiset(comp, a)
 	{
+		// [associative.reqmts.general]/23
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+
 		this->insert(first, last);
 	}
 
@@ -131,13 +137,22 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	multiset(InputIterator first, InputIterator last, Allocator const& a)
 		: multiset(first, last, Compare(), a)
-	{}
+	{
+		// [associative.reqmts.general]/26
+		static_assert(hamon::detail::cpp17_default_constructible_t<key_compare>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	multiset(hamon::from_range_t, R&& rg, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: multiset(comp, a)
 	{
+		// [associative.reqmts.general]/29
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		this->insert_range(hamon::forward<R>(rg));
 	}
 
@@ -145,7 +160,12 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	multiset(hamon::from_range_t, R&& rg, Allocator const& a)
 		: multiset(hamon::from_range, hamon::forward<R>(rg), Compare(), a)
-	{}
+	{
+		// [associative.reqmts.general]/32
+		static_assert(hamon::detail::cpp17_default_constructible_t<key_compare>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+	}
 
 	HAMON_CXX14_CONSTEXPR
 	multiset(std::initializer_list<value_type> il, Compare const& comp = Compare(), Allocator const& a = Allocator())
@@ -400,6 +420,10 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace(Args&&... args)
 	{
+		// [associative.reqmts.general]/53
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, Args&&...>::value, "");
+
 		return m_impl.emplace(m_allocator, hamon::forward<Args>(args)...).first;
 	}
 
@@ -456,6 +480,10 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR
 	void insert(InputIterator first, InputIterator last)
 	{
+		// [associative.reqmts.general]/76
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*first)>::value, "");
+
 		m_impl.insert_range(m_allocator, first, last);
 	}
 
@@ -463,6 +491,10 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR
 	void insert_range(R&& rg)
 	{
+		// [associative.reqmts.general]/80
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		m_impl.insert_range(m_allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}
 

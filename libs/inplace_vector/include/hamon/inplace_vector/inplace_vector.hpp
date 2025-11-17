@@ -21,12 +21,16 @@
 #include <hamon/algorithm/ranges/move.hpp>
 #include <hamon/algorithm/ranges/rotate.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
+#include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_move_constructible.hpp>
+#include <hamon/concepts/detail/cpp17_swappable.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/cpp17_copy_insertable.hpp>
 #include <hamon/container/detail/cpp17_default_insertable.hpp>
+#include <hamon/container/detail/cpp17_emplace_constructible.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -104,6 +108,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	inplace_vector(InputIterator first, InputIterator last)
 	{
+		// [sequence.reqmts]/8
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*first)>::value, "");
+
 		// [inplace.vector.cons]/7
 		this->AppendRange(first, last);
 	}
@@ -112,6 +120,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	inplace_vector(hamon::from_range_t, R&& rg)
 	{
+		// [sequence.reqmts]/11
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		// [inplace.vector.cons]/9
 		this->AppendRange(hamon::forward<R>(rg));
 	}
@@ -158,6 +170,10 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign(InputIterator first, InputIterator last)
 	{
+		// [sequence.reqmts]/58
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*first)>::value, "");
+
 		auto const n = static_cast<size_type>(hamon::ranges::distance(first, last));
 		if (n > this->capacity())
 		{
@@ -171,6 +187,13 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
+		// [sequence.reqmts]/61
+		static_assert(hamon::assignable_from_t<value_type&, hamon::ranges::range_reference_t<R>>::value, "");
+
+		// [sequence.reqmts]/62
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		auto const n = static_cast<size_type>(hamon::ranges::distance(rg));
 		if (n > this->capacity())
 		{
@@ -198,6 +221,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	assign(std::initializer_list<T> il)
 	{
+		// [sequence.reqmts]/65
 		this->assign(il.begin(), il.end());
 	}
 
@@ -426,6 +450,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	reference emplace_back(Args&&... args)
 	{
+		// [sequence.reqmts]/85
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, Args&&...>::value, "");
+
 		this->EmplaceBack(hamon::forward<Args>(args)...);
 
 		// [inplace.vector.modifiers]/4
@@ -454,6 +482,10 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void append_range(R&& rg)
 	{
+		// [sequence.reqmts]/110
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		this->AppendRange(hamon::forward<R>(rg));
 	}
 
@@ -468,6 +500,10 @@ public:
 	HAMON_CXX14_CONSTEXPR pointer
 	try_emplace_back(Args&&... args)
 	{
+		// [inplace.vector.modifiers]/9
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, Args&&...>::value, "");
+
 		// [inplace.vector.modifiers]/11
 		if (size() == capacity())
 		{
@@ -484,12 +520,20 @@ public:
 	HAMON_CXX14_CONSTEXPR pointer
 	try_push_back(T const& x)
 	{
+		// [inplace.vector.modifiers]/9
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, T const&>::value, "");
+
 		return this->try_emplace_back(x);
 	}
 
 	HAMON_CXX14_CONSTEXPR pointer
 	try_push_back(T&& x)
 	{
+		// [inplace.vector.modifiers]/9
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, T&&>::value, "");
+
 		return this->try_emplace_back(hamon::move(x));
 	}
 
@@ -497,6 +541,10 @@ public:
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<R>
 	try_append_range(R&& rg)
 	{
+		// [inplace.vector.modifiers]/15
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
+
 		auto first = hamon::ranges::begin(rg);
 		auto last = hamon::ranges::end(rg);
 		for (; first != last; ++first)
@@ -539,7 +587,10 @@ public:
 	emplace(const_iterator position, Args&&... args)
 	{
 		// [sequence.reqmts]/21
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, Args&&...>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
 
 		auto const mid = this->end();
 		this->EmplaceBack(hamon::forward<Args>(args)...);	// may throw
@@ -587,7 +638,12 @@ public:
 	insert(const_iterator position, InputIterator first, InputIterator last)
 	{
 		// [sequence.reqmts]/37
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*first)>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const mid = this->end();
 		this->AppendRange(first, last);	// may throw
@@ -601,7 +657,12 @@ public:
 	insert_range(const_iterator position, R&& rg)
 	{
 		// [sequence.reqmts]/41
+		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const mid = this->end();
 		this->AppendRange(hamon::forward<R>(rg));	// may throw
