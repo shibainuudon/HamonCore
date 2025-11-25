@@ -1292,6 +1292,10 @@
 #if (_MSC_FULL_VER >= 195035718)
 #endif
 
+// Visual Studio 2026 Version: 18.0.2
+#if (_MSC_FULL_VER >= 195035719)
+#endif
+
 #if (HAMON_CXX_STANDARD >= 17)
 #  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
 #    define HAMON_HAS_CXX17_CONSTEXPR
