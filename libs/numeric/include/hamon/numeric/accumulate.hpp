@@ -60,6 +60,16 @@ accumulate(
 	T init,
 	BinaryOperation binary_op)
 {
+#if defined(HAMON_HAS_CXX14_CONSTEXPR)
+	while (first != last)
+	{
+		init = binary_op(hamon::move(init), *first);
+		first = hamon::next(first);
+	}
+
+	return init;
+#else
+	// C++11でconstexprにするために再帰で実装する
 	return
 		first == last ?
 			init:
@@ -68,6 +78,7 @@ accumulate(
 			last,
 			binary_op(hamon::move(init), *first),
 			binary_op);
+#endif
 }
 
 /**
