@@ -57,6 +57,9 @@ namespace hamon
 namespace ranges
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 template <typename Iter, typename Out>
 using copy_result = in_out_result<Iter, Out>;
 
@@ -152,6 +155,8 @@ public:
 			hamon::move(result));
 	}
 };
+
+HAMON_WARNING_POP()
 
 inline namespace cpo
 {
