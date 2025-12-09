@@ -45,6 +45,9 @@ namespace hamon
 namespace ranges
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
+
 // 27.7.6 Fill[alg.fill]
 
 struct fill_n_fn
@@ -111,6 +114,8 @@ public:
 			hamon::detail::overload_priority<1>{});
 	}
 };
+
+HAMON_WARNING_POP()
 
 inline namespace cpo
 {
