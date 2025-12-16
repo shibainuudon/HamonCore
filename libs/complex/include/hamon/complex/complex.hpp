@@ -673,6 +673,9 @@ inline namespace literals
 inline namespace complex_literals
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+
 // アンダースコアで始まらないユーザー定義リテラルのサフィックス名は、
 // 標準C++の将来の拡張のために予約されている。
 
@@ -711,6 +714,8 @@ HAMON_CXX11_CONSTEXPR hamon::complex<float> operator"" _if(unsigned long long d)
 	// [complex.literals]/4
 	return {0.0f, static_cast<float>(d)};
 }
+
+HAMON_WARNING_POP()
 
 }	// inline namespace complex_literals
 }	// inline namespace literals
