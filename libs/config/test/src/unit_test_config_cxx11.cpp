@@ -536,6 +536,9 @@ GTEST_TEST(ConfigTest, Cxx11RawStringsTest)
 namespace user_defined_literals_test
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+
 int operator"" _ki(unsigned long long)
 {
 	return 1;
@@ -567,6 +570,8 @@ float operator"" _kh()
 {
 	return 6.0f;
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace user_defined_literals_test
 
