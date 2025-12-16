@@ -18,32 +18,6 @@ namespace to_chars_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool
-ToCharsResultTest()
-{
-	char buf[128]{};
-
-	hamon::to_chars_result res1{buf, hamon::errc{}};
-	hamon::to_chars_result res2{buf, hamon::errc{}};
-	hamon::to_chars_result res3{buf, hamon::errc::value_too_large};
-	hamon::to_chars_result res4{buf+1, hamon::errc{}};
-	hamon::to_chars_result res5{buf+1, hamon::errc::value_too_large};
-
-	VERIFY( (res1 == res1));
-	VERIFY( (res1 == res2));
-	VERIFY(!(res1 == res3));
-	VERIFY(!(res1 == res4));
-	VERIFY(!(res1 == res5));
-
-	VERIFY(!(res1 != res1));
-	VERIFY(!(res1 != res2));
-	VERIFY( (res1 != res3));
-	VERIFY( (res1 != res4));
-	VERIFY( (res1 != res5));
-
-	return true;
-}
-
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 IntegerToCharsTest(T val, int base, const char* expected)
@@ -58,8 +32,6 @@ IntegerToCharsTest(T val, int base, const char* expected)
 
 GTEST_TEST(CharConvTest, ToCharsTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsResultTest());
-
 	// 10進
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerToCharsTest(0, 10, "0"));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerToCharsTest(1, 10, "1"));

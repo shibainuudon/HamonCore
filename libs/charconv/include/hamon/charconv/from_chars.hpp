@@ -7,6 +7,7 @@
 #ifndef HAMON_CHARCONV_FROM_CHARS_HPP
 #define HAMON_CHARCONV_FROM_CHARS_HPP
 
+#include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/config.hpp>
 
 #if defined(HAMON_USE_STD_CHARCONV)
@@ -16,7 +17,6 @@
 namespace hamon
 {
 
-using std::from_chars_result;
 using std::from_chars;
 
 }	// namespace hamon
@@ -35,30 +35,6 @@ using std::from_chars;
 
 namespace hamon
 {
-
-struct from_chars_result
-{
-	const char* ptr;
-	hamon::errc ec;
-#if defined(HAMON_HAS_CXX20_CONSISTENT_DEFAULTED_COMPARISONS)
-	friend bool operator==(from_chars_result const&, from_chars_result const&) = default;
-#else
-	friend HAMON_CXX11_CONSTEXPR bool
-	operator==(from_chars_result const& lhs, from_chars_result const& rhs)
-	{
-		return
-			lhs.ptr == rhs.ptr &&
-			lhs.ec  == rhs.ec;
-	}
-#endif
-#if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	friend HAMON_CXX11_CONSTEXPR bool
-	operator!=(from_chars_result const& lhs, from_chars_result const& rhs)
-	{
-		return !(lhs == rhs);
-	}
-#endif
-};
 
 namespace charconv_detail
 {

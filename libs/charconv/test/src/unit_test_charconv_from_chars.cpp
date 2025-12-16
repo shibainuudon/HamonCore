@@ -19,32 +19,6 @@ namespace from_chars_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-inline HAMON_CXX14_CONSTEXPR bool
-FromCharsResultTest()
-{
-	const char buf[128]{};
-
-	hamon::from_chars_result res1{buf, hamon::errc{}};
-	hamon::from_chars_result res2{buf, hamon::errc{}};
-	hamon::from_chars_result res3{buf, hamon::errc::invalid_argument};
-	hamon::from_chars_result res4{buf+1, hamon::errc{}};
-	hamon::from_chars_result res5{buf+1, hamon::errc::invalid_argument};
-
-	VERIFY( (res1 == res1));
-	VERIFY( (res1 == res2));
-	VERIFY(!(res1 == res3));
-	VERIFY(!(res1 == res4));
-	VERIFY(!(res1 == res5));
-
-	VERIFY(!(res1 != res1));
-	VERIFY(!(res1 != res2));
-	VERIFY( (res1 != res3));
-	VERIFY( (res1 != res4));
-	VERIFY( (res1 != res5));
-
-	return true;
-}
-
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 IntegerFromCharsTest(hamon::string_view sv, int base, T expected, hamon::size_t length, hamon::errc ec = {})
@@ -60,8 +34,6 @@ IntegerFromCharsTest(hamon::string_view sv, int base, T expected, hamon::size_t 
 
 GTEST_TEST(CharConvTest, FromCharsTest)
 {
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(FromCharsResultTest());
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("12345", 10, 12345, 5));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("-12345", 10, -12345, 6));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(IntegerFromCharsTest("123 45", 10, 123, 3));

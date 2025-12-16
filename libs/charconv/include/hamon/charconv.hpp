@@ -9,6 +9,8 @@
 
 #include <hamon/charconv/config.hpp>
 #include <hamon/charconv/from_chars.hpp>
+#include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/to_chars.hpp>
+#include <hamon/charconv/to_chars_result.hpp>
 
 #endif // HAMON_CHARCONV_HPP
