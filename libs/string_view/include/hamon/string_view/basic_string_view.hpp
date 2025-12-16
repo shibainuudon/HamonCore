@@ -1202,6 +1202,9 @@ inline namespace literals
 inline namespace string_view_literals
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+
 // [string.view.literals], suffix for basic_string_view literals
 
 HAMON_NODISCARD inline HAMON_CONSTEXPR hamon::basic_string_view<char>
@@ -1237,6 +1240,8 @@ operator"" _sv(char32_t const* str, hamon::size_t len) HAMON_NOEXCEPT
 	return hamon::basic_string_view<char32_t>{str, len};
 }
 #endif
+
+HAMON_WARNING_POP()
 
 }	// namespace string_literals
 }	// namespace literals
