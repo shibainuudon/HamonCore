@@ -17,6 +17,9 @@ namespace hamon {
 inline namespace literals {
 inline namespace string_literals {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+
 // アンダースコアで始まらないユーザー定義リテラルのサフィックス名は、
 // 標準C++の将来の拡張のために予約されているため、アンダースコアから始まる名前に変更した。
 
@@ -61,6 +64,8 @@ hamon::wstring operator"" _s(const wchar_t* str, hamon::size_t len)
 	// [basic.string.literals]/5
 	return hamon::wstring{str, len};
 }
+
+HAMON_WARNING_POP()
 
 }	// inline namespace string_literals
 }	// inline namespace literals
