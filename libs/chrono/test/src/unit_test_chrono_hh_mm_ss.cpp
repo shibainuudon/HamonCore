@@ -87,9 +87,9 @@ HAMON_CXX11_CONSTEXPR long long check_precision(Duration d)
 {
 	using HMS = hamon::chrono::hh_mm_ss<Duration>;
 	using precision = typename HMS::precision;
-	static_assert(hamon::is_same<typename HMS::precision, decltype(hamon::declval<HMS>().operator precision())>::value, "");
-	static_assert(noexcept(hamon::declval<HMS>().operator precision()), "");
-	return precision(HMS(d)).count();
+	static_assert(hamon::is_same<typename HMS::precision, decltype(static_cast<precision>(hamon::declval<HMS>()))>::value, "");
+	static_assert(noexcept(static_cast<precision>(hamon::declval<HMS>())), "");
+	return static_cast<precision>(HMS(d)).count();
 }
 
 template <typename Duration>
