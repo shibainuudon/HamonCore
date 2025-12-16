@@ -283,6 +283,9 @@ from_stream(
 inline namespace literals {
 inline namespace chrono_literals {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+
 // アンダースコアで始まらないユーザー定義リテラルのサフィックス名は、
 // 標準C++の将来の拡張のために予約されているため、アンダースコアから始まる名前に変更した。
 
@@ -292,6 +295,8 @@ chrono::year operator"" _y(unsigned long long y) HAMON_NOEXCEPT
 	// [time.cal.year.nonmembers]/10
 	return chrono::year{static_cast<int>(y)};
 }
+
+HAMON_WARNING_POP()
 
 }	// inline namespace chrono_literals
 }	// inline namespace literals
