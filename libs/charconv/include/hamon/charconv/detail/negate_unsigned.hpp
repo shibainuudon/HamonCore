@@ -14,17 +14,17 @@
 namespace hamon
 {
 
-namespace charconv_detail
+namespace detail
 {
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
-inline HAMON_CXX11_CONSTEXPR T
-negate_unsigned(T x)
+HAMON_CXX11_CONSTEXPR T
+negate_unsigned(T x) HAMON_NOEXCEPT
 {
 	return static_cast<T>(~x + 1);
 }
 
-}	// namespace charconv_detail
+}	// namespace detail
 
 }	// namespace hamon
 
