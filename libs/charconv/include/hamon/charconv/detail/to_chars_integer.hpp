@@ -24,13 +24,13 @@ namespace detail
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR int
-to_chars_integer_width(T value, T base)
+to_chars_integer_width(T value, int base)
 {
 	int result = 0;
 	
 	do
 	{
-		value = static_cast<T>(value / base);
+		value = value / static_cast<T>(base);
 		++result;
 	}
 	while (value != 0);
@@ -40,7 +40,7 @@ to_chars_integer_width(T value, T base)
 
 template <typename T>
 HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars_unsigned_integer(char* first, char* last, T value, T base)
+to_chars_unsigned_integer(char* first, char* last, T value, int base)
 {
 	auto n = hamon::detail::to_chars_integer_width(value, base);
 	if (n > (last - first))
@@ -52,8 +52,8 @@ to_chars_unsigned_integer(char* first, char* last, T value, T base)
 	auto p = last;
 	do
 	{
-		auto c = value % base;
-		value = static_cast<T>(value / base);
+		auto c = value % static_cast<T>(base);
+		value = value / static_cast<T>(base);
 		*--p = "0123456789abcdefghijklmnopqrstuvwxyz"[c];
 	}
 	while (value != 0);
@@ -65,7 +65,7 @@ template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value
 HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars_integer_impl(char* first, char* last, T value, int base, hamon::detail::overload_priority<1>)
 {
-	return hamon::detail::to_chars_unsigned_integer(first, last, value, static_cast<T>(base));
+	return hamon::detail::to_chars_unsigned_integer(first, last, value, base);
 }
 
 template <typename T>
@@ -79,7 +79,7 @@ to_chars_integer_impl(char* first, char* last, T value, int base, hamon::detail:
 		*first++ = '-';
 		x = hamon::detail::negate_unsigned(x);
 	}
-	return hamon::detail::to_chars_unsigned_integer(first, last, x, static_cast<UT>(base));
+	return hamon::detail::to_chars_unsigned_integer(first, last, x, base);
 }
 
 template <typename T>

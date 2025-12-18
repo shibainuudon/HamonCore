@@ -20,7 +20,11 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		config
+		cmath
+		cstddef
+		cstring
 		detail
+		ieee754
 		limits
 		system_error
 		type_traits
