@@ -45,6 +45,7 @@ set(SUBDIRECTORIES
 	forward_list
 	functional
 	hive
+	ieee754
 	inplace_vector
 	iomanip
 	ios
