@@ -54,7 +54,7 @@ to_chars_floating_point_precision_hex(char* first, char* const last, const Float
 	// * Also calculate the unbiased_exponent. This unifies the processing of zero, subnormal, and normal values.
 	auto const adjusted_fraction_bits = hamon::round_up(bits.fraction_bits, 4);
 	auto adjusted_fraction = bits.unbiased_fraction() << (adjusted_fraction_bits - bits.fraction_bits);
-	int32_t unbiased_exponent = bits.unbiased_exponent();;
+	int32_t unbiased_exponent = bits.unbiased_exponent();
 
 	// unbiased_exponent is within [-126, 127] for float, [-1022, 1023] for double.
 

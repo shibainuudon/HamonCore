@@ -75,9 +75,8 @@ inline to_chars_result large_integer_to_chars(char* const first, char* const las
   // __d2fixed_buffered_n(). If __f2fixed_buffered_n() is implemented, it might be faster than long division.
 
   assert(exponent2 > 0);
-  if (exponent2 > 104){
   assert(exponent2 <= 104); // because ieeeExponent <= 254
-  }
+
   // Manually represent mantissa2 * 2^exponent2 as a large integer. mantissa2 is always 24 bits
   // (due to the implicit bit), while exponent2 indicates a shift of at most 104 bits.
   // 24 + 104 equals 128 equals 4 * 32, so we need exactly 4 32-bit elements.
@@ -370,6 +369,12 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
   const uint32_t olength = decimalLength9(output);
   int32_t scientific_exponent = ryu_exponent + (int32_t)(olength) - 1;
 
+#ifdef RYU_DEBUG
+  printf("DIGITS=%u\n", v.mantissa);
+  printf("OLEN=%u\n", olength);
+  printf("EXP=%u\n", v.exponent + olength);
+#endif
+
   if (fmt == chars_format{}) {
     int32_t lower;
     int32_t upper;
@@ -551,6 +556,12 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
   char* const result = first;
 
   // Print the decimal digits.
+  // The following code is equivalent to:
+  // for (uint32_t i = 0; i < olength - 1; ++i) {
+  //   const uint32_t c = output % 10; output /= 10;
+  //   result[index + olength - i] = (char) ('0' + c);
+  // }
+  // result[index] = '0' + output % 10;
   uint32_t i = 0;
   while (output >= 10000) {
 #ifdef __clang__ // https://bugs.llvm.org/show_bug.cgi?id=38217

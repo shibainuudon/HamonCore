@@ -184,7 +184,7 @@ struct general_precision_tables<double>
 };
 
 template <typename Floating>
-inline to_chars_result
+inline hamon::to_chars_result
 to_chars_floating_point_precision_general(char* first, char* last, Floating value, int precision) noexcept
 {
 	using Binary = hamon::ieee754::binary<Floating>;
