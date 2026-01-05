@@ -9,6 +9,7 @@
 
 #include <hamon/charconv/to_chars_result.hpp>
 #include <hamon/charconv/detail/to_chars_integer.hpp>
+#include <hamon/cstring/memset.hpp>
 #include <hamon/ieee754/binary.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 #include <hamon/assert.hpp>
@@ -20,7 +21,7 @@ namespace detail
 {
 
 template <typename Floating>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_precision_hex(char* first, char* const last, const Floating value, int precision) noexcept
 {
 	// * Determine the effective precision.
@@ -228,7 +229,7 @@ to_chars_floating_point_precision_hex(char* first, char* const last, const Float
 			if (number_of_bits_remaining == 0)
 			{
 				// We've finished printing adjusted_fraction, so all remaining hexits are '0'.
-				std::memset(first, '0', static_cast<size_t>(precision));
+				hamon::ct::memset(first, '0', static_cast<size_t>(precision));
 				first += precision;
 				break;
 			}

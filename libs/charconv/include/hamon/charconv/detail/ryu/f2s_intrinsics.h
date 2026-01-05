@@ -40,7 +40,7 @@ namespace hamon {
 namespace detail {
 namespace ryu {
 
-static inline uint32_t pow5factor_32(uint32_t value) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t pow5factor_32(uint32_t value) {
   uint32_t count = 0;
   for (;;) {
     assert(value != 0);
@@ -56,19 +56,19 @@ static inline uint32_t pow5factor_32(uint32_t value) {
 }
 
 // Returns true if value is divisible by 5^p.
-static inline bool multipleOfPowerOf5_32(const uint32_t value, const uint32_t p) {
+static inline HAMON_CXX20_CONSTEXPR bool multipleOfPowerOf5_32(const uint32_t value, const uint32_t p) {
   return pow5factor_32(value) >= p;
 }
 
 // Returns true if value is divisible by 2^p.
-static inline bool multipleOfPowerOf2_32(const uint32_t value, const uint32_t p) {
+static inline HAMON_CXX20_CONSTEXPR bool multipleOfPowerOf2_32(const uint32_t value, const uint32_t p) {
   // __builtin_ctz doesn't appear to be faster here.
   return (value & ((1u << p) - 1)) == 0;
 }
 
 // It seems to be slightly faster to avoid uint128_t here, although the
 // generated code for uint128_t looks slightly nicer.
-static inline uint32_t mulShift32(const uint32_t m, const uint64_t factor, const int32_t shift) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t mulShift32(const uint32_t m, const uint64_t factor, const int32_t shift) {
   assert(shift > 32);
 
   // The casts here help MSVC to avoid calls to the __allmul library
@@ -102,7 +102,7 @@ static inline uint32_t mulShift32(const uint32_t m, const uint64_t factor, const
 #endif // RYU_32_BIT_PLATFORM
 }
 
-static inline uint32_t mulPow5InvDivPow2(const uint32_t m, const uint32_t q, const int32_t j) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t mulPow5InvDivPow2(const uint32_t m, const uint32_t q, const int32_t j) {
 #if defined(RYU_FLOAT_FULL_TABLE)
   return mulShift32(m, FLOAT_POW5_INV_SPLIT[q], j);
 #elif defined(RYU_OPTIMIZE_SIZE)
@@ -117,7 +117,7 @@ static inline uint32_t mulPow5InvDivPow2(const uint32_t m, const uint32_t q, con
 #endif
 }
 
-static inline uint32_t mulPow5divPow2(const uint32_t m, const uint32_t i, const int32_t j) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t mulPow5divPow2(const uint32_t m, const uint32_t i, const int32_t j) {
 #if defined(RYU_FLOAT_FULL_TABLE)
   return mulShift32(m, FLOAT_POW5_SPLIT[i], j);
 #elif defined(RYU_OPTIMIZE_SIZE)

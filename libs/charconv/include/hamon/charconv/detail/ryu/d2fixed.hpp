@@ -43,6 +43,9 @@
 #include "hamon/charconv/detail/ryu/d2fixed_full_table.h"
 #include "hamon/charconv/detail/ryu/d2s_intrinsics.h"
 
+#include "hamon/cstring/memcpy.hpp"
+#include "hamon/cstring/memset.hpp"
+
 #define DOUBLE_MANTISSA_BITS 52
 #define DOUBLE_EXPONENT_BITS 11
 #define DOUBLE_BIAS 1023
@@ -54,7 +57,7 @@ namespace detail {
 namespace ryu {
 
 #if defined(HAS_UINT128)
-static inline uint128_t umul256(const uint128_t a, const uint64_t bHi, const uint64_t bLo, uint128_t* const productHi) {
+static inline HAMON_CXX20_CONSTEXPR uint128_t umul256(const uint128_t a, const uint64_t bHi, const uint64_t bLo, uint128_t* const productHi) {
   const uint64_t aLo = (uint64_t)a;
   const uint64_t aHi = (uint64_t)(a >> 64);
 
@@ -82,7 +85,7 @@ static inline uint128_t umul256(const uint128_t a, const uint64_t bHi, const uin
 }
 
 // Returns the high 128 bits of the 256-bit product of a and b.
-static inline uint128_t umul256_hi(const uint128_t a, const uint64_t bHi, const uint64_t bLo) {
+static inline HAMON_CXX20_CONSTEXPR uint128_t umul256_hi(const uint128_t a, const uint64_t bHi, const uint64_t bLo) {
   // Reuse the umul256 implementation.
   // Optimizers will likely eliminate the instructions used to compute the
   // low part of the product.
@@ -93,7 +96,7 @@ static inline uint128_t umul256_hi(const uint128_t a, const uint64_t bHi, const 
 
 // Unfortunately, gcc/clang do not automatically turn a 128-bit integer division
 // into a multiplication, so we have to do it manually.
-static inline uint32_t uint128_mod1e9(const uint128_t v) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t uint128_mod1e9(const uint128_t v) {
   // After multiplying, we're going to shift right by 29, then truncate to uint32_t.
   // This means that we need only 29 + 32 = 61 bits, so we can truncate to uint64_t before shifting.
   const uint64_t multiplied = (uint64_t) umul256_hi(v, 0x89705F4136B4A597u, 0x31680A88F8953031u);
@@ -105,7 +108,7 @@ static inline uint32_t uint128_mod1e9(const uint128_t v) {
 }
 
 // Best case: use 128-bit type.
-static inline uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const mul, const int32_t j) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const mul, const int32_t j) {
   const uint128_t b0 = ((uint128_t) m) * mul[0]; // 0
   const uint128_t b1 = ((uint128_t) m) * mul[1]; // 64
   const uint128_t b2 = ((uint128_t) m) * mul[2]; // 128
@@ -126,7 +129,7 @@ static inline uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const m
 
 #if defined(HAS_64_BIT_INTRINSICS)
 // Returns the low 64 bits of the high 128 bits of the 256-bit product of a and b.
-static inline uint64_t umul256_hi128_lo64(
+static inline HAMON_CXX20_CONSTEXPR uint64_t umul256_hi128_lo64(
   const uint64_t aHi, const uint64_t aLo, const uint64_t bHi, const uint64_t bLo) {
   uint64_t b00Hi;
   const uint64_t b00Lo = umul128(aLo, bLo, &b00Hi);
@@ -145,7 +148,7 @@ static inline uint64_t umul256_hi128_lo64(
   return b11Lo + temp1Hi + temp2Hi;
 }
 
-static inline uint32_t uint128_mod1e9(const uint64_t vHi, const uint64_t vLo) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t uint128_mod1e9(const uint64_t vHi, const uint64_t vLo) {
   // After multiplying, we're going to shift right by 29, then truncate to uint32_t.
   // This means that we need only 29 + 32 = 61 bits, so we can truncate to uint64_t before shifting.
   const uint64_t multiplied = umul256_hi128_lo64(vHi, vLo, 0x89705F4136B4A597u, 0x31680A88F8953031u);
@@ -157,7 +160,7 @@ static inline uint32_t uint128_mod1e9(const uint64_t vHi, const uint64_t vLo) {
 }
 #endif // HAS_64_BIT_INTRINSICS
 
-static inline uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const mul, const int32_t j) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const mul, const int32_t j) {
   uint64_t high0;                                   // 64
   const uint64_t low0 = umul128(m, mul[0], &high0); // 0
   uint64_t high1;                                   // 128
@@ -202,7 +205,7 @@ static inline uint32_t mulShift_mod1e9(const uint64_t m, const uint64_t* const m
 // The caller has to guarantee that:
 //   10^(olength-1) <= digits < 10^olength
 // e.g., by passing `olength` as `decimalLength9(digits)`.
-static inline void append_n_digits(const uint32_t olength, uint32_t digits, char* const result) {
+static inline HAMON_CXX20_CONSTEXPR void append_n_digits(const uint32_t olength, uint32_t digits, char* const result) {
 #ifdef RYU_DEBUG
   printf("DIGITS=%u\n", digits);
 #endif
@@ -217,19 +220,19 @@ static inline void append_n_digits(const uint32_t olength, uint32_t digits, char
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    memcpy(result + olength - i - 2, DIGIT_TABLE + c0, 2);
-    memcpy(result + olength - i - 4, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + olength - i - 4, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (digits >= 100) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (digits >= 10) {
     const uint32_t c = digits << 1;
-    memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + olength - i - 2, DIGIT_TABLE + c, 2);
   } else {
     result[0] = (char) ('0' + digits);
   }
@@ -239,7 +242,7 @@ static inline void append_n_digits(const uint32_t olength, uint32_t digits, char
 // dot '.' followed by the remaining digits. The caller has to guarantee that:
 //   10^(olength-1) <= digits < 10^olength
 // e.g., by passing `olength` as `decimalLength9(digits)`.
-static inline void append_d_digits(const uint32_t olength, uint32_t digits, char* const result) {
+static inline HAMON_CXX20_CONSTEXPR void append_d_digits(const uint32_t olength, uint32_t digits, char* const result) {
 #ifdef RYU_DEBUG
   printf("DIGITS=%u\n", digits);
 #endif
@@ -254,14 +257,14 @@ static inline void append_d_digits(const uint32_t olength, uint32_t digits, char
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c0, 2);
-    memcpy(result + olength + 1 - i - 4, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + olength + 1 - i - 4, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (digits >= 100) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + olength + 1 - i - 2, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (digits >= 10) {
@@ -277,7 +280,7 @@ static inline void append_d_digits(const uint32_t olength, uint32_t digits, char
 
 // Convert `digits` to decimal and write the last `count` decimal digits to result.
 // If `digits` contains additional digits, then those are silently ignored.
-static inline void append_c_digits(const uint32_t count, uint32_t digits, char* const result) {
+static inline HAMON_CXX20_CONSTEXPR void append_c_digits(const uint32_t count, uint32_t digits, char* const result) {
 #ifdef RYU_DEBUG
   printf("DIGITS=%u\n", digits);
 #endif
@@ -286,7 +289,7 @@ static inline void append_c_digits(const uint32_t count, uint32_t digits, char* 
   for (; i < count - 1; i += 2) {
     const uint32_t c = (digits % 100) << 1;
     digits /= 100;
-    memcpy(result + count - i - 2, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + count - i - 2, DIGIT_TABLE + c, 2);
   }
   // Generate the last digit if count is odd.
   if (i < count) {
@@ -297,12 +300,12 @@ static inline void append_c_digits(const uint32_t count, uint32_t digits, char* 
 
 // Convert `digits` to decimal and write the last 9 decimal digits to result.
 // If `digits` contains additional digits, then those are silently ignored.
-static inline void append_nine_digits(uint32_t digits, char* const result) {
+static inline HAMON_CXX20_CONSTEXPR void append_nine_digits(uint32_t digits, char* const result) {
 #ifdef RYU_DEBUG
   printf("DIGITS=%u\n", digits);
 #endif
   if (digits == 0) {
-    memset(result, '0', 9);
+    hamon::ct::memset(result, '0', 9);
     return;
   }
 
@@ -315,21 +318,21 @@ static inline void append_nine_digits(uint32_t digits, char* const result) {
     digits /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    memcpy(result + 7 - i, DIGIT_TABLE + c0, 2);
-    memcpy(result + 5 - i, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + 7 - i, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + 5 - i, DIGIT_TABLE + c1, 2);
   }
   result[0] = (char) ('0' + digits);
 }
 
-static inline uint32_t indexForExponent(const uint32_t e) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t indexForExponent(const uint32_t e) {
   return (e + 15) / 16;
 }
 
-static inline uint32_t pow10BitsForIndex(const uint32_t idx) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t pow10BitsForIndex(const uint32_t idx) {
   return 16 * idx + POW10_ADDITIONAL_BITS;
 }
 
-static inline uint32_t lengthForIndex(const uint32_t idx) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t lengthForIndex(const uint32_t idx) {
   // +1 for ceil, +16 for mantissa, +8 to round up when dividing by 9
   return (log10Pow2(16 * (int32_t) idx) + 1 + 16 + 8) / 9;
 }
@@ -342,29 +345,29 @@ static inline int copy_special_str_printf(char* const result, const bool sign, c
   }
   if (mantissa) {
     if (mantissa < (1ull << (DOUBLE_MANTISSA_BITS - 1))) {
-      memcpy(result + sign, "nan(snan)", 9);
+      hamon::ct::memcpy(result + sign, "nan(snan)", 9);
       return sign + 9;
     }
-    memcpy(result + sign, "nan", 3);
+    hamon::ct::memcpy(result + sign, "nan", 3);
     return sign + 3;
   }
 #else
   if (mantissa) {
-    memcpy(result, "nan", 3);
+    hamon::ct::memcpy(result, "nan", 3);
     return 3;
   }
   if (sign) {
     result[0] = '-';
   }
 #endif
-  memcpy(result + sign, "Infinity", 8);
+  hamon::ct::memcpy(result + sign, "Infinity", 8);
   return sign + 8;
 }
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wsign-conversion")
 
-inline hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, const double d,
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, const double d,
   const uint32_t precision) {
   char* const original_first = first;
 
@@ -390,7 +393,7 @@ inline hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, 
     *first++ = '0';
     if (precision > 0) {
       *first++ = '.';
-      std::memset(first, '0', precision);
+      hamon::ct::memset(first, '0', precision);
       first += precision;
     }
     return { first, errc{} };
@@ -424,7 +427,7 @@ inline hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, 
     printf("len=%d\n", len);
 #endif
     for (int32_t i = len - 1; i >= 0; --i) {
-      const uint32_t j = p10bits - e2;
+      const uint32_t j = p10bits - static_cast<uint32_t>(e2);
       // Temporary: j is usually around 128, and by shifting a bit, we push it to 128 or above, which is
       // a slightly faster code path in mulShift_mod1e9. Instead, we can just increase the multipliers.
       const uint32_t digits = mulShift_mod1e9(m2 << 8, POW10_SPLIT[POW10_OFFSET[idx] + i], (int32_t) (j + 8));
@@ -474,27 +477,27 @@ inline hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, 
       if (last - first < static_cast<ptrdiff_t>(precision)) {
         return { last, errc::value_too_large };
       }
-      std::memset(first, '0', precision);
+      hamon::ct::memset(first, '0', precision);
       first += precision;
     } else if (i < MIN_BLOCK_2[idx]) {
       i = MIN_BLOCK_2[idx];
       if (last - first < static_cast<ptrdiff_t>(9 * i)) {
         return { last, errc::value_too_large };
       }
-      std::memset(first, '0', 9 * i);
+      hamon::ct::memset(first, '0', 9 * i);
       first += 9 * i;
     }
     for (; i < blocks; ++i) {
       const int32_t j = ADDITIONAL_BITS_2 + (-e2 - 16 * idx);
       const uint32_t p = POW10_OFFSET_2[idx] + i - MIN_BLOCK_2[idx];
       if (p >= POW10_OFFSET_2[idx + 1]) {
-        // If the remaining digits are all 0, then we might as well use memset.
+        // If the remaining digits are all 0, then we might as well use hamon::ct::memset.
         // No rounding required in this case.
         const uint32_t fill = precision - 9 * i;
         if (last - first < static_cast<ptrdiff_t>(fill)) {
           return { last, errc::value_too_large };
         }
-        std::memset(first, '0', fill);
+        hamon::ct::memset(first, '0', fill);
         first += fill;
         break;
       }
@@ -581,13 +584,13 @@ inline hamon::to_chars_result d2fixed_buffered_n(char* first, char* const last, 
     if (last - first < static_cast<ptrdiff_t>(precision)) {
       return { last, errc::value_too_large };
     }
-    std::memset(first, '0', precision);
+    hamon::ct::memset(first, '0', precision);
     first += precision;
   }
   return { first, errc{} };
 }
 
-inline to_chars_result d2exp_buffered_n(char* first, char* const last, const double d,
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2exp_buffered_n(char* first, char* const last, const double d,
   uint32_t precision) {
   char* const original_first = first;
 
@@ -612,10 +615,10 @@ inline to_chars_result d2exp_buffered_n(char* first, char* const last, const dou
     *first++ = '0';
     if (precision > 0) {
       *first++ = '.';
-      std::memset(first, '0', precision);
+      hamon::ct::memset(first, '0', precision);
       first += precision;
     }
-    std::memcpy(first, "e+00", 4);
+    hamon::ct::memcpy(first, "e+00", 4);
     first += 4;
     return { first, errc{} };
   }
@@ -653,7 +656,7 @@ inline to_chars_result d2exp_buffered_n(char* first, char* const last, const dou
     printf("len=%d\n", len);
 #endif
     for (int32_t i = len - 1; i >= 0; --i) {
-      const uint32_t j = p10bits - e2;
+      const uint32_t j = p10bits - static_cast<uint32_t>(e2);
       // Temporary: j is usually around 128, and by shifting a bit, we push it to 128 or above, which is
       // a slightly faster code path in mulShift_mod1e9. Instead, we can just increase the multipliers.
       digits = mulShift_mod1e9(m2 << 8, POW10_SPLIT[POW10_OFFSET[idx] + i], (int32_t) (j + 8));
@@ -787,7 +790,7 @@ inline to_chars_result d2exp_buffered_n(char* first, char* const last, const dou
       return { last, errc::value_too_large };
     }
     if (digits == 0) {
-      std::memset(first, '0', maximum);
+      hamon::ct::memset(first, '0', maximum);
     } else {
       append_c_digits(maximum, digits, first);
     }
@@ -855,11 +858,11 @@ inline to_chars_result d2exp_buffered_n(char* first, char* const last, const dou
 
   if (exp >= 100) {
     const int32_t c = exp % 10;
-    memcpy(first, DIGIT_TABLE + 2 * (exp / 10), 2);
+    hamon::ct::memcpy(first, DIGIT_TABLE + 2 * (exp / 10), 2);
     first[2] = (char) ('0' + c);
     first += 3;
   } else {
-    memcpy(first, DIGIT_TABLE + 2 * exp, 2);
+    hamon::ct::memcpy(first, DIGIT_TABLE + 2 * exp, 2);
     first += 2;
   }
 

@@ -21,7 +21,7 @@ namespace detail
 {
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_hex_fraction(char* first, char* last, T value, int bits)
 {
 	HAMON_ASSERT(bits % 4 == 0);
@@ -55,7 +55,7 @@ to_chars_hex_fraction(char* first, char* last, T value, int bits)
 }
 
 template <typename Floating>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_hex_shortest(char* first, char* last, Floating value) noexcept
 {
 	// This prints "1.728p+0" instead of "2.e5p-1".

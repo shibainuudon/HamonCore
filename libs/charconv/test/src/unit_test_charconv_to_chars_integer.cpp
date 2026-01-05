@@ -2,6 +2,8 @@
  *	@file	unit_test_charconv_to_chars_integer.cpp
  *
  *	@brief	to_chars のテスト
+ *
+ *	constexpr to_chars_result to_chars(char* first, char* last, integer-type value, int base = 10);
  */
 
 #include <hamon/charconv/to_chars.hpp>
