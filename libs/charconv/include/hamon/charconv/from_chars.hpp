@@ -7,6 +7,7 @@
 #ifndef HAMON_CHARCONV_FROM_CHARS_HPP
 #define HAMON_CHARCONV_FROM_CHARS_HPP
 
+#include <hamon/charconv/chars_format.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/config.hpp>
 
@@ -24,8 +25,10 @@ using std::from_chars;
 #else
 
 #include <hamon/charconv/detail/from_chars_integer.hpp>
+#include <hamon/charconv/detail/from_chars_floating_point.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
+#include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
@@ -42,6 +45,20 @@ from_chars(char const* first, char const* last, T& value, int base = 10)
 	HAMON_ASSERT(2 <= base && base <= 36);
 
 	return hamon::detail::from_chars_integer(first, last, value, base);
+}
+
+template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
+hamon::from_chars_result
+from_chars(const char* first, const char* last, T& value, hamon::chars_format fmt = hamon::chars_format::general)
+{
+	// [charconv.from.chars]/5
+	HAMON_ASSERT(
+		fmt == hamon::chars_format::scientific ||
+		fmt == hamon::chars_format::fixed ||
+		fmt == hamon::chars_format::hex ||
+		fmt == hamon::chars_format::general);
+
+	return hamon::detail::from_chars_floating_point(first, last, value, fmt);
 }
 
 }	// namespace hamon
