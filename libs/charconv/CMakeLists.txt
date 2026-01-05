@@ -20,6 +20,8 @@ include(AddSubLibrary)
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
 		bit
+		bigint
+		cctype
 		config
 		cmath
 		cstddef
@@ -27,6 +29,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		detail
 		ieee754
 		limits
+		string_view
 		system_error
 		type_traits
 		utility)
