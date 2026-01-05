@@ -13,6 +13,7 @@
 #include <hamon/limits.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "charconv_test_helper.hpp"
 
 namespace hamon_charconv_test
 {
@@ -38,7 +39,7 @@ test(T val, hamon::chars_format fmt, const char* expected)
 	return true;
 }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
+inline HAMON_CXX14_CONSTEXPR bool float_test()
 {
 	float const infinity = hamon::numeric_limits<float>::infinity();
 	float const quiet_NaN = hamon::numeric_limits<float>::quiet_NaN();
@@ -53,6 +54,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		const char* expected;
 	};
 
+	using nan_str = nan_str<float>;
+
 	const test_data data[] =
 	{
 		// Test special cases (zero, inf, nan) and an ordinary case. Also test negative signs.
@@ -60,22 +63,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		{-0.0f, chars_format::scientific, "-0e+00"},
 		{ infinity, chars_format::scientific, "inf"},
 		{-infinity, chars_format::scientific, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan"},
-		{ signaling_NaN, chars_format::scientific, "nan(snan)"},
-		{-signaling_NaN, chars_format::scientific, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan(ind)"},
-		{ signaling_NaN, chars_format::scientific, "nan"},
-		{-signaling_NaN, chars_format::scientific, "-nan"},
-#else
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan"},
-		{ signaling_NaN, chars_format::scientific, "nan"},
-		{-signaling_NaN, chars_format::scientific, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::scientific, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::scientific, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::scientific, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::scientific, nan_str::snan_str2()},
 		{ 2.018f, chars_format::scientific, "2.018e+00"},
 		{-2.018f, chars_format::scientific, "-2.018e+00"},
 
@@ -84,22 +75,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		{-0.0f, chars_format::fixed, "-0"},
 		{ infinity, chars_format::fixed, "inf"},
 		{-infinity, chars_format::fixed, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan"},
-		{ signaling_NaN, chars_format::fixed, "nan(snan)"},
-		{-signaling_NaN, chars_format::fixed, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan(ind)"},
-		{ signaling_NaN, chars_format::fixed, "nan"},
-		{-signaling_NaN, chars_format::fixed, "-nan"},
-#else
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan"},
-		{ signaling_NaN, chars_format::fixed, "nan"},
-		{-signaling_NaN, chars_format::fixed, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::fixed, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::fixed, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::fixed, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::fixed, nan_str::snan_str2()},
 		{ 2.018f, chars_format::fixed, "2.018"},
 		{-2.018f, chars_format::fixed, "-2.018"},
 
@@ -108,22 +87,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		{-0.0f, chars_format::general, "-0"},
 		{ infinity, chars_format::general, "inf"},
 		{-infinity, chars_format::general, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan"},
-		{ signaling_NaN, chars_format::general, "nan(snan)"},
-		{-signaling_NaN, chars_format::general, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan(ind)"},
-		{ signaling_NaN, chars_format::general, "nan"},
-		{-signaling_NaN, chars_format::general, "-nan"},
-#else
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan"},
-		{ signaling_NaN, chars_format::general, "nan"},
-		{-signaling_NaN, chars_format::general, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::general, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::general, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::general, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::general, nan_str::snan_str2()},
 		{ 2.018f, chars_format::general, "2.018"},
 		{-2.018f, chars_format::general, "-2.018"},
 
@@ -132,22 +99,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		{-0.0f, chars_format::hex, "-0p+0"},
 		{ infinity, chars_format::hex, "inf"},
 		{-infinity, chars_format::hex, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan"},
-		{ signaling_NaN, chars_format::hex, "nan(snan)"},
-		{-signaling_NaN, chars_format::hex, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan(ind)"},
-		{ signaling_NaN, chars_format::hex, "nan"},
-		{-signaling_NaN, chars_format::hex, "-nan"},
-#else
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan"},
-		{ signaling_NaN, chars_format::hex, "nan"},
-		{-signaling_NaN, chars_format::hex, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::hex, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::hex, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::hex, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::hex, nan_str::snan_str2()},
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{ 0x1.729p+0f, chars_format::hex, "1.729p+0"},
 		{-0x1.729p+0f, chars_format::hex, "-1.729p+0"},
@@ -524,7 +479,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 		// Test hexfloat corner cases.
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{0x1.728p+0f,      chars_format::hex, "1.728p+0"}, // instead of "2.e5p-1"
-#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_MSVC)
+#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_STDLIB_DINKUMWARE)
 		{0x0.000002p-126f, chars_format::hex, "0.000002p-126"}, // instead of "1p-149", min subnormal
 		{0x0.fffffep-126f, chars_format::hex, "0.fffffep-126"}, // max subnormal
 #endif
@@ -572,7 +527,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool float_test()
 	return true;
 }
 
-inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
+inline HAMON_CXX14_CONSTEXPR bool double_test1()
 {
 	double const infinity = hamon::numeric_limits<double>::infinity();
 	double const quiet_NaN = hamon::numeric_limits<double>::quiet_NaN();
@@ -587,6 +542,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		const char* expected;
 	};
 
+	using nan_str = nan_str<double>;
+
 	const test_data data[] =
 	{
 		// Test special cases (zero, inf, nan) and an ordinary case. Also test negative signs.
@@ -594,22 +551,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{-0.0, chars_format::scientific, "-0e+00"},
 		{ infinity, chars_format::scientific, "inf"},
 		{-infinity, chars_format::scientific, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan"},
-		{ signaling_NaN, chars_format::scientific, "nan(snan)"},
-		{-signaling_NaN, chars_format::scientific, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan(ind)"},
-		{ signaling_NaN, chars_format::scientific, "nan(snan)"},
-		{-signaling_NaN, chars_format::scientific, "-nan(snan)"},
-#else
-		{ quiet_NaN, chars_format::scientific, "nan"},
-		{-quiet_NaN, chars_format::scientific, "-nan"},
-		{ signaling_NaN, chars_format::scientific, "nan"},
-		{-signaling_NaN, chars_format::scientific, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::scientific, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::scientific, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::scientific, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::scientific, nan_str::snan_str2()},
 		{ 2.018, chars_format::scientific, "2.018e+00"},
 		{-2.018, chars_format::scientific, "-2.018e+00"},
 
@@ -618,22 +563,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{-0.0, chars_format::fixed, "-0"},
 		{ infinity, chars_format::fixed, "inf"},
 		{-infinity, chars_format::fixed, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan"},
-		{ signaling_NaN, chars_format::fixed, "nan(snan)"},
-		{-signaling_NaN, chars_format::fixed, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan(ind)"},
-		{ signaling_NaN, chars_format::fixed, "nan(snan)"},
-		{-signaling_NaN, chars_format::fixed, "-nan(snan)"},
-#else
-		{ quiet_NaN, chars_format::fixed, "nan"},
-		{-quiet_NaN, chars_format::fixed, "-nan"},
-		{ signaling_NaN, chars_format::fixed, "nan"},
-		{-signaling_NaN, chars_format::fixed, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::fixed, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::fixed, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::fixed, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::fixed, nan_str::snan_str2()},
 		{ 2.018, chars_format::fixed, "2.018"},
 		{-2.018, chars_format::fixed, "-2.018"},
 
@@ -642,22 +575,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{-0.0, chars_format::general, "-0"},
 		{ infinity, chars_format::general, "inf"},
 		{-infinity, chars_format::general, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan"},
-		{ signaling_NaN, chars_format::general, "nan(snan)"},
-		{-signaling_NaN, chars_format::general, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan(ind)"},
-		{ signaling_NaN, chars_format::general, "nan(snan)"},
-		{-signaling_NaN, chars_format::general, "-nan(snan)"},
-#else
-		{ quiet_NaN, chars_format::general, "nan"},
-		{-quiet_NaN, chars_format::general, "-nan"},
-		{ signaling_NaN, chars_format::general, "nan"},
-		{-signaling_NaN, chars_format::general, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::general, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::general, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::general, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::general, nan_str::snan_str2()},
 		{ 2.018, chars_format::general, "2.018"},
 		{-2.018, chars_format::general, "-2.018"},
 
@@ -666,22 +587,10 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{-0.0, chars_format::hex, "-0p+0"},
 		{ infinity, chars_format::hex, "inf"},
 		{-infinity, chars_format::hex, "-inf"},
-#if !defined(HAMON_USE_STD_CHARCONV)
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan"},
-		{ signaling_NaN, chars_format::hex, "nan(snan)"},
-		{-signaling_NaN, chars_format::hex, "-nan(snan)"},
-#elif defined(HAMON_MSVC)
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan(ind)"},
-		{ signaling_NaN, chars_format::hex, "nan(snan)"},
-		{-signaling_NaN, chars_format::hex, "-nan(snan)"},
-#else
-		{ quiet_NaN, chars_format::hex, "nan"},
-		{-quiet_NaN, chars_format::hex, "-nan"},
-		{ signaling_NaN, chars_format::hex, "nan"},
-		{-signaling_NaN, chars_format::hex, "-nan"},
-#endif
+		{ quiet_NaN, chars_format::hex, nan_str::nan_str1()},
+		{-quiet_NaN, chars_format::hex, nan_str::nan_str2()},
+		{ signaling_NaN, chars_format::hex, nan_str::snan_str1()},
+		{-signaling_NaN, chars_format::hex, nan_str::snan_str2()},
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{ 0x1.729p+0, chars_format::hex, "1.729p+0"},
 		{-0x1.729p+0, chars_format::hex, "-1.729p+0"},
@@ -839,7 +748,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{68719476736000.0, chars_format::scientific, "6.8719476736e+13"},
 		{549755813888000.0, chars_format::scientific, "5.49755813888e+14"},
 		{8796093022208000.0, chars_format::scientific, "8.796093022208e+15"},
+	};
 
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test2()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		// Test all exponents.
 		{7.29e-324, chars_format::scientific, "5e-324"}, // 1.729e-324 would be too small
 		{1.729e-323, chars_format::scientific, "1.5e-323"},
@@ -1474,7 +1405,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1.729e306, chars_format::scientific, "1.729e+306"},
 		{1.729e307, chars_format::scientific, "1.729e+307"},
 		{1.729e308, chars_format::scientific, "1.729e+308"},
+	};
 
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test3_1()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		// Test all of the cases for fixed notation, including the non-Ryu fallback for large integers.
 		{1.729e-4, chars_format::fixed, "0.0001729"},
 		{1.729e-3, chars_format::fixed, "0.001729"},
@@ -1631,6 +1584,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1.729e148, chars_format::fixed, "17289999999999998899106958473468411301912663441159411185628448939866394616973854317158350774314412395830343678805008096610084238372277417135195553792"},
 		{1.729e149, chars_format::fixed, "172899999999999994669497118294112945435718883536629536494107619768336292118880724270327946129065399944171020489327936909558042432677289277091030761472"},
 		{1.729e150, chars_format::fixed, "1728999999999999946694971182941129454357188835366295364941076197683362921188807242703279461290653999441710204893279369095580424326772892770910307614720"},
+	};
+
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test3_2()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		{1.729e151, chars_format::fixed, "17289999999999999466949711829411294543571888353662953649410761976833629211888072427032794612906539994417102048932793690955804243267728927709103076147200"},
 		{1.729e152, chars_format::fixed, "172900000000000006298916707023823194224899809744702086152369390765425256622723911160556555943432173163227831909544985881758388132936136213644656819306496"},
 		{1.729e153, chars_format::fixed, "1729000000000000156024523780075913932562445507111601258789788075630964282257984606727394437949255917384732810457186250595186646931432137628875576655740928"},
@@ -1730,6 +1706,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1.729e247, chars_format::fixed, "17290000000000000791901370596006778084012113059221141223449509669294388964084882359387002881848777051490753677477496655851350266676076402857612659921171584055104055985311527556696524998426837107820445401710904824761951506157501137093210078984536064"},
 		{1.729e248, chars_format::fixed, "172899999999999995498868967554396299648285222892190970179406959759371000528432519385462407327472679867880266145603142954611657089712178379203486246293200708996742359523666161931325441817469126676082168964321489645515521511843261363789325959316897792"},
 		{1.729e249, chars_format::fixed, "1729000000000000054349847582789334846017539490522073238234774693062293118183655627521885045202847523855020826489406018377331335513510468987015985286280128142401809197872254528398372883509085221977799970065515365271987163516286613695035458237396680704"},
+	};
+
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test3_3()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		{1.729e250, chars_format::fixed, "17289999999999999748609212569930373663897896812419424090822106166874266278641912805880762676603509437140462944627063473123595238203995208310310870276016313004543007157637802011302781112415700578042173457276749902185216047980034136493216993220145184768"},
 		{1.729e251, chars_format::fixed, "172899999999999997486092125699303736638978968124194240908221061668742662786419128058807626766035094371404629446270634731235952382039952083103108702760163130045430071576378020113027811124157005780421734572767499021852160479800341364932169932201451847680"},
 		{1.729e252, chars_format::fixed, "1729000000000000025733834105502667753351549559181226139739851625567341181668648462625713885287548755004269994959794136793941483303990527650861421913155869279300706144313203770581858765492779762875310225303892830252739562377704661678578505027859102302208"},
@@ -1789,7 +1788,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1.729e306, chars_format::fixed, "1728999999999999908612831898032541832095701003383549119633402005314792606560057181899736337684460333156593515046724802554287085522073905135520607430870215697004486634104534496344395882710848274439484671546719679174270431983942825289995878606968039445389238499093310627026709121794255026067310987781764808704"},
 		{1.729e307, chars_format::fixed, "17290000000000000333528512439525300606189955681859594988491057825308889504692598342254795794947144447164663583364561206381900132841048578837979817054698194932027240269064982663447504421537030567855922618194063780901052285179380748731715320520224387509426927770960704712217658015290076287147169396782654291968"},
 		{1.729e308, chars_format::fixed, "172900000000000003335285124395253006061899556818595949884910578253088895046925983422547957949471444471646635833645612063819001328410485788379798170546981949320272402690649826634475044215370305678559226181940637809010522851793807487317153205202243875094269277709607047122176580152900762871471693967826542919680"},
+	};
 
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test4()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		// Also test one-digit cases, where the decimal point can't appear between digits like "17.29".
 		{7e-3, chars_format::fixed, "0.007"},
 		{7e-2, chars_format::fixed, "0.07"},
@@ -1834,7 +1855,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1e20, chars_format::fixed, "100000000000000000000"},
 		{1e21, chars_format::fixed, "1000000000000000000000"},
 		{1e22, chars_format::fixed, "10000000000000000000000"},
+	};
 
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test5_1()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		// Test powers of 10 that aren't exactly representable.
 		// This exercises the "adjustment" code.
 		{1e23, chars_format::fixed, "99999999999999991611392"},
@@ -2015,6 +2058,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1e198, chars_format::fixed, "1000000000000000017535541566019400541537441865177200086145798104936341572305513193378283771523764365204900328030374534281861011105867876227585990799216050325567033999660761493056632508247061001404416"},
 		{1e199, chars_format::fixed, "10000000000000000972062404885344653449756728480474941855847657639911300522221339234388177506516007760792756678147673846152604340428430285295728914471221362369950308146488642846313231335560438561636352"},
 		{1e200, chars_format::fixed, "99999999999999996973312221251036165947450327545502362648241750950346848435554075534196338404706251868027512415973882408182135734368278484639385041047239877871023591066789981811181813306167128854888448"},
+	};
+
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test5_2()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		{1e201, chars_format::fixed, "1000000000000000037718785293056550291741793714171007924670336578563554653884390444993619046236149589293075414109087389699655531583234914810756005630018925423128793192791080866922220799992003324610084864"},
 		{1e202, chars_format::fixed, "9999999999999999017474591319641730272072128367390393282944984404433823148266910656903077218579754480674748342103902584639871831041306548820316951909258721342916786285447187693014154661313392524876840960"},
 		{1e203, chars_format::fixed, "99999999999999998876910787506329447650934459829549922997503484884029261182361866844442696946000689845185920534555642245481492613075738123641525387194542623914743194966239051177873087980216425864602058752"},
@@ -2084,6 +2150,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1e267, chars_format::fixed, "999999999999999973438224854160227305877518561122823750593712591987145964024444656694044404476868689015149167622996309190165824584023146941018349739309135463248122613459314107074039291811569329219648848907543004197890512187794469896370420793533163493423472892065087488"},
 		{1e268, chars_format::fixed, "9999999999999999734382248541602273058775185611228237505937125919871459640244446566940444044768686890151491676229963091901658245840231469410183497393091354632481226134593141070740392918115693292196488489075430041978905121877944698963704207935331634934234728920650874880"},
 		{1e269, chars_format::fixed, "100000000000000004675381888545612798918960543133041028684136487274401643939455589461036825818030333693907688813404495028932616818466243033147431327741697981638738927986463793558699752023835231102266007829372867138519293326106230343475263802678137754874196788463928344576"},
+	};
+
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test5_3()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		{1e270, chars_format::fixed, "1000000000000000046753818885456127989189605431330410286841364872744016439394555894610368258180303336939076888134044950289326168184662430331474313277416979816387389279864637935586997520238352311022660078293728671385192933261062303434752638026781377548741967884639283445760"},
 		{1e271, chars_format::fixed, "9999999999999999529098585253973751145501342374646995204443699533752222309208135100774737254399069875964494058799026896824009283758441475916906799486389390443691279468658234350904109878520700943148057046794110173854458342872794765056233999682236635579342942941443126198272"},
 		{1e272, chars_format::fixed, "100000000000000006552261095746787856411749967010355244012076385661777528108930437151694716472838260680760238458487340241071121614642608687943103994317258797079104154646440083568631482671560875436423095301659220218514235305581886882057848563849292034690350260273827761094656"},
@@ -2123,7 +2212,29 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		{1e306, chars_format::fixed, "1000000000000000017216064596736454828831087825013238982328892017892380671244575047987920451875459594568606138861698291060311049225532948520696938805711440650122628514669428460356992624968028329550689224175284346730060716088829214255439694630119794546505512415617982143262670862918816362862119154749127262208"},
 		{1e307, chars_format::fixed, "9999999999999999860310597602564577717002641838126363875249660735883565852672743849064846414228960666786379280392654615393353172850252103336275952370615397010730691664689375178569039851073146339641623266071126720011020169553304018596457812688561947201171488461172921822139066929851282122002676667750021070848"},
 		{1e308, chars_format::fixed, "100000000000000001097906362944045541740492309677311846336810682903157585404911491537163328978494688899061249669721172515611590283743140088328307009198146046031271664502933027185697489699588559043338384466165001178426897626212945177628091195786707458122783970171784415105291802893207873272974885715430223118336"},
+	};
 
+	for (auto const& x : data)
+	{
+		VERIFY(test(x.val, x.fmt, x.expected));
+	}
+
+	return true;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool double_test6()
+{
+	using hamon::chars_format;
+
+	struct test_data
+	{
+		double val;
+		chars_format fmt;
+		const char* expected;
+	};
+
+	const test_data data[] =
+	{
 		// These numbers have odd mantissas (unaffected by shifting)
 		// that are barely within the "max shifted mantissa" limit.
 		// They're exactly-representable multiples of powers of 10, and can use Ryu with zero-filling.
@@ -2290,7 +2401,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 		// Test hexfloat corner cases.
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
 		{0x1.728p+0,              chars_format::hex, "1.728p+0"}, // instead of "2.e5p-1"
-#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_MSVC)
+#if !defined(HAMON_USE_STD_CHARCONV) || defined(HAMON_STDLIB_DINKUMWARE)
 		{0x0.0000000000001p-1022, chars_format::hex, "0.0000000000001p-1022"}, // instead of "1p-1074", min subnormal
 		{0x0.fffffffffffffp-1022, chars_format::hex, "0.fffffffffffffp-1022"}, // max subnormal
 #endif
@@ -2419,103 +2530,53 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool double_test()
 
 GTEST_TEST(CharConvTest, ToCharsFloatingPointFmtTest)
 {
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(float_test());
-	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(double_test());
+#if !defined(HAMON_USE_STD_CHARCONV)
+#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE
+#else
+#define TO_CHARS_CONSTEXPR_EXPECT_TRUE	EXPECT_TRUE
+#endif
+
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(float_test());
+
+	// constexprのステップ数の制限にかかるので適当に分割しないといけない
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test1());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test2());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_1());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_2());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test3_3());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test4());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_1());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_2());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test5_3());
+	TO_CHARS_CONSTEXPR_EXPECT_TRUE(double_test6());
+
+#undef TO_CHARS_CONSTEXPR_EXPECT_TRUE
 
 	using hamon::chars_format;
+
 	{
+		using nan_str = nan_str<float>;
 		float const nan_payload = hamon::nanf("1729");
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan"));
-#endif
+		EXPECT_TRUE(test( nan_payload, chars_format::scientific, nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::general,    nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::general,    nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::hex,        nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        nan_str::nan_str2()));
 	}
 	{
+		using nan_str = nan_str<double>;
 		double const nan_payload = hamon::nan("1729");
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::scientific, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::fixed, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::fixed, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::general, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::general, "-nan"));
-#endif
-
-#if !defined(HAMON_USE_STD_CHARCONV)
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan"));
-#elif defined(HAMON_MSVC)
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan(ind)"));
-#else
-		EXPECT_TRUE(test( nan_payload, chars_format::hex, "nan"));
-		EXPECT_TRUE(test(-nan_payload, chars_format::hex, "-nan"));
-#endif
+		EXPECT_TRUE(test( nan_payload, chars_format::scientific, nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::scientific, nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::fixed,      nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::fixed,      nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::general,    nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::general,    nan_str::nan_str2()));
+		EXPECT_TRUE(test( nan_payload, chars_format::hex,        nan_str::nan_str1()));
+		EXPECT_TRUE(test(-nan_payload, chars_format::hex,        nan_str::nan_str2()));
 	}
 }
 

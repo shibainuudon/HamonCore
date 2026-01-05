@@ -54,6 +54,9 @@
 #endif
 
 #include "hamon/bit/countr_zero.hpp"
+#include "hamon/cstring/memcpy.hpp"
+#include "hamon/cstring/memmove.hpp"
+#include "hamon/cstring/memset.hpp"
 
 #define DOUBLE_MANTISSA_BITS 52
 #define DOUBLE_EXPONENT_BITS 11
@@ -63,7 +66,7 @@ namespace hamon {
 namespace detail {
 namespace ryu {
 
-static inline uint32_t decimalLength17(const uint64_t v) {
+static inline HAMON_CXX20_CONSTEXPR uint32_t decimalLength17(const uint64_t v) {
   // This is slightly faster than a loop.
   // The average output length is 16.38 digits, so we check high-to-low.
   // Function precondition: v is not an 18, 19, or 20-digit number.
@@ -96,7 +99,7 @@ typedef struct floating_decimal_64 {
   int32_t exponent;
 } floating_decimal_64;
 
-static inline floating_decimal_64 d2d(const uint64_t ieeeMantissa, const uint32_t ieeeExponent) {
+static inline HAMON_CXX20_CONSTEXPR floating_decimal_64 d2d(const uint64_t ieeeMantissa, const uint32_t ieeeExponent) {
   int32_t e2;
   uint64_t m2;
   if (ieeeExponent == 0) {
@@ -319,7 +322,7 @@ static inline floating_decimal_64 d2d(const uint64_t ieeeMantissa, const uint32_
   return fd;
 }
 
-static inline to_chars_result to_chars(char* const first, char* const last, const floating_decimal_64 v,
+static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const first, char* const last, const floating_decimal_64 v,
   chars_format fmt, const double f) {
   // Step 5: Print the decimal representation.
   uint64_t output = v.mantissa;
@@ -396,7 +399,7 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
         // Rounding can affect the number of digits.
         // For example, 1e23 is exactly "99999999999999991611392" which is 23 digits instead of 24.
         // We can use a lookup table to detect this and adjust the total length.
-        static constexpr uint8_t adjustment[309] = {
+        const uint8_t adjustment[309] = {
           0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,0,1,1,1,0,1,1,1,0,0,0,0,0,
           1,1,0,0,1,0,1,1,1,0,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,0,0,1,1,1,1,0,1,0,1,0,1,1,0,0,0,0,1,1,1,
           1,0,0,0,0,0,0,0,1,1,0,1,1,0,0,1,0,1,0,1,0,1,1,0,0,0,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,1,1,0,1,
@@ -445,7 +448,7 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
         // same output for two different doubles X and Y). This allows Ryu's output to be used (zero-filled).
 
         // (2^53 - 1) / 5^0 (for indexing), (2^53 - 1) / 5^1, ..., (2^53 - 1) / 5^22
-        static constexpr uint64_t max_shifted_mantissa[23] = {
+        const uint64_t max_shifted_mantissa[23] = {
           9007199254740991u, 1801439850948198u, 360287970189639u, 72057594037927u, 14411518807585u,
           2882303761517u, 576460752303u, 115292150460u, 23058430092u, 4611686018u, 922337203u, 184467440u,
           36893488u, 7378697u, 1475739u, 295147u, 59029u, 11805u, 2361u, 472u, 94u, 18u, 3u };
@@ -487,10 +490,10 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
       const uint32_t d0 = (d % 100) << 1;
       const uint32_t d1 = (d / 100) << 1;
 
-      std::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
-      std::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
-      std::memcpy(mid -= 2, DIGIT_TABLE + d0, 2);
-      std::memcpy(mid -= 2, DIGIT_TABLE + d1, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + d0, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + d1, 2);
     }
     uint32_t output2 = static_cast<uint32_t>(output);
     while (output2 >= 10000) {
@@ -502,35 +505,35 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
       output2 /= 10000;
       const uint32_t c0 = (c % 100) << 1;
       const uint32_t c1 = (c / 100) << 1;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
-      std::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
     }
     if (output2 >= 100) {
       const uint32_t c = (output2 % 100) << 1;
       output2 /= 100;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     }
     if (output2 >= 10) {
       const uint32_t c = output2 << 1;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     } else {
       *--mid = static_cast<char>('0' + output2);
     }
 
     if (ryu_exponent > 0) { // case "172900" with can_use_ryu
       // Performance note: it might be more efficient to do this immediately after setting mid.
-      std::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
+      hamon::ct::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
     } else if (ryu_exponent == 0) { // case "1729"
       // Done!
     } else if (whole_digits > 0) { // case "17.29"
       // Performance note: moving digits might not be optimal.
-      std::memmove(first, first + 1, static_cast<size_t>(whole_digits));
+      hamon::ct::memmove(first, first + 1, static_cast<size_t>(whole_digits));
       first[whole_digits] = '.';
     } else { // case "0.001729"
       // Performance note: a larger memset() followed by overwriting '.' might be more efficient.
       first[0] = '0';
       first[1] = '.';
-      std::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
+      hamon::ct::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
     }
 
     return { first + total_fixed_length, errc{} };
@@ -569,10 +572,10 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
     const uint32_t c1 = (c / 100) << 1;
     const uint32_t d0 = (d % 100) << 1;
     const uint32_t d1 = (d / 100) << 1;
-    std::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
-    std::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
-    std::memcpy(result + olength - i - 5, DIGIT_TABLE + d0, 2);
-    std::memcpy(result + olength - i - 7, DIGIT_TABLE + d1, 2);
+    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + olength - i - 5, DIGIT_TABLE + d0, 2);
+    hamon::ct::memcpy(result + olength - i - 7, DIGIT_TABLE + d1, 2);
     i += 8;
   }
   uint32_t output2 = (uint32_t) output;
@@ -585,14 +588,14 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
     output2 /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    std::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
-    std::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (output2 >= 100) {
     const uint32_t c = (output2 % 100) << 1;
     output2 /= 100;
-    std::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (output2 >= 10) {
@@ -624,18 +627,18 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
 
   if (scientific_exponent >= 100) {
     const int32_t c = scientific_exponent % 10;
-    std::memcpy(result + index, DIGIT_TABLE + 2 * (scientific_exponent / 10), 2);
+    hamon::ct::memcpy(result + index, DIGIT_TABLE + 2 * (scientific_exponent / 10), 2);
     result[index + 2] = static_cast<char>('0' + c);
     index += 3;
   } else {
-    std::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
+    hamon::ct::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
     index += 2;
   }
 
   return { first + total_scientific_length, errc{} };
 }
 
-static inline bool d2d_small_int(const uint64_t ieeeMantissa, const uint32_t ieeeExponent,
+static inline HAMON_CXX20_CONSTEXPR bool d2d_small_int(const uint64_t ieeeMantissa, const uint32_t ieeeExponent,
   floating_decimal_64* const v) {
   const uint64_t m2 = (1ull << DOUBLE_MANTISSA_BITS) | ieeeMantissa;
   const int32_t e2 = (int32_t) ieeeExponent - DOUBLE_BIAS - DOUBLE_MANTISSA_BITS;
@@ -667,7 +670,7 @@ static inline bool d2d_small_int(const uint64_t ieeeMantissa, const uint32_t iee
   return true;
 }
 
-inline to_chars_result d2s_buffered_n(char* const first, char* const last, const double f,
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result d2s_buffered_n(char* const first, char* const last, const double f,
   const chars_format fmt) {
 
   // Step 1: Decode the floating-point number, and unify normalized and subnormal cases.
@@ -688,7 +691,7 @@ inline to_chars_result d2s_buffered_n(char* const first, char* const last, const
         return { last, errc::value_too_large };
       }
 
-      std::memcpy(first, "0e+00", 5);
+      hamon::ct::memcpy(first, "0e+00", 5);
 
       return { first + 5, errc{} };
     }

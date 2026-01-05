@@ -39,7 +39,7 @@ namespace hamon
 // 28.2.2 Primitive numeric output conversion[charconv.to.chars]
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_integral<T>::value>>
-HAMON_CXX14_CONSTEXPR hamon::to_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, T value, int base = 10)
 {
 	// [charconv.to.chars]/4
@@ -52,7 +52,7 @@ to_chars(char* first, char* last, T value, int base = 10)
 hamon::to_chars_result to_chars(char*, char*, bool, int = 10) = delete;
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, T value)
 {
 	// [charconv.to.chars]/7
@@ -60,7 +60,7 @@ to_chars(char* first, char* last, T value)
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, T value, hamon::chars_format fmt)
 {
 	// [charconv.to.chars]/9
@@ -75,7 +75,7 @@ to_chars(char* first, char* last, T value, hamon::chars_format fmt)
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, T value, hamon::chars_format fmt, int precision)
 {
 	// [charconv.to.chars]/12

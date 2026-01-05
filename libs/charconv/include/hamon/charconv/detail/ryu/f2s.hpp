@@ -40,6 +40,9 @@
 #include "hamon/charconv/detail/ryu/d2fixed.hpp"
 
 #include "hamon/bit/countr_zero.hpp"
+#include "hamon/cstring/memcpy.hpp"
+#include "hamon/cstring/memmove.hpp"
+#include "hamon/cstring/memset.hpp"
 
 #define FLOAT_MANTISSA_BITS 23
 #define FLOAT_EXPONENT_BITS 8
@@ -57,7 +60,7 @@ typedef struct floating_decimal_32 {
   int32_t exponent;
 } floating_decimal_32;
 
-inline to_chars_result large_integer_to_chars(char* const first, char* const last,
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result large_integer_to_chars(char* const first, char* const last,
   const uint32_t mantissa2, const int32_t exponent2) {
 
   // Print the integer mantissa2 * 2^exponent2 exactly.
@@ -181,7 +184,7 @@ inline to_chars_result large_integer_to_chars(char* const first, char* const las
   return { result, errc{} };
 }
 
-static inline floating_decimal_32 f2d(const uint32_t ieeeMantissa, const uint32_t ieeeExponent) {
+static inline HAMON_CXX20_CONSTEXPR floating_decimal_32 f2d(const uint32_t ieeeMantissa, const uint32_t ieeeExponent) {
   int32_t e2;
   uint32_t m2;
   if (ieeeExponent == 0) {
@@ -361,7 +364,7 @@ static inline floating_decimal_32 f2d(const uint32_t ieeeMantissa, const uint32_
   return fd;
 }
 
-static inline to_chars_result to_chars(char* const first, char* const last, const floating_decimal_32 v,
+static inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result to_chars(char* const first, char* const last, const floating_decimal_32 v,
   chars_format fmt, const uint32_t ieeeMantissa, const uint32_t ieeeExponent) {
   // Step 5: Print the decimal representation.
   uint32_t output = v.mantissa;
@@ -438,7 +441,7 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
         // Rounding can affect the number of digits.
         // For example, 1e11f is exactly "99999997952" which is 11 digits instead of 12.
         // We can use a lookup table to detect this and adjust the total length.
-        static constexpr uint8_t adjustment[39] = {
+        const uint8_t adjustment[39] = {
           0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,1,0,1,1,1,0,0,1,1,0,1,0,1,1,0,0,1,0,1,1,0,1,1,1 };
         total_fixed_length -= adjustment[ryu_exponent];
         // whole_digits doesn't need to be adjusted because these cases won't refer to it later.
@@ -481,7 +484,7 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
         // same output for two different floats X and Y). This allows Ryu's output to be used (zero-filled).
 
         // (2^24 - 1) / 5^0 (for indexing), (2^24 - 1) / 5^1, ..., (2^24 - 1) / 5^10
-        static constexpr uint32_t max_shifted_mantissa[11] = {
+        const uint32_t max_shifted_mantissa[11] = {
           16777215, 3355443, 671088, 134217, 26843, 5368, 1073, 214, 42, 8, 1 };
         auto trailing_zero_bits = hamon::countr_zero(v.mantissa); // v.mantissa is guaranteed nonzero
         const uint32_t shifted_mantissa = v.mantissa >> trailing_zero_bits;
@@ -514,35 +517,35 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
       output /= 10000;
       const uint32_t c0 = (c % 100) << 1;
       const uint32_t c1 = (c / 100) << 1;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
-      std::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c0, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c1, 2);
     }
     if (output >= 100) {
       const uint32_t c = (output % 100) << 1;
       output /= 100;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     }
     if (output >= 10) {
       const uint32_t c = output << 1;
-      std::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
+      hamon::ct::memcpy(mid -= 2, DIGIT_TABLE + c, 2);
     } else {
       *--mid = static_cast<char>('0' + output);
     }
 
     if (ryu_exponent > 0) { // case "172900" with can_use_ryu
       // Performance note: it might be more efficient to do this immediately after setting mid.
-      std::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
+      hamon::ct::memset(first + olength, '0', static_cast<size_t>(ryu_exponent));
     } else if (ryu_exponent == 0) { // case "1729"
       // Done!
     } else if (whole_digits > 0) { // case "17.29"
       // Performance note: moving digits might not be optimal.
-      std::memmove(first, first + 1, static_cast<size_t>(whole_digits));
+      hamon::ct::memmove(first, first + 1, static_cast<size_t>(whole_digits));
       first[whole_digits] = '.';
     } else { // case "0.001729"
       // Performance note: a larger memset() followed by overwriting '.' might be more efficient.
       first[0] = '0';
       first[1] = '.';
-      std::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
+      hamon::ct::memset(first + 2, '0', static_cast<size_t>(-whole_digits));
     }
 
     return { first + total_fixed_length, errc{} };
@@ -572,14 +575,14 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
     output /= 10000;
     const uint32_t c0 = (c % 100) << 1;
     const uint32_t c1 = (c / 100) << 1;
-    std::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
-    std::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
+    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c0, 2);
+    hamon::ct::memcpy(result + olength - i - 3, DIGIT_TABLE + c1, 2);
     i += 4;
   }
   if (output >= 100) {
     const uint32_t c = (output % 100) << 1;
     output /= 100;
-    std::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
+    hamon::ct::memcpy(result + olength - i - 1, DIGIT_TABLE + c, 2);
     i += 2;
   }
   if (output >= 10) {
@@ -609,13 +612,13 @@ static inline to_chars_result to_chars(char* const first, char* const last, cons
     result[index++] = '+';
   }
 
-  std::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
+  hamon::ct::memcpy(result + index, DIGIT_TABLE + 2 * scientific_exponent, 2);
   index += 2;
 
   return { first + total_scientific_length, errc{} };
 }
 
-inline to_chars_result f2s_buffered_n(char* const first, char* const last, const float f,
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result f2s_buffered_n(char* const first, char* const last, const float f,
   const chars_format fmt) {
 
   // Step 1: Decode the floating-point number, and unify normalized and subnormal cases.

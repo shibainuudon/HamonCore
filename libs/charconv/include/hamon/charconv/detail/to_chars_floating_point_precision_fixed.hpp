@@ -19,7 +19,7 @@ namespace detail
 {
 
 template <typename Floating>
-hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_precision_fixed(char* first, char* last, Floating value, int precision) noexcept
 {
 	// C11 7.21.6.1 "The fprintf function"/5:

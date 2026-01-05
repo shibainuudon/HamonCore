@@ -24,20 +24,20 @@ namespace hamon
 namespace detail
 {
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_ryu(char* first, char* last, float value, hamon::chars_format fmt)
 {
 	return ryu::f2s_buffered_n(first, last, value, fmt);
 }
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_ryu(char* first, char* last, double value, hamon::chars_format fmt)
 {
 	return ryu::d2s_buffered_n(first, last, value, fmt);
 }
 
 template <typename T>
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point_impl(char* first, char* last, T value, hamon::chars_format fmt)
 {
 	hamon::ieee754::binary<T> const bin(value);
@@ -83,7 +83,7 @@ to_chars_floating_point_impl(char* first, char* last, T value, hamon::chars_form
 			return {last, hamon::errc::value_too_large};
 		}
 
-		hamon::memcpy(first, str, len);
+		hamon::ct::memcpy(first, str, len);
 
 		return {first + len, errc{}};
 	}
@@ -96,19 +96,19 @@ to_chars_floating_point_impl(char* first, char* last, T value, hamon::chars_form
 	return to_chars_floating_point_ryu(first, last, value, fmt);
 }
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point(char* first, char* last, float value, hamon::chars_format fmt)
 {
 	return to_chars_floating_point_impl(first, last, value, fmt);
 }
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point(char* first, char* last, double value, hamon::chars_format fmt)
 {
 	return to_chars_floating_point_impl(first, last, value, fmt);
 }
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars_floating_point(char* first, char* last, long double value, hamon::chars_format fmt)
 {
 	return to_chars_floating_point_impl(first, last, static_cast<double>(value), fmt);
