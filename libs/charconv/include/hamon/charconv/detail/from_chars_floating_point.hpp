@@ -1661,102 +1661,6 @@ HAMON_NODISCARD hamon::from_chars_result _Ordinary_floating_from_chars(const cha
     // ^^^^^^^^^^ DERIVED FROM corecrt_internal_strtox.h WITH SIGNIFICANT MODIFICATIONS ^^^^^^^^^^
 }
 
-//HAMON_NODISCARD inline bool _Starts_with_case_insensitive(
-//    const char* first, const char* const last, const char* _Lowercase) noexcept {
-//    // pre: _Lowercase contains only ['a', 'z'] and is null-terminated
-//    for (; first != last && *_Lowercase != '\0'; ++first, ++_Lowercase) {
-//        if ((static_cast<unsigned char>(*first) | 0x20) != *_Lowercase) {
-//            return false;
-//        }
-//    }
-//
-//    return *_Lowercase == '\0';
-//}
-//
-//template <class _Floating>
-//HAMON_NODISCARD hamon::from_chars_result _Infinity_from_chars(const char* const first, const char* const last, _Floating& value,
-//    const bool negative, const char* _Next) noexcept {
-//    // pre: _Next points at 'i' (case-insensitively)
-//    if (!_Starts_with_case_insensitive(_Next + 1, last, "nf")) { // definitely invalid
-//        return {first, errc::invalid_argument};
-//    }
-//
-//    // definitely inf
-//    _Next += 3;
-//
-//    if (_Starts_with_case_insensitive(_Next, last, "inity")) { // definitely infinity
-//        _Next += 5;
-//    }
-//
-//    _Assemble_floating_point_infinity(negative, value);
-//
-//    return {_Next, errc{}};
-//}
-
-//template <class _Floating>
-//HAMON_NODISCARD hamon::from_chars_result _Nan_from_chars(const char* const first, const char* const last, _Floating& value,
-//    bool negative, const char* _Next) noexcept {
-//    // pre: _Next points at 'n' (case-insensitively)
-//    if (!_Starts_with_case_insensitive(_Next + 1, last, "an")) { // definitely invalid
-//        return {first, errc::invalid_argument};
-//    }
-//
-//    // definitely nan
-//    _Next += 3;
-//
-//    bool _Quiet = true;
-//
-//    if (_Next != last && *_Next == '(') { // possibly nan(n-char-sequence[opt])
-//        const char* const _Seq_begin = _Next + 1;
-//
-//        for (const char* _Temp = _Seq_begin; _Temp != last; ++_Temp) {
-//            if (*_Temp == ')') { // definitely nan(n-char-sequence[opt])
-//                _Next = _Temp + 1;
-//
-//                if (_Temp - _Seq_begin == 3
-//                    && _Starts_with_case_insensitive(_Seq_begin, _Temp, "ind")) { // definitely nan(ind)
-//                    // The UCRT considers indeterminate NaN to be negative quiet NaN with no payload bits set.
-//                    // It parses "nan(ind)" and "-nan(ind)" identically.
-//                    negative = true;
-//                } else if (_Temp - _Seq_begin == 4
-//                           && _Starts_with_case_insensitive(_Seq_begin, _Temp, "snan")) { // definitely nan(snan)
-//                    _Quiet = false;
-//                }
-//
-//                break;
-//            } else if (*_Temp == '_' || ('0' <= *_Temp && *_Temp <= '9') || ('A' <= *_Temp && *_Temp <= 'Z')
-//                       || ('a' <= *_Temp && *_Temp <= 'z')) { // possibly nan(n-char-sequence[opt]), keep going
-//            } else { // definitely nan, not nan(n-char-sequence[opt])
-//                break;
-//            }
-//        }
-//    }
-//
-//    // Intentional behavior difference between the UCRT and the STL:
-//    // strtod()/strtof() parse plain "nan" as being a quiet NaN with all payload bits set.
-//    // numeric_limits::quiet_NaN() returns a quiet NaN with no payload bits set.
-//    // This implementation of from_chars() has chosen to be consistent with numeric_limits.
-//
-//    using _Traits    = _Floating_type_traits<_Floating>;
-//    using _Uint_type = typename _Traits::_Uint_type;
-//
-//    _Uint_type _Uint_value = _Traits::_Shifted_exponent_mask;
-//
-//    if (negative) {
-//        _Uint_value |= _Traits::_Shifted_sign_mask;
-//    }
-//
-//    if (_Quiet) {
-//        _Uint_value |= _Traits::_Special_nan_mantissa_mask;
-//    } else {
-//        _Uint_value |= 1;
-//    }
-//
-//    value = hamon::bit_cast<_Floating>(_Uint_value);
-//
-//    return {_Next, errc{}};
-//}
-
 HAMON_WARNING_POP()
 
 template <typename F>
@@ -1786,11 +1690,6 @@ from_chars_floating_point_impl(const char* const first, const char* const last, 
 		return hamon::detail::from_chars_floating_point_inf<F>(first, last, value, negative, ptr);
 	case 'n':
 		return hamon::detail::from_chars_floating_point_nan<F>(first, last, value, negative, ptr);
-		//if constexpr (numeric_limits<_Fp>::has_quiet_NaN)
-		//	// NOTE: The pointer passed here will be parsed in the default C locale.
-		//	// This is standard behavior (see https://eel.is/c++draft/charconv.from.chars), but may be unexpected.
-		//	return std::__from_chars_floating_point_nan<_Fp>(__first, __last, __ptr + 1, __negative);
-		//return { _Fp{0}, 0, errc::invalid_argument };
 	}
 
 	// Distinguish ordinary numbers versus inf/nan with a single test.
