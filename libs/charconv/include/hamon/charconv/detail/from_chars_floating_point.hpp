@@ -7,8 +7,12 @@
 #ifndef HAMON_CHARCONV_DETAIL_FROM_CHARS_FLOATING_POINT_HPP
 #define HAMON_CHARCONV_DETAIL_FROM_CHARS_FLOATING_POINT_HPP
 
+#include <hamon/charconv/detail/from_chars_floating_point_inf.hpp>
+#include <hamon/charconv/detail/from_chars_floating_point_nan.hpp>
+
 #include <hamon/algorithm.hpp>
 #include <hamon/bit.hpp>
+#include <hamon/cctype.hpp>
 #include <hamon/cstring.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
@@ -76,13 +80,7 @@ struct _Floating_type_traits<double> {
 template <>
 struct _Floating_type_traits<long double> : _Floating_type_traits<double> {};
 
-template <class _To, class _From, hamon::enable_if_t<hamon::conjunction<
-	hamon::bool_constant<sizeof(_To) == sizeof(_From)>,
-	hamon::is_trivially_copyable<_To>,
-	hamon::is_trivially_copyable<_From>>::value, int> = 0>
-HAMON_NODISCARD constexpr _To _Bit_cast(const _From& _Val) noexcept {
-    return hamon::bit_cast<_To>(_Val);
-}
+
 
 // convert ['0', '9'] ['A', 'Z'] ['a', 'z'] to [0, 35], everything else to 255
 static constexpr unsigned char _Digit_from_byte[] = {255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
@@ -195,33 +193,33 @@ HAMON_NODISCARD inline _Big_integer_flt _Make_big_integer_flt_one() noexcept {
     return _Xval;
 }
 
-HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const uint32_t _Value) noexcept {
+HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const uint32_t value) noexcept {
     //unsigned long _Index; // Intentionally uninitialized for better codegen
 
-    //if (_BitScanReverse(&_Index, _Value)) {
+    //if (_BitScanReverse(&_Index, value)) {
     //    return _Index + 1;
     //}
 
     //return 0;
 
-	return 32 - hamon::countl_zero(_Value);
+	return 32 - hamon::countl_zero(value);
 }
 
-HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const uint64_t _Value) noexcept {
+HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const uint64_t value) noexcept {
 //    unsigned long _Index; // Intentionally uninitialized for better codegen
 //
 //#ifdef _WIN64
-//    if (_BitScanReverse64(&_Index, _Value)) {
+//    if (_BitScanReverse64(&_Index, value)) {
 //        return _Index + 1;
 //    }
 //#else // ^^^ 64-bit / 32-bit vvv
-//    uint32_t _Ui32 = static_cast<uint32_t>(_Value >> 32);
+//    uint32_t _Ui32 = static_cast<uint32_t>(value >> 32);
 //
 //    if (_BitScanReverse(&_Index, _Ui32)) {
 //        return _Index + 1 + 32;
 //    }
 //
-//    _Ui32 = static_cast<uint32_t>(_Value);
+//    _Ui32 = static_cast<uint32_t>(value);
 //
 //    if (_BitScanReverse(&_Index, _Ui32)) {
 //        return _Index + 1;
@@ -230,7 +228,7 @@ HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const uint64_t _Value) noexcep
 //
 //    return 0;
 
-	return 64 - hamon::countl_zero(_Value);
+	return 64 - hamon::countl_zero(value);
 }
 
 HAMON_NODISCARD inline uint32_t _Bit_scan_reverse(const _Big_integer_flt& _Xval) noexcept {
@@ -318,14 +316,14 @@ HAMON_NODISCARD inline bool _Shift_left(_Big_integer_flt& _Xval, const uint32_t 
     return true;
 }
 
-// Adds a 32-bit _Value to the high-precision integer _Xval. Returns true if the addition was successful;
+// Adds a 32-bit value to the high-precision integer _Xval. Returns true if the addition was successful;
 // false if it overflowed. When overflow occurs, the high-precision integer is reset to zero.
-HAMON_NODISCARD inline bool _Add(_Big_integer_flt& _Xval, const uint32_t _Value) noexcept {
-    if (_Value == 0) {
+HAMON_NODISCARD inline bool _Add(_Big_integer_flt& _Xval, const uint32_t value) noexcept {
+    if (value == 0) {
         return true;
     }
 
-    uint32_t _Carry = _Value;
+    uint32_t _Carry = value;
     for (uint32_t _Ix = 0; _Ix != _Xval._Myused; ++_Ix) {
         const uint64_t _Result = static_cast<uint64_t>(_Xval._Mydata[_Ix]) + _Carry;
         _Xval._Mydata[_Ix]     = static_cast<uint32_t>(_Result);
@@ -833,7 +831,7 @@ void _Assemble_floating_point_zero(const bool _Is_negative, _FloatingType& _Resu
     _Uint_type _Sign_component = _Is_negative;
     _Sign_component <<= _Floating_traits::_Sign_shift;
 
-    _Result = _Bit_cast<_FloatingType>(_Sign_component);
+    _Result = hamon::bit_cast<_FloatingType>(_Sign_component);
 }
 
 // Stores a positive or negative infinity into the _Result object
@@ -847,7 +845,7 @@ void _Assemble_floating_point_infinity(const bool _Is_negative, _FloatingType& _
 
     constexpr _Uint_type _Exponent_component = _Floating_traits::_Shifted_exponent_mask;
 
-    _Result = _Bit_cast<_FloatingType>(_Sign_component | _Exponent_component);
+    _Result = hamon::bit_cast<_FloatingType>(_Sign_component | _Exponent_component);
 }
 
 //// Determines whether a mantissa should be rounded up according to round_to_nearest given [1] the value of the least
@@ -874,19 +872,19 @@ void _Assemble_floating_point_infinity(const bool _Is_negative, _FloatingType& _
 //    return _Round_bit && (_Has_tail_bits || _Lsb_bit);
 //}
 
-// Computes _Value / 2^_Shift, then rounds the result according to round_to_nearest.
+// Computes value / 2^_Shift, then rounds the result according to round_to_nearest.
 // By the time we call this function, we will already have discarded most digits.
 // The caller must pass true for _Has_zero_tail if all discarded bits were zeroes.
 HAMON_NODISCARD inline uint64_t _Right_shift_with_rounding(
-    const uint64_t _Value, const uint32_t _Shift, const bool _Has_zero_tail) noexcept {
+    const uint64_t value, const uint32_t _Shift, const bool _Has_zero_tail) noexcept {
     constexpr uint32_t _Total_number_of_bits = 64;
     if (_Shift >= _Total_number_of_bits) {
         if (_Shift == _Total_number_of_bits) {
             constexpr uint64_t _Extra_bits_mask = (1ULL << (_Total_number_of_bits - 1)) - 1;
             constexpr uint64_t _Round_bit_mask  = (1ULL << (_Total_number_of_bits - 1));
 
-            const bool _Round_bit = (_Value & _Round_bit_mask) != 0;
-            const bool _Tail_bits = !_Has_zero_tail || (_Value & _Extra_bits_mask) != 0;
+            const bool _Round_bit = (value & _Round_bit_mask) != 0;
+            const bool _Tail_bits = !_Has_zero_tail || (value & _Extra_bits_mask) != 0;
 
             // We round up the answer to 1 if the answer is greater than 0.5. Otherwise, we round down the answer to 0
             // if either [1] the answer is less than 0.5 or [2] the answer is exactly 0.5.
@@ -902,24 +900,24 @@ HAMON_NODISCARD inline uint64_t _Right_shift_with_rounding(
     // const uint64_t _Round_bit_mask  = (1ULL << (_Shift - 1));
     // const uint64_t _Lsb_bit_mask    = 1ULL << _Shift;
 
-    // const bool _Lsb_bit   = (_Value & _Lsb_bit_mask) != 0;
-    // const bool _Round_bit = (_Value & _Round_bit_mask) != 0;
-    // const bool _Tail_bits = !_Has_zero_tail || (_Value & _Extra_bits_mask) != 0;
+    // const bool _Lsb_bit   = (value & _Lsb_bit_mask) != 0;
+    // const bool _Round_bit = (value & _Round_bit_mask) != 0;
+    // const bool _Tail_bits = !_Has_zero_tail || (value & _Extra_bits_mask) != 0;
 
-    // return (_Value >> _Shift) + _Should_round_up(_Lsb_bit, _Round_bit, _Tail_bits);
+    // return (value >> _Shift) + _Should_round_up(_Lsb_bit, _Round_bit, _Tail_bits);
 
     // Example for optimized implementation: Let _Shift be 8.
     // Bit index: ...[8]76543210
-    //    _Value: ...[L]RTTTTTTT
+    //    value: ...[L]RTTTTTTT
     // By focusing on the bit at index _Shift, we can avoid unnecessary branching and shifting.
 
     // Bit index: ...[8]76543210
     //  _Lsb_bit: ...[L]RTTTTTTT
-    const uint64_t _Lsb_bit = _Value;
+    const uint64_t _Lsb_bit = value;
 
     //  Bit index: ...9[8]76543210
     // _Round_bit: ...L[R]TTTTTTT0
-    const uint64_t _Round_bit = _Value << 1;
+    const uint64_t _Round_bit = value << 1;
 
     // We can detect (without branching) whether any of the trailing bits are set.
     // Due to _Should_round below, this computation will be used if and only if R is 1, so we can assume that here.
@@ -938,7 +936,7 @@ HAMON_NODISCARD inline uint64_t _Right_shift_with_rounding(
     const uint64_t _Should_round = ((_Round_bit & (_Has_tail_bits | _Lsb_bit)) >> _Shift) & uint64_t{1};
 
     // This rounding technique is dedicated to the memory of Peppermint. =^..^=
-    return (_Value >> _Shift) + _Should_round;
+    return (value >> _Shift) + _Should_round;
 }
 
 // Converts the floating-point value [sign] (mantissa / 2^(precision-1)) * 2^exponent into the correct form for
@@ -980,7 +978,7 @@ void _Assemble_floating_point_value_no_shift(const bool _Is_negative, const int3
     _Uint_type _Exponent_component = static_cast<uint32_t>(_Exponent + (_Floating_traits::_Exponent_bias - 1));
     _Exponent_component <<= _Floating_traits::_Exponent_shift;
 
-    _Result = _Bit_cast<_FloatingType>(_Sign_component | (_Exponent_component + _Mantissa));
+    _Result = hamon::bit_cast<_FloatingType>(_Sign_component | (_Exponent_component + _Mantissa));
 }
 
 // Converts the floating-point value [sign] (mantissa / 2^(precision-1)) * 2^exponent into the correct form for
@@ -1424,11 +1422,11 @@ HAMON_NODISCARD errc _Convert_hexadecimal_string_to_floating_type(
 //     P sign[opt] digit-sequence
 
 template <class _Floating>
-HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* const _First, const char* const _Last,
-    _Floating& _Value, const chars_format _Fmt, const bool _Minus_sign, const char* _Next) noexcept {
+HAMON_NODISCARD hamon::from_chars_result _Ordinary_floating_from_chars(const char* const first, const char* const last,
+    _Floating& value, const hamon::chars_format fmt, const bool negative, const char* _Next) noexcept {
     // vvvvvvvvvv DERIVED FROM corecrt_internal_strtox.h WITH SIGNIFICANT MODIFICATIONS vvvvvvvvvv
 
-    const bool _Is_hexadecimal = _Fmt == chars_format::hex;
+    const bool _Is_hexadecimal = fmt == hamon::chars_format::hex;
     const int _Base{_Is_hexadecimal ? 16 : 10};
 
     // PERFORMANCE NOTE: _Fp_string is intentionally left uninitialized. Zero-initialization is quite expensive
@@ -1436,7 +1434,7 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     _Floating_point_string _Fp_string;
 
     // Record the optional minus sign:
-    _Fp_string._Myis_negative = _Minus_sign;
+    _Fp_string._Myis_negative = negative;
 
     uint8_t* const _Mantissa_first = _Fp_string._Mymantissa;
     uint8_t* const _Mantissa_last  = hamon::end(_Fp_string._Mymantissa);
@@ -1446,14 +1444,14 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     const char* const _Whole_begin = _Next;
 
     // Skip past any leading zeroes in the mantissa:
-    for (; _Next != _Last && *_Next == '0'; ++_Next) {
+    for (; _Next != last && *_Next == '0'; ++_Next) {
     }
     const char* const _Leading_zero_end = _Next;
 
     bool _Has_zero_tail = true;
 
     // Scan the integer part of the mantissa:
-    for (; _Next != _Last; ++_Next) {
+    for (; _Next != last; ++_Next) {
         const unsigned char _Digit_value = _Digit_from_char(*_Next);
 
         if (_Digit_value >= _Base) {
@@ -1476,7 +1474,7 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     ptrdiff_t _Exponent_adjustment = _Whole_end - _Leading_zero_end;
 
     // [_Whole_end, _Dot_end) will contain 0 or 1 '.' characters
-    if (_Next != _Last && *_Next == '.') {
+    if (_Next != last && *_Next == '.') {
         ++_Next;
     }
     const char* const _Dot_end = _Next;
@@ -1486,14 +1484,14 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     // If we haven't yet scanned any nonzero digits, continue skipping over zeroes,
     // updating the exponent adjustment to account for the zeroes we are skipping:
     if (_Exponent_adjustment == 0) {
-        for (; _Next != _Last && *_Next == '0'; ++_Next) {
+        for (; _Next != last && *_Next == '0'; ++_Next) {
         }
 
         _Exponent_adjustment = _Dot_end - _Next;
     }
 
     // Scan the fractional part of the mantissa:
-    for (; _Next != _Last; ++_Next) {
+    for (; _Next != last; ++_Next) {
         const unsigned char _Digit_value = _Digit_from_char(*_Next);
 
         if (_Digit_value >= _Base) {
@@ -1510,7 +1508,7 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
 
     // We must have at least 1 digit/hexit
     if (_Whole_begin == _Whole_end && _Dot_end == _Frac_end) {
-        return {_First, errc::invalid_argument};
+        return {first, errc::invalid_argument};
     }
 
     const char _Exponent_prefix{_Is_hexadecimal ? 'p' : 'e'};
@@ -1522,18 +1520,18 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     constexpr int _Maximum_temporary_decimal_exponent = 5200;
     constexpr int _Minimum_temporary_decimal_exponent = -5200;
 
-    if (_Fmt != chars_format::fixed // N4950 [charconv.from.chars]/6.3
+    if (fmt != hamon::chars_format::fixed // N4950 [charconv.from.chars]/6.3
                                     // "if fmt has chars_format::fixed set but not chars_format::scientific,
                                     // the optional exponent part shall not appear"
-        && _Next != _Last && (static_cast<unsigned char>(*_Next) | 0x20) == _Exponent_prefix) { // found exponent prefix
+        && _Next != last && (static_cast<unsigned char>(*_Next) | 0x20) == _Exponent_prefix) { // found exponent prefix
         const char* _Unread = _Next + 1;
 
-        if (_Unread != _Last && (*_Unread == '+' || *_Unread == '-')) { // found optional sign
+        if (_Unread != last && (*_Unread == '+' || *_Unread == '-')) { // found optional sign
             _Exponent_is_negative = *_Unread == '-';
             ++_Unread;
         }
 
-        while (_Unread != _Last) {
+        while (_Unread != last) {
             const unsigned char _Digit_value = _Digit_from_char(*_Unread);
 
             if (_Digit_value >= 10) {
@@ -1560,11 +1558,11 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     // [_Frac_end, _Exponent_end) will either be empty or contain "[EPep] sign[opt] digit-sequence"
     const char* const _Exponent_end = _Next;
 
-    if (_Fmt == chars_format::scientific
+    if (fmt == hamon::chars_format::scientific
         && _Frac_end == _Exponent_end) { // N4950 [charconv.from.chars]/6.2
                                          // "if fmt has chars_format::scientific set but not chars_format::fixed,
                                          // the otherwise optional exponent part shall appear"
-        return {_First, errc::invalid_argument};
+        return {first, errc::invalid_argument};
     }
 
     // Remove trailing zeroes from mantissa:
@@ -1578,17 +1576,17 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     // update _Next to point past the end of the exponent.
     if (_Mantissa_it == _Mantissa_first) {
         //_STL_INTERNAL_CHECK(_Has_zero_tail);
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, _Value);
+        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
         return {_Next, errc{}};
     }
 
     // Handle exponent of an overly large absolute value.
     if (_Exp_abs_too_large) {
         if (_Exponent > 0) {
-            _Assemble_floating_point_infinity(_Fp_string._Myis_negative, _Value);
+            _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
             return {_Next, errc::result_out_of_range};
         } else {
-            _Assemble_floating_point_zero(_Fp_string._Myis_negative, _Value);
+            _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
             return {_Next, errc::result_out_of_range};
         }
     }
@@ -1625,13 +1623,13 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     // So we can detect out-of-range cases directly.
     if (_Exponent > _Maximum_temporary_decimal_exponent
         || _Exponent_adjustment > _Maximum_temporary_decimal_exponent / _Exponent_adjustment_multiplier) {
-        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, _Value);
+        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
         return {_Next, errc::result_out_of_range}; // Overflow example: "1e+9999"
     }
 
     if (_Exponent < _Minimum_temporary_decimal_exponent
         || _Exponent_adjustment < _Minimum_temporary_decimal_exponent / _Exponent_adjustment_multiplier) {
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, _Value);
+        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
         return {_Next, errc::result_out_of_range}; // Underflow example: "1e-9999"
     }
 
@@ -1640,12 +1638,12 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     // Verify that after adjustment the exponent isn't wildly out of range (if it is, it isn't representable
     // in any supported floating-point format).
     if (_Exponent > _Maximum_temporary_decimal_exponent) {
-        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, _Value);
+        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
         return {_Next, errc::result_out_of_range}; // Overflow example: "10e+5199"
     }
 
     if (_Exponent < _Minimum_temporary_decimal_exponent) {
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, _Value);
+        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
         return {_Next, errc::result_out_of_range}; // Underflow example: "0.001e-5199"
     }
 
@@ -1653,180 +1651,205 @@ HAMON_NODISCARD from_chars_result _Ordinary_floating_from_chars(const char* cons
     _Fp_string._Mymantissa_count = static_cast<uint32_t>(_Mantissa_it - _Mantissa_first);
 
     if (_Is_hexadecimal) {
-        const errc _Ec = _Convert_hexadecimal_string_to_floating_type(_Fp_string, _Value, _Has_zero_tail);
+        const errc _Ec = _Convert_hexadecimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
         return {_Next, _Ec};
     } else {
-        const errc _Ec = _Convert_decimal_string_to_floating_type(_Fp_string, _Value, _Has_zero_tail);
+        const errc _Ec = _Convert_decimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
         return {_Next, _Ec};
     }
 
     // ^^^^^^^^^^ DERIVED FROM corecrt_internal_strtox.h WITH SIGNIFICANT MODIFICATIONS ^^^^^^^^^^
 }
 
-HAMON_NODISCARD inline bool _Starts_with_case_insensitive(
-    const char* _First, const char* const _Last, const char* _Lowercase) noexcept {
-    // pre: _Lowercase contains only ['a', 'z'] and is null-terminated
-    for (; _First != _Last && *_Lowercase != '\0'; ++_First, ++_Lowercase) {
-        if ((static_cast<unsigned char>(*_First) | 0x20) != *_Lowercase) {
-            return false;
-        }
-    }
+//HAMON_NODISCARD inline bool _Starts_with_case_insensitive(
+//    const char* first, const char* const last, const char* _Lowercase) noexcept {
+//    // pre: _Lowercase contains only ['a', 'z'] and is null-terminated
+//    for (; first != last && *_Lowercase != '\0'; ++first, ++_Lowercase) {
+//        if ((static_cast<unsigned char>(*first) | 0x20) != *_Lowercase) {
+//            return false;
+//        }
+//    }
+//
+//    return *_Lowercase == '\0';
+//}
+//
+//template <class _Floating>
+//HAMON_NODISCARD hamon::from_chars_result _Infinity_from_chars(const char* const first, const char* const last, _Floating& value,
+//    const bool negative, const char* _Next) noexcept {
+//    // pre: _Next points at 'i' (case-insensitively)
+//    if (!_Starts_with_case_insensitive(_Next + 1, last, "nf")) { // definitely invalid
+//        return {first, errc::invalid_argument};
+//    }
+//
+//    // definitely inf
+//    _Next += 3;
+//
+//    if (_Starts_with_case_insensitive(_Next, last, "inity")) { // definitely infinity
+//        _Next += 5;
+//    }
+//
+//    _Assemble_floating_point_infinity(negative, value);
+//
+//    return {_Next, errc{}};
+//}
 
-    return *_Lowercase == '\0';
-}
-
-template <class _Floating>
-HAMON_NODISCARD from_chars_result _Infinity_from_chars(const char* const _First, const char* const _Last, _Floating& _Value,
-    const bool _Minus_sign, const char* _Next) noexcept {
-    // pre: _Next points at 'i' (case-insensitively)
-    if (!_Starts_with_case_insensitive(_Next + 1, _Last, "nf")) { // definitely invalid
-        return {_First, errc::invalid_argument};
-    }
-
-    // definitely inf
-    _Next += 3;
-
-    if (_Starts_with_case_insensitive(_Next, _Last, "inity")) { // definitely infinity
-        _Next += 5;
-    }
-
-    _Assemble_floating_point_infinity(_Minus_sign, _Value);
-
-    return {_Next, errc{}};
-}
-
-template <class _Floating>
-HAMON_NODISCARD from_chars_result _Nan_from_chars(const char* const _First, const char* const _Last, _Floating& _Value,
-    bool _Minus_sign, const char* _Next) noexcept {
-    // pre: _Next points at 'n' (case-insensitively)
-    if (!_Starts_with_case_insensitive(_Next + 1, _Last, "an")) { // definitely invalid
-        return {_First, errc::invalid_argument};
-    }
-
-    // definitely nan
-    _Next += 3;
-
-    bool _Quiet = true;
-
-    if (_Next != _Last && *_Next == '(') { // possibly nan(n-char-sequence[opt])
-        const char* const _Seq_begin = _Next + 1;
-
-        for (const char* _Temp = _Seq_begin; _Temp != _Last; ++_Temp) {
-            if (*_Temp == ')') { // definitely nan(n-char-sequence[opt])
-                _Next = _Temp + 1;
-
-                if (_Temp - _Seq_begin == 3
-                    && _Starts_with_case_insensitive(_Seq_begin, _Temp, "ind")) { // definitely nan(ind)
-                    // The UCRT considers indeterminate NaN to be negative quiet NaN with no payload bits set.
-                    // It parses "nan(ind)" and "-nan(ind)" identically.
-                    _Minus_sign = true;
-                } else if (_Temp - _Seq_begin == 4
-                           && _Starts_with_case_insensitive(_Seq_begin, _Temp, "snan")) { // definitely nan(snan)
-                    _Quiet = false;
-                }
-
-                break;
-            } else if (*_Temp == '_' || ('0' <= *_Temp && *_Temp <= '9') || ('A' <= *_Temp && *_Temp <= 'Z')
-                       || ('a' <= *_Temp && *_Temp <= 'z')) { // possibly nan(n-char-sequence[opt]), keep going
-            } else { // definitely nan, not nan(n-char-sequence[opt])
-                break;
-            }
-        }
-    }
-
-    // Intentional behavior difference between the UCRT and the STL:
-    // strtod()/strtof() parse plain "nan" as being a quiet NaN with all payload bits set.
-    // numeric_limits::quiet_NaN() returns a quiet NaN with no payload bits set.
-    // This implementation of from_chars() has chosen to be consistent with numeric_limits.
-
-    using _Traits    = _Floating_type_traits<_Floating>;
-    using _Uint_type = typename _Traits::_Uint_type;
-
-    _Uint_type _Uint_value = _Traits::_Shifted_exponent_mask;
-
-    if (_Minus_sign) {
-        _Uint_value |= _Traits::_Shifted_sign_mask;
-    }
-
-    if (_Quiet) {
-        _Uint_value |= _Traits::_Special_nan_mantissa_mask;
-    } else {
-        _Uint_value |= 1;
-    }
-
-    _Value = _Bit_cast<_Floating>(_Uint_value);
-
-    return {_Next, errc{}};
-}
+//template <class _Floating>
+//HAMON_NODISCARD hamon::from_chars_result _Nan_from_chars(const char* const first, const char* const last, _Floating& value,
+//    bool negative, const char* _Next) noexcept {
+//    // pre: _Next points at 'n' (case-insensitively)
+//    if (!_Starts_with_case_insensitive(_Next + 1, last, "an")) { // definitely invalid
+//        return {first, errc::invalid_argument};
+//    }
+//
+//    // definitely nan
+//    _Next += 3;
+//
+//    bool _Quiet = true;
+//
+//    if (_Next != last && *_Next == '(') { // possibly nan(n-char-sequence[opt])
+//        const char* const _Seq_begin = _Next + 1;
+//
+//        for (const char* _Temp = _Seq_begin; _Temp != last; ++_Temp) {
+//            if (*_Temp == ')') { // definitely nan(n-char-sequence[opt])
+//                _Next = _Temp + 1;
+//
+//                if (_Temp - _Seq_begin == 3
+//                    && _Starts_with_case_insensitive(_Seq_begin, _Temp, "ind")) { // definitely nan(ind)
+//                    // The UCRT considers indeterminate NaN to be negative quiet NaN with no payload bits set.
+//                    // It parses "nan(ind)" and "-nan(ind)" identically.
+//                    negative = true;
+//                } else if (_Temp - _Seq_begin == 4
+//                           && _Starts_with_case_insensitive(_Seq_begin, _Temp, "snan")) { // definitely nan(snan)
+//                    _Quiet = false;
+//                }
+//
+//                break;
+//            } else if (*_Temp == '_' || ('0' <= *_Temp && *_Temp <= '9') || ('A' <= *_Temp && *_Temp <= 'Z')
+//                       || ('a' <= *_Temp && *_Temp <= 'z')) { // possibly nan(n-char-sequence[opt]), keep going
+//            } else { // definitely nan, not nan(n-char-sequence[opt])
+//                break;
+//            }
+//        }
+//    }
+//
+//    // Intentional behavior difference between the UCRT and the STL:
+//    // strtod()/strtof() parse plain "nan" as being a quiet NaN with all payload bits set.
+//    // numeric_limits::quiet_NaN() returns a quiet NaN with no payload bits set.
+//    // This implementation of from_chars() has chosen to be consistent with numeric_limits.
+//
+//    using _Traits    = _Floating_type_traits<_Floating>;
+//    using _Uint_type = typename _Traits::_Uint_type;
+//
+//    _Uint_type _Uint_value = _Traits::_Shifted_exponent_mask;
+//
+//    if (negative) {
+//        _Uint_value |= _Traits::_Shifted_sign_mask;
+//    }
+//
+//    if (_Quiet) {
+//        _Uint_value |= _Traits::_Special_nan_mantissa_mask;
+//    } else {
+//        _Uint_value |= 1;
+//    }
+//
+//    value = hamon::bit_cast<_Floating>(_Uint_value);
+//
+//    return {_Next, errc{}};
+//}
 
 HAMON_WARNING_POP()
 
-template <class _Floating>
-HAMON_NODISCARD from_chars_result _Floating_from_chars(
-    const char* const _First, const char* const _Last, _Floating& _Value, const chars_format _Fmt) noexcept {
-    //_Adl_verify_range(_First, _Last);
+template <typename F>
+HAMON_NODISCARD hamon::from_chars_result
+from_chars_floating_point_impl(const char* const first, const char* const last, F& value, const hamon::chars_format fmt) noexcept
+{
+	if (first == last) /*[[unlikely]]*/
+	{
+		return { first, errc::invalid_argument };
+	}
 
-    //_STL_ASSERT(_Fmt == chars_format::general || _Fmt == chars_format::scientific || _Fmt == chars_format::fixed
-    //                || _Fmt == chars_format::hex,
-    //    "invalid format in from_chars()");
+	const char* ptr = first;
+	bool const negative = (*ptr == '-');
+	if (negative)
+	{
+		++ptr;
 
-    bool _Minus_sign = false;
+		if (ptr == last) /*[[unlikely]]*/
+		{
+			return { first, errc::invalid_argument };
+		}
+	}
 
-    const char* _Next = _First;
+	switch (hamon::tolower(*ptr))
+	{
+	case 'i':
+		return hamon::detail::from_chars_floating_point_inf<F>(first, last, value, negative, ptr);
+	case 'n':
+		return hamon::detail::from_chars_floating_point_nan<F>(first, last, value, negative, ptr);
+		//if constexpr (numeric_limits<_Fp>::has_quiet_NaN)
+		//	// NOTE: The pointer passed here will be parsed in the default C locale.
+		//	// This is standard behavior (see https://eel.is/c++draft/charconv.from.chars), but may be unexpected.
+		//	return std::__from_chars_floating_point_nan<_Fp>(__first, __last, __ptr + 1, __negative);
+		//return { _Fp{0}, 0, errc::invalid_argument };
+	}
 
-    if (_Next == _Last) {
-        return {_First, errc::invalid_argument};
-    }
+	// Distinguish ordinary numbers versus inf/nan with a single test.
+	// ordinary numbers start with ['.'] ['0', '9'] ['A', 'F'] ['a', 'f']
+	// inf/nan start with ['I'] ['N'] ['i'] ['n']
+	// All other starting characters are invalid.
+	// Setting the 0x20 bit folds these ranges in a useful manner.
+	// ordinary (and some invalid) starting characters are folded to ['.'] ['0', '9'] ['a', 'f']
+	// inf/nan starting characters are folded to ['i'] ['n']
+	// These are ordered: ['.'] ['0', '9'] ['a', 'f'] < ['i'] ['n']
+	// Note that invalid starting characters end up on both sides of this test.
+	const unsigned char _Folded_start = static_cast<unsigned char>(static_cast<unsigned char>(*ptr) | 0x20);
 
-    if (*_Next == '-') {
-        _Minus_sign = true;
-        ++_Next;
-
-        if (_Next == _Last) {
-            return {_First, errc::invalid_argument};
-        }
-    }
-
-    // Distinguish ordinary numbers versus inf/nan with a single test.
-    // ordinary numbers start with ['.'] ['0', '9'] ['A', 'F'] ['a', 'f']
-    // inf/nan start with ['I'] ['N'] ['i'] ['n']
-    // All other starting characters are invalid.
-    // Setting the 0x20 bit folds these ranges in a useful manner.
-    // ordinary (and some invalid) starting characters are folded to ['.'] ['0', '9'] ['a', 'f']
-    // inf/nan starting characters are folded to ['i'] ['n']
-    // These are ordered: ['.'] ['0', '9'] ['a', 'f'] < ['i'] ['n']
-    // Note that invalid starting characters end up on both sides of this test.
-    const unsigned char _Folded_start = static_cast<unsigned char>(static_cast<unsigned char>(*_Next) | 0x20);
-
-    if (_Folded_start <= 'f') { // possibly an ordinary number
-        return _Ordinary_floating_from_chars(_First, _Last, _Value, _Fmt, _Minus_sign, _Next);
-    } else if (_Folded_start == 'i') { // possibly inf
-        return _Infinity_from_chars(_First, _Last, _Value, _Minus_sign, _Next);
-    } else if (_Folded_start == 'n') { // possibly nan
-        return _Nan_from_chars(_First, _Last, _Value, _Minus_sign, _Next);
-    } else { // definitely invalid
-        return {_First, errc::invalid_argument};
-    }
+	if (_Folded_start <= 'f')
+	{
+		// possibly an ordinary number
+		return _Ordinary_floating_from_chars(first, last, value, fmt, negative, ptr);
+	}
+	//else if (_Folded_start == 'i')
+	//{
+	//	// possibly inf
+	//	return _Infinity_from_chars(first, last, value, negative, ptr);
+	//}
+	//else if (_Folded_start == 'n')
+	//{
+	//	// possibly nan
+	//	return _Nan_from_chars(first, last, value, negative, ptr);
+	//}
+	else
+	{
+		// definitely invalid
+		return { first, errc::invalid_argument };
+	}
 }
 
-inline from_chars_result from_chars_floating_point(const char* const _First, const char* const _Last, float& _Value,
-    const chars_format _Fmt) noexcept /* strengthened */ {
-    return _Floating_from_chars(_First, _Last, _Value, _Fmt);
+inline hamon::from_chars_result
+from_chars_floating_point(const char* first, const char* last, float& value, hamon::chars_format fmt) noexcept
+{
+	return from_chars_floating_point_impl(first, last, value, fmt);
 }
-inline from_chars_result from_chars_floating_point(const char* const _First, const char* const _Last, double& _Value,
-    const chars_format _Fmt) noexcept /* strengthened */ {
-    return _Floating_from_chars(_First, _Last, _Value, _Fmt);
+
+inline hamon::from_chars_result
+from_chars_floating_point(const char* first, const char* last, double& value, hamon::chars_format fmt) noexcept
+{
+	return from_chars_floating_point_impl(first, last, value, fmt);
 }
-inline from_chars_result from_chars_floating_point(const char* const _First, const char* const _Last, long double& _Value,
-    const chars_format _Fmt) noexcept /* strengthened */ {
-    double _Dbl; // intentionally default-init
-    const from_chars_result _Result = _Floating_from_chars(_First, _Last, _Dbl, _Fmt);
 
-    if (_Result.ec == errc{}) {
-        _Value = _Dbl;
-    }
+inline hamon::from_chars_result
+from_chars_floating_point(const char* first, const char* last, long double& value, hamon::chars_format fmt) noexcept
+{
+	double dbl; // intentionally default-init
+	auto const ret = from_chars_floating_point_impl(first, last, dbl, fmt);
 
-    return _Result;
+	if (ret.ec == errc{})
+	{
+		value = dbl;
+	}
+
+	return ret;
 }
 
 }	// namespace detail
