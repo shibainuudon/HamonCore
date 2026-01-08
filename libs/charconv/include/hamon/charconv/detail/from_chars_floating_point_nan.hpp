@@ -8,10 +8,10 @@
 #define HAMON_CHARCONV_DETAIL_FROM_CHARS_FLOATING_POINT_NAN_HPP
 
 #include <hamon/charconv/detail/starts_with_case_insensitive.hpp>
+#include <hamon/charconv/detail/make_floating_point_nan.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/cctype/isalnum.hpp>
 #include <hamon/system_error/errc.hpp>
-#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -25,8 +25,6 @@ HAMON_NODISCARD hamon::from_chars_result
 from_chars_floating_point_nan(const char* first, const char* last, F& value, bool negative, const char* ptr) noexcept
 {
 	// pre: ptr points at 'n' (case-insensitively)
-
-	static_assert(hamon::numeric_limits<F>::has_quiet_NaN, "");
 
 	if (!starts_with_case_insensitive(ptr + 1, last, "an"))
 	{
@@ -58,14 +56,7 @@ from_chars_floating_point_nan(const char* first, const char* last, F& value, boo
 		while (ptr + offset != last);
 	}
 
-	if (negative)
-	{
-		value = -hamon::numeric_limits<F>::quiet_NaN();
-	}
-	else
-	{
-		value = hamon::numeric_limits<F>::quiet_NaN();
-	}
+	value = make_floating_point_nan<F>(negative);
 
 	return { ptr, hamon::errc{} };
 }

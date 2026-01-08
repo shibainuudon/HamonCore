@@ -168,6 +168,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool nan_test(hamon::chars_format fmt)
 		{"NAM",        0, errc::invalid_argument, T{0}},
 		{"NAN",        3, errc{}, nan},
 		{"NAN(",       3, errc{}, nan},
+		{"NAN(!)",     3, errc{}, nan},
 		{"NAN(1",      3, errc{}, nan},
 		{"NAN(1_",     3, errc{}, nan},
 		{"NAN(1_A",    3, errc{}, nan},
@@ -180,6 +181,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool nan_test(hamon::chars_format fmt)
 		{"-NAM",        0, errc::invalid_argument, T{0}},
 		{"-NAN",        4, errc{}, -nan},
 		{"-NAN(",       4, errc{}, -nan},
+		{"-NAN(!)",     4, errc{}, -nan},
 		{"-NAN(1",      4, errc{}, -nan},
 		{"-NAN(1_",     4, errc{}, -nan},
 		{"-NAN(1_A",    4, errc{}, -nan},
@@ -192,6 +194,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool nan_test(hamon::chars_format fmt)
 		{"nam",        0, errc::invalid_argument, T{0}},
 		{"nan",        3, errc{}, nan},
 		{"nan(",       3, errc{}, nan},
+		{"nan(!)",     3, errc{}, nan},
 		{"nan(1",      3, errc{}, nan},
 		{"nan(1_",     3, errc{}, nan},
 		{"nan(1_a",    3, errc{}, nan},
@@ -204,6 +207,7 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool nan_test(hamon::chars_format fmt)
 		{"-nam",        0, errc::invalid_argument, T{0}},
 		{"-nan",        4, errc{}, -nan},
 		{"-nan(",       4, errc{}, -nan},
+		{"-nan(!)",     4, errc{}, -nan},
 		{"-nan(1",      4, errc{}, -nan},
 		{"-nan(1_",     4, errc{}, -nan},
 		{"-nan(1_a",    4, errc{}, -nan},
@@ -287,6 +291,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool invalid_argument_test(hamon::chars_format 
 template <typename T>
 inline /*HAMON_CXX14_CONSTEXPR*/ bool fixed_test()
 {
+	auto const infinity = hamon::numeric_limits<T>::infinity();
+
 	using hamon::errc;
 
 	struct test_data
@@ -352,6 +358,23 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool fixed_test()
 		{"Y123", 0, errc::invalid_argument, T{0}},
 		{"Z123", 0, errc::invalid_argument, T{0}},
 
+		{"0",         1, errc{}, T( 0.0)},
+		{"-0",        2, errc{}, T(-0.0)},
+		{"0.0",       3, errc{}, T( 0.0)},
+		{"-0.0",      4, errc{}, T(-0.0)},
+		{"0.000",     5, errc{}, T( 0.0)},
+		{"-0.000",    6, errc{}, T(-0.0)},
+		{"000.000",   7, errc{}, T( 0.0)},
+		{"-00.000",   7, errc{}, T(-0.0)},
+		{"0e0",       1, errc{}, T( 0.0)},
+		{"-0e0",      2, errc{}, T(-0.0)},
+		{"00e00",     2, errc{}, T( 0.0)},
+		{"-00e00",    3, errc{}, T(-0.0)},
+		{"0p0",       1, errc{}, T( 0.0)},
+		{"-0p0",      2, errc{}, T(-0.0)},
+		{"0.0p0",     3, errc{}, T( 0.0)},
+		{"-0.0p0",    4, errc{}, T(-0.0)},
+
 		{"123",       3, errc{}, T( 123)},
 		{"-123",      4, errc{}, T(-123)},
 		{"0.25",      4, errc{}, T( 0.25)},
@@ -382,6 +405,26 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool fixed_test()
 		{"123.456e3", 7, errc{}, T(1.23456e2)},
 		{"0.111111111111111111111111111111111111111111", 44, errc{}, T(0.111111111111111111111111111111111111111111)},
 		{"111111111111.111111111111111111111111111111111111111111", 55, errc{}, T(111111111111.111111111111111111111111111111111111111111)},
+		{"1"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+		 801, errc::result_out_of_range, infinity},
+		{"-1"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+		 "0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001",
+		 802, errc::result_out_of_range, -infinity},
 	};
 
 	for (auto const& x : data)
@@ -462,18 +505,35 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool scientific_test()
 		{"Y1e0", 0, errc::invalid_argument, T{0}},
 		{"Z1e0", 0, errc::invalid_argument, T{0}},
 
-		{"1.23", 0, errc::invalid_argument, T{0}},
-		{"1.23e", 0, errc::invalid_argument, T{0}},
-		{"1.5e+", 0, errc::invalid_argument, T{0}},
-		{"1.5e-", 0, errc::invalid_argument, T{0}},
-		{"1.5e +1", 0, errc::invalid_argument, T{0}},
-		{"1.5e+ 1", 0, errc::invalid_argument, T{0}},
-		{"1.5e -1", 0, errc::invalid_argument, T{0}},
-		{"1.5e- 1", 0, errc::invalid_argument, T{0}},
+		{"1.23",      0, errc::invalid_argument, T{0}},
+		{"1.23e",     0, errc::invalid_argument, T{0}},
+		{"1.5e+",     0, errc::invalid_argument, T{0}},
+		{"1.5e-",     0, errc::invalid_argument, T{0}},
+		{"1.5e +1",   0, errc::invalid_argument, T{0}},
+		{"1.5e+ 1",   0, errc::invalid_argument, T{0}},
+		{"1.5e -1",   0, errc::invalid_argument, T{0}},
+		{"1.5e- 1",   0, errc::invalid_argument, T{0}},
 		{"1.25e++12", 0, errc::invalid_argument, T{0}},
 		{"1.25e+-12", 0, errc::invalid_argument, T{0}},
 		{"1.25e-+12", 0, errc::invalid_argument, T{0}},
 		{"1.25e--12", 0, errc::invalid_argument, T{0}},
+
+		{"0",         0, errc::invalid_argument, T{0}},
+		{"-0",        0, errc::invalid_argument, T{0}},
+		{"0.0",       0, errc::invalid_argument, T{0}},
+		{"-0.0",      0, errc::invalid_argument, T{0}},
+		{"0.000",     0, errc::invalid_argument, T{0}},
+		{"-0.000",    0, errc::invalid_argument, T{0}},
+		{"000.000",   0, errc::invalid_argument, T{0}},
+		{"-00.000",   0, errc::invalid_argument, T{0}},
+		{"0e0",       3, errc{}, T( 0.0)},
+		{"-0e0",      4, errc{}, T(-0.0)},
+		{"00e00",     5, errc{}, T( 0.0)},
+		{"-00e00",    6, errc{}, T(-0.0)},
+		{"0p0",       0, errc::invalid_argument, T{0}},
+		{"-0p0",      0, errc::invalid_argument, T{0}},
+		{"0.0p0",     0, errc::invalid_argument, T{0}},
+		{"-0.0p0",    0, errc::invalid_argument, T{0}},
 
 		{"0.25e0",      6, errc{}, T( 0.25)},
 		{"-0.25e0",     7, errc{}, T(-0.25)},
@@ -483,6 +543,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool scientific_test()
 		{"1.5E10",      6, errc{}, T(1.5e10)},
 		{"1.5e+10",     7, errc{}, T(1.5e10)},
 		{"1.5e-10",     7, errc{}, T(1.5e-10)},
+		{"0.001e5",     7, errc{}, T(1.0e2)},
+		{"0.001e-5",    8, errc{}, T(1.0e-8)},
 		{"1.25e0x12",   6, errc{}, T(1.25)},
 		{"20040229e0", 10, errc{}, T(20040229)},
 		{"123.456e3",   9, errc{}, T(1.23456e5)},
@@ -572,6 +634,23 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool general_test()
 		{"X1", 0, errc::invalid_argument, T{0}},
 		{"Y1", 0, errc::invalid_argument, T{0}},
 		{"Z1", 0, errc::invalid_argument, T{0}},
+
+		{"0",         1, errc{}, T( 0.0)},
+		{"-0",        2, errc{}, T(-0.0)},
+		{"0.0",       3, errc{}, T( 0.0)},
+		{"-0.0",      4, errc{}, T(-0.0)},
+		{"0.000",     5, errc{}, T( 0.0)},
+		{"-0.000",    6, errc{}, T(-0.0)},
+		{"000.000",   7, errc{}, T( 0.0)},
+		{"-00.000",   7, errc{}, T(-0.0)},
+		{"0e0",       3, errc{}, T( 0.0)},
+		{"-0e0",      4, errc{}, T(-0.0)},
+		{"00e00",     5, errc{}, T( 0.0)},
+		{"-00e00",    6, errc{}, T(-0.0)},
+		{"0p0",       1, errc{}, T( 0.0)},
+		{"-0p0",      2, errc{}, T(-0.0)},
+		{"0.0p0",     3, errc{}, T( 0.0)},
+		{"-0.0p0",    4, errc{}, T(-0.0)},
 
 		{"0.25",      4, errc{}, T( 0.25)},
 		{"-0.25",     5, errc{}, T(-0.25)},
@@ -688,6 +767,23 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool hex_test()
 		{"Y1", 0, errc::invalid_argument, T{0}},
 		{"Z1", 0, errc::invalid_argument, T{0}},
 
+		{"0",         1, errc{}, T( 0.0)},
+		{"-0",        2, errc{}, T(-0.0)},
+		{"0.0",       3, errc{}, T( 0.0)},
+		{"-0.0",      4, errc{}, T(-0.0)},
+		{"0.000",     5, errc{}, T( 0.0)},
+		{"-0.000",    6, errc{}, T(-0.0)},
+		{"000.000",   7, errc{}, T( 0.0)},
+		{"-00.000",   7, errc{}, T(-0.0)},
+		{"0e0",       3, errc{}, T(0xe0)},
+		{"-0e0",      4, errc{}, T(-0xe0)},
+		{"00e00",     5, errc{}, T( 0xe00)},
+		{"-00e00",    6, errc{}, T(-0xe00)},
+		{"0p0",       3, errc{}, T( 0.0)},
+		{"-0p0",      4, errc{}, T(-0.0)},
+		{"0.0p0",     5, errc{}, T( 0.0)},
+		{"-0.0p0",    6, errc{}, T(-0.0)},
+
 		{"0.25",      4, errc{}, T( 0.14453125)},	// 0x0.25p0
 		{"-0.25",     5, errc{}, T(-0.14453125)},	// -0x0.25p0
 		{"001x",      3, errc{}, T(1.0)},
@@ -701,6 +797,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool hex_test()
 		{"1.5P10",    6, errc{}, T(1344.0)},		// 0x1.5p10
 		{"1.5p+10",   7, errc{}, T(1344.0)},		// 0x1.5p10
 		{"1.5p-10",   7, errc{}, T(0.00128173828125)},	// 0x1.5p-10
+		{"0.001p5",   7, errc{}, T(0.0078125)},		// 0x0.001p5
+		{"0.001p-5",  8, errc{}, T(7.62939453125e-06)},	// 0x0.001p-5
 		{"1.5p",      3, errc{}, T(1.3125)},		// 0x1.5p0
 		{"1.5p+",     3, errc{}, T(1.3125)},		// 0x1.5p0
 		{"1.5p-",     3, errc{}, T(1.3125)},		// 0x1.5p0

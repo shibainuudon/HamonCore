@@ -9,6 +9,8 @@
 
 #include <hamon/charconv/detail/from_chars_floating_point_inf.hpp>
 #include <hamon/charconv/detail/from_chars_floating_point_nan.hpp>
+#include <hamon/charconv/detail/make_floating_point_infinity.hpp>
+#include <hamon/charconv/detail/make_floating_point_zero.hpp>
 
 #include <hamon/algorithm.hpp>
 #include <hamon/bit.hpp>
@@ -822,31 +824,31 @@ struct _Floating_point_string {
     uint8_t _Mymantissa[768];
 };
 
-// Stores a positive or negative zero into the _Result object
-template <class _FloatingType>
-void _Assemble_floating_point_zero(const bool _Is_negative, _FloatingType& _Result) noexcept {
-    using _Floating_traits = _Floating_type_traits<_FloatingType>;
-    using _Uint_type       = typename _Floating_traits::_Uint_type;
+//// Stores a positive or negative zero into the _Result object
+//template <class _FloatingType>
+//void _Assemble_floating_point_zero(const bool _Is_negative, _FloatingType& _Result) noexcept {
+//    using _Floating_traits = _Floating_type_traits<_FloatingType>;
+//    using _Uint_type       = typename _Floating_traits::_Uint_type;
+//
+//    _Uint_type _Sign_component = _Is_negative;
+//    _Sign_component <<= _Floating_traits::_Sign_shift;
+//
+//    _Result = hamon::bit_cast<_FloatingType>(_Sign_component);
+//}
 
-    _Uint_type _Sign_component = _Is_negative;
-    _Sign_component <<= _Floating_traits::_Sign_shift;
-
-    _Result = hamon::bit_cast<_FloatingType>(_Sign_component);
-}
-
-// Stores a positive or negative infinity into the _Result object
-template <class _FloatingType>
-void _Assemble_floating_point_infinity(const bool _Is_negative, _FloatingType& _Result) noexcept {
-    using _Floating_traits = _Floating_type_traits<_FloatingType>;
-    using _Uint_type       = typename _Floating_traits::_Uint_type;
-
-    _Uint_type _Sign_component = _Is_negative;
-    _Sign_component <<= _Floating_traits::_Sign_shift;
-
-    constexpr _Uint_type _Exponent_component = _Floating_traits::_Shifted_exponent_mask;
-
-    _Result = hamon::bit_cast<_FloatingType>(_Sign_component | _Exponent_component);
-}
+//// Stores a positive or negative infinity into the _Result object
+//template <class _FloatingType>
+//void _Assemble_floating_point_infinity(const bool _Is_negative, _FloatingType& _Result) noexcept {
+//    using _Floating_traits = _Floating_type_traits<_FloatingType>;
+//    using _Uint_type       = typename _Floating_traits::_Uint_type;
+//
+//    _Uint_type _Sign_component = _Is_negative;
+//    _Sign_component <<= _Floating_traits::_Sign_shift;
+//
+//    constexpr _Uint_type _Exponent_component = _Floating_traits::_Shifted_exponent_mask;
+//
+//    _Result = hamon::bit_cast<_FloatingType>(_Sign_component | _Exponent_component);
+//}
 
 //// Determines whether a mantissa should be rounded up according to round_to_nearest given [1] the value of the least
 //// significant bit of the mantissa, [2] the value of the next bit after the least significant bit (the "round" bit)
@@ -1008,7 +1010,7 @@ HAMON_NODISCARD errc _Assemble_floating_point_value(const uint64_t _Initial_mant
 
     if (_Normal_exponent > _Traits::_Maximum_binary_exponent) {
         // The exponent is too large to be represented by the floating-point type; report the overflow condition:
-        _Assemble_floating_point_infinity(_Is_negative, _Result);
+		_Result = make_floating_point_infinity<_FloatingType>(_Is_negative);
         return errc::result_out_of_range; // Overflow example: "1e+1000"
     }
 
@@ -1225,7 +1227,7 @@ HAMON_NODISCARD errc _Convert_decimal_string_to_floating_type(
 
     if (_Integer_digits_missing > 0) {
         if (!_Multiply_by_power_of_ten(_Integer_value, _Integer_digits_missing)) {
-            _Assemble_floating_point_infinity(_Data._Myis_negative, _Result);
+			_Result = make_floating_point_infinity<_FloatingType>(_Data._Myis_negative);
             return errc::result_out_of_range; // Overflow example: "1e+2000"
         }
     }
@@ -1259,7 +1261,7 @@ HAMON_NODISCARD errc _Convert_decimal_string_to_floating_type(
     if (!_Multiply_by_power_of_ten(_Fractional_denominator, _Fractional_denominator_exponent)) {
         // If there were any digits in the integer part, it is impossible to underflow (because the exponent
         // cannot possibly be small enough), so if we underflow here it is a true underflow and we return zero.
-        _Assemble_floating_point_zero(_Data._Myis_negative, _Result);
+		_Result = make_floating_point_zero<_FloatingType>(_Data._Myis_negative);
         return errc::result_out_of_range; // Underflow example: "1e-2000"
     }
 
@@ -1576,17 +1578,17 @@ HAMON_NODISCARD hamon::from_chars_result _Ordinary_floating_from_chars(const cha
     // update _Next to point past the end of the exponent.
     if (_Mantissa_it == _Mantissa_first) {
         //_STL_INTERNAL_CHECK(_Has_zero_tail);
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
+		value = make_floating_point_zero<_Floating>(negative);
         return {_Next, errc{}};
     }
 
     // Handle exponent of an overly large absolute value.
     if (_Exp_abs_too_large) {
         if (_Exponent > 0) {
-            _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
+			value = make_floating_point_infinity<_Floating>(negative);
             return {_Next, errc::result_out_of_range};
         } else {
-            _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
+			value = make_floating_point_zero<_Floating>(negative);
             return {_Next, errc::result_out_of_range};
         }
     }
@@ -1614,51 +1616,58 @@ HAMON_NODISCARD hamon::from_chars_result _Ordinary_floating_from_chars(const cha
         }
     }
 
-    // In hexadecimal floating constants, the exponent is a base 2 exponent. The exponent adjustment computed during
-    // parsing has the same base as the mantissa (so, 16 for hexadecimal floating constants).
-    // We therefore need to scale the base 16 multiplier to base 2 by multiplying by log2(16):
-    const int _Exponent_adjustment_multiplier{_Is_hexadecimal ? 4 : 1};
+	// In hexadecimal floating constants, the exponent is a base 2 exponent. The exponent adjustment computed during
+	// parsing has the same base as the mantissa (so, 16 for hexadecimal floating constants).
+	// We therefore need to scale the base 16 multiplier to base 2 by multiplying by log2(16):
+	const int _Exponent_adjustment_multiplier{ _Is_hexadecimal ? 4 : 1 };
 
-    // And then _Exponent and _Exponent_adjustment are either both non-negative or both non-positive.
-    // So we can detect out-of-range cases directly.
-    if (_Exponent > _Maximum_temporary_decimal_exponent
-        || _Exponent_adjustment > _Maximum_temporary_decimal_exponent / _Exponent_adjustment_multiplier) {
-        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
-        return {_Next, errc::result_out_of_range}; // Overflow example: "1e+9999"
-    }
+	// And then _Exponent and _Exponent_adjustment are either both non-negative or both non-positive.
+	// So we can detect out-of-range cases directly.
+	if (_Exponent > _Maximum_temporary_decimal_exponent
+		|| _Exponent_adjustment > _Maximum_temporary_decimal_exponent / _Exponent_adjustment_multiplier)
+	{
+		value = make_floating_point_infinity<_Floating>(negative);
+		return { _Next, errc::result_out_of_range }; // Overflow example: "1e+9999"
+	}
 
-    if (_Exponent < _Minimum_temporary_decimal_exponent
-        || _Exponent_adjustment < _Minimum_temporary_decimal_exponent / _Exponent_adjustment_multiplier) {
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
-        return {_Next, errc::result_out_of_range}; // Underflow example: "1e-9999"
-    }
+	if (_Exponent < _Minimum_temporary_decimal_exponent
+		|| _Exponent_adjustment < _Minimum_temporary_decimal_exponent / _Exponent_adjustment_multiplier)
+	{
+		value = make_floating_point_zero<_Floating>(negative);
+		return { _Next, errc::result_out_of_range }; // Underflow example: "1e-9999"
+	}
 
-    _Exponent += _Exponent_adjustment * _Exponent_adjustment_multiplier;
+	_Exponent += _Exponent_adjustment * _Exponent_adjustment_multiplier;
 
-    // Verify that after adjustment the exponent isn't wildly out of range (if it is, it isn't representable
-    // in any supported floating-point format).
-    if (_Exponent > _Maximum_temporary_decimal_exponent) {
-        _Assemble_floating_point_infinity(_Fp_string._Myis_negative, value);
-        return {_Next, errc::result_out_of_range}; // Overflow example: "10e+5199"
-    }
+	// Verify that after adjustment the exponent isn't wildly out of range (if it is, it isn't representable
+	// in any supported floating-point format).
+	if (_Exponent > _Maximum_temporary_decimal_exponent)
+	{
+		value = make_floating_point_infinity<_Floating>(negative);
+		return { _Next, errc::result_out_of_range }; // Overflow example: "10e+5199"
+	}
 
-    if (_Exponent < _Minimum_temporary_decimal_exponent) {
-        _Assemble_floating_point_zero(_Fp_string._Myis_negative, value);
-        return {_Next, errc::result_out_of_range}; // Underflow example: "0.001e-5199"
-    }
+	if (_Exponent < _Minimum_temporary_decimal_exponent)
+	{
+		value = make_floating_point_zero<_Floating>(negative);
+		return { _Next, errc::result_out_of_range }; // Underflow example: "0.001e-5199"
+	}
 
-    _Fp_string._Myexponent       = static_cast<int32_t>(_Exponent);
-    _Fp_string._Mymantissa_count = static_cast<uint32_t>(_Mantissa_it - _Mantissa_first);
+	_Fp_string._Myexponent = static_cast<int32_t>(_Exponent);
+	_Fp_string._Mymantissa_count = static_cast<uint32_t>(_Mantissa_it - _Mantissa_first);
 
-    if (_Is_hexadecimal) {
-        const errc _Ec = _Convert_hexadecimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
-        return {_Next, _Ec};
-    } else {
-        const errc _Ec = _Convert_decimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
-        return {_Next, _Ec};
-    }
+	if (_Is_hexadecimal)
+	{
+		const errc _Ec = _Convert_hexadecimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
+		return { _Next, _Ec };
+	}
+	else
+	{
+		const errc _Ec = _Convert_decimal_string_to_floating_type(_Fp_string, value, _Has_zero_tail);
+		return { _Next, _Ec };
+	}
 
-    // ^^^^^^^^^^ DERIVED FROM corecrt_internal_strtox.h WITH SIGNIFICANT MODIFICATIONS ^^^^^^^^^^
+	// ^^^^^^^^^^ DERIVED FROM corecrt_internal_strtox.h WITH SIGNIFICANT MODIFICATIONS ^^^^^^^^^^
 }
 
 HAMON_WARNING_POP()
