@@ -136,6 +136,9 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool inf_test(hamon::chars_format fmt)
 		{"-infinity",   9, errc{}, -infinity},
 		{"-infinityx",  9, errc{}, -infinity},
 		{"-infinityxx", 9, errc{}, -infinity},
+
+		{"InF",         3, errc{}, infinity},
+		{"-iNfInItY",   9, errc{}, -infinity},
 	};
 
 	for (auto const& x : data)
@@ -214,6 +217,9 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool nan_test(hamon::chars_format fmt)
 		{"-nan(1_a)",   9, errc{}, -nan},
 		{"-nan(1_a)x",  9, errc{}, -nan},
 		{"-nan(1_a)xx", 9, errc{}, -nan},
+
+		{"NaN",        3, errc{}, nan},
+		{"-nAn",       4, errc{}, -nan},
 	};
 
 	for (auto const& x : data)
@@ -239,45 +245,45 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool invalid_argument_test(hamon::chars_format 
 
 	const test_data data[] =
 	{
-		{"", 0, errc::invalid_argument, T{0}},
-		{"-", 0, errc::invalid_argument, T{0}},
-		{".", 0, errc::invalid_argument, T{0}},
-		{"-.", 0, errc::invalid_argument, T{0}},
+		{"",      0, errc::invalid_argument, T{0}},
+		{"-",     0, errc::invalid_argument, T{0}},
+		{".",     0, errc::invalid_argument, T{0}},
+		{"-.",    0, errc::invalid_argument, T{0}},
 		{"+0.25", 0, errc::invalid_argument, T{0}},
-		{"`1", 0, errc::invalid_argument, T{0}},
-		{"~1", 0, errc::invalid_argument, T{0}},
-		{"!1", 0, errc::invalid_argument, T{0}},
-		{"@1", 0, errc::invalid_argument, T{0}},
-		{"#1", 0, errc::invalid_argument, T{0}},
-		{"$1", 0, errc::invalid_argument, T{0}},
-		{"%1", 0, errc::invalid_argument, T{0}},
-		{"^1", 0, errc::invalid_argument, T{0}},
-		{"&1", 0, errc::invalid_argument, T{0}},
-		{"*1", 0, errc::invalid_argument, T{0}},
-		{"(1", 0, errc::invalid_argument, T{0}},
-		{")1", 0, errc::invalid_argument, T{0}},
-		{"_1", 0, errc::invalid_argument, T{0}},
-		{"=1", 0, errc::invalid_argument, T{0}},
-		{"[1", 0, errc::invalid_argument, T{0}},
-		{"]1", 0, errc::invalid_argument, T{0}},
-		{"{1", 0, errc::invalid_argument, T{0}},
-		{"}1", 0, errc::invalid_argument, T{0}},
-		{"\\1", 0, errc::invalid_argument, T{0}},
-		{"|1", 0, errc::invalid_argument, T{0}},
-		{";1", 0, errc::invalid_argument, T{0}},
-		{":1", 0, errc::invalid_argument, T{0}},
-		{"'1", 0, errc::invalid_argument, T{0}},
-		{"\"1", 0, errc::invalid_argument, T{0}},
-		{",1", 0, errc::invalid_argument, T{0}},
-		{"/1", 0, errc::invalid_argument, T{0}},
-		{"<1", 0, errc::invalid_argument, T{0}},
-		{">1", 0, errc::invalid_argument, T{0}},
-		{"?1", 0, errc::invalid_argument, T{0}},
-		{" 1", 0, errc::invalid_argument, T{0}},
-		{"\t1", 0, errc::invalid_argument, T{0}},
-		{"\v1", 0, errc::invalid_argument, T{0}},
-		{"\r1", 0, errc::invalid_argument, T{0}},
-		{"\n1", 0, errc::invalid_argument, T{0}},
+		{"`1",    0, errc::invalid_argument, T{0}},
+		{"~1",    0, errc::invalid_argument, T{0}},
+		{"!1",    0, errc::invalid_argument, T{0}},
+		{"@1",    0, errc::invalid_argument, T{0}},
+		{"#1",    0, errc::invalid_argument, T{0}},
+		{"$1",    0, errc::invalid_argument, T{0}},
+		{"%1",    0, errc::invalid_argument, T{0}},
+		{"^1",    0, errc::invalid_argument, T{0}},
+		{"&1",    0, errc::invalid_argument, T{0}},
+		{"*1",    0, errc::invalid_argument, T{0}},
+		{"(1",    0, errc::invalid_argument, T{0}},
+		{")1",    0, errc::invalid_argument, T{0}},
+		{"_1",    0, errc::invalid_argument, T{0}},
+		{"=1",    0, errc::invalid_argument, T{0}},
+		{"[1",    0, errc::invalid_argument, T{0}},
+		{"]1",    0, errc::invalid_argument, T{0}},
+		{"{1",    0, errc::invalid_argument, T{0}},
+		{"}1",    0, errc::invalid_argument, T{0}},
+		{"\\1",   0, errc::invalid_argument, T{0}},
+		{"|1",    0, errc::invalid_argument, T{0}},
+		{";1",    0, errc::invalid_argument, T{0}},
+		{":1",    0, errc::invalid_argument, T{0}},
+		{"'1",    0, errc::invalid_argument, T{0}},
+		{"\"1",   0, errc::invalid_argument, T{0}},
+		{",1",    0, errc::invalid_argument, T{0}},
+		{"/1",    0, errc::invalid_argument, T{0}},
+		{"<1",    0, errc::invalid_argument, T{0}},
+		{">1",    0, errc::invalid_argument, T{0}},
+		{"?1",    0, errc::invalid_argument, T{0}},
+		{" 1",    0, errc::invalid_argument, T{0}},
+		{"\t1",   0, errc::invalid_argument, T{0}},
+		{"\v1",   0, errc::invalid_argument, T{0}},
+		{"\r1",   0, errc::invalid_argument, T{0}},
+		{"\n1",   0, errc::invalid_argument, T{0}},
 	};
 
 	for (auto const& x : data)
@@ -368,8 +374,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool fixed_test()
 		{"-00.000",   7, errc{}, T(-0.0)},
 		{"0e0",       1, errc{}, T( 0.0)},
 		{"-0e0",      2, errc{}, T(-0.0)},
-		{"00e00",     2, errc{}, T( 0.0)},
-		{"-00e00",    3, errc{}, T(-0.0)},
+		{"00E00",     2, errc{}, T( 0.0)},
+		{"-00E00",    3, errc{}, T(-0.0)},
 		{"0p0",       1, errc{}, T( 0.0)},
 		{"-0p0",      2, errc{}, T(-0.0)},
 		{"0.0p0",     3, errc{}, T( 0.0)},
@@ -528,8 +534,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool scientific_test()
 		{"-00.000",   0, errc::invalid_argument, T{0}},
 		{"0e0",       3, errc{}, T( 0.0)},
 		{"-0e0",      4, errc{}, T(-0.0)},
-		{"00e00",     5, errc{}, T( 0.0)},
-		{"-00e00",    6, errc{}, T(-0.0)},
+		{"00E00",     5, errc{}, T( 0.0)},
+		{"-00E00",    6, errc{}, T(-0.0)},
 		{"0p0",       0, errc::invalid_argument, T{0}},
 		{"-0p0",      0, errc::invalid_argument, T{0}},
 		{"0.0p0",     0, errc::invalid_argument, T{0}},
@@ -797,8 +803,8 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool hex_test()
 		{"1.5P10",    6, errc{}, T(1344.0)},		// 0x1.5p10
 		{"1.5p+10",   7, errc{}, T(1344.0)},		// 0x1.5p10
 		{"1.5p-10",   7, errc{}, T(0.00128173828125)},	// 0x1.5p-10
-		{"0.001p5",   7, errc{}, T(0.0078125)},		// 0x0.001p5
-		{"0.001p-5",  8, errc{}, T(7.62939453125e-06)},	// 0x0.001p-5
+		{"0.001P5",   7, errc{}, T(0.0078125)},		// 0x0.001p5
+		{"0.001P-5",  8, errc{}, T(7.62939453125e-06)},	// 0x0.001p-5
 		{"1.5p",      3, errc{}, T(1.3125)},		// 0x1.5p0
 		{"1.5p+",     3, errc{}, T(1.3125)},		// 0x1.5p0
 		{"1.5p-",     3, errc{}, T(1.3125)},		// 0x1.5p0
@@ -815,6 +821,9 @@ inline /*HAMON_CXX14_CONSTEXPR*/ bool hex_test()
 		{"1.25p0x12", 6, errc{}, T(1.14453125)},	// 0x1.25p0
 		{"1.25p0p12", 6, errc{}, T(1.14453125)},	// 0x1.25p0
 		{"131CA25",   7, errc{}, T(0x131CA25)},
+		{"131ca25",   7, errc{}, T(0x131CA25)},
+		{"1.ap0",     5, errc{}, T(1.625)},			// 0x1.ap0
+		{"1.AP0",     5, errc{}, T(1.625)},			// 0x1.ap0
 		{"123.456",   7, errc{}, T(291.27099609375)},	// 0x123.456p0
 		{"123.456p3", 9, errc{}, T(2330.16796875)},	// 0x123.456p3
 #if defined(HAMON_HAS_CXX17_HEX_FLOAT)
