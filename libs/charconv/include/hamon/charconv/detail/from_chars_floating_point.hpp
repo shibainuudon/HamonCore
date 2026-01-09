@@ -1079,7 +1079,7 @@ _Assemble_floating_point_value(const uint64_t initial_mantissa, const int32_t in
 			if (mantissa > _Traits::_Normal_mantissa_mask && exponent == _Traits::_Maximum_binary_exponent)
 			{
 				error_code = errc::result_out_of_range; // Overflow example: "1.ffffffp+127" for float
-														 // Overflow example: "1.fffffffffffff8p+1023" for double
+														// Overflow example: "1.fffffffffffff8p+1023" for double
 			}
 		}
 		else
@@ -1568,8 +1568,8 @@ _Ordinary_floating_from_chars(const char* const first, const char* const last, F
 		const char* unread = next + 1;
 
 		if (unread != last && (*unread == '+' || *unread == '-'))
-
-		{ // found optional sign
+		{
+			// found optional sign
 			exponent_is_negative = *unread == '-';
 			++unread;
 		}
