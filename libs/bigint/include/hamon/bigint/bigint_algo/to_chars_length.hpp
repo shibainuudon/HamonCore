@@ -41,7 +41,7 @@ to_chars_length(VectorType const& value, int base)
 }	// namespace to_chars_length_detail
 
 template <typename T>
-inline hamon::size_t
+inline HAMON_CXX14_CONSTEXPR hamon::size_t
 to_chars_length(hamon::vector<T> const& value, int base = 10)
 {
 	return to_chars_length_detail::to_chars_length(value, base);

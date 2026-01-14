@@ -102,7 +102,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 }	// namespace from_chars_detail
 
 template <typename T>
-inline hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, hamon::vector<T>& value, int base = 10)
 {
 	return from_chars_detail::from_chars(first, last, value, base);

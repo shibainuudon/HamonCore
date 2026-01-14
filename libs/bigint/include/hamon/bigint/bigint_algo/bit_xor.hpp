@@ -35,7 +35,7 @@ bit_xor_impl(T* lhs, T const* rhs, hamon::size_t n)
 }	// namespace bit_xor_detail
 
 template <typename T>
-inline void
+inline HAMON_CXX14_CONSTEXPR void
 bit_xor(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	auto const N = hamon::max(lhs.size(), rhs.size());

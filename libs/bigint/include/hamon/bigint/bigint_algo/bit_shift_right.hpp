@@ -66,7 +66,7 @@ bit_shift_right_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 }	// namespace bit_shift_right_detail
 
 template <typename T>
-inline void
+inline HAMON_CXX14_CONSTEXPR void
 bit_shift_right(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
 {
 	bit_shift_right_detail::bit_shift_right_impl(lhs.data(), lhs.size(), rhs);

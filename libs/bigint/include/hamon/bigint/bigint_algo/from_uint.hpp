@@ -54,7 +54,7 @@ from_uint(UInt n, T* dst, hamon::size_t size)
 template <typename UInt, typename T,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
-inline from_uint_result
+inline HAMON_CXX14_CONSTEXPR from_uint_result
 from_uint(UInt n, hamon::vector<T>& value)
 {
 	value.resize(sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1);

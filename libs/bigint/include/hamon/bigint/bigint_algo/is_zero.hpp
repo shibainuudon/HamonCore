@@ -18,7 +18,7 @@ namespace bigint_algo
 {
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 is_zero(hamon::vector<T> const& vec)
 {
 	return vec.size() == 1 && vec[0] == 0;

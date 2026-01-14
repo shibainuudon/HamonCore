@@ -67,7 +67,7 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 template <typename UInt, typename T,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
-inline to_uint_result
+inline HAMON_CXX14_CONSTEXPR to_uint_result
 to_uint(UInt& dst, hamon::vector<T> const& value)
 {
 	return to_uint_detail::to_uint(dst, value.data(), value.size());

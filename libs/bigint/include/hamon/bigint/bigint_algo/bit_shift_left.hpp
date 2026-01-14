@@ -69,7 +69,7 @@ bit_shift_left_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 }	// namespace bit_shift_left_detail
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
 {
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());

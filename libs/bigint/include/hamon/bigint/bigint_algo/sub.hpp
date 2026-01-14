@@ -48,7 +48,7 @@ sub_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 }	// namespace sub_detail
 
 template <typename T>
-inline void
+inline HAMON_CXX14_CONSTEXPR void
 sub(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));

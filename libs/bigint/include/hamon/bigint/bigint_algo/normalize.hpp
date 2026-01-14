@@ -22,7 +22,7 @@ namespace bigint_algo
  *  ・空の場合は {0} を返す
  */
 template <typename T>
-inline void
+inline HAMON_CXX14_CONSTEXPR void
 normalize(hamon::vector<T>& vec)
 {
 	auto n = vec.size();

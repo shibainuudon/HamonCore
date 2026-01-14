@@ -17,101 +17,106 @@ namespace hamon_bigint_test
 namespace bigint_algo_normalize_test
 {
 
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
 template <typename T>
-void test()
+inline HAMON_CXX14_CONSTEXPR bool test()
 {
 	{
 		hamon::vector<T> a{};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0, 1};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0, 1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 1};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1, 1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0, 0, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 0, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0, 1, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0, 1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{0, 0, 1};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{0, 0, 1};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 2, 3};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1, 2, 3};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 2, 3, 4, 0, 0, 0, 0};
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1, 2, 3, 4};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
 	{
 		hamon::vector<T> a{1, 0, 2, 0, 0, 3, 4, 0 };
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1, 0, 2, 0, 0, 3, 4};
-		EXPECT_EQ(a, expected);
+		VERIFY(a == expected);
 	}
+	return true;
 }
+
+#undef VERIFY
 
 GTEST_TEST(BigIntAlgoTest, NormalizeTest)
 {
-	test<hamon::uint8_t>();
-	test<hamon::uint16_t>();
-	test<hamon::uint32_t>();
-	test<hamon::uint64_t>();
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<hamon::uint8_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<hamon::uint16_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<hamon::uint32_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<hamon::uint64_t>());
 }
 
 }	// namespace bigint_algo_normalize_test

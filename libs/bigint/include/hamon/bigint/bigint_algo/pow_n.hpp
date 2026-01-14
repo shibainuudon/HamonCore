@@ -83,7 +83,7 @@ pow_n_impl(VectorType& out, VectorType const& x, hamon::uintmax_t y)
 }	// namespace pow_n_detail
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 pow_n(hamon::vector<T>& out, hamon::vector<T> const& x, hamon::uintmax_t y)
 {
 	return pow_n_detail::pow_n_impl(out, x, y);

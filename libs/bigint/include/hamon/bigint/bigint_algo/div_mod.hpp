@@ -124,7 +124,7 @@ div_mod_impl(T const* lhs, hamon::size_t n, VectorType const& rhs)
 }	// namespace div_mod_detail
 
 template <typename T>
-inline div_mod_result<hamon::vector<T>>
+inline HAMON_CXX14_CONSTEXPR div_mod_result<hamon::vector<T>>
 div_mod(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	return div_mod_detail::div_mod_impl(lhs.data(), lhs.size(), rhs);

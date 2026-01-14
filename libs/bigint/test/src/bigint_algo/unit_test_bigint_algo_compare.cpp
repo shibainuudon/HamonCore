@@ -70,6 +70,15 @@ GTEST_TEST(BigIntAlgoTest, CompareTest)
 		EXPECT_EQ( 1, hamon::bigint_algo::compare(a, b));
 		EXPECT_EQ(-1, hamon::bigint_algo::compare(b, a));
 	}
+	{
+		using Vector = hamon::vector<hamon::uint8_t>;
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0}, Vector{0}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0}, Vector{1}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{1}, Vector{0}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{1}, Vector{1}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0xFF}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x01, 0x10}));
+	}
 
 	{
 		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 4> const a{0};

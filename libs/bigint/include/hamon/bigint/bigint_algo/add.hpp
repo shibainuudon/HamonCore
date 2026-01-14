@@ -28,7 +28,7 @@ namespace bigint_algo
 // * T は 符号なし整数型
 // * 数値の格納の仕方はリトルエンディアン。つまり下位の桁を前方に格納する。
 // * arrayを引数にとるものはC++14でconstexpr
-// * vectorを引数にとるものはC++20でconstexpr (TODO)
+// * vectorを引数にとるものはC++20でconstexpr
 // * 引数を複数取る場合、
 //   arrayは要素数が同じ
 //   vectorは要素数が異なる場合がある
@@ -78,7 +78,7 @@ add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 }	// namespace add_detail
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
@@ -92,7 +92,7 @@ add(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 }
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::vector<T>& lhs, T rhs)
 {
 	T const carry = add_detail::add_impl(

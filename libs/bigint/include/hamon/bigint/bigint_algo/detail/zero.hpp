@@ -20,7 +20,7 @@ namespace detail
 {
 
 template <typename T>
-inline void
+inline HAMON_CXX14_CONSTEXPR void
 zero(hamon::vector<T>& v)
 {
 	v.resize(1);

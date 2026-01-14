@@ -62,7 +62,7 @@ multiply_impl(VectorType& out, T const* lhs, hamon::size_t n1, T const* rhs, ham
 // オーバーフローフラグを戻り値で返す
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
 {
 	return multiply_detail::multiply_impl(out,
@@ -71,7 +71,7 @@ multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
 }
 
 template <typename T>
-inline bool
+inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	return multiply_detail::multiply_impl(out,
@@ -100,7 +100,7 @@ multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T,
 
 // 利便性のために、結果を戻り値で返すバージョン(オーバーフローの情報は得られない)
 template <typename T>
-inline hamon::vector<T>
+inline HAMON_CXX14_CONSTEXPR hamon::vector<T>
 multiply(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	hamon::vector<T> result;

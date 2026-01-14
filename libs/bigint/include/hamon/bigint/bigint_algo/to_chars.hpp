@@ -99,7 +99,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 }	// namespace to_chars_detail
 
 template <typename T>
-inline hamon::to_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, hamon::vector<T> const& value, int base = 10)
 {
 	return to_chars_detail::to_chars(first, last, value, base);

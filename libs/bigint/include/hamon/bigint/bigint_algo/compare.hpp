@@ -36,7 +36,7 @@ compare_impl(T const* lhs, T const* rhs, hamon::size_t n)
 }	// namespace compare_detail
 
 template <typename T>
-inline int
+inline HAMON_CXX14_CONSTEXPR int
 compare(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
 	auto const NA = lhs.size();
