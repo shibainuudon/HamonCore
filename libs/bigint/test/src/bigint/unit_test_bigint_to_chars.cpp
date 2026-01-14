@@ -139,7 +139,8 @@ ToCharsUnsignedTest()
 
 GTEST_TEST(BigIntTest, ToCharsTest)
 {
-	EXPECT_TRUE(ToCharsSignedTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToCharsSignedTest<hamon::int128_t>());

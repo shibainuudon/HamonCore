@@ -248,7 +248,8 @@ CompareUnsignedTest2()
 
 GTEST_TEST(BigIntTest, CompareTest)
 {
-	EXPECT_TRUE(CompareSignedTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int128_t>());

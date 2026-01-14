@@ -61,7 +61,7 @@ UnaryPlusTest2()
 
 GTEST_TEST(BigIntTest, UnaryPlusTest)
 {
-	EXPECT_TRUE(UnaryPlusTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest<hamon::int64_t>());
@@ -79,7 +79,7 @@ GTEST_TEST(BigIntTest, UnaryPlusTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnaryPlusTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(UnaryPlusTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnaryPlusTest2<hamon::int256_t>());

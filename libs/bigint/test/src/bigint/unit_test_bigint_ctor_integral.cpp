@@ -103,7 +103,7 @@ CtorIntegralTest()
 
 GTEST_TEST(BigIntTest, CtorIntegralTest)
 {
-	EXPECT_TRUE(CtorIntegralTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorIntegralTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorIntegralTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorIntegralTest<hamon::int256_t>());

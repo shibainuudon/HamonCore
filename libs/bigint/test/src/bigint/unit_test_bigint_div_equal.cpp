@@ -93,7 +93,8 @@ SignedDivEqualTest()
 
 GTEST_TEST(BigIntTest, DivEqualTest)
 {
-	EXPECT_TRUE(UnsignedDivEqualTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivEqualTest<hamon::int128_t>());
@@ -109,7 +110,8 @@ GTEST_TEST(BigIntTest, DivEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivEqualTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedDivEqualTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivEqualTest<hamon::int128_t>());

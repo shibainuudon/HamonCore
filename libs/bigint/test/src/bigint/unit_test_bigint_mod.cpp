@@ -133,7 +133,8 @@ SignedModTest2()
 
 GTEST_TEST(BigIntTest, ModTest)
 {
-	EXPECT_TRUE(UnsignedModTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int128_t>());
@@ -149,7 +150,8 @@ GTEST_TEST(BigIntTest, ModTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedModTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int128_t>());
@@ -158,7 +160,8 @@ GTEST_TEST(BigIntTest, ModTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModTest<hamon::int2048_t>());
 
-	EXPECT_TRUE(UnsignedModTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedModTest2<hamon::bigint>());
+
 //	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest2<hamon::int512_t>());
@@ -170,7 +173,8 @@ GTEST_TEST(BigIntTest, ModTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest2<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedModTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedModTest2<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest2<hamon::int512_t>());

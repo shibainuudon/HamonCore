@@ -4,9 +4,6 @@
  *	@brief	operator^のテスト
  */
 
-#include <hamon/bigint/bigint.hpp>
-#include <gtest/gtest.h>
-
 #include <hamon/bigint.hpp>
 #include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
@@ -76,7 +73,7 @@ XorTest2()
 
 GTEST_TEST(BigIntTest, XorTest)
 {
-	EXPECT_TRUE(XorTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(XorTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorTest<hamon::int64_t>());
@@ -94,7 +91,7 @@ GTEST_TEST(BigIntTest, XorTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(XorTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(XorTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorTest2<hamon::int256_t>());

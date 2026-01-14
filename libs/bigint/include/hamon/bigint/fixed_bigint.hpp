@@ -68,7 +68,8 @@ HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
 
 template <hamon::size_t B, bool S>
-hamon::string to_string(fixed_bigint<B, S> const& value);
+HAMON_CXX20_CONSTEXPR hamon::string
+to_string(fixed_bigint<B, S> const& value);
 
 template <hamon::size_t Bits, bool Signed>
 class fixed_bigint
@@ -464,7 +465,8 @@ private:
 	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
 
 	template <hamon::size_t B, bool S>
-	friend hamon::string to_string(fixed_bigint<B, S> const& value);
+	friend HAMON_CXX20_CONSTEXPR hamon::string
+	to_string(fixed_bigint<B, S> const& value);
 };
 
 template <hamon::size_t Bits, bool Signed>
@@ -502,7 +504,7 @@ to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int b
 }
 
 template <hamon::size_t Bits, bool Signed>
-inline hamon::string
+inline HAMON_CXX20_CONSTEXPR hamon::string
 to_string(fixed_bigint<Bits, Signed> const& value)
 {
 	int base = 10;

@@ -24,6 +24,7 @@
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/detail/abs_unsigned.hpp>
+#include <hamon/bigint/detail/negate_unsigned.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
@@ -42,13 +43,13 @@ namespace hamon
 
 class bigint;
 
-hamon::from_chars_result
+HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, bigint& value, int base = 10);
 
-hamon::to_chars_result
+HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base = 10);
 
-hamon::string to_string(bigint const& value);
+HAMON_CXX20_CONSTEXPR hamon::string to_string(bigint const& value);
 
 class bigint
 {
@@ -56,19 +57,22 @@ private:
 	using MagnitudeType = hamon::vector<hamon::uint32_t>;
 
 public:
+	HAMON_CXX20_CONSTEXPR
 	bigint() HAMON_NOEXCEPT
 		: m_sign(1)
 		, m_magnitude{0}
 	{}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX20_CONSTEXPR
 	bigint(Integral n) HAMON_NOEXCEPT
 		: m_sign(n < 0 ? -1 : 1)
 	{
 		bigint_algo::from_uint(hamon::abs_unsigned(n), m_magnitude);
 	}
 
-	explicit bigint(hamon::string_view str)
+	explicit HAMON_CXX20_CONSTEXPR
+	bigint(hamon::string_view str)
 		: m_sign(1)
 		, m_magnitude{0}
 	{
@@ -120,18 +124,21 @@ public:
 	}
 
 private:
+	HAMON_CXX20_CONSTEXPR
 	bigint(int sign, MagnitudeType const& mag) HAMON_NOEXCEPT
 		: m_sign(sign)
 		, m_magnitude{mag}
 	{}
 
 public:
-	HAMON_NODISCARD bigint operator+() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR bigint
+	operator+() const HAMON_NOEXCEPT
 	{
 		return *this;
 	}
 
-	HAMON_NODISCARD bigint operator-() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR bigint
+	operator-() const HAMON_NOEXCEPT
 	{
 		if (bigint_algo::is_zero(m_magnitude))
 		{
@@ -140,18 +147,21 @@ public:
 		return {-m_sign, m_magnitude};
 	}
 
-	HAMON_NODISCARD bigint operator~() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR bigint
+	operator~() const HAMON_NOEXCEPT
 	{
 		return -(bigint{*this} += 1);
 	}
 
 private:
-	void add(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR void
+	add(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::add(m_magnitude, rhs.m_magnitude);
 	}
 
-	void sub(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR void
+	sub(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		auto const c = bigint_algo::compare(m_magnitude, rhs.m_magnitude);
 
@@ -176,7 +186,8 @@ private:
 	}
 	
 public:
-	bigint& operator+=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator+=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
 		{
@@ -190,7 +201,8 @@ public:
 		return *this;
 	}
 
-	bigint& operator-=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator-=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
 		{
@@ -204,7 +216,8 @@ public:
 		return *this;
 	}
 
-	bigint& operator*=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator*=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		m_magnitude = bigint_algo::multiply(m_magnitude, rhs.m_magnitude);
 		if (bigint_algo::is_zero(m_magnitude))
@@ -218,7 +231,8 @@ public:
 		return *this;
 	}
 
-	bigint& operator/=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator/=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		auto ret = bigint_algo::div_mod(m_magnitude, rhs.m_magnitude);
 		m_magnitude = ret.quo;
@@ -233,7 +247,8 @@ public:
 		return *this;
 	}
 
-	bigint& operator%=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator%=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		auto ret = bigint_algo::div_mod(m_magnitude, rhs.m_magnitude);
 		m_magnitude = ret.rem;
@@ -244,54 +259,63 @@ public:
 		return *this;
 	}
 
-	bigint& operator&=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator&=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_and(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	bigint& operator|=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator|=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_or(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	bigint& operator^=(bigint const& rhs) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator^=(bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_xor(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	bigint& operator<<=(hamon::size_t pos) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator<<=(hamon::size_t pos) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_shift_left(m_magnitude, pos);
 		return *this;
 	}
 
-	bigint& operator>>=(hamon::size_t pos) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator>>=(hamon::size_t pos) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_shift_right(m_magnitude, pos);
 		return *this;
 	}
 
-	bigint& operator++() HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator++() HAMON_NOEXCEPT
 	{
 		return *this += 1;
 	}
 
-	bigint& operator--() HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint&
+	operator--() HAMON_NOEXCEPT
 	{
 		return *this -= 1;
 	}
 
-	bigint operator++(int) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint
+	operator++(int) HAMON_NOEXCEPT
 	{
 		auto tmp = *this;
 		++(*this);
 		return tmp;
 	}
 
-	bigint operator--(int) HAMON_NOEXCEPT
+	HAMON_CXX20_CONSTEXPR bigint
+	operator--(int) HAMON_NOEXCEPT
 	{
 		auto tmp = *this;
 		--(*this);
@@ -299,15 +323,16 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
-	explicit operator Integral() const HAMON_NOEXCEPT
+	explicit HAMON_CXX20_CONSTEXPR operator Integral() const HAMON_NOEXCEPT
 	{
 		using UT = hamon::make_unsigned_t<Integral>;
 		UT result{};
 		bigint_algo::to_uint(result, m_magnitude);
-		return static_cast<Integral>(result * static_cast<UT>(m_sign));
+		return static_cast<Integral>(m_sign < 0 ? negate_unsigned(result) : result);
 	}
 
-	HAMON_NODISCARD int compare(bigint const& rhs) const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR int
+	compare(bigint const& rhs) const HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
 		{
@@ -322,120 +347,121 @@ private:
 	MagnitudeType	m_magnitude;
 
 private:
-	friend hamon::from_chars_result
+	friend HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 	from_chars(char const* first, char const* last, bigint& value, int base);
 
-	friend hamon::to_chars_result
+	friend HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 	to_chars(char* first, char* last, bigint const& value, int base);
 
-	friend hamon::string to_string(bigint const& value);
+	friend HAMON_CXX20_CONSTEXPR hamon::string
+	to_string(bigint const& value);
 };
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator+(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) += rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator-(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) -= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator*(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) *= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator/(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) /= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator%(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) %= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator&(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) &= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator|(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) |= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator^(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return bigint(lhs) ^= rhs;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator<<(bigint const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
 {
 	return bigint(lhs) <<= pos;
 }
 
-HAMON_NODISCARD inline bigint
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
 operator>>(bigint const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
 {
 	return bigint(lhs) >>= pos;
 }
 
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator==(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) == 0;
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-HAMON_NODISCARD inline hamon::strong_ordering
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::strong_ordering
 operator<=>(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) <=> 0;
 }
 #else
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator!=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs == rhs);
 }
 
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator<(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) < 0;
 }
 
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator>(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return rhs < lhs;
 }
 
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator<=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs > rhs);
 }
 
-HAMON_NODISCARD inline bool
+HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
 operator>=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs < rhs);
 }
 #endif
 
-inline hamon::from_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, bigint& value, int base)
 {
 	value.m_sign = 1;
@@ -447,7 +473,7 @@ from_chars(char const* first, char const* last, bigint& value, int base)
 	return bigint_algo::from_chars(first, last, value.m_magnitude, base);
 }
 
-inline hamon::to_chars_result
+inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base)
 {
 	if (value.m_sign < 0 && first != last)
@@ -457,7 +483,7 @@ to_chars(char* first, char* last, bigint const& value, int base)
 	return bigint_algo::to_chars(first, last, value.m_magnitude, base);
 }
 
-inline hamon::string
+inline HAMON_CXX20_CONSTEXPR hamon::string
 to_string(bigint const& value)
 {
 	int base = 10;

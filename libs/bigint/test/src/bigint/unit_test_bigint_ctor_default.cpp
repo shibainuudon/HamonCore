@@ -34,7 +34,7 @@ CtorDefaultTest()
 
 GTEST_TEST(BigIntTest, CtorDefaultTest)
 {
-	EXPECT_TRUE(CtorDefaultTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int64_t>());

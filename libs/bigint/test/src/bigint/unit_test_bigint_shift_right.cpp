@@ -53,7 +53,7 @@ ShiftRightTest2()
 
 GTEST_TEST(BigIntTest, ShiftRightTest)
 {
-	EXPECT_TRUE(ShiftRightTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ShiftRightTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftRightTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftRightTest<hamon::int64_t>());
@@ -71,7 +71,7 @@ GTEST_TEST(BigIntTest, ShiftRightTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftRightTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(ShiftRightTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(ShiftRightTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ShiftRightTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftRightTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ShiftRightTest2<hamon::int256_t>());

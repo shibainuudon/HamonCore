@@ -55,21 +55,21 @@ ToStringUnsignedTest()
 
 GTEST_TEST(BigIntTest, ToStringTest)
 {
-	EXPECT_TRUE(ToStringSignedTest<hamon::bigint>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int32_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int64_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int128_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int256_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int512_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int1024_t>());
-	EXPECT_TRUE(ToStringSignedTest<hamon::int2048_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint32_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint64_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint128_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint256_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint512_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint1024_t>());
-	EXPECT_TRUE(ToStringUnsignedTest<hamon::uint2048_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::bigint>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringSignedTest<hamon::int32_t>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringSignedTest<hamon::int64_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int128_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int256_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int512_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int1024_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int2048_t>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringUnsignedTest<hamon::uint32_t>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringUnsignedTest<hamon::uint64_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringUnsignedTest<hamon::uint128_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringUnsignedTest<hamon::uint256_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringUnsignedTest<hamon::uint512_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringUnsignedTest<hamon::uint1024_t>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringUnsignedTest<hamon::uint2048_t>());
 }
 
 #undef VERIFY

@@ -135,7 +135,8 @@ SignedDivTest2()
 
 GTEST_TEST(BigIntTest, DivTest)
 {
-	EXPECT_TRUE(UnsignedDivTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int128_t>());
@@ -151,7 +152,8 @@ GTEST_TEST(BigIntTest, DivTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedDivTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int128_t>());
@@ -160,7 +162,8 @@ GTEST_TEST(BigIntTest, DivTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest<hamon::int2048_t>());
 
-	EXPECT_TRUE(UnsignedDivTest2<hamon::bigint>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest2<hamon::bigint>());
+
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int512_t>());
@@ -172,7 +175,8 @@ GTEST_TEST(BigIntTest, DivTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest2<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedDivTest2<hamon::bigint>());
+	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::bigint>());
+
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int512_t>());

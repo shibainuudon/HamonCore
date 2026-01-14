@@ -75,7 +75,8 @@ SignedModEqualTest()
 
 GTEST_TEST(BigIntTest, ModEqualTest)
 {
-	EXPECT_TRUE(UnsignedModEqualTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModEqualTest<hamon::int128_t>());
@@ -91,7 +92,8 @@ GTEST_TEST(BigIntTest, ModEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModEqualTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(SignedModEqualTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModEqualTest<hamon::int128_t>());

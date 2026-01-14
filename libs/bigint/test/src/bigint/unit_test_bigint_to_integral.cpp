@@ -235,7 +235,8 @@ ToIntegralTest()
 
 GTEST_TEST(BigIntTest, ToIntegralTest)
 {
-	EXPECT_TRUE(ToIntegralTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToIntegralTest<hamon::bigint>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToIntegralTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToIntegralTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ToIntegralTest<hamon::int512_t>());

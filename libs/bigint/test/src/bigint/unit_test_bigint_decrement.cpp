@@ -95,7 +95,7 @@ DecrementTest2()
 
 GTEST_TEST(BigIntTest, DecrementTest)
 {
-	EXPECT_TRUE(DecrementTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(DecrementTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(DecrementTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(DecrementTest<hamon::int64_t>());
@@ -113,7 +113,7 @@ GTEST_TEST(BigIntTest, DecrementTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(DecrementTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(DecrementTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(DecrementTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(DecrementTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(DecrementTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(DecrementTest2<hamon::int256_t>());

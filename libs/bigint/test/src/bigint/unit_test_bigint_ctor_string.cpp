@@ -118,7 +118,7 @@ CtorStringTest()
 
 GTEST_TEST(BigIntTest, CtorStringTest)
 {
-	EXPECT_TRUE(CtorStringTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorStringTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorStringTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorStringTest<hamon::int256_t>());

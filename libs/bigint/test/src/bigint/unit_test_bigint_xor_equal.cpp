@@ -59,7 +59,7 @@ XorEqualTest2()
 
 GTEST_TEST(BigIntTest, XorEqualTest)
 {
-	EXPECT_TRUE(XorEqualTest<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int64_t>());
@@ -77,7 +77,7 @@ GTEST_TEST(BigIntTest, XorEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest<hamon::uint2048_t>());
 
-	EXPECT_TRUE(XorEqualTest2<hamon::bigint>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(XorEqualTest2<hamon::bigint>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest2<hamon::int256_t>());
