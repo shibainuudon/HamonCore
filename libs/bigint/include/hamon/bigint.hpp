@@ -9,5 +9,6 @@
 
 #include <hamon/bigint/bigint.hpp>
 #include <hamon/bigint/fixed_bigint.hpp>
+#include <hamon/bigint/fixed_bigint_fwd.hpp>
 
 #endif // HAMON_BIGINT_HPP
