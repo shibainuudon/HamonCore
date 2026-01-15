@@ -43,22 +43,19 @@
 namespace hamon
 {
 
-template <hamon::size_t B, bool S>
-HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, fixed_bigint<B, S>& value, int base = 10);
+namespace detail
+{
 
-template <hamon::size_t B, bool S>
-HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base = 10);
+struct fixed_bigint_access;
 
-template <hamon::size_t B, bool S>
-HAMON_CXX20_CONSTEXPR hamon::string
-to_string(fixed_bigint<B, S> const& value);
+}	// namespace detail
 
 template <hamon::size_t Bits, bool Signed>
 class fixed_bigint
 {
 private:
+	friend hamon::detail::fixed_bigint_access;
+
 	using element_type = hamon::uint32_t;
 	static const hamon::size_t N = (Bits / 8) / sizeof(element_type);
 	using vector_type = hamon::array<element_type, N>;
@@ -438,20 +435,31 @@ private:
 
 private:
 	vector_type	m_data;
-
-private:
-	template <hamon::size_t B, bool S>
-	friend HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-	from_chars(char const* first, char const* last, fixed_bigint<B, S>& value, int base);
-	
-	template <hamon::size_t B, bool S>
-	friend HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-	to_chars(char* first, char* last, fixed_bigint<B, S> const& value, int base);
-
-	template <hamon::size_t B, bool S>
-	friend HAMON_CXX20_CONSTEXPR hamon::string
-	to_string(fixed_bigint<B, S> const& value);
 };
+
+namespace detail
+{
+
+struct fixed_bigint_access
+{
+	template <hamon::size_t Bits, bool Signed>
+	static HAMON_CXX14_CONSTEXPR
+	typename fixed_bigint<Bits, Signed>::vector_type&
+	data(fixed_bigint<Bits, Signed>& x) HAMON_NOEXCEPT
+	{
+		return x.m_data;
+	}
+
+	template <hamon::size_t Bits, bool Signed>
+	static HAMON_CXX14_CONSTEXPR
+	typename fixed_bigint<Bits, Signed>::vector_type const&
+	data(fixed_bigint<Bits, Signed> const& x) HAMON_NOEXCEPT
+	{
+		return x.m_data;
+	}
+};
+
+}	// namespace detail
 
 template <hamon::size_t Bits, bool Signed>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
@@ -464,10 +472,12 @@ from_chars(char const* first, char const* last, fixed_bigint<Bits, Signed>& valu
 		++first;
 	}
 
-	auto ret = bigint_algo::from_chars(first, last, value.m_data, base);
+	using access = hamon::detail::fixed_bigint_access;
+
+	auto ret = bigint_algo::from_chars(first, last, access::data(value), base);
 	if (minus)
 	{
-		bigint_algo::negate(value.m_data);
+		bigint_algo::negate(access::data(value));
 	}
 	return ret;
 }
@@ -476,15 +486,25 @@ template <hamon::size_t Bits, bool Signed>
 inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, fixed_bigint<Bits, Signed> const& value, int base)
 {
+	using access = hamon::detail::fixed_bigint_access;
+
 	if (Signed)
 	{
-		if (bigint_algo::signbit(value.m_data) && first != last)
+		if (bigint_algo::signbit(access::data(value)) && first != last)
 		{
 			*first++ = '-';
-			return bigint_algo::to_chars(first, last, bigint_algo::negate(value.m_data), base);
+			return bigint_algo::to_chars(first, last, bigint_algo::negate(access::data(value)), base);
 		}
 	}
-	return bigint_algo::to_chars(first, last, value.m_data, base);
+	return bigint_algo::to_chars(first, last, access::data(value), base);
+}
+
+template <hamon::size_t Bits, bool Signed>
+inline HAMON_CXX14_CONSTEXPR hamon::size_t
+to_chars_length(fixed_bigint<Bits, Signed> const& value, int base = 10)
+{
+	using access = hamon::detail::fixed_bigint_access;
+	return bigint_algo::to_chars_length(access::data(value), base);
 }
 
 template <hamon::size_t Bits, bool Signed>
@@ -493,7 +513,7 @@ to_string(fixed_bigint<Bits, Signed> const& value)
 {
 	int base = 10;
 	hamon::size_t len =
-		bigint_algo::to_chars_length(value.m_data, base) +
+		to_chars_length(value, base) +
 		(Signed ? 1 : 0) +	// '-' 
 		1;	// '\0'
 	hamon::string result;
