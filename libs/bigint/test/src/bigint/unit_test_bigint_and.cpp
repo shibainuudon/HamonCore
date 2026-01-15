@@ -23,35 +23,35 @@ AndTest()
 {
 	{
 		auto x = BigInt{0x35} & BigInt{0xf0};
-		VERIFY(x == 0x30);
+		VERIFY(x == BigInt{0x30});
 	}
 	{
 		auto x = BigInt{0x35} & BigInt{0x0f};
-		VERIFY(x == 0x05);
+		VERIFY(x == BigInt{0x05});
 	}
 	{
 		auto x = BigInt{0x0F} & BigInt{0x12};
-		VERIFY(x == 0x02);
+		VERIFY(x == BigInt{0x02});
 	}
 	{
 		auto x = BigInt{0x77} & BigInt{0x20};
-		VERIFY(x == 0x20);
+		VERIFY(x == BigInt{0x20});
 	}
 	{
 		auto x = BigInt{0x123456} & BigInt{0xf00000};
-		VERIFY(x == 0x100000);
+		VERIFY(x == BigInt{0x100000});
 	}
 	{
 		auto x = BigInt{0x123456} & BigInt{0x0f0000};
-		VERIFY(x == 0x020000);
+		VERIFY(x == BigInt{0x020000});
 	}
 	{
 		auto x = BigInt{0x123456} & BigInt{0x00000f};
-		VERIFY(x == 0x000006);
+		VERIFY(x == BigInt{0x000006});
 	}
 	{
 		auto x = BigInt{0x123456} & BigInt{0xf0f0f0};
-		VERIFY(x == 0x103050);
+		VERIFY(x == BigInt{0x103050});
 	}
 	return true;
 }
@@ -64,7 +64,7 @@ AndTest2()
 		auto x =
 			BigInt{0x01} &
 			BigInt{"0x8000000000000000000000000000000"};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x =
@@ -76,7 +76,7 @@ AndTest2()
 		auto x =
 			BigInt{"0x1234000000000000000000000000000"} &
 			BigInt{0x123};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	return true;
 }

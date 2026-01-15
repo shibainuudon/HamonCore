@@ -23,31 +23,31 @@ XorTest()
 {
 	{
 		auto x = BigInt{0xFA} ^ BigInt{0x47};
-		VERIFY(x == 0xBD);
+		VERIFY(x == BigInt{0xBD});
 	}
 	{
 		auto x = BigInt{0x35} ^ BigInt{0xf0};
-		VERIFY(x == 0xC5);
+		VERIFY(x == BigInt{0xC5});
 	}
 	{
 		auto x = BigInt{0x73} ^ BigInt{0x20};
-		VERIFY(x == 0x53);
+		VERIFY(x == BigInt{0x53});
 	}
 	{
 		auto x = BigInt{0x123456} ^ BigInt{0xf00000};
-		VERIFY(x == 0xE23456);
+		VERIFY(x == BigInt{0xE23456});
 	}
 	{
 		auto x = BigInt{0x123456} ^ BigInt{0x0f0000};
-		VERIFY(x == 0x1D3456);
+		VERIFY(x == BigInt{0x1D3456});
 	}
 	{
 		auto x = BigInt{0x123456} ^ BigInt{0x00000f};
-		VERIFY(x == 0x123459);
+		VERIFY(x == BigInt{0x123459});
 	}
 	{
 		auto x = BigInt{0x123456} ^ BigInt{0xf0f0f0};
-		VERIFY(x == 0xE2C4A6);
+		VERIFY(x == BigInt{0xE2C4A6});
 	}
 	return true;
 }
@@ -66,7 +66,7 @@ XorTest2()
 		auto x =
 			BigInt{"0x123456789ABCDEF0123456789ABCDEF"} ^
 			BigInt{"0x123456789ABCDEF0123456789ABCDEF"};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	return true;
 }

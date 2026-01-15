@@ -189,36 +189,6 @@ public:
 		return *this;
 	}
 
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator+(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} += rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator-(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} -= rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator*(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} *= rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator/(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} /= rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator%(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} %= rhs;
-	}
-
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
 	operator&=(fixed_bigint const& rhs) HAMON_NOEXCEPT
 	{
@@ -240,24 +210,6 @@ public:
 		return *this;
 	}
 
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator&(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} &= rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator|(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} |= rhs;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator^(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} ^= rhs;
-	}
-
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
 	operator<<=(hamon::size_t pos) HAMON_NOEXCEPT
 	{
@@ -270,18 +222,6 @@ public:
 	{
 		bigint_algo::bit_shift_right(m_data, pos);
 		return *this;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator<<(hamon::size_t pos) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} <<= pos;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
-	operator>>(hamon::size_t pos) const HAMON_NOEXCEPT
-	{
-		return fixed_bigint{*this} >>= pos;
 	}
 
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
@@ -335,50 +275,6 @@ public:
 		}
 		return bigint_algo::compare(m_data, rhs.m_data);
 	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator==(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return this->compare(rhs) == 0;
-	}
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR hamon::strong_ordering
-	operator<=>(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return this->compare(rhs) <=> 0;
-	}
-#else
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator!=(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return !(*this == rhs);
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator<(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return this->compare(rhs) < 0;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator>(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return rhs < *this;
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator<=(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return !(*this > rhs);
-	}
-
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool
-	operator>=(fixed_bigint const& rhs) const HAMON_NOEXCEPT
-	{
-		return !(*this < rhs);
-	}
-#endif
 
 private:
 	static HAMON_CXX14_CONSTEXPR vector_type
@@ -436,6 +332,127 @@ private:
 private:
 	vector_type	m_data;
 };
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator+(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} += rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator-(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} -= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator*(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} *= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator/(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} /= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator%(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} %= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator&(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} &= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator|(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} |= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator^(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} ^= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator<<(fixed_bigint<Bits, Signed> const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} <<= pos;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator>>(fixed_bigint<Bits, Signed> const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} >>= pos;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator==(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) == 0;
+}
+
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::strong_ordering
+operator<=>(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) <=> 0;
+}
+#else
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator!=(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs == rhs);
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) < 0;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs < lhs;
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<=(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs > rhs);
+}
+
+template <hamon::size_t Bits, bool Signed>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>=(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return !(lhs < rhs);
+}
+#endif
 
 namespace detail
 {

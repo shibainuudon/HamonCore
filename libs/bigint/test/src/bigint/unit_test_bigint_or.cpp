@@ -23,35 +23,35 @@ OrTest()
 {
 	{
 		auto x = BigInt{0x0F} | BigInt{0x35};
-		VERIFY(x == 0x3F);
+		VERIFY(x == BigInt{0x3F});
 	}
 	{
 		auto x = BigInt{0x35} | BigInt{0xf0};
-		VERIFY(x == 0xF5);
+		VERIFY(x == BigInt{0xF5});
 	}
 	{
 		auto x = BigInt{0x0F} | BigInt{0x12};
-		VERIFY(x == 0x1F);
+		VERIFY(x == BigInt{0x1F});
 	}
 	{
 		auto x = BigInt{0x77} | BigInt{0x20};
-		VERIFY(x == 0x77);
+		VERIFY(x == BigInt{0x77});
 	}
 	{
 		auto x = BigInt{0x123456} | BigInt{0xf00000};
-		VERIFY(x == 0xF23456);
+		VERIFY(x == BigInt{0xF23456});
 	}
 	{
 		auto x = BigInt{0x123456} | BigInt{0x0f0000};
-		VERIFY(x == 0x1F3456);
+		VERIFY(x == BigInt{0x1F3456});
 	}
 	{
 		auto x = BigInt{0x123456} | BigInt{0x00000f};
-		VERIFY(x == 0x12345F);
+		VERIFY(x == BigInt{0x12345F});
 	}
 	{
 		auto x = BigInt{0x123456} | BigInt{0xf0f0f0};
-		VERIFY(x == 0xF2F4F6);
+		VERIFY(x == BigInt{0xF2F4F6});
 	}
 	return true;
 }

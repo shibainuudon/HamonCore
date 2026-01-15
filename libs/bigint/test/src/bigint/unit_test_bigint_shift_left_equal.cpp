@@ -23,29 +23,29 @@ ShiftLeftEqualTest()
 {
 	{
 		auto x = BigInt{1};
-		VERIFY(x == 0x01);
+		VERIFY(x == BigInt{0x01});
 
 		x <<= 1;
-		VERIFY(x == 0x02);
+		VERIFY(x == BigInt{0x02});
 
 		x <<= 1;
-		VERIFY(x == 0x04);
+		VERIFY(x == BigInt{0x04});
 
 		x <<= 2;
-		VERIFY(x == 0x10);
+		VERIFY(x == BigInt{0x10});
 
 		x <<= 4;
-		VERIFY(x == 0x100);
+		VERIFY(x == BigInt{0x100});
 	}
 	{
 		auto x = BigInt{0xff};
-		VERIFY(x == 0xff);
+		VERIFY(x == BigInt{0xff});
 
 		x <<= 4;
-		VERIFY(x == 0xff0);
+		VERIFY(x == BigInt{0xff0});
 
 		x <<= 8;
-		VERIFY(x == 0xff000);
+		VERIFY(x == BigInt{0xff000});
 	}
 	return true;
 }

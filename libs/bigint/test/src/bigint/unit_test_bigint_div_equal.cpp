@@ -23,40 +23,40 @@ UnsignedDivEqualTest()
 {
 	{
 		BigInt x{100};
-		VERIFY(x == 100);
+		VERIFY(x == BigInt{100});
 
 		x /= BigInt{2};
-		VERIFY(x == 50);
+		VERIFY(x == BigInt{50});
 
 		x /= BigInt{2};
-		VERIFY(x == 25);
+		VERIFY(x == BigInt{25});
 
 		x /= BigInt{2};
-		VERIFY(x == 12);
+		VERIFY(x == BigInt{12});
 
 		x /= BigInt{2};
-		VERIFY(x == 6);
+		VERIFY(x == BigInt{6});
 
 		x /= BigInt{2};
-		VERIFY(x == 3);
+		VERIFY(x == BigInt{3});
 
 		x /= BigInt{2};
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 
 		x /= BigInt{2};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 
 		x /= BigInt{2};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		BigInt x{0xffff};
-		VERIFY(x == 0xffff);
+		VERIFY(x == BigInt{0xffff});
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wself-assign-overloaded")
 		x /= x;
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 HAMON_WARNING_POP()
 	}
 	return true;
@@ -68,25 +68,25 @@ SignedDivEqualTest()
 {
 	{
 		BigInt x(-256);
-		VERIFY(x == -256);
+		VERIFY(x == BigInt{-256});
 
 		x /= BigInt{2};
-		VERIFY(x == -128);
+		VERIFY(x == BigInt{-128});
 
 		x /= -2;
-		VERIFY(x == 64);
+		VERIFY(x == BigInt{64});
 
 		x /= -4;
-		VERIFY(x == -16);
+		VERIFY(x == BigInt{-16});
 
 		x /= BigInt{4};
-		VERIFY(x == -4);
+		VERIFY(x == BigInt{-4});
 
 		x /= BigInt{5};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 
 		x /= -1;
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	return true;
 }

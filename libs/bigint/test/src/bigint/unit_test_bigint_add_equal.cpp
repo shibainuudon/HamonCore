@@ -25,22 +25,22 @@ inline HAMON_CXX14_CONSTEXPR bool
 AddEqualTest()
 {
 	BigInt x{};
-	VERIFY(x == 0);
+	VERIFY(x == BigInt{0});
 
 	x += 0;
-	VERIFY(x == 0);
+	VERIFY(x == BigInt{0});
 
 	x += 1;
-	VERIFY(x == 1);
+	VERIFY(x == BigInt{1});
 
 	x += BigInt(-2);
 	VERIFY(x == BigInt(-1));
 
 	x += 12345;
-	VERIFY(x == 12344);
+	VERIFY(x == BigInt{12344});
 
 	x += BigInt(656);
-	VERIFY(x == 13000);
+	VERIFY(x == BigInt{13000});
 
 	x += BigInt(-123456789);
 	VERIFY(x == BigInt(-123443789));
@@ -49,7 +49,7 @@ AddEqualTest()
 	VERIFY(x == BigInt(-246887578));
 
 	x += -x;
-	VERIFY(x == 0);
+	VERIFY(x == BigInt{0});
 
 	return true;
 }

@@ -23,19 +23,19 @@ ShiftRightEqualTest()
 {
 	{
 		auto x = BigInt{12345678};
-		VERIFY(x == 12345678);
+		VERIFY(x == BigInt{12345678});
 
 		x >>= 1;
-		VERIFY(x == 6172839);
+		VERIFY(x == BigInt{6172839});
 
 		x >>= 2;
-		VERIFY(x == 1543209);
+		VERIFY(x == BigInt{1543209});
 
 		x >>= 3;
-		VERIFY(x == 192901);
+		VERIFY(x == BigInt{192901});
 
 		x >>= 10;
-		VERIFY(x == 188);
+		VERIFY(x == BigInt{188});
 	}
 	return true;
 }
@@ -51,7 +51,7 @@ ShiftRightEqualTest2()
 		VERIFY(x == BigInt{"0x123456789012345678901234567890123456789"});
 
 		x >>= 0x10000000;
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	return true;
 }

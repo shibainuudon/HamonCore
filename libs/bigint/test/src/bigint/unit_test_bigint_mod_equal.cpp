@@ -23,31 +23,31 @@ UnsignedModEqualTest()
 {
 	{
 		auto x = BigInt{12345};
-		VERIFY(x == 12345);
+		VERIFY(x == BigInt{12345});
 
 		x %= BigInt(678);
-		VERIFY(x == 141);
+		VERIFY(x == BigInt{141});
 
 		x %= BigInt{13};
-		VERIFY(x == 11);
+		VERIFY(x == BigInt{11});
 
 		x %= BigInt(20);
-		VERIFY(x == 11);
+		VERIFY(x == BigInt{11});
 
 		x %= BigInt{11};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 
 		x %= BigInt(1);
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		BigInt x{0xffff};
-		VERIFY(x == 0xffff);
+		VERIFY(x == BigInt{0xffff});
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wself-assign-overloaded")
 		x %= x;
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 HAMON_WARNING_POP()
 	}
 	return true;

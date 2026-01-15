@@ -27,29 +27,29 @@ CompareSignedTest()
 	{
 		auto const x1 = BigInt(-2);
 
-		VERIFY((x1 == -1) == false);
-		VERIFY((x1 == -2) == true);
-		VERIFY((x1 == -3) == false);
+		VERIFY((x1 == BigInt{-1}) == false);
+		VERIFY((x1 == BigInt{-2}) == true);
+		VERIFY((x1 == BigInt{-3}) == false);
 
-		VERIFY((x1 != -1) == true);
-		VERIFY((x1 != -2) == false);
-		VERIFY((x1 != -3) == true);
+		VERIFY((x1 != BigInt{-1}) == true);
+		VERIFY((x1 != BigInt{-2}) == false);
+		VERIFY((x1 != BigInt{-3}) == true);
 
-		VERIFY((x1 <  -1) == true);
-		VERIFY((x1 <  -2) == false);
-		VERIFY((x1 <  -3) == false);
+		VERIFY((x1 <  BigInt{-1}) == true);
+		VERIFY((x1 <  BigInt{-2}) == false);
+		VERIFY((x1 <  BigInt{-3}) == false);
 
-		VERIFY((x1 >  -1) == false);
-		VERIFY((x1 >  -2) == false);
-		VERIFY((x1 >  -3) == true);
+		VERIFY((x1 >  BigInt{-1}) == false);
+		VERIFY((x1 >  BigInt{-2}) == false);
+		VERIFY((x1 >  BigInt{-3}) == true);
 
-		VERIFY((x1 <= -1) == true);
-		VERIFY((x1 <= -2) == true);
-		VERIFY((x1 <= -3) == false);
+		VERIFY((x1 <= BigInt{-1}) == true);
+		VERIFY((x1 <= BigInt{-2}) == true);
+		VERIFY((x1 <= BigInt{-3}) == false);
 
-		VERIFY((x1 >= -1) == false);
-		VERIFY((x1 >= -2) == true);
-		VERIFY((x1 >= -3) == true);
+		VERIFY((x1 >= BigInt{-1}) == false);
+		VERIFY((x1 >= BigInt{-2}) == true);
+		VERIFY((x1 >= BigInt{-3}) == true);
 	}
 	{
 		auto const x1 = BigInt( -12345);
@@ -102,8 +102,7 @@ CompareSignedTest()
 		VERIFY((x1 >= x6) == true);
 	}
 	{
-		auto const x1 = BigInt(-1);
-		VERIFY((x1 < 0) == true);
+		VERIFY((BigInt{-1} < BigInt{0}) == true);
 	}
 	return true;
 }
@@ -172,33 +171,32 @@ CompareUnsignedTest()
 	{
 		auto const x1 = BigInt(2);
 
-		VERIFY((x1 == 1) == false);
-		VERIFY((x1 == 2) == true);
-		VERIFY((x1 == 3) == false);
+		VERIFY((x1 == BigInt{1}) == false);
+		VERIFY((x1 == BigInt{2}) == true);
+		VERIFY((x1 == BigInt{3}) == false);
 
-		VERIFY((x1 != 1) == true);
-		VERIFY((x1 != 2) == false);
-		VERIFY((x1 != 3) == true);
+		VERIFY((x1 != BigInt{1}) == true);
+		VERIFY((x1 != BigInt{2}) == false);
+		VERIFY((x1 != BigInt{3}) == true);
 
-		VERIFY((x1 <  1) == false);
-		VERIFY((x1 <  2) == false);
-		VERIFY((x1 <  3) == true);
+		VERIFY((x1 <  BigInt{1}) == false);
+		VERIFY((x1 <  BigInt{2}) == false);
+		VERIFY((x1 <  BigInt{3}) == true);
 
-		VERIFY((x1 >  1) == true);
-		VERIFY((x1 >  2) == false);
-		VERIFY((x1 >  3) == false);
+		VERIFY((x1 >  BigInt{1}) == true);
+		VERIFY((x1 >  BigInt{2}) == false);
+		VERIFY((x1 >  BigInt{3}) == false);
 
-		VERIFY((x1 <= 1) == false);
-		VERIFY((x1 <= 2) == true);
-		VERIFY((x1 <= 3) == true);
+		VERIFY((x1 <= BigInt{1}) == false);
+		VERIFY((x1 <= BigInt{2}) == true);
+		VERIFY((x1 <= BigInt{3}) == true);
 
-		VERIFY((x1 >= 1) == true);
-		VERIFY((x1 >= 2) == true);
-		VERIFY((x1 >= 3) == false);
+		VERIFY((x1 >= BigInt{1}) == true);
+		VERIFY((x1 >= BigInt{2}) == true);
+		VERIFY((x1 >= BigInt{3}) == false);
 	}
 	{
-		auto const x1 = BigInt(-1);
-		VERIFY((x1 < 0) == false);
+		VERIFY((BigInt(-1) < BigInt{0}) == false);
 	}
 	return true;
 }

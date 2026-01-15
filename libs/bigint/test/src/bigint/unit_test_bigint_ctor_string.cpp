@@ -22,96 +22,96 @@ CtorStringTest()
 {
 	{
 		BigInt x{""};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		BigInt x{"0"};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		BigInt x{"+0"};
-		VERIFY(x == +0);
+		VERIFY(x == BigInt{+0});
 	}
 	{
 		BigInt x{"-0"};
-		VERIFY(x == -0);
+		VERIFY(x == BigInt{-0});
 	}
 	{
 		BigInt x{"1"};
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 	}
 	{
 		BigInt x{"+1"};
-		VERIFY(x == +1);
+		VERIFY(x == BigInt{+1});
 	}
 	{
 		BigInt x{"-1"};
-		VERIFY(x == -1);
+		VERIFY(x == BigInt{-1});
 	}
 	{
 		BigInt x{"123"};
-		VERIFY(x == 123);
+		VERIFY(x == BigInt{123});
 	}
 	{
 		BigInt x{"+123"};
-		VERIFY(x == +123);
+		VERIFY(x == BigInt{+123});
 	}
 	{
 		BigInt x{"-123"};
-		VERIFY(x == -123);
+		VERIFY(x == BigInt{-123});
 	}
 	{
 		BigInt x{"987654321"};
-		VERIFY(x == 987654321);
+		VERIFY(x == BigInt{987654321});
 	}
 	{
 		BigInt x{"+987654321"};
-		VERIFY(x == +987654321);
+		VERIFY(x == BigInt{+987654321});
 	}
 	{
 		BigInt x{"-987654321"};
-		VERIFY(x == -987654321);
+		VERIFY(x == BigInt{-987654321});
 	}
 
 	// binary
 	{
 		BigInt x{"0b1111011"};
-//		VERIFY(x == 0b1111011);
-		VERIFY(x == 123);
+//		VERIFY(x == BigInt{0b1111011});
+		VERIFY(x == BigInt{123});
 	}
 	{
 		BigInt x{"-0B1111011"};
-//		VERIFY(x == -0B1111011);
-		VERIFY(x == -123);
+//		VERIFY(x == BigInt{-0B1111011});
+		VERIFY(x == BigInt{-123});
 	}
 
 	// hex
 	{
 		BigInt x{"0x0123456789ABCDEF"};
-		VERIFY(x == 0x0123456789ABCDEF);
-		VERIFY(x == 81985529216486895);
+		VERIFY(x == BigInt{0x0123456789ABCDEF});
+		VERIFY(x == BigInt{81985529216486895});
 	}
 	{
 		BigInt x{"0Xffffffff"};
-		VERIFY(x == 0Xffffffff);
-		VERIFY(x == 4294967295);
+		VERIFY(x == BigInt{0Xffffffff});
+		VERIFY(x == BigInt{4294967295});
 	}
 	{
 		BigInt x{"-0x007f"};
-		VERIFY(x == -0x007f);
-		VERIFY(x == -127);
+		VERIFY(x == BigInt{-0x007f});
+		VERIFY(x == BigInt{-127});
 	}
 
 	// oct
 	{
 		BigInt x {"02322"};
-		VERIFY(x == 02322);
-		VERIFY(x == 1234);
+		VERIFY(x == BigInt{02322});
+		VERIFY(x == BigInt{1234});
 	}
 	{
 		BigInt x {"-02322"};
-		VERIFY(x == -02322);
-		VERIFY(x == -1234);
+		VERIFY(x == BigInt{-02322});
+		VERIFY(x == BigInt{-1234});
 	}
 	return true;
 }

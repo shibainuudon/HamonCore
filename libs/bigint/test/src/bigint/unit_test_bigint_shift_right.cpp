@@ -23,15 +23,15 @@ ShiftRightTest()
 {
 	{
 		auto x = BigInt{0x1234} >> 1;
-		VERIFY(x == 0x91a);
+		VERIFY(x == BigInt{0x91a});
 	}
 	{
 		auto x = BigInt{0xffff} >> 1;
-		VERIFY(x == 0x7fff);
+		VERIFY(x == BigInt{0x7fff});
 	}
 	{
 		auto x = BigInt{0xffffff} >> 2;
-		VERIFY(x == 0x3fffff);
+		VERIFY(x == BigInt{0x3fffff});
 	}
 	return true;
 }
@@ -42,11 +42,11 @@ ShiftRightTest2()
 {
 	{
 		auto x = BigInt{"0x12340000000000000000"} >> 64;
-		VERIFY(x == 0x1234);
+		VERIFY(x == BigInt{0x1234});
 	}
 	{
 		auto x = BigInt{"0x12340000000000000000"} >> 65;
-		VERIFY(x == 0x91a);
+		VERIFY(x == BigInt{0x91a});
 	}
 	return true;
 }

@@ -23,27 +23,27 @@ UnsignedModTest()
 {
 	{
 		auto x = BigInt{123} % BigInt{2};
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 	}
 	{
 		auto x = BigInt{123} % BigInt{3};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt{123} % BigInt{4};
-		VERIFY(x == 3);
+		VERIFY(x == BigInt{3});
 	}
 	{
 		auto x = BigInt{123} % BigInt{5};
-		VERIFY(x == 3);
+		VERIFY(x == BigInt{3});
 	}
 	{
 		auto x = BigInt{123} % BigInt{6};
-		VERIFY(x == 3);
+		VERIFY(x == BigInt{3});
 	}
 	{
 		auto x = BigInt{123} % BigInt{7};
-		VERIFY(x == 4);
+		VERIFY(x == BigInt{4});
 	}
 	return true;
 }
@@ -54,35 +54,35 @@ SignedModTest()
 {
 	{
 		auto x = BigInt( 6) % BigInt( 3);
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt(-6) % BigInt( 3);
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt( 6) % BigInt(-3);
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt(-6) % BigInt(-3);
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt( 7) % BigInt( 3);
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 	}
 	{
 		auto x = BigInt(-7) % BigInt( 3);
-		VERIFY(x == -1);
+		VERIFY(x == BigInt{-1});
 	}
 	{
 		auto x = BigInt( 7) % BigInt(-3);
-		VERIFY(x == 1);
+		VERIFY(x == BigInt{1});
 	}
 	{
 		auto x = BigInt(-7) % BigInt(-3);
-		VERIFY(x == -1);
+		VERIFY(x == BigInt{-1});
 	}
 	return true;
 }

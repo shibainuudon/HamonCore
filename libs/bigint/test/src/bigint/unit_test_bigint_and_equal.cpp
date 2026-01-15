@@ -43,20 +43,20 @@ AndEqualTest2()
 {
 	{
 		auto x = BigInt{0xffffffff};
-		VERIFY(x == 0xffffffff);
+		VERIFY(x == BigInt{0xffffffff});
 
 		x &= BigInt("0xFEDCBA9876543210000000000000000");
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	{
 		auto x = BigInt{0x12345678};
-		VERIFY(x == 0x12345678);
+		VERIFY(x == BigInt{0x12345678});
 
 		x &= BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-		VERIFY(x == 0x12345678);
+		VERIFY(x == BigInt{0x12345678});
 
 		x &= BigInt("0x000000000000000000000000000FFFF");
-		VERIFY(x == 0x5678);
+		VERIFY(x == BigInt{0x5678});
 	}
 	return true;
 }

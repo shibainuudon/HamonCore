@@ -23,13 +23,13 @@ OrEqualTest()
 {
 	{
 		auto x = BigInt{0};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 
 		x |= BigInt(1);
-		VERIFY(x == 0x0001);
+		VERIFY(x == BigInt{0x0001});
 
 		x |= BigInt(0x8000);
-		VERIFY(x == 0x8001);
+		VERIFY(x == BigInt{0x8001});
 	}
 	return true;
 }
@@ -40,7 +40,7 @@ OrEqualTest2()
 {
 	{
 		auto x = BigInt{0x8001};
-		VERIFY(x == 0x8001);
+		VERIFY(x == BigInt{0x8001});
 
 		x |= BigInt{"0xFEDCBA9876543210000000000000000"};
 		VERIFY(x == BigInt{"0xFEDCBA9876543210000000000008001"});

@@ -52,7 +52,7 @@ XorEqualTest2()
 		VERIFY(x == BigInt{"0x0edcb567865432ef012cb56886a432ef"});
 
 		x ^= BigInt{"0x0edcb567865432ef012cb56886a432ef"};
-		VERIFY(x == 0);
+		VERIFY(x == BigInt{0});
 	}
 	return true;
 }
