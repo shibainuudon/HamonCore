@@ -2,8 +2,8 @@
 
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
 	<Type Name="hamon::basic_string_view&lt;*,*&gt;">
-		<Intrinsic Name="GetSize" Expression="m_len" />
-		<Intrinsic Name="GetData" Expression="m_str" />
+		<Intrinsic Name="GetSize" Expression="m_size" />
+		<Intrinsic Name="GetData" Expression="m_data" />
 		<DisplayString>{GetData(),[GetSize()]}</DisplayString>
 		<StringView>GetData(),[GetSize()]</StringView>
 		<Expand>
