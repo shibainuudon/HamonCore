@@ -7,6 +7,7 @@
 #ifndef HAMON_BIGINT_BIGINT_HPP
 #define HAMON_BIGINT_BIGINT_HPP
 
+#include <hamon/bigint/bigint_fwd.hpp>
 #include <hamon/bigint/bigint_algo/from_uint.hpp>
 #include <hamon/bigint/bigint_algo/from_chars.hpp>
 #include <hamon/bigint/bigint_algo/to_uint.hpp>
@@ -40,8 +41,6 @@
 
 namespace hamon
 {
-
-class bigint;
 
 HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, bigint& value, int base = 10);
