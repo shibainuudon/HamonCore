@@ -20,6 +20,7 @@
 #include <hamon/bigint/bigint_algo/bit_and.hpp>
 #include <hamon/bigint/bigint_algo/bit_or.hpp>
 #include <hamon/bigint/bigint_algo/bit_xor.hpp>
+#include <hamon/bigint/bigint_algo/bit_scan_reverse.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
@@ -487,6 +488,19 @@ struct bigint_access
 };
 
 }	// namespace detail
+
+inline HAMON_CXX14_CONSTEXPR bool
+bit_scan_reverse(hamon::size_t* index, bigint const& x)
+{
+	using access = hamon::detail::bigint_access;
+
+	if (access::sign(x) < 0)
+	{
+		return false;
+	}
+
+	return bigint_algo::bit_scan_reverse(index, access::magnitude(x));
+}
 
 inline HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, bigint& value, int base)
