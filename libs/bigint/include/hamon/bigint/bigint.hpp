@@ -42,18 +42,20 @@
 namespace hamon
 {
 
-HAMON_CXX20_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, bigint& value, int base = 10);
+namespace detail
+{
 
-HAMON_CXX20_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, bigint const& value, int base = 10);
+struct bigint_access;
 
-HAMON_CXX20_CONSTEXPR hamon::string to_string(bigint const& value);
+}	// namespace detail
 
 class bigint
 {
 private:
-	using MagnitudeType = hamon::vector<hamon::uint32_t>;
+	friend hamon::detail::bigint_access;
+
+	using sign_type = int;
+	using magnitude_type = hamon::vector<hamon::uint32_t>;
 
 public:
 	HAMON_CXX20_CONSTEXPR
@@ -124,7 +126,7 @@ public:
 
 private:
 	HAMON_CXX20_CONSTEXPR
-	bigint(int sign, MagnitudeType const& mag) HAMON_NOEXCEPT
+	bigint(sign_type sign, magnitude_type const& mag) HAMON_NOEXCEPT
 		: m_sign(sign)
 		, m_magnitude{mag}
 	{}
@@ -177,7 +179,7 @@ private:
 		else if (c < 0)
 		{
 			// lhs = rhs - lhs
-			MagnitudeType tmp(rhs.m_magnitude);
+			magnitude_type tmp(rhs.m_magnitude);
 			bigint_algo::sub(tmp, m_magnitude);
 			m_magnitude = tmp;
 			m_sign = -m_sign;
@@ -342,18 +344,8 @@ public:
 	}
 
 private:
-	int				m_sign = 1;	// m_magnitude >= 0 なら 1、m_magnitude < 0 なら -1
-	MagnitudeType	m_magnitude;
-
-private:
-	friend HAMON_CXX20_CONSTEXPR hamon::from_chars_result
-	from_chars(char const* first, char const* last, bigint& value, int base);
-
-	friend HAMON_CXX20_CONSTEXPR hamon::to_chars_result
-	to_chars(char* first, char* last, bigint const& value, int base);
-
-	friend HAMON_CXX20_CONSTEXPR hamon::string
-	to_string(bigint const& value);
+	sign_type		m_sign = 1;	// m_magnitude >= 0 なら 1、m_magnitude < 0 なら -1
+	magnitude_type	m_magnitude;
 };
 
 HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bigint
@@ -460,34 +452,76 @@ operator>=(bigint const& lhs, bigint const& rhs) HAMON_NOEXCEPT
 }
 #endif
 
+namespace detail
+{
+
+struct bigint_access
+{
+	static HAMON_CXX14_CONSTEXPR
+	bigint::sign_type&
+	sign(bigint& x) HAMON_NOEXCEPT
+	{
+		return x.m_sign;
+	}
+
+	static HAMON_CXX14_CONSTEXPR
+	bigint::sign_type const&
+	sign(bigint const& x) HAMON_NOEXCEPT
+	{
+		return x.m_sign;
+	}
+
+	static HAMON_CXX14_CONSTEXPR
+	bigint::magnitude_type&
+	magnitude(bigint& x) HAMON_NOEXCEPT
+	{
+		return x.m_magnitude;
+	}
+
+	static HAMON_CXX14_CONSTEXPR
+	bigint::magnitude_type const&
+	magnitude(bigint const& x) HAMON_NOEXCEPT
+	{
+		return x.m_magnitude;
+	}
+};
+
+}	// namespace detail
+
 inline HAMON_CXX20_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, bigint& value, int base)
 {
-	value.m_sign = 1;
+	using access = hamon::detail::bigint_access;
+
+	access::sign(value) = 1;
 	if (first != last && *first == '-')
 	{
-		value.m_sign = -1;
+		access::sign(value) = -1;
 		++first;
 	}
-	return bigint_algo::from_chars(first, last, value.m_magnitude, base);
+	return bigint_algo::from_chars(first, last, access::magnitude(value), base);
 }
 
 inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, bigint const& value, int base)
 {
-	if (value.m_sign < 0 && first != last)
+	using access = hamon::detail::bigint_access;
+
+	if (access::sign(value) < 0 && first != last)
 	{
 		*first++ = '-';
 	}
-	return bigint_algo::to_chars(first, last, value.m_magnitude, base);
+	return bigint_algo::to_chars(first, last, access::magnitude(value), base);
 }
 
 inline HAMON_CXX20_CONSTEXPR hamon::string
 to_string(bigint const& value)
 {
+	using access = hamon::detail::bigint_access;
+
 	int base = 10;
 	hamon::size_t len =
-		bigint_algo::to_chars_length(value.m_magnitude, base) +
+		bigint_algo::to_chars_length(access::magnitude(value), base) +
 		1 +	// '-' 
 		1;	// '\0'
 	hamon::string result;
