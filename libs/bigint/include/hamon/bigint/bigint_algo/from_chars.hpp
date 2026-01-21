@@ -12,7 +12,8 @@
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/algorithm/min.hpp>
-#include <hamon/charconv/from_chars.hpp>
+#include <hamon/charconv/from_chars_result.hpp>
+#include <hamon/charconv/detail/from_chars_integer.hpp>
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/floor.hpp>
 //#include <hamon/cmath/detail/pow_n.hpp>
@@ -52,7 +53,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 	{
 		auto p2 = first + hamon::min(p - first + digits, last - first);
 		T t{};
-		auto r = hamon::from_chars(p, p2, t, base);
+		auto r = hamon::detail::from_chars_integer(p, p2, t, base);
 		if (r.ec == hamon::errc::invalid_argument)
 		{
 			break;
