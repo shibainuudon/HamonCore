@@ -481,6 +481,31 @@ struct fixed_bigint_access
 
 template <hamon::size_t Bits, bool Signed>
 inline HAMON_CXX14_CONSTEXPR bool
+pow_n(fixed_bigint<Bits, Signed>& out, fixed_bigint<Bits, Signed> const& x, hamon::uintmax_t y)
+{
+	using access = hamon::detail::fixed_bigint_access;
+
+	if (Signed)
+	{
+		if (bigint_algo::signbit(access::data(x)))
+		{
+			if (bigint_algo::pow_n(access::data(out), bigint_algo::negate(access::data(x)), y))
+			{
+				return true;
+			}
+			if (y % 2 == 1)
+			{
+				bigint_algo::negate(access::data(out));
+			}
+			return false;
+		}
+	}
+
+	return bigint_algo::pow_n(access::data(out), access::data(x), y);
+}
+
+template <hamon::size_t Bits, bool Signed>
+inline HAMON_CXX14_CONSTEXPR bool
 bit_scan_reverse(hamon::size_t* index, fixed_bigint<Bits, Signed> const& x)
 {
 	using access = hamon::detail::fixed_bigint_access;

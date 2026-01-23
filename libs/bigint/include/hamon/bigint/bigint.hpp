@@ -490,6 +490,28 @@ struct bigint_access
 }	// namespace detail
 
 inline HAMON_CXX14_CONSTEXPR bool
+pow_n(bigint& out, bigint const& x, hamon::uintmax_t y)
+{
+	using access = hamon::detail::bigint_access;
+
+	if (bigint_algo::pow_n(access::magnitude(out), access::magnitude(x), y))
+	{
+		return true;
+	}
+
+	access::sign(out) = 1;
+	if (access::sign(x) < 0)
+	{
+		if (y % 2 == 1)
+		{
+			access::sign(out) = -1;
+		}
+	}
+
+	return false;
+}
+
+inline HAMON_CXX14_CONSTEXPR bool
 bit_scan_reverse(hamon::size_t* index, bigint const& x)
 {
 	using access = hamon::detail::bigint_access;
