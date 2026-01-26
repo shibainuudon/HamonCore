@@ -11,6 +11,7 @@
 #include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -38,8 +39,18 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 bit_xor(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
-	auto const N = hamon::max(lhs.size(), rhs.size());
-	lhs.resize(N);
+	auto const n = hamon::max(lhs.size(), rhs.size());
+	lhs.resize(n);
+	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), rhs.size());
+	bigint_algo::normalize(lhs);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+bit_xor(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
+{
+	auto const n = hamon::max(lhs.size(), rhs.size());
+	lhs.resize(n);
 	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), rhs.size());
 	bigint_algo::normalize(lhs);
 }

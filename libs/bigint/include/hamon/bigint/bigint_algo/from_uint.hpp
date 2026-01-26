@@ -15,6 +15,7 @@
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -58,6 +59,19 @@ inline HAMON_CXX14_CONSTEXPR from_uint_result
 from_uint(UInt n, hamon::vector<T>& value)
 {
 	value.resize(sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1);
+	auto ret = from_uint_detail::from_uint(n, value.data(), value.size());
+	bigint_algo::normalize(value);
+	return ret;
+}
+
+template <typename UInt, typename T, hamon::size_t N,
+	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
+>
+inline HAMON_CXX14_CONSTEXPR from_uint_result
+from_uint(UInt n, hamon::inplace_vector<T, N>& value)
+{
+	auto const m = sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1;
+	value.resize(hamon::min(m, N));
 	auto ret = from_uint_detail::from_uint(n, value.data(), value.size());
 	bigint_algo::normalize(value);
 	return ret;

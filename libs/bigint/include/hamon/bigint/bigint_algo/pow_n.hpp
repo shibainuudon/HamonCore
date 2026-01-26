@@ -8,10 +8,12 @@
 #define HAMON_BIGINT_BIGINT_ALGO_POW_N_HPP
 
 #include <hamon/bigint/bigint_algo/multiply.hpp>
+#include <hamon/bigint/bigint_algo/detail/move.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
-#include <hamon/utility/move.hpp>
+//#include <hamon/utility/move.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -67,7 +69,8 @@ pow_n_impl(VectorType& out, VectorType const& x, hamon::uintmax_t y)
 	{
 		auto f1 = pow_n_impl(out, x, y / 2);
 		auto f2 = bigint_algo::multiply(tmp, out, out);
-		out = hamon::move(tmp);
+		//out = hamon::move(tmp);
+		detail::move(out, tmp);
 		return f1 || f2;
 	}
 	else
@@ -85,6 +88,13 @@ pow_n_impl(VectorType& out, VectorType const& x, hamon::uintmax_t y)
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 pow_n(hamon::vector<T>& out, hamon::vector<T> const& x, hamon::uintmax_t y)
+{
+	return pow_n_detail::pow_n_impl(out, x, y);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+pow_n(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& x, hamon::uintmax_t y)
 {
 	return pow_n_detail::pow_n_impl(out, x, y);
 }

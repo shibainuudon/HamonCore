@@ -8,6 +8,7 @@
 #include <hamon/array.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -38,6 +39,7 @@ test(VectorType const& vec, hamon::size_t expected, bool found)
 
 GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 {
+	// array
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0x00}, 0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0x01}, 0, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0x02}, 1, true));
@@ -49,7 +51,6 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0x40}, 6, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0x80}, 7, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 1>{0xff}, 7, true));
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0x00, 0x00},  0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0x01, 0x00},  0, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0x10, 0x00},  4, true));
@@ -58,7 +59,6 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0x00, 0x02},  9, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0x00, 0x80}, 15, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint8_t, 2>{0xff, 0xff}, 15, true));
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0x0000},  0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0x0001},  0, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0x0002},  1, true));
@@ -69,7 +69,6 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0x1111}, 12, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0x8111}, 15, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 1>{0xffff}, 15, true));
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0000, 0x0000},  0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0001, 0x0000},  0, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0010, 0x0000},  4, true));
@@ -79,7 +78,6 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0000, 0x0010}, 20, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0000, 0x0100}, 24, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint16_t, 2>{0x0000, 0x1000}, 28, true));
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0x00000000, 0x00000000, 0x00000000},  0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0x0000000f, 0x00000000, 0x00000000},  3, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0x000000ff, 0x00000000, 0x00000000},  7, true));
@@ -105,7 +103,6 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0xffffffff, 0xffffffff, 0x00ffffff}, 87, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0xffffffff, 0xffffffff, 0x0fffffff}, 91, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint32_t, 3>{0xffffffff, 0xffffffff, 0xffffffff}, 95, true));
-
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint64_t, 4>{0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000},   0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint64_t, 4>{0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000},   0, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint64_t, 4>{0x8000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000},  63, true));
@@ -117,6 +114,7 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint64_t, 4>{0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x8000000000000000}, 255, true));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::array<hamon::uint64_t, 4>{0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff, 0xffffffffffffffff}, 255, true));
 
+	// vector
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x00}, 0, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x01}, 0, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x12}, 4, true));
@@ -124,14 +122,12 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x34, 0x12}, 12, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x01}, 16, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint8_t>{0x00, 0x00, 0x02}, 17, true));
-
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x0000},  0, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x0001},  0, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x0002},  1, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x4000}, 14, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x4000, 0x0001}, 16, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint16_t>{0x4000, 0x0001, 0x8000}, 47, true));
-
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0x00000000},  0, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0x00000001},  0, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0x00000003},  1, true));
@@ -229,11 +225,32 @@ GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0xffffffff, 0xffffffff, 0x3fffffff}, 93, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0xffffffff, 0xffffffff, 0x7fffffff}, 94, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint32_t>{0xffffffff, 0xffffffff, 0xffffffff}, 95, true));
-
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint64_t>{0x0000000000000000},  0, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint64_t>{0x0000000000000001},  0, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint64_t>{0x0000000000000000, 0x0000000000000001},  64, true));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::vector<hamon::uint64_t>{0xffffffffffffffff, 0xffffffffffffffff}, 127, true));
+
+	// inplace_vector
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x00}, 0, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x01}, 0, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x12}, 4, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x23, 0x01}, 8, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x34, 0x12}, 12, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x00, 0x00, 0x01}, 16, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint8_t, 3>{0x00, 0x00, 0x02}, 17, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x0000},  0, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x0001},  0, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x0002},  1, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x4000}, 14, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x4000, 0x0001}, 16, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint16_t, 4>{0x4000, 0x0001, 0x8000}, 47, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint32_t, 3>{0x00000000},  0, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint32_t, 3>{0x00000001},  0, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint32_t, 3>{0xffffffff, 0xffffffff, 0x00000001}, 64, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint64_t, 2>{0x0000000000000000},  0, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint64_t, 2>{0x0000000000000001},  0, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint64_t, 2>{0x0000000000000000, 0x0000000000000001},  64, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_vector<hamon::uint64_t, 2>{0xffffffffffffffff, 0xffffffffffffffff}, 127, true));
 }
 
 }	// namespace bigint_algo_bit_scan_reverse_test

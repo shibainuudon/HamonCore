@@ -9,6 +9,7 @@
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/countl_zero.hpp>
+#include <hamon/bigint/bigint_algo/bit_scan_reverse.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/array.hpp>
@@ -16,6 +17,7 @@
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -73,12 +75,27 @@ inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
 {
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
-	hamon::size_t const N = lhs.size() + quo + 1;
-	lhs.resize(N);
-	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), N, rhs);
+	hamon::size_t const n = lhs.size() + quo + 1;
+	lhs.resize(n);
+	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), n, rhs);
 	bigint_algo::normalize(lhs);
 
 	return false;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+bit_shift_left(hamon::inplace_vector<T, N>& lhs, hamon::uintmax_t rhs)
+{
+	hamon::size_t msb{};
+	auto const nonzero = bigint_algo::bit_scan_reverse(&msb, lhs);
+	bool const overflow = nonzero && ((msb + 1 + rhs) > (N * hamon::bitsof<T>()));
+	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
+	hamon::size_t const n = hamon::min(lhs.size() + quo + 1, N);
+	lhs.resize(n);
+	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), n, rhs);
+	bigint_algo::normalize(lhs);
+	return overflow;
 }
 
 template <typename T, hamon::size_t N>

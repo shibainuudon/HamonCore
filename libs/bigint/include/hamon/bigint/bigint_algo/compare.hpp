@@ -9,6 +9,7 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -38,6 +39,19 @@ compare_impl(T const* lhs, T const* rhs, hamon::size_t n)
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR int
 compare(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
+{
+	auto const NA = lhs.size();
+	auto const NB = rhs.size();
+
+	if (NA > NB) { return  1; }
+	if (NA < NB) { return -1; }
+
+	return compare_detail::compare_impl(lhs.data(), rhs.data(), NA);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR int
+compare(hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
 {
 	auto const NA = lhs.size();
 	auto const NB = rhs.size();

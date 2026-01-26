@@ -13,6 +13,7 @@
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -68,6 +69,14 @@ bit_shift_right_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 bit_shift_right(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
+{
+	bit_shift_right_detail::bit_shift_right_impl(lhs.data(), lhs.size(), rhs);
+	bigint_algo::normalize(lhs);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+bit_shift_right(hamon::inplace_vector<T, N>& lhs, hamon::uintmax_t rhs)
 {
 	bit_shift_right_detail::bit_shift_right_impl(lhs.data(), lhs.size(), rhs);
 	bigint_algo::normalize(lhs);

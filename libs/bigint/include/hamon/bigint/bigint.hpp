@@ -236,8 +236,10 @@ public:
 	HAMON_CXX20_CONSTEXPR bigint&
 	operator/=(bigint const& rhs) HAMON_NOEXCEPT
 	{
-		auto ret = bigint_algo::div_mod(m_magnitude, rhs.m_magnitude);
-		m_magnitude = ret.quo;
+		magnitude_type quo;
+		magnitude_type rem;
+		bigint_algo::div_mod(quo, rem, m_magnitude, rhs.m_magnitude);
+		m_magnitude = hamon::move(quo);
 		if (bigint_algo::is_zero(m_magnitude))
 		{
 			m_sign = 1;
@@ -252,8 +254,10 @@ public:
 	HAMON_CXX20_CONSTEXPR bigint&
 	operator%=(bigint const& rhs) HAMON_NOEXCEPT
 	{
-		auto ret = bigint_algo::div_mod(m_magnitude, rhs.m_magnitude);
-		m_magnitude = ret.rem;
+		magnitude_type quo;
+		magnitude_type rem;
+		bigint_algo::div_mod(quo, rem, m_magnitude, rhs.m_magnitude);
+		m_magnitude = hamon::move(rem);
 		if (bigint_algo::is_zero(m_magnitude))
 		{
 			m_sign = 1;

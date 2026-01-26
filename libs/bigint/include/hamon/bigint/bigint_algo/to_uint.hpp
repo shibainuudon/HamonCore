@@ -15,6 +15,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -69,6 +70,15 @@ template <typename UInt, typename T,
 >
 inline HAMON_CXX14_CONSTEXPR to_uint_result
 to_uint(UInt& dst, hamon::vector<T> const& value)
+{
+	return to_uint_detail::to_uint(dst, value.data(), value.size());
+}
+
+template <typename UInt, typename T, hamon::size_t N,
+	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
+>
+inline HAMON_CXX14_CONSTEXPR to_uint_result
+to_uint(UInt& dst, hamon::inplace_vector<T, N> const& value)
 {
 	return to_uint_detail::to_uint(dst, value.data(), value.size());
 }

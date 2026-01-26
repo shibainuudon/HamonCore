@@ -20,7 +20,7 @@ namespace bigint_algo_bit_not_test
 
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR bool
-BitNotTest(VectorType a, VectorType const& expected)
+test(VectorType a, VectorType const& expected)
 {
 	hamon::bigint_algo::bit_not(a);
 	VERIFY(a == expected);
@@ -41,16 +41,16 @@ GTEST_TEST(BigIntAlgoTest, BitNotTest)
 	}
 #endif
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitNotTest(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::array<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},
 		hamon::array<hamon::uint8_t, 4>{0xED, 0xCB, 0xA9, 0x87}));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitNotTest(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::array<hamon::uint16_t, 3>{0x1234, 0x5678, 0x9ABC},
 		hamon::array<hamon::uint16_t, 3>{0xEDCB, 0xA987, 0x6543}));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitNotTest(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::array<hamon::uint32_t, 3>{0x12345678, 0x9ABCDEF0, 0x00000000},
 		hamon::array<hamon::uint32_t, 3>{0xEDCBA987, 0x6543210F, 0xFFFFFFFF}));
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(BitNotTest(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::array<hamon::uint64_t, 2>{0x123456789ABCDEF0, 0x0000000000000000},
 		hamon::array<hamon::uint64_t, 2>{0xEDCBA9876543210F, 0xFFFFFFFFFFFFFFFF}));
 }

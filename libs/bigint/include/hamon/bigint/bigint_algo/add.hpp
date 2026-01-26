@@ -11,10 +11,12 @@
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/utility/make_index_sequence.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -24,19 +26,20 @@ namespace bigint_algo
 {
 
 // bigint_algo全体的な取り決め
-// * vector<T> または array<T, N> を対象
+// * vector<T> または inplace_vector<T, N> または array<T, N> が対象
 // * T は 符号なし整数型
 // * 数値の格納の仕方はリトルエンディアン。つまり下位の桁を前方に格納する。
 // * arrayを引数にとるものはC++14でconstexpr
-// * vectorを引数にとるものはC++20でconstexpr
+// * vector/inplace_vectorを引数にとるものはC++20でconstexpr
 // * 引数を複数取る場合、
 //   arrayは要素数が同じ
-//   vectorは要素数が異なる場合がある
+//   vector/inplace_vectorは要素数が異なる場合がある
 // * 計算結果が入力より桁数が大きくなる場合、
 //   arrayはオーバーフローする
 //   vectorは自動的に要素数が増える
+//   inplace_vectorは自動的に要素数が増えるが、最大要素数を超えた場合はオーバーフローする
 // 
-// vectorの正規化ルール：
+// vector/inplace_vectorの正規化ルール：
 // * 上位桁の0を削除する。
 // * 空の場合は {0} にする。
 //   { 1, 0, 0 } -> { 1 }
@@ -99,6 +102,43 @@ add(hamon::vector<T>& lhs, T rhs)
 		lhs.data(), lhs.size(), &rhs, 1);
 	if (carry != 0)
 	{
+		lhs.push_back(carry);
+	}
+	return false;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
+{
+	lhs.resize(hamon::max(lhs.size(), rhs.size()));
+	T const carry = add_detail::add_impl(
+		lhs.data(), lhs.size(), rhs.data(), rhs.size());
+	if (carry != 0)
+	{
+		if (lhs.size() == N)
+		{
+			bigint_algo::normalize(lhs);
+			return true;
+		}
+		lhs.push_back(carry);
+	}
+	return false;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::inplace_vector<T, N>& lhs, T rhs)
+{
+	T const carry = add_detail::add_impl(
+		lhs.data(), lhs.size(), &rhs, 1);
+	if (carry != 0)
+	{
+		if (lhs.size() == N)
+		{
+			bigint_algo::normalize(lhs);
+			return true;
+		}
 		lhs.push_back(carry);
 	}
 	return false;

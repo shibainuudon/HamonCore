@@ -29,6 +29,7 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		config
 		cstddef
 		cstdint
+		inplace_vector
 		limits
 		memory
 		ranges		# range_value_t

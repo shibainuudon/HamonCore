@@ -7,6 +7,7 @@
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -22,6 +23,7 @@ namespace bigint_algo_normalize_test
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool test()
 {
+	// vector
 	{
 		hamon::vector<T> a{};
 		hamon::bigint_algo::normalize(a);
@@ -104,6 +106,20 @@ inline HAMON_CXX14_CONSTEXPR bool test()
 		hamon::vector<T> a{1, 0, 2, 0, 0, 3, 4, 0 };
 		hamon::bigint_algo::normalize(a);
 		hamon::vector<T> const expected{1, 0, 2, 0, 0, 3, 4};
+		VERIFY(a == expected);
+	}
+
+	// inplace_vector
+	{
+		hamon::inplace_vector<T, 8> a{1, 2, 3, 4, 0, 0, 0, 0};
+		hamon::bigint_algo::normalize(a);
+		hamon::inplace_vector<T, 8> const expected{1, 2, 3, 4};
+		VERIFY(a == expected);
+	}
+	{
+		hamon::inplace_vector<T, 8> a{1, 0, 2, 0, 0, 3, 4, 0 };
+		hamon::bigint_algo::normalize(a);
+		hamon::inplace_vector<T, 8> const expected{1, 0, 2, 0, 0, 3, 4};
 		VERIFY(a == expected);
 	}
 	return true;

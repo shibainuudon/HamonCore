@@ -9,6 +9,7 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -20,6 +21,13 @@ namespace bigint_algo
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 is_zero(hamon::vector<T> const& vec)
+{
+	return vec.size() == 1 && vec[0] == 0;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+is_zero(hamon::inplace_vector<T, N> const& vec)
 {
 	return vec.size() == 1 && vec[0] == 0;
 }

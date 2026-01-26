@@ -7,12 +7,14 @@
 #include <hamon/bigint/bigint_algo/to_chars_length.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
 GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 {
+	// vector
 	{
 		using Vector = hamon::vector<hamon::uint8_t>;
 		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(8u, hamon::bigint_algo::to_chars_length(Vector{0},  2));
@@ -241,8 +243,88 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 50u, hamon::bigint_algo::to_chars_length(Vector{0, 0, 0, 1}, 35));
 		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 50u, hamon::bigint_algo::to_chars_length(Vector{0, 0, 0, 1}, 36));
 	}
+
+	// inplace_vector
 	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 3> const a{};
+		using Vector = hamon::inplace_vector<hamon::uint8_t, 7>;
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  2));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(11u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  3));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 8u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  4));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 7u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  5));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 7u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  6));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 6u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  7));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 6u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  8));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 6u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF},  9));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 10));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 11));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 12));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 13));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 14));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 15));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 16));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 17));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 18));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 19));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 20));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 21));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 22));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 23));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 24));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 25));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 26));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 27));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 28));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 29));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 30));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 31));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 32));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 33));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 34));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 35));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 4u, hamon::bigint_algo::to_chars_length(Vector{0xFF, 0xFF}, 36));
+	}
+	{
+		using Vector = hamon::inplace_vector<hamon::uint32_t, 4>;
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(96u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  2));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(61u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  3));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(48u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  4));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(42u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  5));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(38u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  6));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(35u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  7));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(32u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  8));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(31u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},  9));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(29u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 10));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(28u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 11));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(27u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 12));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(26u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 13));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(26u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 14));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(25u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 15));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(24u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 16));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(24u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 17));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(24u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 18));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(23u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 19));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(23u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 20));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(22u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 21));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(22u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 22));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(22u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 23));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 24));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 25));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 26));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 27));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 28));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 29));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 30));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 31));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 32));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(20u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 33));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(19u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 34));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(19u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 35));
+		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(19u, hamon::bigint_algo::to_chars_length(Vector{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}, 36));
+	}
+
+	// array
+	{
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint8_t, 8> const a{0, 0, 1};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(24u, hamon::bigint_algo::to_chars_length(a,  2));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  3));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(12u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -280,7 +362,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 5u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint16_t, 2> const a{};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint16_t, 3> const a{0, 1};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(32u, hamon::bigint_algo::to_chars_length(a,  2));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(a,  3));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -318,7 +400,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 7u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint32_t, 1> const a{};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint32_t, 1> const a{0};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(32u, hamon::bigint_algo::to_chars_length(a,  2));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(21u, hamon::bigint_algo::to_chars_length(a,  3));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(16u, hamon::bigint_algo::to_chars_length(a,  4));
@@ -356,7 +438,7 @@ GTEST_TEST(BigIntAlgoTest, ToCharsLengthTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 7u, hamon::bigint_algo::to_chars_length(a, 36));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint64_t, 3> const a{};
+		HAMON_CXX14_CONSTEXPR hamon::array<hamon::uint64_t, 3> const a{0, 0, 1};
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(192u, hamon::bigint_algo::to_chars_length(a,  2));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(122u, hamon::bigint_algo::to_chars_length(a,  3));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 96u, hamon::bigint_algo::to_chars_length(a,  4));

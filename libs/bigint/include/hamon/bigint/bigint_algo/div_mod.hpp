@@ -17,6 +17,7 @@
 #include <hamon/bit/shl.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/array.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -24,13 +25,6 @@ namespace hamon
 {
 namespace bigint_algo
 {
-
-template <typename T>
-struct div_mod_result
-{
-	T	quo;	// 商
-	T	rem;	// あまり
-};
 
 namespace div_mod_detail
 {
@@ -98,43 +92,50 @@ div1(VectorType const& lhs, VectorType const& rhs, VectorType& x)
 }
 
 template <typename T, typename VectorType>
-inline HAMON_CXX14_CONSTEXPR div_mod_result<VectorType>
-div_mod_impl(T const* lhs, hamon::size_t n, VectorType const& rhs)
+inline HAMON_CXX14_CONSTEXPR void
+div_mod_impl(VectorType& quo, VectorType& rem, T const* lhs, hamon::size_t n, VectorType const& rhs)
 {
-	div_mod_result<VectorType> result
-	{
-		{0},
-		{0},
-	};
+	detail::zero(quo);
+	detail::zero(rem);
+
 	VectorType tmp{0};
 	for (hamon::size_t i = n; i > 0; --i)
 	{
-		bigint_algo::bit_shift_left(result.rem, hamon::bitsof<T>());
-		result.rem[0] = lhs[i-1];
+		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
+		rem[0] = lhs[i-1];
 
-		auto const q = div1(result.rem, rhs, tmp);
-		bigint_algo::bit_shift_left(result.quo, hamon::bitsof<T>());
-		result.quo[0] = q;
+		auto const q = div1(rem, rhs, tmp);
+		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
+		quo[0] = q;
 
-		bigint_algo::sub(result.rem, tmp);
+		bigint_algo::sub(rem, tmp);
 	}
-	return result;
 }
 
 }	// namespace div_mod_detail
 
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR div_mod_result<hamon::vector<T>>
-div_mod(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
+inline HAMON_CXX14_CONSTEXPR void
+div_mod(hamon::vector<T>& quo, hamon::vector<T>& rem,
+	hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
 {
-	return div_mod_detail::div_mod_impl(lhs.data(), lhs.size(), rhs);
+	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), lhs.size(), rhs);
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR div_mod_result<hamon::array<T, N>>
-div_mod(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+inline HAMON_CXX14_CONSTEXPR void
+div_mod(hamon::inplace_vector<T, N>& quo, hamon::inplace_vector<T, N>& rem,
+	hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
 {
-	return div_mod_detail::div_mod_impl(lhs.data(), detail::actual_size(lhs), rhs);
+	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), lhs.size(), rhs);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+div_mod(hamon::array<T, N>& quo, hamon::array<T, N>& rem,
+	hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+{
+	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), detail::actual_size(lhs), rhs);
 }
 
 }	// namespace bigint_algo

@@ -11,6 +11,7 @@
 #include <hamon/array.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -38,9 +39,19 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 bit_and(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
-	auto const N = hamon::min(lhs.size(), rhs.size());
-	lhs.resize(N);
-	bit_and_detail::bit_and_impl(lhs.data(), rhs.data(), N);
+	auto const n = hamon::min(lhs.size(), rhs.size());
+	lhs.resize(n);
+	bit_and_detail::bit_and_impl(lhs.data(), rhs.data(), n);
+	bigint_algo::normalize(lhs);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+bit_and(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
+{
+	auto const n = hamon::min(lhs.size(), rhs.size());
+	lhs.resize(n);
+	bit_and_detail::bit_and_impl(lhs.data(), rhs.data(), n);
 	bigint_algo::normalize(lhs);
 }
 

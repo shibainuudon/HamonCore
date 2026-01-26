@@ -18,6 +18,7 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -73,6 +74,24 @@ multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
+{
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), lhs.size(),
+		rhs.data(), rhs.size());
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+multiply(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, T rhs)
+{
+	return multiply_detail::multiply_impl(out,
+		lhs.data(), lhs.size(),
+		&rhs, 1);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+multiply(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
 {
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), lhs.size(),

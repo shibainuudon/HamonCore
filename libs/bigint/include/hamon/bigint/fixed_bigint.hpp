@@ -294,39 +294,43 @@ private:
 	static HAMON_CXX14_CONSTEXPR vector_type
 	divide(vector_type const& lhs, vector_type const& rhs) HAMON_NOEXCEPT
 	{
+		vector_type quo{};
+		vector_type rem{};
 		if (Signed)
 		{
-			auto ret = bigint_algo::div_mod(abs(lhs), abs(rhs));
+			bigint_algo::div_mod(quo, rem, abs(lhs), abs(rhs));
 			if (bigint_algo::signbit(lhs) !=
 				bigint_algo::signbit(rhs))
 			{
-				bigint_algo::negate(ret.quo);
+				bigint_algo::negate(quo);
 			}
-			return ret.quo;
+			return quo;
 		}
 		else
 		{
-			auto ret = bigint_algo::div_mod(lhs, rhs);
-			return ret.quo;
+			bigint_algo::div_mod(quo, rem, lhs, rhs);
+			return quo;
 		}
 	}
 
 	static HAMON_CXX14_CONSTEXPR vector_type
 	modulus(vector_type const& lhs, vector_type const& rhs) HAMON_NOEXCEPT
 	{
+		vector_type quo{};
+		vector_type rem{};
 		if (Signed)
 		{
-			auto ret = bigint_algo::div_mod(abs(lhs), abs(rhs));
+			bigint_algo::div_mod(quo, rem, abs(lhs), abs(rhs));
 			if (bigint_algo::signbit(lhs))
 			{
-				bigint_algo::negate(ret.rem);
+				bigint_algo::negate(rem);
 			}
-			return ret.rem;
+			return rem;
 		}
 		else
 		{
-			auto ret = bigint_algo::div_mod(lhs, rhs);
-			return ret.rem;
+			bigint_algo::div_mod(quo, rem, lhs, rhs);
+			return rem;
 		}
 	}
 

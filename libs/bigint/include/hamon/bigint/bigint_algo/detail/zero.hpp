@@ -9,6 +9,7 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -22,6 +23,14 @@ namespace detail
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 zero(hamon::vector<T>& v)
+{
+	v.resize(1);
+	v[0] = 0;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+zero(hamon::inplace_vector<T, N>& v)
 {
 	v.resize(1);
 	v[0] = 0;

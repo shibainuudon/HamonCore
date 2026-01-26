@@ -13,8 +13,9 @@
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/config.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -39,14 +40,26 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
 bit_scan_reverse(hamon::size_t* index, hamon::vector<T> const& vec)
 {
-	return is_zero(vec) ? false : bit_scan_reverse_detail::bit_scan_reverse_impl(index, vec.data(), vec.size());
+	return bit_scan_reverse_detail::bit_scan_reverse_impl(index, vec.data(), vec.size());
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+bit_scan_reverse(hamon::size_t* index, hamon::inplace_vector<T, N> const& vec)
+{
+	return bit_scan_reverse_detail::bit_scan_reverse_impl(index, vec.data(), vec.size());
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 bit_scan_reverse(hamon::size_t* index, hamon::array<T, N> const& vec)
 {
-	return is_zero(vec) ? false : bit_scan_reverse_detail::bit_scan_reverse_impl(index, vec.data(), detail::actual_size(vec));
+	auto const n = detail::actual_size(vec);
+	if (n == 0)
+	{
+		return false;
+	}
+	return bit_scan_reverse_detail::bit_scan_reverse_impl(index, vec.data(), n);
 }
 
 }	// namespace bigint_algo

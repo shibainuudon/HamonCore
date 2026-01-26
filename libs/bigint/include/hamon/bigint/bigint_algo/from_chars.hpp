@@ -11,6 +11,7 @@
 #include <hamon/bigint/bigint_algo/multiply.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/pow_n.hpp>
+#include <hamon/bigint/bigint_algo/detail/move.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/from_chars_integer.hpp>
@@ -20,8 +21,9 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/system_error/errc.hpp>
-#include <hamon/utility/move.hpp>
+//#include <hamon/utility/move.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -64,7 +66,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		if (n == digits)
 		{
 			auto f = bigint_algo::multiply(tmp, x, base2);
-			x = hamon::move(tmp);
+			detail::move(x, tmp);
 			overflow = overflow || f;
 		}
 		else
@@ -72,7 +74,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 			VectorType tmp2{0};
 			bigint_algo::pow_n(tmp2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(n));
 			auto f = bigint_algo::multiply(tmp, x, tmp2);
-			x = hamon::move(tmp);
+			detail::move(x, tmp);
 			overflow = overflow || f;
 		}
 
@@ -105,6 +107,13 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, hamon::vector<T>& value, int base = 10)
+{
+	return from_chars_detail::from_chars(first, last, value, base);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+from_chars(char const* first, char const* last, hamon::inplace_vector<T, N>& value, int base = 10)
 {
 	return from_chars_detail::from_chars(first, last, value, base);
 }
