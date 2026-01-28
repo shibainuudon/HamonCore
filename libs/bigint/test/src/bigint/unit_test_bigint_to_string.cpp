@@ -56,6 +56,11 @@ ToStringUnsignedTest()
 GTEST_TEST(BigIntTest, ToStringTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::bigint>());
+
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::inplace_bigint<128>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::inplace_bigint<256>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::inplace_bigint<512>>());
+
 	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringSignedTest<hamon::int32_t>());
 	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(ToStringSignedTest<hamon::int64_t>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(ToStringSignedTest<hamon::int128_t>());

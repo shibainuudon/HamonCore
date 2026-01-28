@@ -80,6 +80,9 @@ inline void StreamOutputUnignedTest2()
 GTEST_TEST(BigIntTest, StreamOutputTest)
 {
 	StreamOutputSignedTest<hamon::bigint>();
+	StreamOutputSignedTest<hamon::inplace_bigint<128>>();
+	StreamOutputSignedTest<hamon::inplace_bigint<256>>();
+	StreamOutputSignedTest<hamon::inplace_bigint<512>>();
 	StreamOutputSignedTest<hamon::int64_t>();
 	StreamOutputSignedTest<hamon::int128_t>();
 	StreamOutputSignedTest<hamon::int256_t>();
@@ -88,6 +91,9 @@ GTEST_TEST(BigIntTest, StreamOutputTest)
 	StreamOutputSignedTest<hamon::int2048_t>();
 	
 	StreamOutputSignedTest2<hamon::bigint>();
+	StreamOutputSignedTest2<hamon::inplace_bigint<256>>();
+	StreamOutputSignedTest2<hamon::inplace_bigint<512>>();
+	StreamOutputSignedTest2<hamon::inplace_bigint<1024>>();
 //	StreamOutputSignedTest2<hamon::int128_t>();
 	StreamOutputSignedTest2<hamon::int256_t>();
 	StreamOutputSignedTest2<hamon::int512_t>();
@@ -95,6 +101,9 @@ GTEST_TEST(BigIntTest, StreamOutputTest)
 	StreamOutputSignedTest2<hamon::int2048_t>();
 	
 	StreamOutputUnignedTest<hamon::bigint>();
+	StreamOutputUnignedTest<hamon::inplace_bigint<128>>();
+	StreamOutputUnignedTest<hamon::inplace_bigint<256>>();
+	StreamOutputUnignedTest<hamon::inplace_bigint<512>>();
 	StreamOutputUnignedTest<hamon::int64_t>();
 	StreamOutputUnignedTest<hamon::int128_t>();
 	StreamOutputUnignedTest<hamon::int256_t>();
@@ -109,6 +118,9 @@ GTEST_TEST(BigIntTest, StreamOutputTest)
 	StreamOutputUnignedTest<hamon::uint2048_t>();
 
 	StreamOutputUnignedTest2<hamon::bigint>();
+	StreamOutputUnignedTest2<hamon::inplace_bigint<256>>();
+	StreamOutputUnignedTest2<hamon::inplace_bigint<512>>();
+	StreamOutputUnignedTest2<hamon::inplace_bigint<1024>>();
 //	StreamOutputUnignedTest2<hamon::int128_t>();
 	StreamOutputUnignedTest2<hamon::int256_t>();
 	StreamOutputUnignedTest2<hamon::int512_t>();

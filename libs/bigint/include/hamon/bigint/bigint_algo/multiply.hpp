@@ -102,7 +102,6 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
 {
-
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), detail::actual_size(lhs),
 		&rhs, 1);

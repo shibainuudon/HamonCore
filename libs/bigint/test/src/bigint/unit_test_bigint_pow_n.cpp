@@ -168,6 +168,35 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::bigint{-12345}, 11, hamon::bigint{"-1014850422703912515858714960329315071728515625"}, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::bigint{-12345}, 12, hamon::bigint{"12528328468279800008275836185265394560488525390625"}, false));
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::bigint{-12345}, 13, hamon::bigint{"-154662214940914131102165197707101295849230845947265625"}, false));
+
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0},   0, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0},   1, hamon::inplace_bigint<128>{0}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0},   2, hamon::inplace_bigint<128>{0}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0},   3, hamon::inplace_bigint<128>{0}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0},  10, hamon::inplace_bigint<128>{0}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 0}, 128, hamon::inplace_bigint<128>{0}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1},   0, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1},   1, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1},   2, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1},   3, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1},  10, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 1}, 128, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2},   0, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2},   1, hamon::inplace_bigint<128>{2}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2},   2, hamon::inplace_bigint<128>{4}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2},   3, hamon::inplace_bigint<128>{8}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2},  10, hamon::inplace_bigint<128>{1024}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2}, 127, hamon::inplace_bigint<128>{"170141183460469231731687303715884105728"}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{ 2}, 128, hamon::inplace_bigint<128>{}, true));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},   0, hamon::inplace_bigint<128>{1}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},   1, hamon::inplace_bigint<128>{10}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},   2, hamon::inplace_bigint<128>{100}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},   3, hamon::inplace_bigint<128>{1000}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},  10, hamon::inplace_bigint<128>{10000000000}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},  37, hamon::inplace_bigint<128>{"10000000000000000000000000000000000000"}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},  38, hamon::inplace_bigint<128>{"100000000000000000000000000000000000000"}, false));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(hamon::inplace_bigint<128>{10},  39, hamon::inplace_bigint<128>{}, true));
+
 }
 
 }	// namespace bigint_pow_n_test

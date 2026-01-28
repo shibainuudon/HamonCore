@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
-	<Type Name="hamon::bigint">
+	<Type Name="hamon::basic_bigint&lt;*&gt;">
 		<DisplayString>{{ sign = {m_sign} }}, {{ magnitude = {m_magnitude} }}</DisplayString>
 		<Expand>
 			<Item Name="sign">m_sign</Item>

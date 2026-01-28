@@ -36,6 +36,10 @@ GTEST_TEST(BigIntTest, CtorDefaultTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::bigint>());
 
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::inplace_bigint<128>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::inplace_bigint<256>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::inplace_bigint<512>>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CtorDefaultTest<hamon::int128_t>());

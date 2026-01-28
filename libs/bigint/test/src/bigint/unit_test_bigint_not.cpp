@@ -78,6 +78,10 @@ GTEST_TEST(BigIntTest, NotTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::bigint>());
 
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::inplace_bigint<128>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::inplace_bigint<256>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::inplace_bigint<512>>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NotTest<hamon::int128_t>());
@@ -94,6 +98,10 @@ GTEST_TEST(BigIntTest, NotTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(NotTest<hamon::uint2048_t>());
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::bigint>());
+
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::inplace_bigint<128>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::inplace_bigint<256>>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::inplace_bigint<512>>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(NotTest2<hamon::int256_t>());
