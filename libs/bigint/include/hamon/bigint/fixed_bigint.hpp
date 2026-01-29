@@ -29,6 +29,8 @@
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/signbit.hpp>
 #include <hamon/bigint/detail/abs_unsigned.hpp>
+#include <hamon/bit/bitsof.hpp>
+#include <hamon/cmath/round_up.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
@@ -58,7 +60,7 @@ private:
 	friend hamon::detail::fixed_bigint_access;
 
 	using element_type = hamon::uint32_t;
-	static const hamon::size_t N = (Bits / 8) / sizeof(element_type);
+	static const hamon::size_t N = (hamon::round_up(Bits, hamon::bitsof<element_type>()) / hamon::bitsof<element_type>());
 	using vector_type = hamon::array<element_type, N>;
 
 public:
