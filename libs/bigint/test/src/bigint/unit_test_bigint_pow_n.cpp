@@ -32,7 +32,7 @@ test(BigInt const& x, hamon::uintmax_t y, BigInt const& expected, bool overflow)
 
 #undef VERIFY
 
-GTEST_TEST(BigIntAlgoTest, PowNTest)
+GTEST_TEST(BigIntTest, PowNTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint128_t{ 0},   0, hamon::uint128_t{1}, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint128_t{ 0},   1, hamon::uint128_t{0}, false));

@@ -32,7 +32,7 @@ test(BigInt const& x, hamon::size_t expected, bool found)
 
 #undef VERIFY
 
-GTEST_TEST(BigIntAlgoTest, BitScanReverseTest)
+GTEST_TEST(BigIntTest, BitScanReverseTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint128_t{"0x00000000000000000000000000000000"},   0, false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint128_t{"0x00000000000000000000000000000001"},   0, true));
