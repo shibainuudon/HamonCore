@@ -222,6 +222,11 @@ GTEST_TEST(BigIntAlgoTest, MultiplyTest)
 		hamon::array<hamon::uint8_t, 4>{0x00, 0x08, 0x0A, 0x03},
 		false));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		hamon::array<hamon::uint8_t, 4>{0x00, 0x00, 0x01, 0x00},
+		hamon::array<hamon::uint8_t, 4>{0x00, 0x00, 0x01, 0x00},
+		hamon::array<hamon::uint8_t, 4>{0x00, 0x00, 0x00, 0x00},
+		true));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::array<hamon::uint16_t, 4>{0x68B1, 0x3ADE},
 		hamon::array<hamon::uint16_t, 4>{0x0003},
 		hamon::array<hamon::uint16_t, 4>{0x3A13, 0xB09B},

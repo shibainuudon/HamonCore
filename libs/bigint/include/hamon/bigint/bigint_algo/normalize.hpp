@@ -41,7 +41,7 @@ normalize(hamon::vector<T>& vec)
 			break;
 		}
 	}
-	
+
 	vec.resize(n);
 }
 
@@ -64,8 +64,14 @@ normalize(hamon::inplace_vector<T, N>& vec)
 			break;
 		}
 	}
-	
+
 	vec.resize(n);
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR void
+normalize(hamon::array<T, N>&)
+{
 }
 
 }	// namespace bigint_algo

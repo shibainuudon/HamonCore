@@ -7,15 +7,13 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_MULTIPLY_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_MULTIPLY_HPP
 
-#include <hamon/bigint/bigint_algo/add.hpp>
-#include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
-#include <hamon/bigint/bigint_algo/detail/mul.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/mul_addc.hpp>
 #include <hamon/array.hpp>
-#include <hamon/bit/bitsof.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/inplace_vector.hpp>
@@ -32,26 +30,60 @@ namespace multiply_detail
 
 template <typename VectorType, typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-multiply_impl(VectorType& out, T const* lhs, hamon::size_t n1, T const* rhs, hamon::size_t n2)
+multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
 	detail::zero(out);
-	VectorType tmp{0};
+
+	// n1 < n2 を保証するようにswapしたほうが速くなりそうだが、実際にやってみたところあまり変わらなかった
+	//if (n1 > n2)
+	//{
+	//	hamon::swap(p1, p2);
+	//	hamon::swap(n1, n2);
+	//}
+
+	detail::resize(out, n1 + n2);
+	auto const p3 = out.data();
+	auto const n3 = out.size();
 	bool overflow = false;
-	for (hamon::size_t i = n1; i > 0; --i)
+	for (hamon::size_t i = 0; i < n1; ++i)
 	{
-		detail::zero(tmp);
-		for (hamon::size_t j = n2; j > 0; --j)
+		auto const x = p1[i];
+		if (x == 0)
 		{
-			auto const t = detail::mul(lhs[i-1], rhs[j-1]);
-			auto const f1 = bigint_algo::add(tmp, detail::hi(t));
-			auto const f2 = bigint_algo::bit_shift_left(tmp, hamon::bitsof<T>());
-			tmp[0] = detail::lo(t);
-			overflow = overflow || f1 || f2;
+			continue;
 		}
-		auto const f1 = bigint_algo::bit_shift_left(out, hamon::bitsof<T>());
-		auto const f2 = bigint_algo::add(out, tmp);
-		overflow = overflow || f1 || f2;
+
+		hamon::size_t k = i;
+		T carry = 0;
+		for (hamon::size_t j = 0; j < n2; ++j, ++k)
+		{
+			if (k >= n3)
+			{
+				carry = 0;
+				overflow = true;
+				break;
+			}
+
+			auto const y = p2[j];
+			auto const r = detail::mul_addc(x, y, p3[k], carry);
+			p3[k] = detail::lo(r);
+			carry = detail::hi(r);
+		}
+
+		for (; carry != 0; ++k)
+		{
+			if (k >= n3)
+			{
+				overflow = true;
+				break;
+			}
+
+			auto const r = detail::addc(p3[k], T{0}, carry);
+			p3[k] = detail::lo(r);
+			carry = detail::hi(r);
+		}
 	}
+	bigint_algo::normalize(out);
 	return overflow;
 }
 
