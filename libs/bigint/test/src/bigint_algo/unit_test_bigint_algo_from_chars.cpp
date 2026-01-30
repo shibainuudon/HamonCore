@@ -44,6 +44,8 @@ test(hamon::string_view sv, int base, T const& expected, hamon::size_t length = 
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 {
 	// vector
@@ -863,8 +865,6 @@ GTEST_TEST(BigIntAlgoTest, FromCharsTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test("ffffffffffffffffffffffffffff", 16, Vector{0x00000000, 0x00000000, 0x00000000}, 28, hamon::errc::result_out_of_range));
 	}
 }
-
-#undef VERIFY
 
 }	// namespace bigint_algo_from_chars_test
 

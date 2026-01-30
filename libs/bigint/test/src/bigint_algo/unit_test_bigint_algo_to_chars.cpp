@@ -39,6 +39,8 @@ test(T const& val, int base, const char* expected)
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntAlgoTest, ToCharsTest)
 {
 	// vector
@@ -613,8 +615,6 @@ GTEST_TEST(BigIntAlgoTest, ToCharsTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(value, 36, "9ys742pps3qo"));
 	}
 }
-
-#undef VERIFY
 
 }	// namespace bigint_algo_to_chars_test
 

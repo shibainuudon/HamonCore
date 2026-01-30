@@ -32,6 +32,8 @@ test(UInt n, T const& expected, hamon::errc ec = {})
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 {
 	// vector
@@ -270,8 +272,6 @@ GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x123456789ABCDEF0}));
 	}
 }
-
-#undef VERIFY
 
 }	// namespace bigint_algo_from_uint_test
 
