@@ -66,7 +66,6 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		if (n == digits)
 		{
 			auto f = bigint_algo::multiply(tmp, x, base2);
-			detail::move(x, tmp);
 			overflow = overflow || f;
 		}
 		else
@@ -74,13 +73,12 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 			VectorType tmp2{0};
 			bigint_algo::pow_n(tmp2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(n));
 			auto f = bigint_algo::multiply(tmp, x, tmp2);
-			detail::move(x, tmp);
 			overflow = overflow || f;
 		}
 
 		// x += t
 		{
-			auto f = bigint_algo::add(x, t);
+			auto f = bigint_algo::add(x, tmp, t);
 			overflow = overflow || f;
 		}
 
@@ -97,7 +95,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		return {p, hamon::errc::result_out_of_range};
 	}
 
-	value = x;
+	detail::move(value, x);
 
 	return {p, hamon::errc{}};
 }

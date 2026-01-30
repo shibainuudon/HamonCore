@@ -59,21 +59,25 @@ namespace add_detail
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR T
-add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
+add_impl(T* dst, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
 	T carry = 0;
 	hamon::size_t i = 0;
 	for (; i < n2; ++i)
 	{
 		auto const x = detail::addc(p1[i], p2[i], carry);
-		p1[i] = detail::lo(x);
-		carry = detail::hi(x);
+		dst[i] = detail::lo(x);
+		carry  = detail::hi(x);
 	}
 	for (; carry != 0 && i < n1; ++i)
 	{
 		auto const x = detail::addc(p1[i], T{0}, carry);
-		p1[i] = detail::lo(x);
-		carry = detail::hi(x);
+		dst[i] = detail::lo(x);
+		carry  = detail::hi(x);
+	}
+	for (; i < n1; ++i)
+	{
+		dst[i] = p1[i];
 	}
 	return carry;
 }
@@ -86,7 +90,7 @@ add(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
 	T const carry = add_detail::add_impl(
-		lhs.data(), lhs.size(), rhs.data(), rhs.size());
+		lhs.data(), lhs.data(), lhs.size(), rhs.data(), rhs.size());
 	if (carry != 0)
 	{
 		lhs.push_back(carry);
@@ -99,10 +103,24 @@ inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::vector<T>& lhs, T rhs)
 {
 	T const carry = add_detail::add_impl(
-		lhs.data(), lhs.size(), &rhs, 1);
+		lhs.data(), lhs.data(), lhs.size(), &rhs, 1);
 	if (carry != 0)
 	{
 		lhs.push_back(carry);
+	}
+	return false;
+}
+
+template <typename T>
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
+{
+	out.resize(lhs.size());
+	T const carry = add_detail::add_impl(
+		out.data(), lhs.data(), lhs.size(), &rhs, 1);
+	if (carry != 0)
+	{
+		out.push_back(carry);
 	}
 	return false;
 }
@@ -113,7 +131,7 @@ add(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
 {
 	lhs.resize(hamon::max(lhs.size(), rhs.size()));
 	T const carry = add_detail::add_impl(
-		lhs.data(), lhs.size(), rhs.data(), rhs.size());
+		lhs.data(), lhs.data(), lhs.size(), rhs.data(), rhs.size());
 	if (carry != 0)
 	{
 		if (lhs.size() == N)
@@ -131,7 +149,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::inplace_vector<T, N>& lhs, T rhs)
 {
 	T const carry = add_detail::add_impl(
-		lhs.data(), lhs.size(), &rhs, 1);
+		lhs.data(), lhs.data(), lhs.size(), &rhs, 1);
 	if (carry != 0)
 	{
 		if (lhs.size() == N)
@@ -146,9 +164,29 @@ add(hamon::inplace_vector<T, N>& lhs, T rhs)
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, T rhs)
+{
+	out.resize(lhs.size());
+	T const carry = add_detail::add_impl(
+		out.data(), lhs.data(), lhs.size(), &rhs, 1);
+	if (carry != 0)
+	{
+		if (out.size() == N)
+		{
+			bigint_algo::normalize(out);
+			return true;
+		}
+		out.push_back(carry);
+	}
+	return false;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
 {
 	T const carry = add_detail::add_impl(
+		lhs.data(),
 		lhs.data(), lhs.size(),
 		rhs.data(), detail::actual_size(rhs));
 	return carry != 0;
@@ -159,6 +197,19 @@ inline HAMON_CXX14_CONSTEXPR bool
 add(hamon::array<T, N>& lhs, T rhs)
 {
 	T const carry = add_detail::add_impl(
+		lhs.data(),
+		lhs.data(), lhs.size(),
+		&rhs, 1);
+	return carry != 0;
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR bool
+add(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
+{
+	detail::zero(out);
+	T const carry = add_detail::add_impl(
+		out.data(),
 		lhs.data(), lhs.size(),
 		&rhs, 1);
 	return carry != 0;
