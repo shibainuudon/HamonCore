@@ -14,8 +14,6 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
-#include <hamon/bit/shl.hpp>
-#include <hamon/bit/shr.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
@@ -52,13 +50,13 @@ bit_shift_left_impl(T* lhs, hamon::size_t n, hamon::uintmax_t rhs)
 		for (; i > quo + 1; --i)
 		{
 			lhs[i - 1] = static_cast<T>(
-				hamon::shr(lhs[i - quo - 2], rem2) +
-				hamon::shl(lhs[i - quo - 1], rem));
+				(lhs[i - quo - 2] >> rem2) |
+				(lhs[i - quo - 1] << rem));
 		}
 		for (; i > quo; --i)
 		{
 			lhs[i - 1] = static_cast<T>(
-				hamon::shl(lhs[i - quo - 1], rem));
+				(lhs[i - quo - 1] << rem));
 		}
 	}
 
@@ -79,7 +77,6 @@ bit_shift_left(hamon::vector<T>& lhs, hamon::uintmax_t rhs)
 	lhs.resize(n);
 	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), n, rhs);
 	bigint_algo::normalize(lhs);
-
 	return false;
 }
 
