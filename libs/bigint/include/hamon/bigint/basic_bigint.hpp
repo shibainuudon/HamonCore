@@ -20,9 +20,9 @@
 #include <hamon/bigint/bigint_algo/bit_and.hpp>
 #include <hamon/bigint/bigint_algo/bit_or.hpp>
 #include <hamon/bigint/bigint_algo/bit_xor.hpp>
-#include <hamon/bigint/bigint_algo/bit_scan_reverse.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
+#include <hamon/bigint/bigint_algo/bit_width.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
@@ -41,6 +41,7 @@
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
+#include <hamon/assert.hpp>
 #include <istream>
 #include <ostream>
 
@@ -556,17 +557,12 @@ pow_n(basic_bigint<V>& out, basic_bigint<V> const& x, hamon::uintmax_t y)
 }
 
 template <typename V>
-inline HAMON_CXX14_CONSTEXPR bool
-bit_scan_reverse(hamon::size_t* index, basic_bigint<V> const& x)
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR int
+bit_width(basic_bigint<V> const& x) HAMON_NOEXCEPT
 {
 	using access = hamon::detail::bigint_access;
-
-	if (access::sign(x) < 0)
-	{
-		return false;
-	}
-
-	return bigint_algo::bit_scan_reverse(index, access::magnitude(x));
+	HAMON_ASSERT(access::sign(x) >= 0);
+	return bigint_algo::bit_width(access::magnitude(x));
 }
 
 template <typename V>

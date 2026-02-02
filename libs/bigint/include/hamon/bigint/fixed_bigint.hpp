@@ -22,9 +22,9 @@
 #include <hamon/bigint/bigint_algo/bit_or.hpp>
 #include <hamon/bigint/bigint_algo/bit_xor.hpp>
 #include <hamon/bigint/bigint_algo/bit_not.hpp>
-#include <hamon/bigint/bigint_algo/bit_scan_reverse.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
+#include <hamon/bigint/bigint_algo/bit_width.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/signbit.hpp>
@@ -510,13 +510,12 @@ pow_n(fixed_bigint<Bits, Signed>& out, fixed_bigint<Bits, Signed> const& x, hamo
 	return bigint_algo::pow_n(access::data(out), access::data(x), y);
 }
 
-template <hamon::size_t Bits, bool Signed>
-inline HAMON_CXX14_CONSTEXPR bool
-bit_scan_reverse(hamon::size_t* index, fixed_bigint<Bits, Signed> const& x)
+template <hamon::size_t Bits>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR int
+bit_width(fixed_bigint<Bits, false> const& x) HAMON_NOEXCEPT
 {
 	using access = hamon::detail::fixed_bigint_access;
-
-	return bigint_algo::bit_scan_reverse(index, access::data(x));
+	return bigint_algo::bit_width(access::data(x));
 }
 
 template <hamon::size_t Bits, bool Signed>

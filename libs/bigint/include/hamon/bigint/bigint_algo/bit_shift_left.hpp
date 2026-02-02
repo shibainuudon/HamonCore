@@ -9,7 +9,8 @@
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/countl_zero.hpp>
-#include <hamon/bigint/bigint_algo/bit_scan_reverse.hpp>
+#include <hamon/bigint/bigint_algo/bit_width.hpp>
+#include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/array.hpp>
@@ -84,9 +85,12 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::inplace_vector<T, N>& lhs, hamon::uintmax_t rhs)
 {
-	hamon::size_t msb{};
-	auto const nonzero = bigint_algo::bit_scan_reverse(&msb, lhs);
-	bool const overflow = nonzero && ((msb + 1 + rhs) > (N * hamon::bitsof<T>()));
+	if (bigint_algo::is_zero(lhs))
+	{
+		return false;
+	}
+	auto const msb = bigint_algo::bit_width(lhs);
+	bool const overflow = ((static_cast<hamon::uintmax_t>(msb) + rhs) > (N * hamon::bitsof<T>()));
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 	hamon::size_t const n = hamon::min(lhs.size() + quo + 1, N);
 	lhs.resize(n);
