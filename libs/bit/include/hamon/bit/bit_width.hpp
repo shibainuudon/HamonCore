@@ -9,8 +9,11 @@
 
 #include <hamon/bit/config.hpp>
 
-#if defined(HAMON_HAS_CXX_LIB_INT_POW2)
-
+#if defined(HAMON_HAS_CXX_LIB_INT_POW2) && \
+	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1930)) && \
+	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 130000)) && \
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 160000))
+// LWG Issue 3656 が適用される前の標準ライブラリは、bit_widthの戻り値の型が int になっていないので使わない
 #include <bit>
 
 namespace hamon
@@ -52,10 +55,10 @@ template <
 		hamon::is_unsigned<T>::value
 	>
 >
-inline HAMON_CONSTEXPR T
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR int
 bit_width(T x) HAMON_NOEXCEPT
 {
-	return static_cast<T>(bitsof(x) - static_cast<hamon::size_t>(countl_zero(x)));
+	return static_cast<int>(hamon::bitsof(x)) - hamon::countl_zero(x);
 }
 
 }	// namespace hamon
