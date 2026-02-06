@@ -9,7 +9,6 @@
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/countl_zero.hpp>
-#include <hamon/bigint/bigint_algo/bit_width.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/algorithm/min.hpp>
@@ -89,8 +88,8 @@ bit_shift_left(hamon::inplace_vector<T, N>& lhs, hamon::uintmax_t rhs)
 	{
 		return false;
 	}
-	auto const msb = bigint_algo::bit_width(lhs);
-	bool const overflow = ((static_cast<hamon::uintmax_t>(msb) + rhs) > (N * hamon::bitsof<T>()));
+
+	bool const overflow = (rhs > static_cast<hamon::uintmax_t>(bigint_algo::countl_zero(lhs)));
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 	hamon::size_t const n = hamon::min(lhs.size() + quo + 1, N);
 	lhs.resize(n);
@@ -103,7 +102,7 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 bit_shift_left(hamon::array<T, N>& lhs, hamon::uintmax_t rhs)
 {
-	bool const overflow = (rhs > bigint_algo::countl_zero(lhs));
+	bool const overflow = (rhs > static_cast<hamon::uintmax_t>(bigint_algo::countl_zero(lhs)));
 	auto const quo = static_cast<unsigned int>(rhs / hamon::bitsof<T>());
 	hamon::size_t const n = hamon::min(detail::actual_size(lhs) + quo + 1, N);
 	bit_shift_left_detail::bit_shift_left_impl(lhs.data(), n, rhs);

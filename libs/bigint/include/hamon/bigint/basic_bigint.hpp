@@ -24,6 +24,7 @@
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
 #include <hamon/bigint/bigint_algo/bit_width.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
+#include <hamon/bigint/bigint_algo/countl_zero.hpp>
 #include <hamon/bigint/bigint_algo/countr_zero.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
@@ -564,6 +565,15 @@ bit_width(basic_bigint<V> const& x) HAMON_NOEXCEPT
 	using access = hamon::detail::bigint_access;
 	HAMON_ASSERT(access::sign(x) >= 0);
 	return bigint_algo::bit_width(access::magnitude(x));
+}
+
+template <typename V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR int
+countl_zero(basic_bigint<V> const& x) HAMON_NOEXCEPT
+{
+	using access = hamon::detail::bigint_access;
+	HAMON_ASSERT(access::sign(x) >= 0);
+	return bigint_algo::countl_zero(access::magnitude(x));
 }
 
 template <typename V>
