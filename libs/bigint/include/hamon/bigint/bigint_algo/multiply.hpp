@@ -17,6 +17,7 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/inplace_vector.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
@@ -34,12 +35,12 @@ multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon
 {
 	detail::zero(out);
 
-	// n1 < n2 を保証するようにswapしたほうが速くなりそうだが、実際にやってみたところあまり変わらなかった
-	//if (n1 > n2)
-	//{
-	//	hamon::swap(p1, p2);
-	//	hamon::swap(n1, n2);
-	//}
+	// アウターループよりインナーループのほうが回数が多くなるようにしたほうが高速になる
+	if (n1 > n2)
+	{
+		hamon::swap(p1, p2);
+		hamon::swap(n1, n2);
+	}
 
 	detail::resize(out, n1 + n2);
 	auto const p3 = out.data();
