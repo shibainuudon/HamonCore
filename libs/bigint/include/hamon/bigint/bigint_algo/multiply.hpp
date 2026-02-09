@@ -31,6 +31,39 @@ namespace multiply_detail
 
 template <typename VectorType, typename T>
 inline HAMON_CXX14_CONSTEXPR bool
+multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T rhs)
+{
+	detail::zero(out);
+
+	detail::resize(out, n1 + 1);
+	auto const p3 = out.data();
+	auto const n3 = out.size();
+	bool overflow = false;
+	T carry = 0;
+	hamon::size_t i = 0;
+	for (; i < n1; ++i)
+	{
+		auto const r = detail::mul_addc(p1[i], rhs, p3[i], carry);
+		p3[i] = detail::lo(r);
+		carry = detail::hi(r);
+	}
+	if (carry != 0)
+	{
+		if (i < n3)
+		{
+			p3[i] = carry;
+		}
+		else
+		{
+			overflow = true;
+		}
+	}
+	bigint_algo::normalize(out);
+	return overflow;
+}
+
+template <typename VectorType, typename T>
+inline HAMON_CXX14_CONSTEXPR bool
 multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
 	detail::zero(out);
@@ -79,9 +112,8 @@ multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon
 				break;
 			}
 
-			auto const r = detail::addc(p3[k], T{0}, carry);
-			p3[k] = detail::lo(r);
-			carry = detail::hi(r);
+			p3[k] = carry;
+			carry = T{0};
 		}
 	}
 	bigint_algo::normalize(out);
@@ -100,8 +132,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
 {
 	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(),
-		&rhs, 1);
+		lhs.data(), lhs.size(), rhs);
 }
 
 template <typename T>
@@ -118,8 +149,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, T rhs)
 {
 	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(),
-		&rhs, 1);
+		lhs.data(), lhs.size(), rhs);
 }
 
 template <typename T, hamon::size_t N>
@@ -136,8 +166,7 @@ inline HAMON_CXX14_CONSTEXPR bool
 multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
 {
 	return multiply_detail::multiply_impl(out,
-		lhs.data(), detail::actual_size(lhs),
-		&rhs, 1);
+		lhs.data(), detail::actual_size(lhs), rhs);
 }
 
 template <typename T, hamon::size_t N>

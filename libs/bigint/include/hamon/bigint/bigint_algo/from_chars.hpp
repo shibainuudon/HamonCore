@@ -10,14 +10,14 @@
 #include <hamon/bigint/bigint_algo/add.hpp>
 #include <hamon/bigint/bigint_algo/multiply.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
-#include <hamon/bigint/bigint_algo/pow_n.hpp>
+//#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/from_chars_integer.hpp>
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/floor.hpp>
-//#include <hamon/cmath/detail/pow_n.hpp>
+#include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/system_error/errc.hpp>
@@ -41,10 +41,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
 
-	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(hamon::numeric_limits<T>::digits / hamon::log2(base)));
-
-	VectorType base2{0};
-	bigint_algo::pow_n(base2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(digits));
+	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor((hamon::numeric_limits<T>::digits - 1) / hamon::log2(base)));
 
 	VectorType x{0};
 	VectorType tmp{0};
@@ -63,24 +60,10 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		auto n = r.ptr - p;
 
 		// x *= pow_n(base, n)
-		if (n == digits)
-		{
-			auto f = bigint_algo::multiply(tmp, x, base2);
-			overflow = overflow || f;
-		}
-		else
-		{
-			VectorType tmp2{0};
-			bigint_algo::pow_n(tmp2, VectorType{static_cast<T>(base)}, static_cast<hamon::uintmax_t>(n));
-			auto f = bigint_algo::multiply(tmp, x, tmp2);
-			overflow = overflow || f;
-		}
+		overflow = overflow || bigint_algo::multiply(tmp, x, hamon::detail::pow_n(static_cast<T>(base), n));
 
 		// x += t
-		{
-			auto f = bigint_algo::add(x, tmp, t);
-			overflow = overflow || f;
-		}
+		overflow = overflow || bigint_algo::add(x, tmp, t);
 
 		p = r.ptr;
 	};
