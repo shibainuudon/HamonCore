@@ -158,6 +158,10 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 	// multiply で 右辺が整数型のときを最適化
 	// Debug:   1101 ms
 	// Release:   98 ms
+
+	// char_to_uint をテーブル引きにした
+	// Debug:   1171 ms
+	// Release:   94 ms
 #endif
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<hamon::bigint>());

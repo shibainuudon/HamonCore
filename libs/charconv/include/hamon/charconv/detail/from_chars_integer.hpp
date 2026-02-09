@@ -9,6 +9,7 @@
 
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/negate_unsigned.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -24,12 +25,34 @@ namespace hamon
 namespace detail
 {
 
+constexpr int digit_tbl[] =
+{
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	  0,   1,   2,   3,   4,   5,   6,   7,   8,   9, 255, 255, 255, 255, 255, 255,
+	255,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,
+	 25,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35, 255, 255, 255, 255, 255,
+	255,  10,  11,  12,  13,  14,  15,  16,  17,  18,  19,  20,  21,  22,  23,  24,
+	 25,  26,  27,  28,  29,  30,  31,  32,  33,  34,  35, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255,
+};
+
 template <typename T>
-HAMON_CXX14_CONSTEXPR T
+inline HAMON_CXX14_CONSTEXPR T
 char_to_uint(char c)
 {
 	static_assert(hamon::is_unsigned<T>::value, "");
-
+#if 1
+	return static_cast<T>(digit_tbl[static_cast<hamon::size_t>(c)]);
+#else
 	if ('0' <= c && c <= '9')
 	{
 		return static_cast<T>(c - '0');
@@ -47,10 +70,11 @@ char_to_uint(char c)
 
 	// パターンにマッチしないときはとにかく大きな値を返す
 	return static_cast<T>(-1);
+#endif
 }
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_unsigned_integer(char const* first, char const* last, T& value, T base)
 {
 	static_assert(hamon::is_unsigned<T>::value, "");
@@ -94,7 +118,7 @@ from_chars_unsigned_integer(char const* first, char const* last, T& value, T bas
 }
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
-HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_integer_impl(char const* first, char const* last, T& value, int base, hamon::detail::overload_priority<1>)
 {
 	T x{};
@@ -107,7 +131,7 @@ from_chars_integer_impl(char const* first, char const* last, T& value, int base,
 }
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_integer_impl(char const* first, char const* last, T& value, int base, hamon::detail::overload_priority<0>)
 {
 	using UT = hamon::make_unsigned_t<T>;
@@ -147,7 +171,7 @@ from_chars_integer_impl(char const* first, char const* last, T& value, int base,
 }
 
 template <typename T>
-HAMON_CXX14_CONSTEXPR hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_integer(char const* first, char const* last, T& value, int base)
 {
 	return hamon::detail::from_chars_integer_impl(
