@@ -8,6 +8,7 @@
 #define HAMON_IEEE754_BINARY_HPP
 
 #include <hamon/bit/bit_cast.hpp>
+#include <hamon/bit/bit_width.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/countr_zero.hpp>
 #include <hamon/cstdint.hpp>
@@ -31,8 +32,13 @@ template <>
 struct binary_traits<float>
 {
 	using uint_type     = hamon::uint32_t;
+
+	using sign_component_type     = hamon::uint8_t;
+	using exponent_component_type = hamon::uint32_t;
+	using fraction_component_type = hamon::uint32_t;
+
 	using sign_type     = hamon::uint8_t;
-	using exponent_type = hamon::uint32_t;
+	using exponent_type = hamon::int32_t;
 	using fraction_type = hamon::uint32_t;
 };
 
@@ -40,8 +46,13 @@ template <>
 struct binary_traits<double>
 {
 	using uint_type     = hamon::uint64_t;
+
+	using sign_component_type     = hamon::uint8_t;
+	using exponent_component_type = hamon::uint32_t;
+	using fraction_component_type = hamon::uint64_t;
+
 	using sign_type     = hamon::uint8_t;
-	using exponent_type = hamon::uint32_t;
+	using exponent_type = hamon::int32_t;
 	using fraction_type = hamon::uint64_t;
 };
 
@@ -55,68 +66,144 @@ private:
 
 public:
 	using uint_type     = typename Traits::uint_type;
-	using int_type      = hamon::make_signed_t<uint_type>;
+
+	using sign_component_type     = typename Traits::sign_component_type;
+	using exponent_component_type = typename Traits::exponent_component_type;
+	using fraction_component_type = typename Traits::fraction_component_type;
+
 	using sign_type     = typename Traits::sign_type;
 	using exponent_type = typename Traits::exponent_type;
 	using fraction_type = typename Traits::fraction_type;
-	using signed_exponent_type = hamon::make_signed_t<exponent_type>;
 
-	static uint_type constexpr sign_bits = 1;
-	static uint_type constexpr fraction_bits = hamon::numeric_limits<T>::digits - 1;
-	static uint_type constexpr exponent_bits = static_cast<uint_type>(hamon::bitsof<T>() - 1 - fraction_bits);
+	static int constexpr sign_bits     = 1;
+	static int constexpr fraction_bits = hamon::numeric_limits<T>::digits - 1;
+	static int constexpr exponent_bits = static_cast<int>(hamon::bitsof<T>() - sign_bits - fraction_bits);
 
-	static uint_type constexpr sign_shift = static_cast<uint_type>(hamon::bitsof<T>() - 1);
-	static uint_type constexpr exponent_shift = fraction_bits;
-	static uint_type constexpr fraction_shift = 0;
+	static int constexpr sign_shift     = fraction_bits + exponent_bits;
+	static int constexpr exponent_shift = fraction_bits;
+	static int constexpr fraction_shift = 0;
 
 	static uint_type constexpr sign_mask     = ((1ULL << sign_bits)     - 1) << sign_shift;
 	static uint_type constexpr exponent_mask = ((1ULL << exponent_bits) - 1) << exponent_shift;
 	static uint_type constexpr fraction_mask = ((1ULL << fraction_bits) - 1) << fraction_shift;
 	static uint_type constexpr fraction_msb_mask = ((1ULL << (fraction_bits - 1)) << fraction_shift);
 
-	static int_type constexpr exponent_bias = hamon::numeric_limits<T>::max_exponent - 1;
-	static int_type constexpr exponent_max  = (1ULL << exponent_bits) - 1;
-	static int_type constexpr fraction_bias = (1ULL << fraction_bits);
+	static exponent_component_type constexpr exponent_component_min = 0;
+	static exponent_component_type constexpr exponent_component_max = (1ULL << exponent_bits) - 1;
+
+	static exponent_type constexpr exponent_max = hamon::numeric_limits<T>::max_exponent - 1;
+	static exponent_type constexpr exponent_min = 1 - exponent_max;
+
+	static exponent_type constexpr exponent_bias = exponent_max;
+
+	static fraction_component_type constexpr fraction_bias = (1ULL << fraction_bits);
+
+private:
+	static HAMON_CXX14_CONSTEXPR uint_type
+	make_floating_point_value(sign_type sign, exponent_type exponent, fraction_type fraction) HAMON_NOEXCEPT
+	{
+		if (exponent == exponent_component_max || fraction == 0)
+		{
+			// NaN or Inf or Zero
+		}
+		else
+		{
+			if (exponent < exponent_min)
+			{
+				// subnormal
+				int shift = static_cast<int>(fraction_bits) + exponent - exponent_min;
+				exponent = 0;
+				fraction <<= shift;
+			}
+			else
+			{
+				// normal
+				exponent = static_cast<int>(fraction_bits) + exponent + exponent_bias;
+				int shift = static_cast<int>(fraction_bits) + 1 - hamon::bit_width(fraction);
+				fraction <<= shift;
+				exponent -= shift;
+			}
+		}
+
+		auto s = (static_cast<uint_type>(sign)     << sign_shift)     & sign_mask;
+		auto f = (static_cast<uint_type>(fraction) << fraction_shift) & fraction_mask;
+		auto e = (static_cast<uint_type>(exponent) << exponent_shift) & exponent_mask;
+
+		return s | f | e;
+	}
 
 public:
-	HAMON_CXX11_CONSTEXPR
+	/**
+	 *	@brief 浮動小数点数からのコンストラクタ
+	 */
+	explicit HAMON_CXX11_CONSTEXPR
 	binary(T v) HAMON_NOEXCEPT
 		: m_uint_value(hamon::bit_cast<uint_type>(v))
 	{}
 
+	/**
+	 *	@brief 整数型からのコンストラクタ
+	 */
+	explicit HAMON_CXX11_CONSTEXPR
+	binary(uint_type v) HAMON_NOEXCEPT
+		: m_uint_value(v)
+	{}
+
+	/**
+	 *	@brief	sign, exponent, fraction からのコンストラクタ
+	 *
+	 *	sign, exponent, fraction から浮動小数点数を得る
+	 *	(-1^sign) * (2^exponent) * fraction と同じ結果になる
+	 *
+	 *	任意の浮動小数点数をfとしたとき、
+	 *	binary b1(f);
+	 *	binary b2(b1.sign(), b1.exponent(), b1.fraction());
+	 *	とすると、b1 と b2 の値は等しくなる
+	 */
+	HAMON_CXX11_CONSTEXPR
+	binary(sign_type sign, exponent_type exponent, fraction_type fraction) HAMON_NOEXCEPT
+		: m_uint_value(make_floating_point_value(sign, exponent, fraction))
+	{}
+
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	uint_type uint() const HAMON_NOEXCEPT
+	uint_type to_uint() const HAMON_NOEXCEPT
 	{
 		return m_uint_value;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	sign_type sign() const HAMON_NOEXCEPT
+	T to_float() const HAMON_NOEXCEPT
 	{
-		return static_cast<sign_type>((m_uint_value & sign_mask) >> sign_shift);
+		return hamon::bit_cast<T>(m_uint_value);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	exponent_type exponent() const HAMON_NOEXCEPT
+	sign_component_type sign_component() const HAMON_NOEXCEPT
 	{
-		return static_cast<exponent_type>((m_uint_value & exponent_mask) >> exponent_shift);
+		return static_cast<sign_component_type>((m_uint_value & sign_mask) >> sign_shift);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	fraction_type fraction() const HAMON_NOEXCEPT
+	exponent_component_type exponent_component() const HAMON_NOEXCEPT
 	{
-		return static_cast<fraction_type>((m_uint_value & fraction_mask) >> fraction_shift);
+		return static_cast<exponent_component_type>((m_uint_value & exponent_mask) >> exponent_shift);
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	signed_exponent_type unbiased_exponent() const HAMON_NOEXCEPT
+	fraction_component_type fraction_component() const HAMON_NOEXCEPT
+	{
+		return static_cast<fraction_component_type>((m_uint_value & fraction_mask) >> fraction_shift);
+	}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	exponent_type unbiased_exponent() const HAMON_NOEXCEPT
 	{
 		return
 			is_normal() ?
-				static_cast<signed_exponent_type>(exponent()) - exponent_bias :
+				static_cast<exponent_type>(exponent_component()) - exponent_bias :
 			is_subnormal() ?
-				1 - exponent_bias :
-				static_cast<signed_exponent_type>(exponent());
+				exponent_min :
+				static_cast<exponent_type>(exponent_component());
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
@@ -124,29 +211,35 @@ public:
 	{
 		return
 			is_normal() ?
-				static_cast<fraction_type>(fraction() | fraction_bias) :
-				fraction();
+				static_cast<fraction_type>(fraction_component() | fraction_bias) :
+				fraction_component();
+	}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	sign_type sign() const HAMON_NOEXCEPT
+	{
+		return static_cast<sign_type>(sign_component());
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
-	signed_exponent_type normalized_exponent() const HAMON_NOEXCEPT
+	exponent_type exponent() const HAMON_NOEXCEPT
 	{
 		if (!is_finite() || is_zero())
 		{
-			return static_cast<signed_exponent_type>(exponent());
+			return static_cast<exponent_type>(exponent_component());
 		}
-		auto const exp = unbiased_exponent() - signed_exponent_type{fraction_bits};
+		auto const exp = unbiased_exponent() - exponent_type{fraction_bits};
 		auto const frac = unbiased_fraction();
 		auto const s = hamon::countr_zero(frac);
 		return exp + s;
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR
-	fraction_type normalized_fraction() const HAMON_NOEXCEPT
+	fraction_type fraction() const HAMON_NOEXCEPT
 	{
 		if (!is_finite() || is_zero())
 		{
-			return fraction();
+			return fraction_component();
 		}
 		auto const frac = unbiased_fraction();
 		auto const s = hamon::countr_zero(frac);
@@ -156,37 +249,37 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_zero() const HAMON_NOEXCEPT
 	{
-		return exponent() == 0 && fraction() == 0;
+		return exponent_component() == 0 && fraction_component() == 0;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_subnormal() const HAMON_NOEXCEPT
 	{
-		return exponent() == 0 && fraction() != 0;
+		return exponent_component() == 0 && fraction_component() != 0;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_normal() const HAMON_NOEXCEPT
 	{
-		return exponent() != 0 && exponent() != exponent_max;
+		return exponent_component() != 0 && exponent_component() != exponent_component_max;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_finite() const HAMON_NOEXCEPT
 	{
-		return exponent() != exponent_max;
+		return exponent_component() != exponent_component_max;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_infinity() const HAMON_NOEXCEPT
 	{
-		return exponent() == exponent_max && fraction() == 0;
+		return exponent_component() == exponent_component_max && fraction_component() == 0;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	bool is_nan() const HAMON_NOEXCEPT
 	{
-		return exponent() == exponent_max && fraction() != 0;
+		return exponent_component() == exponent_component_max && fraction_component() != 0;
 	}
 
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR

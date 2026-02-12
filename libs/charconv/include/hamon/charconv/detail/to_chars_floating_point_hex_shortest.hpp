@@ -81,7 +81,7 @@ to_chars_floating_point_hex_shortest(char* first, char* last, Floating value) no
 	char const leadinghexit = bits.is_subnormal() ? '0' : '1'; // implicit bit
 	*first++ = leadinghexit;
 
-	auto const ieee_fraction = bits.fraction();
+	auto const ieee_fraction = bits.fraction_component();
 	if (ieee_fraction == 0)
 	{
 		// The fraction bits are all 0. Trim them away, including the decimal point.

@@ -200,7 +200,7 @@ to_chars_floating_point_precision_general(char* first, char* last, Floating valu
 	HAMON_ASSERT(bits.is_finite());
 
 	using uint_type = typename Binary::uint_type;
-	const auto uint_value = bits.uint();
+	const auto uint_value = bits.to_uint();
 
 	// C11 7.21.6.1 "The fprintf function"/5:
 	// "A negative precision argument is taken as if the precision were omitted."
