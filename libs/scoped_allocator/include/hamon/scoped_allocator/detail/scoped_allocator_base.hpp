@@ -83,9 +83,9 @@ protected:
 	HAMON_CXX11_CONSTEXPR
 	scoped_allocator_base() HAMON_NOEXCEPT {}
 
-	template <typename OuterA2>
+	template <typename OuterA2, typename... InnerAllocs>	// InnerAllocs は Visual Studio 2026 でコンパイルを通すためのダミー引数
 	HAMON_CXX11_CONSTEXPR
-	scoped_allocator_base(OuterA2&& outerAlloc) HAMON_NOEXCEPT
+	scoped_allocator_base(OuterA2&& outerAlloc, InnerAllocs const&...) HAMON_NOEXCEPT
 		: OuterAlloc(hamon::forward<OuterA2>(outerAlloc))
 	{}
 
