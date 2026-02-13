@@ -30,6 +30,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
+        - { os: windows-2025-vs2026, generator: "Visual Studio 18 2026" }
         - { os: windows-2022, generator: "Visual Studio 17 2022" }
         architecture: [x64, Win32]
         cxx_standard: [14, 17, 20, 23]
