@@ -134,62 +134,62 @@ GTEST_TEST(BigIntAlgoTest, MultiplyTest)
 		false));
 
 	// inplace_vector
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint8_t, 1>{0},
 		hamon::inplace_vector<hamon::uint8_t, 1>{0},
 		hamon::inplace_vector<hamon::uint8_t, 1>{0},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint8_t, 1>{2},
 		hamon::inplace_vector<hamon::uint8_t, 1>{3},
 		hamon::inplace_vector<hamon::uint8_t, 1>{6},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint8_t, 2>{123},
 		hamon::inplace_vector<hamon::uint8_t, 2>{45},
 		hamon::inplace_vector<hamon::uint8_t, 2>{0x9F, 0x15},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint8_t, 2>{0x20, 0x10},
 		hamon::inplace_vector<hamon::uint8_t, 2>{0x40, 0x30},
 		hamon::inplace_vector<hamon::uint8_t, 2>{0x00, 0x08},
 		true));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint8_t, 4>{0x20, 0x10},
 		hamon::inplace_vector<hamon::uint8_t, 4>{0x40, 0x30},
 		hamon::inplace_vector<hamon::uint8_t, 4>{0x00, 0x08, 0x0A, 0x03},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint16_t, 4>{0x68B1, 0x3ADE},
 		hamon::inplace_vector<hamon::uint16_t, 4>{0x0003},
 		hamon::inplace_vector<hamon::uint16_t, 4>{0x3A13, 0xB09B},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint16_t, 4>{0xFF07, 0x5088, 0x0007},
 		hamon::inplace_vector<hamon::uint16_t, 4>{0xE3EC, 0x5438, 0x0006},
 		hamon::inplace_vector<hamon::uint16_t, 4>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43},
 		true));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint16_t, 5>{0xFF07, 0x5088, 0x0007},
 		hamon::inplace_vector<hamon::uint16_t, 5>{0xE3EC, 0x5438, 0x0006},
 		hamon::inplace_vector<hamon::uint16_t, 5>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43, 0x002E},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint32_t, 4>{0x5088FF07, 0x00000007},
 		hamon::inplace_vector<hamon::uint32_t, 4>{0x5438E3EC, 0x00000006},
 		hamon::inplace_vector<hamon::uint32_t, 4>{0xCDF64F74, 0x4B430EF7, 0x0000002E},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint64_t, 2>{0x000000075088FF07},
 		hamon::inplace_vector<hamon::uint64_t, 2>{0x000000065438E3EC},
 		hamon::inplace_vector<hamon::uint64_t, 2>{0x4B430EF7CDF64F74, 0x000000000000002E},
 		false));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint64_t, 3>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::inplace_vector<hamon::uint64_t, 3>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::inplace_vector<hamon::uint64_t, 3>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE},
 		true));
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
 		hamon::inplace_vector<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::inplace_vector<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::inplace_vector<hamon::uint64_t, 4>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF},

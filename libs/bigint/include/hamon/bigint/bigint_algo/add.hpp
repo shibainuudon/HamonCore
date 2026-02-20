@@ -29,8 +29,8 @@ namespace bigint_algo
 // * vector<T> または inplace_vector<T, N> または array<T, N> が対象
 // * T は 符号なし整数型
 // * 数値の格納の仕方はリトルエンディアン。つまり下位の桁を前方に格納する。
-// * arrayを引数にとるものはC++14でconstexpr
-// * vector/inplace_vectorを引数にとるものはC++20でconstexpr
+// * array/inplace_vectorを引数にとるものはC++14でconstexpr
+// * vectorを引数にとるものはC++20でconstexpr
 // * 引数を複数取る場合、
 //   arrayは要素数が同じ
 //   vector/inplace_vectorは要素数が異なる場合がある

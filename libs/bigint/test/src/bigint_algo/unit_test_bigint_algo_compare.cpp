@@ -85,16 +85,16 @@ GTEST_TEST(BigIntAlgoTest, CompareTest)
 	// inplace_vector
 	{
 		using Vector = hamon::inplace_vector<hamon::uint8_t, 4>;
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0}, Vector{0}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0}, Vector{1}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{1}, Vector{0}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{1}, Vector{1}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0xFF}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x00, 0x10}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x01, 0x10}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x12, 0x34}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x34, 0x12}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x34, 0x12}, Vector{0x12, 0x34}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0}, Vector{0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0}, Vector{1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{1}, Vector{0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{1}, Vector{1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x00, 0x10}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x01, 0x10}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x12, 0x34}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x34, 0x12}, Vector{0x12, 0x34}));
 	}
 
 	// array

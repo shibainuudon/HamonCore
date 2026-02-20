@@ -50,34 +50,34 @@ GTEST_TEST(BigIntAlgoTest, IsZeroTest)
 	// inplace_vector
 	{
 		using VectorType = hamon::inplace_vector<hamon::uint8_t, 4>;
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x01}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00, 0x01}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00, 0x00, 0x01}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFF, 0xFF, 0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x01}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00, 0x01}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00, 0x00, 0x01}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFF, 0xFF, 0xFF}));
 	}
 	{
 		using VectorType = hamon::inplace_vector<hamon::uint16_t, 5>;
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x0000}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0001}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0000, 0x0001}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0000, 0x0000, 0x0001}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0001}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0000, 0x0001}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x0000, 0x0000, 0x0001}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF}));
 	}
 	{
 		using VectorType = hamon::inplace_vector<hamon::uint32_t, 3>;
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00000000}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000002}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000000, 0xFFFFFFFF}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000000, 0x00000000, 0x00000001}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000002}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000000, 0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0x00000000, 0x00000000, 0x00000001}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}));
 	}
 	{
 		using VectorType = hamon::inplace_vector<hamon::uint64_t, 4>;
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{1}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0, 1}));
-		HAMON_CXX20_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0, 0, 1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(true,  hamon::bigint_algo::is_zero(VectorType{0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0, 1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(false, hamon::bigint_algo::is_zero(VectorType{0, 0, 1}));
 	}
 
 	// array
