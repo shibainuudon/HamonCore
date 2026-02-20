@@ -29,7 +29,7 @@ namespace erasure_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-HAMON_CXX20_CONSTEXPR bool test1()
+HAMON_CXX14_CONSTEXPR bool test1()
 {
 	{
 		hamon::inplace_vector<int, 10> v = {3,1,4,5,2};
@@ -88,18 +88,34 @@ HAMON_CXX20_CONSTEXPR bool test2()
 	return true;
 }
 
-HAMON_CXX20_CONSTEXPR bool test3()
+HAMON_CXX14_CONSTEXPR bool test3()
 {
 	{
+		struct is_odd
+		{
+			constexpr bool operator()(int x) const
+			{
+				return x % 2 == 0;
+			}
+		};
+
 		hamon::inplace_vector<int, 5> v = {3,1,4,5,2};
-		auto r = hamon::erase_if(v, [](int x) { return x % 2 == 0; });
+		auto r = hamon::erase_if(v, is_odd{});
 		VERIFY(r == 2);
 		const int v2[] = {3,1,5};
 		VERIFY(hamon::ranges::equal(v, v2));
 	}
 	{
+		struct greater_equal_5
+		{
+			constexpr bool operator()(int x) const
+			{
+				return x >= 5;
+			}
+		};
+
 		hamon::inplace_vector<int, 20> v = {3,1,4,1,5,9,2,6,5,3,5};
-		auto r = hamon::erase_if(v, [](int x) { return x >= 5; });
+		auto r = hamon::erase_if(v, greater_equal_5{});
 		VERIFY(r == 5);
 		const int v2[] = {3,1,4,1,2,3};
 		VERIFY(hamon::ranges::equal(v, v2));
@@ -111,13 +127,13 @@ HAMON_CXX20_CONSTEXPR bool test3()
 
 GTEST_TEST(InplaceVectorTest, ErasureTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test1());
 #if defined(HAMON_MSVC) && (HAMON_MSVC < 1930)
 	EXPECT_TRUE(test2());
 #else
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
 #endif
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test3());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test3());
 
 	// https://en.cppreference.com/w/cpp/container/inplace_vector/erase2
 	{

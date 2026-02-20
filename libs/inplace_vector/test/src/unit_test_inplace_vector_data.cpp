@@ -76,9 +76,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(InplaceVectorTest, DataTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<float>());
 
 	// https://en.cppreference.com/w/cpp/container/inplace_vector/data
 	{

@@ -83,8 +83,8 @@ HAMON_CXX14_CONSTEXPR bool test_impl_0()
 
 	{
 		InplaceVector v;
-		ConstIterator it;
-		SizeType sz;
+		ConstIterator it{};
+		SizeType sz{};
 		static_assert(hamon::is_same<decltype(v.insert(it, sz, hamon::declval<T const&>())), Iterator>::value, "");
 		static_assert(!noexcept(v.insert(it, sz, hamon::declval<T const&>())), "");
 	}
@@ -205,10 +205,10 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(InplaceVectorTest, InsertNValueTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S1>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<S1>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<S2>());
 	EXPECT_TRUE(test<S3>());
 

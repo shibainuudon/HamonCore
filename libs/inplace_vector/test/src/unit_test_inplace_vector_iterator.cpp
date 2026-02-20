@@ -21,7 +21,7 @@ namespace iterator_test
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <typename T>
-HAMON_CXX20_CONSTEXPR bool test()
+HAMON_CXX14_CONSTEXPR bool test()
 {
 	using InplaceVector = hamon::inplace_vector<T, 10>;
 	using difference_type = typename InplaceVector::difference_type;
@@ -265,7 +265,7 @@ struct Vector3
 	int z;
 };
 
-HAMON_CXX20_CONSTEXPR bool test2()
+HAMON_CXX14_CONSTEXPR bool test2()
 {
 	{
 		hamon::inplace_vector<Vector3, 10> v
@@ -293,10 +293,10 @@ HAMON_CXX20_CONSTEXPR bool test2()
 
 GTEST_TEST(InplaceVectorTest, IteratorTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<unsigned char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test2());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<unsigned char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2());
 }
 
 }	// namespace iterator_test

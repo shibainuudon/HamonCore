@@ -21,7 +21,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/memory/construct_at.hpp>
-#include <hamon/memory/destroy.hpp>
+#include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <hamon/memory/detail/uninitialized_fill_n_impl.hpp>
 #include <hamon/memory/detail/uninitialized_copy_n_impl.hpp>
@@ -115,7 +115,7 @@ protected:
 
 	HAMON_CXX14_CONSTEXPR void PopBackN(hamon::size_t n) HAMON_NOEXCEPT
 	{
-		hamon::destroy(this->End() - n, this->End());
+		hamon::detail::destroy_impl(this->End() - n, this->End());
 		m_size -= n;
 	}
 

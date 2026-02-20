@@ -122,9 +122,9 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 GTEST_TEST(InplaceVectorTest, CtorInitializerListTest)
 {
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<int>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<char>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<float>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<int>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test<float>());
 #if defined(HAMON_MSVC) && (HAMON_MSVC < 1930)
 	                      EXPECT_TRUE(test<S1>());
 #else
