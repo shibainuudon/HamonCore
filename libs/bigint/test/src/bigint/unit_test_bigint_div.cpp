@@ -137,9 +137,9 @@ GTEST_TEST(BigIntTest, DivTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::bigint>());
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<128>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<512>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<2048>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<128>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<512>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<2048>>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int64_t>());
@@ -158,9 +158,9 @@ GTEST_TEST(BigIntTest, DivTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::bigint>());
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<128>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<512>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<2048>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<128>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<512>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<2048>>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int32_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int64_t>());
@@ -172,9 +172,9 @@ GTEST_TEST(BigIntTest, DivTest)
 
 	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest2<hamon::bigint>());
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<255>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<999>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<1033>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<255>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<999>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::inplace_bigint<1033>>());
 
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest2<hamon::int256_t>());
@@ -189,9 +189,9 @@ GTEST_TEST(BigIntTest, DivTest)
 
 	/*HAMON_CXX20_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::bigint>());
 
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<256>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<512>>());
-	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<2048>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<256>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<512>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::inplace_bigint<2048>>());
 
 	//HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int256_t>());

@@ -71,13 +71,13 @@ private:
 	static_assert(hamon::is_unsigned<element_type>::value, "");
 
 public:
-	HAMON_CXX20_CONSTEXPR
+	HAMON_CXX14_CONSTEXPR
 	basic_bigint() HAMON_NOEXCEPT
 		: m_sign(1)
 		, m_magnitude{0}
 	{}
 
-	HAMON_CXX20_CONSTEXPR
+	HAMON_CXX14_CONSTEXPR
 	basic_bigint(basic_bigint const& rhs)
 		: m_sign(rhs.m_sign)
 	{
@@ -85,14 +85,14 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
-	HAMON_CXX20_CONSTEXPR
+	HAMON_CXX14_CONSTEXPR
 	basic_bigint(Integral n) HAMON_NOEXCEPT
 		: m_sign(n < 0 ? -1 : 1)
 	{
 		bigint_algo::from_uint(hamon::abs_unsigned(n), m_magnitude);
 	}
 
-	explicit HAMON_CXX20_CONSTEXPR
+	explicit HAMON_CXX14_CONSTEXPR
 	basic_bigint(hamon::string_view str)
 		: m_sign(1)
 		, m_magnitude{0}
@@ -145,20 +145,20 @@ public:
 	}
 
 private:
-	HAMON_CXX20_CONSTEXPR
+	HAMON_CXX14_CONSTEXPR
 	basic_bigint(sign_type sign, vector_type const& mag) HAMON_NOEXCEPT
 		: m_sign(sign)
 		, m_magnitude{mag}
 	{}
 
 public:
-	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR basic_bigint
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
 	operator+() const HAMON_NOEXCEPT
 	{
 		return *this;
 	}
 
-	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR basic_bigint
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
 	operator-() const HAMON_NOEXCEPT
 	{
 		if (bigint_algo::is_zero(m_magnitude))
@@ -168,20 +168,20 @@ public:
 		return {-m_sign, m_magnitude};
 	}
 
-	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR basic_bigint
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
 	operator~() const HAMON_NOEXCEPT
 	{
 		return -(basic_bigint{*this} += 1);
 	}
 
 private:
-	HAMON_CXX20_CONSTEXPR void
+	HAMON_CXX14_CONSTEXPR void
 	add(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::add(m_magnitude, rhs.m_magnitude);
 	}
 
-	HAMON_CXX20_CONSTEXPR void
+	HAMON_CXX14_CONSTEXPR void
 	sub(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		auto const c = bigint_algo::compare(m_magnitude, rhs.m_magnitude);
@@ -207,7 +207,7 @@ private:
 	}
 	
 public:
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator+=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
@@ -222,7 +222,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator-=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
@@ -237,7 +237,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator*=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		vector_type tmp;
@@ -254,7 +254,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator/=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		vector_type quo;
@@ -272,7 +272,7 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator%=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		vector_type quo;
@@ -286,54 +286,54 @@ public:
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator&=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_and(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator|=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_or(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator^=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_xor(m_magnitude, rhs.m_magnitude);
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator<<=(hamon::size_t pos) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_shift_left(m_magnitude, pos);
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator>>=(hamon::size_t pos) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_shift_right(m_magnitude, pos);
 		return *this;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator++() HAMON_NOEXCEPT
 	{
 		return *this += 1;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint&
+	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator--() HAMON_NOEXCEPT
 	{
 		return *this -= 1;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint
+	HAMON_CXX14_CONSTEXPR basic_bigint
 	operator++(int) HAMON_NOEXCEPT
 	{
 		auto tmp = *this;
@@ -341,7 +341,7 @@ public:
 		return tmp;
 	}
 
-	HAMON_CXX20_CONSTEXPR basic_bigint
+	HAMON_CXX14_CONSTEXPR basic_bigint
 	operator--(int) HAMON_NOEXCEPT
 	{
 		auto tmp = *this;
@@ -350,7 +350,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
-	explicit HAMON_CXX20_CONSTEXPR operator Integral() const HAMON_NOEXCEPT
+	explicit HAMON_CXX14_CONSTEXPR operator Integral() const HAMON_NOEXCEPT
 	{
 		using UT = hamon::make_unsigned_t<Integral>;
 		UT result{};
@@ -358,7 +358,7 @@ public:
 		return static_cast<Integral>(m_sign < 0 ? negate_unsigned(result) : result);
 	}
 
-	HAMON_NODISCARD HAMON_CXX20_CONSTEXPR int
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR int
 	compare(basic_bigint const& rhs) const HAMON_NOEXCEPT
 	{
 		if (m_sign != rhs.m_sign)
@@ -375,77 +375,77 @@ private:
 };
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator+(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) += rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator-(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) -= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator*(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) *= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator/(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) /= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator%(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) %= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator&(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) &= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator|(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) |= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator^(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) ^= rhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator<<(basic_bigint<V> const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) <<= pos;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR basic_bigint<V>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator>>(basic_bigint<V> const& lhs, hamon::size_t pos) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) >>= pos;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator==(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) == 0;
@@ -453,42 +453,42 @@ operator==(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEP
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR hamon::strong_ordering
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::strong_ordering
 operator<=>(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) <=> 0;
 }
 #else
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator!=(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs == rhs);
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) < 0;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs < lhs;
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<=(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs > rhs);
 }
 
 template <typename V>
-HAMON_NODISCARD inline HAMON_CXX20_CONSTEXPR bool
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>=(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs < rhs);
@@ -586,7 +586,7 @@ countr_zero(basic_bigint<V> const& x) HAMON_NOEXCEPT
 }
 
 template <typename V>
-inline HAMON_CXX20_CONSTEXPR hamon::from_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, basic_bigint<V>& value, int base)
 {
 	using access = hamon::detail::bigint_access;
@@ -601,7 +601,7 @@ from_chars(char const* first, char const* last, basic_bigint<V>& value, int base
 }
 
 template <typename V>
-inline HAMON_CXX20_CONSTEXPR hamon::to_chars_result
+inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, basic_bigint<V> const& value, int base)
 {
 	using access = hamon::detail::bigint_access;
