@@ -82,7 +82,7 @@ struct S2
 template <typename T,
 	template <typename> class InputIteratorWrapper,
 	template <typename> class OutputIteratorWrapper>
-MEMORY_TEST_CONSTEXPR bool test2()
+MEMORY_TEST_CONSTEXPR bool test1_impl2()
 {
 	{
 		using InputIterator  = InputIteratorWrapper<T>;
@@ -102,33 +102,55 @@ MEMORY_TEST_CONSTEXPR bool test2()
 }
 
 template <typename T, template <typename> class InputIteratorWrapper>
-MEMORY_TEST_CONSTEXPR bool test1()
+MEMORY_TEST_CONSTEXPR bool test1_impl()
 {
 	return
-		test2<T, InputIteratorWrapper, forward_iterator_wrapper>() &&
-		test2<T, InputIteratorWrapper, bidirectional_iterator_wrapper>() &&
-		test2<T, InputIteratorWrapper, random_access_iterator_wrapper>() &&
-		test2<T, InputIteratorWrapper, contiguous_iterator_wrapper>();
+		test1_impl2<T, InputIteratorWrapper, forward_iterator_wrapper>() &&
+		test1_impl2<T, InputIteratorWrapper, bidirectional_iterator_wrapper>() &&
+		test1_impl2<T, InputIteratorWrapper, random_access_iterator_wrapper>() &&
+		test1_impl2<T, InputIteratorWrapper, contiguous_iterator_wrapper>();
 }
 
 template <typename T>
-MEMORY_TEST_CONSTEXPR bool test()
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	return
-		test1<T, input_iterator_wrapper>() &&
-		test1<T, forward_iterator_wrapper>() &&
-		test1<T, bidirectional_iterator_wrapper>() &&
-		test1<T, random_access_iterator_wrapper>() &&
-		test1<T, contiguous_iterator_wrapper>();
+		test1_impl<T, input_iterator_wrapper>() &&
+		test1_impl<T, forward_iterator_wrapper>() &&
+		test1_impl<T, bidirectional_iterator_wrapper>() &&
+		test1_impl<T, random_access_iterator_wrapper>() &&
+		test1_impl<T, contiguous_iterator_wrapper>();
+}
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test2()
+{
+	{
+		T dst[5]{};
+		T const src[5]{T{10}, T{20}, T{30}, T{40}, T{50}};
+		auto ret = hamon::detail::uninitialized_move_n_impl(src, 5, dst);
+		VERIFY(ret.first == src + 5);
+		VERIFY(ret.second == dst + 5);
+		VERIFY(dst[0] == T{10});
+		VERIFY(dst[1] == T{20});
+		VERIFY(dst[2] == T{30});
+		VERIFY(dst[3] == T{40});
+		VERIFY(dst[4] == T{50});
+	}
+	return true;
 }
 
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedMoveNImplTest)
 {
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S0>());
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S0>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S1>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S2>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
 
 	{
 		hamon::allocator<S1> alloc;

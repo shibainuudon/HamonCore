@@ -29,7 +29,7 @@ template <typename Allocator, typename Iter, typename Sent,
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_value_construct_impl(
 	Allocator& allocator, Iter first, Sent last,
 	hamon::detail::overload_priority<1>)
@@ -69,7 +69,7 @@ uninitialized_value_construct_impl(
 }
 
 template <typename Allocator, typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_value_construct_impl(Allocator& allocator, Iter first, Sent last)
 {
 	return hamon::detail::uninitialized_value_construct_impl(
@@ -78,7 +78,7 @@ uninitialized_value_construct_impl(Allocator& allocator, Iter first, Sent last)
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_value_construct_impl(Iter first, Sent last)
 {
 	hamon::allocator<hamon::iter_value_t<Iter>> alloc;

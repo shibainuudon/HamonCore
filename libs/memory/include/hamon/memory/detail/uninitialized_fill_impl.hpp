@@ -36,7 +36,7 @@ template <typename Allocator, typename Iter, typename Sent, typename T,
 		hamon::is_trivially_constructible<ValueType, T const&>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Allocator& allocator, Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<2>)
@@ -64,7 +64,7 @@ template <typename Allocator, typename Iter, typename Sent, typename T,
 		hamon::is_nothrow_constructible<ValueType, T const&>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_fill_impl(
 	Allocator& allocator, Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<1>)
@@ -104,7 +104,7 @@ uninitialized_fill_impl(
 }
 
 template <typename Allocator, typename Iter, typename Sent, typename T>
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_fill_impl(Allocator& allocator, Iter first, Sent last, T const& x)
 {
 	return hamon::detail::uninitialized_fill_impl(
@@ -113,7 +113,7 @@ uninitialized_fill_impl(Allocator& allocator, Iter first, Sent last, T const& x)
 }
 
 template <typename Iter, typename Sent, typename T>
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_fill_impl(Iter first, Sent last, T const& x)
 {
 	hamon::allocator<hamon::iter_value_t<Iter>> alloc;

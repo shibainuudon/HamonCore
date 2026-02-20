@@ -40,7 +40,7 @@ template <typename Allocator, typename I, typename S1, typename O, typename S2,
 		hamon::is_trivially_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::ranges::in_out_result<I, O>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_move_impl(
 	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
 	hamon::detail::overload_priority<2>)
@@ -70,7 +70,7 @@ template <typename Allocator, typename I, typename S1, typename O, typename S2,
 		hamon::is_nothrow_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::ranges::in_out_result<I, O>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_move_impl(
 	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
 	hamon::detail::overload_priority<1>)
@@ -112,7 +112,7 @@ uninitialized_move_impl(
 }
 
 template <typename Allocator, typename I, typename S1, typename O, typename S2>
-HAMON_CXX20_CONSTEXPR hamon::ranges::in_out_result<I, O>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_move_impl(Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast)
 {
 	return hamon::detail::uninitialized_move_impl(
@@ -121,7 +121,7 @@ uninitialized_move_impl(Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 o
 }
 
 template <typename I, typename S1, typename O, typename S2>
-HAMON_CXX20_CONSTEXPR hamon::ranges::in_out_result<I, O>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_move_impl(I ifirst, S1 ilast, O ofirst, S2 olast)
 {
 	hamon::allocator<hamon::iter_value_t<O>> alloc;
@@ -129,7 +129,7 @@ uninitialized_move_impl(I ifirst, S1 ilast, O ofirst, S2 olast)
 }
 
 template <typename I, typename S1, typename O>
-HAMON_CXX20_CONSTEXPR hamon::ranges::in_out_result<I, O>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_move_impl(I ifirst, S1 ilast, O ofirst)
 {
 	return hamon::detail::uninitialized_move_impl(ifirst, ilast, ofirst, hamon::unreachable_sentinel);

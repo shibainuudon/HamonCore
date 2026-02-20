@@ -58,7 +58,7 @@ struct S3
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename> class RangeWrapper>
-MEMORY_TEST_CONSTEXPR bool test1()
+MEMORY_TEST_CONSTEXPR bool test1_impl()
 {
 	{
 		using Range = RangeWrapper<S0>;
@@ -100,24 +100,44 @@ MEMORY_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MEMORY_TEST_CONSTEXPR bool test()
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	return
-		test1<test_forward_range>() &&
-		test1<test_bidirectional_range>() &&
-		test1<test_random_access_range>() &&
-		test1<test_contiguous_range>() &&
-		test1<test_forward_common_range>() &&
-		test1<test_bidirectional_common_range>() &&
-		test1<test_random_access_common_range>() &&
-		test1<test_contiguous_common_range>();
+		test1_impl<test_forward_range>() &&
+		test1_impl<test_bidirectional_range>() &&
+		test1_impl<test_random_access_range>() &&
+		test1_impl<test_contiguous_range>() &&
+		test1_impl<test_forward_common_range>() &&
+		test1_impl<test_bidirectional_common_range>() &&
+		test1_impl<test_random_access_common_range>() &&
+		test1_impl<test_contiguous_common_range>();
+}
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test2()
+{
+	{
+		T buf[5]{};
+		auto ret = hamon::detail::uninitialized_default_construct_impl(buf, buf + 5);
+		VERIFY(ret == buf + 5);
+		VERIFY(buf[0] == T{});
+		VERIFY(buf[1] == T{});
+		VERIFY(buf[2] == T{});
+		VERIFY(buf[3] == T{});
+		VERIFY(buf[4] == T{});
+	}
+	return true;
 }
 
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedDefaultConstructImplTest)
 {
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

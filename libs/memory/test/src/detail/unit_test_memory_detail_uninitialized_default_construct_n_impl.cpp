@@ -58,7 +58,7 @@ struct S3
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename> class IteratorWrapper>
-MEMORY_TEST_CONSTEXPR bool test1()
+MEMORY_TEST_CONSTEXPR bool test1_impl()
 {
 	{
 		using Iterator = IteratorWrapper<S0>;
@@ -94,20 +94,40 @@ MEMORY_TEST_CONSTEXPR bool test1()
 	return true;
 }
 
-MEMORY_TEST_CONSTEXPR bool test()
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	return
-		test1<forward_iterator_wrapper>() &&
-		test1<bidirectional_iterator_wrapper>() &&
-		test1<random_access_iterator_wrapper>() &&
-		test1<contiguous_iterator_wrapper>();
+		test1_impl<forward_iterator_wrapper>() &&
+		test1_impl<bidirectional_iterator_wrapper>() &&
+		test1_impl<random_access_iterator_wrapper>() &&
+		test1_impl<contiguous_iterator_wrapper>();
+}
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test2()
+{
+	{
+		T buf[5]{};
+		auto ret = hamon::detail::uninitialized_default_construct_n_impl(buf, 5);
+		VERIFY(ret == buf + 5);
+		VERIFY(buf[0] == T{});
+		VERIFY(buf[1] == T{});
+		VERIFY(buf[2] == T{});
+		VERIFY(buf[3] == T{});
+		VERIFY(buf[4] == T{});
+	}
+	return true;
 }
 
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedDefaultConstructNImplTest)
 {
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{

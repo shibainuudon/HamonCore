@@ -40,7 +40,7 @@ template <typename Allocator, typename Iter, typename Size, typename Out,
 		hamon::is_trivially_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
+HAMON_CXX14_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_if_noexcept_n_impl(
 	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<2>)
@@ -75,7 +75,7 @@ template <typename Allocator, typename Iter, typename Size, typename Out,
 		hamon::is_nothrow_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
+HAMON_CXX14_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_if_noexcept_n_impl(
 	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<1>)
@@ -119,7 +119,7 @@ uninitialized_move_if_noexcept_n_impl(
 }
 
 template <typename Allocator, typename Iter, typename Size, typename Out>
-HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
+HAMON_CXX14_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_if_noexcept_n(Allocator& allocator, Iter first, Size count, Out result)
 {
 	return hamon::detail::uninitialized_move_if_noexcept_n_impl(
@@ -128,7 +128,7 @@ uninitialized_move_if_noexcept_n(Allocator& allocator, Iter first, Size count, O
 }
 
 template <typename Iter, typename Size, typename Out>
-HAMON_CXX20_CONSTEXPR hamon::pair<Iter, Out>
+HAMON_CXX14_CONSTEXPR hamon::pair<Iter, Out>
 uninitialized_move_if_noexcept_n(Iter first, Size count, Out result)
 {
 	hamon::allocator<hamon::iter_value_t<Out>> alloc;

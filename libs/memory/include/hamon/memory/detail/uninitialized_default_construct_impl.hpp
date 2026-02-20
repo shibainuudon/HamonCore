@@ -30,7 +30,7 @@ template <typename Iter, typename Sent,
 		hamon::is_trivially_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<2>)
@@ -45,7 +45,7 @@ template <typename Iter, typename Sent,
 		hamon::is_nothrow_default_constructible<ValueType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last,
 	hamon::detail::overload_priority<1>)
@@ -85,7 +85,7 @@ uninitialized_default_construct_impl(
 }
 
 template <typename Iter, typename Sent>
-HAMON_CXX20_CONSTEXPR Iter
+HAMON_CXX14_CONSTEXPR Iter
 uninitialized_default_construct_impl(
 	Iter first, Sent last)
 {

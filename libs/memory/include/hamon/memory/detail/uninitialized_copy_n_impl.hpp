@@ -38,7 +38,7 @@ template <typename Allocator, typename Iter, typename Size, typename Out,
 		hamon::is_trivially_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Out
+HAMON_CXX14_CONSTEXPR Out
 uninitialized_copy_n_impl(
 	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<2>)
@@ -69,7 +69,7 @@ template <typename Allocator, typename Iter, typename Size, typename Out,
 		hamon::is_nothrow_constructible<ValueType, SrcType>::value
 	>
 >
-HAMON_CXX20_CONSTEXPR Out
+HAMON_CXX14_CONSTEXPR Out
 uninitialized_copy_n_impl(
 	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<1>)
@@ -113,7 +113,7 @@ uninitialized_copy_n_impl(
 }
 
 template <typename Allocator, typename Iter, typename Size, typename Out>
-HAMON_CXX20_CONSTEXPR Out
+HAMON_CXX14_CONSTEXPR Out
 uninitialized_copy_n_impl(Allocator& allocator, Iter first, Size n, Out result)
 {
 	return hamon::detail::uninitialized_copy_n_impl(
@@ -122,7 +122,7 @@ uninitialized_copy_n_impl(Allocator& allocator, Iter first, Size n, Out result)
 }
 
 template <typename Iter, typename Size, typename Out>
-HAMON_CXX20_CONSTEXPR Out
+HAMON_CXX14_CONSTEXPR Out
 uninitialized_copy_n_impl(Iter first, Size n, Out result)
 {
 	hamon::allocator<hamon::iter_value_t<Out>> alloc;

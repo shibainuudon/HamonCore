@@ -79,7 +79,7 @@ struct S2
 
 template <typename T,
 	template <typename> class RangeWrapper>
-MEMORY_TEST_CONSTEXPR bool test1()
+MEMORY_TEST_CONSTEXPR bool test1_impl()
 {
 	{
 		using Range = RangeWrapper<T>;
@@ -88,7 +88,8 @@ MEMORY_TEST_CONSTEXPR bool test1()
 		hamon::allocator<T> alloc;
 		auto* p = alloc.allocate(10);
 		T const x{42};
-		hamon::detail::uninitialized_fill_impl(Iter{p}, Sent{p + 3}, x);
+		auto ret = hamon::detail::uninitialized_fill_impl(Iter{p}, Sent{p + 3}, x);
+		VERIFY(base(ret) == p + 3);
 		VERIFY(p[0].value == 42);
 		VERIFY(p[1].value == 42);
 		VERIFY(p[2].value == 42);
@@ -98,26 +99,46 @@ MEMORY_TEST_CONSTEXPR bool test1()
 }
 
 template <typename T>
-MEMORY_TEST_CONSTEXPR bool test()
+MEMORY_TEST_CONSTEXPR bool test1()
 {
 	return
-		test1<T, test_forward_range>() &&
-		test1<T, test_bidirectional_range>() &&
-		test1<T, test_random_access_range>() &&
-		test1<T, test_contiguous_range>() &&
-		test1<T, test_forward_common_range>() &&
-		test1<T, test_bidirectional_common_range>() &&
-		test1<T, test_random_access_common_range>() &&
-		test1<T, test_contiguous_common_range>();
+		test1_impl<T, test_forward_range>() &&
+		test1_impl<T, test_bidirectional_range>() &&
+		test1_impl<T, test_random_access_range>() &&
+		test1_impl<T, test_contiguous_range>() &&
+		test1_impl<T, test_forward_common_range>() &&
+		test1_impl<T, test_bidirectional_common_range>() &&
+		test1_impl<T, test_random_access_common_range>() &&
+		test1_impl<T, test_contiguous_common_range>();
+}
+
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test2()
+{
+	{
+		T buf[5]{};
+		auto ret = hamon::detail::uninitialized_fill_impl(buf, buf + 5, T{11});
+		VERIFY(ret == buf + 5);
+		VERIFY(buf[0] == T{11});
+		VERIFY(buf[1] == T{11});
+		VERIFY(buf[2] == T{11});
+		VERIFY(buf[3] == T{11});
+		VERIFY(buf[4] == T{11});
+	}
+	return true;
 }
 
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedFillImplTest)
 {
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S0>());
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S1>());
-	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test<S2>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S0>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S1>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test1<S2>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
