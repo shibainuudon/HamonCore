@@ -31,6 +31,8 @@
 #include <hamon/bigint/bigint_algo/detail/copy.hpp>
 #include <hamon/bigint/detail/abs_unsigned.hpp>
 #include <hamon/bigint/detail/negate_unsigned.hpp>
+#include <hamon/algorithm/max.hpp>
+#include <hamon/array.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
@@ -70,6 +72,20 @@ private:
 	static_assert(hamon::is_integral<element_type>::value, "");
 	static_assert(hamon::is_unsigned<element_type>::value, "");
 
+private:
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	static HAMON_CXX11_CONSTEXPR sign_type
+	sign(Integral n) HAMON_NOEXCEPT
+	{
+		return n < 0 ? -1 : 1;
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	basic_bigint(sign_type sign, vector_type const& mag) HAMON_NOEXCEPT
+		: m_sign(sign)
+		, m_magnitude{mag}
+	{}
+
 public:
 	HAMON_CXX14_CONSTEXPR
 	basic_bigint() HAMON_NOEXCEPT
@@ -87,7 +103,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
 	HAMON_CXX14_CONSTEXPR
 	basic_bigint(Integral n) HAMON_NOEXCEPT
-		: m_sign(n < 0 ? -1 : 1)
+		: m_sign(sign(n))
 	{
 		bigint_algo::from_uint(hamon::abs_unsigned(n), m_magnitude);
 	}
@@ -144,14 +160,6 @@ public:
 		}
 	}
 
-private:
-	HAMON_CXX14_CONSTEXPR
-	basic_bigint(sign_type sign, vector_type const& mag) HAMON_NOEXCEPT
-		: m_sign(sign)
-		, m_magnitude{mag}
-	{}
-
-public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
 	operator+() const HAMON_NOEXCEPT
 	{
@@ -175,16 +183,18 @@ public:
 	}
 
 private:
+	template <typename VectorType2>
 	HAMON_CXX14_CONSTEXPR void
-	add(basic_bigint const& rhs) HAMON_NOEXCEPT
+	add(VectorType2 const& rhs) HAMON_NOEXCEPT
 	{
-		bigint_algo::add(m_magnitude, rhs.m_magnitude);
+		bigint_algo::add(m_magnitude, rhs);
 	}
 
+	template <typename VectorType2>
 	HAMON_CXX14_CONSTEXPR void
-	sub(basic_bigint const& rhs) HAMON_NOEXCEPT
+	sub(VectorType2 const& rhs) HAMON_NOEXCEPT
 	{
-		auto const c = bigint_algo::compare(m_magnitude, rhs.m_magnitude);
+		auto const c = bigint_algo::compare(m_magnitude, rhs);
 
 		if (c == 0)
 		{
@@ -194,13 +204,13 @@ private:
 		else if (c > 0)
 		{
 			// lhs = lhs - rhs
-			bigint_algo::sub(m_magnitude, rhs.m_magnitude);
+			bigint_algo::sub(m_magnitude, rhs);
 		}
 		else if (c < 0)
 		{
 			// lhs = rhs - lhs
 			vector_type tmp{};
-			bigint_algo::sub(tmp, rhs.m_magnitude, m_magnitude);
+			bigint_algo::sub(tmp, rhs, m_magnitude);
 			m_magnitude = tmp;
 			m_sign = -m_sign;
 		}
@@ -210,13 +220,33 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator+=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		if (m_sign != rhs.m_sign)
+		if (m_sign == rhs.m_sign)
 		{
-			this->sub(rhs);
+			this->add(rhs.m_magnitude);
 		}
 		else
 		{
-			this->add(rhs);
+			this->sub(rhs.m_magnitude);
+		}
+
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator+=(Integral rhs) HAMON_NOEXCEPT
+	{
+		constexpr auto N = hamon::max(hamon::size_t{1}, sizeof(Integral) / sizeof(element_type));
+		hamon::array<element_type, N> tmp{};
+		bigint_algo::from_uint(hamon::abs_unsigned(rhs), tmp);
+
+		if (m_sign == sign(rhs))
+		{
+			this->add(tmp);
+		}
+		else
+		{
+			this->sub(tmp);
 		}
 
 		return *this;
@@ -227,11 +257,11 @@ public:
 	{
 		if (m_sign != rhs.m_sign)
 		{
-			this->add(rhs);
+			this->add(rhs.m_magnitude);
 		}
 		else
 		{
-			this->sub(rhs);
+			this->sub(rhs.m_magnitude);
 		}
 
 		return *this;

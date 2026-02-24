@@ -9,9 +9,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4146)	// 符号付きの値を代入する変数は、符号付き型にキャストしなければなりません。
-
 namespace hamon_bigint_test
 {
 
@@ -51,6 +48,30 @@ AddEqualTest()
 	x += -x;
 	VERIFY(x == BigInt{0});
 
+	x += hamon::uint8_t{255};
+	VERIFY(x == BigInt{255});
+
+	x += hamon::int8_t{-128};
+	VERIFY(x == BigInt{127});
+
+	x += hamon::uint16_t{65535};
+	VERIFY(x == BigInt{65662});
+
+	x += hamon::int16_t{-32768};
+	VERIFY(x == BigInt{32894});
+
+	x += hamon::int32_t{-2147483648};
+	VERIFY(x == BigInt{-2147450754});
+
+	x += hamon::uint32_t{4294967295};
+	VERIFY(x == BigInt{2147516541});
+
+	x += hamon::uint64_t{18446744073709551615ULL};
+	VERIFY(x == BigInt{"18446744075857068156"});
+
+	x += hamon::int64_t{-1};
+	VERIFY(x == BigInt{"18446744075857068155"});
+
 	return true;
 }
 
@@ -72,6 +93,8 @@ AddEqualTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, AddEqualTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::bigint>());
@@ -80,16 +103,12 @@ GTEST_TEST(BigIntTest, AddEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::inplace_bigint<512>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::inplace_bigint<2048>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(AddEqualTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(AddEqualTest<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddEqualTest<hamon::uint512_t>());
@@ -115,10 +134,6 @@ GTEST_TEST(BigIntTest, AddEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(AddEqualTest2<hamon::uint2048_t>());
 }
 
-#undef VERIFY
-
 }	// namespace bigint_add_equal_test
 
 }	// namespace hamon_bigint_test
-
-HAMON_WARNING_POP()

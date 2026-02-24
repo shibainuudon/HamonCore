@@ -138,7 +138,7 @@ GTEST_TEST(BigIntTest, AddTest)
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(AddTest2<hamon::bigint>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddTest2<hamon::inplace_bigint<100>>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddTest2<hamon::inplace_bigint<200>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddTest2<hamon::inplace_bigint<500>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(AddTest2<hamon::inplace_bigint<1000>>());
 
