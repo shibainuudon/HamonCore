@@ -22,6 +22,8 @@ namespace detail
 
 // x * y + z + carry
 
+// note: 戻り値の型は引数の型の倍のサイズなので、この計算でオーバーフローすることは無い
+
 inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
 mul_addc(hamon::uint8_t x, hamon::uint8_t y, hamon::uint8_t z, hamon::uint8_t carry)
 {
@@ -68,10 +70,9 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
 mul_addc(T x, T y, T z, T carry)
 {
-	auto r = detail::mul(x, y);
-	bigint_algo::add(r, z);
-	bigint_algo::add(r, carry);
-	return r;
+	auto r1 = detail::mul(x, y);
+	auto r2 = detail::addc(detail::lo(r1), z, carry);
+	return {detail::lo(r2), detail::hi(r1)+detail::hi(r2)};
 }
 
 }	// namespace detail

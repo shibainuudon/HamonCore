@@ -12,12 +12,10 @@
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
-#include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -31,9 +29,6 @@ namespace bigint_algo
 // * 数値の格納の仕方はリトルエンディアン。つまり下位の桁を前方に格納する。
 // * array/inplace_vectorを引数にとるものはC++14でconstexpr
 // * vectorを引数にとるものはC++20でconstexpr
-// * 引数を複数取る場合、
-//   arrayは要素数が同じ
-//   vector/inplace_vectorは要素数が異なる場合がある
 // * 計算結果が入力より桁数が大きくなる場合、
 //   arrayはオーバーフローする
 //   vectorは自動的に要素数が増える
@@ -57,15 +52,10 @@ namespace bigint_algo
 namespace add_detail
 {
 
-template <typename VectorType, typename T>
+template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-add_impl(VectorType& lhs, T const* p2, hamon::size_t n2)
+add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
-	detail::resize(lhs, hamon::max(lhs.size(), n2) + 1);
-
-	auto const p1 = lhs.data();
-	auto const n1 = lhs.size();
-
 	T carry = 0;
 	hamon::size_t i = 0;
 
@@ -82,19 +72,13 @@ add_impl(VectorType& lhs, T const* p2, hamon::size_t n2)
 		carry = detail::hi(x);
 	}
 
-	bigint_algo::normalize(lhs);
 	return carry != 0;
 }
 
-template <typename VectorType, typename T>
+template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-add_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
+add_impl(T* p3, hamon::size_t n3, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
-	detail::resize(out, hamon::max(n1, n2) + 1);
-
-	auto const p3 = out.data();
-	auto const n3 = out.size();
-
 	T carry = 0;
 	hamon::size_t i = 0;
 
@@ -122,74 +106,34 @@ add_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon::siz
 		carry = detail::hi(x);
 	}
 
-	bigint_algo::normalize(out);
 	return carry != 0;
 }
 
 }	// namespace add_detail
 
-template <typename T>
+template <typename VectorType1, typename VectorType2>
 inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
+add(VectorType1& lhs, VectorType2 const& rhs)
 {
-	return add_detail::add_impl(lhs, rhs.data(), rhs.size());
+	auto n1 = detail::actual_size(lhs);
+	auto n2 = detail::actual_size(rhs);
+	detail::resize(lhs, hamon::max(n1, n2) + 1);
+	auto overflow = add_detail::add_impl(lhs.data(), lhs.size(), rhs.data(), n2);
+	bigint_algo::normalize(lhs);
+	return overflow;
 }
 
-template <typename T>
+template <typename VectorType1, typename VectorType2, typename VectorType3>
 inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::vector<T>& lhs, T rhs)
-{
-	return add_detail::add_impl(lhs, &rhs, 1);
-}
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
-{
-	return add_detail::add_impl(out, lhs.data(), lhs.size(), &rhs, 1);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
-{
-	return add_detail::add_impl(lhs, rhs.data(), rhs.size());
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::inplace_vector<T, N>& lhs, T rhs)
-{
-	return add_detail::add_impl(lhs, &rhs, 1);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, T rhs)
-{
-	return add_detail::add_impl(out, lhs.data(), lhs.size(), &rhs, 1);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
-{
-	return add_detail::add_impl(lhs, rhs.data(), detail::actual_size(rhs));
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::array<T, N>& lhs, T rhs)
-{
-	return add_detail::add_impl(lhs, &rhs, 1);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-add(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
+add(VectorType1& out, VectorType2 const& lhs, VectorType3 const& rhs)
 {
 	detail::zero(out);
-	return add_detail::add_impl(out, lhs.data(), lhs.size(), &rhs, 1);
+	auto n1 = detail::actual_size(lhs);
+	auto n2 = detail::actual_size(rhs);
+	detail::resize(out, hamon::max(n1, n2) + 1);
+	auto overflow = add_detail::add_impl(out.data(), out.size(), lhs.data(), n1, rhs.data(), n2);
+	bigint_algo::normalize(out);
+	return overflow;
 }
 
 }	// namespace bigint_algo

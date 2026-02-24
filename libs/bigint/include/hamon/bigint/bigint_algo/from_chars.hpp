@@ -63,7 +63,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		overflow = overflow || bigint_algo::multiply(tmp, x, hamon::detail::pow_n(static_cast<T>(base), n));
 
 		// x += t
-		overflow = overflow || bigint_algo::add(x, tmp, t);
+		overflow = overflow || bigint_algo::add(x, tmp, hamon::array<T, 1>{t});
 
 		p = r.ptr;
 	};

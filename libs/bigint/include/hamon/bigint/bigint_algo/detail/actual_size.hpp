@@ -9,6 +9,8 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/inplace_vector.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -34,9 +36,23 @@ actual_size_impl(T const* p, hamon::size_t n)
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR hamon::size_t
-actual_size(hamon::array<T, N> const& lhs)
+actual_size(hamon::array<T, N> const& v)
 {
-	return actual_size_impl(lhs.data(), N);
+	return actual_size_impl(v.data(), N);
+}
+
+template <typename T>
+inline HAMON_CXX14_CONSTEXPR hamon::size_t
+actual_size(hamon::vector<T> const& v)
+{
+	return v.size();
+}
+
+template <typename T, hamon::size_t N>
+inline HAMON_CXX14_CONSTEXPR hamon::size_t
+actual_size(hamon::inplace_vector<T, N> const& v)
+{
+	return v.size();
 }
 
 }	// namespace detail
