@@ -199,8 +199,8 @@ private:
 		else if (c < 0)
 		{
 			// lhs = rhs - lhs
-			vector_type tmp(rhs.m_magnitude);
-			bigint_algo::sub(tmp, m_magnitude);
+			vector_type tmp{};
+			bigint_algo::sub(tmp, rhs.m_magnitude, m_magnitude);
 			m_magnitude = tmp;
 			m_sign = -m_sign;
 		}
