@@ -7,10 +7,8 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_COMPARE_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_COMPARE_HPP
 
-#include <hamon/array.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -23,12 +21,15 @@ namespace compare_detail
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR int
-compare_impl(T const* lhs, T const* rhs, hamon::size_t n)
+compare_impl(T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
-	for (hamon::size_t i = n; i > 0; --i)
+	if (n1 > n2) { return  1; }
+	if (n1 < n2) { return -1; }
+
+	for (hamon::size_t i = n1; i > 0; --i)
 	{
-		if (lhs[i - 1] > rhs[i - 1]) { return  1; }
-		if (lhs[i - 1] < rhs[i - 1]) { return -1; }
+		if (p1[i - 1] > p2[i - 1]) { return  1; }
+		if (p1[i - 1] < p2[i - 1]) { return -1; }
 	}
 
 	return 0;
@@ -36,37 +37,13 @@ compare_impl(T const* lhs, T const* rhs, hamon::size_t n)
 
 }	// namespace compare_detail
 
-template <typename T>
+template <typename VectorType1, typename VectorType2>
 inline HAMON_CXX14_CONSTEXPR int
-compare(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
+compare(VectorType1 const& lhs, VectorType2 const& rhs)
 {
-	auto const NA = lhs.size();
-	auto const NB = rhs.size();
-
-	if (NA > NB) { return  1; }
-	if (NA < NB) { return -1; }
-
-	return compare_detail::compare_impl(lhs.data(), rhs.data(), NA);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR int
-compare(hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
-{
-	auto const NA = lhs.size();
-	auto const NB = rhs.size();
-
-	if (NA > NB) { return  1; }
-	if (NA < NB) { return -1; }
-
-	return compare_detail::compare_impl(lhs.data(), rhs.data(), NA);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR int
-compare(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-{
-	return compare_detail::compare_impl(lhs.data(), rhs.data(), N);
+	return compare_detail::compare_impl(
+		lhs.data(), detail::actual_size(lhs),
+		rhs.data(), detail::actual_size(rhs));
 }
 
 }	// namespace bigint_algo
