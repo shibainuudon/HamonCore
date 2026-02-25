@@ -7,18 +7,19 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_DIV_MOD_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_DIV_MOD_HPP
 
-#include <hamon/bigint/bigint_algo/compare.hpp>
-#include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
-#include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
-#include <hamon/bigint/bigint_algo/sub.hpp>
-#include <hamon/bigint/bigint_algo/multiply.hpp>
-#include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
+#include <hamon/bigint/bigint_algo/compare.hpp>
+#include <hamon/bigint/bigint_algo/multiply.hpp>
+#include <hamon/bigint/bigint_algo/sub.hpp>
+#include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/ranges/range_value_t.hpp>
-#include <hamon/array.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -29,9 +30,10 @@ namespace bigint_algo
 namespace div_mod_detail
 {
 
-template <typename VectorType, typename T = hamon::ranges::range_value_t<VectorType>>
+template <typename VectorType1, typename VectorType2,
+	typename T = hamon::ranges::range_value_t<VectorType1>>
 inline HAMON_CXX14_CONSTEXPR T
-div1(VectorType const& lhs, VectorType const& rhs, VectorType& x)
+div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType2& x)
 {
 	{
 		auto const c = bigint_algo::compare(lhs, rhs);
@@ -91,18 +93,23 @@ div1(VectorType const& lhs, VectorType const& rhs, VectorType& x)
 	return q;
 }
 
-template <typename T, typename VectorType>
+template <typename VectorType1, typename VectorType2, typename VectorType3>
 inline HAMON_CXX14_CONSTEXPR void
-div_mod_impl(VectorType& quo, VectorType& rem, T const* lhs, hamon::size_t n, VectorType const& rhs)
+div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorType3 const& rhs)
 {
+	using T = hamon::ranges::range_value_t<VectorType1>;
+
 	detail::zero(quo);
 	detail::zero(rem);
 
-	VectorType tmp{0};
+	auto const p = lhs.data();
+	auto const n = detail::actual_size(lhs);
+
+	VectorType3 tmp{0};
 	for (hamon::size_t i = n; i > 0; --i)
 	{
 		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = lhs[i-1];
+		rem[0] = p[i-1];
 
 		auto const q = div1(rem, rhs, tmp);
 		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
@@ -114,28 +121,23 @@ div_mod_impl(VectorType& quo, VectorType& rem, T const* lhs, hamon::size_t n, Ve
 
 }	// namespace div_mod_detail
 
-template <typename T>
+template <typename VectorType1, typename VectorType2, typename VectorType3,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_same<T1, T2>,
+		hamon::is_same<T1, T3>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR void
-div_mod(hamon::vector<T>& quo, hamon::vector<T>& rem,
-	hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
+div_mod(VectorType1& quo, VectorType1& rem,
+	VectorType2 const& lhs, VectorType3 const& rhs)
 {
-	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), lhs.size(), rhs);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR void
-div_mod(hamon::inplace_vector<T, N>& quo, hamon::inplace_vector<T, N>& rem,
-	hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
-{
-	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), lhs.size(), rhs);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR void
-div_mod(hamon::array<T, N>& quo, hamon::array<T, N>& rem,
-	hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-{
-	return div_mod_detail::div_mod_impl(quo, rem, lhs.data(), detail::actual_size(lhs), rhs);
+	// pre: VectorType1 の 最大要素数は lhs、rhs の要素数以上でなければならない
+	HAMON_ASSERT(quo.max_size() >= detail::actual_size(lhs));
+	HAMON_ASSERT(quo.max_size() >= detail::actual_size(rhs));
+	return div_mod_detail::div_mod_impl(quo, rem, lhs, rhs);
 }
 
 }	// namespace bigint_algo

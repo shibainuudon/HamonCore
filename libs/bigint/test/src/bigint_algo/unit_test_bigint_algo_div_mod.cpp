@@ -20,12 +20,12 @@ namespace bigint_algo_div_mod_test
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename VectorType>
+template <typename VectorType1, typename VectorType2, typename VectorType3>
 inline HAMON_CXX14_CONSTEXPR bool
-test(VectorType const& a, VectorType const& b, VectorType const& expected_quo, VectorType const& expected_rem)
+test(VectorType1 const& a, VectorType2 const& b, VectorType3 const& expected_quo, VectorType3 const& expected_rem)
 {
-	VectorType quo{};
-	VectorType rem{};
+	VectorType3 quo{};
+	VectorType3 rem{};
 	hamon::bigint_algo::div_mod(quo, rem, a, b);
 	VERIFY(quo == expected_quo);
 	VERIFY(rem == expected_rem);
@@ -468,6 +468,87 @@ GTEST_TEST(BigIntAlgoTest, DivModTest)
 			VectorType{0x0000000000000011},
 			VectorType{0x0112233445566777},
 			VectorType{0x0000000000000009}));
+	}
+
+	{
+		using Vector1 = hamon::vector<hamon::uint8_t>;
+		using Vector2 = hamon::inplace_vector<hamon::uint8_t, 8>;
+		using Vector3 = hamon::array<hamon::uint8_t, 8>;
+
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{2}, Vector2{3}, Vector3{0}, Vector3{2}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{3}, Vector2{3}, Vector3{1}, Vector3{0}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{4}, Vector2{3}, Vector3{1}, Vector3{1}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFF, 0xFF, 0xFF},
+			Vector2{0xFF},
+			Vector3{0x01, 0x01, 0x01},
+			Vector3{0x00}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0x46, 0x42, 0x29, 0xA2, 0xDF, 0x2D, 0x99, 0x2B},
+			Vector2{0x75, 0x49, 0xA0, 0x30, 0x17},
+			Vector3{0x3C, 0x4B, 0xE1, 0x01},
+			Vector3{0xDA, 0xC3, 0x3D, 0x42, 0x07}));
+	}
+	{
+		using Vector1 = hamon::inplace_vector<hamon::uint16_t, 4>;
+		using Vector2 = hamon::array<hamon::uint16_t, 7>;
+		using Vector3 = hamon::vector<hamon::uint16_t>;
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{2}, Vector2{3}, Vector3{0}, Vector3{2}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{3}, Vector2{3}, Vector3{1}, Vector3{0}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{4}, Vector2{3}, Vector3{1}, Vector3{1}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFFFF, 0x00FF},
+			Vector2{0x00FF},
+			Vector3{0x0101, 0x0001},
+			Vector3{0x0000}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0x1F8E, 0xF324, 0x10F5, 0x1122},
+			Vector2{0x73DC, 0x0861},
+			Vector3{0xD5EA, 0x0B5A, 0x0002},
+			Vector3{0x2C76, 0x0552}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFFFF, 0xFFFF, 0xFFFF, 0x7FFF},
+			Vector2{0x0013},
+			Vector3{0xCA1A, 0x286B, 0xA1AF, 0x06BC},
+			Vector3{0x0011}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0x4246, 0xA229, 0x2DDF, 0x2B99},
+			Vector2{0x4975, 0x30A0, 0x0017},
+			Vector3{0x4B3C, 0x01E1},
+			Vector3{0xC3DA, 0x423D, 0x0007}));
+	}
+	{
+		using Vector1 = hamon::array<hamon::uint32_t, 3>;
+		using Vector2 = hamon::vector<hamon::uint32_t>;
+		using Vector3 = hamon::inplace_vector<hamon::uint32_t, 3>;
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{2}, Vector2{3}, Vector3{0}, Vector3{2}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{3}, Vector2{3}, Vector3{1}, Vector3{0}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(Vector1{4}, Vector2{3}, Vector3{1}, Vector3{1}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xF3241F8E, 0x112210F5},
+			Vector2{0x086173DC},
+			Vector3{0x0B5AD5EA, 0x00000002},
+			Vector3{0x05522C76}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFFFFFFFF, 0x7FFFFFFF},
+			Vector2{0x00000013},
+			Vector3{0x286BCA1A, 0x06BCA1AF},
+			Vector3{0x00000011}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xA2294246, 0x2B992DDF},
+			Vector2{0x30A04975, 0x00000017},
+			Vector3{0x01E14B3C},
+			Vector3{0x423DC3DA, 0x00000007}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+			Vector2{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+			Vector3{0x00000001},
+			Vector3{0x00000000}));
+		HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+			Vector1{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+			Vector2{0xFFFFFFFE, 0xFFFFFFFF, 0xFFFFFFFF},
+			Vector3{0x00000001},
+			Vector3{0x00000001}));
 	}
 }
 
