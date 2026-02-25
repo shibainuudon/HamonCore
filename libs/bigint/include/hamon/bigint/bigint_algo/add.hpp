@@ -7,15 +7,19 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_ADD_HPP
 
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/addc.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
-#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
+#include <hamon/ranges/range_value_t.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -111,7 +115,13 @@ add_impl(T* p3, hamon::size_t n3, T const* p1, hamon::size_t n1, T const* p2, ha
 
 }	// namespace add_detail
 
-template <typename VectorType1, typename VectorType2>
+template <typename VectorType1, typename VectorType2,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_same<T1, T2>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR bool
 add(VectorType1& lhs, VectorType2 const& rhs)
 {
@@ -123,7 +133,15 @@ add(VectorType1& lhs, VectorType2 const& rhs)
 	return overflow;
 }
 
-template <typename VectorType1, typename VectorType2, typename VectorType3>
+template <typename VectorType1, typename VectorType2, typename VectorType3,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_same<T1, T2>,
+		hamon::is_same<T1, T3>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR bool
 add(VectorType1& out, VectorType2 const& lhs, VectorType3 const& rhs)
 {
