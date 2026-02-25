@@ -34,6 +34,7 @@
 #include <hamon/algorithm/max.hpp>
 #include <hamon/array.hpp>
 #include <hamon/concepts/integral.hpp>
+#include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/memory/to_address.hpp>
@@ -303,6 +304,14 @@ public:
 	operator&=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
 		bigint_algo::bit_and(m_magnitude, rhs.m_magnitude);
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator&=(UnsignedIntegral rhs) HAMON_NOEXCEPT
+	{
+		bigint_algo::bit_and(m_magnitude, magnitude(rhs));
 		return *this;
 	}
 
