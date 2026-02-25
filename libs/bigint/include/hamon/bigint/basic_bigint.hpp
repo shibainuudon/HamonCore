@@ -80,6 +80,16 @@ private:
 		return n < 0 ? -1 : 1;
 	}
 
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral),
+		hamon::size_t N = hamon::max(hamon::size_t{1}, sizeof(Integral) / sizeof(element_type))>
+	static HAMON_CXX14_CONSTEXPR hamon::array<element_type, N>
+	magnitude(Integral n) HAMON_NOEXCEPT
+	{
+		hamon::array<element_type, N> result{};
+		bigint_algo::from_uint(hamon::abs_unsigned(n), result);
+		return result;
+	}
+
 	HAMON_CXX14_CONSTEXPR
 	basic_bigint(sign_type sign, vector_type const& mag) HAMON_NOEXCEPT
 		: m_sign(sign)
@@ -215,7 +225,24 @@ private:
 			m_sign = -m_sign;
 		}
 	}
-	
+
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	mul(sign_type sign, VectorType2 const& magnitude) HAMON_NOEXCEPT
+	{
+		vector_type tmp;
+		bigint_algo::multiply(tmp, m_magnitude, magnitude);
+		bigint_algo::detail::move(m_magnitude, tmp);
+		if (bigint_algo::is_zero(m_magnitude))
+		{
+			m_sign = 1;
+		}
+		else
+		{
+			m_sign *= sign;
+		}
+	}
+
 public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator+=(basic_bigint const& rhs) HAMON_NOEXCEPT
@@ -236,17 +263,13 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator+=(Integral rhs) HAMON_NOEXCEPT
 	{
-		constexpr auto N = hamon::max(hamon::size_t{1}, sizeof(Integral) / sizeof(element_type));
-		hamon::array<element_type, N> tmp{};
-		bigint_algo::from_uint(hamon::abs_unsigned(rhs), tmp);
-
 		if (m_sign == sign(rhs))
 		{
-			this->add(tmp);
+			this->add(magnitude(rhs));
 		}
 		else
 		{
-			this->sub(tmp);
+			this->sub(magnitude(rhs));
 		}
 
 		return *this;
@@ -271,17 +294,13 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator-=(Integral rhs) HAMON_NOEXCEPT
 	{
-		constexpr auto N = hamon::max(hamon::size_t{1}, sizeof(Integral) / sizeof(element_type));
-		hamon::array<element_type, N> tmp{};
-		bigint_algo::from_uint(hamon::abs_unsigned(rhs), tmp);
-
 		if (m_sign == sign(rhs))
 		{
-			this->sub(tmp);
+			this->sub(magnitude(rhs));
 		}
 		else
 		{
-			this->add(tmp);
+			this->add(magnitude(rhs));
 		}
 
 		return *this;
@@ -290,17 +309,15 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator*=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		vector_type tmp;
-		bigint_algo::multiply(tmp, m_magnitude, rhs.m_magnitude);
-		bigint_algo::detail::move(m_magnitude, tmp);
-		if (bigint_algo::is_zero(m_magnitude))
-		{
-			m_sign = 1;
-		}
-		else
-		{
-			m_sign *= rhs.m_sign;
-		}
+		this->mul(rhs.m_sign, rhs.m_magnitude);
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator*=(Integral rhs) HAMON_NOEXCEPT
+	{
+		this->mul(sign(rhs), magnitude(rhs));
 		return *this;
 	}
 
