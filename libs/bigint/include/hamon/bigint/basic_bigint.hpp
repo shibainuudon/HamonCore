@@ -192,58 +192,6 @@ public:
 		return -(basic_bigint{*this} += 1);
 	}
 
-private:
-	template <typename VectorType2>
-	HAMON_CXX14_CONSTEXPR void
-	add(VectorType2 const& rhs) HAMON_NOEXCEPT
-	{
-		bigint_algo::add(m_magnitude, rhs);
-	}
-
-	template <typename VectorType2>
-	HAMON_CXX14_CONSTEXPR void
-	sub(VectorType2 const& rhs) HAMON_NOEXCEPT
-	{
-		auto const c = bigint_algo::compare(m_magnitude, rhs);
-
-		if (c == 0)
-		{
-			m_magnitude = {0};
-			m_sign = 1;
-		}
-		else if (c > 0)
-		{
-			// lhs = lhs - rhs
-			bigint_algo::sub(m_magnitude, rhs);
-		}
-		else if (c < 0)
-		{
-			// lhs = rhs - lhs
-			vector_type tmp{};
-			bigint_algo::sub(tmp, rhs, m_magnitude);
-			m_magnitude = tmp;
-			m_sign = -m_sign;
-		}
-	}
-
-	template <typename VectorType2>
-	HAMON_CXX14_CONSTEXPR void
-	mul(sign_type sign, VectorType2 const& magnitude) HAMON_NOEXCEPT
-	{
-		vector_type tmp;
-		bigint_algo::multiply(tmp, m_magnitude, magnitude);
-		bigint_algo::detail::move(m_magnitude, tmp);
-		if (bigint_algo::is_zero(m_magnitude))
-		{
-			m_sign = 1;
-		}
-		else
-		{
-			m_sign *= sign;
-		}
-	}
-
-public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator+=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
@@ -324,32 +272,30 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator/=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		vector_type quo;
-		vector_type rem;
-		bigint_algo::div_mod(quo, rem, m_magnitude, rhs.m_magnitude);
-		bigint_algo::detail::move(m_magnitude, quo);
-		if (bigint_algo::is_zero(m_magnitude))
-		{
-			m_sign = 1;
-		}
-		else
-		{
-			m_sign /= rhs.m_sign;
-		}
+		this->div(rhs.m_sign, rhs.m_magnitude);
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator/=(Integral rhs) HAMON_NOEXCEPT
+	{
+		this->div(sign(rhs), magnitude(rhs));
 		return *this;
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator%=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		vector_type quo;
-		vector_type rem;
-		bigint_algo::div_mod(quo, rem, m_magnitude, rhs.m_magnitude);
-		bigint_algo::detail::move(m_magnitude, rem);
-		if (bigint_algo::is_zero(m_magnitude))
-		{
-			m_sign = 1;
-		}
+		this->mod(rhs.m_magnitude);
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator%=(Integral rhs) HAMON_NOEXCEPT
+	{
+		this->mod(magnitude(rhs));
 		return *this;
 	}
 
@@ -434,6 +380,89 @@ public:
 		}
 
 		return bigint_algo::compare(m_magnitude, rhs.m_magnitude) * m_sign;
+	}
+
+private:
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	add(VectorType2 const& rhs) HAMON_NOEXCEPT
+	{
+		bigint_algo::add(m_magnitude, rhs);
+	}
+
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	sub(VectorType2 const& rhs) HAMON_NOEXCEPT
+	{
+		auto const c = bigint_algo::compare(m_magnitude, rhs);
+
+		if (c == 0)
+		{
+			m_magnitude = {0};
+			m_sign = 1;
+		}
+		else if (c > 0)
+		{
+			// lhs = lhs - rhs
+			bigint_algo::sub(m_magnitude, rhs);
+		}
+		else if (c < 0)
+		{
+			// lhs = rhs - lhs
+			vector_type tmp{};
+			bigint_algo::sub(tmp, rhs, m_magnitude);
+			m_magnitude = tmp;
+			m_sign = -m_sign;
+		}
+	}
+
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	mul(sign_type sign, VectorType2 const& magnitude) HAMON_NOEXCEPT
+	{
+		vector_type tmp;
+		bigint_algo::multiply(tmp, m_magnitude, magnitude);
+		bigint_algo::detail::move(m_magnitude, tmp);
+		if (bigint_algo::is_zero(m_magnitude))
+		{
+			m_sign = 1;
+		}
+		else
+		{
+			m_sign *= sign;
+		}
+	}
+
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	div(sign_type sign, VectorType2 const& magnitude) HAMON_NOEXCEPT
+	{
+		vector_type quo;
+		vector_type rem;
+		bigint_algo::div_mod(quo, rem, m_magnitude, magnitude);
+		bigint_algo::detail::move(m_magnitude, quo);
+		if (bigint_algo::is_zero(m_magnitude))
+		{
+			m_sign = 1;
+		}
+		else
+		{
+			m_sign /= sign;
+		}
+	}
+
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR void
+	mod(VectorType2 const& magnitude) HAMON_NOEXCEPT
+	{
+		vector_type quo;
+		vector_type rem;
+		bigint_algo::div_mod(quo, rem, m_magnitude, magnitude);
+		bigint_algo::detail::move(m_magnitude, rem);
+		if (bigint_algo::is_zero(m_magnitude))
+		{
+			m_sign = 1;
+		}
 	}
 
 private:
