@@ -255,13 +255,33 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator-=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		if (m_sign != rhs.m_sign)
+		if (m_sign == rhs.m_sign)
 		{
-			this->add(rhs.m_magnitude);
+			this->sub(rhs.m_magnitude);
 		}
 		else
 		{
-			this->sub(rhs.m_magnitude);
+			this->add(rhs.m_magnitude);
+		}
+
+		return *this;
+	}
+
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator-=(Integral rhs) HAMON_NOEXCEPT
+	{
+		constexpr auto N = hamon::max(hamon::size_t{1}, sizeof(Integral) / sizeof(element_type));
+		hamon::array<element_type, N> tmp{};
+		bigint_algo::from_uint(hamon::abs_unsigned(rhs), tmp);
+
+		if (m_sign == sign(rhs))
+		{
+			this->sub(tmp);
+		}
+		else
+		{
+			this->add(tmp);
 		}
 
 		return *this;
@@ -354,13 +374,13 @@ public:
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator++() HAMON_NOEXCEPT
 	{
-		return *this += 1;
+		return *this += element_type{1};
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator--() HAMON_NOEXCEPT
 	{
-		return *this -= 1;
+		return *this -= element_type{1};
 	}
 
 	HAMON_CXX14_CONSTEXPR basic_bigint

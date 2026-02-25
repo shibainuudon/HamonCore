@@ -48,6 +48,30 @@ SubEqualTest()
 	x -= BigInt(45);
 	VERIFY(x == BigInt(-28));
 
+	x -= hamon::int8_t{-128};
+	VERIFY(x == BigInt{100});
+
+	x -= hamon::uint8_t{255};
+	VERIFY(x == BigInt{-155});
+
+	x -= hamon::uint16_t{65535};
+	VERIFY(x == BigInt{-65690});
+
+	x -= hamon::int16_t{-2};
+	VERIFY(x == BigInt{-65688});
+
+	x -= hamon::int32_t{-2147483648};
+	VERIFY(x == BigInt{2147417960});
+
+	x -= hamon::uint32_t{4294967295};
+	VERIFY(x == BigInt{-2147549335});
+
+	x -= hamon::uint64_t{18446744073709551615ULL};
+	VERIFY(x == BigInt{"-18446744075857100950"});
+
+	x -= hamon::int64_t{-9223372036854775807LL};
+	VERIFY(x == BigInt{"-9223372039002325143"});
+
 	return true;
 }
 
@@ -66,6 +90,8 @@ SubEqualTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, SubEqualTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::bigint>());
@@ -74,16 +100,12 @@ GTEST_TEST(BigIntTest, SubEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubEqualTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubEqualTest<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubEqualTest<hamon::uint512_t>());
@@ -108,8 +130,6 @@ GTEST_TEST(BigIntTest, SubEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubEqualTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubEqualTest2<hamon::uint2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_sub_equal_test
 
