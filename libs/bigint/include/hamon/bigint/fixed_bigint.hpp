@@ -176,7 +176,7 @@ public:
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
 	operator*=(fixed_bigint const& rhs) HAMON_NOEXCEPT
 	{
-		m_data = bigint_algo::multiply(m_data, rhs.m_data);
+		m_data = multiply(m_data, rhs.m_data);
 		return *this;
 	}
 
@@ -293,6 +293,14 @@ private:
 		{
 			return v;
 		}
+	}
+
+	static HAMON_CXX14_CONSTEXPR vector_type
+	multiply(vector_type const& lhs, vector_type const& rhs) HAMON_NOEXCEPT
+	{
+		vector_type result{};
+		bigint_algo::multiply(result, lhs, rhs);
+		return result;
 	}
 
 	static HAMON_CXX14_CONSTEXPR vector_type

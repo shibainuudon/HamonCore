@@ -7,18 +7,20 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_MULTIPLY_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_MULTIPLY_HPP
 
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
-#include <hamon/bigint/bigint_algo/detail/zero.hpp>
-#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
-#include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/mul_addc.hpp>
-#include <hamon/array.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/cstdint.hpp>
-#include <hamon/inplace_vector.hpp>
+#include <hamon/ranges/range_value_t.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_integral.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/utility/swap.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -127,74 +129,37 @@ multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon
 // out と lhs, out と rhs が、同じオブジェクトや同じ領域の場合の動作は未規定
 // オーバーフローフラグを戻り値で返す
 
-template <typename T>
+template <typename VectorType1, typename VectorType2, typename T3,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_integral<T3>,
+		hamon::is_same<T1, T2>,
+		hamon::is_same<T1, T3>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, T rhs)
-{
-	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(), rhs);
-}
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::vector<T>& out, hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
-{
-	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(),
-		rhs.data(), rhs.size());
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, T rhs)
-{
-	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(), rhs);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& lhs, hamon::inplace_vector<T, N> const& rhs)
-{
-	return multiply_detail::multiply_impl(out,
-		lhs.data(), lhs.size(),
-		rhs.data(), rhs.size());
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, T rhs)
+multiply(VectorType1& out, VectorType2 const& lhs, T3 rhs)
 {
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), detail::actual_size(lhs), rhs);
 }
 
-template <typename T, hamon::size_t N>
+template <typename VectorType1, typename VectorType2, typename VectorType3,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_same<T1, T2>,
+		hamon::is_same<T1, T3>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR bool
-multiply(hamon::array<T, N>& out, hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
+multiply(VectorType1& out, VectorType2 const& lhs, VectorType3 const& rhs)
 {
 	return multiply_detail::multiply_impl(out,
 		lhs.data(), detail::actual_size(lhs),
 		rhs.data(), detail::actual_size(rhs));
-}
-
-// 利便性のために、結果を戻り値で返すバージョン(オーバーフローの情報は得られない)
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::vector<T>
-multiply(hamon::vector<T> const& lhs, hamon::vector<T> const& rhs)
-{
-	hamon::vector<T> result;
-	bigint_algo::multiply(result, lhs, rhs);
-	return result;
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, N>
-multiply(hamon::array<T, N> const& lhs, hamon::array<T, N> const& rhs)
-{
-	hamon::array<T, N> result{};
-	bigint_algo::multiply(result, lhs, rhs);
-	return result;
 }
 
 }	// namespace bigint_algo
