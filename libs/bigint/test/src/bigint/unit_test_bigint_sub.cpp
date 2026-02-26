@@ -22,64 +22,55 @@ inline HAMON_CXX14_CONSTEXPR bool
 SubTest()
 {
 	{
-		auto x = BigInt{0} - BigInt{0};
-		VERIFY(x == BigInt(0));
+		VERIFY(BigInt{0} - BigInt{0} == BigInt(0));
+		VERIFY(BigInt{1} - BigInt{0} == BigInt(1));
+		VERIFY(BigInt{5} - BigInt{2} == BigInt(3));
+		VERIFY(BigInt{1000} - BigInt{1} == BigInt(999));
+		VERIFY(BigInt{1000} - BigInt{999} == BigInt(1));
+		VERIFY(BigInt{1000} - BigInt{1000} == BigInt(0));
+		VERIFY(BigInt{1000} - BigInt{1001} == BigInt(-1));
+		VERIFY(BigInt( 2) - BigInt( 5) == BigInt(-3));
+		VERIFY(BigInt( 2) - BigInt(-5) == BigInt(7));
+		VERIFY(BigInt(-2) - BigInt( 5) == BigInt(-7));
+		VERIFY(BigInt(-2) - BigInt(-5) == BigInt(3));
+		VERIFY(BigInt{256} - BigInt{1} == BigInt(255));
+		VERIFY(BigInt{0x10000} - BigInt{1} == BigInt(0xffff));
+		VERIFY(BigInt{0x1000000} - BigInt{1} == BigInt(0xffffff));
+		VERIFY(BigInt{0x1000000} - BigInt{0xffffff} == BigInt(1));
 	}
 	{
-		auto x = BigInt{1} - BigInt{0};
-		VERIFY(x == BigInt(1));
+		VERIFY(BigInt{0} - hamon::uint8_t{0} == BigInt(0));
+		VERIFY(BigInt{1} - hamon::uint16_t{0} == BigInt(1));
+		VERIFY(BigInt{5} - hamon::uint32_t{2} == BigInt(3));
+		VERIFY(BigInt{1000} - hamon::uint64_t{1} == BigInt(999));
+		VERIFY(BigInt{1000} - 999 == BigInt(1));
+		VERIFY(BigInt{1000} - 1000 == BigInt(0));
+		VERIFY(BigInt{1000} - 1001 == BigInt(-1));
+		VERIFY(BigInt( 2) - hamon::int8_t( 5) == BigInt(-3));
+		VERIFY(BigInt( 2) - hamon::int16_t(-5) == BigInt(7));
+		VERIFY(BigInt(-2) - hamon::int32_t( 5) == BigInt(-7));
+		VERIFY(BigInt(-2) - hamon::int64_t(-5) == BigInt(3));
+		VERIFY(BigInt{256} - int{1} == BigInt(255));
+		VERIFY(BigInt{0x10000} - short{1} == BigInt(0xffff));
+		VERIFY(BigInt{0x1000000} - long{1} == BigInt(0xffffff));
+		VERIFY(BigInt{0x1000000} - hamon::uint64_t{0xffffff} == BigInt(1));
 	}
 	{
-		auto x = BigInt{5} - BigInt{2};
-		VERIFY(x == BigInt(3));
-	}
-	{
-		auto x = BigInt{1000} - BigInt{1};
-		VERIFY(x == BigInt(999));
-	}
-	{
-		auto x = BigInt{1000} - BigInt{999};
-		VERIFY(x == BigInt(1));
-	}
-	{
-		auto x = BigInt{1000} - BigInt{1000};
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt{1000} - BigInt{1001};
-		VERIFY(x == BigInt(-1));
-	}
-	{
-		auto x = BigInt( 2) - BigInt( 5);
-		VERIFY(x == BigInt(-3));
-	}
-	{
-		auto x = BigInt( 2) - BigInt(-5);
-		VERIFY(x == BigInt(7));
-	}
-	{
-		auto x = BigInt(-2) - BigInt( 5);
-		VERIFY(x == BigInt(-7));
-	}
-	{
-		auto x = BigInt(-2) - BigInt(-5);
-		VERIFY(x == BigInt(3));
-	}
-	{
-		auto x = BigInt{256} - BigInt{1};
-		VERIFY(x == BigInt(255));
-	}
-	{
-		auto x = BigInt{0x10000} - BigInt{1};
-		VERIFY(x == BigInt(0xffff));
-	}
-	{
-		auto x = BigInt{0x1000000} - BigInt{1};
-		VERIFY(x == BigInt(0xffffff));
-	}
-	{
-		auto x = BigInt{0x1000000} - BigInt{0xffffff};
-		VERIFY(x == BigInt(1));
+		VERIFY(hamon::uint8_t{0} - BigInt{0} == BigInt(0));
+		VERIFY(hamon::uint16_t{1} - BigInt{0} == BigInt(1));
+		VERIFY(hamon::uint32_t{5} - BigInt{2} == BigInt(3));
+		VERIFY(hamon::uint64_t{1000} - BigInt{1} == BigInt(999));
+		VERIFY(1000 - BigInt{999} == BigInt(1));
+		VERIFY(1000 - BigInt{1000} == BigInt(0));
+		VERIFY(1000 - BigInt{1001} == BigInt(-1));
+		VERIFY(hamon::int8_t( 2) - BigInt( 5) == BigInt(-3));
+		VERIFY(hamon::int16_t( 2) - BigInt(-5) == BigInt(7));
+		VERIFY(hamon::int32_t(-2) - BigInt( 5) == BigInt(-7));
+		VERIFY(hamon::int64_t(-2) - BigInt(-5) == BigInt(3));
+		VERIFY(long{256} - BigInt{1} == BigInt(255));
+		VERIFY(hamon::uint32_t{0x10000} - BigInt{1} == BigInt(0xffff));
+		VERIFY(hamon::uint64_t{0x1000000} - BigInt{1} == BigInt(0xffffff));
+		VERIFY(hamon::uint64_t{0x1000000} - BigInt{0xffffff} == BigInt(1));
 	}
 	return true;
 }
@@ -109,6 +100,8 @@ SubTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, SubTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::bigint>());
@@ -117,16 +110,12 @@ GTEST_TEST(BigIntTest, SubTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubTest<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SubTest<hamon::uint512_t>());
@@ -151,8 +140,6 @@ GTEST_TEST(BigIntTest, SubTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SubTest2<hamon::uint2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_sub_test
 
