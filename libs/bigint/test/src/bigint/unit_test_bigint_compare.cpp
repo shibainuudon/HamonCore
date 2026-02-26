@@ -9,9 +9,6 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
-HAMON_WARNING_PUSH()
-HAMON_WARNING_DISABLE_MSVC(4127)	// 条件式が定数です。
-
 namespace hamon_bigint_test
 {
 
@@ -25,31 +22,154 @@ inline HAMON_CXX14_CONSTEXPR bool
 CompareSignedTest()
 {
 	{
-		auto const x1 = BigInt(-2);
+		VERIFY((BigInt{-2} == BigInt{-1}) == false);
+		VERIFY((BigInt{-2} == BigInt{-2}) == true);
+		VERIFY((BigInt{-2} == BigInt{-3}) == false);
 
-		VERIFY((x1 == BigInt{-1}) == false);
-		VERIFY((x1 == BigInt{-2}) == true);
-		VERIFY((x1 == BigInt{-3}) == false);
+		VERIFY((BigInt{-2} != BigInt{-1}) == true);
+		VERIFY((BigInt{-2} != BigInt{-2}) == false);
+		VERIFY((BigInt{-2} != BigInt{-3}) == true);
 
-		VERIFY((x1 != BigInt{-1}) == true);
-		VERIFY((x1 != BigInt{-2}) == false);
-		VERIFY((x1 != BigInt{-3}) == true);
+		VERIFY((BigInt{-2} <  BigInt{-1}) == true);
+		VERIFY((BigInt{-2} <  BigInt{-2}) == false);
+		VERIFY((BigInt{-2} <  BigInt{-3}) == false);
 
-		VERIFY((x1 <  BigInt{-1}) == true);
-		VERIFY((x1 <  BigInt{-2}) == false);
-		VERIFY((x1 <  BigInt{-3}) == false);
+		VERIFY((BigInt{-2} >  BigInt{-1}) == false);
+		VERIFY((BigInt{-2} >  BigInt{-2}) == false);
+		VERIFY((BigInt{-2} >  BigInt{-3}) == true);
 
-		VERIFY((x1 >  BigInt{-1}) == false);
-		VERIFY((x1 >  BigInt{-2}) == false);
-		VERIFY((x1 >  BigInt{-3}) == true);
+		VERIFY((BigInt{-2} <= BigInt{-1}) == true);
+		VERIFY((BigInt{-2} <= BigInt{-2}) == true);
+		VERIFY((BigInt{-2} <= BigInt{-3}) == false);
 
-		VERIFY((x1 <= BigInt{-1}) == true);
-		VERIFY((x1 <= BigInt{-2}) == true);
-		VERIFY((x1 <= BigInt{-3}) == false);
+		VERIFY((BigInt{-2} >= BigInt{-1}) == false);
+		VERIFY((BigInt{-2} >= BigInt{-2}) == true);
+		VERIFY((BigInt{-2} >= BigInt{-3}) == true);
+	}
+	{
+		VERIFY((BigInt{-2} == hamon::int8_t {-1}) == false);
+		VERIFY((BigInt{-2} == hamon::int16_t{-2}) == true);
+		VERIFY((BigInt{-2} == hamon::int32_t{-3}) == false);
 
-		VERIFY((x1 >= BigInt{-1}) == false);
-		VERIFY((x1 >= BigInt{-2}) == true);
-		VERIFY((x1 >= BigInt{-3}) == true);
+		VERIFY((BigInt{-2} != hamon::int64_t{-1}) == true);
+		VERIFY((BigInt{-2} != hamon::int8_t {-2}) == false);
+		VERIFY((BigInt{-2} != hamon::int16_t{-3}) == true);
+
+		VERIFY((BigInt{-2} <  hamon::int32_t{-1}) == true);
+		VERIFY((BigInt{-2} <  hamon::int64_t{-2}) == false);
+		VERIFY((BigInt{-2} <  hamon::int8_t {-3}) == false);
+
+		VERIFY((BigInt{-2} >  hamon::int16_t{-1}) == false);
+		VERIFY((BigInt{-2} >  hamon::int32_t{-2}) == false);
+		VERIFY((BigInt{-2} >  hamon::int64_t{-3}) == true);
+
+		VERIFY((BigInt{-2} <= hamon::int8_t {-1}) == true);
+		VERIFY((BigInt{-2} <= hamon::int16_t{-2}) == true);
+		VERIFY((BigInt{-2} <= hamon::int32_t{-3}) == false);
+
+		VERIFY((BigInt{-2} >= hamon::int64_t{-1}) == false);
+		VERIFY((BigInt{-2} >= hamon::int8_t {-2}) == true);
+		VERIFY((BigInt{-2} >= hamon::int16_t{-3}) == true);
+	}
+	{
+		VERIFY((hamon::int8_t {-2} == BigInt{-1}) == false);
+		VERIFY((hamon::int16_t{-2} == BigInt{-2}) == true);
+		VERIFY((hamon::int32_t{-2} == BigInt{-3}) == false);
+
+		VERIFY((hamon::int64_t{-2} != BigInt{-1}) == true);
+		VERIFY((hamon::int8_t {-2} != BigInt{-2}) == false);
+		VERIFY((hamon::int16_t{-2} != BigInt{-3}) == true);
+
+		VERIFY((hamon::int32_t{-2} <  BigInt{-1}) == true);
+		VERIFY((hamon::int64_t{-2} <  BigInt{-2}) == false);
+		VERIFY((hamon::int8_t {-2} <  BigInt{-3}) == false);
+
+		VERIFY((hamon::int16_t{-2} >  BigInt{-1}) == false);
+		VERIFY((hamon::int32_t{-2} >  BigInt{-2}) == false);
+		VERIFY((hamon::int64_t{-2} >  BigInt{-3}) == true);
+
+		VERIFY((hamon::int8_t {-2} <= BigInt{-1}) == true);
+		VERIFY((hamon::int16_t{-2} <= BigInt{-2}) == true);
+		VERIFY((hamon::int32_t{-2} <= BigInt{-3}) == false);
+
+		VERIFY((hamon::int64_t{-2} >= BigInt{-1}) == false);
+		VERIFY((hamon::int8_t {-2} >= BigInt{-2}) == true);
+		VERIFY((hamon::int16_t{-2} >= BigInt{-3}) == true);
+	}
+	{
+		VERIFY((BigInt{2} == BigInt{1}) == false);
+		VERIFY((BigInt{2} == BigInt{2}) == true);
+		VERIFY((BigInt{2} == BigInt{3}) == false);
+
+		VERIFY((BigInt{2} != BigInt{1}) == true);
+		VERIFY((BigInt{2} != BigInt{2}) == false);
+		VERIFY((BigInt{2} != BigInt{3}) == true);
+
+		VERIFY((BigInt{2} <  BigInt{1}) == false);
+		VERIFY((BigInt{2} <  BigInt{2}) == false);
+		VERIFY((BigInt{2} <  BigInt{3}) == true);
+
+		VERIFY((BigInt{2} >  BigInt{1}) == true);
+		VERIFY((BigInt{2} >  BigInt{2}) == false);
+		VERIFY((BigInt{2} >  BigInt{3}) == false);
+
+		VERIFY((BigInt{2} <= BigInt{1}) == false);
+		VERIFY((BigInt{2} <= BigInt{2}) == true);
+		VERIFY((BigInt{2} <= BigInt{3}) == true);
+
+		VERIFY((BigInt{2} >= BigInt{1}) == true);
+		VERIFY((BigInt{2} >= BigInt{2}) == true);
+		VERIFY((BigInt{2} >= BigInt{3}) == false);
+	}
+	{
+		VERIFY((BigInt{2} == hamon::uint8_t {1}) == false);
+		VERIFY((BigInt{2} == hamon::uint16_t{2}) == true);
+		VERIFY((BigInt{2} == hamon::uint32_t{3}) == false);
+
+		VERIFY((BigInt{2} != hamon::uint64_t{1}) == true);
+		VERIFY((BigInt{2} != hamon::uint8_t {2}) == false);
+		VERIFY((BigInt{2} != hamon::uint16_t{3}) == true);
+
+		VERIFY((BigInt{2} <  hamon::uint32_t{1}) == false);
+		VERIFY((BigInt{2} <  hamon::uint64_t{2}) == false);
+		VERIFY((BigInt{2} <  hamon::uint8_t {3}) == true);
+
+		VERIFY((BigInt{2} >  hamon::uint16_t{1}) == true);
+		VERIFY((BigInt{2} >  hamon::uint32_t{2}) == false);
+		VERIFY((BigInt{2} >  hamon::uint64_t{3}) == false);
+
+		VERIFY((BigInt{2} <= hamon::uint8_t {1}) == false);
+		VERIFY((BigInt{2} <= hamon::uint16_t{2}) == true);
+		VERIFY((BigInt{2} <= hamon::uint32_t{3}) == true);
+
+		VERIFY((BigInt{2} >= hamon::uint64_t{1}) == true);
+		VERIFY((BigInt{2} >= hamon::uint8_t {2}) == true);
+		VERIFY((BigInt{2} >= hamon::uint16_t{3}) == false);
+	}
+	{
+		VERIFY((hamon::uint8_t {2} == BigInt{1}) == false);
+		VERIFY((hamon::uint16_t{2} == BigInt{2}) == true);
+		VERIFY((hamon::uint32_t{2} == BigInt{3}) == false);
+
+		VERIFY((hamon::uint64_t{2} != BigInt{1}) == true);
+		VERIFY((hamon::uint8_t {2} != BigInt{2}) == false);
+		VERIFY((hamon::uint16_t{2} != BigInt{3}) == true);
+
+		VERIFY((hamon::uint32_t{2} <  BigInt{1}) == false);
+		VERIFY((hamon::uint64_t{2} <  BigInt{2}) == false);
+		VERIFY((hamon::uint8_t {2} <  BigInt{3}) == true);
+
+		VERIFY((hamon::uint16_t{2} >  BigInt{1}) == true);
+		VERIFY((hamon::uint32_t{2} >  BigInt{2}) == false);
+		VERIFY((hamon::uint64_t{2} >  BigInt{3}) == false);
+
+		VERIFY((hamon::uint8_t {2} <= BigInt{1}) == false);
+		VERIFY((hamon::uint16_t{2} <= BigInt{2}) == true);
+		VERIFY((hamon::uint32_t{2} <= BigInt{3}) == true);
+
+		VERIFY((hamon::uint64_t{2} >= BigInt{1}) == true);
+		VERIFY((hamon::uint8_t {2} >= BigInt{2}) == true);
+		VERIFY((hamon::uint16_t{2} >= BigInt{3}) == false);
 	}
 	{
 		auto const x1 = BigInt( -12345);
@@ -102,7 +222,85 @@ CompareSignedTest()
 		VERIFY((x1 >= x6) == true);
 	}
 	{
-		VERIFY((BigInt{-1} < BigInt{0}) == true);
+		VERIFY((BigInt{-1} < BigInt{-2}) == false);
+		VERIFY((BigInt{-1} < BigInt{-1}) == false);
+		VERIFY((BigInt{-1} < BigInt{ 0}) == true);
+		VERIFY((BigInt{-1} < BigInt{ 1}) == true);
+		VERIFY((BigInt{-1} < BigInt{ 2}) == true);
+	}
+	{
+		VERIFY((BigInt{1} == BigInt{-2}) == false);
+		VERIFY((BigInt{1} == BigInt{-1}) == false);
+		VERIFY((BigInt{1} == BigInt{ 0}) == false);
+		VERIFY((BigInt{1} == BigInt{ 1}) == true);
+		VERIFY((BigInt{1} == BigInt{ 2}) == false);
+
+		VERIFY((BigInt{1} != BigInt{-2}) == true);
+		VERIFY((BigInt{1} != BigInt{-1}) == true);
+		VERIFY((BigInt{1} != BigInt{ 0}) == true);
+		VERIFY((BigInt{1} != BigInt{ 1}) == false);
+		VERIFY((BigInt{1} != BigInt{ 2}) == true);
+
+		VERIFY((BigInt{1} <  BigInt{-2}) == false);
+		VERIFY((BigInt{1} <  BigInt{-1}) == false);
+		VERIFY((BigInt{1} <  BigInt{ 0}) == false);
+		VERIFY((BigInt{1} <  BigInt{ 1}) == false);
+		VERIFY((BigInt{1} <  BigInt{ 2}) == true);
+
+		VERIFY((BigInt{1} >  BigInt{-2}) == true);
+		VERIFY((BigInt{1} >  BigInt{-1}) == true);
+		VERIFY((BigInt{1} >  BigInt{ 0}) == true);
+		VERIFY((BigInt{1} >  BigInt{ 1}) == false);
+		VERIFY((BigInt{1} >  BigInt{ 2}) == false);
+
+		VERIFY((BigInt{1} <= BigInt{-2}) == false);
+		VERIFY((BigInt{1} <= BigInt{-1}) == false);
+		VERIFY((BigInt{1} <= BigInt{ 0}) == false);
+		VERIFY((BigInt{1} <= BigInt{ 1}) == true);
+		VERIFY((BigInt{1} <= BigInt{ 2}) == true);
+
+		VERIFY((BigInt{1} >= BigInt{-2}) == true);
+		VERIFY((BigInt{1} >= BigInt{-1}) == true);
+		VERIFY((BigInt{1} >= BigInt{ 0}) == true);
+		VERIFY((BigInt{1} >= BigInt{ 1}) == true);
+		VERIFY((BigInt{1} >= BigInt{ 2}) == false);
+	}
+	{
+		VERIFY((hamon::uint8_t {1} == BigInt{-2}) == false);
+		VERIFY((hamon::uint16_t{1} == BigInt{-1}) == false);
+		VERIFY((hamon::uint32_t{1} == BigInt{ 0}) == false);
+		VERIFY((hamon::uint64_t{1} == BigInt{ 1}) == true);
+		VERIFY((hamon::uint8_t {1} == BigInt{ 2}) == false);
+
+		VERIFY((hamon::uint16_t{1} != BigInt{-2}) == true);
+		VERIFY((hamon::uint32_t{1} != BigInt{-1}) == true);
+		VERIFY((hamon::uint64_t{1} != BigInt{ 0}) == true);
+		VERIFY((hamon::uint8_t {1} != BigInt{ 1}) == false);
+		VERIFY((hamon::uint16_t{1} != BigInt{ 2}) == true);
+
+		VERIFY((hamon::uint32_t{1} <  BigInt{-2}) == false);
+		VERIFY((hamon::uint64_t{1} <  BigInt{-1}) == false);
+		VERIFY((hamon::uint8_t {1} <  BigInt{ 0}) == false);
+		VERIFY((hamon::uint16_t{1} <  BigInt{ 1}) == false);
+		VERIFY((hamon::uint32_t{1} <  BigInt{ 2}) == true);
+
+		VERIFY((hamon::uint64_t{1} >  BigInt{-2}) == true);
+		VERIFY((hamon::uint8_t {1} >  BigInt{-1}) == true);
+		VERIFY((hamon::uint16_t{1} >  BigInt{ 0}) == true);
+		VERIFY((hamon::uint32_t{1} >  BigInt{ 1}) == false);
+		VERIFY((hamon::uint64_t{1} >  BigInt{ 2}) == false);
+
+		VERIFY((hamon::uint8_t {1} <= BigInt{-2}) == false);
+		VERIFY((hamon::uint16_t{1} <= BigInt{-1}) == false);
+		VERIFY((hamon::uint32_t{1} <= BigInt{ 0}) == false);
+		VERIFY((hamon::uint64_t{1} <= BigInt{ 1}) == true);
+		VERIFY((hamon::uint8_t {1} <= BigInt{ 2}) == true);
+
+		VERIFY((hamon::uint16_t{1} >= BigInt{-2}) == true);
+		VERIFY((hamon::uint32_t{1} >= BigInt{-1}) == true);
+		VERIFY((hamon::uint64_t{1} >= BigInt{ 0}) == true);
+		VERIFY((hamon::uint8_t {1} >= BigInt{ 1}) == true);
+		VERIFY((hamon::uint16_t{1} >= BigInt{ 2}) == false);
 	}
 	return true;
 }
@@ -244,6 +442,8 @@ CompareUnsignedTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, CompareTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::bigint>());
@@ -252,8 +452,6 @@ GTEST_TEST(BigIntTest, CompareTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareSignedTest<hamon::int512_t>());
@@ -272,8 +470,6 @@ GTEST_TEST(BigIntTest, CompareTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareSignedTest2<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareUnsignedTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareUnsignedTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareUnsignedTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareUnsignedTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(CompareUnsignedTest<hamon::uint512_t>());
@@ -287,10 +483,6 @@ GTEST_TEST(BigIntTest, CompareTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(CompareUnsignedTest2<hamon::uint2048_t>());
 }
 
-#undef VERIFY
-
 }	// namespace bigint_compare_test
 
 }	// namespace hamon_bigint_test
-
-HAMON_WARNING_POP()

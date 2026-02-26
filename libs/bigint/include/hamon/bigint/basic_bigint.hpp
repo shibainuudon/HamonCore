@@ -399,12 +399,14 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR int
 	compare(basic_bigint const& rhs) const HAMON_NOEXCEPT
 	{
-		if (m_sign != rhs.m_sign)
-		{
-			return m_sign;
-		}
+		return this->compare_impl(rhs.m_sign, rhs.m_magnitude);
+	}
 
-		return bigint_algo::compare(m_magnitude, rhs.m_magnitude) * m_sign;
+	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR int
+	compare(Integral rhs) const HAMON_NOEXCEPT
+	{
+		return this->compare_impl(sign(rhs), magnitude(rhs));
 	}
 
 private:
@@ -490,6 +492,18 @@ private:
 		}
 	}
 
+	template <typename VectorType2>
+	HAMON_CXX14_CONSTEXPR int
+	compare_impl(sign_type sign, VectorType2 const& magnitude) const HAMON_NOEXCEPT
+	{
+		if (m_sign != sign)
+		{
+			return m_sign;
+		}
+
+		return bigint_algo::compare(m_magnitude, magnitude) * m_sign;
+	}
+
 private:
 	sign_type   m_sign = 1;	// m_magnitude >= 0 なら 1、m_magnitude < 0 なら -1
 	vector_type m_magnitude;
@@ -572,10 +586,24 @@ operator==(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEP
 	return lhs.compare(rhs) == 0;
 }
 
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator==(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) == 0;
+}
+
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 template <typename V>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::strong_ordering
 operator<=>(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) <=> 0;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::strong_ordering
+operator<=>(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) <=> 0;
 }
@@ -598,7 +626,7 @@ template <typename V>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
-	return rhs < lhs;
+	return lhs.compare(rhs) > 0;
 }
 
 template <typename V>
@@ -613,6 +641,87 @@ HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>=(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
 	return !(lhs < rhs);
+}
+
+// 右辺が Integal
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator!=(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return !(lhs == rhs);
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) < 0;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return lhs.compare(rhs) > 0;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<=(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return !(lhs > rhs);
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>=(basic_bigint<V> const& lhs, Integral rhs) HAMON_NOEXCEPT
+{
+	return !(lhs < rhs);
+}
+
+// 左辺が Integal
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator==(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs == lhs;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator!=(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs != lhs;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs > lhs;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs < lhs;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator<=(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs >= lhs;
+}
+
+template <typename V, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
+operator>=(Integral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
+{
+	return rhs <= lhs;
 }
 #endif
 
