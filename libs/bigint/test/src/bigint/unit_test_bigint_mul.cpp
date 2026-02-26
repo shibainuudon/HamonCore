@@ -22,48 +22,46 @@ inline HAMON_CXX14_CONSTEXPR bool
 MulTest()
 {
 	{
-		auto x = BigInt(2) * BigInt(3);
-		VERIFY(x == BigInt(6));
+		VERIFY(BigInt(2) * BigInt(3) == BigInt(6));
+		VERIFY(BigInt(2) * BigInt(-3) == BigInt(-6));
+		VERIFY(BigInt(-2) * BigInt(3) == BigInt(-6));
+		VERIFY(BigInt(-2) * BigInt(-3) == BigInt(6));
+		VERIFY(BigInt(-3) * BigInt( 0) == BigInt(0));
+		VERIFY(BigInt( 3) * BigInt( 0) == BigInt(0));
+		VERIFY(BigInt( 0) * BigInt( 256) == BigInt(0));
+		VERIFY(BigInt( 0) * BigInt(-256) == BigInt(0));
+		VERIFY(BigInt{3} * BigInt{4} * BigInt{5} == BigInt(60));
+		VERIFY(BigInt{123} * BigInt{0} == BigInt(0));
+		VERIFY(BigInt{4824} * BigInt{31} == BigInt(149544));
+		VERIFY(BigInt{123456} * BigInt{0xffffffff} == BigInt(530239482371520));
 	}
 	{
-		auto x = BigInt(2) * BigInt(-3);
-		VERIFY(x == BigInt(-6));
+		VERIFY(BigInt(2) * hamon::uint8_t(3) == BigInt(6));
+		VERIFY(BigInt(2) * hamon::int8_t(-3) == BigInt(-6));
+		VERIFY(BigInt(-2) * hamon::uint16_t(3) == BigInt(-6));
+		VERIFY(BigInt(-2) * hamon::int16_t(-3) == BigInt(6));
+		VERIFY(BigInt(-3) * hamon::uint32_t( 0) == BigInt(0));
+		VERIFY(BigInt( 3) * hamon::int32_t( 0) == BigInt(0));
+		VERIFY(BigInt( 0) * hamon::uint64_t( 256) == BigInt(0));
+		VERIFY(BigInt( 0) * hamon::int64_t(-256) == BigInt(0));
+		VERIFY(BigInt{3} * int{4} * BigInt{5} == BigInt(60));
+		VERIFY(BigInt{123} * short{0} == BigInt(0));
+		VERIFY(BigInt{4824} * long{31} == BigInt(149544));
+		VERIFY(BigInt{123456} * hamon::uint64_t{0xffffffff} == BigInt(530239482371520));
 	}
 	{
-		auto x = BigInt(-2) * BigInt(3);
-		VERIFY(x == BigInt(-6));
-	}
-	{
-		auto x = BigInt(-2) * BigInt(-3);
-		VERIFY(x == BigInt(6));
-	}
-	{
-		auto x = BigInt(-3) * BigInt( 0);
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt( 3) * BigInt( 0);
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt( 0) * BigInt( 256);
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt( 0) * BigInt(-256);
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt{3} * BigInt{4} * BigInt{5};
-		VERIFY(x == BigInt(60));
-	}
-	{
-		auto x = BigInt{123} * BigInt{0};
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt{4824} * BigInt{31};
-		VERIFY(x == BigInt(149544));
+		VERIFY(hamon::uint8_t(2) * BigInt(3) == BigInt(6));
+		VERIFY(hamon::uint16_t(2) * BigInt(-3) == BigInt(-6));
+		VERIFY(hamon::int8_t(-2) * BigInt(3) == BigInt(-6));
+		VERIFY(hamon::int16_t(-2) * BigInt(-3) == BigInt(6));
+		VERIFY(hamon::int32_t(-3) * BigInt( 0) == BigInt(0));
+		VERIFY(hamon::uint32_t( 3) * BigInt( 0) == BigInt(0));
+		VERIFY(hamon::uint64_t( 0) * BigInt( 256) == BigInt(0));
+		VERIFY(hamon::int64_t( 0) * BigInt(-256) == BigInt(0));
+		VERIFY(int{3} * BigInt{4} * BigInt{5} == BigInt(60));
+		VERIFY(short{123} * BigInt{0} == BigInt(0));
+		VERIFY(long{4824} * BigInt{31} == BigInt(149544));
+		VERIFY(hamon::uint64_t{123456} * BigInt{0xffffffff} == BigInt(530239482371520));
 	}
 	return true;
 }
@@ -99,6 +97,8 @@ MulTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, MulTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::bigint>());
@@ -107,16 +107,12 @@ GTEST_TEST(BigIntTest, MulTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::inplace_bigint<1024>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(MulTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(MulTest<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(MulTest<hamon::uint512_t>());
@@ -141,8 +137,6 @@ GTEST_TEST(BigIntTest, MulTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(MulTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(MulTest2<hamon::uint2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_mul_test
 
