@@ -7,12 +7,15 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_BIT_XOR_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_BIT_XOR_HPP
 
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
-#include <hamon/array.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
+#include <hamon/ranges/range_value_t.hpp>
+#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -25,41 +28,31 @@ namespace bit_xor_detail
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
-bit_xor_impl(T* lhs, T const* rhs, hamon::size_t n)
+bit_xor_impl(T* p1, T const* p2, hamon::size_t n)
 {
 	for (hamon::size_t i = 0; i < n; ++i)
 	{
-		lhs[i] = static_cast<T>(lhs[i] ^ rhs[i]);
+		p1[i] = static_cast<T>(p1[i] ^ p2[i]);
 	}
 }
 
 }	// namespace bit_xor_detail
 
-template <typename T>
+template <typename VectorType1, typename VectorType2,
+	typename T1 = hamon::ranges::range_value_t<VectorType1>,
+	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_same<T1, T2>
+	>::value>
+>
 inline HAMON_CXX14_CONSTEXPR void
-bit_xor(hamon::vector<T>& lhs, hamon::vector<T> const& rhs)
+bit_xor(VectorType1& lhs, VectorType2 const& rhs)
 {
-	auto const n = hamon::max(lhs.size(), rhs.size());
-	lhs.resize(n);
-	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), rhs.size());
+	auto const n1 = detail::actual_size(lhs);
+	auto const n2 = detail::actual_size(rhs);
+	detail::resize(lhs, hamon::max(n1, n2));
+	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), n2);
 	bigint_algo::normalize(lhs);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR void
-bit_xor(hamon::inplace_vector<T, N>& lhs, hamon::inplace_vector<T, N> const& rhs)
-{
-	auto const n = hamon::max(lhs.size(), rhs.size());
-	lhs.resize(n);
-	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), rhs.size());
-	bigint_algo::normalize(lhs);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR void
-bit_xor(hamon::array<T, N>& lhs, hamon::array<T, N> const& rhs)
-{
-	bit_xor_detail::bit_xor_impl(lhs.data(), rhs.data(), N);
 }
 
 }	// namespace bigint_algo
