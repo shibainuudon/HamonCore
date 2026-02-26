@@ -484,6 +484,20 @@ operator|(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} |= rhs;
 }
 
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator|(fixed_bigint<Bits, Signed> const& lhs, UnsignedIntegral rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} |= rhs;
+}
+
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
+operator|(UnsignedIntegral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
+{
+	return fixed_bigint<Bits, Signed>{lhs} |= rhs;
+}
+
 template <hamon::size_t Bits, bool Signed>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator^(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
