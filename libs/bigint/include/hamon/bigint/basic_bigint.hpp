@@ -322,6 +322,14 @@ public:
 		return *this;
 	}
 
+	template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+	HAMON_CXX14_CONSTEXPR basic_bigint&
+	operator|=(UnsignedIntegral rhs) HAMON_NOEXCEPT
+	{
+		bigint_algo::bit_or(m_magnitude, magnitude(rhs));
+		return *this;
+	}
+
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator^=(basic_bigint const& rhs) HAMON_NOEXCEPT
 	{
