@@ -22,40 +22,37 @@ inline HAMON_CXX14_CONSTEXPR bool
 UnsignedDivTest()
 {
 	{
-		auto x = BigInt( 6) / BigInt( 1);
-		VERIFY(x == BigInt(6));
+		VERIFY(BigInt( 6) / BigInt( 1) == BigInt(6));
+		VERIFY(BigInt( 6) / BigInt( 2) == BigInt(3));
+		VERIFY(BigInt( 6) / BigInt( 4) == BigInt(1));
+		VERIFY(BigInt( 6) / BigInt( 6) == BigInt(1));
+		VERIFY(BigInt( 6) / BigInt( 7) == BigInt(0));
+		VERIFY(BigInt{0x10000} / BigInt{2} == BigInt(0x8000));
+		VERIFY(BigInt{0xffff} / BigInt{2} == BigInt(0x7fff));
+		VERIFY(BigInt{999999} / BigInt{7777} == BigInt(128));
+		VERIFY(BigInt{999999999} / BigInt{999999} == BigInt(1000));
 	}
 	{
-		auto x = BigInt( 6) / BigInt( 2);
-		VERIFY(x == BigInt(3));
+		VERIFY(BigInt( 6) / hamon::uint8_t( 1) == BigInt(6));
+		VERIFY(BigInt( 6) / hamon::uint16_t( 2) == BigInt(3));
+		VERIFY(BigInt( 6) / hamon::uint32_t( 4) == BigInt(1));
+		VERIFY(BigInt( 6) / hamon::uint64_t( 6) == BigInt(1));
+		VERIFY(BigInt( 6) / hamon::uint8_t( 7) == BigInt(0));
+		VERIFY(BigInt{0x10000} / hamon::uint8_t{2} == BigInt(0x8000));
+		VERIFY(BigInt{0xffff} / hamon::uint16_t{2} == BigInt(0x7fff));
+		VERIFY(BigInt{999999} / hamon::uint32_t{7777} == BigInt(128));
+		VERIFY(BigInt{999999999} / hamon::uint64_t{999999} == BigInt(1000));
 	}
 	{
-		auto x = BigInt( 6) / BigInt( 4);
-		VERIFY(x == BigInt(1));
-	}
-	{
-		auto x = BigInt( 6) / BigInt( 6);
-		VERIFY(x == BigInt(1));
-	}
-	{
-		auto x = BigInt( 6) / BigInt( 7);
-		VERIFY(x == BigInt(0));
-	}
-	{
-		auto x = BigInt{0x10000} / BigInt{2};
-		VERIFY(x == BigInt(0x8000));
-	}
-	{
-		auto x = BigInt{0xffff} / BigInt{2};
-		VERIFY(x == BigInt(0x7fff));
-	}
-	{
-		auto x = BigInt{999999} / BigInt{7777};
-		VERIFY(x == BigInt(128));
-	}
-	{
-		auto x = BigInt{999999999} / BigInt{999999};
-		VERIFY(x == BigInt(1000));
+		VERIFY(hamon::uint8_t ( 6) / BigInt( 1) == BigInt(6));
+		VERIFY(hamon::uint16_t( 6) / BigInt( 2) == BigInt(3));
+		VERIFY(hamon::uint32_t( 6) / BigInt( 4) == BigInt(1));
+		VERIFY(hamon::uint64_t( 6) / BigInt( 6) == BigInt(1));
+		VERIFY(hamon::uint8_t ( 6) / BigInt( 7) == BigInt(0));
+		VERIFY(hamon::uint32_t{0x10000} / BigInt{2} == BigInt(0x8000));
+		VERIFY(hamon::uint16_t{0xffff} / BigInt{2} == BigInt(0x7fff));
+		VERIFY(hamon::uint32_t{999999} / BigInt{7777} == BigInt(128));
+		VERIFY(hamon::uint64_t{999999999} / BigInt{999999} == BigInt(1000));
 	}
 	return true;
 }
@@ -65,20 +62,22 @@ inline HAMON_CXX14_CONSTEXPR bool
 SignedDivTest()
 {
 	{
-		auto x = BigInt( 6) / BigInt( 3);
-		VERIFY(x == BigInt(2));
+		VERIFY(BigInt( 6) / BigInt( 3) == BigInt(2));
+		VERIFY(BigInt( 6) / BigInt(-3) == BigInt(-2));
+		VERIFY(BigInt(-6) / BigInt( 3) == BigInt(-2));
+		VERIFY(BigInt(-6) / BigInt(-3) == BigInt(2));
 	}
 	{
-		auto x = BigInt( 6) / BigInt(-3);
-		VERIFY(x == BigInt(-2));
+		VERIFY(BigInt( 6) / hamon::int8_t ( 3) == BigInt(2));
+		VERIFY(BigInt( 6) / hamon::int16_t(-3) == BigInt(-2));
+		VERIFY(BigInt(-6) / hamon::int32_t( 3) == BigInt(-2));
+		VERIFY(BigInt(-6) / hamon::int64_t(-3) == BigInt(2));
 	}
 	{
-		auto x = BigInt(-6) / BigInt( 3);
-		VERIFY(x == BigInt(-2));
-	}
-	{
-		auto x = BigInt(-6) / BigInt(-3);
-		VERIFY(x == BigInt(2));
+		VERIFY(hamon::int8_t ( 6) / BigInt( 3) == BigInt(2));
+		VERIFY(hamon::int16_t( 6) / BigInt(-3) == BigInt(-2));
+		VERIFY(hamon::int32_t(-6) / BigInt( 3) == BigInt(-2));
+		VERIFY(hamon::int64_t(-6) / BigInt(-3) == BigInt(2));
 	}
 	return true;
 }
@@ -133,6 +132,8 @@ SignedDivTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, DivTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::bigint>());
@@ -141,15 +142,11 @@ GTEST_TEST(BigIntTest, DivTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<512>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::inplace_bigint<2048>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedDivTest<hamon::int2048_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedDivTest<hamon::uint512_t>());
@@ -162,8 +159,6 @@ GTEST_TEST(BigIntTest, DivTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<512>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::inplace_bigint<2048>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest<hamon::int512_t>());
@@ -199,8 +194,6 @@ GTEST_TEST(BigIntTest, DivTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::int2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_div_test
 
