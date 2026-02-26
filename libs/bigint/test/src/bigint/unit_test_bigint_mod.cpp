@@ -22,28 +22,28 @@ inline HAMON_CXX14_CONSTEXPR bool
 UnsignedModTest()
 {
 	{
-		auto x = BigInt{123} % BigInt{2};
-		VERIFY(x == BigInt{1});
+		VERIFY(BigInt{123} % BigInt{2} == BigInt{1});
+		VERIFY(BigInt{123} % BigInt{3} == BigInt{0});
+		VERIFY(BigInt{123} % BigInt{4} == BigInt{3});
+		VERIFY(BigInt{123} % BigInt{5} == BigInt{3});
+		VERIFY(BigInt{123} % BigInt{6} == BigInt{3});
+		VERIFY(BigInt{123} % BigInt{7} == BigInt{4});
 	}
 	{
-		auto x = BigInt{123} % BigInt{3};
-		VERIFY(x == BigInt{0});
+		VERIFY(BigInt{123} % hamon::uint8_t {2} == BigInt{1});
+		VERIFY(BigInt{123} % hamon::uint16_t{3} == BigInt{0});
+		VERIFY(BigInt{123} % hamon::uint32_t{4} == BigInt{3});
+		VERIFY(BigInt{123} % hamon::uint64_t{5} == BigInt{3});
+		VERIFY(BigInt{123} % hamon::uint8_t {6} == BigInt{3});
+		VERIFY(BigInt{123} % hamon::uint16_t{7} == BigInt{4});
 	}
 	{
-		auto x = BigInt{123} % BigInt{4};
-		VERIFY(x == BigInt{3});
-	}
-	{
-		auto x = BigInt{123} % BigInt{5};
-		VERIFY(x == BigInt{3});
-	}
-	{
-		auto x = BigInt{123} % BigInt{6};
-		VERIFY(x == BigInt{3});
-	}
-	{
-		auto x = BigInt{123} % BigInt{7};
-		VERIFY(x == BigInt{4});
+		VERIFY(hamon::uint8_t {123} % BigInt{2} == BigInt{1});
+		VERIFY(hamon::uint16_t{123} % BigInt{3} == BigInt{0});
+		VERIFY(hamon::uint32_t{123} % BigInt{4} == BigInt{3});
+		VERIFY(hamon::uint64_t{123} % BigInt{5} == BigInt{3});
+		VERIFY(hamon::uint8_t {123} % BigInt{6} == BigInt{3});
+		VERIFY(hamon::uint16_t{123} % BigInt{7} == BigInt{4});
 	}
 	return true;
 }
@@ -53,36 +53,34 @@ inline HAMON_CXX14_CONSTEXPR bool
 SignedModTest()
 {
 	{
-		auto x = BigInt( 6) % BigInt( 3);
-		VERIFY(x == BigInt{0});
+		VERIFY(BigInt( 6) % BigInt( 3) == BigInt{ 0});
+		VERIFY(BigInt(-6) % BigInt( 3) == BigInt{ 0});
+		VERIFY(BigInt( 6) % BigInt(-3) == BigInt{ 0});
+		VERIFY(BigInt(-6) % BigInt(-3) == BigInt{ 0});
+		VERIFY(BigInt( 7) % BigInt( 3) == BigInt{ 1});
+		VERIFY(BigInt(-7) % BigInt( 3) == BigInt{-1});
+		VERIFY(BigInt( 7) % BigInt(-3) == BigInt{ 1});
+		VERIFY(BigInt(-7) % BigInt(-3) == BigInt{-1});
 	}
 	{
-		auto x = BigInt(-6) % BigInt( 3);
-		VERIFY(x == BigInt{0});
+		VERIFY(BigInt( 6) % hamon::int8_t ( 3) == BigInt{ 0});
+		VERIFY(BigInt(-6) % hamon::int16_t( 3) == BigInt{ 0});
+		VERIFY(BigInt( 6) % hamon::int32_t(-3) == BigInt{ 0});
+		VERIFY(BigInt(-6) % hamon::int64_t(-3) == BigInt{ 0});
+		VERIFY(BigInt( 7) % hamon::int8_t ( 3) == BigInt{ 1});
+		VERIFY(BigInt(-7) % hamon::int16_t( 3) == BigInt{-1});
+		VERIFY(BigInt( 7) % hamon::int32_t(-3) == BigInt{ 1});
+		VERIFY(BigInt(-7) % hamon::int64_t(-3) == BigInt{-1});
 	}
 	{
-		auto x = BigInt( 6) % BigInt(-3);
-		VERIFY(x == BigInt{0});
-	}
-	{
-		auto x = BigInt(-6) % BigInt(-3);
-		VERIFY(x == BigInt{0});
-	}
-	{
-		auto x = BigInt( 7) % BigInt( 3);
-		VERIFY(x == BigInt{1});
-	}
-	{
-		auto x = BigInt(-7) % BigInt( 3);
-		VERIFY(x == BigInt{-1});
-	}
-	{
-		auto x = BigInt( 7) % BigInt(-3);
-		VERIFY(x == BigInt{1});
-	}
-	{
-		auto x = BigInt(-7) % BigInt(-3);
-		VERIFY(x == BigInt{-1});
+		VERIFY(hamon::int8_t ( 6) % BigInt( 3) == BigInt{ 0});
+		VERIFY(hamon::int16_t(-6) % BigInt( 3) == BigInt{ 0});
+		VERIFY(hamon::int32_t( 6) % BigInt(-3) == BigInt{ 0});
+		VERIFY(hamon::int64_t(-6) % BigInt(-3) == BigInt{ 0});
+		VERIFY(hamon::int8_t ( 7) % BigInt( 3) == BigInt{ 1});
+		VERIFY(hamon::int16_t(-7) % BigInt( 3) == BigInt{-1});
+		VERIFY(hamon::int32_t( 7) % BigInt(-3) == BigInt{ 1});
+		VERIFY(hamon::int64_t(-7) % BigInt(-3) == BigInt{-1});
 	}
 	return true;
 }
@@ -131,6 +129,8 @@ SignedModTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, ModTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::bigint>());
@@ -139,15 +139,11 @@ GTEST_TEST(BigIntTest, ModTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(UnsignedModTest<hamon::int2048_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(UnsignedModTest<hamon::uint512_t>());
@@ -160,8 +156,6 @@ GTEST_TEST(BigIntTest, ModTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedModTest<hamon::int512_t>());
@@ -197,8 +191,6 @@ GTEST_TEST(BigIntTest, ModTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModTest2<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedModTest2<hamon::int2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_mod_test
 
