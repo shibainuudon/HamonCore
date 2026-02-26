@@ -37,6 +37,21 @@ XorEqualTest()
 		x ^= BigInt(0xff00);
 		VERIFY(x == BigInt(0xed34));
 	}
+	{
+		auto x = BigInt{0};
+
+		x ^= hamon::uint8_t(0x40);
+		VERIFY(x == BigInt{0x0040});
+
+		x ^= hamon::uint16_t(0x80f0);
+		VERIFY(x == BigInt{0x80b0});
+
+		x ^= hamon::uint32_t(0xff00ff00);
+		VERIFY(x == BigInt{0xff007fb0});
+
+		x ^= hamon::uint64_t(0x123456789abcdef0);
+		VERIFY(x == BigInt{0x1234567865bca140});
+	}
 	return true;
 }
 
@@ -57,6 +72,8 @@ XorEqualTest2()
 	return true;
 }
 
+#undef VERIFY
+
 GTEST_TEST(BigIntTest, XorEqualTest)
 {
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::bigint>());
@@ -65,16 +82,12 @@ GTEST_TEST(BigIntTest, XorEqualTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::inplace_bigint<256>>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::inplace_bigint<512>>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest<hamon::int2048_t>());
 
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::uint32_t>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::uint64_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::uint128_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::uint256_t>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(XorEqualTest<hamon::uint512_t>());
@@ -99,8 +112,6 @@ GTEST_TEST(BigIntTest, XorEqualTest)
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest2<hamon::uint1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(XorEqualTest2<hamon::uint2048_t>());
 }
-
-#undef VERIFY
 
 }	// namespace bigint_xor_equal_test
 
