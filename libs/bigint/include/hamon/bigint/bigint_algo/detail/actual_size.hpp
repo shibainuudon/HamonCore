@@ -31,7 +31,7 @@ actual_size_impl(T const* p, hamon::size_t n)
 			return i;
 		}
 	}
-	return 0;
+	return 1;
 }
 
 template <typename T, hamon::size_t N>
