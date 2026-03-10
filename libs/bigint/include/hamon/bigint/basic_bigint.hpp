@@ -104,13 +104,6 @@ public:
 		, m_magnitude{0}
 	{}
 
-	HAMON_CXX14_CONSTEXPR
-	basic_bigint(basic_bigint const& rhs)
-		: m_sign(rhs.m_sign)
-	{
-		bigint_algo::detail::copy(m_magnitude, rhs.m_magnitude);
-	}
-
 	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
 	HAMON_CXX14_CONSTEXPR
 	basic_bigint(Integral n) HAMON_NOEXCEPT
@@ -169,6 +162,21 @@ public:
 		{
 			m_sign = 1;
 		}
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	basic_bigint(basic_bigint const& rhs)
+		: m_sign(rhs.m_sign)
+	{
+		bigint_algo::detail::copy(m_magnitude, rhs.m_magnitude);
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	basic_bigint& operator=(basic_bigint const& rhs)
+	{
+		m_sign = rhs.m_sign;
+		bigint_algo::detail::copy(m_magnitude, rhs.m_magnitude);
+		return *this;
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
