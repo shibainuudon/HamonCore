@@ -31,29 +31,19 @@ namespace bigint_algo
 namespace multiply_detail
 {
 
-template <typename VectorType, typename T>
+template <typename T>
 inline HAMON_CXX14_CONSTEXPR bool
-multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T rhs)
+multiply_impl(T* p1, hamon::size_t n1, T rhs)
 {
-	detail::resize(out, n1 + 1);
-	auto const p3 = out.data();
-	auto const n3 = out.size();
 	T carry = 0;
 	hamon::size_t i = 0;
 	for (; i < n1; ++i)
 	{
 		auto const r = detail::mul_addc(p1[i], rhs, T{0}, carry);
-		p3[i] = detail::lo(r);
+		p1[i] = detail::lo(r);
 		carry = detail::hi(r);
 	}
 
-	for (; i < n3; ++i)
-	{
-		p3[i] = carry;
-		carry = T{0};
-	}
-
-	bigint_algo::normalize(out);
 	return carry != 0;
 }
 
@@ -116,26 +106,27 @@ multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon
 
 }	// namespace multiply_detail
 
+template <typename VectorType, typename T2,
+	typename T1 = hamon::ranges::range_value_t<VectorType>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_integral<T2>,
+		hamon::is_same<T1, T2>
+	>::value>
+>
+inline HAMON_CXX14_CONSTEXPR bool
+multiply(VectorType& lhs, T2 rhs)
+{
+	auto n1 = detail::actual_size(lhs);
+	detail::resize(lhs, n1 + 1);
+	auto overflow = multiply_detail::multiply_impl(lhs.data(), lhs.size(), rhs);
+	bigint_algo::normalize(lhs);
+	return overflow;
+}
+
 // 乗算はin-placeに行うことができないので、左辺(lhs)を出力にするパターンは使えない
 // 繰り返し乗算を行う場合に、その都度メモリ確保することを避けるため(とくに vector)、出力変数を外から与える
 // out と lhs, out と rhs が、同じオブジェクトや同じ領域の場合の動作は未規定
 // オーバーフローフラグを戻り値で返す
-
-template <typename VectorType1, typename VectorType2, typename T3,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::is_integral<T3>,
-		hamon::is_same<T1, T2>,
-		hamon::is_same<T1, T3>
-	>::value>
->
-inline HAMON_CXX14_CONSTEXPR bool
-multiply(VectorType1& out, VectorType2 const& lhs, T3 rhs)
-{
-	return multiply_detail::multiply_impl(out,
-		lhs.data(), detail::actual_size(lhs), rhs);
-}
 
 template <typename VectorType1, typename VectorType2, typename VectorType3,
 	typename T1 = hamon::ranges::range_value_t<VectorType1>,

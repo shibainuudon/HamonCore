@@ -44,7 +44,6 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor((hamon::numeric_limits<T>::digits - 1) / hamon::log2(base)));
 
 	VectorType x{0};
-	VectorType tmp{0};
 
 	bool overflow = false;
 	auto p = first;
@@ -60,10 +59,10 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		auto n = r.ptr - p;
 
 		// x *= pow_n(base, n)
-		overflow = overflow || bigint_algo::multiply(tmp, x, hamon::detail::pow_n(static_cast<T>(base), n));
+		overflow = overflow || bigint_algo::multiply(x, hamon::detail::pow_n(static_cast<T>(base), n));
 
 		// x += t
-		overflow = overflow || bigint_algo::add(x, tmp, hamon::array<T, 1>{t});
+		overflow = overflow || bigint_algo::add(x, hamon::array<T, 1>{t});
 
 		p = r.ptr;
 	};

@@ -158,6 +158,10 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 	// bigint_algo::addでの不要なzeroを削除
 	// Debug:    811 ms
 	// Release:   93 ms
+
+	// bigint_algo::multiplyをin-placeに
+	// Debug:    715 ms
+	// Release:   86 ms
 #endif
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<hamon::bigint>());

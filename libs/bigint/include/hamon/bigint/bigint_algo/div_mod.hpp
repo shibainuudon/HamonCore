@@ -59,7 +59,8 @@ div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType2& x)
 	for (;;)
 	{
 		w /= 2;
-		auto f = bigint_algo::multiply(x, rhs, q);
+		x = rhs;
+		auto f = bigint_algo::multiply(x, q);
 
 		// x と lhs を比較する。ただし、乗算の結果がオーバーフローしている場合は
 		// 必ず x > lhs。
