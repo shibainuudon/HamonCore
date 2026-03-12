@@ -7,8 +7,7 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 
-#include <hamon/bigint/bigint_algo/add.hpp>
-#include <hamon/bigint/bigint_algo/multiply.hpp>
+#include <hamon/bigint/bigint_algo/multiply_add.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 //#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
@@ -58,11 +57,9 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		}
 		auto n = r.ptr - p;
 
-		// x *= pow_n(base, n)
-		overflow = overflow || bigint_algo::multiply(x, hamon::detail::pow_n(static_cast<T>(base), n));
-
-		// x += t
-		overflow = overflow || bigint_algo::add(x, hamon::array<T, 1>{t});
+		// x = x * pow_n(base, n) + t
+		auto const pn = hamon::detail::pow_n(static_cast<T>(base), n);
+		overflow = overflow || bigint_algo::multiply_add(x, pn, t);
 
 		p = r.ptr;
 	};
