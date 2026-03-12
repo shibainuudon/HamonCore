@@ -98,16 +98,14 @@ add_impl(T* p3, hamon::size_t n3, T const* p1, hamon::size_t n1, T const* p2, ha
 		p3[i] = detail::lo(x);
 		carry = detail::hi(x);
 	}
-
 	for (; i < n1; ++i)
 	{
 		p3[i] = p1[i];
 	}
-	for (; carry != 0 && i < n3; ++i)
+	for (; i < n3; ++i)
 	{
-		auto const x = detail::addc(p3[i], T{0}, carry);
-		p3[i] = detail::lo(x);
-		carry = detail::hi(x);
+		p3[i] = carry;
+		carry = T{0};
 	}
 
 	return carry != 0;
@@ -145,7 +143,6 @@ template <typename VectorType1, typename VectorType2, typename VectorType3,
 inline HAMON_CXX14_CONSTEXPR bool
 add(VectorType1& out, VectorType2 const& lhs, VectorType3 const& rhs)
 {
-	detail::zero(out);
 	auto n1 = detail::actual_size(lhs);
 	auto n2 = detail::actual_size(rhs);
 	detail::resize(out, hamon::max(n1, n2) + 1);
