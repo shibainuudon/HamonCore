@@ -148,20 +148,13 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 		std::cout << elapsed.count() << " ms" << std::endl;
 	}
 	// 最適化前
-	// Debug:   1396 ms
-	// Release:  222 ms
+	// Debug:   1539 ms
+	// Release:  117 ms
 
-	// multiply の アウターループよりインナーループがビジーになるようにした
-	// Debug:   1198 ms
-	// Release:  110 ms
-
-	// multiply で 右辺が整数型のときを最適化
-	// Debug:   1101 ms
-	// Release:   98 ms
-
-	// char_to_uint をテーブル引きにした
-	// Debug:   1171 ms
+	// bigint_algo::multiplyでの不要なzeroを削除
+	// Debug:   1223 ms
 	// Release:   94 ms
+
 #endif
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<hamon::bigint>());
