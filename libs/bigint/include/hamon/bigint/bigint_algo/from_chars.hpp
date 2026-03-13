@@ -40,7 +40,9 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
 
-	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor((hamon::numeric_limits<T>::digits - 1) / hamon::log2(base)));
+	auto const digits = static_cast<hamon::ptrdiff_t>(base == 10 ?
+		hamon::numeric_limits<T>::digits10 :
+		hamon::floor((hamon::numeric_limits<T>::digits - 1) / hamon::log2(base)));
 
 	VectorType x{0};
 

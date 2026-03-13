@@ -171,6 +171,10 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 	// bigint_algo::multiply_addを最適化
 	// Debug:    2892 ms
 	// Release:   532 ms
+
+	// 不要なlog2の呼び出しを回避
+	// Debug:    2402 ms
+	// Release:   320 ms
 #endif
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<hamon::bigint>());
