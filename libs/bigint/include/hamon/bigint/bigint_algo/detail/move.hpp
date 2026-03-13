@@ -39,10 +39,13 @@ template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR void
 move(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N>& src)
 {
-	out.resize(src.size());
-	for (hamon::size_t i = 0; i < src.size(); ++i)
+	auto n = src.size();
+	out.resize(n);
+	auto p1 = out.data();
+	auto p2 = src.data();
+	for (; n != 0; --n)
 	{
-		out[i] = hamon::move(src[i]);
+		*p1++ = *p2++;
 	}
 }
 
