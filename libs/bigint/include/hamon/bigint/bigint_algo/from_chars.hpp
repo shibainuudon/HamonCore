@@ -7,10 +7,12 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 
-#include <hamon/bigint/bigint_algo/multiply_add.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 //#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
+#include <hamon/bigint/bigint_algo/detail/mulc.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
 #include <hamon/charconv/detail/from_chars_integer.hpp>
@@ -44,13 +46,20 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		hamon::numeric_limits<T>::digits10 :
 		hamon::floor((hamon::numeric_limits<T>::digits - 1) / hamon::log2(base)));
 
+	auto const length = last - first;
+
 	VectorType x{0};
+	detail::resize(x, static_cast<hamon::size_t>(length / digits + 1));
+
+	auto x_p = x.data();
+	hamon::size_t x_n = 1;
+	hamon::size_t const x_sz = x.size();
 
 	bool overflow = false;
 	auto p = first;
 	while (p != last)
 	{
-		auto p2 = first + hamon::min(p - first + digits, last - first);
+		auto p2 = first + hamon::min(p - first + digits, length);
 		T t{};
 		auto r = hamon::detail::from_chars_integer(p, p2, t, base);
 		if (r.ec == hamon::errc::invalid_argument)
@@ -61,10 +70,28 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 
 		// x = x * pow_n(base, n) + t
 		auto const pn = hamon::detail::pow_n(static_cast<T>(base), n);
-		overflow = overflow || bigint_algo::multiply_add(x, pn, t);
+		for (hamon::size_t i = 0; i < x_n; ++i)
+		{
+			x_p[i] = detail::mulc(x_p[i], pn, &t);
+		}
+
+		if (t != 0)
+		{
+			if (x_n == x_sz)
+			{
+				overflow = true;
+			}
+			else
+			{
+				x_p[x_n] = t;
+				++x_n;
+			}
+		}
 
 		p = r.ptr;
 	};
+
+	bigint_algo::normalize(x);
 
 	if (p == first)
 	{
