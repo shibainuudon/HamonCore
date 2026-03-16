@@ -148,19 +148,50 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 	detail::zero(rem);
 
 	auto const p = lhs.data();
-	auto const n = detail::actual_size(lhs);
+	auto const n1 = detail::actual_size(lhs);
+	auto const n2 = detail::actual_size(rhs);
+
+	if (n1 < n2)
+	{
+		detail::copy(rem, lhs);
+		return;
+	}
+
+	hamon::size_t i = n1;
+
+	detail::resize(rem, n2);
+	for (hamon::size_t j = n2; j > 0; --j)
+	{
+		rem[j - 1] = p[i - 1];
+		--i;
+	}
 
 	VectorType1 tmp{0};
-	for (hamon::size_t i = n; i > 0; --i)
+	for (;;)
 	{
-		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = p[i-1];
-
 		auto const q = div1(rem, rhs, tmp);
 		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
+		//{
+		//	auto const n = hamon::min(detail::actual_size(quo) + 1, quo.max_size());
+		//	detail::resize(quo, n);
+		//	for (hamon::size_t j = n; j > 1; --j)
+		//	{
+		//		quo[j - 1] = quo[j - 2];
+		//	}
+		//	bigint_algo::normalize(quo);
+		//}
 		quo[0] = q;
 
 		bigint_algo::sub(rem, tmp);
+
+		if (i == 0)
+		{
+			break;
+		}
+
+		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
+		rem[0] = p[i-1];
+		--i;
 	}
 }
 
