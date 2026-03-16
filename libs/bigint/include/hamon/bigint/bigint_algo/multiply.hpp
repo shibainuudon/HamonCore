@@ -10,6 +10,7 @@
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/hi.hpp>
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
+#include <hamon/bigint/bigint_algo/detail/mulc.hpp>
 #include <hamon/bigint/bigint_algo/detail/mul_addc.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
@@ -36,14 +37,10 @@ inline HAMON_CXX14_CONSTEXPR bool
 multiply_impl(T* p1, hamon::size_t n1, T rhs)
 {
 	T carry = 0;
-	hamon::size_t i = 0;
-	for (; i < n1; ++i)
+	for (hamon::size_t i = 0; i < n1; ++i)
 	{
-		auto const r = detail::mul_addc(p1[i], rhs, T{0}, carry);
-		p1[i] = detail::lo(r);
-		carry = detail::hi(r);
+		p1[i] = detail::mulc(p1[i], rhs, &carry);
 	}
-
 	return carry != 0;
 }
 

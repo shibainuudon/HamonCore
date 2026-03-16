@@ -9,6 +9,8 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+//#include <chrono>
+
 namespace hamon_bigint_test
 {
 
@@ -193,6 +195,84 @@ GTEST_TEST(BigIntTest, DivTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(SignedDivTest2<hamon::int512_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::int1024_t>());
 	/*HAMON_CXX14_CONSTEXPR_*/EXPECT_TRUE(SignedDivTest2<hamon::int2048_t>());
+
+	{
+		using BigInt = hamon::inplace_bigint<4000>;
+
+		{
+			auto x = BigInt{"99999999999999999"} << 47;
+
+			BigInt y{};
+			hamon::pow_n(y, BigInt{5}, 17);
+
+			auto t = x / y;
+			EXPECT_EQ(t, BigInt{"18446744073709551431"});
+		}
+		{
+			auto x = BigInt{"4940656458412"} << 802;
+
+			BigInt y{};
+			hamon::pow_n(y, BigInt{5}, 336);
+
+			auto t = x / y;
+			EXPECT_EQ(t, BigInt{"18446744073707813813"});
+		}
+		{
+			auto x = BigInt{"70064923216240853546186479164495806564013097093825"} << 119;
+
+			BigInt y{};
+			hamon::pow_n(y, BigInt{5}, 95);
+
+			auto t = x / y;
+			EXPECT_EQ(t, BigInt{"18446744073709551615"});
+		}
+	}
+
+#if 0
+	{
+		auto t0 = std::chrono::high_resolution_clock::now();
+		{
+			using BigInt = hamon::inplace_bigint<4000>;
+
+			BigInt x{
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+				"1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890"
+			};
+
+			for (int i = 0; i < 10; ++i)
+			{
+				BigInt y{10};
+				for (int j = 0; j < 800; ++j)
+				{
+					BigInt q = x / y;
+					(void)q;
+					y *= 10;
+				}
+			}
+		}
+
+		auto t1 = std::chrono::high_resolution_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
+		std::cout << elapsed.count() << " ms" << std::endl;
+	}
+	// 最適化前
+	// Debug:   2052 ms
+	// Release:  331 ms
+
+	// div_modで使っているbigint_algo::multiplyを最適化
+	// Debug:   1899 ms
+	// Release:  339 ms
+
+	// div_modを最適化
+	// Debug:   496 ms
+	// Release:  52 ms
+#endif
 }
 
 }	// namespace bigint_div_test

@@ -7,7 +7,8 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_DETAIL_COPY_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_DETAIL_COPY_HPP
 
-#include <hamon/inplace_vector.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
 
@@ -25,23 +26,20 @@ copy(T& out, T const& src)
 	out = src;
 }
 
-/**
- *	inplace_vector をコピー代入すると、clangでC++20のときにconstexprにできない。
- *	inplace_vector の m_value が初期化されていないという理由でconstexprにできないのだが、
- *	デフォルトコンストラクタで初期化されるはずなのでclangのバグではないかという気がする。
- *	(実際にgccやMSVCではconstexprにできている)
- *
- *	仕方がないので、inplace_vector のときは手動でsize()ぶんだけコピーするようにしたら
- *	constexprにできるようになった。
- */
-template <typename T, hamon::size_t N>
+template <typename VectorType1, typename VectorType2>
 inline HAMON_CXX14_CONSTEXPR void
-copy(hamon::inplace_vector<T, N>& out, hamon::inplace_vector<T, N> const& src)
+copy(VectorType1& out, VectorType2 const& src)
 {
-	out.resize(src.size());
-	for (hamon::size_t i = 0; i < src.size(); ++i)
+	auto n = detail::actual_size(src);
+	detail::resize(out, n);
+	hamon::size_t i = 0;
+	for (; i < n; ++i)
 	{
 		out[i] = src[i];
+	}
+	for (; i < out.size(); ++i)
+	{
+		out[i] = 0;
 	}
 }
 
