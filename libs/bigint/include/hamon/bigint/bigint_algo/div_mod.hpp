@@ -159,12 +159,30 @@ div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType1& x)
 #endif
 }
 
+template <typename VectorType, typename T>
+inline HAMON_CXX14_CONSTEXPR void
+push_front(VectorType& vec, T x)
+{
+	if (bigint_algo::is_zero(vec))
+	{
+		vec[0] = x;
+		return;
+	}
+
+	auto n = hamon::min(detail::actual_size(vec) + 1, vec.max_size());
+	detail::resize(vec, n);
+	auto p = vec.data();
+	for (; n > 1; --n)
+	{
+		p[n - 1] = p[n - 2];
+	}
+	p[0] = x;
+}
+
 template <typename VectorType1, typename VectorType2, typename VectorType3>
 inline HAMON_CXX14_CONSTEXPR void
 div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorType3 const& rhs)
 {
-	using T = hamon::ranges::range_value_t<VectorType1>;
-
 	detail::zero(quo);
 	detail::zero(rem);
 
@@ -187,21 +205,17 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 		--i;
 	}
 
+	if (i != 0 && bigint_algo::compare(rem, rhs) < 0)
+	{
+		push_front(rem, p[i - 1]);
+		--i;
+	}
+
 	VectorType1 tmp{0};
 	for (;;)
 	{
 		auto const q = div1(rem, rhs, tmp);
-		bigint_algo::bit_shift_left(quo, hamon::bitsof<T>());
-		//{
-		//	auto const n = hamon::min(detail::actual_size(quo) + 1, quo.max_size());
-		//	detail::resize(quo, n);
-		//	for (hamon::size_t j = n; j > 1; --j)
-		//	{
-		//		quo[j - 1] = quo[j - 2];
-		//	}
-		//	bigint_algo::normalize(quo);
-		//}
-		quo[0] = q;
+		push_front(quo, q);
 
 		bigint_algo::sub(rem, tmp);
 
@@ -210,8 +224,7 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 			break;
 		}
 
-		bigint_algo::bit_shift_left(rem, hamon::bitsof<T>());
-		rem[0] = p[i-1];
+		push_front(rem, p[i - 1]);
 		--i;
 	}
 }

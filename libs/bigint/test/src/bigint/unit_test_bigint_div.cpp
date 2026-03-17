@@ -284,6 +284,10 @@ GTEST_TEST(BigIntTest, DivTest)
 	// bigint_algo::sub
 	// Debug:   281 ms
 	// Release:  34 ms
+
+	// push_front
+	// Debug:   220 ms
+	// Release:  29 ms
 #endif
 }
 
