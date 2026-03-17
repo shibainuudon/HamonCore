@@ -276,6 +276,10 @@ GTEST_TEST(BigIntTest, DivTest)
 	// div_modを最適化
 	// Debug:   387 ms
 	// Release:  47 ms
+
+	// bit_shift_right_to_uint64
+	// Debug:   296 ms
+	// Release:  32 ms
 #endif
 }
 

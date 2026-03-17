@@ -19,7 +19,8 @@
 #include <hamon/bigint/bigint_algo/to_uint.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/bit/bitsof.hpp>
-//#include <hamon/bit/shl.hpp>
+#include <hamon/bit/shl.hpp>
+#include <hamon/bit/shr.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -35,6 +36,35 @@ namespace bigint_algo
 
 namespace div_mod_detail
 {
+
+template <typename VectorType>
+inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
+bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
+{
+	using T = hamon::ranges::range_value_t<VectorType>;
+	auto const bits = static_cast<unsigned int>(hamon::bitsof<T>());
+	auto const rem = static_cast<unsigned int>(shift % bits);
+	auto const quo = static_cast<unsigned int>((shift + bits - 1) / bits);
+
+	auto p = vec.data();
+	auto n = static_cast<unsigned int>(vec.size());
+	auto m = static_cast<unsigned int>(sizeof(hamon::uint64_t) / sizeof(T));
+
+	hamon::uint64_t result{};
+
+	auto const l = hamon::min(quo, n);
+	for (auto i = hamon::min(quo + m, n); i > l; --i)
+	{
+		result = hamon::shl(result, bits) | p[i - 1];
+	}
+
+	if (rem != 0)
+	{
+		result = hamon::shl(result, bits - rem) | hamon::shr(p[l - 1], rem);
+	}
+
+	return result;
+}
 
 template <typename VectorType1, typename VectorType2,
 	typename T = hamon::ranges::range_value_t<VectorType1>>
@@ -59,23 +89,14 @@ div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType1& x)
 		}
 	}
 #if 1
-	VectorType1 l2 = lhs;
-	VectorType2 r2 = rhs;
-	int shift = hamon::max(0, bigint_algo::bit_width(lhs) - 64);
-	bigint_algo::bit_shift_right(l2, static_cast<hamon::uintmax_t>(shift));
-	bigint_algo::bit_shift_right(r2, static_cast<hamon::uintmax_t>(shift));
-	hamon::uint64_t l3{};
-	hamon::uint64_t r3{};
-	bigint_algo::to_uint(l3, l2);
-	bigint_algo::to_uint(r3, r2);
-	if (r3 == 0)
-	{
-		T q = hamon::numeric_limits<T>::max();
-		bigint_algo::multiply(x, q);
-		return q;
-	}
-	T q = static_cast<T>(hamon::min<hamon::uint64_t>(l3 / r3, hamon::numeric_limits<T>::max()));
+	// lhs と rhs を64ビットの値に変換して除算する
+	auto const shift = static_cast<hamon::size_t>(hamon::max(0, bigint_algo::bit_width(lhs) - 64));
+	auto l = bit_shift_right_to_uint64(lhs, shift);
+	auto r = bit_shift_right_to_uint64(rhs, shift);
+	T q = static_cast<T>(hamon::min<hamon::uint64_t>(l / r, hamon::numeric_limits<T>::max()));
 
+	// 得られた答えは、必ず正しい答え以上の値になっているので、
+	// デクリメントしながら正しい答えを探す
 	for (;;)
 	{
 		detail::copy(x, rhs);
