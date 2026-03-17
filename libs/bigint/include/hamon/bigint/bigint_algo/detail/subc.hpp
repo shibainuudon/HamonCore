@@ -19,54 +19,66 @@ namespace bigint_algo
 namespace detail
 {
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
-subc(hamon::uint8_t lhs, hamon::uint8_t rhs, hamon::uint8_t carry)
+// x - y + borrow
+// 戻り値で計算結果の下位ビットを返し、borrowに上位ビットを格納する
+
+inline HAMON_CXX14_CONSTEXPR hamon::uint8_t
+subc(hamon::uint8_t x, hamon::uint8_t y, hamon::uint8_t* borrow)
 {
-	return static_cast<hamon::uint16_t>(
-		static_cast<hamon::uint16_t>(lhs) -
-		static_cast<hamon::uint16_t>(rhs) +
-		static_cast<hamon::uint16_t>(static_cast<hamon::int8_t>(carry)));
+	auto t = static_cast<hamon::uint16_t>(
+		static_cast<hamon::uint16_t>(x) -
+		static_cast<hamon::uint16_t>(y) +
+		static_cast<hamon::uint16_t>(static_cast<hamon::int8_t>(*borrow)));
+	*borrow = static_cast<hamon::uint8_t>(t >> 8);
+	return static_cast<hamon::uint8_t>(t);
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t
-subc(hamon::uint16_t lhs, hamon::uint16_t rhs, hamon::uint16_t carry)
+inline HAMON_CXX14_CONSTEXPR hamon::uint16_t
+subc(hamon::uint16_t x, hamon::uint16_t y, hamon::uint16_t* borrow)
 {
-	return static_cast<hamon::uint32_t>(
-		static_cast<hamon::uint32_t>(lhs) -
-		static_cast<hamon::uint32_t>(rhs) +
-		static_cast<hamon::uint32_t>(static_cast<hamon::int16_t>(carry)));
+	auto t = static_cast<hamon::uint32_t>(
+		static_cast<hamon::uint32_t>(x) -
+		static_cast<hamon::uint32_t>(y) +
+		static_cast<hamon::uint32_t>(static_cast<hamon::int16_t>(*borrow)));
+	*borrow = static_cast<hamon::uint16_t>(t >> 16);
+	return static_cast<hamon::uint16_t>(t);
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t
-subc(hamon::uint32_t lhs, hamon::uint32_t rhs, hamon::uint32_t carry)
+inline HAMON_CXX14_CONSTEXPR hamon::uint32_t
+subc(hamon::uint32_t x, hamon::uint32_t y, hamon::uint32_t* borrow)
 {
-	return static_cast<hamon::uint64_t>(
-		static_cast<hamon::uint64_t>(lhs) -
-		static_cast<hamon::uint64_t>(rhs) +
-		static_cast<hamon::uint64_t>(static_cast<hamon::int32_t>(carry)));
+	auto t = static_cast<hamon::uint64_t>(
+		static_cast<hamon::uint64_t>(x) -
+		static_cast<hamon::uint64_t>(y) +
+		static_cast<hamon::uint64_t>(static_cast<hamon::int32_t>(*borrow)));
+	*borrow = static_cast<hamon::uint32_t>(t >> 32);
+	return static_cast<hamon::uint32_t>(t);
 }
 
 #if defined(__SIZEOF_INT128__)
-inline HAMON_CXX11_CONSTEXPR __uint128_t
-subc(hamon::uint64_t lhs, hamon::uint64_t rhs, hamon::uint64_t carry)
+inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
+subc(hamon::uint64_t x, hamon::uint64_t y, hamon::uint64_t* borrow)
 {
-	return static_cast<__uint128_t>(
-		static_cast<__uint128_t>(lhs) -
-		static_cast<__uint128_t>(rhs) +
-		static_cast<__uint128_t>(static_cast<hamon::int64_t>(carry)));
+	auto t = static_cast<__uint128_t>(
+		static_cast<__uint128_t>(x) -
+		static_cast<__uint128_t>(y) +
+		static_cast<__uint128_t>(static_cast<hamon::int64_t>(*borrow)));
+	*borrow = static_cast<hamon::uint64_t>(t >> 64);
+	return static_cast<hamon::uint64_t>(t);
 }
 #endif
 
 // 上記以外の汎用的な実装(主に__uint128_tが使えない環境向け)
 template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
-subc(T lhs, T rhs, T carry)
+inline HAMON_CXX14_CONSTEXPR T
+subc(T x, T y, T* borrow)
 {
-	T const a = static_cast<T>(rhs + static_cast<T>(static_cast<hamon::make_signed_t<T>>(carry)));
-	T const b = static_cast<T>(lhs - a);
-	T const c1 = a > rhs ? T(-1) : 0;
-	T const c2 = b > lhs ? T(-1) : 0;
-	return {b, static_cast<T>(c1 + c2)};
+	T const a = static_cast<T>(y + static_cast<T>(static_cast<hamon::make_signed_t<T>>(*borrow)));
+	T const b = static_cast<T>(x - a);
+	T const c1 = a > y ? T(-1) : 0;
+	T const c2 = b > x ? T(-1) : 0;
+	*borrow = static_cast<T>(c1 + c2);
+	return b;
 }
 
 }	// namespace detail

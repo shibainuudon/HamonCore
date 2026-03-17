@@ -280,6 +280,10 @@ GTEST_TEST(BigIntTest, DivTest)
 	// bit_shift_right_to_uint64
 	// Debug:   296 ms
 	// Release:  32 ms
+
+	// bigint_algo::sub
+	// Debug:   281 ms
+	// Release:  34 ms
 #endif
 }
 
