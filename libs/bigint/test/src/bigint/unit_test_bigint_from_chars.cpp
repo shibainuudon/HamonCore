@@ -144,45 +144,12 @@ GTEST_TEST(BigIntTest, FromCharsTest)
 		std::cout << elapsed.count() << " ms" << std::endl;
 	}
 	// 最適化前
-	// Debug:   1539 ms
-	// Release:  117 ms
-
-	// bigint_algo::multiplyでの不要なzeroを削除
-	// Debug:   1223 ms
-	// Release:   94 ms
-
-	// bigint_algo::addでの不要なzeroを削除
-	// Debug:    811 ms
-	// Release:   93 ms
-
-	// bigint_algo::multiplyをin-placeに
-	// Debug:    715 ms
-	// Release:   86 ms
-
-	// bigint_algo::multiply_addを追加
-	// Debug:    543 ms
-	// Release:   81 ms
-
-	// テスト文字列の長さを 1200 -> 800 に、繰り返し回数を 10000 -> 100000 に変更
-	// (実際に使用するケースにより近づける意図)
-	// Debug:    3230 ms
-	// Release:   555 ms
-
-	// bigint_algo::multiply_addを最適化
-	// Debug:    2892 ms
-	// Release:   532 ms
-
-	// 不要なlog2の呼び出しを回避
-	// Debug:    2402 ms
-	// Release:   320 ms
-
-	// detail::moveを最適化
-	// Debug:    2027 ms
-	// Release:   307 ms
-
-	// bigint_algo::multiply_addを削除
 	// Debug:    1586 ms
-	// Release:   285 ms
+	// Release:   265 ms
+
+	// from_chars_unsigned_integerを呼び出すようにした
+	// Debug:    1152 ms
+	// Release:   252 ms
 #endif
 
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test1<hamon::bigint>());

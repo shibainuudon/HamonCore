@@ -22,6 +22,7 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/system_error/errc.hpp>
+#include <hamon/type_traits/is_unsigned.hpp>
 //#include <hamon/utility/move.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/inplace_vector.hpp>
@@ -41,6 +42,9 @@ inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, VectorType& value, int base)
 {
 	using T = hamon::ranges::range_value_t<VectorType>;
+	static_assert(hamon::is_unsigned<T>::value, "");
+
+	auto const ubase = static_cast<T>(base);
 
 	auto const digits = static_cast<hamon::ptrdiff_t>(base == 10 ?
 		hamon::numeric_limits<T>::digits10 :
@@ -61,7 +65,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 	{
 		auto p2 = first + hamon::min(p - first + digits, length);
 		T t{};
-		auto r = hamon::detail::from_chars_integer(p, p2, t, base);
+		auto r = hamon::detail::from_chars_unsigned_integer(p, p2, t, ubase);
 		if (r.ec == hamon::errc::invalid_argument)
 		{
 			break;
@@ -69,7 +73,7 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 		auto n = r.ptr - p;
 
 		// x = x * pow_n(base, n) + t
-		auto const pn = hamon::detail::pow_n(static_cast<T>(base), n);
+		auto const pn = hamon::detail::pow_n(ubase, n);
 		for (hamon::size_t i = 0; i < x_n; ++i)
 		{
 			x_p[i] = detail::mulc(x_p[i], pn, &t);
