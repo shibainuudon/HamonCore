@@ -66,6 +66,7 @@ class basic_bigint
 private:
 	friend hamon::detail::bigint_access;
 
+public:
 	using sign_type = int;
 	using vector_type = VectorType;
 	using element_type = hamon::ranges::range_value_t<VectorType>;
@@ -90,12 +91,6 @@ private:
 		bigint_algo::from_uint(hamon::abs_unsigned(n), result);
 		return result;
 	}
-
-	HAMON_CXX14_CONSTEXPR
-	basic_bigint(sign_type sign, vector_type const& mag) HAMON_NOEXCEPT
-		: m_sign(sign)
-		, m_magnitude{mag}
-	{}
 
 public:
 	HAMON_CXX14_CONSTEXPR
@@ -164,6 +159,12 @@ public:
 		}
 	}
 
+	explicit HAMON_CXX14_CONSTEXPR
+	basic_bigint(sign_type sign, vector_type const& mag)
+		: m_sign(sign)
+		, m_magnitude{mag}
+	{}
+
 	HAMON_CXX14_CONSTEXPR
 	basic_bigint(basic_bigint const& rhs)
 		: m_sign(rhs.m_sign)
@@ -179,6 +180,18 @@ public:
 		return *this;
 	}
 
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR sign_type
+	sign() const HAMON_NOEXCEPT
+	{
+		return m_sign;
+	}
+
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR vector_type const&
+	magnitude() const HAMON_NOEXCEPT
+	{
+		return m_magnitude;
+	}
+
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint
 	operator+() const HAMON_NOEXCEPT
 	{
@@ -192,7 +205,8 @@ public:
 		{
 			return *this;
 		}
-		return {-m_sign, m_magnitude};
+
+		return basic_bigint{-m_sign, m_magnitude};
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR basic_bigint

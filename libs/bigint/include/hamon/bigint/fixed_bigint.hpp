@@ -62,9 +62,10 @@ class fixed_bigint
 private:
 	friend hamon::detail::fixed_bigint_access;
 
+public:
 	using element_type = hamon::uint32_t;
-	static const hamon::size_t N = (hamon::round_up(Bits, hamon::bitsof<element_type>()) / hamon::bitsof<element_type>());
-	using vector_type = hamon::array<element_type, N>;
+	using vector_type = hamon::array<element_type,
+		(hamon::round_up(Bits, hamon::bitsof<element_type>()) / hamon::bitsof<element_type>())>;
 
 public:
 	HAMON_CXX14_CONSTEXPR
@@ -135,13 +136,17 @@ public:
 		}
 	}
 
-private:
-	HAMON_CXX14_CONSTEXPR
+	explicit HAMON_CXX14_CONSTEXPR
 	fixed_bigint(vector_type const& data) HAMON_NOEXCEPT
 		: m_data{data}
 	{}
 
-public:
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR vector_type const&
+	value() const HAMON_NOEXCEPT
+	{
+		return m_data;
+	}
+
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
 	operator+() const HAMON_NOEXCEPT
 	{
@@ -151,13 +156,13 @@ public:
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
 	operator-() const HAMON_NOEXCEPT
 	{
-		return {bigint_algo::negate(m_data)};
+		return fixed_bigint{bigint_algo::negate(m_data)};
 	}
 
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR fixed_bigint
 	operator~() const HAMON_NOEXCEPT
 	{
-		return {bigint_algo::bit_not(m_data)};
+		return fixed_bigint{bigint_algo::bit_not(m_data)};
 	}
 
 	HAMON_CXX14_CONSTEXPR fixed_bigint&
