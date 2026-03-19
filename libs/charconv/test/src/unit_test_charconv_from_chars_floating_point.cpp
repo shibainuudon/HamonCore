@@ -17,6 +17,12 @@
 
 //#include <chrono>
 
+//#define RANDOM_TEST
+
+#if defined(RANDOM_TEST)
+#include <random>
+#endif
+
 namespace hamon_charconv_test
 {
 
@@ -3579,6 +3585,80 @@ inline void double_test()
 	}
 }
 
+#if defined(RANDOM_TEST)
+
+template <typename RNG>
+inline hamon::string_view make_random_number_string(char* buf, int integer_part_length, int fraction_part_length, RNG& rng)
+{
+	std::uniform_int_distribution<> dist(0, 9);
+
+	char* ptr = buf;
+
+	if (integer_part_length == 0)
+	{
+		*ptr++ = '0';
+	}
+	else
+	{
+		for (int i = 0; i < integer_part_length; ++i)
+		{
+			*ptr++ = char('0' + dist(rng));
+		}
+	}
+
+	if (fraction_part_length != 0)
+	{
+		*ptr++ = '.';
+
+		for (int i = 0; i < fraction_part_length; ++i)
+		{
+			*ptr++ = char('0' + dist(rng));
+		}
+	}
+
+	return {buf, ptr};
+}
+
+template <typename T, typename RNG>
+inline void random_test_sub(char* buf, int count, int integer_part_length, int fraction_part_length, RNG& rng)
+{
+	for (int i = 0; i < count; ++i)
+	{
+		auto str = make_random_number_string(buf, integer_part_length, fraction_part_length, rng);
+		T v1{};
+		T v2{};
+		auto r1 = hamon::from_chars(str.begin(), str.end(), v1);
+		auto r2 = std::from_chars(str.begin(), str.end(), v2);
+		EXPECT_EQ((int)r1.ec, (int)r2.ec);
+		if (r1)
+		{
+			EXPECT_EQ(v1, v2);
+		}
+		else
+		{
+			EXPECT_EQ(v1, T{});
+		}
+	}
+}
+
+template <typename T, int IntegerPartLengthMax, int FractionPartLengthMax>
+inline void random_test()
+{
+	std::random_device seed_gen;
+	std::default_random_engine rng(seed_gen());
+
+	char buf[IntegerPartLengthMax + FractionPartLengthMax + 2]{};
+
+	for (int i = 0; i <= IntegerPartLengthMax; ++i)
+	{
+		for (int j = 0; j <= FractionPartLengthMax; ++j)
+		{
+			random_test_sub<T>(buf, 10, i, j, rng);
+		}
+	}
+}
+#endif
+
 GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 {
 	inf_test<float>(hamon::chars_format::scientific);
@@ -3625,6 +3705,11 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 
 	float_test();
 	double_test();
+
+#if defined(RANDOM_TEST)
+	random_test<float, 39, 100>();
+	random_test<double, 309, 500>();
+#endif
 
 #if 0
 	{
