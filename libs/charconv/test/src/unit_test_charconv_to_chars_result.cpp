@@ -40,6 +40,12 @@ test()
 	VERIFY( (res1 != res4));
 	VERIFY( (res1 != res5));
 
+	VERIFY( static_cast<bool>(res1));
+	VERIFY( static_cast<bool>(res2));
+	VERIFY(!static_cast<bool>(res3));
+	VERIFY( static_cast<bool>(res4));
+	VERIFY(!static_cast<bool>(res5));
+
 	return true;
 }
 

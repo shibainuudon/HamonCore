@@ -35,6 +35,7 @@ test(T val, const char* expected)
 	//}
 	VERIFY(hamon::string_view(buf, ret.ptr) == expected);
 	VERIFY(ret.ec == hamon::errc{});
+	VERIFY(ret);
 
 	return true;
 }

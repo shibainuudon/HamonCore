@@ -15,7 +15,7 @@
 #    include <charconv>
 #  endif
 
-#  if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 201611L) &&	\
+#  if defined(__cpp_lib_to_chars) && (__cpp_lib_to_chars >= 202306L) &&	\
       defined(__cpp_lib_constexpr_charconv) && (__cpp_lib_constexpr_charconv >= 202207L)
 #    define	HAMON_USE_STD_CHARCONV
 #  endif

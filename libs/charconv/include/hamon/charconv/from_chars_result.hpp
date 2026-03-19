@@ -50,6 +50,11 @@ struct from_chars_result
 		return !(lhs == rhs);
 	}
 #endif
+
+	HAMON_CXX11_CONSTEXPR explicit operator bool() const HAMON_NOEXCEPT
+	{
+		return ec == hamon::errc{};
+	}
 };
 
 }	// namespace hamon

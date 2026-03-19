@@ -28,6 +28,7 @@ test(T val, int base, const char* expected)
 	auto ret = hamon::to_chars(buf, buf+sizeof(buf), val, base);
 	VERIFY(hamon::string_view(buf, ret.ptr) == expected);
 	VERIFY(ret.ec == hamon::errc{});
+	VERIFY(ret);
 
 	return true;
 }
@@ -184,24 +185,28 @@ GTEST_TEST(CharConvTest, ToCharsIntegerTest)
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 12345);
 		EXPECT_EQ(ret.ptr, buf+sizeof(buf));
 		EXPECT_EQ(ret.ec, hamon::errc::value_too_large);
+		EXPECT_FALSE(ret);
 	}
 	{
 		char buf[5];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 12345);
 		EXPECT_EQ(hamon::string_view(buf, ret.ptr), "12345");
 		EXPECT_EQ(ret.ec, hamon::errc{});
+		EXPECT_TRUE(ret);
 	}
 	{
 		char buf[7];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 0xFFFFFFFF, 16);
 		EXPECT_EQ(ret.ptr, buf+sizeof(buf));
 		EXPECT_EQ(ret.ec, hamon::errc::value_too_large);
+		EXPECT_FALSE(ret);
 	}
 	{
 		char buf[8];
 		auto ret = hamon::to_chars(buf, buf+sizeof(buf), 0xFFFFFFFF, 16);
 		EXPECT_EQ(hamon::string_view(buf, ret.ptr), "ffffffff");
 		EXPECT_EQ(ret.ec, hamon::errc{});
+		EXPECT_TRUE(ret);
 	}
 }
 
