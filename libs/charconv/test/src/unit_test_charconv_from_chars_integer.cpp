@@ -31,7 +31,7 @@ test(hamon::string_view sv, int base, T expected, hamon::size_t length, hamon::e
 	VERIFY(ret.ptr == sv.data() + length);
 	VERIFY(ret.ec == ec);
 
-	if (ret.ec == hamon::errc{})
+	if (ret)
 	{
 		VERIFY(value == expected);
 	}

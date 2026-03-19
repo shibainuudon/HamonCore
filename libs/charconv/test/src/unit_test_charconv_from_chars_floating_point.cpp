@@ -35,7 +35,7 @@ test(hamon::string_view sv, hamon::chars_format fmt, hamon::size_t expected_idx,
 	VERIFY(ret.ptr == sv.data() + expected_idx);
 	VERIFY(ret.ec == expected_ec);
 
-	if (ret.ec == hamon::errc{})
+	if (ret)
 	{
 		hamon::ieee754::binary<T> const bits1(dest);
 		hamon::ieee754::binary<T> const bits2(expected_value);
