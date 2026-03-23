@@ -3862,6 +3862,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// 最適化前
 	// Debug:    1188 ms
 	// Release:   155 ms
+
+	// pow5_table
+	// Debug:     827 ms
+	// Release:   110 ms
 #endif
 }
 
