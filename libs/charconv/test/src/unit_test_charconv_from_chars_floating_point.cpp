@@ -18,9 +18,16 @@
 //#include <chrono>
 
 //#define RANDOM_TEST
-
 #if defined(RANDOM_TEST)
 #include <random>
+#endif
+
+//#define PERFORMANCE_TEST
+#if defined(PERFORMANCE_TEST)
+#include <random>
+#include <chrono>
+#include <vector>
+#include <string>
 #endif
 
 namespace hamon_charconv_test
@@ -3659,6 +3666,110 @@ inline void random_test()
 }
 #endif
 
+#if defined(PERFORMANCE_TEST)
+
+template <typename RNG>
+inline std::string make_random_number_string(int integer_part_length, int fraction_part_length, RNG& rng)
+{
+	std::uniform_int_distribution<> dist(0, 9);
+
+	std::string result;
+	result.reserve(integer_part_length + 1 + fraction_part_length);
+
+	if (integer_part_length == 0)
+	{
+		result += '0';
+	}
+	else
+	{
+		for (int i = 0; i < integer_part_length; ++i)
+		{
+			result += char('0' + dist(rng));
+		}
+	}
+
+	if (fraction_part_length != 0)
+	{
+		result += '.';
+
+		for (int i = 0; i < fraction_part_length; ++i)
+		{
+			result += char('0' + dist(rng));
+		}
+	}
+
+	return result;
+}
+
+template <typename T, typename RNG>
+inline void performance_test_sub(int integer_part_length, int fraction_part_length, RNG& rng)
+{
+	std::vector<std::string> str_tbl;
+	for (int i = 0; i < 100; ++i)
+	{
+		str_tbl.push_back(make_random_number_string(integer_part_length, fraction_part_length, rng));
+	}
+
+	{
+		auto t0 = std::chrono::high_resolution_clock::now();
+
+		for (int i = 0; i < 200; ++i)
+		{
+			for (auto const& s : str_tbl)
+			{
+				T val{};
+				hamon::from_chars(s.data(), s.data() + s.size(), val);
+			}
+		}
+
+		auto t1 = std::chrono::high_resolution_clock::now();
+		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
+		std::cout <<
+			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") <<
+			">(" << integer_part_length <<
+			", " << fraction_part_length << "): " <<
+			elapsed.count() << " ms" << std::endl;
+	}
+}
+
+template <typename T>
+inline void performance_test()
+{
+	std::default_random_engine rng;
+
+	performance_test_sub<T>(0, 4, rng);
+	performance_test_sub<T>(0, 8, rng);
+	performance_test_sub<T>(0, 16, rng);
+	performance_test_sub<T>(0, 32, rng);
+	performance_test_sub<T>(0, 64, rng);
+	performance_test_sub<T>(0, 128, rng);
+	performance_test_sub<T>(0, 256, rng);
+	performance_test_sub<T>(0, 512, rng);
+	performance_test_sub<T>(0, 700, rng);
+	performance_test_sub<T>(0, 800, rng);
+
+	performance_test_sub<T>(4, 0, rng);
+	performance_test_sub<T>(8, 0, rng);
+	performance_test_sub<T>(16, 0, rng);
+	performance_test_sub<T>(32, 0, rng);
+	performance_test_sub<T>(64, 0, rng);
+	performance_test_sub<T>(128, 0, rng);
+	performance_test_sub<T>(256, 0, rng);
+	performance_test_sub<T>(512, 0, rng);
+
+	performance_test_sub<T>(4, 4, rng);
+	performance_test_sub<T>(8, 8, rng);
+	performance_test_sub<T>(16, 16, rng);
+	performance_test_sub<T>(32, 32, rng);
+	performance_test_sub<T>(64, 64, rng);
+	performance_test_sub<T>(128, 128, rng);
+	performance_test_sub<T>(256, 256, rng);
+
+	std::cout << std::endl;
+}
+
+#endif
+
 GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 {
 	inf_test<float>(hamon::chars_format::scientific);
@@ -3709,6 +3820,11 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 #if defined(RANDOM_TEST)
 	random_test<float, 39, 100>();
 	random_test<double, 309, 500>();
+#endif
+
+#if defined(PERFORMANCE_TEST)
+	performance_test<float>();
+	performance_test<double>();
 #endif
 
 #if 0
