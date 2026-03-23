@@ -126,7 +126,7 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// 指数を調整しつつ、可能な限り文字列を切り詰める
 	if (!integer_part_str.empty())
 	{
-		exponent += integer_part_str.length();
+		exponent += static_cast<hamon::int64_t>(integer_part_str.length());
 		if (fraction_part_str.empty())
 		{
 			// 小数部が0のときは、整数部の末尾の0を削除する
@@ -136,9 +136,9 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	else
 	{
 		// 整数部が0のときは、小数部の先頭の0を削除する
-		exponent -= fraction_part_str.length();
+		exponent -= static_cast<hamon::int64_t>(fraction_part_str.length());
 		fraction_part_str = remove_leading_zeros(fraction_part_str);
-		exponent += fraction_part_str.length();
+		exponent += static_cast<hamon::int64_t>(fraction_part_str.length());
 	}
 
 	constexpr hamon::int64_t exponent10_max = hamon::numeric_limits<F>::max_exponent10 + 1;

@@ -19,7 +19,7 @@ namespace detail
 // Computes value / 2^shift, then rounds the result according to round_to_nearest.
 // By the time we call this function, we will already have discarded most digits.
 // The caller must pass true for has_zero_tail if all discarded bits were zeroes.
-HAMON_NODISCARD inline hamon::uint64_t
+HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
 right_shift_with_rounding(hamon::uint64_t value, hamon::uint32_t shift, bool has_zero_tail) HAMON_NOEXCEPT
 {
 	hamon::uint32_t const total_number_of_bits = 64;

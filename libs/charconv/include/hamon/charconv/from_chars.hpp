@@ -56,7 +56,7 @@ namespace hamon
 // 28.2.3 Primitive numeric input conversion[charconv.from.chars]
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_floating_point<T>::value>>
-hamon::from_chars_result
+HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(const char* first, const char* last, T& value, hamon::chars_format fmt = hamon::chars_format::general)
 {
 	// [charconv.from.chars]/5
