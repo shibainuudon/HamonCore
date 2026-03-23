@@ -1657,6 +1657,13 @@ inline void float_test()
 
 		EXPECT_TRUE(test(hamon::string_view(s, last), chars_format::general, len, errc{}, 7.411412e-39F));
 	}
+
+#if defined(HAMON_HAS_CXX17_HEX_FLOAT)
+    // See LWG-2403. This number (exactly 0x1.fffffd00000004 in infinite precision) behaves differently
+    // when parsed as double and converted to float, versus being parsed as float directly.
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+		"1.999999821186065729339276231257827021181583404541015625", chars_format::general, 56, errc{}, 0x1.fffffep0f));
+#endif
 }
 
 inline void double_test()
@@ -3590,6 +3597,13 @@ inline void double_test()
 		// the proper exponent is e-278, which can be represented by a double.
 		EXPECT_TRUE(test(hamon::string_view(s, last), chars_format::general, len, errc{}, 4.219902180869891e-278));
 	}
+
+#if defined(HAMON_HAS_CXX17_HEX_FLOAT)
+    // See LWG-2403. This number (exactly 0x1.fffffd00000004 in infinite precision) behaves differently
+    // when parsed as double and converted to float, versus being parsed as float directly.
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+		"1.999999821186065729339276231257827021181583404541015625", chars_format::general, 56, errc{}, 0x1.fffffdp0));
+#endif
 }
 
 #if defined(RANDOM_TEST)
