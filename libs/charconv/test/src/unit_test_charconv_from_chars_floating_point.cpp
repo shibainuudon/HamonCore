@@ -3866,6 +3866,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// pow5_table
 	// Debug:     827 ms
 	// Release:   110 ms
+
+	// unchecked_from_chars_dec
+	// Debug:     723 ms
+	// Release:   104 ms
 #endif
 }
 

@@ -1163,6 +1163,65 @@ inline HAMON_CXX14_CONSTEXPR BigInt pow5(int n)
 	return BigInt{1, VectorType{&tbl.magnitude[0], &tbl.magnitude[tbl.size]}};
 }
 
+template <typename BigInt>
+inline HAMON_CXX14_CONSTEXPR void
+unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
+{
+	using access = hamon::detail::bigint_access;
+
+	auto const digits = 9;
+	auto const length = last - first;
+
+	auto& mag = access::magnitude(value);
+	mag.resize(hamon::min(static_cast<hamon::size_t>(length / digits + 1), mag.max_size()));
+	auto mag_p = mag.data();
+	hamon::uint32_t mag_n = 1;
+	hamon::uint32_t accum = 0;
+	int count = 0;
+	for (auto p = first; p != last; ++p)
+	{
+		if (count == digits)
+		{
+			//value *= 1000000000;
+			//value += accum;
+			for (hamon::uint32_t i = 0; i < mag_n; ++i)
+			{
+				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], 1000000000, &accum);
+			}
+			if (accum != 0)
+			{
+				mag_p[mag_n] = accum;
+				++mag_n;
+			}
+
+			accum = 0;
+			count = 0;
+		}
+
+		accum *= 10;
+		accum += static_cast<hamon::uint32_t>(*p - '0');
+		++count;
+	}
+
+	//value *= hamon::detail::pow_n(10, count);
+	//value += accum;
+	if (count != 0)
+	{
+		auto const pow10 = hamon::detail::pow_n(hamon::uint32_t{10}, count);
+		for (hamon::uint32_t i = 0; i < mag_n; ++i)
+		{
+			mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10, &accum);
+		}
+		if (accum != 0)
+		{
+			mag_p[mag_n] = accum;
+			++mag_n;
+		}
+	}
+
+	mag.resize(mag_n);
+}
+
 template <typename F>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_floating_point_dec(const char* first, const char* last, F& value, hamon::chars_format fmt, bool negative, const char* ptr) HAMON_NOEXCEPT
@@ -1330,11 +1389,10 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	>;
 
 	BigInt d{};
-	hamon::from_chars(
+	unchecked_from_chars_dec(
 		mantissa_digits_first,
 		mantissa_digits_it,
-		d,
-		10);
+		d);
 
 	// この時点で、10進での仮数(d)と指数(p)が得られた。
 	// d * pow(10, p) が最終的に求めたい値である。
