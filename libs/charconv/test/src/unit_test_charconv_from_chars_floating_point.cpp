@@ -3716,7 +3716,7 @@ inline std::string make_random_number_string(int integer_part_length, int fracti
 }
 
 template <typename T, typename RNG>
-inline void performance_test_sub(int integer_part_length, int fraction_part_length, RNG& rng)
+inline void performance_test_sub(int integer_part_length, int fraction_part_length, int loop_count, RNG& rng)
 {
 	std::vector<std::string> str_tbl;
 	for (int i = 0; i < 100; ++i)
@@ -3727,7 +3727,7 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 	{
 		auto t0 = std::chrono::high_resolution_clock::now();
 
-		for (int i = 0; i < 200; ++i)
+		for (int i = 0; i < loop_count; ++i)
 		{
 			for (auto const& s : str_tbl)
 			{
@@ -3739,9 +3739,9 @@ inline void performance_test_sub(int integer_part_length, int fraction_part_leng
 		auto t1 = std::chrono::high_resolution_clock::now();
 		auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0);
 		std::cout <<
-			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") <<
-			">(" << integer_part_length <<
-			", " << fraction_part_length << "): " <<
+			"from_chars<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
+			"(" << std::setw(3) << integer_part_length <<
+			", " << std::setw(3) << fraction_part_length << "): " <<
 			elapsed.count() << " ms" << std::endl;
 	}
 }
@@ -3751,33 +3751,33 @@ inline void performance_test()
 {
 	std::default_random_engine rng;
 
-	performance_test_sub<T>(0, 4, rng);
-	performance_test_sub<T>(0, 8, rng);
-	performance_test_sub<T>(0, 16, rng);
-	performance_test_sub<T>(0, 32, rng);
-	performance_test_sub<T>(0, 64, rng);
-	performance_test_sub<T>(0, 128, rng);
-	performance_test_sub<T>(0, 256, rng);
-	performance_test_sub<T>(0, 512, rng);
-	performance_test_sub<T>(0, 700, rng);
-	performance_test_sub<T>(0, 800, rng);
+	performance_test_sub<T>(0,   4, 2000, rng);
+	performance_test_sub<T>(0,   8, 2000, rng);
+	performance_test_sub<T>(0,  16, 2000, rng);
+	performance_test_sub<T>(0,  32, 2000, rng);
+	performance_test_sub<T>(0,  64, 2000, rng);
+	performance_test_sub<T>(0, 128, 2000, rng);
+	performance_test_sub<T>(0, 256, 2000, rng);
+	performance_test_sub<T>(0, 512, 2000, rng);
+	performance_test_sub<T>(0, 700, 2000, rng);
+	performance_test_sub<T>(0, 800, 2000, rng);
 
-	performance_test_sub<T>(4, 0, rng);
-	performance_test_sub<T>(8, 0, rng);
-	performance_test_sub<T>(16, 0, rng);
-	performance_test_sub<T>(32, 0, rng);
-	performance_test_sub<T>(64, 0, rng);
-	performance_test_sub<T>(128, 0, rng);
-	performance_test_sub<T>(256, 0, rng);
-	performance_test_sub<T>(512, 0, rng);
+	performance_test_sub<T>(  4, 0, 10000, rng);
+	performance_test_sub<T>(  8, 0, 10000, rng);
+	performance_test_sub<T>( 16, 0, 10000, rng);
+	performance_test_sub<T>( 32, 0, 10000, rng);
+	performance_test_sub<T>( 64, 0, 10000, rng);
+	performance_test_sub<T>(128, 0, 10000, rng);
+	performance_test_sub<T>(256, 0, 10000, rng);
+	performance_test_sub<T>(512, 0, 10000, rng);
 
-	performance_test_sub<T>(4, 4, rng);
-	performance_test_sub<T>(8, 8, rng);
-	performance_test_sub<T>(16, 16, rng);
-	performance_test_sub<T>(32, 32, rng);
-	performance_test_sub<T>(64, 64, rng);
-	performance_test_sub<T>(128, 128, rng);
-	performance_test_sub<T>(256, 256, rng);
+	performance_test_sub<T>(  4,   4, 10000, rng);
+	performance_test_sub<T>(  8,   8, 10000, rng);
+	performance_test_sub<T>( 16,  16, 10000, rng);
+	performance_test_sub<T>( 32,  32, 10000, rng);
+	performance_test_sub<T>( 64,  64, 10000, rng);
+	performance_test_sub<T>(128, 128, 10000, rng);
+	performance_test_sub<T>(256, 256, 10000, rng);
 
 	std::cout << std::endl;
 }
