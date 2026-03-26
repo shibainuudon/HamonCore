@@ -1222,6 +1222,20 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 	mag.resize(mag_n);
 }
 
+inline HAMON_CXX14_CONSTEXPR hamon::string_view
+get_digit_string(const char* first, const char* last)
+{
+	const char* ptr = first;
+	for (; ptr != last; ++ptr)
+	{
+		if (!hamon::isdigit(*ptr))
+		{
+			break;
+		}
+	}
+	return {first, ptr};
+}
+
 template <typename F>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_floating_point_dec(const char* first, const char* last, F& value, hamon::chars_format fmt, bool negative, const char* ptr) HAMON_NOEXCEPT
@@ -1231,15 +1245,8 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// ptr は'-'記号を除いた文字列の最初
 
 	// 仮数部のうちの整数部の文字列を得る
-	const char* integer_part_first = ptr;
-	for (; ptr != last; ++ptr)
-	{
-		if (!hamon::isdigit(*ptr))
-		{
-			break;
-		}
-	}
-	hamon::string_view integer_part_str{integer_part_first, ptr};
+	hamon::string_view integer_part_str = get_digit_string(ptr, last);
+	ptr += integer_part_str.length();
 
 	// 小数点 '.' を飛ばす
 	if (ptr != last && *ptr == '.')
@@ -1248,15 +1255,8 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	}
 
 	// 仮数部のうちの小数部の文字列を得る
-	const char* fraction_part_first = ptr;
-	for (; ptr != last; ++ptr)
-	{
-		if (!hamon::isdigit(*ptr))
-		{
-			break;
-		}
-	}
-	hamon::string_view fraction_part_str{fraction_part_first, ptr};
+	hamon::string_view fraction_part_str = get_digit_string(ptr, last);
+	ptr += fraction_part_str.length();
 
 	// 整数部も小数部も空の場合は、無効な引数
 	if (integer_part_str.empty() && fraction_part_str.empty())
@@ -1405,11 +1405,11 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	hamon::int32_t e = p;
 
-	if (p >= 0)
+	if (p > 0)
 	{
 		d *= pow5<BigInt>(p);
 	}
-	else
+	else if (p < 0)
 	{
 		BigInt const denominator = pow5<BigInt>(-p);
 
