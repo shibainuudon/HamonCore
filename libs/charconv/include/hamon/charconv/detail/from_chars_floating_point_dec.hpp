@@ -1175,7 +1175,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 	auto& mag = access::magnitude(value);
 	mag.resize(hamon::min(static_cast<hamon::size_t>(length / digits + 1), mag.max_size()));
 	auto mag_p = mag.data();
-	hamon::uint32_t mag_n = 1;
+	hamon::uint32_t mag_n = 0;
 	hamon::uint32_t accum = 0;
 	int count = 0;
 	for (auto p = first; p != last; ++p)
@@ -1417,11 +1417,24 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 			e -= shift;
 		}
 
+#if 0
 		auto quo = d / denominator;
 		if (quo * denominator != d)	// if (d % denominator != 0)
 		{
 			has_zero_tail = false;
 		}
+#else
+		using access = hamon::detail::bigint_access;
+		BigInt quo;
+		BigInt rem;
+		hamon::bigint_algo::div_mod(
+			access::magnitude(quo), access::magnitude(rem),
+			access::magnitude(d), access::magnitude(denominator));
+		if (rem != 0)
+		{
+			has_zero_tail = false;
+		}
+#endif
 		d = quo;
 	}
 
