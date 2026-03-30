@@ -1236,6 +1236,25 @@ get_digit_string(const char* first, const char* last)
 	return {first, ptr};
 }
 
+inline HAMON_CXX14_CONSTEXPR char*
+copy_digit_string(char* dst_first, char* dst_last, hamon::string_view src_str, bool* has_zero_tail)
+{
+	const char* src_first = src_str.data();
+	auto src_length = src_str.length();
+	auto dst_length = static_cast<hamon::size_t>(dst_last - dst_first);
+	if (src_length > dst_length)
+	{
+		src_length = dst_length;
+		*has_zero_tail = false;
+	}
+	const char* src_last = src_first + src_length;
+	while (src_first != src_last)
+	{
+		*dst_first++ = *src_first++;
+	}
+	return dst_first;
+}
+
 template <typename F>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_floating_point_dec(const char* first, const char* last, F& value, hamon::chars_format fmt, bool negative, const char* ptr) HAMON_NOEXCEPT
@@ -1317,11 +1336,6 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	if (!integer_part_str.empty())
 	{
 		exponent += static_cast<hamon::int64_t>(integer_part_str.length());
-		if (fraction_part_str.empty())
-		{
-			// 小数部が0のときは、整数部の末尾の0を削除する
-			integer_part_str = remove_trailing_zeros(integer_part_str);
-		}
 	}
 	else
 	{
@@ -1354,29 +1368,10 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// これは最後の値の丸めに影響してくる。
 	bool has_zero_tail = true;
 
-	auto p = static_cast<int>(exponent);
+	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, integer_part_str, &has_zero_tail);
+	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, fraction_part_str, &has_zero_tail);
 
-	for (auto it = integer_part_str.begin(); it != integer_part_str.end(); ++it)
-	{
-		if (mantissa_digits_it == mantissa_digits_last)
-		{
-			has_zero_tail = false;
-			break;
-		}
-		*mantissa_digits_it++ = *it;
-		p--;
-	}
-
-	for (auto it = fraction_part_str.begin(); it != fraction_part_str.end(); ++it)
-	{
-		if (mantissa_digits_it == mantissa_digits_last)
-		{
-			has_zero_tail = false;
-			break;
-		}
-		*mantissa_digits_it++ = *it;
-		p--;
-	}
+	auto p = static_cast<int>(exponent - (mantissa_digits_it - mantissa_digits_first));
 
 //	HAMON_ASSERT(p >= -1091);
 //	HAMON_ASSERT(p <= 308);
