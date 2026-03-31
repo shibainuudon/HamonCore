@@ -18,21 +18,13 @@ namespace detail
 
 struct isxdigit_fn
 {
-private:
-	static HAMON_CXX11_CONSTEXPR bool
-	impl(unsigned char c) HAMON_NOEXCEPT
-	{
-		return hamon::isdigit(c) ||
-			('A' <= c && c <= 'F') ||
-			('a' <= c && c <= 'f');
-	}
-
-public:
 	template <typename T>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 	operator()(T c) const HAMON_NOEXCEPT
 	{
-		return c < 0x80 && impl(static_cast<unsigned char>(c));
+		return hamon::isdigit(c) ||
+			('A' <= c && c <= 'F') ||
+			('a' <= c && c <= 'f');
 	}
 };
 
