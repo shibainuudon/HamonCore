@@ -3867,9 +3867,13 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// Debug:     827 ms
 	// Release:   110 ms
 
-	// unchecked_from_chars_dec
+	// unchecked_from_chars_decを追加
 	// Debug:     723 ms
 	// Release:   104 ms
+
+	// from_chars_floating_point_decを最適化
+	// Debug:     579 ms
+	// Release:    84 ms
 #endif
 }
 

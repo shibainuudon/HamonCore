@@ -1158,23 +1158,19 @@ static constexpr pow5_data pow5_table[] =
 template <typename BigInt>
 inline HAMON_CXX14_CONSTEXPR BigInt pow5(int n)
 {
-	using VectorType = typename BigInt::vector_type;
 	auto const& tbl = pow5_table[n];
-	return BigInt{1, VectorType{&tbl.magnitude[0], &tbl.magnitude[tbl.size]}};
+	return BigInt{&tbl.magnitude[0], &tbl.magnitude[tbl.size]};
 }
 
 template <typename BigInt>
 inline HAMON_CXX14_CONSTEXPR void
 unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 {
-	using access = hamon::detail::bigint_access;
-
 	auto const digits = 9;
 	auto const length = last - first;
 
-	auto& mag = access::magnitude(value);
-	mag.resize(hamon::min(static_cast<hamon::size_t>(length / digits + 1), mag.max_size()));
-	auto mag_p = mag.data();
+	value.resize(hamon::min(static_cast<hamon::size_t>(length / digits + 1), value.max_size()));
+	auto mag_p = value.data();
 	hamon::uint32_t mag_n = 0;
 	hamon::uint32_t accum = 0;
 	int count = 0;
@@ -1219,7 +1215,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 		}
 	}
 
-	mag.resize(mag_n);
+	value.resize(mag_n);
 }
 
 inline HAMON_CXX14_CONSTEXPR hamon::string_view
@@ -1378,10 +1374,10 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	constexpr auto shift_space = hamon::numeric_limits<F>::digits + 1;	// mantissa_bits + 2
 
-	using BigInt = hamon::inplace_bigint<
+	using BigInt = typename hamon::inplace_bigint<
 		2552	// ceil(log2(10^768))
 		+ shift_space
-	>;
+	>::vector_type;
 
 	BigInt d{};
 	unchecked_from_chars_dec(
@@ -1402,7 +1398,10 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	if (p > 0)
 	{
-		d *= pow5<BigInt>(p);
+//		d *= pow5<BigInt>(p);
+		BigInt tmp;
+		hamon::bigint_algo::multiply(tmp, d, pow5<BigInt>(p));
+		d = tmp;
 	}
 	else if (p < 0)
 	{
@@ -1410,47 +1409,41 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 		// d のビット数が denominator のビット数+shift_space を上回るようにする
 		// (そうしないと、割り算をした結果の精度が不足するため)
-		int const shift = hamon::bit_width(denominator) + shift_space - hamon::bit_width(d);
+		int const shift = hamon::bigint_algo::bit_width(denominator) + shift_space - hamon::bigint_algo::bit_width(d);
 		if (shift > 0)
 		{
-			d <<= static_cast<hamon::size_t>(shift);
+			hamon::bigint_algo::bit_shift_left(d, static_cast<hamon::uintmax_t>(shift));	// d <<= shift
 			e -= shift;
 		}
 
-#if 0
-		auto quo = d / denominator;
-		if (quo * denominator != d)	// if (d % denominator != 0)
-		{
-			has_zero_tail = false;
-		}
-#else
-		using access = hamon::detail::bigint_access;
+		// quo = d / denominator;
+		// rem = d % denominator;
 		BigInt quo;
 		BigInt rem;
-		hamon::bigint_algo::div_mod(
-			access::magnitude(quo), access::magnitude(rem),
-			access::magnitude(d), access::magnitude(denominator));
-		if (rem != 0)
+		hamon::bigint_algo::div_mod(quo, rem, d, denominator);
+		if (!hamon::bigint_algo::is_zero(rem))
 		{
 			has_zero_tail = false;
 		}
-#endif
+
 		d = quo;
 	}
 
 	// 上位ビットだけにする
-	int shift = hamon::bit_width(d) - shift_space;
+	int shift = hamon::bigint_algo::bit_width(d) - shift_space;
 	if (shift > 0)
 	{
-		if (shift > hamon::countr_zero(d))
+		if (shift > hamon::bigint_algo::countr_zero(d))
 		{
 			has_zero_tail = false;
 		}
-		d >>= static_cast<hamon::size_t>(shift);
+		hamon::bigint_algo::bit_shift_right(d, static_cast<hamon::uintmax_t>(shift));	// d >>= shift
 		e += shift;
 	}
 
-	hamon::uint64_t m = static_cast<hamon::uint64_t>(d);
+//	hamon::uint64_t m = static_cast<hamon::uint64_t>(d);
+	hamon::uint64_t m{};
+	hamon::bigint_algo::to_uint(m, d);
 
 	auto const ec = make_floating_point_value(m, e, negative, has_zero_tail, value);
 	return {ptr, ec};
