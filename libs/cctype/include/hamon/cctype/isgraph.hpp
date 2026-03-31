@@ -17,19 +17,11 @@ namespace detail
 
 struct isgraph_fn
 {
-private:
-	static HAMON_CXX11_CONSTEXPR bool
-	impl(unsigned char c) HAMON_NOEXCEPT
-	{
-		return 0x21 <= c && c <= 0x7E;
-	}
-
-public:
 	template <typename T>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 	operator()(T c) const HAMON_NOEXCEPT
 	{
-		return c < 0x80 && impl(static_cast<unsigned char>(c));
+		return 0x21 <= c && c <= 0x7E;
 	}
 };
 
