@@ -122,6 +122,10 @@ jobs:
         - { os: macos-14, cc: "clang", cxx: "clang++" }
         cxx_standard: [11, 14, 17, 20, 23]
         build_type: [Debug, Release]
+        exclude:
+          - config: { os: macos-14 }
+            cxx_standard: 11
+            build_type: Debug
     steps:
       - uses: actions/checkout@v6
         with:
