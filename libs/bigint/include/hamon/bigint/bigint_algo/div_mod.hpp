@@ -15,6 +15,7 @@
 #include <hamon/bigint/bigint_algo/bit_width.hpp>
 #include <hamon/bigint/bigint_algo/compare.hpp>
 #include <hamon/bigint/bigint_algo/multiply.hpp>
+#include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/bigint/bigint_algo/sub.hpp>
 #include <hamon/bigint/bigint_algo/to_uint.hpp>
 #include <hamon/algorithm/max.hpp>
@@ -183,39 +184,58 @@ template <typename VectorType1, typename VectorType2, typename VectorType3>
 inline HAMON_CXX14_CONSTEXPR void
 div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorType3 const& rhs)
 {
-	detail::zero(quo);
-	detail::zero(rem);
+	{
+		auto const c = bigint_algo::compare(lhs, rhs);
 
-	auto const p = lhs.data();
+		// lhs < rhs
+		if (c < 0)
+		{
+			detail::zero(quo);
+			detail::copy(rem, lhs);
+			return;
+		}
+
+		// lhs == rhs
+		if (c == 0)
+		{
+			detail::zero(quo);
+			quo[0] = 1;
+			detail::zero(rem);
+			return;
+		}
+	}
+
+	auto const p1 = lhs.data();
+	auto const p2 = rhs.data();
 	auto const n1 = detail::actual_size(lhs);
 	auto const n2 = detail::actual_size(rhs);
 
-	if (n1 < n2)
-	{
-		detail::copy(rem, lhs);
-		return;
-	}
-
 	hamon::size_t i = n1;
 
-	detail::resize(rem, n2);
-	for (hamon::size_t j = n2; j > 0; --j)
+	auto n3 = n2;
+	if (p1[n1-1] < p2[n2-1])
 	{
-		rem[j - 1] = p[i - 1];
-		--i;
+		n3++;
 	}
 
-	if (i != 0 && bigint_algo::compare(rem, rhs) < 0)
+	detail::resize(rem, n3);
 	{
-		push_front(rem, p[i - 1]);
-		--i;
+		auto rem_p = rem.data();
+		for (hamon::size_t j = n3; j > 0; --j)
+		{
+			rem_p[j - 1] = p1[i - 1];
+			--i;
+		}
 	}
 
-	VectorType1 tmp{0};
+	detail::resize(quo, i + 1);
+	auto quo_p = quo.data();
+
+	VectorType1 tmp{};
 	for (;;)
 	{
 		auto const q = div1(rem, rhs, tmp);
-		push_front(quo, q);
+		quo_p[i] = q;
 
 		bigint_algo::sub(rem, tmp);
 
@@ -224,9 +244,11 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 			break;
 		}
 
-		push_front(rem, p[i - 1]);
+		push_front(rem, p1[i - 1]);
 		--i;
 	}
+
+	bigint_algo::normalize(quo);
 }
 
 }	// namespace div_mod_detail
