@@ -121,6 +121,23 @@ HAMON_CXX14_CONSTEXPR bool test2()
 	return true;
 }
 
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test3()
+{
+	{
+		hamon::allocator<T> alloc;
+		auto* p = alloc.allocate(10);
+		auto ret = hamon::detail::uninitialized_value_construct_n_impl(p, 4);
+		VERIFY(ret == p + 4);
+		VERIFY(p[0] == T{});
+		VERIFY(p[1] == T{});
+		VERIFY(p[2] == T{});
+		VERIFY(p[3] == T{});
+		alloc.deallocate(p, 10);
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedValueConstructNImplTest)
@@ -130,6 +147,10 @@ GTEST_TEST(MemoryTest, UninitializedValueConstructNImplTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
+
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<char>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<short>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<int>());
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
