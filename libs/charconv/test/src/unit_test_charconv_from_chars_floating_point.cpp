@@ -3882,6 +3882,14 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// bigint_algo::div_mod を最適化
 	// Debug:     478 ms
 	// Release:    83 ms
+
+	// uninitialized_value_construct_n_impl を最適化
+	// Debug:     449 ms
+	// Release:    84 ms
+
+	// unchecked_from_chars_dec を最適化(mulcをマクロ化)
+	// Debug:     425 ms
+	// Release:    83 ms
 #endif
 }
 

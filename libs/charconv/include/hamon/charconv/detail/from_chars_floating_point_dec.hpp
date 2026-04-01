@@ -1162,6 +1162,16 @@ inline HAMON_CXX14_CONSTEXPR BigInt pow5(int n)
 	return BigInt{&tbl.magnitude[0], &tbl.magnitude[tbl.size]};
 }
 
+// x * y + c
+// bigint_algo::detail::mulc を、さらに高速化するためにマクロ化
+#define HAMON_FROM_CHARS_MULC(x, y, c)	\
+	auto t = static_cast<hamon::uint64_t>(	\
+		static_cast<hamon::uint64_t>(x) *	\
+		static_cast<hamon::uint64_t>(y) +	\
+		static_cast<hamon::uint64_t>(c));	\
+	c = static_cast<hamon::uint32_t>(t >> 32);	\
+	x = static_cast<hamon::uint32_t>(t)
+
 template <typename BigInt>
 inline HAMON_CXX14_CONSTEXPR void
 unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
@@ -1182,7 +1192,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 			//value += accum;
 			for (hamon::uint32_t i = 0; i < mag_n; ++i)
 			{
-				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], 1000000000, &accum);
+				HAMON_FROM_CHARS_MULC(mag_p[i], 1000000000, accum);
 			}
 			if (accum != 0)
 			{
@@ -1194,8 +1204,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 			count = 0;
 		}
 
-		accum *= 10;
-		accum += static_cast<hamon::uint32_t>(*p - '0');
+		accum = accum * 10 + static_cast<hamon::uint32_t>(*p - '0');
 		++count;
 	}
 
@@ -1206,7 +1215,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 		auto const pow10 = hamon::detail::pow_n(hamon::uint32_t{10}, count);
 		for (hamon::uint32_t i = 0; i < mag_n; ++i)
 		{
-			mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10, &accum);
+			HAMON_FROM_CHARS_MULC(mag_p[i], pow10, accum);
 		}
 		if (accum != 0)
 		{
@@ -1217,6 +1226,8 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 
 	value.resize(mag_n);
 }
+
+#undef HAMON_FROM_CHARS_MULC
 
 inline HAMON_CXX14_CONSTEXPR hamon::string_view
 get_digit_string(const char* first, const char* last)
