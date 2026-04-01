@@ -11,6 +11,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -61,6 +62,11 @@ GTEST_TEST(BigIntAlgoTest, NormalizeTest)
 	test<hamon::inplace_vector<hamon::uint16_t, 32>>();
 	test<hamon::inplace_vector<hamon::uint32_t, 100>>();
 	test<hamon::inplace_vector<hamon::uint64_t, 1024>>();
+
+	test<MyVector<hamon::uint8_t, 10>>();
+	test<MyVector<hamon::uint16_t, 32>>();
+	test<MyVector<hamon::uint32_t, 100>>();
+	test<MyVector<hamon::uint64_t, 1024>>();
 }
 
 }	// namespace bigint_algo_normalize_test

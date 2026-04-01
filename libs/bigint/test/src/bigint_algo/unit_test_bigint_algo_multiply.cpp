@@ -11,6 +11,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -260,6 +261,68 @@ GTEST_TEST(BigIntAlgoTest, MultiplyTest)
 		hamon::array<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::array<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
 		hamon::array<hamon::uint64_t, 4>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF},
+		false));
+
+	// MyVector
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 1>{0},
+		MyVector<hamon::uint8_t, 1>{0},
+		MyVector<hamon::uint8_t, 1>{0},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 1>{2},
+		MyVector<hamon::uint8_t, 1>{3},
+		MyVector<hamon::uint8_t, 1>{6},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 2>{123},
+		MyVector<hamon::uint8_t, 2>{45},
+		MyVector<hamon::uint8_t, 2>{0x9F, 0x15},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 2>{0x20, 0x10},
+		MyVector<hamon::uint8_t, 2>{0x40, 0x30},
+		MyVector<hamon::uint8_t, 2>{0x00, 0x08},
+		true));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0x20, 0x10},
+		MyVector<hamon::uint8_t, 4>{0x40, 0x30},
+		MyVector<hamon::uint8_t, 4>{0x00, 0x08, 0x0A, 0x03},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 4>{0x68B1, 0x3ADE},
+		MyVector<hamon::uint16_t, 4>{0x0003},
+		MyVector<hamon::uint16_t, 4>{0x3A13, 0xB09B},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 4>{0xFF07, 0x5088, 0x0007},
+		MyVector<hamon::uint16_t, 4>{0xE3EC, 0x5438, 0x0006},
+		MyVector<hamon::uint16_t, 4>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43},
+		true));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 5>{0xFF07, 0x5088, 0x0007},
+		MyVector<hamon::uint16_t, 5>{0xE3EC, 0x5438, 0x0006},
+		MyVector<hamon::uint16_t, 5>{0x4F74, 0xCDF6, 0x0EF7, 0x4B43, 0x002E},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint32_t, 4>{0x5088FF07, 0x00000007},
+		MyVector<hamon::uint32_t, 4>{0x5438E3EC, 0x00000006},
+		MyVector<hamon::uint32_t, 4>{0xCDF64F74, 0x4B430EF7, 0x0000002E},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint64_t, 2>{0x000000075088FF07},
+		MyVector<hamon::uint64_t, 2>{0x000000065438E3EC},
+		MyVector<hamon::uint64_t, 2>{0x4B430EF7CDF64F74, 0x000000000000002E},
+		false));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint64_t, 3>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		MyVector<hamon::uint64_t, 3>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		MyVector<hamon::uint64_t, 3>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE},
+		true));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		MyVector<hamon::uint64_t, 4>{0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF},
+		MyVector<hamon::uint64_t, 4>{0x0000000000000001, 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF},
 		false));
 }
 

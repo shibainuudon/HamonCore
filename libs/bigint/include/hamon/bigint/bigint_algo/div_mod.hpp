@@ -10,6 +10,8 @@
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/copy.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/one.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
 #include <hamon/bigint/bigint_algo/bit_width.hpp>
@@ -22,7 +24,6 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -42,7 +43,7 @@ template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
 bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 {
-	using T = hamon::ranges::range_value_t<VectorType>;
+	using T = detail::vector_value_t<VectorType>;
 	auto const bits = static_cast<unsigned int>(hamon::bitsof<T>());
 	auto const rem = static_cast<unsigned int>(shift % bits);
 	auto const quo = static_cast<unsigned int>((shift + bits - 1) / bits);
@@ -68,7 +69,7 @@ bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 }
 
 template <typename VectorType1, typename VectorType2,
-	typename T = hamon::ranges::range_value_t<VectorType1>>
+	typename T = detail::vector_value_t<VectorType1>>
 inline HAMON_CXX14_CONSTEXPR T
 div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType1& x)
 {
@@ -166,7 +167,7 @@ push_front(VectorType& vec, T x)
 {
 	if (bigint_algo::is_zero(vec))
 	{
-		vec[0] = x;
+		vec.data()[0] = x;
 		return;
 	}
 
@@ -198,8 +199,7 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 		// lhs == rhs
 		if (c == 0)
 		{
-			detail::zero(quo);
-			quo[0] = 1;
+			detail::one(quo);
 			detail::zero(rem);
 			return;
 		}
@@ -254,9 +254,9 @@ div_mod_impl(VectorType1& quo, VectorType1& rem, VectorType2 const& lhs, VectorT
 }	// namespace div_mod_detail
 
 template <typename VectorType1, typename VectorType2, typename VectorType3,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
-	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename T1 = detail::vector_value_t<VectorType1>,
+	typename T2 = detail::vector_value_t<VectorType2>,
+	typename T3 = detail::vector_value_t<VectorType3>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_same<T1, T2>,
 		hamon::is_same<T1, T3>

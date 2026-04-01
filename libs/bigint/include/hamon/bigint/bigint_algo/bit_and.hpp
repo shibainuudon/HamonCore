@@ -9,10 +9,10 @@
 
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -44,8 +44,8 @@ bit_and_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 }	// namespace bit_and_detail
 
 template <typename VectorType1, typename VectorType2,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename T1 = detail::vector_value_t<VectorType1>,
+	typename T2 = detail::vector_value_t<VectorType2>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_same<T1, T2>
 	>::value>

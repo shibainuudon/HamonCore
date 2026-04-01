@@ -11,6 +11,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -259,6 +260,44 @@ GTEST_TEST(BigIntAlgoTest, PowNTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a, 6, VectorType{0x5D3AD92018237689, 0x000000022B5AD2E7}, false));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a, 7, VectorType{0x05AC0116D14CADED, 0x000277DDED37D756}, false));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a, 8, VectorType{0x0C993B10935F47E1, 0xCEEB937769D3D2A2}, true));
+	}
+
+	// MyVector
+	{
+		using VectorType = MyVector<hamon::uint8_t, 10>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0},   0, VectorType{1}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0},   1, VectorType{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0},   2, VectorType{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0},   8, VectorType{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0}, 100, VectorType{0}, false));
+	}
+	{
+		using VectorType = MyVector<hamon::uint8_t, 10>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{1},   0, VectorType{1}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{1},   1, VectorType{1}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{1},   2, VectorType{1}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{1},   8, VectorType{1}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{1}, 100, VectorType{1}, false));
+	}
+	{
+		using VectorType = MyVector<hamon::uint8_t, 8>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 0, VectorType{0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 1, VectorType{0x34, 0x12}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 2, VectorType{0x90, 0x5A, 0x4B, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 3, VectorType{0x40, 0x85, 0xAC, 0x8F, 0x17}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 4, VectorType{0x00, 0x91, 0x69, 0x50, 0xE3, 0xAC, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 5, VectorType{0x00, 0x74, 0xA3, 0xC1, 0xD3, 0x19, 0x7F, 0x1E}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x34, 0x12}, 6, VectorType{0x00, 0x90, 0x5B, 0xD3, 0xA0, 0x22, 0xA2, 0x21}, true));
+	}
+	{
+		using VectorType = MyVector<hamon::uint16_t, 4>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 0, VectorType{0x0001}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 1, VectorType{0x0ABC}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 2, VectorType{0x3A10, 0x0073}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 3, VectorType{0x43C0, 0xD4E3, 0x0004}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 4, VectorType{0x4100, 0x378B, 0x33DD}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 5, VectorType{0xBC00, 0x3ACD, 0xBAA0, 0x022C}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(VectorType{0x0ABC}, 6, VectorType{0x1000, 0x386E, 0x4FF7, 0x5823}, true));
 	}
 }
 

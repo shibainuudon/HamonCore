@@ -11,6 +11,13 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
+
+namespace hamon_bigint_test
+{
+
+namespace bigint_algo_compare_test
+{
 
 GTEST_TEST(BigIntAlgoTest, CompareTest)
 {
@@ -128,4 +135,23 @@ GTEST_TEST(BigIntAlgoTest, CompareTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(a, b));
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(b, a));
 	}
+
+	// MyVector
+	{
+		using Vector = MyVector<hamon::uint8_t, 4>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0}, Vector{0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0}, Vector{1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{1}, Vector{0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{1}, Vector{1}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x00, 0x10}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x00, 0x10}, Vector{0x01, 0x10}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 0, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x12, 0x34}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ( 1, hamon::bigint_algo::compare(Vector{0x12, 0x34}, Vector{0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(-1, hamon::bigint_algo::compare(Vector{0x34, 0x12}, Vector{0x12, 0x34}));
+	}
 }
+
+}	// namespace bigint_algo_compare_test
+
+}	// namespace hamon_bigint_test

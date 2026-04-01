@@ -12,6 +12,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -324,6 +325,97 @@ GTEST_TEST(BigIntAlgoTest, ToUIntTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000, 0x0000000000000000}, hamon::uint64_t{0x0000000000000000}));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x123456789ABCDEF0, 0x0000000000000000}, hamon::uint64_t{0x123456789ABCDEF0}));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFFFFFFFFFFFFFF, 0x0000000000000000}, hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000, 0x0000000000000001}, hamon::uint64_t{}, hamon::errc::value_too_large));
+	}
+
+	// MyVector
+	{
+		using Vector = MyVector<hamon::uint8_t, 128>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00},       hamon::uint8_t{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x12},       hamon::uint8_t{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF},       hamon::uint8_t{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x01}, hamon::uint8_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00},             hamon::uint16_t{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x01},       hamon::uint16_t{0x0100}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x34, 0x12},       hamon::uint16_t{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},       hamon::uint16_t{0xFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x00, 0x01}, hamon::uint16_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00},                         hamon::uint32_t{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x00, 0x01},             hamon::uint32_t{0x00010000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x78, 0x56, 0x34, 0x12},       hamon::uint32_t{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF, 0xFF, 0xFF},       hamon::uint32_t{0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x00, 0x00, 0x00, 0x01}, hamon::uint32_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00},                                                 hamon::uint64_t{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x00, 0x00, 0x00, 0x01},                         hamon::uint64_t{0x0000000100000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12},       hamon::uint64_t{0x123456789ABCDEF0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF},       hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01}, hamon::uint64_t{}, hamon::errc::value_too_large));
+	}
+	{
+		using Vector = MyVector<hamon::uint16_t, 10>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000}, hamon::uint8_t{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00FF}, hamon::uint8_t{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0012}, hamon::uint8_t{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0100}, hamon::uint8_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000},         hamon::uint16_t{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0100},         hamon::uint16_t{0x0100}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x1234},         hamon::uint16_t{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFF},         hamon::uint16_t{0xFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000, 0x0001}, hamon::uint16_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000},                 hamon::uint32_t{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000, 0x0001},         hamon::uint32_t{0x00010000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x5678, 0x1234},         hamon::uint32_t{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFF, 0xFFFF},         hamon::uint32_t{0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000, 0x0000, 0x0001}, hamon::uint32_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000},                                 hamon::uint64_t{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000, 0x0000, 0x0001},                 hamon::uint64_t{0x0000000100000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xDEF0, 0x9ABC, 0x5678, 0x1234},         hamon::uint64_t{0x123456789ABCDEF0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF},         hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000, 0x0000, 0x0000, 0x0000, 0x0001}, hamon::uint64_t{}, hamon::errc::value_too_large));
+	}
+	{
+		using Vector = MyVector<hamon::uint32_t, 8>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000}, hamon::uint8_t{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000012}, hamon::uint8_t{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x000000FF}, hamon::uint8_t{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000100}, hamon::uint8_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000}, hamon::uint16_t{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000100}, hamon::uint16_t{0x0100}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00001234}, hamon::uint16_t{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000FFFF}, hamon::uint16_t{0xFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00010000}, hamon::uint16_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000},             hamon::uint32_t{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00010000},             hamon::uint32_t{0x00010000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x12345678},             hamon::uint32_t{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFFFFFF},             hamon::uint32_t{0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000, 0x00000001}, hamon::uint32_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000},                         hamon::uint64_t{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000, 0x00000001},             hamon::uint64_t{0x0000000100000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x9ABCDEF0, 0x12345678},             hamon::uint64_t{0x123456789ABCDEF0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFFFFFF, 0xFFFFFFFF},             hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000, 0x00000000, 0x00000001}, hamon::uint64_t{}, hamon::errc::value_too_large));
+	}
+	{
+		using Vector = MyVector<hamon::uint64_t, 5>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000}, hamon::uint8_t{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000012}, hamon::uint8_t{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000000000FF}, hamon::uint8_t{0xFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000100}, hamon::uint8_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x123456789ABCDEF0}, hamon::uint8_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000}, hamon::uint16_t{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000100}, hamon::uint16_t{0x0100}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000001234}, hamon::uint16_t{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x000000000000FFFF}, hamon::uint16_t{0xFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000010000}, hamon::uint16_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000}, hamon::uint32_t{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000010000}, hamon::uint32_t{0x00010000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000012345678}, hamon::uint32_t{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x00000000FFFFFFFF}, hamon::uint32_t{0xFFFFFFFF}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000100000000}, hamon::uint32_t{}, hamon::errc::value_too_large));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000}, hamon::uint64_t{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000100000000}, hamon::uint64_t{0x0000000100000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x123456789ABCDEF0}, hamon::uint64_t{0x123456789ABCDEF0}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFFFFFFFFFFFFFFFF}, hamon::uint64_t{0xFFFFFFFFFFFFFFFF}));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0x0000000000000000, 0x0000000000000001}, hamon::uint64_t{}, hamon::errc::value_too_large));
 	}
 }

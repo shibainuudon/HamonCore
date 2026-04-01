@@ -12,6 +12,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -262,6 +263,100 @@ GTEST_TEST(BigIntAlgoTest, FromUIntTest)
 	}
 	{
 		using Vector = hamon::array<hamon::uint64_t, 1>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x0000000000000012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x0000000000001234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x0000000012345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x123456789ABCDEF0}));
+	}
+
+	// MyVector
+	{
+		using Vector = MyVector<hamon::uint8_t, 8>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x78, 0x56, 0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0xF0, 0xDE, 0xBC, 0x9A, 0x78, 0x56, 0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000123}, Vector{0x23, 0x01}));
+	}
+	{
+		using Vector = MyVector<hamon::uint8_t, 3>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x34, 0x12}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x78, 0x56, 0x34}, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x00}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0xF0, 0xDE, 0xBC}, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000123}, Vector{0x23, 0x01}));
+	}
+	{
+		using Vector = MyVector<hamon::uint16_t, 4>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x0012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x5678, 0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0xDEF0, 0x9ABC, 0x5678, 0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000123}, Vector{0x0123}));
+	}
+	{
+		using Vector = MyVector<hamon::uint16_t, 3>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x0012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x5678, 0x1234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x0000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0xDEF0, 0x9ABC, 0x5678}, hamon::errc::result_out_of_range));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000123}, Vector{0x0123}));
+	}
+	{
+		using Vector = MyVector<hamon::uint32_t, 2>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x00000012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x00001234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x9ABCDEF0, 0x12345678}));
+	}
+	{
+		using Vector = MyVector<hamon::uint32_t, 1>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x00000012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x00001234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x12345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x00000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x9ABCDEF0}, hamon::errc::result_out_of_range));
+	}
+	{
+		using Vector = MyVector<hamon::uint64_t, 2>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x0000000000000012}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x1234},             Vector{0x0000000000001234}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x00000000},         Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint32_t{0x12345678},         Vector{0x0000000012345678}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x0000000000000000}, Vector{0x0000000000000000}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint64_t{0x123456789ABCDEF0}, Vector{0x123456789ABCDEF0}));
+	}
+	{
+		using Vector = MyVector<hamon::uint64_t, 1>;
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x00},                Vector{0x0000000000000000}));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint8_t{0x12},                Vector{0x0000000000000012}));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(hamon::uint16_t{0x0000},             Vector{0x0000000000000000}));

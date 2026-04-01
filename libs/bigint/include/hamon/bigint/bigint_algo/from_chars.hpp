@@ -7,11 +7,10 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_FROM_CHARS_HPP
 
-#include <hamon/bigint/bigint_algo/compare.hpp>
-//#include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
 #include <hamon/bigint/bigint_algo/detail/mulc.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/charconv/from_chars_result.hpp>
@@ -20,13 +19,9 @@
 #include <hamon/cmath/floor.hpp>
 #include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-//#include <hamon/utility/move.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -34,14 +29,11 @@ namespace hamon
 namespace bigint_algo
 {
 
-namespace from_chars_detail
-{
-
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars(char const* first, char const* last, VectorType& value, int base)
 {
-	using T = hamon::ranges::range_value_t<VectorType>;
+	using T = detail::vector_value_t<VectorType>;
 	static_assert(hamon::is_unsigned<T>::value, "");
 
 	auto const ubase = static_cast<T>(base);
@@ -110,29 +102,6 @@ from_chars(char const* first, char const* last, VectorType& value, int base)
 	detail::move(value, x);
 
 	return {p, hamon::errc{}};
-}
-
-}	// namespace from_chars_detail
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, hamon::vector<T>& value, int base = 10)
-{
-	return from_chars_detail::from_chars(first, last, value, base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, hamon::inplace_vector<T, N>& value, int base = 10)
-{
-	return from_chars_detail::from_chars(first, last, value, base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars(char const* first, char const* last, hamon::array<T, N>& value, int base = 10)
-{
-	return from_chars_detail::from_chars(first, last, value, base);
 }
 
 }	// namespace bigint_algo

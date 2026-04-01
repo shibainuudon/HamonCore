@@ -7,16 +7,15 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_TO_UINT_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_TO_UINT_HPP
 
-#include <hamon/array.hpp>
+#include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/countl_zero.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -65,31 +64,13 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 
 }	// namespace to_uint_detail
 
-template <typename UInt, typename T,
+template <typename UInt, typename VectorType,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
 inline HAMON_CXX14_CONSTEXPR to_uint_result
-to_uint(UInt& dst, hamon::vector<T> const& value)
+to_uint(UInt& dst, VectorType const& value)
 {
-	return to_uint_detail::to_uint(dst, value.data(), value.size());
-}
-
-template <typename UInt, typename T, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
->
-inline HAMON_CXX14_CONSTEXPR to_uint_result
-to_uint(UInt& dst, hamon::inplace_vector<T, N> const& value)
-{
-	return to_uint_detail::to_uint(dst, value.data(), value.size());
-}
-
-template <typename UInt, typename T, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
->
-inline HAMON_CXX14_CONSTEXPR to_uint_result
-to_uint(UInt& dst, hamon::array<T, N> const& value)
-{
-	return to_uint_detail::to_uint(dst, value.data(), value.size());
+	return to_uint_detail::to_uint(dst, value.data(), detail::actual_size(value));
 }
 
 }	// namespace bigint_algo

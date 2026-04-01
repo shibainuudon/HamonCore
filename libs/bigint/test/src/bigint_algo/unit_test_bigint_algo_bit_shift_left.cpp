@@ -6,11 +6,13 @@
 
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/array.hpp>
+#include <hamon/cstddef.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/inplace_vector.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -22,7 +24,7 @@ namespace bigint_algo_bit_shift_left_test
 
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR bool
-test(VectorType a, hamon::uintmax_t b, VectorType const& expected, bool overflow)
+test(VectorType a, hamon::size_t b, VectorType const& expected, bool overflow)
 {
 	bool f = hamon::bigint_algo::bit_shift_left(a, b);
 	VERIFY(a == expected);
@@ -155,6 +157,14 @@ GTEST_TEST(BigIntAlgoTest, BitShiftLeftTest)
 	// array
 	{
 		using Vector = hamon::array<hamon::uint8_t, 3>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   0, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   1, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   2, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   8, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0}, 100, Vector{0}, false));
+	}
+	{
+		using Vector = hamon::array<hamon::uint8_t, 3>;
 		HAMON_CXX14_CONSTEXPR Vector const a{0xFF, 0x7F, 0x00};
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a,  0, Vector{0xFF, 0x7F, 0x00}, false));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a,  1, Vector{0xFE, 0xFF, 0x00}, false));
@@ -201,6 +211,51 @@ GTEST_TEST(BigIntAlgoTest, BitShiftLeftTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a,126, Vector{0x0000000000000000, 0xC000000000000000}, true));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a,127, Vector{0x0000000000000000, 0x8000000000000000}, true));
 		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(a,128, Vector{0x0000000000000000, 0x0000000000000000}, true));
+	}
+
+	// MyVector
+	{
+		using Vector = MyVector<hamon::uint8_t, 3>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   0, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   1, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   2, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0},   8, Vector{0}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0}, 100, Vector{0}, false));
+	}
+	{
+		using Vector = MyVector<hamon::uint8_t, 3>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  0, Vector{0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  1, Vector{0x02}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  2, Vector{0x04}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  3, Vector{0x08}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  7, Vector{0x80}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  8, Vector{0x00, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1},  9, Vector{0x00, 0x02}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 15, Vector{0x00, 0x80}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 16, Vector{0x00, 0x00, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 17, Vector{0x00, 0x00, 0x02}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 23, Vector{0x00, 0x00, 0x80}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 24, Vector{0x00}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{1}, 25, Vector{0x00}, true));
+	}
+	{
+		using Vector = MyVector<hamon::uint8_t, 4>;
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  0, Vector{0xFF, 0xFF}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  1, Vector{0xFE, 0xFF, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  2, Vector{0xFC, 0xFF, 0x03}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  3, Vector{0xF8, 0xFF, 0x07}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  7, Vector{0x80, 0xFF, 0x7F}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  8, Vector{0x00, 0xFF, 0xFF}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF},  9, Vector{0x00, 0xFE, 0xFF, 0x01}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 15, Vector{0x00, 0x80, 0xFF, 0x7F}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 16, Vector{0x00, 0x00, 0xFF, 0xFF}, false));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 17, Vector{0x00, 0x00, 0xFE, 0xFF}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 23, Vector{0x00, 0x00, 0x80, 0xFF}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 24, Vector{0x00, 0x00, 0x00, 0xFF}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 25, Vector{0x00, 0x00, 0x00, 0xFE}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 31, Vector{0x00, 0x00, 0x00, 0x80}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 32, Vector{0x00}, true));
+		HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(Vector{0xFF, 0xFF}, 33, Vector{0x00}, true));
 	}
 }
 
