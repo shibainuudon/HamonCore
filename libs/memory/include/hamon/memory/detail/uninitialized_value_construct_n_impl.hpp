@@ -11,9 +11,16 @@
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/destroy_impl.hpp>
+#include <hamon/memory/to_address.hpp>
+#include <hamon/cstring/memset.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/config.hpp>
 
@@ -22,6 +29,31 @@ namespace hamon
 
 namespace detail
 {
+
+template <typename Allocator, typename Iter, typename Size,
+	typename ValueType = hamon::iter_value_t<Iter>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_arithmetic<ValueType>,
+		hamon::contiguous_iterator_t<Iter>
+	>::value>
+>
+HAMON_CXX14_CONSTEXPR Iter
+uninitialized_value_construct_n_impl(
+	Allocator& allocator, Iter first, Size n,
+	hamon::detail::overload_priority<2>)
+{
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
+	{
+		hamon::memset(hamon::to_address(first), 0, static_cast<hamon::size_t>(n) * sizeof(ValueType));
+		hamon::advance(first, n);
+		return first;
+	}
+#endif
+
+	return uninitialized_value_construct_n_impl(
+		allocator, first, n, hamon::detail::overload_priority<1>{});
+}
 
 template <typename Allocator, typename Iter, typename Size,
 	typename ValueType = hamon::iter_value_t<Iter>,
@@ -76,7 +108,7 @@ uninitialized_value_construct_n_impl(Allocator& allocator, Iter first, Size n)
 {
 	return hamon::detail::uninitialized_value_construct_n_impl(
 		allocator, first, n,
-		hamon::detail::overload_priority<1>{});
+		hamon::detail::overload_priority<2>{});
 }
 
 template <typename Iter, typename Size>
