@@ -11,15 +11,24 @@
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/destroy_impl.hpp>
+#include <hamon/memory/to_address.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
+#include <hamon/cstring/memmove.hpp>
 #include <hamon/detail/overload_priority.hpp>
+#include <hamon/iterator/advance.hpp>
+#include <hamon/iterator/concepts/contiguous_iterator.hpp>
+#include <hamon/iterator/concepts/sized_sentinel_for.hpp>
+#include <hamon/iterator/distance.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/iterator/unreachable_sentinel_t.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/config.hpp>
@@ -31,13 +40,47 @@ namespace detail
 {
 
 template <typename Allocator, typename I, typename S1, typename O, typename S2,
+	typename T1 = hamon::iter_value_t<I>,
+	typename T2 = hamon::iter_value_t<O>,
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_arithmetic<T1>,
+		hamon::is_arithmetic<T2>,
+		hamon::is_same<T1, T2>,
+		hamon::contiguous_iterator_t<I>,
+		hamon::contiguous_iterator_t<O>,
+		hamon::sized_sentinel_for_t<S1, I>
+	>::value>
+>
+HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
+uninitialized_copy_impl(
+	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
+	hamon::detail::overload_priority<3>)
+{
+#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+	if (!hamon::is_constant_evaluated())
+	{
+		auto src = hamon::to_address(ifirst);
+		auto dst = hamon::to_address(ofirst);
+		auto n = hamon::distance(ifirst, ilast);
+		hamon::memmove(dst, src, static_cast<hamon::size_t>(n) * sizeof(T1));
+		hamon::advance(ifirst, n);
+		hamon::advance(ofirst, n);
+		return {ifirst, ofirst};
+	}
+#endif
+
+	return uninitialized_copy_impl(
+		allocator, ifirst, ilast, ofirst, olast, hamon::detail::overload_priority<2>{});
+}
+
+template <typename Allocator, typename I, typename S1, typename O, typename S2,
 	typename SrcType = hamon::iter_const_reference_t<I>,
 	typename RefType = hamon::iter_reference_t<O>,
 	typename ValueType = hamon::iter_value_t<O>,
-	typename = hamon::enable_if_t<
-		hamon::is_trivially_assignable<RefType, SrcType>::value &&
-		hamon::is_trivially_constructible<ValueType, SrcType>::value
-	>
+	typename = hamon::enable_if_t<hamon::conjunction<
+		hamon::is_trivially_assignable<RefType, SrcType>,
+		hamon::is_trivially_constructible<ValueType, SrcType>
+	>::value>
 >
 HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_copy_impl(
@@ -116,7 +159,7 @@ uninitialized_copy_impl(Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 o
 {
 	return hamon::detail::uninitialized_copy_impl(
 		allocator, ifirst, ilast, ofirst, olast,
-		hamon::detail::overload_priority<2>{});
+		hamon::detail::overload_priority<3>{});
 }
 
 template <typename I, typename S1, typename O, typename S2>

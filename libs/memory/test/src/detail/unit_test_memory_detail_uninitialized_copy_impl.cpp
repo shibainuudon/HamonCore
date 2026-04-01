@@ -144,6 +144,25 @@ HAMON_CXX14_CONSTEXPR bool test2()
 	return true;
 }
 
+template <typename T>
+HAMON_CXX14_CONSTEXPR bool test3()
+{
+	{
+		hamon::allocator<T> alloc;
+		auto* p = alloc.allocate(10);
+		T const a[] = { T{1}, T{2}, T{3}, T{4} };
+		auto ret = hamon::detail::uninitialized_copy_impl(a, a + 4, p);
+		VERIFY(ret.in  == a + 4);
+		VERIFY(ret.out == p + 4);
+		VERIFY(p[0] == T{1});
+		VERIFY(p[1] == T{2});
+		VERIFY(p[2] == T{3});
+		VERIFY(p[3] == T{4});
+		alloc.deallocate(p, 10);
+	}
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(MemoryTest, UninitializedCopyImplTest)
@@ -155,6 +174,10 @@ GTEST_TEST(MemoryTest, UninitializedCopyImplTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<char>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<short>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test2<int>());
+
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<char>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<short>());
+	MEMORY_TEST_CONSTEXPR_EXPECT_TRUE(test3<int>());
 
 	{
 		hamon::allocator<S1> alloc;
