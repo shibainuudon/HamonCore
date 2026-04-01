@@ -14,9 +14,9 @@
 #include <hamon/bigint/bigint_algo/detail/mul_addc.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_integral.hpp>
@@ -104,7 +104,7 @@ multiply_impl(VectorType& out, T const* p1, hamon::size_t n1, T const* p2, hamon
 }	// namespace multiply_detail
 
 template <typename VectorType, typename T2,
-	typename T1 = hamon::ranges::range_value_t<VectorType>,
+	typename T1 = detail::vector_value_t<VectorType>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_integral<T2>,
 		hamon::is_same<T1, T2>
@@ -126,9 +126,9 @@ multiply(VectorType& lhs, T2 rhs)
 // オーバーフローフラグを戻り値で返す
 
 template <typename VectorType1, typename VectorType2, typename VectorType3,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
-	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename T1 = detail::vector_value_t<VectorType1>,
+	typename T2 = detail::vector_value_t<VectorType2>,
+	typename T3 = detail::vector_value_t<VectorType3>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_same<T1, T2>,
 		hamon::is_same<T1, T3>

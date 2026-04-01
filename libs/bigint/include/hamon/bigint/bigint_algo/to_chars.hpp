@@ -11,17 +11,15 @@
 #include <hamon/bigint/bigint_algo/pow_n.hpp>
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/algorithm/reverse.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/floor.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/charconv/to_chars.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -63,7 +61,7 @@ template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
 to_chars(char* first, char* last, VectorType value, int base)
 {
-	using T = hamon::ranges::range_value_t<VectorType>;
+	using T = detail::vector_value_t<VectorType>;
 	
 	auto const digits = static_cast<hamon::ptrdiff_t>(hamon::floor(hamon::numeric_limits<T>::digits / hamon::log2(base)));
 
@@ -79,7 +77,7 @@ to_chars(char* first, char* last, VectorType value, int base)
 		bigint_algo::div_mod(quo, rem, value, base2);
 		detail::move(value, quo);
 		auto p2 = hamon::min(p + digits, last);
-		to_chars_reverse(p, p2, rem[0], base);
+		to_chars_reverse(p, p2, rem.data()[0], base);
 		p = p2;
 
 		if (bigint_algo::is_zero(value))
@@ -102,23 +100,9 @@ to_chars(char* first, char* last, VectorType value, int base)
 
 }	// namespace to_chars_detail
 
-template <typename T>
+template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, hamon::vector<T> const& value, int base = 10)
-{
-	return to_chars_detail::to_chars(first, last, value, base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, hamon::inplace_vector<T, N> const& value, int base = 10)
-{
-	return to_chars_detail::to_chars(first, last, value, base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::to_chars_result
-to_chars(char* first, char* last, hamon::array<T, N> const& value, int base = 10)
+to_chars(char* first, char* last, VectorType const& value, int base = 10)
 {
 	return to_chars_detail::to_chars(first, last, value, base);
 }

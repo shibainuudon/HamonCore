@@ -32,7 +32,6 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 		inplace_vector
 		limits
 		memory
-		ranges		# range_value_t
 		string
 		string_view
 		system_error

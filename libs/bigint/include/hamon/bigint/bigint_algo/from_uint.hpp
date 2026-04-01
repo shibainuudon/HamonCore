@@ -8,15 +8,14 @@
 #define HAMON_BIGINT_BIGINT_ALGO_FROM_UINT_HPP
 
 #include <hamon/bigint/bigint_algo/normalize.hpp>
-#include <hamon/array.hpp>
+#include <hamon/bigint/bigint_algo/detail/resize.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shr.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/system_error/errc.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -52,38 +51,18 @@ from_uint(UInt n, T* dst, hamon::size_t size)
 
 }	// namespace from_uint_detail
 
-template <typename UInt, typename T,
+template <typename UInt, typename VectorType,
 	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
 >
 inline HAMON_CXX14_CONSTEXPR from_uint_result
-from_uint(UInt n, hamon::vector<T>& value)
+from_uint(UInt n, VectorType& value)
 {
-	value.resize(sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1);
-	auto ret = from_uint_detail::from_uint(n, value.data(), value.size());
-	bigint_algo::normalize(value);
-	return ret;
-}
-
-template <typename UInt, typename T, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
->
-inline HAMON_CXX14_CONSTEXPR from_uint_result
-from_uint(UInt n, hamon::inplace_vector<T, N>& value)
-{
+	using T = detail::vector_value_t<VectorType>;
 	auto const m = sizeof(UInt) > sizeof(T) ? sizeof(UInt) / sizeof(T) : 1;
-	value.resize(hamon::min(m, N));
+	detail::resize(value, m);
 	auto ret = from_uint_detail::from_uint(n, value.data(), value.size());
 	bigint_algo::normalize(value);
 	return ret;
-}
-
-template <typename UInt, typename T, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::is_unsigned<UInt>::value>
->
-inline HAMON_CXX14_CONSTEXPR from_uint_result
-from_uint(UInt n, hamon::array<T, N>& value)
-{
-	return from_uint_detail::from_uint(n, value.data(), value.size());
 }
 
 }	// namespace bigint_algo

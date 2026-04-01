@@ -11,6 +11,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -149,6 +150,20 @@ GTEST_TEST(BigIntAlgoTest, SubTest)
 		hamon::array<hamon::uint64_t, 2>{0x112210F47DE98115, 0x5070421D41BE781E},
 		hamon::array<hamon::uint64_t, 2>{0x0D5DFA96F25108D0, 0x3324882800214281},
 		hamon::array<hamon::uint64_t, 2>{0x03C4165D8B987845, 0x1D4BB9F5419D359D}));
+
+	// MyVector
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0x00, 0x00, 0x01},
+		MyVector<hamon::uint8_t, 4>{0x01},
+		MyVector<hamon::uint8_t, 4>{0xFF, 0xFF}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0x56, 0x34, 0x12},
+		MyVector<hamon::uint8_t, 4>{0x89, 0x30, 0x12},
+		MyVector<hamon::uint8_t, 4>{0xCD, 0x03}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint32_t, 5>{0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000010},
+		MyVector<hamon::uint32_t, 5>{0x00000000, 0x00000001},
+		MyVector<hamon::uint32_t, 5>{0x00000000, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0x0000000F}));
 }
 
 }	// namespace bigint_algo_sub_test

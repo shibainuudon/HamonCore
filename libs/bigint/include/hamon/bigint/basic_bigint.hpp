@@ -29,6 +29,7 @@
 #include <hamon/bigint/bigint_algo/is_zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/move.hpp>
 #include <hamon/bigint/bigint_algo/detail/copy.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/detail/abs_unsigned.hpp>
 #include <hamon/bigint/detail/negate_unsigned.hpp>
 #include <hamon/algorithm/max.hpp>
@@ -38,7 +39,6 @@
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/memory/to_address.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/string.hpp>
 #include <hamon/type_traits/is_integral.hpp>
@@ -69,7 +69,7 @@ private:
 public:
 	using sign_type = int;
 	using vector_type = VectorType;
-	using element_type = hamon::ranges::range_value_t<VectorType>;
+	using element_type = bigint_algo::detail::vector_value_t<VectorType>;
 
 	static_assert(hamon::is_integral<element_type>::value, "");
 	static_assert(hamon::is_unsigned<element_type>::value, "");

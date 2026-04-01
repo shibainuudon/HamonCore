@@ -8,17 +8,11 @@
 #define HAMON_BIGINT_BIGINT_ALGO_TO_CHARS_LENGTH_HPP
 
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
-#include <hamon/algorithm/max.hpp>
-#include <hamon/bit/has_single_bit.hpp>
-#include <hamon/bit/countr_zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/cmath/log2.hpp>
 #include <hamon/cmath/ceil.hpp>
-#include <hamon/ranges/range_value_t.hpp>
-#include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/limits.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -26,41 +20,15 @@ namespace hamon
 namespace bigint_algo
 {
 
-namespace to_chars_length_detail
-{
-
-template <typename T>
+template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR hamon::size_t
-to_chars_length(hamon::size_t size, int base)
+to_chars_length(VectorType const& value, int base = 10)
 {
+	using T = detail::vector_value_t<VectorType>;
 	auto const d = hamon::numeric_limits<T>::digits;
 	auto const l = hamon::log2(base);
-	auto const s = static_cast<double>(size);
+	auto const s = static_cast<double>(detail::actual_size(value));
 	return static_cast<hamon::size_t>(hamon::ceil(d / l * s));
-}
-
-}	// namespace to_chars_length_detail
-
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::size_t
-to_chars_length(hamon::vector<T> const& value, int base = 10)
-{
-	return to_chars_length_detail::to_chars_length<T>(value.size(), base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::size_t
-to_chars_length(hamon::inplace_vector<T, N> const& value, int base = 10)
-{
-	return to_chars_length_detail::to_chars_length<T>(value.size(), base);
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR hamon::size_t
-to_chars_length(hamon::array<T, N> const& value, int base = 10)
-{
-	auto const n = hamon::max(hamon::size_t{1}, detail::actual_size(value));
-	return to_chars_length_detail::to_chars_length<T>(n, base);
 }
 
 }	// namespace bigint_algo

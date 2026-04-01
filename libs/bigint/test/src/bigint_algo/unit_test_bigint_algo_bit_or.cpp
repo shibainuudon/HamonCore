@@ -11,6 +11,7 @@
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
+#include "bigint_algo_test_helper.hpp"
 
 namespace hamon_bigint_test
 {
@@ -214,6 +215,48 @@ GTEST_TEST(BigIntAlgoTest, BitOrTest)
 			Vector2{0x12345678, 0x12345678, 0x12345678},
 			Vector1{0xFFFF5678, 0xFF34FF78, 0x12345678}));
 	}
+
+	// MyVector
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0},
+		MyVector<hamon::uint8_t, 4>{0},
+		MyVector<hamon::uint8_t, 4>{0}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},
+		MyVector<hamon::uint8_t, 4>{0xFF, 0xFF, 0xFF},
+		MyVector<hamon::uint8_t, 4>{0xFF, 0xFF, 0xFF, 0x78}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint8_t, 4>{0x12, 0x34, 0x56, 0x78},
+		MyVector<hamon::uint8_t, 4>{0xFF, 0x0F, 0xF0},
+		MyVector<hamon::uint8_t, 4>{0xFF, 0x3F, 0xF6, 0x78}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 2>{0x4996, 0x02D2},
+		MyVector<hamon::uint16_t, 2>{0x12B9, 0xB0A1},
+		MyVector<hamon::uint16_t, 2>{0x5BBF, 0xB2F3}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 4>{0x4996, 0x02D2, 0xFFFF, 0x1234},
+		MyVector<hamon::uint16_t, 4>{0x0000},
+		MyVector<hamon::uint16_t, 4>{0x4996, 0x02D2, 0xFFFF, 0x1234}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 3>{0xFFFF, 0xFF00},
+		MyVector<hamon::uint16_t, 3>{0x0000, 0x00FF, 0x0F0F},
+		MyVector<hamon::uint16_t, 3>{0xFFFF, 0xFFFF, 0x0F0F}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint16_t, 3>{0x1234, 0x5678, 0x9ABC},
+		MyVector<hamon::uint16_t, 3>{0x1234, 0x5678, 0x9ABC},
+		MyVector<hamon::uint16_t, 3>{0x1234, 0x5678, 0x9ABC}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint32_t, 3>{0},
+		MyVector<hamon::uint32_t, 3>{0},
+		MyVector<hamon::uint32_t, 3>{0}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint32_t, 3>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF},
+		MyVector<hamon::uint32_t, 3>{0xFFFF0000, 0xFF00FF00, 0xF0F0F0F0},
+		MyVector<hamon::uint32_t, 3>{0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF}));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test(
+		MyVector<hamon::uint64_t, 2>{0x0123456789ABCDEF, 0x1122334455667788},
+		MyVector<hamon::uint64_t, 2>{0xFFFF0000FF00FF00, 0xFFFFFFFF00000000},
+		MyVector<hamon::uint64_t, 2>{0xFFFF4567FFABFFEF, 0xFFFFFFFF55667788}));
 }
 
 }	// namespace bigint_algo_bit_or_test

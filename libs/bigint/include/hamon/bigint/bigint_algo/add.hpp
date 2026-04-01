@@ -13,10 +13,10 @@
 #include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
+#include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
 #include <hamon/bigint/bigint_algo/normalize.hpp>
 #include <hamon/algorithm/max.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -114,8 +114,8 @@ add_impl(T* p3, hamon::size_t n3, T const* p1, hamon::size_t n1, T const* p2, ha
 }	// namespace add_detail
 
 template <typename VectorType1, typename VectorType2,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
+	typename T1 = detail::vector_value_t<VectorType1>,
+	typename T2 = detail::vector_value_t<VectorType2>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_same<T1, T2>
 	>::value>
@@ -132,9 +132,9 @@ add(VectorType1& lhs, VectorType2 const& rhs)
 }
 
 template <typename VectorType1, typename VectorType2, typename VectorType3,
-	typename T1 = hamon::ranges::range_value_t<VectorType1>,
-	typename T2 = hamon::ranges::range_value_t<VectorType2>,
-	typename T3 = hamon::ranges::range_value_t<VectorType3>,
+	typename T1 = detail::vector_value_t<VectorType1>,
+	typename T2 = detail::vector_value_t<VectorType2>,
+	typename T3 = detail::vector_value_t<VectorType3>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::is_same<T1, T2>,
 		hamon::is_same<T1, T3>

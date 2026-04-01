@@ -1,13 +1,12 @@
 ﻿/**
- *	@file	resize.hpp
+ *	@file	one.hpp
  *
- *	@brief	resize 関数の定義
+ *	@brief	one 関数の定義
  */
 
-#ifndef HAMON_BIGINT_BIGINT_ALGO_DETAIL_RESIZE_HPP
-#define HAMON_BIGINT_BIGINT_ALGO_DETAIL_RESIZE_HPP
+#ifndef HAMON_BIGINT_BIGINT_ALGO_DETAIL_ONE_HPP
+#define HAMON_BIGINT_BIGINT_ALGO_DETAIL_ONE_HPP
 
-#include <hamon/algorithm/min.hpp>
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
@@ -21,19 +20,26 @@ namespace detail
 
 template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR void
-resize(VectorType& v, hamon::size_t n)
+one(VectorType& v)
 {
-	v.resize(hamon::min(n, v.max_size()));
+	v.resize(1);
+	v.data()[0] = 1;
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR void
-resize(hamon::array<T, N>&, hamon::size_t)
+one(hamon::array<T, N>& v)
 {
+	auto p = v.data();
+	p[0] = 1;
+	for (hamon::size_t i = 1; i < N; ++i)
+	{
+		p[i] = 0;
+	}
 }
 
 }	// namespace detail
 }	// namespace bigint_algo
 }	// namespace hamon
 
-#endif // HAMON_BIGINT_BIGINT_ALGO_DETAIL_RESIZE_HPP
+#endif // HAMON_BIGINT_BIGINT_ALGO_DETAIL_ONE_HPP

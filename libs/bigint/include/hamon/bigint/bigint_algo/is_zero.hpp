@@ -9,8 +9,6 @@
 
 #include <hamon/array.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/inplace_vector.hpp>
-#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -18,27 +16,21 @@ namespace hamon
 namespace bigint_algo
 {
 
-template <typename T>
+template <typename VectorType>
 inline HAMON_CXX14_CONSTEXPR bool
-is_zero(hamon::vector<T> const& vec)
+is_zero(VectorType const& vec)
 {
-	return vec.size() == 1 && vec[0] == 0;
-}
-
-template <typename T, hamon::size_t N>
-inline HAMON_CXX14_CONSTEXPR bool
-is_zero(hamon::inplace_vector<T, N> const& vec)
-{
-	return vec.size() == 1 && vec[0] == 0;
+	return vec.size() == 1 && vec.data()[0] == 0;
 }
 
 template <typename T, hamon::size_t N>
 inline HAMON_CXX14_CONSTEXPR bool
 is_zero(hamon::array<T, N> const& vec)
 {
+	auto p = vec.data();
 	for (hamon::size_t i = 0; i < N; ++i)
 	{
-		if (vec[i] != 0)
+		if (p[i] != 0)
 		{
 			return false;
 		}
