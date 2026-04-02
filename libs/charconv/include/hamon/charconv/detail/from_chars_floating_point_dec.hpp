@@ -32,6 +32,68 @@ namespace hamon
 namespace detail
 {
 
+template <hamon::size_t Bits>
+struct MyBigInt
+{
+private:
+	using value_type = hamon::uint32_t;
+	using size_type = hamon::size_t;
+
+	static constexpr hamon::size_t N = hamon::round_up(Bits, hamon::bitsof<value_type>()) / hamon::bitsof<value_type>();
+
+	size_type  m_size;
+	value_type m_data[N];
+
+public:
+	HAMON_CXX14_CONSTEXPR
+	MyBigInt()
+		: m_size(0)
+		, m_data{}
+	{}
+
+	HAMON_CXX14_CONSTEXPR
+	MyBigInt(value_type const* first, value_type const* last)
+		: m_size(static_cast<size_type>(last - first))
+		, m_data{}
+	{
+		auto dst = m_data;
+		for (auto src = first; src != last; ++src)
+		{
+			*dst++ = *src;
+		}
+	}
+
+	HAMON_CXX11_CONSTEXPR size_type size() const
+	{
+		return m_size;
+	}
+
+	HAMON_CXX11_CONSTEXPR size_type max_size() const
+	{
+		return N;
+	}
+
+	HAMON_CXX14_CONSTEXPR value_type* data()
+	{
+		return m_data;
+	}
+
+	HAMON_CXX11_CONSTEXPR value_type const* data() const
+	{
+		return m_data;
+	}
+
+	HAMON_CXX14_CONSTEXPR void resize(size_type new_size)
+	{
+		for (size_type i = m_size; i < new_size; ++i)
+		{
+			m_data[i] = 0;
+		}
+
+		m_size = new_size;
+	}
+};
+
 #if 0
 inline void make_pow5_table()
 {
@@ -1385,10 +1447,10 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	constexpr auto shift_space = hamon::numeric_limits<F>::digits + 1;	// mantissa_bits + 2
 
-	using BigInt = typename hamon::inplace_bigint<
+	using BigInt = MyBigInt<
 		2552	// ceil(log2(10^768))
 		+ shift_space
-	>::vector_type;
+	>;
 
 	BigInt d{};
 	unchecked_from_chars_dec(

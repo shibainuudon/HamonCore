@@ -3890,6 +3890,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// unchecked_from_chars_dec を最適化(mulcをマクロ化)
 	// Debug:     425 ms
 	// Release:    83 ms
+
+	// MyBigIntを追加
+	// Debug:     353 ms
+	// Release:    83 ms
 #endif
 }
 
