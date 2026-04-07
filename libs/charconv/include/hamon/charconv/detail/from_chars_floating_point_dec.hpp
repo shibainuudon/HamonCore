@@ -1469,23 +1469,27 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	hamon::int32_t e = p;
 
-	if (p > 0)
-	{
-//		d *= pow5<BigInt>(p);
-		BigInt tmp;
-		hamon::bigint_algo::multiply(tmp, d, pow5<BigInt>(p));
-		d = tmp;
-	}
-	else if (p < 0)
+	if (p < 0)
 	{
 		BigInt const denominator = pow5<BigInt>(-p);
 
-		// d のビット数が denominator のビット数+shift_space を上回るようにする
-		// (そうしないと、割り算をした結果の精度が不足するため)
+		// d のビット数が denominator のビット数+shift_space になるようにする
+		// 理由：
+		// d のビット数が小さすぎる場合、割り算をした結果の精度が不足する
+		// d のビット数が大きすぎる場合、割り算の計算量が不必要に大きくなる
 		int const shift = hamon::bigint_algo::bit_width(denominator) + shift_space - hamon::bigint_algo::bit_width(d);
 		if (shift > 0)
 		{
 			hamon::bigint_algo::bit_shift_left(d, static_cast<hamon::uintmax_t>(shift));	// d <<= shift
+			e -= shift;
+		}
+		else if (shift < 0)
+		{
+			if (-shift > hamon::bigint_algo::countr_zero(d))
+			{
+				has_zero_tail = false;
+			}
+			hamon::bigint_algo::bit_shift_right(d, static_cast<hamon::uintmax_t>(-shift));	// d >>= -shift
 			e -= shift;
 		}
 
@@ -1501,20 +1505,29 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 		d = quo;
 	}
-
-	// 上位ビットだけにする
-	int shift = hamon::bigint_algo::bit_width(d) - shift_space;
-	if (shift > 0)
+	else
 	{
-		if (shift > hamon::bigint_algo::countr_zero(d))
+		if (p > 0)
 		{
-			has_zero_tail = false;
+			//d *= pow5<BigInt>(p);
+			BigInt tmp;
+			hamon::bigint_algo::multiply(tmp, d, pow5<BigInt>(p));
+			d = tmp;
 		}
-		hamon::bigint_algo::bit_shift_right(d, static_cast<hamon::uintmax_t>(shift));	// d >>= shift
-		e += shift;
+
+		// 上位ビットだけにする
+		int const shift = hamon::bigint_algo::bit_width(d) - shift_space;
+		if (shift > 0)
+		{
+			if (shift > hamon::bigint_algo::countr_zero(d))
+			{
+				has_zero_tail = false;
+			}
+			hamon::bigint_algo::bit_shift_right(d, static_cast<hamon::uintmax_t>(shift));	// d >>= shift
+			e += shift;
+		}
 	}
 
-//	hamon::uint64_t m = static_cast<hamon::uint64_t>(d);
 	hamon::uint64_t m{};
 	hamon::bigint_algo::to_uint(m, d);
 

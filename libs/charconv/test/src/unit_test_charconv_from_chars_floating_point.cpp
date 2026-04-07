@@ -3894,6 +3894,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// MyBigIntを追加
 	// Debug:     353 ms
 	// Release:    83 ms
+
+	// 除算のときのビット数を調整
+	// Debug:     335 ms
+	// Release:    79 ms
 #endif
 }
 
