@@ -1224,6 +1224,25 @@ inline HAMON_CXX14_CONSTEXPR BigInt pow5(int n)
 	return BigInt{&tbl.magnitude[0], &tbl.magnitude[tbl.size]};
 }
 
+static constexpr hamon::uint32_t pow10_u32_tbl[] =
+{
+	1,
+	10,
+	100,
+	1000,
+	10000,
+	100000,
+	1000000,
+	10000000,
+	100000000,
+	1000000000,
+};
+
+inline HAMON_CXX14_CONSTEXPR hamon::uint32_t pow10_u32(int n)
+{
+	return pow10_u32_tbl[n];
+}
+
 // x * y + c
 // bigint_algo::detail::mulc を、さらに高速化するためにマクロ化
 #define HAMON_FROM_CHARS_MULC(x, y, c)	\
@@ -1272,7 +1291,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 	//value += accum;
 	if (count != 0)
 	{
-		auto const pow10 = hamon::detail::pow_n(hamon::uint32_t{10}, count);
+		auto const pow10 = pow10_u32(count);
 		for (hamon::size_t i = 0; i < mag_n; ++i)
 		{
 			HAMON_FROM_CHARS_MULC(mag_p[i], pow10, accum);

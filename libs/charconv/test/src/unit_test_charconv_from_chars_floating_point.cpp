@@ -3902,6 +3902,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// MyBigIntのresizeを高速化
 	// Debug:     319 ms
 	// Release:    72 ms
+
+	// pow10をテーブル引きにした
+	// Debug:     315 ms
+	// Release:    69 ms
 #endif
 }
 
