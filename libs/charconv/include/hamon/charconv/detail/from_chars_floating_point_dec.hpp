@@ -85,10 +85,10 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type new_size)
 	{
-		for (size_type i = m_size; i < new_size; ++i)
-		{
-			m_data[i] = 0;
-		}
+		//for (size_type i = m_size; i < new_size; ++i)
+		//{
+		//	m_data[i] = 0;
+		//}
 
 		m_size = new_size;
 	}
@@ -1239,11 +1239,9 @@ inline HAMON_CXX14_CONSTEXPR void
 unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 {
 	auto const digits = 9;
-	auto const length = last - first;
 
-	value.resize(hamon::min(static_cast<hamon::size_t>(length / digits + 1), value.max_size()));
 	auto mag_p = value.data();
-	hamon::uint32_t mag_n = 0;
+	auto mag_n = value.size();
 	hamon::uint32_t accum = 0;
 	int count = 0;
 	for (auto p = first; p != last; ++p)
@@ -1252,7 +1250,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 		{
 			//value *= 1000000000;
 			//value += accum;
-			for (hamon::uint32_t i = 0; i < mag_n; ++i)
+			for (hamon::size_t i = 0; i < mag_n; ++i)
 			{
 				HAMON_FROM_CHARS_MULC(mag_p[i], 1000000000, accum);
 			}
@@ -1275,7 +1273,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 	if (count != 0)
 	{
 		auto const pow10 = hamon::detail::pow_n(hamon::uint32_t{10}, count);
-		for (hamon::uint32_t i = 0; i < mag_n; ++i)
+		for (hamon::size_t i = 0; i < mag_n; ++i)
 		{
 			HAMON_FROM_CHARS_MULC(mag_p[i], pow10, accum);
 		}
@@ -1426,6 +1424,13 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// 仮数部を1つの文字列にまとめ、指数を調整する
 	constexpr hamon::size_t mantissa_digits_length_max = 768;	// TODO: 何文字まで見るか
 
+	hamon::size_t const mantissa_digits_length =
+		hamon::min(integer_part_str.length() + fraction_part_str.length(), mantissa_digits_length_max);
+
+	auto p = exponent - static_cast<hamon::int64_t>(mantissa_digits_length);
+//	HAMON_ASSERT(p >= -1091);
+//	HAMON_ASSERT(p <= 308);
+
 	char mantissa_digits[mantissa_digits_length_max] = {};
 	char* mantissa_digits_first = hamon::begin(mantissa_digits);
 	char* mantissa_digits_last  = hamon::end(mantissa_digits);
@@ -1439,11 +1444,6 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 
 	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, integer_part_str, &has_zero_tail);
 	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, fraction_part_str, &has_zero_tail);
-
-	auto p = static_cast<int>(exponent - (mantissa_digits_it - mantissa_digits_first));
-
-//	HAMON_ASSERT(p >= -1091);
-//	HAMON_ASSERT(p <= 308);
 
 	constexpr auto shift_space = hamon::numeric_limits<F>::digits + 1;	// mantissa_bits + 2
 
@@ -1467,11 +1467,11 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// e == p
 	// となる。
 
-	hamon::int32_t e = p;
+	hamon::int32_t e = static_cast<hamon::int32_t>(p);
 
-	if (p < 0)
+	if (e < 0)
 	{
-		BigInt const denominator = pow5<BigInt>(-p);
+		BigInt const denominator = pow5<BigInt>(-e);
 
 		// d のビット数が denominator のビット数+shift_space になるようにする
 		// 理由：
@@ -1507,11 +1507,11 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	}
 	else
 	{
-		if (p > 0)
+		if (e > 0)
 		{
-			//d *= pow5<BigInt>(p);
+			//d *= pow5<BigInt>(e);
 			BigInt tmp;
-			hamon::bigint_algo::multiply(tmp, d, pow5<BigInt>(p));
+			hamon::bigint_algo::multiply(tmp, d, pow5<BigInt>(e));
 			d = tmp;
 		}
 

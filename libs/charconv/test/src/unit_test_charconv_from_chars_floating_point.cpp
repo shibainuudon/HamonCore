@@ -3898,6 +3898,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	// 除算のときのビット数を調整
 	// Debug:     335 ms
 	// Release:    79 ms
+
+	// MyBigIntのresizeを高速化
+	// Debug:     319 ms
+	// Release:    72 ms
 #endif
 }
 
