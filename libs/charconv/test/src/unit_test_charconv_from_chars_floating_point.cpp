@@ -3751,33 +3751,33 @@ inline void performance_test()
 {
 	std::default_random_engine rng;
 
-	performance_test_sub<T>(0,   4, 2000, rng);
-	performance_test_sub<T>(0,   8, 2000, rng);
-	performance_test_sub<T>(0,  16, 2000, rng);
-	performance_test_sub<T>(0,  32, 2000, rng);
-	performance_test_sub<T>(0,  64, 2000, rng);
-	performance_test_sub<T>(0, 128, 2000, rng);
-	performance_test_sub<T>(0, 256, 2000, rng);
-	performance_test_sub<T>(0, 512, 2000, rng);
-	performance_test_sub<T>(0, 700, 2000, rng);
-	performance_test_sub<T>(0, 800, 2000, rng);
+	performance_test_sub<T>(0,   4, 10000, rng);
+	performance_test_sub<T>(0,   8, 10000, rng);
+	performance_test_sub<T>(0,  16, 10000, rng);
+	performance_test_sub<T>(0,  32, 10000, rng);
+	performance_test_sub<T>(0,  64, 10000, rng);
+	performance_test_sub<T>(0, 128, 10000, rng);
+	performance_test_sub<T>(0, 256, 10000, rng);
+	performance_test_sub<T>(0, 512, 10000, rng);
+	performance_test_sub<T>(0, 700, 10000, rng);
+	performance_test_sub<T>(0, 800, 10000, rng);
 
-	performance_test_sub<T>(  4, 0, 10000, rng);
-	performance_test_sub<T>(  8, 0, 10000, rng);
-	performance_test_sub<T>( 16, 0, 10000, rng);
-	performance_test_sub<T>( 32, 0, 10000, rng);
-	performance_test_sub<T>( 64, 0, 10000, rng);
-	performance_test_sub<T>(128, 0, 10000, rng);
-	performance_test_sub<T>(256, 0, 10000, rng);
-	performance_test_sub<T>(512, 0, 10000, rng);
+	performance_test_sub<T>(  4, 0, 50000, rng);
+	performance_test_sub<T>(  8, 0, 50000, rng);
+	performance_test_sub<T>( 16, 0, 50000, rng);
+	performance_test_sub<T>( 32, 0, 50000, rng);
+	performance_test_sub<T>( 64, 0, 50000, rng);
+	performance_test_sub<T>(128, 0, 50000, rng);
+	performance_test_sub<T>(256, 0, 50000, rng);
+	performance_test_sub<T>(512, 0, 50000, rng);
 
-	performance_test_sub<T>(  4,   4, 10000, rng);
-	performance_test_sub<T>(  8,   8, 10000, rng);
-	performance_test_sub<T>( 16,  16, 10000, rng);
-	performance_test_sub<T>( 32,  32, 10000, rng);
-	performance_test_sub<T>( 64,  64, 10000, rng);
-	performance_test_sub<T>(128, 128, 10000, rng);
-	performance_test_sub<T>(256, 256, 10000, rng);
+	performance_test_sub<T>(  4,   4, 20000, rng);
+	performance_test_sub<T>(  8,   8, 20000, rng);
+	performance_test_sub<T>( 16,  16, 20000, rng);
+	performance_test_sub<T>( 32,  32, 20000, rng);
+	performance_test_sub<T>( 64,  64, 20000, rng);
+	performance_test_sub<T>(128, 128, 20000, rng);
+	performance_test_sub<T>(256, 256, 20000, rng);
 
 	std::cout << std::endl;
 }
@@ -3905,6 +3905,10 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 
 	// pow10をテーブル引きにした
 	// Debug:     315 ms
+	// Release:    69 ms
+
+	// mantissaの文字列を一時バッファにコピーしないようにした
+	// Debug:     311 ms
 	// Release:    69 ms
 #endif
 }

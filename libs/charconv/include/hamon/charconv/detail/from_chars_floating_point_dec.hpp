@@ -1322,25 +1322,6 @@ get_digit_string(const char* first, const char* last)
 	return {first, ptr};
 }
 
-inline HAMON_CXX14_CONSTEXPR char*
-copy_digit_string(char* dst_first, char* dst_last, hamon::string_view src_str, bool* has_zero_tail)
-{
-	const char* src_first = src_str.data();
-	auto src_length = src_str.length();
-	auto dst_length = static_cast<hamon::size_t>(dst_last - dst_first);
-	if (src_length > dst_length)
-	{
-		src_length = dst_length;
-		*has_zero_tail = false;
-	}
-	const char* src_last = src_first + src_length;
-	while (src_first != src_last)
-	{
-		*dst_first++ = *src_first++;
-	}
-	return dst_first;
-}
-
 template <typename F>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_floating_point_dec(const char* first, const char* last, F& value, hamon::chars_format fmt, bool negative, const char* ptr) HAMON_NOEXCEPT
@@ -1450,19 +1431,11 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 //	HAMON_ASSERT(p >= -1091);
 //	HAMON_ASSERT(p <= 308);
 
-	char mantissa_digits[mantissa_digits_length_max] = {};
-	char* mantissa_digits_first = hamon::begin(mantissa_digits);
-	char* mantissa_digits_last  = hamon::end(mantissa_digits);
-	char* mantissa_digits_it = mantissa_digits_first;
-
 	// 文字列が途中で打ち切られたか
 	// 文字列の末尾の0はあらかじめ取り除かれているので、
 	// 途中で打ち切られたということはそれ以降に0以外が登場するということ。
 	// これは最後の値の丸めに影響してくる。
 	bool has_zero_tail = true;
-
-	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, integer_part_str, &has_zero_tail);
-	mantissa_digits_it = copy_digit_string(mantissa_digits_it, mantissa_digits_last, fraction_part_str, &has_zero_tail);
 
 	constexpr auto shift_space = hamon::numeric_limits<F>::digits + 1;	// mantissa_bits + 2
 
@@ -1472,10 +1445,33 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	>;
 
 	BigInt d{};
-	unchecked_from_chars_dec(
-		mantissa_digits_first,
-		mantissa_digits_it,
-		d);
+	{
+		hamon::size_t mantissa_length_remain = mantissa_digits_length_max;
+		if (!integer_part_str.empty())
+		{
+			auto integer_part_first = integer_part_str.data();
+			auto integer_part_length = integer_part_str.length();
+			if (integer_part_length > mantissa_length_remain)
+			{
+				integer_part_length = mantissa_length_remain;
+				has_zero_tail = false;
+			}
+			mantissa_length_remain -= integer_part_length;
+			unchecked_from_chars_dec(integer_part_first, integer_part_first + integer_part_length, d);
+		}
+		if (!fraction_part_str.empty())
+		{
+			auto fraction_part_first = fraction_part_str.data();
+			auto fraction_part_length = fraction_part_str.length();
+			if (fraction_part_length > mantissa_length_remain)
+			{
+				fraction_part_length = mantissa_length_remain;
+				has_zero_tail = false;
+			}
+			mantissa_length_remain -= fraction_part_length;
+			unchecked_from_chars_dec(fraction_part_first, fraction_part_first + fraction_part_length, d);
+		}
+	}
 
 	// この時点で、10進での仮数(d)と指数(p)が得られた。
 	// d * pow(10, p) が最終的に求めたい値である。
