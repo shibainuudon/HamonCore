@@ -3604,12 +3604,38 @@ inline void double_test()
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
 		"1.999999821186065729339276231257827021181583404541015625", chars_format::general, 56, errc{}, 0x1.fffffdp0));
 #endif
+
+	// p が -1092 になるケース
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+		"0."
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+		"1e-324",
+		chars_format::general, 808, errc::result_out_of_range, T{}));
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test(
+		"0."
+		"956035300162774138801060278664817507854743610554714658685623356337924665760046411609746596423686779178146120663411"
+		"832400417709397387255524011557739187034880145935040797282505408853164500540263198971379866967126279685193139419378"
+		"301052092394154842974987441213148150151422501554604732137774784637373945933030900931061417304182118489439986033606"
+		"596274066326401843145981579426222322314143449562050441831771173627477037110781910977573343629493179909523578331891"
+		"831074140746495072934093844319764125369570613740971905218065665013749117450859939798450517607431828768951461896671"
+		"316615505947959027412206686180517155441774719366414579283545771698485665247419508025260930081409453230176713056142"
+		"036335144442544155934546436362082177080233424147895057091901886109680956233765657772851648714481050160876296932242"
+		"16536794717923660962094952780249313260743431275034358049093223803071184474755895e-0324",
+		chars_format::general, 886, errc::result_out_of_range, T{}));
 }
 
 #if defined(RANDOM_TEST)
 
 template <typename RNG>
-inline hamon::string_view make_random_number_string(char* buf, int integer_part_length, int fraction_part_length, RNG& rng)
+inline hamon::string_view make_random_number_string(
+	char* buf, int integer_part_length, int fraction_part_length, int exponent_part_length, RNG& rng)
 {
 	std::uniform_int_distribution<> dist(0, 9);
 
@@ -3637,15 +3663,34 @@ inline hamon::string_view make_random_number_string(char* buf, int integer_part_
 		}
 	}
 
+	if (exponent_part_length != 0)
+	{
+		*ptr++ = 'e';
+
+		if (dist(rng) % 2 == 0)
+		{
+			*ptr++ = '-';
+		}
+
+		for (int i = 0; i < exponent_part_length; ++i)
+		{
+			*ptr++ = char('0' + dist(rng));
+		}
+	}
+
+	*ptr = '\0';
+
 	return {buf, ptr};
 }
 
 template <typename T, typename RNG>
-inline void random_test_sub(char* buf, int count, int integer_part_length, int fraction_part_length, RNG& rng)
+inline void random_test_sub(
+	char* buf, int count, int integer_part_length, int fraction_part_length, int exponent_part_length, RNG& rng)
 {
 	for (int i = 0; i < count; ++i)
 	{
-		auto str = make_random_number_string(buf, integer_part_length, fraction_part_length, rng);
+		auto str = make_random_number_string(buf, integer_part_length, fraction_part_length, exponent_part_length, rng);
+		//std::cout << str << std::endl;
 		T v1{};
 		T v2{};
 		auto r1 = hamon::from_chars(str.begin(), str.end(), v1);
@@ -3662,21 +3707,37 @@ inline void random_test_sub(char* buf, int count, int integer_part_length, int f
 	}
 }
 
-template <typename T, int IntegerPartLengthMax, int FractionPartLengthMax>
+template <typename T, int IntegerPartLengthMax, int FractionPartLengthMax, int ExponentPartLengthMax>
 inline void random_test()
 {
 	std::random_device seed_gen;
 	std::default_random_engine rng(seed_gen());
 
-	char buf[IntegerPartLengthMax + FractionPartLengthMax + 2]{};
+	constexpr hamon::size_t buf_size =
+		IntegerPartLengthMax
+		+ 1 // '.'
+		+ FractionPartLengthMax
+		+ 1 // 'e'
+		+ 1 // '-'
+		+ ExponentPartLengthMax
+		+ 1; // '\0';
+	char buf[buf_size]{};
 
 	for (int i = 0; i <= IntegerPartLengthMax; ++i)
 	{
 		for (int j = 0; j <= FractionPartLengthMax; ++j)
 		{
-			random_test_sub<T>(buf, 10, i, j, rng);
+			for (int k = 0; k <= ExponentPartLengthMax; ++k)
+			{
+				random_test_sub<T>(buf, 10, i, j, k, rng);
+			}
 		}
+
+		std::cout <<
+			"\rrandom_test<" << (hamon::is_same<T, float>::value ? "float" : "double") << ">" <<
+			"("  << i << "/" << IntegerPartLengthMax << ")";
 	}
+	std::cout << std::endl;
 }
 #endif
 
@@ -3832,8 +3893,8 @@ GTEST_TEST(CharConvTest, FromCharsFloatingPointTest)
 	double_test();
 
 #if defined(RANDOM_TEST)
-	random_test<float, 39, 100>();
-	random_test<double, 309, 500>();
+	random_test<float, 100, 500, 3>();
+	random_test<double, 500, 1000, 4>();
 #endif
 
 #if defined(PERFORMANCE_TEST)

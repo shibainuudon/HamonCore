@@ -1413,7 +1413,7 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	}
 
 	constexpr hamon::int64_t exponent10_max = hamon::numeric_limits<F>::max_exponent10 + 1;
-	constexpr hamon::int64_t exponent10_min = hamon::numeric_limits<F>::min_exponent10 - hamon::numeric_limits<F>::max_digits10;
+	constexpr hamon::int64_t exponent10_min = hamon::numeric_limits<F>::min_exponent10 - hamon::numeric_limits<F>::max_digits10 + 1;
 
 	// 指数の値が範囲外のときは、result_out_of_range
 	if (exponent < exponent10_min || exponent10_max < exponent)
