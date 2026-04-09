@@ -1403,6 +1403,11 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	if (!integer_part_str.empty())
 	{
 		exponent += static_cast<hamon::int64_t>(integer_part_str.length());
+		if (fraction_part_str.empty())
+		{
+			// 小数部が0のときは、整数部の末尾の0を削除する
+			integer_part_str = remove_trailing_zeros(integer_part_str);
+		}
 	}
 	else
 	{
