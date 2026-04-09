@@ -3812,33 +3812,16 @@ inline void performance_test()
 {
 	std::default_random_engine rng;
 
-	performance_test_sub<T>(0,   4, 10000, rng);
-	performance_test_sub<T>(0,   8, 10000, rng);
-	performance_test_sub<T>(0,  16, 10000, rng);
-	performance_test_sub<T>(0,  32, 10000, rng);
-	performance_test_sub<T>(0,  64, 10000, rng);
-	performance_test_sub<T>(0, 128, 10000, rng);
-	performance_test_sub<T>(0, 256, 10000, rng);
-	performance_test_sub<T>(0, 512, 10000, rng);
-	performance_test_sub<T>(0, 700, 10000, rng);
-	performance_test_sub<T>(0, 800, 10000, rng);
+	int const integer_length_tbl[]  = {0, 7, 8, 9, 16, 17, 18, 32, 64, 128, 256};
+	int const fraction_length_tbl[] = {0, 4, 16, 32, 64, 128, 256, 512, 800};
 
-	performance_test_sub<T>(  4, 0, 50000, rng);
-	performance_test_sub<T>(  8, 0, 50000, rng);
-	performance_test_sub<T>( 16, 0, 50000, rng);
-	performance_test_sub<T>( 32, 0, 50000, rng);
-	performance_test_sub<T>( 64, 0, 50000, rng);
-	performance_test_sub<T>(128, 0, 50000, rng);
-	performance_test_sub<T>(256, 0, 50000, rng);
-	performance_test_sub<T>(512, 0, 50000, rng);
-
-	performance_test_sub<T>(  4,   4, 20000, rng);
-	performance_test_sub<T>(  8,   8, 20000, rng);
-	performance_test_sub<T>( 16,  16, 20000, rng);
-	performance_test_sub<T>( 32,  32, 20000, rng);
-	performance_test_sub<T>( 64,  64, 20000, rng);
-	performance_test_sub<T>(128, 128, 20000, rng);
-	performance_test_sub<T>(256, 256, 20000, rng);
+	for (auto const& i : integer_length_tbl)
+	{
+		for (auto const& j : fraction_length_tbl)
+		{
+			performance_test_sub<T>(i, j, 10000, rng);
+		}
+	}
 
 	std::cout << std::endl;
 }
