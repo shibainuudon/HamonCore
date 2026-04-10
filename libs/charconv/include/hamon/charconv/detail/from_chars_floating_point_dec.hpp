@@ -1322,6 +1322,25 @@ get_digit_string(const char* first, const char* last)
 	return {first, ptr};
 }
 
+inline HAMON_CXX14_CONSTEXPR char*
+copy_digit_string(char* dst_first, char* dst_last, hamon::string_view src_str, bool* has_zero_tail)
+{
+	const char* src_first = src_str.data();
+	auto src_length = src_str.length();
+	auto dst_length = static_cast<hamon::size_t>(dst_last - dst_first);
+	if (src_length > dst_length)
+	{
+		src_length = dst_length;
+		*has_zero_tail = false;
+	}
+	const char* src_last = src_first + src_length;
+	while (src_first != src_last)
+	{
+		*dst_first++ = *src_first++;
+	}
+	return dst_first;
+}
+
 template <typename F>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
 from_chars_floating_point_dec(const char* first, const char* last, F& value, hamon::chars_format fmt, bool negative, const char* ptr) HAMON_NOEXCEPT
@@ -1429,18 +1448,164 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	// 仮数部を1つの文字列にまとめ、指数を調整する
 	constexpr hamon::size_t mantissa_digits_length_max = 768;	// TODO: 何文字まで見るか
 
-	hamon::size_t const mantissa_digits_length =
-		hamon::min(integer_part_str.length() + fraction_part_str.length(), mantissa_digits_length_max);
+#if 0
+	{
+		bool has_zero_tail2 = true;
 
-	auto p = exponent - static_cast<hamon::int64_t>(mantissa_digits_length);
-//	HAMON_ASSERT(p >= -1091);
-//	HAMON_ASSERT(p <= 308);
+		char mantissa_digits_buf[mantissa_digits_length_max];
+		char* mantissa_digits_first = hamon::begin(mantissa_digits_buf);
+		char* mantissa_digits_last  = hamon::end(mantissa_digits_buf);
+		char* it = mantissa_digits_first;
+		it = copy_digit_string(it, mantissa_digits_last, integer_part_str, &has_zero_tail2);
+		it = copy_digit_string(it, mantissa_digits_last, fraction_part_str, &has_zero_tail2);
+		mantissa_digits_last = it;
+
+		hamon::size_t mantissa_digits_length = mantissa_digits_last - mantissa_digits_first;
+		hamon::size_t mantissa_integer_part_length = static_cast<hamon::size_t>(hamon::clamp<hamon::int64_t>(exponent, 0, mantissa_digits_length));
+		hamon::size_t mantissa_fraction_part_length = mantissa_digits_length - mantissa_integer_part_length;
+
+		hamon::string_view integer_part_str2{mantissa_digits_first, mantissa_integer_part_length};
+		hamon::string_view fraction_part_str2{mantissa_digits_first + mantissa_integer_part_length, mantissa_fraction_part_length};
+
+
+		constexpr auto required_mantissa_bits = hamon::numeric_limits<F>::digits + 1;
+
+		using BigInt = MyBigInt<
+			2552	// ceil(log2(10^768))
+			+ required_mantissa_bits
+		>;
+
+		BigInt mantissa_integer{};
+		if (integer_part_str2.empty())
+		{
+			mantissa_integer.resize(1);	// TODO
+		}
+		else
+		{
+			unchecked_from_chars_dec(integer_part_str2.data(), integer_part_str2.data() + integer_part_str2.length(), mantissa_integer);
+		}
+
+		hamon::int32_t e = static_cast<hamon::int32_t>(exponent - static_cast<hamon::int64_t>(mantissa_integer_part_length));
+
+		if (e > 0)
+		{
+			BigInt tmp;
+			hamon::bigint_algo::multiply(tmp, mantissa_integer, pow5<BigInt>(e));
+			mantissa_integer = tmp;
+		}
+		else if (e < 0)
+		{
+			HAMON_ASSERT(mantissa_integer_part_length == 0);
+		}
+
+		{
+			int const shift = hamon::bigint_algo::bit_width(mantissa_integer) - required_mantissa_bits;
+			if (shift > 0)
+			{
+				if (shift > hamon::bigint_algo::countr_zero(mantissa_integer))
+				{
+					has_zero_tail2 = false;
+				}
+				hamon::bigint_algo::bit_shift_right(mantissa_integer, static_cast<hamon::uintmax_t>(shift));	// d >>= shift
+				e += shift;
+			}
+		}
+
+		hamon::uint64_t m{};
+		hamon::bigint_algo::to_uint(m, mantissa_integer);
+
+		if (hamon::bit_width(m) >= required_mantissa_bits || fraction_part_str2.empty())
+		{
+			if (!fraction_part_str2.empty())
+			{
+				has_zero_tail2 = false;
+			}
+			auto const ec = make_floating_point_value(m, e, negative, has_zero_tail2, value);
+			return {ptr, ec};
+		}
+
+		BigInt mantissa_fraction{};
+		unchecked_from_chars_dec(fraction_part_str2.data(), fraction_part_str2.data() + fraction_part_str2.length(), mantissa_fraction);
+
+		auto const required_fraction_bits = required_mantissa_bits - hamon::bit_width(m);
+
+		auto den = e - static_cast<hamon::int32_t>(mantissa_fraction_part_length);
+		HAMON_ASSERT(den < 0);
+		BigInt denominator = pow5<BigInt>(-den);
+
+		int const shift = hamon::bigint_algo::bit_width(denominator) + required_fraction_bits - hamon::bigint_algo::bit_width(mantissa_fraction);
+		if (shift > 0)
+		{
+			hamon::bigint_algo::bit_shift_left(mantissa_fraction, static_cast<hamon::uintmax_t>(shift));	// d <<= shift
+		}
+		else if (shift < 0)
+		{
+			if (-shift > hamon::bigint_algo::countr_zero(mantissa_fraction))
+			{
+				has_zero_tail2 = false;
+			}
+			hamon::bigint_algo::bit_shift_right(mantissa_fraction, static_cast<hamon::uintmax_t>(-shift));	// d >>= -shift
+		}
+
+		BigInt quo;
+		BigInt rem;
+		hamon::bigint_algo::div_mod(quo, rem, mantissa_fraction, denominator);
+		if (!hamon::bigint_algo::is_zero(rem))
+		{
+			has_zero_tail2 = false;
+		}
+
+		hamon::uint64_t m2{};
+		hamon::bigint_algo::to_uint(m2, quo);
+
+		if (m == 0)
+		{
+			m = m2;
+			e = static_cast<hamon::int32_t>(exponent - static_cast<hamon::int64_t>(mantissa_digits_length));
+			e -= shift;
+			auto const ec = make_floating_point_value(m, e, negative, has_zero_tail2, value);
+			return {ptr, ec};
+		}
+
+		//int s = required_mantissa_bits - shift + den;
+		//if (s > 0)
+		//{
+		//	m2 <<= s;
+		//}
+		//else if (s < 0)
+		//{
+		//	if (-s > hamon::countr_zero(m2))
+		//	{
+		//		has_zero_tail2 = false;
+		//	}
+		//	m2 = hamon::shr(m2, static_cast<unsigned int>(-s));
+		//}
+
+		//m <<= required_mantissa_bits;
+		//e -= required_mantissa_bits;
+		//m |= m2;
+
+		//bool flag = true;
+		//if (flag)
+		//{
+		//	auto const ec = make_floating_point_value(m, e, negative, has_zero_tail2, value);
+		//	return {ptr, ec};
+		//}
+	}
+#endif
 
 	// 文字列が途中で打ち切られたか
 	// 文字列の末尾の0はあらかじめ取り除かれているので、
 	// 途中で打ち切られたということはそれ以降に0以外が登場するということ。
 	// これは最後の値の丸めに影響してくる。
 	bool has_zero_tail = true;
+
+	hamon::size_t const mantissa_digits_length =
+		hamon::min(integer_part_str.length() + fraction_part_str.length(), mantissa_digits_length_max);
+
+	auto p = exponent - static_cast<hamon::int64_t>(mantissa_digits_length);
+//	HAMON_ASSERT(p >= -1091);
+//	HAMON_ASSERT(p <= 308);
 
 	constexpr auto shift_space = hamon::numeric_limits<F>::digits + 1;	// mantissa_bits + 2
 
