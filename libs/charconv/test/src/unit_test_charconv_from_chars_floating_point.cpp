@@ -22,7 +22,7 @@
 #include <random>
 #endif
 
-#define PERFORMANCE_TEST
+//#define PERFORMANCE_TEST
 #if defined(PERFORMANCE_TEST)
 #include <random>
 #include <chrono>
@@ -3812,18 +3812,16 @@ inline void performance_test()
 {
 	std::default_random_engine rng;
 
-	//int const integer_length_tbl[]  = {0, 7, 8, 9, 16, 17, 18, 32, 64, 128, 256};
-	//int const fraction_length_tbl[] = {0, 4, 16, 32, 64, 128, 256, 512, 800};
+	int const integer_length_tbl[]  = {0, 7, 8, 9, 16, 17, 18, 32, 64, 128, 256};
+	int const fraction_length_tbl[] = {0, 4, 16, 32, 64, 128, 256, 512, 800};
 
-	//for (auto const& i : integer_length_tbl)
-	//{
-	//	for (auto const& j : fraction_length_tbl)
-	//	{
-	//		performance_test_sub<T>(i, j, 10000, rng);
-	//	}
-	//}
-
-	performance_test_sub<T>(0, 0, 100000, rng);
+	for (auto const& i : integer_length_tbl)
+	{
+		for (auto const& j : fraction_length_tbl)
+		{
+			performance_test_sub<T>(i, j, 10000, rng);
+		}
+	}
 
 	std::cout << std::endl;
 }

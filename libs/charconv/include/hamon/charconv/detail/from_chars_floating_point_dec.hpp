@@ -1353,6 +1353,21 @@ from_chars_floating_point_dec(const char* first, const char* last, F& value, ham
 	hamon::string_view integer_part_str = get_digit_string(ptr, last);
 	ptr += integer_part_str.length();
 
+	//if (ptr == last)
+	//{
+	//	if (fmt == hamon::chars_format::scientific)
+	//	{
+	//		return {first, hamon::errc::invalid_argument};
+	//	}
+
+	//	auto integer_part_str2 = remove_leading_zeros(integer_part_str);
+	//	if (integer_part_str2.empty())
+	//	{
+	//		value = make_floating_point_zero<F>(negative);
+	//		return { ptr, hamon::errc{} };
+	//	}
+	//}
+
 	// 小数点 '.' を飛ばす
 	if (ptr != last && *ptr == '.')
 	{
