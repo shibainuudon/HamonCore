@@ -693,7 +693,7 @@
 #if (_MSC_FULL_VER >= 192930158)
 #endif
 
-// Visual Studio 2019 Version 16.11.(45-54)
+// Visual Studio 2019 Version 16.11.(45-55)
 #if (_MSC_FULL_VER >= 192930159)
 #endif
 
@@ -1272,7 +1272,7 @@
 #if (_MSC_FULL_VER >= 194435224)
 #endif
 
-// Visual Studio 2022 Version 17.14.29
+// Visual Studio 2022 Version 17.14.(29-30)
 #if (_MSC_FULL_VER >= 194435225)
 #endif
 
@@ -1346,6 +1346,10 @@
 
 // Visual Studio 2026 Version: 18.4.(2-3)
 #if (_MSC_FULL_VER >= 195035728)
+#endif
+
+// Visual Studio 2026 Version: 18.5.0
+#if (_MSC_FULL_VER >= 195035729)
 #endif
 
 #if (HAMON_CXX_STANDARD >= 17)
