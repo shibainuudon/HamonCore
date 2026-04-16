@@ -17,6 +17,7 @@
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/limits.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -119,8 +120,18 @@ from_chars_unsigned_integer(char const* first, char const* last, T& value, T bas
 
 template <typename T, typename = hamon::enable_if_t<hamon::is_unsigned<T>::value>>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars_integer_impl(char const* first, char const* last, T& value, int base, hamon::detail::overload_priority<1>)
+from_chars_integer_impl(char const* first, char const* last, T& value, int base, bool allow_plus_sign, hamon::detail::overload_priority<1>)
 {
+	HAMON_ASSERT(first != last);
+
+	if (allow_plus_sign)
+	{
+		if (*first == '+')
+		{
+			++first;
+		}
+	}
+
 	T x{};
 	auto ret = hamon::detail::from_chars_unsigned_integer(first, last, x, static_cast<T>(base));
 	if (ret.ec == hamon::errc{})
@@ -132,13 +143,19 @@ from_chars_integer_impl(char const* first, char const* last, T& value, int base,
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars_integer_impl(char const* first, char const* last, T& value, int base, hamon::detail::overload_priority<0>)
+from_chars_integer_impl(char const* first, char const* last, T& value, int base, bool allow_plus_sign, hamon::detail::overload_priority<0>)
 {
+	HAMON_ASSERT(first != last);
+
 	using UT = hamon::make_unsigned_t<T>;
 	bool minus = false;
-	if (first != last && *first == '-')
+	if (*first == '-')
 	{
 		minus = true;
+		++first;
+	}
+	else if (allow_plus_sign && *first == '+')
+	{
 		++first;
 	}
 
@@ -172,10 +189,15 @@ from_chars_integer_impl(char const* first, char const* last, T& value, int base,
 
 template <typename T>
 inline HAMON_CXX14_CONSTEXPR hamon::from_chars_result
-from_chars_integer(char const* first, char const* last, T& value, int base)
+from_chars_integer(char const* first, char const* last, T& value, int base, bool allow_plus_sign = false)
 {
+	if (first == last)
+	{
+		return {first, hamon::errc::invalid_argument};
+	}
+
 	return hamon::detail::from_chars_integer_impl(
-		first, last, value, base, hamon::detail::overload_priority<1>{});
+		first, last, value, base, allow_plus_sign, hamon::detail::overload_priority<1>{});
 }
 
 }	// namespace detail

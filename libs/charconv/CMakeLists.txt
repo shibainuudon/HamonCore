@@ -19,14 +19,20 @@ include(AddSubLibrary)
 
 add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/..
 	INTERFACE
+		bigint
 		bit
+		cctype
 		config
 		cmath
 		cstddef
+		cstdint
 		cstring
+		debug
 		detail
 		ieee754
+		iterator
 		limits
+		string_view
 		system_error
 		type_traits
 		utility)
