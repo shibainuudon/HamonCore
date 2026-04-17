@@ -12,6 +12,8 @@
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/one.hpp>
 #include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
+#include <hamon/bigint/bigint_algo/detail/div.hpp>
+#include <hamon/bigint/bigint_algo/detail/uint128.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_left.hpp>
 #include <hamon/bigint/bigint_algo/bit_shift_right.hpp>
 #include <hamon/bigint/bigint_algo/bit_width.hpp>
@@ -21,6 +23,7 @@
 #include <hamon/bigint/bigint_algo/sub.hpp>
 #include <hamon/bigint/bigint_algo/to_uint.hpp>
 #include <hamon/algorithm/max.hpp>
+#include <hamon/array.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/shl.hpp>
 #include <hamon/bit/shr.hpp>
@@ -39,9 +42,9 @@ namespace bigint_algo
 namespace div_mod_detail
 {
 
-template <typename VectorType>
-inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
-bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
+template <typename U, typename VectorType>
+inline HAMON_CXX14_CONSTEXPR U
+bit_shift_right_to_uint(VectorType const& vec, hamon::size_t shift)
 {
 	using T = detail::vector_value_t<VectorType>;
 	auto const bits = static_cast<int>(hamon::bitsof<T>());
@@ -50,9 +53,9 @@ bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 
 	auto p = vec.data();
 	auto n = static_cast<int>(vec.size());
-	auto m = static_cast<int>(sizeof(hamon::uint64_t) / sizeof(T));
+	auto m = static_cast<int>(sizeof(U) / sizeof(T));
 
-	hamon::uint64_t result{};
+	U result{};
 
 	auto const l = hamon::min(quo, n);
 	for (auto i = hamon::min(quo + m, n); i > l; --i)
@@ -67,6 +70,26 @@ bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 
 	return result;
 }
+
+template <typename T>
+struct make_dividend;
+
+template <>
+struct make_dividend<hamon::uint8_t> { using type = hamon::uint16_t; };
+template <>
+struct make_dividend<hamon::uint16_t> { using type = hamon::uint32_t; };
+template <>
+struct make_dividend<hamon::uint32_t> { using type = hamon::uint64_t; };
+#if defined(HAMON_HAS_INT128)
+template <>
+struct make_dividend<hamon::uint64_t> { using type = __uint128_t; };
+#else
+template <>
+struct make_dividend<hamon::uint64_t> { using type = detail::uint128; };
+#endif
+
+template <typename T>
+using make_dividend_t = typename make_dividend<T>::type;
 
 template <typename VectorType1, typename VectorType2,
 	typename T = detail::vector_value_t<VectorType1>>
@@ -90,15 +113,20 @@ div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType1& x)
 			return 1;
 		}
 	}
-#if 1
-	// lhs と rhs を64ビットの値に変換して除算する
-	auto const shift = static_cast<hamon::size_t>(hamon::max(0, bigint_algo::bit_width(lhs) - 64));
-	auto l = bit_shift_right_to_uint64(lhs, shift);
-	auto r = bit_shift_right_to_uint64(rhs, shift);
-	T q = static_cast<T>(hamon::min<hamon::uint64_t>(l / r, hamon::numeric_limits<T>::max()));
 
-	// 得られた答えは、必ず正しい答え以上の値になっているので、
-	// デクリメントしながら正しい答えを探す
+	// lhs と rhs を整数に変換して除算する
+	// このとき、被除数は除数の倍のサイズにする。
+	using D = make_dividend_t<T>;
+	auto const shift = static_cast<hamon::size_t>(hamon::max(0, bigint_algo::bit_width(rhs) - (int)hamon::bitsof<T>()));
+	auto l = bit_shift_right_to_uint<D>(lhs, shift);
+	auto r = bit_shift_right_to_uint<T>(rhs, shift);
+
+	T q = detail::div(l, r);
+
+	// 得られた q は、必ず正しい商 *以上* の値になっているので、
+	// デクリメントしながら正しい商を探す。
+	// (正しい商なら、q * rhs <= lhs になる)
+
 	for (;;)
 	{
 		detail::copy(x, rhs);
@@ -117,48 +145,8 @@ div1(VectorType1 const& lhs, VectorType2 const& rhs, VectorType1& x)
 			break;
 		}
 	}
+
 	return q;
-#else
-	// 割り算の答えをバイナリサーチで探す
-	T w = hamon::shl(T{1}, static_cast<unsigned int>(hamon::bitsof<T>() - 1));
-	T q = w;
-	for (;;)
-	{
-		w /= 2;
-		detail::copy(x, rhs);
-		auto f = bigint_algo::multiply(x, q);
-
-		// x と lhs を比較する。ただし、乗算の結果がオーバーフローしている場合は
-		// 必ず x > lhs。
-		auto c = f ? 1 : bigint_algo::compare(x, lhs);
-
-		if (c == 0)
-		{
-			break;
-		}
-		else if (c > 0)
-		{
-			q = static_cast<T>(q - w);
-		}
-		else
-		{
-			q = static_cast<T>(q + w);
-		}
-
-		if (w == 0)
-		{
-			if (c > 0)
-			{
-				q = static_cast<T>(q - 1);
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
-	return q;
-#endif
 }
 
 template <typename VectorType, typename T>
