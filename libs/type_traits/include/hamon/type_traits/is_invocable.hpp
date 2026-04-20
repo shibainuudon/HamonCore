@@ -11,6 +11,7 @@
 #include <type_traits>
 
 #if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304) && \
 	defined(HAMON_USE_STD_REFERENCE_WRAPPER)
 
 namespace hamon

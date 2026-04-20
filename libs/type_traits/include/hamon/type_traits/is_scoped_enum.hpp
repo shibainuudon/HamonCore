@@ -10,7 +10,8 @@
 #include <hamon/config.hpp>
 #include <type_traits>
 
-#if defined(__cpp_lib_is_scoped_enum) && (__cpp_lib_is_scoped_enum >= 202011)
+#if defined(__cpp_lib_is_scoped_enum) && (__cpp_lib_is_scoped_enum >= 202011) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 namespace hamon
 {

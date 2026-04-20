@@ -10,7 +10,8 @@
 #include <hamon/config.hpp>
 #include <type_traits>
 
-#if defined(__cpp_lib_reference_from_temporary) && (__cpp_lib_reference_from_temporary >= 202202L)
+#if defined(__cpp_lib_reference_from_temporary) && (__cpp_lib_reference_from_temporary >= 202202L) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 namespace hamon
 {

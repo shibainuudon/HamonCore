@@ -26,7 +26,8 @@ HAMON_WARNING_DISABLE_MSVC(4244)
 namespace hamon
 {
 
-#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703)
+#if defined(__cpp_lib_is_invocable) && (__cpp_lib_is_invocable >= 201703) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 using std::is_nothrow_invocable_r;
 

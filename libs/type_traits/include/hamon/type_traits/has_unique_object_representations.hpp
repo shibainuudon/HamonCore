@@ -10,7 +10,8 @@
 #include <hamon/config.hpp>
 #include <type_traits>
 
-#if defined(__cpp_lib_has_unique_object_representations) && (__cpp_lib_has_unique_object_representations >= 201606)
+#if defined(__cpp_lib_has_unique_object_representations) && (__cpp_lib_has_unique_object_representations >= 201606) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 namespace hamon
 {

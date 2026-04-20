@@ -26,7 +26,8 @@
 namespace hamon
 {
 
-#if defined(__cpp_lib_is_implicit_lifetime) && (__cpp_lib_is_implicit_lifetime >= 202302L)
+#if defined(__cpp_lib_is_implicit_lifetime) && (__cpp_lib_is_implicit_lifetime >= 202302L) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 #define HAMON_USE_STD_IS_IMPLICIT_LIFETIME
 

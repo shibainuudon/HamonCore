@@ -13,7 +13,8 @@
 namespace hamon
 {
 
-#if defined(__cpp_lib_is_layout_compatible) && (__cpp_lib_is_layout_compatible >= 201907)
+#if defined(__cpp_lib_is_layout_compatible) && (__cpp_lib_is_layout_compatible >= 201907) && \
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
 
 using std::is_corresponding_member;
 
