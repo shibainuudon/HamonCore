@@ -26,59 +26,62 @@
 
 #endif
 
-HAMON_IS_OBJECT_TEST(true,                 int);
-HAMON_IS_OBJECT_TEST(true,  const          int);
-HAMON_IS_OBJECT_TEST(true,        volatile int);
-HAMON_IS_OBJECT_TEST(true,  const volatile int);
-HAMON_IS_OBJECT_TEST(true,                 int*);
-HAMON_IS_OBJECT_TEST(true,  const          int*);
-HAMON_IS_OBJECT_TEST(true,        volatile int*);
-HAMON_IS_OBJECT_TEST(true,  const volatile int*);
-HAMON_IS_OBJECT_TEST(false,                int&);
-HAMON_IS_OBJECT_TEST(false, const          int&);
-HAMON_IS_OBJECT_TEST(false,       volatile int&);
-HAMON_IS_OBJECT_TEST(false, const volatile int&);
-HAMON_IS_OBJECT_TEST(false,                int&&);
-HAMON_IS_OBJECT_TEST(false, const          int&&);
-HAMON_IS_OBJECT_TEST(false,       volatile int&&);
-HAMON_IS_OBJECT_TEST(false, const volatile int&&);
-HAMON_IS_OBJECT_TEST(true,                 int[2]);
-HAMON_IS_OBJECT_TEST(true,  const          int[2]);
-HAMON_IS_OBJECT_TEST(true,        volatile int[2]);
-HAMON_IS_OBJECT_TEST(true,  const volatile int[2]);
-HAMON_IS_OBJECT_TEST(true,                 int[]);
-HAMON_IS_OBJECT_TEST(true,  const          int[]);
-HAMON_IS_OBJECT_TEST(true,        volatile int[]);
-HAMON_IS_OBJECT_TEST(true,  const volatile int[]);
-HAMON_IS_OBJECT_TEST(true,  int(*)[2]);
-HAMON_IS_OBJECT_TEST(true,  int(*)[]);
-HAMON_IS_OBJECT_TEST(false, int(&)[2]);
-HAMON_IS_OBJECT_TEST(false, int(&)[]);
-HAMON_IS_OBJECT_TEST(false, int(&&)[2]);
-HAMON_IS_OBJECT_TEST(false, int(&&)[]);
+#define HAMON_IS_OBJECT_TEST_CV(b, T)	\
+	HAMON_IS_OBJECT_TEST(b,                T);	\
+	HAMON_IS_OBJECT_TEST(b, const          T);	\
+	HAMON_IS_OBJECT_TEST(b,       volatile T);	\
+	HAMON_IS_OBJECT_TEST(b, const volatile T)
 
-HAMON_IS_OBJECT_TEST(false,                void);
-HAMON_IS_OBJECT_TEST(false, const          void);
-HAMON_IS_OBJECT_TEST(false,       volatile void);
-HAMON_IS_OBJECT_TEST(false, const volatile void);
+HAMON_IS_OBJECT_TEST_CV(true,  int);
+HAMON_IS_OBJECT_TEST_CV(true,  int*);
+HAMON_IS_OBJECT_TEST_CV(false, int&);
+HAMON_IS_OBJECT_TEST_CV(false, int&&);
+HAMON_IS_OBJECT_TEST_CV(true,  int[2]);
+HAMON_IS_OBJECT_TEST_CV(true,  int[]);
+HAMON_IS_OBJECT_TEST_CV(true,  int(*)[2]);
+HAMON_IS_OBJECT_TEST_CV(true,  int(*)[]);
+HAMON_IS_OBJECT_TEST_CV(false, int(&)[2]);
+HAMON_IS_OBJECT_TEST_CV(false, int(&)[]);
+HAMON_IS_OBJECT_TEST_CV(false, int(&&)[2]);
+HAMON_IS_OBJECT_TEST_CV(false, int(&&)[]);
 
-HAMON_IS_OBJECT_TEST(true,  bool);
-HAMON_IS_OBJECT_TEST(true,  char);
-HAMON_IS_OBJECT_TEST(true,  float);
-HAMON_IS_OBJECT_TEST(true,  void*);
-HAMON_IS_OBJECT_TEST(true,  enum_UDT);
-HAMON_IS_OBJECT_TEST(true,  enum_class_UDT);
-HAMON_IS_OBJECT_TEST(true,  UDT);
-HAMON_IS_OBJECT_TEST(true,  POD_UDT);
-HAMON_IS_OBJECT_TEST(true,  f1);
-HAMON_IS_OBJECT_TEST(true,  f2);
-HAMON_IS_OBJECT_TEST(true,  f3);
-HAMON_IS_OBJECT_TEST(true,  mf1);
-HAMON_IS_OBJECT_TEST(true,  mf2);
-HAMON_IS_OBJECT_TEST(true,  mf3);
-HAMON_IS_OBJECT_TEST(true,  mf4);
-HAMON_IS_OBJECT_TEST(true,  mp);
-HAMON_IS_OBJECT_TEST(true,  cmf);
+HAMON_IS_OBJECT_TEST_CV(false, void);
+
+HAMON_IS_OBJECT_TEST_CV(true,  bool);
+HAMON_IS_OBJECT_TEST_CV(true,  char);
+HAMON_IS_OBJECT_TEST_CV(true,  wchar_t);
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+HAMON_IS_OBJECT_TEST_CV(true,  char8_t);
+#endif
+HAMON_IS_OBJECT_TEST_CV(true,  char16_t);
+HAMON_IS_OBJECT_TEST_CV(true,  char32_t);
+HAMON_IS_OBJECT_TEST_CV(true,  signed char);
+HAMON_IS_OBJECT_TEST_CV(true,  short);
+HAMON_IS_OBJECT_TEST_CV(true,  int);
+HAMON_IS_OBJECT_TEST_CV(true,  long);
+HAMON_IS_OBJECT_TEST_CV(true,  long long);
+HAMON_IS_OBJECT_TEST_CV(true,  unsigned char);
+HAMON_IS_OBJECT_TEST_CV(true,  unsigned short);
+HAMON_IS_OBJECT_TEST_CV(true,  unsigned int);
+HAMON_IS_OBJECT_TEST_CV(true,  unsigned long);
+HAMON_IS_OBJECT_TEST_CV(true,  unsigned long long);
+HAMON_IS_OBJECT_TEST_CV(true,  float);
+HAMON_IS_OBJECT_TEST_CV(true,  double);
+HAMON_IS_OBJECT_TEST_CV(true,  long double);
+HAMON_IS_OBJECT_TEST_CV(true,  void*);
+HAMON_IS_OBJECT_TEST_CV(true,  enum_UDT);
+HAMON_IS_OBJECT_TEST_CV(true,  enum_class_UDT);
+HAMON_IS_OBJECT_TEST_CV(true,  UDT);
+HAMON_IS_OBJECT_TEST_CV(true,  POD_UDT);
+HAMON_IS_OBJECT_TEST_CV(true,  f1);
+HAMON_IS_OBJECT_TEST_CV(true,  f2);
+HAMON_IS_OBJECT_TEST_CV(true,  f3);
+HAMON_IS_OBJECT_TEST_CV(true,  mf1);
+HAMON_IS_OBJECT_TEST_CV(true,  mf2);
+HAMON_IS_OBJECT_TEST_CV(true,  mf3);
+HAMON_IS_OBJECT_TEST_CV(true,  mf4);
+HAMON_IS_OBJECT_TEST_CV(true,  mp);
+HAMON_IS_OBJECT_TEST_CV(true,  cmf);
 HAMON_IS_OBJECT_TEST(false, foo0_t);
 HAMON_IS_OBJECT_TEST(false, foo1_t);
 HAMON_IS_OBJECT_TEST(false, foo2_t);
@@ -86,3 +89,4 @@ HAMON_IS_OBJECT_TEST(false, foo3_t);
 HAMON_IS_OBJECT_TEST(false, foo4_t);
 
 #undef HAMON_IS_OBJECT_TEST
+#undef HAMON_IS_OBJECT_TEST_CV

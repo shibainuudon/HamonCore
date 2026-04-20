@@ -27,69 +27,83 @@
 
 #endif
 
-HAMON_IS_UNION_TEST(true,                 union_UDT);
-HAMON_IS_UNION_TEST(true,  const          union_UDT);
-HAMON_IS_UNION_TEST(true,        volatile union_UDT);
-HAMON_IS_UNION_TEST(true,  const volatile union_UDT);
-HAMON_IS_UNION_TEST(false, union_UDT*);
-HAMON_IS_UNION_TEST(false, union_UDT&);
-HAMON_IS_UNION_TEST(false, union_UDT&&);
-HAMON_IS_UNION_TEST(false, union_UDT[2]);
-HAMON_IS_UNION_TEST(false, union_UDT[]);
-HAMON_IS_UNION_TEST(false, union_UDT(*)[2]);
-HAMON_IS_UNION_TEST(false, union_UDT(*)[]);
-HAMON_IS_UNION_TEST(false, union_UDT(&)[2]);
-HAMON_IS_UNION_TEST(false, union_UDT(&)[]);
-HAMON_IS_UNION_TEST(false, union_UDT(&&)[2]);
-HAMON_IS_UNION_TEST(false, union_UDT(&&)[]);
+#define HAMON_IS_UNION_TEST_CV(b, T)	\
+	HAMON_IS_UNION_TEST(b,                T);	\
+	HAMON_IS_UNION_TEST(b, const          T);	\
+	HAMON_IS_UNION_TEST(b,       volatile T);	\
+	HAMON_IS_UNION_TEST(b, const volatile T)
 
-HAMON_IS_UNION_TEST(false,                UDT);
-HAMON_IS_UNION_TEST(false, const          UDT);
-HAMON_IS_UNION_TEST(false,       volatile UDT);
-HAMON_IS_UNION_TEST(false, const volatile UDT);
-HAMON_IS_UNION_TEST(false, UDT*);
-HAMON_IS_UNION_TEST(false, UDT&);
-HAMON_IS_UNION_TEST(false, UDT&&);
-HAMON_IS_UNION_TEST(false, UDT[2]);
-HAMON_IS_UNION_TEST(false, UDT[]);
-HAMON_IS_UNION_TEST(false, UDT(*)[2]);
-HAMON_IS_UNION_TEST(false, UDT(*)[]);
-HAMON_IS_UNION_TEST(false, UDT(&)[2]);
-HAMON_IS_UNION_TEST(false, UDT(&)[]);
-HAMON_IS_UNION_TEST(false, UDT(&&)[2]);
-HAMON_IS_UNION_TEST(false, UDT(&&)[]);
+HAMON_IS_UNION_TEST_CV(true,  union_UDT);
+HAMON_IS_UNION_TEST_CV(false, union_UDT*);
+HAMON_IS_UNION_TEST_CV(false, union_UDT&);
+HAMON_IS_UNION_TEST_CV(false, union_UDT&&);
+HAMON_IS_UNION_TEST_CV(false, union_UDT[2]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT[]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(*)[2]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(*)[]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(&)[2]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(&)[]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(&&)[2]);
+HAMON_IS_UNION_TEST_CV(false, union_UDT(&&)[]);
 
-HAMON_IS_UNION_TEST(false,                void);
-HAMON_IS_UNION_TEST(false, const          void);
-HAMON_IS_UNION_TEST(false,       volatile void);
-HAMON_IS_UNION_TEST(false, const volatile void);
+HAMON_IS_UNION_TEST_CV(false, UDT);
+HAMON_IS_UNION_TEST_CV(false, UDT*);
+HAMON_IS_UNION_TEST_CV(false, UDT&);
+HAMON_IS_UNION_TEST_CV(false, UDT&&);
+HAMON_IS_UNION_TEST_CV(false, UDT[2]);
+HAMON_IS_UNION_TEST_CV(false, UDT[]);
+HAMON_IS_UNION_TEST_CV(false, UDT(*)[2]);
+HAMON_IS_UNION_TEST_CV(false, UDT(*)[]);
+HAMON_IS_UNION_TEST_CV(false, UDT(&)[2]);
+HAMON_IS_UNION_TEST_CV(false, UDT(&)[]);
+HAMON_IS_UNION_TEST_CV(false, UDT(&&)[2]);
+HAMON_IS_UNION_TEST_CV(false, UDT(&&)[]);
 
-HAMON_IS_UNION_TEST(false, bool);
-HAMON_IS_UNION_TEST(false, char);
-HAMON_IS_UNION_TEST(false, int);
-HAMON_IS_UNION_TEST(false, float);
-HAMON_IS_UNION_TEST(false, void*);
-HAMON_IS_UNION_TEST(false, hamon::nullptr_t);
-HAMON_IS_UNION_TEST(false, decltype(nullptr));
-HAMON_IS_UNION_TEST(false, enum_UDT);
-HAMON_IS_UNION_TEST(false, enum_uint32_t_UDT);
-HAMON_IS_UNION_TEST(false, enum_class_UDT);
-HAMON_IS_UNION_TEST(false, enum_class_uint32_t_UDT);
-HAMON_IS_UNION_TEST(false, UDT);
-HAMON_IS_UNION_TEST(false, POD_UDT);
-HAMON_IS_UNION_TEST(true,  union_UDT);
-HAMON_IS_UNION_TEST(true,  POD_union_UDT);
-HAMON_IS_UNION_TEST(true,  empty_union_UDT);
-HAMON_IS_UNION_TEST(true,  empty_POD_union_UDT);
-HAMON_IS_UNION_TEST(false, f1);
-HAMON_IS_UNION_TEST(false, f2);
-HAMON_IS_UNION_TEST(false, f3);
-HAMON_IS_UNION_TEST(false, mf1);
-HAMON_IS_UNION_TEST(false, mf2);
-HAMON_IS_UNION_TEST(false, mf3);
-HAMON_IS_UNION_TEST(false, mf4);
-HAMON_IS_UNION_TEST(false, mp);
-HAMON_IS_UNION_TEST(false, cmf);
+HAMON_IS_UNION_TEST_CV(false, void);
+
+HAMON_IS_UNION_TEST_CV(false, bool);
+HAMON_IS_UNION_TEST_CV(false, char);
+HAMON_IS_UNION_TEST_CV(false, wchar_t);
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+HAMON_IS_UNION_TEST_CV(false, char8_t);
+#endif
+HAMON_IS_UNION_TEST_CV(false, char16_t);
+HAMON_IS_UNION_TEST_CV(false, char32_t);
+HAMON_IS_UNION_TEST_CV(false, signed char);
+HAMON_IS_UNION_TEST_CV(false, short);
+HAMON_IS_UNION_TEST_CV(false, int);
+HAMON_IS_UNION_TEST_CV(false, long);
+HAMON_IS_UNION_TEST_CV(false, long long);
+HAMON_IS_UNION_TEST_CV(false, unsigned char);
+HAMON_IS_UNION_TEST_CV(false, unsigned short);
+HAMON_IS_UNION_TEST_CV(false, unsigned int);
+HAMON_IS_UNION_TEST_CV(false, unsigned long);
+HAMON_IS_UNION_TEST_CV(false, unsigned long long);
+HAMON_IS_UNION_TEST_CV(false, float);
+HAMON_IS_UNION_TEST_CV(false, double);
+HAMON_IS_UNION_TEST_CV(false, long double);
+HAMON_IS_UNION_TEST_CV(false, void*);
+HAMON_IS_UNION_TEST_CV(false, hamon::nullptr_t);
+HAMON_IS_UNION_TEST_CV(false, decltype(nullptr));
+HAMON_IS_UNION_TEST_CV(false, enum_UDT);
+HAMON_IS_UNION_TEST_CV(false, enum_uint32_t_UDT);
+HAMON_IS_UNION_TEST_CV(false, enum_class_UDT);
+HAMON_IS_UNION_TEST_CV(false, enum_class_uint32_t_UDT);
+HAMON_IS_UNION_TEST_CV(false, UDT);
+HAMON_IS_UNION_TEST_CV(false, POD_UDT);
+HAMON_IS_UNION_TEST_CV(true,  union_UDT);
+HAMON_IS_UNION_TEST_CV(true,  POD_union_UDT);
+HAMON_IS_UNION_TEST_CV(true,  empty_union_UDT);
+HAMON_IS_UNION_TEST_CV(true,  empty_POD_union_UDT);
+HAMON_IS_UNION_TEST_CV(false, f1);
+HAMON_IS_UNION_TEST_CV(false, f2);
+HAMON_IS_UNION_TEST_CV(false, f3);
+HAMON_IS_UNION_TEST_CV(false, mf1);
+HAMON_IS_UNION_TEST_CV(false, mf2);
+HAMON_IS_UNION_TEST_CV(false, mf3);
+HAMON_IS_UNION_TEST_CV(false, mf4);
+HAMON_IS_UNION_TEST_CV(false, mp);
+HAMON_IS_UNION_TEST_CV(false, cmf);
 HAMON_IS_UNION_TEST(false, foo0_t);
 HAMON_IS_UNION_TEST(false, foo1_t);
 HAMON_IS_UNION_TEST(false, foo2_t);
@@ -97,3 +111,4 @@ HAMON_IS_UNION_TEST(false, foo3_t);
 HAMON_IS_UNION_TEST(false, foo4_t);
 
 #undef HAMON_IS_UNION_TEST
+#undef HAMON_IS_UNION_TEST_CV

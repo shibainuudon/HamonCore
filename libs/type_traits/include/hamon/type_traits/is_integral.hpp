@@ -25,6 +25,7 @@ namespace hamon
  *	以下のような型が、整数型として判定される：
  *	・bool
  *	・char
+ *	・char8_t
  *	・char16_t
  *	・char32_t
  *	・wchar_t

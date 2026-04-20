@@ -40,6 +40,11 @@ HAMON_MAKE_SIGNED_TEST(unsigned long,		signed long);
 HAMON_MAKE_SIGNED_TEST(unsigned long long,	signed long long);
 
 HAMON_MAKE_SIGNED_TEST_1(wchar_t);
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+HAMON_MAKE_SIGNED_TEST_1(char8_t);
+#endif
+HAMON_MAKE_SIGNED_TEST_1(char16_t);
+HAMON_MAKE_SIGNED_TEST_1(char32_t);
 HAMON_MAKE_SIGNED_TEST_1(enum_UDT);
 HAMON_MAKE_SIGNED_TEST_1(enum_uint32_t_UDT);
 HAMON_MAKE_SIGNED_TEST_1(enum_uint16_t_UDT);
