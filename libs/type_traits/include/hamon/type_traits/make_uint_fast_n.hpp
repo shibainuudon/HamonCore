@@ -10,6 +10,7 @@
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -25,7 +26,13 @@ public:
 		hamon::conditional_t<N <= 16, hamon::uint_fast16_t,
 		hamon::conditional_t<N <= 32, hamon::uint_fast32_t,
 		hamon::conditional_t<N <= 64, hamon::uint_fast64_t,
+#if defined(HAMON_HAS_INT128)
+		hamon::conditional_t<N <= 128, __uint128_t,
+#endif
 		incomplete
+#if defined(HAMON_HAS_INT128)
+	>
+#endif
 	>>>>;
 };
 

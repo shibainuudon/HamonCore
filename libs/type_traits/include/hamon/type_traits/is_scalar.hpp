@@ -7,9 +7,13 @@
 #ifndef HAMON_TYPE_TRAITS_IS_SCALAR_HPP
 #define HAMON_TYPE_TRAITS_IS_SCALAR_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/is_enum.hpp>
+#include <hamon/type_traits/is_pointer.hpp>
+#include <hamon/type_traits/is_member_pointer.hpp>
+#include <hamon/type_traits/is_null_pointer.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -25,8 +29,12 @@ namespace hamon
  */
 template <typename T>
 struct is_scalar
-	: public hamon::bool_constant<
-		std::is_scalar<T>::value
+	: public hamon::disjunction<
+		hamon::is_arithmetic<T>,
+		hamon::is_enum<T>,
+		hamon::is_pointer<T>,
+		hamon::is_member_pointer<T>,
+		hamon::is_null_pointer<T>
 	>
 {};
 

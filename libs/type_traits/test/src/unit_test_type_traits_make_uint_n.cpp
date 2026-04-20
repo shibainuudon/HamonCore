@@ -12,7 +12,15 @@ static_assert(hamon::is_unsigned<hamon::make_uint_n_t<16>>::value, "");
 static_assert(hamon::is_unsigned<hamon::make_uint_n_t<32>>::value, "");
 static_assert(hamon::is_unsigned<hamon::make_uint_n_t<64>>::value, "");
 
+#if defined(HAMON_HAS_INT128)
+static_assert(hamon::is_unsigned<hamon::make_uint_n_t<128>>::value, "");
+#endif
+
 static_assert(sizeof(hamon::make_uint_n_t< 8>) == 1, "");
 static_assert(sizeof(hamon::make_uint_n_t<16>) == 2, "");
 static_assert(sizeof(hamon::make_uint_n_t<32>) == 4, "");
 static_assert(sizeof(hamon::make_uint_n_t<64>) == 8, "");
+
+#if defined(HAMON_HAS_INT128)
+static_assert(sizeof(hamon::make_uint_n_t<128>) == 16, "");
+#endif

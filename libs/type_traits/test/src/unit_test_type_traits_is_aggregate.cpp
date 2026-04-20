@@ -115,6 +115,11 @@ HAMON_IS_AGGREGATE_TEST   (false, void());
 using ArrayType = std::array<Aggregate1, 4>;
 HAMON_IS_AGGREGATE_TEST_CV(true,  ArrayType);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_IS_AGGREGATE_TEST_CV(false, __int128_t);
+HAMON_IS_AGGREGATE_TEST_CV(false, __uint128_t);
+#endif
+
 #undef HAMON_IS_AGGREGATE_TEST
 #undef HAMON_IS_AGGREGATE_TEST_CV
 

@@ -53,5 +53,14 @@ HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, incomplete_type);
 HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, incomplete_type[]);
 HAMON_IS_BOUNDED_ARRAY_TEST_CV(true,  incomplete_type[5]);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, __int128_t);
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, __int128_t[]);
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(true,  __int128_t[3]);
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, __uint128_t);
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(false, __uint128_t[]);
+HAMON_IS_BOUNDED_ARRAY_TEST_CV(true,  __uint128_t[3]);
+#endif
+
 #undef HAMON_IS_BOUNDED_ARRAY_TEST
 #undef HAMON_IS_BOUNDED_ARRAY_TEST_CV

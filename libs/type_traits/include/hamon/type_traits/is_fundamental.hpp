@@ -7,9 +7,11 @@
 #ifndef HAMON_TYPE_TRAITS_IS_FUNDAMENTAL_HPP
 #define HAMON_TYPE_TRAITS_IS_FUNDAMENTAL_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/is_arithmetic.hpp>
+#include <hamon/type_traits/is_void.hpp>
+#include <hamon/type_traits/is_null_pointer.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -25,8 +27,10 @@ namespace hamon
  */
 template <typename T>
 struct is_fundamental
-	: public hamon::bool_constant<
-		std::is_fundamental<T>::value
+	: public hamon::disjunction<
+		hamon::is_arithmetic<T>,
+		hamon::is_void<T>,
+		hamon::is_null_pointer<T>
 	>
 {};
 

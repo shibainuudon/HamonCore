@@ -39,6 +39,11 @@ HAMON_MAKE_UNSIGNED_TEST(unsigned int,			unsigned int);
 HAMON_MAKE_UNSIGNED_TEST(unsigned long,			unsigned long);
 HAMON_MAKE_UNSIGNED_TEST(unsigned long long,	unsigned long long);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_MAKE_UNSIGNED_TEST(__int128_t,  __uint128_t);
+HAMON_MAKE_UNSIGNED_TEST(__uint128_t, __uint128_t);
+#endif
+
 HAMON_MAKE_UNSIGNED_TEST_1(wchar_t);
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 HAMON_MAKE_UNSIGNED_TEST_1(char8_t);

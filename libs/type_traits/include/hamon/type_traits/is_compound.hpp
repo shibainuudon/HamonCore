@@ -7,9 +7,9 @@
 #ifndef HAMON_TYPE_TRAITS_IS_COMPOUND_HPP
 #define HAMON_TYPE_TRAITS_IS_COMPOUND_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/is_fundamental.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -28,10 +28,7 @@ namespace hamon
  */
 template <typename T>
 struct is_compound
-	: public hamon::bool_constant<
-		std::is_compound<T>::value
-	>
-{};
+	: public hamon::negation<hamon::is_fundamental<T>> {};
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

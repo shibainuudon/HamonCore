@@ -7,9 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_IS_ARITHMETIC_HPP
 #define HAMON_TYPE_TRAITS_IS_ARITHMETIC_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/is_integral.hpp>
+#include <hamon/type_traits/is_floating_point.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
@@ -25,8 +26,9 @@ namespace hamon
  */
 template <typename T>
 struct is_arithmetic
-	: public hamon::bool_constant<
-		std::is_arithmetic<T>::value
+	: public hamon::disjunction<
+		hamon::is_integral<T>,
+		hamon::is_floating_point<T>
 	>
 {};
 

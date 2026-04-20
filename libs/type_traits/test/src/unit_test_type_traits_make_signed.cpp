@@ -39,6 +39,11 @@ HAMON_MAKE_SIGNED_TEST(unsigned int,		signed int);
 HAMON_MAKE_SIGNED_TEST(unsigned long,		signed long);
 HAMON_MAKE_SIGNED_TEST(unsigned long long,	signed long long);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_MAKE_SIGNED_TEST(__int128_t,  __int128_t);
+HAMON_MAKE_SIGNED_TEST(__uint128_t, __int128_t);
+#endif
+
 HAMON_MAKE_SIGNED_TEST_1(wchar_t);
 #if defined(HAMON_HAS_CXX20_CHAR8_T)
 HAMON_MAKE_SIGNED_TEST_1(char8_t);

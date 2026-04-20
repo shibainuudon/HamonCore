@@ -21,6 +21,12 @@ static_assert(hamon::is_signed<hamon::make_int_least_n_t<33>>::value, "");
 static_assert(hamon::is_signed<hamon::make_int_least_n_t<63>>::value, "");
 static_assert(hamon::is_signed<hamon::make_int_least_n_t<64>>::value, "");
 
+#if defined(HAMON_HAS_INT128)
+static_assert(hamon::is_signed<hamon::make_int_least_n_t<65>>::value, "");
+static_assert(hamon::is_signed<hamon::make_int_least_n_t<127>>::value, "");
+static_assert(hamon::is_signed<hamon::make_int_least_n_t<128>>::value, "");
+#endif
+
 static_assert(sizeof(hamon::make_int_least_n_t< 0>) >= 1, "");
 static_assert(sizeof(hamon::make_int_least_n_t< 1>) >= 1, "");
 static_assert(sizeof(hamon::make_int_least_n_t< 7>) >= 1, "");
@@ -34,3 +40,9 @@ static_assert(sizeof(hamon::make_int_least_n_t<32>) >= 4, "");
 static_assert(sizeof(hamon::make_int_least_n_t<33>) >= 8, "");
 static_assert(sizeof(hamon::make_int_least_n_t<63>) >= 8, "");
 static_assert(sizeof(hamon::make_int_least_n_t<64>) >= 8, "");
+
+#if defined(HAMON_HAS_INT128)
+static_assert(sizeof(hamon::make_int_least_n_t<65>) >= 16, "");
+static_assert(sizeof(hamon::make_int_least_n_t<127>) >= 16, "");
+static_assert(sizeof(hamon::make_int_least_n_t<128>) >= 16, "");
+#endif

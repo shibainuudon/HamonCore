@@ -8,11 +8,43 @@
 #define HAMON_TYPE_TRAITS_IS_INTEGRAL_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+namespace detail
+{
+
+template <typename T>
+struct is_integral_impl : public hamon::false_type{};
+
+template <> struct is_integral_impl<bool>               : public hamon::true_type{};
+template <> struct is_integral_impl<char>               : public hamon::true_type{};
+template <> struct is_integral_impl<signed char>        : public hamon::true_type{};
+template <> struct is_integral_impl<unsigned char>      : public hamon::true_type{};
+template <> struct is_integral_impl<wchar_t>            : public hamon::true_type{};
+#if defined(HAMON_HAS_CXX20_CHAR8_T)
+template <> struct is_integral_impl<char8_t>            : public hamon::true_type{};
+#endif
+template <> struct is_integral_impl<char16_t>           : public hamon::true_type{};
+template <> struct is_integral_impl<char32_t>           : public hamon::true_type{};
+template <> struct is_integral_impl<short>              : public hamon::true_type{};
+template <> struct is_integral_impl<unsigned short>     : public hamon::true_type{};
+template <> struct is_integral_impl<int>                : public hamon::true_type{};
+template <> struct is_integral_impl<unsigned int>       : public hamon::true_type{};
+template <> struct is_integral_impl<long>               : public hamon::true_type{};
+template <> struct is_integral_impl<unsigned long>      : public hamon::true_type{};
+template <> struct is_integral_impl<long long>          : public hamon::true_type{};
+template <> struct is_integral_impl<unsigned long long> : public hamon::true_type{};
+
+#if defined(HAMON_HAS_INT128)
+template <> struct is_integral_impl<__int128_t>  : public hamon::true_type{};
+template <> struct is_integral_impl<__uint128_t> : public hamon::true_type{};
+#endif
+
+}	// namespace detail
 
 /**
  *	@brief	型Tが整数型かを調べる
@@ -37,10 +69,7 @@ namespace hamon
  */
 template <typename T>
 struct is_integral
-	: public hamon::bool_constant<
-		std::is_integral<T>::value
-	>
-{};
+	: public hamon::detail::is_integral_impl<hamon::remove_cv_t<T>> {};
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 

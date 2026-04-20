@@ -153,6 +153,11 @@ HAMON_IS_FUNCTION_TEST(true,  foo2_t);
 HAMON_IS_FUNCTION_TEST(true,  foo3_t);
 HAMON_IS_FUNCTION_TEST(true,  foo4_t);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_IS_FUNCTION_TEST(false, __int128_t);
+HAMON_IS_FUNCTION_TEST(false, __uint128_t);
+#endif
+
 #undef HAMON_IS_FUNCTION_TEST
 
 }	// namespace is_function_test

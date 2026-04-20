@@ -158,5 +158,10 @@ HAMON_IS_SIGNED_TEST(false, foo2_t);
 HAMON_IS_SIGNED_TEST(false, foo3_t);
 HAMON_IS_SIGNED_TEST(false, foo4_t);
 
+#if defined(HAMON_HAS_INT128)
+HAMON_IS_SIGNED_TEST_CV(true,  __int128_t);
+HAMON_IS_SIGNED_TEST_CV(false, __uint128_t);
+#endif
+
 #undef HAMON_IS_SIGNED_TEST
 #undef HAMON_IS_SIGNED_TEST_CV

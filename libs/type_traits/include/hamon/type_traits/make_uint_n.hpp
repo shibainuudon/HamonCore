@@ -12,6 +12,7 @@
 #include <hamon/cstdint/uint16_t.hpp>
 #include <hamon/cstdint/uint32_t.hpp>
 #include <hamon/cstdint/uint64_t.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -23,6 +24,10 @@ template <> struct make_uint_n< 8> { using type = hamon::uint8_t; };
 template <> struct make_uint_n<16> { using type = hamon::uint16_t; };
 template <> struct make_uint_n<32> { using type = hamon::uint32_t; };
 template <> struct make_uint_n<64> { using type = hamon::uint64_t; };
+
+#if defined(HAMON_HAS_INT128)
+template <> struct make_uint_n<128> { using type = __uint128_t; };
+#endif
 
 template <hamon::size_t N>
 using make_uint_n_t = typename make_uint_n<N>::type;
