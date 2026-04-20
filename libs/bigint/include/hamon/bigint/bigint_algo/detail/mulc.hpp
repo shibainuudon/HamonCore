@@ -55,7 +55,7 @@ mulc(hamon::uint32_t x, hamon::uint32_t y, hamon::uint32_t* carry)
 	return static_cast<hamon::uint32_t>(t);
 }
 
-#if defined(__SIZEOF_INT128__)
+#if defined(HAMON_HAS_INT128)
 inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
 mulc(hamon::uint64_t x, hamon::uint64_t y, hamon::uint64_t* carry)
 {

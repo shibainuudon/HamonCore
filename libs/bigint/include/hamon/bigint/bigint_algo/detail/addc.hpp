@@ -45,7 +45,7 @@ addc(hamon::uint32_t lhs, hamon::uint32_t rhs, hamon::uint32_t carry)
 		static_cast<hamon::uint64_t>(carry));
 }
 
-#if defined(__SIZEOF_INT128__)
+#if defined(HAMON_HAS_INT128)
 inline HAMON_CXX11_CONSTEXPR __uint128_t
 addc(hamon::uint64_t lhs, hamon::uint64_t rhs, hamon::uint64_t carry)
 {

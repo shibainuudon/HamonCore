@@ -46,7 +46,7 @@ mul(hamon::uint32_t lhs, hamon::uint32_t rhs)
 		static_cast<hamon::uint64_t>(rhs));
 }
 
-#if defined(__SIZEOF_INT128__)
+#if defined(HAMON_HAS_INT128)
 inline HAMON_CXX11_CONSTEXPR __uint128_t
 mul(hamon::uint64_t lhs, hamon::uint64_t rhs)
 {

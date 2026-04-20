@@ -54,7 +54,7 @@ mul_addc(hamon::uint32_t x, hamon::uint32_t y, hamon::uint32_t z, hamon::uint32_
 		static_cast<hamon::uint64_t>(carry));
 }
 
-#if defined(__SIZEOF_INT128__)
+#if defined(HAMON_HAS_INT128)
 inline HAMON_CXX11_CONSTEXPR __uint128_t
 mul_addc(hamon::uint64_t x, hamon::uint64_t y, hamon::uint64_t z, hamon::uint64_t carry)
 {

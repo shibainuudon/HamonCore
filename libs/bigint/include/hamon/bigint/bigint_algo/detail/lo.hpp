@@ -39,7 +39,7 @@ inline HAMON_CXX11_CONSTEXPR T lo(hamon::array<T, 2> const& x)
 	return x[0];
 }
 
-#if defined(__SIZEOF_INT128__)
+#if defined(HAMON_HAS_INT128)
 inline HAMON_CXX11_CONSTEXPR hamon::uint64_t lo(__uint128_t x)
 {
 	return static_cast<hamon::uint64_t>(x);
