@@ -71,8 +71,8 @@ inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
 mul_addc(T x, T y, T z, T carry)
 {
 	auto r1 = detail::mul(x, y);
-	auto r2 = detail::addc(detail::lo(r1), z, carry);
-	return {detail::lo(r2), detail::hi(r1)+detail::hi(r2)};
+	auto r2 = detail::addc(detail::lo(r1), z, &carry);
+	return {r2, detail::hi(r1) + carry};
 }
 
 }	// namespace detail

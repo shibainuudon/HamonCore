@@ -7,7 +7,6 @@
 #ifndef HAMON_BIGINT_BIGINT_ALGO_DETAIL_ADDC_HPP
 #define HAMON_BIGINT_BIGINT_ALGO_DETAIL_ADDC_HPP
 
-#include <hamon/array.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/config.hpp>
 
@@ -18,54 +17,60 @@ namespace bigint_algo
 namespace detail
 {
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint16_t
-addc(hamon::uint8_t lhs, hamon::uint8_t rhs, hamon::uint8_t carry)
+// x + y + carry
+// 戻り値で計算結果の下位ビットを返し、carryに上位ビットを格納する
+
+inline HAMON_CXX14_CONSTEXPR hamon::uint8_t
+addc(hamon::uint8_t x, hamon::uint8_t y, hamon::uint8_t* carry)
 {
-	return static_cast<hamon::uint16_t>(
-		static_cast<hamon::uint16_t>(lhs) +
-		static_cast<hamon::uint16_t>(rhs) +
-		static_cast<hamon::uint16_t>(carry));
+	auto t = static_cast<hamon::uint16_t>(
+		static_cast<hamon::uint16_t>(x) +
+		static_cast<hamon::uint16_t>(y) +
+		static_cast<hamon::uint16_t>(*carry));
+	*carry = static_cast<hamon::uint8_t>(t >> 8);
+	return static_cast<hamon::uint8_t>(t);
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint32_t
-addc(hamon::uint16_t lhs, hamon::uint16_t rhs, hamon::uint16_t carry)
+inline HAMON_CXX14_CONSTEXPR hamon::uint16_t
+addc(hamon::uint16_t x, hamon::uint16_t y, hamon::uint16_t* carry)
 {
-	return static_cast<hamon::uint32_t>(
-		static_cast<hamon::uint32_t>(lhs) +
-		static_cast<hamon::uint32_t>(rhs) +
-		static_cast<hamon::uint32_t>(carry));
+	auto t = static_cast<hamon::uint32_t>(
+		static_cast<hamon::uint32_t>(x) +
+		static_cast<hamon::uint32_t>(y) +
+		static_cast<hamon::uint32_t>(*carry));
+	*carry = static_cast<hamon::uint16_t>(t >> 16);
+	return static_cast<hamon::uint16_t>(t);
 }
 
-inline HAMON_CXX11_CONSTEXPR hamon::uint64_t
-addc(hamon::uint32_t lhs, hamon::uint32_t rhs, hamon::uint32_t carry)
+inline HAMON_CXX14_CONSTEXPR hamon::uint32_t
+addc(hamon::uint32_t x, hamon::uint32_t y, hamon::uint32_t* carry)
 {
-	return static_cast<hamon::uint64_t>(
-		static_cast<hamon::uint64_t>(lhs) +
-		static_cast<hamon::uint64_t>(rhs) +
-		static_cast<hamon::uint64_t>(carry));
+	auto t = static_cast<hamon::uint64_t>(
+		static_cast<hamon::uint64_t>(x) +
+		static_cast<hamon::uint64_t>(y) +
+		static_cast<hamon::uint64_t>(*carry));
+	*carry = static_cast<hamon::uint32_t>(t >> 32);
+	return static_cast<hamon::uint32_t>(t);
 }
 
+inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
+addc(hamon::uint64_t x, hamon::uint64_t y, hamon::uint64_t* carry)
+{
 #if defined(HAMON_HAS_INT128)
-inline HAMON_CXX11_CONSTEXPR __uint128_t
-addc(hamon::uint64_t lhs, hamon::uint64_t rhs, hamon::uint64_t carry)
-{
-	return static_cast<__uint128_t>(
-		static_cast<__uint128_t>(lhs) +
-		static_cast<__uint128_t>(rhs) +
-		static_cast<__uint128_t>(carry));
-}
+	auto t = static_cast<__uint128_t>(
+		static_cast<__uint128_t>(x) +
+		static_cast<__uint128_t>(y) +
+		static_cast<__uint128_t>(*carry));
+	*carry = static_cast<hamon::uint64_t>(t >> 64);
+	return static_cast<hamon::uint64_t>(t);
+#else
+	auto const a = static_cast<hamon::uint64_t>(y + *carry);
+	auto const b = static_cast<hamon::uint64_t>(x + a);
+	auto const c1 = a < y ? 1 : 0;
+	auto const c2 = b < x ? 1 : 0;
+	*carry = static_cast<hamon::uint64_t>(c1 + c2);
+	return b;
 #endif
-
-// 上記以外の汎用的な実装(主に__uint128_tが使えない環境向け)
-template <typename T>
-inline HAMON_CXX14_CONSTEXPR hamon::array<T, 2>
-addc(T lhs, T rhs, T carry)
-{
-	T const a = static_cast<T>(rhs + carry);
-	T const b = static_cast<T>(lhs + a);
-	T const c1 = a < rhs ? 1 : 0;
-	T const c2 = b < lhs ? 1 : 0;
-	return {b, static_cast<T>(c1 + c2)};
 }
 
 }	// namespace detail

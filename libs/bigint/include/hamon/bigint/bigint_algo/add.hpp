@@ -9,8 +9,6 @@
 
 #include <hamon/bigint/bigint_algo/detail/actual_size.hpp>
 #include <hamon/bigint/bigint_algo/detail/addc.hpp>
-#include <hamon/bigint/bigint_algo/detail/hi.hpp>
-#include <hamon/bigint/bigint_algo/detail/lo.hpp>
 #include <hamon/bigint/bigint_algo/detail/resize.hpp>
 #include <hamon/bigint/bigint_algo/detail/zero.hpp>
 #include <hamon/bigint/bigint_algo/detail/vector_value_t.hpp>
@@ -65,15 +63,11 @@ add_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 
 	for (; i < n2; ++i)
 	{
-		auto const x = detail::addc(p1[i], p2[i], carry);
-		p1[i] = detail::lo(x);
-		carry = detail::hi(x);
+		p1[i] = detail::addc(p1[i], p2[i], &carry);
 	}
 	for (; carry != 0 && i < n1; ++i)
 	{
-		auto const x = detail::addc(p1[i], T{0}, carry);
-		p1[i] = detail::lo(x);
-		carry = detail::hi(x);
+		p1[i] = detail::addc(p1[i], T{0}, &carry);
 	}
 
 	return carry != 0;

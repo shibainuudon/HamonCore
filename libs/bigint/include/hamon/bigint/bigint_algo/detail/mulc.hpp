@@ -73,9 +73,9 @@ inline HAMON_CXX14_CONSTEXPR T
 mulc(T x, T y, T* carry)
 {
 	auto r1 = detail::mul(x, y);
-	auto r2 = detail::addc(detail::lo(r1), T{0}, *carry);
-	*carry = detail::hi(r1) + detail::hi(r2);
-	return detail::lo(r2);
+	auto r2 = detail::addc(detail::lo(r1), T{0}, carry);
+	*carry += detail::hi(r1);
+	return r2;
 }
 
 }	// namespace detail
