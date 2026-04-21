@@ -24,7 +24,7 @@ using std::rotr;
 
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <hamon/bit/bitsof.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -33,14 +33,12 @@ namespace hamon
 namespace detail
 {
 
-template <typename T>
-inline HAMON_CONSTEXPR T
-rotr_impl(T x, unsigned int shift) HAMON_NOEXCEPT
+template <int N, typename T>
+inline HAMON_CXX11_CONSTEXPR T
+rotr_impl(T x, unsigned int r) HAMON_NOEXCEPT
 {
-	return
-		shift == 0 ?	// このチェックをしないとビット幅ぶんのシフトが発生して実装依存の動作になってしまう。
-			x :
-		static_cast<T>((x >> shift) | (x << (bitsof(x) - shift)));
+	// [bit.rotate]/7
+	return r == 0 ? x : static_cast<T>((x >> r) | (x << (N - r)));
 }
 
 }	// namespace detail
@@ -50,22 +48,25 @@ rotr_impl(T x, unsigned int shift) HAMON_NOEXCEPT
  *
  *	@tparam	T		xの型(符号なし整数型)
  *
- *	@param	x		シフトされる値
- *	@param	shift	シフトするビット数
+ *	@param	x	シフトされる値
+ *	@param	s	シフトするビット数
  *
- *	xをshiftビットだけ環状右シフト(キャリーなし右ローテート)した値を返します。
- *	shiftがxのビット数以上の場合でも正しく計算します。
+ *	符号なし整数型 T のビット数を N 、 s % N を r であるとして、
+ *	 * r が0である場合は x が返る
+ *	 * r が正である場合は (x >> r) | (x << (N - r)) が返る
+ *	 * r が負である場合は rotl(x, -r) が返る
  */
 template <
 	typename T,
 	typename = hamon::enable_if_t<
-		hamon::is_unsigned<T>::value
-	>
+		hamon::is_unsigned<T>::value	// [bit.rotate]/5
+	>,
+	int N = hamon::numeric_limits<T>::digits	// [bit.rotate]/1
 >
-inline HAMON_CONSTEXPR T
-rotr(T x, unsigned int shift) HAMON_NOEXCEPT
+HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR T
+rotr(T x, int s) HAMON_NOEXCEPT
 {
-	return detail::rotr_impl(x, static_cast<unsigned int>(shift & (bitsof(x) - 1)));
+	return detail::rotr_impl<N>(x, static_cast<unsigned int>(s) % N);	// [bit.rotate]/6
 }
 
 }	// namespace hamon
