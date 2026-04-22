@@ -45,9 +45,9 @@ to_uint(UInt& dst, T const* src, hamon::size_t size)
 		}
 
 		auto const v = static_cast<UInt>(src[i]);
-		auto const shift = static_cast<unsigned int>(i * hamon::bitsof<T>());
+		auto const shift = static_cast<int>(i * hamon::bitsof<T>());
 
-		if (v != 0 && shift > static_cast<unsigned int>(hamon::countl_zero(v)))
+		if (v != 0 && shift > hamon::countl_zero(v))
 		{
 			overflow = true;
 		}

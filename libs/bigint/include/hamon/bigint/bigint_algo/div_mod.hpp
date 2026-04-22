@@ -44,13 +44,13 @@ inline HAMON_CXX14_CONSTEXPR hamon::uint64_t
 bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 {
 	using T = detail::vector_value_t<VectorType>;
-	auto const bits = static_cast<unsigned int>(hamon::bitsof<T>());
-	auto const rem = static_cast<unsigned int>(shift % bits);
-	auto const quo = static_cast<unsigned int>((shift + bits - 1) / bits);
+	auto const bits = static_cast<int>(hamon::bitsof<T>());
+	auto const rem = static_cast<int>(shift % bits);
+	auto const quo = static_cast<int>((shift + bits - 1) / bits);
 
 	auto p = vec.data();
-	auto n = static_cast<unsigned int>(vec.size());
-	auto m = static_cast<unsigned int>(sizeof(hamon::uint64_t) / sizeof(T));
+	auto n = static_cast<int>(vec.size());
+	auto m = static_cast<int>(sizeof(hamon::uint64_t) / sizeof(T));
 
 	hamon::uint64_t result{};
 
@@ -62,7 +62,7 @@ bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 
 	if (rem != 0)
 	{
-		result = hamon::shl(result, bits - rem) | hamon::shr(p[l - 1], rem);
+		result = hamon::shl(result, bits - rem) | hamon::shr(p[l - 1], static_cast<unsigned int>(rem));
 	}
 
 	return result;
