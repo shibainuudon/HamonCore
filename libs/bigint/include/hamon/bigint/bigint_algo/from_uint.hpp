@@ -38,7 +38,7 @@ from_uint(UInt n, T* dst, hamon::size_t size)
 	for (hamon::size_t i = 0; i < size; ++i)
 	{
 		dst[i] = static_cast<T>(n);
-		n = hamon::shr(n, static_cast<unsigned int>(hamon::bitsof<T>()));
+		n = hamon::shr(n, static_cast<int>(hamon::bitsof<T>()));
 	}
 	
 	if (n != 0)

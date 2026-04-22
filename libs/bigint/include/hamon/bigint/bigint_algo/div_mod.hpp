@@ -62,7 +62,7 @@ bit_shift_right_to_uint64(VectorType const& vec, hamon::size_t shift)
 
 	if (rem != 0)
 	{
-		result = hamon::shl(result, bits - rem) | hamon::shr(p[l - 1], static_cast<unsigned int>(rem));
+		result = hamon::shl(result, bits - rem) | hamon::shr(p[l - 1], rem);
 	}
 
 	return result;

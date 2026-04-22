@@ -62,7 +62,7 @@ private:
 	static HAMON_CXX14_CONSTEXPR size_type
 	NextOneBit(hamon::uint64_t val, size_type index) HAMON_NOEXCEPT
 	{
-		val = hamon::shr(val, static_cast<unsigned int>(index + 1));
+		val = hamon::shr(val, static_cast<int>(index + 1));
 		val = hamon::shl(val, static_cast<int>(index + 1));
 		return FirstOneBit(val);
 	}
@@ -72,7 +72,7 @@ private:
 	PrevOneBit(hamon::uint64_t val, size_type index) HAMON_NOEXCEPT
 	{
 		val = hamon::shl(val, static_cast<int>(hamon::bitsof(val) - index));
-		val = hamon::shr(val, static_cast<unsigned int>(hamon::bitsof(val) - index));
+		val = hamon::shr(val, static_cast<int>(hamon::bitsof(val) - index));
 		return LastOneBit(val);
 	}
 
