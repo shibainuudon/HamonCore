@@ -33,15 +33,15 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 sub_impl(T* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
-	T carry = 0;
+	T borrow = 0;
 	hamon::size_t i = 0;
 	for (; i < n2; ++i)
 	{
-		p1[i] = detail::subc(p1[i], p2[i], &carry);
+		p1[i] = detail::subc(p1[i], p2[i], &borrow);
 	}
-	for (; carry != 0 && i < n1; ++i)
+	for (; borrow != 0 && i < n1; ++i)
 	{
-		p1[i] = detail::subc(p1[i], T{0}, &carry);
+		p1[i] = detail::subc(p1[i], T{0}, &borrow);
 	}
 }
 
@@ -49,15 +49,15 @@ template <typename T>
 inline HAMON_CXX14_CONSTEXPR void
 sub_impl(T* dst, T const* p1, hamon::size_t n1, T const* p2, hamon::size_t n2)
 {
-	T carry = 0;
+	T borrow = 0;
 	hamon::size_t i = 0;
 	for (; i < n2; ++i)
 	{
-		dst[i] = detail::subc(p1[i], p2[i], &carry);
+		dst[i] = detail::subc(p1[i], p2[i], &borrow);
 	}
-	for (; carry != 0 && i < n1; ++i)
+	for (; borrow != 0 && i < n1; ++i)
 	{
-		dst[i] = detail::subc(p1[i], T{0}, &carry);
+		dst[i] = detail::subc(p1[i], T{0}, &borrow);
 	}
 	for (; i < n1; ++i)
 	{
