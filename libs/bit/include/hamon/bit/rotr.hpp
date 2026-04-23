@@ -22,9 +22,10 @@ using std::rotr;
 
 #else
 
+#include <hamon/bit/bitsof.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
-#include <hamon/limits.hpp>
+//#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -61,7 +62,8 @@ template <
 	typename = hamon::enable_if_t<
 		hamon::is_unsigned<T>::value	// [bit.rotate]/5
 	>,
-	int N = hamon::numeric_limits<T>::digits	// [bit.rotate]/1
+//	int N = hamon::numeric_limits<T>::digits	// [bit.rotate]/1
+	int N = hamon::bitsof<T>()
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR T
 rotr(T x, int s) HAMON_NOEXCEPT
