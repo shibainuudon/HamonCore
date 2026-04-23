@@ -7,7 +7,7 @@
 #ifndef HAMON_CONFIG_SUFFIX_INT128_HPP
 #define HAMON_CONFIG_SUFFIX_INT128_HPP
 
-#if defined(__SIZEOF_INT128__)
+#if defined(__SIZEOF_INT128__) && !defined(_MSC_VER)
 #  define HAMON_HAS_INT128
 #endif
 
