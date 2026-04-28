@@ -83,12 +83,10 @@ static inline HAMON_CXX20_CONSTEXPR uint64_t shiftright128_ct(const uint64_t lo,
 #if defined(HAS_64_BIT_INTRINSICS)
 
 static inline HAMON_CXX20_CONSTEXPR uint64_t umul128(const uint64_t a, const uint64_t b, uint64_t* const productHi) {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
   if (hamon::is_constant_evaluated())
   {
     return umul128_ct(a, b, productHi);
   }
-#endif
   return _umul128(a, b, productHi);
 }
 
@@ -105,12 +103,10 @@ static inline HAMON_CXX20_CONSTEXPR uint64_t shiftright128(const uint64_t lo, co
   // Check this here in case a future change requires larger shift
   // values. In this case this function needs to be adjusted.
   assert(dist < 64);
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
   if (hamon::is_constant_evaluated())
   {
     return shiftright128_ct(lo, hi, dist);
   }
-#endif
   return __shiftright128(lo, hi, (unsigned char) dist);
 }
 
