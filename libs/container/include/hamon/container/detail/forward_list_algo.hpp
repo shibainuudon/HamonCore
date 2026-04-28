@@ -70,8 +70,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	static HAMON_CXX14_CONSTEXPR
 	node_type* construct_node(Allocator& alloc, Args&&... args)
 	{
-#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930) && \
-	defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+#if defined(HAMON_MSVC) && (HAMON_MSVC < 1930)
 		if (hamon::is_constant_evaluated())
 		{
 			return new node_type(hamon::forward<Args>(args)...);	// may throw
