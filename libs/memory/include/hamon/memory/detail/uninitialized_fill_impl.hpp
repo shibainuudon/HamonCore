@@ -41,21 +41,15 @@ uninitialized_fill_impl(
 	Allocator& allocator, Iter first, Sent last, T const& x,
 	hamon::detail::overload_priority<2>)
 {
-	(void)allocator;
-
 	// fill関数であれば、可能ならmemsetを使う等の最適化が期待できるが、
 	// constexprの文脈で未初期化領域に代入することはできない。
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
-#endif
 	{
 		return hamon::ranges::fill(first, last, x);
 	}
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	return uninitialized_fill_impl(
 		allocator, first, last, x, hamon::detail::overload_priority<1>{});
-#endif
 }
 
 template <typename Allocator, typename Iter, typename Sent, typename T,

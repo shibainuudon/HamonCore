@@ -37,15 +37,10 @@ assume_aligned(T* ptr) HAMON_NOEXCEPT
 	// [ptr.align]/5
 	static_assert(hamon::has_single_bit(N), "");
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (hamon::is_constant_evaluated())
-	{
-		return ptr;
-	}
-#endif
-
 	// [ptr.align]/7
-	return static_cast<T*>(__builtin_assume_aligned(ptr, N));
+	return hamon::is_constant_evaluated() ?
+		ptr :
+		static_cast<T*>(__builtin_assume_aligned(ptr, N));
 }
 
 }	// namespace hamon

@@ -42,14 +42,12 @@ uninitialized_value_construct_n_impl(
 	Allocator& allocator, Iter first, Size n,
 	hamon::detail::overload_priority<2>)
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
 	{
 		hamon::memset(hamon::to_address(first), 0, static_cast<hamon::size_t>(n) * sizeof(ValueType));
 		hamon::advance(first, n);
 		return first;
 	}
-#endif
 
 	return uninitialized_value_construct_n_impl(
 		allocator, first, n, hamon::detail::overload_priority<1>{});

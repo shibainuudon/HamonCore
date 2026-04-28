@@ -56,7 +56,6 @@ uninitialized_copy_impl(
 	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
 	hamon::detail::overload_priority<3>)
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
 	{
 		auto src = hamon::to_address(ifirst);
@@ -67,7 +66,6 @@ uninitialized_copy_impl(
 		hamon::advance(ofirst, n);
 		return {ifirst, ofirst};
 	}
-#endif
 
 	return uninitialized_copy_impl(
 		allocator, ifirst, ilast, ofirst, olast, hamon::detail::overload_priority<2>{});
@@ -87,22 +85,15 @@ uninitialized_copy_impl(
 	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
 	hamon::detail::overload_priority<2>)
 {
-	(void)allocator;
-
 	// copy関数であれば、可能ならmemmoveを使う等の最適化が期待できるが、
 	// constexprの文脈で未初期化領域に代入することはできない。
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
-#endif
 	{
-		(void)olast;
 		return hamon::ranges::copy(ifirst, ilast, ofirst);
 	}
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	return uninitialized_copy_impl(
 		allocator, ifirst, ilast, ofirst, olast, hamon::detail::overload_priority<1>{});
-#endif
 }
 
 template <typename Allocator, typename I, typename S1, typename O, typename S2,

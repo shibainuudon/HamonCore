@@ -43,12 +43,11 @@ struct sp_access
 	static HAMON_CXX14_CONSTEXPR shared_ptr<T>
 	make_shared(Args&&... args)
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new T(hamon::forward<Args>(args)...));
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<T>(hamon::allocator<T>{}, 1);
 		hamon::construct_at(ret.get(), hamon::forward<Args>(args)...);
@@ -59,12 +58,11 @@ struct sp_access
 	static HAMON_CXX14_CONSTEXPR shared_ptr<T>
 	allocate_shared(A const& a, Args&&... args)
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new T(hamon::forward<Args>(args)...), hamon::default_delete<T>{}, a);
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<T>(a, 1);
 		hamon::construct_at(ret.get(), hamon::forward<Args>(args)...);
@@ -75,12 +73,11 @@ struct sp_access
 	static HAMON_CXX14_CONSTEXPR shared_ptr<T>
 	make_shared_for_overwrite()
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new T);
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<T>(hamon::allocator<T>{}, 1);
 		return ret;
@@ -91,12 +88,12 @@ struct sp_access
 	make_shared_for_overwrite(hamon::size_t N = hamon::extent<T>::value)
 	{
 		using U = hamon::remove_extent_t<T>;
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new U[N]);
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<U>(hamon::allocator<T>{}, N);
 		return ret;
@@ -106,12 +103,11 @@ struct sp_access
 	static HAMON_CXX14_CONSTEXPR shared_ptr<T>
 	allocate_shared_for_overwrite(A const& a)
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new T, hamon::default_delete<T>{}, a);
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<T>(a, 1);
 		return ret;
@@ -122,12 +118,12 @@ struct sp_access
 	allocate_shared_for_overwrite(A const& a, hamon::size_t N = hamon::extent<T>::value)
 	{
 		using U = hamon::remove_extent_t<T>;
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
+
 		if (hamon::is_constant_evaluated())
 		{
 			return shared_ptr<T>(new U[N], hamon::default_delete<U[]>{}, a);
 		}
-#endif
+
 		shared_ptr<T> ret;
 		ret.template ConstructStorage<U>(a, N);
 		return ret;

@@ -43,23 +43,17 @@ uninitialized_copy_n_impl(
 	Allocator& allocator, Iter first, Size n, Out result,
 	hamon::detail::overload_priority<2>)
 {
-	(void)allocator;
-
 	// copy_n関数であれば、可能ならmemmoveを使う等の最適化が期待できるが、
 	// constexprの文脈で未初期化領域に代入することはできない。
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
-#endif
 	{
 		using DifferenceType = hamon::iter_difference_t<Iter>;
 		return hamon::ranges::copy_n(
 			first, static_cast<DifferenceType>(n), result).out;
 	}
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	return uninitialized_copy_n_impl(
 		allocator, first, n, result, hamon::detail::overload_priority<1>{});
-#endif
 }
 
 template <typename Allocator, typename Iter, typename Size, typename Out,

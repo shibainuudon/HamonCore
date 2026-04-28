@@ -64,14 +64,13 @@ public:
 			hamon::detail::throw_bad_array_new_length();
 		}
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			// std::allocator::allocate はコンパイラマジックによってconstexprになっており、
 			// それ以外の方法でconstexprにメモリを確保することはできない。
 			return std::allocator<T>{}.allocate(n);
 		}
-#endif
+
 		// [allocator.members]/5
 		return static_cast<T*>(::operator new(n * sizeof(T)));
 	}
@@ -85,14 +84,13 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void deallocate(T* p, hamon::size_t n)
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			// std::allocator::deallocate はコンパイラマジックによってconstexprになっており、
 			// それ以外の方法でconstexprにメモリを解放することはできない。
 			return std::allocator<T>{}.deallocate(p, n);
 		}
-#endif
+
 		// [allocator.members]/11
 		::operator delete(p);
 		(void)n;

@@ -45,22 +45,15 @@ uninitialized_move_impl(
 	Allocator& allocator, I ifirst, S1 ilast, O ofirst, S2 olast,
 	hamon::detail::overload_priority<2>)
 {
-	(void)allocator;
-
 	// move関数であれば、可能ならmemmoveを使う等の最適化が期待できるが、
 	// constexprの文脈で未初期化領域に代入することはできない。
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
-#endif
 	{
-		(void)olast;
 		return hamon::ranges::move(ifirst, ilast, ofirst);
 	}
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	return uninitialized_move_impl(
 		allocator, ifirst, ilast, ofirst, olast, hamon::detail::overload_priority<1>{});
-#endif
 }
 
 template <typename Allocator, typename I, typename S1, typename O, typename S2,

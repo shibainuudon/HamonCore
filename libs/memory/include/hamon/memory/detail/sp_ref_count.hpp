@@ -38,31 +38,28 @@ private:
 	template <typename T>
 	static HAMON_CXX14_CONSTEXPR T increment(T& count) noexcept
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return ++count;
 		}
-#endif
+
 		return hamon::detail::atomic_increment(&count);
 	}
 
 	template <typename T>
 	static HAMON_CXX14_CONSTEXPR T decrement(T& count) noexcept
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return --count;
 		}
-#endif
+
 		return hamon::detail::atomic_decrement(&count);
 	}
 
 	template <typename T>
 	static HAMON_CXX14_CONSTEXPR bool increment_if_not_zero(T& count) noexcept
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			if (count == 0)
@@ -73,7 +70,7 @@ private:
 			++count;
 			return true;
 		}
-#endif
+
 		T t = hamon::detail::atomic_load(&count);
 		for (;;)
 		{
