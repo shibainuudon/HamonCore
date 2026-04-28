@@ -60,12 +60,11 @@ private:
 	static HAMON_CXX14_CONSTEXPR bool impl(hamon::detail::overload_priority<1>, T&& t, U&& u)
 		HAMON_NOEXCEPT_IF_EXPR(hamon::declval<T>() < hamon::declval<U>())
 	{
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			return t < u;
 		}
-#endif
+
 		auto x = reinterpret_cast<hamon::uintptr_t>(
 			static_cast<const volatile void*>(hamon::forward<T>(t)));
 		auto y = reinterpret_cast<hamon::uintptr_t>(
