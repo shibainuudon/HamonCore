@@ -636,7 +636,6 @@ public:
 		// 2は仕様には合致しなくなってしまうが、ランタイムの動作は仕様通りなので大きな問題はなさそうだと判断し、
 		// 2の方法を選択した
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			for (auto it = this->Begin(); it != this->End(); ++it)
@@ -648,7 +647,6 @@ public:
 			}
 		}
 		else
-#endif
 		{
 			auto block = this->ActiveBlocks_Begin();
 			while (block != this->ActiveBlocks_End())
