@@ -723,7 +723,6 @@ HAMON_WARNING_POP()
 	insert(node_type&& nh)
 	{
 		// [unord.req.general]/123
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (!hamon::is_constant_evaluated())
 		{
 			if (!nh.empty())
@@ -731,7 +730,6 @@ HAMON_WARNING_POP()
 				HAMON_ASSERT(this->get_allocator() == nh.get_allocator());
 			}
 		}
-#endif
 
 		// [unord.req.general]/124
 		return m_impl.insert_node(
@@ -742,7 +740,6 @@ HAMON_WARNING_POP()
 	insert(const_iterator /*hint*/, node_type&& nh)
 	{
 		// [unord.req.general]/128
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (!hamon::is_constant_evaluated())
 		{
 			if (!nh.empty())
@@ -750,7 +747,6 @@ HAMON_WARNING_POP()
 				HAMON_ASSERT(this->get_allocator() == nh.get_allocator());
 			}
 		}
-#endif
 
 		// [unord.req.general]/129
 		return m_impl.insert_node(
