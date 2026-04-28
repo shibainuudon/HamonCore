@@ -40,12 +40,11 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 	{
 		m_lhs->destroy();
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 		if (hamon::is_constant_evaluated())
 		{
 			m_lhs->begin_lifetime();
 		}
-#endif
+
 		auto res = ctor_visitor{}(v, hamon::forward<Args>(args)...);
 		m_lhs->index(m_index);
 		return *res;
