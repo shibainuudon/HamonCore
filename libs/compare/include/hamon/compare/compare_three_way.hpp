@@ -46,12 +46,11 @@ struct compare_three_way
 			auto pt = static_cast<void const volatile*>(t);
 			auto pu = static_cast<void const volatile*>(u);
 
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 			if (hamon::is_constant_evaluated())
 			{
 				return pt <=> pu;
 			}
-#endif
+
 			auto it = reinterpret_cast<hamon::uintptr_t>(pt);
 			auto iu = reinterpret_cast<hamon::uintptr_t>(pu);
 			return it <=> iu;
