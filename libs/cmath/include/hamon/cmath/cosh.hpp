@@ -65,13 +65,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 cosh_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::cosh(x);
-	}
-#endif
-	return cosh_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		cosh_unchecked_ct(x) : std::cosh(x);
 }
 
 #endif

@@ -166,13 +166,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 erf_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::erf(x);
-	}
-#endif
-	return erf_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		erf_unchecked_ct(x) : std::erf(x);
 }
 
 template <typename FloatType>

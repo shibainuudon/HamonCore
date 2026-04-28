@@ -52,13 +52,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 tan_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::tan(x);
-	}
-#endif
-	return sin_unchecked_ct(x) / cos_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		(sin_unchecked_ct(x) / cos_unchecked_ct(x)) : std::tan(x);
 }
 
 #endif

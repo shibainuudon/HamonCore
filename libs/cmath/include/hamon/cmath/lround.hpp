@@ -65,13 +65,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR long
 lround_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::lround(x);
-	}
-#endif
-	return static_cast<long>(round_unchecked(x));
+	return hamon::is_constant_evaluated() ?
+		static_cast<long>(round_unchecked(x)) : std::lround(x);
 }
 
 #endif

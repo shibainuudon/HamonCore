@@ -40,13 +40,9 @@ template <typename FloatType>
 HAMON_CXX11_CONSTEXPR int
 fpclassify_impl(FloatType x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::fpclassify(x);
-	}
-#endif
 	return
+		!hamon::is_constant_evaluated() ?
+			std::fpclassify(x) :
 		hamon::isnan(x) ?
 			FP_NAN :
 		hamon::isinf(x) ?

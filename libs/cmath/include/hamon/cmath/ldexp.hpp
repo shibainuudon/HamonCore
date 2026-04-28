@@ -64,16 +64,10 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 ldexp_unchecked(T x, int exp) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::ldexp(x, exp);
-	}
-#endif
-
 	// FLT_RADIX が2のとき、scalbn と等しい
 	// そうでないときは、x * std::pow(2, exp) となる
-	return hamon::scalbn(x, exp);
+	return hamon::is_constant_evaluated() ?
+		hamon::scalbn(x, exp) : std::ldexp(x, exp);
 }
 
 #endif

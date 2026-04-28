@@ -66,13 +66,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 fma_unchecked(T x, T y, T z) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::fma(x, y, z);
-	}
-#endif
-	return x * y + z;
+	return hamon::is_constant_evaluated() ?
+		(x * y + z) : std::fma(x, y, z);
 }
 
 #endif

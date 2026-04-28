@@ -80,13 +80,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 log_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::log(x);
-	}
-#endif
-	return log_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		log_unchecked_ct(x) : std::log(x);
 }
 
 #endif

@@ -254,13 +254,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 lgamma_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::lgamma(x);
-	}
-#endif
-	return lgamma_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		lgamma_unchecked_ct(x) : std::lgamma(x);
 }
 
 #endif

@@ -70,13 +70,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 pow_unchecked(T x, T y) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::pow(x, y);
-	}
-#endif
-	return pow_unchecked_ct(x, y);
+	return hamon::is_constant_evaluated() ?
+		pow_unchecked_ct(x, y) : std::pow(x, y);
 }
 
 #endif

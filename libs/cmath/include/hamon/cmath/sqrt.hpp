@@ -96,13 +96,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 sqrt_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::sqrt(x);
-	}
-#endif
-	return sqrt_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		sqrt_unchecked_ct(x) : std::sqrt(x);
 }
 
 #endif

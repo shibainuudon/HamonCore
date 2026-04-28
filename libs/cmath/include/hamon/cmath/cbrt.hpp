@@ -67,13 +67,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 cbrt_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::cbrt(x);
-	}
-#endif
-	return cbrt_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		cbrt_unchecked_ct(x) : std::cbrt(x);
 }
 
 #endif

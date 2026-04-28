@@ -122,12 +122,10 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR T
 remquo_unchecked(T x, T y, int* quo) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
 	{
 		return std::remquo(x, y, quo);
 	}
-#endif
 
 	return remquo_unchecked_impl(x, y, quo);
 }

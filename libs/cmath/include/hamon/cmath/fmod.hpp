@@ -44,13 +44,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 fmod_unchecked(T x, T y) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::fmod(x, y);
-	}
-#endif
-	return x - (hamon::trunc(x / y) * y);
+	return hamon::is_constant_evaluated() ?
+		(x - (hamon::trunc(x / y) * y)) : std::fmod(x, y);
 }
 
 template <typename FloatType>

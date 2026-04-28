@@ -90,13 +90,8 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 atan_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::atan(x);
-	}
-#endif
-	return atan_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		atan_unchecked_ct(x) : std::atan(x);
 }
 
 #endif

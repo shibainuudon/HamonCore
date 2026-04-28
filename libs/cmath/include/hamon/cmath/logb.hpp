@@ -153,13 +153,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 logb_unchecked(T x) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::logb(x);
-	}
-#endif
-	return logb_unchecked_ct(x);
+	return hamon::is_constant_evaluated() ?
+		logb_unchecked_ct(x) : std::logb(x);
 }
 
 #endif

@@ -66,13 +66,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 remainder_unchecked(T x, T y) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::remainder(x, y);
-	}
-#endif
-	return x - (hamon::round_half_even(x / y) * y);
+	return hamon::is_constant_evaluated() ?
+		(x - (hamon::round_half_even(x / y) * y)) : std::remainder(x, y);
 }
 
 #endif

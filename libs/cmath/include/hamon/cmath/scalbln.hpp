@@ -72,13 +72,8 @@ template <typename T>
 HAMON_CXX11_CONSTEXPR T
 scalbln_unchecked(T x, long exp) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
-	if (!hamon::is_constant_evaluated())
-	{
-		return std::scalbln(x, exp);
-	}
-#endif
-	return scalbln_unchecked_ct(x, exp);
+	return hamon::is_constant_evaluated() ?
+		scalbln_unchecked_ct(x, exp) : std::scalbln(x, exp);
 }
 
 #endif

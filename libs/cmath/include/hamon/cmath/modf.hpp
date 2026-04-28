@@ -43,12 +43,10 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR T
 modf_unchecked(T x, T* iptr) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
 	{
 		return std::modf(x, iptr);
 	}
-#endif
 	*iptr = hamon::trunc(x);
 	return hamon::copysign(x - (*iptr), x);
 }

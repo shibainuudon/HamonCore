@@ -43,12 +43,10 @@ template <typename FloatType>
 HAMON_CXX14_CONSTEXPR FloatType
 frexp_unchecked(FloatType x, int* exp) HAMON_NOEXCEPT
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 	if (!hamon::is_constant_evaluated())
 	{
 		return std::frexp(x, exp);
 	}
-#endif
 	*exp = static_cast<int>(1 + hamon::logb(x));
 	return hamon::scalbn(x, -(*exp));
 }

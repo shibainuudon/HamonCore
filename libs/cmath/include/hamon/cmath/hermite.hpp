@@ -59,7 +59,6 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR T
 hermite_unchecked(unsigned int n, T x)
 {
-#if defined(HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED)
 #if defined(__cpp_lib_math_special_functions) && (__cpp_lib_math_special_functions >= 201603)
 	if (!hamon::is_constant_evaluated())
 	{
@@ -68,7 +67,6 @@ HAMON_WARNING_DISABLE_MSVC(4244)
 		return std::hermite(n, x);
 HAMON_WARNING_POP()
 	}
-#endif
 #endif
 
 	using value_type = hamon::float_promote_t<double, T>;
