@@ -20,32 +20,11 @@ namespace asin_test
 {
 
 static_assert(hamon::is_same<float,       decltype(hamon::asin(0.0f))>::value, "");
-static_assert(hamon::is_same<float,       decltype(hamon::asinf(0.0f))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::asin(0.0 ))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::asin(0   ))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::asin(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::asinf(0.0f))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::asinl(0.0l))>::value, "");
-
-template <typename T>
-double get_error();
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<float>()
-{
-	return 0.000001;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<double>()
-{
-	return 0.000000000001;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
-{
-	return 0.000000000001;
-}
 
 template <typename T>
 void AsinTestFloat()
@@ -54,17 +33,17 @@ void AsinTestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
 
-	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T, float>::value ? 1e-6 : 1e-15;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.5707963267949, (double)hamon::asin(T(-1.00)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.8480620789814, (double)hamon::asin(T(-0.75)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.5235987755983, (double)hamon::asin(T(-0.50)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.2526802551420, (double)hamon::asin(T(-0.25)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::asin(T( 0.00)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.2526802551420, (double)hamon::asin(T( 0.25)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.5235987755983, (double)hamon::asin(T( 0.50)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.8480620789814, (double)hamon::asin(T( 0.75)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.5707963267949, (double)hamon::asin(T( 1.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.5707963267948966192313216916397514420985846996876,  (double)hamon::asin(T(-1.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.84806207898148100805294433899841808007336621326311, (double)hamon::asin(T(-0.75)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.52359877559829887307710723054658381403286156656252, (double)hamon::asin(T(-0.50)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.25268025514207865348565743699371097225219373309684, (double)hamon::asin(T(-0.25)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.00000000000000000000000000000000000000000000000000, (double)hamon::asin(T( 0.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.25268025514207865348565743699371097225219373309684, (double)hamon::asin(T( 0.25)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.52359877559829887307710723054658381403286156656252, (double)hamon::asin(T( 0.50)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.84806207898148100805294433899841808007336621326311, (double)hamon::asin(T( 0.75)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.5707963267948966192313216916397514420985846996876,  (double)hamon::asin(T( 1.00)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asin(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asin(T(-0.0)));
@@ -80,11 +59,11 @@ void AsinTestFloat()
 template <typename T>
 void AsinTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-30;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, hamon::asin(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.5707963267949, hamon::asin(T( 1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.5707963267949, hamon::asin(T(-1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000000000000000000000000000000000000000, hamon::asin(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.5707963267948966192313216916397514420985846996876, hamon::asin(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.5707963267948966192313216916397514420985846996876, hamon::asin(T(-1)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(T( 2))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(T(-2))));
@@ -93,10 +72,10 @@ void AsinTestSignedInt(void)
 template <typename T>
 void AsinTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-30;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000, hamon::asin(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.5707963267949, hamon::asin(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000000000000000000000000000000000000000, hamon::asin(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.5707963267948966192313216916397514420985846996876, hamon::asin(T( 1)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::asin(T( 2))));
 }
