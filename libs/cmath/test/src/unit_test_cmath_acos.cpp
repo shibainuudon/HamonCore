@@ -20,32 +20,11 @@ namespace acos_test
 {
 
 static_assert(hamon::is_same<float,       decltype(hamon::acos(0.0f))>::value, "");
-static_assert(hamon::is_same<float,       decltype(hamon::acosf(0.0f))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::acos(0.0 ))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::acos(0   ))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::acos(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::acosf(0.0f))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::acosl(0.0l))>::value, "");
-
-template <typename T>
-double get_error();
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<float>()
-{
-	return 0.000001;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<double>()
-{
-	return 0.000000000001;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
-{
-	return 0.000000000001;
-}
 
 template <typename T>
 void AcosTestFloat()
@@ -54,17 +33,17 @@ void AcosTestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
 
-	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T, float>::value ? 1e-6 : 1e-15;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(3.141592653590, (double)hamon::acos(T(-1.00)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(2.418858405776, (double)hamon::acos(T(-0.75)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(2.094395102393, (double)hamon::acos(T(-0.50)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.823476581937, (double)hamon::acos(T(-0.25)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.570796326795, (double)hamon::acos(T( 0.00)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.318116071653, (double)hamon::acos(T( 0.25)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.047197551197, (double)hamon::acos(T( 0.50)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.722734247813, (double)hamon::acos(T( 0.75)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.000000000000, (double)hamon::acos(T( 1.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(3.1415926535897932384626433832795028841971693993751, (double)hamon::acos(T(-1.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(2.4188584057763776272842660306381695221719509129507, (double)hamon::acos(T(-0.75)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(2.0943951023931954923084289221863352561314462662501, (double)hamon::acos(T(-0.50)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.8234765819369752727169791286334624143507784327844, (double)hamon::acos(T(-0.25)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.5707963267948966192313216916397514420985846996876, (double)hamon::acos(T( 0.00)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.3181160716528179657456642546460404698463909665907, (double)hamon::acos(T( 0.25)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.047197551196597746154214461093167628065723133125,  (double)hamon::acos(T( 0.50)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.7227342478134156111783773526413333620252184864244, (double)hamon::acos(T( 0.75)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000000000000000000000000000000000000000, (double)hamon::acos(T( 1.00)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::acos(T(+1.0)));
 
@@ -79,11 +58,12 @@ void AcosTestFloat()
 template <typename T>
 void AcosTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-30;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(3.141592653590, hamon::acos(T(-1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.570796326795, hamon::acos(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.000000000000, hamon::acos(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(3.1415926535897932384626433832795028841971693993751, hamon::acos(T(-1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.5707963267948966192313216916397514420985846996876, hamon::acos(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000000000000000000000000000000000000000, hamon::acos(T( 1)), error);
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(T( 2))));
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(T(-2))));
 }
@@ -91,10 +71,11 @@ void AcosTestSignedInt(void)
 template <typename T>
 void AcosTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-30;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.570796326795, hamon::acos(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.000000000000, hamon::acos(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(1.5707963267948966192313216916397514420985846996876, hamon::acos(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(0.0000000000000000000000000000000000000000000000000, hamon::acos(T( 1)), error);
+
 	HAMON_CXX11_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::acos(T( 2))));
 }
 
