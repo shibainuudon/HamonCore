@@ -19,32 +19,11 @@ namespace asinh_test
 {
 
 static_assert(hamon::is_same<float,       decltype(hamon::asinh(0.0f))>::value, "");
-static_assert(hamon::is_same<float,       decltype(hamon::asinhf(0.0f))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::asinh(0.0 ))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::asinh(0   ))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::asinh(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::asinhf(0.0f))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::asinhl(0.0l))>::value, "");
-
-template <typename T>
-double get_error();
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<float>()
-{
-	return 1e-6;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<double>()
-{
-	return 1e-12;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
-{
-	return 1e-12;
-}
 
 template <typename T>
 void AsinhTestFloat()
@@ -52,21 +31,21 @@ void AsinhTestFloat()
 	HAMON_CXX11_CONSTEXPR auto nan = hamon::numeric_limits<T>::quiet_NaN();
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 
-	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T, float>::value ? 1e-6 : 1e-12;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.8184464592320, (double)hamon::asinh(T(-3.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.6472311463710, (double)hamon::asinh(T(-2.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4436354751788, (double)hamon::asinh(T(-2.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.1947632172871, (double)hamon::asinh(T(-1.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.8813735870195, (double)hamon::asinh(T(-1.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.4812118250596, (double)hamon::asinh(T(-0.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::asinh(T( 0.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.4812118250596, (double)hamon::asinh(T( 0.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.8813735870195, (double)hamon::asinh(T( 1.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.1947632172871, (double)hamon::asinh(T( 1.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.4436354751788, (double)hamon::asinh(T( 2.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.6472311463710, (double)hamon::asinh(T( 2.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.8184464592320, (double)hamon::asinh(T( 3.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T(-3.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.647231146371095710624858610443619663504414430193, (double)hamon::asinh(T(-2.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.443635475178810342493276740273105269405553003157, (double)hamon::asinh(T(-2.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.194763217287109304111930828519090523536162075153, (double)hamon::asinh(T(-1.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.881373587019543025232609324979792309028160328261, (double)hamon::asinh(T(-1.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.481211825059603447497758913424368423135184334385, (double)hamon::asinh(T(-0.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.000000000000000000000000000000000000000000000000, (double)hamon::asinh(T( 0.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.481211825059603447497758913424368423135184334385, (double)hamon::asinh(T( 0.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.881373587019543025232609324979792309028160328261, (double)hamon::asinh(T( 1.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.194763217287109304111930828519090523536162075153, (double)hamon::asinh(T( 1.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.443635475178810342493276740273105269405553003157, (double)hamon::asinh(T( 2.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.647231146371095710624858610443619663504414430193, (double)hamon::asinh(T( 2.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T( 3.0)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asinh(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ( 0.0, hamon::asinh(T(-0.0)));
@@ -81,26 +60,26 @@ void AsinhTestFloat()
 template <typename T>
 void AsinhTestSignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-12;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.8184464592320, (double)hamon::asinh(T(-3)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4436354751788, (double)hamon::asinh(T(-2)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.8813735870195, (double)hamon::asinh(T(-1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::asinh(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.8813735870195, (double)hamon::asinh(T( 1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.4436354751788, (double)hamon::asinh(T( 2)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.8184464592320, (double)hamon::asinh(T( 3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T(-3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.443635475178810342493276740273105269405553003157, (double)hamon::asinh(T(-2)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.881373587019543025232609324979792309028160328261, (double)hamon::asinh(T(-1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.000000000000000000000000000000000000000000000000, (double)hamon::asinh(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.881373587019543025232609324979792309028160328261, (double)hamon::asinh(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.443635475178810342493276740273105269405553003157, (double)hamon::asinh(T( 2)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T( 3)), error);
 }
 
 template <typename T>
 void AsinhTestUnsignedInt(void)
 {
-	HAMON_CXX11_CONSTEXPR double error = 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = 1e-12;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::asinh(T( 0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.8813735870195, (double)hamon::asinh(T( 1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.4436354751788, (double)hamon::asinh(T( 2)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.8184464592320, (double)hamon::asinh(T( 3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.000000000000000000000000000000000000000000000000, (double)hamon::asinh(T( 0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.881373587019543025232609324979792309028160328261, (double)hamon::asinh(T( 1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.443635475178810342493276740273105269405553003157, (double)hamon::asinh(T( 2)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.818446459232066823483698963560708993786253942768, (double)hamon::asinh(T( 3)), error);
 }
 
 GTEST_TEST(CMathTest, AsinhTest)
