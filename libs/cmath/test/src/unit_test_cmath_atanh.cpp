@@ -20,32 +20,11 @@ namespace atanh_test
 {
 
 static_assert(hamon::is_same<float,       decltype(hamon::atanh(0.0f))>::value, "");
-static_assert(hamon::is_same<float,       decltype(hamon::atanhf(0.0f))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::atanh(0.0 ))>::value, "");
 static_assert(hamon::is_same<double,      decltype(hamon::atanh(0   ))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::atanh(0.0l))>::value, "");
+static_assert(hamon::is_same<float,       decltype(hamon::atanhf(0.0f))>::value, "");
 static_assert(hamon::is_same<long double, decltype(hamon::atanhl(0.0l))>::value, "");
-
-template <typename T>
-double get_error();
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<float>()
-{
-	return 1e-6;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<double>()
-{
-	return 1e-12;
-}
-
-template <>
-inline HAMON_CXX11_CONSTEXPR double get_error<long double>()
-{
-	return 1e-12;
-}
 
 template <typename T>
 void AtanhTestFloat()
@@ -54,21 +33,21 @@ void AtanhTestFloat()
 	HAMON_CXX11_CONSTEXPR auto inf = hamon::numeric_limits<T>::infinity();
 	HAMON_CXX11_CONSTEXPR auto eps = hamon::numeric_limits<T>::epsilon();
 
-	HAMON_CXX11_CONSTEXPR double error = get_error<T>();
+	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T, float>::value ? 1e-6 : 1e-12;
 
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000, (double)hamon::atanh(T( 0.0)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.1003353477310, (double)hamon::atanh(T( 0.1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.2027325540540, (double)hamon::atanh(T( 0.2)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.3095196042031, (double)hamon::atanh(T( 0.3)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.5493061443340, (double)hamon::atanh(T( 0.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.4722194895832, (double)hamon::atanh(T( 0.9)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 2.6466524123622, (double)hamon::atanh(T( 0.99)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.1003353477310, (double)hamon::atanh(T(-0.1)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.2027325540540, (double)hamon::atanh(T(-0.2)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.3095196042031, (double)hamon::atanh(T(-0.3)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.5493061443340, (double)hamon::atanh(T(-0.5)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4722194895832, (double)hamon::atanh(T(-0.9)), error);
-	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-2.6466524123622, (double)hamon::atanh(T(-0.99)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.0000000000000000000000000000000000000000000000000, (double)hamon::atanh(T( 0.0)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.1003353477310755806357265520600389452633628691459, (double)hamon::atanh(T( 0.1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.2027325540540821909890065577321745682859952117312, (double)hamon::atanh(T( 0.2)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.3095196042031117154740673490610694375840916075891, (double)hamon::atanh(T( 0.3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 0.5493061443340548456976226184612628523237452789113, (double)hamon::atanh(T( 0.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 1.4722194895832202300045137159439267686186896306496, (double)hamon::atanh(T( 0.9)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR( 2.6466524123622461977050606459342686009455526402847, (double)hamon::atanh(T( 0.99)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.1003353477310755806357265520600389452633628691459, (double)hamon::atanh(T(-0.1)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.2027325540540821909890065577321745682859952117312, (double)hamon::atanh(T(-0.2)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.3095196042031117154740673490610694375840916075891, (double)hamon::atanh(T(-0.3)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-0.5493061443340548456976226184612628523237452789113, (double)hamon::atanh(T(-0.5)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-1.4722194895832202300045137159439267686186896306496, (double)hamon::atanh(T(-0.9)), error);
+	HAMON_CXX11_CONSTEXPR_EXPECT_NEAR(-2.6466524123622461977050606459342686009455526402847, (double)hamon::atanh(T(-0.99)), error);
 
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atanh(T(+0.0)));
 	HAMON_CXX11_CONSTEXPR_EXPECT_EQ(0.0, hamon::atanh(T(-0.0)));
