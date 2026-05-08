@@ -51,7 +51,7 @@ void test1()
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cyl_bessel_i(nan1, T2{1})));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(hamon::isnan(hamon::cyl_bessel_i(T1{0}, nan2)));
 
-	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T1, float>::value ? 0.0000001 : 0.000000000001;
+	HAMON_CXX11_CONSTEXPR double error = hamon::is_same<T1, float>::value ? 1e-7 : 1e-12;
 
 	HAMON_CYL_BESSEL_I_TEST(1.0000000000000000, T1(0.0000000000000000), T2(0.0000000000000000), error);
 	HAMON_CYL_BESSEL_I_TEST(1.0156861412236078, T1(0.0000000000000000), T2(0.2500000000000000), error);
