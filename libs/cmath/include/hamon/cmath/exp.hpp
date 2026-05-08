@@ -13,9 +13,11 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/factorial.hpp>
 #include <hamon/cmath/detail/pow_n.hpp>
+#include <hamon/cmath/detail/exp_table.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
@@ -50,21 +52,44 @@ exp_unchecked(long double x) HAMON_NOEXCEPT
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
-exp_unchecked_ct_1(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
+exp_unchecked_around_zero_recur(T x, unsigned int n, unsigned int last) HAMON_NOEXCEPT
 {
 	return last - n == 1 ?
 		pow_n(x, n) / unchecked_factorial<T>(n) :
-		exp_unchecked_ct_1(x, n, n + (last - n) / 2) +
-		exp_unchecked_ct_1(x, n + (last - n) / 2, last);
+		exp_unchecked_around_zero_recur(x, n, n + (last - n) / 2) +
+		exp_unchecked_around_zero_recur(x, n + (last - n) / 2, last);
+}
+
+template <typename T>
+inline HAMON_CXX11_CONSTEXPR T
+exp_unchecked_around_zero(T x) HAMON_NOEXCEPT
+{
+	return !(x > -1) ?
+		T(1) / (T(1) + exp_unchecked_around_zero_recur(-x, 1, max_factorial<T>() / 2 + 1)) :
+		        T(1) + exp_unchecked_around_zero_recur( x, 1, max_factorial<T>() / 2 + 1);
+}
+
+template <typename T>
+inline HAMON_CXX11_CONSTEXPR T
+exp_unchecked_ct_1(int i, T x) HAMON_NOEXCEPT
+{
+	return
+		i > exp_table_max ?
+			hamon::numeric_limits<T>::infinity() :
+		i < exp_table_min ?
+			T(0) :
+			static_cast<T>(exp_table[i - exp_table_min] * exp_unchecked_around_zero(x - static_cast<T>(i)));
 }
 
 template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 exp_unchecked_ct(T x) HAMON_NOEXCEPT
 {
-	return !(x > -1) ?
-		T(1) / (T(1) + exp_unchecked_ct_1(-x, 1, max_factorial<T>() / 2 + 1)) :
-		        T(1) + exp_unchecked_ct_1( x, 1, max_factorial<T>() / 2 + 1);
+	// 指数関数はマクローリン展開によって求めることができるが、
+	// xの絶対値が大きくなると急激に精度が落ちてしまう。
+	// そこで、e^(a+b) = e^a * e^b であることを利用して、xを整数部と小数部にわけて、
+	// 整数部はテーブル引きで求め、小数部はマクローリン展開で求めてそれらを乗算する。
+	return exp_unchecked_ct_1(static_cast<int>(x), x);
 }
 
 template <typename T>
