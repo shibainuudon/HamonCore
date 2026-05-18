@@ -12,6 +12,7 @@
 #include <hamon/cmath/round_up.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/cstdint.hpp>
+#include <hamon/limits.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -27,7 +28,11 @@ template <hamon::size_t Bits>
 struct big_int
 {
 public:
+#if defined(HAMON_HAS_INT128)
+	using value_type = hamon::uint64_t;
+#else
 	using value_type = hamon::uint32_t;
+#endif
 	using size_type = hamon::size_t;
 
 private:
@@ -163,7 +168,8 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 {
 	using T = typename BigInt::value_type;
 
-	auto const digits = 9;
+	auto constexpr digits = hamon::numeric_limits<T>::digits10;
+	auto constexpr pow10_c = hamon::detail::pow_n(T{10}, digits);
 
 	auto mag_p = value.data();
 	auto mag_n = value.size();
@@ -173,11 +179,11 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 	{
 		if (count == digits)
 		{
-			//value *= 1000000000;
+			//value *= pow_n(10, digits);
 			//value += accum;
 			for (hamon::size_t i = 0; i < mag_n; ++i)
 			{
-				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], T{1000000000}, &accum);
+				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10_c, &accum);
 			}
 			if (accum != 0)
 			{
@@ -194,7 +200,7 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 		++count;
 	}
 
-	//value *= hamon::detail::pow_n(10, count);
+	//value *= pow_n(10, count);
 	//value += accum;
 	if (count != 0)
 	{
