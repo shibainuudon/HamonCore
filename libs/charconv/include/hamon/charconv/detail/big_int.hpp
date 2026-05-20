@@ -7,6 +7,7 @@
 #ifndef HAMON_CHARCONV_DETAIL_BIG_INT_HPP
 #define HAMON_CHARCONV_DETAIL_BIG_INT_HPP
 
+#include <hamon/charconv/detail/pow5_table.hpp>
 #include <hamon/bigint.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/cmath/round_up.hpp>
@@ -157,9 +158,14 @@ div_mod(big_int<Bits> const& lhs, big_int<Bits> const& rhs, big_int<Bits>* quo)
 template <typename BigInt>
 inline HAMON_CXX14_CONSTEXPR BigInt pow5(int n)
 {
+#if 0
 	BigInt result;
 	hamon::bigint_algo::pow_n(result, BigInt{5}, static_cast<hamon::uintmax_t>(n));
 	return result;
+#endif
+
+	auto const& tbl = pow5_table[n];
+	return BigInt{&tbl.magnitude[0], &tbl.magnitude[tbl.size]};
 }
 
 template <typename BigInt>
