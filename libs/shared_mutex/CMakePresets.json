@@ -33,6 +33,9 @@
 			"vendor": {
 				"microsoft.com/VisualStudioSettings/CMake/1.0": {
 					"hostOS": [ "Linux" ]
+				},
+				"microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+					"forceWSL1Toolset": true
 				}
 			}
 		},
