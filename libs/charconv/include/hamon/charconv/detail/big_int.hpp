@@ -89,10 +89,10 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void resize(size_type new_size)
 	{
-		for (size_type i = m_size; i < new_size; ++i)
-		{
-			m_data[i] = 0;
-		}
+		//for (size_type i = m_size; i < new_size; ++i)
+		//{
+		//	m_data[i] = 0;
+		//}
 
 		m_size = new_size;
 	}
@@ -179,17 +179,27 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 
 	auto mag_p = value.data();
 	auto mag_n = value.size();
-	T accum = 0;
-	int count = 0;
-	for (auto p = first; p != last; ++p)
+	for (auto p = first; p != last;)
 	{
-		if (count == digits)
+		T accum = 0;
+		int count = 0;
+
+		while (count < digits && p != last)
 		{
-			//value *= pow_n(10, digits);
-			//value += accum;
+			accum = accum * 10 + static_cast<T>(*p - '0');
+			++count;
+			++p;
+		}
+
+		//value *= pow_n(10, count);
+		//value += accum;
+		{
+			auto const pow10 = count == digits ?
+				pow10_c : hamon::detail::pow_n(T{10}, count);
+
 			for (hamon::size_t i = 0; i < mag_n; ++i)
 			{
-				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10_c, &accum);
+				mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10, &accum);
 			}
 			if (accum != 0)
 			{
@@ -197,29 +207,6 @@ unchecked_from_chars_dec(char const* first, char const* last, BigInt& value)
 				value.resize(mag_n);
 				mag_p[mag_n - 1] = accum;
 			}
-
-			accum = 0;
-			count = 0;
-		}
-
-		accum = accum * 10 + static_cast<T>(*p - '0');
-		++count;
-	}
-
-	//value *= pow_n(10, count);
-	//value += accum;
-	if (count != 0)
-	{
-		auto const pow10 = hamon::detail::pow_n(T{10}, count);
-		for (hamon::size_t i = 0; i < mag_n; ++i)
-		{
-			mag_p[i] = bigint_algo::detail::mulc(mag_p[i], pow10, &accum);
-		}
-		if (accum != 0)
-		{
-			++mag_n;
-			value.resize(mag_n);
-			mag_p[mag_n - 1] = accum;
 		}
 	}
 }
