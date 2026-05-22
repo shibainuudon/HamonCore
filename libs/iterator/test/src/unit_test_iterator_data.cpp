@@ -10,6 +10,18 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
+namespace iterator_test
+{
+
+namespace data_test
+{
+
+template <typename E>
+HAMON_CXX14_CONSTEXPR E initializer_list_test(std::initializer_list<E> il)
+{
+	return *hamon::data(il);
+}
+
 GTEST_TEST(IteratorTest, DataTest)
 {
 	{
@@ -33,6 +45,10 @@ GTEST_TEST(IteratorTest, DataTest)
 		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(&a[0], hamon::data(a));
 	}
 	{
-		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, *hamon::data({1,2,3}));
+		HAMON_CXX14_CONSTEXPR_EXPECT_EQ(1, initializer_list_test({1,2,3}));
 	}
 }
+
+}	// namespace data_test
+
+}	// namespace iterator_test
