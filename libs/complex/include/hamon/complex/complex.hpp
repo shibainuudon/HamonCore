@@ -675,6 +675,9 @@ inline namespace complex_literals
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' の形式のリテラル演算子 ID は非推奨になりました
+#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 170000)
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-literal-operator")
+#endif
 
 // アンダースコアで始まらないユーザー定義リテラルのサフィックス名は、
 // 標準C++の将来の拡張のために予約されている。
