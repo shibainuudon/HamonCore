@@ -26,12 +26,15 @@ using std::cbegin;
 namespace hamon
 {
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-cbegin(Container const& c)
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+cbegin(C const& c)
 HAMON_NOEXCEPT_IF_EXPR(hamon::begin(c))
 -> decltype(hamon::begin(c))
 {
+	// [iterator.range]/6
 	return hamon::begin(c);
 }
 

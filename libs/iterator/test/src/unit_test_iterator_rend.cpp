@@ -83,4 +83,22 @@ GTEST_TEST(IteratorTest, REndTest)
 		++it;
 		EXPECT_TRUE(it == hamon::rend(l));
 	}
+
+	{
+		std::initializer_list<int> il {1,2,3,4};
+		auto it = hamon::rbegin(il);
+		EXPECT_EQ(4, *it);
+		EXPECT_TRUE(it != hamon::rend(il));
+		++it;
+		EXPECT_EQ(3, *it);
+		EXPECT_TRUE(it != hamon::rend(il));
+		++it;
+		EXPECT_EQ(2, *it);
+		EXPECT_TRUE(it != hamon::rend(il));
+		++it;
+		EXPECT_EQ(1, *it);
+		EXPECT_TRUE(it != hamon::rend(il));
+		++it;
+		EXPECT_TRUE(it == hamon::rend(il));
+	}
 }

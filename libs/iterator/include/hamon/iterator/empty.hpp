@@ -9,7 +9,8 @@
 
 #include <iterator>
 
-#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411)
+#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411) && \
+	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
 
 namespace hamon
 {
@@ -27,23 +28,35 @@ using std::empty;
 namespace hamon
 {
 
-template <typename Container>
-HAMON_NODISCARD HAMON_CONSTEXPR auto empty(Container const& c) -> decltype(c.empty())
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+empty(C const& c) HAMON_NOEXCEPT_IF_EXPR(c.empty())
+-> decltype(c.empty())
 {
+	// [iterator.range]/20
 	return c.empty();
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD HAMON_CONSTEXPR bool empty(T const (&)[N]) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+empty(T const (&)[N]) HAMON_NOEXCEPT
 {
+	// [iterator.range]/21
 	return false;
 }
 
+#if !(defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L))
+
 template <typename E>
-HAMON_NODISCARD HAMON_CONSTEXPR bool empty(std::initializer_list<E> il) HAMON_NOEXCEPT
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
+empty(std::initializer_list<E> il) HAMON_NOEXCEPT
 {
 	return il.size() == 0;
 }
+
+#endif
 
 }	// namespace hamon
 

@@ -54,4 +54,7 @@ GTEST_TEST(IteratorTest, RBeginTest)
 		auto it = hamon::rbegin(l);
 		EXPECT_EQ(8, *it);
 	}
+
+	std::initializer_list<int> il {1,2,3,4};
+	EXPECT_EQ(4, *hamon::rbegin(il));
 }

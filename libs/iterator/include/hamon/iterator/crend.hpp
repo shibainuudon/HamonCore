@@ -9,7 +9,8 @@
 
 #include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_ITERATOR)
+#if defined(HAMON_USE_STD_ITERATOR) && \
+	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
 
 namespace hamon
 {
@@ -26,12 +27,15 @@ using std::crend;
 namespace hamon
 {
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-crend(Container const& c)
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+crend(C const& c)
 HAMON_NOEXCEPT_IF_EXPR(hamon::rend(c))
 -> decltype(hamon::rend(c))
 {
+	// [iterator.range]/15
 	return hamon::rend(c);
 }
 

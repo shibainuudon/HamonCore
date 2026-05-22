@@ -9,7 +9,8 @@
 
 #include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_ITERATOR)
+#if defined(HAMON_USE_STD_ITERATOR) && \
+	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
 
 namespace hamon
 {
@@ -23,29 +24,45 @@ using std::rbegin;
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
 #include <hamon/config.hpp>
+#include <initializer_list>
 
 namespace hamon
 {
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-rbegin(Container& c) -> decltype(c.rbegin())
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+rbegin(C& c) HAMON_NOEXCEPT_IF_EXPR(c.rbegin())
+-> decltype(c.rbegin())
 {
+	// [iterator.range]/8
 	return c.rbegin();
 }
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-rbegin(Container const& c) -> decltype(c.rbegin())
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+rbegin(C const& c) HAMON_NOEXCEPT_IF_EXPR(c.rbegin())
+-> decltype(c.rbegin())
 {
+	// [iterator.range]/8
 	return c.rbegin();
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CONSTEXPR hamon::reverse_iterator<T*>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::reverse_iterator<T*>
 rbegin(T (&a)[N]) HAMON_NOEXCEPT
 {
+	// [iterator.range]/10
 	return hamon::reverse_iterator<T*>(a + N);
+}
+
+template <typename E>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::reverse_iterator<E const*>
+rbegin(std::initializer_list<E> il) HAMON_NOEXCEPT
+{
+	// [iterator.range]/12
+	return hamon::reverse_iterator<E const*>(il.end());
 }
 
 }	// namespace hamon

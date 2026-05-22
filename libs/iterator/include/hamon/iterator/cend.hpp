@@ -26,12 +26,15 @@ using std::cend;
 namespace hamon
 {
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-cend(Container const& c)
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+cend(C const& c)
 HAMON_NOEXCEPT_IF_EXPR(hamon::end(c))
 -> decltype(hamon::end(c))
 {
+	// [iterator.range]/7
 	return hamon::end(c);
 }
 

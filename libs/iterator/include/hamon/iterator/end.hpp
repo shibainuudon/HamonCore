@@ -9,7 +9,8 @@
 
 #include <hamon/iterator/config.hpp>
 
-#if defined(HAMON_USE_STD_ITERATOR)
+#if defined(HAMON_USE_STD_ITERATOR) && \
+	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
 
 namespace hamon
 {
@@ -26,24 +27,31 @@ using std::end;
 namespace hamon
 {
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-end(Container& c) -> decltype(c.end())
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+end(C& c) HAMON_NOEXCEPT_IF_EXPR(c.end())
+-> decltype(c.end())
 {
+	// [iterator.range]/3
 	return c.end();
 }
 
-template <typename Container>
-inline HAMON_CONSTEXPR auto
-end(Container const& c) -> decltype(c.end())
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+end(C const& c) HAMON_NOEXCEPT_IF_EXPR(c.end())
+-> decltype(c.end())
 {
+	// [iterator.range]/3
 	return c.end();
 }
 
 template <typename T, hamon::size_t N>
-inline HAMON_CONSTEXPR T*
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T*
 end(T (&a)[N]) HAMON_NOEXCEPT
 {
+	// [iterator.range]/5
 	return a + N;
 }
 

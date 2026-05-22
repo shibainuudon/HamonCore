@@ -9,7 +9,8 @@
 
 #include <iterator>
 
-#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411)
+#if defined(__cpp_lib_nonmember_container_access) && (__cpp_lib_nonmember_container_access >= 201411) && \
+	defined(__cpp_lib_initializer_list) && (__cpp_lib_initializer_list >= 202511L)
 
 namespace hamon
 {
@@ -26,17 +27,22 @@ using std::size;
 namespace hamon
 {
 
-template <typename Container>
-HAMON_NODISCARD HAMON_CONSTEXPR auto
-size(Container const& c) -> decltype(c.size())
+// 24.7 Range access[iterator.range]
+
+template <typename C>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
+size(C const& c) HAMON_NOEXCEPT_IF_EXPR(c.size())
+-> decltype(c.size())
 {
+	// [iterator.range]/16
 	return c.size();
 }
 
 template <typename T, hamon::size_t N>
-HAMON_NODISCARD HAMON_CONSTEXPR hamon::size_t
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::size_t
 size(T const (&)[N]) HAMON_NOEXCEPT
 {
+	// [iterator.range]/17
 	return N;
 }
 
