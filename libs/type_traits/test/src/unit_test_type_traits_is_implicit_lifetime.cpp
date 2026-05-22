@@ -194,7 +194,7 @@ HAMON_IS_IMPLICIT_LIFETIME_TEST(true,  ConstrainedUserDeclaredDefaultConstructor
 HAMON_IS_IMPLICIT_LIFETIME_TEST(false, ConstrainedUserDeclaredDefaultConstructor<false>);
 #if defined(HAMON_USE_STD_IS_IMPLICIT_LIFETIME)
 HAMON_IS_IMPLICIT_LIFETIME_TEST(false, ConstrainedUserProvidedDestructor<true>);
-HAMON_IS_IMPLICIT_LIFETIME_TEST(false, ConstrainedUserProvidedDestructor<false>);
+HAMON_IS_IMPLICIT_LIFETIME_TEST(true,  ConstrainedUserProvidedDestructor<false>);
 #endif
 #endif
 #if 0
