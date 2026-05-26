@@ -832,4 +832,26 @@ auto i = f<int>();
 }	// namespace allow_static_assert_false_test
 #endif
 
+#if defined(HAMON_HAS_CXX23_RANGE_BASED_FOR)
+namespace cxx23_range_based_for_test
+{
+
+std::vector<std::string> getstr()
+{
+	return { "hello", "UB" };
+}
+
+GTEST_TEST(ConfigTest, Cxx23RangeBasedForTest)
+{
+	std::stringstream ss;
+	for (auto&& c : getstr()[0])
+	{
+		ss << c << ", ";
+	}
+	EXPECT_EQ("h, e, l, l, o, ", ss.str());
+}
+
+}	// namespace cxx23_range_based_for_test
+#endif
+
 }	// namespace hamon_config_cxx23_test

@@ -580,6 +580,11 @@
 #      define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER				// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
 #    endif
 #  endif
+#  if (HAMON_GCC_VERSION >= 150000)
+#    if defined(__cpp_range_based_for) && (__cpp_range_based_for >= 202211L)
+#      define HAMON_HAS_CXX23_RANGE_BASED_FOR								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#    endif
+#  endif
 #endif	// C++23
 
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
