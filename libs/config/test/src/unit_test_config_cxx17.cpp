@@ -530,6 +530,7 @@ GTEST_TEST(ConfigTest, Cxx17NodiscardTest)
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4834)	// 'nodiscard' 属性を持つ関数の戻り値を破棄しています
 HAMON_WARNING_DISABLE_CLANG("-Wunused-result")
+HAMON_WARNING_DISABLE_CLANG("-Wunused-value")
 HAMON_WARNING_DISABLE_GCC("-Wunused-result")
 
 	f();

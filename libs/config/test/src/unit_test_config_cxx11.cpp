@@ -827,7 +827,12 @@ class derived : public base
 
 class base_f final
 {
+HAMON_WARNING_PUSH()
+#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 210000)
+HAMON_WARNING_DISABLE_CLANG("-Wunnecessary-virtual-specifier")
+#endif
 	virtual void func_virt();
+HAMON_WARNING_POP()
 };
 
 //class derived_f : public base_f {};

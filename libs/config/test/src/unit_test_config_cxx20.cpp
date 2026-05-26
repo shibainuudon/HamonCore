@@ -975,6 +975,7 @@ GTEST_TEST(ConfigTest, Cxx20NodiscardWithMessageTest)
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4858)	// 戻り値 "..." を破棄しています 
 HAMON_WARNING_DISABLE_CLANG("-Wunused-result")
+HAMON_WARNING_DISABLE_CLANG("-Wunused-value")
 HAMON_WARNING_DISABLE_GCC("-Wunused-result")
 
 	f();
