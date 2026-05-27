@@ -546,6 +546,10 @@
 # endif
 // Defect report
 # define HAMON_HAS_CXX20_EXCEPTION_SPEC_DEFAULTED_FUNCTION	// P1286R2
+// DR20:
+# if (HAMON_CXX_STANDARD >= 20)
+#  define HAMON_HAS_CXX23_MEANINGFUL_EXPORTS				// P2615R1	DR20: Meaningful exports
+# endif
 #endif
 
 // Visual Studio 2019 version 16.8.1
@@ -1676,7 +1680,7 @@
 #define HAMON_HAS_CXX23_STATIC_SUBSCRIPT_OPERATOR					// P2589R1	static operator[]														__cpp_multidimensional_subscript >= 202211L
 #define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION		// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
 #define HAMON_HAS_CXX23_RANGE_BASED_FOR								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
-#define HAMON_HAS_CXX23_											// P2615R1	DR20: Meaningful exports
+#define HAMON_HAS_CXX23_MEANINGFUL_EXPORTS							// P2615R1	DR20: Meaningful exports
 #define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP						// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31						// P1949R7	DR98: C++ Identifier Syntax using Unicode Standard Annex 31
 #define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1	DR11: Allow Duplicate Attributes

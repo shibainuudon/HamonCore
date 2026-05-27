@@ -650,6 +650,9 @@
 #      define HAMON_HAS_CXX23_CONSTEVAL_PROPAGATE_UP				// P2564R3	DR20: consteval needs to propagate up									__cpp_consteval >= 202211L
 #    endif
 #  endif
+#  if (HAMON_GCC_VERSION >= 150000)
+#    define HAMON_HAS_CXX23_MEANINGFUL_EXPORTS						// P2615R1	DR20: Meaningful exports
+#  endif
 #endif
 
 //#define HAMON_HAS_CXX20_MODULES								// P1103R3
