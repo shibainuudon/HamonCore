@@ -242,7 +242,7 @@
 #    define HAMON_HAS_CXX11_VARIADIC_MACROS
 #    define HAMON_HAS_CXX11_PRAGMA_OPERATOR
 #  endif
-#endif
+#endif	// C++11
 
 #define HAMON_HAS_CXX11_UNIFORM_INITIALIZATION
 
@@ -281,7 +281,7 @@
 #  if (HAMON_GCC_VERSION >= 50000) && defined(__cpp_aggregate_nsdmi) && (__cpp_aggregate_nsdmi >= 201304)
 #    define HAMON_HAS_CXX14_AGGREGATE_NSDMI
 #  endif
-#endif
+#endif	// C++14
 
 // C++17
 #if (HAMON_CXX_STANDARD >= 17)
@@ -343,9 +343,6 @@
 #  if (HAMON_GCC_VERSION >= 60000) && defined(__cpp_nested_namespace_definitions) && (__cpp_nested_namespace_definitions >= 201411)
 #    define HAMON_HAS_CXX17_NESTED_NAMESPACE_DEFINITIONS
 #  endif
-#  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_inheriting_constructors) && (__cpp_inheriting_constructors >= 201511)
-#    define HAMON_HAS_CXX17_INHERITING_CONSTRUCTORS
-#  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_variadic_using) && (__cpp_variadic_using >= 201611)
 #    define HAMON_HAS_CXX17_VARIADIC_USING
 #  endif
@@ -377,20 +374,13 @@
 #  if (HAMON_GCC_VERSION >= 60000) && defined(__cpp_nontype_template_args) && (__cpp_nontype_template_args >= 201411)
 #    define HAMON_HAS_CXX17_NONTYPE_TEMPLATE_ARGS
 #  endif
-#  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_template_template_args) && (__cpp_template_template_args >= 201611)
-#    define HAMON_HAS_CXX17_TEMPLATE_TEMPLATE_ARGS
-#  endif
 #  if (HAMON_GCC_VERSION >= 70000)
 #    define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS
 #  endif
 #  if (HAMON_GCC_VERSION >= 50000) && defined(__has_include)
 #    define HAMON_HAS_CXX17_HAS_INCLUDE
 #  endif
-#endif
-
-#if (HAMON_GCC_VERSION >= 50000)
-#  define HAMON_HAS_CXX17_AUTO_DEDUCTION_BRACED_INIT_LIST
-#endif
+#endif	// C++17
 
 // C++20
 #if (HAMON_CXX_STANDARD >= 20)
@@ -433,9 +423,6 @@
 #    endif
 #    if (HAMON_HAS_CPP_ATTRIBUTE(no_unique_address) >= 201803)
 #      define HAMON_HAS_CXX20_NO_UNIQUE_ADDRESS						// P0840R2
-#    endif
-#    if defined(__cpp_constexpr_in_decltype) && (__cpp_constexpr_in_decltype >= 201711)
-#      define HAMON_HAS_CXX20_CONSTEXPR_IN_DECLTYPE					// P0859R0
 #    endif
 #    if defined(__cpp_init_captures) && (__cpp_init_captures >= 201803)
 #      define HAMON_HAS_CXX20_INIT_CAPTURES							// P0780R2
@@ -491,7 +478,6 @@
 #    endif
 #    if (HAMON_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907)
 #      define HAMON_HAS_CXX20_NODISCARD_WITH_MESSAGE				// P1301R4
-#      define HAMON_HAS_CXX20_NODISCARD_CTOR						// P1771R1
 #    endif
 #  endif
 #  if (HAMON_GCC_VERSION >= 100200)	//10.2
@@ -517,7 +503,6 @@
 #  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
 #    define HAMON_HAS_CXX20_CONSTEXPR
 #  endif
-
 #endif	// C++20
 
 // C++23
@@ -598,20 +583,14 @@
 
 // Defect reports (DR)
 
-#if (HAMON_GCC_VERSION >= 80000)
-#  define HAMON_HAS_CXX20_RELAXING_STRUCTURED_BINDINGS				// P0961R1
-#  define HAMON_HAS_CXX20_RELAXING_RANGE_FOR						// P0962R1
-#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE		// P0588R1
-#  define HAMON_HAS_CXX20_STRUCTURED_BINDINGS_TO_ACCESSIBLE_MEMBERS	// P0969R0
-#endif
-#if (HAMON_GCC_VERSION >= 100000)
-#  define HAMON_HAS_CXX20_EXCEPTION_SPEC_DEFAULTED_FUNCTION			// P1286R2
+// DR98:
+#if (HAMON_GCC_VERSION >= 70000)
+#  if defined(__cpp_template_template_args) && (__cpp_template_template_args >= 201611)
+#    define HAMON_HAS_CXX17_TEMPLATE_TEMPLATE_ARGS					// P0522R0
+#  endif
 #endif
 #if (HAMON_GCC_VERSION >= 110000)
-#  define HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING				// P1957R2
-#  define HAMON_HAS_CXX20_ARRAY_SIZE_DEDUCTION_NEW					// P1009R2
 #  define HAMON_HAS_CXX20_PSEUDO_DESTRUCTOR							// P0593R6
-//#  define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1
 #endif
 #if (HAMON_GCC_VERSION >= 120000)
 #  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31					// P1949R7
@@ -619,27 +598,61 @@
 #if (HAMON_GCC_VERSION >= 130000)
 #  define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE					// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
 #endif
-#if (HAMON_GCC_VERSION >= 140000)
-#  define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
-#endif
-#if (HAMON_GCC_VERSION >= 160000)
-#  define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
+
+// DR11:
+#if (HAMON_CXX_STANDARD >= 11)
+#  if (HAMON_GCC_VERSION >= 50000)
+#    define HAMON_HAS_CXX17_AUTO_DEDUCTION_BRACED_INIT_LIST			// N3922
+#  endif
+#  if (HAMON_GCC_VERSION >= 70000)
+#    if defined(__cpp_inheriting_constructors) && (__cpp_inheriting_constructors >= 201511)
+#      define HAMON_HAS_CXX17_INHERITING_CONSTRUCTORS				// P0136R1
+#    endif
+#  endif
+#  if (HAMON_GCC_VERSION >= 80000)
+#    define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE		// P0588R1
+#    define HAMON_HAS_CXX20_RELAXING_RANGE_FOR						// P0962R1
+#  endif
+#  if (HAMON_GCC_VERSION >= 90000)
+#    if defined(__cpp_constexpr_in_decltype) && (__cpp_constexpr_in_decltype >= 201711)
+#      define HAMON_HAS_CXX20_CONSTEXPR_IN_DECLTYPE					// P0859R0
+#    endif
+#  endif
+#  if (HAMON_GCC_VERSION >= 100000)
+#    define HAMON_HAS_CXX20_EXCEPTION_SPEC_DEFAULTED_FUNCTION		// P1286R2
+#  endif
+#  if (HAMON_GCC_VERSION >= 110000)
+#    define HAMON_HAS_CXX20_ARRAY_SIZE_DEDUCTION_NEW				// P1009R2
+#    if (HAMON_CXX_STANDARD >= 20)	// C++20 mode only
+#      define HAMON_HAS_CXX20_IMPLICIT_MOVE							// P1825R0
+#    endif
+#    define HAMON_HAS_CXX20_POINTER_TO_BOOL_CONVERTING				// P1957R2
+//#    define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES					// P2156R1	DR11: Allow Duplicate Attributes
+#  endif
+#  if (HAMON_GCC_VERSION >= 140000)
+#    define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
+#  endif
+#  if (HAMON_GCC_VERSION >= 160000)
+#    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
+#  endif
 #endif
 
-// DR17
-
+// DR17:
 #if (HAMON_CXX_STANDARD >= 17)
 #  if (HAMON_GCC_VERSION >= 80000)
-#    define HAMON_HAS_CXX20_INITIALIZER_LIST_CTAD					// P0702R1
+#    define HAMON_HAS_CXX20_RELAXING_STRUCTURED_BINDINGS				// P0961R1
+#    define HAMON_HAS_CXX20_STRUCTURED_BINDINGS_TO_ACCESSIBLE_MEMBERS	// P0969R0
+#    define HAMON_HAS_CXX20_INITIALIZER_LIST_CTAD						// P0702R1
+#  endif
+#  if (HAMON_GCC_VERSION >= 100000)
+#    if (HAMON_HAS_CPP_ATTRIBUTE(nodiscard) >= 201907)
+#      define HAMON_HAS_CXX20_NODISCARD_CTOR						// P1771R1
+#    endif
 #  endif
 #endif
 
-// DR20
-
+// DR20:
 #if (HAMON_CXX_STANDARD >= 20)
-#  if (HAMON_GCC_VERSION >= 110000)
-#    define HAMON_HAS_CXX20_IMPLICIT_MOVE							// P1825R0
-#  endif
 #  if (HAMON_GCC_VERSION >= 130000)
 #    define HAMON_HAS_CXX23_DE_DEPRECATE_VOLATILE					// P2327R1	De-deprecating volatile compound operations
 #    define HAMON_HAS_CXX23_EQUALITY_OPERATOR						// P2468R2	DR20: The Equality Operator You Are Looking For
