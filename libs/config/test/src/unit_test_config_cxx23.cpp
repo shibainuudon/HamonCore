@@ -841,6 +841,13 @@ std::vector<std::string> getstr()
 	return { "hello", "UB" };
 }
 
+HAMON_WARNING_PUSH()
+// clang-21より前では、間違って警告が発生していた
+// https://github.com/llvm/llvm-project/issues/109793
+#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 210000)
+HAMON_WARNING_DISABLE_CLANG("-Wdangling-gsl")
+#endif
+
 GTEST_TEST(ConfigTest, Cxx23RangeBasedForTest)
 {
 	std::stringstream ss;
@@ -850,6 +857,8 @@ GTEST_TEST(ConfigTest, Cxx23RangeBasedForTest)
 	}
 	EXPECT_EQ("h, e, l, l, o, ", ss.str());
 }
+
+HAMON_WARNING_POP()
 
 }	// namespace cxx23_range_based_for_test
 #endif
