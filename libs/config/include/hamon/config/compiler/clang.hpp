@@ -564,6 +564,11 @@
 #  define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE							// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
 #  define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE					// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
 #endif
+#if (HAMON_CXX_STANDARD >= 23)	// DR11 のはずだが、clangではC++23以上のときのみ適用される
+#if (HAMON_CLANG_VERSION >= 200000)
+#  define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR					// P2280R4	DR11: Using unknown references in constant expressions
+#endif
+#endif
 
 //#  define HAMON_HAS_CXX20_SIMPLIFYING_IMPLICIT_LAMBDA_CAPTURE				// P0588R1
 
