@@ -460,6 +460,7 @@ namespace label_at_end_of_compound_statement_test
 {
 
 HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4102)	// '   ': ラベルは 1 度も参照されません。
 HAMON_WARNING_DISABLE_CLANG("-Wunused-label")
 HAMON_WARNING_DISABLE_CLANG("-Wunused-but-set-variable")
 HAMON_WARNING_DISABLE_GCC("-Wunused-label")

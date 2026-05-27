@@ -1386,6 +1386,17 @@
 
 // Visual Studio 2026 Version: 18.6.0
 #if (_MSC_FULL_VER >= 195136243)
+#  if (HAMON_CXX_STANDARD >= 23)
+#    define HAMON_HAS_CXX23_CHARACTER_SETS_AND_ENCODINGS				// P2314R4	Character sets and encodings
+#    define HAMON_HAS_CXX23_NON_ENCODABLE_WIDE_CHARACTER_LITERALS		// P2362R3	Remove non-encodable wide character literals and multicharacter wide character literals
+#    define HAMON_HAS_CXX23_LABEL_AT_END_OF_COMPOUND_STATEMENT			// P2324R2	Labels at the end of compound statements
+#    define HAMON_HAS_CXX23_NAMED_CHARACTER_ESCAPES						// P2071R2	Named universal character escapes										__cpp_named_character_escapes >= 202207L
+#    define HAMON_HAS_CXX23_RELAXING_CONSTEXPR							// P2448R2	Relaxing some constexpr restrictions									__cpp_constexpr >= 202207L
+#    define HAMON_HAS_CXX23_INHERITED_CONSTRUCTOR_CTAD					// P2582R1	Wording for class template argument deduction from inherited constructors
+#    define HAMON_HAS_CXX23_ASSUME										// P1774R8	Portable assumptions
+#    define HAMON_HAS_CXX23_STATIC_VARIABLE_IN_CONSTEXPR_FUNCTION		// P2647R1	Permitting static constexpr variables in constexpr functions			__cpp_constexpr >= 202211L
+#    define HAMON_HAS_CXX23_RANGE_BASED_FOR								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#  endif
 #endif
 
 // Visual Studio 2026 Version: 18.6.1
