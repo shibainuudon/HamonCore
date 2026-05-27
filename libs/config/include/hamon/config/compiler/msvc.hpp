@@ -1085,6 +1085,10 @@
 
 // Visual Studio 2022 Version 17.6.(0-2)
 #if (_MSC_FULL_VER >= 193632532)
+// DR20:
+#  if (HAMON_CXX_STANDARD >= 20)
+#    define HAMON_HAS_CXX23_EQUALITY_OPERATOR			// P2468R2	DR20: The Equality Operator You Are Looking For
+#  endif
 #endif
 
 // Visual Studio 2022 Version 17.6.3
@@ -1149,7 +1153,7 @@
 
 // Visual Studio 2022 Version 17.10.0
 #if (_MSC_FULL_VER >= 194033808)
-# if (HAMON_CXX_STANDARD >= 20)
+# if (HAMON_CXX_STANDARD >= 23)
 #  define HAMON_HAS_CXX23_ELIFDEF				// P2334R1	Add support for preprocessing directives elifdef and elifndef
 # endif
 // DR98/11:
