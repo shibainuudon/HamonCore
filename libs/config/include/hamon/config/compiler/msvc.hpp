@@ -1314,6 +1314,22 @@
 
 // Visual Studio 2026 Version: 18.0.0
 #if (_MSC_FULL_VER >= 195035717)
+#  if (HAMON_CXX_STANDARD >= 23)
+#    define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
+#    define HAMON_HAS_CXX23_AUTO_CAST									// P0849R8	auto(x): decay-copy in the language										__cpp_auto_cast >= 202110L
+#    define HAMON_HAS_CXX23_ALIAS_DECLARATION_IN_INIT_STATEMENT			// P2360R0	Extend init-statement to allow alias-declaration
+#    define HAMON_HAS_CXX23_WARNING										// P2437R1	Support for #warning
+#    define HAMON_HAS_CXX23_DELIMITED_ESCAPE_SEQUENCES					// P2290R3	Delimited escape sequences
+#    define HAMON_HAS_CXX23_IMPLICIT_MOVE								// P2266R3	Simpler implicit move													__cpp_implicit_move >= 202207L
+#  endif
+// DR98:
+#  define HAMON_HAS_CXX23_IDENTIFIER_SYNTAX_UAX31						// P1949R7	DR98: C++ Identifier Syntax using Unicode Standard Annex 31
+// DR11:
+#  if (HAMON_CXX_STANDARD >= 11)
+#    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
+#    define HAMON_HAS_CXX23_DUPLICATE_ATTRIBUTES						// P2156R1	DR11: Allow Duplicate Attributes
+#    define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR				// P2280R4	DR11: Using unknown references in constant expressions
+#  endif
 #endif
 
 // Visual Studio 2026 Version: 18.0.1

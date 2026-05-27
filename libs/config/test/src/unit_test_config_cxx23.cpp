@@ -573,6 +573,7 @@ namespace warning_test
 {
 
 HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5295)	// #warning
 HAMON_WARNING_DISABLE_CLANG("-W#warnings")
 HAMON_WARNING_DISABLE_GCC("-Wcpp")
 
@@ -603,9 +604,14 @@ HAMON_WARNING_POP()
 namespace delimited_escape_sequences_test
 {
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4566)	// ユニバーサル文字名 '  ' によって表示されている文字は、現在のコード ページ (932) で表示できません
+
 auto a = "\o{17}";
 auto b = "\x{ab}c";
 auto c = "\u{1F1F8}";
+
+HAMON_WARNING_POP()
 
 }	// namespace delimited_escape_sequences_test
 #endif
