@@ -582,7 +582,7 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 150000)
 #    if defined(__cpp_range_based_for) && (__cpp_range_based_for >= 202211L)
-#      define HAMON_HAS_CXX23_RANGE_BASED_FOR								// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
+#      define HAMON_HAS_CXX23_RANGE_BASED_FOR						// P2718R0	Wording for P2644R1 Fix for Range-based for Loop						__cpp_range_based_for >= 202211L
 #    endif
 #  endif
 #endif	// C++23
@@ -621,6 +621,9 @@
 #endif
 #if (HAMON_GCC_VERSION >= 140000)
 #  define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
+#endif
+#if (HAMON_GCC_VERSION >= 160000)
+#  define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
 #endif
 
 // DR17
