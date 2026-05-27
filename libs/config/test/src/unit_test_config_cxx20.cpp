@@ -400,6 +400,9 @@ void f(volatile int n);
 // volatile-qualified return type is deprecated
 //volatile int g(int n);
 
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_GCC("-Wunused-but-set-variable")
+
 GTEST_TEST(ConfigTest, Cxx20DeprecateVolatileTest)
 {
 	volatile int i = 0;
@@ -423,6 +426,8 @@ GTEST_TEST(ConfigTest, Cxx20DeprecateVolatileTest)
 	// use of result of assignment to object of volatile-qualified type is deprecated
 	i = j = 1;
 }
+
+HAMON_WARNING_POP()
 
 #endif
 
