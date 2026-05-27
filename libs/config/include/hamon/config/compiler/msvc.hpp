@@ -1654,7 +1654,7 @@
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
 #define HAMON_HAS_CXX23_EXPLICIT_THIS_PARAMETER						// P0847R7, P2797R0, CWG2586	Deducing this										__cpp_explicit_this_parameter >= 202110L
 #define HAMON_HAS_CXX23_AUTO_CAST									// P0849R8	auto(x): decay-copy in the language										__cpp_auto_cast >= 202110L
-#define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	Change scope of lambda trailing-return-type
+#define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE			// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
 #define HAMON_HAS_CXX23_ELIFDEF										// P2334R1	Add support for preprocessing directives elifdef and elifndef
 #define HAMON_HAS_CXX23_CONSTEXPR_NON_LITERAL_VARIABLES				// P2242R3	Non-literal variables (and labels and gotos) in constexpr functions		__cpp_constexpr >= 202110L
 #define HAMON_HAS_CXX23_CHARACTER_LITERALS_IN_PREPROCESSOR			// P2316R2	Consistent character literal encoding
