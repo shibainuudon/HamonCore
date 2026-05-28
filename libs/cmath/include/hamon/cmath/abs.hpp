@@ -39,7 +39,7 @@ template <typename T>
 inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {
-	return x < 0 ? -x : x;
+	return x < 0 ? static_cast<T>(-x) : x;
 }
 
 template <typename T>
