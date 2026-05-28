@@ -29,7 +29,8 @@
 #if defined(HAMON_CPP_LIB_CONSTEXPR_FUNCTIONAL) && \
 	defined(__cpp_lib_common_reference) && (__cpp_lib_common_reference >= 202302L) && \
 	defined(__cpp_lib_common_reference_wrapper) && (__cpp_lib_common_reference_wrapper >= 202302L) && \
-	HAMON_CXX_STANDARD >= 23
+	(HAMON_CXX_STANDARD >= 23) && \
+	!defined(HAMON_APPLE_CLANG)		// AppleClang は P2655R3 を実装していないのに __cpp_lib_common_reference と __cpp_lib_common_reference_wrapper を定義している
 #  define HAMON_USE_STD_REFERENCE_WRAPPER
 #endif
 
