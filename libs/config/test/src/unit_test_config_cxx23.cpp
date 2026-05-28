@@ -322,6 +322,7 @@ struct Jeff {
 };
 
 HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4172)	// ローカル変数またはテンポラリ : x のアドレスを返します
 HAMON_WARNING_DISABLE_GCC("-Wreturn-local-addr")
 
 int* five(Mutt x) {
