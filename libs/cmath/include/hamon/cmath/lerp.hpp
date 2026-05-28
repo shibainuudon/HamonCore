@@ -11,6 +11,7 @@
 #include <cmath>
 
 #if defined(__cpp_lib_interpolate) && (__cpp_lib_interpolate >= 201902) &&	\
+	defined(HAMON_HAS_CXX23_LIB_EXTENDED_FLOATING_POINT_TYPES) &&	\
 	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000))
 #  define HAMON_USE_STD_LERP
 #endif
@@ -26,8 +27,10 @@ using std::lerp;
 
 #else
 
+#include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/float_promote.hpp>
 
 namespace hamon
 {
@@ -84,20 +87,6 @@ lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
 {
 	return detail::lerp_impl(a, b, t);
 }
-
-}	// namespace hamon
-
-#endif
-
-#if !(defined(HAMON_USE_STD_LERP) && defined(HAMON_HAS_CXX23_LIB_EXTENDED_FLOATING_POINT_TYPES))
-
-#include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/type_traits/float_promote.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
 
 /**
  *	@brief
