@@ -462,7 +462,7 @@ public:
 	}
 
 private:
-	HAMON_CXX11_CONSTEXPR T bitmask() const HAMON_NOEXCEPT
+	static HAMON_CXX11_CONSTEXPR T bitmask() HAMON_NOEXCEPT
 	{
 		return T(-1) >> (BitsPerWord - NBits);
 	}
