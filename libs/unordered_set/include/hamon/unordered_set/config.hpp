@@ -7,9 +7,11 @@
 #ifndef HAMON_UNORDERED_SET_CONFIG_HPP
 #define HAMON_UNORDERED_SET_CONFIG_HPP
 
+#include <hamon/memory/config.hpp>
 #include <unordered_set>
 
-#if defined(__cpp_lib_nonmember_container_access)          && (__cpp_lib_nonmember_container_access          >= 201411L) && \
+#if defined(HAMON_USE_STD_ALLOCATOR) && \
+    defined(__cpp_lib_nonmember_container_access)          && (__cpp_lib_nonmember_container_access          >= 201411L) && \
     defined(__cpp_lib_node_extract)                        && (__cpp_lib_node_extract                        >= 201606L) && \
     defined(__cpp_lib_generic_unordered_lookup)            && (__cpp_lib_generic_unordered_lookup            >= 201811L) && \
     defined(__cpp_lib_associative_heterogeneous_erasure)   && (__cpp_lib_associative_heterogeneous_erasure   >= 202110L) && \

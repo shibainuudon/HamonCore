@@ -38,4 +38,11 @@
 
 #endif
 
+#if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907L) &&	\
+	defined(__cpp_lib_allocate_at_least) && (__cpp_lib_allocate_at_least >= 202302L)
+
+#define	HAMON_USE_STD_ALLOCATOR
+
+#endif
+
 #endif // HAMON_MEMORY_CONFIG_HPP

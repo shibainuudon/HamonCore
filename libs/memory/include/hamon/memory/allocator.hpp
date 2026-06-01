@@ -7,10 +7,11 @@
 #ifndef HAMON_MEMORY_ALLOCATOR_HPP
 #define HAMON_MEMORY_ALLOCATOR_HPP
 
-#include <memory>
+#include <hamon/memory/config.hpp>
 
-#if defined(__cpp_lib_constexpr_dynamic_alloc) && (__cpp_lib_constexpr_dynamic_alloc >= 201907L) &&	\
-	defined(__cpp_lib_allocate_at_least) && (__cpp_lib_allocate_at_least >= 202302L)
+#if defined(HAMON_USE_STD_ALLOCATOR)
+
+#include <memory>
 
 namespace hamon
 {

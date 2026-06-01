@@ -7,9 +7,11 @@
 #ifndef HAMON_UNORDERED_MAP_CONFIG_HPP
 #define HAMON_UNORDERED_MAP_CONFIG_HPP
 
+#include <hamon/memory/config.hpp>
 #include <unordered_map>
 
-#if defined(__cpp_lib_nonmember_container_access)          && (__cpp_lib_nonmember_container_access          >= 201411L) && \
+#if defined(HAMON_USE_STD_ALLOCATOR) && \
+    defined(__cpp_lib_nonmember_container_access)          && (__cpp_lib_nonmember_container_access          >= 201411L) && \
     defined(__cpp_lib_unordered_map_try_emplace)           && (__cpp_lib_unordered_map_try_emplace           >= 201411L) && \
     defined(__cpp_lib_node_extract)                        && (__cpp_lib_node_extract                        >= 201606L) && \
     defined(__cpp_lib_generic_unordered_lookup)            && (__cpp_lib_generic_unordered_lookup            >= 201811L) && \

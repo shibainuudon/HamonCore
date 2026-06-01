@@ -7,6 +7,7 @@
 #ifndef HAMON_OPTIONAL_CONFIG_HPP
 #define HAMON_OPTIONAL_CONFIG_HPP
 
+#include <hamon/memory/config.hpp>
 #include <hamon/config.hpp>
 
 #if (HAMON_CXX_STANDARD >= 17)
@@ -15,7 +16,8 @@
 #    include <optional>
 #  endif
 
-#  if defined(__cpp_lib_optional) && (__cpp_lib_optional >= 202110L) &&	\
+#  if defined(HAMON_USE_STD_ALLOCATOR) && \
+      defined(__cpp_lib_optional) && (__cpp_lib_optional >= 202110L) &&	\
       defined(__cpp_lib_three_way_comparison) && (__cpp_lib_three_way_comparison >= 201907L) && \
 	  !defined(HAMON_CLANG)
 #    define	HAMON_USE_STD_OPTIONAL
