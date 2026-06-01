@@ -1207,6 +1207,9 @@ HAMON_WARNING_DISABLE_MSVC(5311)	// '演算子文字列-リテラル識別子' �
 #if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 170000)
 HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-literal-operator")
 #endif
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 150000)
+HAMON_WARNING_DISABLE_GCC("-Wdeprecated-literal-operator")
+#endif
 
 // [string.view.literals], suffix for basic_string_view literals
 
