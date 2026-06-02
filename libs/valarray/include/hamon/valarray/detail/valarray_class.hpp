@@ -297,7 +297,7 @@ public:
 		valarray<T> result(size);
 		for (hamon::size_t i = 0; i < size; ++i)
 		{
-			result[i] = -m_data[i];
+			result[i] = static_cast<T>(-m_data[i]);
 		}
 		return result;
 	}
