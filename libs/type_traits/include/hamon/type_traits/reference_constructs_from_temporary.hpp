@@ -11,7 +11,8 @@
 #include <type_traits>
 
 #if defined(__cpp_lib_reference_from_temporary) && (__cpp_lib_reference_from_temporary >= 202202L) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
+	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304) && \
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 210000))	// clang 21 以前だと正しい値が返ってこない
 
 namespace hamon
 {
