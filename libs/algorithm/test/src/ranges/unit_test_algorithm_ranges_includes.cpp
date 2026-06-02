@@ -7,6 +7,7 @@
 #include <hamon/algorithm/ranges/includes.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -68,7 +69,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -77,6 +78,12 @@ inline bool test02()
 		VERIFY( ranges::includes(x, y, {}, &X::i, &X::i));
 		VERIFY(!ranges::includes(y, x, {}, &X::i, &X::i));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::vector<int> x = {};
 		hamon::vector<int> y = {};
@@ -91,7 +98,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesIncludesTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_includes_test

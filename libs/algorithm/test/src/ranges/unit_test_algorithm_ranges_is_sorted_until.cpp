@@ -5,10 +5,10 @@
  */
 
 #include <hamon/algorithm/ranges/is_sorted_until.hpp>
-#include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/forward_list.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -58,7 +58,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -66,20 +66,26 @@ inline bool test02()
 		auto it = ranges::is_sorted_until(a, {}, &X::i);
 		VERIFY(it == a+3);
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::forward_list<int> const a = {3,3,4,4,5,5};
 		auto it = ranges::is_sorted_until(a, [] (int x, int y) { return x < y; });
-		EXPECT_TRUE(it == a.end());
+		VERIFY(it == a.end());
 	}
 	{
 		hamon::forward_list<int> const a = {3,3,4,4,5,5};
 		auto it = ranges::is_sorted_until(a, [] (int x, int y) { return x > y; });
-		EXPECT_TRUE(it == ranges::next(a.begin(), 2));
+		VERIFY(it == ranges::next(a.begin(), 2));
 	}
 	{
 		hamon::forward_list<int> const a = {};
 		auto it = ranges::is_sorted_until(a);
-		EXPECT_TRUE(it == a.end());
+		VERIFY(it == a.end());
 	}
 	return true;
 }
@@ -89,7 +95,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesIsSortedUntilTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_is_sorted_until_test

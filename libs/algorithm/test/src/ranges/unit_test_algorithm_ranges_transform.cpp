@@ -9,6 +9,7 @@
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -93,7 +94,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 struct X { int i; };
 struct Y { int i; int j; };
 
-inline bool test05()
+inline HAMON_CXX14_CONSTEXPR bool test05()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -108,7 +109,7 @@ inline bool test05()
 	return true;
 }
 
-inline bool test06()
+inline HAMON_CXX20_CONSTEXPR bool test06()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -122,7 +123,7 @@ inline bool test06()
 	return true;
 }
 
-inline bool test07()
+inline HAMON_CXX14_CONSTEXPR bool test07()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -139,7 +140,7 @@ inline bool test07()
 	return true;
 }
 
-inline bool test08()
+inline HAMON_CXX20_CONSTEXPR bool test08()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -162,10 +163,10 @@ GTEST_TEST(AlgorithmTest, RangesTransformTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
-	EXPECT_TRUE(test05());
-	EXPECT_TRUE(test06());
-	EXPECT_TRUE(test07());
-	EXPECT_TRUE(test08());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test06());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test07());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test08());
 }
 
 }	// namespace ranges_transform_test

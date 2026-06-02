@@ -6,6 +6,7 @@
 
 #include <hamon/algorithm/ranges/find_first_of.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -50,7 +51,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 struct X { int i; };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 
@@ -89,7 +90,7 @@ inline bool test02()
 
 struct Y { int i; int j; };
 
-inline bool test03()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -105,8 +106,8 @@ inline bool test03()
 GTEST_TEST(AlgorithmTest, RangesFindFirstOfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
-	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_find_first_of_test

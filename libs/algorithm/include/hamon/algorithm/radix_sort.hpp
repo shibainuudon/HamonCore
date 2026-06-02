@@ -11,6 +11,7 @@
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/bit/countr_zero.hpp>
 #include <hamon/bit/has_single_bit.hpp>
+#include <hamon/bit/shr.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
@@ -36,7 +37,7 @@ template <
 	typename SizeType
 >
 inline HAMON_CXX14_CONSTEXPR void
-radix_sort_loop(Iter1 input, Iter2 output, Proj proj, SizeType size, hamon::size_t shift)
+radix_sort_loop(Iter1 input, Iter2 output, Proj proj, SizeType size, int shift)
 {
 	hamon::size_t const Mask = Radix - 1;
 
@@ -45,7 +46,7 @@ radix_sort_loop(Iter1 input, Iter2 output, Proj proj, SizeType size, hamon::size
 	// Count occurrences
 	for (SizeType i = 0; i < size; ++i)
 	{
-		auto const idx = (hamon::invoke(proj, input[i]) >> shift) & Mask;
+		auto const idx = hamon::shr(hamon::invoke(proj, input[i]), shift) & Mask;
 		counts[idx]++;
 	}
 
@@ -58,7 +59,7 @@ radix_sort_loop(Iter1 input, Iter2 output, Proj proj, SizeType size, hamon::size
 	// Build the output array
 	for (auto i = size - 1; i >= 0; --i)
 	{
-		auto const idx = (hamon::invoke(proj, input[i]) >> shift) & Mask;
+		auto const idx = hamon::shr(hamon::invoke(proj, input[i]), shift) & Mask;
 		output[--counts[idx]] = hamon::move(input[i]);
 	}
 }
@@ -117,8 +118,8 @@ radix_sort(
 	auto const size = hamon::ranges::distance(first, last);
 
 	int loop_count = 0;
-	for (hamon::size_t shift = 0;
-		shift < hamon::bitsof<value_t>();
+	for (int shift = 0;
+		shift < static_cast<int>(hamon::bitsof<value_t>());
 		shift += hamon::countr_zero(Radix))
 	{
 		if (loop_count % 2 == 0)

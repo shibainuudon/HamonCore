@@ -36,11 +36,11 @@ GTEST_TEST(AlgorithmTest, RangesClampTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(10, 20, 10, ranges::greater{}) == 10);
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp( 9, 20, 10, ranges::greater{}) == 10);
 
-	EXPECT_TRUE(ranges::clamp(X{0}, X{1}, X{3}, {}, &X::i).i == 1);
-	EXPECT_TRUE(ranges::clamp(X{1}, X{1}, X{3}, {}, &X::i).i == 1);
-	EXPECT_TRUE(ranges::clamp(X{2}, X{1}, X{3}, {}, &X::i).i == 2);
-	EXPECT_TRUE(ranges::clamp(X{3}, X{1}, X{3}, {}, &X::i).i == 3);
-	EXPECT_TRUE(ranges::clamp(X{4}, X{1}, X{3}, {}, &X::i).i == 3);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(X{0}, X{1}, X{3}, {}, &X::i).i == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(X{1}, X{1}, X{3}, {}, &X::i).i == 1);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(X{2}, X{1}, X{3}, {}, &X::i).i == 2);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(X{3}, X{1}, X{3}, {}, &X::i).i == 3);
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(ranges::clamp(X{4}, X{1}, X{3}, {}, &X::i).i == 3);
 }
 
 }	// namespace ranges_clamp_test

@@ -7,14 +7,14 @@
 #include <hamon/algorithm/ranges/radix_sort.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/algorithm/ranges/is_sorted.hpp>
-#include <hamon/algorithm/ranges/sort.hpp>
+//#include <hamon/algorithm/ranges/sort.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
 #include <hamon/random.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <chrono>
+//#include <chrono>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -86,18 +86,18 @@ struct X
 	unsigned int	index;
 	hamon::string	name;
 
-	bool operator==(X const& rhs) const
+	constexpr bool operator==(X const& rhs) const
 	{
 		return index == rhs.index &&
 			name == rhs.name;
 	}
-	bool operator!=(X const& rhs) const
+	constexpr bool operator!=(X const& rhs) const
 	{
 		return !(*this == rhs);
 	}
 };
 
-inline bool test02()
+inline HAMON_CXX20_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -145,6 +145,12 @@ inline bool test02()
 		};
 		VERIFY(ranges::equal(x, y));
 	}
+	return true;
+}
+
+inline bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::mt19937 rng;
 		unsigned int const min = 0;
@@ -168,7 +174,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesRadixSortTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
+	EXPECT_TRUE(test03());
 
 #if 0
 	namespace ranges = hamon::ranges;

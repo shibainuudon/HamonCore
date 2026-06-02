@@ -8,6 +8,7 @@
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -30,7 +31,7 @@ struct Proj
 	}
 };
 
-HAMON_CXX14_CONSTEXPR bool test01()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int x[] = { 2, 2, 6, 8, 10, 11, 11 };
 	int y[] = { 2, 2, 6, 8, 10, 11, 11 };
@@ -67,7 +68,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	return true;
 }
 
-HAMON_CXX14_CONSTEXPR bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int x[] = { 1, 2, 3, 4, 5 };
 	int y[] = { 1, 2, 3, 4, 5 };
@@ -99,7 +100,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	return true;
 }
 
-bool test03()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	int x[] = { 2, 2, 6, 8, 10, 11, 11 };
 	int y[] = { 2, 2, 6, 8, 10, 11, 11 };
@@ -130,26 +131,26 @@ bool test03()
 	return true;
 }
 
-bool test04()
+inline HAMON_CXX14_CONSTEXPR bool test04()
 {
 	X   x[] = { {2}, {2}, {6}, { 8}, {10}, {11} };
 	X   y[] = { {2}, {6}, {8}, {10}, {11}, { 2} };
 	int z[] = { 2, 6, 8, 10, 2, 2 };
 	int w[] = { 2, 6, 8, 10, 2, 2 };
 
-	VERIFY(hamon::ranges::equal(z, w));
-	VERIFY(hamon::ranges::equal(z, w, {}));
+	VERIFY( hamon::ranges::equal(z, w));
+	VERIFY( hamon::ranges::equal(z, w, {}));
 	VERIFY(!hamon::ranges::equal(z, w, {}, Proj{}));
 	VERIFY(!hamon::ranges::equal(z, w, {}, {}, Proj{}));
 	VERIFY(!hamon::ranges::equal(z, z + 5, w + 1, w + 6));
 	VERIFY(!hamon::ranges::equal(z, z + 5, w + 1, w + 5));
 	VERIFY(!hamon::ranges::equal(x, y, {}, &X::i, &X::i));
-	VERIFY(hamon::ranges::equal(x + 1, x + 5, y, y + 4, {}, &X::i, &X::i));
+	VERIFY( hamon::ranges::equal(x + 1, x + 5, y, y + 4, {}, &X::i, &X::i));
 
 	return true;
 }
 
-bool test05()
+inline HAMON_CXX20_CONSTEXPR bool test05()
 {
 	hamon::vector<int> x = {2, 2, 6, 8, 10, 11};
 	hamon::vector<int> y = {2, 2, 6, 8, 10, 11};
@@ -166,9 +167,9 @@ GTEST_TEST(AlgorithmTest, RangesEqualTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	EXPECT_TRUE(test03());
-	EXPECT_TRUE(test04());
-	EXPECT_TRUE(test05());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test05());
 }
 
 }	// namespace ranges_equal_test

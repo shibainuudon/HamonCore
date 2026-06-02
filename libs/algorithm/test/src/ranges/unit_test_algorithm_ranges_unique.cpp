@@ -9,6 +9,7 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/forward_list.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -67,7 +68,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -87,6 +88,12 @@ inline bool test02()
 		int const y[] = { 5,4,3,2,1 };
 		VERIFY(ranges::equal(x, x+5, y, y+5));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::forward_list<int> x = {};
 		auto res = ranges::unique(x);
@@ -101,7 +108,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesUniqueTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_unique_test

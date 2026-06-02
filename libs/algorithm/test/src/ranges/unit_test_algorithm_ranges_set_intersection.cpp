@@ -11,6 +11,7 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -62,7 +63,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -79,6 +80,12 @@ inline bool test02()
 		int const a[] = { 3, 4, 5 };
 		VERIFY(ranges::equal(z, a, {}, &X::i));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		int const x[] = { 5, 6, 7 };
 		hamon::list<int> const y = { 1, 2, 3 };
@@ -105,7 +112,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesSetIntersectionTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_set_intersection_test

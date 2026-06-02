@@ -10,6 +10,8 @@
 #include <hamon/functional/negate.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/ranges/adaptors/zip_view.hpp>
+#include <hamon/tuple/get.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"

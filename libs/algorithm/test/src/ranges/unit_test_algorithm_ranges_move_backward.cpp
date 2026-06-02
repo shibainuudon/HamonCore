@@ -13,6 +13,7 @@
 #include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -90,7 +91,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	return true;
 }
 
-inline bool test02()
+inline HAMON_CXX20_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -203,25 +204,25 @@ struct sentinel
 {
 	It it;
 
-	friend bool operator==(It x, sentinel y)
+	friend constexpr bool operator==(It x, sentinel y)
 	{
 		return x == y.it;
 	}
-	friend bool operator!=(It x, sentinel y)
+	friend constexpr bool operator!=(It x, sentinel y)
 	{
 		return !(x == y);
 	}
-	friend bool operator==(sentinel y, It x)
+	friend constexpr bool operator==(sentinel y, It x)
 	{
 		return x == y.it;
 	}
-	friend bool operator!=(sentinel y, It x)
+	friend constexpr bool operator!=(sentinel y, It x)
 	{
 		return !(x == y);
 	}
 };
 
-inline void test05()
+inline HAMON_CXX20_CONSTEXPR bool test05()
 {
 	hamon::vector<int> v = { 1,2,3,4,5 };
 	hamon::vector<int> w = { 0,0,0,0,0 };
@@ -234,10 +235,12 @@ inline void test05()
 	};
 	hamon::ranges::move_backward(sr, w.end());
 	const int x[] = { 1, 2, 3, 4, 5 };
-	EXPECT_TRUE(hamon::ranges::equal(w, x));
+	VERIFY(hamon::ranges::equal(w, x));
+
+	return true;
 }
 
-inline void test06()
+inline HAMON_CXX20_CONSTEXPR bool test06()
 {
 	hamon::vector<int> v = { 1,2,3,4,5 };
 	hamon::vector<int> w = { 0,0,0,0,0 };
@@ -250,7 +253,9 @@ inline void test06()
 	};
 	hamon::ranges::move_backward(sr, Iter{ w.begin() });
 	const int x[] = { 1, 2, 3, 4, 5 };
-	EXPECT_TRUE(hamon::ranges::equal(w, x));
+	VERIFY(hamon::ranges::equal(w, x));
+
+	return true;
 }
 
 #undef VERIFY
@@ -258,12 +263,12 @@ inline void test06()
 GTEST_TEST(AlgorithmTest, RangesMoveBackwardTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
-	                      EXPECT_TRUE(test03());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 
 	test04();
-	test05();
-	test06();
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test06());
 }
 
 }	// namespace ranges_move_backward_test

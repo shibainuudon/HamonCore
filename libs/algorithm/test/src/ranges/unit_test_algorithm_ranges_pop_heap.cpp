@@ -9,6 +9,7 @@
 #include <hamon/algorithm/ranges/is_heap.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -60,7 +61,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	return true;
 }
 
-inline bool test02()
+inline HAMON_CXX20_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -131,7 +132,7 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesPopHeapTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
 }
 
 }	// namespace ranges_pop_heap_test

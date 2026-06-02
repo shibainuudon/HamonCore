@@ -10,6 +10,7 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -43,7 +44,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 struct X { int i; };
 
 template <template <typename> class iter_wrapper>
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -67,7 +68,7 @@ inline bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -82,6 +83,12 @@ inline bool test03()
 		hamon::vector<int> x{1,2,2,3,3,3};
 		VERIFY(ranges::adjacent_find(x) == x.begin()+1);
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test04()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::forward_list<int> x{};
 		VERIFY(ranges::adjacent_find(x) == x.end());
@@ -97,7 +104,7 @@ inline bool test03()
 	return true;
 }
 
-inline bool test04()
+inline HAMON_CXX14_CONSTEXPR bool test05()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -115,10 +122,11 @@ inline bool test04()
 GTEST_TEST(AlgorithmTest, RangesAdjacentFindTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02<forward_iterator_wrapper>());
-	EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
-	EXPECT_TRUE(test03());
-	EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<forward_iterator_wrapper>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }
 
 }	// namespace ranges_adjacent_find_test

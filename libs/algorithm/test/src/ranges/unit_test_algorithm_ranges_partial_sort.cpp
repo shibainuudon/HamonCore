@@ -9,6 +9,7 @@
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -71,7 +72,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -88,6 +89,12 @@ inline bool test02()
 		X y[] = { {5},{4},{3},{2} };
 		VERIFY(ranges::equal(x, x+4, y, y+4, {}, &X::i, &X::i));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::vector<int> x = {};
 		auto it = ranges::partial_sort(x, x.begin());
@@ -101,7 +108,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesPartialSortTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_partial_sort_test

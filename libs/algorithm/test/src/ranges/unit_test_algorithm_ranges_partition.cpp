@@ -7,6 +7,7 @@
 #include <hamon/algorithm/ranges/partition.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -83,7 +84,7 @@ struct X
 };
 
 template <template <typename> class IterWrap>
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -96,7 +97,7 @@ inline bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -114,9 +115,9 @@ GTEST_TEST(AlgorithmTest, RangesPartitionTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<forward_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<bidirectional_iterator_wrapper>());
-	EXPECT_TRUE(test02<forward_iterator_wrapper>());
-	EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
-	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<forward_iterator_wrapper>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_partition_test

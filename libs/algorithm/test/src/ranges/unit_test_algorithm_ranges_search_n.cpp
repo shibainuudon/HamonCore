@@ -6,6 +6,7 @@
 
 #include <hamon/algorithm/ranges/search_n.hpp>
 #include <hamon/functional/greater.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -89,7 +90,7 @@ struct X
 	int i;
 };
 
-inline bool test03()
+inline HAMON_CXX14_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -124,7 +125,7 @@ GTEST_TEST(AlgorithmTest, RangesSearchNTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<random_access_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<forward_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_search_n_test

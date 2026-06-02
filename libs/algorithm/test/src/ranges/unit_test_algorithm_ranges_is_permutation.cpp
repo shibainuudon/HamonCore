@@ -7,6 +7,7 @@
 #include <hamon/algorithm/ranges/is_permutation.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -39,7 +40,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 struct X { int i; };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -53,7 +54,7 @@ inline bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -94,8 +95,8 @@ inline bool test03()
 GTEST_TEST(AlgorithmTest, RangesIsPermutationTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
-	EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_is_permutation_test

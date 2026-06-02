@@ -7,6 +7,7 @@
 #include <hamon/algorithm/ranges/partition_point.hpp>
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -61,7 +62,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -74,6 +75,12 @@ inline bool test02()
 		auto middle = ranges::partition_point(x, [](int a) { return a < 0; }, &X::i);
 		VERIFY(middle == x+0);
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::vector<int> x {};
 		auto middle = ranges::partition_point(x, [](int a) { return a < 0; });
@@ -87,7 +94,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesPartitionPointTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_partition_point_test

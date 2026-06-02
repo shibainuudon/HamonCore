@@ -15,6 +15,7 @@
 #include <hamon/algorithm/ranges/out_value_result.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/move.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 

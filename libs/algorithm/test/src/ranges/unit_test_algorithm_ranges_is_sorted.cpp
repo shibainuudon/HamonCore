@@ -5,9 +5,9 @@
  */
 
 #include <hamon/algorithm/ranges/is_sorted.hpp>
-#include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/forward_list.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -68,7 +68,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -76,6 +76,12 @@ inline bool test02()
 		VERIFY(true  == ranges::is_sorted(a, {}, &X::i));
 		VERIFY(false == ranges::is_sorted(a, ranges::greater{}, &X::i));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test03()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::forward_list<int> const a = {};
 		VERIFY(true  == ranges::is_sorted(a));
@@ -89,7 +95,8 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesIsSortedTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_is_sorted_test

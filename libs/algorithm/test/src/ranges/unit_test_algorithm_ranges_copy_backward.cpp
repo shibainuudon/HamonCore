@@ -11,6 +11,7 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -28,30 +29,30 @@ struct sentinel
 {
 	It it;
 
-	friend bool operator==(It x, sentinel y)
+	friend constexpr bool operator==(It x, sentinel y)
 	{
 		return x == y.it;
 	}
-	friend bool operator!=(It x, sentinel y)
+	friend constexpr bool operator!=(It x, sentinel y)
 	{
 		return !(x == y);
 	}
-	friend bool operator==(sentinel y, It x)
+	friend constexpr bool operator==(sentinel y, It x)
 	{
 		return x == y.it;
 	}
-	friend bool operator!=(sentinel y, It x)
+	friend constexpr bool operator!=(sentinel y, It x)
 	{
 		return !(x == y);
 	}
 };
 
-inline bool test01()
+inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	namespace ranges = hamon::ranges;
 
-	volatile int i[2] = { 1, 2 };
-	volatile int j[2] = { 0, 0 };
+	int i[2] = { 1, 2 };
+	int j[2] = { 0, 0 };
 	int k[2] = { 0, 0 };
 
 	ranges::copy_backward(i, i + 2, j + 2);
@@ -61,7 +62,7 @@ inline bool test01()
 	ranges::copy_backward(k + 1, k + 2, i + 1);
 	VERIFY(i[0] == 2);
 
-	const volatile int* cj = j;
+	const int* cj = j;
 	ranges::copy_backward(cj, cj + 2, i + 2);
 	VERIFY(i[0] == 1 && i[1] == 2);
 	ranges::copy_backward(cj + 1, cj + 2, k + 1);
@@ -73,7 +74,7 @@ inline bool test01()
 	return true;
 }
 
-inline bool test02()
+inline HAMON_CXX20_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 
@@ -90,7 +91,7 @@ inline bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -153,7 +154,7 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 	return true;
 }
 
-inline bool test06()
+inline HAMON_CXX20_CONSTEXPR bool test06()
 {
 	namespace ranges = hamon::ranges;
 
@@ -227,12 +228,12 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 
 GTEST_TEST(AlgorithmTest, RangesCopyBackwardTest)
 {
-	                      EXPECT_TRUE(test01());
-	                      EXPECT_TRUE(test02());
-	                      EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
-	                      EXPECT_TRUE(test06());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test06());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test07());
 }
 

@@ -9,6 +9,7 @@
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -73,7 +74,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -100,7 +101,7 @@ inline bool test03()
 	return true;
 }
 
-inline bool test04()
+inline HAMON_CXX20_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -130,8 +131,8 @@ GTEST_TEST(AlgorithmTest, RangesCopyTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	EXPECT_TRUE(test03());
-	EXPECT_TRUE(test04());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_copy_test

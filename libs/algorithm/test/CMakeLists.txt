@@ -23,10 +23,16 @@ add_sublibraries(${TARGET_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/../..
 		functional
 		iterator
 		list
+		map
 		memory
 		random
 		ranges
+		set
 		string
+		tuple
+		type_traits
+		unordered_map
+		unordered_set
 		utility
 		vector
 		common_test)

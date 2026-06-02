@@ -12,6 +12,7 @@
 #include <hamon/array.hpp>
 #include <hamon/string.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -74,7 +75,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -107,7 +108,7 @@ GTEST_TEST(AlgorithmTest, RangesFoldLeftFirstTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<test_bidirectional_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<test_random_access_range>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<test_contiguous_range>());
-	EXPECT_TRUE(test03());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace ranges_fold_left_first_test

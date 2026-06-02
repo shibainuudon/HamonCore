@@ -7,7 +7,10 @@
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/iterator/ranges/next.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -66,7 +69,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	return true;
 }
 
-inline bool test03()
+inline HAMON_CXX20_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -111,7 +114,7 @@ GTEST_TEST(AlgorithmTest, RangesFillNTest)
 #else
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 #endif
-	EXPECT_TRUE(test03());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 }
 

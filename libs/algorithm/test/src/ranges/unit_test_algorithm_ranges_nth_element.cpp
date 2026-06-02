@@ -13,6 +13,7 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -94,7 +95,7 @@ struct X
 	int i;
 };
 
-inline bool test02()
+inline HAMON_CXX20_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	for (int i = 0; i < 5; ++i)
@@ -123,7 +124,7 @@ GTEST_TEST(AlgorithmTest, RangesNthElementTest)
 #else
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 #endif
-	EXPECT_TRUE(test02());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test02());
 }
 
 }	// namespace ranges_nth_element_test

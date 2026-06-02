@@ -6,6 +6,7 @@
 
 #include <hamon/algorithm/ranges/copy_if.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
@@ -50,14 +51,14 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	return true;
 }
 
-inline bool test02()
+inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 
 	int x[] = { 1,2,3,4,5,6,7 };
 
 	{
-		int w[7];
+		int w[7]{};
 		test_input_range<int>  rx(x);
 		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
@@ -67,7 +68,7 @@ inline bool test02()
 		VERIFY(ranges::equal(w, w+3, y, y+3));
 	}
 	{
-		int w[7];
+		int w[7]{};
 		test_input_range<int>  rx(x);
 		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
@@ -77,7 +78,7 @@ inline bool test02()
 		VERIFY(ranges::equal(w, w+4, y, y+4));
 	}
 	{
-		int w[7];
+		int w[7]{};
 		test_input_range<int>  rx(x);
 		test_output_range<int> rw(w);
 		auto res = ranges::copy_if(rx, rw.begin(),
@@ -95,7 +96,7 @@ inline bool test02()
 GTEST_TEST(AlgorithmTest, RangesCopyIfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 }
 
 }	// namespace ranges_copy_if_test

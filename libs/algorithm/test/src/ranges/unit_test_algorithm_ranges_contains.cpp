@@ -6,15 +6,18 @@
 
 #include <hamon/algorithm/ranges/contains.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
+#include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/end.hpp>
 #include <hamon/array.hpp>
 #include <hamon/forward_list.hpp>
 #include <hamon/list.hpp>
 #include <hamon/vector.hpp>
+#include <hamon/map.hpp>
+#include <hamon/set.hpp>
+#include <hamon/unordered_map.hpp>
+#include <hamon/unordered_set.hpp>
+#include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <map>
-#include <set>
-#include <unordered_map>
-#include <unordered_set>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
 
@@ -56,7 +59,7 @@ inline HAMON_CXX14_CONSTEXPR bool Test01()
 
 struct X { int i; };
 
-inline bool Test02()
+inline HAMON_CXX14_CONSTEXPR bool Test02()
 {
 	namespace ranges = hamon::ranges;
 
@@ -100,7 +103,7 @@ operator!=(Y const& lhs, Y const& rhs)
 	return !(lhs == rhs);
 }
 
-inline bool Test03()
+inline HAMON_CXX14_CONSTEXPR bool Test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -147,7 +150,7 @@ inline HAMON_CXX14_CONSTEXPR bool TestArray()
 	return true;
 }
 
-inline bool TestVector()
+inline HAMON_CXX20_CONSTEXPR bool TestVector()
 {
 	namespace ranges = hamon::ranges;
 
@@ -162,7 +165,7 @@ inline bool TestVector()
 	return true;
 }
 
-inline bool TestList()
+inline HAMON_CXX20_CONSTEXPR bool TestList()
 {
 	namespace ranges = hamon::ranges;
 
@@ -177,7 +180,7 @@ inline bool TestList()
 	return true;
 }
 
-inline bool TestForwardList()
+inline HAMON_CXX20_CONSTEXPR bool TestForwardList()
 {
 	namespace ranges = hamon::ranges;
 
@@ -192,11 +195,11 @@ inline bool TestForwardList()
 	return true;
 }
 
-inline bool TestMap()
+inline HAMON_CXX20_CONSTEXPR bool TestMap()
 {
 	namespace ranges = hamon::ranges;
 
-	std::map<int, char> m = { {1,'a'}, {2,'b'} };
+	hamon::map<int, char> m = { {1,'a'}, {2,'b'} };
 	using Pair = hamon::remove_cvref_t<decltype(*m.begin())>;
 	VERIFY(!ranges::contains(m, Pair(0, 'a')));
 	VERIFY( ranges::contains(m, Pair(1, 'a')));
@@ -210,11 +213,11 @@ inline bool TestMap()
 	return true;
 }
 
-inline bool TestSet()
+inline HAMON_CXX20_CONSTEXPR bool TestSet()
 {
 	namespace ranges = hamon::ranges;
 
-	std::set<int> s = { 6, 4, 2 };
+	hamon::set<int> s = { 6, 4, 2 };
 	VERIFY(!ranges::contains(s, 0));
 	VERIFY(!ranges::contains(s, 1));
 	VERIFY( ranges::contains(s, 2));
@@ -226,11 +229,11 @@ inline bool TestSet()
 	return true;
 }
 
-inline bool TestUnorderedMap()
+inline HAMON_CXX20_CONSTEXPR bool TestUnorderedMap()
 {
 	namespace ranges = hamon::ranges;
 
-	std::unordered_map<int, char> m = { {1,'a'}, {2,'b'} };
+	hamon::unordered_map<int, char> m = { {1,'a'}, {2,'b'} };
 	using Pair = hamon::remove_cvref_t<decltype(*m.begin())>;
 	VERIFY(!ranges::contains(m, Pair(0, 'a')));
 	VERIFY( ranges::contains(m, Pair(1, 'a')));
@@ -244,11 +247,11 @@ inline bool TestUnorderedMap()
 	return true;
 }
 
-inline bool TestUnorderedSet()
+inline HAMON_CXX20_CONSTEXPR bool TestUnorderedSet()
 {
 	namespace ranges = hamon::ranges;
 
-	std::unordered_set<int> s = { 6, 4, 2 };
+	hamon::unordered_set<int> s = { 6, 4, 2 };
 	VERIFY(!ranges::contains(s, 0));
 	VERIFY(!ranges::contains(s, 1));
 	VERIFY( ranges::contains(s, 2));
@@ -265,17 +268,17 @@ inline bool TestUnorderedSet()
 GTEST_TEST(AlgorithmTest, RangesContainsTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test01());
-	EXPECT_TRUE(Test02());
-	EXPECT_TRUE(Test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(TestArray());
-	EXPECT_TRUE(TestVector());
-	EXPECT_TRUE(TestList());
-	EXPECT_TRUE(TestForwardList());
-	EXPECT_TRUE(TestMap());
-	EXPECT_TRUE(TestSet());
-	EXPECT_TRUE(TestUnorderedMap());
-	EXPECT_TRUE(TestUnorderedSet());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestVector());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestList());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestForwardList());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestMap());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestSet());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestUnorderedMap());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestUnorderedSet());
 }
 
 }	// namespace ranges_contains_test
