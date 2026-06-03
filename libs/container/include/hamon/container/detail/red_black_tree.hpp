@@ -14,23 +14,20 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/less.hpp>
-#include <hamon/iterator/bidirectional_iterator_tag.hpp>
+#include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/next.hpp>
-#include <hamon/iterator/prev.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
-#include <hamon/iterator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
-#include <hamon/memory/pointer_traits.hpp>
 #include <hamon/pair/pair.hpp>
-#include <hamon/type_traits/conditional.hpp>
+#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_invocable.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/exchange.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
-#include <hamon/assert.hpp>
 
 namespace hamon
 {

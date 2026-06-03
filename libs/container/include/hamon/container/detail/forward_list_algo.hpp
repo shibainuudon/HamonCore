@@ -9,6 +9,7 @@
 
 #include <hamon/algorithm/min.hpp>
 #include <hamon/container/detail/forward_list_node.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/limits/numeric_limits.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/ranges/begin.hpp>
