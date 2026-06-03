@@ -12,7 +12,6 @@
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/config.hpp>
 
 namespace hamon
 {

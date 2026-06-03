@@ -7,8 +7,8 @@
 #ifndef HAMON_MEMORY_DETAIL_UNINITIALIZED_DEFAULT_CONSTRUCT_N_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_DEFAULT_CONSTRUCT_N_IMPL_HPP
 
-#include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/memory/construct_at.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/next.hpp>

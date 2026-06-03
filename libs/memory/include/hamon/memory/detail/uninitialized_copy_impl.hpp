@@ -13,6 +13,8 @@
 #include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
+#include <hamon/algorithm/ranges/in_out_result.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memmove.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/advance.hpp>
@@ -31,6 +33,7 @@
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
+#include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon

@@ -12,6 +12,7 @@
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/memory/to_address.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memset.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/advance.hpp>

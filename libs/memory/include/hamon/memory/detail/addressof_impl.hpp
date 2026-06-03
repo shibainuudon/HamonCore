@@ -7,7 +7,6 @@
 #ifndef HAMON_MEMORY_DETAIL_ADDRESSOF_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_ADDRESSOF_IMPL_HPP
 
-#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/declval.hpp>

@@ -7,13 +7,14 @@
 #ifndef HAMON_MEMORY_DETAIL_UNINITIALIZED_COPY_N_IMPL_HPP
 #define HAMON_MEMORY_DETAIL_UNINITIALIZED_COPY_N_IMPL_HPP
 
-#include <hamon/memory/construct_at.hpp>
+#include <hamon/memory/addressof.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/algorithm/ranges/copy_n.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/iter_const_reference_t.hpp>
+#include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
