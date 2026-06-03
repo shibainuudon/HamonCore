@@ -183,6 +183,13 @@
 				"CMAKE_CXX_STANDARD": "23"
 			}
 		},
+		{
+			"name": "c++26",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_CXX_STANDARD": "26"
+			}
+		},
 
 		{
 			"name": "debug",
@@ -379,6 +386,14 @@
 			"name": "linux-gcc-c++23-release",
 			"inherits": [ "linux", "gcc", "c++23", "release" ]
 		},
+		{
+			"name": "linux-gcc-c++26-debug",
+			"inherits": [ "linux", "gcc", "c++26", "debug" ]
+		},
+		{
+			"name": "linux-gcc-c++26-release",
+			"inherits": [ "linux", "gcc", "c++26", "release" ]
+		},
 
 		{
 			"name": "linux-clang-c++11-debug",
@@ -419,6 +434,14 @@
 		{
 			"name": "linux-clang-c++23-release",
 			"inherits": [ "linux", "clang", "c++23", "release" ]
+		},
+		{
+			"name": "linux-clang-c++26-debug",
+			"inherits": [ "linux", "clang", "c++26", "debug" ]
+		},
+		{
+			"name": "linux-clang-c++26-release",
+			"inherits": [ "linux", "clang", "c++26", "release" ]
 		},
 
 		{
