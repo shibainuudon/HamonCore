@@ -31,7 +31,8 @@
 	defined(__cpp_lib_erase_if)                    && (__cpp_lib_erase_if                    >= 202002) &&	\
 	defined(__cpp_lib_string_contains)             && (__cpp_lib_string_contains             >= 202011) &&	\
 	defined(__cpp_lib_string_resize_and_overwrite) && (__cpp_lib_string_resize_and_overwrite >= 202110) &&	\
-	defined(__cpp_lib_containers_ranges)           && (__cpp_lib_containers_ranges           >= 202202)
+	defined(__cpp_lib_containers_ranges)           && (__cpp_lib_containers_ranges           >= 202202) &&	\
+	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 220000))	// clang21のstd::stringだとconstexprにできない場合がある
 #  define HAMON_USE_STD_STRING
 #endif
 
