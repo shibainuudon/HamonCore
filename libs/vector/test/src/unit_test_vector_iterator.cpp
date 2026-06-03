@@ -7,6 +7,7 @@
 #include <hamon/vector.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/iterator/detail/cpp17_random_access_iterator.hpp>
 #include <hamon/compare.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
