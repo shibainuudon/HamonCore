@@ -115,8 +115,8 @@ GTEST_TEST(AlgorithmTest, RangesPartitionTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<forward_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01<bidirectional_iterator_wrapper>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<forward_iterator_wrapper>());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test02<forward_iterator_wrapper>());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 }
 

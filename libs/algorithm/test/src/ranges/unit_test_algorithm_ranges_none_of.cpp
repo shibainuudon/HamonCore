@@ -70,7 +70,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool test03()
+inline HAMON_CXX17_CONSTEXPR bool test03()
 {
 	namespace ranges = hamon::ranges;
 
@@ -92,7 +92,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 
 struct Y { int i; int j; };
 
-inline HAMON_CXX14_CONSTEXPR bool test04()
+inline HAMON_CXX17_CONSTEXPR bool test04()
 {
 	namespace ranges = hamon::ranges;
 
@@ -110,8 +110,8 @@ GTEST_TEST(AlgorithmTest, RangesNoneOfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_none_of_test

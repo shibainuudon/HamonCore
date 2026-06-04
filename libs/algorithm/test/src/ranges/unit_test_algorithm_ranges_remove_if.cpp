@@ -56,7 +56,7 @@ struct X
 	int i;
 };
 
-inline HAMON_CXX14_CONSTEXPR bool test02()
+inline HAMON_CXX17_CONSTEXPR bool test02()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -103,7 +103,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 GTEST_TEST(AlgorithmTest, RangesRemoveIfTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test02());
 }
 
 }	// namespace ranges_remove_if_test

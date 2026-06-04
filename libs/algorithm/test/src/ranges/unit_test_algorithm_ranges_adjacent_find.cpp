@@ -104,7 +104,7 @@ inline HAMON_CXX20_CONSTEXPR bool test04()
 	return true;
 }
 
-inline HAMON_CXX14_CONSTEXPR bool test05()
+inline HAMON_CXX17_CONSTEXPR bool test05()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -126,7 +126,7 @@ GTEST_TEST(AlgorithmTest, RangesAdjacentFindTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
-	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX17_CONSTEXPR_EXPECT_TRUE(test05());
 }
 
 }	// namespace ranges_adjacent_find_test
