@@ -48,7 +48,9 @@ using std::basic_string_view;
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_array.hpp>
-#include <hamon/type_traits/is_trivial.hpp>
+#include <hamon/type_traits/is_trivially_default_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
+#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/swap.hpp>
@@ -104,9 +106,15 @@ template <typename CharT, typename Traits>
 class basic_string_view
 {
 private:
+	// [strings.general]/1
 	static_assert(!hamon::is_array<CharT>::value, "");
-	static_assert(hamon::is_trivial<CharT>::value && hamon::is_standard_layout<CharT>::value, "");
-	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "[string.view.template.general]/1 Note1");
+	static_assert(hamon::is_trivially_default_constructible<CharT>::value, "");
+	static_assert(hamon::is_trivially_copyable<CharT>::value, "");
+	static_assert(hamon::is_trivially_copy_assignable<CharT>::value, "");
+	static_assert(hamon::is_standard_layout<CharT>::value, "");
+
+	// [string.view.template.general]/1 Note1
+	static_assert(hamon::is_same<CharT, typename Traits::char_type>::value, "");
 
 public:
 	// types

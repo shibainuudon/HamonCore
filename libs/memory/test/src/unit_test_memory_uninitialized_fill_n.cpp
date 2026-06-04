@@ -7,7 +7,6 @@
 #include <hamon/memory/uninitialized_fill_n.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
-#include <hamon/type_traits/is_trivial.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_memory_test
@@ -19,8 +18,6 @@ namespace uninitialized_fill_n_test
 struct X
 {
 };
-
-static_assert(hamon::is_trivial<X>::value, "X is trivial");
 
 static int constructed = 0;
 static int assigned = 0;
@@ -36,8 +33,6 @@ struct Y
 	Y& operator=(X const&) && = delete;
 	Y& operator=(X&&) = delete;
 };
-
-static_assert(hamon::is_trivial<Y>::value, "Y is trivial");
 
 struct Z
 {

@@ -5,10 +5,14 @@
  */
 
 #include <hamon/cstddef/max_align_t.hpp>
-#include <hamon/type_traits/is_trivial.hpp>
+#include <hamon/type_traits/is_trivially_default_constructible.hpp>
+#include <hamon/type_traits/is_trivially_copyable.hpp>
+#include <hamon/type_traits/is_trivially_copy_assignable.hpp>
 
 // max_align_t はトリビアル型
-static_assert(hamon::is_trivial<hamon::max_align_t>::value, "");
+static_assert(hamon::is_trivially_default_constructible<hamon::max_align_t>::value, "");
+static_assert(hamon::is_trivially_copyable<hamon::max_align_t>::value, "");
+static_assert(hamon::is_trivially_copy_assignable<hamon::max_align_t>::value, "");
 
 // max_align_t はあらゆるスカラー型以上のアラインメントを必要とする型
 static_assert(alignof(hamon::max_align_t) >= alignof(char), "");

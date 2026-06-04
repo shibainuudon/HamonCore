@@ -7,7 +7,6 @@
 #include <hamon/memory/uninitialized_copy.hpp>
 #include <hamon/memory/destroy.hpp>
 #include <hamon/memory/allocator.hpp>
-#include <hamon/type_traits/is_trivial.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 
@@ -20,8 +19,6 @@ namespace uninitialized_copy_test
 struct X
 {
 };
-
-static_assert(hamon::is_trivial<X>::value, "X is trivial");
 
 struct Y
 {
@@ -40,8 +37,6 @@ struct Y
 
 int Y::constructed = 0;
 int Y::assigned = 0;
-
-static_assert(hamon::is_trivial<Y>::value, "Y is trivial");
 
 struct Z
 {

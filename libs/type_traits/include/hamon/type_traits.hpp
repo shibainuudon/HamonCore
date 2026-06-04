@@ -104,7 +104,7 @@
 #include <hamon/type_traits/is_standard_layout.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/type_traits/is_swappable_with.hpp>
-#include <hamon/type_traits/is_trivial.hpp>		// deprecated in C++26
+//#include <hamon/type_traits/is_trivial.hpp>		// deprecated in C++26
 #include <hamon/type_traits/is_trivially_assignable.hpp>
 #include <hamon/type_traits/is_trivially_constructible.hpp>
 #include <hamon/type_traits/is_trivially_copyable.hpp>
