@@ -47,6 +47,7 @@ if (MSVC)
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 	target_compile_options(${TARGET_NAME} INTERFACE -fno-rtti -Wall -Wextra -Wshadow -Wconversion -Wpedantic -Werror)
 	target_compile_options(${TARGET_NAME} INTERFACE -Wno-gnu-zero-variadic-macro-arguments)
+	target_compile_options(${TARGET_NAME} INTERFACE -Wno-c++17-attribute-extensions)	# GoogleTest のバグで、C++14でも [[maybe_unused]] が使われてしまっている
 
 elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	target_compile_options(${TARGET_NAME} INTERFACE -fno-rtti -Wall -Wextra -Wshadow -Wconversion -Wpedantic -Werror)
