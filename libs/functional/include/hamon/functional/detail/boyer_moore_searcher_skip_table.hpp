@@ -81,7 +81,7 @@ private:
 	using unsigned_key_type = hamon::make_unsigned_t<key_type>;
 	static_assert(hamon::numeric_limits<unsigned_key_type>::max() < 256, "");
 
-	hamon::array<value_type, 256> m_table;
+	hamon::array<value_type, 256> m_table{};
 
 public:
 	HAMON_CXX14_CONSTEXPR explicit
