@@ -574,6 +574,78 @@
 #  endif
 #endif	// C++23
 
+// C++26
+#if (HAMON_CXX_STANDARD >= 26)
+#  if (HAMON_GCC_VERSION >= 140000)
+#    define HAMON_HAS_CXX26_UNEVALUATED_STRINGS						// P2361R6	Unevaluated strings
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202306L)
+#      define HAMON_HAS_CXX26_CONSTEXPR_CAST_FROM_VOID_POINTER		// P2738R1	constexpr cast from void*: towards constexpr type-erasure				__cpp_constexpr >= 202306L
+#    endif
+#    if defined(__cpp_static_assert) && (__cpp_static_assert >= 202306L)
+#      define HAMON_HAS_CXX26_STATIC_ASSERT								// P2741R3	user-generated static_assert messages									__cpp_static_assert >= 202306L
+#    endif
+#    if defined(__cpp_placeholder_variables) && (__cpp_placeholder_variables >= 202306L)
+#      define HAMON_HAS_CXX26_PLACEHOLDER_VARIABLES						// P2169R4	A nice placeholder with no name											__cpp_placeholder_variables >= 202306L
+#    endif
+#    define HAMON_HAS_CXX26_REMOVE_ARITHMETIC_CONVERSION_ON_ENUMERATIONS	// P2864R2	Remove Deprecated Arithmetic Conversion on Enumerations From C++26
+#    define HAMON_HAS_CXX26_DISALLOW_BINDING_A_RETURNED_REFERENCE_TO_A_TEMPORARY	// P2748R5	Disallow Binding a Returned Glvalue to a Temporary
+#  endif
+#  if (HAMON_GCC_VERSION >= 150000)
+#    define HAMON_HAS_CXX26_ADD_CHARACTERS_TO_THE_BASIC_CHARACTER_SET	// P2558R2	Add @, $, and ` to the basic character set
+#    if defined(__cpp_pack_indexing) && (__cpp_pack_indexing >= 202311L)
+#      define HAMON_HAS_CXX26_PACK_INDEXING								// P2662R3	Pack Indexing															__cpp_pack_indexing >= 202311L
+#    endif
+#    if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 202403L)
+#      define HAMON_HAS_CXX26_ATTRIBUTES_FOR_STRUCTURED_BINDINGS		// P0609R3	Attributes for Structured Bindings										__cpp_structured_bindings >= 202403L
+#    endif
+#    if defined(__cpp_deleted_function) && (__cpp_deleted_function >= 202403L)
+#      define HAMON_HAS_CXX26_DELETED_FUNCTION							// P2573R2	= delete("should have a reason");										__cpp_deleted_function >= 202403L
+#    endif
+#    if defined(__cpp_variadic_friend) && (__cpp_variadic_friend >= 202403L)
+#      define HAMON_HAS_CXX26_VARIADIC_FRIEND							// P2893R3	Variadic friends														__cpp_variadic_friend >= 202403L
+#    endif
+#    if defined(__cpp_constexpr) && (__cpp_constexpr >= 202406L)
+#      define HAMON_HAS_CXX26_CONSTEXPR_PLACEMENT_NEW					// P2747R2	constexpr placement new													__cpp_constexpr >= 202406L
+#    endif
+#    if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 202406L)
+#      define HAMON_HAS_CXX26_STRUCTURED_BINDING_DECLARATION_AS_A_CONDITION	// P0963R3	Structured binding declaration as a condition							__cpp_structured_bindings >= 202406L
+#    endif
+#    define HAMON_HAS_CXX26_DELETING_A_POINTER_TO_AN_INCOMPLETE_TYPE	// P3144R2	Deleting a Pointer to an Incomplete Type Should be Ill-formed
+#    define HAMON_HAS_CXX26_OXFORD_VARIADIC_COMMA						// P3176R1	The Oxford variadic comma
+#    define HAMON_HAS_CXX26_REMOVE_ARRAY_COMPARISONS					// P2865R6	Remove Deprecated Array Comparisons from C++26
+#    if defined(__cpp_pp_embed) && (__cpp_pp_embed >= 202502L)
+#      define HAMON_HAS_CXX26_PP_EMBED									// P1967R14	#embed - a scannable, tooling-friendly binary resource inclusion mechanism	__cpp_pp_embed >= 202502L
+#    endif
+#  endif
+#  if (HAMON_GCC_VERSION >= 160000)
+#    define HAMON_HAS_CXX26_ERRONEOUS_BEHAVIOUR_FOR_UNINITIALIZED_READS	// P2795R5,P3684R1	Erroneous behaviour for uninitialized reads
+#    if defined(__cpp_structured_bindings) && (__cpp_structured_bindings >= 202411L)
+#      define HAMON_HAS_CXX26_STRUCTURED_BINDINGS_CAN_INTRODUCE_A_PACK	// P1061R10	Structured Bindings can introduce a Pack								__cpp_structured_bindings >= 202411L
+#    endif
+#    // No references to constexpr variables
+#    //define HAMON_HAS_CXX26_CONSTEXPR_STRUCTURED_BINDINGS				// P2686R5	constexpr structured bindings and references to constexpr variables
+#    if defined(__cpp_constexpr_exceptions) && (__cpp_constexpr_exceptions >= 202411L)
+#      define HAMON_HAS_CXX26_CONSTEXPR_EXCEPTIONS						// P3068R6	Allowing exception throwing in constant-evaluation						__cpp_constexpr_exceptions >= 202411L
+#    endif
+#    define HAMON_HAS_CXX26_OBSERVABLE_CHECKPOINTS						// P1494R5	Partial program correctness
+#    if defined(__cpp_contracts) && (__cpp_contracts >= 202502L)
+#      define HAMON_HAS_CXX26_CONTRACTS									// P2900R14	Contracts for C++														__cpp_contracts >= 202502L
+#    endif
+#    if defined(__cpp_impl_reflection) && (__cpp_impl_reflection >= 202506L)
+#      define HAMON_HAS_CXX26_IMPL_REFLECTION							// P2996R13,P3096R12,P3293R3,P3394R4,P3795R2	Reflection							__cpp_impl_reflection >= 202506L
+#    endif
+#    if defined(__cpp_expansion_statements) && (__cpp_expansion_statements >= 202506L)
+#      define HAMON_HAS_CXX26_EXPANSION_STATEMENTS						// P1306R5	Expansion Statements													__cpp_expansion_statements >= 202506L
+#    endif
+#    if defined(__cpp_constexpr_virtual_inheritance) && (__cpp_constexpr_virtual_inheritance >= 202506L)
+#      define HAMON_HAS_CXX26_CONSTEXPR_VIRTUAL_INHERITANCE				// P3533R2	constexpr virtual inheritance											__cpp_constexpr_virtual_inheritance >= 202506L
+#    endif
+#    define HAMON_HAS_CXX26_DIAGNOSING_PREPROCESSOR_ERRORS				// P2843R3	Preprocessing is never undefined
+#    define HAMON_HAS_CXX26_ALLOW_ATTACHING_MAIN_TO_THE_GLOBAL_MODULE	// P3618R0	Allow attaching main to the global module
+#  endif
+#endif	// C++26
+
+
 #define HAMON_HAS_CXX23_TRIMMING_WHITESPACES_BEFORE_LINE_SPLICING	// P2223R2	Trimming whitespaces before line splicing
 #define HAMON_HAS_CXX23_DECLARATION_ORDER_LAYOUT					// P1847R4	Make declaration order layout mandated
 #define HAMON_HAS_CXX23_MIXED_STRING_LITERAL_CONCATENATION			// P2201R1	Mixed string literal concatenation
@@ -600,6 +672,11 @@
 #if (HAMON_GCC_VERSION >= 130000)
 #  define HAMON_HAS_CXX23_ALLOW_STATIC_ASSERT_FALSE					// CWG2518	DR98/11: Clarify reporting of diagnostic directives and allow static_assert of non-value-dependent expressions in a template context
 #endif
+#define HAMON_HAS_CXX26_REMOVE_UNDEFINED_BEHAVIOR_FROM_LEXING		// P2621R3	DR98: UB? In my Lexer?
+#if (HAMON_GCC_VERSION >= 140000)
+#  define HAMON_HAS_CXX26_MAKING_NON_ENCODABLE_STRING_LITERALS_ILL_FORMED	// P1854R4	DR98: Making non-encodable string literals ill-formed
+#endif
+#define HAMON_HAS_CXX26_BRACE_ELISION_IN_AGGREGATE_INITIALIZATION	// P3106R1	DR98: Clarifying rules for brace elision in aggregate initialization
 
 // DR11:
 #if (HAMON_CXX_STANDARD >= 11)
@@ -619,6 +696,7 @@
 #    if defined(__cpp_constexpr_in_decltype) && (__cpp_constexpr_in_decltype >= 201711)
 #      define HAMON_HAS_CXX20_CONSTEXPR_IN_DECLTYPE					// P0859R0
 #    endif
+#    define HAMON_HAS_CXX26_TEMPLATE_PARAMETER_INITIALIZATION		// P2308R1	DR11/20: Template parameter initialization
 #  endif
 #  if (HAMON_GCC_VERSION >= 100000)
 #    define HAMON_HAS_CXX20_EXCEPTION_SPEC_DEFAULTED_FUNCTION		// P1286R2
@@ -633,6 +711,8 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 140000)
 #    define HAMON_HAS_CXX23_UNKNOWN_REFERENCE_IN_CONSTEXPR			// P2280R4	DR11: Using unknown references in constant expressions
+#    define HAMON_HAS_CXX26_STATIC_STORAGE_FOR_BRACED_INITIALIZERS	// P2752R3	DR11: Static storage for braced initializers
+#    define HAMON_HAS_CXX26_TRIVIAL_INFINITE_LOOPS_ARE_NOT_UNDEFINED_BEHAVIOR	// P2809R3	DR11: Trivial infinite loops are not Undefined Behavior
 #  endif
 #  if (HAMON_GCC_VERSION >= 160000)
 #    define HAMON_HAS_CXX23_LAMBDA_TRAILING_RETURN_TYPE_SCOPE		// P2036R3, P2579R0	DR11: Change scope of lambda trailing-return-type
@@ -667,6 +747,8 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 150000)
 #    define HAMON_HAS_CXX23_MEANINGFUL_EXPORTS						// P2615R1	DR20: Meaningful exports
+#    define HAMON_HAS_CXX26_IGNORABILITY_OF_STANDARD_ATTRIBUTES		// P2552R3	DR20: On the ignorability of standard attributes
+#    define HAMON_HAS_CXX26_DISALLOW_MODULE_DECLARATIONS_TO_BE_MACROS	// P3034R1	DR20: Module Declarations Shouldn’t be Macros
 #  endif
 #endif
 
