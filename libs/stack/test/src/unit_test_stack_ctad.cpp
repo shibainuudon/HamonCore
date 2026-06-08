@@ -77,9 +77,11 @@ void test1()
 	test1_impl<T, hamon::deque<T>>();
 	test1_impl<T, hamon::vector<T>>();
 	test1_impl<T, hamon::list<T>>();
+#if !(defined(HAMON_APPLE_CLANG) && (HAMON_APPLE_CLANG < 170000))	// Apple Clang 17 以前だとコンパイルエラーになってしまう
 	test1_impl<T, std::deque<T, hamon::allocator<T>>>();
 	test1_impl<T, std::vector<T, hamon::allocator<T>>>();
 	test1_impl<T, std::list<T, hamon::allocator<T>>>();
+#endif
 }
 
 template <typename Container, typename Allocator>

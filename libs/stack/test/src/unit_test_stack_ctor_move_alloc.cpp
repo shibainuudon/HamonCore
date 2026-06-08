@@ -82,6 +82,7 @@ GTEST_TEST(StackTest, CtorMoveAllocTest)
 	EXPECT_TRUE((test<float, hamon::list<float>>()));
 #endif
 
+#if !(defined(HAMON_APPLE_CLANG) && (HAMON_APPLE_CLANG < 170000))	// Apple Clang 17 以前だとコンパイルエラーになってしまう
 	EXPECT_TRUE((test<int,   std::deque<int,   hamon::allocator<int>>>()));
 	EXPECT_TRUE((test<float, std::deque<float, hamon::allocator<float>>>()));
 
@@ -90,6 +91,7 @@ GTEST_TEST(StackTest, CtorMoveAllocTest)
 
 	EXPECT_TRUE((test<int,   std::list<int,   hamon::allocator<int>>>()));
 	EXPECT_TRUE((test<float, std::list<float, hamon::allocator<float>>>()));
+#endif
 }
 
 #undef STACK_TEST_CONSTEXPR_EXPECT_TRUE
