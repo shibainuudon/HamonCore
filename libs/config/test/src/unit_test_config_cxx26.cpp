@@ -83,4 +83,31 @@ GTEST_TEST(ConfigTest, Cxx26ConstexprCastFromVoidPointerTest)
 }	// namespace constexpr_cast_from_void_pointer_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_STATIC_ASSERT)
+namespace static_assert_test
+{
+
+enum E
+{
+	One,
+	Two,
+	Three
+};
+
+constexpr std::string_view ToString(E e)
+{
+	switch (e)
+	{
+	case One: return "One";
+	case Two: return "Two";
+	case Three: return "Three";
+	default: return "Unknown";
+	}
+}
+
+static_assert(true, ToString(One));
+
+}	// namespace static_assert_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
