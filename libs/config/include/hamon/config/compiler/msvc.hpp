@@ -60,6 +60,38 @@
 #  endif
 #endif  // HAMON_CXX_STANDARD
 
+// HAMON_HAS_CXX11_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 11)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 200704)
+#    define HAMON_HAS_CXX11_CONSTEXPR					// N2235
+#  endif
+#endif
+
+// HAMON_HAS_CXX14_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 14)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
+#    define HAMON_HAS_CXX14_CONSTEXPR					// N3652
+#  endif
+#endif
+
+// HAMON_HAS_CXX17_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 17)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
+#    define HAMON_HAS_CXX17_CONSTEXPR
+#  endif
+#endif
+
+// HAMON_HAS_CXX20_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 20)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
+#    define HAMON_HAS_CXX20_CONSTEXPR
+#  endif
+#endif
+
+// HAMON_HAS_CXX23_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 23)
+#endif
+
 #if (_MSC_VER >= 1600)
 #  define HAMON_HAS_STDINT_H
 #endif
@@ -172,7 +204,6 @@
 // Visual Studio 2015 Update 3	(Visual C++ 14.0)
 #if (_MSC_FULL_VER >= 190024210)
 #  define HAMON_HAS_CXX11_SFINAE_EXPR						// 任意の式によるSFINAE
-#  define HAMON_HAS_CXX11_CONSTEXPR							// 定数式
 # if (HAMON_CXX_STANDARD >= 17)
 #  define HAMON_HAS_CXX17_NESTED_NAMESPACE_DEFINITIONS		// 入れ子名前空間の定義
 # endif
@@ -180,7 +211,6 @@
 
 // Visual Studio 2017 (15.0)	(Visual C++ 14.10)
 #if (_MSC_FULL_VER >= 191025017)
-#  define HAMON_HAS_CXX14_CONSTEXPR							// constexprの制限緩和
 #  define HAMON_HAS_CXX14_AGGREGATE_NSDMI					// 宣言時のメンバ初期化を持つ型の集成体初期化
 # if (HAMON_CXX_STANDARD >= 14)
 #  define HAMON_HAS_CXX17_RANGE_BASED_FOR					// 範囲for文の制限を緩和
@@ -1417,21 +1447,6 @@
 
 // Visual Studio 2026 Version: 18.7.0
 #if (_MSC_FULL_VER >= 195136247)
-#endif
-
-#if (HAMON_CXX_STANDARD >= 17)
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
-#    define HAMON_HAS_CXX17_CONSTEXPR
-#  endif
-#endif
-
-#if (HAMON_CXX_STANDARD >= 20)
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
-#    define HAMON_HAS_CXX20_CONSTEXPR
-#  endif
-#endif
-
-#if (HAMON_CXX_STANDARD >= 23)
 #endif
 
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION

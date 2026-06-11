@@ -44,6 +44,34 @@
 #  define HAMON_NO_TYPEID
 #endif
 
+// HAMON_HAS_CXX11_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 11)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 200704)
+#    define HAMON_HAS_CXX11_CONSTEXPR					// N2235
+#  endif
+#endif
+
+// HAMON_HAS_CXX14_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 14)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
+#    define HAMON_HAS_CXX14_CONSTEXPR					// N3652
+#  endif
+#endif
+
+// HAMON_HAS_CXX17_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 17)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
+#    define HAMON_HAS_CXX17_CONSTEXPR
+#  endif
+#endif
+
+// HAMON_HAS_CXX20_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 20)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
+#    define HAMON_HAS_CXX20_CONSTEXPR
+#  endif
+#endif
+
 // C++11
 #if (HAMON_CXX_STANDARD >= 11)
 #  if defined(__cpp_rvalue_references) && (__cpp_rvalue_references >= 200610)
@@ -108,9 +136,6 @@
 #  endif
 #  if (HAMON_HAS_CPP_ATTRIBUTE(carries_dependency) >= 200809)
 #    define HAMON_HAS_CXX11_CARRIES_DEPENDENCY			// N2761
-#  endif
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 200704)
-#    define HAMON_HAS_CXX11_CONSTEXPR					// N2235
 #  endif
 #  if HAMON_HAS_FEATURE(cxx_alignas)
 #    define HAMON_HAS_CXX11_ALIGNAS					// N2341
@@ -220,9 +245,6 @@
 #  if defined(__cpp_variable_templates) && (__cpp_variable_templates >= 201304)
 #    define HAMON_HAS_CXX14_VARIABLE_TEMPLATES			// N3651
 #  endif
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
-#    define HAMON_HAS_CXX14_CONSTEXPR					// N3652
-#  endif
 #  if defined(__cpp_aggregate_nsdmi) && (__cpp_aggregate_nsdmi >= 201304)
 #    define HAMON_HAS_CXX14_AGGREGATE_NSDMI			// N3653
 #  endif
@@ -259,7 +281,6 @@
 #  endif
 #  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
 #    define HAMON_HAS_CXX17_CONSTEXPR_LAMBDA			// P0170R1
-#    define HAMON_HAS_CXX17_CONSTEXPR
 #  endif
 #  if defined(__cpp_if_constexpr) && (__cpp_if_constexpr >= 201606)
 #    define HAMON_HAS_CXX17_IF_CONSTEXPR				// P0292R2
@@ -355,6 +376,7 @@
 #  if (HAMON_CLANG_VERSION >= 90000)
 #    define HAMON_HAS_CXX20_TWOS_COMPLEMENT_SIGNED_INTEGERS					// P1236R1
 #    define HAMON_HAS_CXX20_VA_OPT											// P0306R4 P1042R1
+#    define HAMON_HAS_CXX20_CONSTEXPR_VIRTUAL_FUNCTION						// P1064R0
 #    define HAMON_HAS_CXX20_IS_CONSTANT_EVALUATED							// P0595R2
 #    define HAMON_HAS_CXX20_DEPRECATE_COMMA_IN_SUBSCRIPTING_EXPRESSIONS		// P1161R3
 #    define HAMON_HAS_CXX20_ADL_AND_FUNCTION_TEMPLATES						// P0846R0
@@ -380,6 +402,8 @@
 #    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 100000)
+#    define HAMON_HAS_CXX20_CONSTEXPR_TRIVIAL_DEFAULT_INIT					// P1331R2
+#    define HAMON_HAS_CXX20_CONSTEXPR_ASM									// P1668R1
 #    define HAMON_HAS_CXX20_ABBREVIATED_FUNCTION_TEMPLATE					// P1141R2
 #    define HAMON_HAS_CXX20_DEPRECATE_VOLATILE								// P1152R4
 #    if defined(__cpp_designated_initializers) && (__cpp_designated_initializers >= 201707)
@@ -429,9 +453,6 @@
 #  endif
 #  if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201711L)
 #    define HAMON_HAS_CXX20_THREE_WAY_COMPARISON							// P0515R3 P1185R2 P1186R3 P1630R1
-#  endif
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
-#    define HAMON_HAS_CXX20_CONSTEXPR										// P1064R0 P1002R1 P1327R0 P1330R0 P1331R2 P1668R1
 #  endif
 #  if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
 #    define HAMON_HAS_CXX20_CONCEPTS										// P0734R0

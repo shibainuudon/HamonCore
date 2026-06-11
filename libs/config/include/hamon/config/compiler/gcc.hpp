@@ -104,6 +104,33 @@
 #  endif
 #endif
 
+// HAMON_HAS_CXX11_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 11)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 200704)
+#    define HAMON_HAS_CXX11_CONSTEXPR					// N2235
+#  endif
+#endif
+
+// HAMON_HAS_CXX14_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 14)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
+#    define HAMON_HAS_CXX14_CONSTEXPR					// N3652
+#  endif
+#endif
+
+// HAMON_HAS_CXX17_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 17)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
+#    define HAMON_HAS_CXX17_CONSTEXPR
+#  endif
+#endif
+
+// HAMON_HAS_CXX20_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 20)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
+#    define HAMON_HAS_CXX20_CONSTEXPR
+#  endif
+#endif
 
 // C++11
 #if (HAMON_CXX_STANDARD >= 11)
@@ -169,9 +196,6 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 40800) && (HAMON_HAS_CPP_ATTRIBUTE(carries_dependency) >= 200809)
 #    define HAMON_HAS_CXX11_CARRIES_DEPENDENCY
-#  endif
-#  if (HAMON_GCC_VERSION >= 40600) && defined(__cpp_constexpr) && (__cpp_constexpr >= 200704)
-#    define HAMON_HAS_CXX11_CONSTEXPR
 #  endif
 #  if (HAMON_GCC_VERSION >= 40800)
 #    define HAMON_HAS_CXX11_ALIGNAS
@@ -277,9 +301,6 @@
 #  if (HAMON_GCC_VERSION >= 50000) && defined(__cpp_variable_templates) && (__cpp_variable_templates >= 201304)
 #    define HAMON_HAS_CXX14_VARIABLE_TEMPLATES
 #  endif
-#  if (HAMON_GCC_VERSION >= 50000) && defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
-#    define HAMON_HAS_CXX14_CONSTEXPR
-#  endif
 #  if (HAMON_GCC_VERSION >= 50000) && defined(__cpp_aggregate_nsdmi) && (__cpp_aggregate_nsdmi >= 201304)
 #    define HAMON_HAS_CXX14_AGGREGATE_NSDMI
 #  endif
@@ -316,7 +337,6 @@
 #  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
 #    define HAMON_HAS_CXX17_CONSTEXPR_LAMBDA
-#    define HAMON_HAS_CXX17_CONSTEXPR
 #  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_if_constexpr) && (__cpp_if_constexpr >= 201606)
 #    define HAMON_HAS_CXX17_IF_CONSTEXPR
@@ -501,9 +521,6 @@
 #    if defined(__cpp_nontype_template_args) && (__cpp_nontype_template_args >= 201911)
 #      define HAMON_HAS_CXX20_NONTYPE_TEMPLATE_PARAMETER_FLOAT		// P1907R1
 #    endif
-#  endif
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
-#    define HAMON_HAS_CXX20_CONSTEXPR
 #  endif
 #endif	// C++20
 
