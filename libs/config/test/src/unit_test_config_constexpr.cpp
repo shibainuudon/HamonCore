@@ -36,6 +36,11 @@ HAMON_CXX23_CONSTEXPR int func5(int x)
 	return x + 6;
 }
 
+HAMON_CXX26_CONSTEXPR int func6(int x)
+{
+	return x + 7;
+}
+
 GTEST_TEST(ConfigTest, ConstexprTest)
 {
 	HAMON_CONSTEXPR					int a = 1;
@@ -51,6 +56,8 @@ GTEST_TEST(ConfigTest, ConstexprTest)
 	HAMON_CXX20_STATIC_CONSTEXPR	int k = func4(11);
 	HAMON_CXX23_CONSTEXPR_OR_CONST	int l = func5(12);
 	HAMON_CXX23_STATIC_CONSTEXPR	int m = func5(13);
+	HAMON_CXX26_CONSTEXPR_OR_CONST	int n = func6(14);
+	HAMON_CXX26_STATIC_CONSTEXPR	int o = func6(15);
 
 	EXPECT_EQ(1, a);
 	EXPECT_EQ(2, b);
@@ -65,6 +72,8 @@ GTEST_TEST(ConfigTest, ConstexprTest)
 	EXPECT_EQ(55, k);
 	EXPECT_EQ(18, l);
 	EXPECT_EQ(19, m);
+	EXPECT_EQ(21, n);
+	EXPECT_EQ(22, o);
 
 	static_assert(b == 2, "");
 	static_assert(c == 3, "");
@@ -120,6 +129,11 @@ GTEST_TEST(ConfigTest, ConstexprTest)
 #if defined(HAMON_HAS_CXX23_CONSTEXPR)
 	static_assert(l == 18, "");
 	static_assert(m == 19, "");
+#endif
+
+#if defined(HAMON_HAS_CXX26_CONSTEXPR)
+	static_assert(n == 21, "");
+	static_assert(o == 22, "");
 #endif
 }
 
