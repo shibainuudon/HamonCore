@@ -110,4 +110,27 @@ static_assert(true, ToString(One));
 }	// namespace static_assert_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_PLACEHOLDER_VARIABLES)
+namespace placeholder_variables_test
+{
+
+inline int f() { return 42; }
+
+auto _ = f(); // Ok, declare a variable "_"
+//auto _ = f(); // error: "_" is already defined in this namespace scope
+
+GTEST_TEST(ConfigTest, Cxx26PlaceholderVariablesTest)
+{
+	auto _ = 42; // Ok, declare a variable "_"
+	auto _ = 0; // Ok, re-declare a variable "_"
+	{
+		auto _ = 1; // Ok, shaddowing
+		EXPECT_TRUE(_ == 1); // Ok
+	}
+//	EXPECT_TRUE(_ == 42); // ill-formed: Use of a redeclared placeholder variables
+}
+
+}	// namespace placeholder_variables_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
