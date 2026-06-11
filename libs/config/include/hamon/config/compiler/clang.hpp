@@ -372,6 +372,10 @@
 #    define HAMON_HAS_CXX20_NESTED_INLINE_NAMESPACES						// P1094R2
 #    define HAMON_HAS_CXX20_CONST_MISMATCH_WITH_DEFAULTED_COPY_CONSTRUCTOR	// P0641R2
 #    define HAMON_HAS_CXX20_PROHIBIT_AGGREGATES_WITH_USER_DECLARED_CONSTRUCTORS	// P1008R1
+#    if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201907L)
+#      // partial
+#      //define HAMON_HAS_CXX20_THREE_WAY_COMPARISON						// P0515R3
+#    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 90000)
 #    define HAMON_HAS_CXX20_TWOS_COMPLEMENT_SIGNED_INTEGERS					// P1236R1
@@ -412,6 +416,11 @@
 #    if defined(__cpp_constinit) && (__cpp_constinit >= 201907)
 #      define HAMON_HAS_CXX20_CONSTINIT										// P1143R2
 #    endif
+#    if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201907L)
+#      define HAMON_HAS_CXX20_THREE_WAY_COMPARISON							// P0515R3
+#      define HAMON_HAS_CXX20_THREE_WAY_COMPARISON_NE_EQ_OP					// P1185R2 <=> != ==
+#      define HAMON_HAS_CXX20_SYNTHESIZING_THREE_WAY_COMPARISON				// P1186R3 Synthesizing three-way comparison for specified comparison category
+#    endif
 #  endif
 #  if (HAMON_CLANG_VERSION >= 120000)
 #    define HAMON_HAS_CXX20_NONTYPE_TEMPLATE_PARAMETER_CLASS				// P0732R2
@@ -450,9 +459,6 @@
 #    if defined(__cpp_consteval) && (__cpp_consteval >= 201811)
 #      define HAMON_HAS_CXX20_CONSTEVAL										// P1073R3
 #    endif
-#  endif
-#  if defined(__cpp_impl_three_way_comparison) && (__cpp_impl_three_way_comparison >= 201711L)
-#    define HAMON_HAS_CXX20_THREE_WAY_COMPARISON							// P0515R3 P1185R2 P1186R3 P1630R1
 #  endif
 #  if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
 #    define HAMON_HAS_CXX20_CONCEPTS										// P0734R0
