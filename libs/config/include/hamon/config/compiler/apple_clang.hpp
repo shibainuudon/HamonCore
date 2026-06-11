@@ -75,6 +75,13 @@
 #  endif
 #endif
 
+// HAMON_HAS_CXX23_CONSTEXPR
+#if (HAMON_CXX_STANDARD >= 23)
+#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 202211L)
+#    define HAMON_HAS_CXX23_CONSTEXPR
+#  endif
+#endif
+
 // C++11
 #if (HAMON_CXX_STANDARD >= 11)
 #  if defined(__cpp_rvalue_references) && (__cpp_rvalue_references >= 200610)

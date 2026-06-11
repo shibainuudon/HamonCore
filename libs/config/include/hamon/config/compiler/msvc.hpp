@@ -69,27 +69,30 @@
 
 // HAMON_HAS_CXX14_CONSTEXPR
 #if (HAMON_CXX_STANDARD >= 14)
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201304)
+#  if (_MSC_VER >= 1910)	// (__cpp_constexpr >= 201304)
 #    define HAMON_HAS_CXX14_CONSTEXPR					// N3652
 #  endif
 #endif
 
 // HAMON_HAS_CXX17_CONSTEXPR
 #if (HAMON_CXX_STANDARD >= 17)
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201603)
+#  if (_MSC_VER >= 1911)	// (__cpp_constexpr >= 201603)
 #    define HAMON_HAS_CXX17_CONSTEXPR
 #  endif
 #endif
 
 // HAMON_HAS_CXX20_CONSTEXPR
 #if (HAMON_CXX_STANDARD >= 20)
-#  if defined(__cpp_constexpr) && (__cpp_constexpr >= 201907)
+#  if (_MSC_VER >= 1928)	// (__cpp_constexpr >= 201907)
 #    define HAMON_HAS_CXX20_CONSTEXPR
 #  endif
 #endif
 
 // HAMON_HAS_CXX23_CONSTEXPR
 #if (HAMON_CXX_STANDARD >= 23)
+#  if (_MSC_VER >= 1951)	// (__cpp_constexpr >= 202211L)
+#    define HAMON_HAS_CXX23_CONSTEXPR
+#  endif
 #endif
 
 #if (_MSC_VER >= 1600)

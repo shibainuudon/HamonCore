@@ -81,6 +81,22 @@
 #  endif
 #endif
 
+#if !defined(HAMON_CXX23_CONSTEXPR)
+#  if defined(HAMON_HAS_CXX23_CONSTEXPR)
+#    define HAMON_CXX23_CONSTEXPR constexpr
+#  else
+#    define HAMON_CXX23_CONSTEXPR
+#  endif
+#endif
+
+#if !defined(HAMON_CXX23_CONSTEXPR_OR_CONST)
+#  if defined(HAMON_HAS_CXX23_CONSTEXPR)
+#    define HAMON_CXX23_CONSTEXPR_OR_CONST constexpr
+#  else
+#    define HAMON_CXX23_CONSTEXPR_OR_CONST const
+#  endif
+#endif
+
 #if !defined(HAMON_STATIC_CONSTEXPR)
 #  define HAMON_STATIC_CONSTEXPR			HAMON_CXX11_STATIC_CONSTEXPR
 #endif
@@ -99,6 +115,10 @@
 
 #if !defined(HAMON_CXX20_STATIC_CONSTEXPR)
 #  define HAMON_CXX20_STATIC_CONSTEXPR		static HAMON_CXX20_CONSTEXPR_OR_CONST
+#endif
+
+#if !defined(HAMON_CXX23_STATIC_CONSTEXPR)
+#  define HAMON_CXX23_STATIC_CONSTEXPR		static HAMON_CXX23_CONSTEXPR_OR_CONST
 #endif
 
 #endif // HAMON_CONFIG_SUFFIX_CONSTEXPR_HPP
