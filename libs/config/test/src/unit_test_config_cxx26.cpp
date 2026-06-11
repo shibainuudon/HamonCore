@@ -155,4 +155,32 @@ static_assert(first_plus_last(1, 2, 10) == 11);
 }	// namespace pack_indexing_test
 #endif
 
+#if !defined(HAMON_HAS_CXX26_REMOVE_ARITHMETIC_CONVERSION_ON_ENUMERATIONS)
+namespace remove_arithmetic_conversion_on_enumerations_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5054)	// 演算子 '-': 異なる型の列挙間では非推奨です
+HAMON_WARNING_DISABLE_MSVC(5055)	// 演算子 '<=': 列挙型と浮動小数点型の間では非推奨です
+HAMON_WARNING_DISABLE_CLANG("-Wenum-float-conversion")
+HAMON_WARNING_DISABLE_CLANG("-Wenum-enum-conversion")
+HAMON_WARNING_DISABLE_CLANG("-Wenum-compare-conditional")
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-enum-float-conversion")
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-enum-enum-conversion")
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-enum-compare-conditional")
+HAMON_WARNING_DISABLE_GCC("-Wdeprecated-enum-float-conversion")
+HAMON_WARNING_DISABLE_GCC("-Wdeprecated-enum-enum-conversion")
+HAMON_WARNING_DISABLE_GCC("-Wenum-compare")
+
+enum E1 { e };
+enum E2 { f };
+bool b = e <= 3.7;     // ill-formed; previously well-formed
+int  k = f - e;        // ill-formed; previously well-formed
+auto x = true ? e : f; // ill-formed; previously well-formed
+
+HAMON_WARNING_POP()
+
+}	// namespace remove_arithmetic_conversion_on_enumerations_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
