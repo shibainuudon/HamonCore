@@ -133,4 +133,26 @@ GTEST_TEST(ConfigTest, Cxx26PlaceholderVariablesTest)
 }	// namespace placeholder_variables_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_PACK_INDEXING)
+namespace pack_indexing_test
+{
+
+template <typename... T>
+constexpr auto first_plus_last(T... values)
+#if !defined(HAMON_GCC_VERSION)
+	-> T...[0]
+	// TODO: gccだと
+	// sorry, unimplemented: mangling type pack index
+	// というエラーになる
+#endif
+{
+	return T...[0](values...[0] + values...[sizeof...(values) - 1]);
+}
+
+//first_plus_last(); // ill formed
+static_assert(first_plus_last(1, 2, 10) == 11);
+
+}	// namespace pack_indexing_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
