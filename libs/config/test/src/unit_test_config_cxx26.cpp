@@ -350,4 +350,35 @@ static_assert(f(), "");
 }	// namespace constexpr_placement_new_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_STRUCTURED_BINDING_DECLARATION_AS_A_CONDITION)
+namespace structured_binding_declaration_as_a_condition_test
+{
+
+struct result
+{
+	int val;
+	int ec;
+
+	explicit operator bool() const
+	{
+		return ec == 0;
+	}
+};
+
+result f()
+{
+	return {42, 0};
+}
+
+void g()
+{
+	if (auto [val, ec] = f())
+	{
+		(void)val;
+	}
+}
+
+}	// namespace structured_binding_declaration_as_a_condition_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
