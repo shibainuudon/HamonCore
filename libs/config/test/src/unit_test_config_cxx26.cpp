@@ -6,6 +6,7 @@
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
+#include <memory>
 #include <tuple>
 
 #if HAMON_HAS_INCLUDE(<string_view>) && (HAMON_CXX_STANDARD >= 17)
@@ -289,6 +290,64 @@ GTEST_TEST(ConfigTest, Cxx26BraceElisionInAggregateInitializationTest)
 HAMON_WARNING_POP()
 
 }	// namespace brace_elision_in_aggregate_initialization_test
+#endif
+
+#if defined(HAMON_HAS_CXX26_CONSTEXPR_PLACEMENT_NEW)
+namespace constexpr_placement_new_test
+{
+
+struct X
+{
+	int a = 1;
+	int b = 2;
+};
+
+#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
+
+constexpr bool f()
+{
+	{
+		X* p = std::allocator<X>{}.allocate(1);
+		// value initialization
+		new (p) X(3, 4);
+		VERIFY(p->a == 3);
+		VERIFY(p->b == 4);
+		std::allocator<X>{}.deallocate(p, 1);
+	}
+	{
+		X* p = std::allocator<X>{}.allocate(1);
+		// default initialization
+		new (p) X;
+		VERIFY(p->a == 1);
+		VERIFY(p->b == 2);
+		std::allocator<X>{}.deallocate(p, 1);
+	}
+	// TODO: clang だとエラーになる
+	//{
+	//	int* p = std::allocator<int>{}.allocate(3);
+	//	// list initialization
+	//	new (p) int[]{1,2,3};
+	//	VERIFY(p[0] == 1);
+	//	VERIFY(p[1] == 2);
+	//	VERIFY(p[2] == 3);
+	//	std::allocator<int>{}.deallocate(p, 3);
+	//}
+	{
+		X* p = std::allocator<X>{}.allocate(1);
+		// designated initialization
+		new (p) X{.a = 17, .b = 42};
+		VERIFY(p->a == 17);
+		VERIFY(p->b == 42);
+		std::allocator<X>{}.deallocate(p, 1);
+	}
+	return true;
+}
+
+#undef VERIFY
+
+static_assert(f(), "");
+
+}	// namespace constexpr_placement_new_test
 #endif
 
 }	// namespace hamon_config_cxx26_test
