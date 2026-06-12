@@ -430,4 +430,32 @@ HAMON_WARNING_POP()
 }	// namespace structured_bindings_can_introduce_a_pack_test
 #endif
 
+#if !defined(HAMON_HAS_CXX26_REMOVE_ARRAY_COMPARISONS)
+namespace remove_array_comparisons_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(5056)	// 演算子 '==': 配列型に対しては非推奨です
+HAMON_WARNING_DISABLE_CLANG("-Wtautological-compare")
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-array-compare")
+#if defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION >= 200000)
+HAMON_WARNING_DISABLE_CLANG("-Warray-compare")
+#endif
+#if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 120000)
+HAMON_WARNING_DISABLE_GCC("-Warray-compare")
+#endif
+
+void f()
+{
+	int arr1[5];
+	int arr2[5];
+	bool same = arr1 == arr2; // ill-formed; previously well-formed
+	(void)same;
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace remove_array_comparisons_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
