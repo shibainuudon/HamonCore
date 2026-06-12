@@ -18,22 +18,33 @@
 
 // HAMON_CXX_STANDARD
 #if !defined(HAMON_CXX_STANDARD)
-#  if __cplusplus >= 202400L
+#  if __cplusplus > 202302L
 #    define HAMON_CXX_STANDARD 26
-#  elif __cplusplus >= 202302L
+#  elif __cplusplus > 202002L
 #    define HAMON_CXX_STANDARD 23
-#  elif __cplusplus >= 202002L
+#  elif __cplusplus > 201703L
 #    define HAMON_CXX_STANDARD 20
-#  elif __cplusplus >= 201703L
+#  elif __cplusplus > 201402L
 #    define HAMON_CXX_STANDARD 17
-#  elif __cplusplus >= 201402L
+#  elif __cplusplus > 201103L
 #    define HAMON_CXX_STANDARD 14
-#  elif  __cplusplus >= 201103L
+#  elif  __cplusplus > 199711L
 #    define HAMON_CXX_STANDARD 11
 #  else
 #    define HAMON_CXX_STANDARD  3
 #  endif
 #endif  // HAMON_CXX_STANDARD
+// __cplusplus の値は
+// * 199711L(until C++11)
+// * 201103L(C++11)
+// * 201402L(C++14)
+// * 201703L(C++17)
+// * 202002L(C++20)
+// * 202302L(C++23)
+// * 202400L(C++26)
+// だが、実際にはコンパイラによって微妙に違う場合がある。
+// 例えば、C++23ビルドなのに 202302L より小さかったりする。
+// そのため、「202002L より大きければ C++23」というふうに判定する。
 
 #if !HAMON_HAS_FEATURE(cxx_exceptions) && !defined(HAMON_NO_EXCEPTIONS)
 #  define HAMON_NO_EXCEPTIONS
