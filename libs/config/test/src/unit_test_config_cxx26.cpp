@@ -202,4 +202,29 @@ auto g()
 }	// namespace attributes_for_structured_bindings_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_ERRONEOUS_BEHAVIOUR_FOR_UNINITIALIZED_READS)
+namespace erroneous_behaviour_for_uninitialized_reads_test
+{
+
+void f(int) {}
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4700)	// 初期化されていないローカル変数 ' ' が使用されます
+HAMON_WARNING_DISABLE_CLANG("-Wuninitialized")
+HAMON_WARNING_DISABLE_GCC("-Wuninitialized")
+
+void g()
+{
+	int x;
+	int y [[indeterminate]];
+
+	f(x);
+	f(y);
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace erroneous_behaviour_for_uninitialized_reads_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
