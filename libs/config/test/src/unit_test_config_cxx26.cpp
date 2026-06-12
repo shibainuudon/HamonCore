@@ -458,4 +458,29 @@ HAMON_WARNING_POP()
 }	// namespace remove_array_comparisons_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_PP_EMBED)
+namespace pp_embed_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wc23-extensions")
+
+GTEST_TEST(ConfigTest, Cxx26PPEmbedTest)
+{
+	constexpr char text[] = {
+		#embed "test.txt"
+	};
+
+	EXPECT_EQ('h', text[0]);
+	EXPECT_EQ('e', text[1]);
+	EXPECT_EQ('l', text[2]);
+	EXPECT_EQ('l', text[3]);
+	EXPECT_EQ('o', text[4]);
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace pp_embed_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
