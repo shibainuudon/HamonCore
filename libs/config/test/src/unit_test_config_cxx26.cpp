@@ -227,4 +227,28 @@ HAMON_WARNING_POP()
 }	// namespace erroneous_behaviour_for_uninitialized_reads_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_DELETED_FUNCTION)
+namespace deleted_function_test
+{
+
+void newapi();
+void oldapi() = delete("This old API is outdated and already been removed. Please use newapi() instead.");
+
+template<typename T>
+struct A {/* ... */};
+template<typename T>
+A<T> factory(const T&) {/* process lvalue */}
+template<typename T>
+A<T> factory(const T&&) = delete("Using rvalue to construct A may result in dangling reference");
+
+struct MoveOnly
+{
+	// ... (with move members defaulted or defined)
+	MoveOnly(const MoveOnly&) = delete("Copy-construction is expensive; please use move construction instead.");
+	MoveOnly& operator=(const MoveOnly&) = delete("Copy-assignment is expensive; please use move assignment instead.");
+};
+
+}	// namespace deleted_function_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
