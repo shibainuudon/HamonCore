@@ -264,4 +264,31 @@ class Foo
 }	// namespace variadic_friend_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_BRACE_ELISION_IN_AGGREGATE_INITIALIZATION)
+namespace brace_elision_in_aggregate_initialization_test
+{
+
+struct X { int i, j, k; };
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wmissing-braces")
+
+GTEST_TEST(ConfigTest, Cxx26BraceElisionInAggregateInitializationTest)
+{
+	X a[] = { 1, 2, 3, 4, 5, 6 };
+	X b[2] = { { 1, 2, 3 }, { 4, 5, 6 } };
+
+	EXPECT_EQ(a[0].i, b[0].i);
+	EXPECT_EQ(a[0].j, b[0].j);
+	EXPECT_EQ(a[0].k, b[0].k);
+	EXPECT_EQ(a[1].i, b[1].i);
+	EXPECT_EQ(a[1].j, b[1].j);
+	EXPECT_EQ(a[1].k, b[1].k);
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace brace_elision_in_aggregate_initialization_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
