@@ -251,4 +251,17 @@ struct MoveOnly
 }	// namespace deleted_function_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_VARIADIC_FRIEND)
+namespace variadic_friend_test
+{
+
+template<class... Ts>
+class Foo
+{
+	friend Ts...;
+};
+
+}	// namespace variadic_friend_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
