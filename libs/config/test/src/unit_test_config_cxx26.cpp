@@ -8,6 +8,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include <tuple>
+#include <type_traits>
 
 #if HAMON_HAS_INCLUDE(<string_view>) && (HAMON_CXX_STANDARD >= 17)
 #include <string_view>
@@ -379,6 +380,30 @@ void g()
 }
 
 }	// namespace structured_binding_declaration_as_a_condition_test
+#endif
+
+#if defined(HAMON_HAS_CXX26_FOLD_EXPRESSIONS)
+namespace fold_expressions_test
+{
+
+template <class T> concept A = std::is_move_constructible_v<T>;
+template <class T> concept B = std::is_copy_constructible_v<T>;
+template <class T> concept C = A<T> && B<T>;
+
+template <class... T>
+requires (A<T> && ...)
+int g(T...){return 1;}
+
+template <class... T>
+requires (C<T> && ...)
+int g(T...){return 2;}
+
+GTEST_TEST(ConfigTest, Cxx26FoldExpressionsTest)
+{
+	EXPECT_EQ(2, g(0));
+}
+
+}	// namespace fold_expressions_test
 #endif
 
 }	// namespace hamon_config_cxx26_test
