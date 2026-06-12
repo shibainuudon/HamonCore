@@ -406,4 +406,28 @@ GTEST_TEST(ConfigTest, Cxx26FoldExpressionsTest)
 }	// namespace fold_expressions_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_STRUCTURED_BINDINGS_CAN_INTRODUCE_A_PACK)
+namespace structured_bindings_can_introduce_a_pack_test
+{
+
+struct C { int x, y, z; };
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wunused-variable")
+
+template <class T>
+void now_i_know_my()
+{
+	auto [a, b, c] = C(); // OK, SB0 is a, SB1 is b, and SB2 is c
+	auto [d, ...e] = C(); // OK, SB0 is d, the pack e (v1) contains two structured bindings: SB1 and SB2
+	auto [...f, g] = C(); // OK, the pack f (v0) contains two structured bindings: SB0 and SB1, and SB2 is g
+	auto [h, i, j, ...k] = C(); // OK, the pack k is empty
+//	auto [l, m, n, o, ...p] = C(); // error: structured binding size is too small
+}
+
+HAMON_WARNING_POP()
+
+}	// namespace structured_bindings_can_introduce_a_pack_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
