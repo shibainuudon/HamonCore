@@ -6,6 +6,7 @@
 
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
+#include <tuple>
 
 #if HAMON_HAS_INCLUDE(<string_view>) && (HAMON_CXX_STANDARD >= 17)
 #include <string_view>
@@ -181,6 +182,24 @@ auto x = true ? e : f; // ill-formed; previously well-formed
 HAMON_WARNING_POP()
 
 }	// namespace remove_arithmetic_conversion_on_enumerations_test
+#endif
+
+#if defined(HAMON_HAS_CXX26_ATTRIBUTES_FOR_STRUCTURED_BINDINGS)
+namespace attributes_for_structured_bindings_test
+{
+
+std::tuple<int, float, int> f()
+{
+	return { 3, 0.5f, 42 };
+}
+
+auto g()
+{
+	auto [a, b [[maybe_unused]], c] = f();
+	return a + c;
+}
+
+}	// namespace attributes_for_structured_bindings_test
 #endif
 
 }	// namespace hamon_config_cxx26_test
