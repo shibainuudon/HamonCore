@@ -14,6 +14,16 @@
 #include <string_view>
 #endif
 
+#if defined(HAMON_HAS_CXX26_CONTRACTS)
+#include <contracts>
+
+void handle_contract_violation(const std::contracts::contract_violation& /*violation*/)
+{
+	// Custom logic (e.g., log the violation, or abort)
+	std::abort();
+}
+#endif
+
 namespace hamon_config_cxx26_test
 {
 
@@ -502,6 +512,21 @@ constexpr auto Var = 42;
 S<Concept, Var> s;
 
 }	// namespace template_parameters_test
+#endif
+
+#if defined(HAMON_HAS_CXX26_CONTRACTS)
+namespace contracts_test
+{
+
+int f(const int x)
+	pre(x != 1) // a precondition assertion
+	post(r : r == x && r != 2) // a postcondition assertion; r names the result object of f
+{
+	contract_assert(x != 3); // an assertion statement
+	return x;
+}
+
+}	// namespace contracts_test
 #endif
 
 }	// namespace hamon_config_cxx26_test
