@@ -7,6 +7,7 @@
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include <memory>
+#include <string>
 #include <tuple>
 #include <type_traits>
 
@@ -578,6 +579,53 @@ static_assert(f(c1, c2) == 5);
 //static_assert(f(S{}) == sizeof(int) + sizeof(short));
 
 }	// namespace expansion_statements_test
+#endif
+
+#if defined(HAMON_HAS_CXX26_CONSTEXPR_VIRTUAL_INHERITANCE)
+namespace constexpr_virtual_inheritance_test
+{
+
+struct Superbase
+{
+	std::string id{ "name" };
+};
+
+struct Common : Superbase
+{
+	unsigned counter{ 0 };
+};
+
+struct Left : virtual Common
+{
+	unsigned value{ 0 };
+	constexpr const unsigned& get_counter() const
+	{
+		return Common::counter;
+	}
+};
+
+struct Right : virtual Common
+{
+	unsigned value{ 0 };
+	constexpr const unsigned& get_counter() const
+	{
+		return Common::counter;
+	}
+};
+
+struct Child : Left, Right
+{
+	unsigned x{ 0 };
+	unsigned y{ 0 };
+	// ...
+};
+
+constexpr auto ch = Child{}; // before: not allowed to even construct
+                             // after: works as expected
+
+static_assert(&ch.Left::get_counter() == &ch.Right::get_counter());
+
+}	// namespace constexpr_virtual_inheritance_test
 #endif
 
 }	// namespace hamon_config_cxx26_test
