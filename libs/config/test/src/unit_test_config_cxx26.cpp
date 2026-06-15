@@ -483,4 +483,25 @@ HAMON_WARNING_POP()
 }	// namespace pp_embed_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_TEMPLATE_PARAMETERS)
+namespace template_parameters_test
+{
+
+template<
+	template <typename T> concept C,
+	template <typename T> auto V
+>
+struct S {};
+
+template <typename T>
+concept Concept = true;
+
+template <typename T>
+constexpr auto Var = 42;
+
+S<Concept, Var> s;
+
+}	// namespace template_parameters_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
