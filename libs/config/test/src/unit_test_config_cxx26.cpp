@@ -529,4 +529,55 @@ int f(const int x)
 }	// namespace contracts_test
 #endif
 
+#if defined(HAMON_HAS_CXX26_EXPANSION_STATEMENTS)
+namespace expansion_statements_test
+{
+
+// Example 1:
+consteval int f(auto const&... Containers)
+{
+	int result = 0;
+	template for (auto const& c : { Containers... })
+	{
+		// OK, enumerating expansion statement
+		result += c[0];
+	}
+	return result;
+}
+constexpr int c1[] = { 1, 2, 3 };
+constexpr int c2[] = { 4, 3, 2, 1 };
+static_assert(f(c1, c2) == 5);
+
+// Example 2:
+//consteval int f()
+//{
+//	constexpr std::array<int, 3> arr{ 1, 2, 3 };
+//	int result = 0;
+//	template for (constexpr int s : arr)
+//	{
+//		// OK, iterating expansion statement
+//		result += sizeof(char[s]);
+//	}
+//	return result;
+//}
+//static_assert(f() == 6);
+
+// Example 3:
+//struct S { int i; short s; };
+//
+//consteval long f(S s)
+//{
+//	long result = 0;
+//	template for (auto x : s)
+//	{
+//		// OK, destructuring expansion statement
+//		result += sizeof(x);
+//	}
+//	return result;
+//}
+//static_assert(f(S{}) == sizeof(int) + sizeof(short));
+
+}	// namespace expansion_statements_test
+#endif
+
 }	// namespace hamon_config_cxx26_test
