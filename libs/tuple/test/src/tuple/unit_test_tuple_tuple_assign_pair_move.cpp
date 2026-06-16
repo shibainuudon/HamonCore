@@ -57,6 +57,7 @@ static_assert(!hamon::is_assignable<hamon::tuple<MoveAssignable, MovableInt>&,  
 static_assert(!hamon::is_assignable<hamon::tuple<MovableInt,  MoveAssignable>&, hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_assignable<hamon::tuple<MoveAssignable, MoveAssignable>&, hamon::pair<int, int>>::value, "");
 
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_assignable<hamon::tuple<int, int>&, hamon::pair<short, int>>::value, "");
 static_assert( hamon::is_nothrow_assignable<hamon::tuple<int, int>&, hamon::pair<int,   short>>::value, "");
 static_assert( hamon::is_nothrow_assignable<hamon::tuple<int, int>&, hamon::pair<short, short>>::value, "");
@@ -64,6 +65,7 @@ static_assert( hamon::is_nothrow_assignable<hamon::tuple<NothrowMovableInt, Noth
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<MovableInt,        NothrowMovableInt>&, hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<NothrowMovableInt, MovableInt>&,        hamon::pair<int, int>>::value, "");
 static_assert(!hamon::is_nothrow_assignable<hamon::tuple<MovableInt,        MovableInt>&,        hamon::pair<int, int>>::value, "");
+#endif
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

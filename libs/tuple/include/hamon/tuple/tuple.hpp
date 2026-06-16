@@ -1064,7 +1064,7 @@ public:
 			tuple,
 			nat
 		> const& u)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_copy_assignable<Types>...
 	>::value))
 	{
@@ -1080,7 +1080,7 @@ public:
 		>::value>* = nullptr>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(tuple const& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_copy_assignable<Types const>...
 	>::value))
 	{
@@ -1112,7 +1112,7 @@ public:
 		>::value>* = nullptr>
 	HAMON_CXX14_CONSTEXPR tuple
 	const& operator=(tuple&& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<			// noexcept as an extension
 		hamon::is_nothrow_assignable<Types const&, Types>...
 	>::value))
 	{
@@ -1129,7 +1129,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple&
 	operator=(tuple<UTypes...> const& u)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_assignable<Types&, UTypes const&>...
 	>::value))
 	{
@@ -1147,7 +1147,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(tuple<UTypes...> const& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_assignable<Types const&, UTypes const&>...
 	>::value))
 	{
@@ -1165,7 +1165,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple&
 	operator=(tuple<UTypes...>&& u)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<			// noexcept as an extension
 		hamon::is_nothrow_assignable<Types&, UTypes>...
 	>::value))
 	{
@@ -1183,7 +1183,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(tuple<UTypes...>&& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<			// noexcept as an extension
 		hamon::is_nothrow_assignable<Types const&, UTypes>...
 	>::value))
 	{
@@ -1203,7 +1203,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple&
 	operator=(pair<U1, U2> const& u)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_assignable<typename T0::type&, U1 const&>,
 		hamon::is_nothrow_assignable<typename T1::type&, U2 const&>
 	>::value))
@@ -1224,7 +1224,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(pair<U1, U2> const& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<	// noexcept as an extension
 		hamon::is_nothrow_assignable<typename T0::type const&, U1 const&>,
 		hamon::is_nothrow_assignable<typename T1::type const&, U2 const&>
 	>::value))
@@ -1245,7 +1245,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple&
 	operator=(pair<U1, U2>&& u)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<			// noexcept as an extension
 		hamon::is_nothrow_assignable<typename T0::type&, U1>,
 		hamon::is_nothrow_assignable<typename T1::type&, U2>
 	>::value))
@@ -1266,7 +1266,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(pair<U1, U2>&& u) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<			// noexcept as an extension
 		hamon::is_nothrow_assignable<typename T0::type const&, U1>,
 		hamon::is_nothrow_assignable<typename T1::type const&, U2>
 	>::value))
@@ -1281,7 +1281,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple&
 	operator=(UTuple&& u)
-	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))					// noexcept as an extension
 	{
 		impl_type::assign(*this, hamon::forward<UTuple>(u));	// [tuple.assign]/40
 		return *this;											// [tuple.assign]/41
@@ -1293,7 +1293,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR tuple const&
 	operator=(UTuple&& u) const
-	HAMON_NOEXCEPT_IF((Constraint::nothrow))
+	HAMON_NOEXCEPT_IF((Constraint::nothrow))					// noexcept as an extension
 	{
 		impl_type::assign(*this, hamon::forward<UTuple>(u));	// [tuple.assign]/43
 		return *this;											// [tuple.assign]/44
@@ -1302,7 +1302,7 @@ public:
 	// [tuple.swap], tuple swap
 	HAMON_CXX14_CONSTEXPR void
 	swap(tuple& rhs)
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<						// [tuple.swap]/6.1
 		hamon::is_nothrow_swappable<Types>...>::value))
 	{
 		impl_type::swap(*this, rhs);
@@ -1310,7 +1310,7 @@ public:
 
 	HAMON_CXX14_CONSTEXPR void
 	swap(tuple const& rhs) const
-	HAMON_NOEXCEPT_IF((hamon::conjunction<
+	HAMON_NOEXCEPT_IF((hamon::conjunction<						// [tuple.swap]/6.2
 		hamon::is_nothrow_swappable<Types const>...>::value))
 	{
 		impl_type::swap(*this, rhs);
