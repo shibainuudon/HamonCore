@@ -123,6 +123,7 @@ static_assert( hamon::is_constructible<hamon::tuple<NoAlloc>,           hamon::a
 static_assert( hamon::is_constructible<hamon::tuple<NoThrowFirstAlloc>, hamon::allocator_arg_t, MyAlloc, hamon::tuple<NoThrowFirstAlloc> const&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<NoThrowLastAlloc>,  hamon::allocator_arg_t, MyAlloc, hamon::tuple<NoThrowLastAlloc> const&>::value, "");
 static_assert( hamon::is_constructible<hamon::tuple<NoThrowNoAlloc>,    hamon::allocator_arg_t, MyAlloc, hamon::tuple<NoThrowNoAlloc> const&>::value, "");
+#if !defined(HAMON_USE_STD_TUPLE)
 static_assert(!hamon::is_constructible<hamon::tuple<NoCopy>,            hamon::allocator_arg_t, MyAlloc, hamon::tuple<NoCopy> const&>::value, "");
 static_assert( hamon::is_constructible<
 	hamon::tuple<FirstAlloc, LastAlloc, NoAlloc>, hamon::allocator_arg_t, MyAlloc,
@@ -136,6 +137,7 @@ static_assert(!hamon::is_constructible<
 static_assert(!hamon::is_constructible<
 	hamon::tuple<FirstAlloc, LastAlloc, NoCopy>, hamon::allocator_arg_t, MyAlloc,
 	hamon::tuple<FirstAlloc, LastAlloc, NoCopy> const&>::value, "");
+#endif
 
 #if !defined(HAMON_USE_STD_TUPLE)
 static_assert( hamon::is_nothrow_constructible<hamon::tuple<>,                  hamon::allocator_arg_t, MyAlloc, hamon::tuple<> const&>::value, "");
