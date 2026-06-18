@@ -17,6 +17,15 @@ namespace hamon {
 namespace chrono {
 
 using std::chrono::weekday;
+
+using std::chrono::Sunday;
+using std::chrono::Monday;
+using std::chrono::Tuesday;
+using std::chrono::Wednesday;
+using std::chrono::Thursday;
+using std::chrono::Friday;
+using std::chrono::Saturday;
+
 using std::chrono::weekday_indexed;
 using std::chrono::weekday_last;
 
