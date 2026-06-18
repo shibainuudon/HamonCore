@@ -245,6 +245,13 @@ from_stream(
 #endif
 
 }	// namespace chrono
+}	// namespace hamon
+
+#endif
+
+#include <hamon/config.hpp>
+
+namespace hamon {
 
 inline namespace literals {
 inline namespace chrono_literals {
@@ -267,7 +274,5 @@ using namespace literals::chrono_literals;
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_CHRONO_DAY_HPP
