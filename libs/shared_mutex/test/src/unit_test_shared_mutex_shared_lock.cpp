@@ -8,8 +8,9 @@
 #include <hamon/shared_mutex/shared_mutex.hpp>
 #include <hamon/shared_mutex/shared_timed_mutex.hpp>
 #include <hamon/chrono.hpp>
-#include <hamon/utility.hpp>
+#include <hamon/system_error.hpp>
 #include <hamon/type_traits.hpp>
+#include <hamon/utility.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_shared_mutex_test
@@ -276,7 +277,7 @@ void try_lock_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock();
+			(void)lk.try_lock();
 		}
 		catch (hamon::system_error const& ex)
 		{
@@ -294,7 +295,7 @@ void try_lock_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock();
+			(void)lk.try_lock();
 		}
 		catch (hamon::system_error const& ex)
 		{
@@ -335,7 +336,7 @@ void try_lock_until_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock_until(hamon::chrono::system_clock::now() + hamon::chrono::seconds(3));
+			(void)lk.try_lock_until(hamon::chrono::system_clock::now() + hamon::chrono::seconds(3));
 		}
 		catch (hamon::system_error const& ex)
 		{
@@ -353,7 +354,7 @@ void try_lock_until_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock_until(hamon::chrono::system_clock::now() + hamon::chrono::seconds(3));
+			(void)lk.try_lock_until(hamon::chrono::system_clock::now() + hamon::chrono::seconds(3));
 		}
 		catch (hamon::system_error const& ex)
 		{
@@ -394,7 +395,7 @@ void try_lock_for_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock_for(hamon::chrono::seconds(3));
+			(void)lk.try_lock_for(hamon::chrono::seconds(3));
 		}
 		catch (hamon::system_error const& ex)
 		{
@@ -412,7 +413,7 @@ void try_lock_for_test()
 		bool caught_expected = false;
 		try
 		{
-			lk.try_lock_for(hamon::chrono::seconds(3));
+			(void)lk.try_lock_for(hamon::chrono::seconds(3));
 		}
 		catch (hamon::system_error const& ex)
 		{

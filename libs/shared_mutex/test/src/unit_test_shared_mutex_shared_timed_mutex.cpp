@@ -5,6 +5,7 @@
  */
 
 #include <hamon/shared_mutex/shared_timed_mutex.hpp>
+#include <hamon/chrono.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <atomic>
