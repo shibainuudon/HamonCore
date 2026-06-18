@@ -18,6 +18,19 @@ namespace chrono {
 
 using std::chrono::month;
 
+using std::chrono::January;
+using std::chrono::February;
+using std::chrono::March;
+using std::chrono::April;
+using std::chrono::May;
+using std::chrono::June;
+using std::chrono::July;
+using std::chrono::August;
+using std::chrono::September;
+using std::chrono::October;
+using std::chrono::November;
+using std::chrono::December;
+
 }	// namespace chrono
 }	// namespace hamon
 
