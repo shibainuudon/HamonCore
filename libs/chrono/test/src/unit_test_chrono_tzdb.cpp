@@ -9,7 +9,11 @@
 #include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/leap_second.hpp>
 #include <hamon/chrono/get_tzdb.hpp>
+#include <hamon/chrono/year.hpp>
+#include <hamon/chrono/month.hpp>
+#include <hamon/chrono/duration.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/pair.hpp>
 #include <hamon/ranges.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>
 #include <hamon/string.hpp>
@@ -119,6 +123,7 @@ static void test()
 
 GTEST_TEST(ChronoTest, TzdbTest)
 {
+#if !defined(HAMON_USE_STD_CHRONO)
 	{
 		hamon::chrono::tzdb tzdb;
 		static_assert(hamon::is_same<decltype(tzdb.version),      hamon::string>::value, "");
@@ -126,6 +131,7 @@ GTEST_TEST(ChronoTest, TzdbTest)
 		static_assert(hamon::is_same<decltype(tzdb.links),        hamon::vector<hamon::chrono::time_zone_link>>::value, "");
 		static_assert(hamon::is_same<decltype(tzdb.leap_seconds), hamon::vector<hamon::chrono::leap_second>>::value, "");
 	}
+#endif
 
 	leap_seconds_test::test();
 	locate_zone_test::test();
