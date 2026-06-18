@@ -37,7 +37,7 @@ struct Clock1
 	using duration = hamon::chrono::duration<rep, period>;
 	using time_point = hamon::chrono::time_point<Clock1, duration>;
 	static constexpr bool is_steady = false;
-	static constexpr int now() { return 0; }
+	static constexpr time_point now() { return {}; }
 };
 
 struct Clock2
@@ -111,7 +111,9 @@ struct Clock8
 };
 
 HAMON_IS_CLOCK_TEST(true,  Clock1);
+#if !defined(HAMON_USE_STD_CHRONO)
 HAMON_IS_CLOCK_TEST(true,  Clock2);
+#endif
 HAMON_IS_CLOCK_TEST(false, Clock3);
 HAMON_IS_CLOCK_TEST(false, Clock4);
 HAMON_IS_CLOCK_TEST(false, Clock5);
