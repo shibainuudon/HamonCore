@@ -17,6 +17,7 @@ namespace hamon {
 namespace chrono {
 
 using std::chrono::treat_as_floating_point;
+using std::chrono::treat_as_floating_point_v;
 
 }	// namespace chrono
 }	// namespace hamon
