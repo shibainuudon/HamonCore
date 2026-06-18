@@ -7,6 +7,7 @@
 #include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/get_tzdb.hpp>
 #include <hamon/compare.hpp>
+#include <hamon/string_view.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
 

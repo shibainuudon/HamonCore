@@ -10,6 +10,7 @@
 #include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/system_clock.hpp>
+#include <hamon/chrono/month.hpp>
 #include <gtest/gtest.h>
 
 namespace hamon_chrono_test
