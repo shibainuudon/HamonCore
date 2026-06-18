@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_LOCAL_TIME_HPP
 #define HAMON_CHRONO_LOCAL_TIME_HPP
 
+#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::local_time;
 
 #else
 
-#include <hamon/chrono/time_point.hpp>
 #include <ostream>	// basic_ostream
 #include <istream>	// basic_istream
 

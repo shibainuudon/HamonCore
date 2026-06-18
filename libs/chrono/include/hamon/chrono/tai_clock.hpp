@@ -7,6 +7,9 @@
 #ifndef HAMON_CHRONO_TAI_CLOCK_HPP
 #define HAMON_CHRONO_TAI_CLOCK_HPP
 
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -25,9 +28,6 @@ using std::chrono::tai_seconds;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/utc_clock.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/memory/allocator.hpp>
 #include <hamon/string.hpp>

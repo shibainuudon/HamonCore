@@ -7,6 +7,9 @@
 #ifndef HAMON_CHRONO_LEAP_SECOND_HPP
 #define HAMON_CHRONO_LEAP_SECOND_HPP
 
+#include <hamon/chrono/sys_seconds.hpp>
+#include <hamon/chrono/sys_time.hpp>
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,9 +26,6 @@ using std::chrono::leap_second;
 
 #else
 
-#include <hamon/chrono/sys_seconds.hpp>
-#include <hamon/chrono/sys_time.hpp>
-#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>

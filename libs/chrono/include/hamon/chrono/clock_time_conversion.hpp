@@ -7,6 +7,9 @@
 #ifndef HAMON_CHRONO_CLOCK_TIME_CONVERSION_HPP
 #define HAMON_CHRONO_CLOCK_TIME_CONVERSION_HPP
 
+#include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/system_clock.hpp>
+#include <hamon/chrono/utc_clock.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,9 +26,6 @@ using std::chrono::clock_time_conversion;
 
 #else
 
-#include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/system_clock.hpp>
-#include <hamon/chrono/utc_clock.hpp>
 #include <hamon/type_traits/common_type.hpp>
 
 namespace hamon {

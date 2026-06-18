@@ -7,6 +7,8 @@
 #ifndef HAMON_CHRONO_SYS_INFO_HPP
 #define HAMON_CHRONO_SYS_INFO_HPP
 
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,8 +25,6 @@ using std::chrono::sys_info;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/sys_seconds.hpp>
 #include <hamon/string.hpp>
 #include <ostream>	// basic_ostream
 

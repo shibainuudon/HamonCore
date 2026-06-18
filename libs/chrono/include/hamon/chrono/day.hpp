@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_DAY_HPP
 #define HAMON_CHRONO_DAY_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::day;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>

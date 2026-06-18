@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_LOCAL_INFO_HPP
 #define HAMON_CHRONO_LOCAL_INFO_HPP
 
+#include <hamon/chrono/sys_info.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::local_info;
 
 #else
 
-#include <hamon/chrono/sys_info.hpp>
 #include <ostream>	// basic_ostream
 
 namespace hamon {

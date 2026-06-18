@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_LOCATE_ZONE_HPP
 #define HAMON_CHRONO_LOCATE_ZONE_HPP
 
+#include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::locate_zone;
 
 #else
 
-#include <hamon/chrono/time_zone.hpp>
 #include <hamon/chrono/get_tzdb.hpp>
 #include <hamon/string_view.hpp>
 

@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_IS_AM_HPP
 #define HAMON_CHRONO_IS_AM_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::is_am;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

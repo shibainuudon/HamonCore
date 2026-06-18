@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_CLOCK_CAST_HPP
 #define HAMON_CHRONO_CLOCK_CAST_HPP
 
+#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::clock_cast;
 
 #else
 
-#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/clock_time_conversion.hpp>
 #include <hamon/detail/overload_priority.hpp>
 

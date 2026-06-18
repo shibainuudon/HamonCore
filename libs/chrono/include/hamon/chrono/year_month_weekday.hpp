@@ -7,6 +7,15 @@
 #ifndef HAMON_CHRONO_YEAR_MONTH_WEEKDAY_HPP
 #define HAMON_CHRONO_YEAR_MONTH_WEEKDAY_HPP
 
+#include <hamon/chrono/year.hpp>
+#include <hamon/chrono/month.hpp>
+#include <hamon/chrono/weekday.hpp>
+#include <hamon/chrono/sys_days.hpp>
+#include <hamon/chrono/local_days.hpp>
+#include <hamon/chrono/year_month_day.hpp>
+#include <hamon/chrono/year_month.hpp>
+#include <hamon/chrono/month_weekday.hpp>
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -24,15 +33,6 @@ using std::chrono::year_month_weekday_last;
 
 #else
 
-#include <hamon/chrono/year.hpp>
-#include <hamon/chrono/month.hpp>
-#include <hamon/chrono/weekday.hpp>
-#include <hamon/chrono/sys_days.hpp>
-#include <hamon/chrono/local_days.hpp>
-#include <hamon/chrono/year_month_day.hpp>
-#include <hamon/chrono/year_month.hpp>
-#include <hamon/chrono/month_weekday.hpp>
-#include <hamon/chrono/duration.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>
 

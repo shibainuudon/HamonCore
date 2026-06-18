@@ -7,6 +7,12 @@
 #ifndef HAMON_CHRONO_TIME_ZONE_HPP
 #define HAMON_CHRONO_TIME_ZONE_HPP
 
+#include <hamon/chrono/sys_info.hpp>
+#include <hamon/chrono/system_clock.hpp>
+#include <hamon/chrono/local_info.hpp>
+#include <hamon/chrono/local_time.hpp>
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/choose.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,12 +29,6 @@ using std::chrono::time_zone;
 
 #else
 
-#include <hamon/chrono/sys_info.hpp>
-#include <hamon/chrono/system_clock.hpp>
-#include <hamon/chrono/local_info.hpp>
-#include <hamon/chrono/local_time.hpp>
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/choose.hpp>
 #include <hamon/chrono/detail/tz.hpp>
 #include <hamon/chrono/detail/private_ctor_tag.hpp>
 #include <hamon/compare/strong_ordering.hpp>

@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_YEAR_HPP
 #define HAMON_CHRONO_YEAR_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::year;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
 #include <hamon/config.hpp>

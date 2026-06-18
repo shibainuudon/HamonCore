@@ -7,6 +7,8 @@
 #ifndef HAMON_CHRONO_LOCAL_DAYS_HPP
 #define HAMON_CHRONO_LOCAL_DAYS_HPP
 
+#include <hamon/chrono/local_time.hpp>
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -22,9 +24,6 @@ using std::chrono::local_days;
 }	// namespace hamon
 
 #else
-
-#include <hamon/chrono/local_time.hpp>
-#include <hamon/chrono/duration.hpp>
 
 namespace hamon {
 namespace chrono {

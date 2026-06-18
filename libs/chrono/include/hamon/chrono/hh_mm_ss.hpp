@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_HH_MM_SS_HPP
 #define HAMON_CHRONO_HH_MM_SS_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,9 +24,10 @@ using std::chrono::hh_mm_ss;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
+#include <hamon/cstdint.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/config.hpp>
 #include <ostream>
 
 namespace hamon {

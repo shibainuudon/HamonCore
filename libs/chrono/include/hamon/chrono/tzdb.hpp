@@ -7,6 +7,8 @@
 #ifndef HAMON_CHRONO_TZDB_HPP
 #define HAMON_CHRONO_TZDB_HPP
 
+#include <hamon/chrono/time_zone.hpp>
+#include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,8 +25,6 @@ using std::chrono::tzdb;
 
 #else
 
-#include <hamon/chrono/time_zone.hpp>
-#include <hamon/chrono/time_zone_link.hpp>
 #include <hamon/chrono/leap_second.hpp>
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 #include <hamon/stdexcept/runtime_error.hpp>

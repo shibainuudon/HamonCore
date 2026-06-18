@@ -7,6 +7,9 @@
 #ifndef HAMON_CHRONO_UTC_CLOCK_HPP
 #define HAMON_CHRONO_UTC_CLOCK_HPP
 
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/time_point.hpp>
+#include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -27,9 +30,6 @@ using std::chrono::get_leap_second_info;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/time_point.hpp>
-#include <hamon/chrono/system_clock.hpp>
 #include <hamon/chrono/get_tzdb.hpp>
 #include <hamon/ratio.hpp>
 #include <hamon/type_traits/common_type.hpp>

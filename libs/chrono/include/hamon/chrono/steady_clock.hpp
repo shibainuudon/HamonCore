@@ -7,6 +7,8 @@
 #ifndef HAMON_CHRONO_STEADY_CLOCK_HPP
 #define HAMON_CHRONO_STEADY_CLOCK_HPP
 
+#include <hamon/chrono/duration.hpp>
+#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,8 +25,6 @@ using std::chrono::steady_clock;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
-#include <hamon/chrono/time_point.hpp>
 #include <hamon/chrono/detail/windows.hpp>
 #include <hamon/cstdint.hpp>
 #include <hamon/ratio.hpp>

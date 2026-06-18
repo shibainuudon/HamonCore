@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_MAKE24_HPP
 #define HAMON_CHRONO_MAKE24_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -23,7 +24,6 @@ using std::chrono::make24;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {

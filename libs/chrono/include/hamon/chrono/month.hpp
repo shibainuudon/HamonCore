@@ -7,6 +7,7 @@
 #ifndef HAMON_CHRONO_MONTH_HPP
 #define HAMON_CHRONO_MONTH_HPP
 
+#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/config.hpp>
 
 #if defined(HAMON_USE_STD_CHRONO)
@@ -36,7 +37,6 @@ using std::chrono::December;
 
 #else
 
-#include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/detail/modulo.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/detail/statically_widen.hpp>
