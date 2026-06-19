@@ -357,6 +357,9 @@
 #  if (HAMON_GCC_VERSION >= 60000) && defined(__cpp_fold_expressions) && (__cpp_fold_expressions >= 201411)
 #    define HAMON_HAS_CXX17_FOLD_EXPRESSIONS
 #  endif
+#  if (HAMON_GCC_VERSION >= 60000)
+#    define HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS	// P0036R0	Unary fold expressions and empty parameter packs
+#  endif
 #  if (HAMON_GCC_VERSION >= 70000) && defined(__cpp_capture_star_this) && (__cpp_capture_star_this >= 201603)
 #    define HAMON_HAS_CXX17_CAPTURE_STAR_THIS
 #  endif

@@ -266,6 +266,7 @@
 # if (HAMON_CXX_STANDARD >= 17)
 #  define HAMON_HAS_CXX17_NONTYPE_TEMPLATE_ARGS				// 非型テンプレートパラメータの定数式を評価
 #  define HAMON_HAS_CXX17_FOLD_EXPRESSIONS					// 畳み込み式
+#  define HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS	// P0036R0	Unary fold expressions and empty parameter packs
 #  define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS			// 非推奨だった例外仕様を削除
 #  define HAMON_HAS_CXX17_NOEXCEPT_FUNCTION_TYPE			// 例外仕様を型システムの一部にする
 #  define HAMON_HAS_CXX17_ALIGNED_NEW						// アライメント指定されたデータの動的メモリ確保
@@ -1572,6 +1573,7 @@
 #define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS		// P0003R5	none									非推奨だった例外仕様を削除
 #define HAMON_HAS_CXX17_HAS_INCLUDE						// P0061R1	__has_include							プリプロセッサでの条件式__has_include
 #define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS				// N4086	Removing trigraphs
+#define HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS	// P0036R0	Unary fold expressions and empty parameter packs
 // P0398R0	Explicit default constructors and copy-list-initialization						none
 // P0134R0	Introducing a name for brace-or-equal-initializers for non-static data members	none
 

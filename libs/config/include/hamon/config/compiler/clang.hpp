@@ -298,8 +298,13 @@
 #  if (HAMON_CLANG_VERSION >= 40000)
 #    define HAMON_HAS_CXX17_EXPRESSION_EVALUATION_ORDER	// P0145R3
 #  endif
-#  if defined(__cpp_fold_expressions) && (__cpp_fold_expressions >= 201411)
-#    define HAMON_HAS_CXX17_FOLD_EXPRESSIONS			// N4295
+#  if (HAMON_CLANG_VERSION >= 30600)	// 3.6
+#    if defined(__cpp_fold_expressions) && (__cpp_fold_expressions >= 201411)
+#      define HAMON_HAS_CXX17_FOLD_EXPRESSIONS			// N4295
+#    endif
+#  endif
+#  if (HAMON_CLANG_VERSION >= 30900)	// 3.9
+#    define HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS	// P0036R0	Unary fold expressions and empty parameter packs
 #  endif
 #  if defined(__cpp_capture_star_this) && (__cpp_capture_star_this >= 201603)
 #    define HAMON_HAS_CXX17_CAPTURE_STAR_THIS			// P0018R3

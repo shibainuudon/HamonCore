@@ -156,7 +156,9 @@ GTEST_TEST(ConfigTest, Cxx17FoldExpressionsTest)
 	EXPECT_EQ(0, sum0());
 	EXPECT_EQ(true, all(true));
 	EXPECT_EQ(false, all(false, true, true));
+#if defined(HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS)
 	EXPECT_EQ(true, all());
+#endif
 
 	std::stringstream ss;
 	print_all(ss, 1, 2, 3, 'A');
