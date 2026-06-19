@@ -371,7 +371,10 @@
 #    define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS	// P0003R5
 #  endif
 #  if !defined(__has_include)
-#    define HAMON_HAS_CXX17_HAS_INCLUDE				// P0061R1
+#    define HAMON_HAS_CXX17_HAS_INCLUDE					// P0061R1
+#  endif
+#  if (HAMON_CLANG_VERSION >= 30500)
+#    define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS			// N4086	Removing trigraphs
 #  endif
 #endif	// C++17
 

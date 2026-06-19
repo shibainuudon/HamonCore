@@ -763,4 +763,24 @@ Z<D> zd;
 
 #endif
 
+#if !defined(HAMON_HAS_CXX17_REMOVE_TRIGRAPHS)
+
+// GCCでC++17以上だと、トライグラフを記述するだけでコンパイルエラーになる。
+// (#ifdefで無効にしてもエラーになる。コメントは大丈夫)
+//
+//HAMON_WARNING_PUSH()
+//HAMON_WARNING_DISABLE_CLANG("-Wtrigraphs")
+//HAMON_WARNING_DISABLE_GCC("-Wtrigraphs")
+//
+//GTEST_TEST(ConfigTest, Cxx17RemoveTrigraphsTest)
+//{
+//	const char* s1 = "#";
+//	const char* s2 = "??=";
+//	EXPECT_STREQ(s1, s2);
+//}
+//
+//HAMON_WARNING_POP()
+
+#endif
+
 }	// namespace hamon_config_cxx17_test

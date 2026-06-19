@@ -335,15 +335,16 @@
 #  if defined(__cpp_aggregate_bases) && (__cpp_aggregate_bases >= 201603)
 #    define HAMON_HAS_CXX17_AGGREGATE_BASES			// P0017R1
 #  endif
-#  define HAMON_HAS_CXX17_INIT_ENUM_CLASS			// P0138R2
+#  define HAMON_HAS_CXX17_INIT_ENUM_CLASS				// P0138R2
 #  define HAMON_HAS_CXX17_TEMPLATE_TEMPLATE_TYPENAME	// N4051
 #  if defined(__cpp_nontype_template_args) && (__cpp_nontype_template_args >= 201411)
 #    define HAMON_HAS_CXX17_NONTYPE_TEMPLATE_ARGS		// N4268
 #  endif
-#  define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS	// P0003R5
+#  define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS		// P0003R5
 #  if !defined(__has_include)
-#    define HAMON_HAS_CXX17_HAS_INCLUDE				// P0061R1
+#    define HAMON_HAS_CXX17_HAS_INCLUDE					// P0061R1
 #  endif
+#  define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS				// N4086	Removing trigraphs
 #endif	// C++17
 
 // C++20

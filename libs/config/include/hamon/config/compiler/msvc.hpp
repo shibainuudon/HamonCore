@@ -120,6 +120,9 @@
 #  define HAMON_HAS_CXX11_STATIC_ASSERT						// コンパイル時アサート
 #  define HAMON_HAS_CXX11_NULLPTR							// nullptr
 #  define HAMON_HAS_CXX11_TRAILING_RETURN_TYPE				// 戻り値の型を後置する関数宣言構文
+#
+#  // C++17に限らず適用される
+#  define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS					// N4086	Removing trigraphs
 #endif
 
 // Visual Studio 2012 (Visual C++ 11)
@@ -1568,6 +1571,7 @@
 #define HAMON_HAS_CXX17_TEMPLATE_TEMPLATE_ARGS			// P0522R0	__cpp_template_template_args			テンプレートテンプレート引数のマッチングにおいて、互換性のあるテンプレートを除外
 #define HAMON_HAS_CXX17_EXCEPTION_SPECIFICATIONS		// P0003R5	none									非推奨だった例外仕様を削除
 #define HAMON_HAS_CXX17_HAS_INCLUDE						// P0061R1	__has_include							プリプロセッサでの条件式__has_include
+#define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS				// N4086	Removing trigraphs
 // P0398R0	Explicit default constructors and copy-list-initialization						none
 // P0134R0	Introducing a name for brace-or-equal-initializers for non-static data members	none
 

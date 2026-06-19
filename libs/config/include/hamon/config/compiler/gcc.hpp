@@ -427,6 +427,9 @@
 #  if (HAMON_GCC_VERSION >= 50000) && defined(__has_include)
 #    define HAMON_HAS_CXX17_HAS_INCLUDE
 #  endif
+#  if (HAMON_GCC_VERSION >= 50000)
+#    define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS		// N4086	Removing trigraphs
+#  endif
 #endif	// C++17
 
 // C++20
