@@ -346,6 +346,7 @@
 #    define HAMON_HAS_CXX17_HAS_INCLUDE					// P0061R1
 #  endif
 #  define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS				// N4086	Removing trigraphs
+#  define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD		// P0001R1	Remove deprecated use of the register keyword
 #endif	// C++17
 
 // C++20

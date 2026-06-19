@@ -381,6 +381,9 @@
 #  if (HAMON_CLANG_VERSION >= 30500)
 #    define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS			// N4086	Removing trigraphs
 #  endif
+#  if (HAMON_CLANG_VERSION >= 30800)	// 3.8
+#    define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD		// P0001R1	Remove deprecated use of the register keyword
+#  endif
 #endif	// C++17
 
 // C++20

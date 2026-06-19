@@ -431,7 +431,10 @@
 #    define HAMON_HAS_CXX17_HAS_INCLUDE
 #  endif
 #  if (HAMON_GCC_VERSION >= 50000)
-#    define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS		// N4086	Removing trigraphs
+#    define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS			// N4086	Removing trigraphs
+#  endif
+#  if (HAMON_GCC_VERSION >= 70000)
+#    define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD		// P0001R1	Remove deprecated use of the register keyword
 #  endif
 #endif	// C++17
 

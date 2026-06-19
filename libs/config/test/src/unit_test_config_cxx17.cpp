@@ -785,4 +785,22 @@ Z<D> zd;
 
 #endif
 
+#if !defined(HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD)
+namespace remove_register_keyword_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-register")
+
+void f()
+{
+	register int v = 42;
+	(void)v;
+}
+
+HAMON_WARNING_POP()
+
+}
+#endif
+
 }	// namespace hamon_config_cxx17_test
