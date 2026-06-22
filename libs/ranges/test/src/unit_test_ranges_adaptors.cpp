@@ -11,6 +11,7 @@
 #include <hamon/list.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
+#include <hamon/tuple.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
 #include <cctype>
