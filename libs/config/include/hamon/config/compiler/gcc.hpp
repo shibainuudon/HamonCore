@@ -436,6 +436,9 @@
 #  if (HAMON_GCC_VERSION >= 70000)
 #    define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD		// P0001R1	Remove deprecated use of the register keyword
 #  endif
+#  if (HAMON_GCC_VERSION >= 70000)
+#    define HAMON_HAS_CXX17_REMOVE_INCREMENT_OPERATOR_FOR_BOOL	// P0002R1	Remove deprecated operator++(bool)
+#  endif
 #endif	// C++17
 
 // C++20

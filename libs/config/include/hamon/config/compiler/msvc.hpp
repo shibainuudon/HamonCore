@@ -246,6 +246,7 @@
 #  define HAMON_HAS_CXX17_STRUCTURED_BINDINGS				// 構造化束縛
 #  define HAMON_HAS_CXX17_SELECTION_WITH_INIT				// if文とswitch文の条件式と初期化を分離
 #  define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD			// P0001R1	Remove deprecated use of the register keyword
+#  define HAMON_HAS_CXX17_REMOVE_INCREMENT_OPERATOR_FOR_BOOL	// P0002R1	Remove deprecated operator++(bool)
 # endif
 #endif
 
@@ -1576,6 +1577,7 @@
 #define HAMON_HAS_CXX17_REMOVE_TRIGRAPHS				// N4086	Removing trigraphs
 #define HAMON_HAS_CXX17_UNARY_FOLD_EXPRESSIONS_AND_EMPTY_PARAMETER_PACKS	// P0036R0	Unary fold expressions and empty parameter packs
 #define HAMON_HAS_CXX17_REMOVE_REGISTER_KEYWORD			// P0001R1	Remove deprecated use of the register keyword
+#define HAMON_HAS_CXX17_REMOVE_INCREMENT_OPERATOR_FOR_BOOL	// P0002R1	Remove deprecated operator++(bool)
 // P0398R0	Explicit default constructors and copy-list-initialization						none
 // P0134R0	Introducing a name for brace-or-equal-initializers for non-static data members	none
 

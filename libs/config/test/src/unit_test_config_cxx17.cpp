@@ -803,4 +803,26 @@ HAMON_WARNING_POP()
 }
 #endif
 
+#if !defined(HAMON_HAS_CXX17_REMOVE_INCREMENT_OPERATOR_FOR_BOOL)
+namespace remove_increment_operator_for_bool_test
+{
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_CLANG("-Wdeprecated-increment-bool")
+HAMON_WARNING_DISABLE_GCC("-Wdeprecated")
+
+void f()
+{
+	bool b = false;
+	const bool b1 = ++b;
+	const bool b2 = b++;
+	(void)b1;
+	(void)b2;
+}
+
+HAMON_WARNING_POP()
+
+}
+#endif
+
 }	// namespace hamon_config_cxx17_test
