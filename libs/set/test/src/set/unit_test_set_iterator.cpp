@@ -11,6 +11,10 @@
 
 #include <hamon/set/set.hpp>
 #include <hamon/iterator.hpp>
+#include <hamon/iterator/detail/cpp17_input_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_forward_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_bidirectional_iterator.hpp>
+#include <hamon/iterator/detail/cpp17_random_access_iterator.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/type_traits.hpp>
 #include <gtest/gtest.h>
