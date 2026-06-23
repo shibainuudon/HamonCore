@@ -27,6 +27,7 @@ using std::ranges::iterator_t;
 namespace hamon {
 namespace ranges {
 
+// [ranges.syn]
 template <typename T>
 using iterator_t = decltype(ranges::begin(hamon::declval<T&>()));
 

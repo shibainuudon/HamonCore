@@ -31,8 +31,9 @@ using std::ranges::sentinel_t;
 namespace hamon {
 namespace ranges {
 
-template <HAMON_CONSTRAINED_PARAM(ranges::range, Range)>
-using sentinel_t = decltype(ranges::end(hamon::declval<Range&>()));
+// [ranges.syn]
+template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
+using sentinel_t = decltype(ranges::end(hamon::declval<R&>()));
 
 }	// namespace ranges
 }	// namespace hamon

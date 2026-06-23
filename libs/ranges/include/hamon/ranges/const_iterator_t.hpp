@@ -22,15 +22,16 @@ using std::ranges::const_iterator_t;
 #else
 
 #include <hamon/ranges/concepts/range.hpp>
-#include <hamon/ranges/iterator_t.hpp>
+#include <hamon/ranges/cbegin.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/iterator/const_iterator.hpp>
+#include <hamon/utility/declval.hpp>
 
 namespace hamon {
 namespace ranges {
 
+// [ranges.syn]
 template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
-using const_iterator_t = hamon::const_iterator<hamon::ranges::iterator_t<R>>;
+using const_iterator_t = decltype(ranges::cbegin(hamon::declval<R&>()));
 
 }	// namespace ranges
 }	// namespace hamon

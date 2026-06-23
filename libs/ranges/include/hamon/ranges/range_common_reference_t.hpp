@@ -29,9 +29,9 @@ using std::ranges::range_common_reference_t;
 namespace hamon {
 namespace ranges {
 
-// Defect report: P2789R0 (LWG 3860)
+// [ranges.syn]
 template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
-using range_common_reference_t = hamon::iter_common_reference_t<hamon::ranges::iterator_t<R>>;
+using range_common_reference_t = hamon::iter_common_reference_t<ranges::iterator_t<R>>;
 
 }	// namespace ranges
 }	// namespace hamon

@@ -29,8 +29,9 @@ using std::ranges::range_const_reference_t;
 namespace hamon {
 namespace ranges {
 
+// [ranges.syn]
 template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
-using range_const_reference_t = hamon::iter_const_reference_t<hamon::ranges::iterator_t<R>>;
+using range_const_reference_t = hamon::iter_const_reference_t<ranges::iterator_t<R>>;
 
 }	// namespace ranges
 }	// namespace hamon

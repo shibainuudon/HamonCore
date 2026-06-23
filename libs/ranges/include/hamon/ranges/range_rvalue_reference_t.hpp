@@ -31,8 +31,9 @@ using std::ranges::range_rvalue_reference_t;
 namespace hamon {
 namespace ranges {
 
-template <HAMON_CONSTRAINED_PARAM(ranges::range, Range)>
-using range_rvalue_reference_t = hamon::iter_rvalue_reference_t<ranges::iterator_t<Range>>;
+// [ranges.syn]
+template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
+using range_rvalue_reference_t = hamon::iter_rvalue_reference_t<ranges::iterator_t<R>>;
 
 }	// namespace ranges
 }	// namespace hamon
