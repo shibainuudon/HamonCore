@@ -120,11 +120,10 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(r)), hamon::basic_const_iterator<int*>>::value, "");
 	static_assert(hamon::same_as_t<decltype(hamon::ranges::crend(cr)), hamon::basic_const_iterator<int*>>::value, "");
 
-	// const& にキャストしてもconstant_iteratorを返さないので、
-	// 非const 版の結果をbasic_const_iteratorに変換する。
+	// const& にキャストされてrendを呼び出す
 	// メンバ関数crendは呼び出されない
-	VERIFY(hamon::ranges::crend(r) == r.rend());
-	VERIFY(hamon::ranges::crend(r) != cr.rend());
+	VERIFY(hamon::ranges::crend(r) != r.rend());
+	VERIFY(hamon::ranges::crend(r) == cr.rend());
 	VERIFY(hamon::ranges::crend(r) != r.crend());
 	VERIFY(hamon::ranges::crend(cr) != r.rend());
 	VERIFY(hamon::ranges::crend(cr) == cr.rend());

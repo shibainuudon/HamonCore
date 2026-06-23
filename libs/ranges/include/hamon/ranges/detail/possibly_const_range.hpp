@@ -8,7 +8,6 @@
 #define HAMON_RANGES_DETAIL_POSSIBLY_CONST_RANGE_HPP
 
 #include <hamon/ranges/concepts/input_range.hpp>
-#include <hamon/ranges/concepts/constant_range.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -25,9 +24,7 @@ namespace detail {
 template <hamon::ranges::input_range R>
 constexpr auto& possibly_const_range(R& r) noexcept
 {
-	if constexpr (
-		 hamon::ranges::constant_range<const R> &&
-		!hamon::ranges::constant_range<R>)
+	if constexpr (hamon::ranges::input_range<const R>)
 	{
 		return const_cast<const R&>(r);
 	}
@@ -40,9 +37,7 @@ constexpr auto& possibly_const_range(R& r) noexcept
 #else
 
 template <typename R,
-	typename = hamon::enable_if_t<
-		 hamon::ranges::constant_range_t<const R>::value &&
-		!hamon::ranges::constant_range_t<R>::value>>
+	typename = hamon::enable_if_t<hamon::ranges::input_range<const R>::value>>
 constexpr const R&
 possibly_const_range_impl(R& r, hamon::detail::overload_priority<1>) noexcept
 {
