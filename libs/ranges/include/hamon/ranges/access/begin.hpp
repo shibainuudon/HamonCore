@@ -25,16 +25,15 @@ using std::ranges::begin;
 #include <hamon/ranges/detail/has_member_begin.hpp>
 #include <hamon/ranges/detail/has_adl_begin.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/detail/decay_copy.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/remove_all_extents.hpp>
-#include <hamon/type_traits/remove_reference.hpp>
+#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -47,45 +46,43 @@ namespace detail {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.2 ranges::begin[range.access.begin]
 struct begin_fn
 {
 private:
-	template <
-		typename T,
-		typename = hamon::enable_if_t<
-			hamon::is_array<hamon::remove_reference_t<T>>::value
-		>
-	>
-	static HAMON_CONSTEXPR hamon::decay_t<T>
-	impl(T&& t, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
+	// [range.access.begin]/2.3
+	template <typename T,
+		typename = hamon::enable_if_t<hamon::conjunction<
+			hamon::is_array<hamon::remove_reference_t<T>>,
+			hamon::is_lvalue_reference<T>>::value>>
+	static HAMON_CXX11_CONSTEXPR hamon::decay_t<T>
+	impl(T&& t, hamon::detail::overload_priority<3>) HAMON_NOEXCEPT
 	{
-		static_assert(hamon::is_lvalue_reference<T>::value, "");
 		return t + 0;
 	}
 
+	// [range.access.begin]/2.4
 	template <HAMON_CONSTRAINED_PARAM(has_member_begin, T)>
-	static HAMON_CONSTEXPR auto
-	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().begin()))
-	->decltype(t.begin())
-	{
-		return t.begin();
-	}
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<2>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.begin()))
 	
+	// [range.access.begin]/2.5
 	template <HAMON_CONSTRAINED_PARAM(has_adl_begin, T)>
-	static HAMON_CONSTEXPR auto
-	impl(T&& t, hamon::detail::overload_priority<0>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(begin(hamon::declval<T&>())))
-	->decltype(begin(t))
-	{
-		return begin(t);
-	}
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(begin(t)))
+
+	// [range.access.begin]/2.6
+	template <typename T>
+	static HAMON_CXX11_CONSTEXPR void
+	impl(T&&, hamon::detail::overload_priority<0>) = delete;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>		// [range.access.begin]/2.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::forward<T>(t), hamon::detail::overload_priority<2>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<3>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
@@ -95,7 +92,8 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.access.begin]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::begin_fn begin{};
 
 }	// inline namespace cpo

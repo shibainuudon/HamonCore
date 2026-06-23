@@ -7,7 +7,7 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_MEMBER_RBEGIN_HPP
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_RBEGIN_HPP
 
-#include <hamon/detail/decay_copy.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
@@ -17,13 +17,15 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.access.rbegin]/2.3
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_member_rbegin =
-	requires(T& t)
+	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(t.rbegin()) } -> hamon::input_or_output_iterator;
+		{ HAMON_AUTO_CAST(t.rbegin()) } -> hamon::input_or_output_iterator;
 	};
 
 #else
@@ -33,9 +35,9 @@ struct has_member_rbegin_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(hamon::detail::decay_copy(hamon::declval<U&>().rbegin()))
+		typename I = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().rbegin()))
 	>
-	static auto test(int) -> hamon::input_or_output_iterator<B>;
+	static auto test(int) -> hamon::input_or_output_iterator<I>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

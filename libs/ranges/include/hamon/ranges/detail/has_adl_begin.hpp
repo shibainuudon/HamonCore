@@ -7,8 +7,8 @@
 #ifndef HAMON_RANGES_DETAIL_HAS_ADL_BEGIN_HPP
 #define HAMON_RANGES_DETAIL_HAS_ADL_BEGIN_HPP
 
-#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -27,14 +27,16 @@ void begin() = delete;
 void begin();
 #endif
 
+// [range.access.begin]/2.5
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_adl_begin =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
-	requires(T& t)
+	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(begin(t)) } -> hamon::input_or_output_iterator;
+		{ HAMON_AUTO_CAST(begin(t)) } -> hamon::input_or_output_iterator;
 	};
 
 #else
@@ -48,9 +50,9 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename B = decltype(hamon::detail::decay_copy(begin(hamon::declval<U&>())))
+		typename I = decltype(HAMON_AUTO_CAST(begin(hamon::declval<U&>())))
 	>
-	static auto test(int) -> hamon::input_or_output_iterator<B>;
+	static auto test(int) -> hamon::input_or_output_iterator<I>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

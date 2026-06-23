@@ -27,14 +27,11 @@ using std::ranges::rbegin;
 #include <hamon/ranges/detail/has_adl_rbegin.hpp>
 #include <hamon/ranges/detail/reversable.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/detail/decay_copy.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
-#include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/iterator/make_reverse_iterator.hpp>
 #include <hamon/utility/forward.hpp>
-#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -47,43 +44,42 @@ namespace detail {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.6 ranges::rbegin[range.access.rbegin]
 struct rbegin_fn
 {
 private:
+	// [range.access.rbegin]/2.3
 	template <HAMON_CONSTRAINED_PARAM(has_member_rbegin, T)>
-	static HAMON_CONSTEXPR auto
-	impl(T&& t, hamon::detail::overload_priority<2>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(hamon::declval<T&>().rbegin()))
-	->decltype(t.rbegin())
-	{
-		return t.rbegin();
-	}
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<3>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.rbegin()))
 
+	// [range.access.rbegin]/2.4
 	template <HAMON_CONSTRAINED_PARAM(has_adl_rbegin, T)>
-	static HAMON_CONSTEXPR auto
-	impl(T&& t, hamon::detail::overload_priority<1>)
-		HAMON_NOEXCEPT_IF_EXPR(hamon::detail::decay_copy(rbegin(hamon::declval<T&>())))
-	->decltype(rbegin(t))
-	{
-		return rbegin(t);
-	}
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<2>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(rbegin(t)))
 
+	// [range.access.rbegin]/2.5
 	template <HAMON_CONSTRAINED_PARAM(reversable, T)>
-	static HAMON_CONSTEXPR auto
-	impl(T&& t, hamon::detail::overload_priority<0>)
-		noexcept(
-			noexcept(ranges::end(t)) &&
-			hamon::is_nothrow_copy_constructible<decltype(ranges::end(t))>::value)
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(T&& t, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_IF_EXPR(ranges::end(t))
 	->decltype(hamon::make_reverse_iterator(ranges::end(t)))
 	{
 		return hamon::make_reverse_iterator(ranges::end(t));
 	}
 
+	// [range.access.rbegin]/2.6
+	template <typename T>
+	static HAMON_CXX11_CONSTEXPR void
+	impl(T&&, hamon::detail::overload_priority<0>) = delete;
+
 public:
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator() (T&& t) const
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.rbegin]/2.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			impl(hamon::forward<T>(t), hamon::detail::overload_priority<2>{}))
+			impl(hamon::forward<T>(t), hamon::detail::overload_priority<3>{}))
 };
 
 #undef HAMON_NOEXCEPT_DECLTYPE_RETURN
@@ -93,7 +89,8 @@ public:
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.access.rbegin]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::rbegin_fn rbegin{};
 
 }	// inline namespace cpo

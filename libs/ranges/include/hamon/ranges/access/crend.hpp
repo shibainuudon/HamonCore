@@ -39,12 +39,12 @@ namespace detail {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.9 ranges::crend[range.access.crend]
 struct crend_fn
 {
-	// [range.access.crend]
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.crend]/1.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.access.crend]/1.2
 			hamon::const_sentinel<decltype(hamon::ranges::rend(hamon::ranges::detail::possibly_const_range(t)))>(
 				hamon::ranges::rend(hamon::ranges::detail::possibly_const_range(t))))
 };
@@ -56,7 +56,8 @@ struct crend_fn
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.access.crend]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::crend_fn crend{};
 
 }	// inline namespace cpo

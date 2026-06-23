@@ -41,12 +41,12 @@ constexpr const T* as_const_pointer(const T* p) noexcept { return p; }
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.15 ranges::cdata[range.prim.cdata]
 struct cdata_fn
 {
-	// [range.prim.cdata]
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.prim.cdata]/1.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.prim.cdata]/1.2
 			as_const_pointer(hamon::ranges::data(possibly_const_range(t))))
 };
 
@@ -57,7 +57,8 @@ struct cdata_fn
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.prim.cdata]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::cdata_fn cdata{};
 
 }	// inline namespace cpo

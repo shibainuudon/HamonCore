@@ -8,8 +8,8 @@
 #define HAMON_RANGES_DETAIL_HAS_ADL_REND_HPP
 
 #include <hamon/ranges/rbegin.hpp>
-#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -28,14 +28,16 @@ void rend() = delete;
 void rend();
 #endif
 
+// [range.access.rend]/2.4
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_adl_rend =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
-	requires(T& t)
+	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(rend(t)) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
+		{ HAMON_AUTO_CAST(rend(t)) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
 	};
 
 #else
@@ -49,10 +51,10 @@ private:
 			hamon::detail::class_or_enum<
 				hamon::remove_reference_t<U>
 			>::value>,
-		typename E = decltype(hamon::detail::decay_copy(rend(hamon::declval<U&>()))),
-		typename B = decltype(ranges::rbegin(hamon::declval<U&>()))
+		typename S = decltype(HAMON_AUTO_CAST(rend(hamon::declval<U&>()))),
+		typename I = decltype(ranges::rbegin(hamon::declval<U&>()))
 	>
-	static auto test(int) -> hamon::sentinel_for<E, B>;
+	static auto test(int) -> hamon::sentinel_for<S, I>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

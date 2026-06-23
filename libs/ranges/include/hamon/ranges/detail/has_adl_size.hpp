@@ -8,12 +8,11 @@
 #define HAMON_RANGES_DETAIL_HAS_ADL_SIZE_HPP
 
 #include <hamon/ranges/concepts/disable_sized_range.hpp>
-#include <hamon/iterator/detail/is_integer_like.hpp>
-#include <hamon/detail/decay_copy.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
+#include <hamon/detail/auto_cast.hpp>
+#include <hamon/iterator/detail/is_integer_like.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
@@ -30,15 +29,17 @@ void size() = delete;
 void size();
 #endif
 
+// [range.prim.size]/2.4
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_adl_size =
-	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
+	hamon::detail::class_or_enum<hamon::remove_cvref_t<T>> &&
 	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
 	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(size(hamon::forward<T>(t))) } -> hamon::detail::is_integer_like;
+		{ HAMON_AUTO_CAST(size(t)) } -> hamon::detail::is_integer_like;
 	};
 
 #else
@@ -50,14 +51,14 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<
 			hamon::detail::class_or_enum<
-				hamon::remove_reference_t<U>
+				hamon::remove_cvref_t<U>
 			>::value>,
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,
-		typename S = decltype(hamon::detail::decay_copy(size(hamon::declval<U&&>())))
+		typename V = decltype(HAMON_AUTO_CAST(size(hamon::declval<U&>())))
 	>
-	static auto test(int) -> hamon::detail::is_integer_like<S>;
+	static auto test(int) -> hamon::detail::is_integer_like<V>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

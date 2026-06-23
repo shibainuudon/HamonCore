@@ -15,11 +15,13 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.prim.empty]/2.2
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_member_empty =
-	requires(T& t)
+	requires(T&& t)
 	{
 		bool(t.empty());
 	};

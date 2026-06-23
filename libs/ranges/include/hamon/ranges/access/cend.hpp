@@ -38,12 +38,12 @@ namespace detail {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.5 ranges::cend[range.access.cend]
 struct cend_fn
 {
-	// [range.access.cend]
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.cend]/1.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.access.cend]/1.2
 			hamon::const_sentinel<decltype(hamon::ranges::end(hamon::ranges::detail::possibly_const_range(t)))>(
 				hamon::ranges::end(hamon::ranges::detail::possibly_const_range(t))))
 };
@@ -55,7 +55,8 @@ struct cend_fn
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.access.cend]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::cend_fn cend{};
 
 }	// inline namespace cpo

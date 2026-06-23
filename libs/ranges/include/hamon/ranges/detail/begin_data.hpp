@@ -17,6 +17,8 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.prim.data]/2.4
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
@@ -29,8 +31,8 @@ template <typename T>
 struct begin_data_impl
 {
 private:
-	template <typename U, typename B = decltype(ranges::begin(hamon::declval<U&>()))>
-	static auto test(int) -> hamon::contiguous_iterator<B>;
+	template <typename U, typename I = decltype(ranges::begin(hamon::declval<U&>()))>
+	static auto test(int) -> hamon::contiguous_iterator<I>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

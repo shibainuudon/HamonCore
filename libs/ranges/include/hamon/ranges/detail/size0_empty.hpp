@@ -16,11 +16,13 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.prim.empty]/2.3
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept size0_empty =
-	requires(T& t)
+	requires(T&& t)
 	{
 		ranges::size(t) == 0;
 	};

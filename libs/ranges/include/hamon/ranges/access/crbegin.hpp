@@ -39,12 +39,12 @@ namespace detail {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
+// 25.3.8 ranges::crbegin[range.access.crbegin]
 struct crbegin_fn
 {
-	// [range.access.crbegin]
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>
-	HAMON_NODISCARD HAMON_CONSTEXPR auto operator()(T&& t) const
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.crbegin]/1.1
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.access.crbegin]/1.2
 			hamon::const_iterator<decltype(hamon::ranges::rbegin(hamon::ranges::detail::possibly_const_range(t)))>(
 				hamon::ranges::rbegin(hamon::ranges::detail::possibly_const_range(t))))
 };
@@ -56,7 +56,8 @@ struct crbegin_fn
 inline namespace cpo
 {
 
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+// [range.access.crbegin]/1
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::crbegin_fn crbegin{};
 
 }	// inline namespace cpo

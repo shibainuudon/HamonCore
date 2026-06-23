@@ -21,13 +21,14 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.prim.empty]/2.4
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept eq_iter_empty =
-	requires(T& t)
+	requires(T&& t)
 	{
-		requires (!hamon::is_unbounded_array<hamon::remove_reference_t<T>>::value);
 		{ ranges::begin(t) } -> hamon::forward_iterator;
 		bool(ranges::begin(t) == ranges::end(t));
 	};
@@ -39,11 +40,8 @@ struct eq_iter_empty_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<
-			!hamon::is_unbounded_array<hamon::remove_reference_t<U>>::value
-		>,
-		typename B = decltype(ranges::begin(hamon::declval<U&>())),
-		typename = hamon::enable_if_t<hamon::forward_iterator<B>::value>,
+		typename I = decltype(ranges::begin(hamon::declval<U&>())),
+		typename = hamon::enable_if_t<hamon::forward_iterator<I>::value>,
 		typename = decltype(bool(ranges::begin(hamon::declval<U&>()) == ranges::end(hamon::declval<U&>())))
 	>
 	static auto test(int) -> hamon::true_type;

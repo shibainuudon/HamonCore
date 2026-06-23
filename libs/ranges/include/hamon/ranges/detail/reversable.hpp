@@ -20,11 +20,13 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.access.rbegin]/2.5
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept reversable =
-	requires(T& t)
+	requires(T&& t)
 	{
 		{ ranges::begin(t) } -> hamon::bidirectional_iterator;
 		{ ranges::end(t) } -> hamon::same_as<decltype(ranges::begin(t))>;
@@ -37,12 +39,12 @@ struct reversable_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(ranges::begin(hamon::declval<U&>())),
-		typename E = decltype(ranges::end(hamon::declval<U&>()))
+		typename I = decltype(ranges::begin(hamon::declval<U&>())),
+		typename S = decltype(ranges::end(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::conjunction<
-		hamon::bidirectional_iterator<B>,
-		hamon::same_as<E, B>
+		hamon::bidirectional_iterator<I>,
+		hamon::same_as<S, I>
 	>;
 
 	template <typename U>

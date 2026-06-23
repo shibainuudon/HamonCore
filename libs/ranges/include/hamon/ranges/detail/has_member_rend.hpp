@@ -8,7 +8,7 @@
 #define HAMON_RANGES_DETAIL_HAS_MEMBER_REND_HPP
 
 #include <hamon/ranges/rbegin.hpp>
-#include <hamon/detail/decay_copy.hpp>
+#include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
@@ -18,14 +18,15 @@ namespace hamon {
 namespace ranges {
 namespace detail {
 
+// [range.access.rend]/2.3
+
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
 concept has_member_rend =
-	requires(T& t)
+	requires(T&& t)
 	{
-		{ hamon::detail::decay_copy(t.rend()) }
-			-> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
+		{ HAMON_AUTO_CAST(t.rend()) } -> hamon::sentinel_for<decltype(ranges::rbegin(t))>;
 	};
 
 #else
@@ -35,10 +36,10 @@ struct has_member_rend_impl
 {
 private:
 	template <typename U,
-		typename E = decltype(hamon::detail::decay_copy(hamon::declval<U&>().rend())),
-		typename B = decltype(ranges::rbegin(hamon::declval<U&>()))
+		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().rend())),
+		typename I = decltype(ranges::rbegin(hamon::declval<U&>()))
 	>
-	static auto test(int) -> hamon::sentinel_for<E, B>;
+	static auto test(int) -> hamon::sentinel_for<S, I>;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;
