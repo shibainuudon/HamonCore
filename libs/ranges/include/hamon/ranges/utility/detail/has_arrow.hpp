@@ -26,7 +26,7 @@ namespace detail {
 template <typename I>
 concept has_arrow =
 	hamon::input_iterator<I> &&
-	(hamon::is_pointer_v<I> || requires(I i) { i.operator->(); });
+	(hamon::is_pointer_v<I> || requires(const I i) { i.operator->(); });
 
 template <typename I>
 using has_arrow_t = hamon::bool_constant<has_arrow<I>>;
@@ -38,7 +38,7 @@ struct has_arrow_impl
 	: public hamon::false_type {};
 
 template <typename I>
-struct has_arrow_impl<I, hamon::void_t<decltype(hamon::declval<I&>().operator->())>>
+struct has_arrow_impl<I, hamon::void_t<decltype(hamon::declval<const I&>().operator->())>>
 	: public hamon::true_type {};
 
 template <typename I>
