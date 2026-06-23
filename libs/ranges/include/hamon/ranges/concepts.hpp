@@ -9,6 +9,7 @@
 #ifndef HAMON_RANGES_CONCEPTS_HPP
 #define HAMON_RANGES_CONCEPTS_HPP
 
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>

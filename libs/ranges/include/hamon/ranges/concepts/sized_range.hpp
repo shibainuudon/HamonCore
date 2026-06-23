@@ -12,7 +12,7 @@
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
-#include <hamon/ranges/concepts/range.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
@@ -23,7 +23,7 @@ namespace hamon
 namespace ranges
 {
 
-// [range.sized]/1
+// 25.4.4 Sized ranges[range.sized]
 
 #if defined(HAMON_USE_STD_RANGES)
 
@@ -33,7 +33,7 @@ using std::ranges::sized_range;
 
 template <typename T>
 concept sized_range =
-	ranges::range<T> &&
+	ranges::approximately_sized_range<T> &&
 	requires(T& t) { ranges::size(t); };
 
 #else
@@ -46,7 +46,7 @@ struct sized_range_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<ranges::range<U>::value>,
+		typename = hamon::enable_if_t<ranges::approximately_sized_range<U>::value>,
 		typename = decltype(ranges::size(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::true_type;
