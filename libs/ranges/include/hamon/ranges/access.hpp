@@ -20,7 +20,7 @@
 #include <hamon/ranges/access/end.hpp>
 #include <hamon/ranges/access/rbegin.hpp>
 #include <hamon/ranges/access/rend.hpp>
-//#include <hamon/ranges/access/reserve_hint.hpp>
+#include <hamon/ranges/access/reserve_hint.hpp>
 #include <hamon/ranges/access/size.hpp>
 #include <hamon/ranges/access/ssize.hpp>
 
