@@ -840,6 +840,13 @@ void to_map_test()
 	}
 }
 
+void lwg_3984_test()
+{
+	hamon::vector<hamon::vector<int>> v;
+	auto r = hamon::views::all(hamon::move(v));
+	auto l = hamon::ranges::to<hamon::list<hamon::list<int>>>(r);
+}
+
 GTEST_TEST(RangesTest, ToTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(direct_construction_test());
@@ -850,6 +857,7 @@ GTEST_TEST(RangesTest, ToTest)
 
 	to_vector_test();
 	to_map_test();
+	lwg_3984_test();
 
 	{
 		// [range.utility.conv.general]/2

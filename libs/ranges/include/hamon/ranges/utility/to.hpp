@@ -25,6 +25,7 @@ using std::ranges::to;
 #else
 
 #include <hamon/ranges/adaptors/transform_view.hpp>
+#include <hamon/ranges/adaptors/ref_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
@@ -324,7 +325,7 @@ HAMON_CXX11_CONSTEXPR C
 to_impl(hamon::detail::overload_priority<1>, R&& r, Args&&... args)
 {
 	return hamon::ranges::to<C>(
-		r | hamon::views::transform(to_recursive_fn<C>{}), hamon::forward<Args>(args)...);
+		ranges::ref_view<hamon::remove_reference_t<R>>(r) | hamon::views::transform(to_recursive_fn<C>{}), hamon::forward<Args>(args)...);
 }
 
 // [range.utility.conv.to]/2.3
@@ -367,8 +368,10 @@ struct to_fn
 template <HAMON_CONSTRAINED_PARAM(hamon::ranges::not_view, C), typename... Args>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 auto to(Args&&... args)
+#if !defined(HAMON_HAS_CXX14_RETURN_TYPE_DEDUCTION)
 ->decltype(hamon::ranges::detail::make_range_adaptor(
 		hamon::bind_back(hamon::ranges::detail::to_fn<C>{}, hamon::forward<Args>(args)...)))
+#endif
 {
 	// [range.utility.conv.adaptors]/1
 	static_assert(!hamon::is_const<C>::value, "");
