@@ -29,6 +29,7 @@ using std::ranges::views::common;
 
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/random_access_range.hpp>
@@ -41,6 +42,7 @@ using std::ranges::views::common;
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
@@ -222,6 +224,24 @@ public:
 	->decltype(hamon::ranges::size(hamon::declval<V2&>()))
 	{
 		return hamon::ranges::size(m_base);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	{
+		return hamon::ranges::reserve_hint(m_base);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	{
+		return hamon::ranges::reserve_hint(m_base);
 	}
 };
 
