@@ -239,6 +239,14 @@ struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
 	: public hamon::true_type {};
 
 template <typename T, typename = void>
+struct has_reserve_hint
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
+	: public hamon::true_type {};
+
+template <typename T, typename = void>
 struct has_pre_increment
 	: public hamon::false_type {};
 
@@ -452,6 +460,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_size<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<RV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
 
+	static_assert(has_reserve_hint<RV>::value == hamon::ranges::approximately_sized_range_t<V>::value, "");
+	static_assert(has_reserve_hint<RV const>::value == hamon::ranges::approximately_sized_range_t<V const>::value, "");
+
 	using I = decltype(hamon::declval<RV&>().begin());
 	using S = decltype(hamon::declval<RV&>().end());
 	using BI = decltype(hamon::declval<V&>().begin());
@@ -574,6 +585,9 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	VERIFY(rv.size() == 4);
 	VERIFY(hamon::as_const(rv).size() == 4);
+
+	VERIFY(rv.reserve_hint() == 4);
+	VERIFY(hamon::as_const(rv).reserve_hint() == 4);
 
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
@@ -1192,6 +1206,29 @@ HAMON_CXX14_CONSTEXPR bool test07()
 	return true;
 }
 
+HAMON_CXX14_CONSTEXPR bool test08()
+{
+	int const a[] = {1, 2, 3, 4};
+	using R = test_input_approximately_sized_view<int const>;
+	R r(a);
+
+	using RV = hamon::ranges::transform_view<R, Double>;
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+	hamon::ranges::transform_view rv{r, Double{}};
+	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
+#else
+	RV rv{r, Double{}};
+#endif
+
+	static_assert(!has_size<RV>::value, "");
+	static_assert( has_reserve_hint<RV>::value, "");
+
+	VERIFY(rv.reserve_hint() == 4);
+	VERIFY(hamon::as_const(rv).reserve_hint() == 4);
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(ViewsTest, TransformViewTest)
@@ -1225,6 +1262,12 @@ GTEST_TEST(ViewsTest, TransformViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_bidirectional_sized_view, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_random_access_sized_view, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_contiguous_sized_view, Double>()));
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_input_approximately_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_forward_approximately_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_bidirectional_approximately_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_random_access_approximately_sized_view, Double>()));
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_contiguous_approximately_sized_view, Double>()));
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NoDefaultCtorInputView, Double>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NoDefaultCtorForwardView, Double>()));
@@ -1289,6 +1332,7 @@ GTEST_TEST(ViewsTest, TransformViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test06());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test07());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test08());
 }
 
 }	// namespace transform_view_test
