@@ -30,12 +30,14 @@ using std::ranges::views::take;
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
+#include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/factories/iota_view.hpp>
 #include <hamon/ranges/factories/repeat_view.hpp>
@@ -44,6 +46,7 @@ using std::ranges::views::take;
 #include <hamon/ranges/factories/detail/is_specialization_of_repeat_view.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
@@ -379,6 +382,36 @@ public:
 		return hamon::ranges::min(
 			hamon::ranges::size(m_base),
 			static_cast<decltype(hamon::ranges::size(m_base))>(m_count));
+	}
+
+private:
+	template <typename V2, typename = hamon::enable_if_t<
+		hamon::ranges::approximately_sized_range_t<V2>::value>>
+	static HAMON_CXX14_CONSTEXPR auto
+	reserve_hint_impl(V2& base, hamon::ranges::range_difference_t<V> cnt, hamon::detail::overload_priority<1>)
+	{
+		auto n = static_cast<hamon::ranges::range_difference_t<V2>>(hamon::ranges::reserve_hint(base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::min(n, cnt));
+	}
+
+	template <typename V2>
+	static HAMON_CXX14_CONSTEXPR auto
+	reserve_hint_impl(V2& /*base*/, hamon::ranges::range_difference_t<V> cnt, hamon::detail::overload_priority<0>)
+	{
+		return hamon::ranges::detail::to_unsigned_like(cnt);
+	}
+
+public:
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint()
+	{
+		return reserve_hint_impl(m_base, m_count, hamon::detail::overload_priority<1>{});
+	}
+
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint() const
+	{
+		return reserve_hint_impl(m_base, m_count, hamon::detail::overload_priority<1>{});
 	}
 };
 

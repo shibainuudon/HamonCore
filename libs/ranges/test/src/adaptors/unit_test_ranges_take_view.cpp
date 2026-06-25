@@ -79,6 +79,14 @@ template <typename T>
 struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
 	: public hamon::true_type {};
 
+template <typename T, typename = void>
+struct has_reserve_hint
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
+	: public hamon::true_type {};
+
 template <typename T, typename U, typename = void>
 struct has_eq
 	: public hamon::false_type {};
@@ -365,6 +373,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_size<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<RV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
 
+	static_assert(has_reserve_hint<RV>::value, "");
+	static_assert(has_reserve_hint<RV const>::value, "");
+
 	return true;
 }
 
@@ -390,6 +401,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	VERIFY(rv.size() == 3);
 	VERIFY(crv.size() == 3);
+	VERIFY(rv.reserve_hint() == 3);
+	VERIFY(crv.reserve_hint() == 3);
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
 
@@ -443,6 +456,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 	VERIFY(rv.size() == 5);
 	VERIFY(crv.size() == 5);
+	VERIFY(rv.reserve_hint() == 5);
+	VERIFY(crv.reserve_hint() == 5);
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
 
@@ -509,6 +524,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	VERIFY(rv.size() == 2);
 	VERIFY(crv.size() == 2);
+	VERIFY(rv.reserve_hint() == 2);
+	VERIFY(crv.reserve_hint() == 2);
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
 
@@ -555,8 +572,13 @@ HAMON_CXX14_CONSTEXPR bool test04()
 #endif
 	auto const& crv = rv;
 
+	VERIFY(rv.reserve_hint() == 4);
+	VERIFY(crv.reserve_hint() == 4);
+
 	static_assert(!has_size<decltype(rv)>::value, "");
 	static_assert(!has_size<decltype(crv)>::value, "");
+	static_assert( has_reserve_hint<decltype(rv)>::value, "");
+	static_assert( has_reserve_hint<decltype(crv)>::value, "");
 
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
@@ -737,6 +759,8 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 	VERIFY(rv.size() == 4);
 	VERIFY(crv.size() == 4);
+	VERIFY(rv.reserve_hint() == 4);
+	VERIFY(crv.reserve_hint() == 4);
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
 
@@ -797,6 +821,8 @@ HAMON_CXX14_CONSTEXPR bool test06()
 
 	VERIFY(rv.size() == 6);
 	VERIFY(crv.size() == 6);
+	VERIFY(rv.reserve_hint() == 6);
+	VERIFY(crv.reserve_hint() == 6);
 	VERIFY(rv.base().begin() == r.begin());
 	VERIFY(hamon::move(rv).base().begin() == r.begin());
 
@@ -867,8 +893,13 @@ HAMON_CXX14_CONSTEXPR bool test07()
 #endif
 	auto const& crv = rv;
 
+	VERIFY(rv.reserve_hint() == 3);
+	VERIFY(crv.reserve_hint() == 3);
+
 	static_assert(!has_size<decltype(rv)>::value, "");
 	static_assert(!has_size<decltype(crv)>::value, "");
+	static_assert( has_reserve_hint<decltype(rv)>::value, "");
+	static_assert( has_reserve_hint<decltype(crv)>::value, "");
 
 	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
 	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
@@ -919,8 +950,13 @@ HAMON_CXX14_CONSTEXPR bool test08()
 #endif
 	auto const& crv = rv;
 
+	VERIFY(rv.reserve_hint() == 10);
+	VERIFY(crv.reserve_hint() == 10);
+
 	static_assert(!has_size<decltype(rv)>::value, "");
 	static_assert(!has_size<decltype(crv)>::value, "");
+	static_assert( has_reserve_hint<decltype(rv)>::value, "");
+	static_assert( has_reserve_hint<decltype(crv)>::value, "");
 
 	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
 	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
@@ -1143,6 +1179,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		VERIFY(rv.base().begin() == r.begin());
 		VERIFY(rv.base().end() == r.end());
 		VERIFY(rv.size() == 3);
+		VERIFY(rv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(r, 3);
 		static_assert( hamon::same_as_t<decltype(rv), decltype(rv2)>::value, "");
@@ -1153,6 +1190,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		VERIFY(rv.base().begin() == a);
 		VERIFY(rv.base().end() == a + 9);
 		VERIFY(rv.size() == 3);
+		VERIFY(rv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(a, 3);
 		static_assert( hamon::same_as_t<decltype(rv), decltype(rv2)>::value, "");
@@ -1163,6 +1201,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		VERIFY(rv.base().base().begin() == a);
 		VERIFY(rv.base().base().end() == a + 9);
 		VERIFY(rv.size() == 3);
+		VERIFY(rv.reserve_hint() == 3);
 		VERIFY(*rv.begin() == 1);
 
 		auto rv2 = hamon::views::take(hamon::views::take(a, 5), 3);
@@ -1181,12 +1220,14 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		auto rv = a | hamon::views::transform(Double{}) | hamon::views::take(4);
 		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
 		VERIFY(rv.size() == 4);
+		VERIFY(rv.reserve_hint() == 4);
 		VERIFY(*rv.begin() == 2);
 	}
 	{
 		auto rv = a | hamon::views::take(4) | hamon::views::transform(Double{});
 		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::transform_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>, Double>>::value, "");
 		VERIFY(rv.size() == 4);
+		VERIFY(rv.reserve_hint() == 4);
 		VERIFY(*rv.begin() == 2);
 	}
 	{
@@ -1194,6 +1235,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		auto rv = a | partial;
 		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
 		VERIFY(rv.size() == 4);
+		VERIFY(rv.reserve_hint() == 4);
 		VERIFY(*rv.begin() == 2);
 	}
 
@@ -1292,6 +1334,12 @@ GTEST_TEST(RangesTest, TakeViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_approximately_sized_view>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<ConstNotView>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<ConstNotSizedView>());
