@@ -313,11 +313,63 @@ HAMON_CXX14_CONSTEXPR bool common_construction_test()
 }
 
 template <typename T>
-struct Insertable
+struct CanEmplaceBack
 {
 	using value_type = T;
 
-	constexpr Insertable(int val1 = 0, int val2 = 0)
+	constexpr CanEmplaceBack(int val1 = 0, int val2 = 0)
+		: m_size(0)
+		, m_value1(val1)
+		, m_value2(val2)
+	{}
+
+	HAMON_CXX14_CONSTEXPR void emplace_back(T const& v)
+	{
+		m_buffer[m_size] = v;
+		m_size++;
+	}
+
+	constexpr T const* begin() const { return m_buffer; }
+	constexpr T const* end() const { return m_buffer + m_size; }
+
+	T m_buffer[10] {};
+	hamon::size_t m_size;
+	int m_value1;
+	int m_value2;
+};
+
+template <typename T>
+struct CanPushBack
+{
+	using value_type = T;
+
+	constexpr CanPushBack(int val1 = 0, int val2 = 0)
+		: m_size(0)
+		, m_value1(val1)
+		, m_value2(val2)
+	{}
+
+	HAMON_CXX14_CONSTEXPR void push_back(T const& v)
+	{
+		m_buffer[m_size] = v;
+		m_size++;
+	}
+
+	constexpr T const* begin() const { return m_buffer; }
+	constexpr T const* end() const { return m_buffer + m_size; }
+
+	T m_buffer[10] {};
+	hamon::size_t m_size;
+	int m_value1;
+	int m_value2;
+};
+
+template <typename T>
+struct CanInsert
+{
+	using value_type = T;
+
+	constexpr CanInsert(int val1 = 0, int val2 = 0)
 		: m_size(0)
 		, m_value1(val1)
 		, m_value2(val2)
@@ -341,20 +393,22 @@ struct Insertable
 };
 
 template <typename T>
-struct BackInsertable
+struct CanEmplace
 {
 	using value_type = T;
 
-	constexpr BackInsertable(int val1 = 0, int val2 = 0)
+	constexpr CanEmplace(int val1 = 0, int val2 = 0)
 		: m_size(0)
 		, m_value1(val1)
 		, m_value2(val2)
 	{}
 
-	HAMON_CXX14_CONSTEXPR void push_back(T const& v)
+	HAMON_CXX14_CONSTEXPR T const* emplace(T const* pos, T const& v)
 	{
+		(void)pos;
 		m_buffer[m_size] = v;
 		m_size++;
+		return end();
 	}
 
 	constexpr T const* begin() const { return m_buffer; }
@@ -419,7 +473,7 @@ HAMON_CXX14_CONSTEXPR bool insert_construction_test()
 {
 	{
 		int const a[] = {1,2,3};
-		using C = Insertable<int>;
+		using C = CanEmplaceBack<int>;
 
 		{
 			auto c = hamon::ranges::to<C>(a);
@@ -445,7 +499,59 @@ HAMON_CXX14_CONSTEXPR bool insert_construction_test()
 	}
 	{
 		int const a[] = {1,2,3};
-		using C = BackInsertable<int>;
+		using C = CanPushBack<int>;
+
+		{
+			auto c = hamon::ranges::to<C>(a);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 0);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = a | hamon::ranges::to<C>(42);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 42);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = a | hamon::ranges::to<C>(1, 2);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 1);
+			VERIFY(c.m_value2 == 2);
+		}
+	}
+	{
+		int const a[] = {1,2,3};
+		using C = CanInsert<int>;
+
+		{
+			auto c = hamon::ranges::to<C>(a);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 0);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = a | hamon::ranges::to<C>(42);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 42);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = a | hamon::ranges::to<C>(1, 2);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.m_value1 == 1);
+			VERIFY(c.m_value2 == 2);
+		}
+	}
+	{
+		int const a[] = {1,2,3};
+		using C = CanEmplace<int>;
 
 		{
 			auto c = hamon::ranges::to<C>(a);

@@ -39,7 +39,7 @@ using std::ranges::to;
 #include <hamon/ranges/range_size_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
-#include <hamon/algorithm/ranges/copy.hpp>
+#include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/derived_from.hpp>
@@ -69,20 +69,38 @@ namespace ranges {
 namespace detail {
 
 template <typename Container, typename Ref, typename = void>
-struct has_push_back
+struct can_emplace_back
 	: public hamon::false_type {};
 
 template <typename Container, typename Ref>
-struct has_push_back<Container, Ref,
+struct can_emplace_back<Container, Ref,
+	hamon::void_t<decltype(hamon::declval<Container&>().emplace_back(hamon::declval<Ref>()))>>
+	: public hamon::true_type {};
+
+template <typename Container, typename Ref, typename = void>
+struct can_push_back
+	: public hamon::false_type {};
+
+template <typename Container, typename Ref>
+struct can_push_back<Container, Ref,
 	hamon::void_t<decltype(hamon::declval<Container&>().push_back(hamon::declval<Ref>()))>>
 	: public hamon::true_type {};
 
 template <typename Container, typename Ref, typename = void>
-struct has_insert_end
+struct can_emplace
 	: public hamon::false_type {};
 
 template <typename Container, typename Ref>
-struct has_insert_end<Container, Ref,
+struct can_emplace<Container, Ref,
+	hamon::void_t<decltype(hamon::declval<Container&>().emplace(hamon::declval<Container&>().begin(), hamon::declval<Ref>()))>>
+	: public hamon::true_type {};
+
+template <typename Container, typename Ref, typename = void>
+struct can_insert
+	: public hamon::false_type {};
+
+template <typename Container, typename Ref>
+struct can_insert<Container, Ref,
 	hamon::void_t<decltype(hamon::declval<Container&>().insert(hamon::declval<Container&>().begin(), hamon::declval<Ref>()))>>
 	: public hamon::true_type {};
 
@@ -104,16 +122,18 @@ using reservable_container_t = hamon::bool_constant<reservable_container<Contain
 
 // [range.utility.conv.general]/4
 template <typename Container, typename Ref>
-constexpr bool container_insertable =
+constexpr bool container_appendable =
 	requires(Container& c, Ref&& ref)
 	{
 		requires (
-			requires { c.push_back(hamon::forward<Ref>(ref)); } ||
+			requires { c.emplace_back(hamon::forward<Ref>(ref)); }     ||
+			requires { c.push_back(hamon::forward<Ref>(ref)); }        ||
+			requires { c.emplace(c.end(), hamon::forward<Ref>(ref)); } ||
 			requires { c.insert(c.end(), hamon::forward<Ref>(ref)); });
 	};
 
 template <typename Container, typename Ref>
-using container_insertable_t = hamon::bool_constant<container_insertable<Container, Ref>>;
+using container_appendable_t = hamon::bool_constant<container_appendable<Container, Ref>>;
 
 // [range.utility.conv.to]/2.1.3
 template <typename C, typename R, typename... Args>
@@ -158,9 +178,11 @@ using reservable_container_t =
 	typename reservable_container_impl<Container>::type;
 
 template <typename Container, typename Ref>
-using container_insertable_t = hamon::disjunction<
-	has_push_back<Container, Ref>,
-	has_insert_end<Container, Ref>
+using container_appendable_t = hamon::disjunction<
+	can_emplace_back<Container, Ref>,
+	can_push_back<Container, Ref>,
+	can_emplace<Container, Ref>,
+	can_insert<Container, Ref>
 >;
 
 template <typename C, typename R, typename... Args>
@@ -189,29 +211,48 @@ using container_common_constructible_t =
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 
 // [range.utility.conv.general]/5
-
-template <typename Ref, typename Container, typename = hamon::enable_if_t<has_push_back<Container, Ref>::value>>
-HAMON_CXX11_CONSTEXPR auto
-container_inserter_impl(Container& c, hamon::detail::overload_priority<1>)
-->decltype(hamon::back_inserter(c))
+template <typename Container>
+struct container_append_t
 {
-	return hamon::back_inserter(c);
-}
+	Container& c;
 
-template <typename Ref, typename Container, typename = hamon::enable_if_t<has_insert_end<Container, Ref>::value>>
-HAMON_CXX11_CONSTEXPR auto
-container_inserter_impl(Container& c, hamon::detail::overload_priority<0>)
-->decltype(hamon::inserter(c, c.end()))
-{
-	return hamon::inserter(c, c.end());
-}
+private:
+	template <typename Ref, typename = hamon::enable_if_t<can_emplace_back<Container, Ref>::value>>
+	constexpr void impl(Ref&& ref, hamon::detail::overload_priority<3>) const
+	{
+		c.emplace_back(hamon::forward<Ref>(ref));
+	}
 
-template <typename Ref, typename Container>
-HAMON_CXX11_CONSTEXPR auto
-container_inserter(Container& c)
-->decltype(container_inserter_impl<Ref>(c, hamon::detail::overload_priority<1>{}))
+	template <typename Ref, typename = hamon::enable_if_t<can_push_back<Container, Ref>::value>>
+	constexpr void impl(Ref&& ref, hamon::detail::overload_priority<2>) const
+	{
+		c.push_back(hamon::forward<Ref>(ref));
+	}
+
+	template <typename Ref, typename = hamon::enable_if_t<can_emplace<Container, Ref>::value>>
+	constexpr void impl(Ref&& ref, hamon::detail::overload_priority<1>) const
+	{
+		c.emplace(c.end(), hamon::forward<Ref>(ref));
+	}
+
+	template <typename Ref, typename = hamon::enable_if_t<can_insert<Container, Ref>::value>>
+	constexpr void impl(Ref&& ref, hamon::detail::overload_priority<0>) const
+	{
+		c.insert(c.end(), hamon::forward<Ref>(ref));
+	}
+
+public:
+	template <typename Ref>
+	constexpr void operator()(Ref&& ref) const
+	{
+		impl(hamon::forward<Ref>(ref), hamon::detail::overload_priority<3>{});
+	}
+};
+
+template <typename Container>
+constexpr auto container_append(Container& c)
 {
-	return container_inserter_impl<Ref>(c, hamon::detail::overload_priority<1>{});
+	return container_append_t<Container>{c};
 }
 
 }	// namespace detail
@@ -279,13 +320,13 @@ to_impl_reserve(C&, R&&, hamon::detail::overload_priority<0>)
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
 		hamon::constructible_from_t<C, Args...>::value &&
-		hamon::ranges::detail::container_insertable_t<C, hamon::ranges::range_reference_t<R>>::value>>
+		hamon::ranges::detail::container_appendable_t<C, hamon::ranges::range_reference_t<R>>::value>>
 HAMON_CXX14_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<1>, R&& r, Args&&... args)
 {
 	C c(hamon::forward<Args>(args)...);
 	to_impl_reserve(c, r, hamon::detail::overload_priority<1>{});
-	hamon::ranges::copy(r, hamon::ranges::detail::container_inserter<hamon::ranges::range_reference_t<R>>(c));
+	hamon::ranges::for_each(r, hamon::ranges::detail::container_append(c));
 	return c;
 }
 
