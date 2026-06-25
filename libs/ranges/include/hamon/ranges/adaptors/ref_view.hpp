@@ -21,6 +21,7 @@ using std::ranges::ref_view;
 
 #else
 
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/concepts/contiguous_range.hpp>
@@ -32,7 +33,9 @@ using std::ranges::ref_view;
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/empty.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -118,24 +121,29 @@ public:
 		return hamon::ranges::empty(*m_r);
 	}
 
-	template <typename R2 = R,
-		typename = hamon::enable_if_t<hamon::ranges::sized_range_t<R2>::value>>
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, R2, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR 	// nodiscard as an extension
 	auto size() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::size(hamon::declval<R2&>()))	// noexcept as an extension
 	->decltype(hamon::ranges::size(hamon::declval<R2&>()))
-//		requires hamon::ranges::sized_range<R>
 	{
 		return hamon::ranges::size(*m_r);
 	}
 
-	template <typename R2 = R,
-		typename = hamon::enable_if_t<hamon::ranges::contiguous_range_t<R2>::value>>
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, R2, R)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR 	// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<R2&>()))	// noexcept as an extension
+	->decltype(hamon::ranges::reserve_hint(hamon::declval<R2&>()))
+	{
+		return hamon::ranges::reserve_hint(*m_r);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::contiguous_range, R2, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR 	// nodiscard as an extension
 	auto data() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::data(hamon::declval<R2&>()))	// noexcept as an extension
 	->decltype(hamon::ranges::data(hamon::declval<R2&>()))
-//		requires hamon::ranges::contiguous_range<R>
 	{
 		return hamon::ranges::data(*m_r);
 	}
