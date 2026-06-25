@@ -79,6 +79,14 @@ template <typename T>
 struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
 	: public hamon::true_type {};
 
+template <typename T, typename = void>
+struct has_reserve_hint
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
+	: public hamon::true_type {};
+
 template <typename T>
 struct ConstNotView : hamon::ranges::view_base
 {
@@ -259,6 +267,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_size<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<RV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
 
+	static_assert(has_reserve_hint<RV&>::value == hamon::ranges::approximately_sized_range_t<V>::value, "");
+	static_assert(has_reserve_hint<RV const&>::value == hamon::ranges::approximately_sized_range_t<V const>::value, "");
+
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_size<RV>::value)
 	{
@@ -294,6 +305,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	VERIFY(rv.size() == 2);
 	VERIFY(crv.size() == 2);
+	VERIFY(rv.reserve_hint() == 2);
+	VERIFY(crv.reserve_hint() == 2);
 
 	static_assert( hamon::same_as_t<decltype(rv.begin()), decltype(r.begin())>::value, "");
 	static_assert(!hamon::same_as_t<decltype(rv.end()),   decltype(r.begin())>::value, "");
@@ -349,6 +362,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 	VERIFY(rv.size() == 3);
 	VERIFY(crv.size() == 3);
+	VERIFY(rv.reserve_hint() == 3);
+	VERIFY(crv.reserve_hint() == 3);
 
 	static_assert( hamon::same_as_t<decltype(rv.begin()), decltype(r.begin())>::value, "");
 	static_assert(!hamon::same_as_t<decltype(rv.end()),   decltype(r.begin())>::value, "");
@@ -522,6 +537,33 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	return true;
 }
 
+HAMON_CXX14_CONSTEXPR bool test05()
+{
+	int a[] = {1, 2, 3, 4, 5};
+	using R = test_input_approximately_sized_view<int>;
+	R r(a);
+
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+	hamon::ranges::drop_view rv{r, 2};
+#else
+	hamon::ranges::drop_view<R> rv{r, 2};
+#endif
+	auto const& crv = rv;
+
+	using RV = decltype(rv);
+	static_assert(!has_size<RV>::value, "");
+	static_assert( has_reserve_hint<RV>::value, "");
+
+	using CRV = decltype(crv);
+	static_assert(!has_size<CRV>::value, "");
+	static_assert( has_reserve_hint<CRV>::value, "");
+
+	VERIFY(rv.reserve_hint() == 3);
+	VERIFY(crv.reserve_hint() == 3);
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(ViewsTest, DropViewTest)
@@ -551,6 +593,12 @@ GTEST_TEST(ViewsTest, DropViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
 
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_approximately_sized_view>());
+
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<ConstNotView>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<NotSimpleContiguousSizedView>());
@@ -566,6 +614,7 @@ GTEST_TEST(ViewsTest, DropViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 
 #if defined(HAMON_HAS_CXX17_RANGE_BASED_FOR)
 	// [range.drop.overview]/3

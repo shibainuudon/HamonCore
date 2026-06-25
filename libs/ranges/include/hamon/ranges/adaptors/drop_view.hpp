@@ -30,6 +30,7 @@ using std::ranges::views::drop;
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/cached_value.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
@@ -47,6 +48,7 @@ using std::ranges::views::drop;
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_size_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/size.hpp>
@@ -199,6 +201,22 @@ public:
 	-> hamon::ranges::range_size_t<V2>
 	{
 		return size_impl(hamon::ranges::size(m_base), m_count);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint()
+	{
+		const auto s = static_cast<hamon::ranges::range_difference_t<V>>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(s < m_count ? 0 : s - m_count);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint() const
+	{
+		const auto s = static_cast<hamon::ranges::range_difference_t<const V>>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(s < m_count ? 0 : s - m_count);
 	}
 
 private:
