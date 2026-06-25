@@ -44,6 +44,7 @@ using elements_t = decltype(elements<N>);
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
@@ -61,6 +62,7 @@ using elements_t = decltype(elements<N>);
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
@@ -288,6 +290,24 @@ public:
 	->decltype(hamon::ranges::size(hamon::declval<V2&>()))
 	{
 		return hamon::ranges::size(m_base);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	{
+		return hamon::ranges::reserve_hint(m_base);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	{
+		return hamon::ranges::reserve_hint(m_base);
 	}
 
 private:
