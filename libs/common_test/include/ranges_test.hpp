@@ -149,6 +149,25 @@ template <typename T> using test_forward_sized_range       = test_sized_range<T,
 template <typename T> using test_input_sized_range         = test_sized_range<T, input_iterator_wrapper<T>>;
 template <typename T> using test_output_sized_range        = test_sized_range<T, output_iterator_wrapper<T>>;
 
+template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
+struct test_approximately_sized_range : public test_range<T, Iterator, Sentinel>
+{
+	using base_t = test_range<T, Iterator, Sentinel>;
+	using base_t::test_range;
+
+	HAMON_CONSTEXPR hamon::size_t reserve_hint() const noexcept
+	{
+		return static_cast<hamon::size_t>(base_t::m_last - base_t::m_first);
+	}
+};
+
+template <typename T> using test_contiguous_approximately_sized_range    = test_approximately_sized_range<T, contiguous_iterator_wrapper<T>>;
+template <typename T> using test_random_access_approximately_sized_range = test_approximately_sized_range<T, random_access_iterator_wrapper<T>>;
+template <typename T> using test_bidirectional_approximately_sized_range = test_approximately_sized_range<T, bidirectional_iterator_wrapper<T>>;
+template <typename T> using test_forward_approximately_sized_range       = test_approximately_sized_range<T, forward_iterator_wrapper<T>>;
+template <typename T> using test_input_approximately_sized_range         = test_approximately_sized_range<T, input_iterator_wrapper<T>>;
+template <typename T> using test_output_approximately_sized_range        = test_approximately_sized_range<T, output_iterator_wrapper<T>>;
+
 template <typename T, hamon::size_t N, template <typename> class Iterator>
 struct test_static_sized_range : public test_range<T, Iterator<T>>
 {
