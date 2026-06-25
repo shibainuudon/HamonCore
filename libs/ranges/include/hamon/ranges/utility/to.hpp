@@ -28,6 +28,7 @@ using std::ranges::to;
 #include <hamon/ranges/adaptors/ref_view.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
@@ -38,6 +39,7 @@ using std::ranges::to;
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/range_size_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/concepts/convertible_to.hpp>
@@ -302,12 +304,12 @@ to_impl2(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
 // [range.utility.conv.to]/2.1.4
 template <typename C, typename R,
 	typename = hamon::enable_if_t<
-		hamon::ranges::sized_range_t<R>::value &&
+		hamon::ranges::approximately_sized_range_t<R>::value &&
 		hamon::ranges::detail::reservable_container_t<C>::value>>
 HAMON_CXX14_CONSTEXPR void
 to_impl_reserve(C& c, R&& r, hamon::detail::overload_priority<1>)
 {
-	c.reserve(static_cast<hamon::ranges::range_size_t<C>>(hamon::ranges::size(r)));
+	c.reserve(static_cast<hamon::ranges::range_size_t<C>>(hamon::ranges::reserve_hint(r)));
 }
 
 template <typename C, typename R>

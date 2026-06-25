@@ -579,8 +579,11 @@ HAMON_CXX14_CONSTEXPR bool insert_construction_test()
 		int const a[] = {1,2,3};
 		using C = Reservable<int>;
 
+		using R = test_input_sized_range<int const>;
+		R r(a);
+
 		{
-			auto c = hamon::ranges::to<C>(a);
+			auto c = hamon::ranges::to<C>(r);
 			static_assert(hamon::is_same<decltype(c), C>::value, "");
 			VERIFY(hamon::ranges::equal(c, a));
 			VERIFY(c.capacity() == 3);
@@ -588,7 +591,7 @@ HAMON_CXX14_CONSTEXPR bool insert_construction_test()
 			VERIFY(c.m_value2 == 0);
 		}
 		{
-			auto c = a | hamon::ranges::to<C>(42);
+			auto c = r | hamon::ranges::to<C>(42);
 			static_assert(hamon::is_same<decltype(c), C>::value, "");
 			VERIFY(hamon::ranges::equal(c, a));
 			VERIFY(c.capacity() == 3);
@@ -596,7 +599,39 @@ HAMON_CXX14_CONSTEXPR bool insert_construction_test()
 			VERIFY(c.m_value2 == 0);
 		}
 		{
-			auto c = a | hamon::ranges::to<C>(1, 2);
+			auto c = r | hamon::ranges::to<C>(1, 2);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.capacity() == 3);
+			VERIFY(c.m_value1 == 1);
+			VERIFY(c.m_value2 == 2);
+		}
+	}
+	{
+		int const a[] = {1,2,3};
+		using C = Reservable<int>;
+
+		using R = test_input_approximately_sized_range<int const>;
+		R r(a);
+
+		{
+			auto c = hamon::ranges::to<C>(r);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.capacity() == 3);
+			VERIFY(c.m_value1 == 0);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = r | hamon::ranges::to<C>(42);
+			static_assert(hamon::is_same<decltype(c), C>::value, "");
+			VERIFY(hamon::ranges::equal(c, a));
+			VERIFY(c.capacity() == 3);
+			VERIFY(c.m_value1 == 42);
+			VERIFY(c.m_value2 == 0);
+		}
+		{
+			auto c = r | hamon::ranges::to<C>(1, 2);
 			static_assert(hamon::is_same<decltype(c), C>::value, "");
 			VERIFY(hamon::ranges::equal(c, a));
 			VERIFY(c.capacity() == 3);
