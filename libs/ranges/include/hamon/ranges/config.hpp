@@ -16,6 +16,7 @@
 
 #if (defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202110)) && \
 	(defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)) && \
+	(defined(__cpp_lib_ranges_reserve_hint) && (__cpp_lib_ranges_reserve_hint >= 202502L)) && \
 	defined(HAMON_USE_STD_TUPLE) && \
 	!(defined(_GLIBCXX_RELEASE) && (_GLIBCXX_RELEASE <= 13))    /* libcstdc++ の enable_view は参照型でもtrueになってしまう */
 
