@@ -21,9 +21,11 @@
 #include <hamon/memory/detail/uninitialized_move_if_noexcept_n.hpp>
 #include <hamon/memory/detail/uninitialized_value_construct_n_impl.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/end.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/stdexcept/length_error.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/exchange.hpp>
@@ -262,8 +264,25 @@ private:
 
 	template <typename Range,
 		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<Range>::value ||
-			hamon::ranges::sized_range_t<Range>::value>>
+			hamon::ranges::approximately_sized_range_t<Range>::value>>
+	HAMON_CXX14_CONSTEXPR void
+	InsertRangeImpl(Allocator& allocator, difference_type pos_offset, Range&& rg, hamon::detail::overload_priority<2>)
+	{
+		auto const n1 = static_cast<size_type>(hamon::ranges::distance(rg));
+		auto const n2 = static_cast<size_type>(hamon::ranges::reserve_hint(rg));
+		if (n1 <= n2)
+		{
+			this->InsertCopyN(allocator, pos_offset, hamon::ranges::begin(rg), n2);
+		}
+		else
+		{
+			this->InsertIterSent(allocator, pos_offset, hamon::ranges::begin(rg), hamon::ranges::end(rg));
+		}
+	}
+
+	template <typename Range,
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range_t<Range>::value>>
 	HAMON_CXX14_CONSTEXPR void
 	InsertRangeImpl(Allocator& allocator, difference_type pos_offset, Range&& rg, hamon::detail::overload_priority<1>)
 	{
@@ -290,7 +309,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	InsertRange(Allocator& allocator, difference_type pos_offset, Range&& rg)
 	{
-		InsertRangeImpl(allocator, pos_offset, hamon::forward<Range>(rg), hamon::detail::overload_priority<1>{});
+		InsertRangeImpl(allocator, pos_offset, hamon::forward<Range>(rg), hamon::detail::overload_priority<2>{});
 	}
 
 private:
@@ -363,8 +382,25 @@ private:
 
 	template <typename Range,
 		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<Range>::value ||
-			hamon::ranges::sized_range_t<Range>::value>>
+			hamon::ranges::approximately_sized_range_t<Range>::value>>
+	HAMON_CXX14_CONSTEXPR void
+	AssignRangeImpl(Allocator& allocator, Range&& rg, hamon::detail::overload_priority<2>)
+	{
+		auto const n1 = static_cast<size_type>(hamon::ranges::distance(rg));
+		auto const n2 = static_cast<size_type>(hamon::ranges::reserve_hint(rg));
+		if (n1 <= n2)
+		{
+			this->AssignCopyN(allocator, hamon::ranges::begin(rg), n2);
+		}
+		else
+		{
+			this->AssignIterSent(allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));
+		}
+	}
+
+	template <typename Range,
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range_t<Range>::value>>
 	HAMON_CXX14_CONSTEXPR void
 	AssignRangeImpl(Allocator& allocator, Range&& rg, hamon::detail::overload_priority<1>)
 	{
@@ -391,7 +427,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void
 	AssignRange(Allocator& allocator, Range&& rg)
 	{
-		AssignRangeImpl(allocator, hamon::forward<Range>(rg), hamon::detail::overload_priority<1>{});
+		AssignRangeImpl(allocator, hamon::forward<Range>(rg), hamon::detail::overload_priority<2>{});
 	}
 
 	template <typename InputIterator>

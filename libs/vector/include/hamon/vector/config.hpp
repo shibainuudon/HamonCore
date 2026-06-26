@@ -17,6 +17,7 @@
 	defined(__cpp_lib_constexpr_vector)                 && (__cpp_lib_constexpr_vector                 >= 201907L) && \
 	defined(__cpp_lib_three_way_comparison)             && (__cpp_lib_three_way_comparison             >= 201907L) && \
 	defined(__cpp_lib_containers_ranges)                && (__cpp_lib_containers_ranges                >= 202202L) && \
+	defined(__cpp_lib_ranges_reserve_hint)              && (__cpp_lib_ranges_reserve_hint              >= 202502L) && \
 	!defined(HAMON_APPLE_CLANG)	/* Apple Clangのstd::vectorは使わない(insert関数においてvalue_typeがcopy assignableであることを要求するので) */
 
 #  define HAMON_USE_STD_VECTOR

@@ -133,6 +133,12 @@ GTEST_TEST(VectorTest, AppendRangeTest)
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_random_access_sized_range>());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_contiguous_sized_range>());
 
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_input_approximately_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_forward_approximately_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_bidirectional_approximately_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_random_access_approximately_sized_range>());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test<test_contiguous_approximately_sized_range>());
+
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		hamon::vector<ThrowOnCopy> v1(3);

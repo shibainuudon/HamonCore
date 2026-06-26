@@ -43,6 +43,7 @@
 #include <hamon/memory/detail/propagate_allocator_on_move.hpp>
 #include <hamon/memory/detail/propagate_allocator_on_swap.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/factories/repeat_view.hpp>
@@ -181,14 +182,15 @@ public:
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
 
-		// TODO
 		// [sequence.reqmts]/11
-		//if constexpr (
-		//	(ranges::approximately_sized_range<R> && !ranges​::​sized_range<R>) ||
-		//	(ranges​::​input_range<R> && !ranges​::​forward_range<R>))
-		//{
-		//	static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
-		//}
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (
+			(hamon::ranges::approximately_sized_range_t<R>::value && !hamon::ranges::sized_range_t<R>::value) ||
+			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range_t<R>::value))
+		{
+			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+		}
+#endif
 
 		// [vector.cons]/11,12
 		this->append_range(hamon::forward<R>(rg));
@@ -365,14 +367,15 @@ public:
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
 
-		// TODO
 		// [sequence.reqmts]/62
-		//if constexpr (
-		//	(ranges::approximately_sized_range<R> && !ranges​::​sized_range<R>) ||
-		//	(ranges​::​input_range<R> && !ranges​::​forward_range<R>))
-		//{
-		//	static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
-		//}
+#if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
+		if constexpr (
+			(hamon::ranges::approximately_sized_range_t<R>::value && !hamon::ranges::sized_range_t<R>::value) ||
+			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range_t<R>::value))
+		{
+			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+		}
+#endif
 
 		// [sequence.reqmts]/63
 		m_impl.AssignRange(m_allocator, hamon::forward<R>(rg));
