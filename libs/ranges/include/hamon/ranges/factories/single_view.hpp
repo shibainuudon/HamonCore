@@ -91,52 +91,59 @@ public:
 		: m_value{hamon::in_place, hamon::forward<Args>(args)...}
 	{}
 
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR T*	// nodiscard as an extension
-	begin() HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	T* begin() HAMON_NOEXCEPT
 	{
 		// [range.single.view]/4
 		return data();
 	}
 
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T const*	// nodiscard as an extension
-	begin() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	T const* begin() const HAMON_NOEXCEPT
 	{
 		// [range.single.view]/4
 		return data();
 	}
 
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR T*	// nodiscard as an extension
-	end() HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	T* end() HAMON_NOEXCEPT
 	{
 		// [range.single.view]/5
 		return data() + 1;
 	}
 
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T const*	// nodiscard as an extension
-	end() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	T const* end() const HAMON_NOEXCEPT
 	{
 		// [range.single.view]/5
 		return data() + 1;
 	}
 
-	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR hamon::size_t	// nodiscard as an extension
-	size() HAMON_NOEXCEPT
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	bool empty() HAMON_NOEXCEPT
 	{
 		// [range.single.view]/6
+		return false;
+	}
+
+	HAMON_NODISCARD static HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	hamon::size_t size() HAMON_NOEXCEPT
+	{
+		// [range.single.view]/7
 		return 1;
 	}
 
-	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR T*	// nodiscard as an extension
-	data() HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	T* data() HAMON_NOEXCEPT
 	{
-		// [range.single.view]/7
+		// [range.single.view]/8
 		return m_value.operator->();
 	}
 
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR T const*	// nodiscard as an extension
-	data() const HAMON_NOEXCEPT
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	T const* data() const HAMON_NOEXCEPT
 	{
-		// [range.single.view]/7
+		// [range.single.view]/8
 		return m_value.operator->();
 	}
 };

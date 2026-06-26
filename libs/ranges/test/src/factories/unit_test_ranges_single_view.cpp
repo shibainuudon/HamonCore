@@ -32,6 +32,9 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s)>, int>::value, "");
 	VERIFY(hamon::ranges::size(s) == 1);
 
+	VERIFY(s.empty() == false);
+	VERIFY(s.size() == 1);
+
 	int count = 0;
 	for (auto i : s)
 	{
@@ -47,48 +50,57 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 
 inline HAMON_CXX14_CONSTEXPR bool test02()
 {
-	hamon::ranges::single_view<long> const s2 {};
-	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s2)>, long>::value, "");
-	VERIFY(hamon::ranges::size(s2) == 1);
+	hamon::ranges::single_view<long> const s {};
+	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s)>, long>::value, "");
+	VERIFY(hamon::ranges::size(s) == 1);
+
+	VERIFY(s.empty() == false);
+	VERIFY(s.size() == 1);
 
 	int count = 0;
-	for (auto l : s2)
+	for (auto l : s)
 	{
 		VERIFY(l == 0L);
 		++count;
 	}
 
 	VERIFY(count == 1);
-	VERIFY(*hamon::ranges::begin(s2) == 0L);
+	VERIFY(*hamon::ranges::begin(s) == 0L);
 
 	return true;
 }
 
 inline HAMON_CXX14_CONSTEXPR bool test03()
 {
-	hamon::ranges::single_view<float> s2(hamon::in_place, 0.5f);
-	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s2)>, float>::value, "");
-	VERIFY(hamon::ranges::size(s2) == 1);
+	hamon::ranges::single_view<float> s(hamon::in_place, 0.5f);
+	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s)>, float>::value, "");
+	VERIFY(hamon::ranges::size(s) == 1);
+
+	VERIFY(s.empty() == false);
+	VERIFY(s.size() == 1);
 
 	int count = 0;
-	for (auto l : s2)
+	for (auto l : s)
 	{
 		VERIFY(l == 0.5f);
 		++count;
 	}
 
 	VERIFY(count == 1);
-	VERIFY(*hamon::ranges::begin(s2) == 0.5f);
+	VERIFY(*hamon::ranges::begin(s) == 0.5f);
 
 	return true;
 }
 
 inline HAMON_CXX14_CONSTEXPR bool test04()
 {
-	auto s3 = hamon::views::single('a');
-	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s3)>, char>::value, "");
-	VERIFY(hamon::ranges::size(s3) == 1);
-	VERIFY(*hamon::ranges::begin(s3) == 'a');
+	auto s = hamon::views::single('a');
+	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(s)>, char>::value, "");
+	VERIFY(hamon::ranges::size(s) == 1);
+	VERIFY(*hamon::ranges::begin(s) == 'a');
+
+	VERIFY(s.empty() == false);
+	VERIFY(s.size() == 1);
 
 	return true;
 }
