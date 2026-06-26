@@ -40,6 +40,7 @@ using adjacent_t = decltype(adjacent<N>);
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
@@ -51,12 +52,14 @@ using adjacent_t = decltype(adjacent<N>);
 #include <hamon/ranges/concepts/viewable_range.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
 #include <hamon/ranges/detail/tuple_transform.hpp>
+#include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
@@ -736,6 +739,39 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto    // nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(  // noexcept as an extension
 		size_impl(m_base, hamon::detail::overload_priority<1>{}))
+
+private:
+	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::approximately_sized_range, V2),
+		typename DT = hamon::ranges::range_difference_t<V2&>,
+		typename CT = hamon::common_type_t<DT, hamon::size_t>>
+	static HAMON_CXX14_CONSTEXPR auto
+	reserve_hint_impl(V2& base)
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	->decltype(hamon::ranges::detail::to_unsigned_like(hamon::declval<CT>()))
+	{
+		auto sz = static_cast<CT>(hamon::ranges::reserve_hint(base));
+		sz -= hamon::min<CT>(sz, N - 1);
+		return hamon::ranges::detail::to_unsigned_like(sz);
+	}
+
+public:
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(reserve_hint_impl(hamon::declval<V2&>()))
+	{
+		return reserve_hint_impl(m_base);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>()))	// noexcept as an extension
+	->decltype(reserve_hint_impl(hamon::declval<V2&>()))
+	{
+		return reserve_hint_impl(m_base);
+	}
 };
 
 }	// inline namespace adjacent_view_ns
