@@ -36,6 +36,7 @@ using std::ranges::views::chunk;
 #include <hamon/ranges/adaptors/detail/non_propagating_cache.hpp>
 #include <hamon/ranges/adaptors/detail/div_ceil.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
@@ -53,6 +54,7 @@ using std::ranges::views::chunk;
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/ranges/utility/subrange.hpp>
@@ -528,6 +530,26 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n));
 	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	UnsignedDifference reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
+	{
+		using DT = hamon::ranges::range_difference_t<decltype((m_base))>;
+		auto s = static_cast<DT>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	UnsignedDifference reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
+	{
+		using DT = hamon::ranges::range_difference_t<decltype((m_base))>;
+		auto s = static_cast<DT>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
+	}
 };
 
 // 26.7.28.6 Class template chunk_view for forward ranges[range.chunk.view.fwd]
@@ -954,6 +976,26 @@ public:
 		// [range.chunk.view.fwd]/3
 		HAMON_NOEXCEPT_RETURN(hamon::ranges::detail::to_unsigned_like(	// noexcept as an extension
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n)))
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	UnsignedDifference reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
+	{
+		using DT = hamon::ranges::range_difference_t<decltype((m_base))>;
+		auto s = static_cast<DT>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	UnsignedDifference reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
+	{
+		using DT = hamon::ranges::range_difference_t<decltype((m_base))>;
+		auto s = static_cast<DT>(hamon::ranges::reserve_hint(m_base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
+	}
 };
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
