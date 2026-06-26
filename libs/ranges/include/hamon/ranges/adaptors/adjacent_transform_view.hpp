@@ -37,6 +37,7 @@ using std::ranges::views::pairwise_transform;
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/zip_transform_view.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
@@ -600,15 +601,39 @@ public:
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, IV2, InnerView)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
-	decltype(hamon::declval<IV2&>().size())
-	size() HAMON_NOEXCEPT_RETURN(			// noexcept as an extension
-		m_inner.size())
+	auto size()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().size())	// noexcept as an extension
+	->decltype(hamon::declval<IV2&>().size())
+	{
+		return m_inner.size();
+	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, IV2, InnerView const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
-	decltype(hamon::declval<IV2&>().size())
-	size() const HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
-		m_inner.size())
+	auto size() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().size())	// noexcept as an extension
+	->decltype(hamon::declval<IV2&>().size())
+	{
+		return m_inner.size();
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, IV2, InnerView)>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().reserve_hint())	// noexcept as an extension
+	->decltype(hamon::declval<IV2&>().reserve_hint())
+	{
+		return m_inner.reserve_hint();
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, IV2, InnerView const)>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().reserve_hint())	// noexcept as an extension
+	->decltype(hamon::declval<IV2&>().reserve_hint())
+	{
+		return m_inner.reserve_hint();
+	}
 };
 
 namespace views {
