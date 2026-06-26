@@ -32,6 +32,7 @@ using std::ranges::views::stride;
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
 #include <hamon/ranges/adaptors/detail/div_ceil.hpp>
 #include <hamon/ranges/begin.hpp>
+#include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
@@ -49,6 +50,7 @@ using std::ranges::views::stride;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
 #include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/utility/detail/simple_view.hpp>
@@ -617,6 +619,38 @@ public:
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		size_impl(m_base, m_stride, hamon::detail::overload_priority<1>{}))
+
+private:
+	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::approximately_sized_range, V2), typename DT>
+	static HAMON_CXX14_CONSTEXPR auto
+	reserve_hint_impl(V2& base, DT str)
+	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
+	->decltype(hamon::ranges::detail::to_unsigned_like(hamon::declval<DT>()))
+	{
+		auto s = static_cast<DT>(hamon::ranges::reserve_hint(base));
+		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, str));
+	}
+
+public:
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V),
+		typename DT = hamon::ranges::range_difference_t<V2&>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint()
+	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>(), hamon::declval<DT>()))	// noexcept as an extension
+	->decltype(reserve_hint_impl(hamon::declval<V2&>(), hamon::declval<DT>()))
+	{
+		return reserve_hint_impl(m_base, m_stride);
+	}
+
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const),
+		typename DT = hamon::ranges::range_difference_t<V2&>>
+	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
+	auto reserve_hint() const
+	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>(), hamon::declval<DT>()))	// noexcept as an extension
+	->decltype(reserve_hint_impl(hamon::declval<V2&>(), hamon::declval<DT>()))
+	{
+		return reserve_hint_impl(m_base, m_stride);
+	}
 };
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
