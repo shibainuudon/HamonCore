@@ -6,6 +6,7 @@
 
 #include <hamon/ranges/adaptors/as_rvalue_view.hpp>
 #include <hamon/ranges/utility/detail/simple_view.hpp>
+#include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/ranges/concepts.hpp>
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -516,6 +517,28 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	return true;
 }
 
+// LWG 4083
+struct I
+{
+	int operator*();
+	using difference_type = int;
+	I& operator++();
+	void operator++(int);
+};
+
+HAMON_CXX14_CONSTEXPR bool test06()
+{
+	//hamon::ranges::range auto r =
+	//	hamon::ranges::subrange{ I{}, hamon::unreachable_sentinel }
+	//	| hamon::views::as_rvalue;
+	//(void)r;
+
+	auto r = hamon::ranges::make_subrange(I{}, hamon::unreachable_sentinel);
+	static_assert(!hamon::invocable_t<decltype(hamon::views::as_rvalue), decltype(r)>::value, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, AsRvalueViewTest)
@@ -562,6 +585,7 @@ GTEST_TEST(RangesTest, AsRvalueViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test06());
 }
 
 }	// namespace as_rvalue_view_test
