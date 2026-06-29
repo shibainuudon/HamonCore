@@ -829,8 +829,16 @@ public:
 	}
 #endif
 
-private:
 	// [range.iota.view]/15
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+	bool empty() const
+	HAMON_NOEXCEPT_IF_EXPR(m_value == m_bound)	// noexcept as an extension
+	{
+		return m_value == m_bound;
+	}
+
+private:
+	// [range.iota.view]/16
 	template <typename W2, typename Bound2,
 		typename = hamon::enable_if_t<
 			hamon::detail::is_integer_like_t<W2>::value &&

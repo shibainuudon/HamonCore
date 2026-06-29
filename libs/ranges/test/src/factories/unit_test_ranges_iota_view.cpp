@@ -15,6 +15,7 @@
 #include <hamon/iterator.hpp>
 #include <hamon/type_traits.hpp>
 #include <hamon/utility.hpp>
+#include <hamon/vector.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -821,6 +822,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 #else
 	auto v = hamon::ranges::iota_view<int, int>{1, 4};
 #endif
+	VERIFY(!v.empty());
 	VERIFY(v.size() == 3);
 
 	int vals[5] ={};
@@ -899,6 +901,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
 	static_assert( hamon::signed_integral_t<typename I::difference_type>::value, "");
 
+	VERIFY(!v.empty());
 	VERIFY(v.size() == 5);
 
 	auto it = v.begin();
@@ -961,6 +964,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert( hamon::same_as_t<typename I::value_type, random_access_iterator_wrapper<int>>::value, "");
 	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<random_access_iterator_wrapper<int>>>::value, "");
 
+	VERIFY(!v.empty());
 	VERIFY(v.size() == 2);
 
 	auto it = v.begin();
@@ -1064,6 +1068,7 @@ inline HAMON_CXX14_CONSTEXPR bool test08()
 	static_assert( ranges::random_access_range_t<R>::value, "");
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 
+	VERIFY(!v.empty());
 	VERIFY(v.size() == 2);
 
 	auto it = v.begin();
@@ -1186,6 +1191,28 @@ inline HAMON_CXX14_CONSTEXPR bool test12()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test13()
+{
+	auto v = hamon::views::iota(5, 5);
+
+	VERIFY(v.empty());
+	VERIFY(v.size() == 0);
+
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test14()
+{
+	hamon::vector<int> v;
+	auto it = hamon::back_inserter(v);
+//	auto s = hamon::ranges::subrange(it, hamon::unreachable_sentinel);
+	auto r = hamon::views::iota(it);
+//	VERIFY(!s.empty());
+	VERIFY(!r.empty());
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, IotaViewTest)
@@ -1203,6 +1230,8 @@ GTEST_TEST(RangesTest, IotaViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test10());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test11());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test12());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test13());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test14());
 }
 
 }	// namespace iota_view_test
