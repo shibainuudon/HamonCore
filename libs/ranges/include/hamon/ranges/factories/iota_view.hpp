@@ -52,8 +52,10 @@ using std::ranges::views::iota;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
+#include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/utility/forward.hpp>
 
@@ -917,22 +919,20 @@ struct iota_fn
 {
 	// [range.iota.overview]/2
 
-	template <typename T>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::ranges::iota_view<hamon::remove_cvref_t<T>>
-	operator()(T&& e) const
-		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iota_view<hamon::remove_cvref_t<T>>(hamon::forward<T>(e)))
+	template <typename E, typename T = hamon::decay_t<E>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::ranges::iota_view<T>
+	operator()(E&& e) const
+		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iota_view<T>(hamon::forward<E>(e)))
 	{
-		//return hamon::ranges::iota_view(hamon::forward<T>(e));
-		return hamon::ranges::iota_view<hamon::remove_cvref_t<T>>(hamon::forward<T>(e));
+		return hamon::ranges::iota_view<T>(hamon::forward<E>(e));
 	}
 
-	template <typename T, typename U>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::ranges::iota_view<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>
-	operator()(T&& e, U&& f) const
-		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iota_view<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>(hamon::forward<T>(e), hamon::forward<U>(f)))
+	template <typename E, typename F, typename T = hamon::decay_t<E>, typename U = hamon::decay_t<F>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::ranges::iota_view<T, U>
+	operator()(E&& e, F&& f) const
+		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iota_view<T, U>(hamon::forward<E>(e), hamon::forward<F>(f)))
 	{
-		//return hamon::ranges::iota_view(hamon::forward<T>(e), hamon::forward<U>(f));
-		return hamon::ranges::iota_view<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>(hamon::forward<T>(e), hamon::forward<U>(f));
+		return hamon::ranges::iota_view<T, U>(hamon::forward<E>(e), hamon::forward<F>(f));
 	}
 };
 
@@ -952,12 +952,12 @@ struct indices_fn
 {
 	// [range.iota.overview]/4
 
-	template <typename T,
-		typename = hamon::enable_if_t<hamon::detail::is_integer_like_t<hamon::remove_cvref_t<T>>::value>>
+	template <typename E, typename T = hamon::remove_cvref_t<E>,
+		typename = hamon::enable_if_t<hamon::detail::is_integer_like_t<T>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	auto operator()(T&& e) const
+	auto operator()(E&& e) const
 	{
-		return hamon::views::iota(T(0), hamon::forward<T>(e));
+		return hamon::views::iota(T(0), hamon::forward<E>(e));
 	}
 };
 

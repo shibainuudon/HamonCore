@@ -1213,6 +1213,17 @@ inline HAMON_CXX20_CONSTEXPR bool test14()
 	return true;
 }
 
+inline HAMON_CXX14_CONSTEXPR bool test15()
+{
+	//auto v = hamon::views::iota(hamon::views::iota(0));
+	//(void)v;
+
+	auto v1 = hamon::views::iota(0);
+	static_assert(!hamon::invocable_t<decltype(hamon::views::iota), decltype(v1)>::value, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, IotaViewTest)
@@ -1232,6 +1243,7 @@ GTEST_TEST(RangesTest, IotaViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test12());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test13());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test14());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test15());
 }
 
 }	// namespace iota_view_test
