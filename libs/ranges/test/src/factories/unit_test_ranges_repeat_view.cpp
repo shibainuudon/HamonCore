@@ -7,6 +7,7 @@
 #include <hamon/ranges/factories/repeat_view.hpp>
 #include <hamon/ranges/concepts.hpp>
 #include <hamon/compare.hpp>
+#include <hamon/concepts.hpp>
 #include <hamon/cstddef.hpp>
 #include <hamon/iterator.hpp>
 #include <hamon/pair.hpp>	// piecewise_construct_t
@@ -786,6 +787,28 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	return true;
 }
 
+// LWG 4053
+HAMON_CXX14_CONSTEXPR bool test05()
+{
+	using RPV = hamon::ranges::repeat_view<const char*>;
+
+	static_assert(hamon::same_as_t<decltype(hamon::views::repeat("foo", hamon::unreachable_sentinel)), RPV>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::views::repeat(+"foo", hamon::unreachable_sentinel)), RPV>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::views::repeat("foo")), RPV>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::views::repeat(+"foo")), RPV>::value, "");
+
+	return true;
+}
+
+// LWG 4054
+HAMON_CXX14_CONSTEXPR bool test06()
+{
+	auto v = hamon::views::repeat(hamon::views::repeat(5));
+	static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<hamon::ranges::repeat_view<int>>>::value, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, RepeatViewTest)
@@ -795,6 +818,8 @@ GTEST_TEST(RangesTest, RepeatViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test06());
 }
 
 }	// namespace repeat_view_test
