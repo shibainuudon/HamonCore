@@ -29,6 +29,8 @@ using std::ranges::views::zip;
 #else
 
 #include <hamon/ranges/adaptors/all.hpp>
+#include <hamon/ranges/adaptors/detail/all_bidirectional.hpp>
+#include <hamon/ranges/adaptors/detail/all_forward.hpp>
 #include <hamon/ranges/adaptors/detail/all_random_access.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
@@ -101,14 +103,6 @@ namespace detail {
 #if defined(HAMON_HAS_CXX17_FOLD_EXPRESSIONS)
 
 template <bool Const, typename... Views>
-HAMON_CONCEPT_OR_BOOL all_bidirectional =
-	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-HAMON_CONCEPT_OR_BOOL all_forward =
-	(hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
 HAMON_CONCEPT_OR_BOOL all_sized =
 	(hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
 
@@ -127,14 +121,6 @@ HAMON_CONCEPT_OR_BOOL zip_is_common_impl =
 	((hamon::ranges::random_access_range<Rs> && ...) && (hamon::ranges::sized_range<Rs> && ...));
 
 #else
-
-template <bool Const, typename... Views>
-HAMON_CONCEPT_OR_BOOL all_bidirectional = hamon::detail::all_v<
-	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
-HAMON_CONCEPT_OR_BOOL all_forward = hamon::detail::all_v<
-	hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 template <bool Const, typename... Views>
 HAMON_CONCEPT_OR_BOOL all_sized = hamon::detail::all_v<

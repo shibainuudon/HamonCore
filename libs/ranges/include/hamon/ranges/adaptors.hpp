@@ -18,6 +18,7 @@
 #include <hamon/ranges/adaptors/chunk_by_view.hpp>
 #include <hamon/ranges/adaptors/chunk_view.hpp>
 #include <hamon/ranges/adaptors/common_view.hpp>
+#include <hamon/ranges/adaptors/concat_view.hpp>
 #include <hamon/ranges/adaptors/counted_view.hpp>
 #include <hamon/ranges/adaptors/drop_view.hpp>
 #include <hamon/ranges/adaptors/drop_while_view.hpp>
