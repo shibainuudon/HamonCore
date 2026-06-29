@@ -938,6 +938,31 @@ detail::iota_fn iota{};
 
 }	// inline namespace cpo
 
+namespace detail {
+
+struct indices_fn
+{
+	// [range.iota.overview]/4
+
+	template <typename T,
+		typename = hamon::enable_if_t<hamon::detail::is_integer_like_t<hamon::remove_cvref_t<T>>::value>>
+	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
+	auto operator()(T&& e) const
+	{
+		return hamon::views::iota(T(0), hamon::forward<T>(e));
+	}
+};
+
+}	// namespace detail
+
+inline namespace cpo
+{
+
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+detail::indices_fn indices{};
+
+}	// inline namespace cpo
+
 }	// namespace views
 
 }	// namespace ranges
