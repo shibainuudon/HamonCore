@@ -21,6 +21,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -164,46 +165,6 @@ static_assert(!hamon::is_nothrow_move_constructible<ThrowOnMoveView<int>>::value
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_size
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_reserve_hint
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
-	: public hamon::true_type {};
-
 template <template <typename> class View>
 HAMON_CXX14_CONSTEXPR bool test00()
 {
@@ -220,18 +181,20 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 	static_assert(!hamon::is_implicitly_constructible<RV, V>::value, "");
 
-	static_assert(hamon::ranges::view_t<RV>::value, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert( hamon::ranges::range_t<RV>::value, "");
+	static_assert( hamon::ranges::borrowed_range_t<RV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
+	static_assert( hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert( hamon::ranges::approximately_sized_range_t<RV>::value == hamon::ranges::approximately_sized_range_t<V>::value, "");
 	static_assert(!hamon::ranges::output_range_t<RV, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<V>::value, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<V>::value, "");
+	static_assert( hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<V>::value, "");
+	static_assert( hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert( hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert( hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<V>::value, "");
 	static_assert(!hamon::ranges::contiguous_range_t<RV>::value, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<V>::value, "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value, "");
-	static_assert(hamon::ranges::view_t<RV>::value, "");
+	static_assert( hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<V>::value, "");
+	static_assert( hamon::ranges::viewable_range_t<RV>::value, "");
+	static_assert( hamon::ranges::view_t<RV>::value, "");
+	static_assert(!hamon::ranges::constant_range_t<RV>::value, "");
 
 	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<RV&&>::value, "");
