@@ -1,5 +1,5 @@
 ﻿/**
- *	@file	unit_test_ranges_take_while.cpp
+ *	@file	unit_test_ranges_take_while_view.cpp
  *
  *	@brief	ranges::take_while_view のテスト
  */
@@ -23,7 +23,7 @@
 
 namespace hamon_ranges_test
 {
-namespace take_while_test
+namespace take_while_view_test
 {
 
 struct IsZero
@@ -725,7 +725,7 @@ HAMON_CXX17_CONSTEXPR bool test05()
 
 #undef VERIFY
 
-GTEST_TEST(RangesTest, TakeWhileTest)
+GTEST_TEST(RangesTest, TakeWhileViewTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_input_view>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<test_forward_view>()));
@@ -781,5 +781,5 @@ GTEST_TEST(RangesTest, TakeWhileTest)
 #endif
 }
 
-}	// namespace take_while_test
+}	// namespace take_while_view_test
 }	// namespace hamon_ranges_test
