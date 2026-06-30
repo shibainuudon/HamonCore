@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -21,38 +22,6 @@ namespace ref_view_test
 {
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
-
-template <typename T, typename = void>
-struct has_empty
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_empty<T, hamon::void_t<decltype(hamon::declval<T>().empty())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_size
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_reserve_hint
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_data
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_data<T, hamon::void_t<decltype(hamon::declval<T>().data())>>
-	: public hamon::true_type {};
 
 template <template <typename> class RangeWrapper>
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -82,8 +51,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::constructible_from_t<RV, RV const&>::value, "");
 	static_assert( hamon::constructible_from_t<RV, RV const&&>::value, "");
 
+	static_assert(hamon::ranges::range_t<RV>::value, "");
 	static_assert(hamon::ranges::borrowed_range_t<RV>::value, "");
 	static_assert(hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<R>::value, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<RV>::value == hamon::ranges::approximately_sized_range_t<R>::value, "");
 	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<R, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<R>::value, "");
 	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<R>::value, "");
@@ -93,6 +64,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<R>::value, "");
 	static_assert(hamon::ranges::viewable_range_t<RV>::value, "");
 	static_assert(hamon::ranges::view_t<RV>::value, "");
+	static_assert(!hamon::ranges::constant_range_t<RV>::value, "");
 
 	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().base()), R&>::value, "");
 	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().begin()), hamon::ranges::iterator_t<R>>::value, "");
@@ -118,10 +90,18 @@ HAMON_CXX14_CONSTEXPR bool test01()
 #endif
 
 	using RV = decltype(rv);
+	static_assert( has_begin<RV>::value, "");
+	static_assert( has_end<RV>::value, "");
 	static_assert( has_empty<RV>::value, "");
+	static_assert( has_cbegin<RV>::value, "");
+	static_assert( has_cend<RV>::value, "");
+	static_assert( has_operator_bool<RV>::value, "");
+	static_assert(!has_data<RV>::value, "");
 	static_assert( has_size<RV>::value, "");
 	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert(!has_data<RV>::value, "");
+	static_assert( has_front<RV>::value, "");
+	static_assert(!has_back<RV>::value, "");
+	static_assert( has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(!rv.empty());
@@ -148,10 +128,18 @@ HAMON_CXX14_CONSTEXPR bool test02()
 #endif
 
 	using RV = decltype(rv);
+	static_assert( has_begin<RV>::value, "");
+	static_assert( has_end<RV>::value, "");
 	static_assert( has_empty<RV>::value, "");
+	static_assert( has_cbegin<RV>::value, "");
+	static_assert( has_cend<RV>::value, "");
+	static_assert( has_operator_bool<RV>::value, "");
+	static_assert( has_data<RV>::value, "");
 	static_assert( has_size<RV>::value, "");
 	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert( has_data<RV>::value, "");
+	static_assert( has_front<RV>::value, "");
+	static_assert(!has_back<RV>::value, "");
+	static_assert( has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(!rv.empty());
@@ -180,10 +168,18 @@ HAMON_CXX14_CONSTEXPR bool test03()
 #endif
 
 	using RV = decltype(rv);
+	static_assert( has_begin<RV>::value, "");
+	static_assert( has_end<RV>::value, "");
 	static_assert(!has_empty<RV>::value, "");
+	static_assert( has_cbegin<RV>::value, "");
+	static_assert( has_cend<RV>::value, "");
+	static_assert(!has_operator_bool<RV>::value, "");
+	static_assert(!has_data<RV>::value, "");
 	static_assert(!has_size<RV>::value, "");
 	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert(!has_data<RV>::value, "");
+	static_assert(!has_front<RV>::value, "");
+	static_assert(!has_back<RV>::value, "");
+	static_assert(!has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(rv.reserve_hint() == 3);

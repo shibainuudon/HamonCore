@@ -87,6 +87,15 @@ template <typename T>
 struct has_size<T, hamon::void_t<decltype(hamon::declval<T&>().size())>>
 	: public hamon::true_type {};
 
+// reserve_hint()
+template <typename T, typename = void>
+struct has_reserve_hint
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T&>().reserve_hint())>>
+	: public hamon::true_type {};
+
 // front()
 template <typename T, typename = void>
 struct has_front
