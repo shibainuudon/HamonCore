@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -153,46 +154,6 @@ static_assert(!CanInstantiateTakeWhileView<test_output_view<int>, IsZero>::value
 static_assert(!CanInstantiateTakeWhileView<test_input_view<int*>, IsZero>::value, "");	// indirect_unary_predicate<const Pred, iterator_t<V>>
 static_assert(!CanInstantiateTakeWhileView<test_input_view<int>, IsZero&>::value, "");	// is_object_v<Pred>
 
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_eq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_eq<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_neq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_neq<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 template <template <typename> class View, typename F>
@@ -292,24 +253,40 @@ HAMON_CXX14_CONSTEXPR bool test00()
 HAMON_CXX14_CONSTEXPR bool test01()
 {
 	using V = test_random_access_view<int>;
-	hamon::ranges::take_while_view<V, LessThanFive> rv{};
+	using TWV = hamon::ranges::take_while_view<V, LessThanFive>;
 
-	VERIFY(rv.begin() == rv.end());
-	VERIFY(rv.begin() == rv.base().begin());
-	VERIFY(hamon::as_const(rv).begin() == hamon::as_const(rv).end());
-	VERIFY(hamon::as_const(rv).begin() == rv.base().begin());
+	static_assert( has_begin<TWV&>::value, "");
+	static_assert( has_end<TWV&>::value, "");
+	static_assert( has_empty<TWV&>::value, "");
+	static_assert( has_cbegin<TWV&>::value, "");
+	static_assert( has_cend<TWV&>::value, "");
+	static_assert( has_operator_bool<TWV&>::value, "");
+	static_assert(!has_data<TWV&>::value, "");
+	static_assert(!has_size<TWV&>::value, "");
+	static_assert(!has_reserve_hint<TWV&>::value, "");
+	static_assert( has_front<TWV&>::value, "");
+	static_assert(!has_back<TWV&>::value, "");
+	static_assert( has_subscript<TWV&>::value, "");
+	static_assert( has_base<TWV&>::value, "");
+
+	TWV twv{};
+
+	VERIFY(twv.begin() == twv.end());
+	VERIFY(twv.begin() == twv.base().begin());
+	VERIFY(hamon::as_const(twv).begin() == hamon::as_const(twv).end());
+	VERIFY(hamon::as_const(twv).begin() == twv.base().begin());
 
 	{
-		auto& p = rv.pred();
+		auto& p = twv.pred();
 		static_assert(hamon::same_as_t<decltype(p), LessThanFive const&>::value, "");
 	}
 	{
-		auto b = rv.base();
+		auto b = twv.base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
 		VERIFY(b.begin() == b.end());
 	}
 	{
-		auto b = hamon::move(rv).base();
+		auto b = hamon::move(twv).base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
 		VERIFY(b.begin() == b.end());
 	}
@@ -319,50 +296,65 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-
 	using V = test_input_view<int>;
+	using TWV = hamon::ranges::take_while_view<V, LessThanFive>;
+
+	static_assert( has_begin<TWV&>::value, "");
+	static_assert( has_end<TWV&>::value, "");
+	static_assert(!has_empty<TWV&>::value, "");
+	static_assert( has_cbegin<TWV&>::value, "");
+	static_assert( has_cend<TWV&>::value, "");
+	static_assert(!has_operator_bool<TWV&>::value, "");
+	static_assert(!has_data<TWV&>::value, "");
+	static_assert(!has_size<TWV&>::value, "");
+	static_assert(!has_reserve_hint<TWV&>::value, "");
+	static_assert(!has_front<TWV&>::value, "");
+	static_assert(!has_back<TWV&>::value, "");
+	static_assert(!has_subscript<TWV&>::value, "");
+	static_assert( has_base<TWV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_while_view rv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::take_while_view<V, LessThanFive>>::value, "");
+	hamon::ranges::take_while_view twv{v, LessThanFive{}};
+	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
 #else
-	hamon::ranges::take_while_view<V, LessThanFive> rv{v, LessThanFive{}};
+	TWV twv{v, LessThanFive{}};
 #endif
-	auto const& crv = rv;
+	auto const& ctwv = twv;
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = twv.begin();
+		VERIFY(it != twv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctwv.begin();
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctwv.end());
 	}
 
 	return true;
@@ -370,95 +362,110 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-
 	using V = NotSimpleView2<int>;
+	using TWV = hamon::ranges::take_while_view<V, LessThanFive>;
+
+	static_assert( has_begin<TWV&>::value, "");
+	static_assert( has_end<TWV&>::value, "");
+	static_assert( has_empty<TWV&>::value, "");
+	static_assert( has_cbegin<TWV&>::value, "");
+	static_assert( has_cend<TWV&>::value, "");
+	static_assert( has_operator_bool<TWV&>::value, "");
+	static_assert( has_data<TWV&>::value, "");
+	static_assert(!has_size<TWV&>::value, "");
+	static_assert(!has_reserve_hint<TWV&>::value, "");
+	static_assert( has_front<TWV&>::value, "");
+	static_assert(!has_back<TWV&>::value, "");
+	static_assert( has_subscript<TWV&>::value, "");
+	static_assert( has_base<TWV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
 	auto const& cv = v;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_while_view rv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::take_while_view<V, LessThanFive>>::value, "");
+	hamon::ranges::take_while_view twv{v, LessThanFive{}};
+	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
 #else
-	hamon::ranges::take_while_view<V, LessThanFive> rv{v, LessThanFive{}};
+	TWV twv{v, LessThanFive{}};
 #endif
-	auto const& crv = rv;
+	auto const& ctwv = twv;
 
 	{
-		auto it = rv.begin();
+		auto it = twv.begin();
 
-		VERIFY(!(it == crv.end()));
-		VERIFY( (it != crv.end()));
-		VERIFY(!(crv.end() == it));
-		VERIFY( (crv.end() != it));
-		VERIFY(!(it == rv.end()));
-		VERIFY( (it != rv.end()));
-		VERIFY(!(rv.end() == it));
-		VERIFY( (rv.end() != it));
+		VERIFY(!(it == ctwv.end()));
+		VERIFY( (it != ctwv.end()));
+		VERIFY(!(ctwv.end() == it));
+		VERIFY( (ctwv.end() != it));
+		VERIFY(!(it == twv.end()));
+		VERIFY( (it != twv.end()));
+		VERIFY(!(twv.end() == it));
+		VERIFY( (twv.end() != it));
 
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != twv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 
-		VERIFY( (it == crv.end()));
-		VERIFY(!(it != crv.end()));
-		VERIFY( (crv.end() == it));
-		VERIFY(!(crv.end() != it));
-		VERIFY( (it == rv.end()));
-		VERIFY(!(it != rv.end()));
-		VERIFY( (rv.end() == it));
-		VERIFY(!(rv.end() != it));
+		VERIFY( (it == ctwv.end()));
+		VERIFY(!(it != ctwv.end()));
+		VERIFY( (ctwv.end() == it));
+		VERIFY(!(ctwv.end() != it));
+		VERIFY( (it == twv.end()));
+		VERIFY(!(it != twv.end()));
+		VERIFY( (twv.end() == it));
+		VERIFY(!(twv.end() != it));
 	}
 	{
-		auto it = crv.begin();
+		auto it = ctwv.begin();
 
-		VERIFY(!(it == crv.end()));
-		VERIFY( (it != crv.end()));
-		VERIFY(!(crv.end() == it));
-		VERIFY( (crv.end() != it));
-		VERIFY(!(it == rv.end()));
-		VERIFY( (it != rv.end()));
-		VERIFY(!(rv.end() == it));
-		VERIFY( (rv.end() != it));
+		VERIFY(!(it == ctwv.end()));
+		VERIFY( (it != ctwv.end()));
+		VERIFY(!(ctwv.end() == it));
+		VERIFY( (ctwv.end() != it));
+		VERIFY(!(it == twv.end()));
+		VERIFY( (it != twv.end()));
+		VERIFY(!(twv.end() == it));
+		VERIFY( (twv.end() != it));
 
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctwv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 
-		VERIFY( (it == crv.end()));
-		VERIFY(!(it != crv.end()));
-		VERIFY( (crv.end() == it));
-		VERIFY(!(crv.end() != it));
-		VERIFY( (it == rv.end()));
-		VERIFY(!(it != rv.end()));
-		VERIFY( (rv.end() == it));
-		VERIFY(!(rv.end() != it));
+		VERIFY( (it == ctwv.end()));
+		VERIFY(!(it != ctwv.end()));
+		VERIFY( (ctwv.end() == it));
+		VERIFY(!(ctwv.end() != it));
+		VERIFY( (it == twv.end()));
+		VERIFY(!(it != twv.end()));
+		VERIFY( (twv.end() == it));
+		VERIFY(!(twv.end() != it));
 	}
 
-	using Iterator = decltype(rv.begin());
-	using ConstIterator = decltype(crv.begin());
-	using Sentinel = decltype(rv.end());
-	using ConstSentinel = decltype(crv.end());
+	using Iterator = decltype(twv.begin());
+	using ConstIterator = decltype(ctwv.begin());
+	using Sentinel = decltype(twv.end());
+	using ConstSentinel = decltype(ctwv.end());
 	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
@@ -508,13 +515,13 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(sent.base() == nullptr);
 	}
 	{
-		static_assert(hamon::same_as_t<decltype(rv.end().base()), decltype(v.end())>::value, "");
-		static_assert(hamon::same_as_t<decltype(crv.end().base()), decltype(cv.end())>::value, "");
+		static_assert(hamon::same_as_t<decltype(twv.end().base()), decltype(v.end())>::value, "");
+		static_assert(hamon::same_as_t<decltype(ctwv.end().base()), decltype(cv.end())>::value, "");
 
-		auto sent = crv.end();
-		VERIFY(sent.base() == rv.end());
-		sent = rv.end();
-		VERIFY(sent.base() == rv.end());
+		auto sent = ctwv.end();
+		VERIFY(sent.base() == twv.end());
+		sent = twv.end();
+		VERIFY(sent.base() == twv.end());
 	}
 
 	return true;
@@ -522,24 +529,39 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-
 	using V = NotSimpleForwardView<int>;
+	using TWV = hamon::ranges::take_while_view<V, LessThanFive>;
+
+	static_assert( has_begin<TWV&>::value, "");
+	static_assert( has_end<TWV&>::value, "");
+	static_assert( has_empty<TWV&>::value, "");
+	static_assert( has_cbegin<TWV&>::value, "");
+	static_assert( has_cend<TWV&>::value, "");
+	static_assert( has_operator_bool<TWV&>::value, "");
+	static_assert(!has_data<TWV&>::value, "");
+	static_assert(!has_size<TWV&>::value, "");
+	static_assert(!has_reserve_hint<TWV&>::value, "");
+	static_assert( has_front<TWV&>::value, "");
+	static_assert(!has_back<TWV&>::value, "");
+	static_assert(!has_subscript<TWV&>::value, "");
+	static_assert( has_base<TWV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
 	//auto const& cv = v;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_while_view rv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::take_while_view<V, LessThanFive>>::value, "");
+	hamon::ranges::take_while_view twv{v, LessThanFive{}};
+	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
 #else
-	hamon::ranges::take_while_view<V, LessThanFive> rv{v, LessThanFive{}};
+	TWV twv{v, LessThanFive{}};
 #endif
-	auto const& crv = rv;
+	auto const& ctwv = twv;
 
-	using Iterator = decltype(rv.begin());
-	using ConstIterator = decltype(crv.begin());
-	using Sentinel = decltype(rv.end());
-	using ConstSentinel = decltype(crv.end());
+	using Iterator = decltype(twv.begin());
+	using ConstIterator = decltype(ctwv.begin());
+	using Sentinel = decltype(twv.end());
+	using ConstSentinel = decltype(ctwv.end());
 	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
@@ -612,18 +634,18 @@ HAMON_CXX17_CONSTEXPR bool test05()
 	}
 	{
 		int a[] = { 8, 2, 4, 5, 0, 1, 2 };
-		auto rv = hamon::views::take_while(IsEven)(a);
-		auto it = rv.begin();
+		auto twv = hamon::views::take_while(IsEven)(a);
+		auto it = twv.begin();
 		VERIFY(*it++ == 8);
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 	{
-		auto rv = hamon::views::take_while(
+		auto twv = hamon::views::take_while(
 			hamon::views::iota(1),
 			[](int x) { return x < 10; });
-		auto it = rv.begin();
+		auto it = twv.begin();
 		VERIFY(*it++ == 1);
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 3);
@@ -633,25 +655,25 @@ HAMON_CXX17_CONSTEXPR bool test05()
 		VERIFY(*it++ == 7);
 		VERIFY(*it++ == 8);
 		VERIFY(*it++ == 9);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 
 	// C++20以前は、ラムダ式のクロージャオブジェクトが代入可能でなかったので、
 	// Range Adaptorを連結するには、ラムダ式以外にしたり一時変数に受けたりしないといけなかった。
 	{
-		auto rv = hamon::views::iota(1) |
+		auto twv = hamon::views::iota(1) |
 			hamon::views::filter(IsEven) |
 			hamon::views::take_while([](int x) { return x < 10; });
-		auto it = rv.begin();
+		auto it = twv.begin();
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
 		VERIFY(*it++ == 6);
 		VERIFY(*it++ == 8);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 	{
-		auto rv = hamon::views::iota(1) | hamon::views::filter([](int x) { return x % 2 == 0; });
-		auto rv2 = rv | hamon::views::take_while([](int x) { return x < 10; });
+		auto twv = hamon::views::iota(1) | hamon::views::filter([](int x) { return x % 2 == 0; });
+		auto rv2 = twv | hamon::views::take_while([](int x) { return x < 10; });
 		auto it = rv2.begin();
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
@@ -663,39 +685,39 @@ HAMON_CXX17_CONSTEXPR bool test05()
 		auto partial =
 			hamon::views::filter(IsEven) |
 			hamon::views::take_while([](int x) { return x < 10; });
-		auto rv = hamon::views::iota(1) | partial;
-		auto it = rv.begin();
+		auto twv = hamon::views::iota(1) | partial;
+		auto it = twv.begin();
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
 		VERIFY(*it++ == 6);
 		VERIFY(*it++ == 8);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 #if defined(HAMON_HAS_CXX20_DEFAULT_CONSTRUCTIBLE_AND_ASSIGNABLE_STATELESS_LAMBDAS)
 	// C++20(P0624R2) で、ラムダ式のクロージャオブジェクトが代入可能になったので、
 	// 以下のようにラムダ式を含むRange Adaptorを素直に連結できるようになった。
 	{
-		auto rv = hamon::views::iota(1) |
+		auto twv = hamon::views::iota(1) |
 			hamon::views::filter([](int x) { return x % 2 == 0; }) |
 			hamon::views::take_while([](int x) { return x < 10; });
-		auto it = rv.begin();
+		auto it = twv.begin();
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
 		VERIFY(*it++ == 6);
 		VERIFY(*it++ == 8);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 	{
 		auto partial =
 			hamon::views::filter([](int x) { return x % 2 == 0; }) |
 			hamon::views::take_while([](int x) { return x < 10; });
-		auto rv = hamon::views::iota(1) | partial;
-		auto it = rv.begin();
+		auto twv = hamon::views::iota(1) | partial;
+		auto it = twv.begin();
 		VERIFY(*it++ == 2);
 		VERIFY(*it++ == 4);
 		VERIFY(*it++ == 6);
 		VERIFY(*it++ == 8);
-		VERIFY(it == rv.end());
+		VERIFY(it == twv.end());
 	}
 #endif
 	return true;
