@@ -149,13 +149,6 @@
 		},
 
 		{
-			"name": "c++11",
-			"hidden": true,
-			"cacheVariables": {
-				"CMAKE_CXX_STANDARD": "11"
-			}
-		},
-		{
 			"name": "c++14",
 			"hidden": true,
 			"cacheVariables": {
@@ -306,14 +299,6 @@
 		},
 
 		{
-			"name": "win-emscripten-c++11-debug",
-			"inherits": [ "windows", "emscripten", "c++11", "debug" ]
-		},
-		{
-			"name": "win-emscripten-c++11-release",
-			"inherits": [ "windows", "emscripten", "c++11", "release" ]
-		},
-		{
 			"name": "win-emscripten-c++14-debug",
 			"inherits": [ "windows", "emscripten", "c++14", "debug" ]
 		},
@@ -346,14 +331,6 @@
 			"inherits": [ "windows", "emscripten", "c++23", "release" ]
 		},
 
-		{
-			"name": "linux-gcc-c++11-debug",
-			"inherits": [ "linux", "gcc", "c++11", "debug" ]
-		},
-		{
-			"name": "linux-gcc-c++11-release",
-			"inherits": [ "linux", "gcc", "c++11", "release" ]
-		},
 		{
 			"name": "linux-gcc-c++14-debug",
 			"inherits": [ "linux", "gcc", "c++14", "debug" ]
@@ -396,14 +373,6 @@
 		},
 
 		{
-			"name": "linux-clang-c++11-debug",
-			"inherits": [ "linux", "clang", "c++11", "debug" ]
-		},
-		{
-			"name": "linux-clang-c++11-release",
-			"inherits": [ "linux", "clang", "c++11", "release" ]
-		},
-		{
 			"name": "linux-clang-c++14-debug",
 			"inherits": [ "linux", "clang", "c++14", "debug" ]
 		},
@@ -445,14 +414,6 @@
 		},
 
 		{
-			"name": "linux-emscripten-c++11-debug",
-			"inherits": [ "linux", "emscripten", "c++11", "debug" ]
-		},
-		{
-			"name": "linux-emscripten-c++11-release",
-			"inherits": [ "linux", "emscripten", "c++11", "release" ]
-		},
-		{
 			"name": "linux-emscripten-c++14-debug",
 			"inherits": [ "linux", "emscripten", "c++14", "debug" ]
 		},
@@ -486,14 +447,6 @@
 		},
 
 		{
-			"name": "mac-clang-c++11-debug",
-			"inherits": [ "mac", "clang", "c++11", "debug" ]
-		},
-		{
-			"name": "mac-clang-c++11-release",
-			"inherits": [ "mac", "clang", "c++11", "release" ]
-		},
-		{
 			"name": "mac-clang-c++14-debug",
 			"inherits": [ "mac", "clang", "c++14", "debug" ]
 		},
@@ -526,14 +479,6 @@
 			"inherits": [ "mac", "clang", "c++23", "release" ]
 		},
 
-		{
-			"name": "android-c++11-debug",
-			"inherits": [ "android", "c++11", "debug" ]
-		},
-		{
-			"name": "android-c++11-release",
-			"inherits": [ "android", "c++11", "release" ]
-		},
 		{
 			"name": "android-c++14-debug",
 			"inherits": [ "android", "c++14", "debug" ]
