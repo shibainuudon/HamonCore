@@ -7,7 +7,7 @@
 #ifndef HAMON_RANGE_TEST_HELPER_HPP
 #define HAMON_RANGE_TEST_HELPER_HPP
 
-#include <hamon/ranges/range_difference_t.hpp>
+#include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -120,7 +120,7 @@ struct has_subscript
 	: public hamon::false_type {};
 
 template <typename T>
-struct has_subscript<T, hamon::void_t<decltype(hamon::declval<T>()[hamon::declval<hamon::ranges::range_difference_t<T>>()])>>
+struct has_subscript<T, hamon::void_t<decltype(hamon::declval<T>()[hamon::declval<hamon::ptrdiff_t>()])>>
 	: public hamon::true_type {};
 
 // base()
@@ -186,8 +186,44 @@ template <typename T>
 struct has_post_decrement<T, hamon::void_t<decltype(hamon::declval<T>()--)>>
 	: public hamon::true_type {};
 
-// operator==
+// operator+=
 template <typename T, typename U, typename = void>
+struct has_plus_equal
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_plus_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() += hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator-=
+template <typename T, typename U, typename = void>
+struct has_minus_equal
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_minus_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() -= hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator+
+template <typename T, typename U, typename = void>
+struct has_plus
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_plus<T, U, hamon::void_t<decltype(hamon::declval<T>() + hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator-
+template <typename T, typename U, typename = void>
+struct has_minus
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_minus<T, U, hamon::void_t<decltype(hamon::declval<T>() - hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator==
+template <typename T, typename U = T, typename = void>
 struct has_eq
 	: public hamon::false_type {};
 
@@ -196,13 +232,60 @@ struct has_eq<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval
 	: public hamon::true_type {};
 
 // operator!=
-template <typename T, typename U, typename = void>
+template <typename T, typename U = T, typename = void>
 struct has_neq
 	: public hamon::false_type {};
 
 template <typename T, typename U>
 struct has_neq<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
 	: public hamon::true_type {};
+
+// operator<
+template <typename T, typename U = T, typename = void>
+struct has_lt
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_lt<T, U, hamon::void_t<decltype(hamon::declval<T>() < hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator<=
+template <typename T, typename U = T, typename = void>
+struct has_lteq
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_lteq<T, U, hamon::void_t<decltype(hamon::declval<T>() <= hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator>
+template <typename T, typename U = T, typename = void>
+struct has_gt
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_gt<T, U, hamon::void_t<decltype(hamon::declval<T>() > hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator>=
+template <typename T, typename U = T, typename = void>
+struct has_gteq
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_gteq<T, U, hamon::void_t<decltype(hamon::declval<T>() >= hamon::declval<U>())>>
+	: public hamon::true_type {};
+
+// operator<=>
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+template <typename T, typename U = T, typename = void>
+struct has_compare_three_way
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<U>())>>
+	: public hamon::true_type {};
+#endif
 
 }	// namespace hamon_ranges_test
 
