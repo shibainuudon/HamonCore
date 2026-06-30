@@ -114,6 +114,23 @@ template <typename T>
 struct has_subscript<T, hamon::void_t<decltype(hamon::declval<T&>()[hamon::declval<hamon::ranges::range_difference_t<T>>()])>>
 	: public hamon::true_type {};
 
+// operator==
+template <typename T, typename U, typename = void>
+struct has_eq
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_eq<T, U, hamon::void_t<decltype(hamon::declval<T&>() == hamon::declval<U&>())>>
+	: public hamon::true_type {};
+
+// operator!=
+template <typename T, typename U, typename = void>
+struct has_neq
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct has_neq<T, U, hamon::void_t<decltype(hamon::declval<T&>() != hamon::declval<U&>())>>
+	: public hamon::true_type {};
 
 }	// namespace hamon_ranges_test
 

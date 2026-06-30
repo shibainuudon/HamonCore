@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iterator>
 #include "constexpr_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -151,40 +152,6 @@ static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NoDefaultCtor>)
 static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), int&>::value, "");
 #endif
 
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_eq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_eq<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_neq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_neq<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-#define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
-
 template <typename Val, typename CharT>
 HAMON_CXX14_CONSTEXPR bool test00()
 {
@@ -194,6 +161,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::range_t<V>::value, "");
 	static_assert(!hamon::ranges::borrowed_range_t<V>::value, "");
 	static_assert(!hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(!hamon::ranges::approximately_sized_range_t<V>::value, "");
 	static_assert(!hamon::ranges::output_range_t<V, Val>::value, "");
 	static_assert( hamon::ranges::input_range_t<V>::value, "");
 	static_assert(!hamon::ranges::forward_range_t<V>::value, "");
@@ -203,6 +171,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!hamon::ranges::common_range_t<V>::value, "");
 	static_assert( hamon::ranges::viewable_range_t<V>::value, "");
 	static_assert( hamon::ranges::view_t<V>::value, "");
+	static_assert(!hamon::ranges::constant_range_t<V>::value, "");
 
 	static_assert(!hamon::default_initializable_t<V>::value, "");
 
@@ -255,8 +224,6 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	return true;
 }
-
-#undef VERIFY
 
 GTEST_TEST(RangesTest, IstreamViewTest)
 {
