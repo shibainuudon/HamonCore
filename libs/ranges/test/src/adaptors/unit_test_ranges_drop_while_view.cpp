@@ -19,6 +19,7 @@
 #include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -69,30 +70,6 @@ static_assert(!CanInstantiateDropWhileView<test_input_range<int>, LessThanFive>:
 static_assert(!CanInstantiateDropWhileView<test_output_view<int>, LessThanFive>::value, "");	// input_range<V>
 static_assert(!CanInstantiateDropWhileView<test_input_view<int>, LessThanFive&>::value, "");	// is_object_v<Pred>
 static_assert(!CanInstantiateDropWhileView<test_input_view<int*>, LessThanFive>::value, "");	// indirect_unary_predicate<const Pred, iterator_t<V>>
-
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -168,22 +145,52 @@ HAMON_CXX14_CONSTEXPR bool test00()
 HAMON_CXX14_CONSTEXPR bool test01()
 {
 	using V = test_random_access_view<int>;
-	hamon::ranges::drop_while_view<V, LessThanFive> rv{};
+	using DWV = hamon::ranges::drop_while_view<V, LessThanFive>;
 
-	VERIFY(rv.begin() == rv.end());
-	VERIFY(rv.begin() == rv.base().begin());
+	static_assert( has_begin<DWV&>::value, "");
+	static_assert( has_end<DWV&>::value, "");
+	static_assert( has_empty<DWV&>::value, "");
+	static_assert( has_cbegin<DWV&>::value, "");
+	static_assert( has_cend<DWV&>::value, "");
+	static_assert( has_operator_bool<DWV&>::value, "");
+	static_assert(!has_data<DWV&>::value, "");
+	static_assert( has_size<DWV&>::value, "");
+	static_assert(!has_reserve_hint<DWV&>::value, "");
+	static_assert( has_front<DWV&>::value, "");
+	static_assert(!has_back<DWV&>::value, "");
+	static_assert( has_subscript<DWV&>::value, "");
+	static_assert( has_base<DWV&>::value, "");
+
+	static_assert(!has_begin<DWV const&>::value, "");
+	static_assert(!has_end<DWV const&>::value, "");
+	static_assert(!has_empty<DWV const&>::value, "");
+	static_assert(!has_cbegin<DWV const&>::value, "");
+	static_assert(!has_cend<DWV const&>::value, "");
+	static_assert(!has_operator_bool<DWV const&>::value, "");
+	static_assert(!has_data<DWV const&>::value, "");
+	static_assert(!has_size<DWV const&>::value, "");
+	static_assert(!has_reserve_hint<DWV const&>::value, "");
+	static_assert(!has_front<DWV const&>::value, "");
+	static_assert(!has_back<DWV const&>::value, "");
+	static_assert(!has_subscript<DWV const&>::value, "");
+	static_assert( has_base<DWV const&>::value, "");
+
+	DWV dwv{};
+
+	VERIFY(dwv.begin() == dwv.end());
+	VERIFY(dwv.begin() == dwv.base().begin());
 
 	{
-		auto& p = rv.pred();
+		auto& p = dwv.pred();
 		static_assert(hamon::same_as_t<decltype(p), LessThanFive const&>::value, "");
 	}
 	{
-		auto b = rv.base();
+		auto b = dwv.base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
 		VERIFY(b.begin() == b.end());
 	}
 	{
-		auto b = hamon::move(rv).base();
+		auto b = hamon::move(dwv).base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
 		VERIFY(b.begin() == b.end());
 	}
@@ -193,43 +200,72 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
-
 	using V = test_input_view<int>;
+	using DWV = hamon::ranges::drop_while_view<V, LessThanFive>;
+
+	static_assert( has_begin<DWV&>::value, "");
+	static_assert( has_end<DWV&>::value, "");
+	static_assert(!has_empty<DWV&>::value, "");
+	static_assert( has_cbegin<DWV&>::value, "");
+	static_assert( has_cend<DWV&>::value, "");
+	static_assert(!has_operator_bool<DWV&>::value, "");
+	static_assert(!has_data<DWV&>::value, "");
+	static_assert(!has_size<DWV&>::value, "");
+	static_assert(!has_reserve_hint<DWV&>::value, "");
+	static_assert(!has_front<DWV&>::value, "");
+	static_assert(!has_back<DWV&>::value, "");
+	static_assert(!has_subscript<DWV&>::value, "");
+	static_assert( has_base<DWV&>::value, "");
+
+	static_assert(!has_begin<DWV const&>::value, "");
+	static_assert(!has_end<DWV const&>::value, "");
+	static_assert(!has_empty<DWV const&>::value, "");
+	static_assert(!has_cbegin<DWV const&>::value, "");
+	static_assert(!has_cend<DWV const&>::value, "");
+	static_assert(!has_operator_bool<DWV const&>::value, "");
+	static_assert(!has_data<DWV const&>::value, "");
+	static_assert(!has_size<DWV const&>::value, "");
+	static_assert(!has_reserve_hint<DWV const&>::value, "");
+	static_assert(!has_front<DWV const&>::value, "");
+	static_assert(!has_back<DWV const&>::value, "");
+	static_assert(!has_subscript<DWV const&>::value, "");
+	static_assert( has_base<DWV const&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::drop_while_view rv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::drop_while_view<V, LessThanFive>>::value, "");
+	hamon::ranges::drop_while_view dwv{v, LessThanFive{}};
+	static_assert(hamon::same_as_t<decltype(dwv), DWV>::value, "");
 #else
-	hamon::ranges::drop_while_view<V, LessThanFive> rv{v, LessThanFive{}};
+	DWV dwv{v, LessThanFive{}};
 #endif
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = dwv.begin();
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 5);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 6);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 7);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 8);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == dwv.end());
 	}
 	{
-		auto b = rv.base();
+		auto b = dwv.base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
-		VERIFY(rv.begin() != b.begin());
+		VERIFY(dwv.begin() != b.begin());
 	}
 	{
-		auto b = hamon::move(rv).base();
+		auto b = hamon::move(dwv).base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
-		VERIFY(rv.begin() != b.begin());
+		VERIFY(dwv.begin() != b.begin());
 	}
 
 	return true;
@@ -237,40 +273,69 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	int a[] = {10, 1, 2};
-
 	using V = test_input_view<int>;
+	using DWV = hamon::ranges::drop_while_view<V, LessThanFive>;
+
+	static_assert( has_begin<DWV&>::value, "");
+	static_assert( has_end<DWV&>::value, "");
+	static_assert(!has_empty<DWV&>::value, "");
+	static_assert( has_cbegin<DWV&>::value, "");
+	static_assert( has_cend<DWV&>::value, "");
+	static_assert(!has_operator_bool<DWV&>::value, "");
+	static_assert(!has_data<DWV&>::value, "");
+	static_assert(!has_size<DWV&>::value, "");
+	static_assert(!has_reserve_hint<DWV&>::value, "");
+	static_assert(!has_front<DWV&>::value, "");
+	static_assert(!has_back<DWV&>::value, "");
+	static_assert(!has_subscript<DWV&>::value, "");
+	static_assert( has_base<DWV&>::value, "");
+
+	static_assert(!has_begin<DWV const&>::value, "");
+	static_assert(!has_end<DWV const&>::value, "");
+	static_assert(!has_empty<DWV const&>::value, "");
+	static_assert(!has_cbegin<DWV const&>::value, "");
+	static_assert(!has_cend<DWV const&>::value, "");
+	static_assert(!has_operator_bool<DWV const&>::value, "");
+	static_assert(!has_data<DWV const&>::value, "");
+	static_assert(!has_size<DWV const&>::value, "");
+	static_assert(!has_reserve_hint<DWV const&>::value, "");
+	static_assert(!has_front<DWV const&>::value, "");
+	static_assert(!has_back<DWV const&>::value, "");
+	static_assert(!has_subscript<DWV const&>::value, "");
+	static_assert( has_base<DWV const&>::value, "");
+
+	int a[] = {10, 1, 2};
 	V v(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::drop_while_view rv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::drop_while_view<V, LessThanFive>>::value, "");
+	hamon::ranges::drop_while_view dwv{v, LessThanFive{}};
+	static_assert(hamon::same_as_t<decltype(dwv), DWV>::value, "");
 #else
-	hamon::ranges::drop_while_view<V, LessThanFive> rv{v, LessThanFive{}};
+	DWV dwv{v, LessThanFive{}};
 #endif
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = dwv.begin();
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 10);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != dwv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == dwv.end());
 	}
 	{
-		auto b = rv.base();
+		auto b = dwv.base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
-		VERIFY(rv.begin() == b.begin());
+		VERIFY(dwv.begin() == b.begin());
 	}
 	{
-		auto b = hamon::move(rv).base();
+		auto b = hamon::move(dwv).base();
 		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
-		VERIFY(rv.begin() == b.begin());
+		VERIFY(dwv.begin() == b.begin());
 	}
 
 	return true;
@@ -280,22 +345,22 @@ HAMON_CXX17_CONSTEXPR bool test04()
 {
 	{
 		int a[] = { 3, 1, 4, 1, 5, 9 };
-		auto rv = a | hamon::views::drop_while([](int x) { return x % 2 != 0; });
-		auto it = rv.begin();
+		auto dwv = a | hamon::views::drop_while([](int x) { return x % 2 != 0; });
+		auto it = dwv.begin();
 		VERIFY(it[0] == 4);
 		VERIFY(it[1] == 1);
 		VERIFY(it[2] == 5);
 		VERIFY(it[3] == 9);
 	}
 	{
-		auto rv = hamon::views::iota(1, 10) | hamon::views::drop_while([](int x) { return x < 5; });
-		auto it = rv.begin();
+		auto dwv = hamon::views::iota(1, 10) | hamon::views::drop_while([](int x) { return x < 5; });
+		auto it = dwv.begin();
 		VERIFY(*it++ == 5);
 		VERIFY(*it++ == 6);
 		VERIFY(*it++ == 7);
 		VERIFY(*it++ == 8);
 		VERIFY(*it++ == 9);
-		VERIFY(it == rv.end());
+		VERIFY(it == dwv.end());
 	}
 	return true;
 }
