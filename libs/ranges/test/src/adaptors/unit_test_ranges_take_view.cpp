@@ -28,6 +28,7 @@
 #include <sstream>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -46,104 +47,6 @@ static_assert(!CanInstantiateTakeView<int>::value, "");
 static_assert(!CanInstantiateTakeView<test_input_range<int>>::value, "");
 static_assert( CanInstantiateTakeView<test_input_view<int>>::value, "");
 static_assert(!CanInstantiateTakeView<test_input_view<int> const>::value, "");
-
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_size
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_reserve_hint
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_reserve_hint<T, hamon::void_t<decltype(hamon::declval<T>().reserve_hint())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_eq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_eq<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_neq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_neq<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_lt
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_lt<T, U, hamon::void_t<decltype(hamon::declval<T>() < hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_lteq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_lteq<T, U, hamon::void_t<decltype(hamon::declval<T>() <= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_gt
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_gt<T, U, hamon::void_t<decltype(hamon::declval<T>() > hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_gteq
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_gteq<T, U, hamon::void_t<decltype(hamon::declval<T>() >= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename T, typename U, typename = void>
-struct has_compare_three_way
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<U>())>>
-	: public hamon::true_type {};
-#endif
 
 template <typename T>
 struct ConstNotView : hamon::ranges::view_base
@@ -331,111 +234,127 @@ HAMON_CXX14_CONSTEXPR bool test00()
 {
 	using T = int;
 	using V = View<T>;
-	using RV = hamon::ranges::take_view<V>;
+	using TV = hamon::ranges::take_view<V>;
 
-	static_assert(hamon::default_initializable_t<RV>::value == hamon::default_initializable_t<V>::value, "");
+	static_assert(hamon::default_initializable_t<TV>::value == hamon::default_initializable_t<V>::value, "");
 
-	static_assert(hamon::ranges::range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
-	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<V>::value, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<V>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value ==
+	static_assert(hamon::ranges::range_t<TV>::value == true, "");
+	static_assert(hamon::ranges::borrowed_range_t<TV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
+	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(hamon::ranges::output_range_t<TV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
+	static_assert(hamon::ranges::input_range_t<TV>::value == hamon::ranges::input_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range_t<TV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::bidirectional_range_t<TV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(hamon::ranges::random_access_range_t<TV>::value == hamon::ranges::random_access_range_t<V>::value, "");
+	static_assert(hamon::ranges::contiguous_range_t<TV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
+	static_assert(hamon::ranges::common_range_t<TV>::value ==
 		(hamon::ranges::sized_range_t<V>::value && hamon::ranges::random_access_range_t<V>::value), "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::view_t<RV>::value == true, "");
+	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");
+	static_assert(hamon::ranges::view_t<TV>::value == true, "");
 
-	static_assert(hamon::is_default_constructible<RV>::value == hamon::is_default_constructible<V>::value, "");
-	static_assert(hamon::is_nothrow_default_constructible<RV>::value == hamon::is_nothrow_default_constructible<V>::value, "");
-	static_assert(hamon::is_implicitly_default_constructible<RV>::value == hamon::is_implicitly_default_constructible<V>::value, "");
+	static_assert(hamon::is_default_constructible<TV>::value == hamon::is_default_constructible<V>::value, "");
+	static_assert(hamon::is_nothrow_default_constructible<TV>::value == hamon::is_nothrow_default_constructible<V>::value, "");
+	static_assert(hamon::is_implicitly_default_constructible<TV>::value == hamon::is_implicitly_default_constructible<V>::value, "");
 
-	static_assert(hamon::is_constructible<RV, V, hamon::ptrdiff_t>::value, "");
+	static_assert(hamon::is_constructible<TV, V, hamon::ptrdiff_t>::value, "");
 #if 0
-	static_assert(hamon::is_nothrow_constructible<RV, V, hamon::ptrdiff_t>::value, "");
+	static_assert(hamon::is_nothrow_constructible<TV, V, hamon::ptrdiff_t>::value, "");
 #endif
-	static_assert(!hamon::is_implicitly_constructible<RV, V, hamon::ptrdiff_t>::value, "");
+	static_assert(!hamon::is_implicitly_constructible<TV, V, hamon::ptrdiff_t>::value, "");
 
-	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV&&>::value, "");
-	static_assert(has_base<RV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV&&>::value, "");
+	static_assert(has_base<TV const&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(has_begin<RV>::value, "");
-	static_assert(has_begin<RV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_begin<TV>::value, "");
+	static_assert(has_begin<TV const>::value == hamon::ranges::range_t<V const>::value, "");
 
-	static_assert(has_end<RV>::value, "");
-	static_assert(has_end<RV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_end<TV>::value, "");
+	static_assert(has_end<TV const>::value == hamon::ranges::range_t<V const>::value, "");
 
-	static_assert(has_size<RV>::value == hamon::ranges::sized_range_t<V>::value, "");
-	static_assert(has_size<RV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
+	static_assert(has_size<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(has_size<TV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
 
-	static_assert(has_reserve_hint<RV>::value, "");
-	static_assert(has_reserve_hint<RV const>::value, "");
+	static_assert(has_reserve_hint<TV>::value, "");
+	static_assert(has_reserve_hint<TV const>::value, "");
 
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	int a[] = {1, 2, 3, 4, 5};
 	using R = test_random_access_view<int>;
-	R r(a);
+	using TV = hamon::ranges::take_view<R>;
 
-#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 3};
-#else
-	hamon::ranges::take_view<R> rv{r, 3};
-#endif
-	using RV = decltype(rv);
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert( has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert( has_back<TV&>::value, "");
+	static_assert( has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
 
 	{
-		RV t{};
+		TV t{};
 		VERIFY(t.size() == 0);
 	}
 
-	auto const& crv = rv;
+	int a[] = {1, 2, 3, 4, 5};
+	R r(a);
 
-	VERIFY(rv.size() == 3);
-	VERIFY(crv.size() == 3);
-	VERIFY(rv.reserve_hint() == 3);
-	VERIFY(crv.reserve_hint() == 3);
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+#if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
+	hamon::ranges::take_view tv{r, 3};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+#else
+	TV tv{r, 3};
+#endif
 
-	static_assert(hamon::same_as_t<decltype(rv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(rv.end()),   decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(crv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(crv.end()),   decltype(r.begin())>::value, "");
+	auto const& ctv = tv;
+
+	VERIFY(tv.size() == 3);
+	VERIFY(ctv.size() == 3);
+	VERIFY(tv.reserve_hint() == 3);
+	VERIFY(ctv.reserve_hint() == 3);
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
+
+	static_assert(hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(ctv.begin()), decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(ctv.end()),   decltype(r.begin())>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -443,66 +362,83 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
-	int a[] = {1, 2, 3, 4, 5};
 	using R = test_random_access_view<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert( has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert( has_back<TV&>::value, "");
+	static_assert( has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5};
 	R r(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 10};
+	hamon::ranges::take_view tv{r, 10};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 10};
+	TV tv{r, 10};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.size() == 5);
-	VERIFY(crv.size() == 5);
-	VERIFY(rv.reserve_hint() == 5);
-	VERIFY(crv.reserve_hint() == 5);
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+	VERIFY(tv.size() == 5);
+	VERIFY(ctv.size() == 5);
+	VERIFY(tv.reserve_hint() == 5);
+	VERIFY(ctv.reserve_hint() == 5);
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert(hamon::same_as_t<decltype(rv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(rv.end()),   decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(crv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(crv.end()),   decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(ctv.begin()), decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as_t<decltype(ctv.end()),   decltype(r.begin())>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 5);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 5);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -510,49 +446,66 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	using R = NotSimpleRandomAccessView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert( has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert( has_back<TV&>::value, "");
+	static_assert( has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 2};
+	hamon::ranges::take_view tv{r, 2};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 2};
+	TV tv{r, 2};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.size() == 2);
-	VERIFY(crv.size() == 2);
-	VERIFY(rv.reserve_hint() == 2);
-	VERIFY(crv.reserve_hint() == 2);
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+	VERIFY(tv.size() == 2);
+	VERIFY(ctv.size() == 2);
+	VERIFY(tv.reserve_hint() == 2);
+	VERIFY(ctv.reserve_hint() == 2);
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end()),   decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), decltype(cr.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end()),   decltype(cr.begin())>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), decltype(cr.begin())>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end()),   decltype(cr.begin())>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -560,43 +513,60 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 HAMON_CXX14_CONSTEXPR bool test04()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	using R = NotSimpleForwardView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert(!has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert(!has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 4};
+	hamon::ranges::take_view tv{r, 4};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 4};
+	TV tv{r, 4};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.reserve_hint() == 4);
-	VERIFY(crv.reserve_hint() == 4);
+	VERIFY(tv.reserve_hint() == 4);
+	VERIFY(ctv.reserve_hint() == 4);
 
-	static_assert(!has_size<decltype(rv)>::value, "");
-	static_assert(!has_size<decltype(crv)>::value, "");
-	static_assert( has_reserve_hint<decltype(rv)>::value, "");
-	static_assert( has_reserve_hint<decltype(crv)>::value, "");
+	static_assert(!has_size<decltype(tv)>::value, "");
+	static_assert(!has_size<decltype(ctv)>::value, "");
+	static_assert( has_reserve_hint<decltype(tv)>::value, "");
+	static_assert( has_reserve_hint<decltype(ctv)>::value, "");
 
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(rv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end().base()), decltype(r.end())>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(crv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end().base()), decltype(cr.end())>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end().base()), decltype(r.end())>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end().base()), decltype(cr.end())>::value, "");
 
 	{
-		using Iter  = decltype(rv.begin());
-		using CIter = decltype(crv.begin());
-		using Sent  = decltype(rv.end());
-		using CSent = decltype(crv.end());
+		using Iter  = decltype(tv.begin());
+		using CIter = decltype(ctv.begin());
+		using Sent  = decltype(tv.end());
+		using CSent = decltype(ctv.end());
 
 		static_assert( has_eq  <Iter, Iter>::value, "");
 		static_assert(!has_eq  <Iter, CIter>::value, "");
@@ -699,45 +669,45 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		static_assert(!has_gteq<CSent, CSent>::value, "");
 	}
 
-	using Sentinel = decltype(rv.end());
-	using ConstSentinel = decltype(crv.end());
+	using Sentinel = decltype(tv.end());
+	using ConstSentinel = decltype(ctv.end());
 	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == rv.end());
-		VERIFY(rv.end().base().m_it.m_ptr == a + 9);
+		VERIFY(it == tv.end());
+		VERIFY(tv.end().base().m_it.m_ptr == a + 9);
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == crv.end());
-		VERIFY(crv.end().base().m_it.m_ptr == a + 9);
+		VERIFY(it == ctv.end());
+		VERIFY(ctv.end().base().m_it.m_ptr == a + 9);
 	}
 
 	return true;
@@ -745,61 +715,78 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 HAMON_CXX14_CONSTEXPR bool test05()
 {
-	int a[] = {1, 2, 3, 4, 5, 6};
 	using R = NotSimpleForwardSizedView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert( has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert(!has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 4};
+	hamon::ranges::take_view tv{r, 4};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 4};
+	TV tv{r, 4};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.size() == 4);
-	VERIFY(crv.size() == 4);
-	VERIFY(rv.reserve_hint() == 4);
-	VERIFY(crv.reserve_hint() == 4);
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+	VERIFY(tv.size() == 4);
+	VERIFY(ctv.size() == 4);
+	VERIFY(tv.reserve_hint() == 4);
+	VERIFY(ctv.reserve_hint() == 4);
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -807,73 +794,90 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 HAMON_CXX14_CONSTEXPR bool test06()
 {
-	int a[] = {1, 2, 3, 4, 5, 6};
 	using R = NotSimpleForwardSizedView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert( has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert(!has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 999};
+	hamon::ranges::take_view tv{r, 999};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 999};
+	TV tv{r, 999};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.size() == 6);
-	VERIFY(crv.size() == 6);
-	VERIFY(rv.reserve_hint() == 6);
-	VERIFY(crv.reserve_hint() == 6);
-	VERIFY(rv.base().begin() == r.begin());
-	VERIFY(hamon::move(rv).base().begin() == r.begin());
+	VERIFY(tv.size() == 6);
+	VERIFY(ctv.size() == 6);
+	VERIFY(tv.reserve_hint() == 6);
+	VERIFY(ctv.reserve_hint() == 6);
+	VERIFY(tv.base().begin() == r.begin());
+	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 5);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 6);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 5);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 6);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -881,56 +885,73 @@ HAMON_CXX14_CONSTEXPR bool test06()
 
 HAMON_CXX14_CONSTEXPR bool test07()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	using R = CountedView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert(!has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert(!has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert(!has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert(!has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert(!has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 3};
+	hamon::ranges::take_view tv{r, 3};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 3};
+	TV tv{r, 3};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.reserve_hint() == 3);
-	VERIFY(crv.reserve_hint() == 3);
+	VERIFY(tv.reserve_hint() == 3);
+	VERIFY(ctv.reserve_hint() == 3);
 
-	static_assert(!has_size<decltype(rv)>::value, "");
-	static_assert(!has_size<decltype(crv)>::value, "");
-	static_assert( has_reserve_hint<decltype(rv)>::value, "");
-	static_assert( has_reserve_hint<decltype(crv)>::value, "");
+	static_assert(!has_size<decltype(tv)>::value, "");
+	static_assert(!has_size<decltype(ctv)>::value, "");
+	static_assert( has_reserve_hint<decltype(tv)>::value, "");
+	static_assert( has_reserve_hint<decltype(ctv)>::value, "");
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -938,56 +959,73 @@ HAMON_CXX14_CONSTEXPR bool test07()
 
 HAMON_CXX14_CONSTEXPR bool test08()
 {
-	int a[] = {1, 2, 3};
 	using R = CountedView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert(!has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert(!has_operator_bool<TV&>::value, "");
+	static_assert(!has_data<TV&>::value, "");
+	static_assert(!has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert(!has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert(!has_subscript<TV&>::value, "");
+	static_assert( has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{r, 10};
+	hamon::ranges::take_view tv{r, 10};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{r, 10};
+	TV tv{r, 10};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	VERIFY(rv.reserve_hint() == 10);
-	VERIFY(crv.reserve_hint() == 10);
+	VERIFY(tv.reserve_hint() == 10);
+	VERIFY(ctv.reserve_hint() == 10);
 
-	static_assert(!has_size<decltype(rv)>::value, "");
-	static_assert(!has_size<decltype(crv)>::value, "");
-	static_assert( has_reserve_hint<decltype(rv)>::value, "");
-	static_assert( has_reserve_hint<decltype(crv)>::value, "");
+	static_assert(!has_size<decltype(tv)>::value, "");
+	static_assert(!has_size<decltype(ctv)>::value, "");
+	static_assert( has_reserve_hint<decltype(tv)>::value, "");
+	static_assert( has_reserve_hint<decltype(ctv)>::value, "");
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
 
 	{
-		auto it = rv.begin();
-		VERIFY(it != rv.end());
+		auto it = tv.begin();
+		VERIFY(it != tv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.end());
+		VERIFY(it != tv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == rv.end());
+		VERIFY(it == tv.end());
 	}
 	{
-		auto it = crv.begin();
-		VERIFY(it != crv.end());
+		auto it = ctv.begin();
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != crv.end());
+		VERIFY(it != ctv.end());
 		VERIFY(*it == 3);
 		++it;
-		VERIFY(it == crv.end());
+		VERIFY(it == ctv.end());
 	}
 
 	return true;
@@ -995,32 +1033,49 @@ HAMON_CXX14_CONSTEXPR bool test08()
 
 HAMON_CXX14_CONSTEXPR bool test09()
 {
-	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	using R = UnreachableView<int>;
+	using TV = hamon::ranges::take_view<R>;
+
+	static_assert( has_begin<TV&>::value, "");
+	static_assert( has_end<TV&>::value, "");
+	static_assert( has_empty<TV&>::value, "");
+	static_assert( has_cbegin<TV&>::value, "");
+	static_assert( has_cend<TV&>::value, "");
+	static_assert( has_operator_bool<TV&>::value, "");
+	static_assert( has_data<TV&>::value, "");
+	static_assert(!has_size<TV&>::value, "");
+	static_assert( has_reserve_hint<TV&>::value, "");
+	static_assert( has_front<TV&>::value, "");
+	static_assert(!has_back<TV&>::value, "");
+	static_assert( has_subscript<TV&>::value, "");
+	static_assert(!has_base<TV&>::value, "");
+
+	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-	hamon::ranges::take_view rv{hamon::move(r), 3};
+	hamon::ranges::take_view tv{hamon::move(r), 3};
+	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
 #else
-	hamon::ranges::take_view<R> rv{hamon::move(r), 3};
+	TV tv{hamon::move(r), 3};
 #endif
-	auto const& crv = rv;
+	auto const& ctv = tv;
 
-	static_assert( hamon::same_as_t<decltype(rv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(rv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(rv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(rv.end().base()), decltype(r.end())>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(crv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(crv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(crv.end().base()), decltype(cr.end())>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(tv.end().base()), decltype(r.end())>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
+	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as_t<decltype(ctv.end().base()), decltype(cr.end())>::value, "");
 
 	{
-		using Iter  = decltype(rv.begin());
-		using CIter = decltype(crv.begin());
-		using Sent  = decltype(rv.end());
-		using CSent = decltype(crv.end());
+		using Iter  = decltype(tv.begin());
+		using CIter = decltype(ctv.begin());
+		using Sent  = decltype(tv.end());
+		using CSent = decltype(ctv.end());
 
 		static_assert( has_eq  <Iter, Iter>::value, "");
 		static_assert( has_eq  <Iter, CIter>::value, "");
@@ -1123,27 +1178,27 @@ HAMON_CXX14_CONSTEXPR bool test09()
 		static_assert(!has_gteq<CSent, CSent>::value, "");
 	}
 
-	using Sentinel = decltype(rv.end());
-	using ConstSentinel = decltype(crv.end());
+	using Sentinel = decltype(tv.end());
+	using ConstSentinel = decltype(ctv.end());
 	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 
 	{
 		Sentinel s{};
-		VERIFY(rv.begin() != s);
-		VERIFY(crv.begin() != s);
+		VERIFY(tv.begin() != s);
+		VERIFY(ctv.begin() != s);
 	}
 	{
 		ConstSentinel cs{};
-		VERIFY(rv.begin() != cs);
-		VERIFY(crv.begin() != cs);
+		VERIFY(tv.begin() != cs);
+		VERIFY(ctv.begin() != cs);
 	}
 
-	Sentinel s = rv.end();
+	Sentinel s = tv.end();
 	ConstSentinel cs = s;
 
-	auto it = rv.begin();
+	auto it = tv.begin();
 	VERIFY(it != s);
 	VERIFY(it != cs);
 	VERIFY(s  != it);
@@ -1174,38 +1229,38 @@ HAMON_CXX14_CONSTEXPR bool test10()
 	{
 		using R = test_forward_sized_view<int>;
 		R r(a);
-		auto rv = r | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<R>>::value, "");
-		VERIFY(rv.base().begin() == r.begin());
-		VERIFY(rv.base().end() == r.end());
-		VERIFY(rv.size() == 3);
-		VERIFY(rv.reserve_hint() == 3);
+		auto tv = r | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<R>>::value, "");
+		VERIFY(tv.base().begin() == r.begin());
+		VERIFY(tv.base().end() == r.end());
+		VERIFY(tv.size() == 3);
+		VERIFY(tv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(r, 3);
-		static_assert( hamon::same_as_t<decltype(rv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
 	}
 	{
-		auto rv = a | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>::value, "");
-		VERIFY(rv.base().begin() == a);
-		VERIFY(rv.base().end() == a + 9);
-		VERIFY(rv.size() == 3);
-		VERIFY(rv.reserve_hint() == 3);
+		auto tv = a | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>::value, "");
+		VERIFY(tv.base().begin() == a);
+		VERIFY(tv.base().end() == a + 9);
+		VERIFY(tv.size() == 3);
+		VERIFY(tv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(a, 3);
-		static_assert( hamon::same_as_t<decltype(rv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
 	}
 	{
-		auto rv = a | hamon::views::take(5) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>>::value, "");
-		VERIFY(rv.base().base().begin() == a);
-		VERIFY(rv.base().base().end() == a + 9);
-		VERIFY(rv.size() == 3);
-		VERIFY(rv.reserve_hint() == 3);
-		VERIFY(*rv.begin() == 1);
+		auto tv = a | hamon::views::take(5) | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>>::value, "");
+		VERIFY(tv.base().base().begin() == a);
+		VERIFY(tv.base().base().end() == a + 9);
+		VERIFY(tv.size() == 3);
+		VERIFY(tv.reserve_hint() == 3);
+		VERIFY(*tv.begin() == 1);
 
 		auto rv2 = hamon::views::take(hamon::views::take(a, 5), 3);
-		static_assert( hamon::same_as_t<decltype(rv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
 	}
 
 	struct Double
@@ -1217,57 +1272,57 @@ HAMON_CXX14_CONSTEXPR bool test10()
 	};
 
 	{
-		auto rv = a | hamon::views::transform(Double{}) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
-		VERIFY(rv.size() == 4);
-		VERIFY(rv.reserve_hint() == 4);
-		VERIFY(*rv.begin() == 2);
+		auto tv = a | hamon::views::transform(Double{}) | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
+		VERIFY(tv.size() == 4);
+		VERIFY(tv.reserve_hint() == 4);
+		VERIFY(*tv.begin() == 2);
 	}
 	{
-		auto rv = a | hamon::views::take(4) | hamon::views::transform(Double{});
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::transform_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>, Double>>::value, "");
-		VERIFY(rv.size() == 4);
-		VERIFY(rv.reserve_hint() == 4);
-		VERIFY(*rv.begin() == 2);
+		auto tv = a | hamon::views::take(4) | hamon::views::transform(Double{});
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::transform_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>, Double>>::value, "");
+		VERIFY(tv.size() == 4);
+		VERIFY(tv.reserve_hint() == 4);
+		VERIFY(*tv.begin() == 2);
 	}
 	{
 		auto partial = hamon::views::transform(Double{}) | hamon::views::take(4);
-		auto rv = a | partial;
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
-		VERIFY(rv.size() == 4);
-		VERIFY(rv.reserve_hint() == 4);
-		VERIFY(*rv.begin() == 2);
+		auto tv = a | partial;
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
+		VERIFY(tv.size() == 4);
+		VERIFY(tv.reserve_hint() == 4);
+		VERIFY(*tv.begin() == 2);
 	}
 
 	{
 		hamon::ranges::empty_view<int> r;
-		auto rv = r | hamon::views::take(5);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::empty_view<int>>::value, "");
-		VERIFY(rv.size() == 0);
+		auto tv = r | hamon::views::take(5);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::empty_view<int>>::value, "");
+		VERIFY(tv.size() == 0);
 	}
 	{
 		hamon::span<int> s(a);
-		auto rv = s | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::span<int>>::value, "");
-		VERIFY(rv.size() == 3);
+		auto tv = s | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::span<int>>::value, "");
+		VERIFY(tv.size() == 3);
 	}
 	{
 		hamon::span<int, 9> s(a);
-		auto rv = s | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::span<int, hamon::dynamic_extent>>::value, "");
-		VERIFY(rv.size() == 3);
+		auto tv = s | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::span<int, hamon::dynamic_extent>>::value, "");
+		VERIFY(tv.size() == 3);
 	}
 	{
 		hamon::string_view sv = "abcdefg";
-		auto rv = sv | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::string_view>::value, "");
-		VERIFY(rv.size() == 4);
+		auto tv = sv | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::string_view>::value, "");
+		VERIFY(tv.size() == 4);
 	}
 	{
 		hamon::ranges::subrange<int*> s(a, a + 5);
-		auto rv = s | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::subrange<int*>>::value, "");
-		VERIFY(rv.size() == 4);
+		auto tv = s | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::subrange<int*>>::value, "");
+		VERIFY(tv.size() == 4);
 	}
 	{
 		using R = test_forward_sized_view<int>;
@@ -1275,33 +1330,33 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		using S = hamon::ranges::sentinel_t<R>;
 		R r(a);
 		hamon::ranges::subrange<I, S> s(r.begin(), r.end());
-		auto rv = s | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<decltype(s)>>::value, "");
-		static_assert(has_size<decltype(rv)>::value == false, "");
+		auto tv = s | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<decltype(s)>>::value, "");
+		static_assert(has_size<decltype(tv)>::value == false, "");
 	}
 	{
-		auto rv = hamon::views::iota(1, 8) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::iota_view<int, int>>::value, "");
-		VERIFY(rv.size() == 3);
-		VERIFY(*rv.begin() == 1);
+		auto tv = hamon::views::iota(1, 8) | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::iota_view<int, int>>::value, "");
+		VERIFY(tv.size() == 3);
+		VERIFY(*tv.begin() == 1);
 	}
 	{
-		auto rv = hamon::views::iota(1) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::take_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>::value, "");
-		static_assert(has_size<decltype(rv)>::value == false, "");
-		VERIFY(*rv.begin() == 1);
+		auto tv = hamon::views::iota(1) | hamon::views::take(3);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>::value, "");
+		static_assert(has_size<decltype(tv)>::value == false, "");
+		VERIFY(*tv.begin() == 1);
 	}
 	{
-		auto rv = hamon::views::repeat(42, 8) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::repeat_view<int, int>>::value, "");
-		VERIFY(rv.size() == 4);
-		VERIFY(*rv.begin() == 42);
+		auto tv = hamon::views::repeat(42, 8) | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::repeat_view<int, int>>::value, "");
+		VERIFY(tv.size() == 4);
+		VERIFY(*tv.begin() == 42);
 	}
 	{
-		auto rv = hamon::views::repeat(42) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(rv), hamon::ranges::repeat_view<int, hamon::ranges::range_difference_t<decltype(hamon::views::repeat(42))>>>::value, "");
-		VERIFY(rv.size() == 4);
-		VERIFY(*rv.begin() == 42);
+		auto tv = hamon::views::repeat(42) | hamon::views::take(4);
+		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::repeat_view<int, hamon::ranges::range_difference_t<decltype(hamon::views::repeat(42))>>>::value, "");
+		VERIFY(tv.size() == 4);
+		VERIFY(*tv.begin() == 42);
 	}
 
 	return true;
