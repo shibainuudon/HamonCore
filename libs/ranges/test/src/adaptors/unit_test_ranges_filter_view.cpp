@@ -19,83 +19,12 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
 namespace filter_view_test
 {
-
-template <typename T, typename = void>
-struct has_iterator_category
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_arrow
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_arrow<T, hamon::void_t<decltype(hamon::declval<T>().operator->())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_pre_increment
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_pre_increment<T, hamon::void_t<decltype(++hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_post_increment
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_post_increment<T, hamon::void_t<decltype(hamon::declval<T>()++)>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_pre_decrement
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_pre_decrement<T, hamon::void_t<decltype(--hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_post_decrement
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_post_decrement<T, hamon::void_t<decltype(hamon::declval<T>()--)>>
-	: public hamon::true_type {};
 
 struct is_even
 {
@@ -167,6 +96,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::range_t<RV>::value == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<RV>::value == false, "");
 	static_assert(hamon::ranges::sized_range_t<RV>::value == false, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<RV>::value == false, "");
 	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<RV>::value == true, "");
 	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
@@ -176,6 +106,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<V>::value, "");
 	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
 	static_assert(hamon::ranges::view_t<RV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<RV>::value == false, "");
 
 	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<RV&&>::value, "");
@@ -239,9 +170,27 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	{
 		using R = test_random_access_view<int>;
-		hamon::ranges::filter_view<R, is_even> rv{};
+		using FV = hamon::ranges::filter_view<R, is_even>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert( has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert( has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert( has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		FV rv{};
 		VERIFY(rv.empty());
 		VERIFY(rv.begin() == rv.end());
+		VERIFY(rv.cbegin() == rv.cend());
+		VERIFY((bool)rv == false);
 	}
 	return true;
 }
@@ -249,15 +198,31 @@ HAMON_CXX14_CONSTEXPR bool test01()
 HAMON_CXX14_CONSTEXPR bool test02()
 {
 	{
-		int a[] = {1, 2, 3, 4, 5};
 		using R = test_random_access_view<int>;
+		using FV = hamon::ranges::filter_view<R, is_even>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert( has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert( has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert( has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::filter_view rv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::filter_view<R, is_even>>::value, "");
+		static_assert(hamon::same_as_t<decltype(rv), FV>::value, "");
 #else
-		hamon::ranges::filter_view<R, is_even> rv{r, is_even{}};
+		FV rv{r, is_even{}};
 #endif
 		VERIFY(!rv.empty());
 		VERIFY(rv.base().begin() == r.begin());
@@ -304,15 +269,31 @@ HAMON_CXX14_CONSTEXPR bool test02()
 HAMON_CXX14_CONSTEXPR bool test03()
 {
 	{
-		int a[] = {3, 1, 4, 1, 5, 9, 2};
 		using R = test_forward_view<int>;
+		using FV = hamon::ranges::filter_view<R, is_even>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert( has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert( has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert( has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		int a[] = {3, 1, 4, 1, 5, 9, 2};
 		R r(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::filter_view rv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(rv), hamon::ranges::filter_view<R, is_even>>::value, "");
+		static_assert(hamon::same_as_t<decltype(rv), FV>::value, "");
 #else
-		hamon::ranges::filter_view<R, is_even> rv{r, is_even{}};
+		FV rv{r, is_even{}};
 #endif
 		VERIFY(!rv.empty());
 		VERIFY(rv.base().begin() == r.begin());
@@ -350,11 +331,27 @@ HAMON_CXX14_CONSTEXPR bool test03()
 HAMON_CXX14_CONSTEXPR bool test04()
 {
 	{
-		int a[] = {1, 2, 3, 4, 5};
 		using R = test_input_common_view<int>;
+		using FV = hamon::ranges::filter_view<R, is_odd>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert(!has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert(!has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert(!has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		hamon::ranges::filter_view<R, is_odd> rv{r, pred};
+		FV rv{r, pred};
 		VERIFY(&rv.pred() != &pred);
 
 		auto it = rv.begin();
@@ -395,11 +392,27 @@ HAMON_CXX14_CONSTEXPR bool test04()
 HAMON_CXX14_CONSTEXPR bool test05()
 {
 	{
-		int a[] = {1, 2, 3, 4, 5};
 		using R = test_contiguous_view<int>;
+		using FV = hamon::ranges::filter_view<R, is_odd>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert( has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert( has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert( has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		hamon::ranges::filter_view<R, is_odd> rv{r, pred};
+		FV rv{r, pred};
 		VERIFY(&rv.pred() != &pred);
 
 		auto it = rv.begin();
@@ -431,11 +444,27 @@ HAMON_CXX14_CONSTEXPR bool test05()
 HAMON_CXX14_CONSTEXPR bool test06()
 {
 	{
-		int a[] = {2, 3, 4, 5};
 		using R = test_contiguous_view<int>;
+		using FV = hamon::ranges::filter_view<R, is_odd>;
+
+		static_assert( has_begin<FV&>::value, "");
+		static_assert( has_end<FV&>::value, "");
+		static_assert( has_empty<FV&>::value, "");
+		static_assert( has_cbegin<FV&>::value, "");
+		static_assert( has_cend<FV&>::value, "");
+		static_assert( has_operator_bool<FV&>::value, "");
+		static_assert(!has_data<FV&>::value, "");
+		static_assert(!has_size<FV&>::value, "");
+		static_assert(!has_reserve_hint<FV&>::value, "");
+		static_assert( has_front<FV&>::value, "");
+		static_assert(!has_back<FV&>::value, "");
+		static_assert(!has_subscript<FV&>::value, "");
+		static_assert( has_base<FV&>::value, "");
+
+		int a[] = {2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		hamon::ranges::filter_view<R, is_odd> rv{r, pred};
+		FV rv{r, pred};
 		VERIFY(&rv.pred() != &pred);
 
 		{

@@ -132,6 +132,60 @@ template <typename T>
 struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
 	: public hamon::true_type {};
 
+// T::iterator_category
+template <typename T, typename = void>
+struct has_iterator_category
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
+	: public hamon::true_type {};
+
+// operator->()
+template <typename T, typename = void>
+struct has_arrow
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_arrow<T, hamon::void_t<decltype(hamon::declval<T>().operator->())>>
+	: public hamon::true_type {};
+
+// operator++()
+template <typename T, typename = void>
+struct has_pre_increment
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_pre_increment<T, hamon::void_t<decltype(++hamon::declval<T>())>>
+	: public hamon::true_type {};
+
+// operator++(int)
+template <typename T, typename = void>
+struct has_post_increment
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_post_increment<T, hamon::void_t<decltype(hamon::declval<T>()++)>>
+	: public hamon::true_type {};
+
+// operator--()
+template <typename T, typename = void>
+struct has_pre_decrement
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_pre_decrement<T, hamon::void_t<decltype(--hamon::declval<T>())>>
+	: public hamon::true_type {};
+
+// operator--(int)
+template <typename T, typename = void>
+struct has_post_decrement
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_post_decrement<T, hamon::void_t<decltype(hamon::declval<T>()--)>>
+	: public hamon::true_type {};
+
 // operator==
 template <typename T, typename U, typename = void>
 struct has_eq
