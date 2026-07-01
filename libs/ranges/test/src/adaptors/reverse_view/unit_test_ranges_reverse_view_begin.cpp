@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -35,14 +36,6 @@ struct TestView : hamon::ranges::view_base
 	Sentinel      end()         noexcept;
 	ConstSentinel end()   const noexcept;
 };
-
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -132,6 +125,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert(has_begin<RV&>::value, "");
 		static_assert(has_begin<RV const&>::value, "");
+		static_assert(has_cbegin<RV&>::value, "");
+		static_assert(has_cbegin<RV const&>::value, "");
 
 		using ReverseIterator = hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>;
 		static_assert(hamon::is_same<decltype(hamon::declval<RV&>().begin()), ReverseIterator>::value, "");
@@ -152,6 +147,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert(has_begin<RV&>::value, "");
 		static_assert(has_begin<RV const&>::value, "");
+		static_assert(has_cbegin<RV&>::value, "");
+		static_assert(has_cbegin<RV const&>::value, "");
 
 		using ReverseIterator = hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>;
 		static_assert(hamon::is_same<decltype(hamon::declval<RV&>().begin()), ReverseIterator>::value, "");
@@ -172,6 +169,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");
+		static_assert( has_cbegin<RV&>::value, "");
+		static_assert(!has_cbegin<RV const&>::value, "");
 
 		using ReverseIterator = hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>;
 		static_assert(hamon::is_same<decltype(hamon::declval<RV&>().begin()), ReverseIterator>::value, "");
@@ -191,6 +190,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");
+		static_assert( has_cbegin<RV&>::value, "");
+		static_assert(!has_cbegin<RV const&>::value, "");
 
 		using ReverseIterator = hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>;
 		static_assert(hamon::is_same<decltype(hamon::declval<RV&>().begin()), ReverseIterator>::value, "");
