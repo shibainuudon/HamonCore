@@ -241,6 +241,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<TV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::output_range_t<TV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<TV>::value == hamon::ranges::input_range_t<V>::value, "");
 	static_assert(hamon::ranges::forward_range_t<TV>::value == hamon::ranges::forward_range_t<V>::value, "");
@@ -251,6 +252,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		(hamon::ranges::sized_range_t<V>::value && hamon::ranges::random_access_range_t<V>::value), "");
 	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::view_t<TV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<TV>::value == false, "");
 
 	static_assert(hamon::is_default_constructible<TV>::value == hamon::is_default_constructible<V>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<TV>::value == hamon::is_nothrow_default_constructible<V>::value, "");
@@ -300,6 +302,20 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( has_back<TV&>::value, "");
 	static_assert( has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
+
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert( has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert( has_back<TV const&>::value, "");
+	static_assert( has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
 
 	{
 		TV t{};
@@ -378,6 +394,20 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert( has_back<TV&>::value, "");
 	static_assert( has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
+
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert( has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert( has_back<TV const&>::value, "");
+	static_assert( has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5};
 	R r(a);
@@ -463,6 +493,20 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
 
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert( has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert( has_back<TV const&>::value, "");
+	static_assert( has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
+
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
@@ -529,6 +573,20 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(!has_back<TV&>::value, "");
 	static_assert(!has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
+
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert(!has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert(!has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
@@ -732,6 +790,20 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	static_assert(!has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
 
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert( has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert(!has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
+
 	int a[] = {1, 2, 3, 4, 5, 6};
 	R r(a);
 	auto const& cr = r;
@@ -810,6 +882,20 @@ HAMON_CXX14_CONSTEXPR bool test06()
 	static_assert(!has_back<TV&>::value, "");
 	static_assert(!has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
+
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert( has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert(!has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6};
 	R r(a);
@@ -902,6 +988,20 @@ HAMON_CXX14_CONSTEXPR bool test07()
 	static_assert(!has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
 
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert(!has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert(!has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert(!has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert(!has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert(!has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
+
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
 	auto const& cr = r;
@@ -976,6 +1076,20 @@ HAMON_CXX14_CONSTEXPR bool test08()
 	static_assert(!has_subscript<TV&>::value, "");
 	static_assert( has_base<TV&>::value, "");
 
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert(!has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert(!has_operator_bool<TV const&>::value, "");
+	static_assert(!has_data<TV const&>::value, "");
+	static_assert(!has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert(!has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert(!has_subscript<TV const&>::value, "");
+	static_assert( has_base<TV const&>::value, "");
+
 	int a[] = {1, 2, 3};
 	R r(a);
 	auto const& cr = r;
@@ -1049,6 +1163,20 @@ HAMON_CXX14_CONSTEXPR bool test09()
 	static_assert(!has_back<TV&>::value, "");
 	static_assert( has_subscript<TV&>::value, "");
 	static_assert(!has_base<TV&>::value, "");
+
+	static_assert( has_begin<TV const&>::value, "");
+	static_assert( has_end<TV const&>::value, "");
+	static_assert( has_empty<TV const&>::value, "");
+	static_assert( has_cbegin<TV const&>::value, "");
+	static_assert( has_cend<TV const&>::value, "");
+	static_assert( has_operator_bool<TV const&>::value, "");
+	static_assert( has_data<TV const&>::value, "");
+	static_assert(!has_size<TV const&>::value, "");
+	static_assert( has_reserve_hint<TV const&>::value, "");
+	static_assert( has_front<TV const&>::value, "");
+	static_assert(!has_back<TV const&>::value, "");
+	static_assert( has_subscript<TV const&>::value, "");
+	static_assert(!has_base<TV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 	R r(a);
