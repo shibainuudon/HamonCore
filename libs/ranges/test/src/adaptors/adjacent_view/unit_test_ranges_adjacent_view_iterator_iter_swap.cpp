@@ -15,6 +15,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -22,14 +23,6 @@ namespace adjacent_view_test
 {
 namespace iterator_iter_swap_test
 {
-
-template <typename T, typename = void>
-struct has_iter_swap
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_iter_swap<T, hamon::void_t<decltype(hamon::ranges::iter_swap(hamon::declval<T>(), hamon::declval<T>()))>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

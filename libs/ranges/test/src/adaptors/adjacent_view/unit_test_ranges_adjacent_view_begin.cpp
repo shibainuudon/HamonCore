@@ -21,6 +21,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -48,14 +49,6 @@ struct TestView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR ConstSentinel end()   const noexcept { return ConstSentinel{m_last}; }
 };
 
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -74,6 +67,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using AV = hamon::ranges::adjacent_view<V, 2>;
 		static_assert( has_begin<AV&>::value, "");
 		static_assert( has_begin<AV const&>::value, "");
+		static_assert( has_cbegin<AV&>::value, "");
+		static_assert( has_cbegin<AV const&>::value, "");
 
 		using I  = decltype(hamon::declval<AV&>().begin());
 		using CI = decltype(hamon::declval<AV const&>().begin());
@@ -113,6 +108,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using AV = hamon::ranges::adjacent_view<V, 3>;
 		static_assert( has_begin<AV&>::value, "");
 		static_assert( has_begin<AV const&>::value, "");
+		static_assert( has_cbegin<AV&>::value, "");
+		static_assert( has_cbegin<AV const&>::value, "");
 
 		using I  = decltype(hamon::declval<AV&>().begin());
 		using CI = decltype(hamon::declval<AV const&>().begin());
@@ -160,6 +157,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using AV = hamon::ranges::adjacent_view<V, 1>;
 		static_assert( has_begin<AV&>::value, "");
 		static_assert(!has_begin<AV const&>::value, "");
+		static_assert( has_cbegin<AV&>::value, "");
+		static_assert(!has_cbegin<AV const&>::value, "");
 
 		using I = decltype(hamon::declval<AV&>().begin());
 		//static_assert(hamon::is_same<I,  AV::iterator<false>>::value, "");
