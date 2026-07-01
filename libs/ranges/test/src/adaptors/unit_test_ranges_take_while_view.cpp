@@ -161,77 +161,79 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 {
 	using T = int;
 	using V = View<T>;
-	using RV = hamon::ranges::take_while_view<V, F>;
+	using TWV = hamon::ranges::take_while_view<V, F>;
 
-	static_assert(hamon::ranges::range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<V>::value, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<V>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::view_t<RV>::value == true, "");
+	static_assert(hamon::ranges::range_t<TWV>::value == true, "");
+	static_assert(hamon::ranges::borrowed_range_t<TWV>::value == false, "");
+	static_assert(hamon::ranges::sized_range_t<TWV>::value == false, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<TWV>::value == false, "");
+	static_assert(hamon::ranges::output_range_t<TWV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
+	static_assert(hamon::ranges::input_range_t<TWV>::value == hamon::ranges::input_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range_t<TWV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::bidirectional_range_t<TWV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(hamon::ranges::random_access_range_t<TWV>::value == hamon::ranges::random_access_range_t<V>::value, "");
+	static_assert(hamon::ranges::contiguous_range_t<TWV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
+	static_assert(hamon::ranges::common_range_t<TWV>::value == false, "");
+	static_assert(hamon::ranges::viewable_range_t<TWV>::value == true, "");
+	static_assert(hamon::ranges::view_t<TWV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<TWV>::value == false, "");
 
-	static_assert(hamon::is_default_constructible<RV>::value ==
+	static_assert(hamon::is_default_constructible<TWV>::value ==
 		(hamon::is_default_constructible<V>::value && hamon::is_default_constructible<F>::value), "");
-	static_assert(hamon::is_nothrow_default_constructible<RV>::value ==
+	static_assert(hamon::is_nothrow_default_constructible<TWV>::value ==
 		(hamon::is_nothrow_default_constructible<V>::value && hamon::is_nothrow_default_constructible<F>::value), "");
 
-	static_assert(!hamon::is_constructible<RV, V>::value, "");
-	static_assert(!hamon::is_constructible<RV, F>::value, "");
-	static_assert( hamon::is_constructible<RV, V, F>::value, "");
-	static_assert(!hamon::is_constructible<RV, F, V>::value, "");
-	static_assert(!hamon::is_constructible<RV, V, F, F>::value, "");
+	static_assert(!hamon::is_constructible<TWV, V>::value, "");
+	static_assert(!hamon::is_constructible<TWV, F>::value, "");
+	static_assert( hamon::is_constructible<TWV, V, F>::value, "");
+	static_assert(!hamon::is_constructible<TWV, F, V>::value, "");
+	static_assert(!hamon::is_constructible<TWV, V, F, F>::value, "");
 
-	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV&&>::value, "");
-	static_assert(has_base<RV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TWV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TWV&&>::value, "");
+	static_assert(has_base<TWV const&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TWV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<TWV&&>().base()), V>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const&&>().base()), V>::value, "");
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV const>().pred()), F const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const>().pred()), F const&>::value, "");
 
-	static_assert(has_begin<RV>::value, "");
-	static_assert(has_end<RV>::value, "");
+	static_assert(has_begin<TWV>::value, "");
+	static_assert(has_end<TWV>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::ranges::range_t<V const>::value)
 	{
 		using CI = hamon::ranges::iterator_t<V const>;
-		static_assert(has_begin<RV const>::value == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
-		static_assert(has_end<RV const>::value   == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
+		static_assert(has_begin<TWV const>::value == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
+		static_assert(has_end<TWV const>::value   == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
 
-		if constexpr (has_begin<RV const>::value)
+		if constexpr (has_begin<TWV const>::value)
 		{
 			static_assert(hamon::same_as_t<
-				decltype(hamon::declval<RV>().begin()),
-				decltype(hamon::declval<RV const>().begin())>::value ==
+				decltype(hamon::declval<TWV>().begin()),
+				decltype(hamon::declval<TWV const>().begin())>::value ==
 				hamon::ranges::detail::simple_view_t<V>::value, "");
 		}
-		if constexpr (has_end<RV const>::value)
+		if constexpr (has_end<TWV const>::value)
 		{
 			static_assert(hamon::same_as_t<
-				decltype(hamon::declval<RV>().end()),
-				decltype(hamon::declval<RV const>().end())>::value ==
+				decltype(hamon::declval<TWV>().end()),
+				decltype(hamon::declval<TWV const>().end())>::value ==
 				hamon::ranges::detail::simple_view_t<V>::value, "");
 		}
 	}
 	else
 	{
-		static_assert(has_begin<RV const>::value == false, "");
-		static_assert(has_end<RV const>::value   == false, "");
+		static_assert(has_begin<TWV const>::value == false, "");
+		static_assert(has_end<TWV const>::value   == false, "");
 	}
 #endif
 
@@ -268,6 +270,20 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(!has_back<TWV&>::value, "");
 	static_assert( has_subscript<TWV&>::value, "");
 	static_assert( has_base<TWV&>::value, "");
+
+	static_assert( has_begin<TWV const&>::value, "");
+	static_assert( has_end<TWV const&>::value, "");
+	static_assert( has_empty<TWV const&>::value, "");
+	static_assert( has_cbegin<TWV const&>::value, "");
+	static_assert( has_cend<TWV const&>::value, "");
+	static_assert( has_operator_bool<TWV const&>::value, "");
+	static_assert(!has_data<TWV const&>::value, "");
+	static_assert(!has_size<TWV const&>::value, "");
+	static_assert(!has_reserve_hint<TWV const&>::value, "");
+	static_assert( has_front<TWV const&>::value, "");
+	static_assert(!has_back<TWV const&>::value, "");
+	static_assert( has_subscript<TWV const&>::value, "");
+	static_assert( has_base<TWV const&>::value, "");
 
 	TWV twv{};
 
@@ -312,6 +328,20 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!has_back<TWV&>::value, "");
 	static_assert(!has_subscript<TWV&>::value, "");
 	static_assert( has_base<TWV&>::value, "");
+
+	static_assert( has_begin<TWV const&>::value, "");
+	static_assert( has_end<TWV const&>::value, "");
+	static_assert(!has_empty<TWV const&>::value, "");
+	static_assert( has_cbegin<TWV const&>::value, "");
+	static_assert( has_cend<TWV const&>::value, "");
+	static_assert(!has_operator_bool<TWV const&>::value, "");
+	static_assert(!has_data<TWV const&>::value, "");
+	static_assert(!has_size<TWV const&>::value, "");
+	static_assert(!has_reserve_hint<TWV const&>::value, "");
+	static_assert(!has_front<TWV const&>::value, "");
+	static_assert(!has_back<TWV const&>::value, "");
+	static_assert(!has_subscript<TWV const&>::value, "");
+	static_assert( has_base<TWV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
@@ -378,6 +408,20 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert(!has_back<TWV&>::value, "");
 	static_assert( has_subscript<TWV&>::value, "");
 	static_assert( has_base<TWV&>::value, "");
+
+	static_assert( has_begin<TWV const&>::value, "");
+	static_assert( has_end<TWV const&>::value, "");
+	static_assert( has_empty<TWV const&>::value, "");
+	static_assert( has_cbegin<TWV const&>::value, "");
+	static_assert( has_cend<TWV const&>::value, "");
+	static_assert( has_operator_bool<TWV const&>::value, "");
+	static_assert( has_data<TWV const&>::value, "");
+	static_assert(!has_size<TWV const&>::value, "");
+	static_assert(!has_reserve_hint<TWV const&>::value, "");
+	static_assert( has_front<TWV const&>::value, "");
+	static_assert(!has_back<TWV const&>::value, "");
+	static_assert( has_subscript<TWV const&>::value, "");
+	static_assert( has_base<TWV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
@@ -545,6 +589,20 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(!has_back<TWV&>::value, "");
 	static_assert(!has_subscript<TWV&>::value, "");
 	static_assert( has_base<TWV&>::value, "");
+
+	static_assert( has_begin<TWV const&>::value, "");
+	static_assert( has_end<TWV const&>::value, "");
+	static_assert( has_empty<TWV const&>::value, "");
+	static_assert( has_cbegin<TWV const&>::value, "");
+	static_assert( has_cend<TWV const&>::value, "");
+	static_assert( has_operator_bool<TWV const&>::value, "");
+	static_assert(!has_data<TWV const&>::value, "");
+	static_assert(!has_size<TWV const&>::value, "");
+	static_assert(!has_reserve_hint<TWV const&>::value, "");
+	static_assert( has_front<TWV const&>::value, "");
+	static_assert(!has_back<TWV const&>::value, "");
+	static_assert(!has_subscript<TWV const&>::value, "");
+	static_assert( has_base<TWV const&>::value, "");
 
 	int a[] = {1, 2, 3, 4, 5, 6, 7, 8};
 	V v(a);
@@ -750,6 +808,12 @@ GTEST_TEST(RangesTest, TakeWhileViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_approximately_sized_view>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<ConstNotView>()));
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE((test00<NotSimpleView1>()));
