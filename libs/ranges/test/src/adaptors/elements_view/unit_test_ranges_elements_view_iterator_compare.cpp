@@ -31,6 +31,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -53,64 +54,6 @@ struct NonComparableIterator
 	T&                     operator*() const;
 };
 
-template <typename T, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_equal<T, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_not_equal<T, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_less
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_less<T, hamon::void_t<decltype(hamon::declval<T>() < hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_less_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_less_equal<T, hamon::void_t<decltype(hamon::declval<T>() <= hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_greater
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_greater<T, hamon::void_t<decltype(hamon::declval<T>() > hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_greater_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_greater_equal<T, hamon::void_t<decltype(hamon::declval<T>() >= hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename T, typename = void>
-struct has_three_way
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_three_way<T, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<T>())>>
-	: public hamon::true_type {};
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -120,14 +63,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<Tuple, NonComparableIterator<Tuple>>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_equal        <I const&>::value, "");
-		static_assert(!has_not_equal    <I const&>::value, "");
-		static_assert(!has_less         <I const&>::value, "");
-		static_assert(!has_less_equal   <I const&>::value, "");
-		static_assert(!has_greater      <I const&>::value, "");
-		static_assert(!has_greater_equal<I const&>::value, "");
+		static_assert(!has_eq  <I const&>::value, "");
+		static_assert(!has_neq <I const&>::value, "");
+		static_assert(!has_lt  <I const&>::value, "");
+		static_assert(!has_lteq<I const&>::value, "");
+		static_assert(!has_gt  <I const&>::value, "");
+		static_assert(!has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -135,14 +78,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_input_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert(!has_less         <I const&>::value, "");
-		static_assert(!has_less_equal   <I const&>::value, "");
-		static_assert(!has_greater      <I const&>::value, "");
-		static_assert(!has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert(!has_lt  <I const&>::value, "");
+		static_assert(!has_lteq<I const&>::value, "");
+		static_assert(!has_gt  <I const&>::value, "");
+		static_assert(!has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -150,14 +93,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_forward_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert(!has_less         <I const&>::value, "");
-		static_assert(!has_less_equal   <I const&>::value, "");
-		static_assert(!has_greater      <I const&>::value, "");
-		static_assert(!has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert(!has_lt  <I const&>::value, "");
+		static_assert(!has_lteq<I const&>::value, "");
+		static_assert(!has_gt  <I const&>::value, "");
+		static_assert(!has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -165,14 +108,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_bidirectional_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert(!has_less         <I const&>::value, "");
-		static_assert(!has_less_equal   <I const&>::value, "");
-		static_assert(!has_greater      <I const&>::value, "");
-		static_assert(!has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert(!has_lt  <I const&>::value, "");
+		static_assert(!has_lteq<I const&>::value, "");
+		static_assert(!has_gt  <I const&>::value, "");
+		static_assert(!has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -180,14 +123,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_random_access_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert( has_less         <I const&>::value, "");
-		static_assert( has_less_equal   <I const&>::value, "");
-		static_assert( has_greater      <I const&>::value, "");
-		static_assert( has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert( has_lt  <I const&>::value, "");
+		static_assert( has_lteq<I const&>::value, "");
+		static_assert( has_gt  <I const&>::value, "");
+		static_assert( has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -195,14 +138,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_contiguous_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert( has_less         <I const&>::value, "");
-		static_assert( has_less_equal   <I const&>::value, "");
-		static_assert( has_greater      <I const&>::value, "");
-		static_assert( has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert( has_lt  <I const&>::value, "");
+		static_assert( has_lteq<I const&>::value, "");
+		static_assert( has_gt  <I const&>::value, "");
+		static_assert( has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	{
@@ -210,14 +153,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<Tuple, Tuple*>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_equal        <I const&>::value, "");
-		static_assert( has_not_equal    <I const&>::value, "");
-		static_assert( has_less         <I const&>::value, "");
-		static_assert( has_less_equal   <I const&>::value, "");
-		static_assert( has_greater      <I const&>::value, "");
-		static_assert( has_greater_equal<I const&>::value, "");
+		static_assert( has_eq  <I const&>::value, "");
+		static_assert( has_neq <I const&>::value, "");
+		static_assert( has_lt  <I const&>::value, "");
+		static_assert( has_lteq<I const&>::value, "");
+		static_assert( has_gt  <I const&>::value, "");
+		static_assert( has_gteq<I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert( has_three_way    <I const&>::value, "");
+		static_assert( has_compare_three_way<I const&>::value, "");
 #endif
 	}
 	return true;

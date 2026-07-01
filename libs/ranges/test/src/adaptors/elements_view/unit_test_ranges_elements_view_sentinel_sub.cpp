@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -106,14 +107,6 @@ struct TestView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR ConstSentinel end()   const noexcept { return ConstSentinel{ConstIterator{m_last}}; }
 };
 
-template <typename T, typename U, typename = void>
-struct has_sub
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_sub<T, U, hamon::void_t<decltype(hamon::declval<T>() - hamon::declval<U>())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -135,8 +128,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<true>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<true>>::value, "");
 
-		static_assert(!has_sub<I, S>::value, "");
-		static_assert(!has_sub<S, I>::value, "");
+		static_assert(!has_minus<I, S>::value, "");
+		static_assert(!has_minus<S, I>::value, "");
 	}
 	{
 		using Tuple = hamon::tuple<int, long>;
@@ -154,8 +147,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<true>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<true>>::value, "");
 
-		static_assert( has_sub<I, S>::value, "");
-		static_assert( has_sub<S, I>::value, "");
+		static_assert( has_minus<I, S>::value, "");
+		static_assert( has_minus<S, I>::value, "");
 
 		Tuple a[] =
 		{
@@ -188,8 +181,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<true>>::value, "");
 
-		static_assert(!has_sub<I, S>::value, "");
-		static_assert(!has_sub<S, I>::value, "");
+		static_assert(!has_minus<I, S>::value, "");
+		static_assert(!has_minus<S, I>::value, "");
 	}
 	{
 		using Tuple = hamon::tuple<int, long>;
@@ -207,8 +200,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<true>>::value, "");
 
-		static_assert( has_sub<I, S>::value, "");
-		static_assert( has_sub<S, I>::value, "");
+		static_assert( has_minus<I, S>::value, "");
+		static_assert( has_minus<S, I>::value, "");
 
 		Tuple a[] =
 		{
@@ -241,8 +234,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<true>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<false>>::value, "");
 
-		static_assert(!has_sub<I, S>::value, "");
-		static_assert(!has_sub<S, I>::value, "");
+		static_assert(!has_minus<I, S>::value, "");
+		static_assert(!has_minus<S, I>::value, "");
 	}
 	{
 		using Tuple = hamon::tuple<int, long>;
@@ -260,8 +253,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<true>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<false>>::value, "");
 
-		static_assert( has_sub<I, S>::value, "");
-		static_assert( has_sub<S, I>::value, "");
+		static_assert( has_minus<I, S>::value, "");
+		static_assert( has_minus<S, I>::value, "");
 
 		Tuple a[] =
 		{
@@ -294,8 +287,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<false>>::value, "");
 
-		static_assert(!has_sub<I, S>::value, "");
-		static_assert(!has_sub<S, I>::value, "");
+		static_assert(!has_minus<I, S>::value, "");
+		static_assert(!has_minus<S, I>::value, "");
 	}
 	{
 		using Tuple = hamon::tuple<int, long>;
@@ -313,8 +306,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<I, EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<S, EV::sentinel<false>>::value, "");
 
-		static_assert( has_sub<I, S>::value, "");
-		static_assert( has_sub<S, I>::value, "");
+		static_assert( has_minus<I, S>::value, "");
+		static_assert( has_minus<S, I>::value, "");
 
 		Tuple a[] =
 		{

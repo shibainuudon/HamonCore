@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -24,14 +25,6 @@ namespace elements_view_test
 {
 namespace iterator_sub_assign_test
 {
-
-template <typename T, typename = void>
-struct has_sub_assign
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_sub_assign<T, hamon::void_t<decltype(hamon::declval<T>() -= hamon::declval<int>())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -42,8 +35,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_input_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_sub_assign<I&>::value, "");
-		static_assert(!has_sub_assign<I const&>::value, "");
+		static_assert(!has_minus_equal<I&,       int>::value, "");
+		static_assert(!has_minus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() -= hamon::declval<int>()), I&>::value, "");
 	}
 	{
@@ -51,8 +44,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_forward_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_sub_assign<I&>::value, "");
-		static_assert(!has_sub_assign<I const&>::value, "");
+		static_assert(!has_minus_equal<I&,       int>::value, "");
+		static_assert(!has_minus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() -= hamon::declval<int>()), I&>::value, "");
 	}
 	{
@@ -60,8 +53,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_bidirectional_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_sub_assign<I&>::value, "");
-		static_assert(!has_sub_assign<I const&>::value, "");
+		static_assert(!has_minus_equal<I&,       int>::value, "");
+		static_assert(!has_minus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() -= hamon::declval<int>()), I&>::value, "");
 	}
 	{
@@ -69,8 +62,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_random_access_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_sub_assign<I&>::value, "");
-		static_assert(!has_sub_assign<I const&>::value, "");
+		static_assert( has_minus_equal<I&,       int>::value, "");
+		static_assert(!has_minus_equal<I const&, int>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I&>() -= hamon::declval<int>()), I&>::value, "");
 	}
 	{
@@ -78,8 +71,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_contiguous_view<Tuple>;
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_sub_assign<I&>::value, "");
-		static_assert(!has_sub_assign<I const&>::value, "");
+		static_assert( has_minus_equal<I&,       int>::value, "");
+		static_assert(!has_minus_equal<I const&, int>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I&>() -= hamon::declval<int>()), I&>::value, "");
 	}
 	return true;

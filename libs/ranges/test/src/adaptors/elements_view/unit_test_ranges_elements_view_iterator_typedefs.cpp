@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -41,14 +42,6 @@ struct TestIterator
 	bool operator==(const TestIterator& rhs) const;
 	bool operator!=(const TestIterator& rhs) const;
 };
-
-template <typename T, typename = void>
-struct has_iterator_category
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
-	: public hamon::true_type {};
 
 HAMON_CXX14_CONSTEXPR bool test_iterator_concept()
 {
