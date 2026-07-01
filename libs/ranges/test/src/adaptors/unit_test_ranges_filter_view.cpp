@@ -82,74 +82,74 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using T = int;
 	using V = View<T>;
 	using Pred = is_even;
-	using RV = hamon::ranges::filter_view<V, Pred>;
+	using FV = hamon::ranges::filter_view<V, Pred>;
 
-	static_assert(hamon::is_default_constructible<RV>::value ==
+	static_assert(hamon::is_default_constructible<FV>::value ==
 		hamon::is_default_constructible<V>::value && hamon::is_default_constructible<Pred>::value, "");
-	static_assert(hamon::is_nothrow_default_constructible<RV>::value ==
+	static_assert(hamon::is_nothrow_default_constructible<FV>::value ==
 		hamon::is_nothrow_default_constructible<V>::value && hamon::is_nothrow_default_constructible<Pred>::value, "");
 
-	static_assert(!hamon::is_constructible<RV, V>::value, "");
-	static_assert(!hamon::is_constructible<RV, Pred>::value, "");
-	static_assert( hamon::is_constructible<RV, V, Pred>::value, "");
+	static_assert(!hamon::is_constructible<FV, V>::value, "");
+	static_assert(!hamon::is_constructible<FV, Pred>::value, "");
+	static_assert( hamon::is_constructible<FV, V, Pred>::value, "");
 
-	static_assert(hamon::ranges::range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<V>::value, "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::view_t<RV>::value == true, "");
-	static_assert(hamon::ranges::constant_range_t<RV>::value == false, "");
+	static_assert(hamon::ranges::range_t<FV>::value == true, "");
+	static_assert(hamon::ranges::borrowed_range_t<FV>::value == false, "");
+	static_assert(hamon::ranges::sized_range_t<FV>::value == false, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<FV>::value == false, "");
+	static_assert(hamon::ranges::output_range_t<FV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
+	static_assert(hamon::ranges::input_range_t<FV>::value == true, "");
+	static_assert(hamon::ranges::forward_range_t<FV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::bidirectional_range_t<FV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(hamon::ranges::random_access_range_t<FV>::value == false, "");
+	static_assert(hamon::ranges::contiguous_range_t<FV>::value == false, "");
+	static_assert(hamon::ranges::common_range_t<FV>::value == hamon::ranges::common_range_t<V>::value, "");
+	static_assert(hamon::ranges::viewable_range_t<FV>::value == true, "");
+	static_assert(hamon::ranges::view_t<FV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<FV>::value == false, "");
 
-	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV&&>::value, "");
-	static_assert(has_base<RV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<FV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<FV&&>::value, "");
+	static_assert(has_base<FV const&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<FV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&&>().base()), V>::value, "");
 #if !defined(HAMON_USE_STD_RANGES)
-	static_assert(noexcept(hamon::declval<RV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
+	static_assert(noexcept(hamon::declval<FV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
 #endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<FV&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&&>().base()), V>::value, "");
 #if !defined(HAMON_USE_STD_RANGES)
-		static_assert(noexcept(hamon::declval<RV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
-		static_assert(noexcept(hamon::declval<RV const&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
-		static_assert(noexcept(hamon::declval<RV const&&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
+		static_assert(noexcept(hamon::declval<FV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
+		static_assert(noexcept(hamon::declval<FV const&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
+		static_assert(noexcept(hamon::declval<FV const&&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
 #endif
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV&&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&&>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&&>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&&>().pred()), Pred const&>::value, "");
 #if !defined(HAMON_USE_STD_RANGES)
-	static_assert(noexcept(hamon::declval<RV&>().pred()), "");
+	static_assert(noexcept(hamon::declval<FV&>().pred()), "");
 #endif
 
-	static_assert( has_begin<RV&>::value, "");
-	static_assert( has_begin<RV&&>::value, "");
-	static_assert(!has_begin<RV const&>::value, "");
-	static_assert(!has_begin<RV const&&>::value, "");
-	static_assert( has_end<RV&>::value, "");
-	static_assert( has_end<RV&&>::value, "");
-	static_assert(!has_end<RV const&>::value, "");
-	static_assert(!has_end<RV const&&>::value, "");
-	using I = decltype(hamon::declval<RV&>().begin());
-	using S = decltype(hamon::declval<RV&>().end());
+	static_assert( has_begin<FV&>::value, "");
+	static_assert( has_begin<FV&&>::value, "");
+	static_assert(!has_begin<FV const&>::value, "");
+	static_assert(!has_begin<FV const&&>::value, "");
+	static_assert( has_end<FV&>::value, "");
+	static_assert( has_end<FV&&>::value, "");
+	static_assert(!has_end<FV const&>::value, "");
+	static_assert(!has_end<FV const&&>::value, "");
+	using I = decltype(hamon::declval<FV&>().begin());
+	using S = decltype(hamon::declval<FV&>().end());
 	using BI = decltype(hamon::ranges::begin(hamon::declval<V&>()));
 	static_assert(hamon::same_as_t<I, S>::value == hamon::ranges::common_range_t<V>::value, "");
 	static_assert(has_iterator_category<I>::value == hamon::ranges::forward_range_t<V>::value, "");
@@ -186,11 +186,25 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
-		FV rv{};
-		VERIFY(rv.empty());
-		VERIFY(rv.begin() == rv.end());
-		VERIFY(rv.cbegin() == rv.cend());
-		VERIFY((bool)rv == false);
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
+		FV fv{};
+		VERIFY(fv.empty());
+		VERIFY(fv.begin() == fv.end());
+		VERIFY(fv.cbegin() == fv.cend());
+		VERIFY((bool)fv == false);
 	}
 	return true;
 }
@@ -215,40 +229,54 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
 		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-		hamon::ranges::filter_view rv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(rv), FV>::value, "");
+		hamon::ranges::filter_view fv{r, is_even{}};
+		static_assert(hamon::same_as_t<decltype(fv), FV>::value, "");
 #else
-		FV rv{r, is_even{}};
+		FV fv{r, is_even{}};
 #endif
-		VERIFY(!rv.empty());
-		VERIFY(rv.base().begin() == r.begin());
-		VERIFY(hamon::move(rv).base().begin() == r.begin());
+		VERIFY(!fv.empty());
+		VERIFY(fv.base().begin() == r.begin());
+		VERIFY(hamon::move(fv).base().begin() == r.begin());
 
-		auto it = rv.begin();
+		auto it = fv.begin();
 		VERIFY(it.base() != r.begin());
 		VERIFY(hamon::move(it).base() != r.begin());
 
-		VERIFY(it == rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it == fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 2);
 		++it;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 4);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it == rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it == fv.end());
 		--it;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 4);
 		it--;
-		VERIFY(it == rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it == fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 2);
 
 		using I = decltype(it);
@@ -256,11 +284,11 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		static_assert(has_iterator_category<I>::value, "");
 		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
 
-		using S = decltype(rv.end());
+		using S = decltype(fv.end());
 		I iter{};
 		S sent{};
-//		VERIFY(iter != rv.begin());
-		VERIFY(iter != rv.end());
+//		VERIFY(iter != fv.begin());
+		VERIFY(iter != fv.end());
 		VERIFY(iter == sent);
 	}
 	return true;
@@ -286,43 +314,57 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
 		int a[] = {3, 1, 4, 1, 5, 9, 2};
 		R r(a);
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
-		hamon::ranges::filter_view rv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(rv), FV>::value, "");
+		hamon::ranges::filter_view fv{r, is_even{}};
+		static_assert(hamon::same_as_t<decltype(fv), FV>::value, "");
 #else
-		FV rv{r, is_even{}};
+		FV fv{r, is_even{}};
 #endif
-		VERIFY(!rv.empty());
-		VERIFY(rv.base().begin() == r.begin());
-		VERIFY(hamon::move(rv).base().begin() == r.begin());
+		VERIFY(!fv.empty());
+		VERIFY(fv.base().begin() == r.begin());
+		VERIFY(hamon::move(fv).base().begin() == r.begin());
 
-		auto it = rv.begin();
-		VERIFY(it == rv.begin());
-		VERIFY(it != rv.end());
+		auto it = fv.begin();
+		VERIFY(it == fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 4);
 		++it;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
-		VERIFY(rv.end() != it);
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
+		VERIFY(fv.end() != it);
 		VERIFY(*it == 2);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it == rv.end());
-		VERIFY(rv.end() == it);
+		VERIFY(it != fv.begin());
+		VERIFY(it == fv.end());
+		VERIFY(fv.end() == it);
 
 		using I = decltype(it);
 		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::forward_iterator_tag>::value, "");
 		static_assert(has_iterator_category<I>::value, "");
 		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::forward_iterator_tag>::value, "");
 
-		using S = decltype(rv.end());
+		using S = decltype(fv.end());
 		I iter{};
 		S sent{};
-//		VERIFY(iter != rv.begin());
-		VERIFY(iter != rv.end());
+//		VERIFY(iter != fv.begin());
+		VERIFY(iter != fv.end());
 		VERIFY(iter == sent);
 	}
 	return true;
@@ -348,42 +390,56 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
 		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		FV rv{r, pred};
-		VERIFY(&rv.pred() != &pred);
+		FV fv{r, pred};
+		VERIFY(&fv.pred() != &pred);
 
-		auto it = rv.begin();
+		auto it = fv.begin();
 		VERIFY(it.base() == r.begin());
 		VERIFY(hamon::move(it).base() == r.begin());
 
-		VERIFY(it == rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it == fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 3);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
-		VERIFY(rv.end() != it);
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
+		VERIFY(fv.end() != it);
 		VERIFY(*it == 5);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it == rv.end());
-		VERIFY(rv.end() == it);
+		VERIFY(it != fv.begin());
+		VERIFY(it == fv.end());
+		VERIFY(fv.end() == it);
 
 		using I = decltype(it);
 		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
 		static_assert(!has_iterator_category<I>::value, "");
 
-		using S = decltype(rv.end());
+		using S = decltype(fv.end());
 		I iter{};
 		S sent{};
-//		VERIFY(iter != rv.begin());
-//		VERIFY(iter != rv.end());
+//		VERIFY(iter != fv.begin());
+//		VERIFY(iter != fv.end());
 		VERIFY(iter == sent);
 	}
 	return true;
@@ -409,33 +465,47 @@ HAMON_CXX14_CONSTEXPR bool test05()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
 		int a[] = {1, 2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		FV rv{r, pred};
-		VERIFY(&rv.pred() != &pred);
+		FV fv{r, pred};
+		VERIFY(&fv.pred() != &pred);
 
-		auto it = rv.begin();
+		auto it = fv.begin();
 		VERIFY(it.base() == r.begin());
 		VERIFY(hamon::move(it).base() == r.begin());
 		VERIFY(it.operator->() == r.begin());
 
-		VERIFY(it == rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it == fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 1);
 		++it;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 3);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it != rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it != fv.end());
 		VERIFY(*it == 5);
 		it++;
-		VERIFY(it != rv.begin());
-		VERIFY(it == rv.end());
+		VERIFY(it != fv.begin());
+		VERIFY(it == fv.end());
 
-		auto sent = rv.end();
+		auto sent = fv.end();
 		VERIFY(sent.base() == hamon::ranges::end(r));
 	}
 	return true;
@@ -461,20 +531,34 @@ HAMON_CXX14_CONSTEXPR bool test06()
 		static_assert(!has_subscript<FV&>::value, "");
 		static_assert( has_base<FV&>::value, "");
 
+		static_assert(!has_begin<FV const&>::value, "");
+		static_assert(!has_end<FV const&>::value, "");
+		static_assert(!has_empty<FV const&>::value, "");
+		static_assert(!has_cbegin<FV const&>::value, "");
+		static_assert(!has_cend<FV const&>::value, "");
+		static_assert(!has_operator_bool<FV const&>::value, "");
+		static_assert(!has_data<FV const&>::value, "");
+		static_assert(!has_size<FV const&>::value, "");
+		static_assert(!has_reserve_hint<FV const&>::value, "");
+		static_assert(!has_front<FV const&>::value, "");
+		static_assert(!has_back<FV const&>::value, "");
+		static_assert(!has_subscript<FV const&>::value, "");
+		static_assert( has_base<FV const&>::value, "");
+
 		int a[] = {2, 3, 4, 5};
 		R r(a);
 		is_odd pred{};
-		FV rv{r, pred};
-		VERIFY(&rv.pred() != &pred);
+		FV fv{r, pred};
+		VERIFY(&fv.pred() != &pred);
 
 		{
-			auto it = rv.begin();
+			auto it = fv.begin();
 			auto ir = hamon::ranges::iter_move(it);
 			VERIFY(ir == 3);
 		}
 		{
-			auto it1 = rv.begin();
-			auto it2 = rv.begin();
+			auto it1 = fv.begin();
+			auto it2 = fv.begin();
 			it2++;
 			VERIFY(*it1 == 3);
 			VERIFY(*it2 == 5);
@@ -489,38 +573,38 @@ HAMON_CXX14_CONSTEXPR bool test06()
 HAMON_CXX14_CONSTEXPR bool test07()
 {
 	int const a[] = {3, 1, 4, 1, 5, 9, 2};
-	auto rv = hamon::views::filter(a, is_odd{});
-	auto it = rv.begin();
-	VERIFY(it != rv.end());
+	auto fv = hamon::views::filter(a, is_odd{});
+	auto it = fv.begin();
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 3);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 1);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 1);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 5);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 9);
-	VERIFY(it == rv.end());
+	VERIFY(it == fv.end());
 	return true;
 }
 
 HAMON_CXX14_CONSTEXPR bool test08()
 {
 	int const a[] = {3, 1, 4, 1, 5, 9, 2};
-	auto rv = a | hamon::views::filter(is_odd{});
-	auto it = rv.begin();
-	VERIFY(it != rv.end());
+	auto fv = a | hamon::views::filter(is_odd{});
+	auto it = fv.begin();
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 3);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 1);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 1);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 5);
-	VERIFY(it != rv.end());
+	VERIFY(it != fv.end());
 	VERIFY(*it++ == 9);
-	VERIFY(it == rv.end());
+	VERIFY(it == fv.end());
 	return true;
 }
 
@@ -551,6 +635,12 @@ GTEST_TEST(RangesTest, FilterViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_approximately_sized_view>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
