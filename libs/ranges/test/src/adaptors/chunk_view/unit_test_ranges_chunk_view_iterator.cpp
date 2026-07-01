@@ -5,6 +5,7 @@
  */
 
 #include <hamon/ranges/adaptors/chunk_view.hpp>
+#include <hamon/ranges/concepts.hpp>
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/compare.hpp>
@@ -14,8 +15,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
-
-#include <hamon/ranges/concepts.hpp>
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -63,152 +63,6 @@ struct TestView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR ConstSentinel end()   const noexcept { return ConstSentinel{m_last}; }
 };
 
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_dereference
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_dereference<T, hamon::void_t<decltype(*hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_pre_increment
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_pre_increment<T, hamon::void_t<decltype(++hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_post_increment
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_post_increment<T, hamon::void_t<decltype(hamon::declval<T>()++)>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_pre_decrement
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_pre_decrement<T, hamon::void_t<decltype(--hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_post_decrement
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_post_decrement<T, hamon::void_t<decltype(hamon::declval<T>()--)>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_add_assign
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_add_assign<T, hamon::void_t<decltype(hamon::declval<T>() += hamon::declval<int>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_sub_assign
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_sub_assign<T, hamon::void_t<decltype(hamon::declval<T>() -= hamon::declval<int>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_subscript
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_subscript<T, hamon::void_t<decltype(hamon::declval<T>()[hamon::declval<int>()])>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_add
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_add<T, U, hamon::void_t<decltype(hamon::declval<T>() + hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_sub
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_sub<T, U, hamon::void_t<decltype(hamon::declval<T>() - hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_not_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_less
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_less<T, U, hamon::void_t<decltype(hamon::declval<T>() < hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_less_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_less_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() <= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_greater
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_greater<T, U, hamon::void_t<decltype(hamon::declval<T>() > hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_greater_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_greater_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() >= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename T, typename U, typename = void>
-struct has_three_way
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<U>())>>
-	: public hamon::true_type {};
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -240,32 +94,32 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!has_pre_decrement<I const&>::value, "");
 	static_assert(!has_post_decrement<I&>::value, "");
 	static_assert(!has_post_decrement<I const&>::value, "");
-	static_assert(!has_add_assign<I&>::value, "");
-	static_assert(!has_add_assign<I const&>::value, "");
-	static_assert(!has_sub_assign<I&>::value, "");
-	static_assert(!has_sub_assign<I const&>::value, "");
+	static_assert(!has_plus_equal<I&, int>::value, "");
+	static_assert(!has_plus_equal<I const&, int>::value, "");
+	static_assert(!has_minus_equal<I&, int>::value, "");
+	static_assert(!has_minus_equal<I const&, int>::value, "");
 	static_assert(!has_subscript<I&>::value, "");
 	static_assert(!has_subscript<I const&>::value, "");
-	static_assert(!has_add<I const&, int>::value, "");
-	static_assert(!has_add<int, I const&>::value, "");
-	static_assert(!has_sub<I const&, int>::value, "");
-	static_assert(!has_sub<int, I const&>::value, "");
-	static_assert(!has_sub<I const&, I const&>::value, "");
-	static_assert(!has_sub<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert(!has_sub<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_equal        <I const&, I const&>::value, "");
-	static_assert( has_not_equal    <I const&, I const&>::value, "");
-	static_assert(!has_less         <I const&, I const&>::value, "");
-	static_assert(!has_less_equal   <I const&, I const&>::value, "");
-	static_assert(!has_greater      <I const&, I const&>::value, "");
-	static_assert(!has_greater_equal<I const&, I const&>::value, "");
+	static_assert(!has_plus<I const&, int>::value, "");
+	static_assert(!has_plus<int, I const&>::value, "");
+	static_assert(!has_minus<I const&, int>::value, "");
+	static_assert(!has_minus<int, I const&>::value, "");
+	static_assert(!has_minus<I const&, I const&>::value, "");
+	static_assert(!has_minus<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert(!has_minus<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq  <I const&, I const&>::value, "");
+	static_assert( has_neq <I const&, I const&>::value, "");
+	static_assert(!has_lt  <I const&, I const&>::value, "");
+	static_assert(!has_lteq<I const&, I const&>::value, "");
+	static_assert(!has_gt  <I const&, I const&>::value, "");
+	static_assert(!has_gteq<I const&, I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert(!has_three_way    <I const&, I const&>::value, "");
+	static_assert(!has_compare_three_way<I const&, I const&>::value, "");
 #endif
-	static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq <I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<I&      >().base()), forward_iterator_wrapper<int>>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<I const&>().base()), forward_iterator_wrapper<int>>::value, "");
@@ -306,32 +160,32 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(!has_pre_decrement<I const&>::value, "");
 	static_assert( has_post_decrement<I&>::value, "");
 	static_assert(!has_post_decrement<I const&>::value, "");
-	static_assert(!has_add_assign<I&>::value, "");
-	static_assert(!has_add_assign<I const&>::value, "");
-	static_assert(!has_sub_assign<I&>::value, "");
-	static_assert(!has_sub_assign<I const&>::value, "");
+	static_assert(!has_plus_equal<I&, int>::value, "");
+	static_assert(!has_plus_equal<I const&, int>::value, "");
+	static_assert(!has_minus_equal<I&, int>::value, "");
+	static_assert(!has_minus_equal<I const&, int>::value, "");
 	static_assert(!has_subscript<I&>::value, "");
 	static_assert(!has_subscript<I const&>::value, "");
-	static_assert(!has_add<I const&, int>::value, "");
-	static_assert(!has_add<int, I const&>::value, "");
-	static_assert(!has_sub<I const&, int>::value, "");
-	static_assert(!has_sub<int, I const&>::value, "");
-	static_assert(!has_sub<I const&, I const&>::value, "");
-	static_assert(!has_sub<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert(!has_sub<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_equal        <I const&, I const&>::value, "");
-	static_assert( has_not_equal    <I const&, I const&>::value, "");
-	static_assert(!has_less         <I const&, I const&>::value, "");
-	static_assert(!has_less_equal   <I const&, I const&>::value, "");
-	static_assert(!has_greater      <I const&, I const&>::value, "");
-	static_assert(!has_greater_equal<I const&, I const&>::value, "");
+	static_assert(!has_plus<I const&, int>::value, "");
+	static_assert(!has_plus<int, I const&>::value, "");
+	static_assert(!has_minus<I const&, int>::value, "");
+	static_assert(!has_minus<int, I const&>::value, "");
+	static_assert(!has_minus<I const&, I const&>::value, "");
+	static_assert(!has_minus<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert(!has_minus<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq  <I const&, I const&>::value, "");
+	static_assert( has_neq <I const&, I const&>::value, "");
+	static_assert(!has_lt  <I const&, I const&>::value, "");
+	static_assert(!has_lteq<I const&, I const&>::value, "");
+	static_assert(!has_gt  <I const&, I const&>::value, "");
+	static_assert(!has_gteq<I const&, I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert(!has_three_way    <I const&, I const&>::value, "");
+	static_assert(!has_compare_three_way<I const&, I const&>::value, "");
 #endif
-	static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq <I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<I&      >().base()), bidirectional_iterator_wrapper<int>>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<I const&>().base()), bidirectional_iterator_wrapper<int>>::value, "");
@@ -372,32 +226,32 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!has_pre_decrement<I const&>::value, "");
 	static_assert( has_post_decrement<I&>::value, "");
 	static_assert(!has_post_decrement<I const&>::value, "");
-	static_assert( has_add_assign<I&>::value, "");
-	static_assert(!has_add_assign<I const&>::value, "");
-	static_assert( has_sub_assign<I&>::value, "");
-	static_assert(!has_sub_assign<I const&>::value, "");
+	static_assert( has_plus_equal<I&, int>::value, "");
+	static_assert(!has_plus_equal<I const&, int>::value, "");
+	static_assert( has_minus_equal<I&, int>::value, "");
+	static_assert(!has_minus_equal<I const&, int>::value, "");
 	static_assert( has_subscript<I&>::value, "");
 	static_assert( has_subscript<I const&>::value, "");
-	static_assert( has_add<I const&, int>::value, "");
-	static_assert( has_add<int, I const&>::value, "");
-	static_assert( has_sub<I const&, int>::value, "");
-	static_assert(!has_sub<int, I const&>::value, "");
-	static_assert( has_sub<I const&, I const&>::value, "");
-	static_assert( has_sub<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_sub<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_equal        <I const&, I const&>::value, "");
-	static_assert( has_not_equal    <I const&, I const&>::value, "");
-	static_assert( has_less         <I const&, I const&>::value, "");
-	static_assert( has_less_equal   <I const&, I const&>::value, "");
-	static_assert( has_greater      <I const&, I const&>::value, "");
-	static_assert( has_greater_equal<I const&, I const&>::value, "");
+	static_assert( has_plus<I const&, int>::value, "");
+	static_assert( has_plus<int, I const&>::value, "");
+	static_assert( has_minus<I const&, int>::value, "");
+	static_assert(!has_minus<int, I const&>::value, "");
+	static_assert( has_minus<I const&, I const&>::value, "");
+	static_assert( has_minus<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_minus<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq  <I const&, I const&>::value, "");
+	static_assert( has_neq <I const&, I const&>::value, "");
+	static_assert( has_lt  <I const&, I const&>::value, "");
+	static_assert( has_lteq<I const&, I const&>::value, "");
+	static_assert( has_gt  <I const&, I const&>::value, "");
+	static_assert( has_gteq<I const&, I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert(!has_three_way    <I const&, I const&>::value, "");
+	static_assert(!has_compare_three_way<I const&, I const&>::value, "");
 #endif
-	static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq <I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<I&      >().base()), random_access_iterator_wrapper<int>>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<I const&>().base()), random_access_iterator_wrapper<int>>::value, "");
@@ -443,32 +297,32 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert(!has_pre_decrement<I const&>::value, "");
 	static_assert( has_post_decrement<I&>::value, "");
 	static_assert(!has_post_decrement<I const&>::value, "");
-	static_assert( has_add_assign<I&>::value, "");
-	static_assert(!has_add_assign<I const&>::value, "");
-	static_assert( has_sub_assign<I&>::value, "");
-	static_assert(!has_sub_assign<I const&>::value, "");
+	static_assert( has_plus_equal<I&, int>::value, "");
+	static_assert(!has_plus_equal<I const&, int>::value, "");
+	static_assert( has_minus_equal<I&, int>::value, "");
+	static_assert(!has_minus_equal<I const&, int>::value, "");
 	static_assert( has_subscript<I&>::value, "");
 	static_assert( has_subscript<I const&>::value, "");
-	static_assert( has_add<I const&, int>::value, "");
-	static_assert( has_add<int, I const&>::value, "");
-	static_assert( has_sub<I const&, int>::value, "");
-	static_assert(!has_sub<int, I const&>::value, "");
-	static_assert( has_sub<I const&, I const&>::value, "");
-	static_assert( has_sub<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_sub<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_equal        <I const&, I const&>::value, "");
-	static_assert( has_not_equal    <I const&, I const&>::value, "");
-	static_assert( has_less         <I const&, I const&>::value, "");
-	static_assert( has_less_equal   <I const&, I const&>::value, "");
-	static_assert( has_greater      <I const&, I const&>::value, "");
-	static_assert( has_greater_equal<I const&, I const&>::value, "");
+	static_assert( has_plus<I const&, int>::value, "");
+	static_assert( has_plus<int, I const&>::value, "");
+	static_assert( has_minus<I const&, int>::value, "");
+	static_assert(!has_minus<int, I const&>::value, "");
+	static_assert( has_minus<I const&, I const&>::value, "");
+	static_assert( has_minus<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_minus<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq  <I const&, I const&>::value, "");
+	static_assert( has_neq <I const&, I const&>::value, "");
+	static_assert( has_lt  <I const&, I const&>::value, "");
+	static_assert( has_lteq<I const&, I const&>::value, "");
+	static_assert( has_gt  <I const&, I const&>::value, "");
+	static_assert( has_gteq<I const&, I const&>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert( has_three_way    <I const&, I const&>::value, "");
+	static_assert( has_compare_three_way<I const&, I const&>::value, "");
 #endif
-	static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq <I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq <hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(hamon::declval<I&      >().base()), int*>::value, "");
 	static_assert(hamon::is_same<decltype(hamon::declval<I const&>().base()), int*>::value, "");

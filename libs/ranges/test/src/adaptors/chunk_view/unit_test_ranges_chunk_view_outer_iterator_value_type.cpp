@@ -20,8 +20,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
-
-#include <hamon/ranges/concepts.hpp>
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -62,30 +61,6 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR SizedInputIterator<T>
 operator+(hamon::ptrdiff_t, SizedInputIterator<T> const&);
 
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_size
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_size<T, hamon::void_t<decltype(hamon::declval<T>().size())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -110,8 +85,12 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert( has_begin<ValueType&>::value, "");
 	static_assert( has_begin<ValueType const&>::value, "");
+	static_assert( has_cbegin<ValueType&>::value, "");
+	static_assert( has_cbegin<ValueType const&>::value, "");
 	static_assert( has_end<ValueType&>::value, "");
 	static_assert( has_end<ValueType const&>::value, "");
+	static_assert( has_cend<ValueType&>::value, "");
+	static_assert( has_cend<ValueType const&>::value, "");
 	static_assert(!has_size<ValueType&>::value, "");
 	static_assert(!has_size<ValueType const&>::value, "");
 
@@ -168,8 +147,12 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	static_assert( has_begin<ValueType&>::value, "");
 	static_assert( has_begin<ValueType const&>::value, "");
+	static_assert( has_cbegin<ValueType&>::value, "");
+	static_assert( has_cbegin<ValueType const&>::value, "");
 	static_assert( has_end<ValueType&>::value, "");
 	static_assert( has_end<ValueType const&>::value, "");
+	static_assert( has_cend<ValueType&>::value, "");
+	static_assert( has_cend<ValueType const&>::value, "");
 	static_assert( has_size<ValueType&>::value, "");
 	static_assert( has_size<ValueType const&>::value, "");
 

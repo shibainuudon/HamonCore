@@ -8,6 +8,7 @@
  */
 
 #include <hamon/ranges/adaptors/chunk_view.hpp>
+#include <hamon/ranges/concepts.hpp>
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_same.hpp>
@@ -17,8 +18,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
-
-#include <hamon/ranges/concepts.hpp>
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -59,14 +59,6 @@ template <typename T> using MoveOnlyOutputView        = MoveOnlyView<T, output_i
 static_assert( hamon::ranges::input_range_t<MoveOnlyInputView<int>>::value, "");
 static_assert(!hamon::ranges::forward_range_t<MoveOnlyInputView<int>>::value, "");
 static_assert( hamon::ranges::forward_range_t<MoveOnlyForwardView<int>>::value, "");
-
-template <typename T, typename = void>
-struct has_base
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_base<T, hamon::void_t<decltype(hamon::declval<T>().base())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

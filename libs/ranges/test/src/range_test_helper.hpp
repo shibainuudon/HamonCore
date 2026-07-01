@@ -142,6 +142,15 @@ template <typename T>
 struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
 	: public hamon::true_type {};
 
+// operator*()
+template <typename T, typename = void>
+struct has_dereference
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_dereference<T, hamon::void_t<decltype(*hamon::declval<T>())>>
+	: public hamon::true_type {};
+
 // operator->()
 template <typename T, typename = void>
 struct has_arrow
