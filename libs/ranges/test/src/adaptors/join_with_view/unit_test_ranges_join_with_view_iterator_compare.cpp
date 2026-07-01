@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -57,22 +58,6 @@ struct NonComparableForwardIterator
 	HAMON_CXX11_CONSTEXPR T operator*() const { return *m_ptr; }
 };
 
-template <typename T, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_equal<T, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_not_equal<T, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<T>())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -83,8 +68,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(has_equal<I>::value, "");
-		static_assert(has_not_equal<I>::value, "");
+		static_assert( has_eq<I>::value, "");
+		static_assert( has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, input_iterator_wrapper<int>>;
@@ -92,8 +84,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(has_equal<I>::value, "");
-		static_assert(has_not_equal<I>::value, "");
+		static_assert( has_eq<I>::value, "");
+		static_assert( has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, forward_iterator_wrapper<int>>;
@@ -101,8 +100,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(!has_equal<I>::value, "");
-		static_assert(!has_not_equal<I>::value, "");
+		static_assert(!has_eq<I>::value, "");
+		static_assert(!has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, ValueForwardIterator<int>>;
@@ -110,8 +116,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(has_equal<I>::value, "");
-		static_assert(has_not_equal<I>::value, "");
+		static_assert( has_eq<I>::value, "");
+		static_assert( has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, forward_iterator_wrapper<int>>;
@@ -119,8 +132,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(!has_equal<I>::value, "");
-		static_assert(!has_not_equal<I>::value, "");
+		static_assert(!has_eq<I>::value, "");
+		static_assert(!has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, forward_iterator_wrapper<int>>;
@@ -128,8 +148,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, ValueForwardIterator<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(has_equal<I>::value, "");
-		static_assert(has_not_equal<I>::value, "");
+		static_assert( has_eq<I>::value, "");
+		static_assert( has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	{
 		using InnerView = test_view<int, NonComparableForwardIterator<int>>;
@@ -137,8 +164,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = test_view<int, forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
-		static_assert(!has_equal<I>::value, "");
-		static_assert(!has_not_equal<I>::value, "");
+		static_assert(!has_eq<I>::value, "");
+		static_assert(!has_neq<I>::value, "");
+		static_assert(!has_lt<I>::value, "");
+		static_assert(!has_lteq<I>::value, "");
+		static_assert(!has_gt<I>::value, "");
+		static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	}
 	return true;
 }

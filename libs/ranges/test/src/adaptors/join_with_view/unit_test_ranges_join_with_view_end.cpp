@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -82,14 +83,6 @@ struct NotSimpleView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return const_sentinel{const_iterator{m_last}}; }
 };
 
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -129,6 +122,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::iterator<true>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::iterator<true>>::value, "");
@@ -167,6 +162,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::iterator<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::iterator<true>>::value, "");
@@ -205,6 +202,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::iterator<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::iterator<true>>::value, "");
@@ -250,6 +249,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<true>>::value, "");
 
@@ -287,6 +288,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 
@@ -324,6 +327,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 
@@ -368,6 +373,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<true>>::value, "");
 
@@ -405,6 +412,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 
@@ -442,6 +451,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert(!has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert(!has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 
@@ -486,6 +497,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<true>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -524,6 +537,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -562,6 +577,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -605,6 +622,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<true>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -641,6 +660,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -677,6 +698,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -720,6 +743,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<true>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -756,6 +781,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -792,6 +819,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
 			static_assert( has_end<RV&>::value, "");
 			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV&>().end()), typename RV::sentinel<false>>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
@@ -840,9 +869,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(hamon::ranges::common_range_t<InnerConstRng>::value, "");
 
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
-			static_assert(has_end<RV const&>::value, "");
+			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::iterator<true>>::value, "");
-			
+		
 			RV const rv {};
 			auto it = rv.end();
 			(void)it;
@@ -876,7 +906,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(hamon::ranges::common_range_t<InnerConstRng>::value, "");
 
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
-			static_assert(has_end<RV const&>::value, "");
+			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
 
 			RV const rv {};
@@ -910,7 +941,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(hamon::ranges::common_range_t<InnerConstRng>::value, "");
 
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
-			static_assert(has_end<RV const&>::value, "");
+			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
 
 			RV const rv {};
@@ -944,7 +976,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(!hamon::ranges::common_range_t<InnerConstRng>::value, "");
 
 			using RV = hamon::ranges::join_with_view<V, Pattern>;
-			static_assert(has_end<RV const&>::value, "");
+			static_assert( has_end<RV const&>::value, "");
+			static_assert( has_cend<RV const&>::value, "");
 			//static_assert(hamon::is_same<decltype(hamon::declval<RV const&>().end()), typename RV::sentinel<true>>::value, "");
 
 			RV const rv {};
@@ -977,6 +1010,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_end<RV&>::value, "");
 		static_assert(!has_end<RV const&>::value, "");
+		static_assert( has_cend<RV&>::value, "");
+		static_assert(!has_cend<RV const&>::value, "");
 	}
 
 	// forward_range<const V> &&
@@ -1003,6 +1038,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_end<RV&>::value, "");
 		static_assert(!has_end<RV const&>::value, "");
+		static_assert( has_cend<RV&>::value, "");
+		static_assert(!has_cend<RV const&>::value, "");
 	}
 
 	// forward_range<const V> &&
@@ -1029,6 +1066,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_end<RV&>::value, "");
 		static_assert(!has_end<RV const&>::value, "");
+		static_assert( has_cend<RV&>::value, "");
+		static_assert(!has_cend<RV const&>::value, "");
 	}
 
 	// forward_range<const V> &&
@@ -1055,6 +1094,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_end<RV&>::value, "");
 		static_assert(!has_end<RV const&>::value, "");
+		static_assert( has_cend<RV&>::value, "");
+		static_assert(!has_cend<RV const&>::value, "");
 	}
 
 	return true;
