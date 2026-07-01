@@ -24,6 +24,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -108,14 +109,6 @@ struct NotMovable
 	NotMovable(NotMovable&&) = delete;
 };
 
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -139,6 +132,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -165,6 +160,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -201,6 +198,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert(!has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert(!has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S,  EV::iterator<false>>::value, "");
@@ -236,6 +235,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -272,6 +273,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert(!has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert(!has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S,  EV::sentinel<false>>::value, "");
@@ -307,6 +310,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -343,6 +348,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert(!has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert(!has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S,  EV::iterator<false>>::value, "");
@@ -367,6 +374,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -393,6 +402,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert( has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert( has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//using CS = decltype(hamon::declval<EV const&>().end());
@@ -429,6 +440,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
 		static_assert(!has_end<EV const&>::value, "");
+		static_assert( has_cend<EV&>::value, "");
+		static_assert(!has_cend<EV const&>::value, "");
 
 		//using S  = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S,  EV::sentinel<false>>::value, "");

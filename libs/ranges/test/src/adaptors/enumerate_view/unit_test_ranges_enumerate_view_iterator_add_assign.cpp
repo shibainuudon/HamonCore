@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -24,14 +25,6 @@ namespace enumerate_view_test
 {
 namespace iterator_add_assign_test
 {
-
-template <typename T, typename = void>
-struct has_add_assign
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_add_assign<T, hamon::void_t<decltype(hamon::declval<T>() += hamon::declval<int>())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -41,40 +34,40 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_input_view<int>;
 		using EV = hamon::ranges::enumerate_view<V>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_add_assign<I&>::value, "");
-		static_assert(!has_add_assign<I const&>::value, "");
+		static_assert(!has_plus_equal<I&,       int>::value, "");
+		static_assert(!has_plus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() += hamon::declval<int>()), I&>::value, "");
 	}
 	{
 		using V = test_forward_view<int>;
 		using EV = hamon::ranges::enumerate_view<V>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_add_assign<I&>::value, "");
-		static_assert(!has_add_assign<I const&>::value, "");
+		static_assert(!has_plus_equal<I&,       int>::value, "");
+		static_assert(!has_plus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() += hamon::declval<int>()), I&>::value, "");
 	}
 	{
 		using V = test_bidirectional_view<int>;
 		using EV = hamon::ranges::enumerate_view<V>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert(!has_add_assign<I&>::value, "");
-		static_assert(!has_add_assign<I const&>::value, "");
+		static_assert(!has_plus_equal<I&,       int>::value, "");
+		static_assert(!has_plus_equal<I const&, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<I&>() += hamon::declval<int>()), I&>::value, "");
 	}
 	{
 		using V = test_random_access_view<int>;
 		using EV = hamon::ranges::enumerate_view<V>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_add_assign<I&>::value, "");
-		static_assert(!has_add_assign<I const&>::value, "");
+		static_assert( has_plus_equal<I&,       int>::value, "");
+		static_assert(!has_plus_equal<I const&, int>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I&>() += hamon::declval<int>()), I&>::value, "");
 	}
 	{
 		using V = test_contiguous_view<int>;
 		using EV = hamon::ranges::enumerate_view<V>;
 		using I = hamon::ranges::iterator_t<EV>;
-		static_assert( has_add_assign<I&>::value, "");
-		static_assert(!has_add_assign<I const&>::value, "");
+		static_assert( has_plus_equal<I&,       int>::value, "");
+		static_assert(!has_plus_equal<I const&, int>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I&>() += hamon::declval<int>()), I&>::value, "");
 	}
 	return true;
