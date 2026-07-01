@@ -216,7 +216,9 @@ public:
 	{
 		return ranges::iter_move(m_current);
 	}
-	
+
+	template <typename I = Iter,
+		typename = decltype(ranges::iter_move(hamon::declval<I const&>() + hamon::declval<difference_type>()))>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR reference
 	operator[](difference_type n) const
 	HAMON_NOEXCEPT_IF_EXPR(ranges::iter_move(this->m_current + n))	// extension
