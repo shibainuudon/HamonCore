@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -25,14 +26,6 @@ namespace zip_view_test
 {
 namespace iterator_add_test
 {
-
-template <typename T, typename U, typename = void>
-struct has_add
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_add<T, U, hamon::void_t<decltype(hamon::declval<T>() + hamon::declval<U>())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -42,29 +35,29 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_input_view<int>;
 		using ZV = hamon::ranges::zip_view<V>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	{
 		using V = test_forward_view<int>;
 		using ZV = hamon::ranges::zip_view<V>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	{
 		using V = test_bidirectional_view<int>;
 		using ZV = hamon::ranges::zip_view<V>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	{
 		using V = test_random_access_view<int>;
 		using ZV = hamon::ranges::zip_view<V>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert( has_add<I const&, int>::value, "");
-		static_assert( has_add<int, I const&>::value, "");
+		static_assert( has_plus<I const&, int>::value, "");
+		static_assert( has_plus<int, I const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() + hamon::declval<int>()), I>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<int>() + hamon::declval<I const&>()), I>::value, "");
 	}
@@ -72,8 +65,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_contiguous_view<int>;
 		using ZV = hamon::ranges::zip_view<V>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert( has_add<I const&, int>::value, "");
-		static_assert( has_add<int, I const&>::value, "");
+		static_assert( has_plus<I const&, int>::value, "");
+		static_assert( has_plus<int, I const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() + hamon::declval<int>()), I>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<int>() + hamon::declval<I const&>()), I>::value, "");
 	}
@@ -83,8 +76,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V3 = test_random_access_view<int>;
 		using ZV = hamon::ranges::zip_view<V1, V2, V3>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert( has_add<I const&, int>::value, "");
-		static_assert( has_add<int, I const&>::value, "");
+		static_assert( has_plus<I const&, int>::value, "");
+		static_assert( has_plus<int, I const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() + hamon::declval<int>()), I>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<int>() + hamon::declval<I const&>()), I>::value, "");
 	}
@@ -94,8 +87,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V3 = test_random_access_view<int>;
 		using ZV = hamon::ranges::zip_view<V1, V2, V3>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	{
 		using V1 = test_random_access_view<int>;
@@ -103,8 +96,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V3 = test_random_access_view<int>;
 		using ZV = hamon::ranges::zip_view<V1, V2, V3>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	{
 		using V1 = test_random_access_view<int>;
@@ -112,8 +105,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V3 = test_bidirectional_view<int>;
 		using ZV = hamon::ranges::zip_view<V1, V2, V3>;
 		using I = decltype(hamon::declval<ZV&>().begin());
-		static_assert(!has_add<I const&, int>::value, "");
-		static_assert(!has_add<int, I const&>::value, "");
+		static_assert(!has_plus<I const&, int>::value, "");
+		static_assert(!has_plus<int, I const&>::value, "");
 	}
 	return true;
 }

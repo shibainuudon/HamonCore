@@ -21,6 +21,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -47,14 +48,6 @@ struct TestView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR Sentinel      end()         noexcept { return Sentinel{m_last}; }
 	HAMON_CXX11_CONSTEXPR ConstSentinel end()   const noexcept { return ConstSentinel{m_last}; }
 };
-
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -87,6 +80,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert(has_end<ZV&>::value, "");
 			static_assert(has_end<ZV const&>::value, "");
+			static_assert(has_cend<ZV&>::value, "");
+			static_assert(has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
@@ -142,6 +137,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert(has_end<ZV&>::value, "");
 			static_assert(has_end<ZV const&>::value, "");
+			static_assert(has_cend<ZV&>::value, "");
+			static_assert(has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
@@ -203,6 +200,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert(has_end<ZV&>::value, "");
 			static_assert(has_end<ZV const&>::value, "");
+			static_assert(has_cend<ZV&>::value, "");
+			static_assert(has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
@@ -261,6 +260,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -320,6 +321,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -379,6 +382,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -441,6 +446,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -502,6 +509,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -563,6 +572,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -625,6 +636,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -686,6 +699,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -747,6 +762,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
 				static_assert(has_end<ZV const&>::value, "");
+				static_assert(has_cend<ZV&>::value, "");
+				static_assert(has_cend<ZV const&>::value, "");
 
 				using S  = decltype(hamon::declval<ZV&>().end());
 				using CS = decltype(hamon::declval<ZV const&>().end());
@@ -810,8 +827,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
-			static_assert(has_end<ZV&>::value, "");
+			static_assert( has_end<ZV&>::value, "");
 			static_assert(!has_end<ZV const&>::value, "");
+			static_assert( has_cend<ZV&>::value, "");
+			static_assert(!has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
@@ -856,8 +875,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
-			static_assert(has_end<ZV&>::value, "");
+			static_assert( has_end<ZV&>::value, "");
 			static_assert(!has_end<ZV const&>::value, "");
+			static_assert( has_cend<ZV&>::value, "");
+			static_assert(!has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
@@ -902,8 +923,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
-			static_assert(has_end<ZV&>::value, "");
+			static_assert( has_end<ZV&>::value, "");
 			static_assert(!has_end<ZV const&>::value, "");
+			static_assert( has_cend<ZV&>::value, "");
+			static_assert(!has_cend<ZV const&>::value, "");
 
 			using I  = decltype(hamon::declval<ZV&>().begin());
 			using S  = decltype(hamon::declval<ZV&>().end());
