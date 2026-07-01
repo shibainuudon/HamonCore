@@ -271,7 +271,7 @@ public:
 	->hamon::add_pointer_t<
 		hamon::add_const_t<
 			hamon::remove_pointer_t<
-				decltype(op_arrow_impl(m_current, hamon::detail::overload_priority<1>{}))>>>
+				decltype(op_arrow_impl(hamon::declval<I const&>(), hamon::detail::overload_priority<1>{}))>>>
 	{
 		return op_arrow_impl(m_current, hamon::detail::overload_priority<1>{});
 	}
