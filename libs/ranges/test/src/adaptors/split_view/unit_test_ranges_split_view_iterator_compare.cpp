@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -26,6 +27,17 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = test_forward_view<int>;
 	using P = test_forward_view<int>;
 	using RV = hamon::ranges::split_view<V, P>;
+	using I = hamon::ranges::iterator_t<RV>;
+
+	static_assert( has_eq<I>::value, "");
+	static_assert( has_neq<I>::value, "");
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 
 	int a1[] = {3, 1, 2, 4};
 	int a2[] = {1, 2};
