@@ -17,6 +17,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -24,22 +25,6 @@ namespace lazy_split_view_test
 {
 namespace inner_iterator_compare_test
 {
-
-template <typename T, typename U, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_not_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -52,12 +37,20 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using InnerRng = decltype(*hamon::declval<OuterIter&>());
 	using I = decltype(hamon::declval<InnerRng&>().begin());
 
-	static_assert( has_equal<I const&, I const&>::value, "");
-	static_assert( has_equal<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert( has_not_equal<I const&, I const&>::value, "");
-	static_assert( has_not_equal<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_eq<I const&, I const&>::value, "");
+	static_assert( has_eq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert( has_neq<I const&, I const&>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
+
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 
 	int a1[] = {1, 2, 0, 3, 4, 5};
 	int a2[] = {0};
@@ -152,12 +145,20 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	using InnerRng = decltype(*hamon::declval<OuterIter&>());
 	using I = decltype(hamon::declval<InnerRng&>().begin());
 
-	static_assert(!has_equal<I const&, I const&>::value, "");
-	static_assert( has_equal<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_equal<hamon::default_sentinel_t, I const&>::value, "");
-	static_assert(!has_not_equal<I const&, I const&>::value, "");
-	static_assert( has_not_equal<I const&, hamon::default_sentinel_t>::value, "");
-	static_assert( has_not_equal<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert(!has_eq<I const&, I const&>::value, "");
+	static_assert( has_eq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_eq<hamon::default_sentinel_t, I const&>::value, "");
+	static_assert(!has_neq<I const&, I const&>::value, "");
+	static_assert( has_neq<I const&, hamon::default_sentinel_t>::value, "");
+	static_assert( has_neq<hamon::default_sentinel_t, I const&>::value, "");
+
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 
 	int a1[] = {1, 2, 3, 0, 4, 5};
 	int a2[] = {0};

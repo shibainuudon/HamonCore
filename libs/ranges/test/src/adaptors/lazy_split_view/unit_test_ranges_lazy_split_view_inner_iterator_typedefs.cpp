@@ -16,6 +16,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -23,14 +24,6 @@ namespace lazy_split_view_test
 {
 namespace inner_iterator_typedefs_test
 {
-
-template <typename T, typename = void>
-struct has_iterator_category
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
