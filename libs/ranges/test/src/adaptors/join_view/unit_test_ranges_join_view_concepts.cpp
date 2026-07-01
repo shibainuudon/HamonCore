@@ -11,6 +11,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -68,34 +69,64 @@ HAMON_CXX14_CONSTEXPR bool test00()
 {
 	using T = int;
 	using V = OuterView<InnerView<T>>;
-	using RV = hamon::ranges::join_view<V>;
+	using JV = hamon::ranges::join_view<V>;
 	using IV = hamon::ranges::range_reference_t<V>;
 
-	static_assert(hamon::ranges::range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == false, "");
-//	static_assert(hamon::ranges::output_range_t<RV, T>::value == false, "");
+	static_assert(hamon::ranges::range_t<JV>::value == true, "");
+	static_assert(hamon::ranges::borrowed_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::sized_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<JV>::value == false, "");
+//	static_assert(hamon::ranges::output_range_t<JV, T>::value == false, "");
 #if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000))	// TODO
-	static_assert(hamon::ranges::input_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value ==
+	static_assert(hamon::ranges::input_range_t<JV>::value == true, "");
+	static_assert(hamon::ranges::forward_range_t<JV>::value ==
 		(hamon::ranges::forward_range_t<V>::value &&
 		 hamon::ranges::forward_range_t<IV>::value &&
 		 hamon::is_reference<IV>::value), "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value ==
+	static_assert(hamon::ranges::bidirectional_range_t<JV>::value ==
 		(hamon::ranges::bidirectional_range_t<V>::value &&
 		 hamon::ranges::bidirectional_range_t<IV>::value &&
 		 hamon::is_reference<IV>::value &&
 		 hamon::ranges::common_range_t<IV>::value), "");
 #endif
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == false, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value ==
+	static_assert(hamon::ranges::random_access_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::contiguous_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::common_range_t<JV>::value ==
 		(hamon::ranges::forward_range_t<V>::value &&
 		 hamon::ranges::forward_range_t<IV>::value &&
 		 hamon::ranges::common_range_t<V>::value &&
 		 hamon::ranges::common_range_t<IV>::value), "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::view_t<RV>::value == true, "");
+	static_assert(hamon::ranges::viewable_range_t<JV>::value == true, "");
+	static_assert(hamon::ranges::view_t<JV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<JV>::value == false, "");
+
+	//static_assert(has_begin<JV&>::value, "");
+	//static_assert(has_end<JV&>::value, "");
+	static_assert(has_empty<JV&>::value == hamon::ranges::forward_range_t<JV>::value, "");
+	//static_assert(has_cbegin<JV&>::value, "");
+	//static_assert(has_cend<JV&>::value, "");
+	static_assert(has_operator_bool<JV&>::value == hamon::ranges::forward_range_t<JV>::value, "");
+	static_assert(has_data<JV&>::value == false, "");
+	static_assert(has_size<JV&>::value == false, "");
+	static_assert(has_reserve_hint<JV&>::value == false, "");
+	static_assert(has_front<JV&>::value == hamon::ranges::forward_range_t<JV>::value, "");
+	static_assert(has_back<JV&>::value == (hamon::ranges::bidirectional_range_t<JV>::value && hamon::ranges::common_range_t<JV>::value), "");
+	static_assert(has_subscript<JV&>::value == hamon::ranges::random_access_range_t<JV>::value, "");
+	static_assert(has_base<JV&>::value == true, "");
+
+	//static_assert(has_begin<JV const&>::value, "");
+	//static_assert(has_end<JV const&>::value, "");
+	static_assert(has_empty<JV const&>::value == hamon::ranges::forward_range_t<JV const>::value, "");
+	//static_assert(has_cbegin<JV const&>::value, "");
+	//static_assert(has_cend<JV const&>::value, "");
+	static_assert(has_operator_bool<JV const&>::value == hamon::ranges::forward_range_t<JV const>::value, "");
+	static_assert(has_data<JV const&>::value == false, "");
+	static_assert(has_size<JV const&>::value == false, "");
+	static_assert(has_reserve_hint<JV const&>::value == false, "");
+	static_assert(has_front<JV const&>::value == hamon::ranges::forward_range_t<JV const>::value, "");
+	static_assert(has_back<JV const&>::value == (hamon::ranges::bidirectional_range_t<JV const>::value && hamon::ranges::common_range_t<JV const>::value), "");
+	static_assert(has_subscript<JV const&>::value == hamon::ranges::random_access_range_t<JV const>::value, "");
+	static_assert(has_base<JV const&>::value == true, "");
 
 	return true;
 }
@@ -134,6 +165,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 
 	VERIFY(test01<test_random_access_borrowed_view>());
 	VERIFY(test01<test_input_sized_view>());
+	VERIFY(test01<test_input_approximately_sized_view>());
 
 	VERIFY(test01<ValueForwardView>());
 	VERIFY(test01<ValueBidirectionalView>());

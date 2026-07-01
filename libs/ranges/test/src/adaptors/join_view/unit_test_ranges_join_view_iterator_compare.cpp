@@ -16,6 +16,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -59,22 +60,6 @@ struct NonComapableInputIterator
 	//HAMON_CXX11_CONSTEXPR bool operator==(const NonComapableInputIterator& rhs) const { return m_ptr == rhs.m_ptr; }
 	//HAMON_CXX11_CONSTEXPR bool operator!=(const NonComapableInputIterator& rhs) const { return !(*this == rhs); }
 };
-
-template <typename T, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_equal<T, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<T>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_not_equal<T, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<T>())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -129,8 +114,15 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	using View = test_forward_view<InnerView>;
 	using RV = hamon::ranges::join_view<View>;
 	using I = decltype(hamon::declval<RV>().begin());
-	static_assert(has_equal<I>::value, "");
-	static_assert(has_not_equal<I>::value, "");
+	static_assert( has_eq<I>::value, "");
+	static_assert( has_neq<I>::value, "");
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	return true;
 }
 
@@ -141,8 +133,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	using View = test_view<InnerView, ValueForwardIterator<InnerView>>;
 	using RV = hamon::ranges::join_view<View>;
 	using I = decltype(hamon::declval<RV>().begin());
-	static_assert(!has_equal<I>::value, "");
-	static_assert(!has_not_equal<I>::value, "");
+	static_assert(!has_eq<I>::value, "");
+	static_assert(!has_neq<I>::value, "");
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	return true;
 }
 
@@ -153,8 +152,15 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	using View = test_input_view<InnerView>;
 	using RV = hamon::ranges::join_view<View>;
 	using I = decltype(hamon::declval<RV>().begin());
-	static_assert(!has_equal<I>::value, "");
-	static_assert(!has_not_equal<I>::value, "");
+	static_assert(!has_eq<I>::value, "");
+	static_assert(!has_neq<I>::value, "");
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	return true;
 }
 
@@ -165,8 +171,15 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	using View = test_forward_view<InnerView>;
 	using RV = hamon::ranges::join_view<View>;
 	using I = decltype(hamon::declval<RV>().begin());
-	static_assert(!has_equal<I>::value, "");
-	static_assert(!has_not_equal<I>::value, "");
+	static_assert(!has_eq<I>::value, "");
+	static_assert(!has_neq<I>::value, "");
+	static_assert(!has_lt<I>::value, "");
+	static_assert(!has_lteq<I>::value, "");
+	static_assert(!has_gt<I>::value, "");
+	static_assert(!has_gteq<I>::value, "");
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	static_assert(!has_compare_three_way<I>::value, "");
+#endif
 	return true;
 }
 

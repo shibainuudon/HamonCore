@@ -8,6 +8,7 @@
 #define HAMON_RANGE_TEST_HELPER_HPP
 
 #include <hamon/cstddef/ptrdiff_t.hpp>
+#include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -286,6 +287,15 @@ template <typename T, typename U>
 struct has_compare_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<U>())>>
 	: public hamon::true_type {};
 #endif
+
+// iter_swap
+template <typename T, typename = void>
+struct has_iter_swap
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_iter_swap<T, hamon::void_t<decltype(hamon::ranges::iter_swap(hamon::declval<T>(), hamon::declval<T>()))>>
+	: public hamon::true_type {};
 
 }	// namespace hamon_ranges_test
 

@@ -15,6 +15,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -75,14 +76,6 @@ struct NotSimpleView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return const_sentinel{const_iterator{m_last}}; }
 };
 
-template <typename T, typename = void>
-struct has_begin
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_begin<T, hamon::void_t<decltype(hamon::declval<T>().begin())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -94,6 +87,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert(!has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert(!has_cbegin<RV const&>::value, "");
 
 	return true;
 }
@@ -107,6 +102,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert(!has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert(!has_cbegin<RV const&>::value, "");
 
 	return true;
 }
@@ -129,6 +126,8 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert(!has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert(!has_cbegin<RV const&>::value, "");
 
 	return true;
 }
@@ -140,6 +139,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
 
 	static_assert(hamon::is_same<
 		decltype(hamon::declval<RV&>().begin()),		// iterator<true>
@@ -167,6 +168,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
 
 	static_assert(!hamon::is_same<
 		decltype(hamon::declval<RV&>().begin()),		// iterator<false>
@@ -195,6 +198,8 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 	static_assert( has_begin<RV&>::value, "");
 	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
 
 	static_assert(!hamon::is_same<
 		decltype(hamon::declval<RV&>().begin()),		// iterator<false>

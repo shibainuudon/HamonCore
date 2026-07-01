@@ -21,6 +21,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -77,14 +78,6 @@ struct MoveOnlyIterInnerView : hamon::ranges::view_base
 	iterator begin() const { return iterator{}; }
 	sentinel end() const { return sentinel{}; }
 };
-
-template <typename T, typename = void>
-struct has_arrow
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_arrow<T, hamon::void_t<decltype(hamon::declval<T>().operator->())>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
