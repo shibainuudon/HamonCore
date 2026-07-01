@@ -78,58 +78,60 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 {
 	using T = int;
 	using V = View<T>;
-	using RV = hamon::ranges::drop_while_view<V, Pred>;
-	using I = hamon::ranges::iterator_t<RV>;
-	using S = hamon::ranges::sentinel_t<RV>;
+	using DWV = hamon::ranges::drop_while_view<V, Pred>;
+	using I = hamon::ranges::iterator_t<DWV>;
+	using S = hamon::ranges::sentinel_t<DWV>;
 
-	static_assert(hamon::ranges::range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == hamon::sized_sentinel_for_t<S, I>::value, "");
-	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<V>::value, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<V>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<V>::value, "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value == true, "");
-	static_assert(hamon::ranges::view_t<RV>::value == true, "");
+	static_assert(hamon::ranges::range_t<DWV>::value == true, "");
+	static_assert(hamon::ranges::borrowed_range_t<DWV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
+	static_assert(hamon::ranges::sized_range_t<DWV>::value == hamon::sized_sentinel_for_t<S, I>::value, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<DWV>::value == hamon::sized_sentinel_for_t<S, I>::value, "");
+	static_assert(hamon::ranges::output_range_t<DWV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
+	static_assert(hamon::ranges::input_range_t<DWV>::value == hamon::ranges::input_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range_t<DWV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::bidirectional_range_t<DWV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(hamon::ranges::random_access_range_t<DWV>::value == hamon::ranges::random_access_range_t<V>::value, "");
+	static_assert(hamon::ranges::contiguous_range_t<DWV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
+	static_assert(hamon::ranges::common_range_t<DWV>::value == hamon::ranges::common_range_t<V>::value, "");
+	static_assert(hamon::ranges::viewable_range_t<DWV>::value == true, "");
+	static_assert(hamon::ranges::view_t<DWV>::value == true, "");
+	static_assert(hamon::ranges::constant_range_t<DWV>::value == false, "");
 
-	static_assert(hamon::is_default_constructible<RV>::value ==
+	static_assert(hamon::is_default_constructible<DWV>::value ==
 		(hamon::is_default_constructible<V>::value && hamon::is_default_constructible<Pred>::value), "");
-	static_assert(hamon::is_nothrow_default_constructible<RV>::value ==
+	static_assert(hamon::is_nothrow_default_constructible<DWV>::value ==
 		(hamon::is_nothrow_default_constructible<V>::value && hamon::is_nothrow_default_constructible<Pred>::value), "");
 
-	static_assert(!hamon::is_constructible<RV, V>::value, "");
-	static_assert(!hamon::is_constructible<RV, Pred>::value, "");
-	static_assert( hamon::is_constructible<RV, V, Pred>::value, "");
-	static_assert(!hamon::is_constructible<RV, Pred, V>::value, "");
-	static_assert(!hamon::is_constructible<RV, V, Pred, Pred>::value, "");
+	static_assert(!hamon::is_constructible<DWV, V>::value, "");
+	static_assert(!hamon::is_constructible<DWV, Pred>::value, "");
+	static_assert( hamon::is_constructible<DWV, V, Pred>::value, "");
+	static_assert(!hamon::is_constructible<DWV, Pred, V>::value, "");
+	static_assert(!hamon::is_constructible<DWV, V, Pred, Pred>::value, "");
 
-	static_assert(has_base<RV&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV&&>::value, "");
-	static_assert(has_base<RV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<RV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<DWV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<DWV&&>::value, "");
+	static_assert(has_base<DWV const&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<DWV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV&&>().base()), V>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<RV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const&>().base()), V>::value, "");
+		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const&&>().base()), V>::value, "");
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV const>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const>().pred()), Pred const&>::value, "");
 
-	static_assert( has_begin<RV>::value, "");
-	static_assert(!has_begin<RV const>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().begin()), I>::value, "");
+	static_assert( has_begin<DWV>::value, "");
+	static_assert(!has_begin<DWV const>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV>().begin()), I>::value, "");
 
-	static_assert( has_end<RV>::value, "");
-	static_assert(!has_end<RV const>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().end()), S>::value, "");
+	static_assert( has_end<DWV>::value, "");
+	static_assert(!has_end<DWV const>::value, "");
+	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV>().end()), S>::value, "");
 
 	return true;
 }
@@ -392,6 +394,12 @@ GTEST_TEST(RangesTest, DropWhileViewTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_sized_view>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_sized_view>());
+
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_input_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_forward_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_bidirectional_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_random_access_approximately_sized_view>());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<test_contiguous_approximately_sized_view>());
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00<MoveOnlyView>());
 
