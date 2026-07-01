@@ -22,6 +22,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -44,14 +45,6 @@ struct TestView2 : hamon::ranges::view_base
 	Sentinel end()   noexcept;
 };
 
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -67,6 +60,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_end<CV&>::value, "");
+		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV&>().end()), I>::value, "");
 
 		int a[] = { 1,2,3 };
@@ -85,6 +81,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_end<CV&>::value, "");
+		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV&>().end()), hamon::common_iterator<I, S>>::value, "");
 
 		int a[] = { 1,2,3 };
@@ -104,6 +103,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_end<CV&>::value, "");
+		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV&>().end()), hamon::common_iterator<I, S>>::value, "");
 	}
 	{
@@ -117,6 +119,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_end<CV&>::value, "");
+		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV&>().end()), hamon::common_iterator<I, S>>::value, "");
 
 		int a[] = { 1,2,3 };
@@ -140,6 +145,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 		static_assert( has_end<CV&>::value, "");
 		static_assert(!has_end<CV const&>::value, "");
+		static_assert( has_cend<CV&>::value, "");
+		static_assert(!has_cend<CV const&>::value, "");
 	}
 	{
 		// random_access_range<V const> && sized_range<V const>
@@ -151,7 +158,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		//using S = hamon::ranges::sentinel_t<V const>;
 
 		using CV = hamon::ranges::common_view<V>;
+		static_assert(has_end<CV&>::value, "");
 		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV const&>().end()), I>::value, "");
 
 		int a[] = { 1,2,3 };
@@ -169,7 +179,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using S = hamon::ranges::sentinel_t<V const>;
 
 		using CV = hamon::ranges::common_view<V>;
+		static_assert(has_end<CV&>::value, "");
 		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV const&>().end()), hamon::common_iterator<I, S>>::value, "");
 
 		int a[] = { 1,2,3 };
@@ -188,7 +201,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using S = hamon::ranges::sentinel_t<V const>;
 
 		using CV = hamon::ranges::common_view<V>;
+		static_assert(has_end<CV&>::value, "");
 		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV const&>().end()), hamon::common_iterator<I, S>>::value, "");
 	}
 	{
@@ -201,7 +217,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		using S = hamon::ranges::sentinel_t<V const>;
 
 		using CV = hamon::ranges::common_view<V>;
+		static_assert(has_end<CV&>::value, "");
 		static_assert(has_end<CV const&>::value, "");
+		static_assert(has_cend<CV&>::value, "");
+		static_assert(has_cend<CV const&>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<CV const&>().end()), hamon::common_iterator<I, S>>::value, "");
 
 		int a[] = { 1,2,3 };
