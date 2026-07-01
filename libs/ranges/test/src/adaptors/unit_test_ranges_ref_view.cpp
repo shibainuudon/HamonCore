@@ -51,19 +51,19 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::constructible_from_t<RV, RV const&>::value, "");
 	static_assert( hamon::constructible_from_t<RV, RV const&&>::value, "");
 
-	static_assert(hamon::ranges::range_t<RV>::value, "");
-	static_assert(hamon::ranges::borrowed_range_t<RV>::value, "");
-	static_assert(hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<R>::value, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<RV>::value == hamon::ranges::approximately_sized_range_t<R>::value, "");
-	static_assert(hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<R, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<R>::value, "");
-	static_assert(hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<R>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<R>::value, "");
-	static_assert(hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<R>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<R>::value, "");
-	static_assert(hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<R>::value, "");
-	static_assert(hamon::ranges::viewable_range_t<RV>::value, "");
-	static_assert(hamon::ranges::view_t<RV>::value, "");
+	static_assert( hamon::ranges::range_t<RV>::value, "");
+	static_assert( hamon::ranges::borrowed_range_t<RV>::value, "");
+	static_assert( hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<R>::value, "");
+	static_assert( hamon::ranges::approximately_sized_range_t<RV>::value == hamon::ranges::approximately_sized_range_t<R>::value, "");
+	static_assert( hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<R, T>::value, "");
+	static_assert( hamon::ranges::input_range_t<RV>::value == hamon::ranges::input_range_t<R>::value, "");
+	static_assert( hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<R>::value, "");
+	static_assert( hamon::ranges::bidirectional_range_t<RV>::value == hamon::ranges::bidirectional_range_t<R>::value, "");
+	static_assert( hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<R>::value, "");
+	static_assert( hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<R>::value, "");
+	static_assert( hamon::ranges::common_range_t<RV>::value == hamon::ranges::common_range_t<R>::value, "");
+	static_assert( hamon::ranges::viewable_range_t<RV>::value, "");
+	static_assert( hamon::ranges::view_t<RV>::value, "");
 	static_assert(!hamon::ranges::constant_range_t<RV>::value, "");
 
 	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().base()), R&>::value, "");
@@ -81,27 +81,44 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
+	using R = test_random_access_range<int>;
+	using RV = hamon::ranges::ref_view<R>;
+
+	static_assert( has_begin<RV&>::value, "");
+	static_assert( has_end<RV&>::value, "");
+	static_assert( has_empty<RV&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cend<RV&>::value, "");
+	static_assert( has_operator_bool<RV&>::value, "");
+	static_assert(!has_data<RV&>::value, "");
+	static_assert( has_size<RV&>::value, "");
+	static_assert( has_reserve_hint<RV&>::value, "");
+	static_assert( has_front<RV&>::value, "");
+	static_assert(!has_back<RV&>::value, "");
+	static_assert( has_subscript<RV&>::value, "");
+
+	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_end<RV const&>::value, "");
+	static_assert( has_empty<RV const&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
+	static_assert( has_cend<RV const&>::value, "");
+	static_assert( has_operator_bool<RV const&>::value, "");
+	static_assert(!has_data<RV const&>::value, "");
+	static_assert( has_size<RV const&>::value, "");
+	static_assert( has_reserve_hint<RV const&>::value, "");
+	static_assert( has_front<RV const&>::value, "");
+	static_assert(!has_back<RV const&>::value, "");
+	static_assert( has_subscript<RV const&>::value, "");
+
 	int a[2] = {1, 2};
-	test_random_access_range<int> r(a);
+	R r(a);
+
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
+	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
 #else
-	hamon::ranges::ref_view<test_random_access_range<int>> rv{r};
+	RV rv{r};
 #endif
-
-	using RV = decltype(rv);
-	static_assert( has_begin<RV>::value, "");
-	static_assert( has_end<RV>::value, "");
-	static_assert( has_empty<RV>::value, "");
-	static_assert( has_cbegin<RV>::value, "");
-	static_assert( has_cend<RV>::value, "");
-	static_assert( has_operator_bool<RV>::value, "");
-	static_assert(!has_data<RV>::value, "");
-	static_assert( has_size<RV>::value, "");
-	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert( has_front<RV>::value, "");
-	static_assert(!has_back<RV>::value, "");
-	static_assert( has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(!rv.empty());
@@ -119,27 +136,44 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 HAMON_CXX14_CONSTEXPR bool test02()
 {
+	using R = test_contiguous_range<int>;
+	using RV = hamon::ranges::ref_view<R>;
+
+	static_assert( has_begin<RV&>::value, "");
+	static_assert( has_end<RV&>::value, "");
+	static_assert( has_empty<RV&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cend<RV&>::value, "");
+	static_assert( has_operator_bool<RV&>::value, "");
+	static_assert( has_data<RV&>::value, "");
+	static_assert( has_size<RV&>::value, "");
+	static_assert( has_reserve_hint<RV&>::value, "");
+	static_assert( has_front<RV&>::value, "");
+	static_assert(!has_back<RV&>::value, "");
+	static_assert( has_subscript<RV&>::value, "");
+
+	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_end<RV const&>::value, "");
+	static_assert( has_empty<RV const&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
+	static_assert( has_cend<RV const&>::value, "");
+	static_assert( has_operator_bool<RV const&>::value, "");
+	static_assert( has_data<RV const&>::value, "");
+	static_assert( has_size<RV const&>::value, "");
+	static_assert( has_reserve_hint<RV const&>::value, "");
+	static_assert( has_front<RV const&>::value, "");
+	static_assert(!has_back<RV const&>::value, "");
+	static_assert( has_subscript<RV const&>::value, "");
+
 	int a[3] = {3, 4, 5};
-	test_contiguous_range<int> r(a);
+	R r(a);
+
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
+	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
 #else
-	hamon::ranges::ref_view<test_contiguous_range<int>> rv{r};
+	RV rv{r};
 #endif
-
-	using RV = decltype(rv);
-	static_assert( has_begin<RV>::value, "");
-	static_assert( has_end<RV>::value, "");
-	static_assert( has_empty<RV>::value, "");
-	static_assert( has_cbegin<RV>::value, "");
-	static_assert( has_cend<RV>::value, "");
-	static_assert( has_operator_bool<RV>::value, "");
-	static_assert( has_data<RV>::value, "");
-	static_assert( has_size<RV>::value, "");
-	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert( has_front<RV>::value, "");
-	static_assert(!has_back<RV>::value, "");
-	static_assert( has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(!rv.empty());
@@ -159,27 +193,44 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
+	using R = test_input_approximately_sized_range<int>;
+	using RV = hamon::ranges::ref_view<R>;
+
+	static_assert( has_begin<RV&>::value, "");
+	static_assert( has_end<RV&>::value, "");
+	static_assert(!has_empty<RV&>::value, "");
+	static_assert( has_cbegin<RV&>::value, "");
+	static_assert( has_cend<RV&>::value, "");
+	static_assert(!has_operator_bool<RV&>::value, "");
+	static_assert(!has_data<RV&>::value, "");
+	static_assert(!has_size<RV&>::value, "");
+	static_assert( has_reserve_hint<RV&>::value, "");
+	static_assert(!has_front<RV&>::value, "");
+	static_assert(!has_back<RV&>::value, "");
+	static_assert(!has_subscript<RV&>::value, "");
+
+	static_assert( has_begin<RV const&>::value, "");
+	static_assert( has_end<RV const&>::value, "");
+	static_assert(!has_empty<RV const&>::value, "");
+	static_assert( has_cbegin<RV const&>::value, "");
+	static_assert( has_cend<RV const&>::value, "");
+	static_assert(!has_operator_bool<RV const&>::value, "");
+	static_assert(!has_data<RV const&>::value, "");
+	static_assert(!has_size<RV const&>::value, "");
+	static_assert( has_reserve_hint<RV const&>::value, "");
+	static_assert(!has_front<RV const&>::value, "");
+	static_assert(!has_back<RV const&>::value, "");
+	static_assert(!has_subscript<RV const&>::value, "");
+
 	int a[3] = {3, 4, 5};
-	test_input_approximately_sized_range<int> r(a);
+	R r(a);
+
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
+	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
 #else
-	hamon::ranges::ref_view<test_input_approximately_sized_range<int>> rv{r};
+	RV rv{r};
 #endif
-
-	using RV = decltype(rv);
-	static_assert( has_begin<RV>::value, "");
-	static_assert( has_end<RV>::value, "");
-	static_assert(!has_empty<RV>::value, "");
-	static_assert( has_cbegin<RV>::value, "");
-	static_assert( has_cend<RV>::value, "");
-	static_assert(!has_operator_bool<RV>::value, "");
-	static_assert(!has_data<RV>::value, "");
-	static_assert(!has_size<RV>::value, "");
-	static_assert( has_reserve_hint<RV>::value, "");
-	static_assert(!has_front<RV>::value, "");
-	static_assert(!has_back<RV>::value, "");
-	static_assert(!has_subscript<RV>::value, "");
 
 	VERIFY(&rv.base() == &r);
 	VERIFY(rv.reserve_hint() == 3);
