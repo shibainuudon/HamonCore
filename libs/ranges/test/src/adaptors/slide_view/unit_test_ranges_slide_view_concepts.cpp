@@ -6,6 +6,7 @@
 
 #include <hamon/ranges/adaptors/slide_view.hpp>
 #include <hamon/ranges/concepts.hpp>
+#include <hamon/ranges/range_reference_t.hpp>
 #include <gtest/gtest.h>
 #include "ranges_test.hpp"
 
@@ -36,6 +37,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 	{
 		using T = int;
@@ -55,6 +72,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 	{
 		using T = int;
@@ -74,6 +107,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert( hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert( hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 	{
 		using T = int;
@@ -93,6 +142,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert( hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert( hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert( hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 
 	// constant
@@ -114,6 +179,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert( hamon::ranges::constant_range_t<IV>::value, "");
 	}
 
 	// borrowed
@@ -135,6 +216,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 
 	// common
@@ -156,6 +253,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 
 	// sized
@@ -177,6 +290,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 
 	// approximately_sized
@@ -198,6 +327,22 @@ GTEST_TEST(RangesTest, SlideViewConceptsTest)
 		static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
 		static_assert( hamon::ranges::view_t<SV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
+
+		using IV = hamon::ranges::range_reference_t<SV>;
+		static_assert( hamon::ranges::range_t<IV>::value, "");
+		static_assert( hamon::ranges::borrowed_range_t<IV>::value, "");
+		static_assert( hamon::ranges::sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range_t<IV>::value, "");
+		static_assert( hamon::ranges::output_range_t<IV, T>::value, "");
+		static_assert( hamon::ranges::input_range_t<IV>::value, "");
+		static_assert( hamon::ranges::forward_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::bidirectional_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::random_access_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::contiguous_range_t<IV>::value, "");
+		static_assert(!hamon::ranges::common_range_t<IV>::value, "");
+		static_assert( hamon::ranges::viewable_range_t<IV>::value, "");
+		static_assert( hamon::ranges::view_t<IV>::value, "");
+		static_assert(!hamon::ranges::constant_range_t<IV>::value, "");
 	}
 }
 
