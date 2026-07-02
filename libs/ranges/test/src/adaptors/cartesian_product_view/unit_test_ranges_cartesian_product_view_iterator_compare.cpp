@@ -26,6 +26,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -48,64 +49,6 @@ struct NonComparableIterator
 	T&                     operator*() const;
 };
 
-template <typename T, typename U, typename = void>
-struct has_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() == hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_not_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_not_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() != hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_less
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_less<T, U, hamon::void_t<decltype(hamon::declval<T>() < hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_less_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_less_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() <= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_greater
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_greater<T, U, hamon::void_t<decltype(hamon::declval<T>() > hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-template <typename T, typename U, typename = void>
-struct has_greater_equal
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_greater_equal<T, U, hamon::void_t<decltype(hamon::declval<T>() >= hamon::declval<U>())>>
-	: public hamon::true_type {};
-
-#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename T, typename U, typename = void>
-struct has_three_way
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_three_way<T, U, hamon::void_t<decltype(hamon::declval<T>() <=> hamon::declval<U>())>>
-	: public hamon::true_type {};
-#endif
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -114,210 +57,210 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<int, NonComparableIterator<int>>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert(!has_equal        <I const&, I const&>::value, "");
-		static_assert(!has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
-		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert(!has_eq  <I const&, I const&>::value, "");
+		static_assert(!has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_input_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
-		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_forward_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
-		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_bidirectional_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
-		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_random_access_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert( has_less         <I const&, I const&>::value, "");
-		static_assert( has_less_equal   <I const&, I const&>::value, "");
-		static_assert( has_greater      <I const&, I const&>::value, "");
- 		static_assert( has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert( has_lt  <I const&, I const&>::value, "");
+		static_assert( has_lteq<I const&, I const&>::value, "");
+		static_assert( has_gt  <I const&, I const&>::value, "");
+ 		static_assert( has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert( has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_contiguous_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert( has_less         <I const&, I const&>::value, "");
-		static_assert( has_less_equal   <I const&, I const&>::value, "");
-		static_assert( has_greater      <I const&, I const&>::value, "");
- 		static_assert( has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert( has_lt  <I const&, I const&>::value, "");
+		static_assert( has_lteq<I const&, I const&>::value, "");
+		static_assert( has_gt  <I const&, I const&>::value, "");
+ 		static_assert( has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert( has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
 		using V = test_view<int, int*>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert( has_less         <I const&, I const&>::value, "");
-		static_assert( has_less_equal   <I const&, I const&>::value, "");
-		static_assert( has_greater      <I const&, I const&>::value, "");
- 		static_assert( has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert( has_lt  <I const&, I const&>::value, "");
+		static_assert( has_lteq<I const&, I const&>::value, "");
+		static_assert( has_gt  <I const&, I const&>::value, "");
+ 		static_assert( has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert( has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
@@ -325,30 +268,30 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V2 = test_random_access_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert( has_less         <I const&, I const&>::value, "");
-		static_assert( has_less_equal   <I const&, I const&>::value, "");
-		static_assert( has_greater      <I const&, I const&>::value, "");
- 		static_assert( has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert( has_lt  <I const&, I const&>::value, "");
+		static_assert( has_lteq<I const&, I const&>::value, "");
+		static_assert( has_gt  <I const&, I const&>::value, "");
+ 		static_assert( has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert( has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
@@ -356,30 +299,30 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V2 = test_bidirectional_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
- 		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+ 		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	{
@@ -387,30 +330,30 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V2 = test_random_access_view<int>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		using I = decltype(hamon::declval<CV&>().begin());
-		static_assert( has_equal        <I const&, I const&>::value, "");
-		static_assert( has_not_equal    <I const&, I const&>::value, "");
-		static_assert(!has_less         <I const&, I const&>::value, "");
-		static_assert(!has_less_equal   <I const&, I const&>::value, "");
-		static_assert(!has_greater      <I const&, I const&>::value, "");
- 		static_assert(!has_greater_equal<I const&, I const&>::value, "");
+		static_assert( has_eq  <I const&, I const&>::value, "");
+		static_assert( has_neq <I const&, I const&>::value, "");
+		static_assert(!has_lt  <I const&, I const&>::value, "");
+		static_assert(!has_lteq<I const&, I const&>::value, "");
+		static_assert(!has_gt  <I const&, I const&>::value, "");
+ 		static_assert(!has_gteq<I const&, I const&>::value, "");
 
-		static_assert( has_equal        <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_not_equal    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less         <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_less_equal   <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater      <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_greater_equal<I const&, hamon::default_sentinel_t>::value, "");
-		static_assert( has_equal        <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_not_equal    <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less         <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_less_equal   <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater      <hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_greater_equal<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_eq  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_neq <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_lteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gt  <I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_gteq<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_eq  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_neq <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_lteq<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gt  <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_gteq<hamon::default_sentinel_t, I const&>::value, "");
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		static_assert(!has_three_way    <I const&, I const&>::value, "");
-		static_assert(!has_three_way    <I const&, hamon::default_sentinel_t>::value, "");
-		static_assert(!has_three_way    <hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, I const&>::value, "");
+		static_assert(!has_compare_three_way<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_compare_three_way<hamon::default_sentinel_t, I const&>::value, "");
 #endif
 	}
 	return true;

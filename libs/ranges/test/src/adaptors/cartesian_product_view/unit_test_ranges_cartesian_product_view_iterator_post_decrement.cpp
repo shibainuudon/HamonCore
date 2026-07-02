@@ -16,6 +16,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -23,14 +24,6 @@ namespace cartesian_product_view_test
 {
 namespace iterator_post_decrement_test
 {
-
-template <typename T, typename = void>
-struct has_post_decrement
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_post_decrement<T, hamon::void_t<decltype(hamon::declval<T>()--)>>
-	: public hamon::true_type {};
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

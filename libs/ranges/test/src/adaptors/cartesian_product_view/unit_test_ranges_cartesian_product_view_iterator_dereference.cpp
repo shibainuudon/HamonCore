@@ -13,6 +13,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -28,6 +29,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = test_input_view<int>;
 	using ZV = hamon::ranges::cartesian_product_view<V>;
 	using I = decltype(hamon::declval<ZV&>().begin());
+
+	static_assert(has_dereference<I&>::value, "");
+	static_assert(has_dereference<I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(*hamon::declval<I const&>()), hamon::tuple<int&>>::value, "");
 
@@ -47,6 +51,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	using V3 = test_forward_view<float>;
 	using ZV = hamon::ranges::cartesian_product_view<V1, V2, V3>;
 	using I = decltype(hamon::declval<ZV&>().begin());
+
+	static_assert(has_dereference<I&>::value, "");
+	static_assert(has_dereference<I const&>::value, "");
 
 	static_assert(hamon::is_same<decltype(*hamon::declval<I const&>()), hamon::tuple<int const&, char&, float&>>::value, "");
 
