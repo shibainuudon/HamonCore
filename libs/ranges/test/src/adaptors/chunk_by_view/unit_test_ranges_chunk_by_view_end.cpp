@@ -12,6 +12,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -27,6 +28,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = test_forward_view<int>;
 	using F = hamon::ranges::less;
 	using CV = hamon::ranges::chunk_by_view<V, F>;
+
+	static_assert( has_end<CV&>::value, "");
+	static_assert(!has_end<CV const&>::value, "");
+	static_assert( has_cend<CV&>::value, "");
+	static_assert(!has_cend<CV const&>::value, "");
 
 	int a[] = {1,2,3};
 	V v(a);
@@ -44,6 +50,11 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	using V = test_forward_common_view<int>;
 	using F = hamon::ranges::less;
 	using CV = hamon::ranges::chunk_by_view<V, F>;
+
+	static_assert( has_end<CV&>::value, "");
+	static_assert(!has_end<CV const&>::value, "");
+	static_assert( has_cend<CV&>::value, "");
+	static_assert(!has_cend<CV const&>::value, "");
 
 	int a[] = {1,2,3};
 	V v(a);
