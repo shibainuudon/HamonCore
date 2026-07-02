@@ -19,6 +19,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -46,14 +47,6 @@ struct TestView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR ConstSentinel end()   const noexcept { return ConstSentinel{m_last}; }
 };
 
-template <typename T, typename = void>
-struct has_end
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_end<T, hamon::void_t<decltype(hamon::declval<T>().end())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -77,6 +70,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert( has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert( has_cend<SV const&>::value, "");
 
 			using S  = decltype(hamon::declval<SV&>().end());
 			using CS = decltype(hamon::declval<SV const&>().end());
@@ -115,6 +110,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert( has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert( has_cend<SV const&>::value, "");
 
 			using S  = decltype(hamon::declval<SV&>().end());
 			using CS = decltype(hamon::declval<SV const&>().end());
@@ -150,6 +147,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert( has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert( has_cend<SV const&>::value, "");
 
 			using S  = decltype(hamon::declval<SV&>().end());
 			using CS = decltype(hamon::declval<SV const&>().end());
@@ -195,6 +194,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -236,6 +237,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -274,6 +277,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -318,6 +323,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -360,6 +367,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -399,6 +408,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -440,6 +451,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -479,6 +492,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -515,6 +530,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				using SV = hamon::ranges::stride_view<V>;
 				static_assert( has_end<SV&>::value, "");
 				static_assert( has_end<SV const&>::value, "");
+				static_assert( has_cend<SV&>::value, "");
+				static_assert( has_cend<SV const&>::value, "");
 
 				using S  = decltype(hamon::declval<SV&>().end());
 				using CS = decltype(hamon::declval<SV const&>().end());
@@ -562,6 +579,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert(!has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert(!has_cend<SV const&>::value, "");
 
 			//using S  = decltype(hamon::declval<SV&>().end());
 			//static_assert(hamon::is_same<S,  SV::iterator<false>>::value, "");
@@ -592,6 +611,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert(!has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert(!has_cend<SV const&>::value, "");
 
 			//using S  = decltype(hamon::declval<SV&>().end());
 			//static_assert(hamon::is_same<S,  SV::iterator<false>>::value, "");
@@ -619,6 +640,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			using SV = hamon::ranges::stride_view<V>;
 			static_assert( has_end<SV&>::value, "");
 			static_assert(!has_end<SV const&>::value, "");
+			static_assert( has_cend<SV&>::value, "");
+			static_assert(!has_cend<SV const&>::value, "");
 
 			using S  = decltype(hamon::declval<SV&>().end());
 			static_assert(hamon::is_same<S,  hamon::default_sentinel_t>::value, "");

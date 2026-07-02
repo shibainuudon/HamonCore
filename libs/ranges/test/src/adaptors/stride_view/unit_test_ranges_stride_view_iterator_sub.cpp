@@ -23,6 +23,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -63,14 +64,6 @@ template <typename T>
 HAMON_CXX14_CONSTEXPR SizedInputIterator<T>
 operator+(hamon::ptrdiff_t, SizedInputIterator<T> const&);
 
-template <typename T, typename U, typename = void>
-struct has_sub
-	: public hamon::false_type {};
-
-template <typename T, typename U>
-struct has_sub<T, U, hamon::void_t<decltype(hamon::declval<T>() - hamon::declval<U>())>>
-	: public hamon::true_type {};
-
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
 HAMON_CXX14_CONSTEXPR bool test00()
@@ -79,41 +72,41 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_input_view<int>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert(!has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert(!has_sub<I const&, I const&>::value, "");
-		static_assert(!has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert(!has_minus<I const&, I const&>::value, "");
+		static_assert(!has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_minus<I const&, hamon::default_sentinel_t>::value, "");
 	}
 	{
 		using V = test_forward_view<int>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert(!has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert(!has_sub<I const&, I const&>::value, "");
-		static_assert(!has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert(!has_minus<I const&, I const&>::value, "");
+		static_assert(!has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_minus<I const&, hamon::default_sentinel_t>::value, "");
 	}
 	{
 		using V = test_bidirectional_view<int>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert(!has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert(!has_sub<I const&, I const&>::value, "");
-		static_assert(!has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert(!has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert(!has_minus<I const&, I const&>::value, "");
+		static_assert(!has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert(!has_minus<I const&, hamon::default_sentinel_t>::value, "");
 	}
 	{
 		using V = test_random_access_view<int>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert( has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert( has_sub<I const&, I const&>::value, "");
-		static_assert( has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert( has_minus<I const&, I const&>::value, "");
+		static_assert( has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_minus<I const&, hamon::default_sentinel_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<int>()), I>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<hamon::default_sentinel_t>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
@@ -123,11 +116,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_contiguous_view<int>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert( has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert( has_sub<I const&, I const&>::value, "");
-		static_assert( has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert( has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert( has_minus<I const&, I const&>::value, "");
+		static_assert( has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_minus<I const&, hamon::default_sentinel_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<int>()), I>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<hamon::default_sentinel_t>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
@@ -137,11 +130,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<int, SizedInputIterator<int>, SizedInputIterator<int>>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
-		static_assert(!has_sub<I const&, int>::value, "");
-		static_assert(!has_sub<int, I const&>::value, "");
-		static_assert( has_sub<I const&, I const&>::value, "");
-		static_assert( has_sub<hamon::default_sentinel_t, I const&>::value, "");
-		static_assert( has_sub<I const&, hamon::default_sentinel_t>::value, "");
+		static_assert(!has_minus<I const&, int>::value, "");
+		static_assert(!has_minus<int, I const&>::value, "");
+		static_assert( has_minus<I const&, I const&>::value, "");
+		static_assert( has_minus<hamon::default_sentinel_t, I const&>::value, "");
+		static_assert( has_minus<I const&, hamon::default_sentinel_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<hamon::default_sentinel_t>() - hamon::declval<I const&>()), hamon::ptrdiff_t>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<I const&>() - hamon::declval<hamon::default_sentinel_t>()), hamon::ptrdiff_t>::value, "");

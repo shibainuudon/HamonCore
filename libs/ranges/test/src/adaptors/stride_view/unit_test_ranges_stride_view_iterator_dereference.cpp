@@ -14,6 +14,7 @@
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -46,6 +47,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<int, TestIterator<int, int&>>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
+
+		static_assert(has_dereference<I&>::value, "");
+		static_assert(has_dereference<I const&>::value, "");
+
 		static_assert(hamon::is_same<decltype(*hamon::declval<I&>()), int&>::value, "");
 
 		int a[] = {1,2,3,4,5,6};
@@ -62,6 +67,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<long, TestIterator<long, long const&>>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
+
+		static_assert(has_dereference<I&>::value, "");
+		static_assert(has_dereference<I const&>::value, "");
+
 		static_assert(hamon::is_same<decltype(*hamon::declval<I&>()), long const&>::value, "");
 
 		long a[] = {11,12,13};
@@ -74,6 +83,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = test_view<int, TestIterator<int, int>>;
 		using SV = hamon::ranges::stride_view<V>;
 		using I = decltype(hamon::declval<SV&>().begin());
+
+		static_assert(has_dereference<I&>::value, "");
+		static_assert(has_dereference<I const&>::value, "");
+
 		static_assert(hamon::is_same<decltype(*hamon::declval<I&>()), int>::value, "");
 
 		int a[] = {1,2,3,4,5,6};

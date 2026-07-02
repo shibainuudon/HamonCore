@@ -16,6 +16,7 @@
 #include <hamon/utility/declval.hpp>
 #include <gtest/gtest.h>
 #include "ranges_test.hpp"
+#include "range_test_helper.hpp"
 
 namespace hamon_ranges_test
 {
@@ -23,14 +24,6 @@ namespace stride_view_test
 {
 namespace iterator_typedefs_test
 {
-
-template <typename T, typename = void>
-struct has_iterator_category
-	: public hamon::false_type {};
-
-template <typename T>
-struct has_iterator_category<T, hamon::void_t<typename T::iterator_category>>
-	: public hamon::true_type {};
 
 GTEST_TEST(RangesTest, StrideViewIteratorTypedefsTest)
 {
