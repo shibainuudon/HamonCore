@@ -10,7 +10,6 @@
 #include <hamon/iterator/detail/unsigned_integer_class.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -31,9 +30,9 @@ using is_unsigned_integer_like_t = hamon::bool_constant<is_unsigned_integer_like
 #else
 
 template <typename T>
-using is_unsigned_integer_like = hamon::disjunction<
-	hamon::unsigned_integral<T>,
-	detail::unsigned_integer_class<T>
+using is_unsigned_integer_like = hamon::bool_constant<
+	hamon::unsigned_integral<T> ||
+	detail::unsigned_integer_class<T>::value
 >;
 
 template <typename T>

@@ -8,11 +8,11 @@
 #define HAMON_CONCEPTS_UNSIGNED_INTEGRAL_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -23,26 +23,11 @@ namespace hamon
 
 using std::unsigned_integral;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename T>
-concept unsigned_integral = hamon::integral<T> && !hamon::signed_integral<T>;
-
 #else
 
 template <typename T>
-using unsigned_integral = hamon::bool_constant<
-		hamon::integral<T> && !hamon::signed_integral<T>
-	>;
+HAMON_CONCEPT_OR_BOOL unsigned_integral = hamon::integral<T> && !hamon::signed_integral<T>;
 
-#endif
-
-template <typename T>
-using unsigned_integral_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::unsigned_integral<T>>;
-#else
-	hamon::unsigned_integral<T>;
 #endif
 
 }	// namespace hamon

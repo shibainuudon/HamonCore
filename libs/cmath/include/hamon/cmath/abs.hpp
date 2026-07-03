@@ -11,7 +11,6 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
@@ -29,7 +28,7 @@ abs_impl_2(T x, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 	return hamon::fabs(x);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, T)>
+template <HAMON_CONSTRAINT(hamon::unsigned_integral, T)>
 inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {

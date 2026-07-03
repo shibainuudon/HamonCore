@@ -346,7 +346,7 @@ private:
 	template <typename T2,
 		typename R = decltype(hamon::declval<T2>().size())
 	>
-	static auto test(int) -> hamon::unsigned_integral_t<R>;
+	static auto test(int) -> hamon::bool_constant<hamon::unsigned_integral<R>>;
 
 	template <typename T2>
 	static auto test(...) -> hamon::false_type;

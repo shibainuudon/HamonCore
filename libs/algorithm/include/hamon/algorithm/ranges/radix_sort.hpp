@@ -59,7 +59,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::unsigned_integral<
 				hamon::iter_value_t<hamon::projected<I, P>>
-			>::value
+			>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

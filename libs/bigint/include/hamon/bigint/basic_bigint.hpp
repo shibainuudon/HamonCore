@@ -36,7 +36,6 @@
 #include <hamon/array.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/memory/to_address.hpp>
@@ -330,7 +329,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+	template <HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator&=(UnsignedIntegral rhs) HAMON_NOEXCEPT
 	{
@@ -345,7 +344,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+	template <HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator|=(UnsignedIntegral rhs) HAMON_NOEXCEPT
 	{
@@ -360,7 +359,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+	template <HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 	HAMON_CXX14_CONSTEXPR basic_bigint&
 	operator^=(UnsignedIntegral rhs) HAMON_NOEXCEPT
 	{
@@ -644,14 +643,14 @@ operator&(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 	return basic_bigint<V>(lhs) &= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator&(basic_bigint<V> const& lhs, UnsignedIntegral rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) &= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator&(UnsignedIntegral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
@@ -665,14 +664,14 @@ operator|(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 	return basic_bigint<V>(lhs) |= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator|(basic_bigint<V> const& lhs, UnsignedIntegral rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) |= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator|(UnsignedIntegral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {
@@ -686,14 +685,14 @@ operator^(basic_bigint<V> const& lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 	return basic_bigint<V>(lhs) ^= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator^(basic_bigint<V> const& lhs, UnsignedIntegral rhs) HAMON_NOEXCEPT
 {
 	return basic_bigint<V>(lhs) ^= rhs;
 }
 
-template <typename V, HAMON_CONSTRAINED_PARAM(hamon::unsigned_integral, UnsignedIntegral)>
+template <typename V, HAMON_CONSTRAINT(hamon::unsigned_integral, UnsignedIntegral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR basic_bigint<V>
 operator^(UnsignedIntegral lhs, basic_bigint<V> const& rhs) HAMON_NOEXCEPT
 {

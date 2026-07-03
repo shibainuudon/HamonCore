@@ -40,7 +40,7 @@ private:
 	template <typename G>
 	static auto test(int) -> hamon::conjunction<
 		hamon::invocable<G&>,
-		hamon::unsigned_integral<hamon::invoke_result_t<G&>>,
+		hamon::bool_constant<hamon::unsigned_integral<hamon::invoke_result_t<G&>>>,
 		hamon::same_as<decltype(G::min()), hamon::invoke_result_t<G&>>,
 		hamon::same_as<decltype(G::max()), hamon::invoke_result_t<G&>>,
 		hamon::bool_constant<(G::min() < G::max())>
