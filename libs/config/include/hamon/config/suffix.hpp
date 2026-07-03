@@ -10,6 +10,7 @@
 #include <hamon/config/suffix/alignas.hpp>
 #include <hamon/config/suffix/alignof.hpp>
 #include <hamon/config/suffix/carries_dependency.hpp>
+#include <hamon/config/suffix/concept_or_bool.hpp>
 #include <hamon/config/suffix/constexpr.hpp>
 #include <hamon/config/suffix/current_function.hpp>
 #include <hamon/config/suffix/deprecated.hpp>
