@@ -11,6 +11,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/is_unsigned.hpp>
 #include <hamon/cstddef.hpp>
@@ -446,7 +447,7 @@ double_factorial_impl(unsigned int n) HAMON_NOEXCEPT
  *	・整数型なら 0
  *	を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Arithmetic
 double_factorial(unsigned int n) HAMON_NOEXCEPT
 {

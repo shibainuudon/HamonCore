@@ -27,7 +27,7 @@ using std::ilogbl;
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 #include <cmath>	// FP_ILOGB0, FP_ILOGBNAN
@@ -105,7 +105,7 @@ ilogb_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞  だった場合、INT_MAX     を返す。
  *	arg が NaN だった場合、FP_ILOGBNAN を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR int
 ilogb(Arithmetic arg) HAMON_NOEXCEPT
 {

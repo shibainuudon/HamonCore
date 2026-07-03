@@ -30,6 +30,7 @@ using std::lerp;
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 
 namespace hamon
@@ -95,9 +96,9 @@ lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
  *          → P1467R9 により、標準に含まれることが明確になった。
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 lerp(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT

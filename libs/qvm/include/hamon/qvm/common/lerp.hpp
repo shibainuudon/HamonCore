@@ -9,7 +9,7 @@
 
 #include <hamon/qvm/detail/transform.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cmath/lerp.hpp>
 #include <hamon/utility/forward.hpp>
@@ -45,7 +45,7 @@ struct lerp_fn
 template <
 	template <typename, hamon::size_t...> class GenType,
 	typename T1, hamon::size_t... Ns,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 lerp(GenType<T1, Ns...> const& from, GenType<T1, Ns...> const& to, T2 const& t) HAMON_NOEXCEPT

@@ -17,7 +17,7 @@
 #include <hamon/qvm/common/all.hpp>
 #include <hamon/qvm/common/equal.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
 #include <hamon/functional/minus.hpp>
@@ -142,7 +142,7 @@ operator*=(quaternion<T1>& lhs, quaternion<T2> const& rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -156,7 +156,7 @@ operator*(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(T2 lhs, quaternion<T1> const& rhs) HAMON_NOEXCEPT
@@ -170,7 +170,7 @@ operator*(T2 lhs, quaternion<T1> const& rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR quaternion<T1>&
 operator*=(quaternion<T1>& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -183,7 +183,7 @@ operator*=(quaternion<T1>& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator/(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -197,7 +197,7 @@ operator/(quaternion<T1> const& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR quaternion<T1>&
 operator/=(quaternion<T1>& lhs, T2 rhs) HAMON_NOEXCEPT

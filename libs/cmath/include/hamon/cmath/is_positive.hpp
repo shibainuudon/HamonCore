@@ -11,6 +11,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
 
@@ -55,7 +56,7 @@ is_positive_impl(FloatType x) HAMON_NOEXCEPT
  *	x が 0   の場合、falseを返す。
  *	x が NaN の場合、falseを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 is_positive(Arithmetic x) HAMON_NOEXCEPT
 {

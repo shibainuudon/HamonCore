@@ -7,15 +7,8 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_ARITHMETIC_TEST(B, T)	\
-	static_assert(B == hamon::arithmetic<T>, "");	\
-	static_assert(B == hamon::arithmetic_t<T>::value, "")
-#else
-#  define HAMON_ARITHMETIC_TEST(B, T) \
-	static_assert(B == hamon::arithmetic<T>::value, "");	\
-	static_assert(B == hamon::arithmetic_t<T>::value, "")
-#endif
+#define HAMON_ARITHMETIC_TEST(B, T)	\
+	static_assert(B == hamon::arithmetic<T>, "")
 
 #define HAMON_ARITHMETIC_TEST_CV(B, T)			\
 	HAMON_ARITHMETIC_TEST(B,                T);	\

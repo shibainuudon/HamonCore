@@ -18,6 +18,7 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -118,9 +119,9 @@ ellint_3(FloatType k, FloatType nu, FloatType phi_) HAMON_NOEXCEPT
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 ellint_3(Arithmetic1 k, Arithmetic2 nu, Arithmetic3 phi_) HAMON_NOEXCEPT

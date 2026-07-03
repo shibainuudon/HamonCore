@@ -21,7 +21,7 @@ using std::isinf;
 #else
 
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -50,7 +50,7 @@ isinf_impl(FloatType x) HAMON_NOEXCEPT
 /**
  *	@brief	std::isinf のconstexpr版
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isinf(Arithmetic arg) HAMON_NOEXCEPT
 {

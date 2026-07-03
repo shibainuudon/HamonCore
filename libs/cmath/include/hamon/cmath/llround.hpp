@@ -27,7 +27,7 @@ using std::llroundl;
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -101,7 +101,7 @@ llround_impl(FloatType x) HAMON_NOEXCEPT
  *	x が numeric_limits<long long>::max() より大きい場合、numeric_limits<long long>::max() を返す。
  *	x が NaN の場合、numeric_limits<long long>::min() を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR long long
 llround(Arithmetic arg) HAMON_NOEXCEPT
 {

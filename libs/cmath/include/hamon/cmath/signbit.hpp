@@ -21,7 +21,7 @@ using std::signbit;
 #else
 
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -34,7 +34,7 @@ namespace hamon
  *	argが±0または±NaNのとき、falseを返す。
  *	これはconstexpr関数にするための制限。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 signbit(Arithmetic arg) HAMON_NOEXCEPT
 {

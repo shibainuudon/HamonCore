@@ -16,6 +16,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -198,8 +199,8 @@ hypotl(long double x, long double y) HAMON_NOEXCEPT
  *			そうでない場合、戻り値の型はdouble
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 hypot(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT
@@ -238,9 +239,9 @@ hypot(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	@tparam	Arithmetic3	算術型
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 hypot(Arithmetic1 x, Arithmetic2 y, Arithmetic3 z) HAMON_NOEXCEPT

@@ -13,6 +13,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
 
@@ -56,7 +57,7 @@ is_integer_impl(T x) HAMON_NOEXCEPT
  *
  *	x が NaN または ±∞ の場合、falseを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 is_integer(Arithmetic x) HAMON_NOEXCEPT
 {

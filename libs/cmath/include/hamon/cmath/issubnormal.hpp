@@ -15,7 +15,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -59,7 +59,7 @@ issubnormal_impl(FloatType x) HAMON_NOEXCEPT
  *
  *	@note	xが整数型のときはdoubleにキャストしてから調べる。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR bool
 issubnormal(Arithmetic x) HAMON_NOEXCEPT
 {

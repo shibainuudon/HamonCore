@@ -12,7 +12,7 @@
 #include <hamon/cmath/acos.hpp>
 #include <hamon/cmath/sin.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -30,7 +30,7 @@ namespace qvm
  *
  *	@return	from と to を 係数t で球面線形補間したクォータニオン
  */
-template <typename T, HAMON_CONSTRAINED_PARAM(hamon::arithmetic, U)>
+template <typename T, HAMON_CONSTRAINT(hamon::arithmetic, U)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR quaternion<T>
 slerp(quaternion<T> const& from, quaternion<T> const& to, U t) HAMON_NOEXCEPT
 {

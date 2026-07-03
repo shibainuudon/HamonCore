@@ -26,6 +26,7 @@ using std::fminl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 
@@ -102,8 +103,8 @@ fmin(FloatType x, FloatType y) HAMON_NOEXCEPT
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2>
 fmin(Arithmetic1 x, Arithmetic2 y) HAMON_NOEXCEPT

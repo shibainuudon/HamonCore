@@ -11,7 +11,7 @@
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/cmath/floor.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -69,8 +69,8 @@ round_down_impl(FloatType x, FloatType base) HAMON_NOEXCEPT
  *	base == 0　  の場合、x    を返す。
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2)
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR Arithmetic1
 round_down(Arithmetic1 x, Arithmetic2 base) HAMON_NOEXCEPT

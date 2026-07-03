@@ -18,7 +18,7 @@
 #include <hamon/qvm/detail/multiplies_scalar.hpp>
 #include <hamon/qvm/detail/divides_scalar.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/negate.hpp>
 #include <hamon/functional/plus.hpp>
@@ -167,7 +167,7 @@ operator/=(vector<T1, N>& lhs, vector<T2, N> const& rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, hamon::size_t N,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -181,7 +181,7 @@ operator*(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, hamon::size_t N,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator*(T2 lhs, vector<T1, N> const& rhs) HAMON_NOEXCEPT
@@ -195,7 +195,7 @@ operator*(T2 lhs, vector<T1, N> const& rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, hamon::size_t N,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator*=(vector<T1, N>& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -208,7 +208,7 @@ operator*=(vector<T1, N>& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, hamon::size_t N,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 HAMON_NODISCARD inline HAMON_CONSTEXPR auto
 operator/(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
@@ -222,7 +222,7 @@ operator/(vector<T1, N> const& lhs, T2 rhs) HAMON_NOEXCEPT
  */
 template <
 	typename T1, hamon::size_t N,
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, T2)
+	HAMON_CONSTRAINT(hamon::arithmetic, T2)
 >
 inline HAMON_CXX14_CONSTEXPR vector<T1, N>&
 operator/=(vector<T1, N>& lhs, T2 rhs) HAMON_NOEXCEPT

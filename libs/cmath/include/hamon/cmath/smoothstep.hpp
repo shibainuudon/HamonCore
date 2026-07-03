@@ -11,7 +11,7 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/cmath/isinf.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -83,9 +83,9 @@ smoothstep_impl(FloatType from, FloatType to, FloatType x) HAMON_NOEXCEPT
  *	toが±∞の場合、0を返す。
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic1),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic2),
-	HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic3)
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic1),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic2),
+	HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic3)
 >
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic1, Arithmetic2, Arithmetic3>
 smoothstep(Arithmetic1 from, Arithmetic2 to, Arithmetic3 x) HAMON_NOEXCEPT

@@ -9,7 +9,7 @@
 
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
 
@@ -53,7 +53,7 @@ sign_impl(FloatType x) HAMON_NOEXCEPT
  *	x == 0 の場合、 0を返す。
  *	x >  0 の場合、 1を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR hamon::float_promote_t<Arithmetic>
 sign(Arithmetic arg) HAMON_NOEXCEPT
 {

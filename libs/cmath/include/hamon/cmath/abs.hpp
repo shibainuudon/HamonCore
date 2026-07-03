@@ -12,6 +12,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
 
@@ -78,7 +79,7 @@ abs_impl(T x) HAMON_NOEXCEPT
  *	・constexpr指定している
  *	・hamon::absは全ての算術型に対応している。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR Arithmetic
 abs(Arithmetic x) HAMON_NOEXCEPT
 {

@@ -25,7 +25,7 @@ using std::fpclassify;
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/cmath/issubnormal.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
@@ -56,7 +56,7 @@ fpclassify_impl(FloatType x) HAMON_NOEXCEPT
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::arithmetic, Arithmetic)>
+template <HAMON_CONSTRAINT(hamon::arithmetic, Arithmetic)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR int
 fpclassify(Arithmetic arg) HAMON_NOEXCEPT
 {
