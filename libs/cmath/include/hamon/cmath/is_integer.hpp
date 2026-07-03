@@ -23,7 +23,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatingPoint)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatingPoint)>
 inline HAMON_CXX11_CONSTEXPR bool
 is_integer_impl_1(FloatingPoint x, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {

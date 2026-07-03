@@ -28,7 +28,6 @@ using std::fmal;
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -110,7 +109,7 @@ fma_impl(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
  *	xかyがNaNの場合、NaNを返す。
  *	zがNaNで、x*y が 0*inf または inf*0 でない場合、NaNを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 fma(FloatType x, FloatType y, FloatType z) HAMON_NOEXCEPT
 {

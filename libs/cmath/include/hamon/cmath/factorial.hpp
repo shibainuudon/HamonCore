@@ -266,7 +266,7 @@ static HAMON_CXX11_CONSTEXPR long double s_factorial_tbl_flt[] =
 	0.7257415615307998967396728211129263114717e307,
 };
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CXX11_CONSTEXPR T
 unchecked_factorial_impl(unsigned int n, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {

@@ -32,7 +32,7 @@ frac_unchecked(T x) HAMON_NOEXCEPT
 	return x - hamon::floor(x);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatingPoint)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatingPoint)>
 inline HAMON_CXX11_CONSTEXPR FloatingPoint
 frac_impl(FloatingPoint x) HAMON_NOEXCEPT
 {

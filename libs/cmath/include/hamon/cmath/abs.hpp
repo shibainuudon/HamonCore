@@ -22,7 +22,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CXX11_CONSTEXPR T
 abs_impl_2(T x, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 {

@@ -9,7 +9,7 @@
 
 #include <hamon/numbers/config.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -22,7 +22,7 @@ namespace numbers
 using std::numbers::ln10_v;
 using std::numbers::ln10;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CONSTEXPR T ln10_fn() HAMON_NOEXCEPT
 {
 	return std::numbers::ln10_v<T>;
@@ -30,7 +30,7 @@ inline HAMON_CONSTEXPR T ln10_fn() HAMON_NOEXCEPT
 
 #else
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CONSTEXPR T ln10_fn() HAMON_NOEXCEPT
 {
 	return static_cast<T>(2.302585092994045684017991454684364208L);
@@ -38,7 +38,7 @@ inline HAMON_CONSTEXPR T ln10_fn() HAMON_NOEXCEPT
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 HAMON_INLINE_VAR HAMON_CONSTEXPR T ln10_v = ln10_fn<T>();
 
 #endif

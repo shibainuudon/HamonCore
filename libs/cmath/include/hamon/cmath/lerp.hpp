@@ -29,7 +29,6 @@ using std::lerp;
 
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 
@@ -82,7 +81,7 @@ lerp_impl(T a, T b, T t) HAMON_NOEXCEPT
  *	比較関数CMP(x, y)を、x > yであれば1、x < yであれば-1、そうでなければ0を返すものであるとして、
  *	あらゆる時間値t1とt2についてCMP(lerp(a,b,t2), lerp(a,b,t1))、CMP(t2, t1)、CMP(b,a)はいずれも非負となる
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 lerp(FloatType a, FloatType b, FloatType t) HAMON_NOEXCEPT
 {

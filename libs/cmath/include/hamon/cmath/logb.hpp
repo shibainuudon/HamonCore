@@ -32,6 +32,7 @@ using std::logbl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/numbers/ln2.hpp>
@@ -186,7 +187,7 @@ logb_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±∞  だった場合、+∞ を返す。
  *	arg が NaN だった場合、NaN を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 logb(FloatType arg) HAMON_NOEXCEPT
 {

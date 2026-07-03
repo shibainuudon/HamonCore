@@ -26,12 +26,13 @@ using std::nexttowardl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 nexttoward(FloatType from, long double to) HAMON_NOEXCEPT
 {

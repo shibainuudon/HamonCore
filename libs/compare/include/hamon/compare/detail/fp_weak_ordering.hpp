@@ -13,7 +13,7 @@
 #include <hamon/compare/is_gt.hpp>
 #include <hamon/compare/is_eq.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
 
@@ -23,7 +23,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 HAMON_CXX14_CONSTEXPR hamon::weak_ordering
 fp_weak_ordering(T e, T f)
 {

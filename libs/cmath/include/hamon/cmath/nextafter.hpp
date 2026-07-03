@@ -30,7 +30,6 @@ using std::nextafterl;
 #include <hamon/cmath/ldexp.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -183,7 +182,7 @@ nextafter_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 nextafter(FloatType x, FloatType y) HAMON_NOEXCEPT
 {

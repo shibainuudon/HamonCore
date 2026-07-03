@@ -7,15 +7,8 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_FLOATING_POINT_TEST(B, T)	\
-	static_assert(B == hamon::floating_point<T>, "");	\
-	static_assert(B == hamon::floating_point_t<T>::value, "")
-#else
-#  define HAMON_FLOATING_POINT_TEST(B, T)	\
-	static_assert(B == hamon::floating_point<T>::value, "");	\
-	static_assert(B == hamon::floating_point_t<T>::value, "")
-#endif
+#define HAMON_FLOATING_POINT_TEST(B, T)	\
+	static_assert(B == hamon::floating_point<T>, "")
 
 namespace hamon_concepts_test
 {

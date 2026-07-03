@@ -19,7 +19,6 @@
 #include <hamon/cmath/log.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -186,7 +185,7 @@ pow_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	x が +∞ かつ、y が正の値の場合、+∞ を返す。
  *	上記以外で、xかyの少なくともどちらかがNaNの場合、NaNを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 pow(FloatType x, FloatType y) HAMON_NOEXCEPT
 {

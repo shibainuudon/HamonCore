@@ -23,7 +23,6 @@ using std::isunordered;
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
@@ -60,7 +59,7 @@ isunordered_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *
  *	x と y が unordered かどうか、つまり x と y の少なくとも一方が NaN かどうか を判定する。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 isunordered(FloatType x, FloatType y) HAMON_NOEXCEPT
 {

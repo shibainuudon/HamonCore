@@ -30,6 +30,7 @@ using std::roundl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 
@@ -115,7 +116,7 @@ round_impl(FloatType x) HAMON_NOEXCEPT
  *	x が ±0  の場合、xをそのまま返す。
  *	x が NaN  の場合、NaNを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 round(FloatType arg) HAMON_NOEXCEPT
 {

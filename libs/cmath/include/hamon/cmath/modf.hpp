@@ -30,6 +30,7 @@ using std::modfl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 
@@ -89,7 +90,7 @@ modf_impl(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
  *	x が ±∞  の場合、±0 を返し、*iptrに ±∞ がセットされる。
  *	x が NaN の場合、NaN を返し、*iptrに NaN がセットされる。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_CXX14_CONSTEXPR FloatType
 modf(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
 {

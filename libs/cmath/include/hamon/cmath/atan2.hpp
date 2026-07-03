@@ -17,7 +17,6 @@
 #include <hamon/numbers/pi.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -136,7 +135,7 @@ atan2_impl(FloatType y, FloatType x) HAMON_NOEXCEPT
  *	x が +∞  かつ、y が有限の負の値の場合、-0 を返す。
  *	x か y の少なくともどちらかが NaN の場合、NaN を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 atan2(FloatType y, FloatType x) HAMON_NOEXCEPT
 {

@@ -9,7 +9,7 @@
 
 #include <hamon/numbers/config.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -22,7 +22,7 @@ namespace numbers
 using std::numbers::sqrt2_v;
 using std::numbers::sqrt2;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CONSTEXPR T sqrt2_fn() HAMON_NOEXCEPT
 {
 	return std::numbers::sqrt2_v<T>;
@@ -30,7 +30,7 @@ inline HAMON_CONSTEXPR T sqrt2_fn() HAMON_NOEXCEPT
 
 #else
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline HAMON_CONSTEXPR T sqrt2_fn() HAMON_NOEXCEPT
 {
 	return static_cast<T>(1.414213562373095048801688724209698079L);
@@ -38,7 +38,7 @@ inline HAMON_CONSTEXPR T sqrt2_fn() HAMON_NOEXCEPT
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 HAMON_INLINE_VAR HAMON_CONSTEXPR T sqrt2_v = sqrt2_fn<T>();
 
 #endif

@@ -30,6 +30,7 @@ using std::floorl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -102,7 +103,7 @@ floor_impl(FloatType x) HAMON_NOEXCEPT
  *	arg が ±0  の場合、argをそのまま返す。
  *	arg が NaN  の場合、NaNを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 floor(FloatType arg) HAMON_NOEXCEPT
 {

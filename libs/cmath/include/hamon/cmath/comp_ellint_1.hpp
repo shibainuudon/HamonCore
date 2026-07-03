@@ -13,6 +13,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -85,7 +86,7 @@ comp_ellint_1_impl(T k)
  *	|k| > 1 のとき、NaN を返す(std::comp_ellint_1 と違い、例外を投げない)
  *	|k| = 1 のとき、inf を返す
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR FloatType
 comp_ellint_1(FloatType k) HAMON_NOEXCEPT
 {

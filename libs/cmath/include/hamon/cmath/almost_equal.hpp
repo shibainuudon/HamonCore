@@ -12,7 +12,6 @@
 #include <hamon/cmath/fabs.hpp>
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/arithmetic_promote.hpp>
@@ -43,7 +42,7 @@ eps(T x, T y) HAMON_NOEXCEPT
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4056)	// 浮動小数点数の定数演算でオーバーフローしました。
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 inline HAMON_CXX11_CONSTEXPR bool
 almost_equal_impl(FloatType x, FloatType y, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 {

@@ -10,6 +10,7 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -28,7 +29,7 @@ inline hamon::mt19937& get_random_engine()
 	return mt;
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline T get_random_value_impl(T min, T max, hamon::detail::overload_priority<2>)
 {
 	hamon::uniform_real_distribution<T> dist(min, max);
@@ -55,7 +56,7 @@ inline T get_random_value(T min, T max)
 	return get_random_value_impl<T>(min, max, hamon::detail::overload_priority<2>{});
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, T)>
+template <HAMON_CONSTRAINT(hamon::floating_point, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<1>)
 {
 	return get_random_value(

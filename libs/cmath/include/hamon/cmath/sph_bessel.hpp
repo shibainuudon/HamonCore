@@ -12,6 +12,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -90,7 +91,7 @@ sph_bessel_impl(unsigned int n, T x)
  *	x が NaN のとき、NaN を返す
  *	n >= 128 の場合、この関数の呼び出しの効果は実装定義である
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR FloatType
 sph_bessel(unsigned int n, FloatType x) HAMON_NOEXCEPT
 {

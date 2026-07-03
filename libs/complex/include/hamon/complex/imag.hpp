@@ -11,6 +11,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -26,7 +27,7 @@ imag(complex<T> const& x) HAMON_NOEXCEPT	// noexcept as an extension
 }
 
 // [cmplx.over]/2.1
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, Float)>
+template <HAMON_CONSTRAINT(hamon::floating_point, Float)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR Float	// nodiscard as an extension
 imag(Float) HAMON_NOEXCEPT	// noexcept as an extension
 {

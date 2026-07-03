@@ -14,6 +14,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/numbers/ln10.hpp>
 #include <hamon/limits.hpp>
@@ -98,7 +99,7 @@ log10_impl(FloatType x) HAMON_NOEXCEPT
  *	x が +∞  だった場合、+∞ を返す。
  *	x が NaN だった場合、NaN を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR FloatType
 log10(FloatType arg) HAMON_NOEXCEPT
 {

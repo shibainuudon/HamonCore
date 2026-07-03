@@ -28,7 +28,6 @@ using std::fmodl;
 #include <hamon/cmath/trunc.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -77,7 +76,7 @@ fmod_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	y が ±∞ かつ、x が 有限の値の場合、x をそのまま返す。
  *	x か y の少なくともどちらかがNaNの場合、NaNを返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 fmod(FloatType x, FloatType y) HAMON_NOEXCEPT
 {

@@ -23,7 +23,6 @@ using std::islessequal;
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/config.hpp>
@@ -61,7 +60,7 @@ islessequal_impl(FloatType x, FloatType y) HAMON_NOEXCEPT
  *	@note	islessequal(x, y)の値は、常に x <= y と等しい。
  *			ただし、islessequalはxとyが順序付けられていない場合に浮動小数点例外を生成しない。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool
 islessequal(FloatType x, FloatType y) HAMON_NOEXCEPT
 {

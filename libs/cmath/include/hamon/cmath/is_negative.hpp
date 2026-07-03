@@ -22,7 +22,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 inline HAMON_CXX11_CONSTEXPR bool
 is_negative_impl_2(FloatType x, hamon::detail::overload_priority<2>)
 {

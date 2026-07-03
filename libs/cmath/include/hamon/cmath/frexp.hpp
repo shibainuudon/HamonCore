@@ -30,6 +30,7 @@ using std::frexpl;
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
 
@@ -83,7 +84,7 @@ frexp_impl(FloatType x, int* exp) HAMON_NOEXCEPT
  *	arg が ±∞ の場合、 arg をそのまま返し、*expの値は不定
  *	arg が NaN の場合、NaN を返し、*expの値は不定
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_CXX14_CONSTEXPR FloatType
 frexp(FloatType arg, int* exp) HAMON_NOEXCEPT
 {

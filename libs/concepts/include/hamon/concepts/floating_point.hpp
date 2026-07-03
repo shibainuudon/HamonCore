@@ -8,10 +8,10 @@
 #define HAMON_CONCEPTS_FLOATING_POINT_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/type_traits/is_floating_point.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -22,24 +22,11 @@ namespace hamon
 
 using std::floating_point;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename T>
-concept floating_point = hamon::is_floating_point<T>::value;
-
 #else
 
 template <typename T>
-using floating_point = hamon::is_floating_point<T>;
+HAMON_CONCEPT_OR_BOOL floating_point = hamon::is_floating_point<T>::value;
 
-#endif
-
-template <typename T>
-using floating_point_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::floating_point<T>>;
-#else
-	hamon::floating_point<T>;
 #endif
 
 }	// namespace hamon

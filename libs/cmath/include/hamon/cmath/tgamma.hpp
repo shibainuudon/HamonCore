@@ -18,6 +18,7 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -188,7 +189,7 @@ tgamma_impl(FloatType x) HAMON_NOEXCEPT
  *	x が +∞      の場合、+∞ を返す。
  *	x が NaN     の場合、NaN を返す。
  */
-template <HAMON_CONSTRAINED_PARAM(hamon::floating_point, FloatType)>
+template <HAMON_CONSTRAINT(hamon::floating_point, FloatType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR FloatType
 tgamma(FloatType arg) HAMON_NOEXCEPT
 {
