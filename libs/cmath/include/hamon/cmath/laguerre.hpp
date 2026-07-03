@@ -11,7 +11,6 @@
 #include <hamon/cmath/assoc_laguerre.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
@@ -80,7 +79,7 @@ laguerre(unsigned int n, FloatType x) HAMON_NOEXCEPT
 	return detail::laguerre_impl(n, x);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR double
 laguerre(unsigned int n, IntegralType x) HAMON_NOEXCEPT
 {

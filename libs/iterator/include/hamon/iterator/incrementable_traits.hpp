@@ -62,7 +62,7 @@ struct incrementable_traits_impl<T, true>
 template <typename T>
 struct incrementable_traits_impl<T, false,
 	hamon::enable_if_t<
-		hamon::integral_t<decltype(hamon::declval<T>() - hamon::declval<T>())>::value
+		hamon::integral<decltype(hamon::declval<T>() - hamon::declval<T>())>
 	>>
 {
 	using difference_type = hamon::make_signed_t<decltype(hamon::declval<T>() - hamon::declval<T>())>;

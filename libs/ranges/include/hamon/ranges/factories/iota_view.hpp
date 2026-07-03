@@ -179,7 +179,7 @@ template <typename W>
 struct iota_view_iterator_category<W,
 	hamon::enable_if_t<
 		hamon::incrementable_t<W>::value &&
-		hamon::integral_t<detail::iota_diff_t<W>>::value
+		hamon::integral<detail::iota_diff_t<W>>
 	>>
 {
 	// present only if W models incrementable and

@@ -10,7 +10,6 @@
 #include <hamon/complex/complex.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
@@ -35,7 +34,7 @@ imag(Float) HAMON_NOEXCEPT	// noexcept as an extension
 }
 
 // [cmplx.over]/2.2
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integer)>
+template <HAMON_CONSTRAINT(hamon::integral, Integer)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double	// nodiscard as an extension
 imag(Integer) HAMON_NOEXCEPT	// noexcept as an extension
 {

@@ -10,7 +10,6 @@
 #include <hamon/cmath/isnan.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/type_traits/float_promote.hpp>
@@ -104,7 +103,7 @@ assoc_laguerre(unsigned int n, unsigned int m, FloatType x) HAMON_NOEXCEPT
 	return detail::assoc_laguerre_impl(n, m, x);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR double
 assoc_laguerre(unsigned int n, unsigned int m, IntegralType x) HAMON_NOEXCEPT
 {

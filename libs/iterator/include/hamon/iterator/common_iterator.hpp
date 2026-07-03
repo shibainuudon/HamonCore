@@ -576,7 +576,7 @@ using denotes_forward_iter_t = denotes_forward_iter<I>;
 #endif
 
 template <typename I, typename S,
-	bool = hamon::integral_t<hamon::iter_difference_t<I>>::value>
+	bool = hamon::integral<hamon::iter_difference_t<I>>>
 struct iterator_category_base
 {
 	using iterator_category = hamon::conditional_t<

@@ -36,6 +36,7 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
@@ -73,7 +74,7 @@ public:
 		: m_data{}
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	template <HAMON_CONSTRAINT(hamon::integral, Integral)>
 	HAMON_CXX14_CONSTEXPR
 	fixed_bigint(Integral n) HAMON_NOEXCEPT
 		: m_data{}
@@ -263,7 +264,7 @@ public:
 		return tmp;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+	template <HAMON_CONSTRAINT(hamon::integral, Integral)>
 	explicit HAMON_CXX14_CONSTEXPR operator Integral() const HAMON_NOEXCEPT
 	{
 		using UT = hamon::make_unsigned_t<Integral>;
@@ -363,14 +364,14 @@ operator+(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} += rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator+(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return fixed_bigint<Bits, Signed>{lhs} += rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator+(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
@@ -384,14 +385,14 @@ operator-(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} -= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator-(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return fixed_bigint<Bits, Signed>{lhs} -= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator-(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
@@ -405,14 +406,14 @@ operator*(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} *= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator*(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return fixed_bigint<Bits, Signed>{lhs} *= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator*(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
@@ -426,14 +427,14 @@ operator/(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} /= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator/(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return fixed_bigint<Bits, Signed>{lhs} /= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator/(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
@@ -447,14 +448,14 @@ operator%(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> cons
 	return fixed_bigint<Bits, Signed>{lhs} %= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator%(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return fixed_bigint<Bits, Signed>{lhs} %= rhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR fixed_bigint<Bits, Signed>
 operator%(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
@@ -545,7 +546,7 @@ operator==(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> con
 	return lhs.compare(rhs) == 0;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator==(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
@@ -559,7 +560,7 @@ operator<=>(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> co
 {
 	return lhs.compare(rhs) <=> 0;
 }
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR hamon::strong_ordering
 operator<=>(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
@@ -603,35 +604,35 @@ operator>=(fixed_bigint<Bits, Signed> const& lhs, fixed_bigint<Bits, Signed> con
 
 // 右辺が Integal
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator!=(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return !(lhs == rhs);
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) < 0;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return lhs.compare(rhs) > 0;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<=(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
 	return !(lhs > rhs);
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>=(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 {
@@ -640,42 +641,42 @@ operator>=(fixed_bigint<Bits, Signed> const& lhs, Integral rhs) HAMON_NOEXCEPT
 
 // 左辺が Integal
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator==(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs == lhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator!=(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs != lhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs > lhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs < lhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator<=(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {
 	return rhs >= lhs;
 }
 
-template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <hamon::size_t Bits, bool Signed, HAMON_CONSTRAINT(hamon::integral, Integral)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR bool
 operator>=(Integral lhs, fixed_bigint<Bits, Signed> const& rhs) HAMON_NOEXCEPT
 {

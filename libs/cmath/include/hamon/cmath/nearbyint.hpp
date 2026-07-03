@@ -12,7 +12,6 @@
 #include <hamon/cmath/iszero.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 #include <cmath>
@@ -60,7 +59,7 @@ nearbyint(FloatType arg) HAMON_NOEXCEPT
 	return detail::nearbyint_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 nearbyint(IntegralType arg) HAMON_NOEXCEPT
 {

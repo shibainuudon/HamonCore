@@ -9,8 +9,7 @@
 
 #include <hamon/concepts/integral.hpp>
 #include <hamon/memory/detail/simple_allocator.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -28,9 +27,9 @@ concept is_hasher =
 #else
 
 template <typename T>
-using is_hasher = hamon::conjunction<
-	hamon::negation<hamon::integral<T>>,
-	hamon::negation<hamon::detail::simple_allocator<T>>
+using is_hasher = hamon::bool_constant<
+	!hamon::integral<T> &&
+	!hamon::detail::simple_allocator<T>::value
 >;
 
 #endif

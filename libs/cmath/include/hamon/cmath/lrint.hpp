@@ -12,7 +12,6 @@
 #include <hamon/cmath/signbit.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/limits.hpp>
 #include <hamon/config.hpp>
@@ -65,7 +64,7 @@ lrint(FloatType arg) HAMON_NOEXCEPT
 	return detail::lrint_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 lrint(IntegralType arg) HAMON_NOEXCEPT
 ->decltype(detail::lrint_impl(static_cast<double>(arg)))

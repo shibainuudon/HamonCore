@@ -13,7 +13,6 @@
 #include <hamon/cmath/log.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -116,7 +115,7 @@ atanhl(long double arg) HAMON_NOEXCEPT
 	return detail::atanh_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD inline HAMON_CXX11_CONSTEXPR double
 atanh(IntegralType arg) HAMON_NOEXCEPT
 {

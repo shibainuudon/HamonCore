@@ -29,7 +29,6 @@ using std::modfl;
 #include <hamon/cmath/trunc.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
@@ -97,7 +96,7 @@ modf(FloatType x, FloatType* iptr) HAMON_NOEXCEPT
 	return detail::modf_impl(x, iptr);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_CXX14_CONSTEXPR double
 modf(IntegralType x, double* iptr) HAMON_NOEXCEPT
 {

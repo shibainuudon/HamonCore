@@ -11,7 +11,7 @@
 #include <hamon/atomic/detail/to_gcc_memory_order.hpp>
 #include <hamon/atomic/detail/interlocked_exchange_add.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -20,7 +20,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 T atomic_fetch_add(T* ptr, T val, hamon::memory_order order)
 {
 #if defined(HAMON_MSVC)
@@ -31,7 +31,7 @@ T atomic_fetch_add(T* ptr, T val, hamon::memory_order order)
 #endif
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 T atomic_fetch_add(T* ptr, T val)
 {
 	return hamon::detail::atomic_fetch_add(ptr, val, hamon::memory_order::seq_cst);

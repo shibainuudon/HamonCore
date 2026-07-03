@@ -40,9 +40,9 @@ using is_integer_like_t = hamon::bool_constant<is_integer_like<T>>;
 #else
 
 template <typename T>
-using integral_nonbool = hamon::conjunction<
-	hamon::integral<T>,
-	hamon::negation<hamon::same_as<hamon::remove_cv_t<T>, bool>>
+using integral_nonbool = hamon::bool_constant<
+	hamon::integral<T> &&
+	!hamon::same_as<hamon::remove_cv_t<T>, bool>::value
 >;
 
 template <typename T>

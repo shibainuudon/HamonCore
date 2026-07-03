@@ -9,7 +9,6 @@
 
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/floating_point.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstdint/intmax_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
@@ -64,7 +63,7 @@ inline T get_random_value_impl(hamon::detail::overload_priority<1>)
 		hamon::numeric_limits<T>::max() / 2);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 inline T get_random_value_impl(hamon::detail::overload_priority<0>)
 {
 	return get_random_value(

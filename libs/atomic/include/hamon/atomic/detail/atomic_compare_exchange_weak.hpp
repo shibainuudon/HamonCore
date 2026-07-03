@@ -10,7 +10,7 @@
 #include <hamon/atomic/memory_order.hpp>
 #include <hamon/atomic/detail/atomic_compare_exchange.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -19,7 +19,7 @@ namespace hamon
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 bool atomic_compare_exchange_weak(T* ptr, T* expected, T desired,
 	hamon::memory_order success_memorder, hamon::memory_order failure_memorder)
 {
@@ -27,7 +27,7 @@ bool atomic_compare_exchange_weak(T* ptr, T* expected, T desired,
 		ptr, expected, desired, true, success_memorder, failure_memorder);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 bool atomic_compare_exchange_weak(T* ptr, T* expected, T desired)
 {
 	return hamon::detail::atomic_compare_exchange_weak(ptr, expected, desired,

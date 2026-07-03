@@ -23,7 +23,7 @@ using std::byteswap;
 #else
 
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint16_t.hpp>
 #include <hamon/cstdint/uint32_t.hpp>
@@ -139,7 +139,7 @@ struct byteswap_impl<T, 8>
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 inline HAMON_CXX11_CONSTEXPR T
 byteswap(T value) HAMON_NOEXCEPT
 {

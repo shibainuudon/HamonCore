@@ -29,7 +29,6 @@ using std::frexpl;
 #include <hamon/cmath/scalbn.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/config.hpp>
@@ -91,7 +90,7 @@ frexp(FloatType arg, int* exp) HAMON_NOEXCEPT
 	return detail::frexp_impl(arg, exp);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_CXX14_CONSTEXPR double
 frexp(IntegralType arg, int* exp) HAMON_NOEXCEPT
 {

@@ -31,9 +31,8 @@ concept unsigned_integral = hamon::integral<T> && !hamon::signed_integral<T>;
 #else
 
 template <typename T>
-using unsigned_integral =
-	hamon::bool_constant<
-		hamon::integral<T>::value && !hamon::signed_integral<T>::value
+using unsigned_integral = hamon::bool_constant<
+		hamon::integral<T> && !hamon::signed_integral<T>::value
 	>;
 
 #endif

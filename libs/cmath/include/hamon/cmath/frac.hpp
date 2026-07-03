@@ -13,7 +13,6 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/limits.hpp>
@@ -45,7 +44,7 @@ frac_impl(FloatingPoint x) HAMON_NOEXCEPT
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::integral, Integral),
+	HAMON_CONSTRAINT(hamon::integral, Integral),
 	typename Promoted = hamon::float_promote_t<Integral>
 >
 inline HAMON_CXX11_CONSTEXPR Promoted

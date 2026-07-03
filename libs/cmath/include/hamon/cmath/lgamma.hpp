@@ -17,7 +17,6 @@
 #include <hamon/cmath/trunc.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/numbers/pi.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -303,7 +302,7 @@ lgamma(FloatType arg) HAMON_NOEXCEPT
 	return detail::lgamma_impl(arg);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 lgamma(IntegralType arg) HAMON_NOEXCEPT
 {

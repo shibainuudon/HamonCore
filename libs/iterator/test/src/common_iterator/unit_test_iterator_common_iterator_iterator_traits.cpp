@@ -105,7 +105,7 @@ struct TestIterator2
 };
 
 static_assert( hamon::input_iterator_t<TestIterator2<int>>::value, "");
-static_assert(!hamon::integral_t<hamon::iter_difference_t<TestIterator2<int>>>::value, "");
+static_assert(!hamon::integral<hamon::iter_difference_t<TestIterator2<int>>>, "");
 
 #endif
 

@@ -22,7 +22,7 @@ using std::lcm;
 
 #include <hamon/numeric/gcd.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/config.hpp>
@@ -43,8 +43,8 @@ namespace hamon
  *				そうでない場合、 |m| と |n| の最小公倍数を返す。
  */
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::integral, M),
-	HAMON_CONSTRAINED_PARAM(hamon::integral, N)
+	HAMON_CONSTRAINT(hamon::integral, M),
+	HAMON_CONSTRAINT(hamon::integral, N)
 >
 HAMON_CONSTEXPR hamon::common_type_t<M, N>
 lcm(M m, N n)

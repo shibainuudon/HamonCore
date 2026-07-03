@@ -28,7 +28,6 @@ using std::scalblnl;
 #include <hamon/cmath/detail/pow_n.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
 #include <hamon/limits.hpp>
@@ -111,7 +110,7 @@ scalbln(FloatType x, long exp) HAMON_NOEXCEPT
 	return detail::scalbln_impl(x, exp);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR double
 scalbln(IntegralType x, long exp) HAMON_NOEXCEPT
 {

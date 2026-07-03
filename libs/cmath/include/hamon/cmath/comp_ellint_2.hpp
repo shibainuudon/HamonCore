@@ -13,7 +13,6 @@
 #include <hamon/cmath/detail/ellint_rd.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/float_promote.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -98,7 +97,7 @@ comp_ellint_2(FloatType k) HAMON_NOEXCEPT
 	return detail::comp_ellint_2_impl(k);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, IntegralType)>
+template <HAMON_CONSTRAINT(hamon::integral, IntegralType)>
 HAMON_NODISCARD HAMON_CXX14_CONSTEXPR double
 comp_ellint_2(IntegralType k) HAMON_NOEXCEPT
 {

@@ -10,7 +10,7 @@
 #include <hamon/detail/max_size_type.hpp>
 #include <hamon/detail/max_diff_type.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/make_unsigned.hpp>
 #include <hamon/config.hpp>
@@ -31,7 +31,7 @@ to_unsigned_like(hamon::detail::max_diff_type t) HAMON_NOEXCEPT
 	return hamon::detail::max_size_type(t);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 HAMON_CONSTEXPR hamon::make_unsigned_t<T>
 to_unsigned_like(T t) HAMON_NOEXCEPT
 {

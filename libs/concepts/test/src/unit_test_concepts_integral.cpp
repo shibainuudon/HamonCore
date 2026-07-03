@@ -7,15 +7,8 @@
 #include <hamon/concepts/integral.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_INTEGRAL_TEST(B, T)	\
-	static_assert(B == hamon::integral<T>, "");	\
-	static_assert(B == hamon::integral_t<T>::value, "")
-#else
-#  define HAMON_INTEGRAL_TEST(B, T) \
-	static_assert(B == hamon::integral<T>::value, "");	\
-	static_assert(B == hamon::integral_t<T>::value, "")
-#endif
+#define HAMON_INTEGRAL_TEST(B, T)	\
+	static_assert(B == hamon::integral<T>, "")
 
 namespace hamon_concepts_test
 {

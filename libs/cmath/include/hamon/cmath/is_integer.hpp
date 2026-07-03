@@ -12,7 +12,6 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
@@ -30,7 +29,7 @@ is_integer_impl_1(FloatingPoint x, hamon::detail::overload_priority<1>) HAMON_NO
 	return hamon::isfinite(x) && (hamon::trunc(x) == x);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, Integral)>
+template <HAMON_CONSTRAINT(hamon::integral, Integral)>
 inline HAMON_CXX11_CONSTEXPR bool
 is_integer_impl_1(Integral, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT
 {

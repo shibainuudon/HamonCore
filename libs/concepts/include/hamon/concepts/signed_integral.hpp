@@ -11,7 +11,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/integral.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_signed.hpp>
 #endif
 
@@ -32,9 +31,8 @@ concept signed_integral = hamon::integral<T> && hamon::is_signed<T>::value;
 #else
 
 template <typename T>
-using signed_integral =
-	hamon::conjunction<
-		hamon::integral<T>, hamon::is_signed<T>
+using signed_integral = hamon::bool_constant<
+		hamon::integral<T> && hamon::is_signed<T>::value
 	>;
 
 #endif

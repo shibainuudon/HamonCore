@@ -10,7 +10,6 @@
 #include <hamon/concepts/arithmetic.hpp>
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uintmax_t.hpp>
@@ -84,7 +83,7 @@ static HAMON_CXX11_CONSTEXPR hamon::uintmax_t s_factorial_tbl_int[] =
 	2432902008176640000,	// 20!
 };
 
-template <HAMON_CONSTRAINED_PARAM(hamon::integral, T)>
+template <HAMON_CONSTRAINT(hamon::integral, T)>
 inline HAMON_CXX11_CONSTEXPR T
 unchecked_factorial_impl(unsigned int n, hamon::detail::overload_priority<2>) HAMON_NOEXCEPT
 {
