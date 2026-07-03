@@ -858,7 +858,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
-	static_assert( hamon::signed_integral_t<typename I::difference_type>::value, "");
+	static_assert( hamon::signed_integral<typename I::difference_type>, "");
 	{
 		I it;
 		(void)it;
@@ -899,7 +899,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( has_iterator_category<I>::value, "");
 	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
 	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
-	static_assert( hamon::signed_integral_t<typename I::difference_type>::value, "");
+	static_assert( hamon::signed_integral<typename I::difference_type>, "");
 
 	VERIFY(!v.empty());
 	VERIFY(v.size() == 5);

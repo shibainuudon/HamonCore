@@ -11,7 +11,6 @@
 #include <hamon/concepts/floating_point.hpp>
 #include <hamon/concepts/signed_integral.hpp>
 #include <hamon/concepts/arithmetic.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
@@ -29,7 +28,7 @@ is_negative_impl_2(FloatType x, hamon::detail::overload_priority<2>)
 	return !hamon::isnan(x) && (x < 0);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::signed_integral, SignedType)>
+template <HAMON_CONSTRAINT(hamon::signed_integral, SignedType)>
 inline HAMON_CXX11_CONSTEXPR bool
 is_negative_impl_2(SignedType x, hamon::detail::overload_priority<1>)
 {

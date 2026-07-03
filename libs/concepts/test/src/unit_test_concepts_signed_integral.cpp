@@ -9,15 +9,8 @@
 #include <cstdint>	// WCHAR_MIN
 #include <climits>	// CHAR_MIN
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_SIGNED_INTEGRAL_TEST(B, T)	\
-	static_assert(B == hamon::signed_integral<T>, "");	\
-	static_assert(B == hamon::signed_integral_t<T>::value, "")
-#else
-#  define HAMON_SIGNED_INTEGRAL_TEST(B, T)	\
-	static_assert(B == hamon::signed_integral<T>::value, "");	\
-	static_assert(B == hamon::signed_integral_t<T>::value, "")
-#endif
+#define HAMON_SIGNED_INTEGRAL_TEST(B, T)	\
+	static_assert(B == hamon::signed_integral<T>, "")
 
 namespace hamon_concepts_test
 {

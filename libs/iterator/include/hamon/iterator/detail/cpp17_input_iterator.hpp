@@ -67,7 +67,7 @@ private:
 		typename V = typename hamon::indirectly_readable_traits<I2>::value_type,
 		typename = hamon::common_reference_t<hamon::iter_reference_t<I2>&&, V&>,
 		typename = hamon::common_reference_t<decltype(*hamon::declval<I2&>()++)&&, V&>,
-		typename = hamon::enable_if_t<hamon::signed_integral<D>::value>
+		typename = hamon::enable_if_t<hamon::signed_integral<D>>
 	>
 	static auto test(int) -> hamon::true_type;
 

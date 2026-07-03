@@ -31,9 +31,9 @@ using is_signed_integer_like_t = hamon::bool_constant<is_signed_integer_like<T>>
 #else
 
 template <typename T>
-using is_signed_integer_like = hamon::disjunction<
-	hamon::signed_integral<T>,
-	detail::signed_integer_class<T>
+using is_signed_integer_like = hamon::bool_constant<
+	hamon::signed_integral<T> ||
+	detail::signed_integer_class<T>::value
 >;
 
 template <typename T>
