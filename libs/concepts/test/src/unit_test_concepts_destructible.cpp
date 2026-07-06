@@ -7,16 +7,8 @@
 #include <hamon/concepts/destructible.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_DESTRUCTIBLE_TEST(B, T)	\
-	static_assert(B == hamon::destructible<T>, "");	\
-	static_assert(B == hamon::destructible_t<T>::value, "")
-#else
-#  define HAMON_DESTRUCTIBLE_TEST(B, T) \
-	static_assert(B == hamon::destructible<T>::value, "");	\
-	static_assert(B == hamon::destructible_t<T>::value, "")
-#endif
-
+#define HAMON_DESTRUCTIBLE_TEST(B, T)	\
+	static_assert(B == hamon::destructible<T>, "")
 namespace hamon_concepts_test
 {
 

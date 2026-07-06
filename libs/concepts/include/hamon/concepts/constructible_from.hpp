@@ -11,7 +11,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/destructible.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #endif
 
@@ -34,11 +34,10 @@ concept constructible_from =
 #else
 
 template <typename T, typename... Args>
-using constructible_from =
-	hamon::conjunction<
-		hamon::destructible<T>,
-		hamon::is_constructible<T, Args...>
-	>;
+using constructible_from = hamon::bool_constant<
+	hamon::destructible<T> &&
+	hamon::is_constructible<T, Args...>::value
+>;
 
 #endif
 

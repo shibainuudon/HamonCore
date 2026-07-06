@@ -48,7 +48,7 @@ struct destroy_n_fn
 {
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_input_iterator, I),
-		typename = hamon::enable_if_t<hamon::destructible_t<hamon::iter_value_t<I>>::value>
+		typename = hamon::enable_if_t<hamon::destructible<hamon::iter_value_t<I>>>
 	>
 //	requires hamon::destructible<hamon::iter_value_t<I>>
 	HAMON_CXX14_CONSTEXPR I

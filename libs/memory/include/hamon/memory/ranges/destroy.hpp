@@ -52,7 +52,7 @@ struct destroy_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_input_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, I, S),
-		typename = hamon::enable_if_t<hamon::destructible_t<hamon::iter_value_t<I>>::value>
+		typename = hamon::enable_if_t<hamon::destructible<hamon::iter_value_t<I>>>
 	>
 //	requires hamon::destructible<hamon::iter_value_t<I>>
 	HAMON_CXX14_CONSTEXPR I
@@ -63,7 +63,7 @@ struct destroy_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_input_range, R),
-		typename = hamon::enable_if_t<hamon::destructible_t<hamon::ranges::range_value_t<R>>::value>
+		typename = hamon::enable_if_t<hamon::destructible<hamon::ranges::range_value_t<R>>>
 	>
 //	requires hamon::destructible<hamon::ranges::range_value_t<R>>
 	HAMON_CXX14_CONSTEXPR hamon::ranges::borrowed_iterator_t<R>

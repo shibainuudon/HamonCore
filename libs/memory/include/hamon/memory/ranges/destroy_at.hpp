@@ -25,7 +25,7 @@ using std::ranges::destroy_at;
 #else
 
 #include <hamon/concepts/destructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/memory/destroy_at.hpp>
 
 namespace hamon
@@ -40,7 +40,7 @@ namespace detail
 struct destroy_at_fn
 {
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::destructible, T)>
+	template <HAMON_CONSTRAINT(hamon::destructible, T)>
 	HAMON_CXX14_CONSTEXPR void
 	operator()(T* location) const HAMON_NOEXCEPT
 	{
