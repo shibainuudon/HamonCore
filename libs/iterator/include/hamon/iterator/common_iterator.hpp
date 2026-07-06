@@ -338,7 +338,7 @@ public:
 			hamon::indirectly_readable_t<I2 const>::value &&
 			(hamon::common_iterator_detail::has_arrow_t<I2>::value ||
 			 hamon::is_reference<hamon::iter_reference_t<I2>>::value ||
-			 hamon::constructible_from_t<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>>::value)
+			 hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>>)
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator->() const
@@ -377,7 +377,7 @@ private:
 		typename = hamon::enable_if_t<
 			common_iterator_detail::has_post_increment_t<I2>::value ||
 			!(hamon::indirectly_readable_t<I2>::value &&
-			  hamon::constructible_from_t<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>>::value &&
+			  hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>> &&
 			  hamon::move_constructible_t<hamon::iter_value_t<I2>>::value)>>
 	HAMON_CXX14_CONSTEXPR auto
 	increment_impl(hamon::detail::overload_priority<1>)

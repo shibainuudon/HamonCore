@@ -54,7 +54,7 @@ struct uninitialized_fill_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, I, S),
 		typename T,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::iter_value_t<I>, T const&>::value
+			hamon::constructible_from<hamon::iter_value_t<I>, T const&>
 		>
 	>
 //	requires hamon::constructible_from<hamon::iter_value_t<I>, T const&>
@@ -68,7 +68,7 @@ struct uninitialized_fill_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, R),
 		typename T,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::ranges::range_value_t<R>, T const&>::value
+			hamon::constructible_from<hamon::ranges::range_value_t<R>, T const&>
 		>
 	>
 //	requires hamon::constructible_from<hamon::ranges::range_value_t<R>, T const&>

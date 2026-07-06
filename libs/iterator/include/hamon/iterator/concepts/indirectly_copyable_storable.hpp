@@ -60,7 +60,7 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V const&&>::value>,
 		typename = hamon::enable_if_t<hamon::copyable<V>::value>,
 		typename R = hamon::iter_reference_t<I>,
-		typename = hamon::enable_if_t<hamon::constructible_from<V, R>::value>,
+		typename = hamon::enable_if_t<hamon::constructible_from<V, R>>,
 		typename = hamon::enable_if_t<hamon::assignable_from<V&, R>::value>
 	>
 	static auto test(int) -> hamon::true_type;

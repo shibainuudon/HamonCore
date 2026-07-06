@@ -20,9 +20,6 @@
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/movable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #endif
@@ -60,22 +57,11 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<ranges::range<U>::value>,
 		typename = hamon::enable_if_t<
-			hamon::disjunction<
-				hamon::conjunction<
-					ranges::view<hamon::remove_cvref_t<U>>,
-					hamon::constructible_from<hamon::remove_cvref_t<U>, U>
-				>,
-				hamon::conjunction<
-					hamon::negation<ranges::view<hamon::remove_cvref_t<U>>>,
-					hamon::disjunction<
-						hamon::is_lvalue_reference<U>,
-						hamon::conjunction<
-							hamon::movable<hamon::remove_reference_t<U>>,
-							hamon::negation<is_initializer_list<hamon::remove_cvref_t<U>>>
-						>
-					>
-				>
-			>::value
+			((ranges::view<hamon::remove_cvref_t<U>>::value && hamon::constructible_from<hamon::remove_cvref_t<U>, U>) ||
+			 (!ranges::view<hamon::remove_cvref_t<U>>::value &&
+				 (hamon::is_lvalue_reference<U>::value ||
+					 (hamon::movable<hamon::remove_reference_t<U>>::value &&
+					  !detail::is_initializer_list<hamon::remove_cvref_t<U>>::value))))
 		>
 	>
 	static auto test(int) -> hamon::true_type;

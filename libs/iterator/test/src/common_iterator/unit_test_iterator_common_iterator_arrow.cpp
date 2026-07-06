@@ -87,37 +87,37 @@ using TestIter1 = TestIterator<int, true, int, int&>;
 static_assert( hamon::indirectly_readable_t<TestIter1 const>::value, "");
 static_assert( has_arrow<TestIter1 const&>::value, "");
 static_assert( hamon::is_reference<hamon::iter_reference_t<TestIter1>>::value, "");
-static_assert( hamon::constructible_from_t<hamon::iter_value_t<TestIter1>, hamon::iter_reference_t<TestIter1>>::value, "");
+static_assert( hamon::constructible_from<hamon::iter_value_t<TestIter1>, hamon::iter_reference_t<TestIter1>>, "");
 
 using TestIter2 = TestIterator<int, true, Dummy, int&, int const&>;
 static_assert(!hamon::indirectly_readable_t<TestIter2 const>::value, "");
 static_assert( has_arrow<TestIter2 const&>::value, "");
 static_assert( hamon::is_reference<hamon::iter_reference_t<TestIter2>>::value, "");
-static_assert( hamon::constructible_from_t<hamon::iter_value_t<TestIter2>, hamon::iter_reference_t<TestIter2>>::value, "");
+static_assert( hamon::constructible_from<hamon::iter_value_t<TestIter2>, hamon::iter_reference_t<TestIter2>>, "");
 
 using TestIter3 = TestIterator<int, true, Dummy, Dummy, Dummy>;
 static_assert( hamon::indirectly_readable_t<TestIter3 const>::value, "");
 static_assert( has_arrow<TestIter3 const&>::value, "");
 static_assert(!hamon::is_reference<hamon::iter_reference_t<TestIter3>>::value, "");
-static_assert(!hamon::constructible_from_t<hamon::iter_value_t<TestIter3>, hamon::iter_reference_t<TestIter3>>::value, "");
+static_assert(!hamon::constructible_from<hamon::iter_value_t<TestIter3>, hamon::iter_reference_t<TestIter3>>, "");
 
 using TestIter4 = TestIterator<int, false, Dummy, Dummy&, Dummy&>;
 static_assert( hamon::indirectly_readable_t<TestIter4 const>::value, "");
 static_assert(!has_arrow<TestIter4 const&>::value, "");
 static_assert( hamon::is_reference<hamon::iter_reference_t<TestIter4>>::value, "");
-static_assert(!hamon::constructible_from_t<hamon::iter_value_t<TestIter4>, hamon::iter_reference_t<TestIter4>>::value, "");
+static_assert(!hamon::constructible_from<hamon::iter_value_t<TestIter4>, hamon::iter_reference_t<TestIter4>>, "");
 
 using TestIter5 = TestIterator<int, false, int, int, int>;
 static_assert( hamon::indirectly_readable_t<TestIter5 const>::value, "");
 static_assert(!has_arrow<TestIter5 const&>::value, "");
 static_assert(!hamon::is_reference<hamon::iter_reference_t<TestIter5>>::value, "");
-static_assert( hamon::constructible_from_t<hamon::iter_value_t<TestIter5>, hamon::iter_reference_t<TestIter5>>::value, "");
+static_assert( hamon::constructible_from<hamon::iter_value_t<TestIter5>, hamon::iter_reference_t<TestIter5>>, "");
 
 using TestIter6 = TestIterator<int, false, Dummy, Dummy, Dummy>;
 static_assert( hamon::indirectly_readable_t<TestIter6 const>::value, "");
 static_assert(!has_arrow<TestIter6 const&>::value, "");
 static_assert(!hamon::is_reference<hamon::iter_reference_t<TestIter6>>::value, "");
-static_assert(!hamon::constructible_from_t<hamon::iter_value_t<TestIter6>, hamon::iter_reference_t<TestIter6>>::value, "");
+static_assert(!hamon::constructible_from<hamon::iter_value_t<TestIter6>, hamon::iter_reference_t<TestIter6>>, "");
 
 static_assert( has_arrow<hamon::common_iterator<TestIter1, hamon::unreachable_sentinel_t>>::value, "");
 static_assert(!has_arrow<hamon::common_iterator<TestIter2, hamon::unreachable_sentinel_t>>::value, "");

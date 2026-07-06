@@ -240,10 +240,10 @@ public:
 		typename CharT = typename U::char_type,
 		typename Traits = typename U::traits_type,
 		typename IStreamView = hamon::ranges::basic_istream_view<T, CharT, Traits>,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::derived_from_t<U, std::basic_istream<CharT, Traits>>,
-			hamon::constructible_from_t<IStreamView, U&>
-		>::value>
+		typename = hamon::enable_if_t<
+			hamon::derived_from_t<U, std::basic_istream<CharT, Traits>>::value &&
+			hamon::constructible_from<IStreamView, U&>
+		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(U& e) const

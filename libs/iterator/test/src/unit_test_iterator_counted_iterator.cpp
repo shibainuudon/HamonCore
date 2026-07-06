@@ -266,8 +266,8 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert( hamon::default_initializable_t<CI>::value == hamon::default_initializable_t<I>::value, "");
 	
 	// counted_iterator(I x, iter_difference_t<I> n);
-	static_assert( hamon::constructible_from_t<CI, I, hamon::iter_difference_t<I>>::value, "");
-	static_assert(!hamon::constructible_from_t<CI, I>::value, "");
+	static_assert( hamon::constructible_from<CI, I, hamon::iter_difference_t<I>>, "");
+	static_assert(!hamon::constructible_from<CI, I>, "");
 
 	// const I& base() const & noexcept;
 	// I base() &&;
@@ -491,13 +491,13 @@ GTEST_TEST(CountedIteratorTest, ConceptsTest)
 	// constexpr counted_iterator(const counted_iterator<I2>& x);
 	{
 		using CI = hamon::counted_iterator<int*>;
-		static_assert( hamon::constructible_from_t<CI, hamon::counted_iterator<int*>       const&>::value, "");
-		static_assert(!hamon::constructible_from_t<CI, hamon::counted_iterator<int const*> const&>::value, "");
+		static_assert( hamon::constructible_from<CI, hamon::counted_iterator<int*>       const&>, "");
+		static_assert(!hamon::constructible_from<CI, hamon::counted_iterator<int const*> const&>, "");
 	}
 	{
 		using CI = hamon::counted_iterator<int const*>;
-		static_assert( hamon::constructible_from_t<CI, hamon::counted_iterator<int*>       const&>::value, "");
-		static_assert( hamon::constructible_from_t<CI, hamon::counted_iterator<int const*> const&>::value, "");
+		static_assert( hamon::constructible_from<CI, hamon::counted_iterator<int*>       const&>, "");
+		static_assert( hamon::constructible_from<CI, hamon::counted_iterator<int const*> const&>, "");
 	}
 
 	// template<class I2>

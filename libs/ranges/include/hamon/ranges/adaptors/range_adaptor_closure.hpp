@@ -128,10 +128,10 @@ public:
 template <
 	HAMON_CONSTRAINED_PARAM(range_adaptor_closure_object, Lhs),
 	HAMON_CONSTRAINED_PARAM(range_adaptor_closure_object, Rhs),
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::constructible_from_t<hamon::remove_cvref_t<Lhs>, Lhs>,
-		hamon::constructible_from_t<hamon::remove_cvref_t<Rhs>, Rhs>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::constructible_from<hamon::remove_cvref_t<Lhs>, Lhs> &&
+		hamon::constructible_from<hamon::remove_cvref_t<Rhs>, Rhs>
+	>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 operator|(Lhs&& lhs, Rhs&& rhs)

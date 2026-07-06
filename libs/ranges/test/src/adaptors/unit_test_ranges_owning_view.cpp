@@ -61,26 +61,26 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using R = RangeWrapper<T>;
 	using OV = hamon::ranges::owning_view<RangeWrapper<T>>;
 
-	static_assert(!hamon::constructible_from_t<OV, T>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, T&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, T&&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, T const>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, T const&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, T const&&>::value, "");
+	static_assert(!hamon::constructible_from<OV, T>, "");
+	static_assert(!hamon::constructible_from<OV, T&>, "");
+	static_assert(!hamon::constructible_from<OV, T&&>, "");
+	static_assert(!hamon::constructible_from<OV, T const>, "");
+	static_assert(!hamon::constructible_from<OV, T const&>, "");
+	static_assert(!hamon::constructible_from<OV, T const&&>, "");
 
-	static_assert( hamon::constructible_from_t<OV, R>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, R&>::value, "");
-	static_assert( hamon::constructible_from_t<OV, R&&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, R const>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, R const&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, R const&&>::value, "");
+	static_assert( hamon::constructible_from<OV, R>, "");
+	static_assert(!hamon::constructible_from<OV, R&>, "");
+	static_assert( hamon::constructible_from<OV, R&&>, "");
+	static_assert(!hamon::constructible_from<OV, R const>, "");
+	static_assert(!hamon::constructible_from<OV, R const&>, "");
+	static_assert(!hamon::constructible_from<OV, R const&&>, "");
 
-	static_assert( hamon::constructible_from_t<OV, OV>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, OV&>::value, "");
-	static_assert( hamon::constructible_from_t<OV, OV&&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, OV const>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, OV const&>::value, "");
-	static_assert(!hamon::constructible_from_t<OV, OV const&&>::value, "");
+	static_assert( hamon::constructible_from<OV, OV>, "");
+	static_assert(!hamon::constructible_from<OV, OV&>, "");
+	static_assert( hamon::constructible_from<OV, OV&&>, "");
+	static_assert(!hamon::constructible_from<OV, OV const>, "");
+	static_assert(!hamon::constructible_from<OV, OV const&>, "");
+	static_assert(!hamon::constructible_from<OV, OV const&&>, "");
 
 	static_assert( hamon::ranges::range_t<OV>::value, "");
 	static_assert( hamon::ranges::borrowed_range_t<OV>::value == hamon::ranges::borrowed_range_t<R>::value, "");

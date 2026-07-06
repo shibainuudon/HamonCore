@@ -340,8 +340,9 @@ struct take_while_fn
 
 	template <typename Pred,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::decay_t<Pred>, Pred
-		>::value>>
+			hamon::constructible_from<hamon::decay_t<Pred>, Pred>
+		>
+	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(Pred&& pred) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

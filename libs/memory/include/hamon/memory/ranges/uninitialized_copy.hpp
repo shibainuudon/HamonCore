@@ -65,10 +65,7 @@ struct uninitialized_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S2),
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<
-				hamon::iter_value_t<O>,
-				hamon::iter_reference_t<I>
-			>::value
+			hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_reference_t<I>>
 		>
 	>
 //	requires hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_reference_t<I>>
@@ -82,10 +79,7 @@ struct uninitialized_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, IR),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, OR),
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<
-				hamon::ranges::range_value_t<OR>,
-				hamon::ranges::range_reference_t<IR>
-			>::value
+			hamon::constructible_from<hamon::ranges::range_value_t<OR>, hamon::ranges::range_reference_t<IR>>
 		>
 	>
 //	requires hamon::constructible_from<hamon::ranges::range_value_t<OR>, hamon::ranges::range_reference_t<IR>>

@@ -47,9 +47,9 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<
 			hamon::move_constructible_t<U>::value &&
-			hamon::constructible_from_t<U, U&>::value       && hamon::convertible_to<U&, U> &&
-			hamon::constructible_from_t<U, U const&>::value && hamon::convertible_to<U const&, U> &&
-			hamon::constructible_from_t<U, U const>::value  && hamon::convertible_to<U const, U>
+			hamon::constructible_from<U, U&>       && hamon::convertible_to<U&, U> &&
+			hamon::constructible_from<U, U const&> && hamon::convertible_to<U const&, U> &&
+			hamon::constructible_from<U, U const>  && hamon::convertible_to<U const, U>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

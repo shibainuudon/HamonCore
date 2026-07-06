@@ -730,8 +730,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	using Sentinel = decltype(tv.end());
 	using ConstSentinel = decltype(ctv.end());
 	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
-	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
-	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
+	static_assert(!hamon::constructible_from<Sentinel, ConstSentinel>, "");
+	static_assert(!hamon::constructible_from<ConstSentinel, Sentinel>, "");
 
 	{
 		auto it = tv.begin();
@@ -1309,8 +1309,8 @@ HAMON_CXX14_CONSTEXPR bool test09()
 	using Sentinel = decltype(tv.end());
 	using ConstSentinel = decltype(ctv.end());
 	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
-	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
-	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
+	static_assert(!hamon::constructible_from<Sentinel, ConstSentinel>, "");
+	static_assert( hamon::constructible_from<ConstSentinel, Sentinel>, "");
 
 	{
 		Sentinel s{};

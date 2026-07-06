@@ -687,7 +687,9 @@ struct stride_fn
 
 	template <typename T,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::decay_t<T>, T>::value>>
+			hamon::constructible_from<hamon::decay_t<T>, T>
+		>
+	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(T&& stride) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

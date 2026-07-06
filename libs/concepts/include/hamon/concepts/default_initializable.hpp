@@ -11,6 +11,7 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/constructible_from.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #endif
 
 namespace hamon
@@ -43,10 +44,11 @@ struct default_initializable_impl
 {
 private:
 	template <typename U,
+		typename = hamon::enable_if_t<hamon::constructible_from<U>>,
 		typename = decltype(U{}),
 		typename = decltype((void) ::new U)
 	>
-	static auto test(int) -> hamon::constructible_from<U>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

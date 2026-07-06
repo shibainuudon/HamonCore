@@ -59,7 +59,7 @@ struct cpp17_forward_iterator_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<cpp17_input_iterator<I2>::value>,
-		typename = hamon::enable_if_t<hamon::constructible_from<I2>::value>,
+		typename = hamon::enable_if_t<hamon::constructible_from<I2>>,
 		typename R = hamon::iter_reference_t<I2>,
 		typename = hamon::enable_if_t<hamon::is_lvalue_reference<R>::value>,
 		typename = hamon::enable_if_t<hamon::same_as<

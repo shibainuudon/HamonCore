@@ -674,7 +674,7 @@ public:
 
 	template <typename F,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::decay_t<F>, F>::value>>
+			hamon::constructible_from<hamon::decay_t<F>, F>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(F&& f) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

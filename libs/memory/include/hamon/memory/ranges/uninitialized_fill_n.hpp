@@ -50,7 +50,7 @@ struct uninitialized_fill_n_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, I),
 		typename T,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::iter_value_t<I>, T const&>::value
+			hamon::constructible_from<hamon::iter_value_t<I>, T const&>
 		>
 	>
 //	requires hamon::constructible_from<hamon::iter_value_t<I>, T const&>

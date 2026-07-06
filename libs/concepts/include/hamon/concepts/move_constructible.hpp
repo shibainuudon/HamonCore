@@ -34,7 +34,7 @@ concept move_constructible =
 
 template <typename T>
 using move_constructible = hamon::bool_constant<
-	hamon::constructible_from_t<T, T>::value &&
+	hamon::constructible_from<T, T> &&
 	hamon::convertible_to<T, T>
 >;
 

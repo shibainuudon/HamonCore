@@ -511,8 +511,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	using Sentinel = decltype(twv.end());
 	using ConstSentinel = decltype(ctwv.end());
 	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
-	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
-	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
+	static_assert(!hamon::constructible_from<Sentinel, ConstSentinel>, "");
+	static_assert( hamon::constructible_from<ConstSentinel, Sentinel>, "");
 
 	static_assert( has_eq <Iterator, Iterator>::value, "");
 	static_assert( has_eq <Iterator, ConstIterator>::value, "");
@@ -621,8 +621,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	using Sentinel = decltype(twv.end());
 	using ConstSentinel = decltype(ctwv.end());
 	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
-	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
-	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
+	static_assert(!hamon::constructible_from<Sentinel, ConstSentinel>, "");
+	static_assert(!hamon::constructible_from<ConstSentinel, Sentinel>, "");
 
 	static_assert( has_eq <Iterator, Iterator>::value, "");
 	static_assert(!has_eq <Iterator, ConstIterator>::value, "");

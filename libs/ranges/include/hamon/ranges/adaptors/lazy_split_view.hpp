@@ -810,11 +810,11 @@ public:
 	{}
 
 	template <typename R,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::input_range_t<R>,
-			hamon::constructible_from_t<V, hamon::views::all_t<R>>,
-			hamon::constructible_from_t<Pattern, hamon::ranges::single_view<hamon::ranges::range_value_t<R>>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::input_range_t<R>::value &&
+			hamon::constructible_from<V, hamon::views::all_t<R>> &&
+			hamon::constructible_from<Pattern, hamon::ranges::single_view<hamon::ranges::range_value_t<R>>>
+		>>
 	HAMON_CXX11_CONSTEXPR explicit
 	lazy_split_view(R&& r, hamon::ranges::range_value_t<R> e)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -987,8 +987,9 @@ public:
 
 	template <typename Delim,
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<hamon::decay_t<Delim>, Delim
-		>::value>>
+			hamon::constructible_from<hamon::decay_t<Delim>, Delim>
+		>
+	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(Delim&& delim) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

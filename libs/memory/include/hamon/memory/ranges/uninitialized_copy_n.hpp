@@ -60,10 +60,7 @@ struct uninitialized_copy_n_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S),
 		typename = hamon::enable_if_t<
-			hamon::constructible_from_t<
-				hamon::iter_value_t<O>,
-				hamon::iter_reference_t<I>
-			>::value
+			hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_reference_t<I>>
 		>
 	>
 //	requires hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_reference_t<I>>

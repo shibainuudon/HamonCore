@@ -361,10 +361,10 @@ public:
 	{}
 
 	template <typename... TArgs, typename... BoundArgs,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::constructible_from_t<T, TArgs...>,
-			hamon::constructible_from_t<Bound, BoundArgs...>
-		>::value>
+		typename = hamon::enable_if_t<
+			hamon::constructible_from<T, TArgs...> &&
+			hamon::constructible_from<Bound, BoundArgs...>
+		>
 	>
 //	requires
 //		hamon::constructible_from<T, TArgs...> &&

@@ -175,10 +175,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(!hamon::default_initializable_t<V>::value, "");
 
-	static_assert( hamon::constructible_from_t<V, IStream &>::value, "");
-	static_assert(!hamon::constructible_from_t<V, IStream &&>::value, "");
-	static_assert(!hamon::constructible_from_t<V, IStream const&>::value, "");
-	static_assert(!hamon::constructible_from_t<V, IStream const&&>::value, "");
+	static_assert( hamon::constructible_from<V, IStream &>, "");
+	static_assert(!hamon::constructible_from<V, IStream &&>, "");
+	static_assert(!hamon::constructible_from<V, IStream const&>, "");
+	static_assert(!hamon::constructible_from<V, IStream const&&>, "");
 
 	static_assert(!hamon::is_implicitly_constructible<V, IStream &>::value, "");
 
@@ -196,10 +196,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::same_as<typename I::difference_type, hamon::ptrdiff_t>, "");
 	static_assert(hamon::same_as<typename I::value_type, Val>, "");
 	static_assert(!hamon::default_initializable_t<I>::value, "");
-	static_assert( hamon::constructible_from_t<I, V &>::value, "");
-	static_assert(!hamon::constructible_from_t<I, V &&>::value, "");
-	static_assert(!hamon::constructible_from_t<I, V const&>::value, "");
-	static_assert(!hamon::constructible_from_t<I, V const&&>::value, "");
+	static_assert( hamon::constructible_from<I, V &>, "");
+	static_assert(!hamon::constructible_from<I, V &&>, "");
+	static_assert(!hamon::constructible_from<I, V const&>, "");
+	static_assert(!hamon::constructible_from<I, V const&&>, "");
 	static_assert(!hamon::is_copy_constructible<I>::value, "");
 	static_assert( hamon::is_move_constructible<I>::value, "");
 	static_assert(!hamon::is_copy_assignable<I>::value, "");

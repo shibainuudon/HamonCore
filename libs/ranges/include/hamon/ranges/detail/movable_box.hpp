@@ -199,7 +199,7 @@ public:
 	{}
 
 	template <typename... Args,
-		typename = hamon::enable_if_t<hamon::constructible_from_t<T, Args...>::value>>
+		typename = hamon::enable_if_t<hamon::constructible_from<T, Args...>>>
 //		requires hamon::constructible_from<T, Args...>
 	HAMON_CXX11_CONSTEXPR explicit
 	movable_box(hamon::in_place_t, Args&&... args)

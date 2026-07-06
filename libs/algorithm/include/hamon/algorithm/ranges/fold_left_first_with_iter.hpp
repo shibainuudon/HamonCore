@@ -105,7 +105,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(I first, S last, F f) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		decltype(impl<I>(
 			hamon::move(first), hamon::move(last), hamon::ref(f))),
 		hamon::constructible_from<
@@ -124,7 +124,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(R&& r, F f) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		decltype(impl<ranges::borrowed_iterator_t<R>>(
 			ranges::begin(r), ranges::end(r), hamon::ref(f))),
 		hamon::constructible_from<

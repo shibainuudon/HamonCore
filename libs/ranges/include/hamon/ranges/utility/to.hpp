@@ -195,7 +195,7 @@ private:
 		typename = hamon::enable_if_t<hamon::ranges::common_range_t<R2>::value>,
 		typename Cat = typename hamon::iterator_traits<hamon::ranges::iterator_t<R2>>::iterator_category,
 		typename = hamon::enable_if_t<hamon::derived_from_t<Cat, hamon::input_iterator_tag>::value>,
-		typename = hamon::enable_if_t<hamon::constructible_from_t<C2, hamon::ranges::iterator_t<R2>, hamon::ranges::sentinel_t<R2>, Args2...>::value>
+		typename = hamon::enable_if_t<hamon::constructible_from<C2, hamon::ranges::iterator_t<R2>, hamon::ranges::sentinel_t<R2>, Args2...>>
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -274,7 +274,7 @@ namespace detail
 // [range.utility.conv.to]/2.1.1
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::constructible_from_t<C, R, Args...>::value>>
+		hamon::constructible_from<C, R, Args...>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<4>, R&& r, Args&&... args)
 {
@@ -284,7 +284,7 @@ to_impl2(hamon::detail::overload_priority<4>, R&& r, Args&&... args)
 // [range.utility.conv.to]/2.1.2
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::constructible_from_t<C, hamon::from_range_t, R, Args...>::value>>
+		hamon::constructible_from<C, hamon::from_range_t, R, Args...>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<3>, R&& r, Args&&... args)
 {
@@ -321,7 +321,7 @@ to_impl_reserve(C&, R&&, hamon::detail::overload_priority<0>)
 
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::constructible_from_t<C, Args...>::value &&
+		hamon::constructible_from<C, Args...> &&
 		hamon::ranges::detail::container_appendable_t<C, hamon::ranges::range_reference_t<R>>::value>>
 HAMON_CXX14_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<1>, R&& r, Args&&... args)
