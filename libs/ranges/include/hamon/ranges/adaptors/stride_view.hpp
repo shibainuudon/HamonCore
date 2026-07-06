@@ -61,6 +61,7 @@ using std::ranges::views::stride;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
@@ -196,7 +197,7 @@ private:
 			requires hamon::default_initializable<BaseIter>
 		= default;
 #else
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::default_initializable, I2, BaseIter)>
 		HAMON_CXX11_CONSTEXPR
 		iterator() HAMON_NOEXCEPT_IF(
 			hamon::is_nothrow_default_constructible<I2>::value)

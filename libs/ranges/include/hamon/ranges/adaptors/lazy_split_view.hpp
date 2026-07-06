@@ -55,6 +55,7 @@ using std::ranges::views::lazy_split;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -790,8 +791,8 @@ public:
 	= default;
 #else
 	template <
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, V2, V),
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, P2, Pattern)>
+		HAMON_CONSTRAINT_D(hamon::default_initializable, V2, V),
+		HAMON_CONSTRAINT_D(hamon::default_initializable, P2, Pattern)>
 	HAMON_CXX11_CONSTEXPR lazy_split_view()
 		HAMON_NOEXCEPT_IF(
 			hamon::is_nothrow_default_constructible<V>::value &&

@@ -49,7 +49,7 @@ struct NotMoveable : hamon::ranges::view_base
 };
 static_assert(hamon::ranges::range_t<NotMoveable>::value, "");
 static_assert(!hamon::movable_t<NotMoveable>::value, "");
-static_assert(hamon::default_initializable_t<NotMoveable>::value, "");
+static_assert(hamon::default_initializable<NotMoveable>, "");
 static_assert(HAMON_RANGES_ENABLE_VIEW(NotMoveable), "");
 HAMON_RANGES_VIEW_TEST(false, NotMoveable);
 HAMON_RANGES_VIEW_TEST(false, NotMoveable&);
@@ -69,7 +69,7 @@ struct NotDefaultInit : hamon::ranges::view_base
 };
 static_assert(hamon::ranges::range_t<NotDefaultInit>::value, "");
 static_assert(hamon::movable_t<NotDefaultInit>::value, "");
-static_assert(!hamon::default_initializable_t<NotDefaultInit>::value, "");
+static_assert(!hamon::default_initializable<NotDefaultInit>, "");
 static_assert(HAMON_RANGES_ENABLE_VIEW(NotDefaultInit), "");
 HAMON_RANGES_VIEW_TEST(true,  NotDefaultInit);
 HAMON_RANGES_VIEW_TEST(false, NotDefaultInit&);
@@ -92,7 +92,7 @@ struct NotExplicitlyEnabled
 
 static_assert(hamon::ranges::range_t<NotExplicitlyEnabled>::value, "");
 static_assert(hamon::movable_t<NotExplicitlyEnabled>::value, "");
-static_assert(hamon::default_initializable_t<NotExplicitlyEnabled>::value, "");
+static_assert(hamon::default_initializable<NotExplicitlyEnabled>, "");
 static_assert(!HAMON_RANGES_ENABLE_VIEW(NotExplicitlyEnabled), "");
 HAMON_RANGES_VIEW_TEST(false, NotExplicitlyEnabled);
 HAMON_RANGES_VIEW_TEST(false, NotExplicitlyEnabled&);
@@ -125,7 +125,7 @@ namespace view_test {
 
 static_assert(hamon::ranges::range_t<ExplicitlyEnabled>::value, "");
 static_assert(hamon::movable_t<ExplicitlyEnabled>::value, "");
-static_assert(hamon::default_initializable_t<ExplicitlyEnabled>::value, "");
+static_assert(hamon::default_initializable<ExplicitlyEnabled>, "");
 static_assert(HAMON_RANGES_ENABLE_VIEW(ExplicitlyEnabled), "");
 HAMON_RANGES_VIEW_TEST(true,  ExplicitlyEnabled);
 HAMON_RANGES_VIEW_TEST(false, ExplicitlyEnabled&);
@@ -143,7 +143,7 @@ struct NotARange : hamon::ranges::view_base
 };
 static_assert(!hamon::ranges::range_t<NotARange>::value, "");
 static_assert(hamon::movable_t<NotARange>::value, "");
-static_assert(hamon::default_initializable_t<NotARange>::value, "");
+static_assert(hamon::default_initializable<NotARange>, "");
 static_assert(HAMON_RANGES_ENABLE_VIEW(NotARange), "");
 HAMON_RANGES_VIEW_TEST(false, NotARange);
 HAMON_RANGES_VIEW_TEST(false, NotARange&);
@@ -165,7 +165,7 @@ struct View : hamon::ranges::view_base
 };
 static_assert(hamon::ranges::range_t<View>::value, "");
 static_assert(hamon::movable_t<View>::value, "");
-static_assert(hamon::default_initializable_t<View>::value, "");
+static_assert(hamon::default_initializable<View>, "");
 static_assert(HAMON_RANGES_ENABLE_VIEW(View), "");
 HAMON_RANGES_VIEW_TEST(true,  View);
 HAMON_RANGES_VIEW_TEST(false, View&);

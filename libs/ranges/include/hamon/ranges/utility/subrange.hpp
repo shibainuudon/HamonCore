@@ -42,6 +42,7 @@ using ranges::get;
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
@@ -305,7 +306,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	HAMON_CXX11_CONSTEXPR subrange() requires hamon::default_initializable<It> = default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, It2, It)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, It2, It)>
 	HAMON_CXX11_CONSTEXPR subrange()
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<It>::value)
 	{}

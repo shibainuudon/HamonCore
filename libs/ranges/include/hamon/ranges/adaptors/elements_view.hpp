@@ -71,6 +71,7 @@ using elements_t = decltype(elements<N>);
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -180,7 +181,7 @@ public:
 		requires hamon::default_initializable<V>
 	= default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, V2, V)>
 	HAMON_CXX11_CONSTEXPR elements_view()
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<V>::value)
 	{}
@@ -400,8 +401,7 @@ private:
 		= default;
 #else
 		template <typename I2 = BaseIter,
-			typename = hamon::enable_if_t<
-				hamon::default_initializable_t<I2>::value>>
+			typename = hamon::enable_if_t<hamon::default_initializable<I2>>>
 		HAMON_CXX11_CONSTEXPR iterator()
 			HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<I2>::value)
 		{}

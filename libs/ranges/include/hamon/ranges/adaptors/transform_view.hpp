@@ -56,6 +56,7 @@ using std::ranges::views::transform;
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/regular_invocable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -170,7 +171,7 @@ private:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 		iterator() requires hamon::default_initializable<I> = default;
 #else
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I2, I)>
+		template <HAMON_CONSTRAINT_D(hamon::default_initializable, I2, I)>
 		HAMON_CXX11_CONSTEXPR
 		iterator() HAMON_NOEXCEPT_IF(
 			hamon::is_nothrow_default_constructible<I2>::value)
@@ -567,8 +568,8 @@ public:
 	= default;
 #else
 	template <
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, V2, V),
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, F2, F)>
+		HAMON_CONSTRAINT_D(hamon::default_initializable, V2, V),
+		HAMON_CONSTRAINT_D(hamon::default_initializable, F2, F)>
 	HAMON_CXX11_CONSTEXPR
 	transform_view()
 		HAMON_NOEXCEPT_IF(

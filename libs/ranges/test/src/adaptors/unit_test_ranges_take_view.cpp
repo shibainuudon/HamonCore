@@ -236,7 +236,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = View<T>;
 	using TV = hamon::ranges::take_view<V>;
 
-	static_assert(hamon::default_initializable_t<TV>::value == hamon::default_initializable_t<V>::value, "");
+	static_assert(hamon::default_initializable<TV> == hamon::default_initializable<V>, "");
 
 	static_assert(hamon::ranges::range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<TV>::value == hamon::ranges::borrowed_range_t<V>::value, "");

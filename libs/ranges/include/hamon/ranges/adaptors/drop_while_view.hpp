@@ -45,6 +45,7 @@ using std::ranges::views::drop_while;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/functional/cref.hpp>
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
@@ -87,8 +88,8 @@ public:
 	= default;
 #else
 	template <
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, V2, V),
-		HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, Pred2, Pred)>
+		HAMON_CONSTRAINT_D(hamon::default_initializable, V2, V),
+		HAMON_CONSTRAINT_D(hamon::default_initializable, Pred2, Pred)>
 	HAMON_CXX11_CONSTEXPR
 	drop_while_view() HAMON_NOEXCEPT_IF(
 		hamon::is_nothrow_default_constructible<V2>::value &&

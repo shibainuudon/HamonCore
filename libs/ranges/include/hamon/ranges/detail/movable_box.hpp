@@ -18,6 +18,7 @@
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/constructible_from.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -179,7 +180,7 @@ public:
 		requires hamon::default_initializable<T>
 	= default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, T2, T)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, T2, T)>
 	HAMON_CXX11_CONSTEXPR movable_box()
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<T>::value)
 	{}

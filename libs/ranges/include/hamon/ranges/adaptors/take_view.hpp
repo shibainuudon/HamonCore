@@ -230,7 +230,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	take_view() requires hamon::default_initializable<V> = default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, V2, V)>
 	HAMON_CXX11_CONSTEXPR
 	take_view()
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<V2>::value)

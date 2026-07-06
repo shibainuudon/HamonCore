@@ -34,6 +34,7 @@ using std::ranges::views::single;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -61,7 +62,7 @@ public:
 	single_view()
 		requires hamon::default_initializable<T> = default;
 #else	
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, U, T)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, U, T)>
 	HAMON_CXX11_CONSTEXPR
 	single_view()
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<U>::value)

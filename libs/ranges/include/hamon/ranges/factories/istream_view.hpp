@@ -39,7 +39,6 @@ using std::ranges::views::istream;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/declval.hpp>
@@ -96,11 +95,11 @@ requires hamon::default_initializable<Val> &&
 	detail::stream_extractable<Val, CharT, Traits>
 #else
 template <typename Val, typename CharT, typename Traits = std::char_traits<CharT>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::movable<Val>,
-		hamon::default_initializable<Val>,
-		detail::stream_extractable<Val, CharT, Traits>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::movable_t<Val>::value &&
+		hamon::default_initializable<Val> &&
+		detail::stream_extractable<Val, CharT, Traits>::value
+	>
 >
 #endif
 class basic_istream_view : public hamon::ranges::view_interface<basic_istream_view<Val, CharT, Traits>>

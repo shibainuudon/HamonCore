@@ -55,7 +55,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<input_iterator_wrapper<int>>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert(!hamon::forward_iterator_t<iterator>::value, "");
@@ -72,7 +72,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<forward_iterator_wrapper<int>>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
@@ -90,7 +90,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<bidirectional_iterator_wrapper<int>>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
@@ -109,7 +109,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<random_access_iterator_wrapper<int>>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
@@ -129,7 +129,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<contiguous_iterator_wrapper<int>>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
@@ -149,7 +149,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 	{
 		using iterator = hamon::move_iterator<int*>;
 
-		static_assert( hamon::default_initializable_t<iterator>::value, "");
+		static_assert( hamon::default_initializable<iterator>, "");
 		static_assert( hamon::copyable_t<iterator>::value, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");

@@ -41,6 +41,7 @@ using std::common_iterator;
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
@@ -153,7 +154,7 @@ public:
 	HAMON_CXX11_CONSTEXPR common_iterator()
 		requires hamon::default_initializable<I> = default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, I2, I)>
 	HAMON_CXX11_CONSTEXPR
 	common_iterator() HAMON_NOEXCEPT_IF(
 		hamon::is_nothrow_default_constructible<I>::value &&

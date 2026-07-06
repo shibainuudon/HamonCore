@@ -12,7 +12,6 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -34,11 +33,10 @@ concept semiregular =
 #else
 
 template <typename T>
-using semiregular =
-	hamon::conjunction<
-		hamon::copyable<T>,
-		hamon::default_initializable<T>
-	>;
+using semiregular = hamon::bool_constant<
+	hamon::copyable<T>::value &&
+	hamon::default_initializable<T>
+>;
 
 #endif
 

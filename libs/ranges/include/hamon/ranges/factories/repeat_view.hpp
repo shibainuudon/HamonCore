@@ -333,7 +333,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	repeat_view() requires hamon::default_initializable<T> = default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, T2, T)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, T2, T)>
 	HAMON_CXX11_CONSTEXPR
 	repeat_view()
 		HAMON_NOEXCEPT_IF(

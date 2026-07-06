@@ -263,7 +263,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// counted_iterator()
-	static_assert( hamon::default_initializable_t<CI>::value == hamon::default_initializable_t<I>::value, "");
+	static_assert( hamon::default_initializable<CI> == hamon::default_initializable<I>, "");
 	
 	// counted_iterator(I x, iter_difference_t<I> n);
 	static_assert( hamon::constructible_from<CI, I, hamon::iter_difference_t<I>>, "");

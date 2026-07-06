@@ -61,7 +61,7 @@ struct NonMovable
 	NonMovable& operator=(NonMovable const&) = default;
 	NonMovable& operator=(NonMovable &&) = delete;
 };
-static_assert( hamon::default_initializable_t<NonMovable>::value, "");
+static_assert( hamon::default_initializable<NonMovable>, "");
 static_assert(!hamon::movable_t<NonMovable>::value, "");
 
 template <typename CharT, typename Traits>
@@ -79,7 +79,7 @@ struct NoDefaultCtor
 	NoDefaultCtor& operator=(NoDefaultCtor const&) = default;
 	NoDefaultCtor& operator=(NoDefaultCtor &&) = default;
 };
-static_assert(!hamon::default_initializable_t<NoDefaultCtor>::value, "");
+static_assert(!hamon::default_initializable<NoDefaultCtor>, "");
 static_assert( hamon::movable_t<NoDefaultCtor>::value, "");
 
 template <typename CharT, typename Traits>
@@ -173,7 +173,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::view_t<V>::value, "");
 	static_assert(!hamon::ranges::constant_range_t<V>::value, "");
 
-	static_assert(!hamon::default_initializable_t<V>::value, "");
+	static_assert(!hamon::default_initializable<V>, "");
 
 	static_assert( hamon::constructible_from<V, IStream &>, "");
 	static_assert(!hamon::constructible_from<V, IStream &&>, "");
@@ -195,7 +195,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::same_as<typename I::iterator_concept, hamon::input_iterator_tag>, "");
 	static_assert(hamon::same_as<typename I::difference_type, hamon::ptrdiff_t>, "");
 	static_assert(hamon::same_as<typename I::value_type, Val>, "");
-	static_assert(!hamon::default_initializable_t<I>::value, "");
+	static_assert(!hamon::default_initializable<I>, "");
 	static_assert( hamon::constructible_from<I, V &>, "");
 	static_assert(!hamon::constructible_from<I, V &&>, "");
 	static_assert(!hamon::constructible_from<I, V const&>, "");

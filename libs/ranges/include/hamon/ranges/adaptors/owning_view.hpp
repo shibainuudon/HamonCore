@@ -75,7 +75,7 @@ public:
 	owning_view() requires hamon::default_initializable<R> = default;
 #else
 	template <typename R2 = R,
-		typename = hamon::enable_if_t<hamon::default_initializable_t<R2>::value>>
+		typename = hamon::enable_if_t<hamon::default_initializable<R2>>>
 	owning_view() HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<R2>::value)
 	{}
 #endif

@@ -51,7 +51,7 @@ struct uninitialized_value_construct_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, I, S),
-		typename = hamon::enable_if_t<hamon::default_initializable_t<hamon::iter_value_t<I>>::value>
+		typename = hamon::enable_if_t<hamon::default_initializable<hamon::iter_value_t<I>>>
 	>
 	//requires hamon::default_initializable<hamon::iter_value_t<I>>
 	I operator()(I first, S last) const
@@ -61,7 +61,7 @@ struct uninitialized_value_construct_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, R),
-		typename = hamon::enable_if_t<hamon::default_initializable_t<hamon::ranges::range_value_t<R>>::value>
+		typename = hamon::enable_if_t<hamon::default_initializable<hamon::ranges::range_value_t<R>>>
 	>
 	//requires hamon::default_initializable<hamon::ranges::range_value_t<R>>
 	hamon::ranges::borrowed_iterator_t<R> operator()(R&& r) const

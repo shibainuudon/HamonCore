@@ -170,7 +170,7 @@ public:
 		requires hamon::default_initializable<Iterator>
 		= default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, I, Iterator)>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator()
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<Iterator>::value)	// noexcept as an extension

@@ -7,15 +7,8 @@
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_DEFAULT_INITIALIZABLE_TEST(B, T)	\
-	static_assert(B == hamon::default_initializable<T>, "");	\
-	static_assert(B == hamon::default_initializable_t<T>::value, "")
-#else
-#  define HAMON_DEFAULT_INITIALIZABLE_TEST(B, T)	\
-	static_assert(B == hamon::default_initializable<T>::value, "");	\
-	static_assert(B == hamon::default_initializable_t<T>::value, "")
-#endif
+#define HAMON_DEFAULT_INITIALIZABLE_TEST(B, T)	\
+	static_assert(B == hamon::default_initializable<T>, "")
 
 namespace hamon_concepts_test
 {

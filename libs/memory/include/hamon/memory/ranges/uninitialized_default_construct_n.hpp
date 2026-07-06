@@ -47,7 +47,7 @@ struct uninitialized_default_construct_n_fn
 {
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, I),
-		typename = hamon::enable_if_t<hamon::default_initializable_t<hamon::iter_value_t<I>>::value>
+		typename = hamon::enable_if_t<hamon::default_initializable<hamon::iter_value_t<I>>>
 	>
 //	requires hamon::default_initializable<hamon::iter_value_t<I>>
 	I operator()(I first, hamon::iter_difference_t<I> n) const

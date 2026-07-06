@@ -46,6 +46,7 @@ using std::counted_iterator;
 #include <hamon/concepts/common_with.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/to_address.hpp>
 #include <hamon/type_traits/add_pointer.hpp>
@@ -115,7 +116,7 @@ public:
 	HAMON_CXX11_CONSTEXPR counted_iterator()
 		requires hamon::default_initializable<I> = default;
 #else
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::default_initializable, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::default_initializable, I2, I)>
 	HAMON_CXX11_CONSTEXPR
 	counted_iterator()
 		HAMON_NOEXCEPT_IF(hamon::is_nothrow_default_constructible<I>::value)
