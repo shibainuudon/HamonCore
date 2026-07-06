@@ -200,30 +200,30 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_begin<DV const>::value ==
 		(hamon::ranges::random_access_range_t<V const>::value && hamon::ranges::sized_range_t<V const>::value), "");
 
-	static_assert(hamon::same_as_t<
+	static_assert(hamon::same_as<
 		decltype(hamon::declval<DV>().begin()),
-		decltype(hamon::ranges::begin(hamon::declval<V&>()))>::value, "");
+		decltype(hamon::ranges::begin(hamon::declval<V&>()))>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_begin<DV const>::value)
 	{
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<DV const>().begin()),
-			decltype(hamon::ranges::begin(hamon::declval<V const&>()))>::value, "");
+			decltype(hamon::ranges::begin(hamon::declval<V const&>()))>, "");
 	}
 #endif
 
 	static_assert(has_end<DV>::value, "");
 	static_assert(has_end<DV const>::value == hamon::ranges::range_t<V const>::value, "");
 
-	static_assert(hamon::same_as_t<
+	static_assert(hamon::same_as<
 		decltype(hamon::declval<DV>().end()),
-		decltype(hamon::ranges::end(hamon::declval<V&>()))>::value, "");
+		decltype(hamon::ranges::end(hamon::declval<V&>()))>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_end<DV const>::value)
 	{
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<DV const>().end()),
-			decltype(hamon::ranges::end(hamon::declval<V const&>()))>::value, "");
+			decltype(hamon::ranges::end(hamon::declval<V const&>()))>, "");
 	}
 #endif
 
@@ -236,16 +236,16 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_size<DV>::value)
 	{
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<DV>().size()),
-			decltype(hamon::ranges::size(hamon::declval<V&>()))>::value, "");
+			decltype(hamon::ranges::size(hamon::declval<V&>()))>, "");
 	}
 
 	if constexpr (has_size<DV const>::value)
 	{
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<DV const>().size()),
-			decltype(hamon::ranges::size(hamon::declval<V const&>()))>::value, "");
+			decltype(hamon::ranges::size(hamon::declval<V const&>()))>, "");
 	}
 #endif
 
@@ -291,7 +291,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_view dv{r, 3};
-	static_assert(hamon::same_as_t<decltype(dv), DV>::value, "");
+	static_assert(hamon::same_as<decltype(dv), DV>, "");
 #else
 	DV dv{r, 3};
 #endif
@@ -302,10 +302,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(dv.reserve_hint() == 2);
 	VERIFY(cdv.reserve_hint() == 2);
 
-	static_assert( hamon::same_as_t<decltype(dv.begin()), decltype(r.begin())>::value, "");
-	static_assert(!hamon::same_as_t<decltype(dv.end()),   decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(cdv.begin()), decltype(cr.begin())>::value, "");
-	static_assert(!hamon::same_as_t<decltype(cdv.end()),   decltype(cr.begin())>::value, "");
+	static_assert( hamon::same_as<decltype(dv.begin()), decltype(r.begin())>, "");
+	static_assert(!hamon::same_as<decltype(dv.end()),   decltype(r.begin())>, "");
+	static_assert( hamon::same_as<decltype(cdv.begin()), decltype(cr.begin())>, "");
+	static_assert(!hamon::same_as<decltype(cdv.end()),   decltype(cr.begin())>, "");
 
 	{
 		auto it = dv.begin();
@@ -379,7 +379,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_view dv{r, 2};
-	static_assert(hamon::same_as_t<decltype(dv), DV>::value, "");
+	static_assert(hamon::same_as<decltype(dv), DV>, "");
 #else
 	DV dv{r, 2};
 #endif
@@ -390,10 +390,10 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	VERIFY(dv.reserve_hint() == 3);
 	VERIFY(cdv.reserve_hint() == 3);
 
-	static_assert( hamon::same_as_t<decltype(dv.begin()), decltype(r.begin())>::value, "");
-	static_assert(!hamon::same_as_t<decltype(dv.end()),   decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(cdv.begin()), decltype(cr.begin())>::value, "");
-	static_assert(!hamon::same_as_t<decltype(cdv.end()),   decltype(cr.begin())>::value, "");
+	static_assert( hamon::same_as<decltype(dv.begin()), decltype(r.begin())>, "");
+	static_assert(!hamon::same_as<decltype(dv.end()),   decltype(r.begin())>, "");
+	static_assert( hamon::same_as<decltype(cdv.begin()), decltype(cr.begin())>, "");
+	static_assert(!hamon::same_as<decltype(cdv.end()),   decltype(cr.begin())>, "");
 
 	{
 		auto it = dv.begin();
@@ -474,13 +474,13 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_view dv{r, 3};
-	static_assert(hamon::same_as_t<decltype(dv), DV>::value, "");
+	static_assert(hamon::same_as<decltype(dv), DV>, "");
 #else
 	DV dv{r, 3};
 #endif
 
-	static_assert( hamon::same_as_t<decltype(dv.begin()), decltype(r.begin())>::value, "");
-	static_assert(!hamon::same_as_t<decltype(dv.end()),   decltype(r.begin())>::value, "");
+	static_assert( hamon::same_as<decltype(dv.begin()), decltype(r.begin())>, "");
+	static_assert(!hamon::same_as<decltype(dv.end()),   decltype(r.begin())>, "");
 
 	{
 		auto it = dv.begin();
@@ -507,7 +507,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	// empty_view
 	{
 		auto dv = hamon::ranges::empty_view<int>{} | hamon::views::drop(2);
-		static_assert(hamon::same_as_t<decltype(dv), hamon::ranges::empty_view<int>>::value, "");
+		static_assert(hamon::same_as<decltype(dv), hamon::ranges::empty_view<int>>, "");
 		VERIFY(dv.size() == 0);
 	}
 
@@ -516,14 +516,14 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		int a[] = {1,2,3,4,5};
 		hamon::span<int> s(a);
 		auto dv = s | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::span<int>>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::span<int>>, "");
 		VERIFY(dv.size() == 2);
 	}
 	{
 		int a[] = {1,2,3,4,5,6,7,8};
 		hamon::span<int, 8> s(a);
 		auto dv = s | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::span<int, hamon::dynamic_extent>>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::span<int, hamon::dynamic_extent>>, "");
 		VERIFY(dv.size() == 5);
 	}
 
@@ -531,21 +531,21 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	{
 		hamon::string_view sv = "abcdefg";
 		auto dv = sv | hamon::views::drop(4);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::string_view>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::string_view>, "");
 		VERIFY(dv.size() == 3);
 	}
 
 	// iota_view
 	{
 		auto dv = hamon::views::iota(1, 8) | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::ranges::iota_view<int, int>>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::ranges::iota_view<int, int>>, "");
 		VERIFY(dv.size() == 4);
 		VERIFY(*dv.begin() == 4);
 	}
 	{
 		auto dv = hamon::views::iota(1) | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv),
-			hamon::ranges::drop_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>::value, "");
+		static_assert( hamon::same_as<decltype(dv),
+			hamon::ranges::drop_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>, "");
 		static_assert(!has_size<decltype(dv)>::value, "");
 		VERIFY(*dv.begin() == 4);
 	}
@@ -555,7 +555,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		int a[] = {1,2,3,4,5,6,7,8};
 		hamon::ranges::subrange<int*> s(a, a + 5);
 		auto dv = s | hamon::views::drop(2);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::ranges::subrange<int*>>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::ranges::subrange<int*>>, "");
 		VERIFY(dv.size() == 3);
 	}
 	{
@@ -566,20 +566,20 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		R r(a);
 		hamon::ranges::subrange<I, S, hamon::ranges::subrange_kind::sized> s(r.begin(), r.end(), 8);
 		auto dv = s | hamon::views::drop(2);
-		static_assert( hamon::same_as_t<decltype(dv), decltype(s)>::value, "");
+		static_assert( hamon::same_as<decltype(dv), decltype(s)>, "");
 		VERIFY(dv.size() == 6);
 	}
 
 	// repeat_view
 	{
 		auto dv = hamon::views::repeat(42, 8) | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv), hamon::ranges::repeat_view<int, int>>::value, "");
+		static_assert( hamon::same_as<decltype(dv), hamon::ranges::repeat_view<int, int>>, "");
 		VERIFY(dv.size() == 5);
 		VERIFY(*dv.begin() == 42);
 	}
 	{
 		auto dv = hamon::views::repeat(42) | hamon::views::drop(3);
-		static_assert( hamon::same_as_t<decltype(dv), decltype(hamon::views::repeat(42))>::value, "");
+		static_assert( hamon::same_as<decltype(dv), decltype(hamon::views::repeat(42))>, "");
 		static_assert(!has_size<decltype(dv)>::value, "");
 		VERIFY(*dv.begin() == 42);
 	}
@@ -587,7 +587,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	{
 		int a[] = {1,2,3,4,5};
 		auto dv = a | hamon::views::drop(2);
-		static_assert(hamon::same_as_t<decltype(dv), hamon::ranges::drop_view<hamon::ranges::ref_view<int[5]>>>::value, "");
+		static_assert(hamon::same_as<decltype(dv), hamon::ranges::drop_view<hamon::ranges::ref_view<int[5]>>>, "");
 		VERIFY(dv.size() == 3);
 	}
 	return true;
@@ -631,7 +631,7 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_view dv{r, 2};
-	static_assert(hamon::same_as_t<decltype(dv), DV>::value, "");
+	static_assert(hamon::same_as<decltype(dv), DV>, "");
 #else
 	DV dv{r, 2};
 #endif

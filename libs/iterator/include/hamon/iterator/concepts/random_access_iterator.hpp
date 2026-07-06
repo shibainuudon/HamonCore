@@ -21,7 +21,6 @@
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -77,16 +76,17 @@ private:
 		typename T3 = decltype(hamon::declval<D  >() +  hamon::declval<J2>()),
 		typename T4 = decltype(hamon::declval<I2&>() -= hamon::declval<D >()),
 		typename T5 = decltype(hamon::declval<J2 >() -  hamon::declval<D >()),
-		typename T6 = decltype(hamon::declval<J2 >()[hamon::declval<D>()])
+		typename T6 = decltype(hamon::declval<J2 >()[hamon::declval<D>()]),
+		typename = hamon::enable_if_t<
+			hamon::same_as<T1, I2&> &&
+			hamon::same_as<T2, I2>  &&
+			hamon::same_as<T3, I2>  &&
+			hamon::same_as<T4, I2&> &&
+			hamon::same_as<T5, I2>  &&
+			hamon::same_as<T6, hamon::iter_reference_t<I2>>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<T1, I2&>,
-		hamon::same_as<T2, I2>,
-		hamon::same_as<T3, I2>,
-		hamon::same_as<T4, I2&>,
-		hamon::same_as<T5, I2>,
-		hamon::same_as<T6, hamon::iter_reference_t<I2>>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

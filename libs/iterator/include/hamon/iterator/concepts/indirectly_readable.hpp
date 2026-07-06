@@ -69,8 +69,8 @@ private:
 		typename RR  = hamon::iter_rvalue_reference_t<U>,
 		typename RC  = hamon::iter_reference_t<U const>,
 		typename RRC = hamon::iter_rvalue_reference_t<U const>,
-		typename = hamon::enable_if_t<hamon::same_as<RC, R>::value>,
-		typename = hamon::enable_if_t<hamon::same_as<RRC, RR>::value>,
+		typename = hamon::enable_if_t<hamon::same_as<RC, R>>,
+		typename = hamon::enable_if_t<hamon::same_as<RRC, RR>>,
 		typename = hamon::enable_if_t<hamon::common_reference_with<R&&, V&>::value>,
 		typename = hamon::enable_if_t<hamon::common_reference_with<R&&, RR&&>::value>,
 		typename = hamon::enable_if_t<hamon::common_reference_with<RR&&, V const&>::value>

@@ -163,8 +163,8 @@ private:
 		typename = decltype(hamon::declval<C2&>().reserve(hamon::declval<SizeType>())),
 		typename R1 = decltype(hamon::declval<C2&>().capacity()),
 		typename R2 = decltype(hamon::declval<C2&>().max_size()),
-		typename = hamon::enable_if_t<hamon::same_as_t<R1, SizeType>::value>,
-		typename = hamon::enable_if_t<hamon::same_as_t<R2, SizeType>::value>
+		typename = hamon::enable_if_t<hamon::same_as<R1, SizeType>>,
+		typename = hamon::enable_if_t<hamon::same_as<R2, SizeType>>
 	>
 	static auto test(int) -> hamon::true_type;
 

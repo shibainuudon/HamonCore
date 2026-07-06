@@ -100,7 +100,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	// t + extent_v<T> if E is of array type T.
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(a)), decltype(a + 2)>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(a)), decltype(a + 2)>, "");
 	static_assert(noexcept(hamon::ranges::end(a)), "");
 	VERIFY(hamon::ranges::end(a) == (a + 2));
 
@@ -115,15 +115,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	// and its type S models sentinel_for<decltype(ranges::begin(E))>.
 
 	test_random_access_range<int> r(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(r)), decltype(r.end())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(r)), decltype(r.end())>, "");
 	VERIFY(hamon::ranges::end(r) == hamon::ranges::next(r.begin(), 2));
 
 	test_input_range<int> i(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(i)), decltype(i.end())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(i)), decltype(i.end())>, "");
 	VERIFY(hamon::ranges::end(i) == hamon::ranges::next(i.begin(), 2));
 
 	test_output_range<int> o(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(o)), decltype(o.end())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(o)), decltype(o.end())>, "");
 	VERIFY(hamon::ranges::end(o) == hamon::ranges::next(o.begin(), 2));
 
 	return true;
@@ -137,21 +137,21 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	// Otherwise, decay-copy(end(t)) if it is a valid expression
 	// and its type S models sentinel_for<decltype(ranges::begin(E))>.
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(r)), decltype(end(r))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(r)), decltype(end(r))>, "");
 	static_assert(!noexcept(hamon::ranges::end(r)), "");
 	VERIFY(hamon::ranges::end(r) == end(r));
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(c)), decltype(end(c))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(c)), decltype(end(c))>, "");
 	static_assert(noexcept(hamon::ranges::end(c)), "");
 	VERIFY(hamon::ranges::end(c) == end(c));
 
 	RV v{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(hamon::move(v))), decltype(end(r))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(hamon::move(v))), decltype(end(r))>, "");
 	static_assert(noexcept(hamon::ranges::end(hamon::move(v))), "");
 	VERIFY(hamon::ranges::end(hamon::move(v)) == end(r));
 
 	const RV cv{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::end(hamon::move(cv))), decltype(end(c))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::end(hamon::move(cv))), decltype(end(c))>, "");
 	static_assert(!noexcept(hamon::ranges::end(hamon::move(cv))), "");
 	VERIFY(hamon::ranges::end(hamon::move(cv)) == end(c));
 

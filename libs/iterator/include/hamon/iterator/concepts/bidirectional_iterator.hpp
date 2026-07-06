@@ -17,7 +17,6 @@
 #include <hamon/iterator/concepts/detail/iter_concept.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -63,12 +62,13 @@ private:
 			>::value
 		>,
 		typename T1 = decltype(--hamon::declval<I2&>()),
-		typename T2 = decltype(  hamon::declval<I2&>()--)
+		typename T2 = decltype(  hamon::declval<I2&>()--),
+		typename = hamon::enable_if_t<
+			hamon::same_as<T1, I2&> &&
+			hamon::same_as<T2, I2>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<T1, I2&>,
-		hamon::same_as<T2, I2>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

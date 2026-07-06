@@ -28,10 +28,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(hamon::is_empty<hamon::unreachable_sentinel_t>::value, "");
 	static_assert(hamon::semiregular_t<hamon::unreachable_sentinel_t>::value, "");
 
-	static_assert(hamon::same_as_t<
+	static_assert(hamon::same_as<
 		decltype(hamon::unreachable_sentinel),
 		const hamon::unreachable_sentinel_t
-	>::value, "");
+	>, "");
 
 	auto sentinel = hamon::unreachable_sentinel;
 	int i = 42;

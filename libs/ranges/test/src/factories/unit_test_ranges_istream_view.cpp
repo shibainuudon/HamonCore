@@ -192,9 +192,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( noexcept(hamon::declval<V const>().end()), "");
 
 	using I = decltype(hamon::declval<V>().begin());
-	static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
-	static_assert(hamon::same_as_t<typename I::difference_type, hamon::ptrdiff_t>::value, "");
-	static_assert(hamon::same_as_t<typename I::value_type, Val>::value, "");
+	static_assert(hamon::same_as<typename I::iterator_concept, hamon::input_iterator_tag>, "");
+	static_assert(hamon::same_as<typename I::difference_type, hamon::ptrdiff_t>, "");
+	static_assert(hamon::same_as<typename I::value_type, Val>, "");
 	static_assert(!hamon::default_initializable_t<I>::value, "");
 	static_assert( hamon::constructible_from_t<I, V &>::value, "");
 	static_assert(!hamon::constructible_from_t<I, V &&>::value, "");
@@ -204,15 +204,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::is_move_constructible<I>::value, "");
 	static_assert(!hamon::is_copy_assignable<I>::value, "");
 	static_assert( hamon::is_move_assignable<I>::value, "");
-	static_assert(hamon::same_as_t<decltype(++hamon::declval<I>()), I&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<I>()++), void>::value, "");
-	static_assert(hamon::same_as_t<decltype(*hamon::declval<I>()), Val&>::value, "");
+	static_assert(hamon::same_as<decltype(++hamon::declval<I>()), I&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<I>()++), void>, "");
+	static_assert(hamon::same_as<decltype(*hamon::declval<I>()), Val&>, "");
 
 	static_assert(!noexcept(++hamon::declval<I>()), "");
 	static_assert(!noexcept(hamon::declval<I>()++), "");
 
 	using S = decltype(hamon::declval<V>().end());
-	static_assert(hamon::same_as_t<S, hamon::default_sentinel_t>::value, "");
+	static_assert(hamon::same_as<S, hamon::default_sentinel_t>, "");
 	
 	static_assert(has_eq<I, S>::value, "");
 	static_assert(has_eq<S, I>::value, "");

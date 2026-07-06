@@ -73,10 +73,10 @@ template <typename T>
 struct indirectly_readable_traits_impl<T, false, true, true>
 	: public hamon::detail::cond_value_type<
 		hamon::conditional_t<
-			hamon::same_as_t<
+			hamon::same_as<
 				hamon::remove_cv_t<typename T::element_type>,
 				hamon::remove_cv_t<typename T::value_type>
-			>::value,
+			>,
 			hamon::remove_cv_t<typename T::value_type>,
 			void
 		>

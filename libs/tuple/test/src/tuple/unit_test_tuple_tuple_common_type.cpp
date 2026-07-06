@@ -57,8 +57,8 @@ template <typename T, typename U, typename Expected>
 constexpr bool test_common_type()
 {
 	return
-		hamon::same_as_t<hamon::common_type_t<T, U>, Expected>::value &&
-		hamon::same_as_t<hamon::common_type_t<U, T>, Expected>::value;
+		hamon::same_as<hamon::common_type_t<T, U>, Expected> &&
+		hamon::same_as<hamon::common_type_t<U, T>, Expected>;
 }
 
 // Test common_type<tuple, tuple>

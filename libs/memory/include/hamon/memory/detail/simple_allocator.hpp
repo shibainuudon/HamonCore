@@ -49,7 +49,7 @@ struct simple_allocator_impl
 private:
 	template <typename U,
 		typename P = decltype(hamon::declval<U>().allocate(hamon::declval<hamon::size_t>())),
-		typename = hamon::enable_if_t<hamon::same_as<decltype(*hamon::declval<P>()), typename U::value_type&>::value>,
+		typename = hamon::enable_if_t<hamon::same_as<decltype(*hamon::declval<P>()), typename U::value_type&>>,
 		typename = decltype(hamon::declval<U>().deallocate(hamon::declval<P>(), hamon::declval<hamon::size_t>()))
 	>
 	static auto test(int) -> hamon::conjunction<

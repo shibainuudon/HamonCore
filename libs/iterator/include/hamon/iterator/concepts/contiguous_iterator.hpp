@@ -58,28 +58,16 @@ struct contiguous_iterator_impl
 {
 private:
 	template <typename I2,
+		typename = hamon::enable_if_t<hamon::random_access_iterator<I2>::value>,
 		typename = hamon::enable_if_t<
-			hamon::random_access_iterator<I2>::value
-		>,
-		typename = hamon::enable_if_t<
-			hamon::derived_from<
-				hamon::detail::iter_concept<I2>,
-				hamon::contiguous_iterator_tag
-			>::value
-		>,
+			hamon::derived_from<hamon::detail::iter_concept<I2>, hamon::contiguous_iterator_tag>::value>,
 		typename R = hamon::iter_reference_t<I2>,
-		typename = hamon::enable_if_t<
-			hamon::is_lvalue_reference<R>::value
-		>,
-		typename = hamon::enable_if_t<
-			hamon::same_as<
-				hamon::iter_value_t<I2>,
-				hamon::remove_cvref_t<R>
-			>::value
-		>,
-		typename P1 = decltype(hamon::to_address(hamon::declval<I2 const&>()))
+		typename = hamon::enable_if_t<hamon::is_lvalue_reference<R>::value>,
+		typename = hamon::enable_if_t<hamon::same_as<hamon::iter_value_t<I2>, hamon::remove_cvref_t<R>>>,
+		typename P1 = decltype(hamon::to_address(hamon::declval<I2 const&>())),
+		typename = hamon::enable_if_t<hamon::same_as<P1, hamon::add_pointer_t<R>>>
 	>
-	static auto test(int) -> hamon::same_as<P1, hamon::add_pointer_t<R>>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

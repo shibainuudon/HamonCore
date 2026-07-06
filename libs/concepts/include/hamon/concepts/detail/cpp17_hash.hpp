@@ -52,12 +52,13 @@ private:
 			hamon::detail::cpp17_destructible<U>
 		>::value>,
 		typename R1 = decltype(hamon::declval<U>()(hamon::declval<UKey>())),
-		typename R2 = decltype(hamon::declval<U>()(hamon::declval<UKey&>()))
+		typename R2 = decltype(hamon::declval<U>()(hamon::declval<UKey&>())),
+		typename = hamon::enable_if_t<
+			hamon::same_as<R1, hamon::size_t> &&
+			hamon::same_as<R2, hamon::size_t>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<R1, hamon::size_t>,
-		hamon::same_as<R2, hamon::size_t>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U, typename UKey>
 	static auto test(...) -> hamon::false_type;

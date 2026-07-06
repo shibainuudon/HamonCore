@@ -58,7 +58,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int const a[2] = {};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(a)), hamon::reverse_iterator<int const*>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(a)), hamon::reverse_iterator<int const*>>, "");
 	static_assert(noexcept(hamon::ranges::crbegin(a)), "");
 	VERIFY(hamon::ranges::crbegin(a) == hamon::ranges::rbegin(a));
 
@@ -76,7 +76,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[2] = {};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(a)), hamon::reverse_iterator<int const*>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(a)), hamon::reverse_iterator<int const*>>, "");
 	static_assert(noexcept(hamon::ranges::crbegin(a)), "");
 	VERIFY(hamon::ranges::crbegin(a) == hamon::ranges::rbegin(a));
 
@@ -95,8 +95,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	R1 r;
 	R1 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(r)), const int*>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(cr)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(r)), const int*>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(cr)), const int*>, "");
 
 	// const& にキャストされてrbeginを呼び出す
 	// メンバ関数crbeginは呼び出されない
@@ -127,8 +127,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	R2 r;
 	R2 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(r)), hamon::basic_const_iterator<int*>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::crbegin(cr)), hamon::basic_const_iterator<int*>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(r)), hamon::basic_const_iterator<int*>>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::crbegin(cr)), hamon::basic_const_iterator<int*>>, "");
 
 	// const& にキャストされてrbeginを呼び出す
 	// メンバ関数crbeginは呼び出されない

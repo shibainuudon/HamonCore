@@ -50,7 +50,7 @@ GTEST_TEST(RangesTest, CommonViewOverviewTest)
 	static_assert(hamon::ranges::common_range_t<decltype(hamon::views::iota(0) | hamon::views::common)>::value, "");
 
 	// 元からcommon_rangeなviewに適用しても型は変わらない
-	static_assert(hamon::same_as_t<decltype(hamon::string_view {} | hamon::views::common), hamon::string_view>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::string_view {} | hamon::views::common), hamon::string_view>, "");
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	{

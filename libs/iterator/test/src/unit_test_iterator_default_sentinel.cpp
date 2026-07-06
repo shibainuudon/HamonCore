@@ -16,10 +16,10 @@ GTEST_TEST(IteratorTest, DefaultSentinelTest)
 	static_assert(hamon::is_empty<hamon::default_sentinel_t>::value, "");
 	static_assert(hamon::semiregular_t<hamon::default_sentinel_t>::value, "");
 
-	static_assert(hamon::same_as_t<
+	static_assert(hamon::same_as<
 		decltype(hamon::default_sentinel),
 		const hamon::default_sentinel_t
-	>::value, "");
+	>, "");
 
 	hamon::default_sentinel_t s1;
 	auto s2 = hamon::default_sentinel_t{};

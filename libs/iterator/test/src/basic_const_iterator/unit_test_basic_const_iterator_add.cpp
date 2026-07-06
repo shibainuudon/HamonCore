@@ -60,7 +60,7 @@ private:
 	template <typename I2,
 		typename D = hamon::iter_difference_t<I2>,
 		typename T = decltype(hamon::declval<I2 const&>() + hamon::declval<D>())>
-	static auto test(int) -> hamon::same_as_t<T, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<T, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -76,7 +76,7 @@ private:
 	template <typename I2,
 		typename D = hamon::iter_difference_t<I2>,
 		typename T = decltype(hamon::declval<D>() + hamon::declval<I2 const&>())>
-	static auto test(int) -> hamon::same_as_t<T, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<T, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

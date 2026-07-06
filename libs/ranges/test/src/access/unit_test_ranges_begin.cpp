@@ -57,7 +57,7 @@ struct RR
 struct X { };
 using A = X[]; // unbounded array
 extern A& f();
-static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(f())), X*>::value, "");
+static_assert(hamon::same_as<decltype(hamon::ranges::begin(f())), X*>, "");
 
 }	// namespace begin_test
 
@@ -85,7 +85,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int a[2] ={};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(a)), decltype(a + 0)>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(a)), decltype(a + 0)>, "");
 	static_assert(noexcept(hamon::ranges::begin(a)), "");
 	VERIFY(hamon::ranges::begin(a) == (a + 0));
 
@@ -100,15 +100,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	int a[] ={ 0, 1 };
 
 	test_random_access_range<int> r(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(r)), decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(r)), decltype(r.begin())>, "");
 	VERIFY(hamon::ranges::begin(r) == r.begin());
 
 	test_input_range<int> i(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(i)), decltype(i.begin())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(i)), decltype(i.begin())>, "");
 	VERIFY(hamon::ranges::begin(i) == i.begin());
 
 	test_output_range<int> o(a);
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(o)), decltype(o.begin())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(o)), decltype(o.begin())>, "");
 	*hamon::ranges::begin(o) = 99;
 	VERIFY(a[0] == 99);
 
@@ -120,23 +120,23 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	R r;
 	const R& c = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(r)), decltype(begin(r))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(r)), decltype(begin(r))>, "");
 	static_assert(!noexcept(hamon::ranges::begin(r)), "");
 	VERIFY(hamon::ranges::begin(r) == begin(r));
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(c)), decltype(begin(c))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(c)), decltype(begin(c))>, "");
 	static_assert(noexcept(hamon::ranges::begin(c)), "");
 	VERIFY(hamon::ranges::begin(c) == begin(c));
 
 	RV v{ r };
 	// enable_borrowed_range<RV> allows ranges::begin to work for rvalues,
 	// but it will call v.begin() or begin(v) on an lvalue:
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(hamon::move(v))), decltype(begin(v))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(hamon::move(v))), decltype(begin(v))>, "");
 	static_assert(!noexcept(hamon::ranges::begin(hamon::move(v))), "");
 	VERIFY(hamon::ranges::begin(hamon::move(v)) == begin(v));
 
 	const RV cv{ r };
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::begin(hamon::move(cv))), decltype(begin(cv))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::begin(hamon::move(cv))), decltype(begin(cv))>, "");
 	static_assert(noexcept(hamon::ranges::begin(hamon::move(cv))), "");
 	VERIFY(hamon::ranges::begin(hamon::move(cv)) == begin(cv));
 

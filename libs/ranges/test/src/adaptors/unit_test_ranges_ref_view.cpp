@@ -66,9 +66,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::view_t<RV>::value, "");
 	static_assert(!hamon::ranges::constant_range_t<RV>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().base()), R&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().begin()), hamon::ranges::iterator_t<R>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<RV>().end()), hamon::ranges::sentinel_t<R>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<RV>().base()), R&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<RV>().begin()), hamon::ranges::iterator_t<R>>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<RV>().end()), hamon::ranges::sentinel_t<R>>, "");
 	
 	static_assert(has_empty<RV>::value ==
 		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range_t<R>::value), "");
@@ -115,7 +115,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
-	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
+	static_assert(hamon::same_as<decltype(rv), RV>, "");
 #else
 	RV rv{r};
 #endif
@@ -170,7 +170,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
-	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
+	static_assert(hamon::same_as<decltype(rv), RV>, "");
 #else
 	RV rv{r};
 #endif
@@ -227,7 +227,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::ref_view rv{r};
-	static_assert(hamon::same_as_t<decltype(rv), RV>::value, "");
+	static_assert(hamon::same_as<decltype(rv), RV>, "");
 #else
 	RV rv{r};
 #endif

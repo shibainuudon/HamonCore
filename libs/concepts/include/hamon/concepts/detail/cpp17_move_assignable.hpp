@@ -9,6 +9,7 @@
 
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_function.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
@@ -40,9 +41,10 @@ struct cpp17_move_assignable_impl
 {
 private:
 	template <typename U,
-		typename R = decltype(hamon::declval<U&>() = hamon::declval<U&&>())
+		typename R = decltype(hamon::declval<U&>() = hamon::declval<U&&>()),
+		typename = hamon::enable_if_t<hamon::same_as<R, U&>>
 	>
-	static auto test(int) -> hamon::same_as<R, U&>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

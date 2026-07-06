@@ -66,7 +66,7 @@ private:
 	template <typename I2,
 		typename D = hamon::iter_difference_t<I2>,
 		typename T = decltype(hamon::declval<I2 const&>() - hamon::declval<D>())>
-	static auto test(int) -> hamon::same_as_t<T, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<T, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -82,11 +82,13 @@ private:
 	template <typename I2, typename S2,
 		typename D = hamon::iter_difference_t<I2>,
 		typename T1 = decltype(hamon::declval<I2 const&>() - hamon::declval<S2 const&>()),
-		typename T2 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>())>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as_t<T1, hamon::iter_difference_t<I2>>,
-		hamon::same_as_t<T2, hamon::iter_difference_t<I2>>
-	>;
+		typename T2 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>()),
+		typename = hamon::enable_if_t<
+			hamon::same_as<T1, hamon::iter_difference_t<I2>> &&
+			hamon::same_as<T2, hamon::iter_difference_t<I2>>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2, typename S2>
 	static auto test(...) -> hamon::false_type;

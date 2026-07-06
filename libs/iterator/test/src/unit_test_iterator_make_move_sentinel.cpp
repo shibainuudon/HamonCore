@@ -19,7 +19,7 @@ inline HAMON_CXX14_CONSTEXPR bool make_move_sentinel_test()
 {
 	char s[] = "123";
 	auto sent1 = hamon::make_move_sentinel(s);
-	static_assert(hamon::same_as_t<decltype(sent1), hamon::move_sentinel<char*>>::value, "");
+	static_assert(hamon::same_as<decltype(sent1), hamon::move_sentinel<char*>>, "");
 	hamon::move_sentinel<char*> sent2(s);
 	return sent1.base() == sent2.base();
 }

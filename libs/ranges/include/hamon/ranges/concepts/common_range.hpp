@@ -54,7 +54,7 @@ private:
 			hamon::same_as<
 				ranges::iterator_t<U>,
 				ranges::sentinel_t<U>
-			>::value
+			>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

@@ -72,7 +72,7 @@ struct CanPipe_R
 
 template <typename LHS, typename RHS, typename Ret>
 struct CanPipe_R<LHS, RHS, Ret, hamon::void_t<decltype(hamon::declval<LHS>() | hamon::declval<RHS>())>>
-	: hamon::same_as_t<Ret, decltype(hamon::declval<LHS>() | hamon::declval<RHS>())> {};
+	: hamon::bool_constant<hamon::same_as<Ret, decltype(hamon::declval<LHS>() | hamon::declval<RHS>())>> {};
 
 using TestRange = hamon::array<int, 1>;
 

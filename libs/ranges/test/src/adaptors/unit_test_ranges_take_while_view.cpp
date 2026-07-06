@@ -194,17 +194,17 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(has_base<TWV const&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<TWV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<TWV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<TWV&&>().base()), V>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<TWV&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<TWV const&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<TWV const&&>().base()), V>, "");
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<TWV const>().pred()), F const&>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<TWV const>().pred()), F const&>, "");
 
 	static_assert(has_begin<TWV>::value, "");
 	static_assert(has_end<TWV>::value, "");
@@ -217,16 +217,16 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 
 		if constexpr (has_begin<TWV const>::value)
 		{
-			static_assert(hamon::same_as_t<
+			static_assert(hamon::same_as<
 				decltype(hamon::declval<TWV>().begin()),
-				decltype(hamon::declval<TWV const>().begin())>::value ==
+				decltype(hamon::declval<TWV const>().begin())> ==
 				hamon::ranges::detail::simple_view_t<V>::value, "");
 		}
 		if constexpr (has_end<TWV const>::value)
 		{
-			static_assert(hamon::same_as_t<
+			static_assert(hamon::same_as<
 				decltype(hamon::declval<TWV>().end()),
-				decltype(hamon::declval<TWV const>().end())>::value ==
+				decltype(hamon::declval<TWV const>().end())> ==
 				hamon::ranges::detail::simple_view_t<V>::value, "");
 		}
 	}
@@ -294,16 +294,16 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	{
 		auto& p = twv.pred();
-		static_assert(hamon::same_as_t<decltype(p), LessThanFive const&>::value, "");
+		static_assert(hamon::same_as<decltype(p), LessThanFive const&>, "");
 	}
 	{
 		auto b = twv.base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(b.begin() == b.end());
 	}
 	{
 		auto b = hamon::move(twv).base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(b.begin() == b.end());
 	}
 
@@ -348,7 +348,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_while_view twv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
+	static_assert(hamon::same_as<decltype(twv), TWV>, "");
 #else
 	TWV twv{v, LessThanFive{}};
 #endif
@@ -429,7 +429,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_while_view twv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
+	static_assert(hamon::same_as<decltype(twv), TWV>, "");
 #else
 	TWV twv{v, LessThanFive{}};
 #endif
@@ -510,7 +510,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	using ConstIterator = decltype(ctwv.begin());
 	using Sentinel = decltype(twv.end());
 	using ConstSentinel = decltype(ctwv.end());
-	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
+	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 
@@ -559,8 +559,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(sent.base() == nullptr);
 	}
 	{
-		static_assert(hamon::same_as_t<decltype(twv.end().base()), decltype(v.end())>::value, "");
-		static_assert(hamon::same_as_t<decltype(ctwv.end().base()), decltype(cv.end())>::value, "");
+		static_assert(hamon::same_as<decltype(twv.end().base()), decltype(v.end())>, "");
+		static_assert(hamon::same_as<decltype(ctwv.end().base()), decltype(cv.end())>, "");
 
 		auto sent = ctwv.end();
 		VERIFY(sent.base() == twv.end());
@@ -610,7 +610,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_while_view twv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(twv), TWV>::value, "");
+	static_assert(hamon::same_as<decltype(twv), TWV>, "");
 #else
 	TWV twv{v, LessThanFive{}};
 #endif
@@ -620,7 +620,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	using ConstIterator = decltype(ctwv.begin());
 	using Sentinel = decltype(twv.end());
 	using ConstSentinel = decltype(ctwv.end());
-	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
+	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 

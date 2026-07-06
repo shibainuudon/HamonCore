@@ -113,25 +113,25 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(has_base<DWV const&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<DWV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<DWV&&>().base()), V>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<DWV&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<DWV const&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<DWV const&&>().base()), V>, "");
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV const>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<DWV const>().pred()), Pred const&>, "");
 
 	static_assert( has_begin<DWV>::value, "");
 	static_assert(!has_begin<DWV const>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV>().begin()), I>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<DWV>().begin()), I>, "");
 
 	static_assert( has_end<DWV>::value, "");
 	static_assert(!has_end<DWV const>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<DWV>().end()), S>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<DWV>().end()), S>, "");
 
 	return true;
 }
@@ -184,16 +184,16 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	{
 		auto& p = dwv.pred();
-		static_assert(hamon::same_as_t<decltype(p), LessThanFive const&>::value, "");
+		static_assert(hamon::same_as<decltype(p), LessThanFive const&>, "");
 	}
 	{
 		auto b = dwv.base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(b.begin() == b.end());
 	}
 	{
 		auto b = hamon::move(dwv).base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(b.begin() == b.end());
 	}
 
@@ -238,7 +238,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_while_view dwv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(dwv), DWV>::value, "");
+	static_assert(hamon::same_as<decltype(dwv), DWV>, "");
 #else
 	DWV dwv{v, LessThanFive{}};
 #endif
@@ -261,12 +261,12 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		auto b = dwv.base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(dwv.begin() != b.begin());
 	}
 	{
 		auto b = hamon::move(dwv).base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(dwv.begin() != b.begin());
 	}
 
@@ -311,7 +311,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::drop_while_view dwv{v, LessThanFive{}};
-	static_assert(hamon::same_as_t<decltype(dwv), DWV>::value, "");
+	static_assert(hamon::same_as<decltype(dwv), DWV>, "");
 #else
 	DWV dwv{v, LessThanFive{}};
 #endif
@@ -331,12 +331,12 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	}
 	{
 		auto b = dwv.base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(dwv.begin() == b.begin());
 	}
 	{
 		auto b = hamon::move(dwv).base();
-		static_assert(hamon::same_as_t<decltype(b), V>::value, "");
+		static_assert(hamon::same_as<decltype(b), V>, "");
 		VERIFY(dwv.begin() == b.begin());
 	}
 

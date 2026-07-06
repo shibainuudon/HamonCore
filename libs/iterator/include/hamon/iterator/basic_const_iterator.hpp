@@ -260,10 +260,10 @@ private:
 
 public:
 	template <typename I = Iterator,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::is_lvalue_reference<hamon::iter_reference_t<I>>,
-			hamon::same_as_t<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, value_type>
-		>::value>
+		typename = hamon::enable_if_t<
+			hamon::is_lvalue_reference<hamon::iter_reference_t<I>>::value &&
+			hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, value_type>
+		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator->() const

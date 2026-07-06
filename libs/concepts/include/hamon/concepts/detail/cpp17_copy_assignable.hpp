@@ -38,9 +38,10 @@ struct cpp17_copy_assignable_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<hamon::detail::cpp17_move_assignable<U>::value>,
-		typename R = decltype(hamon::declval<U&>() = hamon::declval<U const&>())
+		typename R = decltype(hamon::declval<U&>() = hamon::declval<U const&>()),
+		typename = hamon::enable_if_t<hamon::same_as<R, U&>>
 	>
-	static auto test(int) -> hamon::same_as<R, U&>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

@@ -10,9 +10,9 @@
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -37,14 +37,14 @@ template <typename Gen>
 struct uniform_random_bit_generator_impl
 {
 private:
-	template <typename G>
-	static auto test(int) -> hamon::conjunction<
-		hamon::invocable<G&>,
-		hamon::bool_constant<hamon::unsigned_integral<hamon::invoke_result_t<G&>>>,
-		hamon::same_as<decltype(G::min()), hamon::invoke_result_t<G&>>,
-		hamon::same_as<decltype(G::max()), hamon::invoke_result_t<G&>>,
-		hamon::bool_constant<(G::min() < G::max())>
-	>;
+	template <typename G,
+		typename = hamon::enable_if_t<hamon::invocable<G&>::value>,
+		typename = hamon::enable_if_t<hamon::unsigned_integral<hamon::invoke_result_t<G&>>>,
+		typename = hamon::enable_if_t<hamon::same_as<decltype(G::min()), hamon::invoke_result_t<G&>>>,
+		typename = hamon::enable_if_t<hamon::same_as<decltype(G::max()), hamon::invoke_result_t<G&>>>,
+		typename = hamon::enable_if_t<hamon::bool_constant<(G::min() < G::max())>::value>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename G>
 	static auto test(...) -> hamon::false_type;

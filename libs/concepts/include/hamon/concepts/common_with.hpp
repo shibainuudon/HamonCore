@@ -15,7 +15,7 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
 
@@ -60,27 +60,29 @@ struct common_with_impl
 {
 private:
 	template <typename T2, typename U2,
+		typename = hamon::enable_if_t<
+			hamon::same_as<
+				hamon::common_type_t<T2, U2>,
+				hamon::common_type_t<U2, T2>
+			>>,
 		typename C = hamon::common_type_t<T2, U2>,
 		typename = decltype(static_cast<C>(hamon::declval<T2>())),
-		typename = decltype(static_cast<C>(hamon::declval<U2>()))
-	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<
-			hamon::common_type_t<T2, U2>,
-			hamon::common_type_t<U2, T2>
-		>,
-		hamon::common_reference_with<
-			hamon::add_lvalue_reference_t<T2 const>,
-			hamon::add_lvalue_reference_t<U2 const>
-		>,
-		hamon::common_reference_with<
-			hamon::add_lvalue_reference_t<C>,
-			hamon::common_reference_t<
+		typename = decltype(static_cast<C>(hamon::declval<U2>())),
+		typename = hamon::enable_if_t<
+			hamon::common_reference_with<
 				hamon::add_lvalue_reference_t<T2 const>,
 				hamon::add_lvalue_reference_t<U2 const>
-			>
+			>::value &&
+			hamon::common_reference_with<
+				hamon::add_lvalue_reference_t<C>,
+				hamon::common_reference_t<
+					hamon::add_lvalue_reference_t<T2 const>,
+					hamon::add_lvalue_reference_t<U2 const>
+				>
+			>::value
 		>
-	>;
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

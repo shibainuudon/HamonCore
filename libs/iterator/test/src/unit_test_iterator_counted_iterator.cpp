@@ -230,26 +230,26 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	using CI = hamon::counted_iterator<I>;
 
 	// using iterator_type = I;
-	static_assert(hamon::same_as_t<typename CI::iterator_type, I>::value, "");
+	static_assert(hamon::same_as<typename CI::iterator_type, I>, "");
 	
 	// using value_type = iter_value_t<I>;
 	static_assert(has_value_type<CI>::value == hamon::indirectly_readable_t<I>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_value_type<CI>::value)
 	{
-		static_assert(hamon::same_as_t<typename CI::value_type, hamon::iter_value_t<I>>::value, "");
+		static_assert(hamon::same_as<typename CI::value_type, hamon::iter_value_t<I>>, "");
 	}
 #endif
 
 	// using difference_type = iter_difference_t<I>;
-	static_assert(hamon::same_as_t<typename CI::difference_type, hamon::iter_difference_t<I>>::value, "");
+	static_assert(hamon::same_as<typename CI::difference_type, hamon::iter_difference_t<I>>, "");
 	
 	// using iterator_concept = typename I::iterator_concept;
 	static_assert(has_iterator_concept<CI>::value == has_iterator_concept<I>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iterator_concept<CI>::value)
 	{
-		static_assert(hamon::same_as_t<typename CI::iterator_concept, typename I::iterator_concept>::value, "");
+		static_assert(hamon::same_as<typename CI::iterator_concept, typename I::iterator_concept>, "");
 	}
 #endif
 
@@ -258,7 +258,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iterator_category<CI>::value)
 	{
-		static_assert(hamon::same_as_t<typename CI::iterator_category, typename I::iterator_category>::value, "");
+		static_assert(hamon::same_as<typename CI::iterator_category, typename I::iterator_category>, "");
 	}
 #endif
 
@@ -271,24 +271,24 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 
 	// const I& base() const & noexcept;
 	// I base() &&;
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI &      >().base()), I const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI &&     >().base()), I       >::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const& >().base()), I const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const&&>().base()), I const&>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI &      >().base()), I const&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI &&     >().base()), I       >, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const& >().base()), I const&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const&&>().base()), I const&>, "");
 
 	// iter_difference_t<I> count() const noexcept;
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI      >().count()), hamon::iter_difference_t<I>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>().count()), hamon::iter_difference_t<I>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI      >().count()), hamon::iter_difference_t<I>>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>().count()), hamon::iter_difference_t<I>>, "");
 
 	// decltype(auto) operator*();
 	static_assert(has_dereference<CI>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI>().operator*()), decltype(*hamon::declval<I>())>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI>().operator*()), decltype(*hamon::declval<I>())>, "");
 	// decltype(auto) operator*() const;
 	static_assert(has_dereference<CI const>::value == hamon::detail::dereferenceable_t<I const>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_dereference<CI const>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>().operator*()), decltype(*hamon::declval<I const>())>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI const>().operator*()), decltype(*hamon::declval<I const>())>, "");
 	}
 #endif
 
@@ -297,14 +297,14 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_arrow<CI const>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>().operator->()), decltype(hamon::to_address(hamon::declval<I>()))>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI const>().operator->()), decltype(hamon::to_address(hamon::declval<I>()))>, "");
 	}
 #endif
 
 	// counted_iterator& operator++();
 	static_assert( has_pre_increment<CI>::value, "");
 	static_assert(!has_pre_increment<CI const>::value, "");
-	static_assert(hamon::same_as_t<decltype(++hamon::declval<CI>()), CI&>::value, "");
+	static_assert(hamon::same_as<decltype(++hamon::declval<CI>()), CI&>, "");
 
 	// counted_iterator operator++(int);
 	// decltype(auto) operator++(int);
@@ -313,11 +313,11 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::forward_iterator_t<I>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI>()++), CI>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI>()++), CI>, "");
 	}
 	else
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI>()++), decltype(hamon::declval<I>()++)>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI>()++), decltype(hamon::declval<I>()++)>, "");
 	}
 #endif
 
@@ -327,7 +327,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_pre_decrement<CI>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(--hamon::declval<CI>()), CI&>::value, "");
+		static_assert(hamon::same_as<decltype(--hamon::declval<CI>()), CI&>, "");
 	}
 #endif
 
@@ -337,7 +337,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_post_decrement<CI>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI>()--), CI>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI>()--), CI>, "");
 	}
 #endif
 
@@ -351,9 +351,9 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::random_access_iterator_t<I>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() + hamon::declval<hamon::iter_difference_t<I>>()), CI>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<hamon::iter_difference_t<I>>() + hamon::declval<CI const>()), CI>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI>() += hamon::declval<hamon::iter_difference_t<I>>()), CI&>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI const>() + hamon::declval<hamon::iter_difference_t<I>>()), CI>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<hamon::iter_difference_t<I>>() + hamon::declval<CI const>()), CI>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI>() += hamon::declval<hamon::iter_difference_t<I>>()), CI&>, "");
 	}
 #endif
 
@@ -362,20 +362,20 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::random_access_iterator_t<I>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() - hamon::declval<hamon::iter_difference_t<I>>()), CI>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI const>() - hamon::declval<hamon::iter_difference_t<I>>()), CI>, "");
 	}
 #endif
 
 	// iter_difference_t<I2> operator-(const counted_iterator& x, const counted_iterator<I2>& y);
 	static_assert(has_minus<CI const, CI const>::value == true, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() - hamon::declval<CI const>()), hamon::iter_difference_t<I>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() - hamon::declval<CI const>()), hamon::iter_difference_t<I>>, "");
 
 	// iter_difference_t<I> operator-(const counted_iterator& x, default_sentinel_t);
 	// iter_difference_t<I> operator-(default_sentinel_t, const counted_iterator& y);
 	static_assert(has_minus<CI const, hamon::default_sentinel_t>::value == true, "");
 	static_assert(has_minus<hamon::default_sentinel_t, CI const>::value == true, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() - hamon::declval<hamon::default_sentinel_t>()), hamon::iter_difference_t<I>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<hamon::default_sentinel_t>() - hamon::declval<CI const>()), hamon::iter_difference_t<I>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() - hamon::declval<hamon::default_sentinel_t>()), hamon::iter_difference_t<I>>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<hamon::default_sentinel_t>() - hamon::declval<CI const>()), hamon::iter_difference_t<I>>, "");
 
 	// counted_iterator& operator-=(iter_difference_t<I> n);
 	static_assert(has_minus_equal<CI const, hamon::iter_difference_t<I>>::value == false, "");
@@ -383,7 +383,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::random_access_iterator_t<I>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<CI>() -= hamon::declval<hamon::iter_difference_t<I>>()), CI&>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<CI>() -= hamon::declval<hamon::iter_difference_t<I>>()), CI&>, "");
 	}
 #endif
 
@@ -393,12 +393,12 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::random_access_iterator_t<I>::value)
 	{
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<CI>()[hamon::declval<hamon::iter_difference_t<I>>()]),
-			decltype(hamon::declval<I>()[hamon::declval<hamon::iter_difference_t<I>>()])>::value, "");
-		static_assert(hamon::same_as_t<
+			decltype(hamon::declval<I>()[hamon::declval<hamon::iter_difference_t<I>>()])>, "");
+		static_assert(hamon::same_as<
 			decltype(hamon::declval<CI const>()[hamon::declval<hamon::iter_difference_t<I>>()]),
-			decltype(hamon::declval<I const>()[hamon::declval<hamon::iter_difference_t<I>>()])>::value, "");
+			decltype(hamon::declval<I const>()[hamon::declval<hamon::iter_difference_t<I>>()])>, "");
 	}
 #endif
 
@@ -413,14 +413,14 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	static_assert(has_compare_three_way<CI const, CI const>::value, "");
 #endif
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() == hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() != hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() <  hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() <= hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() >  hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() >= hamon::declval<CI const>()), bool>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() == hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() != hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() <  hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() <= hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() >  hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() >= hamon::declval<CI const>()), bool>, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() <=> hamon::declval<CI const>()), hamon::strong_ordering>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() <=> hamon::declval<CI const>()), hamon::strong_ordering>, "");
 #endif
 
 	// bool operator==(const counted_iterator& x, default_sentinel_t);
@@ -442,17 +442,17 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	static_assert(!has_compare_three_way<hamon::default_sentinel_t, CI const>::value, "");
 #endif
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() == hamon::declval<hamon::default_sentinel_t>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI const>() != hamon::declval<hamon::default_sentinel_t>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<hamon::default_sentinel_t>() == hamon::declval<CI const>()), bool>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<hamon::default_sentinel_t>() != hamon::declval<CI const>()), bool>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() == hamon::declval<hamon::default_sentinel_t>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI const>() != hamon::declval<hamon::default_sentinel_t>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<hamon::default_sentinel_t>() == hamon::declval<CI const>()), bool>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<hamon::default_sentinel_t>() != hamon::declval<CI const>()), bool>, "");
 
 	// iter_rvalue_reference_t<I> iter_move(const counted_iterator& i)
 //	static_assert(has_iter_move<CI const>::value == hamon::input_iterator_t<I>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iter_move<CI const>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::ranges::iter_move(hamon::declval<CI const>())), hamon::iter_rvalue_reference_t<I>>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::ranges::iter_move(hamon::declval<CI const>())), hamon::iter_rvalue_reference_t<I>>, "");
 	}
 #endif
 
@@ -461,7 +461,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iter_swap<CI const, CI const>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(iter_swap(hamon::declval<CI const>(), hamon::declval<CI const>())), void>::value, "");
+		static_assert(hamon::same_as<decltype(iter_swap(hamon::declval<CI const>(), hamon::declval<CI const>())), void>, "");
 	}
 #endif
 
@@ -546,33 +546,33 @@ GTEST_TEST(CountedIteratorTest, IteratorTraitsTest)
 		using CI = hamon::counted_iterator<I>;
 		using ITraits = hamon::iterator_traits<I>;
 		using CITraits = hamon::iterator_traits<CI>;
-		static_assert(hamon::same_as_t<CITraits::difference_type, ITraits::difference_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::value_type, ITraits::value_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::pointer, ITraits::pointer>::value, "");
-		static_assert(hamon::same_as_t<CITraits::reference, ITraits::reference>::value, "");
-		static_assert(hamon::same_as_t<CITraits::iterator_category, ITraits::iterator_category>::value, "");
+		static_assert(hamon::same_as<CITraits::difference_type, ITraits::difference_type>, "");
+		static_assert(hamon::same_as<CITraits::value_type, ITraits::value_type>, "");
+		static_assert(hamon::same_as<CITraits::pointer, ITraits::pointer>, "");
+		static_assert(hamon::same_as<CITraits::reference, ITraits::reference>, "");
+		static_assert(hamon::same_as<CITraits::iterator_category, ITraits::iterator_category>, "");
 	}
 	{
 		using I = random_access_iterator_wrapper<long>;
 		using CI = hamon::counted_iterator<I>;
 		using ITraits = hamon::iterator_traits<I>;
 		using CITraits = hamon::iterator_traits<CI>;
-		static_assert(hamon::same_as_t<CITraits::difference_type, ITraits::difference_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::value_type, ITraits::value_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::pointer, void>::value, "");
-		static_assert(hamon::same_as_t<CITraits::reference, ITraits::reference>::value, "");
-		static_assert(hamon::same_as_t<CITraits::iterator_category, ITraits::iterator_category>::value, "");
+		static_assert(hamon::same_as<CITraits::difference_type, ITraits::difference_type>, "");
+		static_assert(hamon::same_as<CITraits::value_type, ITraits::value_type>, "");
+		static_assert(hamon::same_as<CITraits::pointer, void>, "");
+		static_assert(hamon::same_as<CITraits::reference, ITraits::reference>, "");
+		static_assert(hamon::same_as<CITraits::iterator_category, ITraits::iterator_category>, "");
 	}
 	{
 		using I = contiguous_iterator_wrapper<double>;
 		using CI = hamon::counted_iterator<I>;
 		using ITraits = hamon::iterator_traits<I>;
 		using CITraits = hamon::iterator_traits<CI>;
-		static_assert(hamon::same_as_t<CITraits::difference_type, ITraits::difference_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::value_type, ITraits::value_type>::value, "");
-		static_assert(hamon::same_as_t<CITraits::pointer, double*>::value, "");
-		static_assert(hamon::same_as_t<CITraits::reference, ITraits::reference>::value, "");
-		static_assert(hamon::same_as_t<CITraits::iterator_category, ITraits::iterator_category>::value, "");
+		static_assert(hamon::same_as<CITraits::difference_type, ITraits::difference_type>, "");
+		static_assert(hamon::same_as<CITraits::value_type, ITraits::value_type>, "");
+		static_assert(hamon::same_as<CITraits::pointer, double*>, "");
+		static_assert(hamon::same_as<CITraits::reference, ITraits::reference>, "");
+		static_assert(hamon::same_as<CITraits::iterator_category, ITraits::iterator_category>, "");
 	}
 }
 
@@ -710,7 +710,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	auto ci = hamon::counted_iterator<input_iterator_wrapper<int>>(i, 3);
 #endif
 	using CI = decltype(ci);
-	static_assert(hamon::same_as_t<decltype(hamon::declval<CI>()++), void>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<CI>()++), void>, "");
 	VERIFY(ci.count() == 3);
 	VERIFY(*ci == 1);
 	VERIFY( (ci == CI(i, 3)));

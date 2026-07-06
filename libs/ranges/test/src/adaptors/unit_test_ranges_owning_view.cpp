@@ -111,16 +111,16 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(noexcept(hamon::declval<OV const&>().end()), "");
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV&>().base()),  R&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV&&>().base()), R&&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV const&>().base()),  const R&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV const&&>().base()), const R&&>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV&>().base()),  R&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV&&>().base()), R&&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV const&>().base()),  const R&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV const&&>().base()), const R&&>, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV&>().begin()), hamon::ranges::iterator_t<R>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV const&>().begin()), hamon::ranges::iterator_t<R>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV&>().begin()), hamon::ranges::iterator_t<R>>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV const&>().begin()), hamon::ranges::iterator_t<R>>, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV&>().end()), hamon::ranges::sentinel_t<R>>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<OV const&>().end()), hamon::ranges::sentinel_t<R>>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV&>().end()), hamon::ranges::sentinel_t<R>>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<OV const&>().end()), hamon::ranges::sentinel_t<R>>, "");
 
 	static_assert(noexcept(hamon::declval<OV&>().base()), "");
 	static_assert(noexcept(hamon::declval<OV&&>().base()), "");

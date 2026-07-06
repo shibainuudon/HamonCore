@@ -11,7 +11,7 @@
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
@@ -37,10 +37,11 @@ concept nothrow_input_iterator =
 #else
 
 template <typename I>
-using nothrow_input_iterator = hamon::conjunction<
-	hamon::input_iterator<I>,
-	hamon::is_lvalue_reference<hamon::iter_reference_t<I>>,
-	hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, hamon::iter_value_t<I>>>;
+using nothrow_input_iterator = hamon::bool_constant<
+	hamon::input_iterator<I>::value &&
+	hamon::is_lvalue_reference_v<hamon::iter_reference_t<I>> &&
+	hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, hamon::iter_value_t<I>>
+>;
 
 #endif
 

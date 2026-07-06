@@ -567,10 +567,10 @@ template <typename I>
 struct iterator_traits<
 	detail::enable_iterator_traits_helper<
 		counted_iterator<I>,
-		hamon::enable_if_t<hamon::conjunction<
-			hamon::input_iterator_t<I>,
-			hamon::same_as_t<hamon::detail::iter_traits<I>, iterator_traits<I>>
-		>::value>>> : iterator_traits<I>
+		hamon::enable_if_t<
+			hamon::input_iterator_t<I>::value &&
+			hamon::same_as<hamon::detail::iter_traits<I>, iterator_traits<I>>
+		>>> : iterator_traits<I>
 #endif
 {
 	using pointer = hamon::conditional_t<

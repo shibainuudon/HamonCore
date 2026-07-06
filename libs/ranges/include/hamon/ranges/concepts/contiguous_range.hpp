@@ -59,9 +59,10 @@ private:
 		typename = hamon::enable_if_t<ranges::random_access_range<U>::value>,
 		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<U>>::value>,
 		typename P1 = decltype(ranges::data(hamon::declval<U&>())),
-		typename P2 = hamon::add_pointer_t<ranges::range_reference_t<U>>
+		typename P2 = hamon::add_pointer_t<ranges::range_reference_t<U>>,
+		typename = hamon::enable_if_t<hamon::same_as<P1, P2>>
 	>
-	static auto test(int) -> hamon::same_as<P1, P2>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

@@ -196,7 +196,7 @@ private:
 	template <typename I2,
 		typename R = decltype(--hamon::declval<I2>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2&>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2&>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -212,7 +212,7 @@ private:
 	template <typename I2,
 		typename R = decltype(hamon::declval<I2>()--)
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -229,7 +229,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<I2>() += hamon::declval<D>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2&>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2&>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -246,7 +246,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<I2>() -= hamon::declval<D>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2&>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2&>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -263,7 +263,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<I2>()[hamon::declval<D>()])
 	>
-	static auto test(int) -> hamon::same_as_t<R, typename I2::value_type>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, typename I2::value_type>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -280,7 +280,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<I2>() + hamon::declval<D>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -297,7 +297,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<D>() + hamon::declval<I2>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -314,7 +314,7 @@ private:
 		typename D = typename I2::difference_type,
 		typename R = decltype(hamon::declval<I2>() - hamon::declval<D>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -330,7 +330,7 @@ private:
 	template <typename I2, typename J2, typename D2,
 		typename R = decltype(hamon::declval<I2>() - hamon::declval<J2>())
 	>
-	static auto test(int) -> hamon::same_as_t<R, D2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<R, D2>>;
 
 	template <typename I2, typename J2, typename D2>
 	static auto test(...) -> hamon::false_type;
@@ -502,7 +502,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 	}
 	{
 		using V = hamon::ranges::iota_view<int, int>;
@@ -536,7 +536,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, I>::value, "");
+		static_assert( hamon::same_as<S, I>, "");
 	}
 	{
 		using V = hamon::ranges::iota_view<int, long>;
@@ -570,9 +570,9 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-//		static_assert( hamon::same_as_t<S, typename V::​sentinel>::value, "");
-		static_assert(!hamon::same_as_t<S, I>::value, "");
-		static_assert(!hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+//		static_assert( hamon::same_as<S, typename V::​sentinel>, "");
+		static_assert(!hamon::same_as<S, I>, "");
+		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
 		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
@@ -611,7 +611,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 	}
 	{
 		using V = hamon::ranges::iota_view<weakly_incrementable_wrapper<int>>;
@@ -645,7 +645,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 	}
 	{
 		using V = hamon::ranges::iota_view<input_iterator_wrapper<int>, test_sentinel<input_iterator_wrapper<int>>>;
@@ -679,9 +679,9 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-//		static_assert( hamon::same_as_t<S, typename V::​sentinel>::value, "");
-		static_assert(!hamon::same_as_t<S, I>::value, "");
-		static_assert(!hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+//		static_assert( hamon::same_as<S, typename V::​sentinel>, "");
+		static_assert(!hamon::same_as<S, I>, "");
+		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
 		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
@@ -720,9 +720,9 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-//		static_assert( hamon::same_as_t<S, typename V::​sentinel>::value, "");
-		static_assert(!hamon::same_as_t<S, I>::value, "");
-		static_assert(!hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+//		static_assert( hamon::same_as<S, typename V::​sentinel>, "");
+		static_assert(!hamon::same_as<S, I>, "");
+		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
 		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
@@ -761,9 +761,9 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-//		static_assert( hamon::same_as_t<S, typename V::​sentinel>::value, "");
-		static_assert(!hamon::same_as_t<S, I>::value, "");
-		static_assert(!hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+//		static_assert( hamon::same_as<S, typename V::​sentinel>, "");
+		static_assert(!hamon::same_as<S, I>, "");
+		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
 		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
@@ -802,9 +802,9 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( subtractable2_t<I, I>::value, "");
 
 		using S = decltype(hamon::declval<V>().end());
-//		static_assert( hamon::same_as_t<S, typename V::​sentinel>::value, "");
-		static_assert(!hamon::same_as_t<S, I>::value, "");
-		static_assert(!hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+//		static_assert( hamon::same_as<S, typename V::​sentinel>, "");
+		static_assert(!hamon::same_as<S, I>, "");
+		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
 		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
@@ -856,8 +856,8 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
-	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
+	static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, int>, "");
 	static_assert( hamon::signed_integral<typename I::difference_type>, "");
 	{
 		I it;
@@ -897,8 +897,8 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
-	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, int>::value, "");
+	static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, int>, "");
 	static_assert( hamon::signed_integral<typename I::difference_type>, "");
 
 	VERIFY(!v.empty());
@@ -960,9 +960,9 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
-	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, random_access_iterator_wrapper<int>>::value, "");
-	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<random_access_iterator_wrapper<int>>>::value, "");
+	static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, random_access_iterator_wrapper<int>>, "");
+	static_assert( hamon::same_as<typename I::difference_type, hamon::iter_difference_t<random_access_iterator_wrapper<int>>>, "");
 
 	VERIFY(!v.empty());
 	VERIFY(v.size() == 2);
@@ -999,9 +999,9 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
-	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, bidirectional_iterator_wrapper<int>>::value, "");
-	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<bidirectional_iterator_wrapper<int>>>::value, "");
+	static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, bidirectional_iterator_wrapper<int>>, "");
+	static_assert( hamon::same_as<typename I::difference_type, hamon::iter_difference_t<bidirectional_iterator_wrapper<int>>>, "");
 
 	return true;
 }
@@ -1020,9 +1020,9 @@ inline HAMON_CXX14_CONSTEXPR bool test06()
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
-	static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, forward_iterator_wrapper<int>>::value, "");
-	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<forward_iterator_wrapper<int>>>::value, "");
+	static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, forward_iterator_wrapper<int>>, "");
+	static_assert( hamon::same_as<typename I::difference_type, hamon::iter_difference_t<forward_iterator_wrapper<int>>>, "");
 
 	return true;
 }
@@ -1041,9 +1041,9 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 
 	using I = decltype(v.begin());
 	static_assert(!has_iterator_category<I>::value, "");
-	//static_assert( hamon::same_as_t<typename I::iterator_category, hamon::input_iterator_tag>::value, "");
-	static_assert( hamon::same_as_t<typename I::value_type, input_iterator_wrapper<int>>::value, "");
-	static_assert( hamon::same_as_t<typename I::difference_type, hamon::iter_difference_t<input_iterator_wrapper<int>>>::value, "");
+	//static_assert( hamon::same_as<typename I::iterator_category, hamon::input_iterator_tag>, "");
+	static_assert( hamon::same_as<typename I::value_type, input_iterator_wrapper<int>>, "");
+	static_assert( hamon::same_as<typename I::difference_type, hamon::iter_difference_t<input_iterator_wrapper<int>>>, "");
 
 	auto it = v.begin();
 	VERIFY((it == v.end()) == false);

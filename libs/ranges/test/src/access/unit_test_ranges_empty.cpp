@@ -29,10 +29,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	constexpr R r;
 	static_assert(!hamon::ranges::empty(r), "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(r)), bool>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::empty(r)), bool>, "");
 
 	static_assert(!hamon::ranges::empty(hamon::move(r)), "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::empty(hamon::move(r))), bool>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::empty(hamon::move(r))), bool>, "");
 
 	return true;
 }

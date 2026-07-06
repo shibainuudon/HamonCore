@@ -14,7 +14,6 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -66,14 +65,15 @@ private:
 		typename = hamon::enable_if_t<hamon::same_as<
 			hamon::remove_cvref_t<R>,
 			typename hamon::indirectly_readable_traits<I2>::value_type
-		>::value>,
+		>>,
 		typename T1 = decltype( hamon::declval<I2&>()++),
-		typename T2 = decltype(*hamon::declval<I2&>()++)
+		typename T2 = decltype(*hamon::declval<I2&>()++),
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<T1, I2 const&>::value &&
+			hamon::same_as<T2, R>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::convertible_to<T1, I2 const&>,
-		hamon::same_as<T2, R>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

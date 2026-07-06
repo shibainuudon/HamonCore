@@ -67,7 +67,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int const a[2] = {};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(a)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(a)), const int*>, "");
 	static_assert(noexcept(hamon::ranges::cdata(a)), "");
 	VERIFY(hamon::ranges::cdata(a) == (a + 0));
 
@@ -78,7 +78,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[2] = {};
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(a)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(a)), const int*>, "");
 	static_assert(noexcept(hamon::ranges::cdata(a)), "");
 	VERIFY(hamon::ranges::cdata(a) == (a + 0));
 
@@ -90,8 +90,8 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	R1 r;
 	R1 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(r)), const int*>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(cr)), const int*>, "");
 
 	// const& にキャストされてdataを呼び出す
 	VERIFY(hamon::ranges::cdata(r) != r.data());
@@ -107,8 +107,8 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	R2 r;
 	R2 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(r)), const int*>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(cr)), const int*>, "");
 
 	// const& にキャストされてdataを呼び出す
 	VERIFY(hamon::ranges::cdata(r) != r.data());
@@ -124,8 +124,8 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	R3 r;
 	R3 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(r)), const int*>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(cr)), const int*>, "");
 
 	// dataメンバ関数を持たないのでto_address(ranges::begin(r))を呼び出す
 	VERIFY(hamon::ranges::cdata(r) != r.begin());
@@ -141,8 +141,8 @@ HAMON_CXX14_CONSTEXPR bool test06()
 	R4 r;
 	R4 const& cr = r;
 
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(r)), const int*>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::cdata(cr)), const int*>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(r)), const int*>, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::cdata(cr)), const int*>, "");
 
 	// dataメンバ関数を持たないので
 	// const& にキャストされてto_address(ranges::begin(r))を呼び出す

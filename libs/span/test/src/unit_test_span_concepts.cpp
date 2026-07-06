@@ -24,7 +24,7 @@ namespace concepts_test
 
 using range = hamon::span<int>;
 
-static_assert( hamon::same_as_t<hamon::ranges::iterator_t<range>, range::iterator>::value, "");
+static_assert( hamon::same_as<hamon::ranges::iterator_t<range>, range::iterator>, "");
 static_assert( hamon::ranges::common_range_t<range>::value, "");
 static_assert( hamon::ranges::random_access_range_t<range>::value, "");
 static_assert( hamon::ranges::contiguous_range_t<range>::value, "");
@@ -34,7 +34,7 @@ static_assert( hamon::ranges::sized_range_t<range>::value, "");
 static_assert( hamon::ranges::borrowed_range_t<range>::value, "");
 static_assert( hamon::ranges::viewable_range_t<range>::value, "");
 
-static_assert( hamon::same_as_t<hamon::ranges::iterator_t<range const>, range::iterator>::value, "");
+static_assert( hamon::same_as<hamon::ranges::iterator_t<range const>, range::iterator>, "");
 static_assert( hamon::ranges::common_range_t<range const>::value, "");
 static_assert( hamon::ranges::random_access_range_t<range const>::value, "");
 static_assert( hamon::ranges::contiguous_range_t<range const>::value, "");

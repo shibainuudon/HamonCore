@@ -31,6 +31,7 @@ using std::ranges::find_last;
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -63,7 +64,7 @@ struct find_last_fn
 private:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::same_as, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::same_as, Iter, Sent),
 		typename T,
 		typename Proj
 	>

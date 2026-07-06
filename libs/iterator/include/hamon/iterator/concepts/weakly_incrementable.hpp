@@ -54,7 +54,7 @@ private:
 		typename D = hamon::iter_difference_t<I2>,
 		typename = hamon::enable_if_t<hamon::detail::is_signed_integer_like<D>::value>,
 		typename T = decltype(++hamon::declval<I2&>()),
-		typename = hamon::enable_if_t<hamon::same_as<T, I2&>::value>,
+		typename = hamon::enable_if_t<hamon::same_as<T, I2&>>,
 		typename = decltype(hamon::declval<I2&>()++)
 	>
 	static auto test(int) -> hamon::true_type;

@@ -51,7 +51,7 @@ using A = Incomplete[2]; // bounded array of incomplete type
 extern A& f();
 
 // gcc10 だと以下の部分でコンパイルエラーになる
-static_assert(hamon::same_as_t<decltype(hamon::ranges::size(f())), hamon::size_t>::value, "");
+static_assert(hamon::same_as<decltype(hamon::ranges::size(f())), hamon::size_t>, "");
 #endif
 
 }	// namespace size_test

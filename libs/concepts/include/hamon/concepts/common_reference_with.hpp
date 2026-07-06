@@ -14,7 +14,7 @@
 #if !(defined(HAMON_USE_STD_CONCEPTS) && defined(HAMON_USE_STD_COMMON_REFERENCE))
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #endif
 
 namespace hamon
@@ -44,13 +44,14 @@ struct common_reference_with_impl
 {
 private:
 	template <typename T2, typename U2,
-		typename C = hamon::common_reference_t<T2, U2>
+		typename C = hamon::common_reference_t<T2, U2>,
+		typename = hamon::enable_if_t<
+			hamon::same_as<C, hamon::common_reference_t<U2, T2>> &&
+			hamon::convertible_to<T2, C>::value &&
+			hamon::convertible_to<U2, C>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<C, hamon::common_reference_t<U2, T2>>,
-		hamon::convertible_to<T2, C>,
-		hamon::convertible_to<U2, C>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

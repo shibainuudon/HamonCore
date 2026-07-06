@@ -15,7 +15,6 @@
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
 #include <hamon/concepts/regular.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -47,9 +46,10 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::regular<I2>::value>,
 		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>::value>,
-		typename T = decltype(hamon::declval<I2&>()++)
+		typename T = decltype(hamon::declval<I2&>()++),
+		typename = hamon::enable_if_t<hamon::same_as<T, I2>>
 	>
-	static auto test(int) -> hamon::same_as<T, I2>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

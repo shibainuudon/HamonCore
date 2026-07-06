@@ -158,10 +158,10 @@ template <typename D>
 		hamon::same_as<D, hamon::remove_cv_t<D>>
 #else
 template <typename D,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::is_class<D>,
+	typename = hamon::enable_if_t<
+		hamon::is_class_v<D> &&
 		hamon::same_as<D, hamon::remove_cv_t<D>>
-	>::value>
+	>
 >
 #endif
 class range_adaptor_closure

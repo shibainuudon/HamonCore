@@ -201,7 +201,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_base<ARV const&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<ARV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<ARV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<ARV&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 	static_assert(noexcept(hamon::declval<ARV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
 #endif
@@ -209,9 +209,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<ARV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<ARV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<ARV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
 		static_assert(noexcept(hamon::declval<ARV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
 #endif
@@ -221,17 +221,17 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		using I = decltype(hamon::ranges::begin(hamon::declval<V&>()));
 
-		static_assert(hamon::same_as_t<decltype(hamon::declval<ARV&>().begin()), hamon::move_iterator<I>>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().begin()), hamon::move_iterator<I>>, "");
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (hamon::ranges::common_range_t<V>::value)
 		{
-			static_assert(hamon::same_as_t<decltype(hamon::declval<ARV&>().end()), hamon::move_iterator<I>>::value, "");
+			static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().end()), hamon::move_iterator<I>>, "");
 		}
 		else
 		{
 			using S = decltype(hamon::ranges::end(hamon::declval<V&>()));
-			static_assert(hamon::same_as_t<decltype(hamon::declval<ARV&>().end()), hamon::move_sentinel<S>>::value, "");
+			static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().end()), hamon::move_sentinel<S>>, "");
 		}
 #endif
 
@@ -247,15 +247,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using CI = decltype(hamon::ranges::begin(hamon::declval<V const&>()));
 		using CS = decltype(hamon::ranges::end(hamon::declval<V const&>()));
 
-		static_assert(hamon::same_as_t<decltype(hamon::declval<ARV const&>().begin()), hamon::move_iterator<CI>>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().begin()), hamon::move_iterator<CI>>, "");
 
 		if constexpr (hamon::ranges::common_range_t<V const>::value)
 		{
-			static_assert(hamon::same_as_t<decltype(hamon::declval<ARV const&>().end()), hamon::move_iterator<CI>>::value, "");
+			static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().end()), hamon::move_iterator<CI>>, "");
 		}
 		else
 		{
-			static_assert(hamon::same_as_t<decltype(hamon::declval<ARV const&>().end()), hamon::move_sentinel<CS>>::value, "");
+			static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().end()), hamon::move_sentinel<CS>>, "");
 		}
 
 #if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
@@ -337,7 +337,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV>, "");
 #else
 		ARV arv{r};
 #endif
@@ -352,7 +352,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view const arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV const>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV const>, "");
 #else
 		ARV const arv{r};
 #endif
@@ -407,7 +407,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV>, "");
 #else
 		ARV arv{r};
 #endif
@@ -422,7 +422,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view const arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV const>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV const>, "");
 #else
 		ARV const arv{r};
 #endif
@@ -477,7 +477,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV>, "");
 #else
 		ARV arv{r};
 #endif
@@ -492,7 +492,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view const arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV const>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV const>, "");
 #else
 		ARV const arv{r};
 #endif
@@ -545,13 +545,13 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	R r(a);
 
 	auto rv1 = r | hamon::views::as_rvalue;
-	static_assert(hamon::same_as_t<decltype(rv1), ARV>::value, "");
+	static_assert(hamon::same_as<decltype(rv1), ARV>, "");
 
 	auto rv2 = r | hamon::views::as_rvalue | hamon::views::as_rvalue;
-	static_assert(hamon::same_as_t<decltype(rv2), ARV>::value, "");
+	static_assert(hamon::same_as<decltype(rv2), ARV>, "");
 
 	auto rv3 = r | (hamon::views::as_rvalue | hamon::views::as_rvalue);
-	static_assert(hamon::same_as_t<decltype(rv3), ARV>::value, "");
+	static_assert(hamon::same_as<decltype(rv3), ARV>, "");
 
 	return true;
 }
@@ -595,7 +595,7 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV>, "");
 #else
 		ARV arv{r};
 #endif
@@ -608,7 +608,7 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	{
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::as_rvalue_view const arv{r};
-		static_assert(hamon::same_as_t<decltype(arv), ARV const>::value, "");
+		static_assert(hamon::same_as<decltype(arv), ARV const>, "");
 #else
 		ARV const arv{r};
 #endif

@@ -60,7 +60,7 @@ struct pre_decrementable
 {
 private:
 	template <typename I2, typename T = decltype(--hamon::declval<I2&>())>
-	static auto test(int) -> hamon::same_as_t<T, I2&>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<T, I2&>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -74,7 +74,7 @@ struct post_decrementable
 {
 private:
 	template <typename I2, typename T = decltype(hamon::declval<I2&>()--)>
-	static auto test(int) -> hamon::same_as_t<T, I2>;
+	static auto test(int) -> hamon::bool_constant<hamon::same_as<T, I2>>;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

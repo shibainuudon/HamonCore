@@ -16,6 +16,7 @@
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/disable_sized_sentinel_for.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
@@ -54,12 +55,13 @@ private:
 			!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<S2>, hamon::remove_cv_t<I2>)>,
 		typename D1 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>()),
 		typename D2 = decltype(hamon::declval<I2 const&>() - hamon::declval<S2 const&>()),
-		typename D3 = hamon::iter_difference_t<I2>
+		typename D3 = hamon::iter_difference_t<I2>,
+		typename = hamon::enable_if_t<
+			hamon::same_as<D1, D3> &&
+			hamon::same_as<D2, D3>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<D1, D3>,
-		hamon::same_as<D2, D3>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename S2, typename I2>
 	static auto test(...) -> hamon::false_type;

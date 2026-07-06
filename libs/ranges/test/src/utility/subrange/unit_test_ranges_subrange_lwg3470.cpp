@@ -37,7 +37,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	// Also test CTAD and a subrange-to-subrange conversion.
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	auto d = hamon::ranges::subrange(b);
-	static_assert(hamon::same_as_t<hamon::ranges::subrange<int**>, decltype(d)>::value, "");
+	static_assert(hamon::same_as<hamon::ranges::subrange<int**>, decltype(d)>, "");
 #else
 	hamon::ranges::subrange<int**> d = b;
 #endif

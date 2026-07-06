@@ -45,7 +45,7 @@ struct R3
 HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int a[] = {10, 20};
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::reserve_hint(a)), decltype(hamon::ranges::size(a))>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::reserve_hint(a)), decltype(hamon::ranges::size(a))>, "");
 	VERIFY(hamon::ranges::reserve_hint(a) == 2);
 
 	return true;
@@ -54,7 +54,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 HAMON_CXX14_CONSTEXPR bool test02()
 {
 	R1 r;
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::reserve_hint(r)), hamon::size_t>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::reserve_hint(r)), hamon::size_t>, "");
 	VERIFY(hamon::ranges::reserve_hint(r) == 1);
 
 	return true;
@@ -63,7 +63,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 HAMON_CXX14_CONSTEXPR bool test03()
 {
 	R2 r;
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::reserve_hint(r)), int>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::reserve_hint(r)), int>, "");
 	VERIFY(hamon::ranges::reserve_hint(r) == 2);
 
 	return true;
@@ -72,7 +72,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 HAMON_CXX14_CONSTEXPR bool test04()
 {
 	R3 r;
-	static_assert(hamon::same_as_t<decltype(hamon::ranges::reserve_hint(r)), long>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::ranges::reserve_hint(r)), long>, "");
 	VERIFY(hamon::ranges::reserve_hint(r) == 3);
 
 	return true;

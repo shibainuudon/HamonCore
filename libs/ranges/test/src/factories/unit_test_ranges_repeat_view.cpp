@@ -160,7 +160,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( noexcept(hamon::declval<V>().end()), "");
 	}
 	{
@@ -218,7 +218,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( noexcept(hamon::declval<V>().end()), "");
 	}
 	{
@@ -276,7 +276,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( noexcept(hamon::declval<V>().end()), "");
 	}
 	{
@@ -330,7 +330,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( noexcept(hamon::declval<V>().end()), "");
 	}
 	{
@@ -384,7 +384,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, hamon::unreachable_sentinel_t>::value, "");
+		static_assert( hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( noexcept(hamon::declval<V>().end()), "");
 	}
 	{
@@ -440,7 +440,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, I>::value, "");
+		static_assert( hamon::same_as<S, I>, "");
 	}
 	{
 		using V = hamon::ranges::repeat_view<int, long>;
@@ -491,7 +491,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, I>::value, "");
+		static_assert( hamon::same_as<S, I>, "");
 	}
 	{
 		using V = hamon::ranges::repeat_view<long, int>;
@@ -542,7 +542,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(noexcept(hamon::declval<I>() - hamon::declval<I>()), "");
 
 		using S = decltype(hamon::declval<V>().end());
-		static_assert( hamon::same_as_t<S, I>::value, "");
+		static_assert( hamon::same_as<S, I>, "");
 	}
 	return true;
 }
@@ -575,7 +575,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	}
 	{
 		auto v = hamon::views::repeat(43);
-		static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<int>>::value, "");
+		static_assert(hamon::same_as<decltype(v), hamon::ranges::repeat_view<int>>, "");
 
 		auto it = v.begin();
 		VERIFY(*it == 43);
@@ -620,7 +620,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	}
 	{
 		auto v = hamon::views::repeat(43, 3);
-		static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<int, int>>::value, "");
+		static_assert(hamon::same_as<decltype(v), hamon::ranges::repeat_view<int, int>>, "");
 
 		VERIFY(v.size() == 3);
 
@@ -792,10 +792,10 @@ HAMON_CXX14_CONSTEXPR bool test05()
 {
 	using RPV = hamon::ranges::repeat_view<const char*>;
 
-	static_assert(hamon::same_as_t<decltype(hamon::views::repeat("foo", hamon::unreachable_sentinel)), RPV>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::views::repeat(+"foo", hamon::unreachable_sentinel)), RPV>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::views::repeat("foo")), RPV>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::views::repeat(+"foo")), RPV>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::views::repeat("foo", hamon::unreachable_sentinel)), RPV>, "");
+	static_assert(hamon::same_as<decltype(hamon::views::repeat(+"foo", hamon::unreachable_sentinel)), RPV>, "");
+	static_assert(hamon::same_as<decltype(hamon::views::repeat("foo")), RPV>, "");
+	static_assert(hamon::same_as<decltype(hamon::views::repeat(+"foo")), RPV>, "");
 
 	return true;
 }
@@ -804,7 +804,7 @@ HAMON_CXX14_CONSTEXPR bool test05()
 HAMON_CXX14_CONSTEXPR bool test06()
 {
 	auto v = hamon::views::repeat(hamon::views::repeat(5));
-	static_assert(hamon::same_as_t<decltype(v), hamon::ranges::repeat_view<hamon::ranges::repeat_view<int>>>::value, "");
+	static_assert(hamon::same_as<decltype(v), hamon::ranges::repeat_view<hamon::ranges::repeat_view<int>>>, "");
 
 	return true;
 }

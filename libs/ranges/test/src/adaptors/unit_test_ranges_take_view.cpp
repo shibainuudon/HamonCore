@@ -327,7 +327,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 3};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 3};
 #endif
@@ -341,10 +341,10 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert(hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(ctv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(ctv.end()),   decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as<decltype(tv.begin()), decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(tv.end()),   decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(ctv.begin()), decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(ctv.end()),   decltype(r.begin())>, "");
 
 	{
 		auto it = tv.begin();
@@ -414,7 +414,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 10};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 10};
 #endif
@@ -427,10 +427,10 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert(hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(ctv.begin()), decltype(r.begin())>::value, "");
-	static_assert(hamon::same_as_t<decltype(ctv.end()),   decltype(r.begin())>::value, "");
+	static_assert(hamon::same_as<decltype(tv.begin()), decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(tv.end()),   decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(ctv.begin()), decltype(r.begin())>, "");
+	static_assert(hamon::same_as<decltype(ctv.end()),   decltype(r.begin())>, "");
 
 	{
 		auto it = tv.begin();
@@ -513,7 +513,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 2};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 2};
 #endif
@@ -526,10 +526,10 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end()),   decltype(r.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), decltype(cr.begin())>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end()),   decltype(cr.begin())>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), decltype(r.begin())>, "");
+	static_assert( hamon::same_as<decltype(tv.end()),   decltype(r.begin())>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), decltype(cr.begin())>, "");
+	static_assert( hamon::same_as<decltype(ctv.end()),   decltype(cr.begin())>, "");
 
 	{
 		auto it = tv.begin();
@@ -594,7 +594,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 4};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 4};
 #endif
@@ -611,14 +611,14 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end().base()), decltype(r.end())>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end().base()), decltype(cr.end())>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(tv.end().base()), decltype(r.end())>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.end().base()), decltype(cr.end())>, "");
 
 	{
 		using Iter  = decltype(tv.begin());
@@ -729,7 +729,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 
 	using Sentinel = decltype(tv.end());
 	using ConstSentinel = decltype(ctv.end());
-	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
+	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert(!hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 
@@ -810,7 +810,7 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 4};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 4};
 #endif
@@ -823,10 +823,10 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert( hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert( hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
 
 	{
 		auto it = tv.begin();
@@ -903,7 +903,7 @@ HAMON_CXX14_CONSTEXPR bool test06()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 999};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 999};
 #endif
@@ -916,10 +916,10 @@ HAMON_CXX14_CONSTEXPR bool test06()
 	VERIFY(tv.base().begin() == r.begin());
 	VERIFY(hamon::move(tv).base().begin() == r.begin());
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert( hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert( hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
 
 	{
 		auto it = tv.begin();
@@ -1008,7 +1008,7 @@ HAMON_CXX14_CONSTEXPR bool test07()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 3};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 3};
 #endif
@@ -1022,10 +1022,10 @@ HAMON_CXX14_CONSTEXPR bool test07()
 	static_assert( has_reserve_hint<decltype(tv)>::value, "");
 	static_assert( has_reserve_hint<decltype(ctv)>::value, "");
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert( hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert( hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
 
 	{
 		auto it = tv.begin();
@@ -1096,7 +1096,7 @@ HAMON_CXX14_CONSTEXPR bool test08()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{r, 10};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{r, 10};
 #endif
@@ -1110,10 +1110,10 @@ HAMON_CXX14_CONSTEXPR bool test08()
 	static_assert( has_reserve_hint<decltype(tv)>::value, "");
 	static_assert( has_reserve_hint<decltype(ctv)>::value, "");
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert( hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert( hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
 
 	{
 		auto it = tv.begin();
@@ -1184,20 +1184,20 @@ HAMON_CXX14_CONSTEXPR bool test09()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 	hamon::ranges::take_view tv{hamon::move(r), 3};
-	static_assert(hamon::same_as_t<decltype(tv), TV>::value, "");
+	static_assert(hamon::same_as<decltype(tv), TV>, "");
 #else
 	TV tv{hamon::move(r), 3};
 #endif
 	auto const& ctv = tv;
 
-	static_assert( hamon::same_as_t<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(tv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(tv.end().base()), decltype(r.end())>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>::value, "");
-	static_assert(!hamon::same_as_t<decltype(ctv.end()),   hamon::default_sentinel_t>::value, "");
-	static_assert( hamon::same_as_t<decltype(ctv.end().base()), decltype(cr.end())>::value, "");
+	static_assert( hamon::same_as<decltype(tv.begin()), hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(tv.end()),   hamon::counted_iterator<decltype(r.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(tv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(tv.end().base()), decltype(r.end())>, "");
+	static_assert( hamon::same_as<decltype(ctv.begin()), hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(ctv.end()),   hamon::counted_iterator<decltype(cr.begin())>>, "");
+	static_assert(!hamon::same_as<decltype(ctv.end()),   hamon::default_sentinel_t>, "");
+	static_assert( hamon::same_as<decltype(ctv.end().base()), decltype(cr.end())>, "");
 
 	{
 		using Iter  = decltype(tv.begin());
@@ -1308,7 +1308,7 @@ HAMON_CXX14_CONSTEXPR bool test09()
 
 	using Sentinel = decltype(tv.end());
 	using ConstSentinel = decltype(ctv.end());
-	static_assert(!hamon::same_as_t<Sentinel, ConstSentinel>::value, "");
+	static_assert(!hamon::same_as<Sentinel, ConstSentinel>, "");
 	static_assert(!hamon::constructible_from_t<Sentinel, ConstSentinel>::value, "");
 	static_assert( hamon::constructible_from_t<ConstSentinel, Sentinel>::value, "");
 
@@ -1358,29 +1358,29 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		using R = test_forward_sized_view<int>;
 		R r(a);
 		auto tv = r | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<R>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<R>>, "");
 		VERIFY(tv.base().begin() == r.begin());
 		VERIFY(tv.base().end() == r.end());
 		VERIFY(tv.size() == 3);
 		VERIFY(tv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(r, 3);
-		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as<decltype(tv), decltype(rv2)>, "");
 	}
 	{
 		auto tv = a | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>, "");
 		VERIFY(tv.base().begin() == a);
 		VERIFY(tv.base().end() == a + 9);
 		VERIFY(tv.size() == 3);
 		VERIFY(tv.reserve_hint() == 3);
 
 		auto rv2 = hamon::views::take(a, 3);
-		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as<decltype(tv), decltype(rv2)>, "");
 	}
 	{
 		auto tv = a | hamon::views::take(5) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>>>, "");
 		VERIFY(tv.base().base().begin() == a);
 		VERIFY(tv.base().base().end() == a + 9);
 		VERIFY(tv.size() == 3);
@@ -1388,7 +1388,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		VERIFY(*tv.begin() == 1);
 
 		auto rv2 = hamon::views::take(hamon::views::take(a, 5), 3);
-		static_assert( hamon::same_as_t<decltype(tv), decltype(rv2)>::value, "");
+		static_assert( hamon::same_as<decltype(tv), decltype(rv2)>, "");
 	}
 
 	struct Double
@@ -1401,14 +1401,14 @@ HAMON_CXX14_CONSTEXPR bool test10()
 
 	{
 		auto tv = a | hamon::views::transform(Double{}) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>, "");
 		VERIFY(tv.size() == 4);
 		VERIFY(tv.reserve_hint() == 4);
 		VERIFY(*tv.begin() == 2);
 	}
 	{
 		auto tv = a | hamon::views::take(4) | hamon::views::transform(Double{});
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::transform_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>, Double>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::transform_view<hamon::ranges::take_view<hamon::ranges::ref_view<int[9]>>, Double>>, "");
 		VERIFY(tv.size() == 4);
 		VERIFY(tv.reserve_hint() == 4);
 		VERIFY(*tv.begin() == 2);
@@ -1416,7 +1416,7 @@ HAMON_CXX14_CONSTEXPR bool test10()
 	{
 		auto partial = hamon::views::transform(Double{}) | hamon::views::take(4);
 		auto tv = a | partial;
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<hamon::ranges::transform_view<hamon::ranges::ref_view<int[9]>, Double>>>, "");
 		VERIFY(tv.size() == 4);
 		VERIFY(tv.reserve_hint() == 4);
 		VERIFY(*tv.begin() == 2);
@@ -1425,31 +1425,31 @@ HAMON_CXX14_CONSTEXPR bool test10()
 	{
 		hamon::ranges::empty_view<int> r;
 		auto tv = r | hamon::views::take(5);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::empty_view<int>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::empty_view<int>>, "");
 		VERIFY(tv.size() == 0);
 	}
 	{
 		hamon::span<int> s(a);
 		auto tv = s | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::span<int>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::span<int>>, "");
 		VERIFY(tv.size() == 3);
 	}
 	{
 		hamon::span<int, 9> s(a);
 		auto tv = s | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::span<int, hamon::dynamic_extent>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::span<int, hamon::dynamic_extent>>, "");
 		VERIFY(tv.size() == 3);
 	}
 	{
 		hamon::string_view sv = "abcdefg";
 		auto tv = sv | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::string_view>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::string_view>, "");
 		VERIFY(tv.size() == 4);
 	}
 	{
 		hamon::ranges::subrange<int*> s(a, a + 5);
 		auto tv = s | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::subrange<int*>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::subrange<int*>>, "");
 		VERIFY(tv.size() == 4);
 	}
 	{
@@ -1459,30 +1459,30 @@ HAMON_CXX14_CONSTEXPR bool test10()
 		R r(a);
 		hamon::ranges::subrange<I, S> s(r.begin(), r.end());
 		auto tv = s | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<decltype(s)>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<decltype(s)>>, "");
 		static_assert(has_size<decltype(tv)>::value == false, "");
 	}
 	{
 		auto tv = hamon::views::iota(1, 8) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::iota_view<int, int>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::iota_view<int, int>>, "");
 		VERIFY(tv.size() == 3);
 		VERIFY(*tv.begin() == 1);
 	}
 	{
 		auto tv = hamon::views::iota(1) | hamon::views::take(3);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::take_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::take_view<hamon::ranges::iota_view<int, hamon::unreachable_sentinel_t>>>, "");
 		static_assert(has_size<decltype(tv)>::value == false, "");
 		VERIFY(*tv.begin() == 1);
 	}
 	{
 		auto tv = hamon::views::repeat(42, 8) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::repeat_view<int, int>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::repeat_view<int, int>>, "");
 		VERIFY(tv.size() == 4);
 		VERIFY(*tv.begin() == 42);
 	}
 	{
 		auto tv = hamon::views::repeat(42) | hamon::views::take(4);
-		static_assert( hamon::same_as_t<decltype(tv), hamon::ranges::repeat_view<int, hamon::ranges::range_difference_t<decltype(hamon::views::repeat(42))>>>::value, "");
+		static_assert( hamon::same_as<decltype(tv), hamon::ranges::repeat_view<int, hamon::ranges::range_difference_t<decltype(hamon::views::repeat(42))>>>, "");
 		VERIFY(tv.size() == 4);
 		VERIFY(*tv.begin() == 42);
 	}

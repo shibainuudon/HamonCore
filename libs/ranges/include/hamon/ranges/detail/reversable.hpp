@@ -11,8 +11,8 @@
 #include <hamon/ranges/end.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -40,12 +40,13 @@ struct reversable_impl
 private:
 	template <typename U,
 		typename I = decltype(ranges::begin(hamon::declval<U&>())),
-		typename S = decltype(ranges::end(hamon::declval<U&>()))
+		typename S = decltype(ranges::end(hamon::declval<U&>())),
+		typename = hamon::enable_if_t<
+			hamon::bidirectional_iterator<I>::value &&
+			hamon::same_as<S, I>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::bidirectional_iterator<I>,
-		hamon::same_as<S, I>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

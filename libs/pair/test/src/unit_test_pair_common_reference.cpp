@@ -75,8 +75,8 @@ template <typename T, typename U, typename Expected>
 constexpr bool test_common_reference()
 {
 	return
-		hamon::same_as_t<hamon::common_reference_t<T, U>, Expected>::value &&
-		hamon::same_as_t<hamon::common_reference_t<U, T>, Expected>::value;
+		hamon::same_as<hamon::common_reference_t<T, U>, Expected> &&
+		hamon::same_as<hamon::common_reference_t<U, T>, Expected>;
 }
 
 static_assert(test_common_reference<hamon::pair<int, int>, hamon::pair<int, int>, hamon::pair<int, int>>(), "");

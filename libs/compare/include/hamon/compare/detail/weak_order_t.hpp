@@ -85,7 +85,7 @@ public:
 		HAMON_NOEXCEPT_IF_EXPR(impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<3>{}))
 	->decltype((impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<3>{})))
 	{
-		static_assert(hamon::same_as_t<hamon::decay_t<T>, hamon::decay_t<U>>::value, "");
+		static_assert(hamon::same_as<hamon::decay_t<T>, hamon::decay_t<U>>, "");
 
 		return impl(hamon::forward<T>(e), hamon::forward<U>(f), hamon::detail::overload_priority<3>{});
 	}

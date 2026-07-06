@@ -13,7 +13,6 @@
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
@@ -40,7 +39,7 @@ concept cpp17_random_access_iterator =
 		{ i +  n } -> hamon::same_as<I>;
 		{ n +  i } -> hamon::same_as<I>;
 		{ i -  n } -> hamon::same_as<I>;
-		{ i - i } -> hamon::same_as<decltype(n)>;
+		{ i -  i } -> hamon::same_as<decltype(n)>;
 		{  i[n]  } -> hamon::convertible_to<hamon::iter_reference_t<I>>;
 	};
 
@@ -66,17 +65,18 @@ private:
 		typename T4 = decltype(hamon::declval<D& >() +  hamon::declval<I2&>()),
 		typename T5 = decltype(hamon::declval<I2&>() -  hamon::declval<D& >()),
 		typename T6 = decltype(hamon::declval<I2&>() -  hamon::declval<I2&>()),
-		typename T7 = decltype(hamon::declval<I2&>()[hamon::declval<D&>()])
+		typename T7 = decltype(hamon::declval<I2&>()[hamon::declval<D&>()]),
+		typename = hamon::enable_if_t<
+			hamon::same_as<T1, I2&> &&
+			hamon::same_as<T2, I2&> &&
+			hamon::same_as<T3, I2>  &&
+			hamon::same_as<T4, I2>  &&
+			hamon::same_as<T5, I2>  &&
+			hamon::same_as<T6, D>   &&
+			hamon::convertible_to<T7, hamon::iter_reference_t<I2>>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<T1, I2&>,
-		hamon::same_as<T2, I2&>,
-		hamon::same_as<T3, I2>,
-		hamon::same_as<T4, I2>,
-		hamon::same_as<T5, I2>,
-		hamon::same_as<T6, D>,
-		hamon::convertible_to<T7, hamon::iter_reference_t<I2>>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

@@ -13,7 +13,6 @@
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -37,9 +36,10 @@ using constant_iterator_t = hamon::bool_constant<constant_iterator<It>>;
 #else
 
 template <typename It>
-using constant_iterator = hamon::conjunction<
-	hamon::input_iterator_t<It>,
-	hamon::same_as_t<hamon::iter_const_reference_t<It>, hamon::iter_reference_t<It>>>;
+using constant_iterator = hamon::bool_constant<
+	hamon::input_iterator_t<It>::value &&
+	hamon::same_as<hamon::iter_const_reference_t<It>, hamon::iter_reference_t<It>>
+>;
 
 template <typename It>
 using constant_iterator_t = constant_iterator<It>;

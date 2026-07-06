@@ -38,11 +38,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		auto v2 = hamon::views::all(r);
 		auto v3 = r | hamon::views::all | hamon::views::all;
 		auto v4 = r | (hamon::views::all | hamon::views::all);
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v2)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v3)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v4)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), R>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), hamon::views::all_t<R>>::value, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v2)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v3)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v4)>, "");
+		static_assert(hamon::same_as<decltype(v1), R>, "");
+		static_assert(hamon::same_as<decltype(v1), hamon::views::all_t<R>>, "");
 	}
 	// (2.2) Otherwise, ref_view{E} if that expression is well-formed.
 	{
@@ -51,11 +51,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		auto v2 = hamon::views::all(a);
 		auto v3 = a | hamon::views::all | hamon::views::all;
 		auto v4 = a | (hamon::views::all | hamon::views::all);
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v2)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v3)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v4)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), hamon::ranges::ref_view<int[5]>>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), hamon::views::all_t<int(&)[5]>>::value, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v2)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v3)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v4)>, "");
+		static_assert(hamon::same_as<decltype(v1), hamon::ranges::ref_view<int[5]>>, "");
+		static_assert(hamon::same_as<decltype(v1), hamon::views::all_t<int(&)[5]>>, "");
 	}
 	// (2.3) Otherwise, owning_view{E}.
 	{
@@ -66,11 +66,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		auto v2 = hamon::views::all(hamon::move(r));
 		auto v3 = hamon::move(r) | hamon::views::all | hamon::views::all;
 		auto v4 = hamon::move(r) | (hamon::views::all | hamon::views::all);
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v2)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v3)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), decltype(v4)>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), hamon::ranges::owning_view<R>>::value, "");
-		static_assert(hamon::same_as_t<decltype(v1), hamon::views::all_t<R>>::value, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v2)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v3)>, "");
+		static_assert(hamon::same_as<decltype(v1), decltype(v4)>, "");
+		static_assert(hamon::same_as<decltype(v1), hamon::ranges::owning_view<R>>, "");
+		static_assert(hamon::same_as<decltype(v1), hamon::views::all_t<R>>, "");
 	}
 	return true;
 }
@@ -83,9 +83,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	auto v1 = hamon::views::all(r);
 	auto v2 = hamon::views::all(hamon::move(r));
 	auto v3 = hamon::views::all(hamon::as_const(r));
-	static_assert(hamon::same_as_t<decltype(v1), hamon::ranges::ref_view<R>>::value, "");
-	static_assert(hamon::same_as_t<decltype(v2), hamon::ranges::owning_view<R>>::value, "");
-	static_assert(hamon::same_as_t<decltype(v3), hamon::ranges::ref_view<R const>>::value, "");
+	static_assert(hamon::same_as<decltype(v1), hamon::ranges::ref_view<R>>, "");
+	static_assert(hamon::same_as<decltype(v2), hamon::ranges::owning_view<R>>, "");
+	static_assert(hamon::same_as<decltype(v3), hamon::ranges::ref_view<R const>>, "");
 
 	static_assert( hamon::is_invocable<decltype(hamon::views::all), R &>::value, "");
 	static_assert( hamon::is_invocable<decltype(hamon::views::all), R &&>::value, "");
@@ -124,9 +124,9 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 GTEST_TEST(RangesTest, AllTest)
 {
-	static_assert(hamon::same_as_t<
+	static_assert(hamon::same_as<
 		decltype(hamon::views::all),
-		decltype(hamon::ranges::views::all)>::value, "");
+		decltype(hamon::ranges::views::all)>, "");
 
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());

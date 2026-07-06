@@ -16,7 +16,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 {
 	int a[] = { 1, 2, 3, 4, 5, 6, 7 };
 	auto it1 = hamon::make_counted_iterator(a, 3);
-	static_assert(hamon::same_as_t<decltype(it1), hamon::counted_iterator<int*>>::value, "");
+	static_assert(hamon::same_as<decltype(it1), hamon::counted_iterator<int*>>, "");
 	hamon::counted_iterator<int*> it2(a, 3);
 	return it1 == it2;
 }

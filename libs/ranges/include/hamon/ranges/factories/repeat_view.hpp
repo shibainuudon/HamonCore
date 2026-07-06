@@ -40,6 +40,7 @@ using std::ranges::views::repeat;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/detail/is_signed_integer_like.hpp>
 #include <hamon/iterator/detail/is_integer_like.hpp>
@@ -113,16 +114,14 @@ requires (hamon::is_object<T>::value && hamon::same_as<T, hamon::remove_cv_t<T>>
 	 hamon::same_as<Bound, hamon::unreachable_sentinel_t>))
 #else
 template <typename T, typename Bound = hamon::unreachable_sentinel_t,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::move_constructible<T>,
-		hamon::semiregular<Bound>,
-		hamon::is_object<T>,
-		hamon::same_as<T, hamon::remove_cv_t<T>>,
-		hamon::disjunction<
-			ranges::detail::integer_like_with_usable_difference_type<Bound>,
-			hamon::same_as<Bound, hamon::unreachable_sentinel_t>
-		>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::move_constructible<T>::value &&
+		hamon::semiregular<Bound>::value &&
+		hamon::is_object<T>::value &&
+		hamon::same_as<T, hamon::remove_cv_t<T>> &&
+		(ranges::detail::integer_like_with_usable_difference_type<Bound>::value ||
+		 hamon::same_as<Bound, hamon::unreachable_sentinel_t>)
+	>
 >
 #endif
 class repeat_view : public view_interface<repeat_view<T, Bound>>
@@ -136,7 +135,7 @@ private:
 
 	private:
 		using index_type = hamon::conditional_t<
-			hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value,
+			hamon::same_as<Bound, hamon::unreachable_sentinel_t>,
 				hamon::ptrdiff_t,
 				Bound>;
 		T const* m_value = nullptr;
@@ -152,7 +151,7 @@ private:
 #if defined(HAMON_HAS_CXX14_CONSTEXPR)
 			// [range.repeat.iterator]/2
 			HAMON_ASSERT((
-				hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value ||
+				hamon::same_as<Bound, hamon::unreachable_sentinel_t> ||
 				b >= 0));
 #endif
 		}
@@ -198,7 +197,7 @@ private:
 		{
 			// [range.repeat.iterator]/7
 			HAMON_ASSERT((
-				hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value ||
+				hamon::same_as<Bound, hamon::unreachable_sentinel_t> ||
 				m_current > 0));
 
 			// [range.repeat.iterator]/8
@@ -220,7 +219,7 @@ private:
 		{
 			// [range.repeat.iterator]/10
 			HAMON_ASSERT((
-				hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value ||
+				hamon::same_as<Bound, hamon::unreachable_sentinel_t> ||
 				m_current + n >= 0));
 
 			// [range.repeat.iterator]/11
@@ -233,7 +232,7 @@ private:
 		{
 			// [range.repeat.iterator]/12
 			HAMON_ASSERT((
-				hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value ||
+				hamon::same_as<Bound, hamon::unreachable_sentinel_t> ||
 				m_current - n >= 0));
 
 			// [range.repeat.iterator]/13
@@ -406,7 +405,7 @@ public:
 	}
 #else
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::same_as, hamon::unreachable_sentinel_t, Bound2, Bound)>
+	template <HAMON_CONSTRAINT_D(hamon::same_as, hamon::unreachable_sentinel_t, Bound2, Bound)>
 	HAMON_CXX11_CONSTEXPR hamon::unreachable_sentinel_t
 	end_impl(hamon::detail::overload_priority<1>) const HAMON_NOEXCEPT
 	{
@@ -430,7 +429,7 @@ public:
 
 	template <typename Bound2 = Bound,
 		typename = hamon::enable_if_t<
-			hamon::negation<hamon::same_as_t<Bound2, hamon::unreachable_sentinel_t>>::value>>
+			!hamon::same_as<Bound2, hamon::unreachable_sentinel_t>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	size() const HAMON_NOEXCEPT	// noexcept as an extension
 	->decltype(ranges::detail::to_unsigned_like(hamon::declval<Bound2>()))

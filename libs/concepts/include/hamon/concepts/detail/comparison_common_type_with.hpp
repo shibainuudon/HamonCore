@@ -52,7 +52,7 @@ private:
 			hamon::same_as<
 				hamon::common_reference_t<T2 const&, U2 const&>,
 				hamon::common_reference_t<U2 const&, T2 const&>
-			>::value
+			>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::convertible_to<T2 const&, C const&>::value ||

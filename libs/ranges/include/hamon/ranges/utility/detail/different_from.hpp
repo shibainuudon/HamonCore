@@ -8,7 +8,6 @@
 #define HAMON_RANGES_UTILITY_DETAIL_DIFFERENT_FROM_HPP
 
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
@@ -30,13 +29,12 @@ concept different_from =
 #else
 
 template <typename T, typename U>
-using different_from =
-	hamon::negation<
-		hamon::same_as<
-			hamon::remove_cvref_t<T>,
-			hamon::remove_cvref_t<U>
-		>
-	>;
+using different_from = hamon::bool_constant<
+	!hamon::same_as<
+		hamon::remove_cvref_t<T>,
+		hamon::remove_cvref_t<U>
+	>
+>;
 
 #endif
 

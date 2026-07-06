@@ -10,8 +10,8 @@
 #include <hamon/iterator/detail/can_reference.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/copyable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -50,14 +50,15 @@ private:
 	template <typename I2,
 		typename T1 = decltype( *hamon::declval<I2&>()),
 		typename T2 = decltype(++hamon::declval<I2&>()),
-		typename T3 = decltype( *hamon::declval<I2&>()++)
+		typename T3 = decltype( *hamon::declval<I2&>()++),
+		typename = hamon::enable_if_t<
+			hamon::detail::can_reference<T1>::value &&
+			hamon::same_as<T2, I2&> &&
+			hamon::detail::can_reference<T3>::value &&
+			hamon::copyable<I2>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::detail::can_reference<T1>,
-		hamon::same_as<T2, I2&>,
-		hamon::detail::can_reference<T3>,
-		hamon::copyable<I2>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

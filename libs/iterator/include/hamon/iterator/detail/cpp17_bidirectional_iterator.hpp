@@ -11,7 +11,6 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
@@ -53,13 +52,14 @@ private:
 		typename = hamon::enable_if_t<cpp17_forward_iterator<I2>::value>,
 		typename T1 = decltype(--hamon::declval<I2&>()),
 		typename T2 = decltype(  hamon::declval<I2&>()--),
-		typename T3 = decltype( *hamon::declval<I2&>()--)
+		typename T3 = decltype( *hamon::declval<I2&>()--),
+		typename = hamon::enable_if_t<
+			hamon::same_as<T1, I2&> &&
+			hamon::convertible_to<T2, I2 const&>::value &&
+			hamon::same_as<T3, hamon::iter_reference_t<I2>>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as<T1, I2&>,
-		hamon::convertible_to<T2, I2 const&>,
-		hamon::same_as<T3, hamon::iter_reference_t<I2>>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;

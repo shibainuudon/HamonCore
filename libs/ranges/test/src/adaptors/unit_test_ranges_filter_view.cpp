@@ -113,7 +113,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_base<FV const&>::value == hamon::copy_constructible_t<V>::value, "");
 	static_assert(has_base<FV const&&>::value == hamon::copy_constructible_t<V>::value, "");
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&&>().base()), V>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<FV&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES)
 	static_assert(noexcept(hamon::declval<FV&&>().base()) == hamon::is_nothrow_move_constructible<V>::value, "");
 #endif
@@ -121,9 +121,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::copy_constructible_t<V>::value)
 	{
-		static_assert(hamon::same_as_t<decltype(hamon::declval<FV&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&>().base()), V>::value, "");
-		static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&&>().base()), V>::value, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<FV&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<FV const&>().base()), V>, "");
+		static_assert(hamon::same_as<decltype(hamon::declval<FV const&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES)
 		static_assert(noexcept(hamon::declval<FV&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
 		static_assert(noexcept(hamon::declval<FV const&>().base()) == hamon::is_nothrow_copy_constructible<V>::value, "");
@@ -132,10 +132,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	}
 #endif
 
-	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<FV&&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&>().pred()), Pred const&>::value, "");
-	static_assert(hamon::same_as_t<decltype(hamon::declval<FV const&&>().pred()), Pred const&>::value, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<FV&>().pred()), Pred const&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<FV&&>().pred()), Pred const&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<FV const&>().pred()), Pred const&>, "");
+	static_assert(hamon::same_as<decltype(hamon::declval<FV const&&>().pred()), Pred const&>, "");
 #if !defined(HAMON_USE_STD_RANGES)
 	static_assert(noexcept(hamon::declval<FV&>().pred()), "");
 #endif
@@ -151,10 +151,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using I = decltype(hamon::declval<FV&>().begin());
 	using S = decltype(hamon::declval<FV&>().end());
 	using BI = decltype(hamon::ranges::begin(hamon::declval<V&>()));
-	static_assert(hamon::same_as_t<I, S>::value == hamon::ranges::common_range_t<V>::value, "");
+	static_assert(hamon::same_as<I, S> == hamon::ranges::common_range_t<V>::value, "");
 	static_assert(has_iterator_category<I>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::same_as_t<typename I::value_type, hamon::ranges::range_value_t<V>>::value, "");
-	static_assert(hamon::same_as_t<typename I::difference_type, hamon::ranges::range_difference_t<V>>::value, "");
+	static_assert(hamon::same_as<typename I::value_type, hamon::ranges::range_value_t<V>>, "");
+	static_assert(hamon::same_as<typename I::difference_type, hamon::ranges::range_difference_t<V>>, "");
 	static_assert(hamon::default_initializable_t<I>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<I>::value, "");
 	static_assert(has_arrow<I>::value == (has_arrow<BI>::value && hamon::copyable_t<BI>::value), "");
@@ -248,7 +248,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::filter_view fv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(fv), FV>::value, "");
+		static_assert(hamon::same_as<decltype(fv), FV>, "");
 #else
 		FV fv{r, is_even{}};
 #endif
@@ -280,9 +280,9 @@ HAMON_CXX14_CONSTEXPR bool test02()
 		VERIFY(*it == 2);
 
 		using I = decltype(it);
-		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::bidirectional_iterator_tag>::value, "");
+		static_assert(hamon::same_as<typename I::iterator_concept, hamon::bidirectional_iterator_tag>, "");
 		static_assert(has_iterator_category<I>::value, "");
-		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::bidirectional_iterator_tag>::value, "");
+		static_assert(hamon::same_as<typename I::iterator_category, hamon::bidirectional_iterator_tag>, "");
 
 		using S = decltype(fv.end());
 		I iter{};
@@ -333,7 +333,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 		hamon::ranges::filter_view fv{r, is_even{}};
-		static_assert(hamon::same_as_t<decltype(fv), FV>::value, "");
+		static_assert(hamon::same_as<decltype(fv), FV>, "");
 #else
 		FV fv{r, is_even{}};
 #endif
@@ -356,9 +356,9 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		VERIFY(fv.end() == it);
 
 		using I = decltype(it);
-		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::forward_iterator_tag>::value, "");
+		static_assert(hamon::same_as<typename I::iterator_concept, hamon::forward_iterator_tag>, "");
 		static_assert(has_iterator_category<I>::value, "");
-		static_assert(hamon::same_as_t<typename I::iterator_category, hamon::forward_iterator_tag>::value, "");
+		static_assert(hamon::same_as<typename I::iterator_category, hamon::forward_iterator_tag>, "");
 
 		using S = decltype(fv.end());
 		I iter{};
@@ -432,7 +432,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		VERIFY(fv.end() == it);
 
 		using I = decltype(it);
-		static_assert(hamon::same_as_t<typename I::iterator_concept, hamon::input_iterator_tag>::value, "");
+		static_assert(hamon::same_as<typename I::iterator_concept, hamon::input_iterator_tag>, "");
 		static_assert(!has_iterator_category<I>::value, "");
 
 		using S = decltype(fv.end());

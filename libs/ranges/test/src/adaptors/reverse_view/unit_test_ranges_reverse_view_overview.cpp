@@ -43,10 +43,10 @@ GTEST_TEST(RangesTest, ReverseViewOverviewTest)
 	}
 	{
 		// reverseを2回適用すると元の型に戻る
-		static_assert(hamon::same_as_t<
+		static_assert(hamon::same_as<
 			hamon::string_view,
 			decltype(hamon::string_view{} | hamon::views::reverse | hamon::views::reverse)
-		>::value, "");
+		>, "");
 
 HAMON_WARNING_PUSH()
 #if defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION >= 140000)

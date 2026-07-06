@@ -39,6 +39,7 @@ using std::ranges::views::iota;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/incrementable.hpp>
@@ -88,12 +89,13 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::incrementable_t<I2>::value>,
 		typename R1 = decltype(--hamon::declval<I2&>()),
-		typename R2 = decltype(hamon::declval<I2&>()--)
+		typename R2 = decltype(hamon::declval<I2&>()--),
+		typename = hamon::enable_if_t<
+			hamon::same_as<R1, I2&> &&
+			hamon::same_as<R2, I2>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as_t<R1, I2&>,
-		hamon::same_as_t<R2, I2>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -146,13 +148,14 @@ private:
 		typename = decltype(I2(hamon::declval<I2 const>() + hamon::declval<D>())),
 		typename = decltype(I2(hamon::declval<D>() + hamon::declval<I2 const>())),
 		typename = decltype(I2(hamon::declval<I2 const>() - hamon::declval<D>())),
-		typename R3 = decltype(hamon::declval<I2 const>() - hamon::declval<I2 const>())
+		typename R3 = decltype(hamon::declval<I2 const>() - hamon::declval<I2 const>()),
+		typename = hamon::enable_if_t<
+			hamon::same_as<R1, I2&> &&
+			hamon::same_as<R2, I2&> &&
+			hamon::convertible_to_t<R3, D>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::same_as_t<R1, I2&>,
-		hamon::same_as_t<R2, I2&>,
-		hamon::convertible_to_t<R3, D>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename I2>
 	static auto test(...) -> hamon::false_type;
@@ -722,9 +725,9 @@ public:
 
 private:
 	using last_type =
-		hamon::conditional_t<hamon::same_as_t<W, Bound>::value,
+		hamon::conditional_t<hamon::same_as<W, Bound>,
 			iterator,						// [range.iota.view]/11.1
-		hamon::conditional_t<hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value,
+		hamon::conditional_t<hamon::same_as<Bound, hamon::unreachable_sentinel_t>,
 			hamon::unreachable_sentinel_t,	// [range.iota.view]/11.2
 			sentinel						// [range.iota.view]/11.3
 		>>;
@@ -780,7 +783,7 @@ public:
 			hamon::is_nothrow_copy_constructible<Bound>::value)
 	{
 		// [range.iota.view]/13
-		if constexpr (hamon::same_as_t<Bound, hamon::unreachable_sentinel_t>::value)
+		if constexpr (hamon::same_as<Bound, hamon::unreachable_sentinel_t>)
 		{
 			return hamon::unreachable_sentinel;
 		}
@@ -801,14 +804,14 @@ public:
 	}
 #else
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::same_as, Bound, W2, W)>
+	template <HAMON_CONSTRAINT_D(hamon::same_as, Bound, W2, W)>
 	HAMON_CXX11_CONSTEXPR iterator
 	end_impl(hamon::detail::overload_priority<2>) const
 	{
 		return iterator{m_bound};
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::same_as, hamon::unreachable_sentinel_t, Bound2, Bound)>
+	template <HAMON_CONSTRAINT_D(hamon::same_as, hamon::unreachable_sentinel_t, Bound2, Bound)>
 	HAMON_CXX11_CONSTEXPR hamon::unreachable_sentinel_t
 	end_impl(hamon::detail::overload_priority<1>) const
 	{
@@ -872,11 +875,11 @@ HAMON_WARNING_POP()
 
 public:
 	template <typename W2 = W, typename Bound2 = Bound,
-		typename = hamon::enable_if_t<hamon::disjunction<
-			hamon::conjunction<hamon::same_as_t<W2, Bound2>, detail::advanceable_t<W2>>,
-			hamon::conjunction<hamon::detail::is_integer_like_t<W2>, hamon::detail::is_integer_like_t<Bound2>>,
-			hamon::sized_sentinel_for_t<Bound2, W2>
-		>::value>
+		typename = hamon::enable_if_t<
+			(hamon::same_as<W2, Bound2> && detail::advanceable_t<W2>::value) ||
+			(hamon::detail::is_integer_like_t<W2>::value && hamon::detail::is_integer_like_t<Bound2>::value) ||
+			hamon::sized_sentinel_for_t<Bound2, W2>::value
+		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_IF_EXPR(

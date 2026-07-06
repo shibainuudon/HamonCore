@@ -593,7 +593,7 @@ public:
 
 	template <typename I = iterator,
 		typename = hamon::enable_if_t<
-			!hamon::same_as_t<I, const_iterator>::value>>
+			!hamon::same_as<I, const_iterator>>>
 	HAMON_CXX14_CONSTEXPR iterator
 	erase(iterator position)
 //		requires (!hamon::same_as<iterator, const_iterator>)

@@ -139,7 +139,7 @@ template <
 	HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It),
 	typename Sent,
 	typename = hamon::enable_if_t<
-		hamon::same_as_t<It, Sent>::value
+		hamon::same_as<It, Sent>
 	>
 >
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>

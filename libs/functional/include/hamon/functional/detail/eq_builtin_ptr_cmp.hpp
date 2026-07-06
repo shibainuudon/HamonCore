@@ -70,7 +70,7 @@ struct eq_builtin_ptr_cmp_impl
 private:
 	template <typename T2, typename U2,
 		typename = hamon::enable_if_t<
-			hamon::same_as<decltype(hamon::declval<T2>() == hamon::declval<U2>()), bool>::value &&
+			hamon::same_as<decltype(hamon::declval<T2>() == hamon::declval<U2>()), bool> &&
 			hamon::convertible_to<T2, const volatile void*>::value &&
 			hamon::convertible_to<U2, const volatile void*>::value &&
 			!has_operator_eq<T2, U2>::value &&

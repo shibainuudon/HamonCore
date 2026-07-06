@@ -30,6 +30,7 @@ using std::ranges::find_last_if;
 
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
@@ -62,7 +63,7 @@ struct find_last_if_fn
 private:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::same_as, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::same_as, Iter, Sent),
 		typename Proj,
 		typename Pred
 	>

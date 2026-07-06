@@ -245,12 +245,12 @@ struct as_rvalue_fn : public hamon::ranges::range_adaptor_closure<as_rvalue_fn>
 private:
 	// [range.as.rvalue.overview]/2.1
 	template <typename T,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::input_range_t<T>,
-			hamon::same_as_t<
+		typename = hamon::enable_if_t<
+			hamon::ranges::input_range_t<T>::value &&
+			hamon::same_as<
 				hamon::ranges::range_rvalue_reference_t<T>,
 				hamon::ranges::range_reference_t<T>>
-		>::value>>
+		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

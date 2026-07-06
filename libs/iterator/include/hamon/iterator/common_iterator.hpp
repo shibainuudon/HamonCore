@@ -139,12 +139,12 @@ template <hamon::input_or_output_iterator I, hamon::sentinel_for<I> S>
 	requires (!hamon::same_as<I, S> && hamon::copyable<I>)
 #else
 template <typename I, typename S,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::input_or_output_iterator_t<I>,
-		hamon::sentinel_for_t<S, I>,
-		hamon::negation<hamon::same_as_t<I, S>>,
-		hamon::copyable_t<I>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::input_or_output_iterator_t<I>::value &&
+		hamon::sentinel_for_t<S, I>::value &&
+		!hamon::same_as<I, S> &&
+		hamon::copyable_t<I>::value
+	>>
 #endif
 class common_iterator
 {

@@ -43,8 +43,6 @@ using std::basic_string_view;
 #include <hamon/string/char_traits.hpp>
 #include <hamon/type_traits/type_identity.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_array.hpp>
@@ -163,10 +161,10 @@ public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),		// [string.view.cons]/7.1
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::same_as_t<hamon::iter_value_t<It>, CharT>,			// [string.view.cons]/7.3
-			hamon::negation<hamon::convertible_to_t<End, size_type>>	// [string.view.cons]/7.4
-		>::value>
+		typename = hamon::enable_if_t<
+			hamon::same_as<hamon::iter_value_t<It>, CharT> &&			// [string.view.cons]/7.3
+			!hamon::convertible_to_t<End, size_type>::value				// [string.view.cons]/7.4
+		>
 	>
 	HAMON_CONSTEXPR
 	basic_string_view(It begin, End end)
