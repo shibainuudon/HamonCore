@@ -13,8 +13,8 @@
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #endif
 
 namespace hamon
@@ -44,12 +44,15 @@ template <typename T>
 struct copy_constructible_impl
 {
 private:
-	template <typename U>
-	static auto test(int) -> hamon::conjunction<
-		hamon::move_constructible<U>,
-		hamon::constructible_from<U, U&>,       hamon::convertible_to<U&, U>,
-		hamon::constructible_from<U, U const&>, hamon::convertible_to<U const&, U>,
-		hamon::constructible_from<U, U const>,  hamon::convertible_to<U const, U>>;
+	template <typename U,
+		typename = hamon::enable_if_t<
+			hamon::move_constructible_t<U>::value &&
+			hamon::constructible_from_t<U, U&>::value       && hamon::convertible_to<U&, U> &&
+			hamon::constructible_from_t<U, U const&>::value && hamon::convertible_to<U const&, U> &&
+			hamon::constructible_from_t<U, U const>::value  && hamon::convertible_to<U const, U>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

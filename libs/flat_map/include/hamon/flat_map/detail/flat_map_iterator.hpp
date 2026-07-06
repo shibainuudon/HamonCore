@@ -12,7 +12,6 @@
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
@@ -66,10 +65,10 @@ public:
 	flat_map_iterator() = default;
 
 	template <bool C, typename = hamon::enable_if_t<C == Const || Const>,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to_t<typename KeyContainer::iterator, key_iterator>,
-			hamon::convertible_to_t<typename MappedContainer::iterator, mapped_iterator>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<typename KeyContainer::iterator, key_iterator> &&
+			hamon::convertible_to<typename MappedContainer::iterator, mapped_iterator>
+		>>
 	HAMON_CXX11_CONSTEXPR
 	flat_map_iterator(flat_map_iterator<Owner, KeyContainer, MappedContainer, C> i)
 		: m_key_iter(hamon::move(i.m_key_iter))

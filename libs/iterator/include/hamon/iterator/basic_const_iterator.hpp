@@ -48,6 +48,7 @@ using std::basic_const_iterator;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/totally_ordered_with.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/to_address.hpp>
@@ -182,7 +183,7 @@ public:
 		: m_current(hamon::move(current))			// [const.iterators.ops]/1
 	{}
 	
-	template <HAMON_CONSTRAINED_PARAM(hamon::convertible_to, Iterator, U)>
+	template <HAMON_CONSTRAINT(hamon::convertible_to, Iterator, U)>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator(basic_const_iterator<U> current)
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_constructible<Iterator, U>::value)		// noexcept as an extension
@@ -190,7 +191,7 @@ public:
 	{}
 	
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, T),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<T, Iterator>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<T, Iterator>>>
 //		requires hamon::convertible_to<T, Iterator>
 	HAMON_CXX11_CONSTEXPR
 	basic_const_iterator(T&& current)

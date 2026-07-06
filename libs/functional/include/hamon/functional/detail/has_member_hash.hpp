@@ -37,9 +37,10 @@ struct has_member_hash_impl
 {
 private:
 	template <typename U,
-		typename B = decltype(decay_copy(hamon::declval<U&>().hash()))
+		typename B = decltype(decay_copy(hamon::declval<U&>().hash())),
+		typename = hamon::enable_if_t<hamon::convertible_to<B, hamon::size_t>>
 	>
-	static auto test(int) -> hamon::convertible_to<B, hamon::size_t>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

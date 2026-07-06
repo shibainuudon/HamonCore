@@ -10,6 +10,7 @@
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/serialization/version.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 
@@ -81,9 +82,10 @@ public:
 	{
 	private:
 		template <typename U,
-			typename R = decltype(hamon::declval<U>().get_class_version())
+			typename R = decltype(hamon::declval<U>().get_class_version()),
+			typename = hamon::enable_if_t<hamon::convertible_to<R, version_t>>
 		>
-		static auto test(int) -> hamon::convertible_to_t<R, version_t>;
+		static auto test(int) -> hamon::true_type;
 
 		template <typename U>
 		static auto test(...) -> hamon::false_type;
@@ -99,9 +101,10 @@ public:
 	{
 	private:
 		template <typename U,
-			typename R = decltype(hamon::declval<U>().get_class_id())
+			typename R = decltype(hamon::declval<U>().get_class_id()),
+			typename = hamon::enable_if_t<hamon::convertible_to<R, const char*>>
 		>
-		static auto test(int) -> hamon::convertible_to_t<R, const char*>;
+		static auto test(int) -> hamon::true_type;
 
 		template <typename U>
 		static auto test(...) -> hamon::false_type;

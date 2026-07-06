@@ -19,8 +19,6 @@
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_implicitly_constructible.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_detected.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
@@ -296,10 +294,10 @@ public:
 
     template <typename U,
 		typename Other = Convertible<U, IteratorWrapper>
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::negation<hamon::is_same<U, T>>,
-			hamon::convertible_to_t<decltype(base(hamon::declval<Other const&>())), pointer>
-		>::value>
+		, typename = hamon::enable_if_t<
+			(!hamon::is_same<U, T>::value) &&
+			hamon::convertible_to<decltype(base(hamon::declval<Other const&>())), pointer>
+		>
 	>
     HAMON_CXX14_CONSTEXPR
 	Convertible(Convertible<U, IteratorWrapper> const& u)
@@ -625,10 +623,10 @@ public:
 
     template <typename U,
 		typename Other = MayThrowAssign<Noexcept, U, IteratorWrapper>
-		, typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::negation<hamon::is_same<U, T>>,
-			hamon::convertible_to_t<decltype(base(hamon::declval<Other const&>())), pointer>
-		>::value>
+		, typename = hamon::enable_if_t<
+			(!hamon::is_same<U, T>::value) &&
+			hamon::convertible_to<decltype(base(hamon::declval<Other const&>())), pointer>
+		>
 	>
     HAMON_CXX14_CONSTEXPR
 	MayThrowAssign(MayThrowAssign<Noexcept, U, IteratorWrapper> const& u) noexcept;

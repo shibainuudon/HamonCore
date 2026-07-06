@@ -651,9 +651,9 @@ namespace hamon
 // [optional.relops], relational operators
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/1
+		hamon::convertible_to<	// [optional.relops]/1
 			decltype(hamon::declval<T const&>() == hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(optional<T> const& x, optional<U> const& y)
@@ -666,9 +666,9 @@ operator==(optional<T> const& x, optional<U> const& y)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/4
+		hamon::convertible_to<	// [optional.relops]/4
 			decltype(hamon::declval<T const&>() != hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(optional<T> const& x, optional<U> const& y)
@@ -681,9 +681,9 @@ operator!=(optional<T> const& x, optional<U> const& y)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/7
+		hamon::convertible_to<	// [optional.relops]/7
 			decltype(hamon::declval<T const&>() < hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(optional<T> const& x, optional<U> const& y)
@@ -696,9 +696,9 @@ operator<(optional<T> const& x, optional<U> const& y)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/10
+		hamon::convertible_to<	// [optional.relops]/10
 			decltype(hamon::declval<T const&>() > hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(optional<T> const& x, optional<U> const& y)
@@ -711,9 +711,9 @@ operator>(optional<T> const& x, optional<U> const& y)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/13
+		hamon::convertible_to<	// [optional.relops]/13
 			decltype(hamon::declval<T const&>() <= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(optional<T> const& x, optional<U> const& y)
@@ -726,9 +726,9 @@ operator<=(optional<T> const& x, optional<U> const& y)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.relops]/16
+		hamon::convertible_to<	// [optional.relops]/16
 			decltype(hamon::declval<T const&>() >= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(optional<T> const& x, optional<U> const& y)
@@ -873,9 +873,9 @@ operator>=(hamon::nullopt_t, optional<T> const& x) HAMON_NOEXCEPT
 // [optional.comp.with.t], comparison with T
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/1
+		hamon::convertible_to<	// [optional.comp.with.t]/1
 			decltype(hamon::declval<T const&>() == hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(optional<T> const& x, U const& v)
@@ -886,9 +886,9 @@ operator==(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/3
+		hamon::convertible_to<	// [optional.comp.with.t]/3
 			decltype(hamon::declval<T const&>() == hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(T const& v, optional<U> const& x)
@@ -899,9 +899,9 @@ operator==(T const& v, optional<U> const& x)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/5
+		hamon::convertible_to<	// [optional.comp.with.t]/5
 			decltype(hamon::declval<T const&>() != hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(optional<T> const& x, U const& v)
@@ -912,9 +912,9 @@ operator!=(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/7
+		hamon::convertible_to<	// [optional.comp.with.t]/7
 			decltype(hamon::declval<T const&>() != hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(T const& v, optional<U> const& x)
@@ -925,9 +925,9 @@ operator!=(T const& v, optional<U> const& x)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/9
+		hamon::convertible_to<	// [optional.comp.with.t]/9
 			decltype(hamon::declval<T const&>() < hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(optional<T> const& x, U const& v)
@@ -938,9 +938,9 @@ operator<(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/11
+		hamon::convertible_to<	// [optional.comp.with.t]/11
 			decltype(hamon::declval<T const&>() < hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(T const& v, optional<U> const& x)
@@ -951,9 +951,9 @@ operator<(T const& v, optional<U> const& x)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/13
+		hamon::convertible_to<	// [optional.comp.with.t]/13
 			decltype(hamon::declval<T const&>() > hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(optional<T> const& x, U const& v)
@@ -964,9 +964,9 @@ operator>(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/15
+		hamon::convertible_to<	// [optional.comp.with.t]/15
 			decltype(hamon::declval<T const&>() > hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(T const& v, optional<U> const& x)
@@ -977,9 +977,9 @@ operator>(T const& v, optional<U> const& x)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/17
+		hamon::convertible_to<	// [optional.comp.with.t]/17
 			decltype(hamon::declval<T const&>() <= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(optional<T> const& x, U const& v)
@@ -990,9 +990,9 @@ operator<=(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/19
+		hamon::convertible_to<	// [optional.comp.with.t]/19
 			decltype(hamon::declval<T const&>() <= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(T const& v, optional<U> const& x)
@@ -1003,9 +1003,9 @@ operator<=(T const& v, optional<U> const& x)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/21
+		hamon::convertible_to<	// [optional.comp.with.t]/21
 			decltype(hamon::declval<T const&>() >= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(optional<T> const& x, U const& v)
@@ -1016,9 +1016,9 @@ operator>=(optional<T> const& x, U const& v)
 
 template <typename T, typename U,
 	typename = hamon::enable_if_t<
-		hamon::convertible_to_t<	// [optional.comp.with.t]/23
+		hamon::convertible_to<	// [optional.comp.with.t]/23
 			decltype(hamon::declval<T const&>() >= hamon::declval<U const&>()), bool
-		>::value>>
+		>>>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(T const& v, optional<U> const& x)

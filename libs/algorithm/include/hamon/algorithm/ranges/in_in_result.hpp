@@ -29,7 +29,6 @@ using std::ranges::in_in_result;
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -54,11 +53,9 @@ struct in_in_result
 		hamon::convertible_to<I2 const&, II2>
 #else
 	template <typename II1, typename II2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<I1 const&, II1>,
-			hamon::convertible_to<I2 const&, II2>
-		>::value>
-	>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<I1 const&, II1> &&
+			hamon::convertible_to<I2 const&, II2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator in_in_result<II1, II2>() const&
@@ -73,11 +70,9 @@ struct in_in_result
 		hamon::convertible_to<I2, II2>
 #else
 	template <typename II1, typename II2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<I1, II1>,
-			hamon::convertible_to<I2, II2>
-		>::value>
-	>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<I1, II1> &&
+			hamon::convertible_to<I2, II2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator in_in_result<II1, II2>() &&

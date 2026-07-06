@@ -30,7 +30,6 @@ using std::ranges::out_value_result;
 
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -55,11 +54,9 @@ struct out_value_result
 		hamon::convertible_to<T const&, T2>
 #else
 	template <typename O2, typename T2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<O const&, O2>,
-			hamon::convertible_to<T const&, T2>
-		>::value>
-	>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<O const&, O2> &&
+			hamon::convertible_to<T const&, T2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator out_value_result<O2, T2>() const&
@@ -74,11 +71,9 @@ struct out_value_result
 		hamon::convertible_to<T, T2>
 #else
 	template <typename O2, typename T2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to<O, O2>,
-			hamon::convertible_to<T, T2>
-		>::value>
-	>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<O, O2> &&
+			hamon::convertible_to<T, T2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator out_value_result<O2, T2>() &&

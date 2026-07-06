@@ -71,8 +71,8 @@ private:
 	template <typename T2, typename U2,
 		typename = hamon::enable_if_t<
 			hamon::same_as<decltype(hamon::declval<T2>() == hamon::declval<U2>()), bool> &&
-			hamon::convertible_to<T2, const volatile void*>::value &&
-			hamon::convertible_to<U2, const volatile void*>::value &&
+			hamon::convertible_to<T2, const volatile void*> &&
+			hamon::convertible_to<U2, const volatile void*> &&
 			!has_operator_eq<T2, U2>::value &&
 			!has_member_eq<T2, U2>::value
 		>

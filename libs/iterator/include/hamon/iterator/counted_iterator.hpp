@@ -137,7 +137,7 @@ public:
 
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to_t<I2 const&, I>::value>>
+			hamon::convertible_to<I2 const&, I>>>
 	HAMON_CXX11_CONSTEXPR
 	counted_iterator(counted_iterator<I2> const& x)
 		HAMON_NOEXCEPT_IF(		// noexcept as an extension

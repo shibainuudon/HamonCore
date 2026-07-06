@@ -321,8 +321,8 @@ private:
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
 				hamon::bool_constant<C2>,
-				hamon::convertible_to_t<hamon::ranges::iterator_t<First>, hamon::ranges::iterator_t<First const>>,
-				hamon::convertible_to_t<hamon::ranges::iterator_t<Vs>, hamon::ranges::iterator_t<Vs const>>...
+				hamon::bool_constant<hamon::convertible_to<hamon::ranges::iterator_t<First>, hamon::ranges::iterator_t<First const>>>,
+				hamon::bool_constant<hamon::convertible_to<hamon::ranges::iterator_t<Vs>, hamon::ranges::iterator_t<Vs const>>>...
 			>::value>>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i)

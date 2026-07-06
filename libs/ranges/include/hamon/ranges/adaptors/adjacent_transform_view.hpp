@@ -231,7 +231,7 @@ private:
 
 		template <typename I2 = InnerIterator<Const>,
 			typename = hamon::enable_if_t<
-				Const && hamon::convertible_to_t<InnerIterator<false>, I2>::value>>
+				Const && hamon::convertible_to<InnerIterator<false>, I2>>>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_convertible<InnerIterator<false>, I2>::value)
@@ -456,7 +456,7 @@ private:
 
 		template <typename S2 = InnerSentinel<Const>,
 			typename = hamon::enable_if_t<
-				Const && hamon::convertible_to_t<InnerSentinel<false>, S2>::value>>
+				Const && hamon::convertible_to<InnerSentinel<false>, S2>>>
 		HAMON_CXX11_CONSTEXPR
 		sentinel(sentinel<!Const> i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_convertible<InnerSentinel<false>, S2>::value)

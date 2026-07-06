@@ -98,9 +98,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using InnerRng = hamon::ranges::range_reference_t<V>;
 		using InnerConstRng = hamon::ranges::range_reference_t<const V>;
 
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>::value, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
@@ -123,9 +123,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using InnerRng = hamon::ranges::range_reference_t<V>;
 		using InnerConstRng = hamon::ranges::range_reference_t<const V>;
 
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>::value, "");
-		static_assert(!hamon::convertible_to_t<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>::value, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>, "");
+		static_assert(!hamon::convertible_to<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
@@ -148,9 +148,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using InnerRng = hamon::ranges::range_reference_t<V>;
 		using InnerConstRng = hamon::ranges::range_reference_t<const V>;
 
-		static_assert(!hamon::convertible_to_t<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>::value, "");
+		static_assert(!hamon::convertible_to<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;
@@ -173,9 +173,9 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using InnerRng = hamon::ranges::range_reference_t<V>;
 		using InnerConstRng = hamon::ranges::range_reference_t<const V>;
 
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>::value, "");
-		static_assert( hamon::convertible_to_t<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>::value, "");
-		static_assert(!hamon::convertible_to_t<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>::value, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V const>>, "");
+		static_assert( hamon::convertible_to<hamon::ranges::iterator_t<InnerRng>, hamon::ranges::iterator_t<InnerConstRng>>, "");
+		static_assert(!hamon::convertible_to<hamon::ranges::iterator_t<Pattern>, hamon::ranges::iterator_t<Pattern const>>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		using I = hamon::ranges::iterator_t<RV>;

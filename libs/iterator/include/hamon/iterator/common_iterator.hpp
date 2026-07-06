@@ -199,10 +199,10 @@ private:
 
 public:
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to_t<I2 const&, I>,
-			hamon::convertible_to_t<S2 const&, S>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<I2 const&, I> &&
+			hamon::convertible_to<S2 const&, S>
+		>>
 	HAMON_CXX11_CONSTEXPR
 	common_iterator(common_iterator<I2, S2> const& x)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -212,12 +212,12 @@ public:
 	{}
 
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::convertible_to_t<I2 const&, I>,
-			hamon::convertible_to_t<S2 const&, S>,
-			hamon::assignable_from_t<I&, I2 const&>,
-			hamon::assignable_from_t<S&, S2 const&>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<I2 const&, I> &&
+			hamon::convertible_to<S2 const&, S> &&
+			hamon::assignable_from_t<I&, I2 const&>::value &&
+			hamon::assignable_from_t<S&, S2 const&>::value
+		>>
 	HAMON_CXX14_CONSTEXPR common_iterator&
 	operator=(common_iterator<I2, S2> const& x)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension

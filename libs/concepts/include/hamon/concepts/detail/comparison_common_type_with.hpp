@@ -55,12 +55,12 @@ private:
 			>
 		>,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<T2 const&, C const&>::value ||
-			hamon::convertible_to<T2, C const&>::value
+			hamon::convertible_to<T2 const&, C const&> ||
+			hamon::convertible_to<T2, C const&>
 		>,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<U2 const&, C const&>::value ||
-			hamon::convertible_to<U2, C const&>::value
+			hamon::convertible_to<U2 const&, C const&> ||
+			hamon::convertible_to<U2, C const&>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

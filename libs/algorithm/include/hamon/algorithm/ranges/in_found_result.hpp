@@ -52,9 +52,7 @@ struct in_found_result
 #else
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<I const&, I2>::value
-		>
-	>
+			hamon::convertible_to<I const&, I2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator in_found_result<I2>() const&
@@ -68,9 +66,7 @@ struct in_found_result
 #else
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<I, I2>::value
-		>
-	>
+			hamon::convertible_to<I, I2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator in_found_result<I2>()&&

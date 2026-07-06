@@ -112,7 +112,7 @@ public:
 		typename = hamon::enable_if_t<
 			// [reverse.iter.cons]/3
 			!hamon::is_same<U, Iterator>::value &&
-			hamon::convertible_to_t<U const&, Iterator>::value>>
+			hamon::convertible_to<U const&, Iterator>>>
 	HAMON_CXX11_CONSTEXPR
 	reverse_iterator(reverse_iterator<U> const& u)
 		HAMON_NOEXCEPT_IF(		// noexcept as an extension
@@ -125,7 +125,7 @@ public:
 		typename = hamon::enable_if_t<
 			// [reverse.iter.cons]/5
 			!hamon::is_same<U, Iterator>::value &&
-			hamon::convertible_to_t<U const&, Iterator>::value &&
+			hamon::convertible_to<U const&, Iterator> &&
 			hamon::assignable_from_t<Iterator&, U const&>::value>>
 	HAMON_CXX14_CONSTEXPR reverse_iterator&
 	operator=(reverse_iterator<U> const& u)
@@ -323,7 +323,7 @@ protected:
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/1
 	typename R = decltype(hamon::declval<Iterator1>() == hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator==(
@@ -338,7 +338,7 @@ operator==(
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/3
 	typename R = decltype(hamon::declval<Iterator1>() != hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator!=(
@@ -353,7 +353,7 @@ operator!=(
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/5
 	typename R = decltype(hamon::declval<Iterator1>() > hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator<(
@@ -368,7 +368,7 @@ operator<(
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/7
 	typename R = decltype(hamon::declval<Iterator1>() < hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator>(
@@ -383,7 +383,7 @@ operator>(
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/9
 	typename R = decltype(hamon::declval<Iterator1>() >= hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator<=(
@@ -398,7 +398,7 @@ operator<=(
 template <typename Iterator1, typename Iterator2,
 	// [reverse.iter.cmp]/11
 	typename R = decltype(hamon::declval<Iterator1>() <= hamon::declval<Iterator2>()),
-	typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>
+	typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator>=(

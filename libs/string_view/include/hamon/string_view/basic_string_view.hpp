@@ -163,7 +163,7 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
 		typename = hamon::enable_if_t<
 			hamon::same_as<hamon::iter_value_t<It>, CharT> &&			// [string.view.cons]/7.3
-			!hamon::convertible_to_t<End, size_type>::value				// [string.view.cons]/7.4
+			!hamon::convertible_to<End, size_type>						// [string.view.cons]/7.4
 		>
 	>
 	HAMON_CONSTEXPR

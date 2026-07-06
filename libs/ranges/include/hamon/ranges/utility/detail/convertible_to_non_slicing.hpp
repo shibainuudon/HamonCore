@@ -10,8 +10,7 @@
 #include <hamon/ranges/utility/detail/uses_nonqualification_pointer_conversion.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/decay.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -30,14 +29,12 @@ concept convertible_to_non_slicing =
 #else
 
 template <typename From, typename To>
-using convertible_to_non_slicing = hamon::conjunction<
-	hamon::convertible_to<From, To>,
-	hamon::negation<
-		uses_nonqualification_pointer_conversion<
-			hamon::decay_t<From>,
-			hamon::decay_t<To>
-		>
-	>
+using convertible_to_non_slicing = hamon::bool_constant<
+	hamon::convertible_to<From, To> &&
+	!uses_nonqualification_pointer_conversion<
+		hamon::decay_t<From>,
+		hamon::decay_t<To>
+	>::value
 >;
 
 #endif

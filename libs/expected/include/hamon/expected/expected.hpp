@@ -1252,8 +1252,8 @@ public:
 		typename R1 = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
 		typename R2 = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
 		typename = hamon::enable_if_t<
-			hamon::convertible_to_t<R1, bool>::value &&
-			hamon::convertible_to_t<R2, bool>::value>>
+			hamon::convertible_to<R1, bool> &&
+			hamon::convertible_to<R2, bool>>>
 	friend HAMON_CXX14_CONSTEXPR bool
 	operator==(expected const& x, expected<T2, E2> const& y) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(static_cast<bool>(hamon::declval<T const&>() == hamon::declval<T2 const&>())) &&
@@ -1279,7 +1279,7 @@ public:
 		// [expected.object.eq]/3
 		typename = hamon::enable_if_t<!hamon::detail::is_specialization_of_expected<T2>::value>,
 		typename R = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(expected const& x, T2 const& v) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		static_cast<bool>(hamon::declval<T const&>() == hamon::declval<T2 const&>()))
@@ -1291,7 +1291,7 @@ public:
 	template <typename E2,
 		// [expected.object.eq]/5
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(expected const& x, unexpected<E2> const& e) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		static_cast<bool>(hamon::declval<E const&>() == hamon::declval<E2 const&>()))
@@ -1306,8 +1306,8 @@ public:
 		typename R1 = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
 		typename R2 = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
 		typename = hamon::enable_if_t<
-			hamon::convertible_to_t<R1, bool>::value &&
-			hamon::convertible_to_t<R2, bool>::value>>
+			hamon::convertible_to<R1, bool> &&
+			hamon::convertible_to<R2, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(expected const& x, expected<T2, E2> const& y)
 		HAMON_NOEXCEPT_IF_EXPR(x == y)	// noexcept as an extension
@@ -1318,7 +1318,7 @@ public:
 	template <typename T2,
 		typename = hamon::enable_if_t<!hamon::detail::is_specialization_of_expected<T2>::value>,
 		typename R = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(expected const& x, T2 const& v)
 		HAMON_NOEXCEPT_IF_EXPR(x == v)	// noexcept as an extension
@@ -1329,7 +1329,7 @@ public:
 	template <typename T2,
 		typename = hamon::enable_if_t<!hamon::detail::is_specialization_of_expected<T2>::value>,
 		typename R = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(T2 const& v, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == v)	// noexcept as an extension
@@ -1340,7 +1340,7 @@ public:
 	template <typename T2,
 		typename = hamon::enable_if_t<!hamon::detail::is_specialization_of_expected<T2>::value>,
 		typename R = decltype(hamon::declval<T const&>() == hamon::declval<T2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(T2 const& v, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == v)	// noexcept as an extension
@@ -1350,7 +1350,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(expected const& x, unexpected<E2> const& e)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension
@@ -1360,7 +1360,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(unexpected<E2> const& e, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension
@@ -1370,7 +1370,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(unexpected<E2> const& e, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension
@@ -2260,7 +2260,7 @@ public:
 		// [expected.void.eq]/1
 		typename = hamon::enable_if_t<hamon::is_void<T2>::value>,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX14_CONSTEXPR bool
 	operator==(expected const& x, expected<T2, E2> const& y) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		static_cast<bool>(hamon::declval<E const&>() == hamon::declval<E2 const&>()))
@@ -2277,7 +2277,7 @@ public:
 	template <typename E2,
 		// [expected.void.eq]/3
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(expected const& x, unexpected<E2> const& e) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		static_cast<bool>(hamon::declval<E const&>() == hamon::declval<E2 const&>()))
@@ -2290,7 +2290,7 @@ public:
 	template <typename T2, typename E2,
 		typename = hamon::enable_if_t<hamon::is_void<T2>::value>,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(expected const& x, expected<T2, E2> const& y)
 		HAMON_NOEXCEPT_IF_EXPR(x == y)	// noexcept as an extension
@@ -2300,7 +2300,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(expected const& x, unexpected<E2> const& e)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension
@@ -2310,7 +2310,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator==(unexpected<E2> const& e, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension
@@ -2320,7 +2320,7 @@ public:
 
 	template <typename E2,
 		typename R = decltype(hamon::declval<E const&>() == hamon::declval<E2 const&>()),
-		typename = hamon::enable_if_t<hamon::convertible_to_t<R, bool>::value>>
+		typename = hamon::enable_if_t<hamon::convertible_to<R, bool>>>
 	friend HAMON_CXX11_CONSTEXPR bool
 	operator!=(unexpected<E2> const& e, expected const& x)
 		HAMON_NOEXCEPT_IF_EXPR(x == e)	// noexcept as an extension

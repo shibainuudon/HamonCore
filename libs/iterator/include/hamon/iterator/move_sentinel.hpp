@@ -26,6 +26,7 @@ using std::move_sentinel;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
@@ -53,7 +54,7 @@ concept move_sentinel_assignable_from =
 
 template <typename From, typename To>
 using move_sentinel_constructible_from =
-	hamon::convertible_to<From const&, To>;
+	hamon::bool_constant<hamon::convertible_to<From const&, To>>;
 
 template <typename From, typename To>
 using move_sentinel_assignable_from =

@@ -333,10 +333,10 @@ private:
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
 				Const &&
-				hamon::convertible_to_t<
+				hamon::convertible_to<
 					hamon::ranges::iterator_t<V>,
 					hamon::ranges::iterator_t<B2>
-				>::value>>
+				>>>
 		HAMON_CXX11_CONSTEXPR
 		outer_iterator(outer_iterator<!Const> i)
 			// [range.lazy.split.outer]/4

@@ -77,10 +77,10 @@ public:
 			requires { FUN(hamon::declval<T>()); }
 #else
 	template <typename T,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::detail::different_from_t<T, ref_view>,
+		typename = hamon::enable_if_t<
+			hamon::ranges::detail::different_from_t<T, ref_view>::value &&
 			hamon::convertible_to<T, R&>
-		>::value>,
+		>,
 		typename = decltype(FUN(hamon::declval<T>()))
 	>
 #endif

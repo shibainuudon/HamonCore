@@ -128,7 +128,7 @@ public:
 		typename D = hamon::iter_difference_t<T>,
 		typename = hamon::enable_if_t<
 			hamon::input_or_output_iterator_t<T>::value &&
-			hamon::convertible_to_t<F, D>::value
+			hamon::convertible_to<F, D>
 		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto

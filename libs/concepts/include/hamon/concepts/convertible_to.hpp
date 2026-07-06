@@ -8,12 +8,13 @@
 #define HAMON_CONCEPTS_CONVERTIBLE_TO_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -27,7 +28,7 @@ using std::convertible_to;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename From, typename To>
-concept convertible_to =
+HAMON_CONCEPT_OR_BOOL convertible_to =
 	hamon::is_convertible<From, To>::value &&
 	requires
 	{
@@ -59,17 +60,9 @@ public:
 }	// namespace detail
 
 template <typename From, typename To>
-using convertible_to =
-	typename detail::convertible_to_impl<From, To>::type;
+HAMON_CONCEPT_OR_BOOL convertible_to =
+	detail::convertible_to_impl<From, To>::type::value;
 
-#endif
-
-template <typename From, typename To>
-using convertible_to_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::convertible_to<From, To>>;
-#else
-	hamon::convertible_to<From, To>;
 #endif
 
 }	// namespace hamon

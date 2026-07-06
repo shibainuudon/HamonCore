@@ -12,7 +12,6 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -34,11 +33,10 @@ concept move_constructible =
 #else
 
 template <typename T>
-using move_constructible =
-	hamon::conjunction<
-		hamon::constructible_from<T, T>,
-		hamon::convertible_to<T, T>
-	>;
+using move_constructible = hamon::bool_constant<
+	hamon::constructible_from_t<T, T>::value &&
+	hamon::convertible_to<T, T>
+>;
 
 #endif
 

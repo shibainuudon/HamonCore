@@ -205,8 +205,8 @@ private:
 
 		template <typename V2 = V,
 			typename = hamon::enable_if_t<Const &&
-				hamon::convertible_to_t<hamon::ranges::iterator_t<V2>, BaseIter>::value &&
-				hamon::convertible_to_t<hamon::ranges::sentinel_t<V2>, BaseSent>::value>>
+				hamon::convertible_to<hamon::ranges::iterator_t<V2>, BaseIter> &&
+				hamon::convertible_to<hamon::ranges::sentinel_t<V2>, BaseSent>>>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_constructible<BaseIter, hamon::ranges::iterator_t<V2>>::value &&

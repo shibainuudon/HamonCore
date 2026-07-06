@@ -55,7 +55,7 @@ private:
 		typename T3 = decltype( *hamon::declval<I2&>()--),
 		typename = hamon::enable_if_t<
 			hamon::same_as<T1, I2&> &&
-			hamon::convertible_to<T2, I2 const&>::value &&
+			hamon::convertible_to<T2, I2 const&> &&
 			hamon::same_as<T3, hamon::iter_reference_t<I2>>
 		>
 	>

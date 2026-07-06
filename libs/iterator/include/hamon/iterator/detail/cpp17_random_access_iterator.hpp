@@ -73,7 +73,7 @@ private:
 			hamon::same_as<T4, I2>  &&
 			hamon::same_as<T5, I2>  &&
 			hamon::same_as<T6, D>   &&
-			hamon::convertible_to<T7, hamon::iter_reference_t<I2>>::value
+			hamon::convertible_to<T7, hamon::iter_reference_t<I2>>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

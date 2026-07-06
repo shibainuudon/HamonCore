@@ -8,8 +8,8 @@
 #define HAMON_COMPARE_DETAIL_OP_EQ_LT_HPP
 
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -36,12 +36,13 @@ struct op_eq_lt_impl
 private:
 	template <typename T2, typename U2,
 		typename R1 = decltype(hamon::declval<T2&&>() == hamon::declval<U2&&>()),
-		typename R2 = decltype(hamon::declval<T2&&>() <  hamon::declval<U2&&>())
+		typename R2 = decltype(hamon::declval<T2&&>() <  hamon::declval<U2&&>()),
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<R1, bool> &&
+			hamon::convertible_to<R2, bool>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::convertible_to_t<R1, bool>,
-		hamon::convertible_to_t<R2, bool>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

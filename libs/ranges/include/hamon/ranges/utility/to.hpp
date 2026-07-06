@@ -341,7 +341,7 @@ to_impl2(hamon::detail::overload_priority<0>, R&& r, Args&&... args);
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
 		!hamon::ranges::input_range_t<C>::value ||
-		hamon::convertible_to_t<hamon::ranges::range_reference_t<R>, hamon::ranges::range_value_t<C>>::value>>
+		hamon::convertible_to<hamon::ranges::range_reference_t<R>, hamon::ranges::range_value_t<C>>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
 {

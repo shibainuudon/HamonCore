@@ -52,9 +52,7 @@ struct min_max_result
 #else
 	template <typename T2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<T const&, T2>::value
-		>
-	>
+			hamon::convertible_to<T const&, T2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator min_max_result<T2>() const&
@@ -68,9 +66,7 @@ struct min_max_result
 #else
 	template <typename T2,
 		typename = hamon::enable_if_t<
-			hamon::convertible_to<T, T2>::value
-		>
-	>
+			hamon::convertible_to<T, T2>>>
 #endif
 	HAMON_CXX14_CONSTEXPR
 	operator min_max_result<T2>() &&

@@ -135,7 +135,7 @@ private:
 	template <typename R2, typename T2, typename RQ2, typename TQ2,
 		typename = hamon::enable_if_t<hamon::detail::is_ref_wrapper<R2>::value>,
 		typename CR = hamon::common_reference_t<typename R2::type&, TQ2>,
-		typename = hamon::enable_if_t<hamon::convertible_to<RQ2, CR>::value>
+		typename = hamon::enable_if_t<hamon::convertible_to<RQ2, CR>>
 	>
 	static auto test(int) -> hamon::true_type;
 

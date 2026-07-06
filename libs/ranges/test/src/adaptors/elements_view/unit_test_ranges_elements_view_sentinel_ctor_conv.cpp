@@ -64,7 +64,7 @@ struct ConvertibleSentinel
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(Iterator const& it) : m_it(it) {}
 
-	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to_t<U const&, Iterator>::value>>
+	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to<U const&, Iterator>>>
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(ConvertibleSentinel<U> const& u) : m_it(u.m_it) {}
 };

@@ -34,7 +34,7 @@ struct ConvertibleForwardIterator
 	using reference         = T&;
 	HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator() : m_ptr() {}
 	explicit HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator(T* ptr) : m_ptr(ptr) {}
-	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to_t<U*, T*>::value>>
+	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to<U*, T*>>>
 	HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator(ConvertibleForwardIterator<U> const& u) : m_ptr(u.m_ptr) {}
 	HAMON_CXX14_CONSTEXPR ConvertibleForwardIterator& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR ConvertibleForwardIterator  operator++(int) { auto t = *this; ++m_ptr; return t; }
@@ -54,7 +54,7 @@ struct ConvertibleSentinel
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(Iterator const& it) : m_it(it) {}
 
-	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to_t<U const&, Iterator>::value>>
+	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to<U const&, Iterator>>>
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(ConvertibleSentinel<U> const& u) : m_it(u.m_it) {}
 };
@@ -101,10 +101,10 @@ operator!=(T const& x, ConvertibleSentinel<U> const& y) noexcept
 	return !(x == y);
 }
 
-static_assert( hamon::convertible_to_t<ConvertibleForwardIterator<int> const&, ConvertibleForwardIterator<int const>>::value, "");
-static_assert(!hamon::convertible_to_t<ConvertibleForwardIterator<int const> const&, ConvertibleForwardIterator<int>>::value, "");
-static_assert( hamon::convertible_to_t<ConvertibleSentinel<ConvertibleForwardIterator<int>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int const>>>::value, "");
-static_assert(!hamon::convertible_to_t<ConvertibleSentinel<ConvertibleForwardIterator<int const>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int>>>::value, "");
+static_assert( hamon::convertible_to<ConvertibleForwardIterator<int> const&, ConvertibleForwardIterator<int const>>, "");
+static_assert(!hamon::convertible_to<ConvertibleForwardIterator<int const> const&, ConvertibleForwardIterator<int>>, "");
+static_assert( hamon::convertible_to<ConvertibleSentinel<ConvertibleForwardIterator<int>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int const>>>, "");
+static_assert(!hamon::convertible_to<ConvertibleSentinel<ConvertibleForwardIterator<int const>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int>>>, "");
 
 static_assert( hamon::is_constructible<
 	hamon::common_iterator<ConvertibleForwardIterator<int>, ConvertibleSentinel<ConvertibleForwardIterator<int>>>,
@@ -144,8 +144,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	using S2 = ConvertibleSentinel<I2>;
 	using CI2 = hamon::common_iterator<I2, S2>;
 	
-	static_assert(hamon::convertible_to_t<I1 const&, I2>::value, "");
-	static_assert(hamon::convertible_to_t<S1 const&, S2>::value, "");
+	static_assert(hamon::convertible_to<I1 const&, I2>, "");
+	static_assert(hamon::convertible_to<S1 const&, S2>, "");
 
 	int n = 42;
 	{

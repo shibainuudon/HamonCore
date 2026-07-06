@@ -60,6 +60,7 @@ using std::ranges::views::drop;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/functional/bind_back.hpp>
@@ -406,7 +407,7 @@ private:
 public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R),
-		HAMON_CONSTRAINED_PARAM(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
+		HAMON_CONSTRAINT(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, N&& n) const

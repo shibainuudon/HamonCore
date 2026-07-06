@@ -47,8 +47,8 @@ private:
 		typename C = hamon::common_reference_t<T2, U2>,
 		typename = hamon::enable_if_t<
 			hamon::same_as<C, hamon::common_reference_t<U2, T2>> &&
-			hamon::convertible_to<T2, C>::value &&
-			hamon::convertible_to<U2, C>::value
+			hamon::convertible_to<T2, C> &&
+			hamon::convertible_to<U2, C>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

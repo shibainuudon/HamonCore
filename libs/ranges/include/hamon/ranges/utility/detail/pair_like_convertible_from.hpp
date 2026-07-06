@@ -47,7 +47,7 @@ private:
 		typename E0 = hamon::tuple_element_t<0, T2>,
 		typename = hamon::enable_if_t<ranges::detail::convertible_to_non_slicing<U2, E0>::value>,
 		typename E1 = hamon::tuple_element_t<1, T2>,
-		typename = hamon::enable_if_t<hamon::convertible_to<V2, E1>::value>
+		typename = hamon::enable_if_t<hamon::convertible_to<V2, E1>>
 	>
 	static auto test(int) -> hamon::true_type;
 

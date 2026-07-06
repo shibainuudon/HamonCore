@@ -51,9 +51,7 @@ using std::move_iterator;
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
@@ -123,8 +121,8 @@ concept move_iter_conv_constructible =
 	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter>;
 #else
-using move_iter_conv_constructible = hamon::conjunction<
-	hamon::negation<hamon::is_same<U, Iter>>,
+using move_iter_conv_constructible = hamon::bool_constant<
+	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter>
 >;
 #endif
@@ -136,10 +134,10 @@ concept move_iter_conv_assignable =
 	hamon::convertible_to<U const&, Iter> &&
 	hamon::assignable_from<Iter&, U const&>;
 #else
-using move_iter_conv_assignable = hamon::conjunction<
-	hamon::negation<hamon::is_same<U, Iter>>,
-	hamon::convertible_to<U const&, Iter>,
-	hamon::assignable_from<Iter&, U const&>
+using move_iter_conv_assignable = hamon::bool_constant<
+	(!hamon::is_same<U, Iter>::value) &&
+	hamon::convertible_to<U const&, Iter> &&
+	hamon::assignable_from_t<Iter&, U const&>::value
 >;
 #endif
 

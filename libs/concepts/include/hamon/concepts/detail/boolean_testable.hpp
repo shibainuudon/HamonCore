@@ -8,8 +8,8 @@
 #define HAMON_CONCEPTS_DETAIL_BOOLEAN_TESTABLE_HPP
 
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -42,12 +42,13 @@ struct boolean_testable_impl
 {
 private:
 	template <typename U,
-		typename V = decltype(!hamon::declval<U&&>())
+		typename V = decltype(!hamon::declval<U&&>()),
+		typename = hamon::enable_if_t<
+			hamon::convertible_to<U, bool> &&
+			hamon::convertible_to<V, bool>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::convertible_to<U, bool>,
-		hamon::convertible_to<V, bool>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

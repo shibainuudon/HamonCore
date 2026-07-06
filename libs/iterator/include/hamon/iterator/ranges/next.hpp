@@ -32,6 +32,7 @@ using std::ranges::next;
 #include <hamon/cmath/abs.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>
 
@@ -94,7 +95,7 @@ next_impl(It it, hamon::iter_difference_t<It> n)
 
 // next(it, bound) の実装
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::convertible_to, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::convertible_to, It, Sent)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It /*it*/, Sent bound, hamon::detail::overload_priority<2>)
 {

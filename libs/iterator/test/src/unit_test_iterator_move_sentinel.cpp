@@ -299,7 +299,7 @@ struct NonConvertible
 };
 static_assert( hamon::semiregular_t<NonConvertible>::value, "");
 static_assert( hamon::is_convertible<long, NonConvertible>::value, "");
-static_assert(!hamon::convertible_to_t<long, NonConvertible>::value, "");
+static_assert(!hamon::convertible_to<long, NonConvertible>, "");
 
 inline HAMON_CXX14_CONSTEXPR bool CtorConvertTest()
 {

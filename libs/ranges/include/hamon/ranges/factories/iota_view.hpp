@@ -152,7 +152,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::same_as<R1, I2&> &&
 			hamon::same_as<R2, I2&> &&
-			hamon::convertible_to_t<R3, D>::value
+			hamon::convertible_to<R3, D>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

@@ -59,6 +59,7 @@ using std::ranges::views::take;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -133,7 +134,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<C2 &&
-				hamon::convertible_to_t<hamon::ranges::sentinel_t<V>, BaseSent>::value>>
+				hamon::convertible_to<hamon::ranges::sentinel_t<V>, BaseSent>>>
 		HAMON_CXX11_CONSTEXPR
 		sentinel(sentinel<!Const> s)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -551,7 +552,7 @@ private:
 public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R),
-		HAMON_CONSTRAINED_PARAM(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
+		HAMON_CONSTRAINT(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, N&& n) const

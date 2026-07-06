@@ -113,7 +113,7 @@ class take_while_view : public hamon::ranges::view_interface<take_while_view<V, 
 		
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<C2 &&
-				hamon::convertible_to_t<hamon::ranges::sentinel_t<V>, BaseSent>::value>>
+				hamon::convertible_to<hamon::ranges::sentinel_t<V>, BaseSent>>>
 		HAMON_CXX11_CONSTEXPR
 		sentinel(sentinel<!Const> s)
 			HAMON_NOEXCEPT_IF(		// noexcept as an extension

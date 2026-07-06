@@ -199,7 +199,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<C2 &&
-				hamon::convertible_to_t<ziperator<false>, ziperator<C2>>::value>>
+				hamon::convertible_to<ziperator<false>, ziperator<C2>>>>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_convertible<ziperator<false>, ziperator<C2>>::value)
@@ -459,7 +459,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<C2 &&
-				hamon::convertible_to_t<zentinel<false>, zentinel<C2>>::value>>
+				hamon::convertible_to<zentinel<false>, zentinel<C2>>>>
 		HAMON_CXX11_CONSTEXPR
 		sentinel(sentinel<!Const> i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			hamon::is_nothrow_convertible<zentinel<false>, zentinel<C2>>::value)

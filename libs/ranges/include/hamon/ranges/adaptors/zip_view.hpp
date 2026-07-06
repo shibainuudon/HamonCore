@@ -406,10 +406,10 @@ private:
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
 				hamon::bool_constant<C2>,
-				hamon::convertible_to_t<
+				hamon::bool_constant<hamon::convertible_to<
 					IteratorT<!C2, Views>,
 					IteratorT<C2, Views>
-				>...
+				>>...
 			>::value>>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i)
@@ -771,10 +771,10 @@ private:
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
 				hamon::bool_constant<C2>,
-				hamon::convertible_to_t<
+				hamon::bool_constant<hamon::convertible_to<
 					SentinelT<!C2, Views>,
 					SentinelT<C2, Views>
-				>...
+				>>...
 			>::value>>
 		HAMON_CXX11_CONSTEXPR sentinel(sentinel<!Const> i)
 			HAMON_NOEXCEPT_IF(hamon::conjunction<	// noexcept as an extension

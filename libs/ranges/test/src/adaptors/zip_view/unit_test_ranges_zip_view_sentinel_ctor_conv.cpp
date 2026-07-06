@@ -38,7 +38,7 @@ struct ConvertibleSentinel
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(Iterator const& it) : m_it(it) {}
 
-	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to_t<U const&, Iterator>::value>>
+	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to<U const&, Iterator>>>
 	HAMON_CXX11_CONSTEXPR
 	ConvertibleSentinel(ConvertibleSentinel<U> const& u) : m_it(u.m_it) {}
 };
@@ -96,7 +96,7 @@ struct ConvertibleForwardIterator
 	using reference         = T&;
 	HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator() : m_ptr() {}
 	explicit HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator(T* ptr) : m_ptr(ptr) {}
-	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to_t<U*, T*>::value>>
+	template <typename U, typename = hamon::enable_if_t<hamon::convertible_to<U*, T*>>>
 	HAMON_CXX11_CONSTEXPR ConvertibleForwardIterator(ConvertibleForwardIterator<U> const& u) : m_ptr(u.m_ptr) {}
 	HAMON_CXX14_CONSTEXPR ConvertibleForwardIterator& operator++() { ++m_ptr; return *this; }
 	HAMON_CXX14_CONSTEXPR ConvertibleForwardIterator  operator++(int) { auto t = *this; ++m_ptr; return t; }
