@@ -349,7 +349,7 @@ public:
 		return counted_iterator(m_current - n, m_length + n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR hamon::iter_difference_t<I2>	// nodiscard as an extension
 	operator-(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT		// noexcept as an extension
@@ -400,7 +400,7 @@ public:
 			m_current[n];				// [counted.iter.elem]/5
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -419,7 +419,7 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR hamon::strong_ordering	// nodiscard as an extension
 	operator<=>(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -431,7 +431,7 @@ public:
 		return y.m_length <=> x.m_length;
 	}
 #else
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator!=(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -439,7 +439,7 @@ public:
 		return !(x == y);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -447,7 +447,7 @@ public:
 		return y.m_length < x.m_length;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -455,7 +455,7 @@ public:
 		return y < x;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension
@@ -463,7 +463,7 @@ public:
 		return !(x > y);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::common_with, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::common_with, I, I2)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(counted_iterator const& x, counted_iterator<I2> const& y)
 	HAMON_NOEXCEPT	// noexcept as an extension

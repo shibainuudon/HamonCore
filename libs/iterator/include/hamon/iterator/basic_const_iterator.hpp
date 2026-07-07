@@ -739,10 +739,10 @@ struct basic_const_iterator_common_type {};
 
 template <typename T, typename U>
 struct basic_const_iterator_common_type<T, U,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::common_with_t<T, U>,
-		hamon::input_iterator_t<hamon::common_type_t<T, U>>
-	>::value>>
+	hamon::enable_if_t<
+		hamon::common_with<T, U> &&
+		hamon::input_iterator_t<hamon::common_type_t<T, U>>::value
+	>>
 {
 	using type = hamon::basic_const_iterator<hamon::common_type_t<T, U>>;
 };

@@ -8,15 +8,8 @@
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_COMMON_WITH_TEST(B, T1, T2)	\
-	static_assert(B == hamon::common_with<T1, T2>, "");	\
-	static_assert(B == hamon::common_with_t<T1, T2>::value, "")
-#else
-#  define HAMON_COMMON_WITH_TEST(B, T1, T2)	\
-	static_assert(B == hamon::common_with<T1, T2>::value, "");	\
-	static_assert(B == hamon::common_with_t<T1, T2>::value, "")
-#endif
+#define HAMON_COMMON_WITH_TEST(B, T1, T2)	\
+	static_assert(B == hamon::common_with<T1, T2>, "")
 
 namespace hamon_concepts_test
 {

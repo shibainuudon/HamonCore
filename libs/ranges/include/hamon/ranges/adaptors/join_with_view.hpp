@@ -150,7 +150,7 @@ template <typename R, typename P>
 using compatible_joinable_ranges = hamon::bool_constant<
 	hamon::common_with<
 		hamon::ranges::range_value_t<R>,
-		hamon::ranges::range_value_t<P>>::value &&
+		hamon::ranges::range_value_t<P>> &&
 	hamon::common_reference_with<
 		hamon::ranges::range_reference_t<R>,
 		hamon::ranges::range_reference_t<P>> &&

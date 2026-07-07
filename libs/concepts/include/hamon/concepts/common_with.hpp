@@ -31,7 +31,7 @@ using std::common_with;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept common_with =
+HAMON_CONCEPT_OR_BOOL common_with =
 	hamon::same_as<hamon::common_type_t<T, U>, hamon::common_type_t<U, T>> &&
 	requires
 	{
@@ -94,17 +94,9 @@ public:
 }	// namespace detail
 
 template <typename T, typename U>
-using common_with =
-	typename detail::common_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL common_with =
+	detail::common_with_impl<T, U>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using common_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::common_with<T, U>>;
-#else
-	hamon::common_with<T, U>;
 #endif
 
 }	// namespace hamon
