@@ -513,12 +513,14 @@
 #    if defined(__cpp_impl_coroutine) && (__cpp_impl_coroutine >= 201902)
 #      define HAMON_HAS_CXX20_COROUTINES							// P0912R5
 #    endif
-#    if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
-#      define HAMON_HAS_CXX20_CONCEPTS								// P0734R0
-#    endif
-#    if defined(__cpp_concepts) && (__cpp_concepts >= 202002)
-#      define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
-#    endif
+#    //	GCC10 で Concepts が実装されたが、bool値を期待しているところにconceptを渡すとエラーになるバグがあるようだ。
+#    // GCC12 からはエラーにならない。
+#    //if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
+#    //  define HAMON_HAS_CXX20_CONCEPTS								// P0734R0
+#    //endif
+#    //if defined(__cpp_concepts) && (__cpp_concepts >= 202002)
+#    //  define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
+#    //endif
 #    if defined(__cpp_constexpr_dynamic_alloc) && (__cpp_constexpr_dynamic_alloc >= 201907)
 #      define HAMON_HAS_CXX20_CONSTEXPR_DYNAMIC_ALLOC				// P0784R7
 #    endif
@@ -557,6 +559,14 @@
 #    endif
 #    if defined(__cpp_nontype_template_args) && (__cpp_nontype_template_args >= 201911)
 #      define HAMON_HAS_CXX20_NONTYPE_TEMPLATE_PARAMETER_FLOAT		// P1907R1
+#    endif
+#  endif
+#  if (HAMON_GCC_VERSION >= 120000)
+#    if defined(__cpp_concepts) && (__cpp_concepts >= 201907)
+#      define HAMON_HAS_CXX20_CONCEPTS								// P0734R0
+#    endif
+#    if defined(__cpp_concepts) && (__cpp_concepts >= 202002)
+#      define HAMON_HAS_CXX20_CONDITIONALLY_TRIVIAL_SPECIAL_MEMBER_FUNCTIONS	// P0848R3
 #    endif
 #  endif
 #endif	// C++20
