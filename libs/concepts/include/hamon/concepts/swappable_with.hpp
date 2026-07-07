@@ -12,6 +12,7 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/swap.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
 
@@ -51,9 +52,12 @@ private:
 			ranges::swap(hamon::declval<T2>(), hamon::declval<T2>()),
 			ranges::swap(hamon::declval<U2>(), hamon::declval<U2>()),
 			ranges::swap(hamon::declval<T2>(), hamon::declval<U2>()),
-			ranges::swap(hamon::declval<U2>(), hamon::declval<T2>()))
+			ranges::swap(hamon::declval<U2>(), hamon::declval<T2>())),
+		typename = hamon::enable_if_t<
+			hamon::common_reference_with<T2, U2>
+		>
 	>
-	static auto test(int) -> hamon::common_reference_with<T2, U2>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

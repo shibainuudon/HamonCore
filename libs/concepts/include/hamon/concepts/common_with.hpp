@@ -72,14 +72,14 @@ private:
 			hamon::common_reference_with<
 				hamon::add_lvalue_reference_t<T2 const>,
 				hamon::add_lvalue_reference_t<U2 const>
-			>::value &&
+			> &&
 			hamon::common_reference_with<
 				hamon::add_lvalue_reference_t<C>,
 				hamon::common_reference_t<
 					hamon::add_lvalue_reference_t<T2 const>,
 					hamon::add_lvalue_reference_t<U2 const>
 				>
-			>::value
+			>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

@@ -56,7 +56,7 @@ private:
 		typename = hamon::enable_if_t<hamon::common_reference_with<
 			hamon::remove_reference_t<L> const&,
 			hamon::remove_reference_t<R> const&
-		>::value>,
+		>>,
 		typename T = decltype(hamon::declval<L&>() = hamon::declval<R&&>()),
 		typename = hamon::enable_if_t<hamon::same_as<T, L>>
 	>

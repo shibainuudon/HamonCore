@@ -29,7 +29,7 @@ using std::common_reference_with;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept common_reference_with =
+HAMON_CONCEPT_OR_BOOL common_reference_with =
 	hamon::same_as<hamon::common_reference_t<T, U>, hamon::common_reference_t<U, T>> &&
 	hamon::convertible_to<T, hamon::common_reference_t<T, U>> &&
 	hamon::convertible_to<U, hamon::common_reference_t<T, U>>;
@@ -63,17 +63,9 @@ public:
 }	// namespace detail
 
 template <typename T, typename U>
-using common_reference_with =
-	typename detail::common_reference_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL common_reference_with =
+	detail::common_reference_with_impl<T, U>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using common_reference_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::common_reference_with<T, U>>;
-#else
-	hamon::common_reference_with<T, U>;
 #endif
 
 }	// namespace hamon

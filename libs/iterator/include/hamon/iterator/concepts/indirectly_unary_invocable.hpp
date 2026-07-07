@@ -67,7 +67,7 @@ private:
 			hamon::common_reference_with<
 				hamon::invoke_result_t<F2&, V>,
 				hamon::invoke_result_t<F2&, R>
-			>::value
+			>
 		>
 	>
 	static auto test(int) -> hamon::true_type;
