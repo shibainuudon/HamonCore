@@ -148,7 +148,11 @@ GTEST_TEST(AlgorithmTest, RangesContainsSubrangeTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(Test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(TestArray());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestVector());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))	// Visual Studio 2019 までだと内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestList());
+#else
+	EXPECT_TRUE(TestList());
+#endif
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(TestForwardList());
 }
 

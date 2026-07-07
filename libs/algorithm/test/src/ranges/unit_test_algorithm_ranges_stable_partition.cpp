@@ -171,7 +171,11 @@ GTEST_TEST(AlgorithmTest, RangesStablePartitionTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))	// Visual Studio 2019 までだと内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
+#else
+	EXPECT_TRUE(test04());
+#endif
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test05());
 }
 

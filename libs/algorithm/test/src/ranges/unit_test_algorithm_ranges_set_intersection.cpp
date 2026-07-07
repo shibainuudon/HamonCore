@@ -85,25 +85,27 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 
 inline HAMON_CXX20_CONSTEXPR bool test03()
 {
-	namespace ranges = hamon::ranges;
-	{
-		int const x[] = { 5, 6, 7 };
-		hamon::list<int> const y = { 1, 2, 3 };
-		int z[1];
-		auto res = ranges::set_intersection(x, y, z);
-		VERIFY(res.in1 == x+3);
-		VERIFY(res.in2 == y.end());
-		VERIFY(res.out == z);
-	}
-	{
-		hamon::vector<int> const x;
-		hamon::forward_list<int> const y;
-		int z[1];
-		auto res = ranges::set_intersection(x, y, z);
-		VERIFY(res.in1 == x.end());
-		VERIFY(res.in2 == y.end());
-		VERIFY(res.out == z);
-	}
+	int const x[] = { 5, 6, 7 };
+	hamon::list<int> const y = { 1, 2, 3 };
+	int z[1];
+	auto res = hamon::ranges::set_intersection(x, y, z);
+	VERIFY(res.in1 == x+3);
+	VERIFY(res.in2 == y.end());
+	VERIFY(res.out == z);
+
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test04()
+{
+	hamon::vector<int> const x;
+	hamon::forward_list<int> const y;
+	int z[1];
+	auto res = hamon::ranges::set_intersection(x, y, z);
+	VERIFY(res.in1 == x.end());
+	VERIFY(res.in2 == y.end());
+	VERIFY(res.out == z);
+
 	return true;
 }
 
@@ -113,7 +115,12 @@ GTEST_TEST(AlgorithmTest, RangesSetIntersectionTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))	// Visual Studio 2019 までだと内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
+#else
+	EXPECT_TRUE(test03());
+#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
 }
 
 }	// namespace ranges_set_intersection_test

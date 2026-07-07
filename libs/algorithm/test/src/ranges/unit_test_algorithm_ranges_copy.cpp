@@ -86,6 +86,12 @@ inline HAMON_CXX20_CONSTEXPR bool test03()
 		int const y[7] = { 7, 6, 5, 4, 3, 2, 1 };
 		VERIFY(ranges::equal(w, y));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test04()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::list<int> x = { 1, 2, 3, 4, 5, 6, 7 };
 		hamon::list<int> w(x.size());
@@ -101,7 +107,7 @@ inline HAMON_CXX20_CONSTEXPR bool test03()
 	return true;
 }
 
-inline HAMON_CXX20_CONSTEXPR bool test04()
+inline HAMON_CXX20_CONSTEXPR bool test05()
 {
 	namespace ranges = hamon::ranges;
 	{
@@ -113,6 +119,12 @@ inline HAMON_CXX20_CONSTEXPR bool test04()
 		int const y[6] = { 6, 5, 4, 3, 2, 1 };
 		VERIFY(ranges::equal(w, y));
 	}
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test06()
+{
+	namespace ranges = hamon::ranges;
 	{
 		hamon::forward_list<int> x = { 1, 2, 3, 4, 5 };
 		hamon::forward_list<int> w(5);
@@ -132,7 +144,13 @@ GTEST_TEST(AlgorithmTest, RangesCopyTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test03());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))	// Visual Studio 2019 までだと内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test04());
+#else
+	EXPECT_TRUE(test04());
+#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test05());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test06());
 }
 
 }	// namespace ranges_copy_test

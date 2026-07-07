@@ -135,37 +135,41 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 
 inline HAMON_CXX20_CONSTEXPR bool test05()
 {
-	namespace ranges = hamon::ranges;
+	hamon::vector<int> x { 1,2,3,4,2,3 };
+	hamon::list<int>   y { 2,3 };
+	auto res = hamon::ranges::find_end(x, y);
+	VERIFY(res.begin() == x.begin() + 4);
+	VERIFY(res.end()   == x.begin() + 6);
+	return true;
+}
 
-	{
-		hamon::vector<int> x { 1,2,3,4,2,3 };
-		hamon::list<int>   y { 2,3 };
-		auto res = ranges::find_end(x, y);
-		VERIFY(res.begin() == x.begin() + 4);
-		VERIFY(res.end()   == x.begin() + 6);
-	}
-	{
-		hamon::vector<int> x { 1,2,3,4,2,3 };
-		hamon::list<int>   y { };
-		auto res = ranges::find_end(x, y);
-		VERIFY(res.begin() == x.end());
-		VERIFY(res.end()   == x.end());
-	}
-	{
-		hamon::vector<int> x { 1,2,3,4,2,3 };
-		hamon::forward_list<int> y { 2,3 };
-		auto res = ranges::find_end(x, y);
-		VERIFY(res.begin() == x.begin() + 4);
-		VERIFY(res.end()   == x.begin() + 6);
-	}
-	{
-		hamon::vector<int> x { 1,2,3,4,2,3 };
-		hamon::forward_list<int> y { };
-		auto res = ranges::find_end(x, y);
-		VERIFY(res.begin() == x.end());
-		VERIFY(res.end()   == x.end());
-	}
+inline HAMON_CXX20_CONSTEXPR bool test06()
+{
+	hamon::vector<int> x { 1,2,3,4,2,3 };
+	hamon::list<int>   y { };
+	auto res = hamon::ranges::find_end(x, y);
+	VERIFY(res.begin() == x.end());
+	VERIFY(res.end()   == x.end());
+	return true;
+}
 
+inline HAMON_CXX20_CONSTEXPR bool test07()
+{
+	hamon::vector<int> x { 1,2,3,4,2,3 };
+	hamon::forward_list<int> y { 2,3 };
+	auto res = hamon::ranges::find_end(x, y);
+	VERIFY(res.begin() == x.begin() + 4);
+	VERIFY(res.end()   == x.begin() + 6);
+	return true;
+}
+
+inline HAMON_CXX20_CONSTEXPR bool test08()
+{
+	hamon::vector<int> x { 1,2,3,4,2,3 };
+	hamon::forward_list<int> y { };
+	auto res = hamon::ranges::find_end(x, y);
+	VERIFY(res.begin() == x.end());
+	VERIFY(res.end()   == x.end());
 	return true;
 }
 
@@ -178,7 +182,14 @@ GTEST_TEST(AlgorithmTest, RangesFindEndTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02<bidirectional_iterator_wrapper>());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test04());
+#if !(defined(HAMON_MSVC) && (HAMON_MSVC < 1930))	// Visual Studio 2019 までだと内部コンパイラエラーになってしまう
 	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test05());
+#else
+	EXPECT_TRUE(test05());
+#endif
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test06());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test07());
+	HAMON_CXX20_CONSTEXPR_EXPECT_TRUE(test08());
 }
 
 }	// namespace ranges_find_end_test
