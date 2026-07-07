@@ -58,6 +58,7 @@ using std::ranges::views::pairwise_transform;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/regular_invocable.hpp>
@@ -396,11 +397,12 @@ private:
 			HAMON_NOEXCEPT_RETURN(x.m_inner >= y.m_inner)	// noexcept as an extension
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base),
+			HAMON_CONSTRAINT_D(hamon::three_way_comparable, I2, InnerIterator<Const>)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		auto operator<=>(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_inner <=> y.m_inner)	// noexcept as an extension
-			requires hamon::ranges::random_access_range<Base> &&
-				hamon::three_way_comparable<InnerIterator<Const>>
+			//requires hamon::ranges::random_access_range<Base> && hamon::three_way_comparable<InnerIterator<Const>>
 		{
 			// [range.adjacent.transform.iterator]/14
 			return x.m_inner <=> y.m_inner;

@@ -47,6 +47,7 @@ using std::move_iterator;
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -436,7 +437,7 @@ HAMON_NOEXCEPT_IF_EXPR(bool(!(lhs < rhs)))	// extension
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename Iter1, HAMON_CONSTRAINED_PARAM(hamon::three_way_comparable_with, Iter1, Iter2)>
+template <typename Iter1, HAMON_CONSTRAINT(hamon::three_way_comparable_with, Iter1, Iter2)>
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR auto
 operator<=>(move_iterator<Iter1> const& lhs, move_iterator<Iter2> const& rhs)
 HAMON_NOEXCEPT_IF_EXPR(lhs.base() <=> rhs.base())	// extension

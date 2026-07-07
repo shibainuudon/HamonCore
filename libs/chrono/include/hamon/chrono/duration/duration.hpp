@@ -423,8 +423,9 @@ operator>=(duration<Rep1, Period1> const& lhs, duration<Rep2, Period2> const& rh
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 template <typename Rep1, typename Period1, typename Rep2, typename Period2,
 	// [time.duration.comparisons]/1
-	typename CT = hamon::common_type_t<duration<Rep1, Period1>, duration<Rep2, Period2>>>
-requires hamon::three_way_comparable<typename CT::rep>
+	typename CT = hamon::common_type_t<duration<Rep1, Period1>, duration<Rep2, Period2>>,
+	typename = hamon::enable_if_t<hamon::three_way_comparable<typename CT::rep>>>
+//requires hamon::three_way_comparable<typename CT::rep>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 operator<=>(duration<Rep1, Period1> const& lhs, duration<Rep2, Period2> const& rhs)
 	HAMON_NOEXCEPT_IF(hamon::is_arithmetic<Rep1>::value && hamon::is_arithmetic<Rep2>::value)	// noexcept as an extension

@@ -9,6 +9,7 @@
 
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -186,9 +187,10 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	template <HAMON_CONSTRAINT_D(hamon::three_way_comparable, I, key_iterator)>
 	friend HAMON_CXX11_CONSTEXPR auto
 	operator<=>(flat_map_iterator const& x, flat_map_iterator const& y)
-		requires hamon::three_way_comparable<key_iterator>
+		//requires hamon::three_way_comparable<key_iterator>
 	{
 		return x.m_key_iter <=> y.m_key_iter;
 	}

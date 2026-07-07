@@ -46,6 +46,7 @@ using std::reverse_iterator;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
@@ -412,7 +413,7 @@ operator>=(
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-template <typename Iterator1, hamon::three_way_comparable_with<Iterator1> Iterator2>
+template <typename Iterator1, HAMON_CONSTRAINT(hamon::three_way_comparable_with, Iterator1, Iterator2)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 #if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000))
 hamon::compare_three_way_result_t<Iterator1, Iterator2>

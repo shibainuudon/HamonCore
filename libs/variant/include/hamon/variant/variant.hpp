@@ -366,8 +366,9 @@ operator>=(variant<Types...> const& lhs, variant<Types...> const& rhs)
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-template <typename... Types>
-requires (hamon::three_way_comparable<Types> && ...)
+template <typename... Types,
+	typename = hamon::enable_if_t<(hamon::three_way_comparable<Types> && ...)>>
+//requires (hamon::three_way_comparable<Types> && ...)
 HAMON_NODISCARD inline HAMON_CXX14_CONSTEXPR
 hamon::common_comparison_category_t<hamon::compare_three_way_result_t<Types>...>
 operator<=>(variant<Types...> const& lhs, variant<Types...> const& rhs)

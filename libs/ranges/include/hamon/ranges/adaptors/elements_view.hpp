@@ -604,12 +604,12 @@ private:
 		}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base),
+			HAMON_CONSTRAINT_D(hamon::three_way_comparable, I2, BaseIter)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		auto operator<=>(iterator const& x, iterator const& y) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::declval<BaseIter const&>() <=> hamon::declval<BaseIter const&>())
-			requires
-				hamon::ranges::random_access_range<Base> &&
-				hamon::three_way_comparable<BaseIter>
+			//requires hamon::ranges::random_access_range<Base> && hamon::three_way_comparable<BaseIter>
 		{
 			// [range.elements.iterator]/20
 			return x.m_current <=> y.m_current;

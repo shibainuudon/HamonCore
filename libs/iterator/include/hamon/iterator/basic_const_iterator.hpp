@@ -465,10 +465,12 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator),
+		typename = hamon::enable_if_t<hamon::three_way_comparable<I>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current <=> y.m_current)	// noexcept as an extension
-		requires hamon::random_access_iterator<Iterator> && hamon::three_way_comparable<Iterator>
+		//requires hamon::random_access_iterator<Iterator> && hamon::three_way_comparable<Iterator>
 	{
 		// [const.iterators.ops]/18
 		return m_current <=> y.m_current;
@@ -487,10 +489,10 @@ private:
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
-	struct ThreeWayComparable : public hamon::conjunction<
-		hamon::random_access_iterator_t<Iterator>,
-		hamon::totally_ordered_with_t<Iterator, I>,
-		hamon::three_way_comparable_with_t<Iterator, I>
+	struct ThreeWayComparable : public hamon::bool_constant<
+		hamon::random_access_iterator_t<Iterator>::value &&
+		hamon::totally_ordered_with_t<Iterator, I>::value &&
+		hamon::three_way_comparable_with<Iterator, I>
 	>{};
 #endif
 

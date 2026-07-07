@@ -66,9 +66,10 @@ private:
 		>::value>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename R = decltype(
-			hamon::declval<A const&>() <=> hamon::declval<A const&>())
+			hamon::declval<A const&>() <=> hamon::declval<A const&>()),
+		typename = hamon::enable_if_t<detail::compares_as<R, C2>>
 	>
-	static auto test(int) -> detail::compares_as<R, C2>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename C2>
 	static auto test(...) -> hamon::false_type;
@@ -77,11 +78,15 @@ public:
 	using type = decltype(test<T, Cat>(0));
 };
 
+template <typename T, typename Cat>
+using three_way_comparable =
+	typename three_way_comparable_impl<T, Cat>::type;
+
 }	// namespace detail
 
 template <typename T, typename Cat = hamon::partial_ordering>
-using three_way_comparable =
-	typename detail::three_way_comparable_impl<T, Cat>::type;
+HAMON_INLINE_VAR constexpr bool three_way_comparable =
+	detail::three_way_comparable<T, Cat>::value;
 
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 

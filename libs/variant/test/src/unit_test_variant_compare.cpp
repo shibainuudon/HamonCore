@@ -34,6 +34,7 @@
  */
 
 #include <hamon/variant.hpp>
+#include <hamon/compare.hpp>
 #include <hamon/utility.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
@@ -106,6 +107,28 @@ void MakeEmpty(Variant& v)
 	{
 	}
 }
+
+#endif
+
+#if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+
+struct S1 {};
+struct S2 {};
+
+inline bool operator==(S2 const&, S2 const&)
+{
+	return true;
+}
+
+inline hamon::weak_ordering operator<=>(S2 const&, S2 const&)
+{
+	return hamon::weak_ordering::equivalent;
+}
+
+static_assert(!hamon::three_way_comparable<hamon::variant<S1, S1>>, "");
+static_assert(!hamon::three_way_comparable<hamon::variant<S1, S2>>, "");
+static_assert(!hamon::three_way_comparable<hamon::variant<S2, S1>>, "");
+static_assert( hamon::three_way_comparable<hamon::variant<S2, S2>>, "");
 
 #endif
 

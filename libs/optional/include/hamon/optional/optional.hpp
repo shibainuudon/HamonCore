@@ -32,6 +32,7 @@ using std::optional;
 #include <hamon/optional/detail/construct_from_invoke_tag.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/detail/converts_from_any_cvref.hpp>
@@ -741,7 +742,7 @@ operator>=(optional<T> const& x, optional<U> const& y)
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-template <typename T, hamon::three_way_comparable_with<T> U>
+template <typename T, HAMON_CONSTRAINT(hamon::three_way_comparable_with, T, U)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR hamon::compare_three_way_result_t<T, U>
 operator<=>(optional<T> const& x, optional<U> const& y)

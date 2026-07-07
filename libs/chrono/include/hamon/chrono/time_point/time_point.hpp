@@ -27,6 +27,7 @@ using std::chrono::time_point;
 #include <hamon/chrono/duration.hpp>
 #include <hamon/chrono/detail/is_specialization_of_duration.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
@@ -272,7 +273,7 @@ bool operator>=(time_point<Clock, Duration1> const& lhs, time_point<Clock, Durat
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename Clock, typename Duration1, hamon::three_way_comparable_with<Duration1> Duration2>
+template <typename Clock, typename Duration1, HAMON_CONSTRAINT(hamon::three_way_comparable_with, Duration1, Duration2)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 auto operator<=>(time_point<Clock, Duration1> const& lhs, time_point<Clock, Duration2> const& rhs)
 	HAMON_NOEXCEPT_IF(	// noexcept as an extension

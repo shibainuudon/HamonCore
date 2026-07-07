@@ -17,13 +17,9 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename T, typename Cat>
-concept compares_as =
+HAMON_CONCEPT_OR_BOOL compares_as =
 	hamon::same_as<hamon::common_comparison_category_t<T, Cat>, Cat>;
-
-#endif
 
 }	// namespace detail
 

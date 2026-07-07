@@ -16,6 +16,7 @@
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/has_append_range.hpp>
@@ -378,9 +379,9 @@ HAMON_NOEXCEPT_IF_EXPR(hamon::declval<Container const&>() >= hamon::declval<Cont
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 
-template <typename T, hamon::three_way_comparable Container>
-HAMON_NODISCARD	// nodiscard as an extension
-HAMON_CXX11_CONSTEXPR hamon::compare_three_way_result_t<Container>
+template <typename T, HAMON_CONSTRAINT(hamon::three_way_comparable, Container)>
+HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
+hamon::compare_three_way_result_t<Container>
 operator<=>(queue<T, Container> const& x, queue<T, Container> const& y)
 HAMON_NOEXCEPT_IF_EXPR(hamon::declval<Container const&>() <=> hamon::declval<Container const&>())	// noexcept as an extension
 {

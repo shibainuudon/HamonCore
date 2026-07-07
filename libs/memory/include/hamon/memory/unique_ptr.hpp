@@ -796,8 +796,10 @@ operator>=(hamon::nullptr_t, unique_ptr<T, D> const& x)
 }
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-template <typename T, typename D>
-requires hamon::three_way_comparable<typename unique_ptr<T, D>::pointer>
+template <typename T, typename D,
+	typename = hamon::enable_if_t<
+		hamon::three_way_comparable<typename unique_ptr<T, D>::pointer>>>
+//requires hamon::three_way_comparable<typename unique_ptr<T, D>::pointer>
 HAMON_NODISCARD	HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 hamon::compare_three_way_result_t<typename unique_ptr<T, D>::pointer>
 operator<=>(unique_ptr<T, D> const& x, hamon::nullptr_t)

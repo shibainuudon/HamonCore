@@ -8,6 +8,7 @@
 #define HAMON_FLAT_SET_DETAIL_FLAT_SET_ITERATOR_HPP
 
 #include <hamon/compare/concepts/three_way_comparable.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/memory/pointer_traits.hpp>
 #include <hamon/utility/move.hpp>
@@ -153,9 +154,10 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
+	template <HAMON_CONSTRAINT_D(hamon::three_way_comparable, I, base_iterator)>
 	friend HAMON_CXX11_CONSTEXPR auto
 	operator<=>(flat_set_iterator const& x, flat_set_iterator const& y)
-		requires hamon::three_way_comparable<base_iterator>
+		//requires hamon::three_way_comparable<base_iterator>
 	{
 		return x.m_base <=> y.m_base;
 	}
