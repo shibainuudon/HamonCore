@@ -13,7 +13,6 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/utility/declval.hpp>
@@ -46,11 +45,11 @@ struct cpp17_hash_impl
 {
 private:
 	template <typename U, typename UKey,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::detail::cpp17_function_object<U, UKey>,
-			hamon::detail::cpp17_copy_constructible<U>,
-			hamon::detail::cpp17_destructible<U>
-		>::value>,
+		typename = hamon::enable_if_t<
+			hamon::detail::cpp17_function_object<U, UKey>::value &&
+			hamon::detail::cpp17_copy_constructible<U> &&
+			hamon::detail::cpp17_destructible<U>::value
+		>,
 		typename R1 = decltype(hamon::declval<U>()(hamon::declval<UKey>())),
 		typename R2 = decltype(hamon::declval<U>()(hamon::declval<UKey&>())),
 		typename = hamon::enable_if_t<
