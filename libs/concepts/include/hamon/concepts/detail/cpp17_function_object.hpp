@@ -23,7 +23,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename... Args>
-concept cpp17_function_object =
+HAMON_CONCEPT_OR_BOOL cpp17_function_object =
 	hamon::is_object_v<T> &&
 	requires(T f, Args&&... args)
 	{
@@ -50,17 +50,9 @@ public:
 };
 
 template <typename T, typename... Args>
-using cpp17_function_object =
-	typename cpp17_function_object_impl<T, Args...>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_function_object =
+	cpp17_function_object_impl<T, Args...>::type::value;
 
-#endif
-
-template <typename T, typename... Args>
-using cpp17_function_object_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_function_object<T, Args...>>;
-#else
-	hamon::detail::cpp17_function_object<T, Args...>;
 #endif
 
 }	// namespace detail

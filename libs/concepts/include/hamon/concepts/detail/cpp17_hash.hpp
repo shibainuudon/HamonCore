@@ -46,7 +46,7 @@ struct cpp17_hash_impl
 private:
 	template <typename U, typename UKey,
 		typename = hamon::enable_if_t<
-			hamon::detail::cpp17_function_object<U, UKey>::value &&
+			hamon::detail::cpp17_function_object<U, UKey> &&
 			hamon::detail::cpp17_copy_constructible<U> &&
 			hamon::detail::cpp17_destructible<U>
 		>,

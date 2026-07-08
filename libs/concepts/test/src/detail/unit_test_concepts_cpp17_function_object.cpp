@@ -7,15 +7,8 @@
 #include <hamon/concepts/detail/cpp17_function_object.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_CPP17_FUNCTION_OBJECT_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_function_object<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::detail::cpp17_function_object_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_CPP17_FUNCTION_OBJECT_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_function_object<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::detail::cpp17_function_object_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_CPP17_FUNCTION_OBJECT_TEST(B, ...)	\
+	static_assert(B == hamon::detail::cpp17_function_object<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {
