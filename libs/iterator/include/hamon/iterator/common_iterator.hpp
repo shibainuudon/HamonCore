@@ -434,7 +434,7 @@ public:
 
 private:
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::equality_comparable_with_t<I, I2>::value>>
+		typename = hamon::enable_if_t<hamon::equality_comparable_with<I, I2>>>
 	static HAMON_CXX11_CONSTEXPR bool
 	equal_impl(common_iterator const& x, common_iterator<I2, S2> const& y, hamon::detail::overload_priority<1>)
 	{

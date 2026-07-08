@@ -50,7 +50,7 @@ struct equal_to
 #else
 	template <typename T, typename U,
 		typename = hamon::enable_if_t<
-			hamon::equality_comparable_with<T, U>::value ||
+			hamon::equality_comparable_with<T, U> ||
 			detail::eq_builtin_ptr_cmp<T, U>::value
 		>
 	>

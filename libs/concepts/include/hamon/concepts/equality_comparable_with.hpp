@@ -30,7 +30,7 @@ using std::equality_comparable_with;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept equality_comparable_with =
+HAMON_CONCEPT_OR_BOOL equality_comparable_with =
 	hamon::equality_comparable<T> &&
 	hamon::equality_comparable<U> &&
 	detail::comparison_common_type_with<T, U> &&
@@ -77,17 +77,9 @@ public:
 }	// namespace detail
 
 template <typename T, typename U>
-using equality_comparable_with =
-	typename detail::equality_comparable_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL equality_comparable_with =
+	detail::equality_comparable_with_impl<T, U>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using equality_comparable_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::equality_comparable_with<T, U>>;
-#else
-	hamon::equality_comparable_with<T, U>;
 #endif
 
 }	// namespace hamon

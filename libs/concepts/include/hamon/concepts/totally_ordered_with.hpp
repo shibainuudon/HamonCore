@@ -50,18 +50,21 @@ template <typename T, typename U>
 struct totally_ordered_with_impl
 {
 private:
-	template <typename T2, typename U2>
-	static auto test(int) -> hamon::conjunction<
-		hamon::totally_ordered<T2>,
-		hamon::totally_ordered<U2>,
-		hamon::equality_comparable_with<T2, U2>,
-		hamon::totally_ordered<
-			hamon::common_reference_t<
-				hamon::remove_reference_t<T2> const&,
-				hamon::remove_reference_t<U2> const&
-			>
-		>,
-		detail::partially_ordered_with<T2, U2>>;
+	template <typename T2, typename U2,
+		typename = hamon::enable_if_t<
+			hamon::totally_ordered<T2>::value &&
+			hamon::totally_ordered<U2>::value &&
+			hamon::equality_comparable_with<T2, U2> &&
+			hamon::totally_ordered<
+				hamon::common_reference_t<
+					hamon::remove_reference_t<T2> const&,
+					hamon::remove_reference_t<U2> const&
+				>
+			>::value &&
+			detail::partially_ordered_with<T2, U2>::value
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;
