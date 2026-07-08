@@ -21,7 +21,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept cpp17_move_constructible =
+HAMON_CONCEPT_OR_BOOL cpp17_move_constructible =
 	requires(T&& rv)
 	{
 		{ T(hamon::forward<T>(rv)) };
@@ -46,17 +46,9 @@ public:
 };
 
 template <typename T>
-using cpp17_move_constructible =
-	typename cpp17_move_constructible_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_move_constructible =
+	cpp17_move_constructible_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using cpp17_move_constructible_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_move_constructible<T>>;
-#else
-	hamon::detail::cpp17_move_constructible<T>;
 #endif
 
 }	// namespace detail

@@ -36,7 +36,7 @@ struct cpp17_copy_constructible_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<hamon::detail::cpp17_move_constructible<U>::value>,
+		typename = hamon::enable_if_t<hamon::detail::cpp17_move_constructible<U>>,
 		typename = decltype(U(hamon::declval<U const&>()))
 	>
 	static auto test(int) -> hamon::true_type;
