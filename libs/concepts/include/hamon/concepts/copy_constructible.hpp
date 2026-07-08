@@ -46,7 +46,7 @@ struct copy_constructible_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::move_constructible_t<U>::value &&
+			hamon::move_constructible<U> &&
 			hamon::constructible_from<U, U&>       && hamon::convertible_to<U&, U> &&
 			hamon::constructible_from<U, U const&> && hamon::convertible_to<U const&, U> &&
 			hamon::constructible_from<U, U const>  && hamon::convertible_to<U const, U>

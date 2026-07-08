@@ -92,14 +92,12 @@ template <hamon::ranges::input_range V, hamon::move_constructible F>
 		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>
 #else
 template <typename V, typename F,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range<V>,
-		hamon::move_constructible<F>,
-		hamon::ranges::view<V>,
-		hamon::is_object<F>,
-		hamon::regular_invocable<F&, hamon::ranges::range_reference_t<V>>,
-		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V>::value && hamon::move_constructible<F> &&
+		hamon::ranges::view<V>::value && hamon::is_object<F>::value &&
+		hamon::regular_invocable<F&, hamon::ranges::range_reference_t<V>>::value &&
+		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>::value
+	>
 >
 #endif
 class transform_view : public hamon::ranges::view_interface<transform_view<V, F>>

@@ -108,7 +108,7 @@ class zip_transform_view : public hamon::ranges::view_interface<zip_transform_vi
 {
 private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	static_assert(hamon::move_constructible_t<F>::value, "");
+	static_assert(hamon::move_constructible<F>, "");
 	static_assert(hamon::conjunction<hamon::ranges::input_range_t<Views>...>::value, "");
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Views>...>::value, "");
 	static_assert(sizeof...(Views) > 0, "");
@@ -673,7 +673,7 @@ private:
 		typename R = hamon::decay_t<hamon::invoke_result_t<FD&>>,
 		// [range.zip.transform.overview]2.1.1
 		typename = hamon::enable_if_t<
-			hamon::move_constructible_t<FD>::value &&
+			hamon::move_constructible<FD> &&
 			hamon::regular_invocable_t<FD&>::value &&
 			!hamon::is_void<R>::value>>
 	static HAMON_CXX11_CONSTEXPR auto

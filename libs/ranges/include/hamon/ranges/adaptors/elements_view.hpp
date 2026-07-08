@@ -129,8 +129,7 @@ struct returnable_element_impl
 private:
 	template <typename T2, hamon::size_t N2,
 		typename E = hamon::tuple_element_t<N2, T2>,
-		typename = hamon::enable_if_t<
-			hamon::move_constructible<E>::value>>
+		typename = hamon::enable_if_t<hamon::move_constructible<E>>>
 	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, hamon::size_t N2>

@@ -67,10 +67,9 @@ using boxable_movable_t = hamon::bool_constant<boxable_movable<T>>;
 #else
 
 template <typename T>
-using boxable_t =
-	hamon::conjunction<
-		hamon::move_constructible_t<T>,
-		hamon::is_object<T>>;
+using boxable_t = hamon::bool_constant<
+	hamon::move_constructible<T> && hamon::is_object_v<T>
+>;
 
 template <typename T>
 using boxable_copyable_t =

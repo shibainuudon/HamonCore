@@ -148,15 +148,15 @@ template <hamon::ranges::forward_range V, hamon::move_constructible F, hamon::si
 			F&, hamon::ranges::range_reference_t<V>, N>>
 #else
 template <typename V, typename F, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::forward_range_t<V>,
-		hamon::move_constructible_t<F>,
-		hamon::ranges::view_t<V>,
-		hamon::bool_constant<(N > 0)>,
-		hamon::is_object<F>,
+	typename = hamon::enable_if_t<
+		hamon::ranges::forward_range_t<V>::value &&
+		hamon::move_constructible<F> &&
+		hamon::ranges::view_t<V>::value &&
+		(N > 0) &&
+		hamon::is_object<F>::value &&
 		hamon::ranges::detail::regular_invocable_with_repeated_type_t<
-			F&, hamon::ranges::range_reference_t<V>, N>
-	>::value>,
+			F&, hamon::ranges::range_reference_t<V>, N>::value
+	>,
 	typename = hamon::enable_if_t<
 		hamon::detail::can_reference<hamon::ranges::detail::invoke_result_with_repeated_type_t<
 			F&, hamon::ranges::range_reference_t<V>, N>>::value>>

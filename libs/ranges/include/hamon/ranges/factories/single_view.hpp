@@ -50,7 +50,7 @@ namespace ranges {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <hamon::move_constructible T> requires hamon::is_object_v<T>
 #else
-template <typename T, typename = hamon::enable_if_t<hamon::move_constructible<T>::value && hamon::is_object<T>::value>>
+template <typename T, typename = hamon::enable_if_t<hamon::move_constructible<T> && hamon::is_object<T>::value>>
 #endif
 class single_view : public hamon::ranges::view_interface<single_view<T>>
 {

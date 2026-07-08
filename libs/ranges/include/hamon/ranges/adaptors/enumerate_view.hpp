@@ -103,11 +103,11 @@ struct range_with_movable_references_impl
 {
 private:
 	template <typename R2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::input_range_t<R2>,
-			hamon::move_constructible_t<hamon::ranges::range_reference_t<R2>>,
-			hamon::move_constructible_t<hamon::ranges::range_rvalue_reference_t<R2>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::input_range_t<R2>::value &&
+			hamon::move_constructible<hamon::ranges::range_reference_t<R2>> &&
+			hamon::move_constructible<hamon::ranges::range_rvalue_reference_t<R2>>
+		>>
 	static auto test(int) -> hamon::true_type;
 
 	template <typename R2>

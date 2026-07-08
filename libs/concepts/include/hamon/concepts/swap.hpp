@@ -98,7 +98,7 @@ private:
 		, typename = hamon::enable_if_t<
 			hamon::same_as<T, U> &&
 			hamon::is_lvalue_reference<T>::value &&
-			hamon::move_constructible<hamon::remove_reference_t<T>>::value &&
+			hamon::move_constructible<hamon::remove_reference_t<T>> &&
 			hamon::assignable_from<T, hamon::remove_reference_t<T>>
 		>
 #endif

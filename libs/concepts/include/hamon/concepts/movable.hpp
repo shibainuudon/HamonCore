@@ -47,7 +47,7 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<
 			hamon::is_object<U>::value &&
-			hamon::move_constructible<U>::value &&
+			hamon::move_constructible<U> &&
 			hamon::assignable_from<U&, U> &&
 			hamon::swappable<U>::value
 		>

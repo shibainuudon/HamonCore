@@ -41,14 +41,14 @@ struct TestIterator
 struct Movable
 {};
 
-static_assert(hamon::move_constructible_t<Movable>::value, "");
+static_assert(hamon::move_constructible<Movable>, "");
 
 struct NotMovable
 {
 	NotMovable(NotMovable&&) = delete;
 };
 
-static_assert(!hamon::move_constructible_t<NotMovable>::value, "");
+static_assert(!hamon::move_constructible<NotMovable>, "");
 
 template <typename T, hamon::size_t N, typename = void>
 struct CanInstantiateElementsView

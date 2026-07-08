@@ -379,7 +379,7 @@ private:
 			common_iterator_detail::has_post_increment_t<I2>::value ||
 			!(hamon::indirectly_readable_t<I2>::value &&
 			  hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>> &&
-			  hamon::move_constructible_t<hamon::iter_value_t<I2>>::value)>>
+			  hamon::move_constructible<hamon::iter_value_t<I2>>)>>
 	HAMON_CXX14_CONSTEXPR auto
 	increment_impl(hamon::detail::overload_priority<1>)
 	-> decltype(hamon::declval<I2&>()++)
