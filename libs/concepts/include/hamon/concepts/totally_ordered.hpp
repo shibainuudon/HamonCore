@@ -8,11 +8,11 @@
 #define HAMON_CONCEPTS_TOTALLY_ORDERED_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -23,29 +23,13 @@ namespace hamon
 
 using std::totally_ordered;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#else
 
 template <typename T>
-concept totally_ordered =
+HAMON_CONCEPT_OR_BOOL totally_ordered =
 	hamon::equality_comparable<T> &&
 	detail::partially_ordered_with<T, T>;
 
-#else
-
-template <typename T>
-using totally_ordered = hamon::bool_constant<
-	hamon::equality_comparable<T> &&
-	detail::partially_ordered_with<T, T>
->;
-
-#endif
-
-template <typename T>
-using totally_ordered_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::totally_ordered<T>>;
-#else
-	hamon::totally_ordered<T>;
 #endif
 
 }	// namespace hamon

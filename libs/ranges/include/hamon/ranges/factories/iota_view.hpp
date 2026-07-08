@@ -140,7 +140,7 @@ struct advanceable_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<detail::decrementable_t<I2>::value>,
-		typename = hamon::enable_if_t<hamon::totally_ordered_t<I2>::value>,
+		typename = hamon::enable_if_t<hamon::totally_ordered<I2>>,
 		typename D = detail::iota_diff_t<I2>,
 		typename R1 = decltype(hamon::declval<I2&>() += hamon::declval<D>()),
 		typename R2 = decltype(hamon::declval<I2&>() -= hamon::declval<D>()),
@@ -469,7 +469,7 @@ HAMON_WARNING_POP()
 		}
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::totally_ordered, W2, W)>
+		template <HAMON_CONSTRAINT_D(hamon::totally_ordered, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator<(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_value < y.m_value)	// noexcept as an extension
@@ -479,7 +479,7 @@ HAMON_WARNING_POP()
 			return x.m_value < y.m_value;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::totally_ordered, W2, W)>
+		template <HAMON_CONSTRAINT_D(hamon::totally_ordered, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator>(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y < x)	// noexcept as an extension
@@ -489,7 +489,7 @@ HAMON_WARNING_POP()
 			return y < x;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::totally_ordered, W2, W)>
+		template <HAMON_CONSTRAINT_D(hamon::totally_ordered, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator<=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(y < x))	// noexcept as an extension
@@ -499,7 +499,7 @@ HAMON_WARNING_POP()
 			return !(y < x);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::totally_ordered, W2, W)>
+		template <HAMON_CONSTRAINT_D(hamon::totally_ordered, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator>=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x < y))	// noexcept as an extension
@@ -510,7 +510,7 @@ HAMON_WARNING_POP()
 		}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::totally_ordered, W2, W),
+		template <HAMON_CONSTRAINT_D(hamon::totally_ordered, W2, W),
 			typename = hamon::enable_if_t<hamon::three_way_comparable<W2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		operator<=>(iterator const& x, iterator const& y)

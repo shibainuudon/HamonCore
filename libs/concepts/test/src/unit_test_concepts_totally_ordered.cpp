@@ -11,15 +11,8 @@
 #include <compare>
 #endif
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_TOTALLY_ORDERED_TEST(B, T)	\
-	static_assert(B == hamon::totally_ordered<T>, "");	\
-	static_assert(B == hamon::totally_ordered_t<T>::value, "")
-#else
-#  define HAMON_TOTALLY_ORDERED_TEST(B, T)	\
-	static_assert(B == hamon::totally_ordered<T>::value, "");	\
-	static_assert(B == hamon::totally_ordered_t<T>::value, "")
-#endif
+#define HAMON_TOTALLY_ORDERED_TEST(B, T)	\
+	static_assert(B == hamon::totally_ordered<T>, "")
 
 namespace hamon_concepts_test
 {
