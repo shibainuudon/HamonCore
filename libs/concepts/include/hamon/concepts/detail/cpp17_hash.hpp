@@ -48,7 +48,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::cpp17_function_object<U, UKey>::value &&
 			hamon::detail::cpp17_copy_constructible<U> &&
-			hamon::detail::cpp17_destructible<U>::value
+			hamon::detail::cpp17_destructible<U>
 		>,
 		typename R1 = decltype(hamon::declval<U>()(hamon::declval<UKey>())),
 		typename R2 = decltype(hamon::declval<U>()(hamon::declval<UKey&>())),

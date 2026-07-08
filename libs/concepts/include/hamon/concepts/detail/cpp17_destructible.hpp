@@ -23,7 +23,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept cpp17_destructible =
+HAMON_CONCEPT_OR_BOOL cpp17_destructible =
 	hamon::is_object_v<T> &&
 	!hamon::is_array_v<T> &&
 	requires(T u)
@@ -52,17 +52,9 @@ public:
 };
 
 template <typename T>
-using cpp17_destructible =
-	typename cpp17_destructible_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_destructible =
+	cpp17_destructible_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using cpp17_destructible_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_destructible<T>>;
-#else
-	hamon::detail::cpp17_destructible<T>;
 #endif
 
 }	// namespace detail

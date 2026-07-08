@@ -80,7 +80,7 @@ private:
 	// meets the Cpp17Destructible requirements (Table 35).
 	static_assert(!hamon::is_same<hamon::remove_cv_t<T>, hamon::in_place_t>::value, "");
 	static_assert(!hamon::is_same<hamon::remove_cv_t<T>, hamon::nullopt_t>::value, "");
-	static_assert(hamon::detail::cpp17_destructible_t<T>::value, "");
+	static_assert(hamon::detail::cpp17_destructible<T>, "");
 
 	using constraint_type = optional_detail::optional_constraint<T>;
 

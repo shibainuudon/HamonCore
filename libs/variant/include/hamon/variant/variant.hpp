@@ -39,6 +39,7 @@ using std::variant;
 #include <hamon/functional/ranges/less_equal.hpp>
 #include <hamon/functional/ranges/greater.hpp>
 #include <hamon/functional/ranges/greater_equal.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
@@ -71,7 +72,7 @@ private:
 	using base_type = variant_detail::variant_swap<Types...>;
 
 public:
-    static_assert(hamon::conjunction<hamon::detail::cpp17_destructible_t<Types>...>::value,
+    static_assert(hamon::conjunction<hamon::bool_constant<hamon::detail::cpp17_destructible<Types>>...>::value,
         "All types in Types shall meet the Cpp17Destructible requirements (Table 36)."
         "[variant.variant]/2.");
 
