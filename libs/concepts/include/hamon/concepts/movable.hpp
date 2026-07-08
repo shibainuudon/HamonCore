@@ -49,7 +49,7 @@ private:
 			hamon::is_object<U>::value &&
 			hamon::move_constructible<U> &&
 			hamon::assignable_from<U&, U> &&
-			hamon::swappable<U>::value
+			hamon::swappable<U>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

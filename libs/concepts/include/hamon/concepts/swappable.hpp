@@ -8,11 +8,12 @@
 #define HAMON_CONCEPTS_SWAPPABLE_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/swap.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -26,7 +27,7 @@ using std::swappable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept swappable =
+HAMON_CONCEPT_OR_BOOL swappable =
 	requires(T& a, T& b) { ranges::swap(a, b); };
 
 #else
@@ -54,17 +55,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using swappable =
-	typename detail::swappable_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL swappable =
+	detail::swappable_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using swappable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::swappable<T>>;
-#else
-	hamon::swappable<T>;
 #endif
 
 }	// namespace hamon
