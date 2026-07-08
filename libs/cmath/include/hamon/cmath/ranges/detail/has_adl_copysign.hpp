@@ -46,8 +46,8 @@ struct has_adl_copysign_impl
 private:
 	template <typename U1, typename U2,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<U1>::value ||
-			hamon::detail::class_or_enum<U2>::value
+			hamon::detail::class_or_enum<U1> ||
+			hamon::detail::class_or_enum<U2>
 		>,
 		typename S = decltype(copysign(hamon::declval<U1 const&>(), hamon::declval<U2 const&>()))
 	>

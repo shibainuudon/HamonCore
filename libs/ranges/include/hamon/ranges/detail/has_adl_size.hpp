@@ -50,9 +50,8 @@ struct has_adl_size_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<
-				hamon::remove_cvref_t<U>
-			>::value>,
+			hamon::detail::class_or_enum<hamon::remove_cvref_t<U>>
+		>,
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,

@@ -45,7 +45,7 @@ struct has_adl_cos_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<U>::value>,
+			hamon::detail::class_or_enum<U>>,
 		typename S = decltype(cos(hamon::declval<U const&>()))
 	>
 	static auto test(int) -> hamon::detail::is_not_void<S>;

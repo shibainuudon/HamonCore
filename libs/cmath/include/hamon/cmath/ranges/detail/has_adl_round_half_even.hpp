@@ -45,7 +45,7 @@ struct has_adl_round_half_even_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<U>::value>,
+			hamon::detail::class_or_enum<U>>,
 		typename S = decltype(round_half_even(hamon::declval<U const&>()))
 	>
 	static auto test(int) -> hamon::detail::is_not_void<S>;

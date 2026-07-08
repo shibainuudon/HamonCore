@@ -80,8 +80,8 @@ private:
 	template <typename I1, typename I2
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<hamon::remove_cvref_t<I1>>::value ||
-			hamon::detail::class_or_enum<hamon::remove_cvref_t<I2>>::value
+			hamon::detail::class_or_enum<hamon::remove_cvref_t<I1>> ||
+			hamon::detail::class_or_enum<hamon::remove_cvref_t<I2>>
 		>
 #endif
 	>

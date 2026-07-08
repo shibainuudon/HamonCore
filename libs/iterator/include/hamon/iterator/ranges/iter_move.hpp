@@ -58,7 +58,7 @@ private:
 	//        iter_move(forward<T>(t)) is well-formed in unevaluated context
 	template <typename T
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<hamon::detail::class_or_enum<hamon::remove_reference_t<T>>::value>
+		, typename = hamon::enable_if_t<hamon::detail::class_or_enum<hamon::remove_reference_t<T>>>
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)

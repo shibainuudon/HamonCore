@@ -48,9 +48,8 @@ struct has_adl_rend_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<
-				hamon::remove_reference_t<U>
-			>::value>,
+			hamon::detail::class_or_enum<hamon::remove_reference_t<U>>
+		>,
 		typename S = decltype(HAMON_AUTO_CAST(rend(hamon::declval<U&>()))),
 		typename I = decltype(ranges::rbegin(hamon::declval<U&>()))
 	>

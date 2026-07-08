@@ -47,9 +47,9 @@ struct has_adl_repeat_impl
 private:
 	template <typename U1, typename U2, typename U3,
 		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<U1>::value ||
-			hamon::detail::class_or_enum<U2>::value ||
-			hamon::detail::class_or_enum<U3>::value
+			hamon::detail::class_or_enum<U1> ||
+			hamon::detail::class_or_enum<U2> ||
+			hamon::detail::class_or_enum<U3>
 		>,
 		typename S = decltype(repeat(
 			hamon::declval<U1 const&>(),

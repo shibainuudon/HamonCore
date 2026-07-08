@@ -7,15 +7,8 @@
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_CLASS_OR_ENUM_TEST(B, T)	\
-	static_assert(B == hamon::detail::class_or_enum<T>, "");	\
-	static_assert(B == hamon::detail::class_or_enum_t<T>::value, "")
-#else
-#  define HAMON_CLASS_OR_ENUM_TEST(B, T) \
-	static_assert(B == hamon::detail::class_or_enum<T>::value, "");	\
-	static_assert(B == hamon::detail::class_or_enum_t<T>::value, "")
-#endif
+#define HAMON_CLASS_OR_ENUM_TEST(B, T)	\
+	static_assert(B == hamon::detail::class_or_enum<T>, "")
 
 namespace hamon_concepts_test
 {

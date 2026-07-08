@@ -9,9 +9,9 @@
 
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/cstddef/size_t.hpp>
-#include <hamon/type_traits/disjunction.hpp>
-#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -46,12 +46,13 @@ struct has_adl_swap_impl
 {
 private:
 	template <typename T2, typename U2,
-		typename = decltype(swap(hamon::declval<T2>(), hamon::declval<U2>()))
+		typename = decltype(swap(hamon::declval<T2>(), hamon::declval<U2>())),
+		typename = hamon::enable_if_t<
+			hamon::detail::class_or_enum<hamon::remove_reference_t<T2>> ||
+			hamon::detail::class_or_enum<hamon::remove_reference_t<U2>>
+		>
 	>
-	static auto test(int) -> hamon::disjunction<
-		hamon::detail::class_or_enum<hamon::remove_reference_t<T2>>,
-		hamon::detail::class_or_enum<hamon::remove_reference_t<U2>>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;
