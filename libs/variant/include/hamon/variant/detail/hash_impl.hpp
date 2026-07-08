@@ -39,9 +39,9 @@ struct hash_impl : public hamon::detail::disabled_hash
 template <typename... Types>
 struct hash_impl<hamon::variant<Types...>,
 	hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::cpp17_hash_t<
+		hamon::bool_constant<hamon::detail::cpp17_hash<
 			std::hash<hamon::remove_const_t<Types>>, hamon::remove_const_t<Types>
-		>...
+		>>...
 	>::value>
 >
 {

@@ -27,7 +27,7 @@ struct hash_impl : public hamon::detail::disabled_hash
 
 template <typename T, typename U>
 struct hash_impl<T, U,
-	hamon::enable_if_t<hamon::detail::cpp17_hash_t<std::hash<U>, U>::value>>
+	hamon::enable_if_t<hamon::detail::cpp17_hash<std::hash<U>, U>>>
 {
 	HAMON_NODISCARD	// extension
 	hamon::size_t operator()(hamon::optional<T> const& opt) const

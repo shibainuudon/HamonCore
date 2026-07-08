@@ -9,15 +9,8 @@
 #include <hamon/config.hpp>
 #include <functional>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_CPP17_HASH_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_hash<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::detail::cpp17_hash_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_CPP17_HASH_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_hash<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::detail::cpp17_hash_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_CPP17_HASH_TEST(B, ...)	\
+	static_assert(B == hamon::detail::cpp17_hash<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {

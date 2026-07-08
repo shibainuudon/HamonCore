@@ -28,7 +28,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename Key>
-concept cpp17_hash =
+HAMON_CONCEPT_OR_BOOL cpp17_hash =
 	hamon::detail::cpp17_function_object<T, Key> &&
 	hamon::detail::cpp17_copy_constructible<T> &&
 	hamon::detail::cpp17_destructible<T> &&
@@ -67,17 +67,9 @@ public:
 };
 
 template <typename T, typename Key>
-using cpp17_hash =
-	typename cpp17_hash_impl<T, Key>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_hash =
+	cpp17_hash_impl<T, Key>::type::value;
 
-#endif
-
-template <typename T, typename Key>
-using cpp17_hash_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_hash<T, Key>>;
-#else
-	hamon::detail::cpp17_hash<T, Key>;
 #endif
 
 }	// namespace detail

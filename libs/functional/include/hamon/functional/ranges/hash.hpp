@@ -126,7 +126,7 @@ private:
 	// (5) hamon::hash<T>が呼び出せるなら hamon::hash<T>{}(x)
 	template <typename RawT, typename T,
 		typename = hamon::enable_if_t<
-			hamon::detail::cpp17_hash_t<hamon::hash<RawT>, T>::value>>
+			hamon::detail::cpp17_hash<hamon::hash<RawT>, T>>>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<1>)
 	HAMON_HASH_RETURN(
@@ -135,7 +135,7 @@ private:
 	// (6) std::hash<T>が呼び出せるなら std::hash<T>{}(x)
 	template <typename RawT, typename T,
 		typename = hamon::enable_if_t<
-			hamon::detail::cpp17_hash_t<std::hash<RawT>, T>::value>>
+			hamon::detail::cpp17_hash<std::hash<RawT>, T>>>
 	static HAMON_CXX14_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<0>)
 	HAMON_HASH_RETURN(

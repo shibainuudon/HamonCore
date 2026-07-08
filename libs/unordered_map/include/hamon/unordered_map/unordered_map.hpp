@@ -121,7 +121,7 @@ public:
 	using insert_return_type   = hamon::detail::insert_return_type<iterator, node_type>;
 
 	// TODO
-	//static_assert(hamon::detail::cpp17_hash_t<Hash, Key>::value, "[unord.req.general]/3");
+	//static_assert(hamon::detail::cpp17_hash<Hash, Key>, "[unord.req.general]/3");
 	static_assert(hamon::detail::cpp17_erasable_t<value_type, allocator_type>::value, "[unord.req.general]/16");
 	static_assert(hamon::detail::cpp17_copy_constructible<Pred>, "[unord.req.general]/20");
 

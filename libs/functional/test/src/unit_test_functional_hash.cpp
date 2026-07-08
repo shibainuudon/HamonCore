@@ -33,7 +33,7 @@ namespace hash_test
 template <typename T>
 void enabled_hash_test(void)
 {
-	static_assert(hamon::detail::cpp17_hash_t<hamon::hash<T>, T>::value, "");
+	static_assert(hamon::detail::cpp17_hash<hamon::hash<T>, T>, "");
 	static_assert(hamon::detail::cpp17_default_constructible<hamon::hash<T>>, "");
 	static_assert(hamon::detail::cpp17_copy_assignable<hamon::hash<T>>, "");
 //	static_assert(hamon::detail::cpp17_swappable_t<hamon::hash<T>>::value, "");	// TODO
@@ -49,7 +49,7 @@ void disabled_hash_test(void)
 	static_assert(!hamon::is_move_constructible<hamon::hash<T>>::value, "");
 	static_assert(!hamon::is_copy_assignable<hamon::hash<T>>::value, "");
 	static_assert(!hamon::is_move_assignable<hamon::hash<T>>::value, "");
-	static_assert(!hamon::detail::cpp17_hash_t<hamon::hash<T>, T>::value, "");
+	static_assert(!hamon::detail::cpp17_hash<hamon::hash<T>, T>, "");
 }
 
 void bool_test(void)
