@@ -31,6 +31,7 @@ using std::ranges::minmax;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -130,7 +131,7 @@ struct minmax_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::copyable, T),
+		HAMON_CONSTRAINT(hamon::copyable, T),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<T const*, Proj>,
 		HAMON_CONSTRAINED_PARAM_D(

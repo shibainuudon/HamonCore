@@ -46,7 +46,7 @@ struct ArrowInputIterator
 	HAMON_CXX11_CONSTEXPR bool operator==(const ArrowInputIterator& rhs) const { return m_ptr == rhs.m_ptr; }
 	HAMON_CXX11_CONSTEXPR bool operator!=(const ArrowInputIterator& rhs) const { return !(*this == rhs); }
 };
-static_assert(hamon::copyable_t<ArrowInputIterator<int>>::value, "");
+static_assert(hamon::copyable<ArrowInputIterator<int>>, "");
 
 template <typename T>
 struct MoveOnlyArrowInputIterator
@@ -67,7 +67,7 @@ struct MoveOnlyArrowInputIterator
 	HAMON_CXX11_CONSTEXPR bool operator==(const MoveOnlyArrowInputIterator& rhs) const { return m_ptr == rhs.m_ptr; }
 	HAMON_CXX11_CONSTEXPR bool operator!=(const MoveOnlyArrowInputIterator& rhs) const { return !(*this == rhs); }
 };
-static_assert(!hamon::copyable_t<MoveOnlyArrowInputIterator<int>>::value, "");
+static_assert(!hamon::copyable<MoveOnlyArrowInputIterator<int>>, "");
 static_assert( hamon::input_iterator_t<MoveOnlyArrowInputIterator<int>>::value, "");
 
 struct MoveOnlyIterInnerView : hamon::ranges::view_base

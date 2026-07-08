@@ -71,7 +71,7 @@ using boxable_t = hamon::bool_constant<
 template <typename T>
 using boxable_copyable_t = hamon::bool_constant<
 	hamon::copy_constructible<T> &&
-	(hamon::copyable<T>::value || (hamon::is_nothrow_move_constructible_v<T> && hamon::is_nothrow_copy_constructible_v<T>))
+	(hamon::copyable<T> || (hamon::is_nothrow_move_constructible_v<T> && hamon::is_nothrow_copy_constructible_v<T>))
 >;
 
 template <typename T>

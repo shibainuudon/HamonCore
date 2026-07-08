@@ -144,7 +144,7 @@ template <typename I, typename S,
 		hamon::input_or_output_iterator_t<I>::value &&
 		hamon::sentinel_for_t<S, I>::value &&
 		!hamon::same_as<I, S> &&
-		hamon::copyable_t<I>::value
+		hamon::copyable<I>
 	>>
 #endif
 class common_iterator

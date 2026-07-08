@@ -7,19 +7,8 @@
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_COPYABLE_TEST(B, T)	\
-	static_assert(B == hamon::copyable<T>, "");	\
-	static_assert(B == hamon::copyable_t<T>::value, "");	\
-	static_assert(B != hamon::not_copyable<T>, "");	\
-	static_assert(B != hamon::not_copyable_t<T>::value, "")
-#else
-#  define HAMON_COPYABLE_TEST(B, T)	\
-	static_assert(B == hamon::copyable<T>::value, "");	\
-	static_assert(B == hamon::copyable_t<T>::value, "");	\
-	static_assert(B != hamon::not_copyable<T>::value, "");	\
-	static_assert(B != hamon::not_copyable_t<T>::value, "")
-#endif
+#define HAMON_COPYABLE_TEST(B, T)	\
+	static_assert(B == hamon::copyable<T>, "")
 
 namespace hamon_concepts_test
 {

@@ -157,7 +157,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::same_as<typename I::difference_type, hamon::ranges::range_difference_t<V>>, "");
 	static_assert(hamon::default_initializable<I>, "");
 	static_assert(hamon::is_nothrow_default_constructible<I>::value, "");
-	static_assert(has_arrow<I>::value == (has_arrow<BI>::value && hamon::copyable_t<BI>::value), "");
+	static_assert(has_arrow<I>::value == (has_arrow<BI>::value && hamon::copyable<BI>), "");
 	static_assert(has_pre_increment<I>::value, "");
 	static_assert(has_post_increment<I>::value, "");
 	static_assert(has_pre_decrement<I>::value == hamon::ranges::bidirectional_range_t<V>::value, "");

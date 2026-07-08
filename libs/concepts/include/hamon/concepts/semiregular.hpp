@@ -34,7 +34,7 @@ concept semiregular =
 
 template <typename T>
 using semiregular = hamon::bool_constant<
-	hamon::copyable<T>::value &&
+	hamon::copyable<T> &&
 	hamon::default_initializable<T>
 >;
 

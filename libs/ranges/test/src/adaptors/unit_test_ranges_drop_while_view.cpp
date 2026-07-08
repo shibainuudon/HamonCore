@@ -55,7 +55,7 @@ struct MoveOnlyView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
 static_assert(hamon::ranges::view_t<MoveOnlyView<int>>::value, "");
-static_assert(!hamon::copyable_t<MoveOnlyView<int>>::value, "");
+static_assert(!hamon::copyable<MoveOnlyView<int>>, "");
 
 template <typename T, typename Pred, typename = void>
 struct CanInstantiateDropWhileView

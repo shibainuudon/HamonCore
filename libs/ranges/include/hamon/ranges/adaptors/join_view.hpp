@@ -366,7 +366,7 @@ private:
 		template <typename InnerIter2 = InnerIter,
 			typename = hamon::enable_if_t<
 				hamon::ranges::detail::has_arrow_t<InnerIter2>::value &&
-				hamon::copyable_t<InnerIter2>::value>>
+				hamon::copyable<InnerIter2>>>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR InnerIter	// nodiscard as an extension
 		operator->() const HAMON_NOEXCEPT_IF(		// noexcept as an extension
 			hamon::is_nothrow_copy_constructible<InnerIter>::value)

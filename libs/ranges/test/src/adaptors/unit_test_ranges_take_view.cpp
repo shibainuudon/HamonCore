@@ -225,7 +225,7 @@ static_assert(hamon::ranges::view_t<UnreachableView<int>>::value, "");
 static_assert(!hamon::ranges::sized_range_t<UnreachableView<int>>::value, "");
 static_assert(hamon::ranges::contiguous_range_t<UnreachableView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<UnreachableView<int>>::value, "");
-static_assert(!hamon::copyable_t<UnreachableView<int>>::value, "");
+static_assert(!hamon::copyable<UnreachableView<int>>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

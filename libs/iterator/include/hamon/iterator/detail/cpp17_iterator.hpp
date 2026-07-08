@@ -55,7 +55,7 @@ private:
 			hamon::detail::can_reference<T1>::value &&
 			hamon::same_as<T2, I2&> &&
 			hamon::detail::can_reference<T3>::value &&
-			hamon::copyable<I2>::value
+			hamon::copyable<I2>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

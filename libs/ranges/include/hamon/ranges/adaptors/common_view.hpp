@@ -57,7 +57,6 @@ using std::ranges::views::common;
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -78,11 +77,11 @@ template <hamon::ranges::view V>
 	requires (!hamon::ranges::common_range<V> && hamon::copyable<hamon::ranges::iterator_t<V>>)
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::negation<hamon::ranges::common_range_t<V>>,
-		hamon::copyable_t<hamon::ranges::iterator_t<V>>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		!hamon::ranges::common_range_t<V>::value &&
+		hamon::copyable<hamon::ranges::iterator_t<V>>
+	>>
 #endif
 class common_view : public hamon::ranges::view_interface<common_view<V>>
 {

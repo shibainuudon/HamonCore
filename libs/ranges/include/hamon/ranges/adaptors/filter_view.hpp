@@ -205,10 +205,10 @@ private:
 		}
 
 		template <typename I2 = I,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::ranges::detail::has_arrow_t<I2>,
-				hamon::copyable_t<I2>
-			>::value>
+			typename = hamon::enable_if_t<
+				hamon::ranges::detail::has_arrow_t<I2>::value &&
+				hamon::copyable<I2>
+			>
 		>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR I	// nodiscard as an extension
 		operator->() const HAMON_NOEXCEPT_IF(	// noexcept as an extension

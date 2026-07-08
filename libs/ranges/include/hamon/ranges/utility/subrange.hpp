@@ -353,13 +353,13 @@ public:
 		return PairLike(m_impl.m_begin, m_impl.m_end);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::copyable, I, It)>
+	template <HAMON_CONSTRAINT_D(hamon::copyable, I, It)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR It begin() const
 	{
 		return m_impl.m_begin;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::not_copyable, I, It)>
+	template <HAMON_CONSTRAINT_D(hamon::not_copyable, I, It)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR It begin()
 	{
 		return hamon::move(m_impl.m_begin);

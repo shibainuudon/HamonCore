@@ -52,7 +52,6 @@ using std::ranges::views::iota;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -200,12 +199,12 @@ template <hamon::weakly_incrementable W, hamon::semiregular Bound = hamon::unrea
 #else
 template <
 	typename W, typename Bound = hamon::unreachable_sentinel_t,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::weakly_incrementable<W>,
-		hamon::semiregular<Bound>,
-		hamon::detail::weakly_equality_comparable_with<W, Bound>,
+	typename = hamon::enable_if_t<
+		hamon::weakly_incrementable<W>::value &&
+		hamon::semiregular<Bound>::value &&
+		hamon::detail::weakly_equality_comparable_with<W, Bound>::value &&
 		hamon::copyable<W>
-	>::value>
+	>
 >
 #endif
 class iota_view : public ranges::view_interface<iota_view<W, Bound>>

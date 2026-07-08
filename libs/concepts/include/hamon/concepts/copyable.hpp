@@ -8,14 +8,14 @@
 #define HAMON_CONCEPTS_COPYABLE_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/negation.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/add_const.hpp>
+#include <hamon/type_traits/add_lvalue_reference.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -26,75 +26,21 @@ namespace hamon
 
 using std::copyable;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#else
 
 template <typename T>
-concept copyable =
+HAMON_CONCEPT_OR_BOOL copyable =
 	hamon::copy_constructible<T> &&
 	hamon::movable<T> &&
-	hamon::assignable_from<T&, T&> &&
-	hamon::assignable_from<T&, const T&> &&
-	hamon::assignable_from<T&, const T>;
+	hamon::assignable_from<hamon::add_lvalue_reference_t<T>, hamon::add_lvalue_reference_t<T>> &&
+	hamon::assignable_from<hamon::add_lvalue_reference_t<T>, hamon::add_lvalue_reference_t<hamon::add_const_t<T>>> &&
+	hamon::assignable_from<hamon::add_lvalue_reference_t<T>, hamon::add_const_t<T>>;
 
-#else
-
-namespace detail
-{
-
-template <typename T>
-struct copyable_impl
-{
-private:
-	template <typename U,
-		typename = hamon::enable_if_t<
-			hamon::copy_constructible<U> &&
-			hamon::movable<U> &&
-			hamon::assignable_from<U&, U&> &&
-			hamon::assignable_from<U&, const U&> &&
-			hamon::assignable_from<U&, const U>
-		>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename U>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<T>(0));
-};
-
-}	// namespace detail
-
-template <typename T>
-using copyable =
-	typename detail::copyable_impl<T>::type;
-
-#endif
-
-template <typename T>
-using copyable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::copyable<T>>;
-#else
-	hamon::copyable<T>;
 #endif
 
 // not_copyable
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <typename T>
-concept not_copyable = !hamon::copyable<T>;
-#else
-template <typename T>
-using not_copyable = hamon::negation<hamon::copyable<T>>;
-#endif
-
-template <typename T>
-using not_copyable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::not_copyable<T>>;
-#else
-	hamon::not_copyable<T>;
-#endif
+HAMON_CONCEPT_OR_BOOL not_copyable = !hamon::copyable<T>;
 
 }	// namespace hamon
 
