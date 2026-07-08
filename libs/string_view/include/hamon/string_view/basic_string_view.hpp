@@ -26,6 +26,7 @@ using std::basic_string_view;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/iterator/reverse_iterator.hpp>
@@ -159,7 +160,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),		// [string.view.cons]/7.1
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),				// [string.view.cons]/7.1
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
 		typename = hamon::enable_if_t<
 			hamon::same_as<hamon::iter_value_t<It>, CharT> &&			// [string.view.cons]/7.3
@@ -840,7 +841,7 @@ private:
 // [string.view.deduct], deduction guides
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),	// [string.view.deduct]/1.1
+	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),			// [string.view.deduct]/1.1
 	HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End)	// [string.view.deduct]/1.2
 >
 basic_string_view(It, End)

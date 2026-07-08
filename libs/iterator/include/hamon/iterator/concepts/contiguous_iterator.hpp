@@ -38,7 +38,7 @@ using std::contiguous_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept contiguous_iterator =
+HAMON_CONCEPT_OR_BOOL contiguous_iterator =
 	hamon::random_access_iterator<Iter> &&
 	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::contiguous_iterator_tag> &&
 	hamon::is_lvalue_reference<hamon::iter_reference_t<Iter>>::value &&
@@ -79,17 +79,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using contiguous_iterator =
-	typename detail::contiguous_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL contiguous_iterator =
+	detail::contiguous_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using contiguous_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::contiguous_iterator<Iter>>;
-#else
-	hamon::contiguous_iterator<Iter>;
 #endif
 
 }	// namespace hamon

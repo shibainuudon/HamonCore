@@ -148,7 +148,7 @@ public:
 	// [const.iterators.types]
 
 	using iterator_concept =
-		hamon::conditional_t<hamon::contiguous_iterator_t<Iterator>::value,
+		hamon::conditional_t<hamon::contiguous_iterator<Iterator>,
 			hamon::contiguous_iterator_tag,		// [const.iterators.types]/1.1
 		hamon::conditional_t<hamon::random_access_iterator_t<Iterator>::value,
 			hamon::random_access_iterator_tag,	// [const.iterators.types]/1.2
@@ -241,7 +241,7 @@ public:
 	}
 #else
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, I)>
+	template <HAMON_CONSTRAINT(hamon::contiguous_iterator, I)>
 	HAMON_CXX11_CONSTEXPR auto
 	op_arrow_impl(I current, hamon::detail::overload_priority<1>) const HAMON_NOEXCEPT
 	->decltype(hamon::to_address(current))

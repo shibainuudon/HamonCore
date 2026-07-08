@@ -103,7 +103,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 	static_assert( hamon::forward_iterator_t<iterator>::value, "");
 	static_assert(!hamon::bidirectional_iterator<iterator>, "");
 	static_assert(!hamon::random_access_iterator_t<iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<iterator>::value, "");
+	static_assert(!hamon::contiguous_iterator<iterator>, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<iterator>>::value, "");
 	static_assert(hamon::is_same<T&, hamon::iter_reference_t<iterator>>::value, "");
 	static_assert(hamon::is_same<difference_type, hamon::iter_difference_t<iterator>>::value, "");
@@ -136,7 +136,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 	static_assert( hamon::forward_iterator_t<const_iterator>::value, "");
 	static_assert(!hamon::bidirectional_iterator<const_iterator>, "");
 	static_assert(!hamon::random_access_iterator_t<const_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<const_iterator>::value, "");
+	static_assert(!hamon::contiguous_iterator<const_iterator>, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<const_iterator>>::value, "");
 	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<const_iterator>>::value, "");
 	static_assert(hamon::is_same<difference_type, hamon::iter_difference_t<const_iterator>>::value, "");

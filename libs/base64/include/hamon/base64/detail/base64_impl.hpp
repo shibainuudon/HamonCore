@@ -8,6 +8,7 @@
 #define HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint8_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -270,7 +271,7 @@ public:
 	 */
 	template <
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, InputIterator),
 #else
 		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, InputIterator),
 #endif
@@ -329,7 +330,7 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, InputIterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, InputIterator, Sentinel),
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, OutputIterator)
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
 #else
 		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, OutputIterator)
 #endif
@@ -361,7 +362,7 @@ public:
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, OutputIterator)
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
 #else
 		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, OutputIterator)
 #endif
@@ -381,7 +382,7 @@ public:
 	template <
 		typename Result,
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, Iterator),
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, Iterator),
 #else
 		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iterator),
 #endif

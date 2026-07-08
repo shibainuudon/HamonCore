@@ -24,6 +24,7 @@ using std::span;
 #include <hamon/span/dynamic_extent.hpp>
 #include <hamon/span/detail/is_specialization_of_span.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_array.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -147,7 +148,7 @@ public:
 
 #if defined(HAMON_HAS_CXX20_CONDITIONAL_EXPLICIT)
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/3.1
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/3.1
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/3
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>	// [span.cons]/3.2
 	>
@@ -159,7 +160,7 @@ public:
 	}
 #else
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/3.1
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/3.1
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/3
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/3.2
 		hamon::size_t N = extent, hamon::enable_if_t<N != hamon::dynamic_extent>* = nullptr
@@ -170,7 +171,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/3.1
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/3.1
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/3
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/3.2
 		hamon::size_t N = extent, hamon::enable_if_t<N == hamon::dynamic_extent>* = nullptr
@@ -183,7 +184,7 @@ public:
 
 #if defined(HAMON_HAS_CXX20_CONDITIONAL_EXPLICIT)
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/7.2
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
@@ -197,7 +198,7 @@ public:
 	}
 #else
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/7.2
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
@@ -210,7 +211,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),								// [span.cons]/7.2
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
@@ -588,7 +589,7 @@ private:
 // [span.deduct]
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),	// [span.deduct]/1
+	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),	// [span.deduct]/1
 	typename EndOrSize>
 span(It, EndOrSize)
 -> span<hamon::remove_reference_t<hamon::iter_reference_t<It>>>;
@@ -669,7 +670,7 @@ namespace hamon
 	{ return __VA_ARGS__; }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),
+	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),
 	typename EndOrSize>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_span(It i, EndOrSize e)

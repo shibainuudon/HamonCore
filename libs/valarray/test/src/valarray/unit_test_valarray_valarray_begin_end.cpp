@@ -49,8 +49,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 
 		static_assert(hamon::detail::cpp17_random_access_iterator_t<It>::value, "");
 		static_assert(hamon::detail::cpp17_random_access_iterator_t<CIt>::value, "");
-		static_assert(hamon::contiguous_iterator_t<It>::value, "");
-		static_assert(hamon::contiguous_iterator_t<CIt>::value, "");
+		static_assert(hamon::contiguous_iterator<It>, "");
+		static_assert(hamon::contiguous_iterator<CIt>, "");
 		static_assert(hamon::is_same<hamon::iter_value_t<It>, T>::value, "");
 		static_assert(hamon::is_same<hamon::iter_value_t<CIt>, T>::value, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<It>, T&>::value, "");

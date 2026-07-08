@@ -54,7 +54,7 @@ void IteratorTest()
 		static_assert((hamon::is_same<typename Traits::difference_type, typename Array::difference_type>::value), "");
 	}
 
-	static_assert( hamon::contiguous_iterator_t<Iterator>::value, "");
+	static_assert( hamon::contiguous_iterator<Iterator>, "");
 	static_assert( hamon::indirectly_writable_t<Iterator, T>::value, "");
 	static_assert( hamon::sentinel_for_t<Iterator, Iterator>::value, "");
 	static_assert( hamon::sentinel_for_t<Iterator, ConstIterator>::value, "");
@@ -85,7 +85,7 @@ void IteratorTest()
 	static_assert( hamon::indirectly_swappable_t<Iterator, ReverseIterator>::value, "");
 	static_assert(!hamon::indirectly_swappable_t<Iterator, ConstReverseIterator>::value, "");
 
-	static_assert( hamon::contiguous_iterator_t<ConstIterator>::value, "");
+	static_assert( hamon::contiguous_iterator<ConstIterator>, "");
 	static_assert(!hamon::indirectly_writable_t<ConstIterator, T>::value, "");
 	static_assert( hamon::sentinel_for_t<ConstIterator, Iterator>::value, "");
 	static_assert( hamon::sentinel_for_t<ConstIterator, ConstIterator>::value, "");

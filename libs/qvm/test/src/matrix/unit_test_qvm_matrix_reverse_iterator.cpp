@@ -31,14 +31,14 @@ TYPED_TEST(MatrixTest, ReverseIteratorTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(!hamon::contiguous_iterator_t<typename matrix3x3::reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix3x3::const_reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix3x4::reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix3x4::const_reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix4x3::reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix4x3::const_reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix4x4::reverse_iterator>::value, "");
-	static_assert(!hamon::contiguous_iterator_t<typename matrix4x4::const_reverse_iterator>::value, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix3x3::reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix3x3::const_reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix3x4::reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix3x4::const_reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix4x3::reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix4x3::const_reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix4x4::reverse_iterator>, "");
+	static_assert(!hamon::contiguous_iterator<typename matrix4x4::const_reverse_iterator>, "");
 
 	static_assert(hamon::random_access_iterator_t<typename matrix3x3::reverse_iterator>::value, "");
 	static_assert(hamon::random_access_iterator_t<typename matrix3x3::const_reverse_iterator>::value, "");

@@ -18,7 +18,6 @@
 #include <hamon/iterator/advance.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_constant_evaluated.hpp>
@@ -33,10 +32,10 @@ namespace detail
 
 template <typename Allocator, typename Iter, typename Size,
 	typename ValueType = hamon::iter_value_t<Iter>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::is_arithmetic<ValueType>,
-		hamon::contiguous_iterator_t<Iter>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::is_arithmetic<ValueType>::value &&
+		hamon::contiguous_iterator<Iter>
+	>
 >
 HAMON_CXX14_CONSTEXPR Iter
 uninitialized_value_construct_n_impl(

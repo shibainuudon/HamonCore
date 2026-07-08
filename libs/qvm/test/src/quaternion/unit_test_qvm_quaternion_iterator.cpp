@@ -26,8 +26,8 @@ TYPED_TEST(QuaternionTest, IteratorTest)
 	using T = TypeParam;
 	using quaternion = hamon::qvm::quaternion<T>;
 
-	static_assert(hamon::contiguous_iterator_t<typename quaternion::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename quaternion::const_iterator>::value, "");
+	static_assert(hamon::contiguous_iterator<typename quaternion::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename quaternion::const_iterator>, "");
 
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::iterator>>::value, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::const_iterator>>::value, "");

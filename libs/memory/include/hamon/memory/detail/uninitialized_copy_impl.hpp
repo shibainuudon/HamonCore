@@ -45,14 +45,14 @@ namespace detail
 template <typename Allocator, typename I, typename S1, typename O, typename S2,
 	typename T1 = hamon::iter_value_t<I>,
 	typename T2 = hamon::iter_value_t<O>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::is_arithmetic<T1>,
-		hamon::is_arithmetic<T2>,
-		hamon::is_same<T1, T2>,
-		hamon::contiguous_iterator_t<I>,
-		hamon::contiguous_iterator_t<O>,
-		hamon::sized_sentinel_for_t<S1, I>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::is_arithmetic<T1>::value &&
+		hamon::is_arithmetic<T2>::value &&
+		hamon::is_same<T1, T2>::value &&
+		hamon::contiguous_iterator<I> &&
+		hamon::contiguous_iterator<O> &&
+		hamon::sized_sentinel_for_t<S1, I>::value
+	>
 >
 HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>
 uninitialized_copy_impl(

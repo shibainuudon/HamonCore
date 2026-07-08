@@ -30,14 +30,14 @@ TYPED_TEST(MatrixTest, IteratorTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(hamon::contiguous_iterator_t<typename matrix3x3::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix3x3::const_iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix3x4::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix3x4::const_iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix4x3::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix4x3::const_iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix4x4::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename matrix4x4::const_iterator>::value, "");
+	static_assert(hamon::contiguous_iterator<typename matrix3x3::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix3x3::const_iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix3x4::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix3x4::const_iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix4x3::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix4x3::const_iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix4x4::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename matrix4x4::const_iterator>, "");
 
 	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix3x3::iterator>>::value, "");
 	static_assert(hamon::is_same<vector3, hamon::iter_value_t<typename matrix3x3::const_iterator>>::value, "");

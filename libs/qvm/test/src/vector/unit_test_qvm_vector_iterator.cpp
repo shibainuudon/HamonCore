@@ -28,12 +28,12 @@ TYPED_TEST(VectorTest, IteratorTest)
 	using vector3 = hamon::qvm::vector<T, 3>;
 	using vector4 = hamon::qvm::vector<T, 4>;
 
-	static_assert(hamon::contiguous_iterator_t<typename vector2::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename vector2::const_iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename vector3::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename vector3::const_iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename vector4::iterator>::value, "");
-	static_assert(hamon::contiguous_iterator_t<typename vector4::const_iterator>::value, "");
+	static_assert(hamon::contiguous_iterator<typename vector2::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename vector2::const_iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename vector3::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename vector3::const_iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename vector4::iterator>, "");
+	static_assert(hamon::contiguous_iterator<typename vector4::const_iterator>, "");
 
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::iterator>>::value, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::const_iterator>>::value, "");

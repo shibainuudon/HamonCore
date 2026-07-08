@@ -188,7 +188,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D),
-		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<R>>::value>>
+		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	data()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::to_address(ranges::begin(hamon::declval<R&>())))	// noexcept as an extension
@@ -198,7 +198,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D const),
-		typename = hamon::enable_if_t<hamon::contiguous_iterator_t<ranges::iterator_t<R>>::value>>
+		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	data() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::to_address(ranges::begin(hamon::declval<R&>())))	// noexcept as an extension

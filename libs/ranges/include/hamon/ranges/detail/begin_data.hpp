@@ -10,6 +10,7 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -31,8 +32,11 @@ template <typename T>
 struct begin_data_impl
 {
 private:
-	template <typename U, typename I = decltype(ranges::begin(hamon::declval<U&>()))>
-	static auto test(int) -> hamon::contiguous_iterator<I>;
+	template <typename U,
+		typename I = decltype(ranges::begin(hamon::declval<U&>())),
+		typename = hamon::enable_if_t<hamon::contiguous_iterator<I>>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

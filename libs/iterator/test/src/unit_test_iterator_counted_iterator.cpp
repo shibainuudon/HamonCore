@@ -293,7 +293,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// auto operator->() const noexcept;
-	static_assert(has_arrow<CI const>::value == hamon::contiguous_iterator_t<I>::value, "");
+	static_assert(has_arrow<CI const>::value == hamon::contiguous_iterator<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_arrow<CI const>::value)
 	{
@@ -469,7 +469,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(hamon::forward_iterator_t<CI>::value == hamon::forward_iterator_t<I>::value, "");
 	static_assert(hamon::bidirectional_iterator<CI> == hamon::bidirectional_iterator<I>, "");
 	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");
-	static_assert(hamon::contiguous_iterator_t<CI>::value == hamon::contiguous_iterator_t<I>::value, "");
+	static_assert(hamon::contiguous_iterator<CI> == hamon::contiguous_iterator<I>, "");
 
 	return true;
 }

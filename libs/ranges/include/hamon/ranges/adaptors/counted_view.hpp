@@ -26,6 +26,7 @@ using std::ranges::views::counted;
 #include <hamon/ranges/utility/subrange.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
@@ -99,7 +100,7 @@ private:
 	// 先に、呼び出し可能かどうか判定する必要がある。
 
 	// [range.counted]/2.1
-	template <HAMON_CONSTRAINED_PARAM(hamon::contiguous_iterator, It),
+	template <HAMON_CONSTRAINT(hamon::contiguous_iterator, It),
 		typename = hamon::enable_if_t<is_invocable_to_address<It>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(It it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<2>)

@@ -209,7 +209,7 @@ public:
 			*m_current;	// [counted.iter.elem]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::contiguous_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::contiguous_iterator, I2, I)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto operator->() const HAMON_NOEXCEPT
 #if !defined(HAMON_HAS_CXX14_RETURN_TYPE_DEDUCTION)
@@ -575,7 +575,7 @@ struct iterator_traits<
 #endif
 {
 	using pointer = hamon::conditional_t<
-		hamon::contiguous_iterator_t<I>::value,
+		hamon::contiguous_iterator<I>,
 			hamon::add_pointer_t<hamon::iter_reference_t<I>>,
 			void
 	>;
