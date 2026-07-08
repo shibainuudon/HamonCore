@@ -32,6 +32,7 @@ using std::ranges::fold_right_last;
 #include <hamon/algorithm/ranges/detail/indirectly_binary_right_foldable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/functional/ref.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -92,7 +93,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, I),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,

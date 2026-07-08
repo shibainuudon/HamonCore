@@ -42,7 +42,7 @@ private:
 		typename I = decltype(ranges::begin(hamon::declval<U&>())),
 		typename S = decltype(ranges::end(hamon::declval<U&>())),
 		typename = hamon::enable_if_t<
-			hamon::bidirectional_iterator<I>::value &&
+			hamon::bidirectional_iterator<I> &&
 			hamon::same_as<S, I>
 		>
 	>

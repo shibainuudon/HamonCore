@@ -280,7 +280,7 @@ public:
 		return increment_impl(hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::bidirectional_iterator, I2, I)>
 	HAMON_CXX14_CONSTEXPR
 	counted_iterator& operator--()
 	HAMON_NOEXCEPT_IF_EXPR(--hamon::declval<I2&>())	// noexcept as an extension
@@ -291,7 +291,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::bidirectional_iterator, I2, I)>
 	HAMON_CXX14_CONSTEXPR
 	counted_iterator operator--(int)
 	HAMON_NOEXCEPT_IF(		// noexcept as an extension

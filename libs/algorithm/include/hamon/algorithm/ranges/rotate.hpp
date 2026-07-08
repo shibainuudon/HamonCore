@@ -34,6 +34,7 @@ using std::ranges::rotate;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -147,7 +148,7 @@ private:
 	}
 
 	// else if constexpr (hamon::bidirectional_iterator<Iter>)
-	template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter)>
+	template <HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter)>
 	static HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
 	impl(Iter first, Iter middle, Iter lasti,
 		hamon::detail::overload_priority<1>)

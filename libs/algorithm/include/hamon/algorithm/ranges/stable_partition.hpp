@@ -31,6 +31,7 @@ using std::ranges::stable_partition;
 #include <hamon/algorithm/ranges/detail/make_pred_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -56,7 +57,7 @@ namespace ranges
 struct stable_partition_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,

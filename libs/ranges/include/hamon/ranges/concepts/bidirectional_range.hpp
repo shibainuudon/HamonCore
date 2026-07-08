@@ -50,7 +50,7 @@ private:
 			ranges::forward_range<U>::value
 		>,
 		typename = hamon::enable_if_t<
-			hamon::bidirectional_iterator<ranges::iterator_t<U>>::value
+			hamon::bidirectional_iterator<ranges::iterator_t<U>>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

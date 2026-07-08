@@ -108,7 +108,7 @@ using move_iter_concept =
 		hamon::random_access_iterator_t<Iter>::value,
 		hamon::random_access_iterator_tag,
 	hamon::conditional_t<
-		hamon::bidirectional_iterator_t<Iter>::value,
+		hamon::bidirectional_iterator<Iter>,
 		hamon::bidirectional_iterator_tag,
 	hamon::conditional_t<
 		hamon::forward_iterator_t<Iter>::value,

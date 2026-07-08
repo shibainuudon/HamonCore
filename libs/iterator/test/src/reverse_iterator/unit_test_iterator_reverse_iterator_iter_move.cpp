@@ -48,7 +48,7 @@ template <bool NoExceptCopy, bool NoExceptDecrement, bool NoExceptIterMove>
 HAMON_CXX11_CONSTEXPR float&& iter_move(
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterMove> const&) noexcept(NoExceptIterMove);
 
-static_assert(hamon::bidirectional_iterator_t<TestIterator<true,  true,  true>>::value, "");
+static_assert(hamon::bidirectional_iterator<TestIterator<true,  true,  true>>, "");
 
 static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(hamon::declval<hamon::reverse_iterator<int*>>())), int&&>::value, "");
 static_assert(hamon::is_same<decltype(hamon::ranges::iter_move(hamon::declval<hamon::reverse_iterator<TestIterator<true, true, true>>>())), float&&>::value, "");

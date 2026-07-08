@@ -76,7 +76,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::copyable<iterator>, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
-		static_assert(!hamon::bidirectional_iterator_t<iterator>::value, "");
+		static_assert(!hamon::bidirectional_iterator<iterator>, "");
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable_t<int*, iterator>::value, "");
@@ -94,7 +94,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::copyable<iterator>, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
-		static_assert( hamon::bidirectional_iterator_t<iterator>::value, "");
+		static_assert( hamon::bidirectional_iterator<iterator>, "");
 		static_assert(!hamon::random_access_iterator_t<iterator>::value, "");
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
@@ -113,7 +113,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::copyable<iterator>, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
-		static_assert( hamon::bidirectional_iterator_t<iterator>::value, "");
+		static_assert( hamon::bidirectional_iterator<iterator>, "");
 		static_assert( hamon::random_access_iterator_t<iterator>::value, "");
 		static_assert(!hamon::contiguous_iterator_t<iterator>::value, "");
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
@@ -133,7 +133,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::copyable<iterator>, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
-		static_assert( hamon::bidirectional_iterator_t<iterator>::value, "");
+		static_assert( hamon::bidirectional_iterator<iterator>, "");
 		static_assert( hamon::random_access_iterator_t<iterator>::value, "");
 		static_assert(!hamon::contiguous_iterator_t<iterator>::value, "");
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
@@ -153,7 +153,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::copyable<iterator>, "");
 		static_assert( hamon::input_iterator_t<iterator>::value, "");
 		static_assert( hamon::forward_iterator_t<iterator>::value, "");
-		static_assert( hamon::bidirectional_iterator_t<iterator>::value, "");
+		static_assert( hamon::bidirectional_iterator<iterator>, "");
 		static_assert( hamon::random_access_iterator_t<iterator>::value, "");
 		static_assert(!hamon::contiguous_iterator_t<iterator>::value, "");
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");

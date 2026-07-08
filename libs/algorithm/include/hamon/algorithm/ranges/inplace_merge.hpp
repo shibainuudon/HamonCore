@@ -31,6 +31,7 @@ using std::ranges::inplace_merge;
 #include <hamon/algorithm/ranges/detail/make_comp_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -54,7 +55,7 @@ namespace ranges
 struct inplace_merge_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity

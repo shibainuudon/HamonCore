@@ -30,6 +30,7 @@ using std::ranges::find_end;
 #include <hamon/algorithm/ranges/search.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -58,9 +59,9 @@ struct find_end_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter1),
 		typename Sent1,
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter2),
 		typename Sent2,
 		typename Pred,
 		typename Proj1,

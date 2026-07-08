@@ -404,7 +404,7 @@ public:
 		return hamon::move(*this);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, It)>
+	template <HAMON_CONSTRAINT_D(hamon::bidirectional_iterator, I, It)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR subrange
 	prev(hamon::iter_difference_t<It> n = 1) const
 	{
@@ -416,7 +416,7 @@ public:
 	HAMON_CXX14_CONSTEXPR subrange&
 	advance(hamon::iter_difference_t<It> n)
 	{
-		HAMON_ASSERT(hamon::bidirectional_iterator_t<It>{} || n >= 0);
+		HAMON_ASSERT(hamon::bidirectional_iterator<It> || n >= 0);
 		
 		if (n < 0)
 		{

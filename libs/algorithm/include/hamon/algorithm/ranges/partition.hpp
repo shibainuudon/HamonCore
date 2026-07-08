@@ -29,6 +29,7 @@ using std::ranges::partition;
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -58,7 +59,7 @@ struct partition_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		typename Sent,
 		typename Proj,
 		typename Pred

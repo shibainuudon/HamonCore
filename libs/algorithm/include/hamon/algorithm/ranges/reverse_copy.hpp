@@ -30,6 +30,7 @@ using std::ranges::reverse_copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
@@ -56,7 +57,7 @@ using reverse_copy_result = in_out_result<Iter, Out>;
 struct reverse_copy_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
 	>

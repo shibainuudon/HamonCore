@@ -322,7 +322,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// counted_iterator& operator--();
-	static_assert( has_pre_decrement<CI>::value == hamon::bidirectional_iterator_t<I>::value, "");
+	static_assert( has_pre_decrement<CI>::value == hamon::bidirectional_iterator<I>, "");
 	static_assert(!has_pre_decrement<CI const>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_pre_decrement<CI>::value)
@@ -332,7 +332,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// counted_iterator operator--(int)
-	static_assert( has_post_decrement<CI>::value == hamon::bidirectional_iterator_t<I>::value, "");
+	static_assert( has_post_decrement<CI>::value == hamon::bidirectional_iterator<I>, "");
 	static_assert(!has_post_decrement<CI const>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_post_decrement<CI>::value)
@@ -467,7 +467,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 
 	static_assert(hamon::input_iterator_t<CI>::value == hamon::input_iterator_t<I>::value, "");
 	static_assert(hamon::forward_iterator_t<CI>::value == hamon::forward_iterator_t<I>::value, "");
-	static_assert(hamon::bidirectional_iterator_t<CI>::value == hamon::bidirectional_iterator_t<I>::value, "");
+	static_assert(hamon::bidirectional_iterator<CI> == hamon::bidirectional_iterator<I>, "");
 	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");
 	static_assert(hamon::contiguous_iterator_t<CI>::value == hamon::contiguous_iterator_t<I>::value, "");
 

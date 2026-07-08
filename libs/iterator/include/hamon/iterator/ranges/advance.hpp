@@ -33,6 +33,7 @@ using std::ranges::advance;
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/move.hpp>
@@ -57,7 +58,7 @@ advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_pri
 	it += n;
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It)>
+template <HAMON_CONSTRAINT(hamon::bidirectional_iterator, It)>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<1>)
 {
@@ -136,7 +137,7 @@ advance_impl(It& it, Sent bound)
 // advance(it, n, bound) の実装
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, It),
+	HAMON_CONSTRAINT(hamon::bidirectional_iterator, It),
 	typename Sent,
 	typename = hamon::enable_if_t<
 		hamon::same_as<It, Sent>

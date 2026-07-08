@@ -31,7 +31,7 @@ using std::bidirectional_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept bidirectional_iterator =
+HAMON_CONCEPT_OR_BOOL bidirectional_iterator =
 	hamon::forward_iterator<Iter> &&
 	hamon::derived_from<
 		hamon::detail::iter_concept<Iter>,
@@ -80,17 +80,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using bidirectional_iterator =
-	typename detail::bidirectional_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL bidirectional_iterator =
+	detail::bidirectional_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using bidirectional_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::bidirectional_iterator<Iter>>;
-#else
-	hamon::bidirectional_iterator<Iter>;
 #endif
 
 }	// namespace hamon

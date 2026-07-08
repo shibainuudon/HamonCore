@@ -152,7 +152,7 @@ public:
 			hamon::contiguous_iterator_tag,		// [const.iterators.types]/1.1
 		hamon::conditional_t<hamon::random_access_iterator_t<Iterator>::value,
 			hamon::random_access_iterator_tag,	// [const.iterators.types]/1.2
-		hamon::conditional_t<hamon::bidirectional_iterator_t<Iterator>::value,
+		hamon::conditional_t<hamon::bidirectional_iterator<Iterator>,
 			hamon::bidirectional_iterator_tag,	// [const.iterators.types]/1.3
 		hamon::conditional_t<hamon::forward_iterator_t<Iterator>::value,
 			hamon::forward_iterator_tag,		// [const.iterators.types]/1.4
@@ -335,7 +335,7 @@ public:
 	}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::bidirectional_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator--()
 	HAMON_NOEXCEPT_IF_EXPR(--m_current)	// noexcept as an extension
@@ -346,7 +346,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::bidirectional_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::bidirectional_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator
 	operator--(int)
     HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR(--*this) && hamon::is_nothrow_copy_constructible<basic_const_iterator>::value)	// noexcept as an extension

@@ -61,7 +61,7 @@ HAMON_CXX14_CONSTEXPR void iter_swap(
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterSwap> const&,
 	TestIterator<NoExceptCopy, NoExceptDecrement, NoExceptIterSwap> const&) noexcept(NoExceptIterSwap);
 
-static_assert(hamon::bidirectional_iterator_t<TestIterator<true,  true,  true>>::value, "");
+static_assert(hamon::bidirectional_iterator<TestIterator<true,  true,  true>>, "");
 
 static_assert( has_iter_swap<hamon::reverse_iterator<int*>, hamon::reverse_iterator<int*>>::value, "");
 static_assert( has_iter_swap<hamon::reverse_iterator<int*>, hamon::reverse_iterator<long*>>::value, "");

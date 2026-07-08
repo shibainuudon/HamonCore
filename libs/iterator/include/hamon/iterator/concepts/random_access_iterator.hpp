@@ -60,7 +60,7 @@ struct random_access_iterator_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::bidirectional_iterator<I2>::value>,
+		typename = hamon::enable_if_t<hamon::bidirectional_iterator<I2>>,
 		typename = hamon::enable_if_t<hamon::derived_from<
 			hamon::detail::iter_concept<I2>, hamon::random_access_iterator_tag>>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>>,

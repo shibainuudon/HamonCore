@@ -62,7 +62,7 @@ struct find_last_if_not_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINT(hamon::same_as, Iter, Sent),
 		typename Proj,
 		typename Pred

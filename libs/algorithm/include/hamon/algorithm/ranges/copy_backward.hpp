@@ -30,6 +30,7 @@ using std::ranges::copy_backward;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memmove.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -122,9 +123,9 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, Out result) const
@@ -141,7 +142,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::bidirectional_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::bidirectional_iterator, Out)
+		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result) const
