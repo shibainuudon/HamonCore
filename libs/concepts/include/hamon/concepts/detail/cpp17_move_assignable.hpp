@@ -25,7 +25,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept cpp17_move_assignable =
+HAMON_CONCEPT_OR_BOOL cpp17_move_assignable =
 #if defined(HAMON_MSVC)
 	!hamon::is_function<hamon::remove_reference_t<T>>::value &&
 #endif
@@ -54,17 +54,9 @@ public:
 };
 
 template <typename T>
-using cpp17_move_assignable =
-	typename cpp17_move_assignable_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_move_assignable =
+	cpp17_move_assignable_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using cpp17_move_assignable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_move_assignable<T>>;
-#else
-	hamon::detail::cpp17_move_assignable<T>;
 #endif
 
 }	// namespace detail

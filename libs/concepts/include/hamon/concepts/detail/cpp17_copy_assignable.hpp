@@ -37,7 +37,7 @@ struct cpp17_copy_assignable_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<hamon::detail::cpp17_move_assignable<U>::value>,
+		typename = hamon::enable_if_t<hamon::detail::cpp17_move_assignable<U>>,
 		typename R = decltype(hamon::declval<U&>() = hamon::declval<U const&>()),
 		typename = hamon::enable_if_t<hamon::same_as<R, U&>>
 	>

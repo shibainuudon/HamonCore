@@ -590,7 +590,7 @@ public:
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, hamon::allocator<value_type>, Args&&...>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 
 		auto const mid = this->end();
 		this->EmplaceBack(hamon::forward<Args>(args)...);	// may throw
@@ -614,7 +614,7 @@ public:
 	{
 		// [sequence.reqmts]/29
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 
 		return this->emplace(position, hamon::move(x));
 	}
@@ -642,7 +642,7 @@ public:
 			value_type, hamon::allocator<value_type>, decltype(*first)>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const mid = this->end();
@@ -661,7 +661,7 @@ public:
 			value_type, hamon::allocator<value_type>, decltype(*hamon::ranges::begin(rg))>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const mid = this->end();

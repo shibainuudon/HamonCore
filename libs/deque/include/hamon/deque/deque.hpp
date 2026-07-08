@@ -534,7 +534,7 @@ public:
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, Args&&...>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 
 		auto const pos_offset = position - this->begin();
 		m_impl.Emplace(m_allocator, pos_offset, hamon::forward<Args>(args)...);
@@ -565,7 +565,7 @@ public:
 			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		this->insert_range(this->cbegin(), hamon::forward<R>(rg));
@@ -610,7 +610,7 @@ public:
 	{
 		// [sequence.reqmts]/29
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 
 		return this->emplace(position, hamon::move(x));
 	}
@@ -634,7 +634,7 @@ public:
 			value_type, allocator_type, decltype(*first)>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const pos_offset = position - this->begin();
@@ -650,7 +650,7 @@ public:
 			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible_t<value_type>::value, "");
-		static_assert(hamon::detail::cpp17_move_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
 		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
 
 		auto const pos_offset = position - this->begin();
