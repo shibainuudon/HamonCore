@@ -141,7 +141,7 @@ public:
 		: set(first, last, Compare(), a)
 	{
 		// [associative.reqmts.general]/26
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_compare>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*first)>::value, "");
 	}
@@ -164,7 +164,7 @@ public:
 		: set(hamon::from_range, hamon::forward<R>(rg), Compare(), a)
 	{
 		// [associative.reqmts.general]/32
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_compare>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
 	}

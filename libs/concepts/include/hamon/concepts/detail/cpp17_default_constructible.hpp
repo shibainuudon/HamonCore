@@ -31,7 +31,7 @@ struct cpp17_default_constructible_helper
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept cpp17_default_constructible =
+HAMON_CONCEPT_OR_BOOL cpp17_default_constructible =
 	hamon::is_object_v<T> &&
 	!hamon::is_void_v<T> &&
 	!hamon::is_array_v<T> &&
@@ -66,17 +66,9 @@ public:
 };
 
 template <typename T>
-using cpp17_default_constructible =
-	typename cpp17_default_constructible_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_default_constructible =
+	cpp17_default_constructible_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using cpp17_default_constructible_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_default_constructible<T>>;
-#else
-	hamon::detail::cpp17_default_constructible<T>;
 #endif
 
 }	// namespace detail

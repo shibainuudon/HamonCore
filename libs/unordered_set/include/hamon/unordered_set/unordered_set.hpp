@@ -122,8 +122,8 @@ public:
 	unordered_set()	// may throw
 		: unordered_set(size_type())	// [unord.set.cnstr]/1
 	{
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "[unord.req.general]/32");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "[unord.req.general]/32");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "[unord.req.general]/32");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "[unord.req.general]/32");
 	}
 
 	HAMON_CXX14_CONSTEXPR explicit
@@ -140,15 +140,15 @@ public:
 	unordered_set(size_type n, hasher const& hf, allocator_type const& a)	// may throw
 		: unordered_set(n, hf, key_equal(), a)
 	{
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "[unord.req.general]/26");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "[unord.req.general]/26");
 	}
 
 	HAMON_CXX14_CONSTEXPR
 	unordered_set(size_type n, allocator_type const& a)	// may throw
 		: unordered_set(n, hasher(), key_equal(), a)
 	{
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "[unord.req.general]/29");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "[unord.req.general]/29");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "[unord.req.general]/29");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "[unord.req.general]/29");
 	}
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -180,7 +180,7 @@ public:
 		: unordered_set(f, l, n, hf, key_equal(), a)	// may throw
 	{
 		// [unord.req.general]/38
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
@@ -194,8 +194,8 @@ public:
 		: unordered_set(f, l, n, hasher(), key_equal(), a)
 	{
 		// [unord.req.general]/41
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
@@ -207,8 +207,8 @@ public:
 		: unordered_set(f, l, size_type(), hasher(), key_equal(), a)
 	{
 		// [unord.req.general]/44
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
@@ -242,7 +242,7 @@ public:
 		: unordered_set(hamon::from_range, hamon::forward<R>(rg), n, hf, key_equal(), a)
 	{
 		// [unord.req.general]/50
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
 	}
@@ -256,8 +256,8 @@ public:
 		: unordered_set(hamon::from_range, hamon::forward<R>(rg), n, hasher(), key_equal(), a)
 	{
 		// [unord.req.general]/53
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
 	}
@@ -269,8 +269,8 @@ public:
 		: unordered_set(hamon::from_range, hamon::forward<R>(rg), size_type(), hasher(), key_equal(), a)
 	{
 		// [unord.req.general]/56
-		static_assert(hamon::detail::cpp17_default_constructible_t<hasher>::value, "");
-		static_assert(hamon::detail::cpp17_default_constructible_t<key_equal>::value, "");
+		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
+		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
 	}

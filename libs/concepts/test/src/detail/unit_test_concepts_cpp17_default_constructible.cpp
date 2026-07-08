@@ -10,15 +10,8 @@
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wunused-private-field")
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_CPP17_DEFAULT_CONSTRUCTIBLE_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_default_constructible<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::detail::cpp17_default_constructible_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_CPP17_DEFAULT_CONSTRUCTIBLE_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_default_constructible<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::detail::cpp17_default_constructible_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_CPP17_DEFAULT_CONSTRUCTIBLE_TEST(B, ...)	\
+	static_assert(B == hamon::detail::cpp17_default_constructible<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {
