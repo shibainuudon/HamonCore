@@ -7,15 +7,8 @@
 #include <hamon/concepts/swappable_with.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_SWAPPABLE_WITH_TEST(B, T1, T2)	\
-	static_assert(B == hamon::swappable_with<T1, T2>, "");	\
-	static_assert(B == hamon::swappable_with_t<T1, T2>::value, "")
-#else
-#  define HAMON_SWAPPABLE_WITH_TEST(B, T1, T2)	\
-	static_assert(B == hamon::swappable_with<T1, T2>::value, "");	\
-	static_assert(B == hamon::swappable_with_t<T1, T2>::value, "")
-#endif
+#define HAMON_SWAPPABLE_WITH_TEST(B, T1, T2)	\
+	static_assert(B == hamon::swappable_with<T1, T2>, "")
 
 namespace hamon_concepts_test
 {

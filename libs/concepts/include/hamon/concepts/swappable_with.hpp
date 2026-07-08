@@ -8,13 +8,14 @@
 #define HAMON_CONCEPTS_SWAPPABLE_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/swap.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -28,7 +29,7 @@ using std::swappable_with;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept swappable_with =
+HAMON_CONCEPT_OR_BOOL swappable_with =
 	hamon::common_reference_with<T, U> &&
 	requires(T&& t, U&& u)
 	{
@@ -48,14 +49,14 @@ struct swappable_with_impl
 {
 private:
 	template <typename T2, typename U2,
+		typename = hamon::enable_if_t<
+			hamon::common_reference_with<T2, U2>
+		>,
 		typename = decltype(
 			ranges::swap(hamon::declval<T2>(), hamon::declval<T2>()),
 			ranges::swap(hamon::declval<U2>(), hamon::declval<U2>()),
 			ranges::swap(hamon::declval<T2>(), hamon::declval<U2>()),
-			ranges::swap(hamon::declval<U2>(), hamon::declval<T2>())),
-		typename = hamon::enable_if_t<
-			hamon::common_reference_with<T2, U2>
-		>
+			ranges::swap(hamon::declval<U2>(), hamon::declval<T2>()))
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -69,17 +70,9 @@ public:
 }	// namespace detail
 
 template <typename T, typename U>
-using swappable_with =
-	typename detail::swappable_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL swappable_with =
+	detail::swappable_with_impl<T, U>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using swappable_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::swappable_with<T, U>>;
-#else
-	hamon::swappable_with<T, U>;
 #endif
 
 }	// namespace hamon
