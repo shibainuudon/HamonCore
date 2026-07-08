@@ -7,15 +7,8 @@
 #include <hamon/concepts/strict_weak_order.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_STRICT_WEAK_ORDER_TEST(B, ...)	\
-	static_assert(B == hamon::strict_weak_order<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::strict_weak_order_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_STRICT_WEAK_ORDER_TEST(B, ...) \
-	static_assert(B == hamon::strict_weak_order<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::strict_weak_order_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_STRICT_WEAK_ORDER_TEST(B, ...)	\
+	static_assert(B == hamon::strict_weak_order<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {

@@ -61,11 +61,11 @@ private:
 		typename R2 = hamon::iter_reference_t<J2>,
 		typename C1 = hamon::iter_common_reference_t<J1>,
 		typename C2 = hamon::iter_common_reference_t<J2>,
-		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, V1, V2>::value>,
-		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, V1, R2>::value>,
-		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, R1, V2>::value>,
-		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, R1, R2>::value>,
-		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, C1, C2>::value>
+		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, V1, V2>>,
+		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, V1, R2>>,
+		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, R1, V2>>,
+		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, R1, R2>>,
+		typename = hamon::enable_if_t<hamon::strict_weak_order<F2&, C1, C2>>
 	>
 	static auto test(int) -> hamon::true_type;
 
