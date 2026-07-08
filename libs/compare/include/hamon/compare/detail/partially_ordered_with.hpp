@@ -8,8 +8,8 @@
 #define HAMON_COMPARE_DETAIL_PARTIALLY_ORDERED_WITH_HPP
 
 #include <hamon/concepts/detail/boolean_testable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -49,25 +49,18 @@ private:
 		typename T2, typename U2,
 		typename TR = hamon::remove_reference_t<T2> const&,
 		typename UR = hamon::remove_reference_t<U2> const&,
-		typename B1 = decltype(hamon::declval<TR>() <  hamon::declval<UR>()),
-		typename B2 = decltype(hamon::declval<TR>() >  hamon::declval<UR>()),
-		typename B3 = decltype(hamon::declval<TR>() <= hamon::declval<UR>()),
-		typename B4 = decltype(hamon::declval<TR>() >= hamon::declval<UR>()),
-		typename B5 = decltype(hamon::declval<UR>() <  hamon::declval<TR>()),
-		typename B6 = decltype(hamon::declval<UR>() >  hamon::declval<TR>()),
-		typename B7 = decltype(hamon::declval<UR>() <= hamon::declval<TR>()),
-		typename B8 = decltype(hamon::declval<UR>() >= hamon::declval<TR>())
+		typename = hamon::enable_if_t<
+			boolean_testable<decltype(hamon::declval<TR>() <  hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<TR>() >  hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<TR>() <= hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<TR>() >= hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() <  hamon::declval<TR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() >  hamon::declval<TR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() <= hamon::declval<TR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() >= hamon::declval<TR>())>
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		boolean_testable<B1>,
-		boolean_testable<B2>,
-		boolean_testable<B3>,
-		boolean_testable<B4>,
-		boolean_testable<B5>,
-		boolean_testable<B6>,
-		boolean_testable<B7>,
-		boolean_testable<B8>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

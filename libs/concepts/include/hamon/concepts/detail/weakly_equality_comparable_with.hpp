@@ -46,15 +46,11 @@ private:
 		typename T2, typename U2,
 		typename TR = hamon::remove_reference_t<T2> const&,
 		typename UR = hamon::remove_reference_t<U2> const&,
-		typename B1 = decltype(hamon::declval<TR>() == hamon::declval<UR>()),
-		typename B2 = decltype(hamon::declval<TR>() != hamon::declval<UR>()),
-		typename B3 = decltype(hamon::declval<UR>() == hamon::declval<TR>()),
-		typename B4 = decltype(hamon::declval<UR>() != hamon::declval<TR>()),
 		typename = hamon::enable_if_t<
-			boolean_testable<B1>::value &&
-			boolean_testable<B2>::value &&
-			boolean_testable<B3>::value &&
-			boolean_testable<B4>::value
+			boolean_testable<decltype(hamon::declval<TR>() == hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<TR>() != hamon::declval<UR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() == hamon::declval<TR>())> &&
+			boolean_testable<decltype(hamon::declval<UR>() != hamon::declval<TR>())>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

@@ -44,7 +44,7 @@ private:
 	template <typename U, typename... As,
 		typename = hamon::enable_if_t<
 			hamon::regular_invocable<U, As...> &&
-			detail::boolean_testable<hamon::invoke_result_t<U, As...>>::value
+			detail::boolean_testable<hamon::invoke_result_t<U, As...>>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

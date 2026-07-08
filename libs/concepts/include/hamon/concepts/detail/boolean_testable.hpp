@@ -25,10 +25,10 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept boolean_testable_impl = hamon::convertible_to<T, bool>;
+HAMON_CONCEPT_OR_BOOL boolean_testable_impl = hamon::convertible_to<T, bool>;
 
 template <typename T>
-concept boolean_testable =
+HAMON_CONCEPT_OR_BOOL boolean_testable =
 	boolean_testable_impl<T> &&
 	requires(T&& t)
 	{
@@ -58,7 +58,8 @@ public:
 };
 
 template <typename T>
-using boolean_testable = typename boolean_testable_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL boolean_testable =
+	boolean_testable_impl<T>::type::value;
 
 #endif
 
