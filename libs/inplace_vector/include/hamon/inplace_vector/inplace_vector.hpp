@@ -157,7 +157,7 @@ public:
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/18
 		this->assign(il.begin(), il.end());
@@ -208,7 +208,7 @@ public:
 	{
 		// [sequence.reqmts]/67
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (n > this->capacity())
 		{
@@ -604,7 +604,7 @@ public:
 	{
 		// [sequence.reqmts]/25
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		return this->emplace(position, x);
 	}
@@ -624,7 +624,7 @@ public:
 	{
 		// [sequence.reqmts]/33
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		auto const mid = this->end();
 		this->AppendN(n, x);	// may throw

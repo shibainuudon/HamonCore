@@ -23,7 +23,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept cpp17_copy_assignable =
+HAMON_CONCEPT_OR_BOOL cpp17_copy_assignable =
 	hamon::detail::cpp17_move_assignable<T> &&
 	requires(T& t, T const& v)
 	{
@@ -51,17 +51,9 @@ public:
 };
 
 template <typename T>
-using cpp17_copy_assignable =
-	typename cpp17_copy_assignable_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_copy_assignable =
+	cpp17_copy_assignable_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using cpp17_copy_assignable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_copy_assignable<T>>;
-#else
-	hamon::detail::cpp17_copy_assignable<T>;
 #endif
 
 }	// namespace detail

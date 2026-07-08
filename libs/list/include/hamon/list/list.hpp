@@ -217,7 +217,7 @@ public:
 	{
 		// [container.alloc.reqmts]/22
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (hamon::addressof(x) == this)
 		{
@@ -294,7 +294,7 @@ public:
 	{
 		// [sequence.reqmts]/17
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/18
 		this->assign(il.begin(), il.end());	// may throw
@@ -335,7 +335,7 @@ public:
 	{
 		// [sequence.reqmts]/67
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/68
 		m_impl.assign_n(m_allocator, n, t);	// may throw
@@ -622,7 +622,7 @@ public:
 	{
 		// [sequence.reqmts]/33
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		return iterator{ m_impl.insert_n(m_allocator, position.ptr(), n, x) };	// may throw
 	}

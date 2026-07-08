@@ -390,7 +390,7 @@ public:
 	{
 		// [container.alloc.reqmts]/22
 		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
-		//static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "");
+		//static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (hamon::addressof(x) == this)
 		{
@@ -465,7 +465,7 @@ public:
 	{
 		static_assert(hamon::detail::cpp17_copy_insertable_t<
 			value_type, allocator_type>::value, "[unord.req.general]/69");
-		//static_assert(hamon::detail::cpp17_copy_assignable_t<value_type>::value, "[unord.req.general]/69");
+		//static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "[unord.req.general]/69");
 
 		this->clear();
 		this->insert(il);	// may throw
