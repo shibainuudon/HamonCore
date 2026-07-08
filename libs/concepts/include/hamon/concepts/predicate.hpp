@@ -12,7 +12,7 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/regular_invocable.hpp>
 #include <hamon/concepts/detail/boolean_testable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #endif
 
@@ -41,11 +41,13 @@ template <typename Fn, typename... Args>
 struct predicate_impl
 {
 private:
-	template <typename U, typename... As>
-	static auto test(int) -> hamon::conjunction<
-		hamon::regular_invocable<U, As...>,
-		detail::boolean_testable<hamon::invoke_result_t<U, As...>>
-	>;
+	template <typename U, typename... As,
+		typename = hamon::enable_if_t<
+			hamon::regular_invocable<U, As...> &&
+			detail::boolean_testable<hamon::invoke_result_t<U, As...>>::value
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U, typename... As>
 	static auto test(...) -> hamon::false_type;

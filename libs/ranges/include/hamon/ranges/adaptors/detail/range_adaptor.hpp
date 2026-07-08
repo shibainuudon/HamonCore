@@ -10,7 +10,6 @@
 #include <hamon/ranges/adaptors/range_adaptor_closure.hpp>
 #include <hamon/ranges/concepts/viewable_range.hpp>
 #include <hamon/concepts/invocable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/utility/forward.hpp>
@@ -40,37 +39,37 @@ public:
 	{}
 
 	template <typename R,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F&, R>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::invocable<F&, R>
+		>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		m_f(hamon::forward<R>(r)))
 
 	template <typename R,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F const&, R>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::invocable<F const&, R>
+		>>
 	HAMON_CXX11_CONSTEXPR auto operator()(R&& r) const&
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		m_f(hamon::forward<R>(r)))
 
 	template <typename R,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F&&, R>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::invocable<F&&, R>
+		>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &&
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::move(m_f)(hamon::forward<R>(r)))
 
 	template <typename R,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::viewable_range_t<R>,
-			hamon::invocable_t<F, R>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::invocable<F, R>
+		>>
 	HAMON_CXX11_CONSTEXPR auto operator()(R&& r) const&&
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::move(m_f)(hamon::forward<R>(r)))

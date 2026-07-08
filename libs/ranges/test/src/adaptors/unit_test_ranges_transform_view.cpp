@@ -33,7 +33,7 @@ struct Double
 		return x * 2;
 	}
 };
-static_assert(hamon::regular_invocable_t<Double&, int&>::value, "");
+static_assert(hamon::regular_invocable<Double&, int&>, "");
 //static_assert(hamon::detail::can_reference<hamon::invoke_result_t<Double&, int&>>, "");
 
 struct NonMovable
@@ -49,7 +49,7 @@ struct NonMovable
 	NonMovable& operator=(NonMovable const&) = default;
 	NonMovable& operator=(NonMovable &&) = default;
 };
-static_assert(hamon::regular_invocable_t<NonMovable&, int&>::value, "");
+static_assert(hamon::regular_invocable<NonMovable&, int&>, "");
 //static_assert(hamon::detail::can_reference<hamon::invoke_result_t<NonMovable&, int&>>, "");
 
 struct VoidFunc
@@ -59,7 +59,7 @@ struct VoidFunc
 		x *= 2;
 	}
 };
-static_assert(hamon::regular_invocable_t<VoidFunc&, int&>::value, "");
+static_assert(hamon::regular_invocable<VoidFunc&, int&>, "");
 //static_assert(!hamon::detail::can_reference<hamon::invoke_result_t<VoidFunc&, int&>>, "");
 
 struct NonConstFunc
@@ -71,7 +71,7 @@ struct NonConstFunc
 };
 
 struct Empty{};
-static_assert(!hamon::regular_invocable_t<Empty&, int&>::value, "");
+static_assert(!hamon::regular_invocable<Empty&, int&>, "");
 
 struct Ref
 {
@@ -257,8 +257,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (hamon::ranges::range_t<V const>::value)
 	{
-		static_assert(has_begin<TV const>::value == hamon::regular_invocable_t<F const&, hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert(has_end<TV const>::value   == hamon::regular_invocable_t<F const&, hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert(has_begin<TV const>::value == hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V const>>, "");
+		static_assert(has_end<TV const>::value   == hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V const>>, "");
 	}
 	else
 	{

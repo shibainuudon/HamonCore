@@ -7,15 +7,8 @@
 #include <hamon/concepts/regular_invocable.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_REGULAR_INVOCABLE_TEST(B, ...)	\
-	static_assert(B == hamon::regular_invocable<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::regular_invocable_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_REGULAR_INVOCABLE_TEST(B, ...) \
-	static_assert(B == hamon::regular_invocable<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::regular_invocable_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_REGULAR_INVOCABLE_TEST(B, ...)	\
+	static_assert(B == hamon::regular_invocable<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {

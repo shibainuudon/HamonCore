@@ -639,7 +639,7 @@ HAMON_CXX14_CONSTEXPR bool test06()
 	//(void)r;
 
 	auto r = hamon::ranges::make_subrange(I{}, hamon::unreachable_sentinel);
-	static_assert(!hamon::invocable_t<decltype(hamon::views::as_rvalue), decltype(r)>::value, "");
+	static_assert(!hamon::invocable<decltype(hamon::views::as_rvalue), decltype(r)>, "");
 
 	return true;
 }

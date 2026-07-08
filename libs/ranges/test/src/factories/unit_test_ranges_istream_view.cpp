@@ -116,40 +116,40 @@ static_assert(!CanInstantiateIstreamView<NonMovable, wchar_t>::value, "");
 static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::istream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::ostream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::iostream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::istringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::ostringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::ifstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::ofstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::fstream&>::value, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::ifstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ofstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::fstream&>, "");
 
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream&&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream const&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream const&&>::value, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream const&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream const&&>, "");
 
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::stringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<float>), std::stringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NotStreamExtratable>), std::stringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<StreamExtratable>), std::stringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<CharStreamExtratable>), std::stringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<WCharStreamExtratable>), std::stringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NonMovable>), std::stringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NoDefaultCtor>), std::stringstream&>::value, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<float>), std::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), std::stringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), std::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), std::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), std::stringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), std::stringstream&>, "");
 
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<int>), std::wstringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<float>), std::wstringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NotStreamExtratable>), std::wstringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<StreamExtratable>), std::wstringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<CharStreamExtratable>), std::wstringstream&>::value, "");
-static_assert( hamon::invocable_t<decltype(hamon::views::istream<WCharStreamExtratable>), std::wstringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NonMovable>), std::wstringstream&>::value, "");
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<NoDefaultCtor>), std::wstringstream&>::value, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<float>), std::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NotStreamExtratable>), std::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<StreamExtratable>), std::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<CharStreamExtratable>), std::wstringstream&>, "");
+static_assert( hamon::invocable<decltype(hamon::views::istream<WCharStreamExtratable>), std::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), std::wstringstream&>, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), std::wstringstream&>, "");
 
-static_assert(!hamon::invocable_t<decltype(hamon::views::istream<int>), int&>::value, "");
+static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), int&>, "");
 #endif
 
 template <typename Val, typename CharT>

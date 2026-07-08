@@ -31,7 +31,6 @@ using std::optional;
 #include <hamon/optional/detail/transform_impl.hpp>
 #include <hamon/optional/detail/construct_from_invoke_tag.hpp>
 #include <hamon/concepts/detail/cpp17_destructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/cstdlib/abort.hpp>
@@ -585,7 +584,7 @@ public:
 		return optional_detail::transform_impl{}(hamon::forward<F>(f), hamon::move(*this));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::invocable, F),
+	template <HAMON_CONSTRAINT(hamon::invocable, F),
 		typename U = T,
 		typename = hamon::enable_if_t<hamon::is_move_constructible<U>::value>>	// [optional.monadic]/16
 	HAMON_CXX14_CONSTEXPR optional or_else(F&& f) &&
@@ -597,7 +596,7 @@ public:
 		return *this ? hamon::move(*this) : hamon::forward<F>(f)();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::invocable, F),
+	template <HAMON_CONSTRAINT(hamon::invocable, F),
 		typename U = T,
 		typename = hamon::enable_if_t<hamon::is_copy_constructible<U>::value>>	// [optional.monadic]/13
 	HAMON_CXX11_CONSTEXPR optional or_else(F&& f) const&

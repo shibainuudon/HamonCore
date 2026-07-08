@@ -1219,7 +1219,7 @@ inline HAMON_CXX14_CONSTEXPR bool test15()
 	//(void)v;
 
 	auto v1 = hamon::views::iota(0);
-	static_assert(!hamon::invocable_t<decltype(hamon::views::iota), decltype(v1)>::value, "");
+	static_assert(!hamon::invocable<decltype(hamon::views::iota), decltype(v1)>, "");
 
 	return true;
 }

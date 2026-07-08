@@ -30,7 +30,7 @@ class flipped
 public:
     template <typename T, typename U>
     auto operator()(T&&, U&&)
-    HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+    HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
         hamon::invoke_result_t<F& HAMON_PP_COMMA() U HAMON_PP_COMMA() T>,
         hamon::invocable<F&, U, T>);
 };

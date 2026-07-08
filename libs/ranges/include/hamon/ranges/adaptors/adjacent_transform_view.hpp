@@ -115,7 +115,7 @@ struct regular_invocable_with_repeated_type_impl;
 
 template <typename F, typename T, hamon::size_t... Is>
 struct regular_invocable_with_repeated_type_impl<F, T, hamon::index_sequence<Is...>>
-	: hamon::regular_invocable_t<F, repeat_type_helper<T, Is>...>
+	: hamon::bool_constant<hamon::regular_invocable<F, repeat_type_helper<T, Is>...>>
 {};
 
 template <typename F, typename T, hamon::size_t N>

@@ -58,11 +58,11 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>>,
 		typename V = hamon::detail::indirect_value_t<I2>,
-		typename = hamon::enable_if_t<hamon::invocable<F2&, V>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<F2&, V>>,
 		typename R = hamon::iter_reference_t<I2>,
-		typename = hamon::enable_if_t<hamon::invocable<F2&, R>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<F2&, R>>,
 		typename C = hamon::iter_common_reference_t<I2>,
-		typename = hamon::enable_if_t<hamon::invocable<F2&, C>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<F2&, C>>,
 		typename = hamon::enable_if_t<
 			hamon::common_reference_with<
 				hamon::invoke_result_t<F2&, V>,

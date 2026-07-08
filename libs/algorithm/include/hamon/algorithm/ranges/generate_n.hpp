@@ -34,7 +34,6 @@ using std::ranges::generate_n;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/functional/invoke.hpp>
-#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -55,11 +54,10 @@ struct generate_n_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Out first, hamon::iter_difference_t<Out> n, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Out,
-		HAMON_CONCEPTS_AND(
-			hamon::invocable<F&>,
-			hamon::indirectly_writable<Out HAMON_PP_COMMA() hamon::invoke_result_t<F&>>))
+		hamon::invocable<F&> &&
+		hamon::indirectly_writable_t<Out, hamon::invoke_result_t<F&>>::value)
 	{
 		for (; n > 0; --n, (void)++first)
 		{

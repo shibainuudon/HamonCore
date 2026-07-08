@@ -114,7 +114,7 @@ private:
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Views>...>::value, "");
 	static_assert(sizeof...(Views) > 0, "");
 	static_assert(hamon::is_object<F>::value, "");
-	static_assert(hamon::regular_invocable_t<F&, hamon::ranges::range_reference_t<Views>...>::value, "");
+	static_assert(hamon::regular_invocable<F&, hamon::ranges::range_reference_t<Views>...>, "");
 	static_assert(hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<Views>...>>::value, "");
 #endif
 
@@ -554,13 +554,14 @@ private:
 
 private:
 	template <bool C2>
-	using RegularInvocable =
-		hamon::regular_invocable_t<
+	using RegularInvocable = hamon::bool_constant<
+		hamon::regular_invocable<
 			F const&,
 			hamon::ranges::range_reference_t<
 				hamon::ranges::detail::maybe_const<C2, Views>
 			>...
-		>;
+		>
+	>;
 
 	template <typename>
 	struct always_true : public hamon::true_type {};
@@ -675,7 +676,7 @@ private:
 		// [range.zip.transform.overview]2.1.1
 		typename = hamon::enable_if_t<
 			hamon::move_constructible<FD> &&
-			hamon::regular_invocable_t<FD&>::value &&
+			hamon::regular_invocable<FD&> &&
 			!hamon::is_void<R>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(hamon::detail::overload_priority<1>, F&& /*f*/)
@@ -686,8 +687,8 @@ private:
 	template <typename F, typename... Args,
 		typename = hamon::enable_if_t<(sizeof...(Args) > 0)>,
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		typename = hamon::enable_if_t<hamon::regular_invocable_t<
-			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>::value>,
+		typename = hamon::enable_if_t<hamon::regular_invocable<
+			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>>,
 		typename = hamon::enable_if_t<hamon::detail::can_reference<hamon::invoke_result_t<
 			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>>::value>,
 #endif

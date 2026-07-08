@@ -54,9 +54,7 @@ struct indirect_result_t_impl_2{};
 
 template <typename F, typename... Is>
 struct indirect_result_t_impl_2<F, type_pack<Is...>,
-	hamon::enable_if_t<
-		hamon::invocable<F, Is...>::value
-	>
+	hamon::enable_if_t<hamon::invocable<F, Is...>>
 >
 {
 	using type = hamon::invoke_result_t<F, Is...>;

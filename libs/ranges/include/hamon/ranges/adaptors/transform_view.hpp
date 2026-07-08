@@ -95,7 +95,7 @@ template <typename V, typename F,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V>::value && hamon::move_constructible<F> &&
 		hamon::ranges::view<V>::value && hamon::is_object<F>::value &&
-		hamon::regular_invocable<F&, hamon::ranges::range_reference_t<V>>::value &&
+		hamon::regular_invocable<F&, hamon::ranges::range_reference_t<V>> &&
 		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>::value
 	>
 >
@@ -612,10 +612,10 @@ public:
 	}
 
 	template <typename V2 = V const,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::range_t<V2>,
-			hamon::regular_invocable_t<F const&, hamon::ranges::range_reference_t<V2>>
-		>::value>
+		typename = hamon::enable_if_t<
+			hamon::ranges::range_t<V2>::value &&
+			hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V2>>
+		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR			// nodiscard as an extension
 	iterator<true> begin() const HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -672,7 +672,8 @@ public:
 	}
 
 	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const),
-		typename = hamon::enable_if_t<hamon::regular_invocable_t<F const&, hamon::ranges::range_reference_t<V2>>::value>>
+		typename = hamon::enable_if_t<
+			hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V2>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const
 	HAMON_NOEXCEPT_IF_EXPR(end_const_impl<V2>(hamon::detail::overload_priority<1>{}))	// noexcept as an extension

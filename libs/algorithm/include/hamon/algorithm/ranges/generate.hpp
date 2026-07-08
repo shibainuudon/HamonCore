@@ -37,7 +37,6 @@ using std::ranges::generate;
 #include <hamon/iterator/concepts/indirectly_writable.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
-#include <hamon/preprocessor/punctuation/comma.hpp>
 #include <hamon/ranges/concepts/output_range.hpp>
 #include <hamon/ranges/borrowed_iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
@@ -61,11 +60,10 @@ struct generate_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Out first, Sent last, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Out,
-		HAMON_CONCEPTS_AND(
-			hamon::invocable<F&>,
-			hamon::indirectly_writable<Out HAMON_PP_COMMA() hamon::invoke_result_t<F&>>))
+		hamon::invocable<F&> &&
+		hamon::indirectly_writable_t<Out, hamon::invoke_result_t<F&>>::value)
 	{
 		for (; first != last; ++first)
 		{
@@ -79,11 +77,10 @@ struct generate_fn
 		HAMON_CONSTRAINT(hamon::copy_constructible, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(Range&& r, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<Range>,
-		HAMON_CONCEPTS_AND(
-			hamon::invocable<F&>,
-			ranges::output_range<Range HAMON_PP_COMMA() hamon::invoke_result_t<F&>>))
+		hamon::invocable<F&> &&
+		ranges::output_range_t<Range, hamon::invoke_result_t<F&>>::value)
 	{
 		return (*this)(ranges::begin(r), ranges::end(r), hamon::move(gen));
 	}

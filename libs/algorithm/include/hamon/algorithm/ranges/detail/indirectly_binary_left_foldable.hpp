@@ -63,7 +63,7 @@ private:
 		typename = hamon::enable_if_t<hamon::movable<T2>>,
 		typename = hamon::enable_if_t<hamon::movable<U2>>,
 		typename = hamon::enable_if_t<hamon::convertible_to<T2, U2>>,
-		typename = hamon::enable_if_t<hamon::invocable<F2&, U2, hamon::iter_reference_t<I2>>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<F2&, U2, hamon::iter_reference_t<I2>>>,
 		typename = hamon::enable_if_t<hamon::assignable_from<
 			U2&, hamon::invoke_result_t<F2&, U2, hamon::iter_reference_t<I2>>
 		>>
@@ -88,7 +88,7 @@ private:
 	template <typename F2, typename T2, typename I2,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
-		typename = hamon::enable_if_t<hamon::invocable<F2&, T2, hamon::iter_reference_t<I2>>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<F2&, T2, hamon::iter_reference_t<I2>>>,
 		typename R = hamon::invoke_result_t<F2&, T2, hamon::iter_reference_t<I2>>,
 		typename = hamon::enable_if_t<hamon::convertible_to<R, hamon::decay_t<R>>>,
 		typename = hamon::enable_if_t<

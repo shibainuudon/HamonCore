@@ -38,7 +38,7 @@ struct uniform_random_bit_generator_impl
 {
 private:
 	template <typename G,
-		typename = hamon::enable_if_t<hamon::invocable<G&>::value>,
+		typename = hamon::enable_if_t<hamon::invocable<G&>>,
 		typename = hamon::enable_if_t<hamon::unsigned_integral<hamon::invoke_result_t<G&>>>,
 		typename = hamon::enable_if_t<hamon::same_as<decltype(G::min()), hamon::invoke_result_t<G&>>>,
 		typename = hamon::enable_if_t<hamon::same_as<decltype(G::max()), hamon::invoke_result_t<G&>>>,
