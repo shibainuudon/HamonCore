@@ -30,7 +30,9 @@ concept equivalence_relation = hamon::relation<Rel, T, U>;
 #else
 
 template <typename Rel, typename T, typename U>
-using equivalence_relation = hamon::relation<Rel, T, U>;
+using equivalence_relation = hamon::bool_constant<
+	hamon::relation<Rel, T, U>
+>;
 
 #endif
 

@@ -8,10 +8,10 @@
 #define HAMON_CONCEPTS_RELATION_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/predicate.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -22,33 +22,15 @@ namespace hamon
 
 using std::relation;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#else
 
 template <typename Rel, typename T, typename U>
-concept relation =
+HAMON_CONCEPT_OR_BOOL relation =
 	hamon::predicate<Rel, T, T> &&
 	hamon::predicate<Rel, U, U> &&
 	hamon::predicate<Rel, T, U> &&
 	hamon::predicate<Rel, U, T>;
 
-#else
-
-template <typename Rel, typename T, typename U>
-using relation = hamon::bool_constant<
-	hamon::predicate<Rel, T, T> &&
-	hamon::predicate<Rel, U, U> &&
-	hamon::predicate<Rel, T, U> &&
-	hamon::predicate<Rel, U, T>
->;
-
-#endif
-
-template <typename Rel, typename T, typename U>
-using relation_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::relation<Rel, T, U>>;
-#else
-	hamon::relation<Rel, T, U>;
 #endif
 
 }	// namespace hamon

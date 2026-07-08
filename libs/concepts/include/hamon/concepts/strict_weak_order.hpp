@@ -30,7 +30,9 @@ concept strict_weak_order = hamon::relation<Rel, T, U>;
 #else
 
 template <typename Rel, typename T, typename U>
-using strict_weak_order = hamon::relation<Rel, T, U>;
+using strict_weak_order = hamon::bool_constant<
+	hamon::relation<Rel, T, U>
+>;
 
 #endif
 
