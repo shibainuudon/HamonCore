@@ -48,7 +48,7 @@ private:
 	template <typename I2,
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
-		typename = hamon::enable_if_t<hamon::derived_from<hamon::detail::iter_concept<I2>, hamon::input_iterator_tag>::value>
+		typename = hamon::enable_if_t<hamon::derived_from<hamon::detail::iter_concept<I2>, hamon::input_iterator_tag>>
 	>
 	static auto test(int) -> hamon::true_type;
 

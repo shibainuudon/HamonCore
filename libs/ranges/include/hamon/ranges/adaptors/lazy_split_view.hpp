@@ -531,7 +531,7 @@ private:
 		using BaseIterCat = typename hamon::iterator_traits<BaseIter>::iterator_category;
 	public:
 		using iterator_category = hamon::conditional_t<
-			hamon::derived_from_t<BaseIterCat, hamon::forward_iterator_tag>::value,
+			hamon::derived_from<BaseIterCat, hamon::forward_iterator_tag>,
 			hamon::forward_iterator_tag,	// [range.lazy.split.inner]/1.1
 			BaseIterCat						// [range.lazy.split.inner]/1.2
 		>;

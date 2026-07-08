@@ -68,7 +68,7 @@ using is_derived_from_view_interface =
 template <typename T>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 bool enable_view =
-	derived_from_t<T, hamon::ranges::view_base>::value ||
+	derived_from<T, hamon::ranges::view_base> ||
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires { detail::is_derived_from_view_interface_fn((T*)nullptr, (T*)nullptr); };
 #else
@@ -81,7 +81,7 @@ template <typename T>
 struct enable_view
 {
 	HAMON_STATIC_CONSTEXPR bool value =
-		derived_from_t<T, hamon::ranges::view_base>::value ||
+		derived_from<T, hamon::ranges::view_base> ||
 		hamon::is_detected<detail::is_derived_from_view_interface, T>::value;
 };
 

@@ -215,11 +215,11 @@ private:
 		using iterator_category =
 			hamon::conditional_t<!hamon::is_reference<InvokeResult>::value,
 				hamon::input_iterator_tag,
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::random_access_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::random_access_iterator_tag>,
 				hamon::random_access_iterator_tag,
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::bidirectional_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::bidirectional_iterator_tag>,
 				hamon::bidirectional_iterator_tag,
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::forward_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::forward_iterator_tag>,
 				hamon::forward_iterator_tag,
 				hamon::input_iterator_tag
 			>>>>;

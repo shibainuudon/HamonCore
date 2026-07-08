@@ -89,7 +89,7 @@ struct move_iter_category_base<Iter
 >
 {
 	using iterator_category = hamon::conditional_t<
-		hamon::derived_from_t<typename hamon::iterator_traits<Iter>::iterator_category, hamon::random_access_iterator_tag>::value,
+		hamon::derived_from<typename hamon::iterator_traits<Iter>::iterator_category, hamon::random_access_iterator_tag>,
 		hamon::random_access_iterator_tag,
 		typename hamon::iterator_traits<Iter>::iterator_category
 	>;

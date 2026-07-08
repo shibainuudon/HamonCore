@@ -245,17 +245,17 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 				hamon::input_iterator_tag,
 			hamon::conditional_t<
 				// [range.join.with.iterator]/2.3
-				hamon::derived_from_t<OUTERC, hamon::bidirectional_iterator_tag>::value &&
-				hamon::derived_from_t<INNERC, hamon::bidirectional_iterator_tag>::value &&
-				hamon::derived_from_t<PATTERNC, hamon::bidirectional_iterator_tag>::value &&
+				hamon::derived_from<OUTERC, hamon::bidirectional_iterator_tag> &&
+				hamon::derived_from<INNERC, hamon::bidirectional_iterator_tag> &&
+				hamon::derived_from<PATTERNC, hamon::bidirectional_iterator_tag> &&
 				hamon::ranges::common_range_t<InnerBase>::value &&
 				hamon::ranges::common_range_t<PatternBase>::value,
 				hamon::bidirectional_iterator_tag,
 			hamon::conditional_t<
 				// [range.join.with.iterator]/2.4
-				hamon::derived_from_t<OUTERC, hamon::forward_iterator_tag>::value &&
-				hamon::derived_from_t<INNERC, hamon::forward_iterator_tag>::value &&
-				hamon::derived_from_t<PATTERNC, hamon::forward_iterator_tag>::value,
+				hamon::derived_from<OUTERC, hamon::forward_iterator_tag> &&
+				hamon::derived_from<INNERC, hamon::forward_iterator_tag> &&
+				hamon::derived_from<PATTERNC, hamon::forward_iterator_tag>,
 				hamon::forward_iterator_tag,
 				// [range.join.with.iterator]/2.5
 				hamon::input_iterator_tag

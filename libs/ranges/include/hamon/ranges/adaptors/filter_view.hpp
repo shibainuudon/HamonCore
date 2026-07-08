@@ -129,9 +129,9 @@ private:
 
 	public:
 		using iterator_category =
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::bidirectional_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::bidirectional_iterator_tag>,
 				hamon::bidirectional_iterator_tag,	// [range.filter.iterator]/3.2
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::forward_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::forward_iterator_tag>,
 				hamon::forward_iterator_tag,		// [range.filter.iterator]/3.3
 				C									// [range.filter.iterator]/3.4
 		>>;

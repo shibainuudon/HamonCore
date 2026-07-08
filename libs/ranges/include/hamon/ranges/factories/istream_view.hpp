@@ -240,7 +240,7 @@ public:
 		typename Traits = typename U::traits_type,
 		typename IStreamView = hamon::ranges::basic_istream_view<T, CharT, Traits>,
 		typename = hamon::enable_if_t<
-			hamon::derived_from_t<U, std::basic_istream<CharT, Traits>>::value &&
+			hamon::derived_from<U, std::basic_istream<CharT, Traits>> &&
 			hamon::constructible_from<IStreamView, U&>
 		>
 	>

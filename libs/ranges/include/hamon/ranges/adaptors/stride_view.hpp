@@ -135,7 +135,7 @@ private:
 		using C = typename hamon::iterator_traits<BaseIter>::iterator_category;
 	public:
 		using iterator_category =
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::random_access_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::random_access_iterator_tag>,
 				hamon::random_access_iterator_tag, C>;
 	};
 

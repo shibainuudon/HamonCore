@@ -569,7 +569,9 @@ struct denotes_forward_iter
 
 template <typename I>
 struct denotes_forward_iter<I, hamon::void_t<typename hamon::iterator_traits<I>::iterator_category>>
-	: public hamon::derived_from<typename hamon::iterator_traits<I>::iterator_category, hamon::forward_iterator_tag> {};
+	: public hamon::bool_constant<
+		hamon::derived_from<typename hamon::iterator_traits<I>::iterator_category, hamon::forward_iterator_tag>
+>{};
 
 template <typename I>
 using denotes_forward_iter_t = denotes_forward_iter<I>;

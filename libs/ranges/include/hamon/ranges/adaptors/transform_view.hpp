@@ -126,7 +126,7 @@ private:
 	public:
 		using iterator_category =
 			hamon::conditional_t<hamon::is_reference<InvokeResult>::value,
-				hamon::conditional_t<hamon::derived_from_t<C, hamon::contiguous_iterator_tag>::value,
+				hamon::conditional_t<hamon::derived_from<C, hamon::contiguous_iterator_tag>,
 					hamon::random_access_iterator_tag,	// [range.transform.iterator]/2.1.1
 					C									// [range.transform.iterator]/2.1.2
 				>,

@@ -89,7 +89,7 @@ public:
 	
 	// [reverse.iterator]/2
 	using iterator_category = hamon::conditional_t<
-		hamon::derived_from_t<iter_cat, hamon::random_access_iterator_tag>::value,
+		hamon::derived_from<iter_cat, hamon::random_access_iterator_tag>,
 		hamon::random_access_iterator_tag,	// [reverse.iterator]/2.1
 		iter_cat>;							// [reverse.iterator]/2.2
 	

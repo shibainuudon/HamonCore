@@ -7,15 +7,8 @@
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_DERIVED_FROM_TEST(B, T1, T2)	\
-	static_assert(B == hamon::derived_from<T1, T2>, "");	\
-	static_assert(B == hamon::derived_from_t<T1, T2>::value, "")
-#else
-#  define HAMON_DERIVED_FROM_TEST(B, T1, T2)	\
-	static_assert(B == hamon::derived_from<T1, T2>::value, "");	\
-	static_assert(B == hamon::derived_from_t<T1, T2>::value, "")
-#endif
+#define HAMON_DERIVED_FROM_TEST(B, T1, T2)	\
+	static_assert(B == hamon::derived_from<T1, T2>, "")
 
 namespace hamon_concepts_test
 {

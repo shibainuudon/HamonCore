@@ -162,13 +162,13 @@ private:
 	public:
 		using iterator_category =
 			hamon::conditional_t<
-				hamon::derived_from_t<OUTERC, hamon::bidirectional_iterator_tag>::value &&
-				hamon::derived_from_t<INNERC, hamon::bidirectional_iterator_tag>::value &&
+				hamon::derived_from<OUTERC, hamon::bidirectional_iterator_tag> &&
+				hamon::derived_from<INNERC, hamon::bidirectional_iterator_tag> &&
 				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<Base>>::value,
 					hamon::bidirectional_iterator_tag,	// [range.join.iterator]/2.2
 			hamon::conditional_t<
-				hamon::derived_from_t<OUTERC, hamon::forward_iterator_tag>::value &&
-				hamon::derived_from_t<INNERC, hamon::forward_iterator_tag>::value,
+				hamon::derived_from<OUTERC, hamon::forward_iterator_tag> &&
+				hamon::derived_from<INNERC, hamon::forward_iterator_tag>,
 					hamon::forward_iterator_tag,		// [range.join.iterator]/2.3
 					hamon::input_iterator_tag			// [range.join.iterator]/2.4
 			>>;

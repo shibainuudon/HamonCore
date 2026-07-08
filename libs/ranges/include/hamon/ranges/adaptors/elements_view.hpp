@@ -324,7 +324,7 @@ private:
 		using iterator_category =
 			hamon::conditional_t<!hamon::is_lvalue_reference<U>::value,
 				hamon::input_iterator_tag,			// [range.elements.iterator]/2.1
-			hamon::conditional_t<hamon::derived_from_t<C, hamon::random_access_iterator_tag>::value,
+			hamon::conditional_t<hamon::derived_from<C, hamon::random_access_iterator_tag>,
 				hamon::random_access_iterator_tag,	// [range.elements.iterator]/2.2
 				C									// [range.elements.iterator]/2.3
 			>>;

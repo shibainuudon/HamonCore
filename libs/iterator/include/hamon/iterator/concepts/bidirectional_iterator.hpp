@@ -59,7 +59,7 @@ private:
 			hamon::derived_from<
 				hamon::detail::iter_concept<I2>,
 				hamon::bidirectional_iterator_tag
-			>::value
+			>
 		>,
 		typename T1 = decltype(--hamon::declval<I2&>()),
 		typename T2 = decltype(  hamon::declval<I2&>()--),

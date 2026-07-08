@@ -66,8 +66,8 @@ using range_adaptor_closure_object_t = hamon::bool_constant<range_adaptor_closur
 #else
 
 template <typename T>
-using range_adaptor_closure_object = hamon::conjunction<
-	hamon::negation<hamon::ranges::range<hamon::remove_cvref_t<T>>>,
+using range_adaptor_closure_object = hamon::bool_constant<
+	!hamon::ranges::range<hamon::remove_cvref_t<T>>::value &&
 	hamon::derived_from<hamon::remove_cvref_t<T>, range_adaptor_closure_base<hamon::remove_cvref_t<T>>>
 >;
 

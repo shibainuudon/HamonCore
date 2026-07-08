@@ -55,7 +55,7 @@ private:
 			hamon::derived_from<
 				hamon::detail::iter_concept<I2>,
 				hamon::forward_iterator_tag
-			>::value
+			>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::incrementable<I2>::value
