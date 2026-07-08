@@ -26,6 +26,7 @@ using std::move_sentinel;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -64,7 +65,7 @@ using move_sentinel_assignable_from =
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::semiregular, Sent)>
+template <HAMON_CONSTRAINT(hamon::semiregular, Sent)>
 class move_sentinel
 {
 public:

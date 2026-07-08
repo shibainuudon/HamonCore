@@ -297,7 +297,7 @@ struct NonConvertible
 	NonConvertible(int i);
 	explicit NonConvertible(long i) = delete;
 };
-static_assert( hamon::semiregular_t<NonConvertible>::value, "");
+static_assert( hamon::semiregular<NonConvertible>, "");
 static_assert( hamon::is_convertible<long, NonConvertible>::value, "");
 static_assert(!hamon::convertible_to<long, NonConvertible>, "");
 
@@ -393,7 +393,7 @@ struct NonAssignable
 {
 	NonAssignable& operator=(int i);
 };
-static_assert( hamon::semiregular_t<NonAssignable>::value, "");
+static_assert( hamon::semiregular<NonAssignable>, "");
 static_assert( hamon::is_assignable<NonAssignable, int>::value, "");
 static_assert(!hamon::assignable_from<NonAssignable, int>, "");
 

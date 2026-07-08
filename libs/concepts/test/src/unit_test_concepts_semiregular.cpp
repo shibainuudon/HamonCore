@@ -7,15 +7,8 @@
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_SEMIREGULAR_TEST(B, T)	\
-	static_assert(B == hamon::semiregular<T>, "");	\
-	static_assert(B == hamon::semiregular_t<T>::value, "")
-#else
-#  define HAMON_SEMIREGULAR_TEST(B, T)	\
-	static_assert(B == hamon::semiregular<T>::value, "");	\
-	static_assert(B == hamon::semiregular_t<T>::value, "")
-#endif
+#define HAMON_SEMIREGULAR_TEST(B, T)	\
+	static_assert(B == hamon::semiregular<T>, "")
 
 namespace hamon_concepts_test
 {

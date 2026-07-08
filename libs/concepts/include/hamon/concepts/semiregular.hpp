@@ -8,11 +8,11 @@
 #define HAMON_CONCEPTS_SEMIREGULAR_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -23,29 +23,13 @@ namespace hamon
 
 using std::semiregular;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#else
 
 template <typename T>
-concept semiregular =
+HAMON_CONCEPT_OR_BOOL semiregular =
 	hamon::copyable<T> &&
 	hamon::default_initializable<T>;
 
-#else
-
-template <typename T>
-using semiregular = hamon::bool_constant<
-	hamon::copyable<T> &&
-	hamon::default_initializable<T>
->;
-
-#endif
-
-template <typename T>
-using semiregular_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::semiregular<T>>;
-#else
-	hamon::semiregular<T>;
 #endif
 
 }	// namespace hamon

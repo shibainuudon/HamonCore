@@ -22,7 +22,7 @@ using std::const_sentinel;
 
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/const_iterator.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 
@@ -49,7 +49,7 @@ struct const_sentinel_impl<S,
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::semiregular, S)>
+template <HAMON_CONSTRAINT(hamon::semiregular, S)>
 using const_sentinel =
 	typename detail::const_sentinel_impl<S>::type;
 

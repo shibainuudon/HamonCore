@@ -21,7 +21,7 @@ using std::make_const_sentinel;
 #else
 
 #include <hamon/iterator/const_sentinel.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
 #include <hamon/config.hpp>
@@ -29,7 +29,7 @@ using std::make_const_sentinel;
 namespace hamon
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::semiregular, S)>
+template <HAMON_CONSTRAINT(hamon::semiregular, S)>
 HAMON_CXX11_CONSTEXPR hamon::const_sentinel<S>
 make_const_sentinel(S s)
 HAMON_NOEXCEPT_IF(hamon::is_nothrow_convertible<S, hamon::const_sentinel<S>>::value)	// noexcept as an extension

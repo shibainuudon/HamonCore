@@ -34,7 +34,7 @@ concept regular =
 
 template <typename T>
 using regular = hamon::bool_constant<
-	hamon::semiregular<T>::value &&
+	hamon::semiregular<T> &&
 	hamon::equality_comparable<T>
 >;
 

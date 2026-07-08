@@ -26,7 +26,7 @@ namespace unreachable_sentinel_test
 HAMON_CXX14_CONSTEXPR bool test01()
 {
 	static_assert(hamon::is_empty<hamon::unreachable_sentinel_t>::value, "");
-	static_assert(hamon::semiregular_t<hamon::unreachable_sentinel_t>::value, "");
+	static_assert(hamon::semiregular<hamon::unreachable_sentinel_t>, "");
 
 	static_assert(hamon::same_as<
 		decltype(hamon::unreachable_sentinel),

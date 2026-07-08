@@ -116,7 +116,7 @@ requires (hamon::is_object<T>::value && hamon::same_as<T, hamon::remove_cv_t<T>>
 template <typename T, typename Bound = hamon::unreachable_sentinel_t,
 	typename = hamon::enable_if_t<
 		hamon::move_constructible<T> &&
-		hamon::semiregular<Bound>::value &&
+		hamon::semiregular<Bound> &&
 		hamon::is_object<T>::value &&
 		hamon::same_as<T, hamon::remove_cv_t<T>> &&
 		(ranges::detail::integer_like_with_usable_difference_type<Bound>::value ||

@@ -201,7 +201,7 @@ template <
 	typename W, typename Bound = hamon::unreachable_sentinel_t,
 	typename = hamon::enable_if_t<
 		hamon::weakly_incrementable<W>::value &&
-		hamon::semiregular<Bound>::value &&
+		hamon::semiregular<Bound> &&
 		hamon::detail::weakly_equality_comparable_with<W, Bound> &&
 		hamon::copyable<W>
 	>
