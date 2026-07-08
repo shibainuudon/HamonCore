@@ -264,10 +264,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 	static_assert(!hamon::is_implicitly_constructible<TV, V, hamon::ptrdiff_t>::value, "");
 
-	static_assert(has_base<TV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<TV&&>::value, "");
-	static_assert(has_base<TV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<TV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<TV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(has_begin<TV>::value, "");
 	static_assert(has_begin<TV const>::value == hamon::ranges::range_t<V const>::value, "");

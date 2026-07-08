@@ -113,7 +113,7 @@ public:
 #endif
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::copy_constructible, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::copy_constructible, V2, V)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	V base() const& HAMON_NOEXCEPT_IF(		// noexcept as an extension
 		hamon::is_nothrow_copy_constructible<V>::value)

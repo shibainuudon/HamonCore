@@ -189,14 +189,14 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(!hamon::is_constructible<TWV, F, V>::value, "");
 	static_assert(!hamon::is_constructible<TWV, V, F, F>::value, "");
 
-	static_assert(has_base<TWV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TWV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<TWV&&>::value, "");
-	static_assert(has_base<TWV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<TWV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TWV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<TWV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<TWV&&>().base()), V>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::copy_constructible_t<V>::value)
+	if constexpr (hamon::copy_constructible<V>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<TWV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<TWV const&>().base()), V>, "");

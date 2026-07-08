@@ -191,10 +191,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!hamon::is_constructible<DV, V, int*>::value, "");
 	static_assert(!hamon::is_constructible<DV, V, hamon::ptrdiff_t, int>::value, "");
 
-	static_assert(has_base<DV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<DV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<DV&&>::value, "");
-	static_assert(has_base<DV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<DV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<DV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<DV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(has_begin<DV>::value, "");
 	static_assert(has_begin<DV const>::value ==

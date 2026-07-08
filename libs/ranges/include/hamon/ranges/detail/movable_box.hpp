@@ -24,9 +24,6 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
@@ -72,27 +69,16 @@ using boxable_t = hamon::bool_constant<
 >;
 
 template <typename T>
-using boxable_copyable_t =
-	hamon::conjunction<
-		hamon::copy_constructible_t<T>,
-		hamon::disjunction<
-			hamon::copyable_t<T>,
-			hamon::conjunction<
-				hamon::is_nothrow_move_constructible<T>,
-				hamon::is_nothrow_copy_constructible<T>
-			>
-		>
-	>;
+using boxable_copyable_t = hamon::bool_constant<
+	hamon::copy_constructible<T> &&
+	(hamon::copyable<T>::value || (hamon::is_nothrow_move_constructible_v<T> && hamon::is_nothrow_copy_constructible_v<T>))
+>;
 
 template <typename T>
-using boxable_movable_t =
-	hamon::conjunction<
-		hamon::negation<hamon::copy_constructible_t<T>>,
-		hamon::disjunction<
-			hamon::movable_t<T>,
-			hamon::is_nothrow_move_constructible<T>
-		>
-	>;
+using boxable_movable_t = hamon::bool_constant<
+	(!hamon::copy_constructible<T>) &&
+	(hamon::movable<T>::value || hamon::is_nothrow_move_constructible_v<T>)
+>;
 
 #endif
 

@@ -7,15 +7,8 @@
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_COPY_CONSTRUCTIBLE_TEST(B, T)	\
-	static_assert(B == hamon::copy_constructible<T>, "");	\
-	static_assert(B == hamon::copy_constructible_t<T>::value, "")
-#else
-#  define HAMON_COPY_CONSTRUCTIBLE_TEST(B, T)	\
-	static_assert(B == hamon::copy_constructible<T>::value, "");	\
-	static_assert(B == hamon::copy_constructible_t<T>::value, "")
-#endif
+#define HAMON_COPY_CONSTRUCTIBLE_TEST(B, T)	\
+	static_assert(B == hamon::copy_constructible<T>, "")
 
 namespace hamon_concepts_test
 {

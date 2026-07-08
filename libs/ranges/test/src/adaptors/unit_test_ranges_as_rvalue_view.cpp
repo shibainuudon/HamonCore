@@ -125,7 +125,7 @@ struct NonCopyableView : hamon::ranges::view_base
 
 static_assert(hamon::ranges::view_t<NonCopyableView<int>>::value, "");
 static_assert(hamon::ranges::detail::simple_view_t<NonCopyableView<int>>::value, "");
-static_assert(!hamon::copy_constructible_t<NonCopyableView<int>>::value, "");
+static_assert(!hamon::copy_constructible<NonCopyableView<int>>, "");
 
 template <typename T>
 struct ThrowOnCopyView : hamon::ranges::view_base
@@ -196,10 +196,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::view_t<ARV>::value, "");
 	static_assert(!hamon::ranges::constant_range_t<ARV>::value, "");
 
-	static_assert(has_base<ARV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<ARV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<ARV&&>::value, "");
-	static_assert(has_base<ARV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<ARV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<ARV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<ARV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<ARV&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES_AS_RVALUE_VIEW)
@@ -207,7 +207,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::copy_constructible_t<V>::value)
+	if constexpr (hamon::copy_constructible<V>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().base()), V>, "");

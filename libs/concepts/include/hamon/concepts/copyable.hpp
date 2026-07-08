@@ -47,7 +47,7 @@ struct copyable_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::copy_constructible<U>::value &&
+			hamon::copy_constructible<U> &&
 			hamon::movable<U>::value &&
 			hamon::assignable_from<U&, U&> &&
 			hamon::assignable_from<U&, const U&> &&

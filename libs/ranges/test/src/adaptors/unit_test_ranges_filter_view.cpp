@@ -108,10 +108,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::view_t<FV>::value == true, "");
 	static_assert(hamon::ranges::constant_range_t<FV>::value == false, "");
 
-	static_assert(has_base<FV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<FV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<FV&&>::value, "");
-	static_assert(has_base<FV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<FV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<FV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<FV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<FV&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES)
@@ -119,7 +119,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::copy_constructible_t<V>::value)
+	if constexpr (hamon::copy_constructible<V>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<FV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<FV const&>().base()), V>, "");

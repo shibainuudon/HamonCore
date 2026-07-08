@@ -32,6 +32,7 @@ using std::ranges::transform;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -67,7 +68,7 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
+		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
@@ -89,7 +90,7 @@ struct transform_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
+		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto
@@ -114,7 +115,7 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
+		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>
@@ -145,7 +146,7 @@ struct transform_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range1),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range2),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F),
+		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
 	>

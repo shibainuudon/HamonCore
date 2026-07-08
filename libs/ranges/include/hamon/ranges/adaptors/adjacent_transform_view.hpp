@@ -537,7 +537,7 @@ public:
 		, m_inner(hamon::move(base))
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::copy_constructible, IV2, InnerView)>
+	template <HAMON_CONSTRAINT_D(hamon::copy_constructible, IV2, InnerView)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	V base() const& HAMON_NOEXCEPT_RETURN(	// noexcept as an extension
 		m_inner.base())

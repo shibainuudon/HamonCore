@@ -12,7 +12,6 @@
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/declval.hpp>
@@ -50,11 +49,13 @@ private:
 	template <typename U,
 		typename P = decltype(hamon::declval<U>().allocate(hamon::declval<hamon::size_t>())),
 		typename = hamon::enable_if_t<hamon::same_as<decltype(*hamon::declval<P>()), typename U::value_type&>>,
-		typename = decltype(hamon::declval<U>().deallocate(hamon::declval<P>(), hamon::declval<hamon::size_t>()))
+		typename = decltype(hamon::declval<U>().deallocate(hamon::declval<P>(), hamon::declval<hamon::size_t>())),
+		typename = hamon::enable_if_t<
+			hamon::copy_constructible<U> &&
+			hamon::equality_comparable<U>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::copy_constructible<U>,
-		hamon::equality_comparable<U>>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

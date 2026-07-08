@@ -342,7 +342,7 @@ public:
 	{}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::copy_constructible, T2, T)>
+	template <HAMON_CONSTRAINT_D(hamon::copy_constructible, T2, T)>
 	HAMON_CXX11_CONSTEXPR explicit
 	repeat_view(T const& value, Bound bound = Bound())
 //	requires hamon::copy_constructible<T>

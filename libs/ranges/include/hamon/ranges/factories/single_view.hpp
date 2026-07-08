@@ -69,7 +69,7 @@ public:
 		: m_value(){}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::copy_constructible, U, T)>
+	template <HAMON_CONSTRAINT_D(hamon::copy_constructible, U, T)>
 	HAMON_CXX11_CONSTEXPR explicit
 	single_view(T const& t)
 	// requires hamon::copy_constructible<T>

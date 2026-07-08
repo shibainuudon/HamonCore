@@ -228,10 +228,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::is_nothrow_default_constructible<TV>::value ==
 		(hamon::is_nothrow_default_constructible<V>::value && hamon::is_nothrow_default_constructible<F>::value), "");
 
-	static_assert(has_base<TV&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<TV&&>::value, "");
-	static_assert(has_base<TV const&>::value == hamon::copy_constructible_t<V>::value, "");
-	static_assert(has_base<TV const&&>::value == hamon::copy_constructible_t<V>::value, "");
+	static_assert(has_base<TV const&>::value == hamon::copy_constructible<V>, "");
+	static_assert(has_base<TV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(hamon::same_as<decltype(hamon::declval<TV&&>().base()), V>, "");
 #if !defined(HAMON_USE_STD_RANGES)
@@ -239,7 +239,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::copy_constructible_t<V>::value)
+	if constexpr (hamon::copy_constructible<V>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<TV&>().base()), V>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<TV const&>().base()), V>, "");

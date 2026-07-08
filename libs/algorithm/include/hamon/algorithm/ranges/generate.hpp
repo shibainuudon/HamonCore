@@ -29,6 +29,7 @@ using std::ranges::generate;
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/invocable.hpp>
@@ -56,7 +57,7 @@ struct generate_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, Out),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Out, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F)
+		HAMON_CONSTRAINT(hamon::copy_constructible, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Out first, Sent last, F gen) const
@@ -75,7 +76,7 @@ struct generate_fn
 
 	template <
 		typename Range,
-		HAMON_CONSTRAINED_PARAM(hamon::copy_constructible, F)
+		HAMON_CONSTRAINT(hamon::copy_constructible, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(Range&& r, F gen) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
