@@ -8,15 +8,8 @@
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_ASSIGNABLE_FROM_TEST(B, T1, T2)	\
-	static_assert(B == hamon::assignable_from<T1, T2>, "");	\
-	static_assert(B == hamon::assignable_from_t<T1, T2>::value, "")
-#else
-#  define HAMON_ASSIGNABLE_FROM_TEST(B, T1, T2)	\
-	static_assert(B == hamon::assignable_from<T1, T2>::value, "");	\
-	static_assert(B == hamon::assignable_from_t<T1, T2>::value, "")
-#endif
+#define HAMON_ASSIGNABLE_FROM_TEST(B, T1, T2)	\
+	static_assert(B == hamon::assignable_from<T1, T2>, "")
 
 namespace hamon_concepts_test
 {

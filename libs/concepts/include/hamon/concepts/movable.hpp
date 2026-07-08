@@ -13,7 +13,7 @@
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/swappable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #endif
 
@@ -44,12 +44,15 @@ template <typename T>
 struct movable_impl
 {
 private:
-	template <typename U>
-	static auto test(int) -> hamon::conjunction<
-		hamon::is_object<U>,
-		hamon::move_constructible<U>,
-		hamon::assignable_from<U&, U>,
-		hamon::swappable<U>>;
+	template <typename U,
+		typename = hamon::enable_if_t<
+			hamon::is_object<U>::value &&
+			hamon::move_constructible<U>::value &&
+			hamon::assignable_from<U&, U> &&
+			hamon::swappable<U>::value
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

@@ -138,7 +138,7 @@ concept move_iter_conv_assignable =
 using move_iter_conv_assignable = hamon::bool_constant<
 	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter> &&
-	hamon::assignable_from_t<Iter&, U const&>::value
+	hamon::assignable_from<Iter&, U const&>
 >;
 #endif
 

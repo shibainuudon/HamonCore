@@ -395,7 +395,7 @@ struct NonAssignable
 };
 static_assert( hamon::semiregular_t<NonAssignable>::value, "");
 static_assert( hamon::is_assignable<NonAssignable, int>::value, "");
-static_assert(!hamon::assignable_from_t<NonAssignable, int>::value, "");
+static_assert(!hamon::assignable_from<NonAssignable, int>, "");
 
 inline HAMON_CXX14_CONSTEXPR bool AssignConvertTest()
 {

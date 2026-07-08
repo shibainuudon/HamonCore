@@ -142,10 +142,10 @@ static_assert(!hamon::convertible_to<ConvertibleForwardIterator<int const> const
 static_assert( hamon::convertible_to<ConvertibleSentinel<ConvertibleForwardIterator<int>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int const>>>, "");
 static_assert(!hamon::convertible_to<ConvertibleSentinel<ConvertibleForwardIterator<int const>> const&, ConvertibleSentinel<ConvertibleForwardIterator<int>>>, "");
 
-static_assert( hamon::assignable_from_t<ConvertibleForwardIterator<int const>&, ConvertibleForwardIterator<int> const&>::value, "");
-static_assert(!hamon::assignable_from_t<ConvertibleForwardIterator<int>&, ConvertibleForwardIterator<int const> const&>::value, "");
-static_assert( hamon::assignable_from_t<ConvertibleSentinel<ConvertibleForwardIterator<int const>>&, ConvertibleSentinel<ConvertibleForwardIterator<int>> const&>::value, "");
-static_assert(!hamon::assignable_from_t<ConvertibleSentinel<ConvertibleForwardIterator<int>>&, ConvertibleSentinel<ConvertibleForwardIterator<int const>> const&>::value, "");
+static_assert( hamon::assignable_from<ConvertibleForwardIterator<int const>&, ConvertibleForwardIterator<int> const&>, "");
+static_assert(!hamon::assignable_from<ConvertibleForwardIterator<int>&, ConvertibleForwardIterator<int const> const&>, "");
+static_assert( hamon::assignable_from<ConvertibleSentinel<ConvertibleForwardIterator<int const>>&, ConvertibleSentinel<ConvertibleForwardIterator<int>> const&>, "");
+static_assert(!hamon::assignable_from<ConvertibleSentinel<ConvertibleForwardIterator<int>>&, ConvertibleSentinel<ConvertibleForwardIterator<int const>> const&>, "");
 
 static_assert( hamon::is_assignable<
 	hamon::common_iterator<ConvertibleForwardIterator<int const>, ConvertibleSentinel<ConvertibleForwardIterator<int const>>>&,
@@ -170,8 +170,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using S2 = ConvertibleSentinel<I2>;
 	static_assert(hamon::convertible_to<I2 const&, I1>, "");
 	static_assert(hamon::convertible_to<S2 const&, S1>, "");
-	static_assert(hamon::assignable_from_t<I1&, I2 const&>::value, "");
-	static_assert(hamon::assignable_from_t<S1&, S2 const&>::value, "");
+	static_assert(hamon::assignable_from<I1&, I2 const&>, "");
+	static_assert(hamon::assignable_from<S1&, S2 const&>, "");
 	int a[] = {1, 2, 3};
 	I1 i1 {&a[0]};
 	I2 i2 {&a[1]};

@@ -101,7 +101,7 @@ advance_impl(It& it, hamon::iter_difference_t<It> n)
 
 template <
 	typename It, typename Sent,
-	typename = hamon::enable_if_t<hamon::assignable_from_t<It&, Sent>::value>
+	typename = hamon::enable_if_t<hamon::assignable_from<It&, Sent>>
 >
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl(It& it, Sent bound, hamon::detail::overload_priority<2>)

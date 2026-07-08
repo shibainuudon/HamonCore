@@ -127,7 +127,7 @@ public:
 			// [reverse.iter.cons]/5
 			!hamon::is_same<U, Iterator>::value &&
 			hamon::convertible_to<U const&, Iterator> &&
-			hamon::assignable_from_t<Iterator&, U const&>::value>>
+			hamon::assignable_from<Iterator&, U const&>>>
 	HAMON_CXX14_CONSTEXPR reverse_iterator&
 	operator=(reverse_iterator<U> const& u)
 		HAMON_NOEXCEPT_IF(		// noexcept as an extension

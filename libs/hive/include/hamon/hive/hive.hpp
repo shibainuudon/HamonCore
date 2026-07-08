@@ -433,7 +433,7 @@ public:
 	assign_range(R&& rg)
 	{
 		// [sequence.reqmts]/61
-		static_assert(hamon::assignable_from_t<T&, hamon::ranges::range_reference_t<R>>::value, "");
+		static_assert(hamon::assignable_from<T&, hamon::ranges::range_reference_t<R>>, "");
 
 		// [sequence.reqmts]/62
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<

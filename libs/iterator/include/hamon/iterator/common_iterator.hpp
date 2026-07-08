@@ -216,8 +216,8 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::convertible_to<I2 const&, I> &&
 			hamon::convertible_to<S2 const&, S> &&
-			hamon::assignable_from_t<I&, I2 const&>::value &&
-			hamon::assignable_from_t<S&, S2 const&>::value
+			hamon::assignable_from<I&, I2 const&> &&
+			hamon::assignable_from<S&, S2 const&>
 		>>
 	HAMON_CXX14_CONSTEXPR common_iterator&
 	operator=(common_iterator<I2, S2> const& x)

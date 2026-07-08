@@ -66,7 +66,7 @@ private:
 		typename = hamon::enable_if_t<hamon::invocable<F2&, U2, hamon::iter_reference_t<I2>>::value>,
 		typename = hamon::enable_if_t<hamon::assignable_from<
 			U2&, hamon::invoke_result_t<F2&, U2, hamon::iter_reference_t<I2>>
-		>::value>
+		>>
 	>
 	static auto test(int) -> hamon::true_type;
 

@@ -14,7 +14,7 @@
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #endif
 
 namespace hamon
@@ -45,13 +45,16 @@ template <typename T>
 struct copyable_impl
 {
 private:
-	template <typename U>
-	static auto test(int) -> hamon::conjunction<
-		hamon::copy_constructible<U>,
-		hamon::movable<U>,
-		hamon::assignable_from<U&, U&>,
-		hamon::assignable_from<U&, const U&>,
-		hamon::assignable_from<U&, const U>>;
+	template <typename U,
+		typename = hamon::enable_if_t<
+			hamon::copy_constructible<U>::value &&
+			hamon::movable<U>::value &&
+			hamon::assignable_from<U&, U&> &&
+			hamon::assignable_from<U&, const U&> &&
+			hamon::assignable_from<U&, const U>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

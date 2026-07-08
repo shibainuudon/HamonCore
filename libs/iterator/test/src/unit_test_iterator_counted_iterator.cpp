@@ -505,13 +505,13 @@ GTEST_TEST(CountedIteratorTest, ConceptsTest)
 	// constexpr counted_iterator& operator=(const counted_iterator<I2>& x);
 	{
 		using CI = hamon::counted_iterator<int*>;
-		static_assert( hamon::assignable_from_t<CI&, hamon::counted_iterator<int*>       const&>::value, "");
-		static_assert(!hamon::assignable_from_t<CI&, hamon::counted_iterator<int const*> const&>::value, "");
+		static_assert( hamon::assignable_from<CI&, hamon::counted_iterator<int*>       const&>, "");
+		static_assert(!hamon::assignable_from<CI&, hamon::counted_iterator<int const*> const&>, "");
 	}
 	{
 		using CI = hamon::counted_iterator<int const*>;
-		static_assert( hamon::assignable_from_t<CI&, hamon::counted_iterator<int*>       const&>::value, "");
-		static_assert( hamon::assignable_from_t<CI&, hamon::counted_iterator<int const*> const&>::value, "");
+		static_assert( hamon::assignable_from<CI&, hamon::counted_iterator<int*>       const&>, "");
+		static_assert( hamon::assignable_from<CI&, hamon::counted_iterator<int const*> const&>, "");
 	}
 
 	// template<common_with<I> I2>

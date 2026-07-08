@@ -150,7 +150,7 @@ public:
 
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::assignable_from_t<I&, I2 const&>::value>>
+			hamon::assignable_from<I&, I2 const&>>>
 	HAMON_CXX14_CONSTEXPR counted_iterator&
 	operator=(counted_iterator<I2> const& x)
 		HAMON_NOEXCEPT_IF(		// noexcept as an extension

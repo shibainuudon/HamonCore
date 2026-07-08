@@ -58,7 +58,7 @@ using move_sentinel_constructible_from =
 
 template <typename From, typename To>
 using move_sentinel_assignable_from =
-	hamon::assignable_from<To&, From const&>;
+	hamon::bool_constant<hamon::assignable_from<To&, From const&>>;
 
 #endif
 

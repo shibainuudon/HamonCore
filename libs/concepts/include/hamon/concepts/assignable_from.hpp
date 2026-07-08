@@ -31,7 +31,7 @@ using std::assignable_from;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Lhs, typename Rhs>
-concept assignable_from =
+HAMON_CONCEPT_OR_BOOL assignable_from =
 	hamon::is_lvalue_reference<Lhs>::value &&
 	hamon::common_reference_with<
 		hamon::remove_reference_t<Lhs> const&,
@@ -72,17 +72,9 @@ public:
 }	// namespace detail
 
 template <typename Lhs, typename Rhs>
-using assignable_from =
-	typename detail::assignable_from_impl<Lhs, Rhs>::type;
+HAMON_CONCEPT_OR_BOOL assignable_from =
+	detail::assignable_from_impl<Lhs, Rhs>::type::value;
 
-#endif
-
-template <typename Lhs, typename Rhs>
-using assignable_from_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::assignable_from<Lhs, Rhs>>;
-#else
-	hamon::assignable_from<Lhs, Rhs>;
 #endif
 
 }	// namespace hamon
