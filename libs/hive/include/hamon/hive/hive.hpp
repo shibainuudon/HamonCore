@@ -825,7 +825,7 @@ public:
 		// [hive.operations]/13
 		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_assignable<T>, "");
-		static_assert(hamon::detail::cpp17_swappable_t<T>::value, "");
+		static_assert(hamon::detail::cpp17_swappable<T>, "");
 
 		// vectorにムーブしてソート後、thisに挿入し直す
 		// TODO: Tをムーブするコストが高い場合、vectorにポインタを渡したほうが効率的かもしれない

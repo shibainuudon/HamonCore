@@ -36,7 +36,7 @@ void enabled_hash_test(void)
 	static_assert(hamon::detail::cpp17_hash<hamon::hash<T>, T>, "");
 	static_assert(hamon::detail::cpp17_default_constructible<hamon::hash<T>>, "");
 	static_assert(hamon::detail::cpp17_copy_assignable<hamon::hash<T>>, "");
-//	static_assert(hamon::detail::cpp17_swappable_t<hamon::hash<T>>::value, "");	// TODO
+//	static_assert(hamon::detail::cpp17_swappable<hamon::hash<T>>, "");	// TODO
 	static_assert(hamon::is_nothrow_invocable<hamon::hash<T>, T>::value, "");
 }
 

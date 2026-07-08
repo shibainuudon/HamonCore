@@ -723,7 +723,7 @@ public:
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible<value_type>, "");
 		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
-		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_swappable<value_type>, "");
 
 		auto const pos_offset = position - this->begin();
 		m_impl.InsertIter(m_allocator, pos_offset, hamon::move(first), hamon::move(last));
@@ -740,7 +740,7 @@ public:
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		static_assert(hamon::detail::cpp17_move_constructible<value_type>, "");
 		static_assert(hamon::detail::cpp17_move_assignable<value_type>, "");
-		static_assert(hamon::detail::cpp17_swappable_t<value_type>::value, "");
+		static_assert(hamon::detail::cpp17_swappable<value_type>, "");
 
 		auto const pos_offset = position - this->begin();
 		m_impl.InsertRange(m_allocator, pos_offset, hamon::forward<R>(rg));
