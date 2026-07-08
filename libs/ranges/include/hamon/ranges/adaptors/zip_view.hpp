@@ -544,8 +544,11 @@ private:
 
 	private:
 		template <bool C2>
-		using AllEqualityComparable =
-			hamon::conjunction<hamon::equality_comparable_t<IteratorT<C2, Views>>...>;
+		using AllEqualityComparable = hamon::conjunction<
+			hamon::bool_constant<
+				hamon::equality_comparable<IteratorT<C2, Views>>
+			>...
+		>;
 
 		template <bool C2,
 			typename = hamon::enable_if_t<hamon::ranges::detail::all_bidirectional_t<C2, Views...>::value>>

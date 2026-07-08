@@ -50,6 +50,7 @@ using std::ranges::views::zip_transform;
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/regular_invocable.hpp>
@@ -336,7 +337,7 @@ private:
 				hamon::detail::overload_priority<1>{}))
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, ziperator<Const>)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, ziperator<Const>)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_inner == y.m_inner)	// noexcept as an extension
@@ -358,7 +359,7 @@ private:
 		}
 #else
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, ziperator<Const>)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, ziperator<Const>)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension

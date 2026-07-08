@@ -52,7 +52,7 @@ private:
 		typename = decltype(hamon::declval<U>().deallocate(hamon::declval<P>(), hamon::declval<hamon::size_t>())),
 		typename = hamon::enable_if_t<
 			hamon::copy_constructible<U> &&
-			hamon::equality_comparable<U>::value
+			hamon::equality_comparable<U>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

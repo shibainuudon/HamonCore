@@ -66,6 +66,7 @@ using std::ranges::views::join;
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/common_type.hpp>
@@ -483,10 +484,10 @@ private:
 
 	private:
 		template <typename B2>
-		using EqualityComparable = hamon::conjunction<
-			ref_is_glvalue<B2>,
-			hamon::ranges::forward_range_t<B2>,
-			hamon::equality_comparable_t<hamon::ranges::iterator_t<hamon::ranges::range_reference_t<B2>>>
+		using EqualityComparable = hamon::bool_constant<
+			ref_is_glvalue<B2>::value &&
+			hamon::ranges::forward_range_t<B2>::value &&
+			hamon::equality_comparable<hamon::ranges::iterator_t<hamon::ranges::range_reference_t<B2>>>
 		>;
 
 		template <typename B2 = Base,

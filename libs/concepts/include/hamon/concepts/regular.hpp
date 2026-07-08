@@ -12,7 +12,6 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -34,11 +33,10 @@ concept regular =
 #else
 
 template <typename T>
-using regular =
-	hamon::conjunction<
-		hamon::semiregular<T>,
-		hamon::equality_comparable<T>
-	>;
+using regular = hamon::bool_constant<
+	hamon::semiregular<T>::value &&
+	hamon::equality_comparable<T>
+>;
 
 #endif
 

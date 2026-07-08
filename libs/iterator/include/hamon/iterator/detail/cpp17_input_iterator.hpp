@@ -62,7 +62,7 @@ struct cpp17_input_iterator_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<cpp17_iterator<I2>::value>,
-		typename = hamon::enable_if_t<hamon::equality_comparable<I2>::value>,
+		typename = hamon::enable_if_t<hamon::equality_comparable<I2>>,
 		typename D = typename hamon::incrementable_traits<I2>::difference_type,
 		typename V = typename hamon::indirectly_readable_traits<I2>::value_type,
 		typename = hamon::common_reference_t<hamon::iter_reference_t<I2>&&, V&>,

@@ -660,10 +660,10 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 	private:
 		template <typename B2>
-		using EqualityComparable = hamon::conjunction<
-			ref_is_glvalue<B2>,
-			hamon::ranges::forward_range_t<B2>,
-			hamon::equality_comparable_t<InnerIter>
+		using EqualityComparable = hamon::bool_constant<
+			ref_is_glvalue<B2>::value &&
+			hamon::ranges::forward_range_t<B2>::value &&
+			hamon::equality_comparable<InnerIter>
 		>;
 
 		template <typename B2 = Base,

@@ -491,7 +491,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( advanceable_forward_t<I>::value, "");
 		static_assert( advanceable_backward_t<I>::value, "");
 		static_assert( index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert( hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert( hamon::three_way_comparable<I>, "");
@@ -525,7 +525,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( advanceable_forward_t<I>::value, "");
 		static_assert( advanceable_backward_t<I>::value, "");
 		static_assert( index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert( hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert( hamon::three_way_comparable<I>, "");
@@ -559,7 +559,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( advanceable_forward_t<I>::value, "");
 		static_assert( advanceable_backward_t<I>::value, "");
 		static_assert( index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert( hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert( hamon::three_way_comparable<I>, "");
@@ -600,7 +600,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!advanceable_forward_t<I>::value, "");
 		static_assert(!advanceable_backward_t<I>::value, "");
 		static_assert(!index_accessible_t<I>::value, "");
-		static_assert(!hamon::equality_comparable_t<I>::value, "");
+		static_assert(!hamon::equality_comparable<I>, "");
 		static_assert(!hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");
@@ -634,7 +634,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!advanceable_forward_t<I>::value, "");
 		static_assert(!advanceable_backward_t<I>::value, "");
 		static_assert(!index_accessible_t<I>::value, "");
-		static_assert(!hamon::equality_comparable_t<I>::value, "");
+		static_assert(!hamon::equality_comparable<I>, "");
 		static_assert(!hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");
@@ -668,7 +668,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!advanceable_forward_t<I>::value, "");
 		static_assert(!advanceable_backward_t<I>::value, "");
 		static_assert(!index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert(!hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");
@@ -709,7 +709,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!advanceable_forward_t<I>::value, "");
 		static_assert(!advanceable_backward_t<I>::value, "");
 		static_assert(!index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert(!hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");
@@ -750,7 +750,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!advanceable_forward_t<I>::value, "");
 		static_assert(!advanceable_backward_t<I>::value, "");
 		static_assert(!index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert(!hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");
@@ -791,7 +791,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( advanceable_forward_t<I>::value, "");
 		static_assert( advanceable_backward_t<I>::value, "");
 		static_assert( index_accessible_t<I>::value, "");
-		static_assert( hamon::equality_comparable_t<I>::value, "");
+		static_assert( hamon::equality_comparable<I>, "");
 		static_assert( hamon::totally_ordered_t<I>::value, "");
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		static_assert(!hamon::three_way_comparable<I>, "");

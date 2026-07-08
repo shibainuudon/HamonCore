@@ -426,7 +426,7 @@ private:
 
 	private:
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::equality_comparable_t<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>::value>>
+			hamon::equality_comparable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(iterator const& x, iterator const& y)
 		{
@@ -436,7 +436,7 @@ private:
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::equality_comparable_t<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>::value>>
+			hamon::equality_comparable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(iterator const& x, iterator const& y)
 		{

@@ -12,7 +12,6 @@
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -34,11 +33,10 @@ concept totally_ordered =
 #else
 
 template <typename T>
-using totally_ordered =
-	hamon::conjunction<
-		hamon::equality_comparable<T>,
-		detail::partially_ordered_with<T, T>
-	>;
+using totally_ordered = hamon::bool_constant<
+	hamon::equality_comparable<T> &&
+	detail::partially_ordered_with<T, T>::value
+>;
 
 #endif
 

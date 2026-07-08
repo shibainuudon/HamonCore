@@ -7,15 +7,8 @@
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_EQUALITY_COMPARABLE_TEST(B, T)	\
-	static_assert(B == hamon::equality_comparable<T>, "");	\
-	static_assert(B == hamon::equality_comparable_t<T>::value, "")
-#else
-#  define HAMON_EQUALITY_COMPARABLE_TEST(B, T)	\
-	static_assert(B == hamon::equality_comparable<T>::value, "");	\
-	static_assert(B == hamon::equality_comparable_t<T>::value, "")
-#endif
+#define HAMON_EQUALITY_COMPARABLE_TEST(B, T)	\
+	static_assert(B == hamon::equality_comparable<T>, "")
 
 namespace hamon_concepts_test
 {

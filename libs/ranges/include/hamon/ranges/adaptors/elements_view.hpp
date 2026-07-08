@@ -545,7 +545,7 @@ private:
 	private:
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
-				hamon::equality_comparable_t<hamon::ranges::iterator_t<B2>>::value>>
+				hamon::equality_comparable<hamon::ranges::iterator_t<B2>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(iterator const& x, iterator const& y) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::declval<BaseIter const&>() == hamon::declval<BaseIter const&>())
@@ -557,7 +557,7 @@ private:
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
-				hamon::equality_comparable_t<hamon::ranges::iterator_t<B2>>::value>>
+				hamon::equality_comparable<hamon::ranges::iterator_t<B2>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension

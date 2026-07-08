@@ -297,7 +297,7 @@ private:
 			return tmp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, I)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, I)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator==(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current == y.m_current)	// noexcept as an extension
@@ -308,7 +308,7 @@ private:
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, I)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, I)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator!=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension

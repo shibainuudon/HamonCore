@@ -8,10 +8,10 @@
 #define HAMON_CONCEPTS_EQUALITY_COMPARABLE_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -22,24 +22,11 @@ namespace hamon
 
 using std::equality_comparable;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename T>
-concept equality_comparable = detail::weakly_equality_comparable_with<T, T>;
-
 #else
 
 template <typename T>
-using equality_comparable = hamon::bool_constant<detail::weakly_equality_comparable_with<T, T>>;
+HAMON_CONCEPT_OR_BOOL equality_comparable = detail::weakly_equality_comparable_with<T, T>;
 
-#endif
-
-template <typename T>
-using equality_comparable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::equality_comparable<T>>;
-#else
-	hamon::equality_comparable<T>;
 #endif
 
 }	// namespace hamon

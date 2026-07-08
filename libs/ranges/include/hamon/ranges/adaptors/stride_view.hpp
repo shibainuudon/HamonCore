@@ -348,14 +348,14 @@ private:
 			HAMON_NOEXCEPT_RETURN(!(x == y))			// noexcept as an extension
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, BaseIter)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(iterator const& x, iterator const& y)
 			// [range.stride.iterator]/17
 			HAMON_NOEXCEPT_RETURN(x.m_current == y.m_current)	// noexcept as an extension
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::equality_comparable, I2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::equality_comparable, I2, BaseIter)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_RETURN(!(x == y))			// noexcept as an extension
