@@ -31,7 +31,7 @@ template <typename T, hamon::size_t N> void swap(T(&)[N], T(&)[N]) = delete;
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept has_adl_swap =
+HAMON_CONCEPT_OR_BOOL has_adl_swap =
 	(hamon::detail::class_or_enum<hamon::remove_reference_t<T>> ||
 	 hamon::detail::class_or_enum<hamon::remove_reference_t<U>>) &&
 	requires(T&& t, U&& u)
@@ -46,11 +46,11 @@ struct has_adl_swap_impl
 {
 private:
 	template <typename T2, typename U2,
-		typename = decltype(swap(hamon::declval<T2>(), hamon::declval<U2>())),
 		typename = hamon::enable_if_t<
 			hamon::detail::class_or_enum<hamon::remove_reference_t<T2>> ||
 			hamon::detail::class_or_enum<hamon::remove_reference_t<U2>>
-		>
+		>,
+		typename = decltype(swap(hamon::declval<T2>(), hamon::declval<U2>()))
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -62,7 +62,8 @@ public:
 };
 
 template <typename T, typename U>
-using has_adl_swap = typename has_adl_swap_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_swap =
+	has_adl_swap_impl<T, U>::type::value;
 
 #endif
 

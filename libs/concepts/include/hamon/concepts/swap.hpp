@@ -58,9 +58,7 @@ private:
 	template <
 		typename T, typename U
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-		, typename = hamon::enable_if_t<
-			has_adl_swap<T, U>::value
-		>
+		, typename = hamon::enable_if_t<has_adl_swap<T, U>>
 #endif
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
