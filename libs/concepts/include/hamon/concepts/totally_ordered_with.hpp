@@ -8,14 +8,15 @@
 #define HAMON_CONCEPTS_TOTALLY_ORDERED_WITH_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/compare/detail/partially_ordered_with.hpp>
 #include <hamon/concepts/totally_ordered.hpp>
 #include <hamon/concepts/equality_comparable_with.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -29,7 +30,7 @@ using std::totally_ordered_with;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept totally_ordered_with =
+HAMON_CONCEPT_OR_BOOL totally_ordered_with =
 	hamon::totally_ordered<T> &&
 	hamon::totally_ordered<U> &&
 	hamon::equality_comparable_with<T, U> &&
@@ -76,17 +77,9 @@ public:
 }	// namespace detail
 
 template <typename T, typename U>
-using totally_ordered_with =
-	typename detail::totally_ordered_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL totally_ordered_with =
+	detail::totally_ordered_with_impl<T, U>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using totally_ordered_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::totally_ordered_with<T, U>>;
-#else
-	hamon::totally_ordered_with<T, U>;
 #endif
 
 }	// namespace hamon

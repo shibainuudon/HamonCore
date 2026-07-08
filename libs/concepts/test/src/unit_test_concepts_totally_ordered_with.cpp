@@ -7,15 +7,8 @@
 #include <hamon/concepts/totally_ordered_with.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_TOTALLY_ORDERED_WITH_TEST(B, ...)	\
-	static_assert(B == hamon::totally_ordered_with<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::totally_ordered_with_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_TOTALLY_ORDERED_WITH_TEST(B, ...) \
-	static_assert(B == hamon::totally_ordered_with<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::totally_ordered_with_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_TOTALLY_ORDERED_WITH_TEST(B, ...)	\
+	static_assert(B == hamon::totally_ordered_with<__VA_ARGS__>, "")
 
 namespace hamon_concepts_test
 {

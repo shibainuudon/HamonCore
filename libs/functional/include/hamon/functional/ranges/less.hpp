@@ -75,7 +75,7 @@ private:
 	template <typename T, typename U
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
-			hamon::totally_ordered_with<T, U>::value
+			hamon::totally_ordered_with<T, U>
 		>
 #endif
 	>

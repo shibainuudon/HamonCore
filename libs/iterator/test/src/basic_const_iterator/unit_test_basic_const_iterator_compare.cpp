@@ -86,11 +86,11 @@ static_assert( hamon::equality_comparable_with<hamon::basic_const_iterator<bidir
 static_assert( hamon::equality_comparable_with<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>, random_access_iterator_wrapper<int>>, "");
 static_assert( hamon::equality_comparable_with<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>, contiguous_iterator_wrapper<int>>, "");
 
-static_assert(!hamon::totally_ordered_with_t<hamon::basic_const_iterator<input_iterator_wrapper<int>>, input_iterator_wrapper<int>>::value, "");
-static_assert(!hamon::totally_ordered_with_t<hamon::basic_const_iterator<forward_iterator_wrapper<int>>, forward_iterator_wrapper<int>>::value, "");
-static_assert(!hamon::totally_ordered_with_t<hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>, bidirectional_iterator_wrapper<int>>::value, "");
-static_assert( hamon::totally_ordered_with_t<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>, random_access_iterator_wrapper<int>>::value, "");
-static_assert( hamon::totally_ordered_with_t<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>, contiguous_iterator_wrapper<int>>::value, "");
+static_assert(!hamon::totally_ordered_with<hamon::basic_const_iterator<input_iterator_wrapper<int>>, input_iterator_wrapper<int>>, "");
+static_assert(!hamon::totally_ordered_with<hamon::basic_const_iterator<forward_iterator_wrapper<int>>, forward_iterator_wrapper<int>>, "");
+static_assert(!hamon::totally_ordered_with<hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>, bidirectional_iterator_wrapper<int>>, "");
+static_assert( hamon::totally_ordered_with<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>, random_access_iterator_wrapper<int>>, "");
+static_assert( hamon::totally_ordered_with<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>, contiguous_iterator_wrapper<int>>, "");
 
 static_assert(!hamon::equality_comparable_with<forward_iterator_wrapper<int>, hamon::basic_const_iterator<input_iterator_wrapper<int>>>, "");
 static_assert( hamon::equality_comparable_with<input_iterator_wrapper<int>, hamon::basic_const_iterator<input_iterator_wrapper<int>>>, "");
@@ -99,11 +99,11 @@ static_assert( hamon::equality_comparable_with<bidirectional_iterator_wrapper<in
 static_assert( hamon::equality_comparable_with<random_access_iterator_wrapper<int>, hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>, "");
 static_assert( hamon::equality_comparable_with<contiguous_iterator_wrapper<int>, hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>, "");
 
-static_assert(!hamon::totally_ordered_with_t<input_iterator_wrapper<int>, hamon::basic_const_iterator<input_iterator_wrapper<int>>>::value, "");
-static_assert(!hamon::totally_ordered_with_t<forward_iterator_wrapper<int>, hamon::basic_const_iterator<forward_iterator_wrapper<int>>>::value, "");
-static_assert(!hamon::totally_ordered_with_t<bidirectional_iterator_wrapper<int>, hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::totally_ordered_with_t<random_access_iterator_wrapper<int>, hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::totally_ordered_with_t<contiguous_iterator_wrapper<int>, hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>::value, "");
+static_assert(!hamon::totally_ordered_with<input_iterator_wrapper<int>, hamon::basic_const_iterator<input_iterator_wrapper<int>>>, "");
+static_assert(!hamon::totally_ordered_with<forward_iterator_wrapper<int>, hamon::basic_const_iterator<forward_iterator_wrapper<int>>>, "");
+static_assert(!hamon::totally_ordered_with<bidirectional_iterator_wrapper<int>, hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>>, "");
+static_assert( hamon::totally_ordered_with<random_access_iterator_wrapper<int>, hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>, "");
+static_assert( hamon::totally_ordered_with<contiguous_iterator_wrapper<int>, hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>, "");
 
 static_assert( hamon::detail::weakly_equality_comparable_with<hamon::basic_const_iterator<input_iterator_wrapper<int>>, test_sentinel<input_iterator_wrapper<int>>>, "");
 static_assert( hamon::detail::weakly_equality_comparable_with<hamon::basic_const_iterator<forward_iterator_wrapper<int>>, test_sentinel<forward_iterator_wrapper<int>>>, "");

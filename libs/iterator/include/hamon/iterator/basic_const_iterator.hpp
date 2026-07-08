@@ -59,7 +59,6 @@ using std::basic_const_iterator;
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -482,16 +481,16 @@ private:
 	// それを防ぐためにこれらのクラスが必要。
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
-	struct TotallyOrdered : public hamon::conjunction<
-		hamon::random_access_iterator_t<Iterator>,
-		hamon::totally_ordered_with_t<Iterator, I>
+	struct TotallyOrdered : public hamon::bool_constant<
+		hamon::random_access_iterator_t<Iterator>::value &&
+		hamon::totally_ordered_with<Iterator, I>
 	>{};
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
 	struct ThreeWayComparable : public hamon::bool_constant<
 		hamon::random_access_iterator_t<Iterator>::value &&
-		hamon::totally_ordered_with_t<Iterator, I>::value &&
+		hamon::totally_ordered_with<Iterator, I> &&
 		hamon::three_way_comparable_with<Iterator, I>
 	>{};
 #endif
