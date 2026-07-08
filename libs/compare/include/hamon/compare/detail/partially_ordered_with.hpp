@@ -23,7 +23,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept partially_ordered_with =
+HAMON_CONCEPT_OR_BOOL partially_ordered_with =
 	requires(hamon::remove_reference_t<T> const& t, hamon::remove_reference_t<U> const& u)
 	{
 		{ t <  u } -> detail::boolean_testable;
@@ -72,8 +72,8 @@ public:
 HAMON_WARNING_POP()
 
 template <typename T, typename U>
-using partially_ordered_with =
-	typename partially_ordered_with_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL partially_ordered_with =
+	partially_ordered_with_impl<T, U>::type::value;
 
 #endif
 

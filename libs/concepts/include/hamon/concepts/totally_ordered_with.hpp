@@ -61,7 +61,7 @@ private:
 					hamon::remove_reference_t<U2> const&
 				>
 			>::value &&
-			detail::partially_ordered_with<T2, U2>::value
+			detail::partially_ordered_with<T2, U2>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

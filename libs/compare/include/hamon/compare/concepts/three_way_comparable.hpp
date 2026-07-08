@@ -40,7 +40,7 @@ namespace hamon
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename Cat = hamon::partial_ordering>
-concept three_way_comparable =
+HAMON_CONCEPT_OR_BOOL three_way_comparable =
 	detail::weakly_equality_comparable_with<T, T> &&
 	detail::partially_ordered_with<T, T> &&
 	requires(
@@ -62,7 +62,7 @@ private:
 	template <typename T2, typename C2,
 		typename = hamon::enable_if_t<
 			detail::weakly_equality_comparable_with<T2, T2> &&
-			detail::partially_ordered_with<T2, T2>::value
+			detail::partially_ordered_with<T2, T2>
 		>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename R = decltype(
@@ -78,15 +78,11 @@ public:
 	using type = decltype(test<T, Cat>(0));
 };
 
-template <typename T, typename Cat>
-using three_way_comparable =
-	typename three_way_comparable_impl<T, Cat>::type;
-
 }	// namespace detail
 
 template <typename T, typename Cat = hamon::partial_ordering>
-HAMON_INLINE_VAR constexpr bool three_way_comparable =
-	detail::three_way_comparable<T, Cat>::value;
+HAMON_CONCEPT_OR_BOOL three_way_comparable =
+	detail::three_way_comparable_impl<T, Cat>::type::value;
 
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 

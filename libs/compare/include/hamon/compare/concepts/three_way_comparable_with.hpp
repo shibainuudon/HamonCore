@@ -44,7 +44,7 @@ namespace hamon
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U, typename Cat = hamon::partial_ordering>
-concept three_way_comparable_with =
+HAMON_CONCEPT_OR_BOOL three_way_comparable_with =
 	hamon::three_way_comparable<T, Cat> &&
 	hamon::three_way_comparable<U, Cat> &&
 	detail::comparison_common_type_with<T, U> &&
@@ -82,7 +82,7 @@ private:
 				hamon::remove_reference_t<U2> const&
 			>, C2>>,
 		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>>,
-		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>::value>,
+		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename B = hamon::remove_reference_t<U2>,
 		typename R1 = decltype(hamon::declval<A const&>() <=> hamon::declval<B const&>()),
@@ -100,15 +100,11 @@ public:
 	using type = decltype(test<T, U, Cat>(0));
 };
 
-template <typename T, typename U, typename Cat>
-using three_way_comparable_with =
-	typename three_way_comparable_with_impl<T, U, Cat>::type;
-
 }	// namespace detail
 
 template <typename T, typename U, typename Cat = hamon::partial_ordering>
-HAMON_INLINE_VAR constexpr bool three_way_comparable_with =
-	detail::three_way_comparable_with<T, U, Cat>::value;
+HAMON_CONCEPT_OR_BOOL three_way_comparable_with =
+	detail::three_way_comparable_with_impl<T, U, Cat>::type::value;
 
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 

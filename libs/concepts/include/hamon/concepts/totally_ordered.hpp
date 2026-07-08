@@ -35,7 +35,7 @@ concept totally_ordered =
 template <typename T>
 using totally_ordered = hamon::bool_constant<
 	hamon::equality_comparable<T> &&
-	detail::partially_ordered_with<T, T>::value
+	detail::partially_ordered_with<T, T>
 >;
 
 #endif
