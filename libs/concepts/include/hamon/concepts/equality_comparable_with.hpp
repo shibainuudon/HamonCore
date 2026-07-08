@@ -55,7 +55,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::equality_comparable<T2> &&
 			hamon::equality_comparable<U2> &&
-			detail::comparison_common_type_with<T2, U2>::value &&
+			detail::comparison_common_type_with<T2, U2> &&
 			hamon::equality_comparable<
 				hamon::common_reference_t<
 					hamon::remove_reference_t<T2> const&,

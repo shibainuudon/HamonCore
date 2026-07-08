@@ -25,7 +25,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U, typename C = hamon::common_reference_t<T const&, U const&>>
-concept comparison_common_type_with_impl =
+HAMON_CONCEPT_OR_BOOL comparison_common_type_with_impl =
 	hamon::same_as<
 		hamon::common_reference_t<T const&, U const&>,
 		hamon::common_reference_t<U const&, T const&>
@@ -36,7 +36,7 @@ concept comparison_common_type_with_impl =
 	};
 
 template <typename T, typename U>
-concept comparison_common_type_with =
+HAMON_CONCEPT_OR_BOOL comparison_common_type_with =
 	comparison_common_type_with_impl<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>;
 
 #else
@@ -73,17 +73,9 @@ public:
 };
 
 template <typename T, typename U>
-using comparison_common_type_with =
-	typename comparison_common_type_with_impl<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>::type;
+HAMON_CONCEPT_OR_BOOL comparison_common_type_with =
+	comparison_common_type_with_impl<hamon::remove_cvref_t<T>, hamon::remove_cvref_t<U>>::type::value;
 
-#endif
-
-template <typename T, typename U>
-using comparison_common_type_with_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::comparison_common_type_with<T, U>>;
-#else
-	hamon::detail::comparison_common_type_with<T, U>;
 #endif
 
 }	// namespace detail

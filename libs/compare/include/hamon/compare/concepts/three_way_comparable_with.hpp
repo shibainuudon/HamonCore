@@ -75,7 +75,7 @@ private:
 	template <typename T2, typename U2, typename C2,
 		typename = hamon::enable_if_t<hamon::three_way_comparable<T2, C2>>,
 		typename = hamon::enable_if_t<hamon::three_way_comparable<U2, C2>>,
-		typename = hamon::enable_if_t<detail::comparison_common_type_with<T2, U2>::value>,
+		typename = hamon::enable_if_t<detail::comparison_common_type_with<T2, U2>>,
 		typename = hamon::enable_if_t<hamon::three_way_comparable<
 			hamon::common_reference_t<
 				hamon::remove_reference_t<T2> const&,
