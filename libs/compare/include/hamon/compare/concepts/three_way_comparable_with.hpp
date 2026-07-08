@@ -81,7 +81,7 @@ private:
 				hamon::remove_reference_t<T2> const&,
 				hamon::remove_reference_t<U2> const&
 			>, C2>>,
-		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>::value>,
+		typename = hamon::enable_if_t<detail::weakly_equality_comparable_with<T2, U2>>,
 		typename = hamon::enable_if_t<detail::partially_ordered_with<T2, U2>::value>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename B = hamon::remove_reference_t<U2>,

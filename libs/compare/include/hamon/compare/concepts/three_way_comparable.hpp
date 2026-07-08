@@ -60,10 +60,10 @@ struct three_way_comparable_impl
 {
 private:
 	template <typename T2, typename C2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			detail::weakly_equality_comparable_with<T2, T2>,
-			detail::partially_ordered_with<T2, T2>
-		>::value>,
+		typename = hamon::enable_if_t<
+			detail::weakly_equality_comparable_with<T2, T2> &&
+			detail::partially_ordered_with<T2, T2>::value
+		>,
 		typename A = hamon::remove_reference_t<T2>,
 		typename R = decltype(
 			hamon::declval<A const&>() <=> hamon::declval<A const&>()),

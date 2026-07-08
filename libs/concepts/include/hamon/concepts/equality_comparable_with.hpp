@@ -14,7 +14,7 @@
 #include <hamon/concepts/detail/comparison_common_type_with.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/type_traits/common_reference.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
 #endif
 
@@ -51,18 +51,21 @@ template <typename T, typename U>
 struct equality_comparable_with_impl
 {
 private:
-	template <typename T2, typename U2>
-	static auto test(int) -> hamon::conjunction<
-		hamon::equality_comparable<T2>,
-		hamon::equality_comparable<U2>,
-		detail::comparison_common_type_with<T2, U2>,
-		hamon::equality_comparable<
-			hamon::common_reference_t<
-				hamon::remove_reference_t<T2> const&,
-				hamon::remove_reference_t<U2> const&
-			>
-		>,
-		detail::weakly_equality_comparable_with<T2, U2>>;
+	template <typename T2, typename U2,
+		typename = hamon::enable_if_t<
+			hamon::equality_comparable<T2>::value &&
+			hamon::equality_comparable<U2>::value &&
+			detail::comparison_common_type_with<T2, U2>::value &&
+			hamon::equality_comparable<
+				hamon::common_reference_t<
+					hamon::remove_reference_t<T2> const&,
+					hamon::remove_reference_t<U2> const&
+				>
+			>::value &&
+			detail::weakly_equality_comparable_with<T2, U2>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename T2, typename U2>
 	static auto test(...) -> hamon::false_type;

@@ -202,7 +202,7 @@ template <
 	typename = hamon::enable_if_t<
 		hamon::weakly_incrementable<W>::value &&
 		hamon::semiregular<Bound>::value &&
-		hamon::detail::weakly_equality_comparable_with<W, Bound>::value &&
+		hamon::detail::weakly_equality_comparable_with<W, Bound> &&
 		hamon::copyable<W>
 	>
 >

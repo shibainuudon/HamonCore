@@ -51,9 +51,9 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	VERIFY(!(p == sentinel));
 	VERIFY(!(sentinel == p));
 
-	static_assert( hamon::detail::weakly_equality_comparable_with_t<hamon::unreachable_sentinel_t, int>::value, "");
-	static_assert( hamon::detail::weakly_equality_comparable_with_t<hamon::unreachable_sentinel_t, int*>::value, "");
-	static_assert(!hamon::detail::weakly_equality_comparable_with_t<hamon::unreachable_sentinel_t, void*>::value, "");
+	static_assert( hamon::detail::weakly_equality_comparable_with<hamon::unreachable_sentinel_t, int>, "");
+	static_assert( hamon::detail::weakly_equality_comparable_with<hamon::unreachable_sentinel_t, int*>, "");
+	static_assert(!hamon::detail::weakly_equality_comparable_with<hamon::unreachable_sentinel_t, void*>, "");
 	HAMON_ASSERT_NOEXCEPT_TRUE(sentinel == p);
 	HAMON_ASSERT_NOEXCEPT_TRUE(sentinel != p);
 

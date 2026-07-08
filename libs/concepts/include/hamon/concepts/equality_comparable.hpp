@@ -30,7 +30,7 @@ concept equality_comparable = detail::weakly_equality_comparable_with<T, T>;
 #else
 
 template <typename T>
-using equality_comparable = detail::weakly_equality_comparable_with<T, T>;
+using equality_comparable = hamon::bool_constant<detail::weakly_equality_comparable_with<T, T>>;
 
 #endif
 

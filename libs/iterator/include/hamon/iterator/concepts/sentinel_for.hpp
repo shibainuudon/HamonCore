@@ -45,7 +45,7 @@ private:
 	template <typename S2, typename I2,
 		typename = hamon::enable_if_t<hamon::semiregular<S2>::value>,
 		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
-		typename = hamon::enable_if_t<hamon::detail::weakly_equality_comparable_with<S2, I2>::value>
+		typename = hamon::enable_if_t<hamon::detail::weakly_equality_comparable_with<S2, I2>>
 	>
 	static auto test(int) -> hamon::true_type;
 

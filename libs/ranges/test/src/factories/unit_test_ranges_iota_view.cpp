@@ -575,7 +575,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
-		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
+		static_assert( hamon::detail::weakly_equality_comparable_with<I, S>, "");
 		static_assert(!subtractable2_t<I, S>::value, "");
 		static_assert(!subtractable2_t<S, I, typename I::difference_type>::value, "");
 	}
@@ -684,7 +684,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
-		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
+		static_assert( hamon::detail::weakly_equality_comparable_with<I, S>, "");
 		static_assert(!subtractable2_t<I, S>::value, "");
 		static_assert(!subtractable2_t<S, I, typename I::difference_type>::value, "");
 	}
@@ -725,7 +725,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
-		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
+		static_assert( hamon::detail::weakly_equality_comparable_with<I, S>, "");
 		static_assert(!subtractable2_t<I, S>::value, "");
 		static_assert(!subtractable2_t<S, I, typename I::difference_type>::value, "");
 	}
@@ -766,7 +766,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
-		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
+		static_assert( hamon::detail::weakly_equality_comparable_with<I, S>, "");
 		static_assert(!subtractable2_t<I, S>::value, "");
 		static_assert(!subtractable2_t<S, I, typename I::difference_type>::value, "");
 	}
@@ -807,7 +807,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::same_as<S, hamon::unreachable_sentinel_t>, "");
 		static_assert( hamon::is_default_constructible<S>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<S>::value, "");
-		static_assert( hamon::detail::weakly_equality_comparable_with_t<I, S>::value, "");
+		static_assert( hamon::detail::weakly_equality_comparable_with<I, S>, "");
 		static_assert( subtractable2_t<I, S>::value, "");
 		static_assert( subtractable2_t<S, I, typename I::difference_type>::value, "");
 	}
