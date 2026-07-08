@@ -7,15 +7,8 @@
 #include <hamon/concepts/regular.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_REGULAR_TEST(B, T)	\
-	static_assert(B == hamon::regular<T>, "");	\
-	static_assert(B == hamon::regular_t<T>::value, "")
-#else
-#  define HAMON_REGULAR_TEST(B, T)	\
-	static_assert(B == hamon::regular<T>::value, "");	\
-	static_assert(B == hamon::regular_t<T>::value, "")
-#endif
+#define HAMON_REGULAR_TEST(B, T)	\
+	static_assert(B == hamon::regular<T>, "")
 
 namespace hamon_concepts_test
 {

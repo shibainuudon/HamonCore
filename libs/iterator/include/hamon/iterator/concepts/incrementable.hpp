@@ -44,7 +44,7 @@ struct incrementable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::regular<I2>::value>,
+		typename = hamon::enable_if_t<hamon::regular<I2>>,
 		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>::value>,
 		typename T = decltype(hamon::declval<I2&>()++),
 		typename = hamon::enable_if_t<hamon::same_as<T, I2>>

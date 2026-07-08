@@ -8,11 +8,11 @@
 #define HAMON_CONCEPTS_REGULAR_HPP
 
 #include <hamon/concepts/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -23,29 +23,13 @@ namespace hamon
 
 using std::regular;
 
-#elif defined(HAMON_HAS_CXX20_CONCEPTS)
+#else
 
 template <typename T>
-concept regular =
+HAMON_CONCEPT_OR_BOOL regular =
 	hamon::semiregular<T> &&
 	hamon::equality_comparable<T>;
 
-#else
-
-template <typename T>
-using regular = hamon::bool_constant<
-	hamon::semiregular<T> &&
-	hamon::equality_comparable<T>
->;
-
-#endif
-
-template <typename T>
-using regular_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::regular<T>>;
-#else
-	hamon::regular<T>;
 #endif
 
 }	// namespace hamon
