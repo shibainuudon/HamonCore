@@ -51,9 +51,9 @@ private:
 	template <typename F2, typename I2,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::detail::indirect_value_t<I2>>::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_reference_t<I2>>::value>,
-		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_common_reference_t<I2>>::value>
+		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::detail::indirect_value_t<I2>>>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_reference_t<I2>>>,
+		typename = hamon::enable_if_t<hamon::predicate<F2&, hamon::iter_common_reference_t<I2>>>
 	>
 	static auto test(int) -> hamon::true_type;
 

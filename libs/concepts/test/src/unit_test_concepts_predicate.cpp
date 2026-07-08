@@ -7,15 +7,8 @@
 #include <hamon/concepts/predicate.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_PREDICATE_TEST(B, ...)	\
-	static_assert(B == hamon::predicate<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::predicate_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_PREDICATE_TEST(B, ...) \
-	static_assert(B == hamon::predicate<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::predicate_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_PREDICATE_TEST(B, ...)	\
+	static_assert(B == hamon::predicate<__VA_ARGS__>, "")
 
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_CLANG("-Wunneeded-internal-declaration")

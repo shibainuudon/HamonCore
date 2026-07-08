@@ -15,6 +15,7 @@
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -28,7 +29,7 @@ using std::predicate;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Fn, typename... Args>
-concept predicate =
+HAMON_CONCEPT_OR_BOOL predicate =
 	hamon::regular_invocable<Fn, Args...> &&
 	detail::boolean_testable<hamon::invoke_result_t<Fn, Args...>>;
 
@@ -59,16 +60,9 @@ public:
 }	// namespace detail
 
 template <typename Fn, typename... Args>
-using predicate = typename detail::predicate_impl<Fn, Args...>::type;
+HAMON_CONCEPT_OR_BOOL predicate =
+	detail::predicate_impl<Fn, Args...>::type::value;
 
-#endif
-
-template <typename Fn, typename... Args>
-using predicate_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::predicate<Fn, Args...>>;
-#else
-	hamon::predicate<Fn, Args...>;
 #endif
 
 }	// namespace hamon

@@ -11,7 +11,6 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #if !defined(HAMON_USE_STD_CONCEPTS)
 #include <hamon/concepts/predicate.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -35,13 +34,12 @@ concept relation =
 #else
 
 template <typename Rel, typename T, typename U>
-using relation =
-	hamon::conjunction<
-		hamon::predicate<Rel, T, T>,
-		hamon::predicate<Rel, U, U>,
-		hamon::predicate<Rel, T, U>,
-		hamon::predicate<Rel, U, T>
-	>;
+using relation = hamon::bool_constant<
+	hamon::predicate<Rel, T, T> &&
+	hamon::predicate<Rel, U, U> &&
+	hamon::predicate<Rel, T, U> &&
+	hamon::predicate<Rel, U, T>
+>;
 
 #endif
 
