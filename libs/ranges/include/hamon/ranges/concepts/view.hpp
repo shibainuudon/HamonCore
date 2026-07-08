@@ -50,7 +50,7 @@ struct view_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<ranges::range<U>::value>,
-		typename = hamon::enable_if_t<hamon::movable_t<U>::value>,
+		typename = hamon::enable_if_t<hamon::movable<U>>,
 		typename = hamon::enable_if_t<HAMON_RANGES_ENABLE_VIEW(U)>
 	>
 	static auto test(int) -> hamon::true_type;

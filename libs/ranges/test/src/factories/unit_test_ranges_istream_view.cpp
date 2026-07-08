@@ -62,7 +62,7 @@ struct NonMovable
 	NonMovable& operator=(NonMovable &&) = delete;
 };
 static_assert( hamon::default_initializable<NonMovable>, "");
-static_assert(!hamon::movable_t<NonMovable>::value, "");
+static_assert(!hamon::movable<NonMovable>, "");
 
 template <typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>&
@@ -80,7 +80,7 @@ struct NoDefaultCtor
 	NoDefaultCtor& operator=(NoDefaultCtor &&) = default;
 };
 static_assert(!hamon::default_initializable<NoDefaultCtor>, "");
-static_assert( hamon::movable_t<NoDefaultCtor>::value, "");
+static_assert( hamon::movable<NoDefaultCtor>, "");
 
 template <typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>&

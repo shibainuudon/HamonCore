@@ -60,7 +60,7 @@ private:
 			((ranges::view<hamon::remove_cvref_t<U>>::value && hamon::constructible_from<hamon::remove_cvref_t<U>, U>) ||
 			 (!ranges::view<hamon::remove_cvref_t<U>>::value &&
 				 (hamon::is_lvalue_reference<U>::value ||
-					 (hamon::movable<hamon::remove_reference_t<U>>::value &&
+					 (hamon::movable<hamon::remove_reference_t<U>> &&
 					  !detail::is_initializer_list<hamon::remove_cvref_t<U>>::value))))
 		>
 	>

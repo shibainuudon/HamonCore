@@ -38,7 +38,7 @@ struct NoCopyIterator
 
 static_assert( hamon::input_or_output_iterator_t<NoCopyIterator<int>>::value, "");
 static_assert(!hamon::copyable_t<NoCopyIterator<int>>::value, "");
-static_assert( hamon::movable_t<NoCopyIterator<int>>::value, "");
+static_assert( hamon::movable<NoCopyIterator<int>>, "");
 static_assert( hamon::sentinel_for_t<hamon::unreachable_sentinel_t, NoCopyIterator<int>>::value, "");
 
 template <typename I, typename S, typename = void>

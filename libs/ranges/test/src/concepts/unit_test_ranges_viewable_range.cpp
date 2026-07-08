@@ -95,8 +95,8 @@ struct T5 : test_input_range<int> { };
 static_assert( hamon::ranges::range_t<T5>::value, "");
 static_assert(!hamon::ranges::view_t<T5>::value, "");
 static_assert( hamon::constructible_from<T5, T5>, "");
-static_assert( hamon::movable_t<T5>::value, "");
-static_assert(!hamon::movable_t<const T5>::value, "");
+static_assert( hamon::movable<T5>, "");
+static_assert(!hamon::movable<const T5>, "");
 
 HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  T5); // movable
 HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  T5&); // movable
@@ -109,7 +109,7 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(false, const T5&&);
 static_assert( hamon::ranges::range_t<std::initializer_list<int>>::value, "");
 static_assert(!hamon::ranges::view_t<std::initializer_list<int>>::value, "");
 static_assert( hamon::constructible_from<std::initializer_list<int>, std::initializer_list<int>>, "");
-static_assert( hamon::movable_t<std::initializer_list<int>>::value, "");
+static_assert( hamon::movable<std::initializer_list<int>>, "");
 
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int>);
 HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  std::initializer_list<int>&);
@@ -123,7 +123,7 @@ struct T6 : test_input_range<int> { T6(T6&&); T6& operator=(T6&&) = delete; };
 static_assert( hamon::ranges::range_t<T6>::value, "");
 static_assert(!hamon::ranges::view_t<T6>::value, "");
 static_assert( hamon::constructible_from<T6, T6>, "");
-static_assert(!hamon::movable_t<T6>::value, "");
+static_assert(!hamon::movable<T6>, "");
 
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, T6);
 HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  T6&); // lvalue

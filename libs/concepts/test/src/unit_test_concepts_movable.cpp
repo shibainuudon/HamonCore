@@ -7,15 +7,8 @@
 #include <hamon/concepts/movable.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_MOVABLE_TEST(B, T)	\
-	static_assert(B == hamon::movable<T>, "");	\
-	static_assert(B == hamon::movable_t<T>::value, "")
-#else
-#  define HAMON_MOVABLE_TEST(B, T)	\
-	static_assert(B == hamon::movable<T>::value, "");	\
-	static_assert(B == hamon::movable_t<T>::value, "")
-#endif
+#define HAMON_MOVABLE_TEST(B, T)	\
+	static_assert(B == hamon::movable<T>, "")
 
 namespace hamon_concepts_test
 {

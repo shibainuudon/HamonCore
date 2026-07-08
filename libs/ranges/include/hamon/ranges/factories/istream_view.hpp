@@ -96,7 +96,7 @@ requires hamon::default_initializable<Val> &&
 #else
 template <typename Val, typename CharT, typename Traits = std::char_traits<CharT>,
 	typename = hamon::enable_if_t<
-		hamon::movable_t<Val>::value &&
+		hamon::movable<Val> &&
 		hamon::default_initializable<Val> &&
 		detail::stream_extractable<Val, CharT, Traits>::value
 	>

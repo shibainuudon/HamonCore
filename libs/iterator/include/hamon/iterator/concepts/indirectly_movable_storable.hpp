@@ -52,7 +52,7 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_movable<I, O>::value>,
 		typename V = hamon::iter_value_t<I>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V>::value>,
-		typename = hamon::enable_if_t<hamon::movable<V>::value>,
+		typename = hamon::enable_if_t<hamon::movable<V>>,
 		typename R = hamon::iter_rvalue_reference_t<I>,
 		typename = hamon::enable_if_t<hamon::constructible_from<V, R>>,
 		typename = hamon::enable_if_t<hamon::assignable_from<V&, R>>

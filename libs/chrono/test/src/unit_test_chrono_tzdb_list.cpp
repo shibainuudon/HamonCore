@@ -15,7 +15,7 @@ namespace hamon_chrono_test
 {
 
 static_assert(!hamon::copyable_t<hamon::chrono::tzdb_list>::value, "");
-static_assert(!hamon::movable_t<hamon::chrono::tzdb_list>::value, "");
+static_assert(!hamon::movable<hamon::chrono::tzdb_list>, "");
 static_assert(!hamon::default_initializable<hamon::chrono::tzdb_list>, "");
 
 GTEST_TEST(ChronoTest, TzdbListTest)

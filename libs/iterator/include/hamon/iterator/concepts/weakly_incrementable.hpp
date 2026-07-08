@@ -50,7 +50,7 @@ struct weakly_incrementable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::movable<I2>::value>,
+		typename = hamon::enable_if_t<hamon::movable<I2>>,
 		typename D = hamon::iter_difference_t<I2>,
 		typename = hamon::enable_if_t<hamon::detail::is_signed_integer_like<D>::value>,
 		typename T = decltype(++hamon::declval<I2&>()),

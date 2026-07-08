@@ -15,6 +15,7 @@
 #include <hamon/type_traits/add_const.hpp>
 #include <hamon/type_traits/add_lvalue_reference.hpp>
 #endif
+#include <hamon/config.hpp>
 
 namespace hamon
 {

@@ -60,8 +60,8 @@ struct indirectly_binary_left_foldable_impl_detail
 {
 private:
 	template <typename F2, typename T2, typename I2, typename U2,
-		typename = hamon::enable_if_t<hamon::movable<T2>::value>,
-		typename = hamon::enable_if_t<hamon::movable<U2>::value>,
+		typename = hamon::enable_if_t<hamon::movable<T2>>,
+		typename = hamon::enable_if_t<hamon::movable<U2>>,
 		typename = hamon::enable_if_t<hamon::convertible_to<T2, U2>>,
 		typename = hamon::enable_if_t<hamon::invocable<F2&, U2, hamon::iter_reference_t<I2>>::value>,
 		typename = hamon::enable_if_t<hamon::assignable_from<

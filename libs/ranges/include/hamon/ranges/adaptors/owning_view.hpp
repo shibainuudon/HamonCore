@@ -39,9 +39,7 @@ using std::ranges::owning_view;
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/move.hpp>
@@ -58,11 +56,11 @@ template <hamon::ranges::range R>
 		(!hamon::ranges::detail::is_initializer_list<R>::value) // see [range.refinements]
 #else
 template <typename R,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::range_t<R>,
-		hamon::movable_t<R>,
-		hamon::negation<hamon::ranges::detail::is_initializer_list<R>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::range<R>::value &&
+		hamon::movable<R> &&
+		!hamon::ranges::detail::is_initializer_list<R>::value
+	>
 >
 #endif
 class owning_view : public hamon::ranges::view_interface<owning_view<R>>
