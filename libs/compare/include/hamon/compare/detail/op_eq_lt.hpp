@@ -19,10 +19,10 @@ namespace hamon
 namespace detail
 {
 
-#if 0//defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept op_eq_lt = requires(T&& t, U&& u)
+HAMON_CONCEPT_OR_BOOL op_eq_lt = requires(T&& t, U&& u)
 {
 	{ static_cast<T&&>(t) == static_cast<U&&>(u) } -> hamon::convertible_to<bool>;
 	{ static_cast<T&&>(t) <  static_cast<U&&>(u) } -> hamon::convertible_to<bool>;
@@ -52,8 +52,8 @@ public:
 };
 
 template <typename T, typename U>
-using op_eq_lt =
-	typename op_eq_lt_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL op_eq_lt =
+	op_eq_lt_impl<T, U>::type::value;
 
 #endif
 

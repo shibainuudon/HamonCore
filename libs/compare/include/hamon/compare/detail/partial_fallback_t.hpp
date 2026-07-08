@@ -41,7 +41,7 @@ private:
 
 	// e == f, e < f
 	template <typename T, typename U,
-		typename = hamon::enable_if_t<detail::op_eq_lt<T, U>::value>
+		typename = hamon::enable_if_t<detail::op_eq_lt<T, U>>
 	>
 	static HAMON_CONSTEXPR hamon::partial_ordering
 	impl(T&& e, U&& f, hamon::detail::overload_priority<0>)
