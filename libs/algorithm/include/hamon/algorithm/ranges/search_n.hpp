@@ -162,7 +162,7 @@ public:
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, hamon::iter_difference_t<I> n,
 		T const& value, Pred pred = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::subrange<I>,
 		hamon::indirectly_comparable<I, T const*, Pred, Proj>)
 	{
@@ -210,7 +210,7 @@ public:
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		R&& r, ranges::range_difference_t<R> n,
 		T const& value, Pred pred = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<R>,
 		hamon::indirectly_comparable<
 			ranges::iterator_t<R>, T const*, Pred, Proj>)

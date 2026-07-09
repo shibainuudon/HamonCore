@@ -34,7 +34,7 @@ template <
 	typename P1 = hamon::identity,
 	typename P2 = hamon::identity
 >
-concept indirectly_comparable =
+HAMON_CONCEPT_OR_BOOL indirectly_comparable =
 	hamon::indirect_binary_predicate<Rel, hamon::projected<I1, P1>, hamon::projected<I2, P2>>;
 
 #else
@@ -66,23 +66,9 @@ template <
 	typename P1 = hamon::identity,
 	typename P2 = hamon::identity
 >
-using indirectly_comparable =
-	typename detail::indirectly_comparable_impl<I1, I2, Rel, P1, P2>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_comparable =
+	detail::indirectly_comparable_impl<I1, I2, Rel, P1, P2>::type::value;
 
-#endif
-
-template <
-	typename I1,
-	typename I2,
-	typename Rel,
-	typename P1 = hamon::identity,
-	typename P2 = hamon::identity
->
-using indirectly_comparable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_comparable<I1, I2, Rel, P1, P2>>;
-#else
-	hamon::indirectly_comparable<I1, I2, Rel, P1, P2>;
 #endif
 
 }	// namespace hamon

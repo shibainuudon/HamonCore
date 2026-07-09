@@ -71,7 +71,6 @@ using std::ranges::views::lazy_split;
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/decay.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -165,19 +164,20 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 		(hamon::ranges::forward_range<V> || hamon::ranges::detail::tiny_range<Pattern>)
 #else
 template <typename V, typename Pattern,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range_t<V>,
-		hamon::ranges::forward_range_t<Pattern>,
-		hamon::ranges::view_t<V>,
-		hamon::ranges::view_t<Pattern>,
-		hamon::indirectly_comparable_t<
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range_t<V>::value &&
+		hamon::ranges::forward_range_t<Pattern>::value &&
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view_t<Pattern>::value &&
+		hamon::indirectly_comparable<
 			hamon::ranges::iterator_t<V>,
 			hamon::ranges::iterator_t<Pattern>,
-			hamon::ranges::equal_to>,
-		hamon::disjunction<
-			hamon::ranges::forward_range_t<V>,
-			hamon::ranges::detail::tiny_range_t<Pattern>>
-	>::value>>
+			hamon::ranges::equal_to> &&
+		(
+			hamon::ranges::forward_range_t<V>::value ||
+			hamon::ranges::detail::tiny_range_t<Pattern>::value
+		)
+	>>
 #endif
 class lazy_split_view : public hamon::ranges::view_interface<lazy_split_view<V, Pattern>>
 	, private hamon::ranges::detail::lazy_split_view_base<V>

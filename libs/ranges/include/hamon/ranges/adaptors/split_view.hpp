@@ -59,7 +59,6 @@ using std::ranges::views::split;
 #include <hamon/iterator/forward_iterator_tag.hpp>
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -85,16 +84,16 @@ template <hamon::ranges::forward_range V, hamon::ranges::forward_range Pattern>
 			hamon::ranges::equal_to>
 #else
 template <typename V, typename Pattern,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::forward_range_t<V>,
-		hamon::ranges::forward_range_t<Pattern>,
-		hamon::ranges::view_t<V>,
-		hamon::ranges::view_t<Pattern>,
-		hamon::indirectly_comparable_t<
+	typename = hamon::enable_if_t<
+		hamon::ranges::forward_range_t<V>::value &&
+		hamon::ranges::forward_range_t<Pattern>::value &&
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view_t<Pattern>::value &&
+		hamon::indirectly_comparable<
 			hamon::ranges::iterator_t<V>,
 			hamon::ranges::iterator_t<Pattern>,
 			hamon::ranges::equal_to>
-	>::value>>
+	>>
 #endif
 class split_view : public hamon::ranges::view_interface<split_view<V, Pattern>>
 {

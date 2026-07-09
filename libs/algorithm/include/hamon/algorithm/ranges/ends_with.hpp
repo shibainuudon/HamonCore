@@ -46,8 +46,7 @@ using std::ranges::ends_with;
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
@@ -70,7 +69,7 @@ concept ends_withable =
 using ends_withable = hamon::bool_constant<
 	(hamon::forward_iterator<I1> || hamon::sized_sentinel_for<S1, I1>::value) &&
 	(hamon::forward_iterator<I2> || hamon::sized_sentinel_for<S2, I2>::value) &&
-	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>::value
+	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>
 >;
 #endif
 
@@ -84,9 +83,9 @@ concept ends_withable_range =
 		ranges::iterator_t<R2>,
 		Pred, Proj1, Proj2>;
 #else
-using ends_withable_range =	hamon::conjunction<
-	hamon::disjunction<ranges::forward_range<R1>, ranges::sized_range<R1>>,
-	hamon::disjunction<ranges::forward_range<R2>, ranges::sized_range<R2>>,
+using ends_withable_range =	hamon::bool_constant<
+	(ranges::forward_range<R1>::value || ranges::sized_range<R1>::value) &&
+	(ranges::forward_range<R2>::value || ranges::sized_range<R2>::value) &&
 	hamon::indirectly_comparable<
 		ranges::iterator_t<R1>,
 		ranges::iterator_t<R2>,

@@ -66,7 +66,7 @@ struct starts_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		bool,
 		hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>)
 	{
@@ -89,7 +89,7 @@ struct starts_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		bool,
 		hamon::indirectly_comparable<
 			ranges::iterator_t<R1>,
