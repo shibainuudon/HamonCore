@@ -12,9 +12,9 @@
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -44,12 +44,13 @@ private:
 	template <typename U,
 		typename I = decltype(ranges::begin(hamon::declval<U&>())),
 		typename S = decltype(ranges::end(hamon::declval<U&>())),
-		typename = decltype(detail::to_unsigned_like(hamon::declval<S>() - hamon::declval<I>()))
+		typename = decltype(detail::to_unsigned_like(hamon::declval<S>() - hamon::declval<I>())),
+		typename = hamon::enable_if_t<
+			hamon::forward_iterator<I> &&
+			hamon::sized_sentinel_for<S, I>::value
+		>
 	>
-	static auto test(int) -> hamon::conjunction<
-		hamon::forward_iterator<I>,
-		hamon::sized_sentinel_for<S, I>
-	>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

@@ -28,6 +28,7 @@ using std::ranges::contains_subrange;
 #include <hamon/algorithm/ranges/search.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
@@ -54,9 +55,9 @@ namespace detail
 struct contains_subrange_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I1),
+		HAMON_CONSTRAINT(hamon::forward_iterator, I1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I1, S1),
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I2),
+		HAMON_CONSTRAINT(hamon::forward_iterator, I2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I2, S2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,

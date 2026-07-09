@@ -116,7 +116,7 @@ struct basic_const_iterator_iterator_category
 
 template <typename I>
 struct basic_const_iterator_iterator_category<I,
-	hamon::enable_if_t<hamon::forward_iterator_t<I>::value>>
+	hamon::enable_if_t<hamon::forward_iterator<I>>>
 {
 	using iterator_category =
 		typename hamon::iterator_traits<I>::iterator_category;
@@ -154,7 +154,7 @@ public:
 			hamon::random_access_iterator_tag,	// [const.iterators.types]/1.2
 		hamon::conditional_t<hamon::bidirectional_iterator<Iterator>,
 			hamon::bidirectional_iterator_tag,	// [const.iterators.types]/1.3
-		hamon::conditional_t<hamon::forward_iterator_t<Iterator>::value,
+		hamon::conditional_t<hamon::forward_iterator<Iterator>,
 			hamon::forward_iterator_tag,		// [const.iterators.types]/1.4
 			hamon::input_iterator_tag			// [const.iterators.types]/1.5
 	>>>>;
@@ -308,7 +308,7 @@ public:
 	}
 #else
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::forward_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::forward_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator
 	increment_impl(hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF(HAMON_NOEXCEPT_EXPR(++m_current) && hamon::is_nothrow_copy_constructible<Iterator>::value)

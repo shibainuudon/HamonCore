@@ -10,7 +10,7 @@
 #include <hamon/memory/ranges/detail/nothrow_input_iterator.hpp>
 #include <hamon/memory/ranges/detail/nothrow_sentinel_for.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -33,10 +33,11 @@ concept nothrow_forward_iterator =
 #else
 
 template <typename I>
-using nothrow_forward_iterator = hamon::conjunction<
-	hamon::ranges::detail::nothrow_input_iterator<I>,
-	hamon::forward_iterator<I>,
-	hamon::ranges::detail::nothrow_sentinel_for<I, I>>;
+using nothrow_forward_iterator = hamon::bool_constant<
+	hamon::ranges::detail::nothrow_input_iterator<I>::value &&
+	hamon::forward_iterator<I> &&
+	hamon::ranges::detail::nothrow_sentinel_for<I, I>::value
+>;
 
 #endif
 

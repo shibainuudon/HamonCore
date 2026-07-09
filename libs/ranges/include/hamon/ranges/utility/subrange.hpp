@@ -388,7 +388,7 @@ public:
 		return m_impl.get_size();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::forward_iterator, I, It)>
+	template <HAMON_CONSTRAINT_D(hamon::forward_iterator, I, It)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR subrange
 	next(hamon::iter_difference_t<It> n = 1) const &
 	{

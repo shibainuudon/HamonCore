@@ -53,7 +53,7 @@ struct bidirectional_iterator_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::forward_iterator<I2>::value
+			hamon::forward_iterator<I2>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::derived_from<

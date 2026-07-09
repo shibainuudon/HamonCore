@@ -30,6 +30,7 @@ using std::ranges::is_permutation;
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/count_if.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -74,9 +75,9 @@ private:
 
 public:
 	template<
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity,

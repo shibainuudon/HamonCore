@@ -59,6 +59,14 @@ using uniform_random_bit_generator =
 
 #endif
 
+template <typename Gen>
+using uniform_random_bit_generator_t =
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+	hamon::bool_constant<hamon::uniform_random_bit_generator<Gen>>;
+#else
+	hamon::uniform_random_bit_generator<Gen>;
+#endif
+
 }	// namespace hamon
 
 #endif // HAMON_RANDOM_CONCEPTS_UNIFORM_RANDOM_BIT_GENERATOR_HPP

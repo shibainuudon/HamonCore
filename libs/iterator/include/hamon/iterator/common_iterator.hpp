@@ -365,7 +365,7 @@ private:
 	// [common.iter.nav]/5
 	template <typename I2 = I,
 		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<I2>::value>>
+			hamon::forward_iterator<I2>>>
 	HAMON_CXX14_CONSTEXPR common_iterator
 	increment_impl(hamon::detail::overload_priority<2>)
 	{
@@ -626,7 +626,7 @@ struct iterator_traits<
 {
 	// [common.iter.types]/2.1
 	using iterator_concept = hamon::conditional_t<
-		hamon::forward_iterator_t<I>::value,
+		hamon::forward_iterator<I>,
 		hamon::forward_iterator_tag,
 		hamon::input_iterator_tag
 	>;

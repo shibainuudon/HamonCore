@@ -28,6 +28,7 @@ using std::ranges::max_element;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -52,7 +53,7 @@ namespace ranges
 struct max_element_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,

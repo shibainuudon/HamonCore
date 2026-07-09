@@ -247,7 +247,7 @@ private:
 
 	template <typename InputIterator,
 		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<InputIterator>::value>>
+			hamon::forward_iterator<InputIterator>>>
 	HAMON_CXX14_CONSTEXPR void
 	InsertIterImpl(Allocator& allocator, difference_type pos_offset, InputIterator first, InputIterator last, hamon::detail::overload_priority<1>)
 	{
@@ -365,7 +365,7 @@ private:
 
 	template <typename InputIterator,
 		typename = hamon::enable_if_t<
-			hamon::forward_iterator_t<InputIterator>::value>>
+			hamon::forward_iterator<InputIterator>>>
 	HAMON_CXX14_CONSTEXPR void
 	AssignIterImpl(Allocator& allocator, InputIterator first, InputIterator last, hamon::detail::overload_priority<1>)
 	{

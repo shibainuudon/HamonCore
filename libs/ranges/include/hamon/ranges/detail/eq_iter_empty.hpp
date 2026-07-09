@@ -41,7 +41,7 @@ struct eq_iter_empty_impl
 private:
 	template <typename U,
 		typename I = decltype(ranges::begin(hamon::declval<U&>())),
-		typename = hamon::enable_if_t<hamon::forward_iterator<I>::value>,
+		typename = hamon::enable_if_t<hamon::forward_iterator<I>>,
 		typename = decltype(bool(ranges::begin(hamon::declval<U&>()) == ranges::end(hamon::declval<U&>())))
 	>
 	static auto test(int) -> hamon::true_type;

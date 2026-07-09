@@ -28,6 +28,7 @@ using std::ranges::partition_point;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
@@ -53,7 +54,7 @@ namespace ranges
 struct partition_point_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,

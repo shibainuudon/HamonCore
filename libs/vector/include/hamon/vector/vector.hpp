@@ -349,7 +349,7 @@ public:
 		// [sequence.reqmts]/58
 		static_assert(hamon::detail::cpp17_emplace_constructible_t<
 			value_type, allocator_type, decltype(*first)>::value, "");
-		static_assert(hamon::forward_iterator_t<InputIterator>::value ||
+		static_assert(hamon::forward_iterator<InputIterator> ||
 			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 
 		// [sequence.reqmts]/59

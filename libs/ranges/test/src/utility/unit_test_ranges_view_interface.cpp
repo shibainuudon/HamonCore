@@ -69,7 +69,7 @@ struct NotSizedSentinel
 	NotSizedSentinel operator++(int);
 	bool operator==(NotSizedSentinel const&) const;
 };
-//static_assert(hamon::forward_iterator_t<NotSizedSentinel>::value, "");
+//static_assert(hamon::forward_iterator<NotSizedSentinel>, "");
 
 using ForwardIter = forward_iterator_wrapper<int>;
 using ConstForwardIter = forward_iterator_wrapper<int const>;

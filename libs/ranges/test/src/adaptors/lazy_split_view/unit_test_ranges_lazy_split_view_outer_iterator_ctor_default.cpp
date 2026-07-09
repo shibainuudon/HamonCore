@@ -45,7 +45,7 @@ struct NoDefaultForwardIterator
 };
 
 static_assert(hamon::input_iterator_t<NoDefaultForwardIterator<int>>::value, "");
-static_assert(!hamon::forward_iterator_t<NoDefaultForwardIterator<int>>::value, "");
+static_assert(!hamon::forward_iterator<NoDefaultForwardIterator<int>>, "");
 
 template <typename Iterator>
 struct UnreachableView : hamon::ranges::view_base

@@ -113,7 +113,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		HAMON_CONSTRAINED_PARAM(

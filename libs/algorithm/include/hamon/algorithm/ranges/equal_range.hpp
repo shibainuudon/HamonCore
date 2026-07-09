@@ -31,6 +31,7 @@ using std::ranges::equal_range;
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 #include <hamon/algorithm/ranges/upper_bound.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -63,7 +64,7 @@ namespace ranges
 struct equal_range_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, I),
+		HAMON_CONSTRAINT(hamon::forward_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>,

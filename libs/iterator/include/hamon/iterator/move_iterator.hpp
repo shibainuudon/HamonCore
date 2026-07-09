@@ -50,6 +50,7 @@ using std::move_iterator;
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
+#include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -111,7 +112,7 @@ using move_iter_concept =
 		hamon::bidirectional_iterator<Iter>,
 		hamon::bidirectional_iterator_tag,
 	hamon::conditional_t<
-		hamon::forward_iterator_t<Iter>::value,
+		hamon::forward_iterator<Iter>,
 		hamon::forward_iterator_tag,
 		hamon::input_iterator_tag
 	>>>;
@@ -234,8 +235,9 @@ public:
 	}
 
 private:
+	template <HAMON_CONSTRAINT_D(hamon::forward_iterator, I2, Iter)>
 	HAMON_CXX14_CONSTEXPR move_iterator
-	post_increment(hamon::true_type)
+	post_increment(hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF(
 		hamon::is_nothrow_copy_constructible<Iter>::value &&
 		HAMON_NOEXCEPT_EXPR(++hamon::declval<Iter&>()))	// extension
@@ -246,7 +248,7 @@ private:
 	}
 
 	HAMON_CXX14_CONSTEXPR void
-	post_increment(hamon::false_type)
+	post_increment(hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_IF(
 		HAMON_NOEXCEPT_EXPR(++hamon::declval<Iter&>()))	// extension
 	{
@@ -256,10 +258,10 @@ private:
 public:
 	HAMON_CXX14_CONSTEXPR auto
 	operator++(int)
-	HAMON_NOEXCEPT_IF_EXPR(post_increment(hamon::forward_iterator_t<Iter>{}))	// extension
-	->decltype(post_increment(hamon::forward_iterator_t<Iter>{}))
+		HAMON_NOEXCEPT_IF_EXPR(post_increment(hamon::detail::overload_priority<1>{}))	// extension
+	->decltype(post_increment(hamon::detail::overload_priority<1>{}))
 	{
-		return post_increment(hamon::forward_iterator_t<Iter>{});
+		return post_increment(hamon::detail::overload_priority<1>{});
 	}
 
 	HAMON_CXX14_CONSTEXPR move_iterator&

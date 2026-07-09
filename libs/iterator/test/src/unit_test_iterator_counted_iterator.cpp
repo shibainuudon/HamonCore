@@ -311,7 +311,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert( has_post_increment<CI>::value, "");
 	static_assert(!has_post_increment<CI const>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::forward_iterator_t<I>::value)
+	if constexpr (hamon::forward_iterator<I>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<CI>()++), CI>, "");
 	}
@@ -466,7 +466,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	static_assert(hamon::input_iterator_t<CI>::value == hamon::input_iterator_t<I>::value, "");
-	static_assert(hamon::forward_iterator_t<CI>::value == hamon::forward_iterator_t<I>::value, "");
+	static_assert(hamon::forward_iterator<CI> == hamon::forward_iterator<I>, "");
 	static_assert(hamon::bidirectional_iterator<CI> == hamon::bidirectional_iterator<I>, "");
 	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");
 	static_assert(hamon::contiguous_iterator<CI> == hamon::contiguous_iterator<I>, "");

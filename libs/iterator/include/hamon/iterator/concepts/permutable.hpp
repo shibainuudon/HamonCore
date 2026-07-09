@@ -43,7 +43,7 @@ struct permutable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::forward_iterator<I2>::value>,
+		typename = hamon::enable_if_t<hamon::forward_iterator<I2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_movable_storable<I2, I2>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_swappable<I2, I2>::value>
 	>

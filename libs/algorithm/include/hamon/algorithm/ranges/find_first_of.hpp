@@ -29,6 +29,7 @@ using std::ranges::find_first_of;
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -56,7 +57,7 @@ struct find_first_of_fn
 	template<
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		typename Pred  = ranges::equal_to,
 		typename Proj1 = hamon::identity,

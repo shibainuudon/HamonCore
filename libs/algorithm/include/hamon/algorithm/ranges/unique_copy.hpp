@@ -31,6 +31,7 @@ using std::ranges::unique_copy;
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -68,7 +69,7 @@ struct unique_copy_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
 		typename Sent, typename Out, typename Proj, typename Comp
 	>
 	static HAMON_CXX14_CONSTEXPR unique_copy_result<Iter, Out>
@@ -168,7 +169,7 @@ public:
 		(
 			hamon::indirectly_copyable_t<Iter, Out>::value &&
 			(
-				hamon::forward_iterator_t<Iter>::value ||
+				hamon::forward_iterator<Iter> ||
 				(
 					(
 						hamon::input_iterator_t<Out>::value &&
@@ -215,7 +216,7 @@ public:
 		(
 			hamon::indirectly_copyable_t<ranges::iterator_t<Range>, Out>::value &&
 			(
-				hamon::forward_iterator_t<ranges::iterator_t<Range>>::value ||
+				hamon::forward_iterator<ranges::iterator_t<Range>> ||
 				(
 					(
 						hamon::input_iterator_t<Out>::value &&

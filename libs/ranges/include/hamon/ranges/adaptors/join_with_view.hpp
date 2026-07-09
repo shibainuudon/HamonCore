@@ -550,11 +550,11 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 	private:
 		template <typename B2 = Base,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				ref_is_glvalue<B2>,
-				hamon::forward_iterator_t<OuterIter>,
-				hamon::forward_iterator_t<InnerIter>
-			>::value>>
+			typename = hamon::enable_if_t<
+				ref_is_glvalue<B2>::value &&
+				hamon::forward_iterator<OuterIter> &&
+				hamon::forward_iterator<InnerIter>
+			>>
 		HAMON_CXX14_CONSTEXPR iterator
 		post_increment_impl(hamon::detail::overload_priority<1>)
 		{

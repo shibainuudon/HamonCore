@@ -70,17 +70,19 @@ struct sample_fn
 		Iter first, Sent last,
 		OutIter out_first,
 		hamon::iter_difference_t<Iter> n, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		OutIter,
-		HAMON_CONCEPTS_AND(
-			HAMON_CONCEPTS_OR(
-				hamon::forward_iterator<Iter>,
-				hamon::random_access_iterator<OutIter>),
-		HAMON_CONCEPTS_AND(
-			hamon::indirectly_copyable<
-				Iter HAMON_PP_COMMA() OutIter>,
-			hamon::uniform_random_bit_generator<
-				hamon::remove_reference_t<Gen>>)))
+		(
+			(
+				hamon::forward_iterator<Iter> ||
+				hamon::random_access_iterator_t<OutIter>::value
+			) &&
+			(
+				hamon::indirectly_copyable_t<Iter, OutIter>::value &&
+				hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+			)
+		)
+	)
 	{
 		return hamon::sample(
 			hamon::move(first), ranges::next(first, last),

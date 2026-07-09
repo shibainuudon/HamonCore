@@ -32,7 +32,7 @@ using std::forward_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept forward_iterator =
+HAMON_CONCEPT_OR_BOOL forward_iterator =
 	hamon::input_iterator<Iter> &&
 	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::forward_iterator_tag> &&
 	hamon::incrementable<Iter> &&
@@ -76,17 +76,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using forward_iterator =
-	typename detail::forward_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL forward_iterator =
+	detail::forward_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using forward_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::forward_iterator<Iter>>;
-#else
-	hamon::forward_iterator<Iter>;
 #endif
 
 }	// namespace hamon

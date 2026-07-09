@@ -258,7 +258,7 @@ private:
 #endif
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::forward_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::forward_iterator, I2, I)>
 	HAMON_CXX14_CONSTEXPR counted_iterator
 	increment_impl(hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF(		// noexcept as an extension
@@ -533,10 +533,10 @@ private:
 	}
 
 	template <typename I1, typename I2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::forward_iterator_t<I1>,
-			hamon::forward_iterator_t<I2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::forward_iterator<I1> &&
+			hamon::forward_iterator<I2>
+		>>
 	static HAMON_CXX11_CONSTEXPR bool
 	SameSequenceImpl(counted_iterator<I1> const& i1, counted_iterator<I2> const& i2, hamon::detail::overload_priority<1>)
 	{

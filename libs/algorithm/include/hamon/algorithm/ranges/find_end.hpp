@@ -143,9 +143,9 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::forward_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::forward_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
