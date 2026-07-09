@@ -93,7 +93,7 @@ struct max_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::range_value_t<Range>,
 		hamon::indirectly_copyable_storable<
 			ranges::iterator_t<Range>,

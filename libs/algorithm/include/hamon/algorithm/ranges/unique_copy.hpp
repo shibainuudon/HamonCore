@@ -125,7 +125,7 @@ private:
 		typename Iter, typename Sent, typename Out,
 		typename Proj, typename Comp,
 		typename = hamon::enable_if_t<
-			hamon::indirectly_copyable_storable_t<Iter, Out>::value
+			hamon::indirectly_copyable_storable<Iter, Out>
 		>
 	>
 	static HAMON_CXX14_CONSTEXPR unique_copy_result<Iter, Out>
@@ -178,7 +178,7 @@ public:
 							hamon::iter_value_t<Out>
 						>
 					) ||
-					hamon::indirectly_copyable_storable_t<Iter, Out>::value
+					hamon::indirectly_copyable_storable<Iter, Out>
 				)
 			)
 		)
@@ -225,7 +225,7 @@ public:
 							hamon::iter_value_t<Out>
 						>
 					) ||
-					hamon::indirectly_copyable_storable_t<ranges::iterator_t<Range>, Out>::value
+					hamon::indirectly_copyable_storable<ranges::iterator_t<Range>, Out>
 				)
 			)
 		)

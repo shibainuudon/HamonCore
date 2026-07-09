@@ -32,7 +32,7 @@ using std::indirectly_copyable_storable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename In, typename Out>
-concept indirectly_copyable_storable =
+HAMON_CONCEPT_OR_BOOL indirectly_copyable_storable =
 	hamon::indirectly_copyable<In, Out>                                             &&
 	hamon::indirectly_writable<Out, hamon::iter_value_t<In>&>                       &&
 	hamon::indirectly_writable<Out, hamon::iter_value_t<In> const&>                 &&
@@ -75,17 +75,9 @@ public:
 }	// namespace detail
 
 template <typename In, typename Out>
-using indirectly_copyable_storable =
-	typename detail::indirectly_copyable_storable_impl<In, Out>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_copyable_storable =
+	detail::indirectly_copyable_storable_impl<In, Out>::type::value;
 
-#endif
-
-template <typename In, typename Out>
-using indirectly_copyable_storable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_copyable_storable<In, Out>>;
-#else
-	hamon::indirectly_copyable_storable<In, Out>;
 #endif
 
 }	// namespace hamon
