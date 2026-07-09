@@ -29,11 +29,11 @@ static_assert( hamon::weakly_incrementable_t<hamon::basic_const_iterator<forward
 static_assert( hamon::weakly_incrementable_t<hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>>::value, "");
 static_assert( hamon::weakly_incrementable_t<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>::value, "");
 static_assert( hamon::weakly_incrementable_t<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>::value, "");
-static_assert(!hamon::incrementable_t<hamon::basic_const_iterator<input_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::incrementable_t<hamon::basic_const_iterator<forward_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::incrementable_t<hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::incrementable_t<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::incrementable_t<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>::value, "");
+static_assert(!hamon::incrementable<hamon::basic_const_iterator<input_iterator_wrapper<int>>>, "");
+static_assert( hamon::incrementable<hamon::basic_const_iterator<forward_iterator_wrapper<int>>>, "");
+static_assert( hamon::incrementable<hamon::basic_const_iterator<bidirectional_iterator_wrapper<int>>>, "");
+static_assert( hamon::incrementable<hamon::basic_const_iterator<random_access_iterator_wrapper<int>>>, "");
+static_assert( hamon::incrementable<hamon::basic_const_iterator<contiguous_iterator_wrapper<int>>>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

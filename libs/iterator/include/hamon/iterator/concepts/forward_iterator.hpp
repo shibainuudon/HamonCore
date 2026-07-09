@@ -58,7 +58,7 @@ private:
 			>
 		>,
 		typename = hamon::enable_if_t<
-			hamon::incrementable<I2>::value
+			hamon::incrementable<I2>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::sentinel_for<I2, I2>::value

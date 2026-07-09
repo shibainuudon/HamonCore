@@ -29,7 +29,7 @@ using std::incrementable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept incrementable =
+HAMON_CONCEPT_OR_BOOL incrementable =
 	hamon::regular<Iter> &&
 	hamon::weakly_incrementable<Iter> &&
 	requires(Iter i) { { i++ } -> hamon::same_as<Iter>; };
@@ -61,17 +61,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using incrementable =
-	typename detail::incrementable_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL incrementable =
+	detail::incrementable_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using incrementable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::incrementable<Iter>>;
-#else
-	hamon::incrementable<Iter>;
 #endif
 
 }	// namespace hamon

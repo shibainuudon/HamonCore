@@ -86,7 +86,7 @@ struct decrementable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::incrementable_t<I2>::value>,
+		typename = hamon::enable_if_t<hamon::incrementable<I2>>,
 		typename R1 = decltype(--hamon::declval<I2&>()),
 		typename R2 = decltype(hamon::declval<I2&>()--),
 		typename = hamon::enable_if_t<
@@ -180,7 +180,7 @@ struct iota_view_iterator_category
 template <typename W>
 struct iota_view_iterator_category<W,
 	hamon::enable_if_t<
-		hamon::incrementable_t<W>::value &&
+		hamon::incrementable<W> &&
 		hamon::integral<detail::iota_diff_t<W>>
 	>>
 {
@@ -228,7 +228,7 @@ private:
 				hamon::random_access_iterator_tag,	// [range.iota.iterator]/1.1
 			hamon::conditional_t<detail::decrementable_t<W>::value,
 				hamon::bidirectional_iterator_tag,	// [range.iota.iterator]/1.2
-			hamon::conditional_t<hamon::incrementable_t<W>::value,
+			hamon::conditional_t<hamon::incrementable<W>,
 				hamon::forward_iterator_tag,		// [range.iota.iterator]/1.3
 			    hamon::input_iterator_tag			// [range.iota.iterator]/1.4
 			>>>;
@@ -295,7 +295,7 @@ private:
 		}
 #else
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::incrementable, W2, W)>
+		template <HAMON_CONSTRAINT_D(hamon::incrementable, W2, W)>
 		HAMON_CXX14_CONSTEXPR iterator
 		increment_impl(hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
