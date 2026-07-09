@@ -116,8 +116,8 @@ private:
 	template <typename I1, typename I2
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
-			hamon::indirectly_movable_storable<I1, I2>::value &&
-			hamon::indirectly_movable_storable<I2, I1>::value
+			hamon::indirectly_movable_storable<I1, I2> &&
+			hamon::indirectly_movable_storable<I2, I1>
 		>
 #endif
 	>

@@ -62,7 +62,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
@@ -80,7 +80,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
@@ -99,7 +99,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
@@ -119,7 +119,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert( hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
@@ -139,7 +139,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert( hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
@@ -159,7 +159,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert( hamon::sentinel_for_t<iterator, iterator>::value, "");
 		static_assert( hamon::sized_sentinel_for_t<iterator, iterator>::value, "");
 		static_assert(!hamon::indirectly_movable<int*, iterator>, "");
-		static_assert(!hamon::indirectly_movable_storable_t<int*, iterator>::value, "");
+		static_assert(!hamon::indirectly_movable_storable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable_t<iterator>::value, "");
