@@ -52,7 +52,7 @@ struct indirectly_copyable_storable_impl
 {
 private:
 	template <typename I, typename O,
-		typename = hamon::enable_if_t<hamon::indirectly_copyable<I, O>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_copyable<I, O>>,
 		typename V = hamon::iter_value_t<I>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V&>::value>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V const&>::value>,

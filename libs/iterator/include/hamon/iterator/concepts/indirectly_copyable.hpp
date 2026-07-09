@@ -28,7 +28,7 @@ using std::indirectly_copyable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename In, typename Out>
-concept indirectly_copyable =
+HAMON_CONCEPT_OR_BOOL indirectly_copyable =
 	hamon::indirectly_readable<In> &&
 	hamon::indirectly_writable<Out, hamon::iter_reference_t<In>>;
 
@@ -58,17 +58,9 @@ public:
 }	// namespace detail
 
 template <typename In, typename Out>
-using indirectly_copyable =
-	typename detail::indirectly_copyable_impl<In, Out>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_copyable =
+	detail::indirectly_copyable_impl<In, Out>::type::value;
 
-#endif
-
-template <typename In, typename Out>
-using indirectly_copyable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_copyable<In, Out>>;
-#else
-	hamon::indirectly_copyable<In, Out>;
 #endif
 
 }	// namespace hamon

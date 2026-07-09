@@ -167,7 +167,7 @@ public:
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		unique_copy_result<Iter HAMON_PP_COMMA() Out>,
 		(
-			hamon::indirectly_copyable_t<Iter, Out>::value &&
+			hamon::indirectly_copyable<Iter, Out> &&
 			(
 				hamon::forward_iterator<Iter> ||
 				(
@@ -214,7 +214,7 @@ public:
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		unique_copy_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
 		(
-			hamon::indirectly_copyable_t<ranges::iterator_t<Range>, Out>::value &&
+			hamon::indirectly_copyable<ranges::iterator_t<Range>, Out> &&
 			(
 				hamon::forward_iterator<ranges::iterator_t<Range>> ||
 				(

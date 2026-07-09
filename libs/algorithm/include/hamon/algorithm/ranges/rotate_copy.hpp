@@ -63,7 +63,7 @@ struct rotate_copy_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Iter middle, Sent last, Out result) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		rotate_copy_result<Iter HAMON_PP_COMMA() Out>,
 		hamon::indirectly_copyable<Iter, Out>)
 	{
@@ -84,7 +84,7 @@ struct rotate_copy_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::iterator_t<Range> middle, Out result) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		rotate_copy_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
 		hamon::indirectly_copyable<ranges::iterator_t<Range>, Out>)
 	{

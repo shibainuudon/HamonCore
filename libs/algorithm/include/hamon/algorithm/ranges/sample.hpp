@@ -78,7 +78,7 @@ struct sample_fn
 				hamon::random_access_iterator_t<OutIter>::value
 			) &&
 			(
-				hamon::indirectly_copyable_t<Iter, OutIter>::value &&
+				hamon::indirectly_copyable<Iter, OutIter> &&
 				hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
 			)
 		)
@@ -97,17 +97,19 @@ struct sample_fn
 	auto operator()(
 		Range&& r, OutIter out_first,
 		ranges::range_difference_t<Range> n, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		OutIter,
-		HAMON_CONCEPTS_AND(
-			HAMON_CONCEPTS_OR(
-				ranges::forward_range<Range>,
-				hamon::random_access_iterator<OutIter>),
-		HAMON_CONCEPTS_AND(
-			hamon::indirectly_copyable<
-				ranges::iterator_t<Range> HAMON_PP_COMMA() OutIter>,
-			hamon::uniform_random_bit_generator<
-				hamon::remove_reference_t<Gen>>)))
+		(
+			(
+				ranges::forward_range_t<Range>::value ||
+				hamon::random_access_iterator_t<OutIter>::value
+			) &&
+			(
+				hamon::indirectly_copyable<ranges::iterator_t<Range>, OutIter> &&
+				hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+			)
+		)
+	)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),
