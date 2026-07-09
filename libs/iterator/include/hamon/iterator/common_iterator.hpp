@@ -336,7 +336,7 @@ public:
 	template <typename I2 = I,
 		// [common.iter.access]/3
 		typename = hamon::enable_if_t<
-			hamon::indirectly_readable_t<I2 const>::value &&
+			hamon::indirectly_readable<I2 const> &&
 			(hamon::common_iterator_detail::has_arrow_t<I2>::value ||
 			 hamon::is_reference<hamon::iter_reference_t<I2>>::value ||
 			 hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>>)
@@ -377,7 +377,7 @@ private:
 	template <typename I2 = I,
 		typename = hamon::enable_if_t<
 			common_iterator_detail::has_post_increment_t<I2>::value ||
-			!(hamon::indirectly_readable_t<I2>::value &&
+			!(hamon::indirectly_readable<I2> &&
 			  hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>> &&
 			  hamon::move_constructible<hamon::iter_value_t<I2>>)>>
 	HAMON_CXX14_CONSTEXPR auto

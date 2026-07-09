@@ -9,7 +9,7 @@
 
 #include <hamon/iterator/concepts/indirectly_readable.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 
 namespace hamon
 {
@@ -26,7 +26,7 @@ struct indirect_value_impl
 	using type = hamon::iter_value_t<T>&;
 };
 
-template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_readable, T)>
+template <HAMON_CONSTRAINT(hamon::indirectly_readable, T)>
 using indirect_value_t = typename indirect_value_impl<T>::type;
 
 }	// namespace detail

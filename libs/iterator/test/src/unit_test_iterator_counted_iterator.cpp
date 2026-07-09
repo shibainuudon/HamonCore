@@ -233,7 +233,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(hamon::same_as<typename CI::iterator_type, I>, "");
 	
 	// using value_type = iter_value_t<I>;
-	static_assert(has_value_type<CI>::value == hamon::indirectly_readable_t<I>::value, "");
+	static_assert(has_value_type<CI>::value == hamon::indirectly_readable<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_value_type<CI>::value)
 	{

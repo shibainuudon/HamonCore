@@ -55,7 +55,7 @@ struct indirectly_unary_invocable_impl
 {
 private:
 	template <typename F2, typename I2,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<I2>>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>>,
 		typename V = hamon::detail::indirect_value_t<I2>,
 		typename = hamon::enable_if_t<hamon::invocable<F2&, V>>,

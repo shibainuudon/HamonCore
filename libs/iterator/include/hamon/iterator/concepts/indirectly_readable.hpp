@@ -35,7 +35,7 @@ namespace detail
 {
 
 template <typename In>
-concept indirectly_readable_impl =
+HAMON_CONCEPT_OR_BOOL indirectly_readable_impl =
 	requires
 	{
 		typename hamon::iter_value_t<In>;
@@ -51,7 +51,7 @@ concept indirectly_readable_impl =
 }	// namespace detail
 
 template <typename In>
-concept indirectly_readable =
+HAMON_CONCEPT_OR_BOOL indirectly_readable =
 	detail::indirectly_readable_impl<hamon::remove_cvref_t<In>>;
 
 #else
@@ -87,17 +87,9 @@ public:
 }	// namespace detail
 
 template <typename In>
-using indirectly_readable =
-	typename detail::indirectly_readable_impl<hamon::remove_cvref_t<In>>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_readable =
+	detail::indirectly_readable_impl<hamon::remove_cvref_t<In>>::type::value;
 
-#endif
-
-template <typename In>
-using indirectly_readable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_readable<In>>;
-#else
-	hamon::indirectly_readable<In>;
 #endif
 
 }	// namespace hamon

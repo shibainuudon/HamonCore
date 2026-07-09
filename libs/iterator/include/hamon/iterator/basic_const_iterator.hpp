@@ -90,7 +90,7 @@ concept not_a_const_iterator = !hamon::detail::is_const_iterator<I>::value;
 using not_a_const_iterator = hamon::negation<hamon::detail::is_const_iterator<I>>;
 #endif
 
-template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_readable, I)>
+template <HAMON_CONSTRAINT(hamon::indirectly_readable, I)>
 using iter_const_rvalue_reference_t =
 	hamon::common_reference_t<hamon::iter_value_t<I> const&&, hamon::iter_rvalue_reference_t<I>>;
 

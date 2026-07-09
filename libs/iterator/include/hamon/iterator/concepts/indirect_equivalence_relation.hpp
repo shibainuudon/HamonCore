@@ -52,8 +52,8 @@ struct indirect_equivalence_relation_impl
 {
 private:
 	template <typename F2, typename J1, typename J2,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>::value>,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>>,
 		typename = hamon::enable_if_t<hamon::copy_constructible<F2>>,
 		typename V1 = hamon::detail::indirect_value_t<J1>,
 		typename V2 = hamon::detail::indirect_value_t<J2>,

@@ -34,7 +34,7 @@ struct Identity
 using vec_iterator = hamon::vector<int>::iterator;
 using vecitr_proj = hamon::projected<vec_iterator, Identity>;
 
-static_assert(hamon::indirectly_readable_t<vecitr_proj>::value, "");
+static_assert(hamon::indirectly_readable<vecitr_proj>, "");
 static_assert(hamon::is_same<vecitr_proj::value_type, int>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<vecitr_proj>, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<vecitr_proj>, int>::value, "");
@@ -48,7 +48,7 @@ struct Proj
 };
 using vecitr_proj2 = hamon::projected<vec_iterator, Proj>;
 
-static_assert(hamon::indirectly_readable_t<vecitr_proj2>::value, "");
+static_assert(hamon::indirectly_readable<vecitr_proj2>, "");
 static_assert(hamon::is_same<vecitr_proj2::value_type, double>::value, "");
 static_assert(hamon::is_same<hamon::iter_difference_t<vecitr_proj2>, hamon::ptrdiff_t>::value, "");
 static_assert(hamon::is_same<hamon::iter_value_t<vecitr_proj2>, double>::value, "");

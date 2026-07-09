@@ -74,7 +74,7 @@ template <typename I, typename = void>
 struct counted_iterator_value_type_base {};
 
 template <typename I>
-struct counted_iterator_value_type_base<I, hamon::enable_if_t<hamon::indirectly_readable_t<I>::value>>
+struct counted_iterator_value_type_base<I, hamon::enable_if_t<hamon::indirectly_readable<I>>>
 {
 	using value_type = hamon::iter_value_t<I>;
 };

@@ -49,8 +49,8 @@ struct indirectly_swappable_impl
 {
 private:
 	template <typename J1, typename J2,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>::value>,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<J1>>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<J2>>,
 		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J1 const>(), hamon::declval<J1 const>())),
 		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J1 const>(), hamon::declval<J2 const>())),
 		typename = decltype(hamon::ranges::iter_swap(hamon::declval<J2 const>(), hamon::declval<J1 const>())),

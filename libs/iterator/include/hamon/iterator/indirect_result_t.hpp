@@ -66,7 +66,7 @@ struct indirect_result_t_impl;
 template <typename F, typename... Is>
 struct indirect_result_t_impl<F, type_pack<Is...>,
 	hamon::enable_if_t<
-		hamon::conjunction<hamon::indirectly_readable<Is>...>::value
+		hamon::conjunction<hamon::bool_constant<hamon::indirectly_readable<Is>>...>::value
 	>
 > : public indirect_result_t_impl_2<F, type_pack<hamon::iter_reference_t<Is>...>> {};
 

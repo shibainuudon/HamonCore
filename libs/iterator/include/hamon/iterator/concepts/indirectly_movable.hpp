@@ -42,7 +42,7 @@ struct indirectly_movable_impl
 {
 private:
 	template <typename I, typename O,
-		typename = hamon::enable_if_t<hamon::indirectly_readable<I>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_readable<I>>,
 		typename R = hamon::iter_rvalue_reference_t<I>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, R>::value>
 	>

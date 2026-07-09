@@ -97,8 +97,8 @@ private:
 	template <typename I1, typename I2
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
-			hamon::indirectly_readable<I1>::value &&
-			hamon::indirectly_readable<I2>::value &&
+			hamon::indirectly_readable<I1> &&
+			hamon::indirectly_readable<I2> &&
 			hamon::swappable_with<hamon::iter_reference_t<I1>, hamon::iter_reference_t<I2>>
 		>
 #endif
