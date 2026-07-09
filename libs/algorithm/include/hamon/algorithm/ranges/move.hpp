@@ -126,7 +126,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, Out result) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		move_result<Iter HAMON_PP_COMMA() Out>,
 		hamon::indirectly_movable<Iter, Out>)
 	{
@@ -143,7 +143,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		move_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
 		hamon::indirectly_movable<ranges::iterator_t<Range>, Out>)
 	{

@@ -49,7 +49,7 @@ struct indirectly_movable_storable_impl
 {
 private:
 	template <typename I, typename O,
-		typename = hamon::enable_if_t<hamon::indirectly_movable<I, O>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_movable<I, O>>,
 		typename V = hamon::iter_value_t<I>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V>::value>,
 		typename = hamon::enable_if_t<hamon::movable<V>>,

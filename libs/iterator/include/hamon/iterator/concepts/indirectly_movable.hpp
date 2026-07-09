@@ -28,7 +28,7 @@ using std::indirectly_movable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename In, typename Out>
-concept indirectly_movable =
+HAMON_CONCEPT_OR_BOOL indirectly_movable =
 	hamon::indirectly_readable<In> &&
 	hamon::indirectly_writable<Out, hamon::iter_rvalue_reference_t<In>>;
 
@@ -58,17 +58,9 @@ public:
 }	// namespace detail
 
 template <typename In, typename Out>
-using indirectly_movable =
-	typename detail::indirectly_movable_impl<In, Out>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_movable =
+	detail::indirectly_movable_impl<In, Out>::type::value;
 
-#endif
-
-template <typename In, typename Out>
-using indirectly_movable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_movable<In, Out>>;
-#else
-	hamon::indirectly_movable<In, Out>;
 #endif
 
 }	// namespace hamon
