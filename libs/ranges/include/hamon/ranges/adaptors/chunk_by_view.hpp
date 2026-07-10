@@ -96,12 +96,11 @@ template <
 	requires hamon::ranges::view<V> && hamon::is_object_v<Pred>
 #else
 template <typename V, typename Pred,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::forward_range_t<V>,
-		hamon::indirect_binary_predicate_t<Pred, hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V>>,
-		hamon::ranges::view_t<V>,
-		hamon::is_object<Pred>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::forward_range_t<V>::value &&
+		hamon::indirect_binary_predicate<Pred, hamon::ranges::iterator_t<V>, hamon::ranges::iterator_t<V>> &&
+		hamon::ranges::view_t<V>::value && hamon::is_object_v<Pred>
+	>
 >
 #endif
 class chunk_by_view : public hamon::ranges::view_interface<chunk_by_view<V, Pred>>

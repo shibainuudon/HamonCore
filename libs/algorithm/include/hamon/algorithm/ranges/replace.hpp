@@ -73,8 +73,11 @@ struct replace_fn
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		I,
-		(hamon::indirectly_writable<I, T2 const&> &&
-		 hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<I, Proj>, T1 const*>::value))
+		(
+			hamon::indirectly_writable<I, T2 const&> &&
+			hamon::indirect_binary_predicate<ranges::equal_to, hamon::projected<I, Proj>, T1 const*>
+		)
+	)
 	{
 		for (; first != last; ++first)
 		{
@@ -100,8 +103,11 @@ struct replace_fn
 		Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<R>,
-		(hamon::indirectly_writable<ranges::iterator_t<R>, T2 const&> &&
-		 hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<ranges::iterator_t<R>, Proj>, T1 const*>::value))
+		(
+			hamon::indirectly_writable<ranges::iterator_t<R>, T2 const&> &&
+			hamon::indirect_binary_predicate<ranges::equal_to, hamon::projected<ranges::iterator_t<R>, Proj>, T1 const*>
+		)
+	)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

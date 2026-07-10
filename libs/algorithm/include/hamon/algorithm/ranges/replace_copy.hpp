@@ -80,7 +80,7 @@ struct replace_copy_fn
 		replace_copy_result<I HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<I, O> &&
-			hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<I, Proj>,T1 const*>::value &&
+			hamon::indirect_binary_predicate<ranges::equal_to, hamon::projected<I, Proj>,T1 const*> &&
 			hamon::output_iterator_t<O, T2 const&>::value
 		)
 	)
@@ -118,7 +118,7 @@ struct replace_copy_fn
 			ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<ranges::iterator_t<R>, O> &&
-			hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<ranges::iterator_t<R>, Proj>, T1 const*>::value &&
+			hamon::indirect_binary_predicate<ranges::equal_to, hamon::projected<ranges::iterator_t<R>, Proj>, T1 const*> &&
 			hamon::output_iterator_t<O, T2 const&>::value
 		)
 	)

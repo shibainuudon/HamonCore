@@ -46,9 +46,14 @@ template <typename I1, typename I2, typename Rel, typename P1, typename P2>
 struct indirectly_comparable_impl
 {
 private:
-	template <typename J1, typename J2, typename R2, typename Q1, typename Q2>
-	static auto test(int) -> hamon::indirect_binary_predicate<
-		R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>>;
+	template <typename J1, typename J2, typename R2, typename Q1, typename Q2,
+		typename = hamon::enable_if_t<
+			hamon::indirect_binary_predicate<
+				R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>
+			>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
 
 	template <typename J1, typename J2, typename R2, typename Q1, typename Q2>
 	static auto test(...) -> hamon::false_type;

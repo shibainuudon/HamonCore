@@ -82,7 +82,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::subrange<I>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
@@ -103,14 +103,16 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(R&& r, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<R>,
-		HAMON_CONCEPTS_AND(
-			hamon::permutable<ranges::iterator_t<R>>,
+		(
+			hamon::permutable_t<ranges::iterator_t<R>>::value &&
 			hamon::indirect_binary_predicate<
-				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<ranges::iterator_t<R> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
-				T const*>))
+				ranges::equal_to,
+				hamon::projected<ranges::iterator_t<R>, Proj>,
+				T const*>
+		)
+	)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

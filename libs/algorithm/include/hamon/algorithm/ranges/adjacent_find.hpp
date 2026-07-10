@@ -57,7 +57,7 @@ struct adjacent_find_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
+		HAMON_CONSTRAINT_D(
 			hamon::indirect_binary_predicate,
 			ProjectedIter,
 			ProjectedIter,
@@ -90,7 +90,7 @@ struct adjacent_find_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
+		HAMON_CONSTRAINT_D(
 			hamon::indirect_binary_predicate,
 			ProjectedIter,
 			ProjectedIter,

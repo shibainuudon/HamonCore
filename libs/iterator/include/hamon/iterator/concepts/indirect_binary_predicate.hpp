@@ -32,7 +32,7 @@ using std::indirect_binary_predicate;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2>
-concept indirect_binary_predicate =
+HAMON_CONCEPT_OR_BOOL indirect_binary_predicate =
 	hamon::indirectly_readable<I1> &&
 	hamon::indirectly_readable<I2> &&
 	hamon::copy_constructible<F> &&
@@ -79,17 +79,9 @@ public:
 }	// namespace detail
 
 template <typename F, typename I1, typename I2>
-using indirect_binary_predicate =
-	typename detail::indirect_binary_predicate_impl<F, I1, I2>::type;
+HAMON_CONCEPT_OR_BOOL indirect_binary_predicate =
+	detail::indirect_binary_predicate_impl<F, I1, I2>::type::value;
 
-#endif
-
-template <typename F, typename I1, typename I2>
-using indirect_binary_predicate_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirect_binary_predicate<F, I1, I2>>;
-#else
-	hamon::indirect_binary_predicate<F, I1, I2>;
 #endif
 
 }	// namespace hamon
