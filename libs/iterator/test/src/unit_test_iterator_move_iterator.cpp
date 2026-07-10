@@ -66,7 +66,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 	{
@@ -84,7 +84,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 	{
@@ -103,7 +103,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 	{
@@ -123,7 +123,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 	{
@@ -143,7 +143,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 	{
@@ -163,7 +163,7 @@ GTEST_TEST(MoveIteratorTest, ConceptTest)
 		static_assert(!hamon::indirectly_copyable<int*, iterator>, "");
 		static_assert(!hamon::indirectly_copyable_storable<int*, iterator>, "");
 		static_assert( hamon::indirectly_readable<iterator>, "");
-		static_assert(!hamon::indirectly_writable_t<iterator, int>::value, "");
+		static_assert(!hamon::indirectly_writable<iterator, int>, "");
 		static_assert( hamon::indirectly_swappable<iterator, iterator>, "");
 	}
 }

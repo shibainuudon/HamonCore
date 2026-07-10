@@ -73,7 +73,7 @@ struct transform_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first1, Sent last1, Out result, F op, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		unary_transform_result<Iter HAMON_PP_COMMA() Out>,
 		hamon::indirectly_writable<Out,
 			hamon::indirect_result_t<F&,
@@ -95,7 +95,7 @@ struct transform_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result, F op, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		unary_transform_result<
 			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
 		hamon::indirectly_writable<Out,
@@ -124,7 +124,7 @@ struct transform_fn
 		Iter2 first2, Sent2 last2,
 		Out result, F binary_op,
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		binary_transform_result<Iter1 HAMON_PP_COMMA() Iter2 HAMON_PP_COMMA() Out>,
 		hamon::indirectly_writable<Out,
 			hamon::indirect_result_t<F&,
@@ -153,7 +153,7 @@ struct transform_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range1&& r1, Range2&& r2, Out result, F binary_op,
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		binary_transform_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::borrowed_iterator_t<Range2> HAMON_PP_COMMA()

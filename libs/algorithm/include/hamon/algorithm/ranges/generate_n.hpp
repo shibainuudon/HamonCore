@@ -57,7 +57,7 @@ struct generate_n_fn
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Out,
 		hamon::invocable<F&> &&
-		hamon::indirectly_writable_t<Out, hamon::invoke_result_t<F&>>::value)
+		hamon::indirectly_writable<Out, hamon::invoke_result_t<F&>>)
 	{
 		for (; n > 0; --n, (void)++first)
 		{

@@ -51,7 +51,7 @@ private:
 	template <typename I, typename O,
 		typename = hamon::enable_if_t<hamon::indirectly_movable<I, O>>,
 		typename V = hamon::iter_value_t<I>,
-		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V>::value>,
+		typename = hamon::enable_if_t<hamon::indirectly_writable<O, V>>,
 		typename = hamon::enable_if_t<hamon::movable<V>>,
 		typename R = hamon::iter_rvalue_reference_t<I>,
 		typename = hamon::enable_if_t<hamon::constructible_from<V, R>>,

@@ -55,7 +55,7 @@ void IteratorTest()
 	}
 
 	static_assert( hamon::contiguous_iterator<Iterator>, "");
-	static_assert( hamon::indirectly_writable_t<Iterator, T>::value, "");
+	static_assert( hamon::indirectly_writable<Iterator, T>, "");
 	static_assert( hamon::sentinel_for_t<Iterator, Iterator>::value, "");
 	static_assert( hamon::sentinel_for_t<Iterator, ConstIterator>::value, "");
 	static_assert(!hamon::sentinel_for_t<Iterator, ReverseIterator>::value, "");
@@ -86,7 +86,7 @@ void IteratorTest()
 	static_assert(!hamon::indirectly_swappable<Iterator, ConstReverseIterator>, "");
 
 	static_assert( hamon::contiguous_iterator<ConstIterator>, "");
-	static_assert(!hamon::indirectly_writable_t<ConstIterator, T>::value, "");
+	static_assert(!hamon::indirectly_writable<ConstIterator, T>, "");
 	static_assert( hamon::sentinel_for_t<ConstIterator, Iterator>::value, "");
 	static_assert( hamon::sentinel_for_t<ConstIterator, ConstIterator>::value, "");
 	static_assert(!hamon::sentinel_for_t<ConstIterator, ReverseIterator>::value, "");

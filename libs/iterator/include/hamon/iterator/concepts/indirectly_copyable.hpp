@@ -44,7 +44,7 @@ private:
 	template <typename I, typename O,
 		typename = hamon::enable_if_t<hamon::indirectly_readable<I>>,
 		typename R = hamon::iter_reference_t<I>,
-		typename = hamon::enable_if_t<hamon::indirectly_writable<O, R>::value>
+		typename = hamon::enable_if_t<hamon::indirectly_writable<O, R>>
 	>
 	static auto test(int) -> hamon::true_type;
 

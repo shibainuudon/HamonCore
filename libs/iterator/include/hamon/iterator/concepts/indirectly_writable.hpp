@@ -27,7 +27,7 @@ using std::indirectly_writable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Out, typename T>
-concept indirectly_writable =
+HAMON_CONCEPT_OR_BOOL indirectly_writable =
 	requires(Out&& o, T&& t)
 	{
 		*o = hamon::forward<T>(t);
@@ -64,17 +64,9 @@ public:
 }	// namespace detail
 
 template <typename Out, typename T>
-using indirectly_writable =
-	typename detail::indirectly_writable_impl<Out, T>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_writable =
+	detail::indirectly_writable_impl<Out, T>::type::value;
 
-#endif
-
-template <typename Out, typename T>
-using indirectly_writable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_writable<Out, T>>;
-#else
-	hamon::indirectly_writable<Out, T>;
 #endif
 
 }	// namespace hamon

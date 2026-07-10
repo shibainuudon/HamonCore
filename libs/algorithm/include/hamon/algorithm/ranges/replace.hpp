@@ -71,14 +71,10 @@ struct replace_fn
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		I,
-		HAMON_CONCEPTS_AND(
-			hamon::indirectly_writable<I HAMON_PP_COMMA() T2 const&>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<I HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
-				T1 const*>))
+		(hamon::indirectly_writable<I, T2 const&> &&
+		 hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<I, Proj>, T1 const*>::value))
 	{
 		for (; first != last; ++first)
 		{
@@ -102,14 +98,10 @@ struct replace_fn
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<R>,
-		HAMON_CONCEPTS_AND(
-			hamon::indirectly_writable<ranges::iterator_t<R> HAMON_PP_COMMA() T2 const&>,
-			hamon::indirect_binary_predicate<
-				ranges::equal_to HAMON_PP_COMMA()
-				hamon::projected<ranges::iterator_t<R> HAMON_PP_COMMA() Proj> HAMON_PP_COMMA()
-				T1 const*>))
+		(hamon::indirectly_writable<ranges::iterator_t<R>, T2 const&> &&
+		 hamon::indirect_binary_predicate_t<ranges::equal_to, hamon::projected<ranges::iterator_t<R>, Proj>, T1 const*>::value))
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r),

@@ -12,15 +12,8 @@
 #include <iterator>
 #include "iterator_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_INDIRECTLY_WRITABLE_TEST(B, ...)	\
-	static_assert(B == hamon::indirectly_writable<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::indirectly_writable_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_INDIRECTLY_WRITABLE_TEST(B, ...)	\
-	static_assert(B == hamon::indirectly_writable<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::indirectly_writable_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_INDIRECTLY_WRITABLE_TEST(B, ...)	\
+	static_assert(B == hamon::indirectly_writable<__VA_ARGS__>, "")
 
 namespace hamon_iterator_test
 {
