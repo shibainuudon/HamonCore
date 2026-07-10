@@ -57,10 +57,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 	static_assert(hamon::is_integral<size_type>::value, "");
 	static_assert(hamon::is_signed<difference_type>::value, "");
 	static_assert(hamon::is_integral<difference_type>::value, "");
-	static_assert(hamon::detail::cpp17_bidirectional_iterator_t<iterator>::value, "");
-	static_assert(hamon::detail::cpp17_bidirectional_iterator_t<const_iterator>::value, "");
-	static_assert(hamon::detail::cpp17_bidirectional_iterator_t<reverse_iterator>::value, "");
-	static_assert(hamon::detail::cpp17_bidirectional_iterator_t<const_reverse_iterator>::value, "");
+	static_assert(hamon::detail::cpp17_bidirectional_iterator<iterator>, "");
+	static_assert(hamon::detail::cpp17_bidirectional_iterator<const_iterator>, "");
+	static_assert(hamon::detail::cpp17_bidirectional_iterator<reverse_iterator>, "");
+	static_assert(hamon::detail::cpp17_bidirectional_iterator<const_reverse_iterator>, "");
 
 	return true;
 }

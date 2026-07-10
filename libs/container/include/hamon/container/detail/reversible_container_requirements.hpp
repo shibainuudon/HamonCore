@@ -27,8 +27,8 @@ void reversible_container_requirements()
 	using const_reverse_iterator = typename X::const_reverse_iterator;
 
 	// [container.rev.reqmts]/1
-	HAMON_STATIC_ASSERT(hamon::detail::cpp17_bidirectional_iterator_t<iterator>::value);
-	HAMON_STATIC_ASSERT(hamon::detail::cpp17_bidirectional_iterator_t<const_iterator>::value);
+	HAMON_STATIC_ASSERT(hamon::detail::cpp17_bidirectional_iterator<iterator>);
+	HAMON_STATIC_ASSERT(hamon::detail::cpp17_bidirectional_iterator<const_iterator>);
 
 	// [container.rev.reqmts]/2
 	HAMON_STATIC_ASSERT(hamon::is_same<iterator, typename reverse_iterator::iterator_type>::value);

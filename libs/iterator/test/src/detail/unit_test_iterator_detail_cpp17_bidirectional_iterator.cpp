@@ -15,15 +15,8 @@
 #include <hamon/config.hpp>
 #include "iterator_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_CPP17_BIDIRECTIONAL_ITERATOR_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_bidirectional_iterator<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::detail::cpp17_bidirectional_iterator_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_CPP17_BIDIRECTIONAL_ITERATOR_TEST(B, ...)	\
-	static_assert(B == hamon::detail::cpp17_bidirectional_iterator<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::detail::cpp17_bidirectional_iterator_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_CPP17_BIDIRECTIONAL_ITERATOR_TEST(B, ...)	\
+	static_assert(B == hamon::detail::cpp17_bidirectional_iterator<__VA_ARGS__>, "")
 
 namespace hamon_iterator_test
 {

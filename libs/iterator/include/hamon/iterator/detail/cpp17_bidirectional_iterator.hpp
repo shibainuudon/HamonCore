@@ -27,7 +27,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept cpp17_bidirectional_iterator =
+HAMON_CONCEPT_OR_BOOL cpp17_bidirectional_iterator =
 	cpp17_forward_iterator<I> &&
 	requires(I i)
 	{
@@ -35,9 +35,6 @@ concept cpp17_bidirectional_iterator =
 		{  i-- } -> hamon::convertible_to<I const&>;
 		{ *i-- } -> hamon::same_as<hamon::iter_reference_t<I>>;
 	};
-
-template <typename T>
-using cpp17_bidirectional_iterator_t = hamon::bool_constant<cpp17_bidirectional_iterator<T>>;
 
 #else
 
@@ -71,11 +68,8 @@ public:
 }	// namespace cpp17_bidirectional_iterator_detail
 
 template <typename I>
-using cpp17_bidirectional_iterator =
-	typename cpp17_bidirectional_iterator_detail::cpp17_bidirectional_iterator_impl<I>::type;
-
-template <typename T>
-using cpp17_bidirectional_iterator_t = cpp17_bidirectional_iterator<T>;
+HAMON_CONCEPT_OR_BOOL cpp17_bidirectional_iterator =
+	cpp17_bidirectional_iterator_detail::cpp17_bidirectional_iterator_impl<I>::type::value;
 
 #endif
 

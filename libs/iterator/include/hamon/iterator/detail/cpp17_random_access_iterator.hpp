@@ -56,7 +56,7 @@ struct cpp17_random_access_iterator_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<cpp17_bidirectional_iterator<I2>::value>,
+		typename = hamon::enable_if_t<cpp17_bidirectional_iterator<I2>>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>>,
 		typename D = typename hamon::incrementable_traits<I2>::difference_type,
 		typename T1 = decltype(hamon::declval<I2&>() += hamon::declval<D& >()),
