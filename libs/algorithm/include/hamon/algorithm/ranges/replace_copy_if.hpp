@@ -30,6 +30,7 @@ using std::ranges::replace_copy_if;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -67,7 +68,7 @@ struct replace_copy_if_fn
 		typename T = hamon::iter_value_t<O>,
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<I, Proj>,
-		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, O result,
@@ -101,7 +102,7 @@ struct replace_copy_if_fn
 		typename T = hamon::iter_value_t<O>,
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,
-		HAMON_CONSTRAINED_PARAM(hamon::indirect_unary_predicate, ProjectedIter, Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		R&& r, O result,

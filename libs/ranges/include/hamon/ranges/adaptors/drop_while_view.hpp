@@ -71,12 +71,12 @@ template <hamon::ranges::view V, typename Pred>
 		hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V>>
 #else
 template <typename V, typename Pred,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::input_range_t<V>,
-		hamon::is_object<Pred>,
-		hamon::indirect_unary_predicate_t<Pred const, hamon::ranges::iterator_t<V>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::input_range_t<V>::value &&
+		hamon::is_object_v<Pred> &&
+		hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V>>
+	>
 >
 #endif
 class drop_while_view : public hamon::ranges::view_interface<drop_while_view<V, Pred>>

@@ -51,7 +51,6 @@ using std::ranges::views::take_while;
 #include <hamon/iterator/concepts/indirect_unary_predicate.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/memory/addressof.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -73,12 +72,12 @@ template <hamon::ranges::view V, typename Pred>
 		hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V>>
 #else
 template <typename V, typename Pred,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::input_range_t<V>,
-		hamon::is_object<Pred>,
-		hamon::indirect_unary_predicate_t<Pred const, hamon::ranges::iterator_t<V>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::input_range_t<V>::value &&
+		hamon::is_object_v<Pred> &&
+		hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V>>
+	>
 >
 #endif
 class take_while_view : public hamon::ranges::view_interface<take_while_view<V, Pred>>
@@ -269,10 +268,10 @@ public:
 	}
 
 	template <typename V2 = V const,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::range_t<V2>,
-			hamon::indirect_unary_predicate_t<Pred const, hamon::ranges::iterator_t<V2>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::range_t<V2>::value &&
+			hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V2>>
+		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto begin() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::begin(hamon::declval<V2&>()))
@@ -292,10 +291,10 @@ public:
 	}
 
 	template <typename V2 = V const,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::range_t<V2>,
-			hamon::indirect_unary_predicate_t<Pred const, hamon::ranges::iterator_t<V2>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::range_t<V2>::value &&
+			hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V2>>
+		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF(		// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(hamon::ranges::end(m_base)) &&

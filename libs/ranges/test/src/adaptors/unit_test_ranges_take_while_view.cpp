@@ -212,8 +212,8 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	if constexpr (hamon::ranges::range_t<V const>::value)
 	{
 		using CI = hamon::ranges::iterator_t<V const>;
-		static_assert(has_begin<TWV const>::value == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
-		static_assert(has_end<TWV const>::value   == hamon::indirect_unary_predicate_t<F const, CI>::value, "");
+		static_assert(has_begin<TWV const>::value == hamon::indirect_unary_predicate<F const, CI>, "");
+		static_assert(has_end<TWV const>::value   == hamon::indirect_unary_predicate<F const, CI>, "");
 
 		if constexpr (has_begin<TWV const>::value)
 		{

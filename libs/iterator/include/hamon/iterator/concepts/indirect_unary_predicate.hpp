@@ -32,7 +32,7 @@ using std::indirect_unary_predicate;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I>
-concept indirect_unary_predicate =
+HAMON_CONCEPT_OR_BOOL indirect_unary_predicate =
 	hamon::indirectly_readable<I> &&
 	hamon::copy_constructible<F> &&
 	hamon::predicate<F&, hamon::detail::indirect_value_t<I>> &&
@@ -67,17 +67,9 @@ public:
 }	// namespace detail
 
 template <typename F, typename I>
-using indirect_unary_predicate =
-	typename detail::indirect_unary_predicate_impl<F, I>::type;
+HAMON_CONCEPT_OR_BOOL indirect_unary_predicate =
+	detail::indirect_unary_predicate_impl<F, I>::type::value;
 
-#endif
-
-template <typename F, typename I>
-using indirect_unary_predicate_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirect_unary_predicate<F, I>>;
-#else
-	hamon::indirect_unary_predicate<F, I>;
 #endif
 
 }	// namespace hamon

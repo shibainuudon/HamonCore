@@ -30,6 +30,7 @@ using std::ranges::remove_copy_if;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -64,10 +65,7 @@ struct remove_copy_if_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, Out result,
@@ -93,10 +91,7 @@ struct remove_copy_if_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result, Pred pred, Proj proj = {}) const

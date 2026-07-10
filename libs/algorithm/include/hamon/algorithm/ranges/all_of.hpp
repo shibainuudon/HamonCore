@@ -28,6 +28,7 @@ using std::ranges::all_of;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -54,10 +55,7 @@ struct all_of_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
 		Iter first, Sent last,
@@ -78,10 +76,7 @@ struct all_of_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
 		Range&& r, Pred pred, Proj proj ={}) const

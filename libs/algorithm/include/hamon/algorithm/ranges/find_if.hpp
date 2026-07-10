@@ -28,6 +28,7 @@ using std::ranges::find_if;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -55,10 +56,7 @@ struct find_if_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR Iter operator()(
 		Iter first, Sent last, Pred pred, Proj proj = {}) const
@@ -76,10 +74,7 @@ struct find_if_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
 	operator()(Range&& r, Pred pred, Proj proj = {}) const

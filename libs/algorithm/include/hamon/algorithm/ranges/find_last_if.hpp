@@ -115,10 +115,8 @@ public:
 		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			hamon::projected<Iter HAMON_PP_COMMA() Proj>,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate,
+			hamon::projected<Iter HAMON_PP_COMMA() Proj>, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
 	operator()(Iter first, Sent last, Pred pred, Proj proj = {}) const
@@ -134,10 +132,8 @@ public:
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj>,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate,
+			hamon::projected<ranges::iterator_t<Range> HAMON_PP_COMMA() Proj>, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_subrange_t<Range>
 	operator()(Range&& r, Pred pred, Proj proj = {}) const

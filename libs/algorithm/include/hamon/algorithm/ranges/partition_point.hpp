@@ -58,8 +58,7 @@ struct partition_point_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate, ProjectedIter, Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR Iter operator()(
 		Iter first, Sent last,
@@ -90,10 +89,8 @@ struct partition_point_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
-		typename ProjectedIter =
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate, ProjectedIter, Pred)
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>
 	operator()(Range&& r, Pred pred, Proj proj ={}) const

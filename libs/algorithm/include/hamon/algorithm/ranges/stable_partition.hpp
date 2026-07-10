@@ -61,8 +61,7 @@ struct stable_partition_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate, ProjectedIter, Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
@@ -80,10 +79,8 @@ struct stable_partition_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, Range),
 		typename Proj = hamon::identity,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate,
+			hamon::projected<ranges::iterator_t<Range>, Proj>, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Pred pred, Proj proj = {}) const

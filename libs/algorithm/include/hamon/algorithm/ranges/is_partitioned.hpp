@@ -30,6 +30,7 @@ using std::ranges::is_partitioned;
 #include <hamon/algorithm/ranges/find_if_not.hpp>
 #include <hamon/algorithm/ranges/none_of.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -55,10 +56,7 @@ struct is_partitioned_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR bool
 	operator()(Iter first, Sent last, Pred pred, Proj proj = {}) const
@@ -81,10 +79,7 @@ struct is_partitioned_fn
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR bool
 	operator()(Range&& r, Pred pred, Proj proj = {}) const

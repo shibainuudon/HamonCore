@@ -30,6 +30,7 @@ using std::ranges::partition_copy;
 #include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -66,10 +67,7 @@ struct partition_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out2),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
@@ -106,10 +104,7 @@ struct partition_copy_fn
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out2),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM(
-			hamon::indirect_unary_predicate,
-			ProjectedIter,
-			Pred)
+		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Out1 out_true, Out2 out_false,

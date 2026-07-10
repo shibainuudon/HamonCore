@@ -91,12 +91,11 @@ template <hamon::ranges::input_range V, hamon::indirect_unary_predicate<hamon::r
 	requires hamon::ranges::view<V> && hamon::is_object_v<Pred>
 #else
 template <typename V, typename Pred,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range<V>,
-		hamon::indirect_unary_predicate<Pred, hamon::ranges::iterator_t<V>>,
-		hamon::ranges::view<V>,
-		hamon::is_object<Pred>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V>::value &&
+		hamon::indirect_unary_predicate<Pred, hamon::ranges::iterator_t<V>> &&
+		hamon::ranges::view<V>::value && hamon::is_object_v<Pred>
+	>
 >
 #endif
 class filter_view : public hamon::ranges::view_interface<filter_view<V, Pred>>
