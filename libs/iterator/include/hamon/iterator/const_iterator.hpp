@@ -34,7 +34,7 @@ namespace hamon
 template <HAMON_CONSTRAINT(hamon::input_iterator, I)>
 using const_iterator =
 	hamon::conditional_t<
-		detail::constant_iterator_t<I>::value,
+		detail::constant_iterator<I>,
 		I,
 		hamon::basic_const_iterator<I>
 	>;

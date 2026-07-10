@@ -100,13 +100,13 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		using I = decltype(hamon::ranges::crbegin(r));
 		using S = decltype(hamon::ranges::crend(r));
 		static_assert(hamon::sentinel_for<S, I>, "");
-		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+		static_assert(hamon::detail::constant_iterator<S>, "");
 	}
 	{
 		using I = decltype(hamon::ranges::crbegin(cr));
 		using S = decltype(hamon::ranges::crend(cr));
 		static_assert(hamon::sentinel_for<S, I>, "");
-		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+		static_assert(hamon::detail::constant_iterator<S>, "");
 	}
 
 	return true;
@@ -134,13 +134,13 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		using I = decltype(hamon::ranges::crbegin(r));
 		using S = decltype(hamon::ranges::crend(r));
 		static_assert(hamon::sentinel_for<S, I>, "");
-		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+		static_assert(hamon::detail::constant_iterator<S>, "");
 	}
 	{
 		using I = decltype(hamon::ranges::crbegin(cr));
 		using S = decltype(hamon::ranges::crend(cr));
 		static_assert(hamon::sentinel_for<S, I>, "");
-		static_assert(hamon::detail::constant_iterator_t<S>::value, "");
+		static_assert(hamon::detail::constant_iterator<S>, "");
 	}
 
 	return true;
