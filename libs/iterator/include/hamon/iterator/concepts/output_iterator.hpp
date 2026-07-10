@@ -28,7 +28,7 @@ using std::output_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter, typename T>
-concept output_iterator =
+HAMON_CONCEPT_OR_BOOL output_iterator =
 	hamon::input_or_output_iterator<Iter> &&
 	hamon::indirectly_writable<Iter, T> &&
 	requires(Iter i, T&& t) { *i++ = hamon::forward<T>(t); };
@@ -59,17 +59,9 @@ public:
 }	// namespace detail
 
 template <typename Iter, typename T>
-using output_iterator =
-	typename detail::output_iterator_impl<Iter, T>::type;
+HAMON_CONCEPT_OR_BOOL output_iterator =
+	detail::output_iterator_impl<Iter, T>::type::value;
 
-#endif
-
-template <typename Iter, typename T>
-using output_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::output_iterator<Iter, T>>;
-#else
-	hamon::output_iterator<Iter, T>;
 #endif
 
 }	// namespace hamon

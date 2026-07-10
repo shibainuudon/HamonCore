@@ -77,7 +77,7 @@ struct replace_copy_if_fn
 		replace_copy_if_result<I HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<I, O> &&
-			hamon::output_iterator_t<O, T const&>::value
+			hamon::output_iterator<O, T const&>
 		)
 	)
 	{
@@ -108,11 +108,10 @@ struct replace_copy_if_fn
 		R&& r, O result,
 		Pred pred, T const& new_value, Proj proj = {}) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
-		replace_copy_if_result<
-			ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
+		replace_copy_if_result<ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<ranges::iterator_t<R>, O> &&
-			hamon::output_iterator_t<O, T const&>::value
+			hamon::output_iterator<O, T const&>
 		)
 	)
 	{

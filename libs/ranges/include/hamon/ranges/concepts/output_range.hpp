@@ -47,7 +47,7 @@ struct output_range_impl
 private:
 	template <typename R, typename U,
 		typename = hamon::enable_if_t<ranges::range<R>::value>,
-		typename = hamon::enable_if_t<hamon::output_iterator<ranges::iterator_t<R>, U>::value>
+		typename = hamon::enable_if_t<hamon::output_iterator<ranges::iterator_t<R>, U>>
 	>
 	static auto test(int) -> hamon::true_type;
 
