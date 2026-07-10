@@ -125,7 +125,8 @@ struct has_post_increment
 
 template <typename I>
 struct has_post_increment<I, hamon::void_t<decltype(*hamon::declval<I&>()++)>>
-	: public hamon::detail::can_reference<decltype(*hamon::declval<I&>()++)> {};
+	: public hamon::bool_constant<
+		hamon::detail::can_reference<decltype(*hamon::declval<I&>()++)>> {};
 
 template <typename I>
 using has_post_increment_t = has_post_increment<I>;

@@ -52,9 +52,9 @@ private:
 		typename T2 = decltype(++hamon::declval<I2&>()),
 		typename T3 = decltype( *hamon::declval<I2&>()++),
 		typename = hamon::enable_if_t<
-			hamon::detail::can_reference<T1>::value &&
+			hamon::detail::can_reference<T1> &&
 			hamon::same_as<T2, I2&> &&
-			hamon::detail::can_reference<T3>::value &&
+			hamon::detail::can_reference<T3> &&
 			hamon::copyable<I2>
 		>
 	>

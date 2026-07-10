@@ -115,7 +115,7 @@ private:
 	static_assert(sizeof...(Views) > 0, "");
 	static_assert(hamon::is_object<F>::value, "");
 	static_assert(hamon::regular_invocable<F&, hamon::ranges::range_reference_t<Views>...>, "");
-	static_assert(hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<Views>...>>::value, "");
+	static_assert(hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<Views>...>>, "");
 #endif
 
 	HAMON_NO_UNIQUE_ADDRESS hamon::ranges::detail::movable_box<F> m_fun;
@@ -690,7 +690,7 @@ private:
 		typename = hamon::enable_if_t<hamon::regular_invocable<
 			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>>,
 		typename = hamon::enable_if_t<hamon::detail::can_reference<hamon::invoke_result_t<
-			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>>::value>,
+			F&, hamon::ranges::range_reference_t<hamon::views::all_t<Args>>...>>>,
 #endif
 		typename ZTV = hamon::ranges::zip_transform_view<F, hamon::views::all_t<Args>...>>
 	static HAMON_CXX11_CONSTEXPR auto

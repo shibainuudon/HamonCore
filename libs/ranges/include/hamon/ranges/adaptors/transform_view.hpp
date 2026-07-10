@@ -96,7 +96,7 @@ template <typename V, typename F,
 		hamon::ranges::input_range<V>::value && hamon::move_constructible<F> &&
 		hamon::ranges::view<V>::value && hamon::is_object<F>::value &&
 		hamon::regular_invocable<F&, hamon::ranges::range_reference_t<V>> &&
-		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>::value
+		hamon::detail::can_reference<hamon::invoke_result_t<F&, hamon::ranges::range_reference_t<V>>>
 	>
 >
 #endif

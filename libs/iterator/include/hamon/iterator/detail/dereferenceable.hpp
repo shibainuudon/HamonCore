@@ -40,9 +40,10 @@ struct dereferenceable_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<!hamon::detail::is_void_pointer<U>::value>,
-		typename U2 = decltype(*hamon::declval<U&>())
+		typename U2 = decltype(*hamon::declval<U&>()),
+		typename = hamon::enable_if_t<hamon::detail::can_reference<U2>>
 	>
-	static auto test(int) -> hamon::detail::can_reference<U2>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

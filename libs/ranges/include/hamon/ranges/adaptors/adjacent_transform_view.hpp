@@ -159,7 +159,7 @@ template <typename V, typename F, hamon::size_t N,
 	>,
 	typename = hamon::enable_if_t<
 		hamon::detail::can_reference<hamon::ranges::detail::invoke_result_with_repeated_type_t<
-			F&, hamon::ranges::range_reference_t<V>, N>>::value>>
+			F&, hamon::ranges::range_reference_t<V>, N>>>>
 #endif
 class adjacent_transform_view : public hamon::ranges::view_interface<adjacent_transform_view<V, F, N>>
 {

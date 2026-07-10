@@ -30,7 +30,7 @@ using with_ref = T&;
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept can_reference = requires { typename with_ref<T>; };
+HAMON_CONCEPT_OR_BOOL can_reference = requires { typename with_ref<T>; };
 
 #else
 
@@ -49,8 +49,8 @@ public:
 };
 
 template <typename T>
-using can_reference =
-	typename detail::can_reference_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL can_reference =
+	detail::can_reference_impl<T>::type::value;
 
 #endif
 

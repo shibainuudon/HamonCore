@@ -43,7 +43,7 @@ struct input_or_output_iterator_impl
 private:
 	template <typename I2,
 		typename T = decltype(*hamon::declval<I2&>()),
-		typename = hamon::enable_if_t<hamon::detail::can_reference<T>::value>,
+		typename = hamon::enable_if_t<hamon::detail::can_reference<T>>,
 		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>>
 	>
 	static auto test(int) -> hamon::true_type;
