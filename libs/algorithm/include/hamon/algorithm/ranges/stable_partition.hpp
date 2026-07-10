@@ -66,7 +66,7 @@ struct stable_partition_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
 		Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::subrange<Iter>,
 		hamon::permutable<Iter>)
 	{
@@ -84,7 +84,7 @@ struct stable_partition_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

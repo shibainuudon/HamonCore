@@ -28,7 +28,7 @@ using std::permutable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept permutable =
+HAMON_CONCEPT_OR_BOOL permutable =
 	hamon::forward_iterator<Iter> &&
 	hamon::indirectly_movable_storable<Iter, Iter> &&
 	hamon::indirectly_swappable<Iter, Iter>;
@@ -59,17 +59,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using permutable =
-	typename detail::permutable_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL permutable =
+	detail::permutable_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using permutable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::permutable<Iter>>;
-#else
-	hamon::permutable<Iter>;
 #endif
 
 }	// namespace hamon

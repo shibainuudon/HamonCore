@@ -31,6 +31,7 @@ using std::ranges::shift_right;
 #include <hamon/algorithm/shift_right.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/ranges/next.hpp>
@@ -54,7 +55,7 @@ namespace ranges
 struct shift_right_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, Iter),
+		HAMON_CONSTRAINT(hamon::permutable, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
@@ -68,7 +69,7 @@ struct shift_right_fn
 	template <HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range)>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::range_difference_t<Range> n) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

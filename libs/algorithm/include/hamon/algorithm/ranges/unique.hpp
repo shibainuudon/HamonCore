@@ -56,7 +56,7 @@ namespace ranges
 struct unique_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, Iter),
+		HAMON_CONSTRAINT(hamon::permutable, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
@@ -99,7 +99,7 @@ struct unique_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

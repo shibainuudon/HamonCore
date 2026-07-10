@@ -55,7 +55,7 @@ namespace ranges
 struct remove_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, Iter),
+		HAMON_CONSTRAINT(hamon::permutable, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
@@ -92,7 +92,7 @@ struct remove_if_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

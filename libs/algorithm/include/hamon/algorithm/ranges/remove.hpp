@@ -31,6 +31,7 @@ using std::ranges::remove;
 #include <hamon/algorithm/ranges/remove_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -75,7 +76,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, I),
+		HAMON_CONSTRAINT(hamon::permutable, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>
@@ -106,7 +107,7 @@ public:
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<R>,
 		(
-			hamon::permutable_t<ranges::iterator_t<R>>::value &&
+			hamon::permutable<ranges::iterator_t<R>> &&
 			hamon::indirect_binary_predicate<
 				ranges::equal_to,
 				hamon::projected<ranges::iterator_t<R>, Proj>,

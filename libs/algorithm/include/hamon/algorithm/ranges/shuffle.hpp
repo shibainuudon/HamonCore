@@ -60,12 +60,13 @@ struct shuffle_fn
 		typename Gen
 	>
 	auto operator()(Iter first, Sent last, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Iter,
-		HAMON_CONCEPTS_AND(
-			hamon::permutable<Iter>,
-			hamon::uniform_random_bit_generator<
-				hamon::remove_reference_t<Gen>>))
+		(
+			hamon::permutable<Iter> &&
+			hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+		)
+	)
 	{
 		auto lasti = ranges::next(first, last);
 		hamon::shuffle(hamon::move(first), lasti, hamon::forward<Gen>(g));
@@ -77,12 +78,13 @@ struct shuffle_fn
 		typename Gen
 	>
 	auto operator()(Range&& r, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<Range>,
-		HAMON_CONCEPTS_AND(
-			hamon::permutable<ranges::iterator_t<Range>>,
-			hamon::uniform_random_bit_generator<
-				hamon::remove_reference_t<Gen>>))
+		(
+			hamon::permutable<ranges::iterator_t<Range>> &&
+			hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+		)
+	)
 	{
 		return (*this)(
 			ranges::begin(r), ranges::end(r), hamon::forward<Gen>(g));

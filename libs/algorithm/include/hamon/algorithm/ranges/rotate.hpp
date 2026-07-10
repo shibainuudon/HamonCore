@@ -219,7 +219,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::permutable, Iter),
+		HAMON_CONSTRAINT(hamon::permutable, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
@@ -246,7 +246,7 @@ public:
 	template <HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range)>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::iterator_t<Range> middle) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

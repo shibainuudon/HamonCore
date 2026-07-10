@@ -54,7 +54,7 @@ struct radix_sortable_impl
 {
 private:
 	template <typename I, typename T, typename P,
-		typename = hamon::enable_if_t<hamon::permutable<I>::value>,
+		typename = hamon::enable_if_t<hamon::permutable<I>>,
 		typename = hamon::enable_if_t<hamon::indirectly_swappable<I, T>>,
 		typename = hamon::enable_if_t<
 			hamon::unsigned_integral<
