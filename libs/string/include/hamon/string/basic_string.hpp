@@ -472,7 +472,7 @@ public:
 
 private:
 	template <typename Iterator, typename Sentinel,
-		typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<Iterator, Sentinel>::value>>
+		typename = hamon::enable_if_t<hamon::sized_sentinel_for<Iterator, Sentinel>>>
 	HAMON_CXX14_CONSTEXPR
 	basic_string(Iterator begin, Sentinel end, Allocator const& a, hamon::detail::overload_priority<1>)
 		: m_allocator(a)

@@ -216,10 +216,10 @@ bool operator!=(ThrowIterator<B1> const&, ThrowSentinel<B2> const&);
 template <bool B1, bool B2>
 bool operator!=(ThrowSentinel<B1> const&, ThrowIterator<B2> const&);
 
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<true>,  ThrowIterator<true>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<true>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<true>,  ThrowIterator<false>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<false>>::value, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<true>,  ThrowIterator<true>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<false>, ThrowIterator<true>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<true>,  ThrowIterator<false>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<false>, ThrowIterator<false>>, "");
 
 template <typename T, typename Iterator, typename Sentinel = test_sentinel<Iterator>>
 struct throw_sized_borrowed_range : public test_range<T, Iterator, Sentinel>

@@ -95,8 +95,8 @@ public:
 		Proj2 proj2 = {}) const
 	{
 		constexpr bool sized_iters =
-			(hamon::sized_sentinel_for_t<Sent1, Iter1>::value &&
-			 hamon::sized_sentinel_for_t<Sent2, Iter2>::value);
+			(hamon::sized_sentinel_for<Sent1, Iter1> &&
+			 hamon::sized_sentinel_for<Sent2, Iter2>);
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (sized_iters)

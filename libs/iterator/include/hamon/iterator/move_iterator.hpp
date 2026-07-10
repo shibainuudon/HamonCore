@@ -347,7 +347,7 @@ public:
 	}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<Iter>
 	operator-(move_sentinel<Sent> const& lhs, move_iterator const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(lhs.base() - rhs.base())	// extension
@@ -355,7 +355,7 @@ public:
 		return lhs.base() - rhs.base();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<Iter>
 	operator-(move_iterator const& lhs, move_sentinel<Sent> const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(lhs.base() - rhs.base())	// extension

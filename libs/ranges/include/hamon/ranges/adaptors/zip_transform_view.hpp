@@ -429,7 +429,7 @@ private:
 
 		template <typename I2 = ziperator<Const>,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<I2, I2>::value>>
+				hamon::sized_sentinel_for<I2, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_inner - y.m_inner)	// noexcept as an extension
@@ -531,7 +531,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<zentinel<Const>, ziperator<OtherConst>>::value>>
+				hamon::sized_sentinel_for<zentinel<Const>, ziperator<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		zifference<OtherConst>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -542,7 +542,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<zentinel<Const>, ziperator<OtherConst>>::value>>
+				hamon::sized_sentinel_for<zentinel<Const>, ziperator<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		zifference<OtherConst>
 		operator-(sentinel const& x, iterator<OtherConst> const& y)

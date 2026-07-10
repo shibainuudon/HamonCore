@@ -56,7 +56,6 @@ using std::common_iterator;
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -488,11 +487,11 @@ private:
 #endif
 
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::sized_sentinel_for_t<I2, I>,
-			hamon::sized_sentinel_for_t<S2, I>,
-			hamon::sized_sentinel_for_t<S, I2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::sized_sentinel_for<I2, I> &&
+			hamon::sized_sentinel_for<S2, I> &&
+			hamon::sized_sentinel_for<S, I2>
+		>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	hamon::iter_difference_t<I2>
 	operator-(common_iterator const& x, common_iterator<I2, S2> const& y)

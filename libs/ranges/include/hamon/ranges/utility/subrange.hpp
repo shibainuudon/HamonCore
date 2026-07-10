@@ -171,7 +171,7 @@ template <
 	hamon::input_or_output_iterator It,
 	hamon::sentinel_for<It> Sent = It,
 	ranges::subrange_kind Kind =
-		hamon::sized_sentinel_for_t<Sent, It>::value ?
+		hamon::sized_sentinel_for<Sent, It> ?
 			ranges::subrange_kind::sized :
 			ranges::subrange_kind::unsized
 
@@ -184,7 +184,7 @@ template <
 	typename It,
 	typename Sent = It,
 	ranges::subrange_kind Kind =
-		hamon::sized_sentinel_for_t<Sent, It>::value ?
+		hamon::sized_sentinel_for<Sent, It> ?
 			ranges::subrange_kind::sized :
 			ranges::subrange_kind::unsized,
 	typename = hamon::enable_if_t<
@@ -192,7 +192,7 @@ template <
 		hamon::sentinel_for<Sent, It> &&
 		(
 			Kind == ranges::subrange_kind::sized ||
-			!hamon::sized_sentinel_for<Sent, It>::value
+			!hamon::sized_sentinel_for<Sent, It>
 		)
 	>
 >
@@ -202,7 +202,7 @@ class subrange : public ranges::view_interface<subrange<It, Sent, Kind>>
 private:
 	static constexpr bool StoreSize =
 		Kind == ranges::subrange_kind::sized &&
-		!hamon::sized_sentinel_for_t<Sent, It>::value;
+		!hamon::sized_sentinel_for<Sent, It>;
 
 	using size_type = detail::make_unsigned_like_t<hamon::iter_difference_t<It>>;
 
@@ -326,7 +326,7 @@ public:
 		: m_impl(hamon::move(i), hamon::move(s), n)
 	{
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (hamon::sized_sentinel_for_t<Sent, It>::value)
+		if constexpr (hamon::sized_sentinel_for<Sent, It>)
 		{
 			HAMON_ASSERT((s - i) == static_cast<hamon::iter_difference_t<It>>(n));
 		}
@@ -453,7 +453,7 @@ template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
 subrange(Rng&&)
 -> subrange<hamon::ranges::iterator_t<Rng>, hamon::ranges::sentinel_t<Rng>,
 	(hamon::ranges::sized_range_t<Rng>::value ||
-	 hamon::sized_sentinel_for_t<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>::value) ?
+	 hamon::sized_sentinel_for<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>) ?
 		ranges::subrange_kind::sized :
 		ranges::subrange_kind::unsized>;
 
@@ -603,7 +603,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::ranges::iterator_t<Rng>,
 		hamon::ranges::sentinel_t<Rng>,
 		(hamon::ranges::sized_range_t<Rng>::value ||
-		 hamon::sized_sentinel_for_t<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>::value) ?
+		 hamon::sized_sentinel_for<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>) ?
 			ranges::subrange_kind::sized :
 			ranges::subrange_kind::unsized
 	>(hamon::forward<Rng>(r)))

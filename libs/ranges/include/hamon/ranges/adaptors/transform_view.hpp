@@ -404,7 +404,7 @@ private:
 			return iterator{*i.m_parent, i.m_current - n};
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, I, I2, I)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, I, I2, I)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current - y.m_current)	// noexcept as an extension
@@ -523,7 +523,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<OtherV>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -545,7 +545,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<OtherV>
 		operator-(sentinel const& y, iterator<OtherConst> const& x)

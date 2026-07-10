@@ -70,25 +70,25 @@ namespace hamon_iterator_test {
 namespace reverse_iterator_test {
 namespace sized_sentinel_for_test {
 
-static_assert(!hamon::sized_sentinel_for_t<
+static_assert(!hamon::sized_sentinel_for<
 	TestIterator<int>,
-	TestIterator<int>>::value, "");
+	TestIterator<int>>, "");
 
-static_assert( hamon::sized_sentinel_for_t<
+static_assert( hamon::sized_sentinel_for<
 	hamon::reverse_iterator<int*>,
-	hamon::reverse_iterator<int*>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<
+	hamon::reverse_iterator<int*>>, "");
+static_assert(!hamon::sized_sentinel_for<
 	hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>,
-	hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::sized_sentinel_for_t<
+	hamon::reverse_iterator<bidirectional_iterator_wrapper<int>>>, "");
+static_assert( hamon::sized_sentinel_for<
 	hamon::reverse_iterator<random_access_iterator_wrapper<int>>,
-	hamon::reverse_iterator<random_access_iterator_wrapper<int>>>::value, "");
-static_assert( hamon::sized_sentinel_for_t<
+	hamon::reverse_iterator<random_access_iterator_wrapper<int>>>, "");
+static_assert( hamon::sized_sentinel_for<
 	hamon::reverse_iterator<contiguous_iterator_wrapper<int>>,
-	hamon::reverse_iterator<contiguous_iterator_wrapper<int>>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<
+	hamon::reverse_iterator<contiguous_iterator_wrapper<int>>>, "");
+static_assert(!hamon::sized_sentinel_for<
 	hamon::reverse_iterator<TestIterator<int>>,
-	hamon::reverse_iterator<TestIterator<int>>>::value, "");
+	hamon::reverse_iterator<TestIterator<int>>>, "");
 
 }	// namespace sized_sentinel_for_test
 }	// namespace reverse_iterator_test

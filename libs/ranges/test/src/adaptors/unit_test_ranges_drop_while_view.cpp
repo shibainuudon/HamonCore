@@ -84,8 +84,8 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 
 	static_assert(hamon::ranges::range_t<DWV>::value == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<DWV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
-	static_assert(hamon::ranges::sized_range_t<DWV>::value == hamon::sized_sentinel_for_t<S, I>::value, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<DWV>::value == hamon::sized_sentinel_for_t<S, I>::value, "");
+	static_assert(hamon::ranges::sized_range_t<DWV>::value == hamon::sized_sentinel_for<S, I>, "");
+	static_assert(hamon::ranges::approximately_sized_range_t<DWV>::value == hamon::sized_sentinel_for<S, I>, "");
 	static_assert(hamon::ranges::output_range_t<DWV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<DWV>::value == hamon::ranges::input_range_t<V>::value, "");
 	static_assert(hamon::ranges::forward_range_t<DWV>::value == hamon::ranges::forward_range_t<V>::value, "");

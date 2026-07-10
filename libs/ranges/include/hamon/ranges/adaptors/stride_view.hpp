@@ -299,7 +299,7 @@ private:
 			if (n > 0)
 			{
 				// [range.stride.iterator]/13
-				HAMON_ASSERT((!hamon::sized_sentinel_for_t<BaseSent, BaseIter>::value ||
+				HAMON_ASSERT((!hamon::sized_sentinel_for<BaseSent, BaseIter> ||
 					hamon::ranges::distance(m_current, m_end) > m_stride * (n - 1)));
 
 				hamon::ranges::advance(m_current, m_stride * (n - 1));
@@ -446,7 +446,7 @@ private:
 				 hamon::ranges::detail::div_ceil( N, x.m_stride);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, BaseIter, I2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, BaseIter, I2, BaseIter)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current - y.m_current)	// noexcept as an extension
@@ -455,7 +455,7 @@ private:
 			return distance_impl(x, y, x.m_current - y.m_current, hamon::detail::overload_priority<1>{});
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, BaseIter, S2, BaseSent)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, BaseIter, S2, BaseSent)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(hamon::default_sentinel_t, iterator const& x)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_end - x.m_current)	// noexcept as an extension
@@ -464,7 +464,7 @@ private:
 			return hamon::ranges::detail::div_ceil(x.m_end - x.m_current, x.m_stride);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, BaseIter, S2, BaseSent)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, BaseIter, S2, BaseSent)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, hamon::default_sentinel_t y)
 			// [range.stride.iterator]/27

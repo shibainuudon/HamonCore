@@ -156,7 +156,7 @@ struct SizedViewWithUnsizedSentinel : hamon::ranges::view_base
 };
 static_assert( hamon::ranges::random_access_range_t<SizedViewWithUnsizedSentinel<int>>::value, "");
 static_assert( hamon::ranges::sized_range_t<SizedViewWithUnsizedSentinel<int>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<SizedViewWithUnsizedSentinel<int>::sentinel, SizedViewWithUnsizedSentinel<int>::iterator>::value, "");
+static_assert(!hamon::sized_sentinel_for<SizedViewWithUnsizedSentinel<int>::sentinel, SizedViewWithUnsizedSentinel<int>::iterator>, "");
 static_assert( hamon::ranges::view_t<SizedViewWithUnsizedSentinel<int>>::value, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }

@@ -193,10 +193,10 @@ bool operator!=(ThrowIterator<B1> const&, ThrowSentinel<B2> const&);
 template <bool B1, bool B2>
 bool operator!=(ThrowSentinel<B1> const&, ThrowIterator<B2> const&);
 
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<true>,  ThrowIterator<true>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<true>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<true>,  ThrowIterator<false>>::value, "");
-static_assert(!hamon::sized_sentinel_for_t<ThrowSentinel<false>, ThrowIterator<false>>::value, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<true>,  ThrowIterator<true>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<false>, ThrowIterator<true>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<true>,  ThrowIterator<false>>, "");
+static_assert(!hamon::sized_sentinel_for<ThrowSentinel<false>, ThrowIterator<false>>, "");
 
 static_assert( hamon::is_constructible<
 	hamon::ranges::subrange<ThrowIterator<true>, ThrowSentinel<true>, hamon::ranges::subrange_kind::sized>,
@@ -260,10 +260,10 @@ hamon::ptrdiff_t operator-(const ThrowSizedSentinel<B1>&, const ThrowIterator<B2
 template <bool B1, bool B2>
 hamon::ptrdiff_t operator-(const ThrowIterator<B1>&, const ThrowSizedSentinel<B2>&);
 
-static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<true>,  ThrowIterator<true>>::value, "");
-static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<false>, ThrowIterator<true>>::value, "");
-static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<true>,  ThrowIterator<false>>::value, "");
-static_assert(hamon::sized_sentinel_for_t<ThrowSizedSentinel<false>, ThrowIterator<false>>::value, "");
+static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<true>,  ThrowIterator<true>>, "");
+static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<false>, ThrowIterator<true>>, "");
+static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<true>,  ThrowIterator<false>>, "");
+static_assert(hamon::sized_sentinel_for<ThrowSizedSentinel<false>, ThrowIterator<false>>, "");
 
 #if !defined(HAMON_USE_STD_RANGES)
 static_assert( hamon::is_nothrow_constructible<

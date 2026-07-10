@@ -687,9 +687,9 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::sized_sentinel_for_t<
+				hamon::bool_constant<hamon::sized_sentinel_for<
 					IteratorT<C2, Views>,
-					IteratorT<C2, Views>>...
+					IteratorT<C2, Views>>>...
 			>::value>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 		operator-(iterator const& x, iterator const& y) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
@@ -913,10 +913,10 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::sized_sentinel_for_t<
+				hamon::bool_constant<hamon::sized_sentinel_for<
 					SentinelT<Const, Views>,
 					IteratorT<OtherConst, Views>
-				>...
+				>>...
 			>::value>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::common_type_t<DistanceT<OtherConst, Views>...>
@@ -928,10 +928,10 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::sized_sentinel_for_t<
+				hamon::bool_constant<hamon::sized_sentinel_for<
 					SentinelT<Const, Views>,
 					IteratorT<OtherConst, Views>
-				>...
+				>>...
 			>::value>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::common_type_t<DistanceT<OtherConst, Views>...>

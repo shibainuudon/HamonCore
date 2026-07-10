@@ -287,9 +287,9 @@ private:
 
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
-			hamon::sized_sentinel_for_t<
+			hamon::sized_sentinel_for<
 				hamon::ranges::sentinel_t<V2>, hamon::ranges::iterator_t<V2>
-			>::value>>
+			>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl(This* this_, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -329,11 +329,11 @@ private:
 	}
 
 	template <typename V2, typename This,
-		typename = hamon::enable_if_t<hamon::disjunction<
-			hamon::ranges::sized_range_t<V2>,
-			hamon::sized_sentinel_for_t<
+		typename = hamon::enable_if_t<
+			hamon::ranges::sized_range_t<V2>::value ||
+			hamon::sized_sentinel_for<
 				hamon::ranges::sentinel_t<V2>, hamon::ranges::iterator_t<V2>>
-		>::value>>
+		>>
 	static HAMON_CXX11_CONSTEXPR hamon::default_sentinel_t
 	end_impl(This* /*this_*/, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 	{

@@ -520,7 +520,7 @@ private:
 		distance_impl(iterator const& y, hamon::detail::overload_priority<0>) const
 			HAMON_NOEXCEPT_RETURN(this->m_current - y.m_current)		// noexcept as an extension
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, BaseIter, BaseIter2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, BaseIter, BaseIter2, BaseIter)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
@@ -580,10 +580,10 @@ private:
 
 		template <typename V2 = V,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<
+				hamon::sized_sentinel_for<
 					hamon::ranges::sentinel_t<V2>,
 					hamon::ranges::iterator_t<V2>
-				>::value>>
+				>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<V>
 		operator-(iterator<false> const& x, sentinel const& y)
@@ -591,10 +591,10 @@ private:
 
 		template <typename V2 = V,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<
+				hamon::sized_sentinel_for<
 					hamon::ranges::sentinel_t<V2>,
 					hamon::ranges::iterator_t<V2>
-				>::value>>
+				>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<V>
 		operator-(sentinel const& y, iterator<false> const& x)

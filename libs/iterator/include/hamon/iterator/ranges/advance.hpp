@@ -110,7 +110,7 @@ advance_impl(It& it, Sent bound, hamon::detail::overload_priority<2>)
 	it = hamon::move(bound);
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl(It& it, Sent bound, hamon::detail::overload_priority<1>)
 {
@@ -165,7 +165,7 @@ advance_impl_2(It& /*it*/, hamon::iter_difference_t<It> n, Sent /*bound*/, hamon
 	return n;
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>
 advance_impl(It& it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<1>)
 {

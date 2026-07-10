@@ -102,7 +102,7 @@ next_impl(It /*it*/, Sent bound, hamon::detail::overload_priority<2>)
 	return bound;
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, Sent)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, Sent bound, hamon::detail::overload_priority<1>)
 {
@@ -126,7 +126,7 @@ next_impl(It it, Sent bound)
 
 // next(it, n, bound) の実装
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, Sent)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<1>)
 {

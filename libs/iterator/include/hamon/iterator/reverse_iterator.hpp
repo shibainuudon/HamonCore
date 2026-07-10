@@ -475,7 +475,7 @@ HAMON_SPECIALIZE_DISABLE_SIZED_SENTINEL_FOR(true,
 	hamon::reverse_iterator<Iterator1>,
 	hamon::reverse_iterator_detail::disable_sized_sentinel_for_helper<
 		hamon::reverse_iterator<Iterator2>,
-		hamon::enable_if_t<!hamon::sized_sentinel_for_t<Iterator1, Iterator2>::value>
+		hamon::enable_if_t<!hamon::sized_sentinel_for<Iterator1, Iterator2>>
 	>);
 
 }	// namespace HAMON_DISABLE_SIZED_SENTINEL_FOR_NAMESPACE

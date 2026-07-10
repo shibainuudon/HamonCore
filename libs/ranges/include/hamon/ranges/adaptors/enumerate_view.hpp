@@ -535,7 +535,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sized_sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		BaseDifferenceT<OtherConst>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -547,7 +547,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sized_sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		BaseDifferenceT<OtherConst>
 		operator-(sentinel const& x, iterator<OtherConst> const& y)

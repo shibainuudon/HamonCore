@@ -66,7 +66,7 @@ struct move_fn
 private:
 	template <
 		typename Iter,
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter, Sent),
 		typename Out
 	>
 	static HAMON_CXX14_CONSTEXPR move_result<Iter, Out>

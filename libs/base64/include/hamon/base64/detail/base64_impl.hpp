@@ -226,7 +226,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static HAMON_CONSTEXPR hamon::size_t
 	get_encoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
@@ -254,7 +254,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static HAMON_CONSTEXPR hamon::size_t
 	get_decoded_size(Iterator first, Sentinel last) HAMON_NOEXCEPT
@@ -275,7 +275,7 @@ public:
 #else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, InputIterator),
 #endif
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, InputIterator, Sentinel),
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, InputIterator, Sentinel),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
@@ -386,7 +386,7 @@ public:
 #else
 		HAMON_CONSTRAINT(hamon::random_access_iterator, Iterator),
 #endif
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static Result encode(Iterator first, Sentinel last)
 	{

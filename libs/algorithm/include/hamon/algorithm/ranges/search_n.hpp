@@ -80,7 +80,7 @@ private:
 
 	template <
 		typename Iter,
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter, Sent),
 		typename Difference,
 		typename ValueComp,
 		typename Proj>

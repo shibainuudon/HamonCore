@@ -185,7 +185,7 @@ public:
 #if defined(HAMON_HAS_CXX20_CONDITIONAL_EXPLICIT)
 	template <
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
 		typename = hamon::enable_if_t<!hamon::is_convertible<End, hamon::size_t>::value>		// [span.cons]/7.4
@@ -199,7 +199,7 @@ public:
 #else
 	template <
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
 		typename = hamon::enable_if_t<!hamon::is_convertible<End, hamon::size_t>::value>,		// [span.cons]/7.4
@@ -212,7 +212,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),										// [span.cons]/7.2
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End),							// [span.cons]/7.3
 		typename U = hamon::remove_reference_t<hamon::iter_reference_t<It>>,					// [span.cons]/7
 		typename = hamon::enable_if_t<hamon::is_convertible<U(*)[], element_type(*)[]>::value>,	// [span.cons]/7.1
 		typename = hamon::enable_if_t<!hamon::is_convertible<End, hamon::size_t>::value>,		// [span.cons]/7.4

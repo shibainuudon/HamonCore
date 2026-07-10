@@ -272,7 +272,7 @@ struct is_subrange_store_size
 template <typename It, typename Sent>
 struct is_subrange_store_size<hamon::ranges::subrange<It, Sent, ranges::subrange_kind::sized>>
 {
-	static constexpr bool value = !hamon::sized_sentinel_for_t<Sent, It>::value;
+	static constexpr bool value = !hamon::sized_sentinel_for<Sent, It>;
 };
 
 // 26.7.12.1 Overview[range.drop.overview]

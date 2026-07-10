@@ -61,8 +61,8 @@ private:
 	template <
 		typename Iter1, typename Iter2,
 		typename Pred, typename Proj1, typename Proj2,
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iter2, Sent2)
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter1, Sent1),
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iter2, Sent2)
 	>
 	static HAMON_CXX14_CONSTEXPR bool impl(
 		hamon::detail::overload_priority<1>,

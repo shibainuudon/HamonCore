@@ -33,10 +33,10 @@ if constexpr (sized_sentinel_for<Iterator, Iterator>)
 }
 */
 template <typename Container, typename Iterator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::is_reservable<Container>,
-		hamon::sized_sentinel_for_t<Iterator, Iterator>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::detail::is_reservable<Container>::value &&
+		hamon::sized_sentinel_for<Iterator, Iterator>
+	>>
 HAMON_CXX14_CONSTEXPR void
 reserve_append_size_impl(Container& cont, Iterator first, Iterator last, hamon::detail::overload_priority<1>)
 {

@@ -47,7 +47,7 @@ private:
 		typename = decltype(detail::to_unsigned_like(hamon::declval<S>() - hamon::declval<I>())),
 		typename = hamon::enable_if_t<
 			hamon::forward_iterator<I> &&
-			hamon::sized_sentinel_for<S, I>::value
+			hamon::sized_sentinel_for<S, I>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

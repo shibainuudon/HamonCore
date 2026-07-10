@@ -161,7 +161,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),				// [string.view.cons]/7.1
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
 		typename = hamon::enable_if_t<
 			hamon::same_as<hamon::iter_value_t<It>, CharT> &&			// [string.view.cons]/7.3
 			!hamon::convertible_to<End, size_type>						// [string.view.cons]/7.4
@@ -842,7 +842,7 @@ private:
 
 template <
 	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),			// [string.view.deduct]/1.1
-	HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, It, End)	// [string.view.deduct]/1.2
+	HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End)	// [string.view.deduct]/1.2
 >
 basic_string_view(It, End)
 	-> basic_string_view<hamon::iter_value_t<It>>;

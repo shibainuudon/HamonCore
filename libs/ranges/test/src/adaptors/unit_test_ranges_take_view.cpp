@@ -198,7 +198,7 @@ struct CountedView : hamon::ranges::view_base
 
 static_assert(hamon::ranges::view_t<CountedView<int>>::value, "");
 static_assert(!hamon::ranges::sized_range_t<CountedView<int>>::value, "");
-static_assert(hamon::sized_sentinel_for_t<hamon::ranges::sentinel_t<CountedView<int>>, hamon::ranges::iterator_t<CountedView<int>>>::value, "");
+static_assert(hamon::sized_sentinel_for<hamon::ranges::sentinel_t<CountedView<int>>, hamon::ranges::iterator_t<CountedView<int>>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<CountedView<int>>::value, "");
 
 template <typename T>

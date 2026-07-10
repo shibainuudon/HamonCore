@@ -426,7 +426,7 @@ private:
 			// [range.adjacent.transform.iterator]/16
 			HAMON_NOEXCEPT_RETURN(iterator(*i.m_parent, i.m_inner - n))	// noexcept as an extension
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, InnerIterator<Const>, I2, InnerIterator<Const>)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, InnerIterator<Const>, I2, InnerIterator<Const>)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			// [range.adjacent.transform.iterator]/17
@@ -510,7 +510,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<InnerSentinel<Const>, InnerIterator<OtherConst>>::value>>
+				hamon::sized_sentinel_for<InnerSentinel<Const>, InnerIterator<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		InnerDifferenceT<OtherConst>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -518,7 +518,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<InnerSentinel<Const>, InnerIterator<OtherConst>>::value>>
+				hamon::sized_sentinel_for<InnerSentinel<Const>, InnerIterator<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		InnerDifferenceT<OtherConst>
 		operator-(sentinel const& x, iterator<OtherConst> const& y)

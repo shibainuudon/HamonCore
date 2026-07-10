@@ -31,7 +31,7 @@ using std::sized_sentinel_for;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Sent, typename Iter>
-concept sized_sentinel_for =
+HAMON_CONCEPT_OR_BOOL sized_sentinel_for =
 	hamon::sentinel_for<Sent, Iter> &&
 	!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<Sent>, hamon::remove_cv_t<Iter>) &&
 	requires(Iter const& i, Sent const& s)
@@ -73,17 +73,9 @@ public:
 }	// namespace detail
 
 template <typename Sent, typename Iter>
-using sized_sentinel_for =
-	typename detail::sized_sentinel_for_impl<Sent, Iter>::type;
+HAMON_CONCEPT_OR_BOOL sized_sentinel_for =
+	detail::sized_sentinel_for_impl<Sent, Iter>::type::value;
 
-#endif
-
-template <typename Sent, typename Iter>
-using sized_sentinel_for_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::sized_sentinel_for<Sent, Iter>>;
-#else
-	hamon::sized_sentinel_for<Sent, Iter>;
 #endif
 
 }	// namespace hamon

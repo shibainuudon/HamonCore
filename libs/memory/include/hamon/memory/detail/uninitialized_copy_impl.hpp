@@ -51,7 +51,7 @@ template <typename Allocator, typename I, typename S1, typename O, typename S2,
 		hamon::is_same<T1, T2>::value &&
 		hamon::contiguous_iterator<I> &&
 		hamon::contiguous_iterator<O> &&
-		hamon::sized_sentinel_for_t<S1, I>::value
+		hamon::sized_sentinel_for<S1, I>
 	>
 >
 HAMON_CXX14_CONSTEXPR hamon::ranges::in_out_result<I, O>

@@ -667,7 +667,7 @@ HAMON_WARNING_POP()
 			return x.m_value - m_bound;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		iter_difference_t<W>
 		operator-(iterator const& x, sentinel const& y)
@@ -676,7 +676,7 @@ HAMON_WARNING_POP()
 			return y.subtract(x);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
+		template <HAMON_CONSTRAINT_D(hamon::sized_sentinel_for, W, Bound2, Bound)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		iter_difference_t<W>
 		operator-(sentinel const& x, iterator const& y)
@@ -879,7 +879,7 @@ public:
 		typename = hamon::enable_if_t<
 			(hamon::same_as<W2, Bound2> && detail::advanceable_t<W2>::value) ||
 			(hamon::detail::is_integer_like_t<W2>::value && hamon::detail::is_integer_like_t<Bound2>::value) ||
-			hamon::sized_sentinel_for_t<Bound2, W2>::value
+			hamon::sized_sentinel_for<Bound2, W2>
 		>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension

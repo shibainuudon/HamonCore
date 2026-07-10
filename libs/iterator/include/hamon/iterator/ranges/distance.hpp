@@ -54,7 +54,7 @@ template <
 	hamon::sized_sentinel_for<It> Sent
 #else
 	typename Sent,
-	typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, It>::value>
+	typename = hamon::enable_if_t<hamon::sized_sentinel_for<Sent, It>>
 #endif
 >
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>

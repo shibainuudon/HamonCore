@@ -60,7 +60,7 @@ private:
 	template <
 		typename T,
 		typename Out,
-		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Out, Sent)
+		HAMON_CONSTRAINT(hamon::sized_sentinel_for, Out, Sent)
 	>
 	static HAMON_CXX14_CONSTEXPR Out
 	impl(Out first, Sent last, T const& value,

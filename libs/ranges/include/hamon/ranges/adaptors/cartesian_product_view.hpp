@@ -194,15 +194,15 @@ using cartesian_product_is_sized_t = cartesian_product_is_sized<Vs...>;
 
 template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
 using cartesian_is_sized_sentinel = hamon::conjunction<
-	hamon::sized_sentinel_for_t<
+	hamon::bool_constant<hamon::sized_sentinel_for<
 		FirstSent<hamon::ranges::detail::maybe_const<Const, First>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, First>>
-	>,
+	>>,
 	hamon::ranges::sized_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...,
-	hamon::sized_sentinel_for_t<
+	hamon::bool_constant<hamon::sized_sentinel_for<
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>
-	>...
+	>>...
 >;
 
 template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>

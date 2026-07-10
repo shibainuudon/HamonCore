@@ -68,8 +68,8 @@ concept ends_withable =
 	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>;
 #else
 using ends_withable = hamon::bool_constant<
-	(hamon::forward_iterator<I1> || hamon::sized_sentinel_for<S1, I1>::value) &&
-	(hamon::forward_iterator<I2> || hamon::sized_sentinel_for<S2, I2>::value) &&
+	(hamon::forward_iterator<I1> || hamon::sized_sentinel_for<S1, I1>) &&
+	(hamon::forward_iterator<I2> || hamon::sized_sentinel_for<S2, I2>) &&
 	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>
 >;
 #endif

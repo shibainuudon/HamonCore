@@ -646,10 +646,10 @@ private:
 
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<
+				hamon::sized_sentinel_for<
 					hamon::ranges::iterator_t<B2>,
 					hamon::ranges::iterator_t<B2>
-				>::value>>
+				>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(						// noexcept as an extension
@@ -754,7 +754,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<BaseSent, BaseIter<OtherConst>>::value>>
+				hamon::sized_sentinel_for<BaseSent, BaseIter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<hamon::ranges::detail::maybe_const<OtherConst, V>>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -766,7 +766,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sized_sentinel_for_t<BaseSent, BaseIter<OtherConst>>::value>>
+				hamon::sized_sentinel_for<BaseSent, BaseIter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::range_difference_t<hamon::ranges::detail::maybe_const<OtherConst, V>>
 		operator-(sentinel const& x, iterator<OtherConst> const& y)

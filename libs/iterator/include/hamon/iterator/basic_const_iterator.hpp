@@ -628,7 +628,7 @@ public:
 		return basic_const_iterator(i.m_current - n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, S)>
+	template <HAMON_CONSTRAINT(hamon::sized_sentinel_for, Iterator, S)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 	operator-(S const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current - y)	// noexcept as an extension
@@ -678,7 +678,7 @@ HAMON_NOEXCEPT_IF_EXPR(x != hamon::declval<Iterator const&>())	// noexcept as an
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
-	typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<S, Iterator>::value>>
+	typename = hamon::enable_if_t<hamon::sized_sentinel_for<S, Iterator>>>
 //	requires hamon::sized_sentinel_for<S, Iterator>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 hamon::iter_difference_t<Iterator>
