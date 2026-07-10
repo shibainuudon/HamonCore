@@ -34,7 +34,7 @@ template <
 	typename Rel = hamon::ranges::less,
 	typename Proj = hamon::identity
 >
-concept sortable =
+HAMON_CONCEPT_OR_BOOL sortable =
 	hamon::permutable<Iter> &&
 	hamon::indirect_strict_weak_order<Rel, hamon::projected<Iter, Proj>>;
 
@@ -68,21 +68,9 @@ template <
 	typename Rel = hamon::ranges::less,
 	typename Proj = hamon::identity
 >
-using sortable =
-	typename detail::sortable_impl<Iter, Rel, Proj>::type;
+HAMON_CONCEPT_OR_BOOL sortable =
+	detail::sortable_impl<Iter, Rel, Proj>::type::value;
 
-#endif
-
-template <
-	typename Iter,
-	typename Rel = hamon::ranges::less,
-	typename Proj = hamon::identity
->
-using sortable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::sortable<Iter, Rel, Proj>>;
-#else
-	hamon::sortable<Iter, Rel, Proj>;
 #endif
 
 }	// namespace hamon

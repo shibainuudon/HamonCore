@@ -63,7 +63,7 @@ struct inplace_merge_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Iter middle, Sent last,
 		Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Iter,
 		hamon::sortable<Iter, Comp, Proj>)
 	{
@@ -84,7 +84,7 @@ struct inplace_merge_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, ranges::iterator_t<Range> middle,
 		Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::sortable<ranges::iterator_t<Range>, Comp, Proj>)
 	{

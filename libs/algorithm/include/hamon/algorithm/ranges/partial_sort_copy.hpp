@@ -88,7 +88,7 @@ struct partial_sort_copy_fn
 		(
 			hamon::indirectly_copyable<Iter1, Iter2> &&
 			(
-				hamon::sortable_t<Iter2, Comp, Proj2>::value &&
+				hamon::sortable<Iter2, Comp, Proj2> &&
 				hamon::indirect_strict_weak_order<
 					Comp,
 					hamon::projected<Iter1, Proj1>,
@@ -150,7 +150,7 @@ struct partial_sort_copy_fn
 		(
 			hamon::indirectly_copyable<ranges::iterator_t<Range1>, ranges::iterator_t<Range2>> &&
 			(
-				hamon::sortable_t<ranges::iterator_t<Range2>, Comp, Proj2>::value &&
+				hamon::sortable<ranges::iterator_t<Range2>, Comp, Proj2> &&
 				hamon::indirect_strict_weak_order<
 					Comp,
 					hamon::projected<ranges::iterator_t<Range1>, Proj1>,
