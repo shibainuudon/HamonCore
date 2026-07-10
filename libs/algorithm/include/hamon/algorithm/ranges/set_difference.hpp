@@ -75,7 +75,7 @@ struct set_difference_fn
 		Out result,
 		Comp comp = {},
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		set_difference_result<Iter1 HAMON_PP_COMMA() Out>,
 		hamon::mergeable<Iter1, Iter2, Out, Comp, Proj1, Proj2>)
 	{
@@ -122,7 +122,7 @@ struct set_difference_fn
 		Comp comp = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		set_difference_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA() Out>,
 		hamon::mergeable<

@@ -39,7 +39,7 @@ template <
 	typename P1 = hamon::identity,
 	typename P2 = hamon::identity
 >
-concept mergeable =
+HAMON_CONCEPT_OR_BOOL mergeable =
 	hamon::input_iterator<I1> &&
 	hamon::input_iterator<I2> &&
 	hamon::weakly_incrementable<Out> &&
@@ -84,24 +84,9 @@ template <
 	typename P1 = hamon::identity,
 	typename P2 = hamon::identity
 >
-using mergeable =
-	typename detail::mergeable_impl<I1, I2, Out, Rel, P1, P2>::type;
+HAMON_CONCEPT_OR_BOOL mergeable =
+	detail::mergeable_impl<I1, I2, Out, Rel, P1, P2>::type::value;
 
-#endif
-
-template <
-	typename I1,
-	typename I2,
-	typename Out,
-	typename Rel = hamon::ranges::less,
-	typename P1 = hamon::identity,
-	typename P2 = hamon::identity
->
-using mergeable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::mergeable<I1, I2, Out, Rel, P1, P2>>;
-#else
-	hamon::mergeable<I1, I2, Out, Rel, P1, P2>;
 #endif
 
 }	// namespace hamon

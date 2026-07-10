@@ -76,7 +76,7 @@ struct set_intersection_fn
 		Comp  comp  = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		set_intersection_result<
 			Iter1 HAMON_PP_COMMA() Iter2 HAMON_PP_COMMA() Out>,
 		hamon::mergeable<
@@ -124,7 +124,7 @@ struct set_intersection_fn
 		Comp  comp  = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		set_intersection_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::borrowed_iterator_t<Range2> HAMON_PP_COMMA()
