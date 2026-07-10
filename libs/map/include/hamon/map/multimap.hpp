@@ -34,6 +34,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/functional/less.hpp>
@@ -147,7 +148,7 @@ public:
 		: multimap(Compare(), a)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	multimap(InputIterator first, InputIterator last, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: multimap(comp, a)
@@ -159,7 +160,7 @@ public:
 		this->insert(first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	multimap(InputIterator first, InputIterator last, Allocator const& a)
 		: multimap(first, last, Compare(), a)
@@ -522,7 +523,7 @@ HAMON_WARNING_POP()
 		return this->emplace_hint(position, hamon::forward<P>(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
@@ -868,7 +869,7 @@ private:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_key_type<InputIterator>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_to_alloc_type<InputIterator>>)>
 multimap(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
@@ -898,7 +899,7 @@ multimap(std::initializer_list<hamon::pair<Key, T>>, Compare = Compare(), Alloca
 ->multimap<Key, T, Compare, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 multimap(InputIterator, InputIterator, Allocator)
 ->multimap<

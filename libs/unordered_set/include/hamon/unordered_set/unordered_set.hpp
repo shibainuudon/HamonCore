@@ -16,6 +16,7 @@
 
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
@@ -151,7 +152,7 @@ public:
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "[unord.req.general]/29");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_set(
 		InputIterator f, InputIterator l,
@@ -170,7 +171,7 @@ public:
 		this->insert(f, l);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_set(
 		InputIterator f, InputIterator l,
@@ -185,7 +186,7 @@ public:
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_set(
 		InputIterator f, InputIterator l,
@@ -201,7 +202,7 @@ public:
 	}
 
 	// LWG 2713
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_set(InputIterator f, InputIterator l, allocator_type const& a)	// may throw
 		: unordered_set(f, l, size_type(), hasher(), key_equal(), a)
@@ -641,7 +642,7 @@ public:
 		return this->insert(hamon::forward<K>(obj)).first;	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
@@ -1197,7 +1198,7 @@ private:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<hamon::detail::iter_value_type<InputIterator>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred,
@@ -1214,7 +1215,7 @@ unordered_set(
 	Hash, Pred, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_set(
 	InputIterator, InputIterator,
@@ -1227,7 +1228,7 @@ unordered_set(
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_set(
@@ -1241,7 +1242,7 @@ unordered_set(
 
 // LWG 2713
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_set(InputIterator, InputIterator, Allocator)
 -> unordered_set<

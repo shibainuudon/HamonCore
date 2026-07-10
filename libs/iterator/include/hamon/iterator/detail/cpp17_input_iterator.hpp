@@ -30,7 +30,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept cpp17_input_iterator =
+HAMON_CONCEPT_OR_BOOL cpp17_input_iterator =
 	cpp17_iterator<I> &&
 	hamon::equality_comparable<I> &&
 	requires(I i)
@@ -47,9 +47,6 @@ concept cpp17_input_iterator =
 		>;
 		requires hamon::signed_integral<typename hamon::incrementable_traits<I>::difference_type>;
 	};
-
-template <typename T>
-using cpp17_input_iterator_t = hamon::bool_constant<cpp17_input_iterator<T>>;
 
 #else
 
@@ -81,11 +78,8 @@ public:
 }	// namespace cpp17_input_iterator_detail
 
 template <typename I>
-using cpp17_input_iterator =
-	typename cpp17_input_iterator_detail::cpp17_input_iterator_impl<I>::type;
-
-template <typename T>
-using cpp17_input_iterator_t = cpp17_input_iterator<T>;
+HAMON_CONCEPT_OR_BOOL cpp17_input_iterator =
+	cpp17_input_iterator_detail::cpp17_input_iterator_impl<I>::type::value;
 
 #endif
 

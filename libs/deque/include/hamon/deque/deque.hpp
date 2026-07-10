@@ -19,6 +19,7 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_constructible.hpp>
@@ -123,7 +124,7 @@ public:
 		this->resize(n, value);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	deque(InputIterator first, InputIterator last, Allocator const& a = Allocator())
 		: m_allocator(a)
@@ -286,7 +287,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void assign(InputIterator first, InputIterator last)
 	{
 		// [sequence.reqmts]/58
@@ -626,7 +627,7 @@ public:
 		return this->begin() + pos_offset;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR iterator insert(const_iterator position, InputIterator first, InputIterator last)
 	{
 		// [sequence.reqmts]/37
@@ -706,7 +707,7 @@ public:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename Allocator = hamon::allocator<hamon::detail::iter_value_type<InputIterator>>>
 deque(InputIterator, InputIterator, Allocator = Allocator())
 ->deque<hamon::detail::iter_value_type<InputIterator>, Allocator>;

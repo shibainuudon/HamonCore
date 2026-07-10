@@ -23,6 +23,7 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_constructible.hpp>
@@ -104,7 +105,7 @@ public:
 		this->AppendN(n, value);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	inplace_vector(InputIterator first, InputIterator last)
 	{
@@ -166,7 +167,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	assign(InputIterator first, InputIterator last)
 	{
@@ -633,7 +634,7 @@ public:
 		return pos;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, InputIterator first, InputIterator last)
 	{

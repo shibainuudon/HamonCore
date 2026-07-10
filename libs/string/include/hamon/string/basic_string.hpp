@@ -30,6 +30,7 @@ using std::basic_string;
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -503,7 +504,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.cons]/20
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.cons]/20
 	HAMON_CXX14_CONSTEXPR
 	basic_string(InputIterator begin, InputIterator end, Allocator const& a = Allocator())
 		: basic_string(begin, end, a, hamon::detail::overload_priority<1>{})
@@ -1064,7 +1065,7 @@ HAMON_WARNING_POP()
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.append]/13
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.append]/13
 	HAMON_CXX14_CONSTEXPR basic_string&
 	append(InputIterator first, InputIterator last)
 	{
@@ -1177,7 +1178,7 @@ HAMON_WARNING_POP()
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.assign]/14
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.assign]/14
 	HAMON_CXX14_CONSTEXPR basic_string&
 	assign(InputIterator first, InputIterator last)
 	{
@@ -1356,7 +1357,7 @@ HAMON_WARNING_POP()
 		return begin() + pos;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.insert]/21
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.insert]/21
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator p, InputIterator first, InputIterator last)
 	{
@@ -1605,7 +1606,7 @@ HAMON_WARNING_POP()
 		return replace(static_cast<size_type>(i1 - begin()), static_cast<size_type>(i2 - i1), n, c);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.replace]/23
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>	// [string.replace]/23
 	HAMON_CXX14_CONSTEXPR basic_string&
 	replace(const_iterator i1, const_iterator i2, InputIterator j1, InputIterator j2)
 	{
@@ -2134,7 +2135,7 @@ HAMON_WARNING_POP()
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),	// [string.cons]/26
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [string.cons]/26
 	typename CharT = typename hamon::iterator_traits<InputIterator>::value_type,
 	typename Allocator = hamon::allocator<CharT>,
 	typename = hamon::enable_if_t<

@@ -27,6 +27,7 @@
 #include <hamon/algorithm/remove_if.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/container/detail/alloc_rebind.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
@@ -204,7 +205,7 @@ public:
 		HAMON_ASSERT(this->is_sorted_and_unique(c.keys));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		InputIterator first,
@@ -215,7 +216,7 @@ public:
 		this->insert(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(
 		hamon::sorted_unique_t,
@@ -375,7 +376,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -390,7 +391,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -410,7 +411,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -426,7 +427,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -827,7 +828,7 @@ public:
 		return this->emplace_hint(hamon::move(position), hamon::forward<P>(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
@@ -837,7 +838,7 @@ public:
 		this->append_sort_merge_unique(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(hamon::sorted_unique_t, InputIterator first, InputIterator last)
 	{
@@ -1758,10 +1759,10 @@ flat_map(
 template <
 	typename InputIterator,
 	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::cpp17_input_iterator_t<InputIterator>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::detail::cpp17_input_iterator<InputIterator> &&
+		!hamon::detail::simple_allocator_t<Compare>::value
+	>
 >
 flat_map(
 	InputIterator, InputIterator,
@@ -1774,10 +1775,10 @@ flat_map(
 template <
 	typename InputIterator,
 	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::cpp17_input_iterator_t<InputIterator>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::detail::cpp17_input_iterator<InputIterator> &&
+		!hamon::detail::simple_allocator_t<Compare>::value
+	>
 >
 flat_map(
 	hamon::sorted_unique_t,

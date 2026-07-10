@@ -29,6 +29,7 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/concepts/same_as.hpp>
@@ -123,7 +124,7 @@ public:
 		: set(Compare(), a)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	set(InputIterator first, InputIterator last, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: set(comp, a)
@@ -135,7 +136,7 @@ public:
 		this->insert(first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	set(InputIterator first, InputIterator last, Allocator const& a)
 		: set(first, last, Compare(), a)
@@ -504,7 +505,7 @@ public:
 		return this->emplace_hint(position, hamon::forward<K>(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	void insert(InputIterator first, InputIterator last)
 	{
@@ -864,7 +865,7 @@ private:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_value_type<InputIterator>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
 set(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
@@ -885,7 +886,7 @@ set(std::initializer_list<Key>, Compare = Compare(), Allocator = Allocator())
 ->set<Key, Compare, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 set(InputIterator, InputIterator, Allocator)
 ->set<

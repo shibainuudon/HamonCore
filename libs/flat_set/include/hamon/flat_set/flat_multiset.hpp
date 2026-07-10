@@ -26,6 +26,7 @@
 #include <hamon/algorithm/remove_if.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/container/detail/alloc_rebind.hpp>
@@ -137,7 +138,7 @@ public:
 		HAMON_ASSERT(this->is_sorted(c));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(InputIterator first, InputIterator last, key_compare const& comp = key_compare())
 		: c(), compare(comp)
@@ -145,7 +146,7 @@ public:
 		this->insert(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, InputIterator first, InputIterator last, key_compare const& comp = key_compare())
 		: c(), compare(comp)
@@ -253,7 +254,7 @@ public:
 		, compare(hamon::move(x.compare))
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
@@ -262,7 +263,7 @@ public:
 		: flat_multiset(hamon::move(first), hamon::move(last), key_compare(), a)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
@@ -274,7 +275,7 @@ public:
 		this->insert(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
@@ -283,7 +284,7 @@ public:
 		: flat_multiset(hamon::sorted_equivalent, hamon::move(first), hamon::move(last), key_compare(), a)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
 			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
@@ -528,7 +529,7 @@ public:
 		return this->emplace_hint(hamon::move(position), hamon::move(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
@@ -536,7 +537,7 @@ public:
 		this->append_sort_merge(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(hamon::sorted_equivalent_t, InputIterator first, InputIterator last)
 	{
@@ -1167,10 +1168,10 @@ flat_multiset(hamon::sorted_equivalent_t, KeyContainer, Compare, Allocator)
 template <
 	typename InputIterator,
 	typename Compare = hamon::less<hamon::detail::iter_value_type<InputIterator>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::cpp17_input_iterator_t<InputIterator>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::detail::cpp17_input_iterator<InputIterator> &&
+		!hamon::detail::simple_allocator_t<Compare>::value
+	>
 >
 flat_multiset(InputIterator, InputIterator, Compare = Compare())
 ->flat_multiset<hamon::detail::iter_value_type<InputIterator>, Compare>;
@@ -1178,10 +1179,10 @@ flat_multiset(InputIterator, InputIterator, Compare = Compare())
 template <
 	typename InputIterator,
 	typename Compare = hamon::less<hamon::detail::iter_value_type<InputIterator>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::cpp17_input_iterator_t<InputIterator>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::detail::cpp17_input_iterator<InputIterator> &&
+		!hamon::detail::simple_allocator_t<Compare>::value
+	>
 >
 flat_multiset(hamon::sorted_equivalent_t, InputIterator, InputIterator, Compare = Compare())
 ->flat_multiset<hamon::detail::iter_value_type<InputIterator>, Compare>;

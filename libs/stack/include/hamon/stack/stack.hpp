@@ -83,7 +83,7 @@ public:
 		: c(hamon::move(cont))	// [stack.cons]/2
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX11_CONSTEXPR
 	stack(InputIterator first, InputIterator last) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		hamon::is_nothrow_constructible<Container, InputIterator, InputIterator>::value)
@@ -131,7 +131,7 @@ public:
 		: c(hamon::move(s.c), a)	// [stack.cons.alloc]/6
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>		// [stack.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	stack(InputIterator first, InputIterator last, Alloc const& a) HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -263,7 +263,7 @@ template <
 stack(Container)
 -> stack<typename Container::value_type, Container>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 stack(InputIterator, InputIterator)
 -> stack<hamon::detail::iter_value_type<InputIterator>>;
 
@@ -282,7 +282,7 @@ stack(Container, Allocator)
 -> stack<typename Container::value_type, Container>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>								// [container.adaptors.general]/6.4

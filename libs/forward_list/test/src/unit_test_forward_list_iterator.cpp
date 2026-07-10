@@ -95,7 +95,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 	using iterator      = typename ForwardList::iterator;
 	using const_iterator = typename ForwardList::const_iterator;
 
-	static_assert( hamon::detail::cpp17_input_iterator_t<iterator>::value, "");
+	static_assert( hamon::detail::cpp17_input_iterator<iterator>, "");
 	static_assert( hamon::detail::cpp17_forward_iterator<iterator>, "");
 	static_assert(!hamon::detail::cpp17_bidirectional_iterator<iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
@@ -128,7 +128,7 @@ FORWARD_LIST_TEST_CONSTEXPR bool test()
 	static_assert(!has_compare_three_way<iterator const&, iterator const&>::value,"");
 #endif
 
-	static_assert( hamon::detail::cpp17_input_iterator_t<const_iterator>::value, "");
+	static_assert( hamon::detail::cpp17_input_iterator<const_iterator>, "");
 	static_assert( hamon::detail::cpp17_forward_iterator<const_iterator>, "");
 	static_assert(!hamon::detail::cpp17_bidirectional_iterator<const_iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");

@@ -140,7 +140,7 @@ template <typename I>
 using iterator_traits_base =
 hamon::conditional_t<with_nested_types<I>::value,
 	iterator_traits_base_nested_types<I>,
-hamon::conditional_t<hamon::detail::cpp17_input_iterator_t<I>::value,
+hamon::conditional_t<hamon::detail::cpp17_input_iterator<I>,
 	iterator_traits_base_cpp17_input_iterator<I>,
 hamon::conditional_t<hamon::detail::cpp17_iterator_t<I>::value,
 	iterator_traits_base_cpp17_iterator<I>,

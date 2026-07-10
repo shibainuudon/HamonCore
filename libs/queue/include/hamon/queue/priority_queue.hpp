@@ -17,6 +17,7 @@
 #include <hamon/algorithm/push_heap.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
 #include <hamon/container/detail/has_append_range.hpp>
@@ -105,7 +106,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& x = Compare())
 		: c(first, last), comp(x)	// [priqueue.cons]/4
@@ -117,7 +118,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& x, Container const& y)
 		: c(y), comp(x)	// [priqueue.cons]/6
@@ -130,7 +131,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& x, Container&& y)
 		: c(hamon::move(y)), comp(x)	// [priqueue.cons]/6
@@ -205,7 +206,7 @@ public:
 		: c(hamon::move(q.c), a), comp(hamon::move(q.comp))	// [priqueue.cons.alloc]/7
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Alloc const& a)
@@ -215,7 +216,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Alloc const& a)
@@ -225,7 +226,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Container const& cont, Alloc const& a)
@@ -236,7 +237,7 @@ public:
 		hamon::make_heap(c.begin(), c.end(), comp);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [priqueue.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	priority_queue(InputIterator first, InputIterator last, Compare const& compare, Container&& cont, Alloc const& a)
@@ -371,7 +372,7 @@ priority_queue(Compare, Container)
 -> priority_queue<T, Container, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename T = hamon::detail::iter_value_type<InputIterator>,
 	typename Compare = hamon::less<T>,
 	typename Container = hamon::vector<T>,
@@ -407,7 +408,7 @@ priority_queue(Compare, Container, Allocator)
 -> priority_queue<T, Container, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>
@@ -418,7 +419,7 @@ priority_queue(InputIterator, InputIterator, Allocator)
 -> priority_queue<T, hamon::vector<T, Allocator>, hamon::less<T>>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename Compare, typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
@@ -430,7 +431,7 @@ priority_queue(InputIterator, InputIterator, Compare, Allocator)
 -> priority_queue<T, hamon::vector<T, Allocator>, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 	typename Compare, typename Container, typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,

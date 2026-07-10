@@ -17,6 +17,7 @@
 #include <hamon/algorithm/is_permutation.hpp>
 #include <hamon/cmath/ceil.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
@@ -159,7 +160,7 @@ public:
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "[unord.req.general]/29");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multimap(
 		InputIterator f, InputIterator l,
@@ -178,7 +179,7 @@ public:
 		this->insert(f, l);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multimap(
 		InputIterator f, InputIterator l,
@@ -193,7 +194,7 @@ public:
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multimap(
 		InputIterator f, InputIterator l,
@@ -209,7 +210,7 @@ public:
 	}
 
 	// LWG 2713
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multimap(InputIterator f, InputIterator l, allocator_type const& a)	// may throw
 		: unordered_multimap(f, l, size_type(), hasher(), key_equal(), a)
@@ -639,7 +640,7 @@ HAMON_WARNING_POP()
 		return this->emplace_hint(hint, hamon::forward<P>(obj));	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void
 	insert(InputIterator first, InputIterator last)
 	{
@@ -1181,7 +1182,7 @@ private:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),// [unord.req.general]/248.1
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<hamon::detail::iter_key_type<InputIterator>>),				// [unord.req.general]/248.3
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred,
@@ -1198,7 +1199,7 @@ unordered_multimap(
 	Hash, Pred, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_multimap(
 	InputIterator, InputIterator,
@@ -1212,7 +1213,7 @@ unordered_multimap(
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),						// [unord.req.general]/248.3
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_multimap(
@@ -1227,7 +1228,7 @@ unordered_multimap(
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
+	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_multimap(InputIterator, InputIterator, Allocator)
 ->unordered_multimap<
