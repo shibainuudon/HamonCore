@@ -32,7 +32,7 @@ using std::indirect_equivalence_relation;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2 = I1>
-concept indirect_equivalence_relation =
+HAMON_CONCEPT_OR_BOOL indirect_equivalence_relation =
 	hamon::indirectly_readable<I1> &&
 	hamon::indirectly_readable<I2> &&
 	hamon::copy_constructible<F> &&
@@ -79,17 +79,9 @@ public:
 }	// namespace detail
 
 template <typename F, typename I1, typename I2 = I1>
-using indirect_equivalence_relation =
-	typename detail::indirect_equivalence_relation_impl<F, I1, I2>::type;
+HAMON_CONCEPT_OR_BOOL indirect_equivalence_relation =
+	detail::indirect_equivalence_relation_impl<F, I1, I2>::type::value;
 
-#endif
-
-template <typename F, typename I1, typename I2 = I1>
-using indirect_equivalence_relation_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirect_equivalence_relation<F, I1, I2>>;
-#else
-	hamon::indirect_equivalence_relation<F, I1, I2>;
 #endif
 
 }	// namespace hamon

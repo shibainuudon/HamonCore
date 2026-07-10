@@ -155,10 +155,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter, Comp,
 			ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
@@ -203,10 +201,8 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter, Comp,
 			ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(

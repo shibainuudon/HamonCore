@@ -30,6 +30,7 @@ using std::ranges::unique;
 #include <hamon/algorithm/ranges/adjacent_find.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -59,10 +60,8 @@ struct unique_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter, Comp,
 			ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
@@ -94,10 +93,8 @@ struct unique_fn
 		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter, Comp,
 			ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR auto

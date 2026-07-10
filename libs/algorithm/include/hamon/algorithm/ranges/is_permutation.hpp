@@ -83,11 +83,8 @@ public:
 		typename Proj2 = hamon::identity,
 		typename ProjectedIter1 = hamon::projected<Iter1, Proj1>,
 		typename ProjectedIter2 = hamon::projected<Iter2, Proj2>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter1,
-			ProjectedIter2,
-			Pred,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter1, ProjectedIter2, Pred,
 			hamon::ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
@@ -180,11 +177,8 @@ public:
 		typename Proj2 = hamon::identity,
 		typename ProjectedIter1 = hamon::projected<ranges::iterator_t<Range1>, Proj1>,
 		typename ProjectedIter2 = hamon::projected<ranges::iterator_t<Range2>, Proj2>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_equivalence_relation,
-			ProjectedIter1,
-			ProjectedIter2,
-			Pred,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_equivalence_relation, ProjectedIter1, ProjectedIter2, Pred,
 			hamon::ranges::equal_to)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
