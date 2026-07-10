@@ -34,7 +34,7 @@ struct NoDefaultIterator
 	friend bool operator==(NoDefaultIterator const&, NoDefaultIterator const&);
 	friend bool operator!=(NoDefaultIterator const&, NoDefaultIterator const&);
 };
-static_assert(hamon::input_or_output_iterator_t<NoDefaultIterator>::value, "");
+static_assert(hamon::input_or_output_iterator<NoDefaultIterator>, "");
 
 struct NoDefaultSentinel
 {
@@ -70,7 +70,7 @@ struct ThrowDefaultIterator
 	friend bool operator==(ThrowDefaultIterator const&, ThrowDefaultIterator const&);
 	friend bool operator!=(ThrowDefaultIterator const&, ThrowDefaultIterator const&);
 };
-static_assert(hamon::input_or_output_iterator_t<ThrowDefaultIterator>::value, "");
+static_assert(hamon::input_or_output_iterator<ThrowDefaultIterator>, "");
 
 struct ThrowDefaultSentinel
 {

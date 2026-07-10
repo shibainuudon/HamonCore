@@ -219,7 +219,7 @@ advance_impl(It& it, hamon::iter_difference_t<It> n, Sent bound)
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It)>
+template <HAMON_CONSTRAINT(hamon::input_or_output_iterator, It)>
 inline HAMON_CXX14_CONSTEXPR void
 advance(It& it, hamon::iter_difference_t<It> n)
 {
@@ -227,7 +227,7 @@ advance(It& it, hamon::iter_difference_t<It> n)
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 inline HAMON_CXX14_CONSTEXPR void
@@ -237,7 +237,7 @@ advance(It& it, Sent bound)
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>

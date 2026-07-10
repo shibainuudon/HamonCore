@@ -35,7 +35,6 @@ using std::ranges::distance;
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
@@ -84,10 +83,10 @@ template <
 	hamon::input_or_output_iterator It, hamon::sentinel_for<It> Sent
 #else
 	typename It, typename Sent,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::input_or_output_iterator<It>,
-		hamon::sentinel_for<Sent, It>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::input_or_output_iterator<It> &&
+		hamon::sentinel_for<Sent, It>::value
+	>
 #endif
 >
 inline HAMON_CXX14_CONSTEXPR hamon::iter_difference_t<It>

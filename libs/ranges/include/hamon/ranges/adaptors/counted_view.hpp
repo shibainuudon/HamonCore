@@ -128,7 +128,7 @@ public:
 		typename T = hamon::decay_t<E>,
 		typename D = hamon::iter_difference_t<T>,
 		typename = hamon::enable_if_t<
-			hamon::input_or_output_iterator_t<T>::value &&
+			hamon::input_or_output_iterator<T> &&
 			hamon::convertible_to<F, D>
 		>
 	>

@@ -141,7 +141,7 @@ template <hamon::input_or_output_iterator I, hamon::sentinel_for<I> S>
 #else
 template <typename I, typename S,
 	typename = hamon::enable_if_t<
-		hamon::input_or_output_iterator_t<I>::value &&
+		hamon::input_or_output_iterator<I> &&
 		hamon::sentinel_for_t<S, I>::value &&
 		!hamon::same_as<I, S> &&
 		hamon::copyable<I>

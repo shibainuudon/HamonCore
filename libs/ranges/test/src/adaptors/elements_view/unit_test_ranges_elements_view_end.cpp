@@ -81,8 +81,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::iterator<true>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::iterator<true>>::value, "");
 		static_assert(hamon::is_same<S, CS>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(hamon::input_or_output_iterator<S>, "");
+		static_assert(hamon::input_or_output_iterator<CS>, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<S>,  int&>::value, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<CS>, int&>::value, "");
 
@@ -131,8 +131,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::iterator<true>>::value, "");
 		static_assert(!hamon::is_same<S, CS>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(hamon::input_or_output_iterator<S>, "");
+		static_assert(hamon::input_or_output_iterator<CS>, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<S>,  int&>::value, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<CS>, int const&>::value, "");
 
@@ -199,8 +199,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::sentinel<false>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::iterator<true>>::value, "");
 		static_assert(!hamon::is_same<S, CS>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(!hamon::input_or_output_iterator<S>, "");
+		static_assert(hamon::input_or_output_iterator<CS>, "");
 		//static_assert(hamon::is_same<hamon::iter_reference_t<S>,  int&>::value, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<CS>, int const&>::value, "");
 
@@ -267,8 +267,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::iterator<false>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::sentinel<true>>::value, "");
 		static_assert(!hamon::is_same<S, CS>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(hamon::input_or_output_iterator<S>, "");
+		static_assert(!hamon::input_or_output_iterator<CS>, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<S>,  int&>::value, "");
 		//static_assert(hamon::is_same<hamon::iter_reference_t<CS>, int const&>::value, "");
 
@@ -320,7 +320,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using S  = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S, EV::iterator<false>>::value, "");
-		static_assert(hamon::input_or_output_iterator_t<S>::value, "");
+		static_assert(hamon::input_or_output_iterator<S>, "");
 		static_assert(hamon::is_same<hamon::iter_reference_t<S>, int&>::value, "");
 
 		Tuple a[] =
@@ -362,8 +362,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::sentinel<true>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::sentinel<true>>::value, "");
 		static_assert(hamon::is_same<S, CS>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(!hamon::input_or_output_iterator<S>, "");
+		static_assert(!hamon::input_or_output_iterator<CS>, "");
 
 		Tuple a[] =
 		{
@@ -410,8 +410,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		//static_assert(hamon::is_same<S,  EV::sentinel<false>>::value, "");
 		//static_assert(hamon::is_same<CS, EV::sentinel<true>>::value, "");
 		static_assert(!hamon::is_same<S, CS>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<S>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<CS>::value, "");
+		static_assert(!hamon::input_or_output_iterator<S>, "");
+		static_assert(!hamon::input_or_output_iterator<CS>, "");
 
 		Tuple a[] =
 		{
@@ -461,7 +461,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using S = decltype(hamon::declval<EV&>().end());
 		//static_assert(hamon::is_same<S, EV::sentinel<false>>::value, "");
-		static_assert(!hamon::input_or_output_iterator_t<S>::value, "");
+		static_assert(!hamon::input_or_output_iterator<S>, "");
 
 		Tuple a[] =
 		{

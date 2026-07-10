@@ -36,7 +36,7 @@ struct NoCopyIterator
 	NoCopyIterator& operator=(NoCopyIterator const&) = delete;
 };
 
-static_assert( hamon::input_or_output_iterator_t<NoCopyIterator<int>>::value, "");
+static_assert( hamon::input_or_output_iterator<NoCopyIterator<int>>, "");
 static_assert(!hamon::copyable<NoCopyIterator<int>>, "");
 static_assert( hamon::movable<NoCopyIterator<int>>, "");
 static_assert( hamon::sentinel_for_t<hamon::unreachable_sentinel_t, NoCopyIterator<int>>::value, "");

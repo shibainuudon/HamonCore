@@ -43,7 +43,7 @@ struct output_iterator_impl
 {
 private:
 	template <typename I2, typename T2,
-		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>::value>,
+		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_writable<I2, T2>>,
 		typename = decltype(*hamon::declval<I2&>()++ = hamon::declval<T2&&>())
 	>

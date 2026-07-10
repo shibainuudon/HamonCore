@@ -175,8 +175,8 @@ template <bool B1, bool B2>
 bool operator==(ThrowIterator<B1> const&, ThrowIterator<B2> const&);
 template <bool B1, bool B2>
 bool operator!=(ThrowIterator<B1> const&, ThrowIterator<B2> const&);
-static_assert(hamon::input_or_output_iterator_t<ThrowIterator<true>>::value, "");
-static_assert(hamon::input_or_output_iterator_t<ThrowIterator<false>>::value, "");
+static_assert(hamon::input_or_output_iterator<ThrowIterator<true>>, "");
+static_assert(hamon::input_or_output_iterator<ThrowIterator<false>>, "");
 
 template <bool NoExcept> 
 struct ThrowSentinel

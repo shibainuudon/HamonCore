@@ -10,6 +10,7 @@
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -35,9 +36,10 @@ struct has_member_rbegin_impl
 {
 private:
 	template <typename U,
-		typename I = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().rbegin()))
+		typename I = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().rbegin())),
+		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I>>
 	>
-	static auto test(int) -> hamon::input_or_output_iterator<I>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

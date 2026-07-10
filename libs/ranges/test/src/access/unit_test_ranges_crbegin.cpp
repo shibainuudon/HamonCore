@@ -65,7 +65,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	// [range.access.crbegin]/2
 	{
 		using I = decltype(hamon::ranges::crbegin(a));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 
@@ -83,7 +83,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	// [range.access.crbegin]/2
 	{
 		using I = decltype(hamon::ranges::crbegin(a));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 
@@ -110,12 +110,12 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	// [range.access.crbegin]/2
 	{
 		using I = decltype(hamon::ranges::crbegin(r));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 	{
 		using I = decltype(hamon::ranges::crbegin(cr));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 
@@ -142,12 +142,12 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	// [range.access.crbegin]/2
 	{
 		using I = decltype(hamon::ranges::crbegin(r));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 	{
 		using I = decltype(hamon::ranges::crbegin(cr));
-		static_assert(hamon::input_or_output_iterator_t<I>::value, "");
+		static_assert(hamon::input_or_output_iterator<I>, "");
 		static_assert(hamon::detail::constant_iterator_t<I>::value, "");
 	}
 

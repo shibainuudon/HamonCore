@@ -28,7 +28,7 @@ using std::input_or_output_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept input_or_output_iterator =
+HAMON_CONCEPT_OR_BOOL input_or_output_iterator =
 	requires(Iter i) { { *i } -> hamon::detail::can_reference; } &&
 	hamon::weakly_incrementable<Iter>;
 
@@ -58,17 +58,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using input_or_output_iterator =
-	typename detail::input_or_output_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL input_or_output_iterator =
+	detail::input_or_output_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using input_or_output_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::input_or_output_iterator<Iter>>;
-#else
-	hamon::input_or_output_iterator<Iter>;
 #endif
 
 }	// namespace hamon

@@ -49,7 +49,7 @@ namespace ranges
 struct generate_n_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, Out),
+		HAMON_CONSTRAINT(hamon::input_or_output_iterator, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(

@@ -10,14 +10,14 @@
 #include <hamon/iterator/counted_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, I)>
+template <HAMON_CONSTRAINT(hamon::input_or_output_iterator, I)>
 HAMON_CXX11_CONSTEXPR hamon::counted_iterator<I>
 make_counted_iterator(I it, hamon::iter_difference_t<I> n)
 HAMON_NOEXCEPT_IF_EXPR(hamon::counted_iterator<I>(hamon::move(it), n))

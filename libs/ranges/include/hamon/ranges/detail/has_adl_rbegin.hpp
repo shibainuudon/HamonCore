@@ -49,9 +49,12 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::class_or_enum<hamon::remove_reference_t<U>>
 		>,
-		typename I = decltype(HAMON_AUTO_CAST(rbegin(hamon::declval<U&>())))
+		typename I = decltype(HAMON_AUTO_CAST(rbegin(hamon::declval<U&>()))),
+		typename = hamon::enable_if_t<
+			hamon::input_or_output_iterator<I>
+		>
 	>
-	static auto test(int) -> hamon::input_or_output_iterator<I>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

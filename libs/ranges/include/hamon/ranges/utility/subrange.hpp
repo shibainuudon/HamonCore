@@ -187,14 +187,14 @@ template <
 		hamon::sized_sentinel_for_t<Sent, It>::value ?
 			ranges::subrange_kind::sized :
 			ranges::subrange_kind::unsized,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::input_or_output_iterator<It>,
-		hamon::sentinel_for<Sent, It>,
-		hamon::bool_constant<
+	typename = hamon::enable_if_t<
+		hamon::input_or_output_iterator<It> &&
+		hamon::sentinel_for<Sent, It>::value &&
+		(
 			Kind == ranges::subrange_kind::sized ||
 			!hamon::sized_sentinel_for<Sent, It>::value
-		>
-	>::value>
+		)
+	>
 >
 #endif
 class subrange : public ranges::view_interface<subrange<It, Sent, Kind>>
@@ -436,14 +436,14 @@ public:
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 subrange(It, Sent)
 -> subrange<It, Sent>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 subrange(It, Sent, detail::make_unsigned_like_t<hamon::iter_difference_t<It>>)
@@ -578,7 +578,7 @@ namespace ranges {
 	{ return __VA_ARGS__; }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
@@ -587,7 +587,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	subrange<It, Sent>(hamon::move(i), hamon::move(s)))
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, It),
+	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
 	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
 >
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto

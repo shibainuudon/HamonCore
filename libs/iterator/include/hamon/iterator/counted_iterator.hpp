@@ -99,7 +99,7 @@ struct counted_iterator_iterator_category_base<I, hamon::void_t<typename I::iter
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::input_or_output_iterator, I)>
+template <HAMON_CONSTRAINT(hamon::input_or_output_iterator, I)>
 class counted_iterator
 	: public detail::counted_iterator_value_type_base<I>
 	, public detail::counted_iterator_iterator_concept_base<I>

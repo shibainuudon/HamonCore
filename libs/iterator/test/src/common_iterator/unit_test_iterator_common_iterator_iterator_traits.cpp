@@ -142,7 +142,7 @@ struct TestIterator4
 	bool operator!=(const TestIterator4& rhs) const;
 };
 
-static_assert( hamon::input_or_output_iterator_t<TestIterator4<int>>::value, "");
+static_assert( hamon::input_or_output_iterator<TestIterator4<int>>, "");
 static_assert(!hamon::input_iterator<TestIterator4<int>>, "");
 
 template <typename T, typename = void>
