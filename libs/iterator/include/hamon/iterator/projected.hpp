@@ -43,7 +43,7 @@ template <
 	typename Proj,
 	typename = hamon::enable_if_t<
 		hamon::indirectly_readable<I> &&
-		hamon::indirectly_regular_unary_invocable<Proj, I>::value
+		hamon::indirectly_regular_unary_invocable<Proj, I>
 	>
 #endif
 >
