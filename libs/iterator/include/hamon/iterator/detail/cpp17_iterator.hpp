@@ -26,7 +26,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept cpp17_iterator =
+HAMON_CONCEPT_OR_BOOL cpp17_iterator =
 	requires(I i)
 	{
 		{ *i } -> hamon::detail::can_reference;
@@ -34,9 +34,6 @@ concept cpp17_iterator =
 		{ *i++ } -> hamon::detail::can_reference;
 	} &&
 	hamon::copyable<I>;
-
-template <typename T>
-using cpp17_iterator_t = hamon::bool_constant<cpp17_iterator<T>>;
 
 #else
 
@@ -70,11 +67,8 @@ public:
 }	// namespace cpp17_iterator_detail
 
 template <typename I>
-using cpp17_iterator =
-	typename cpp17_iterator_detail::cpp17_iterator_impl<I>::type;
-
-template <typename T>
-using cpp17_iterator_t = cpp17_iterator<T>;
+HAMON_CONCEPT_OR_BOOL cpp17_iterator =
+	cpp17_iterator_detail::cpp17_iterator_impl<I>::type::value;
 
 #endif
 
