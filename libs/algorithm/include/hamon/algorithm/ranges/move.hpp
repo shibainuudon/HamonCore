@@ -30,6 +30,7 @@ using std::ranges::move;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memmove.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -120,7 +121,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
 	>

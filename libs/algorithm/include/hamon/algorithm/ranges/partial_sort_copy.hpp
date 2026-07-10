@@ -34,6 +34,7 @@ using std::ranges::partial_sort_copy;
 #include <hamon/algorithm/ranges/sort_heap.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -68,7 +69,7 @@ using partial_sort_copy_result = in_out_result<Iter, Out>;
 struct partial_sort_copy_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
 		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),

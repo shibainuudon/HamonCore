@@ -68,7 +68,7 @@ struct MoveOnlyArrowInputIterator
 	HAMON_CXX11_CONSTEXPR bool operator!=(const MoveOnlyArrowInputIterator& rhs) const { return !(*this == rhs); }
 };
 static_assert(!hamon::copyable<MoveOnlyArrowInputIterator<int>>, "");
-static_assert( hamon::input_iterator_t<MoveOnlyArrowInputIterator<int>>::value, "");
+static_assert( hamon::input_iterator<MoveOnlyArrowInputIterator<int>>, "");
 
 struct MoveOnlyIterInnerView : hamon::ranges::view_base
 {

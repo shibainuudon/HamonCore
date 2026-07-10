@@ -126,7 +126,7 @@ struct basic_const_iterator_iterator_category<I,
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator)>
+template <HAMON_CONSTRAINT(hamon::input_iterator, Iterator)>
 class basic_const_iterator
 	: public hamon::detail::basic_const_iterator_iterator_category<Iterator>
 {
@@ -650,7 +650,7 @@ public:
 // sentinel_forの中でbasic_const_iteratorの定義が必要になってしまうので、
 // フリー関数にする。
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
@@ -661,7 +661,7 @@ HAMON_NOEXCEPT_IF_EXPR(x == hamon::declval<Iterator const&>())	// noexcept as an
 }
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
@@ -676,7 +676,7 @@ HAMON_NOEXCEPT_IF_EXPR(x != hamon::declval<Iterator const&>())	// noexcept as an
 // sized_sentinel_forの中でbasic_const_iteratorの定義が必要になってしまうので、
 // フリー関数にする。
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sized_sentinel_for_t<S, Iterator>::value>>
 //	requires hamon::sized_sentinel_for<S, Iterator>
@@ -740,7 +740,7 @@ template <typename T, typename U>
 struct basic_const_iterator_common_type<T, U,
 	hamon::enable_if_t<
 		hamon::common_with<T, U> &&
-		hamon::input_iterator_t<hamon::common_type_t<T, U>>::value
+		hamon::input_iterator<hamon::common_type_t<T, U>>
 	>>
 {
 	using type = hamon::basic_const_iterator<hamon::common_type_t<T, U>>;

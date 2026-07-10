@@ -493,7 +493,7 @@ public:
 	}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::input_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::input_iterator, I2, I)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	hamon::iter_rvalue_reference_t<I>
 	iter_move(counted_iterator const& i)
@@ -569,7 +569,7 @@ struct iterator_traits<
 	detail::enable_iterator_traits_helper<
 		counted_iterator<I>,
 		hamon::enable_if_t<
-			hamon::input_iterator_t<I>::value &&
+			hamon::input_iterator<I> &&
 			hamon::same_as<hamon::detail::iter_traits<I>, iterator_traits<I>>
 		>>> : iterator_traits<I>
 #endif

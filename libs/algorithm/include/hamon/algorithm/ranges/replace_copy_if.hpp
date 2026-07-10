@@ -62,7 +62,7 @@ using replace_copy_if_result = in_out_result<I, O>;
 struct replace_copy_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename O,
 		typename T = hamon::iter_value_t<O>,

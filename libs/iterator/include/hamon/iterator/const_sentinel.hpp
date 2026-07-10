@@ -42,7 +42,7 @@ struct const_sentinel_impl
 
 template <typename S>
 struct const_sentinel_impl<S,
-	hamon::enable_if_t<hamon::input_iterator_t<S>::value>>
+	hamon::enable_if_t<hamon::input_iterator<S>>>
 {
 	using type = hamon::const_iterator<S>;
 };

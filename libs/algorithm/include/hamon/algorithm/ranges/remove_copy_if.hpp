@@ -60,7 +60,7 @@ using remove_copy_if_result = in_out_result<Iter, Out>;
 struct remove_copy_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,

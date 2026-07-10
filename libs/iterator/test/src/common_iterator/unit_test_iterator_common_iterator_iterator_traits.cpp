@@ -85,7 +85,7 @@ namespace hamon_iterator_test {
 namespace common_iterator_test {
 namespace iterator_traits_test {
 
-static_assert( hamon::input_iterator_t<TestIterator1<int>>::value, "");
+static_assert( hamon::input_iterator<TestIterator1<int>>, "");
 
 #if !defined(HAMON_USE_STD_COMMON_ITERATOR)
 
@@ -104,7 +104,7 @@ struct TestIterator2
 	bool operator!=(const TestIterator2& rhs) const;
 };
 
-static_assert( hamon::input_iterator_t<TestIterator2<int>>::value, "");
+static_assert( hamon::input_iterator<TestIterator2<int>>, "");
 static_assert(!hamon::integral<hamon::iter_difference_t<TestIterator2<int>>>, "");
 
 #endif
@@ -127,7 +127,7 @@ struct TestIterator3
 	bool operator!=(const TestIterator3& rhs) const;
 };
 
-static_assert( hamon::input_iterator_t<TestIterator3<int>>::value, "");
+static_assert( hamon::input_iterator<TestIterator3<int>>, "");
 
 template <typename T>
 struct TestIterator4
@@ -143,7 +143,7 @@ struct TestIterator4
 };
 
 static_assert( hamon::input_or_output_iterator_t<TestIterator4<int>>::value, "");
-static_assert(!hamon::input_iterator_t<TestIterator4<int>>::value, "");
+static_assert(!hamon::input_iterator<TestIterator4<int>>, "");
 
 template <typename T, typename = void>
 struct has_arrow

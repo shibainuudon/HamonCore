@@ -30,6 +30,7 @@ using std::ranges::sample;
 #include <hamon/algorithm/sample.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/concepts/detail/or.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -61,7 +62,7 @@ namespace ranges
 struct sample_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutIter),
 		typename Gen

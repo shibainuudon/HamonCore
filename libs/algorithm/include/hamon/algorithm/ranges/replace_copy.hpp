@@ -30,6 +30,7 @@ using std::ranges::replace_copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -63,7 +64,7 @@ using replace_copy_result = in_out_result<I, O>;
 struct replace_copy_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename O,
 		typename Proj = hamon::identity,

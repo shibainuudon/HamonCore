@@ -55,7 +55,7 @@ namespace ranges
 struct find_first_of_fn
 {
 	template<
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
 		HAMON_CONSTRAINT(hamon::forward_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),

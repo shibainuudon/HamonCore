@@ -508,7 +508,7 @@ private:
 			/*x.m_v.index() == 1 && y.m_v.index() == 1 ?*/ 0;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::input_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::input_iterator, I2, I)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	iter_move(common_iterator const& i)
 		HAMON_NOEXCEPT_IF_EXPR(
@@ -618,7 +618,7 @@ template <typename I, typename S>
 struct iterator_traits<
 	hamon::detail::enable_iterator_traits_helper<
 		hamon::common_iterator<I, S>,
-		hamon::enable_if_t<hamon::input_iterator_t<I>::value>
+		hamon::enable_if_t<hamon::input_iterator<I>>
 	>
 >
 #endif

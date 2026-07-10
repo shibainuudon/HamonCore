@@ -9,7 +9,6 @@
 
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
 #include <hamon/type_traits/void_t.hpp>
 #include <hamon/utility/declval.hpp>
@@ -42,12 +41,9 @@ struct has_arrow_impl<I, hamon::void_t<decltype(hamon::declval<const I&>().opera
 	: public hamon::true_type {};
 
 template <typename I>
-using has_arrow = hamon::conjunction<
-	hamon::input_iterator<I>,
-	hamon::disjunction<
-		hamon::is_pointer<I>,
-		has_arrow_impl<I>
-	>
+using has_arrow = hamon::bool_constant<
+	hamon::input_iterator<I> &&
+	(hamon::is_pointer_v<I> || has_arrow_impl<I>::value)
 >;
 
 template <typename I>

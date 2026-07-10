@@ -225,7 +225,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static HAMON_CONSTEXPR hamon::size_t
@@ -253,7 +253,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sized_sentinel_for, Iterator, Sentinel)
 	>
 	static HAMON_CONSTEXPR hamon::size_t
@@ -327,7 +327,7 @@ public:
 	 *	@param	result
 	 */
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, InputIterator),
+		HAMON_CONSTRAINT(hamon::input_iterator, InputIterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, InputIterator, Sentinel),
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
@@ -419,7 +419,7 @@ public:
 	 */
 	template <
 		typename Result,
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iterator),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, Sentinel)
 	>
 	static Result decode(Iterator first, Sentinel last)

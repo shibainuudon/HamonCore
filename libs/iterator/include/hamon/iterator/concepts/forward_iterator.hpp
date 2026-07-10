@@ -49,7 +49,7 @@ struct forward_iterator_impl
 private:
 	template <typename I2,
 		typename = hamon::enable_if_t<
-			hamon::input_iterator<I2>::value
+			hamon::input_iterator<I2>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::derived_from<

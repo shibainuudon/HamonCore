@@ -44,7 +44,7 @@ struct NoDefaultForwardIterator
 	HAMON_CXX11_CONSTEXPR bool operator!=(const NoDefaultForwardIterator& rhs) const { return !(*this == rhs); }
 };
 
-static_assert(hamon::input_iterator_t<NoDefaultForwardIterator<int>>::value, "");
+static_assert(hamon::input_iterator<NoDefaultForwardIterator<int>>, "");
 static_assert(!hamon::forward_iterator<NoDefaultForwardIterator<int>>, "");
 
 template <typename Iterator>

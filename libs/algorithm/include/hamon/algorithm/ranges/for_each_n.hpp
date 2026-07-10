@@ -94,7 +94,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
 		HAMON_CONSTRAINT(

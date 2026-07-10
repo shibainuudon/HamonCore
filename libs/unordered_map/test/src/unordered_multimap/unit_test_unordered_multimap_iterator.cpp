@@ -117,7 +117,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::detail::cpp17_forward_iterator_t<iterator>::value, "");
 //	static_assert(!hamon::detail::cpp17_bidirectional_iterator_t<iterator>::value, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
-	static_assert( hamon::input_iterator_t<iterator>::value, "");
+	static_assert( hamon::input_iterator<iterator>, "");
 	static_assert( hamon::forward_iterator<iterator>, "");
 //	static_assert(!hamon::bidirectional_iterator<iterator>, "");
 	static_assert(!hamon::random_access_iterator_t<iterator>::value, "");
@@ -152,7 +152,7 @@ UNORDERED_MULTIMAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::detail::cpp17_forward_iterator_t<const_iterator>::value, "");
 //	static_assert(!hamon::detail::cpp17_bidirectional_iterator_t<const_iterator>::value, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");
-	static_assert( hamon::input_iterator_t<const_iterator>::value, "");
+	static_assert( hamon::input_iterator<const_iterator>, "");
 	static_assert( hamon::forward_iterator<const_iterator>, "");
 //	static_assert(!hamon::bidirectional_iterator<const_iterator>, "");
 	static_assert(!hamon::random_access_iterator_t<const_iterator>::value, "");

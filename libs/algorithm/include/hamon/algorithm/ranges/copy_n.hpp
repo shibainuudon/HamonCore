@@ -31,6 +31,7 @@ using std::ranges::copy_n;
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
@@ -84,7 +85,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(

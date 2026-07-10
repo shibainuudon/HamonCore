@@ -28,6 +28,7 @@ using std::ranges::uninitialized_copy_n;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -56,7 +57,7 @@ namespace detail
 struct uninitialized_copy_n_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S),
 		typename = hamon::enable_if_t<

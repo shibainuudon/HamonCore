@@ -448,7 +448,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(hamon::same_as<decltype(hamon::declval<hamon::default_sentinel_t>() != hamon::declval<CI const>()), bool>, "");
 
 	// iter_rvalue_reference_t<I> iter_move(const counted_iterator& i)
-//	static_assert(has_iter_move<CI const>::value == hamon::input_iterator_t<I>::value, "");
+//	static_assert(has_iter_move<CI const>::value == hamon::input_iterator<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iter_move<CI const>::value)
 	{
@@ -465,7 +465,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	}
 #endif
 
-	static_assert(hamon::input_iterator_t<CI>::value == hamon::input_iterator_t<I>::value, "");
+	static_assert(hamon::input_iterator<CI> == hamon::input_iterator<I>, "");
 	static_assert(hamon::forward_iterator<CI> == hamon::forward_iterator<I>, "");
 	static_assert(hamon::bidirectional_iterator<CI> == hamon::bidirectional_iterator<I>, "");
 	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");

@@ -31,6 +31,7 @@ using std::ranges::ends_with;
 #include <hamon/algorithm/ranges/equal.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -98,9 +99,9 @@ using ends_withable_range =	hamon::bool_constant<
 struct ends_with_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I1),
+		HAMON_CONSTRAINT(hamon::input_iterator, I1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I1, S1),
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I2),
+		HAMON_CONSTRAINT(hamon::input_iterator, I2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I2, S2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,

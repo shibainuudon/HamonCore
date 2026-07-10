@@ -30,7 +30,7 @@ using std::input_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept input_iterator =
+HAMON_CONCEPT_OR_BOOL input_iterator =
 	hamon::input_or_output_iterator<Iter> &&
 	hamon::indirectly_readable<Iter> &&
 	requires { typename hamon::detail::iter_concept<Iter>; } &&
@@ -62,17 +62,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using input_iterator =
-	typename detail::input_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL input_iterator =
+	detail::input_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using input_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::input_iterator<Iter>>;
-#else
-	hamon::input_iterator<Iter>;
 #endif
 
 }	// namespace hamon

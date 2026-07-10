@@ -16,6 +16,7 @@ HAMON_WARNING_DISABLE_MSVC(4702)	// 制御が渡らないコードです。
 #include <hamon/algorithm/ranges/copy_n.hpp>
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
@@ -99,7 +100,7 @@ protected:
 		m_size += n;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void UncheckedAppendN(hamon::size_t n, InputIterator first)
 	{
 		hamon::detail::uninitialized_copy_n_impl(first, n, this->End());	// may throw
@@ -141,7 +142,7 @@ protected:
 		this->UncheckedResize(n, value);	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::input_iterator, InputIterator)>
+	template <HAMON_CONSTRAINT(hamon::input_iterator, InputIterator)>
 	HAMON_CXX14_CONSTEXPR void UncheckedAssignN(hamon::size_t n, InputIterator first)
 	{
 		auto const m = hamon::min(n, this->Size());

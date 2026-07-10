@@ -58,7 +58,7 @@ namespace ranges
 struct replace_if_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I),
+		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>,

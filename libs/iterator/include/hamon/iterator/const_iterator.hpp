@@ -23,7 +23,7 @@ using std::const_iterator;
 #include <hamon/iterator/basic_const_iterator.hpp>
 #include <hamon/iterator/detail/constant_iterator.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/conditional.hpp>
 
 namespace hamon
@@ -31,7 +31,7 @@ namespace hamon
 
 // [const.iterators.alias]
 
-template <HAMON_CONSTRAINED_PARAM(hamon::input_iterator, I)>
+template <HAMON_CONSTRAINT(hamon::input_iterator, I)>
 using const_iterator =
 	hamon::conditional_t<
 		detail::constant_iterator_t<I>::value,

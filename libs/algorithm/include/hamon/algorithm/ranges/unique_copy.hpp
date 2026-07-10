@@ -94,7 +94,7 @@ private:
 
 	template <
 		typename Iter, typename Sent,
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Out),
+		HAMON_CONSTRAINT(hamon::input_iterator, Out),
 		typename Proj, typename Comp,
 		typename = hamon::enable_if_t<
 			hamon::same_as<
@@ -150,7 +150,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
@@ -170,7 +170,7 @@ public:
 				hamon::forward_iterator<Iter> ||
 				(
 					(
-						hamon::input_iterator_t<Out>::value &&
+						hamon::input_iterator<Out> &&
 						hamon::same_as<
 							hamon::iter_value_t<Iter>,
 							hamon::iter_value_t<Out>
@@ -215,7 +215,7 @@ public:
 				hamon::forward_iterator<ranges::iterator_t<Range>> ||
 				(
 					(
-						hamon::input_iterator_t<Out>::value &&
+						hamon::input_iterator<Out> &&
 						hamon::same_as<
 							hamon::iter_value_t<ranges::iterator_t<Range>>,
 							hamon::iter_value_t<Out>

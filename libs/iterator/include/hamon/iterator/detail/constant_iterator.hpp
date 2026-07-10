@@ -37,7 +37,7 @@ using constant_iterator_t = hamon::bool_constant<constant_iterator<It>>;
 
 template <typename It>
 using constant_iterator = hamon::bool_constant<
-	hamon::input_iterator_t<It>::value &&
+	hamon::input_iterator<It> &&
 	hamon::same_as<hamon::iter_const_reference_t<It>, hamon::iter_reference_t<It>>
 >;
 

@@ -38,7 +38,7 @@ concept nothrow_input_iterator =
 
 template <typename I>
 using nothrow_input_iterator = hamon::bool_constant<
-	hamon::input_iterator<I>::value &&
+	hamon::input_iterator<I> &&
 	hamon::is_lvalue_reference_v<hamon::iter_reference_t<I>> &&
 	hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, hamon::iter_value_t<I>>
 >;

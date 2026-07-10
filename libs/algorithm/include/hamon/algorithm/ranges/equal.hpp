@@ -29,6 +29,7 @@ using std::ranges::equal;
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -132,9 +133,9 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,

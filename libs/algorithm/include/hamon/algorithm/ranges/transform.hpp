@@ -65,7 +65,7 @@ using binary_transform_result = in_in_out_result<Iter1, Iter2, Out>;
 struct transform_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
@@ -110,9 +110,9 @@ struct transform_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter1),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
-		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter2),
+		HAMON_CONSTRAINT(hamon::input_iterator, Iter2),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
