@@ -57,10 +57,8 @@ struct max_element_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR Iter operator()(
@@ -90,10 +88,8 @@ struct max_element_fn
 		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>

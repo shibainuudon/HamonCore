@@ -62,11 +62,8 @@ struct binary_search_fn
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>,
 		typename ProjectedIter = hamon::projected<I, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			T const*,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, T const*, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
@@ -88,11 +85,8 @@ struct binary_search_fn
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			T const*,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, T const*, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(

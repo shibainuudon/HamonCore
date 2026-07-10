@@ -50,7 +50,7 @@ private:
 	template <typename I, typename R, typename P,
 		typename = hamon::enable_if_t<hamon::permutable<I>::value>,
 		typename = hamon::enable_if_t<hamon::indirect_strict_weak_order<
-			R, hamon::projected<I, P>>::value>
+			R, hamon::projected<I, P>>>
 	>
 	static auto test(int) -> hamon::true_type;
 

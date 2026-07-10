@@ -63,7 +63,7 @@ private:
 		typename = hamon::enable_if_t<hamon::indirectly_copyable<J1, O2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_copyable<J2, O2>>,
 		typename = hamon::enable_if_t<hamon::indirect_strict_weak_order<
-			R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>>::value>
+			R2, hamon::projected<J1, Q1>, hamon::projected<J2, Q2>>>
 	>
 	static auto test(int) -> hamon::true_type;
 

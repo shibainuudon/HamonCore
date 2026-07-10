@@ -28,6 +28,7 @@ using std::ranges::is_heap_until;
 #else
 
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -58,10 +59,8 @@ struct is_heap_until_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR Iter operator()(
@@ -92,12 +91,9 @@ struct is_heap_until_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
 		typename Proj = hamon::identity,
-		typename ProjectedIter =
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<Range>

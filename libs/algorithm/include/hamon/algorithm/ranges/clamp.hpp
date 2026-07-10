@@ -27,7 +27,7 @@ using std::ranges::clamp;
 
 #else
 
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -48,10 +48,8 @@ struct clamp_fn
 		typename T,
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<T const*, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR T const& operator()(

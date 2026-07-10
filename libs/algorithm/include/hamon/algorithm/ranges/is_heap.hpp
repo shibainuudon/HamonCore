@@ -29,6 +29,7 @@ using std::ranges::is_heap;
 
 #include <hamon/algorithm/ranges/is_heap_until.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
@@ -55,10 +56,8 @@ struct is_heap_fn
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
@@ -73,12 +72,9 @@ struct is_heap_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
 		typename Proj = hamon::identity,
-		typename ProjectedIter =
-			hamon::projected<ranges::iterator_t<Range>, Proj>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter,
-			Comp,
+		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool

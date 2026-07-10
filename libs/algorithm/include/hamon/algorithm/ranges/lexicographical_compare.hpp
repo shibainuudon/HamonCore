@@ -29,6 +29,7 @@ using std::ranges::lexicographical_compare;
 
 #include <hamon/algorithm/min.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -65,11 +66,8 @@ struct lexicographical_compare_fn
 		typename Proj2 = hamon::identity,
 		typename ProjectedIter1 = hamon::projected<Iter1, Proj1>,
 		typename ProjectedIter2 = hamon::projected<Iter2, Proj2>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter1,
-			ProjectedIter2,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter1, ProjectedIter2, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(
@@ -186,11 +184,8 @@ struct lexicographical_compare_fn
 		typename Proj2 = hamon::identity,
 		typename ProjectedIter1 = hamon::projected<ranges::iterator_t<Range1>, Proj1>,
 		typename ProjectedIter2 = hamon::projected<ranges::iterator_t<Range2>, Proj2>,
-		HAMON_CONSTRAINED_PARAM_D(
-			hamon::indirect_strict_weak_order,
-			ProjectedIter1,
-			ProjectedIter2,
-			Comp,
+		HAMON_CONSTRAINT_D(
+			hamon::indirect_strict_weak_order, ProjectedIter1, ProjectedIter2, Comp,
 			ranges::less)
 	>
 	HAMON_CXX14_CONSTEXPR bool operator()(

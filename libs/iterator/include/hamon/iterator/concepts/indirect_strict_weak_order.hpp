@@ -32,7 +32,7 @@ using std::indirect_strict_weak_order;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I1, typename I2 = I1>
-concept indirect_strict_weak_order =
+HAMON_CONCEPT_OR_BOOL indirect_strict_weak_order =
 	hamon::indirectly_readable<I1> &&
 	hamon::indirectly_readable<I2> &&
 	hamon::copy_constructible<F> &&
@@ -79,17 +79,9 @@ public:
 }	// namespace detail
 
 template <typename F, typename I1, typename I2 = I1>
-using indirect_strict_weak_order =
-	typename detail::indirect_strict_weak_order_impl<F, I1, I2>::type;
+HAMON_CONCEPT_OR_BOOL indirect_strict_weak_order =
+	detail::indirect_strict_weak_order_impl<F, I1, I2>::type::value;
 
-#endif
-
-template <typename F, typename I1, typename I2 = I1>
-using indirect_strict_weak_order_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirect_strict_weak_order<F, I1, I2>>;
-#else
-	hamon::indirect_strict_weak_order<F, I1, I2>;
 #endif
 
 }	// namespace hamon
