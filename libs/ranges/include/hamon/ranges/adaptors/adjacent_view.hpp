@@ -495,7 +495,7 @@ private:
 			return hamon::ranges::detail::tuple_transform(hamon::ranges::iter_move, i.m_current);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::indirectly_swappable, BaseIter2, BaseIter)>
+		template <HAMON_CONSTRAINT_D(hamon::indirectly_swappable, BaseIter2, BaseIter)>
 		friend HAMON_CXX14_CONSTEXPR
 		void iter_swap(iterator const& l, iterator const& r)
 			// [range.adjacent.iterator]/35

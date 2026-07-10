@@ -724,7 +724,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::indirectly_swappable_t<IteratorT<C2, Views>>...
+				hamon::bool_constant<hamon::indirectly_swappable<IteratorT<C2, Views>>>...
 			>::value>>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& l, iterator const& r)

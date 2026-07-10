@@ -520,7 +520,7 @@ private:
 			return ranges::iter_move(*i.m_inner);
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::indirectly_swappable, InnerIter2, InnerIter)>
+		template <HAMON_CONSTRAINT_D(hamon::indirectly_swappable, InnerIter2, InnerIter)>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(ranges::iter_swap(*x.m_inner, *y.m_inner))

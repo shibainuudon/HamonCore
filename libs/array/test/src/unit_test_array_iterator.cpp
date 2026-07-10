@@ -80,10 +80,10 @@ void IteratorTest()
 	static_assert(!hamon::indirectly_copyable_storable<Iterator, ConstIterator>, "");
 	static_assert( hamon::indirectly_copyable_storable<Iterator, ReverseIterator>, "");
 	static_assert(!hamon::indirectly_copyable_storable<Iterator, ConstReverseIterator>, "");
-	static_assert( hamon::indirectly_swappable_t<Iterator, Iterator>::value, "");
-	static_assert(!hamon::indirectly_swappable_t<Iterator, ConstIterator>::value, "");
-	static_assert( hamon::indirectly_swappable_t<Iterator, ReverseIterator>::value, "");
-	static_assert(!hamon::indirectly_swappable_t<Iterator, ConstReverseIterator>::value, "");
+	static_assert( hamon::indirectly_swappable<Iterator, Iterator>, "");
+	static_assert(!hamon::indirectly_swappable<Iterator, ConstIterator>, "");
+	static_assert( hamon::indirectly_swappable<Iterator, ReverseIterator>, "");
+	static_assert(!hamon::indirectly_swappable<Iterator, ConstReverseIterator>, "");
 
 	static_assert( hamon::contiguous_iterator<ConstIterator>, "");
 	static_assert(!hamon::indirectly_writable_t<ConstIterator, T>::value, "");
@@ -111,10 +111,10 @@ void IteratorTest()
 	static_assert(!hamon::indirectly_copyable_storable<ConstIterator, ConstIterator>, "");
 	static_assert( hamon::indirectly_copyable_storable<ConstIterator, ReverseIterator>, "");
 	static_assert(!hamon::indirectly_copyable_storable<ConstIterator, ConstReverseIterator>, "");
-	static_assert(!hamon::indirectly_swappable_t<ConstIterator, Iterator>::value, "");
-	static_assert(!hamon::indirectly_swappable_t<ConstIterator, ConstIterator>::value, "");
-	static_assert(!hamon::indirectly_swappable_t<ConstIterator, ReverseIterator>::value, "");
-	static_assert(!hamon::indirectly_swappable_t<ConstIterator, ConstReverseIterator>::value, "");
+	static_assert(!hamon::indirectly_swappable<ConstIterator, Iterator>, "");
+	static_assert(!hamon::indirectly_swappable<ConstIterator, ConstIterator>, "");
+	static_assert(!hamon::indirectly_swappable<ConstIterator, ReverseIterator>, "");
+	static_assert(!hamon::indirectly_swappable<ConstIterator, ConstReverseIterator>, "");
 }
 
 GTEST_TEST(ArrayTest, IteratorTest)

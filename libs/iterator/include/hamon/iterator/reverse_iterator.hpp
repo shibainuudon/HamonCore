@@ -299,7 +299,7 @@ public:
 #endif
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_swappable, Iterator, Iterator2)>
+	template <HAMON_CONSTRAINT(hamon::indirectly_swappable, Iterator, Iterator2)>
 	friend HAMON_CXX14_CONSTEXPR void
 	iter_swap(
 		reverse_iterator const& x,

@@ -657,8 +657,8 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::indirectly_swappable_t<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>,
-				hamon::indirectly_swappable_t<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, Vs>>>...
+				hamon::bool_constant<hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>>,
+				hamon::bool_constant<hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, Vs>>>>...
 			>::value>>
 		friend HAMON_CXX14_CONSTEXPR void iter_swap(iterator const& l, iterator const& r)
 			HAMON_NOEXCEPT_IF(is_iter_swap_noexcept<hamon::make_index_sequence<1 + sizeof...(Vs)>>::value)

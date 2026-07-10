@@ -696,8 +696,9 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 		template <typename InnerIter2 = InnerIter,
 			typename = hamon::enable_if_t<
-				hamon::indirectly_swappable_t<InnerIter2, PatternIter>::value
-			>>
+				hamon::indirectly_swappable<InnerIter2, PatternIter>
+			>
+		>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& x, iterator const& y)
 		{

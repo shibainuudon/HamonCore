@@ -522,7 +522,7 @@ private:
 			hamon::ranges::iter_move(hamon::get<I>(i.m_v));
 	}
 
-	template <typename S2, HAMON_CONSTRAINED_PARAM(hamon::indirectly_swappable, I, I2)>
+	template <typename S2, HAMON_CONSTRAINT(hamon::indirectly_swappable, I, I2)>
 	friend HAMON_CXX14_CONSTEXPR void
 	iter_swap(common_iterator const& x, common_iterator<I2, S2> const& y)
 		HAMON_NOEXCEPT_IF_EXPR(

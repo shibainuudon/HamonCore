@@ -28,7 +28,7 @@ using std::indirectly_swappable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I1, typename I2 = I1>
-concept indirectly_swappable =
+HAMON_CONCEPT_OR_BOOL indirectly_swappable =
 	hamon::indirectly_readable<I1> &&
 	hamon::indirectly_readable<I2> &&
 	requires(I1 const i1, I2 const i2)
@@ -68,17 +68,9 @@ public:
 }	// namespace detail
 
 template <typename I1, typename I2 = I1>
-using indirectly_swappable =
-	typename detail::indirectly_swappable_impl<I1, I2>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_swappable =
+	detail::indirectly_swappable_impl<I1, I2>::type::value;
 
-#endif
-
-template <typename I1, typename I2 = I1>
-using indirectly_swappable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_swappable<I1, I2>>;
-#else
-	hamon::indirectly_swappable<I1, I2>;
 #endif
 
 }	// namespace hamon

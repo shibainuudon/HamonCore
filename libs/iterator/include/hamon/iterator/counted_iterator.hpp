@@ -504,7 +504,7 @@ public:
 			hamon::ranges::iter_move(i.base());	// [counted.iter.cust]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_swappable, I, I2)>
+	template <HAMON_CONSTRAINT(hamon::indirectly_swappable, I, I2)>
 	friend HAMON_CXX14_CONSTEXPR void
 	iter_swap(counted_iterator const& x, counted_iterator<I2> const& y)
 		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iter_swap(x.base(), y.base()))

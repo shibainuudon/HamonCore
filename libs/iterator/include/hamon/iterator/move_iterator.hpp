@@ -370,7 +370,7 @@ public:
 		return ranges::iter_move(i.m_current);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::indirectly_swappable, Iter, It2)>
+	template <HAMON_CONSTRAINT(hamon::indirectly_swappable, Iter, It2)>
 	friend HAMON_CXX14_CONSTEXPR void
 	iter_swap(move_iterator const& lhs, move_iterator<It2> const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(ranges::iter_swap(lhs.base(), rhs.base()))

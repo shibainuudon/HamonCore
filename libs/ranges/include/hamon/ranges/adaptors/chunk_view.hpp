@@ -458,9 +458,9 @@ private:
 
 		template <typename V2 = V,
 			typename = hamon::enable_if_t<
-				hamon::indirectly_swappable_t<
-					hamon::ranges::iterator_t<V2>
-				>::value>>
+				hamon::indirectly_swappable<hamon::ranges::iterator_t<V2>>
+			>
+		>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(inner_iterator const& x, inner_iterator const& y)
 			HAMON_NOEXCEPT_RETURN(x.iter_swap_impl(y))

@@ -457,7 +457,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// void iter_swap(const counted_iterator& x, const counted_iterator<I2>& y);
-	static_assert(has_iter_swap<CI const, CI const>::value == hamon::indirectly_swappable_t<I, I>::value, "");
+	static_assert(has_iter_swap<CI const, CI const>::value == hamon::indirectly_swappable<I, I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_iter_swap<CI const, CI const>::value)
 	{

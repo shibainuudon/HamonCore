@@ -772,7 +772,9 @@ private:
 
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
-				hamon::indirectly_swappable_t<hamon::ranges::iterator_t<B2>>::value>>
+				hamon::indirectly_swappable<hamon::ranges::iterator_t<B2>>
+			>
+		>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(inner_iterator const& x, inner_iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::iter_swap(x.base(), y.base()))
