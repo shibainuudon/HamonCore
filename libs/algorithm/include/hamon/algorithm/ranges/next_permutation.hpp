@@ -61,7 +61,7 @@ struct next_permutation_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>

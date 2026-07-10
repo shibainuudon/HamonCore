@@ -65,7 +65,7 @@ struct replace_copy_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		typename O,
 		typename Proj = hamon::identity,
 		typename T1 = hamon::projected_value_t<I, Proj>,

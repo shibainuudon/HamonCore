@@ -94,7 +94,7 @@ private:
 public:
 	template <
 		HAMON_CONSTRAINT(hamon::bidirectional_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,
 			hamon::iter_value_t<I>, I, F)

@@ -66,7 +66,7 @@ struct transform_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
@@ -111,9 +111,9 @@ struct transform_fn
 
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter1, Sent1),
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter2),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter2, Sent2),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,

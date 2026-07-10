@@ -62,7 +62,7 @@ struct uninitialized_move_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S1),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S1),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S2),
 		typename = hamon::enable_if_t<

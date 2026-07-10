@@ -492,7 +492,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator==(iterator<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(bool(x.base() == y.m_end))	// noexcept as an extension
@@ -504,7 +504,7 @@ private:
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator!=(iterator<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension
@@ -514,7 +514,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator==(sentinel const& x, iterator<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y == x)	// noexcept as an extension
@@ -524,7 +524,7 @@ private:
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, BaseIterT<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, BaseIterT<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator!=(sentinel const& x, iterator<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))	// noexcept as an extension

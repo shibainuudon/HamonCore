@@ -829,10 +829,10 @@ private:
 
 		template <bool OtherConst>
 		using AllSentinelFor = hamon::conjunction<
-			hamon::sentinel_for_t<
+			hamon::bool_constant<hamon::sentinel_for<
 				SentinelT<Const, Views>,
 				IteratorT<OtherConst, Views>
-			>...>;
+			>>...>;
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<AllSentinelFor<OtherConst>::value>>

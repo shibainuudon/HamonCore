@@ -28,7 +28,7 @@ using std::sentinel_for;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Sent, typename Iter>
-concept sentinel_for =
+HAMON_CONCEPT_OR_BOOL sentinel_for =
 	hamon::semiregular<Sent> &&
 	hamon::input_or_output_iterator<Iter> &&
 	hamon::detail::weakly_equality_comparable_with<Sent, Iter>;
@@ -59,17 +59,9 @@ public:
 }	// namespace detail
 
 template <typename Sent, typename Iter>
-using sentinel_for =
-	typename detail::sentinel_for_impl<Sent, Iter>::type;
+HAMON_CONCEPT_OR_BOOL sentinel_for =
+	detail::sentinel_for_impl<Sent, Iter>::type::value;
 
-#endif
-
-template <typename Sent, typename Iter>
-using sentinel_for_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::sentinel_for<Sent, Iter>>;
-#else
-	hamon::sentinel_for<Sent, Iter>;
 #endif
 
 }	// namespace hamon

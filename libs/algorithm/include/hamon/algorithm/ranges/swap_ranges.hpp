@@ -57,9 +57,9 @@ struct swap_ranges_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter1),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter1, Sent1),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter1, Sent1),
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter2),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter2, Sent2)
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter2, Sent2)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,

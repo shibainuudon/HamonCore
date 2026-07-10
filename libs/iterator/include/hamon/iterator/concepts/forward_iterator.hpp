@@ -61,7 +61,7 @@ private:
 			hamon::incrementable<I2>
 		>,
 		typename = hamon::enable_if_t<
-			hamon::sentinel_for<I2, I2>::value
+			hamon::sentinel_for<I2, I2>
 		>
 	>
 	static auto test(int) -> hamon::true_type;

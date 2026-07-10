@@ -85,7 +85,7 @@ template <
 	typename It, typename Sent,
 	typename = hamon::enable_if_t<
 		hamon::input_or_output_iterator<It> &&
-		hamon::sentinel_for<Sent, It>::value
+		hamon::sentinel_for<Sent, It>
 	>
 #endif
 >

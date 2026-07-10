@@ -77,7 +77,7 @@ private:
 public:
 	template <
 		HAMON_CONSTRAINT(hamon::permutable, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>
 	>

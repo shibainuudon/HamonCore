@@ -36,9 +36,12 @@ struct has_member_end_impl
 {
 private:
 	template <typename U,
-		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().end()))
+		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().end())),
+		typename = hamon::enable_if_t<
+			hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>
+		>
 	>
-	static auto test(int) -> hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

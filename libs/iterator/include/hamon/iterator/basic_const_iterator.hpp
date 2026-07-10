@@ -390,7 +390,7 @@ public:
 		return static_cast<reference>(m_current[n]);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, S)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iterator, S)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator==(S const& s) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current == s)	// noexcept as an extension
@@ -400,7 +400,7 @@ public:
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, S)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iterator, S)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator!=(S const& s) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current == s)	// noexcept as an extension
@@ -652,7 +652,7 @@ public:
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
-	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
+	typename = hamon::enable_if_t<hamon::sentinel_for<S, Iterator>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator==(S const& x, basic_const_iterator<Iterator> const& y)
 HAMON_NOEXCEPT_IF_EXPR(x == hamon::declval<Iterator const&>())	// noexcept as an extension
@@ -663,7 +663,7 @@ HAMON_NOEXCEPT_IF_EXPR(x == hamon::declval<Iterator const&>())	// noexcept as an
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
-	typename = hamon::enable_if_t<hamon::sentinel_for_t<S, Iterator>::value>>
+	typename = hamon::enable_if_t<hamon::sentinel_for<S, Iterator>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator!=(S const& x, basic_const_iterator<Iterator> const& y)
 HAMON_NOEXCEPT_IF_EXPR(x != hamon::declval<Iterator const&>())	// noexcept as an extension

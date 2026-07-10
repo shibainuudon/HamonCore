@@ -84,7 +84,7 @@ struct radix_sort_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINT(hamon::random_access_iterator, Tmp),
 		typename Proj = hamon::identity
 	>

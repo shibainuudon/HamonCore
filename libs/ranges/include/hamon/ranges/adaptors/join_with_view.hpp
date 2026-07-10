@@ -745,9 +745,9 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 	private:
 		template <bool OtherConst>
-		using EqualityComparable = hamon::sentinel_for_t<
+		using EqualityComparable = hamon::bool_constant<hamon::sentinel_for<
 			Sent,
-			hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<OtherConst, V>>>;
+			hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<OtherConst, V>>>>;
 		
 		template <bool OtherConst>
 		HAMON_CXX11_CONSTEXPR bool

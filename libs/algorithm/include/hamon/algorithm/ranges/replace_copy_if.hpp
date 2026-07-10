@@ -63,7 +63,7 @@ struct replace_copy_if_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		typename O,
 		typename T = hamon::iter_value_t<O>,
 		typename Proj = hamon::identity,

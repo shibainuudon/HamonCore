@@ -101,64 +101,64 @@ GTEST_TEST(MoveSentinelTest, ConceptTest)
 	// Pointer.
 	{
 		using It = int*;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<It>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 
 	// `std::input_iterator`.
 	{
 		using It = input_iterator_wrapper<int>;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert(!hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 
 	// `std::forward_iterator`.
 	{
 		using It = forward_iterator_wrapper<int>;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<It>, hamon::move_iterator<It>>, "");
 		static_assert(!hamon::sized_sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert(!hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 
 	// `std::bidirectional_iterator`.
 	{
 		using It = bidirectional_iterator_wrapper<int>;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<It>, hamon::move_iterator<It>>, "");
 		static_assert(!hamon::sized_sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert(!hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 
 	// `std::random_access_iterator`.
 	{
 		using It = random_access_iterator_wrapper<int>;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<It>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 
 	// `std::contiguous_iterator`.
 	{
 		using It = contiguous_iterator_wrapper<int>;
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<It>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<It>, hamon::move_iterator<It>>::value, "");
-		static_assert( hamon::sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		static_assert( hamon::sentinel_for<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>, "");
 		static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<test_sentinel<It>>, hamon::move_iterator<It>>::value, "");
-		//static_assert( hamon::sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
+		//static_assert( hamon::sentinel_for<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>, "");
 		//static_assert( hamon::sized_sentinel_for_t<hamon::move_sentinel<sized_sentinel<It>>, hamon::move_iterator<It>>::value, "");
 	}
 }

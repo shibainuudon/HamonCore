@@ -57,7 +57,7 @@ struct fold_left_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		typename T = hamon::iter_value_t<I>,
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_left_foldable,

@@ -56,7 +56,7 @@ struct shift_right_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::permutable, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent)
 	>
 	HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
 	operator()(Iter first, Sent last, hamon::iter_difference_t<Iter> n) const

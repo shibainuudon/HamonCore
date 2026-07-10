@@ -163,7 +163,7 @@ class take_while_view : public hamon::ranges::view_interface<take_while_view<V, 
 
 		template <bool OtherConst = !Const,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, Iter<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, Iter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(Iter<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y.m_end == x || !hamon::invoke(*y.m_pred, *x))	// noexcept as an extension
@@ -175,7 +175,7 @@ class take_while_view : public hamon::ranges::view_interface<take_while_view<V, 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool OtherConst = !Const,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, Iter<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, Iter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(Iter<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
@@ -185,7 +185,7 @@ class take_while_view : public hamon::ranges::view_interface<take_while_view<V, 
 
 		template <bool OtherConst = !Const,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, Iter<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, Iter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(sentinel const& x, Iter<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y == x)			// noexcept as an extension
@@ -195,7 +195,7 @@ class take_while_view : public hamon::ranges::view_interface<take_while_view<V, 
 
 		template <bool OtherConst = !Const,
 			typename = hamon::enable_if_t<
-				hamon::sentinel_for_t<BaseSent, Iter<OtherConst>>::value>>
+				hamon::sentinel_for<BaseSent, Iter<OtherConst>>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(sentinel const& x, Iter<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension

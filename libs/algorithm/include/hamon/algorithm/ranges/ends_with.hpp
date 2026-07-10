@@ -100,9 +100,9 @@ struct ends_with_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I1),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I1, S1),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I1, S1),
 		HAMON_CONSTRAINT(hamon::input_iterator, I2),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, I2, S2),
+		HAMON_CONSTRAINT(hamon::sentinel_for, I2, S2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

@@ -109,7 +109,7 @@ next_impl(It it, Sent bound, hamon::detail::overload_priority<1>)
 	return next_impl(it, bound - it);
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR It
 next_impl(It it, Sent bound, hamon::detail::overload_priority<0>)
 {
@@ -117,7 +117,7 @@ next_impl(It it, Sent bound, hamon::detail::overload_priority<0>)
 	return it;
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, Sent bound)
 {
@@ -135,7 +135,7 @@ next_impl(It it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::over
 		next_impl(it, n);
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX14_CONSTEXPR It
 next_impl(It it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::overload_priority<0>)
 {
@@ -143,7 +143,7 @@ next_impl(It it, hamon::iter_difference_t<It> n, Sent bound, hamon::detail::over
 	return it;
 }
 
-template <typename It, HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)>
+template <typename It, HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, hamon::iter_difference_t<It> n, Sent bound)
 {
@@ -168,7 +168,7 @@ next(It it, hamon::iter_difference_t<It> n)
 
 template <
 	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
-	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
+	HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)
 >
 inline HAMON_CXX11_CONSTEXPR It
 next(It it, Sent bound)
@@ -178,7 +178,7 @@ next(It it, Sent bound)
 
 template <
 	HAMON_CONSTRAINT(hamon::input_or_output_iterator, It),
-	HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, It, Sent)
+	HAMON_CONSTRAINT(hamon::sentinel_for, It, Sent)
 >
 inline HAMON_CXX11_CONSTEXPR It
 next(It it, hamon::iter_difference_t<It> n, Sent bound)

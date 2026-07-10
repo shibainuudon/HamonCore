@@ -37,9 +37,12 @@ struct has_member_rend_impl
 private:
 	template <typename U,
 		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().rend())),
-		typename I = decltype(ranges::rbegin(hamon::declval<U&>()))
+		typename I = decltype(ranges::rbegin(hamon::declval<U&>())),
+		typename = hamon::enable_if_t<
+			hamon::sentinel_for<S, I>
+		>
 	>
-	static auto test(int) -> hamon::sentinel_for<S, I>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

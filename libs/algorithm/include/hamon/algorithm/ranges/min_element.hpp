@@ -54,7 +54,7 @@ struct min_element_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::forward_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
 		HAMON_CONSTRAINT_D(

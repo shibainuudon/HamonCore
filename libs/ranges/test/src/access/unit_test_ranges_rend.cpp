@@ -118,7 +118,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 	auto i1 = hamon::ranges::rbegin(r);
 	auto i2 = rend(r);
-	static_assert(hamon::sentinel_for_t<decltype(i2), decltype(i1)>::value, "");
+	static_assert(hamon::sentinel_for<decltype(i2), decltype(i1)>, "");
 	VERIFY(hamon::ranges::rend(r) == &r.i);
 	static_assert(!noexcept(hamon::ranges::rend(r)), "");
 

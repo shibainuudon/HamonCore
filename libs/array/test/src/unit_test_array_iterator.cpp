@@ -56,10 +56,10 @@ void IteratorTest()
 
 	static_assert( hamon::contiguous_iterator<Iterator>, "");
 	static_assert( hamon::indirectly_writable<Iterator, T>, "");
-	static_assert( hamon::sentinel_for_t<Iterator, Iterator>::value, "");
-	static_assert( hamon::sentinel_for_t<Iterator, ConstIterator>::value, "");
-	static_assert(!hamon::sentinel_for_t<Iterator, ReverseIterator>::value, "");
-	static_assert(!hamon::sentinel_for_t<Iterator, ConstReverseIterator>::value, "");
+	static_assert( hamon::sentinel_for<Iterator, Iterator>, "");
+	static_assert( hamon::sentinel_for<Iterator, ConstIterator>, "");
+	static_assert(!hamon::sentinel_for<Iterator, ReverseIterator>, "");
+	static_assert(!hamon::sentinel_for<Iterator, ConstReverseIterator>, "");
 	static_assert( hamon::sized_sentinel_for_t<Iterator, Iterator>::value, "");
 	static_assert( hamon::sized_sentinel_for_t<Iterator, ConstIterator>::value, "");
 	static_assert(!hamon::sized_sentinel_for_t<Iterator, ReverseIterator>::value, "");
@@ -87,10 +87,10 @@ void IteratorTest()
 
 	static_assert( hamon::contiguous_iterator<ConstIterator>, "");
 	static_assert(!hamon::indirectly_writable<ConstIterator, T>, "");
-	static_assert( hamon::sentinel_for_t<ConstIterator, Iterator>::value, "");
-	static_assert( hamon::sentinel_for_t<ConstIterator, ConstIterator>::value, "");
-	static_assert(!hamon::sentinel_for_t<ConstIterator, ReverseIterator>::value, "");
-	static_assert(!hamon::sentinel_for_t<ConstIterator, ConstReverseIterator>::value, "");
+	static_assert( hamon::sentinel_for<ConstIterator, Iterator>, "");
+	static_assert( hamon::sentinel_for<ConstIterator, ConstIterator>, "");
+	static_assert(!hamon::sentinel_for<ConstIterator, ReverseIterator>, "");
+	static_assert(!hamon::sentinel_for<ConstIterator, ConstReverseIterator>, "");
 	static_assert( hamon::sized_sentinel_for_t<ConstIterator, Iterator>::value, "");
 	static_assert( hamon::sized_sentinel_for_t<ConstIterator, ConstIterator>::value, "");
 	static_assert(!hamon::sized_sentinel_for_t<ConstIterator, ReverseIterator>::value, "");

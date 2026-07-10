@@ -62,7 +62,7 @@ struct partition_copy_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out1),
 		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out2),
 		typename Proj = hamon::identity,

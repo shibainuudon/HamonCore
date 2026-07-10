@@ -328,7 +328,7 @@ public:
 	 */
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, InputIterator),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, InputIterator, Sentinel),
+		HAMON_CONSTRAINT(hamon::sentinel_for, InputIterator, Sentinel),
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
 #else
@@ -420,7 +420,7 @@ public:
 	template <
 		typename Result,
 		HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iterator, Sentinel)
+		HAMON_CONSTRAINT(hamon::sentinel_for, Iterator, Sentinel)
 	>
 	static Result decode(Iterator first, Sentinel last)
 	{

@@ -31,6 +31,7 @@ using std::ranges::fill;
 #include <hamon/algorithm/ranges/fill_n.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -100,7 +101,7 @@ private:
 public:
 	template <
 		typename O,
-		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, O, S),
+		HAMON_CONSTRAINT(hamon::sentinel_for, O, S),
 		typename T = hamon::iter_value_t<O>
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(

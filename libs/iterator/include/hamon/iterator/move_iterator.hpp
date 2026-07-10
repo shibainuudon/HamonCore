@@ -313,7 +313,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR bool
 	operator==(move_iterator const& lhs, move_sentinel<Sent> const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(bool(lhs.base() == rhs.base()))	// extension
@@ -322,7 +322,7 @@ public:
 	}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR bool
 	operator!=(move_iterator const& lhs, move_sentinel<Sent> const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(bool(!(lhs == rhs)))	// extension
@@ -330,7 +330,7 @@ public:
 		return !(lhs == rhs);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR bool
 	operator==(move_sentinel<Sent> const& lhs, move_iterator const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(bool(rhs == lhs))	// extension
@@ -338,7 +338,7 @@ public:
 		return rhs == lhs;
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent)>
+	template <HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent)>
 	HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR bool
 	operator!=(move_sentinel<Sent> const& lhs, move_iterator const& rhs)
 	HAMON_NOEXCEPT_IF_EXPR(bool(!(lhs == rhs)))	// extension

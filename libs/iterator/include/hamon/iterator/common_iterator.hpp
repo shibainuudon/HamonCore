@@ -142,7 +142,7 @@ template <hamon::input_or_output_iterator I, hamon::sentinel_for<I> S>
 template <typename I, typename S,
 	typename = hamon::enable_if_t<
 		hamon::input_or_output_iterator<I> &&
-		hamon::sentinel_for_t<S, I>::value &&
+		hamon::sentinel_for<S, I> &&
 		!hamon::same_as<I, S> &&
 		hamon::copyable<I>
 	>>
@@ -464,10 +464,10 @@ private:
 	}
 
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::sentinel_for_t<S2, I>,
-			hamon::sentinel_for_t<S, I2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::sentinel_for<S2, I> &&
+			hamon::sentinel_for<S, I2>
+		>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool operator==(common_iterator const& x, common_iterator<I2, S2> const& y)
 	{
@@ -476,10 +476,10 @@ private:
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <typename I2, typename S2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::sentinel_for_t<S2, I>,
-			hamon::sentinel_for_t<S, I2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::sentinel_for<S2, I> &&
+			hamon::sentinel_for<S, I2>
+		>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	bool operator!=(common_iterator const& x, common_iterator<I2, S2> const& y)
 	{

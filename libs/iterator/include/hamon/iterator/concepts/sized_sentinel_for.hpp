@@ -50,7 +50,7 @@ struct sized_sentinel_for_impl
 {
 private:
 	template <typename S2, typename I2,
-		typename = hamon::enable_if_t<hamon::sentinel_for<S2, I2>::value>,
+		typename = hamon::enable_if_t<hamon::sentinel_for<S2, I2>>,
 		typename = hamon::enable_if_t<
 			!HAMON_DISABLE_SIZED_SENTINEL_FOR(hamon::remove_cv_t<S2>, hamon::remove_cv_t<I2>)>,
 		typename D1 = decltype(hamon::declval<S2 const&>() - hamon::declval<I2 const&>()),

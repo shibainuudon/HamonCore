@@ -28,7 +28,7 @@ concept nothrow_sentinel_for = hamon::sentinel_for<S, I>;
 #else
 
 template <typename S, typename I>
-using nothrow_sentinel_for = hamon::sentinel_for<S, I>;
+using nothrow_sentinel_for = hamon::bool_constant<hamon::sentinel_for<S, I>>;
 
 #endif
 

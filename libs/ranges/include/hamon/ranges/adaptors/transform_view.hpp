@@ -468,7 +468,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(iterator<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y.equal(x))			// noexcept as an extension
@@ -480,7 +480,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(iterator<OtherConst> const& x, sentinel const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
@@ -491,7 +491,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator==(sentinel const& x, iterator<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y == x)				// noexcept as an extension
@@ -502,7 +502,7 @@ private:
 		template <bool OtherConst,
 			typename OtherV = hamon::ranges::detail::maybe_const<OtherConst, V>,
 			typename I2 = hamon::ranges::iterator_t<OtherV>,
-			typename = hamon::enable_if_t<hamon::sentinel_for_t<Sent, I2>::value>>
+			typename = hamon::enable_if_t<hamon::sentinel_for<Sent, I2>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator!=(sentinel const& x, iterator<OtherConst> const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))			// noexcept as an extension
