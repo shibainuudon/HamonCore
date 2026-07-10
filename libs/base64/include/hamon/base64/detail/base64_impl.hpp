@@ -276,7 +276,7 @@ public:
 		HAMON_CONSTRAINT(hamon::random_access_iterator, InputIterator),
 #endif
 		HAMON_CONSTRAINT(hamon::sized_sentinel_for, InputIterator, Sentinel),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutputIterator)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>
@@ -308,7 +308,7 @@ public:
 #else
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::random_access_range, Range),
 #endif
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutputIterator)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutputIterator)
 	>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 	requires hamon::indirectly_writable<OutputIterator, hamon::uint8_t>

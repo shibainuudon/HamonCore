@@ -44,7 +44,7 @@ private:
 	template <typename I2,
 		typename T = decltype(*hamon::declval<I2&>()),
 		typename = hamon::enable_if_t<hamon::detail::can_reference<T>::value>,
-		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>::value>
+		typename = hamon::enable_if_t<hamon::weakly_incrementable<I2>>
 	>
 	static auto test(int) -> hamon::true_type;
 

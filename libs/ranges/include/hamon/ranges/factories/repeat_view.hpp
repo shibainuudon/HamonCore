@@ -52,9 +52,7 @@ using std::ranges::views::repeat;
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/utility/move.hpp>
@@ -80,13 +78,10 @@ struct integer_like_with_usable_difference_type_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<hamon::disjunction<
-			hamon::detail::is_signed_integer_like<U>,
-			hamon::conjunction<
-				hamon::detail::is_integer_like<U>,
-				hamon::weakly_incrementable<U>
-			>
-		>::value>
+		typename = hamon::enable_if_t<
+			(hamon::detail::is_signed_integer_like<U>::value ||
+			 (hamon::detail::is_integer_like<U>::value && hamon::weakly_incrementable<U>))
+		>
 	>
 	static auto test(int) -> hamon::true_type;
 

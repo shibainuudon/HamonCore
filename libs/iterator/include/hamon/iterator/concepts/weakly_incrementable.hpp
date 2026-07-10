@@ -30,7 +30,7 @@ using std::weakly_incrementable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept weakly_incrementable =
+HAMON_CONCEPT_OR_BOOL weakly_incrementable =
 	hamon::movable<Iter> &&
 	requires(Iter i)
 	{
@@ -69,17 +69,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using weakly_incrementable =
-	typename detail::weakly_incrementable_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL weakly_incrementable =
+	detail::weakly_incrementable_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using weakly_incrementable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::weakly_incrementable<Iter>>;
-#else
-	hamon::weakly_incrementable<Iter>;
 #endif
 
 }	// namespace hamon

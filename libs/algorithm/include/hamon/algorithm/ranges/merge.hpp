@@ -64,7 +64,7 @@ struct merge_fn
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter1, Sent1),
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter2),
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter2, Sent2),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Comp  = ranges::less,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity
@@ -118,7 +118,7 @@ struct merge_fn
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range1),
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range2),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Comp  = ranges::less,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

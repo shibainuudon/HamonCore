@@ -152,7 +152,7 @@ public:
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
 		HAMON_CONSTRAINT_D(
@@ -198,7 +198,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT_D(

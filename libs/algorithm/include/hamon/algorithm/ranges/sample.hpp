@@ -64,7 +64,7 @@ struct sample_fn
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutIter),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutIter),
 		typename Gen
 	>
 	auto operator()(
@@ -92,7 +92,7 @@ struct sample_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, OutIter),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutIter),
 		typename Gen
 	>
 	auto operator()(

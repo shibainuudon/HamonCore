@@ -86,7 +86,7 @@ private:
 public:
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, hamon::iter_difference_t<Iter> n, Out result) const

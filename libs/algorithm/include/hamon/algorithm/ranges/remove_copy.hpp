@@ -69,7 +69,7 @@ struct remove_copy_fn
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, O),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, O),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<I, Proj>
 	>
@@ -98,7 +98,7 @@ struct remove_copy_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, O),
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, O),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>

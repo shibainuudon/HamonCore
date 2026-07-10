@@ -59,7 +59,7 @@ struct reverse_copy_fn
 	template <
 		HAMON_CONSTRAINT(hamon::bidirectional_iterator, Iter),
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, Out result) const
@@ -81,7 +81,7 @@ struct reverse_copy_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::bidirectional_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result) const

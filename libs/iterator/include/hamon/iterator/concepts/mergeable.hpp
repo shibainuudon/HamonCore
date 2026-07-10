@@ -59,7 +59,7 @@ private:
 	template <typename J1, typename J2, typename O2, typename R2, typename Q1, typename Q2,
 		typename = hamon::enable_if_t<hamon::input_iterator<J1>>,
 		typename = hamon::enable_if_t<hamon::input_iterator<J2>>,
-		typename = hamon::enable_if_t<hamon::weakly_incrementable<O2>::value>,
+		typename = hamon::enable_if_t<hamon::weakly_incrementable<O2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_copyable<J1, O2>>,
 		typename = hamon::enable_if_t<hamon::indirectly_copyable<J2, O2>>,
 		typename = hamon::enable_if_t<hamon::indirect_strict_weak_order<

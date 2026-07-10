@@ -123,7 +123,7 @@ public:
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, Iter),
 		HAMON_CONSTRAINT(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Iter first, Sent last, Out result) const
@@ -140,7 +140,7 @@ public:
 
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, Out)
+		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Out result) const

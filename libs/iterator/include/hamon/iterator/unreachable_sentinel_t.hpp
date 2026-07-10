@@ -22,7 +22,7 @@ using std::unreachable_sentinel;
 #else
 
 #include <hamon/iterator/concepts/weakly_incrementable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -30,28 +30,28 @@ namespace hamon
 
 struct unreachable_sentinel_t
 {
-	template <HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, It)>
+	template <HAMON_CONSTRAINT(hamon::weakly_incrementable, It)>
 	friend HAMON_CONSTEXPR bool
 	operator==(unreachable_sentinel_t, It const&) HAMON_NOEXCEPT
 	{
 		return false;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, It)>
+	template <HAMON_CONSTRAINT(hamon::weakly_incrementable, It)>
 	friend HAMON_CONSTEXPR bool
 	operator!=(unreachable_sentinel_t, It const&) HAMON_NOEXCEPT
 	{
 		return true;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, It)>
+	template <HAMON_CONSTRAINT(hamon::weakly_incrementable, It)>
 	friend HAMON_CONSTEXPR bool
 	operator==(It const&, unreachable_sentinel_t) HAMON_NOEXCEPT
 	{
 		return false;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::weakly_incrementable, It)>
+	template <HAMON_CONSTRAINT(hamon::weakly_incrementable, It)>
 	friend HAMON_CONSTEXPR bool
 	operator!=(It const&, unreachable_sentinel_t) HAMON_NOEXCEPT
 	{
