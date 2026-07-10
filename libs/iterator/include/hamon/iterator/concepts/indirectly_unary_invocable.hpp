@@ -34,7 +34,7 @@ using std::indirectly_unary_invocable;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename I>
-concept indirectly_unary_invocable =
+HAMON_CONCEPT_OR_BOOL indirectly_unary_invocable =
 	hamon::indirectly_readable<I> &&
 	hamon::copy_constructible<F> &&
 	hamon::invocable<F&, hamon::detail::indirect_value_t<I>> &&
@@ -82,17 +82,9 @@ public:
 }	// namespace detail
 
 template <typename F, typename I>
-using indirectly_unary_invocable =
-	typename detail::indirectly_unary_invocable_impl<F, I>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_unary_invocable =
+	detail::indirectly_unary_invocable_impl<F, I>::type::value;
 
-#endif
-
-template <typename F, typename I>
-using indirectly_unary_invocable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::indirectly_unary_invocable<F, I>>;
-#else
-	hamon::indirectly_unary_invocable<F, I>;
 #endif
 
 }	// namespace hamon

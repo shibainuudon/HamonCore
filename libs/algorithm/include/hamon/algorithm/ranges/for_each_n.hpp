@@ -30,6 +30,7 @@ using std::ranges::for_each_n;
 #include <hamon/algorithm/ranges/in_fun_result.hpp>
 #include <hamon/algorithm/ranges/for_each.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -96,7 +97,7 @@ public:
 		HAMON_CONSTRAINED_PARAM(hamon::input_iterator, Iter),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,
-		HAMON_CONSTRAINED_PARAM(
+		HAMON_CONSTRAINT(
 			hamon::indirectly_unary_invocable,
 			ProjectedIter,
 			Fun)
