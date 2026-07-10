@@ -55,7 +55,7 @@ struct reverse_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
 		typename Sent
 	>
 	static HAMON_CXX14_CONSTEXPR Iter

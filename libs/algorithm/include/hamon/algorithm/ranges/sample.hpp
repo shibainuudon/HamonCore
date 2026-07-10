@@ -76,7 +76,7 @@ struct sample_fn
 		(
 			(
 				hamon::forward_iterator<Iter> ||
-				hamon::random_access_iterator_t<OutIter>::value
+				hamon::random_access_iterator<OutIter>
 			) &&
 			(
 				hamon::indirectly_copyable<Iter, OutIter> &&
@@ -103,7 +103,7 @@ struct sample_fn
 		(
 			(
 				ranges::forward_range_t<Range>::value ||
-				hamon::random_access_iterator_t<OutIter>::value
+				hamon::random_access_iterator<OutIter>
 			) &&
 			(
 				hamon::indirectly_copyable<ranges::iterator_t<Range>, OutIter> &&

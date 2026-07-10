@@ -51,7 +51,7 @@ namespace detail
 
 // advance(it, n) の実装
 
-template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, It)>
+template <HAMON_CONSTRAINT(hamon::random_access_iterator, It)>
 inline HAMON_CXX14_CONSTEXPR void
 advance_impl(It& it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<2>)
 {

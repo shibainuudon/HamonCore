@@ -83,7 +83,7 @@ public:
 	
 	// [reverse.iterator]/1
 	using iterator_concept  = hamon::conditional_t<
-		hamon::random_access_iterator_t<Iterator>::value,
+		hamon::random_access_iterator<Iterator>,
 		hamon::random_access_iterator_tag,	// [reverse.iterator]/1.1
 		hamon::bidirectional_iterator_tag>;	// [reverse.iterator]/1.2
 	

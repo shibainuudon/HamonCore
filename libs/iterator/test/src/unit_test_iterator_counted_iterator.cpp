@@ -344,12 +344,12 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	// counted_iterator operator+(iter_difference_t<I> n) const;
 	// counted_iterator operator+(iter_difference_t<I> n, const counted_iterator& x)
 	// counted_iterator& operator+=(iter_difference_t<I> n);
-	static_assert(has_plus<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
-	static_assert(has_plus<hamon::iter_difference_t<I>, CI const>::value == hamon::random_access_iterator_t<I>::value, "");
-	static_assert(has_plus_equal<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(has_plus<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
+	static_assert(has_plus<hamon::iter_difference_t<I>, CI const>::value == hamon::random_access_iterator<I>, "");
+	static_assert(has_plus_equal<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
 	static_assert(has_plus_equal<CI const, hamon::iter_difference_t<I>>::value == false, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::random_access_iterator_t<I>::value)
+	if constexpr (hamon::random_access_iterator<I>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<CI const>() + hamon::declval<hamon::iter_difference_t<I>>()), CI>, "");
 		static_assert(hamon::same_as<decltype(hamon::declval<hamon::iter_difference_t<I>>() + hamon::declval<CI const>()), CI>, "");
@@ -358,9 +358,9 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 #endif
 
 	// counted_iterator operator-(iter_difference_t<I> n) const;
-	static_assert(has_minus<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(has_minus<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::random_access_iterator_t<I>::value)
+	if constexpr (hamon::random_access_iterator<I>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<CI const>() - hamon::declval<hamon::iter_difference_t<I>>()), CI>, "");
 	}
@@ -379,19 +379,19 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 
 	// counted_iterator& operator-=(iter_difference_t<I> n);
 	static_assert(has_minus_equal<CI const, hamon::iter_difference_t<I>>::value == false, "");
-	static_assert(has_minus_equal<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(has_minus_equal<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::random_access_iterator_t<I>::value)
+	if constexpr (hamon::random_access_iterator<I>)
 	{
 		static_assert(hamon::same_as<decltype(hamon::declval<CI>() -= hamon::declval<hamon::iter_difference_t<I>>()), CI&>, "");
 	}
 #endif
 
 	// decltype(auto) operator[](iter_difference_t<I> n) const;
-	static_assert(has_bracket<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
-	static_assert(has_bracket<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(has_bracket<CI, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
+	static_assert(has_bracket<CI const, hamon::iter_difference_t<I>>::value == hamon::random_access_iterator<I>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::random_access_iterator_t<I>::value)
+	if constexpr (hamon::random_access_iterator<I>)
 	{
 		static_assert(hamon::same_as<
 			decltype(hamon::declval<CI>()[hamon::declval<hamon::iter_difference_t<I>>()]),
@@ -468,7 +468,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(hamon::input_iterator<CI> == hamon::input_iterator<I>, "");
 	static_assert(hamon::forward_iterator<CI> == hamon::forward_iterator<I>, "");
 	static_assert(hamon::bidirectional_iterator<CI> == hamon::bidirectional_iterator<I>, "");
-	static_assert(hamon::random_access_iterator_t<CI>::value == hamon::random_access_iterator_t<I>::value, "");
+	static_assert(hamon::random_access_iterator<CI> == hamon::random_access_iterator<I>, "");
 	static_assert(hamon::contiguous_iterator<CI> == hamon::contiguous_iterator<I>, "");
 
 	return true;

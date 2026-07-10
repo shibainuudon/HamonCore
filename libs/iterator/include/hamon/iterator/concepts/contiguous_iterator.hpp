@@ -58,7 +58,7 @@ struct contiguous_iterator_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<hamon::random_access_iterator<I2>::value>,
+		typename = hamon::enable_if_t<hamon::random_access_iterator<I2>>,
 		typename = hamon::enable_if_t<
 			hamon::derived_from<hamon::detail::iter_concept<I2>, hamon::contiguous_iterator_tag>>,
 		typename R = hamon::iter_reference_t<I2>,

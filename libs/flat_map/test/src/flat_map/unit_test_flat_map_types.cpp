@@ -65,8 +65,8 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	static_assert(hamon::is_same<typename Map::const_reference, hamon::pair<Key const&, T const&>>::value, "");
 	static_assert(hamon::is_same<typename Map::size_type, hamon::size_t>::value, "");
 	static_assert(hamon::is_same<typename Map::difference_type, hamon::ptrdiff_t>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename Map::iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename Map::const_iterator>::value, "");
+	static_assert(hamon::random_access_iterator<typename Map::iterator>, "");
+	static_assert(hamon::random_access_iterator<typename Map::const_iterator>, "");
 	static_assert(hamon::is_same<typename Map::reverse_iterator, hamon::reverse_iterator<typename Map::iterator>>::value, "");
 	static_assert(hamon::is_same<typename Map::const_reverse_iterator, hamon::reverse_iterator<typename Map::const_iterator>>::value, "");
 	static_assert(hamon::is_same<typename Map::key_container_type, KeyContainer>::value, "");

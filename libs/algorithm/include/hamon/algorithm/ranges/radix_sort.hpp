@@ -11,6 +11,7 @@
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -82,9 +83,9 @@ using radix_sortable =
 struct radix_sort_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Tmp),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Tmp),
 		typename Proj = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
@@ -103,7 +104,7 @@ struct radix_sort_fn
 
 	template <
 		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Tmp),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Tmp),
 		typename Proj = hamon::identity
 	>
 	HAMON_CXX14_CONSTEXPR auto

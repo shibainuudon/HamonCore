@@ -53,7 +53,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::input_iterator<iterator>, "");
 	static_assert( hamon::forward_iterator<iterator>, "");
 	static_assert( hamon::bidirectional_iterator<iterator>, "");
-	static_assert( hamon::random_access_iterator_t<iterator>::value, "");
+	static_assert( hamon::random_access_iterator<iterator>, "");
 	static_assert(!hamon::contiguous_iterator<iterator>, "");
 	static_assert(hamon::is_same<value_type, hamon::iter_value_t<iterator>>::value, "");
 	static_assert(!hamon::is_same<value_type&, hamon::iter_reference_t<iterator>>::value, "");
@@ -80,7 +80,7 @@ FLAT_MAP_TEST_CONSTEXPR bool test()
 	static_assert( hamon::input_iterator<const_iterator>, "");
 	static_assert( hamon::forward_iterator<const_iterator>, "");
 	static_assert( hamon::bidirectional_iterator<const_iterator>, "");
-	static_assert( hamon::random_access_iterator_t<const_iterator>::value, "");
+	static_assert( hamon::random_access_iterator<const_iterator>, "");
 	static_assert(!hamon::contiguous_iterator<const_iterator>, "");
 	static_assert(hamon::is_same<value_type, hamon::iter_value_t<const_iterator>>::value, "");
 	static_assert(!hamon::is_same<value_type&, hamon::iter_reference_t<const_iterator>>::value, "");

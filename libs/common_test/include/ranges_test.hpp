@@ -11,6 +11,7 @@
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -82,7 +83,7 @@ operator!=(Iterator const& i, test_sentinel<Iterator> const& s) noexcept
 	return !(i == s);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iterator)>
+template <HAMON_CONSTRAINT(hamon::random_access_iterator, Iterator)>
 HAMON_CONSTEXPR auto
 operator-(test_sentinel<Iterator> const& s, Iterator const& i) noexcept
 ->decltype(base(s.m_it) - base(i))
@@ -90,7 +91,7 @@ operator-(test_sentinel<Iterator> const& s, Iterator const& i) noexcept
 	return base(s.m_it) - base(i);
 }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iterator)>
+template <HAMON_CONSTRAINT(hamon::random_access_iterator, Iterator)>
 HAMON_CONSTEXPR auto
 operator-(Iterator const& i, test_sentinel<Iterator> const& s) noexcept
 ->decltype(base(i) - base(s.m_it))

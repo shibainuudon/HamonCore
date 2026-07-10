@@ -40,7 +40,7 @@ namespace detail
 {
 
 template <typename InputIterator, typename T, typename BinaryOperation,
-	hamon::enable_if_t<!hamon::random_access_iterator_t<InputIterator>::value>* = nullptr>
+	hamon::enable_if_t<!hamon::random_access_iterator<InputIterator>>* = nullptr>
 inline HAMON_CXX11_CONSTEXPR T
 reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {
@@ -55,7 +55,7 @@ reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation bin
 }
 
 template <typename InputIterator, typename T, typename BinaryOperation,
-	hamon::enable_if_t<hamon::random_access_iterator_t<InputIterator>::value>* = nullptr>
+	hamon::enable_if_t<hamon::random_access_iterator<InputIterator>>* = nullptr>
 inline HAMON_CXX11_CONSTEXPR T
 reduce_impl(InputIterator first, InputIterator last, T init, BinaryOperation binary_op)
 {

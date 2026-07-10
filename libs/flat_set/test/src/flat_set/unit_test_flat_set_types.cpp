@@ -49,8 +49,8 @@ void test()
 	static_assert(hamon::is_same<typename Set::const_reference, const Key&>::value, "");
 	static_assert(hamon::is_same<typename Set::size_type, typename KeyContainer::size_type>::value, "");
 	static_assert(hamon::is_same<typename Set::difference_type, typename KeyContainer::difference_type>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename Set::iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename Set::const_iterator>::value, "");
+	static_assert(hamon::random_access_iterator<typename Set::iterator>, "");
+	static_assert(hamon::random_access_iterator<typename Set::const_iterator>, "");
 	static_assert(hamon::is_same<typename Set::reverse_iterator, hamon::reverse_iterator<typename Set::iterator>>::value, "");
 	static_assert(hamon::is_same<typename Set::const_reverse_iterator, hamon::reverse_iterator<typename Set::const_iterator>>::value, "");
 	static_assert(hamon::is_same<typename Set::container_type, KeyContainer>::value, "");

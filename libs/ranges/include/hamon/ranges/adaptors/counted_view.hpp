@@ -108,7 +108,7 @@ private:
 			hamon::make_span(hamon::to_address(it), static_cast<hamon::size_t>(n)))
 
 	// [range.counted]/2.2
-	template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, It)>
+	template <HAMON_CONSTRAINT(hamon::random_access_iterator, It)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(It it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

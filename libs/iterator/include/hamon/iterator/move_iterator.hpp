@@ -106,7 +106,7 @@ struct move_iter_category_base<Iter
 template <typename Iter>
 using move_iter_concept =
 	hamon::conditional_t<
-		hamon::random_access_iterator_t<Iter>::value,
+		hamon::random_access_iterator<Iter>,
 		hamon::random_access_iterator_tag,
 	hamon::conditional_t<
 		hamon::bidirectional_iterator<Iter>,

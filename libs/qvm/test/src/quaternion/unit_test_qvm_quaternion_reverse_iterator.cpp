@@ -29,8 +29,8 @@ TYPED_TEST(QuaternionTest, ReverseIteratorTest)
 	static_assert(!hamon::contiguous_iterator<typename quaternion::reverse_iterator>, "");
 	static_assert(!hamon::contiguous_iterator<typename quaternion::const_reverse_iterator>, "");
 
-	static_assert(hamon::random_access_iterator_t<typename quaternion::reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename quaternion::const_reverse_iterator>::value, "");
+	static_assert(hamon::random_access_iterator<typename quaternion::reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename quaternion::const_reverse_iterator>, "");
 
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::reverse_iterator>>::value, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename quaternion::const_reverse_iterator>>::value, "");

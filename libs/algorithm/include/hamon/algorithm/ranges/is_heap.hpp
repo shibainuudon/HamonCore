@@ -52,7 +52,7 @@ namespace ranges
 struct is_heap_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
 		HAMON_CONSTRAINED_PARAM(hamon::sentinel_for, Iter, Sent),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<Iter, Proj>,

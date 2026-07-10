@@ -55,7 +55,7 @@ struct for_each_n_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
 		typename Difference,
 		typename Proj,
 		typename Fun

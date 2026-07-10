@@ -60,7 +60,7 @@ struct rotate_fn
 {
 private:
 	// if constexpr (hamon::random_access_iterator<Iter>)
-	template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter)>
+	template <HAMON_CONSTRAINT(hamon::random_access_iterator, Iter)>
 	static HAMON_CXX14_CONSTEXPR ranges::subrange<Iter>
 	impl(Iter first, Iter middle, Iter lasti,
 		hamon::detail::overload_priority<2>)

@@ -35,12 +35,12 @@ TYPED_TEST(VectorTest, ReverseIteratorTest)
 	static_assert(!hamon::contiguous_iterator<typename vector4::reverse_iterator>, "");
 	static_assert(!hamon::contiguous_iterator<typename vector4::const_reverse_iterator>, "");
 
-	static_assert(hamon::random_access_iterator_t<typename vector2::reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename vector2::const_reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename vector3::reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename vector3::const_reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename vector4::reverse_iterator>::value, "");
-	static_assert(hamon::random_access_iterator_t<typename vector4::const_reverse_iterator>::value, "");
+	static_assert(hamon::random_access_iterator<typename vector2::reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename vector2::const_reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename vector3::reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename vector3::const_reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename vector4::reverse_iterator>, "");
+	static_assert(hamon::random_access_iterator<typename vector4::const_reverse_iterator>, "");
 
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::reverse_iterator>>::value, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<typename vector2::const_reverse_iterator>>::value, "");

@@ -55,7 +55,7 @@ struct copy_n_fn
 {
 private:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, Iter),
+		HAMON_CONSTRAINT(hamon::random_access_iterator, Iter),
 		typename Difference, typename Out
 	>
 	static HAMON_CXX14_CONSTEXPR copy_n_result<Iter, Out>

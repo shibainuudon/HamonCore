@@ -304,7 +304,7 @@ public:
 		return tmp;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	counted_iterator operator+(difference_type n) const
 	HAMON_NOEXCEPT_IF(		// noexcept as an extension
@@ -315,7 +315,7 @@ public:
 		return counted_iterator(m_current + n, m_length - n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR counted_iterator	// nodiscard as an extension
 	operator+(difference_type n, counted_iterator const& x)
 	HAMON_NOEXCEPT_IF_EXPR(x + n)	// noexcept as an extension
@@ -324,7 +324,7 @@ public:
 		return x + n;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_CXX14_CONSTEXPR counted_iterator&
 	operator+=(difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<I2&>() += n)	// noexcept as an extension
@@ -338,7 +338,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR counted_iterator	// nodiscard as an extension
 	operator-(difference_type n) const
 	HAMON_NOEXCEPT_IF(		// noexcept as an extension
@@ -375,7 +375,7 @@ public:
 		return y.m_length;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_CXX14_CONSTEXPR counted_iterator&
 	operator-=(difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<I2&>() -= n)	// noexcept as an extension
@@ -389,7 +389,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I2, I)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I2, I)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator[](difference_type n) const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<I2&>()[n])	// noexcept as an extension

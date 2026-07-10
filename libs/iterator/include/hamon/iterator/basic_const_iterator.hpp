@@ -150,7 +150,7 @@ public:
 	using iterator_concept =
 		hamon::conditional_t<hamon::contiguous_iterator<Iterator>,
 			hamon::contiguous_iterator_tag,		// [const.iterators.types]/1.1
-		hamon::conditional_t<hamon::random_access_iterator_t<Iterator>::value,
+		hamon::conditional_t<hamon::random_access_iterator<Iterator>,
 			hamon::random_access_iterator_tag,	// [const.iterators.types]/1.2
 		hamon::conditional_t<hamon::bidirectional_iterator<Iterator>,
 			hamon::bidirectional_iterator_tag,	// [const.iterators.types]/1.3
@@ -358,7 +358,7 @@ public:
 		return tmp;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator+=(difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(m_current += n)	// noexcept as an extension
@@ -369,7 +369,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_CXX14_CONSTEXPR basic_const_iterator&
 	operator-=(difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(m_current -= n)	// noexcept as an extension
@@ -380,7 +380,7 @@ public:
 		return *this;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR reference	// nodiscard as an extension
 	operator[](difference_type n) const
 	HAMON_NOEXCEPT_IF_EXPR(static_cast<reference>(m_current[n]))	// noexcept as an extension
@@ -423,7 +423,7 @@ public:
 	}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current < y.m_current)	// noexcept as an extension
@@ -433,7 +433,7 @@ public:
 		return m_current < y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current > y.m_current)	// noexcept as an extension
@@ -443,7 +443,7 @@ public:
 		return m_current > y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current <= y.m_current)	// noexcept as an extension
@@ -453,7 +453,7 @@ public:
 		return m_current <= y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(basic_const_iterator const& y) const
 	HAMON_NOEXCEPT_IF_EXPR(m_current >= y.m_current)	// noexcept as an extension
@@ -464,7 +464,7 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator),
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator),
 		typename = hamon::enable_if_t<hamon::three_way_comparable<I>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(basic_const_iterator const& y) const
@@ -482,14 +482,14 @@ private:
 
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
 	struct TotallyOrdered : public hamon::bool_constant<
-		hamon::random_access_iterator_t<Iterator>::value &&
+		hamon::random_access_iterator<Iterator> &&
 		hamon::totally_ordered_with<Iterator, I>
 	>{};
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
 	struct ThreeWayComparable : public hamon::bool_constant<
-		hamon::random_access_iterator_t<Iterator>::value &&
+		hamon::random_access_iterator<Iterator> &&
 		hamon::totally_ordered_with<Iterator, I> &&
 		hamon::three_way_comparable_with<Iterator, I>
 	>{};
@@ -598,7 +598,7 @@ public:
 		return x >= y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator+(basic_const_iterator const& i, difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current + n))	// noexcept as an extension
@@ -608,7 +608,7 @@ public:
 		return basic_const_iterator(i.m_current + n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator+(difference_type n, basic_const_iterator const& i)
 	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current + n))	// noexcept as an extension
@@ -618,7 +618,7 @@ public:
 		return basic_const_iterator(i.m_current + n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::random_access_iterator, I, Iterator)>
+	template <HAMON_CONSTRAINT_D(hamon::random_access_iterator, I, Iterator)>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR basic_const_iterator	// nodiscard as an extension
 	operator-(basic_const_iterator const& i, difference_type n)
 	HAMON_NOEXCEPT_IF_EXPR(basic_const_iterator(i.m_current - n))	// noexcept as an extension

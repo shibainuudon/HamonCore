@@ -35,7 +35,7 @@ using std::random_access_iterator;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter>
-concept random_access_iterator =
+HAMON_CONCEPT_OR_BOOL random_access_iterator =
 	hamon::bidirectional_iterator<Iter> &&
 	hamon::derived_from<hamon::detail::iter_concept<Iter>, hamon::random_access_iterator_tag> &&
 	hamon::totally_ordered<Iter> &&
@@ -98,17 +98,9 @@ public:
 }	// namespace detail
 
 template <typename Iter>
-using random_access_iterator =
-	typename detail::random_access_iterator_impl<Iter>::type;
+HAMON_CONCEPT_OR_BOOL random_access_iterator =
+	detail::random_access_iterator_impl<Iter>::type::value;
 
-#endif
-
-template <typename Iter>
-using random_access_iterator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::random_access_iterator<Iter>>;
-#else
-	hamon::random_access_iterator<Iter>;
 #endif
 
 }	// namespace hamon

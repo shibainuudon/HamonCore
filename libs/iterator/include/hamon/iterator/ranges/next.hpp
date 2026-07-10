@@ -47,7 +47,7 @@ namespace detail
 
 // next(it) の実装
 
-template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, It)>
+template <HAMON_CONSTRAINT(hamon::random_access_iterator, It)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, hamon::detail::overload_priority<1>)
 {
@@ -71,7 +71,7 @@ next_impl(It it)
 
 // next(it, n) の実装
 
-template <HAMON_CONSTRAINED_PARAM(hamon::random_access_iterator, It)>
+template <HAMON_CONSTRAINT(hamon::random_access_iterator, It)>
 inline HAMON_CXX11_CONSTEXPR It
 next_impl(It it, hamon::iter_difference_t<It> n, hamon::detail::overload_priority<1>)
 {
