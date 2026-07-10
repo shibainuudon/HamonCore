@@ -29,7 +29,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using const_iterator = typename Hive::const_iterator;
 
 	static_assert( hamon::detail::cpp17_input_iterator_t<iterator>::value, "");
-	static_assert( hamon::detail::cpp17_forward_iterator_t<iterator>::value, "");
+	static_assert( hamon::detail::cpp17_forward_iterator<iterator>, "");
 	static_assert( hamon::detail::cpp17_bidirectional_iterator<iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
 	static_assert( hamon::input_iterator<iterator>, "");
@@ -62,7 +62,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 #endif
 
 	static_assert( hamon::detail::cpp17_input_iterator_t<const_iterator>::value, "");
-	static_assert( hamon::detail::cpp17_forward_iterator_t<const_iterator>::value, "");
+	static_assert( hamon::detail::cpp17_forward_iterator<const_iterator>, "");
 	static_assert( hamon::detail::cpp17_bidirectional_iterator<const_iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");
 	static_assert( hamon::input_iterator<const_iterator>, "");

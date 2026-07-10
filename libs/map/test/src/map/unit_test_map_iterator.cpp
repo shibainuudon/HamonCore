@@ -98,7 +98,7 @@ MAP_TEST_CONSTEXPR bool test_impl()
 	using const_iterator  = typename Map::const_iterator;
 
 	static_assert( hamon::detail::cpp17_input_iterator_t<iterator>::value, "");
-	static_assert( hamon::detail::cpp17_forward_iterator_t<iterator>::value, "");
+	static_assert( hamon::detail::cpp17_forward_iterator<iterator>, "");
 	static_assert( hamon::detail::cpp17_bidirectional_iterator<iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
 	static_assert( hamon::input_iterator<iterator>, "");
@@ -133,7 +133,7 @@ MAP_TEST_CONSTEXPR bool test_impl()
 #endif
 
 	static_assert( hamon::detail::cpp17_input_iterator_t<const_iterator>::value, "");
-	static_assert( hamon::detail::cpp17_forward_iterator_t<const_iterator>::value, "");
+	static_assert( hamon::detail::cpp17_forward_iterator<const_iterator>, "");
 	static_assert( hamon::detail::cpp17_bidirectional_iterator<const_iterator>, "");
 	static_assert(!hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");
 	static_assert( hamon::input_iterator<const_iterator>, "");

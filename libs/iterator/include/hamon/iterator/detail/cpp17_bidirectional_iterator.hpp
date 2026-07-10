@@ -46,7 +46,7 @@ struct cpp17_bidirectional_iterator_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<cpp17_forward_iterator<I2>::value>,
+		typename = hamon::enable_if_t<cpp17_forward_iterator<I2>>,
 		typename T1 = decltype(--hamon::declval<I2&>()),
 		typename T2 = decltype(  hamon::declval<I2&>()--),
 		typename T3 = decltype( *hamon::declval<I2&>()--),

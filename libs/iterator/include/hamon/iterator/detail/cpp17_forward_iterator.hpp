@@ -31,7 +31,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept cpp17_forward_iterator =
+HAMON_CONCEPT_OR_BOOL cpp17_forward_iterator =
 	cpp17_input_iterator<I> &&
 	hamon::constructible_from<I> &&
 	hamon::is_lvalue_reference<hamon::iter_reference_t<I>>::value &&
@@ -44,9 +44,6 @@ concept cpp17_forward_iterator =
 		{  i++ } -> hamon::convertible_to<I const&>;
 		{ *i++ } -> hamon::same_as<hamon::iter_reference_t<I>>;
 	};
-
-template <typename T>
-using cpp17_forward_iterator_t = hamon::bool_constant<cpp17_forward_iterator<T>>;
 
 #else
 
@@ -85,11 +82,8 @@ public:
 }	// namespace cpp17_forward_iterator_detail
 
 template <typename I>
-using cpp17_forward_iterator =
-	typename cpp17_forward_iterator_detail::cpp17_forward_iterator_impl<I>::type;
-
-template <typename T>
-using cpp17_forward_iterator_t = cpp17_forward_iterator<T>;
+HAMON_CONCEPT_OR_BOOL cpp17_forward_iterator =
+	cpp17_forward_iterator_detail::cpp17_forward_iterator_impl<I>::type::value;
 
 #endif
 

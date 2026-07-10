@@ -68,12 +68,12 @@ void container_requirements()
 
 	// typename X::iterator
 	HAMON_STATIC_ASSERT(hamon::is_same<T, typename hamon::iterator_traits<iterator>::value_type>::value);
-	HAMON_STATIC_ASSERT(hamon::detail::cpp17_forward_iterator_t<iterator>::value);
+	HAMON_STATIC_ASSERT(hamon::detail::cpp17_forward_iterator<iterator>);
 	HAMON_STATIC_ASSERT(hamon::is_convertible<iterator, const_iterator>::value);
 
 	// typename X::const_iterator
 	HAMON_STATIC_ASSERT(hamon::is_same<T, typename hamon::iterator_traits<const_iterator>::value_type>::value);
-	HAMON_STATIC_ASSERT(hamon::detail::cpp17_forward_iterator_t<const_iterator>::value);
+	HAMON_STATIC_ASSERT(hamon::detail::cpp17_forward_iterator<const_iterator>);
 
 	// typename X::difference_type
 	HAMON_STATIC_ASSERT(hamon::is_signed<difference_type>::value);
