@@ -169,7 +169,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using DV = hamon::ranges::drop_view<V>;
 
 	static_assert(hamon::ranges::range_t<DV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<DV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
+	static_assert(hamon::ranges::borrowed_range<DV> == hamon::ranges::borrowed_range<V>, "");
 	static_assert(hamon::ranges::sized_range_t<DV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(hamon::ranges::approximately_sized_range<DV> == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(hamon::ranges::output_range_t<DV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");

@@ -164,7 +164,7 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	using TWV = hamon::ranges::take_while_view<V, F>;
 
 	static_assert(hamon::ranges::range_t<TWV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<TWV>::value == false, "");
+	static_assert(hamon::ranges::borrowed_range<TWV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<TWV>::value == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<TWV> == false, "");
 	static_assert(hamon::ranges::output_range_t<TWV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");

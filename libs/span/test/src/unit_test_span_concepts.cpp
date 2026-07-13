@@ -31,7 +31,7 @@ static_assert( hamon::ranges::contiguous_range_t<range>::value, "");
 static_assert( hamon::ranges::view_t<range>::value, "");
 static_assert( hamon::ranges::enable_view<range>, "");
 static_assert( hamon::ranges::sized_range_t<range>::value, "");
-static_assert( hamon::ranges::borrowed_range_t<range>::value, "");
+static_assert( hamon::ranges::borrowed_range<range>, "");
 static_assert( hamon::ranges::viewable_range_t<range>::value, "");
 
 static_assert( hamon::same_as<hamon::ranges::iterator_t<range const>, range::iterator>, "");
@@ -41,7 +41,7 @@ static_assert( hamon::ranges::contiguous_range_t<range const>::value, "");
 static_assert(!hamon::ranges::view_t<range const>::value, "");
 static_assert(!hamon::ranges::enable_view<range const>, "");
 static_assert( hamon::ranges::sized_range_t<range const>::value, "");
-static_assert( hamon::ranges::borrowed_range_t<range const>::value, "");
+static_assert( hamon::ranges::borrowed_range<range const>, "");
 static_assert( hamon::ranges::viewable_range_t<range const>::value, "");
 
 }	// namespace concepts_test

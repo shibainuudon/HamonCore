@@ -83,12 +83,12 @@ static_assert( ValidSubrangeKind<hamon::ranges::subrange_kind::sized,   random_a
 static_assert(!ValidSubrange<int>::value, "");
 static_assert(!ValidSubrange<int&>::value, "");
 
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*>>::value, "");
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<forward_iterator_wrapper<int>>>::value, "");
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<forward_iterator_wrapper<int>, test_sentinel<forward_iterator_wrapper<int>>>>::value, "");
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, const int*, hamon::ranges::subrange_kind::sized>>::value, "");
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::sized>>::value, "");
-static_assert(hamon::ranges::borrowed_range_t<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::unsized>>::value, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<int*>>, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<forward_iterator_wrapper<int>>>, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<forward_iterator_wrapper<int>, test_sentinel<forward_iterator_wrapper<int>>>>, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<int*, const int*, hamon::ranges::subrange_kind::sized>>, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::sized>>, "");
+static_assert(hamon::ranges::borrowed_range<hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::unsized>>, "");
 
 static_assert(hamon::detail::is_specialization_of_subrange<hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
 

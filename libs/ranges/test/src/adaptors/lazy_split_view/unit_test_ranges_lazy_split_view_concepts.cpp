@@ -24,7 +24,7 @@ void test()
 	using LSV = hamon::ranges::lazy_split_view<V, Pattern>;
 
 	static_assert(hamon::ranges::range_t<LSV>::value                     == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<LSV>::value            == false, "");
+	static_assert(hamon::ranges::borrowed_range<LSV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<LSV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<LSV> == false, "");
 	static_assert(hamon::ranges::output_range_t<LSV, T>::value           == false, "");
@@ -69,7 +69,7 @@ void test()
 	using IV = hamon::ranges::range_reference_t<LSV>;
 
 	static_assert(hamon::ranges::range_t<IV>::value                     == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<IV>::value            == false, "");
+	static_assert(hamon::ranges::borrowed_range<IV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<IV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<IV> == false, "");
 	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::forward_range_t<V>::value, "");

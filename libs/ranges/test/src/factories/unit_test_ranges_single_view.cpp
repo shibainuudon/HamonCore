@@ -97,7 +97,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(hamon::is_same<hamon::ranges::range_value_t<decltype(sv)>, T>::value, "");
 
 	static_assert( hamon::ranges::range_t<SV>::value, "");
-	static_assert(!hamon::ranges::borrowed_range_t<SV>::value, "");
+	static_assert(!hamon::ranges::borrowed_range<SV>, "");
 	static_assert( hamon::ranges::sized_range_t<SV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<SV>, "");
 	static_assert( hamon::ranges::output_range_t<SV, T>::value, "");
@@ -112,7 +112,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert(!hamon::ranges::constant_range_t<SV>::value, "");
 
 	static_assert( hamon::ranges::range_t<CSV>::value, "");
-	static_assert(!hamon::ranges::borrowed_range_t<CSV>::value, "");
+	static_assert(!hamon::ranges::borrowed_range<CSV>, "");
 	static_assert( hamon::ranges::sized_range_t<CSV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CSV>, "");
 	static_assert(!hamon::ranges::output_range_t<CSV, T>::value, "");

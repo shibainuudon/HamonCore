@@ -35,7 +35,7 @@ namespace ranges {
 template <HAMON_CONSTRAINED_PARAM(ranges::range, Range)>
 using borrowed_iterator_t =
 	hamon::conditional_t<
-		ranges::borrowed_range_t<Range>::value,
+		ranges::borrowed_range<Range>,
 		ranges::iterator_t<Range>,
 		ranges::dangling
 	>;

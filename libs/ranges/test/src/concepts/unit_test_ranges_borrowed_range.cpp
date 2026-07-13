@@ -14,15 +14,8 @@
 #include <hamon/span.hpp>
 #include "ranges_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(B, ...)	\
-	static_assert(B == hamon::ranges::borrowed_range<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::ranges::borrowed_range_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(B, ...)	\
-	static_assert(B == hamon::ranges::borrowed_range<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::ranges::borrowed_range_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(B, ...)	\
+	static_assert(B == hamon::ranges::borrowed_range<__VA_ARGS__>, "")
 
 #define HAMON_RANGES_BORROWED_RANGE_TEST(B, ...)	                 \
 	HAMON_RANGES_BORROWED_RANGE_TEST_IMPL(B,    __VA_ARGS__ );	     \

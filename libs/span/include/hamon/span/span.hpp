@@ -282,7 +282,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
-			(hamon::ranges::borrowed_range_t<R>::value || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
+			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4
 			!hamon::is_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.5
@@ -301,7 +301,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
-			(hamon::ranges::borrowed_range_t<R>::value || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
+			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4
 			!hamon::is_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.5
@@ -319,7 +319,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
-			(hamon::ranges::borrowed_range_t<R>::value || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
+			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4
 			!hamon::is_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.5

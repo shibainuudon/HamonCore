@@ -52,7 +52,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::constructible_from<RV, RV const&&>, "");
 
 	static_assert( hamon::ranges::range_t<RV>::value, "");
-	static_assert( hamon::ranges::borrowed_range_t<RV>::value, "");
+	static_assert( hamon::ranges::borrowed_range<RV>, "");
 	static_assert( hamon::ranges::sized_range_t<RV>::value == hamon::ranges::sized_range_t<R>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<RV> == hamon::ranges::approximately_sized_range<R>, "");
 	static_assert( hamon::ranges::output_range_t<RV, T>::value == hamon::ranges::output_range_t<R, T>::value, "");

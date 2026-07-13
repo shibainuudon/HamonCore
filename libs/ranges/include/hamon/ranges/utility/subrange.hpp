@@ -118,7 +118,7 @@ using subrange_constructible_from_iter_sent_size = hamon::conjunction<
 template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize>
 using subrange_constructible_from_range = hamon::bool_constant<
 	hamon::ranges::detail::different_from<Rng, Subrange>::value &&
-	hamon::ranges::borrowed_range<Rng>::value &&
+	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It>::value &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
 	(!StoreSize || hamon::ranges::sized_range<Rng>::value)
@@ -126,7 +126,7 @@ using subrange_constructible_from_range = hamon::bool_constant<
 
 template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind>
 using subrange_constructible_from_range_size = hamon::bool_constant<
-	hamon::ranges::borrowed_range<Rng>::value &&
+	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It>::value &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
 	(Kind == ranges::subrange_kind::sized)
@@ -449,7 +449,7 @@ template <
 subrange(It, Sent, detail::make_unsigned_like_t<hamon::iter_difference_t<It>>)
 -> subrange<It, Sent, ranges::subrange_kind::sized>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+template <HAMON_CONSTRAINT(hamon::ranges::borrowed_range, Rng)>
 subrange(Rng&&)
 -> subrange<hamon::ranges::iterator_t<Rng>, hamon::ranges::sentinel_t<Rng>,
 	(hamon::ranges::sized_range_t<Rng>::value ||
@@ -457,7 +457,7 @@ subrange(Rng&&)
 		ranges::subrange_kind::sized :
 		ranges::subrange_kind::unsized>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+template <HAMON_CONSTRAINT(hamon::ranges::borrowed_range, Rng)>
 subrange(Rng&&, detail::make_unsigned_like_t<hamon::ranges::range_difference_t<Rng>>)
 -> subrange<hamon::ranges::iterator_t<Rng>, hamon::ranges::sentinel_t<Rng>, ranges::subrange_kind::sized>;
 
@@ -596,7 +596,7 @@ make_subrange(It i, Sent s, detail::make_unsigned_like_t<hamon::iter_difference_
 HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	subrange<It, Sent, ranges::subrange_kind::sized>(hamon::move(i), hamon::move(s), hamon::move(n)))
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+template <HAMON_CONSTRAINT(hamon::ranges::borrowed_range, Rng)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_subrange(Rng&& r)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -609,7 +609,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			ranges::subrange_kind::unsized
 	>(hamon::forward<Rng>(r)))
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::borrowed_range, Rng)>
+template <HAMON_CONSTRAINT(hamon::ranges::borrowed_range, Rng)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_subrange(Rng&& r, detail::make_unsigned_like_t<hamon::ranges::range_difference_t<Rng>> n)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(

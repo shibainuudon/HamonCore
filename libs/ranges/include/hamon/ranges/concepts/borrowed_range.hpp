@@ -8,7 +8,6 @@
 #define HAMON_RANGES_CONCEPTS_BORROWED_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
@@ -30,26 +29,17 @@ using std::ranges::borrowed_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept borrowed_range =
+HAMON_CONCEPT_OR_BOOL borrowed_range =
 	ranges::range<T> &&
 	detail::maybe_borrowed_range<T>;
 
 #else
 
 template <typename T>
-using borrowed_range = hamon::bool_constant<
+HAMON_CONCEPT_OR_BOOL borrowed_range =
 	ranges::range<T>::value &&
-	detail::maybe_borrowed_range<T>
->;
+	detail::maybe_borrowed_range<T>;
 
-#endif
-
-template <typename T>
-using borrowed_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::borrowed_range<T>>;
-#else
-	hamon::ranges::borrowed_range<T>;
 #endif
 
 }	// namespace ranges

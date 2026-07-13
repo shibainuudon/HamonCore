@@ -73,7 +73,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using IV = hamon::ranges::range_reference_t<V>;
 
 	static_assert(hamon::ranges::range_t<JV>::value == true, "");
-	static_assert(hamon::ranges::borrowed_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::borrowed_range<JV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<JV>::value == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<JV> == false, "");
 //	static_assert(hamon::ranges::output_range_t<JV, T>::value == false, "");

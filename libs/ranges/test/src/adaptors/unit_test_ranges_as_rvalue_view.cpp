@@ -182,7 +182,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!hamon::is_implicitly_constructible<ARV, V>::value, "");
 
 	static_assert( hamon::ranges::range_t<ARV>::value, "");
-	static_assert( hamon::ranges::borrowed_range_t<ARV>::value == hamon::ranges::borrowed_range_t<V>::value, "");
+	static_assert( hamon::ranges::borrowed_range<ARV> == hamon::ranges::borrowed_range<V>, "");
 	static_assert( hamon::ranges::sized_range_t<ARV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<ARV> == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(!hamon::ranges::output_range_t<ARV, T>::value, "");

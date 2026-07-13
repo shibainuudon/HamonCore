@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -42,7 +42,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -61,7 +61,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_bidirectional_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -80,7 +80,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_random_access_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -99,7 +99,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_contiguous_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -119,7 +119,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -139,7 +139,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -159,7 +159,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -179,7 +179,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_bidirectional_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -199,7 +199,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_bidirectional_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -219,7 +219,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_bidirectional_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -239,7 +239,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_random_access_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -259,7 +259,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_random_access_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -279,7 +279,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_contiguous_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -300,7 +300,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_view<T const>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -319,7 +319,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_forward_view<T const>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -339,7 +339,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_random_access_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -359,7 +359,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_random_access_view<T const>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -379,7 +379,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_random_access_view<T const>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -400,7 +400,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_borrowed_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -419,7 +419,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_forward_borrowed_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -439,7 +439,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_borrowed_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -460,7 +460,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_common_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -480,7 +480,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -500,7 +500,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_common_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -520,7 +520,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_common_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -541,7 +541,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -561,7 +561,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -581,7 +581,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -601,7 +601,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -622,7 +622,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V = test_input_approximately_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -642,7 +642,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -662,7 +662,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_approximately_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
@@ -682,7 +682,7 @@ GTEST_TEST(RangesTest, CartesianProductViewConceptsTest)
 		using V2 = test_forward_approximately_sized_view<T>;
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		static_assert( hamon::ranges::range_t<CV>::value, "");
-		static_assert(!hamon::ranges::borrowed_range_t<CV>::value, "");
+		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
 		static_assert(!hamon::ranges::output_range_t<CV, T>::value, "");
