@@ -255,9 +255,9 @@ make_drop_view(R&& r, hamon::ranges::range_difference_t<R> n)
 
 // enable_borrowed_range の特殊化
 template <typename T>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(T),
-	hamon::ranges::drop_view<T>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::drop_view<T>> =
+	hamon::ranges::enable_borrowed_range<T>;
 
 namespace views {
 

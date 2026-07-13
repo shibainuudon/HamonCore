@@ -56,7 +56,8 @@ public:
 
 // [range.empty], empty view
 template <typename T>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::empty_view<T>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::empty_view<T>> = true;
 
 namespace views {
 

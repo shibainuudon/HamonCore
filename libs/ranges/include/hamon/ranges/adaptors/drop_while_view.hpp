@@ -190,9 +190,9 @@ make_drop_while_view(R&& r, Pred pred)
 
 // enable_borrowed_range の特殊化
 template <typename T, typename Pred>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(T),
-	hamon::ranges::drop_while_view<T, Pred>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::drop_while_view<T, Pred>> =
+	hamon::ranges::enable_borrowed_range<T>;
 
 namespace views {
 

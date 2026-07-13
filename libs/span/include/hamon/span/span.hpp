@@ -639,7 +639,8 @@ span(Range&&)
 HAMON_RANGES_START_NAMESPACE
 
 template <typename T, hamon::size_t Extent>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::span<T, Extent>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::span<T, Extent>> = true;
 
 template <typename T, hamon::size_t Extent>
 HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true, hamon::span<T, Extent>);

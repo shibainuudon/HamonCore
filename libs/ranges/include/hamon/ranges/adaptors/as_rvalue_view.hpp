@@ -231,9 +231,9 @@ make_as_rvalue_view(R&& r)
 
 // [range.as.rvalue], as rvalue view
 template <typename R>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(R),
-	hamon::ranges::as_rvalue_view<R>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::as_rvalue_view<R>> =
+	hamon::ranges::enable_borrowed_range<R>;
 
 namespace views {
 

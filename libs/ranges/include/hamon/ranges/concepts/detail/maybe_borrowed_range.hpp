@@ -27,7 +27,7 @@ namespace detail
 template <typename T>
 concept maybe_borrowed_range =
 	hamon::is_lvalue_reference<T>::value ||
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(hamon::remove_cvref_t<T>);
+	hamon::ranges::enable_borrowed_range<hamon::remove_cvref_t<T>>;
 
 #else
 
@@ -35,7 +35,7 @@ template <typename T>
 using maybe_borrowed_range =
 	hamon::bool_constant<
 		hamon::is_lvalue_reference<T>::value ||
-		HAMON_RANGES_ENABLE_BORROWED_RANGE(hamon::remove_cvref_t<T>)
+		hamon::ranges::enable_borrowed_range<hamon::remove_cvref_t<T>>
 	>;
 
 #endif

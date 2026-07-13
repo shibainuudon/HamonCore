@@ -80,11 +80,13 @@ HAMON_RANGES_START_NAMESPACE
 
 // Allow ranges::begin to work with RV&&
 template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::end_test::RV);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon_ranges_test::end_test::RV> = true;
 
 // N.B. this is a lie, end on an RR rvalue will return a dangling pointer.
 template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::end_test::RR);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon_ranges_test::end_test::RR> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

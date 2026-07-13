@@ -1096,9 +1096,9 @@ zip_view(Rs&&...) -> zip_view<hamon::views::all_t<Rs>...>;
 
 // enable_borrowed_range の特殊化
 template <typename... Views>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	hamon::conjunction<hamon::bool_constant<HAMON_RANGES_ENABLE_BORROWED_RANGE(Views)>...>::value,
-	hamon::ranges::zip_view<Views...>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::zip_view<Views...>> =
+	hamon::conjunction<hamon::bool_constant<hamon::ranges::enable_borrowed_range<Views>>...>::value;
 
 namespace views {
 

@@ -158,7 +158,8 @@ ref_view(R&) -> ref_view<R>;
 #endif
 
 template <typename R>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::ref_view<R>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::ref_view<R>> = true;
 
 }	// namespace ranges
 }	// namespace hamon

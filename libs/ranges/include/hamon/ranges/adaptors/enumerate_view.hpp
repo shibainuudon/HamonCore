@@ -703,9 +703,9 @@ enumerate_view(R&&) -> enumerate_view<hamon::views::all_t<R>>;
 
 // enable_borrowed_range の特殊化
 template <typename View>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(View),
-	hamon::ranges::enumerate_view<View>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::enumerate_view<View>> =
+	hamon::ranges::enable_borrowed_range<View>;
 
 namespace views {
 

@@ -896,7 +896,8 @@ public:
 };
 
 template <typename W, typename Bound>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::iota_view<W, Bound>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::iota_view<W, Bound>> = true;
 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 

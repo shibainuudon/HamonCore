@@ -82,11 +82,13 @@ HAMON_RANGES_START_NAMESPACE
 
 // N.B. this is a lie, rend on an R1 rvalue will return a dangling pointer.
 template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::rend_test::R1);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon_ranges_test::rend_test::R1> = true;
 
 // N.B. this is a lie, begin/end on an R3 rvalue will return a dangling pointer.
 template <>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon_ranges_test::rend_test::R3);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon_ranges_test::rend_test::R3> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

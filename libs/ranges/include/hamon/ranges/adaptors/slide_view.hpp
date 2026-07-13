@@ -820,9 +820,9 @@ slide_view(R&&, hamon::ranges::range_difference_t<R>) -> slide_view<hamon::views
 
 // enable_borrowed_range の特殊化
 template <typename V>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(V),
-	hamon::ranges::slide_view<V>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::slide_view<V>> =
+	hamon::ranges::enable_borrowed_range<V>;
 
 namespace views {
 

@@ -780,9 +780,9 @@ public:
 
 // enable_borrowed_range の特殊化
 template <typename V, hamon::size_t N>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(
-	HAMON_RANGES_ENABLE_BORROWED_RANGE(V),
-	hamon::ranges::adjacent_view<V, N>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::adjacent_view<V, N>> =
+	hamon::ranges::enable_borrowed_range<V>;
 
 namespace views {
 

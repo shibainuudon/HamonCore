@@ -496,7 +496,8 @@ using ranges::get;
 HAMON_RANGES_START_NAMESPACE
 
 template <typename It, typename Sent, hamon::ranges::subrange_kind Kind>
-HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::subrange<It, Sent, Kind>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_borrowed_range<hamon::ranges::subrange<It, Sent, Kind>> = true;
 
 HAMON_RANGES_END_NAMESPACE
 
