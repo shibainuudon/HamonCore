@@ -54,7 +54,7 @@ struct MoveOnlyView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR T* begin() const noexcept { return nullptr; }
 	HAMON_CXX11_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
-static_assert(hamon::ranges::view_t<MoveOnlyView<int>>::value, "");
+static_assert(hamon::ranges::view<MoveOnlyView<int>>, "");
 static_assert(!hamon::copyable<MoveOnlyView<int>>, "");
 
 template <typename T, typename Pred, typename = void>
@@ -94,7 +94,7 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(hamon::ranges::contiguous_range<DWV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<DWV> == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<DWV>::value == true, "");
-	static_assert(hamon::ranges::view_t<DWV>::value == true, "");
+	static_assert(hamon::ranges::view<DWV> == true, "");
 	static_assert(hamon::ranges::constant_range<DWV> == false, "");
 
 	static_assert(hamon::is_default_constructible<DWV>::value ==

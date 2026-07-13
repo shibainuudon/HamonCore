@@ -71,7 +71,6 @@ using std::ranges::views::enumerate;
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -135,10 +134,10 @@ template <hamon::ranges::view V>
 	requires hamon::ranges::detail::range_with_movable_references<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::detail::range_with_movable_references<V>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view<V> &&
+		hamon::ranges::detail::range_with_movable_references<V>::value
+	>>
 #endif
 class enumerate_view : public hamon::ranges::view_interface<enumerate_view<V>>
 {

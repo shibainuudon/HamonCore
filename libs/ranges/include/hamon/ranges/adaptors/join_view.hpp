@@ -132,7 +132,7 @@ template <hamon::ranges::input_range V>
 template <typename V,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>
 	>
 >

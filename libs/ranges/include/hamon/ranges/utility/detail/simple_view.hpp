@@ -46,7 +46,7 @@ struct simple_view_impl
 {
 private:
 	template <typename R2,
-		typename = hamon::enable_if_t<hamon::ranges::view<R2>::value>,
+		typename = hamon::enable_if_t<hamon::ranges::view<R2>>,
 		typename = hamon::enable_if_t<hamon::ranges::range<R2 const>>,
 		typename = hamon::enable_if_t<hamon::same_as<hamon::ranges::iterator_t<R2>, hamon::ranges::iterator_t<R2 const>>>,
 		typename = hamon::enable_if_t<hamon::same_as<hamon::ranges::sentinel_t<R2>, hamon::ranges::sentinel_t<R2 const>>>

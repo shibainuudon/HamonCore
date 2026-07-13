@@ -94,7 +94,7 @@ template <typename V, typename Pred,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
 		hamon::indirect_unary_predicate<Pred, hamon::ranges::iterator_t<V>> &&
-		hamon::ranges::view<V>::value && hamon::is_object_v<Pred>
+		hamon::ranges::view<V> && hamon::is_object_v<Pred>
 	>
 >
 #endif

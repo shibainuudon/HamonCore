@@ -32,7 +32,7 @@ TYPED_TEST(StringViewTest, ConceptsTest)
 	static_assert( hamon::ranges::common_range<string_view>, "");
 	static_assert( hamon::ranges::random_access_range<string_view>, "");
 	static_assert( hamon::ranges::contiguous_range<string_view>, "");
-	static_assert( hamon::ranges::view_t<string_view>::value, "");
+	static_assert( hamon::ranges::view<string_view>, "");
 	static_assert( hamon::ranges::enable_view<string_view>, "");
 	static_assert( hamon::ranges::sized_range<string_view>, "");
 	static_assert( hamon::ranges::borrowed_range<string_view>, "");
@@ -42,7 +42,7 @@ TYPED_TEST(StringViewTest, ConceptsTest)
 	static_assert( hamon::ranges::common_range<string_view const>, "");
 	static_assert( hamon::ranges::random_access_range<string_view const>, "");
 	static_assert( hamon::ranges::contiguous_range<string_view const>, "");
-	static_assert(!hamon::ranges::view_t<string_view const>::value, "");
+	static_assert(!hamon::ranges::view<string_view const>, "");
 	static_assert(!hamon::ranges::enable_view<string_view const>, "");
 	static_assert( hamon::ranges::sized_range<string_view const>, "");
 	static_assert( hamon::ranges::borrowed_range<string_view const>, "");

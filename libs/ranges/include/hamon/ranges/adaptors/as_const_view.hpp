@@ -76,7 +76,7 @@ template <hamon::ranges::view V>
 #else
 template <typename V,
 	typename = hamon::enable_if_t<
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<V>
 	>>
 #endif
@@ -278,7 +278,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::is_lvalue_reference<R>::value &&
 			hamon::ranges::constant_range<U const> &&
-			!hamon::ranges::view_t<U>::value
+			!hamon::ranges::view<U>
 		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, hamon::detail::overload_priority<1>)

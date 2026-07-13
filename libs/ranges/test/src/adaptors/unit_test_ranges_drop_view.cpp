@@ -101,7 +101,7 @@ struct MoveOnlyView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR T* begin() const noexcept { return nullptr; }
 	HAMON_CXX11_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
-static_assert(hamon::ranges::view_t<MoveOnlyView<int>>::value, "");
+static_assert(hamon::ranges::view<MoveOnlyView<int>>, "");
 static_assert(!hamon::copyable<MoveOnlyView<int>>, "");
 
 template <typename Iterator>
@@ -157,7 +157,7 @@ struct SizedViewWithUnsizedSentinel : hamon::ranges::view_base
 static_assert( hamon::ranges::random_access_range<SizedViewWithUnsizedSentinel<int>>, "");
 static_assert( hamon::ranges::sized_range<SizedViewWithUnsizedSentinel<int>>, "");
 static_assert(!hamon::sized_sentinel_for<SizedViewWithUnsizedSentinel<int>::sentinel, SizedViewWithUnsizedSentinel<int>::iterator>, "");
-static_assert( hamon::ranges::view_t<SizedViewWithUnsizedSentinel<int>>::value, "");
+static_assert( hamon::ranges::view<SizedViewWithUnsizedSentinel<int>>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -180,7 +180,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::contiguous_range<DV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<DV> == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<DV>::value == true, "");
-	static_assert(hamon::ranges::view_t<DV>::value == true, "");
+	static_assert(hamon::ranges::view<DV> == true, "");
 	static_assert(hamon::ranges::constant_range<DV> == false, "");
 	
 	static_assert(hamon::is_default_constructible<DV>::value == hamon::is_default_constructible<V>::value, "");

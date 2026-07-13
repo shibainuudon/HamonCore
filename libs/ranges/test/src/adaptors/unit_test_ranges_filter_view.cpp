@@ -105,7 +105,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::contiguous_range<FV> == false, "");
 	static_assert(hamon::ranges::common_range<FV> == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<FV>::value == true, "");
-	static_assert(hamon::ranges::view_t<FV>::value == true, "");
+	static_assert(hamon::ranges::view<FV> == true, "");
 	static_assert(hamon::ranges::constant_range<FV> == false, "");
 
 	static_assert(has_base<FV&>::value == hamon::copy_constructible<V>, "");

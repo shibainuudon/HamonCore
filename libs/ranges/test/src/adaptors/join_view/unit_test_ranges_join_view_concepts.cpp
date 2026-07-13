@@ -97,7 +97,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		 hamon::ranges::common_range<V> &&
 		 hamon::ranges::common_range<IV>), "");
 	static_assert(hamon::ranges::viewable_range_t<JV>::value == true, "");
-	static_assert(hamon::ranges::view_t<JV>::value == true, "");
+	static_assert(hamon::ranges::view<JV> == true, "");
 	static_assert(hamon::ranges::constant_range<JV> == false, "");
 
 	//static_assert(has_begin<JV&>::value, "");

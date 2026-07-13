@@ -198,7 +198,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	//static_assert(!hamon::detail::is_specialization_of_span<V>::value, "");
 	//static_assert(!hamon::ranges::views::detail::is_specialization_of_ref_view<V>::value, "");
 	//static_assert( hamon::ranges::constant_range<V const>, "");
-	//static_assert(!hamon::ranges::view_t<V>::value, "");
+	//static_assert(!hamon::ranges::view<V>, "");
 
 	using CV = hamon::ranges::ref_view<V const>;
 

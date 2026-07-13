@@ -116,7 +116,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #if !defined(HAMON_USE_STD_RANGES_REPEAT_VIEW)
 		static_assert( hamon::is_nothrow_constructible<V, MoveOnly &&>::value, "");
 #endif
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
@@ -174,7 +174,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_constructible<V, ThrowOnMoveCtor const&>::value, "");
 		static_assert(!hamon::is_nothrow_constructible<V, ThrowOnMoveCtor &&>::value, "");
 #endif
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
@@ -232,7 +232,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_nothrow_constructible<V, ThrowOnCopyCtor const&>::value, "");
 		static_assert( hamon::is_nothrow_constructible<V, ThrowOnCopyCtor &&>::value, "");
 #endif
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
@@ -286,7 +286,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_constructible<V, int>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnDefaultCtor const&>::value, "");
 		static_assert( hamon::is_constructible<V, ThrowOnDefaultCtor &&>::value, "");
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
@@ -340,7 +340,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_constructible<V, int>::value, "");
 		static_assert(!hamon::is_constructible<V, int, int>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<V, int>::value, "");
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert(!hamon::ranges::sized_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
@@ -395,7 +395,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_constructible<V, int, int>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<V, int>::value, "");
 		static_assert(!hamon::is_implicitly_constructible<V, int, int>::value, "");
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert( hamon::ranges::sized_range<V>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
@@ -446,7 +446,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = hamon::ranges::repeat_view<int, long>;
 		static_assert( hamon::is_default_constructible<V>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert( hamon::ranges::sized_range<V>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
@@ -497,7 +497,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using V = hamon::ranges::repeat_view<long, int>;
 		static_assert( hamon::is_default_constructible<V>::value, "");
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
-		static_assert( hamon::ranges::view_t<V>::value, "");
+		static_assert( hamon::ranges::view<V>, "");
 		static_assert( hamon::ranges::range<V>, "");
 		static_assert( hamon::ranges::sized_range<V>, "");
 		static_assert( hamon::ranges::common_range<V>, "");

@@ -119,7 +119,7 @@ class chunk_view
 template <typename V,
 	typename = hamon::bool_constant<hamon::ranges::forward_range<V>>,
 	typename = hamon::enable_if_t<
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<V>
 	>>
 class chunk_view;

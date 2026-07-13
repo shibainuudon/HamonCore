@@ -172,7 +172,7 @@ template <hamon::ranges::forward_range V>
 template <typename V,
 	typename = hamon::enable_if_t<
 		hamon::ranges::forward_range<V> &&
-		hamon::ranges::view_t<V>::value
+		hamon::ranges::view<V>
 	>
 >
 #endif

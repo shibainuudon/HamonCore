@@ -34,7 +34,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -54,7 +54,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -74,7 +74,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -94,7 +94,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -114,7 +114,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert( hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -136,7 +136,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert( hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -156,7 +156,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert( hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -176,7 +176,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert( hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -196,7 +196,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert( hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -216,7 +216,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert( hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert( hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -238,7 +238,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -258,7 +258,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -278,7 +278,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -298,7 +298,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -318,7 +318,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert( hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -340,7 +340,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert( hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -360,7 +360,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert( hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -380,7 +380,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert( hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -400,7 +400,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert( hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -420,7 +420,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert( hamon::ranges::contiguous_range<CV>, "");
 		static_assert( hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -442,7 +442,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}
@@ -464,7 +464,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		static_assert(!hamon::ranges::contiguous_range<CV>, "");
 		static_assert(!hamon::ranges::common_range<CV>, "");
 		static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
-		static_assert( hamon::ranges::view_t<CV>::value, "");
+		static_assert( hamon::ranges::view<CV>, "");
 		static_assert(!hamon::ranges::constant_range<V>, "");
 		static_assert( hamon::ranges::constant_range<CV>, "");
 	}

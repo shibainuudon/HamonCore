@@ -167,8 +167,8 @@ template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
 		hamon::ranges::forward_range<Pattern> &&
-		hamon::ranges::view_t<V>::value &&
-		hamon::ranges::view_t<Pattern>::value &&
+		hamon::ranges::view<V> &&
+		hamon::ranges::view<Pattern> &&
 		hamon::indirectly_comparable<
 			hamon::ranges::iterator_t<V>,
 			hamon::ranges::iterator_t<Pattern>,

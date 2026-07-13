@@ -57,8 +57,8 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<ranges::range<U>>,
 		typename = hamon::enable_if_t<
-			((ranges::view<hamon::remove_cvref_t<U>>::value && hamon::constructible_from<hamon::remove_cvref_t<U>, U>) ||
-			 (!ranges::view<hamon::remove_cvref_t<U>>::value &&
+			((ranges::view<hamon::remove_cvref_t<U>> && hamon::constructible_from<hamon::remove_cvref_t<U>, U>) ||
+			 (!ranges::view<hamon::remove_cvref_t<U>> &&
 				 (hamon::is_lvalue_reference<U>::value ||
 					 (hamon::movable<hamon::remove_reference_t<U>> &&
 					  !detail::is_initializer_list<hamon::remove_cvref_t<U>>::value))))

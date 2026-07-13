@@ -110,7 +110,7 @@ private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	static_assert(hamon::move_constructible<F>, "");
 	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::input_range<Views>>...>::value, "");
-	static_assert(hamon::conjunction<hamon::ranges::view_t<Views>...>::value, "");
+	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::view<Views>>...>::value, "");
 	static_assert(sizeof...(Views) > 0, "");
 	static_assert(hamon::is_object<F>::value, "");
 	static_assert(hamon::regular_invocable<F&, hamon::ranges::range_reference_t<Views>...>, "");

@@ -158,7 +158,7 @@ template <hamon::ranges::input_range V, hamon::size_t N>
 template <typename V, hamon::size_t N,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		has_tuple_element<hamon::ranges::range_value_t<V>, N>::value &&
 		has_tuple_element<hamon::remove_reference_t<hamon::ranges::range_reference_t<V>>, N>::value &&
 		returnable_element<hamon::ranges::range_reference_t<V>, N>::value

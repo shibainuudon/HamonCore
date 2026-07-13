@@ -72,7 +72,7 @@ template <hamon::ranges::view V, typename Pred>
 #else
 template <typename V, typename Pred,
 	typename = hamon::enable_if_t<
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<V> &&
 		hamon::is_object_v<Pred> &&
 		hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V>>

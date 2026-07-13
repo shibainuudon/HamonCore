@@ -8,16 +8,14 @@
 #define HAMON_RANGES_CONCEPTS_VIEW_HPP
 
 #include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
 #include <hamon/concepts/movable.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
 #endif
 
 namespace hamon
@@ -34,7 +32,7 @@ using std::ranges::view;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept view =
+HAMON_CONCEPT_OR_BOOL view =
 	ranges::range<T> &&
 	hamon::movable<T> &&
 	hamon::ranges::enable_view<T>;
@@ -65,37 +63,15 @@ public:
 }	// namespace detail
 
 template <typename T>
-using view = typename ranges::detail::view_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL view =
+	ranges::detail::view_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using view_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::view<T>>;
-#else
-	hamon::ranges::view<T>;
 #endif
 
 // !view<T>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename T>
-concept not_view = !hamon::ranges::view<T>;
-
-template <typename T>
-using not_view_t = hamon::bool_constant<hamon::ranges::not_view<T>>;
-
-#else
-
-template <typename T>
-using not_view = hamon::negation<hamon::ranges::view<T>>;
-
-template <typename T>
-using not_view_t = hamon::ranges::not_view<T>;
-
-#endif
+HAMON_CONCEPT_OR_BOOL not_view = !hamon::ranges::view<T>;
 
 }	// namespace ranges
 }	// namespace hamon

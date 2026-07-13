@@ -66,7 +66,7 @@ struct NotSimpleView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return const_sentinel{const_iterator{m_last}}; }
 };
 
-static_assert(hamon::ranges::view_t<NotSimpleView<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleView<int>>::value, "");
 
 template <typename T>
@@ -91,7 +91,7 @@ struct NotSimpleViewCommonRange : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return const_sentinel{const_iterator{m_last}}; }
 };
 
-static_assert(hamon::ranges::view_t<NotSimpleViewCommonRange<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleViewCommonRange<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleViewCommonRange<int>>::value, "");
 static_assert(hamon::ranges::range<NotSimpleViewCommonRange<int>>, "");
 static_assert(hamon::ranges::common_range<NotSimpleViewCommonRange<int>>, "");
@@ -106,7 +106,7 @@ struct ConstNotView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR sentinel end()   noexcept { return nullptr; }
 };
 
-static_assert(hamon::ranges::view_t<ConstNotView<int>>::value, "");
+static_assert(hamon::ranges::view<ConstNotView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<ConstNotView<int>>::value, "");
 static_assert( hamon::ranges::range<ConstNotView<int>>, "");
 static_assert(!hamon::ranges::range<ConstNotView<int> const>, "");
@@ -123,7 +123,7 @@ struct NonCopyableView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
 
-static_assert(hamon::ranges::view_t<NonCopyableView<int>>::value, "");
+static_assert(hamon::ranges::view<NonCopyableView<int>>, "");
 static_assert(hamon::ranges::detail::simple_view_t<NonCopyableView<int>>::value, "");
 static_assert(!hamon::copy_constructible<NonCopyableView<int>>, "");
 
@@ -139,7 +139,7 @@ struct ThrowOnCopyView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
 
-static_assert(hamon::ranges::view_t<ThrowOnCopyView<int>>::value, "");
+static_assert(hamon::ranges::view<ThrowOnCopyView<int>>, "");
 static_assert(hamon::ranges::detail::simple_view_t<ThrowOnCopyView<int>>::value, "");
 static_assert(hamon::is_move_constructible<ThrowOnCopyView<int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<ThrowOnCopyView<int>>::value, "");
@@ -157,7 +157,7 @@ struct ThrowOnMoveView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
 
-static_assert(hamon::ranges::view_t<ThrowOnMoveView<int>>::value, "");
+static_assert(hamon::ranges::view<ThrowOnMoveView<int>>, "");
 static_assert(hamon::ranges::detail::simple_view_t<ThrowOnMoveView<int>>::value, "");
 static_assert(hamon::is_move_constructible<ThrowOnMoveView<int>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<ThrowOnMoveView<int>>::value, "");
@@ -193,7 +193,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!hamon::ranges::contiguous_range<ARV>, "");
 	static_assert( hamon::ranges::common_range<ARV> == hamon::ranges::common_range<V>, "");
 	static_assert( hamon::ranges::viewable_range_t<ARV>::value, "");
-	static_assert( hamon::ranges::view_t<ARV>::value, "");
+	static_assert( hamon::ranges::view<ARV>, "");
 	static_assert(!hamon::ranges::constant_range<ARV>, "");
 
 	static_assert(has_base<ARV&>::value == hamon::copy_constructible<V>, "");

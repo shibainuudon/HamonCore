@@ -77,7 +77,7 @@ template <hamon::ranges::view V>
 #else
 template <typename V,
 	typename = hamon::enable_if_t<
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		!hamon::ranges::common_range<V> &&
 		hamon::copyable<hamon::ranges::iterator_t<V>>
 	>>

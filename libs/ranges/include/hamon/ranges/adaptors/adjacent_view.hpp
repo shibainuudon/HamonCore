@@ -141,7 +141,7 @@ template <hamon::ranges::forward_range V, hamon::size_t N>
 template <typename V, hamon::size_t N,
 	typename = hamon::enable_if_t<
 		hamon::ranges::forward_range<V> &&
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		(N > 0)>>
 #endif
 class adjacent_view : public hamon::ranges::view_interface<adjacent_view<V, N>>

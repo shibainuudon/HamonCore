@@ -82,7 +82,7 @@ struct ForwardRange : hamon::ranges::view_interface<ForwardRange>
 	HAMON_CXX14_CONSTEXPR ForwardIter      end()         noexcept { return ForwardIter     { buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR ConstForwardIter end()   const noexcept { return ConstForwardIter{ buff + 8 }; }
 };
-static_assert(hamon::ranges::view_t<ForwardRange>::value, "");
+static_assert(hamon::ranges::view<ForwardRange>, "");
 
 struct MoveOnlyForwardRange : hamon::ranges::view_interface<MoveOnlyForwardRange>
 {
@@ -96,13 +96,13 @@ struct MoveOnlyForwardRange : hamon::ranges::view_interface<MoveOnlyForwardRange
 	HAMON_CXX14_CONSTEXPR ForwardIter      end()         noexcept { return ForwardIter     { buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR ConstForwardIter end()   const noexcept { return ConstForwardIter{ buff + 8 }; }
 };
-static_assert(hamon::ranges::view_t<MoveOnlyForwardRange>::value, "");
+static_assert(hamon::ranges::view<MoveOnlyForwardRange>, "");
 
 struct MI
 	: hamon::ranges::view_interface<InputRange>
 	, hamon::ranges::view_interface<MoveOnlyForwardRange>
 {};
-static_assert(!hamon::ranges::view_t<MI>::value, "");
+static_assert(!hamon::ranges::view<MI>, "");
 
 struct EmptyIsTrue : hamon::ranges::view_interface<EmptyIsTrue>
 {
@@ -114,7 +114,7 @@ struct EmptyIsTrue : hamon::ranges::view_interface<EmptyIsTrue>
 	HAMON_CXX11_CONSTEXPR ConstForwardIter end()   const noexcept { return ConstForwardIter{ buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR bool empty() const noexcept { return true; }
 };
-static_assert(hamon::ranges::view_t<EmptyIsTrue>::value, "");
+static_assert(hamon::ranges::view<EmptyIsTrue>, "");
 
 using RAIter = random_access_iterator_wrapper<int>;
 using ConstRAIter = random_access_iterator_wrapper<int const>;
@@ -129,7 +129,7 @@ struct SizeIsTen : hamon::ranges::view_interface<SizeIsTen>
 	HAMON_CXX11_CONSTEXPR ConstRAIter end()   const noexcept { return ConstRAIter{ buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR hamon::size_t size()  const noexcept { return 10; }
 };
-static_assert(hamon::ranges::view_t<SizeIsTen>::value, "");
+static_assert(hamon::ranges::view<SizeIsTen>, "");
 
 struct RARange : hamon::ranges::view_interface<RARange>
 {
@@ -139,7 +139,7 @@ struct RARange : hamon::ranges::view_interface<RARange>
 	HAMON_CXX14_CONSTEXPR RAIter      end()         noexcept { return RAIter     { buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR ConstRAIter end()   const noexcept { return ConstRAIter{ buff + 8 }; }
 };
-static_assert(hamon::ranges::view_t<RARange>::value, "");
+static_assert(hamon::ranges::view<RARange>, "");
 
 using ContIter = contiguous_iterator_wrapper<int>;
 using ConstContIter = contiguous_iterator_wrapper<int const>;
@@ -152,7 +152,7 @@ struct ContRange : hamon::ranges::view_interface<ContRange>
 	HAMON_CXX14_CONSTEXPR ContIter      end()         noexcept { return ContIter     { buff + 8 }; }
 	HAMON_CXX11_CONSTEXPR ConstContIter end()   const noexcept { return ConstContIter{ buff + 8 }; }
 };
-static_assert(hamon::ranges::view_t<ContRange>::value, "");
+static_assert(hamon::ranges::view<ContRange>, "");
 
 struct DataIsNull : hamon::ranges::view_interface<DataIsNull>
 {
@@ -165,7 +165,7 @@ struct DataIsNull : hamon::ranges::view_interface<DataIsNull>
 	HAMON_CXX14_CONSTEXPR int*       data()       noexcept { return nullptr; }
 	HAMON_CXX11_CONSTEXPR int const* data() const noexcept { return nullptr; }
 };
-static_assert(hamon::ranges::view_t<DataIsNull>::value, "");
+static_assert(hamon::ranges::view<DataIsNull>, "");
 
 struct BoolConvertibleComparison : hamon::ranges::view_interface<BoolConvertibleComparison>
 {
@@ -190,7 +190,7 @@ struct BoolConvertibleComparison : hamon::ranges::view_interface<BoolConvertible
 	HAMON_CXX11_CONSTEXPR ForwardIter begin() const noexcept { return ForwardIter{ const_cast<int*>(buff) }; }
 	HAMON_CXX11_CONSTEXPR SentinelType end()  const noexcept { return SentinelType{ const_cast<int*>(buff) + 8 }; }
 };
-static_assert(hamon::ranges::view_t<BoolConvertibleComparison>::value, "");
+static_assert(hamon::ranges::view<BoolConvertibleComparison>, "");
 
 #if 0
 template <typename T>

@@ -40,7 +40,7 @@ void test0()
 	static_assert(hamon::ranges::contiguous_range<SV>          == false, "");
 	static_assert(hamon::ranges::common_range<SV>              == hamon::ranges::common_range<View>, "");
 	static_assert(hamon::ranges::viewable_range_t<SV>::value            == true, "");
-	static_assert(hamon::ranges::view_t<SV>::value                      == true, "");
+	static_assert(hamon::ranges::view<SV>                      == true, "");
 	static_assert(hamon::ranges::constant_range<SV>            == false, "");
 
 	using IV = hamon::ranges::range_reference_t<SV>;
@@ -58,7 +58,7 @@ void test0()
 	static_assert(hamon::ranges::contiguous_range<IV>          == hamon::ranges::contiguous_range<View>, "");
 	static_assert(hamon::ranges::common_range<IV>              == true, "");
 	static_assert(hamon::ranges::viewable_range_t<IV>::value            == true, "");
-	static_assert(hamon::ranges::view_t<IV>::value                      == true, "");
+	static_assert(hamon::ranges::view<IV>                      == true, "");
 	static_assert(hamon::ranges::constant_range<IV>            == false, "");
 }
 

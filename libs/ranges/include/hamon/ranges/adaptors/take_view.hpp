@@ -96,7 +96,7 @@ namespace ranges {
 	-> decltype(__VA_ARGS__)                \
 	{ return __VA_ARGS__; }
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::view, V)>
+template <HAMON_CONSTRAINT(hamon::ranges::view, V)>
 class take_view : public hamon::ranges::view_interface<take_view<V>>
 {
 private:

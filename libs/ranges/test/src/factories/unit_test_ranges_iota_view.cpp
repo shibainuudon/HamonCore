@@ -847,7 +847,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	auto v = hamon::views::iota(4);
 
 	using R = decltype(v);
-	static_assert( ranges::view_t<R>::value, "");
+	static_assert( ranges::view<R>, "");
 	static_assert( ranges::range<R>, "");
 	static_assert(!ranges::sized_range<R>, "");
 	static_assert(!ranges::common_range<R>, "");
@@ -888,7 +888,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	auto v = hamon::views::iota(10, 15);
 
 	using R = decltype(v);
-	static_assert( ranges::view_t<R>::value, "");
+	static_assert( ranges::view<R>, "");
 	static_assert( ranges::range<R>, "");
 	static_assert( ranges::sized_range<R>, "");
 	static_assert( ranges::common_range<R>, "");

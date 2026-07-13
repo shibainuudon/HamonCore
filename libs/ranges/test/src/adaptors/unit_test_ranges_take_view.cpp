@@ -104,12 +104,12 @@ template <typename T> using NotSimpleForwardView       = NotSimpleView<T, forwar
 template <typename T> using NotSimpleInputView         = NotSimpleView<T, input_iterator_wrapper<T>,         input_iterator_wrapper<T const>>;
 template <typename T> using NotSimpleOutputView        = NotSimpleView<T, output_iterator_wrapper<T>,        output_iterator_wrapper<T const>>;
 
-static_assert(hamon::ranges::view_t<NotSimpleContiguousView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleRandomAccessView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleBidirectionalView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleForwardView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleInputView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleOutputView<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleContiguousView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleRandomAccessView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleBidirectionalView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleForwardView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleInputView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleOutputView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleContiguousView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleRandomAccessView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleBidirectionalView<int>>::value, "");
@@ -151,12 +151,12 @@ template <typename T> using NotSimpleForwardSizedView       = NotSimpleSizedView
 template <typename T> using NotSimpleInputSizedView         = NotSimpleSizedView<T, input_iterator_wrapper<T>,         input_iterator_wrapper<T const>>;
 template <typename T> using NotSimpleOutputSizedView        = NotSimpleSizedView<T, output_iterator_wrapper<T>,        output_iterator_wrapper<T const>>;
 
-static_assert(hamon::ranges::view_t<NotSimpleContiguousSizedView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleRandomAccessSizedView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleBidirectionalSizedView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleForwardSizedView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleInputSizedView<int>>::value, "");
-static_assert(hamon::ranges::view_t<NotSimpleOutputSizedView<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleContiguousSizedView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleRandomAccessSizedView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleBidirectionalSizedView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleForwardSizedView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleInputSizedView<int>>, "");
+static_assert(hamon::ranges::view<NotSimpleOutputSizedView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleContiguousSizedView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleRandomAccessSizedView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleBidirectionalSizedView<int>>::value, "");
@@ -196,7 +196,7 @@ struct CountedView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return hamon::default_sentinel_t{}; }
 };
 
-static_assert(hamon::ranges::view_t<CountedView<int>>::value, "");
+static_assert(hamon::ranges::view<CountedView<int>>, "");
 static_assert(!hamon::ranges::sized_range<CountedView<int>>, "");
 static_assert(hamon::sized_sentinel_for<hamon::ranges::sentinel_t<CountedView<int>>, hamon::ranges::iterator_t<CountedView<int>>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<CountedView<int>>::value, "");
@@ -221,7 +221,7 @@ struct UnreachableView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return hamon::unreachable_sentinel_t{}; }
 };
 
-static_assert(hamon::ranges::view_t<UnreachableView<int>>::value, "");
+static_assert(hamon::ranges::view<UnreachableView<int>>, "");
 static_assert(!hamon::ranges::sized_range<UnreachableView<int>>, "");
 static_assert(hamon::ranges::contiguous_range<UnreachableView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<UnreachableView<int>>::value, "");
@@ -251,7 +251,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::common_range<TV> ==
 		(hamon::ranges::sized_range<V> && hamon::ranges::random_access_range<V>), "");
 	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");
-	static_assert(hamon::ranges::view_t<TV>::value == true, "");
+	static_assert(hamon::ranges::view<TV> == true, "");
 	static_assert(hamon::ranges::constant_range<TV> == false, "");
 
 	static_assert(hamon::is_default_constructible<TV>::value == hamon::is_default_constructible<V>::value, "");

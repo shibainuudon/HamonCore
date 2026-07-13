@@ -151,7 +151,7 @@ template <typename V, typename F, hamon::size_t N,
 	typename = hamon::enable_if_t<
 		hamon::ranges::forward_range<V> &&
 		hamon::move_constructible<F> &&
-		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::view<V> &&
 		(N > 0) &&
 		hamon::is_object<F>::value &&
 		hamon::ranges::detail::regular_invocable_with_repeated_type_t<

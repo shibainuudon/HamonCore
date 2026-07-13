@@ -85,7 +85,7 @@ namespace ranges {
 
 // 26.7.12.2 Class template drop_view[range.drop.view]
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::view, V)>
+template <HAMON_CONSTRAINT(hamon::ranges::view, V)>
 class drop_view : public hamon::ranges::view_interface<drop_view<V>>
 {
 public:

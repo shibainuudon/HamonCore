@@ -56,7 +56,7 @@ struct all_fn : public hamon::ranges::range_adaptor_closure<all_fn>
 {
 private:
 	// [range.all.general]/2.1
-	template <typename T, typename = hamon::enable_if_t<ranges::view_t<hamon::decay_t<T>>::value>>
+	template <typename T, typename = hamon::enable_if_t<ranges::view<hamon::decay_t<T>>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

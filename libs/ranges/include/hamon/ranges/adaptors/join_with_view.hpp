@@ -198,9 +198,9 @@ template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
 		hamon::ranges::forward_range<Pattern> &&
-		hamon::ranges::view<V>::value &&
+		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>> &&
-		hamon::ranges::view<Pattern>::value &&
+		hamon::ranges::view<Pattern> &&
 		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>::value
 	>>
 #endif

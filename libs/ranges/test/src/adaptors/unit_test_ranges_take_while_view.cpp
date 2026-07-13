@@ -74,7 +74,7 @@ struct NotSimpleView1 : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR T*     end()         noexcept { return nullptr; }
 	HAMON_CXX11_CONSTEXPR Empty* end()   const noexcept { return nullptr; }
 };
-static_assert(hamon::ranges::view_t<NotSimpleView1<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleView1<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleView1<int>>::value, "");
 
 template <typename T>
@@ -93,7 +93,7 @@ struct NotSimpleView2 : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR T*       end()         noexcept { return m_last; }
 	HAMON_CXX11_CONSTEXPR T const* end()   const noexcept { return m_last; }
 };
-static_assert(hamon::ranges::view_t<NotSimpleView2<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleView2<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleView2<int>>::value, "");
 
 template <typename T>
@@ -117,7 +117,7 @@ struct NotSimpleForwardView : hamon::ranges::view_base
 	HAMON_CXX14_CONSTEXPR sentinel       end()         noexcept { return sentinel{iterator{m_last}}; }
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return const_sentinel{const_iterator{m_last}}; }
 };
-static_assert(hamon::ranges::view_t<NotSimpleForwardView<int>>::value, "");
+static_assert(hamon::ranges::view<NotSimpleForwardView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleForwardView<int>>::value, "");
 
 template <typename T>
@@ -129,7 +129,7 @@ struct MoveOnlyView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR T* begin() const noexcept { return nullptr; }
 	HAMON_CXX11_CONSTEXPR T* end()   const noexcept { return nullptr; }
 };
-static_assert(hamon::ranges::view_t<MoveOnlyView<int>>::value, "");
+static_assert(hamon::ranges::view<MoveOnlyView<int>>, "");
 static_assert(!hamon::copyable<MoveOnlyView<int>>, "");
 
 template <typename T, typename Pred, typename = void>
@@ -175,7 +175,7 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(hamon::ranges::contiguous_range<TWV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<TWV> == false, "");
 	static_assert(hamon::ranges::viewable_range_t<TWV>::value == true, "");
-	static_assert(hamon::ranges::view_t<TWV>::value == true, "");
+	static_assert(hamon::ranges::view<TWV> == true, "");
 	static_assert(hamon::ranges::constant_range<TWV> == false, "");
 
 	static_assert(hamon::is_default_constructible<TWV>::value ==

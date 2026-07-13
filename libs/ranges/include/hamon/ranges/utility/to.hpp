@@ -264,7 +264,7 @@ constexpr auto container_append(Container& c)
 
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::ranges::not_view_t<C>::value &&
+		hamon::ranges::not_view<C> &&
 		hamon::ranges::input_range<R>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 C to(R&& r, Args&&... args);	// to_implから再帰的に呼び出すため、前方宣言が必要
@@ -409,7 +409,7 @@ struct to_fn
 
 }	// namespace detail
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::not_view, C), typename... Args>
+template <HAMON_CONSTRAINT(hamon::ranges::not_view, C), typename... Args>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 auto to(Args&&... args)
 #if !defined(HAMON_HAS_CXX14_RETURN_TYPE_DEDUCTION)

@@ -22,7 +22,7 @@ void RangesConceptTest()
 {
 	using Array = hamon::array<T, N>;
 
-	static_assert(!hamon::ranges::view_t<Array>::value, "");
+	static_assert(!hamon::ranges::view<Array>, "");
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<Array>, typename Array::iterator>, "");
 	static_assert( hamon::ranges::common_range<Array>, "");
 	static_assert( hamon::ranges::random_access_range<Array>, "");
@@ -31,7 +31,7 @@ void RangesConceptTest()
 	static_assert(!hamon::ranges::borrowed_range<Array>, "");
 	static_assert( hamon::ranges::viewable_range_t<Array>::value, "");
 
-	static_assert(!hamon::ranges::view_t<Array const>::value, "");
+	static_assert(!hamon::ranges::view<Array const>, "");
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<Array const>, typename Array::const_iterator>, "");
 	static_assert( hamon::ranges::common_range<Array const>, "");
 	static_assert( hamon::ranges::random_access_range<Array const>, "");

@@ -37,7 +37,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using RV = hamon::ranges::lazy_split_view<V, P>;
 		using I = hamon::ranges::iterator_t<RV>;
 		using ValueType = typename I::value_type;
-		static_assert(hamon::ranges::view_t<ValueType>::value, "");
+		static_assert(hamon::ranges::view<ValueType>, "");
 		static_assert(hamon::is_default_constructible<ValueType>::value, "");
 		static_assert(hamon::is_constructible<ValueType, I>::value, "");
 		static_assert(!hamon::is_constructible<ValueType, int>::value, "");
@@ -56,7 +56,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using RV = hamon::ranges::lazy_split_view<V, P>;
 		using I = hamon::ranges::iterator_t<RV>;
 		using ValueType = typename I::value_type;
-		static_assert(hamon::ranges::view_t<ValueType>::value, "");
+		static_assert(hamon::ranges::view<ValueType>, "");
 		static_assert(hamon::is_default_constructible<ValueType>::value, "");
 		static_assert(hamon::is_constructible<ValueType, I>::value, "");
 		static_assert(!hamon::is_constructible<ValueType, int>::value, "");
