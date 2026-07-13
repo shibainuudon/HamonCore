@@ -82,7 +82,7 @@ private:
 	template <typename I2, typename R = typename I2::iterator_category>
 	static auto cat(hamon::detail::overload_priority<4>) -> R;
 	
-	template <typename I2, typename = hamon::enable_if_t<hamon::detail::cpp17_random_access_iterator_t<I2>::value>>
+	template <typename I2, typename = hamon::enable_if_t<hamon::detail::cpp17_random_access_iterator<I2>>>
 	static auto cat(hamon::detail::overload_priority<3>) -> hamon::random_access_iterator_tag;
 
 	template <typename I2, typename = hamon::enable_if_t<hamon::detail::cpp17_bidirectional_iterator<I2>>>

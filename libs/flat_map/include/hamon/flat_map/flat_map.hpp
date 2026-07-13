@@ -93,10 +93,10 @@ class flat_map
 {
 private:
 	// [flat.map.overview]/7
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<typename KeyContainer::iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<typename KeyContainer::iterator>, "");
 	static_assert(noexcept(hamon::declval<KeyContainer>().size()), "");
 	static_assert(noexcept(hamon::declval<KeyContainer>().max_size()), "");
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<typename MappedContainer::iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<typename MappedContainer::iterator>, "");
 	static_assert(noexcept(hamon::declval<MappedContainer>().size()), "");
 	static_assert(noexcept(hamon::declval<MappedContainer>().max_size()), "");
 

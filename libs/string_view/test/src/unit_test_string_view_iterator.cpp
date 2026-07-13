@@ -211,7 +211,7 @@ TYPED_TEST(StringViewTest, IteratorTest)
 	using string_view = hamon::basic_string_view<CharT>;
 
 	using const_iterator = typename string_view::const_iterator;
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "[string.view.iterators]/1");
+	static_assert(hamon::detail::cpp17_random_access_iterator<const_iterator>, "[string.view.iterators]/1");
 	static_assert(hamon::contiguous_iterator<const_iterator>, "[string.view.iterators]/1");
 
 	using iterator_value_type = hamon::iter_value_t<const_iterator>;

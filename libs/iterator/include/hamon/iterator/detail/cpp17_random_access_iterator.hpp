@@ -29,7 +29,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept cpp17_random_access_iterator =
+HAMON_CONCEPT_OR_BOOL cpp17_random_access_iterator =
 	cpp17_bidirectional_iterator<I> &&
 	hamon::totally_ordered<I> &&
 	requires(I i, typename hamon::incrementable_traits<I>::difference_type n)
@@ -42,9 +42,6 @@ concept cpp17_random_access_iterator =
 		{ i -  i } -> hamon::same_as<decltype(n)>;
 		{  i[n]  } -> hamon::convertible_to<hamon::iter_reference_t<I>>;
 	};
-
-template <typename T>
-using cpp17_random_access_iterator_t = hamon::bool_constant<cpp17_random_access_iterator<T>>;
 
 #else
 
@@ -88,11 +85,8 @@ public:
 }	// namespace cpp17_random_access_iterator_detail
 
 template <typename I>
-using cpp17_random_access_iterator =
-	typename cpp17_random_access_iterator_detail::cpp17_random_access_iterator_impl<I>::type;
-
-template <typename T>
-using cpp17_random_access_iterator_t = cpp17_random_access_iterator<T>;
+HAMON_CONCEPT_OR_BOOL cpp17_random_access_iterator =
+	cpp17_random_access_iterator_detail::cpp17_random_access_iterator_impl<I>::type::value;
 
 #endif
 

@@ -27,7 +27,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 	using iterator      = typename Deque::iterator;
 	using const_iterator = typename Deque::const_iterator;
 
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<iterator>, "");
 	static_assert(!hamon::contiguous_iterator<iterator>, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<iterator>>::value, "");
 	static_assert(hamon::is_same<T&, hamon::iter_reference_t<iterator>>::value, "");
@@ -60,7 +60,7 @@ HAMON_CXX20_CONSTEXPR bool test()
 	static_assert(hamon::is_same<hamon::strong_ordering, decltype(hamon::declval<iterator const&>() <=> (hamon::declval<iterator const&>()))>::value, "");
 #endif
 
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<const_iterator>, "");
 	static_assert(!hamon::contiguous_iterator<const_iterator>, "");
 	static_assert(hamon::is_same<T, hamon::iter_value_t<const_iterator>>::value, "");
 	static_assert(hamon::is_same<T const&, hamon::iter_reference_t<const_iterator>>::value, "");

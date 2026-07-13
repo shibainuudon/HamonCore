@@ -137,7 +137,7 @@ void container_requirements()
 
 	// operator <=>
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	if constexpr (hamon::detail::cpp17_random_access_iterator_t<iterator>::value)
+	if constexpr (hamon::detail::cpp17_random_access_iterator<iterator>)
 	{
 		X b{};
 		{

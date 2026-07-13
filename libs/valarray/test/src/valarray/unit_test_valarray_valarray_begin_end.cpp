@@ -47,8 +47,8 @@ HAMON_CXX20_CONSTEXPR bool test()
 		using It = decltype(begin(v));
 		using CIt = decltype(begin(cv));
 
-		static_assert(hamon::detail::cpp17_random_access_iterator_t<It>::value, "");
-		static_assert(hamon::detail::cpp17_random_access_iterator_t<CIt>::value, "");
+		static_assert(hamon::detail::cpp17_random_access_iterator<It>, "");
+		static_assert(hamon::detail::cpp17_random_access_iterator<CIt>, "");
 		static_assert(hamon::contiguous_iterator<It>, "");
 		static_assert(hamon::contiguous_iterator<CIt>, "");
 		static_assert(hamon::is_same<hamon::iter_value_t<It>, T>::value, "");

@@ -59,10 +59,10 @@ HAMON_CXX20_CONSTEXPR bool test()
 	static_assert(hamon::is_integral<size_type>::value, "");
 	static_assert(hamon::is_signed<difference_type>::value, "");
 	static_assert(hamon::is_integral<difference_type>::value, "");
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<iterator>, "");
 	static_assert(!hamon::contiguous_iterator<iterator>, "");
 	static_assert(hamon::is_same<value_type&, hamon::iter_reference_t<iterator>>::value, "");
-	static_assert(hamon::detail::cpp17_random_access_iterator_t<const_iterator>::value, "");
+	static_assert(hamon::detail::cpp17_random_access_iterator<const_iterator>, "");
 	static_assert(!hamon::contiguous_iterator<const_iterator>, "");
 	static_assert(hamon::is_same<value_type const&, hamon::iter_reference_t<const_iterator>>::value, "");
 
