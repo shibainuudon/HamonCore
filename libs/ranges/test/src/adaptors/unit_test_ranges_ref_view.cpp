@@ -60,7 +60,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::forward_range_t<RV>::value == hamon::ranges::forward_range_t<R>::value, "");
 	static_assert( hamon::ranges::bidirectional_range<RV> == hamon::ranges::bidirectional_range<R>, "");
 	static_assert( hamon::ranges::random_access_range_t<RV>::value == hamon::ranges::random_access_range_t<R>::value, "");
-	static_assert( hamon::ranges::contiguous_range_t<RV>::value == hamon::ranges::contiguous_range_t<R>::value, "");
+	static_assert( hamon::ranges::contiguous_range<RV> == hamon::ranges::contiguous_range<R>, "");
 	static_assert( hamon::ranges::common_range<RV> == hamon::ranges::common_range<R>, "");
 	static_assert( hamon::ranges::viewable_range_t<RV>::value, "");
 	static_assert( hamon::ranges::view_t<RV>::value, "");
@@ -74,7 +74,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range_t<R>::value), "");
 	static_assert(has_size<RV>::value == hamon::ranges::sized_range_t<R>::value, "");
 	static_assert(has_reserve_hint<RV>::value == hamon::ranges::approximately_sized_range<R>, "");
-	static_assert(has_data<RV>::value == hamon::ranges::contiguous_range_t<R>::value, "");
+	static_assert(has_data<RV>::value == hamon::ranges::contiguous_range<R>, "");
 
 	return true;
 }

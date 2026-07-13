@@ -200,7 +200,7 @@ public:
 		return hamon::ranges::reserve_hint(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::contiguous_range, R2, R)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::contiguous_range, R2, R)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto data()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::data(m_r))	// noexcept as an extension
@@ -209,7 +209,7 @@ public:
 		return hamon::ranges::data(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::contiguous_range, R2, R const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::contiguous_range, R2, R const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto data() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::data(m_r))	// noexcept as an extension

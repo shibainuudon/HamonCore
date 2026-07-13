@@ -37,7 +37,7 @@ using std::ranges::contiguous_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept contiguous_range =
+HAMON_CONCEPT_OR_BOOL contiguous_range =
 	ranges::random_access_range<T> &&
 	hamon::contiguous_iterator<ranges::iterator_t<T>> &&
 	requires(T& t)
@@ -74,17 +74,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using contiguous_range =
-	typename ranges::detail::contiguous_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL contiguous_range =
+	ranges::detail::contiguous_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using contiguous_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::contiguous_range<T>>;
-#else
-	hamon::ranges::contiguous_range<T>;
 #endif
 
 }	// namespace ranges

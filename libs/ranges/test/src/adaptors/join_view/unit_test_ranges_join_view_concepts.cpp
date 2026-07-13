@@ -90,7 +90,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		 hamon::ranges::common_range<IV>), "");
 #endif
 	static_assert(hamon::ranges::random_access_range_t<JV>::value == false, "");
-	static_assert(hamon::ranges::contiguous_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::contiguous_range<JV> == false, "");
 	static_assert(hamon::ranges::common_range<JV> ==
 		(hamon::ranges::forward_range_t<V>::value &&
 		 hamon::ranges::forward_range_t<IV>::value &&

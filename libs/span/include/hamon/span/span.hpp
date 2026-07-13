@@ -280,7 +280,7 @@ public:
 	template <typename R,
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
-			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
+			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
@@ -299,7 +299,7 @@ public:
 	template <typename R,
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
-			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
+			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
@@ -317,7 +317,7 @@ public:
 	template <typename R,
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
-			hamon::ranges::contiguous_range_t<R>::value &&	// [span.cons]/14.1
+			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
 			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
@@ -616,7 +616,7 @@ span(std::array<T, N> const&)
 -> span<T const, N>;
 #endif
 
-template <HAMON_CONSTRAINED_PARAM(ranges::contiguous_range, Range)>	// [span.deduct]/2
+template <HAMON_CONSTRAINT(ranges::contiguous_range, Range)>	// [span.deduct]/2
 span(Range&&)
 -> span<hamon::remove_reference_t<ranges::range_reference_t<Range>>>;
 
@@ -707,7 +707,7 @@ make_span(std::array<T, N> const& a)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(hamon::span<T const, N>(a))
 #endif
 
-template <HAMON_CONSTRAINED_PARAM(ranges::contiguous_range, Range)>
+template <HAMON_CONSTRAINT(ranges::contiguous_range, Range)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_span(Range&& r)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(

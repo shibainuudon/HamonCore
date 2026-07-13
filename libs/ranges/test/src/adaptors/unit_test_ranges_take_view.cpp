@@ -223,7 +223,7 @@ struct UnreachableView : hamon::ranges::view_base
 
 static_assert(hamon::ranges::view_t<UnreachableView<int>>::value, "");
 static_assert(!hamon::ranges::sized_range_t<UnreachableView<int>>::value, "");
-static_assert(hamon::ranges::contiguous_range_t<UnreachableView<int>>::value, "");
+static_assert(hamon::ranges::contiguous_range<UnreachableView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<UnreachableView<int>>::value, "");
 static_assert(!hamon::copyable<UnreachableView<int>>, "");
 
@@ -247,7 +247,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::forward_range_t<TV>::value == hamon::ranges::forward_range_t<V>::value, "");
 	static_assert(hamon::ranges::bidirectional_range<TV> == hamon::ranges::bidirectional_range<V>, "");
 	static_assert(hamon::ranges::random_access_range_t<TV>::value == hamon::ranges::random_access_range_t<V>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<TV>::value == hamon::ranges::contiguous_range_t<V>::value, "");
+	static_assert(hamon::ranges::contiguous_range<TV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<TV> ==
 		(hamon::ranges::sized_range_t<V>::value && hamon::ranges::random_access_range_t<V>::value), "");
 	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");

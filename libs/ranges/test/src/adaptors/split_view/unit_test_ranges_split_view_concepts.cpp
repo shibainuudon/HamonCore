@@ -37,7 +37,7 @@ void test0()
 	static_assert(hamon::ranges::forward_range_t<SV>::value             == true, "");
 	static_assert(hamon::ranges::bidirectional_range<SV>       == false, "");
 	static_assert(hamon::ranges::random_access_range_t<SV>::value       == false, "");
-	static_assert(hamon::ranges::contiguous_range_t<SV>::value          == false, "");
+	static_assert(hamon::ranges::contiguous_range<SV>          == false, "");
 	static_assert(hamon::ranges::common_range<SV>              == hamon::ranges::common_range<View>, "");
 	static_assert(hamon::ranges::viewable_range_t<SV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<SV>::value                      == true, "");
@@ -55,7 +55,7 @@ void test0()
 	static_assert(hamon::ranges::forward_range_t<IV>::value             == hamon::ranges::forward_range_t<View>::value, "");
 	static_assert(hamon::ranges::bidirectional_range<IV>       == hamon::ranges::bidirectional_range<View>, "");
 	static_assert(hamon::ranges::random_access_range_t<IV>::value       == hamon::ranges::random_access_range_t<View>::value, "");
-	static_assert(hamon::ranges::contiguous_range_t<IV>::value          == hamon::ranges::contiguous_range_t<View>::value, "");
+	static_assert(hamon::ranges::contiguous_range<IV>          == hamon::ranges::contiguous_range<View>, "");
 	static_assert(hamon::ranges::common_range<IV>              == true, "");
 	static_assert(hamon::ranges::viewable_range_t<IV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<IV>::value                      == true, "");
