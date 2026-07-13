@@ -24,7 +24,7 @@ using std::ranges::cend;
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/const_sentinel.hpp>
 #include <hamon/config.hpp>
 
@@ -41,7 +41,7 @@ namespace detail {
 // 25.3.5 ranges::cend[range.access.cend]
 struct cend_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.cend]/1.1
+	template <HAMON_CONSTRAINT(maybe_borrowed_range, T)>	// [range.access.cend]/1.1
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.access.cend]/1.2
 			hamon::const_sentinel<decltype(hamon::ranges::end(hamon::ranges::detail::possibly_const_range(t)))>(

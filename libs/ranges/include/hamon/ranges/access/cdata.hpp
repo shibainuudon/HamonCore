@@ -24,7 +24,7 @@ using std::ranges::cdata;
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/data.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -44,7 +44,7 @@ constexpr const T* as_const_pointer(const T* p) noexcept { return p; }
 // 25.3.15 ranges::cdata[range.prim.cdata]
 struct cdata_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.prim.cdata]/1.1
+	template <HAMON_CONSTRAINT(maybe_borrowed_range, T)>	// [range.prim.cdata]/1.1
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.prim.cdata]/1.2
 			as_const_pointer(hamon::ranges::data(possibly_const_range(t))))

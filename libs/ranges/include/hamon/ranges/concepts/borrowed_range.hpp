@@ -14,7 +14,6 @@
 #if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #endif
 
 namespace hamon
@@ -38,8 +37,8 @@ concept borrowed_range =
 #else
 
 template <typename T>
-using borrowed_range = hamon::conjunction<
-	ranges::range<T>,
+using borrowed_range = hamon::bool_constant<
+	ranges::range<T>::value &&
 	detail::maybe_borrowed_range<T>
 >;
 

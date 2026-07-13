@@ -26,6 +26,7 @@ using std::ranges::data;
 #include <hamon/ranges/detail/begin_data.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/to_address.hpp>
@@ -66,7 +67,7 @@ private:
 	impl(T&&, hamon::detail::overload_priority<0>) = delete;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.prim.data]/2.1
+	template <HAMON_CONSTRAINT(maybe_borrowed_range, T)>	// [range.prim.data]/2.1
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(hamon::forward<T>(t), hamon::detail::overload_priority<2>{}))

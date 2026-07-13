@@ -25,6 +25,7 @@ using std::ranges::begin;
 #include <hamon/ranges/detail/has_member_begin.hpp>
 #include <hamon/ranges/detail/has_adl_begin.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -79,7 +80,7 @@ private:
 	impl(T&&, hamon::detail::overload_priority<0>) = delete;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>		// [range.access.begin]/2.1
+	template <HAMON_CONSTRAINT(maybe_borrowed_range, T)>		// [range.access.begin]/2.1
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator() (T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			impl(hamon::forward<T>(t), hamon::detail::overload_priority<3>{}))

@@ -25,7 +25,7 @@ using std::ranges::crbegin;
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/possibly_const_range.hpp>
 #include <hamon/ranges/rbegin.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/const_iterator.hpp>
 #include <hamon/config.hpp>
 
@@ -42,7 +42,7 @@ namespace detail {
 // 25.3.8 ranges::crbegin[range.access.crbegin]
 struct crbegin_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(maybe_borrowed_range, T)>	// [range.access.crbegin]/1.1
+	template <HAMON_CONSTRAINT(maybe_borrowed_range, T)>	// [range.access.crbegin]/1.1
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto operator()(T&& t) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(							// [range.access.crbegin]/1.2
 			hamon::const_iterator<decltype(hamon::ranges::rbegin(hamon::ranges::detail::possibly_const_range(t)))>(
