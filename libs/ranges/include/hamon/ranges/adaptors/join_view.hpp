@@ -165,7 +165,7 @@ private:
 			hamon::conditional_t<
 				hamon::derived_from<OUTERC, hamon::bidirectional_iterator_tag> &&
 				hamon::derived_from<INNERC, hamon::bidirectional_iterator_tag> &&
-				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<Base>>::value,
+				hamon::ranges::common_range<hamon::ranges::range_reference_t<Base>>,
 					hamon::bidirectional_iterator_tag,	// [range.join.iterator]/2.2
 			hamon::conditional_t<
 				hamon::derived_from<OUTERC, hamon::forward_iterator_tag> &&
@@ -324,7 +324,7 @@ private:
 			ref_is_glvalue<Base>::value &&
 			hamon::ranges::bidirectional_range<Base> &&
 			hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<Base>> &&
-			hamon::ranges::common_range_t<hamon::ranges::range_reference_t<Base>>::value,
+			hamon::ranges::common_range<hamon::ranges::range_reference_t<Base>>,
 				hamon::bidirectional_iterator_tag,	// [range.join.iterator]/1.1
 			hamon::conditional_t<
 			ref_is_glvalue<Base>::value &&
@@ -450,7 +450,7 @@ private:
 				ref_is_glvalue<B2>::value &&
 				hamon::ranges::bidirectional_range<B2> &&
 				hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<B2>> &&
-				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<B2>>::value>>
+				hamon::ranges::common_range<hamon::ranges::range_reference_t<B2>>>>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 		{
 			// [range.join.iterator]/16
@@ -473,7 +473,7 @@ private:
 				ref_is_glvalue<B2>::value &&
 				hamon::ranges::bidirectional_range<B2> &&
 				hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<B2>> &&
-				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<B2>>::value>>
+				hamon::ranges::common_range<hamon::ranges::range_reference_t<B2>>>>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 		{
 			// [range.join.iterator]/17
@@ -701,8 +701,8 @@ private:
 			hamon::ranges::forward_range_t<V2>::value &&
 			hamon::is_reference<InnerRng>::value &&
 			hamon::ranges::forward_range_t<InnerRng>::value &&
-			hamon::ranges::common_range_t<V2>::value &&
-			hamon::ranges::common_range_t<InnerRng>::value
+			hamon::ranges::common_range<V2> &&
+			hamon::ranges::common_range<InnerRng>
 		>,
 		bool UseConst = hamon::ranges::detail::simple_view_t<V2>::value>
 	HAMON_CXX14_CONSTEXPR iterator<UseConst>
@@ -722,8 +722,8 @@ private:
 	template <typename V2 = V const,
 		typename = hamon::enable_if_t<
 			hamon::ranges::forward_range_t<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::common_range_t<V2>::value &&
-			hamon::ranges::common_range_t<hamon::ranges::range_reference_t<V2>>::value>>
+			hamon::ranges::common_range<V2> &&
+			hamon::ranges::common_range<hamon::ranges::range_reference_t<V2>>>>
 	HAMON_CXX11_CONSTEXPR iterator<true>
 	end_const_impl(hamon::detail::overload_priority<1>) const
 	{

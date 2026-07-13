@@ -24,7 +24,7 @@ void RangesConceptTest()
 
 	static_assert(!hamon::ranges::view_t<Array>::value, "");
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<Array>, typename Array::iterator>, "");
-	static_assert( hamon::ranges::common_range_t<Array>::value, "");
+	static_assert( hamon::ranges::common_range<Array>, "");
 	static_assert( hamon::ranges::random_access_range_t<Array>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<Array>::value, "");
 	static_assert( hamon::ranges::sized_range_t<Array>::value, "");
@@ -33,7 +33,7 @@ void RangesConceptTest()
 
 	static_assert(!hamon::ranges::view_t<Array const>::value, "");
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<Array const>, typename Array::const_iterator>, "");
-	static_assert( hamon::ranges::common_range_t<Array const>::value, "");
+	static_assert( hamon::ranges::common_range<Array const>, "");
 	static_assert( hamon::ranges::random_access_range_t<Array const>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<Array const>::value, "");
 	static_assert( hamon::ranges::sized_range_t<Array const>::value, "");

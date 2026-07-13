@@ -192,7 +192,7 @@ struct container_common_constructible_impl
 {
 private:
 	template <typename C2, typename R2, typename... Args2,
-		typename = hamon::enable_if_t<hamon::ranges::common_range_t<R2>::value>,
+		typename = hamon::enable_if_t<hamon::ranges::common_range<R2>>,
 		typename Cat = typename hamon::iterator_traits<hamon::ranges::iterator_t<R2>>::iterator_category,
 		typename = hamon::enable_if_t<hamon::derived_from<Cat, hamon::input_iterator_tag>>,
 		typename = hamon::enable_if_t<hamon::constructible_from<C2, hamon::ranges::iterator_t<R2>, hamon::ranges::sentinel_t<R2>, Args2...>>

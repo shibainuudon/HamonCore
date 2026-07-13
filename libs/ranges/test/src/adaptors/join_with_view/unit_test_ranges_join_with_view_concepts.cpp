@@ -42,15 +42,15 @@ void test0()
 		(hamon::ranges::bidirectional_range<V> &&
 		 hamon::ranges::bidirectional_range<IV> &&
 		 hamon::ranges::bidirectional_range<Pattern> &&
-		 hamon::ranges::common_range_t<IV>::value &&
-		 hamon::ranges::common_range_t<Pattern>::value), "");
+		 hamon::ranges::common_range<IV> &&
+		 hamon::ranges::common_range<Pattern>), "");
 	static_assert(hamon::ranges::random_access_range_t<JWV>::value       == false, "");
 	static_assert(hamon::ranges::contiguous_range_t<JWV>::value          == false, "");
-	static_assert(hamon::ranges::common_range_t<JWV>::value              ==
+	static_assert(hamon::ranges::common_range<JWV>              ==
 		(hamon::ranges::forward_range_t<V>::value &&
 		 hamon::ranges::forward_range_t<IV>::value &&
-		 hamon::ranges::common_range_t<V>::value &&
-		 hamon::ranges::common_range_t<IV>::value), "");
+		 hamon::ranges::common_range<V> &&
+		 hamon::ranges::common_range<IV>), "");
 	static_assert(hamon::ranges::viewable_range_t<JWV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<JWV>::value                      == true, "");
 	static_assert(hamon::ranges::constant_range_t<JWV>::value            == false, "");
@@ -149,7 +149,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::bidirectional_range<JWV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<JWV>::value, "");
-		static_assert(!hamon::ranges::common_range_t<JWV>::value, "");
+		static_assert(!hamon::ranges::common_range<JWV>, "");
 		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
 		static_assert( hamon::ranges::view_t<JWV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<JWV>::value, "");
@@ -169,7 +169,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::bidirectional_range<JWV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<JWV>::value, "");
-		static_assert(!hamon::ranges::common_range_t<JWV>::value, "");
+		static_assert(!hamon::ranges::common_range<JWV>, "");
 		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
 		static_assert( hamon::ranges::view_t<JWV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<JWV>::value, "");
@@ -189,7 +189,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert( hamon::ranges::bidirectional_range<JWV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<JWV>::value, "");
-		static_assert(!hamon::ranges::common_range_t<JWV>::value, "");
+		static_assert(!hamon::ranges::common_range<JWV>, "");
 		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
 		static_assert( hamon::ranges::view_t<JWV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<JWV>::value, "");
@@ -209,7 +209,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::bidirectional_range<JWV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<JWV>::value, "");
-		static_assert( hamon::ranges::common_range_t<JWV>::value, "");
+		static_assert( hamon::ranges::common_range<JWV>, "");
 		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
 		static_assert( hamon::ranges::view_t<JWV>::value, "");
 		static_assert(!hamon::ranges::constant_range_t<JWV>::value, "");

@@ -150,11 +150,11 @@ template <typename... Rs>
 using zip_is_common_impl = hamon::disjunction<
 	hamon::conjunction<
 		hamon::bool_constant<sizeof...(Rs) == 1>,
-		hamon::conjunction<hamon::ranges::common_range_t<Rs>...>
+		hamon::conjunction<hamon::bool_constant<hamon::ranges::common_range<Rs>>...>
 	>,
 	hamon::conjunction<
 		hamon::negation<hamon::conjunction<hamon::bool_constant<hamon::ranges::bidirectional_range<Rs>>...>>,
-		hamon::conjunction<hamon::ranges::common_range_t<Rs>...>
+		hamon::conjunction<hamon::bool_constant<hamon::ranges::common_range<Rs>>...>
 	>,
 	hamon::conjunction<
 		hamon::conjunction<hamon::ranges::random_access_range_t<Rs>...>,

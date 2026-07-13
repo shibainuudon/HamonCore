@@ -94,7 +94,7 @@ struct NotSimpleViewCommonRange : hamon::ranges::view_base
 static_assert(hamon::ranges::view_t<NotSimpleViewCommonRange<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleViewCommonRange<int>>::value, "");
 static_assert(hamon::ranges::range_t<NotSimpleViewCommonRange<int>>::value, "");
-static_assert(hamon::ranges::common_range_t<NotSimpleViewCommonRange<int>>::value, "");
+static_assert(hamon::ranges::common_range<NotSimpleViewCommonRange<int>>, "");
 
 template <typename T>
 struct ConstNotView : hamon::ranges::view_base
@@ -191,7 +191,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::bidirectional_range<ARV> == hamon::ranges::bidirectional_range<V>, "");
 	static_assert( hamon::ranges::random_access_range_t<ARV>::value == hamon::ranges::random_access_range_t<V>::value, "");
 	static_assert(!hamon::ranges::contiguous_range_t<ARV>::value, "");
-	static_assert( hamon::ranges::common_range_t<ARV>::value == hamon::ranges::common_range_t<V>::value, "");
+	static_assert( hamon::ranges::common_range<ARV> == hamon::ranges::common_range<V>, "");
 	static_assert( hamon::ranges::viewable_range_t<ARV>::value, "");
 	static_assert( hamon::ranges::view_t<ARV>::value, "");
 	static_assert(!hamon::ranges::constant_range_t<ARV>::value, "");
@@ -224,7 +224,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().begin()), hamon::move_iterator<I>>, "");
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-		if constexpr (hamon::ranges::common_range_t<V>::value)
+		if constexpr (hamon::ranges::common_range<V>)
 		{
 			static_assert(hamon::same_as<decltype(hamon::declval<ARV&>().end()), hamon::move_iterator<I>>, "");
 		}
@@ -249,7 +249,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().begin()), hamon::move_iterator<CI>>, "");
 
-		if constexpr (hamon::ranges::common_range_t<V const>::value)
+		if constexpr (hamon::ranges::common_range<V const>)
 		{
 			static_assert(hamon::same_as<decltype(hamon::declval<ARV const&>().end()), hamon::move_iterator<CI>>, "");
 		}

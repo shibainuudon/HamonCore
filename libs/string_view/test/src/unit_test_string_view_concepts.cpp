@@ -29,7 +29,7 @@ TYPED_TEST(StringViewTest, ConceptsTest)
 	using string_view = hamon::basic_string_view<TypeParam>;
 
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<string_view>, typename string_view::iterator>, "");
-	static_assert( hamon::ranges::common_range_t<string_view>::value, "");
+	static_assert( hamon::ranges::common_range<string_view>, "");
 	static_assert( hamon::ranges::random_access_range_t<string_view>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<string_view>::value, "");
 	static_assert( hamon::ranges::view_t<string_view>::value, "");
@@ -39,7 +39,7 @@ TYPED_TEST(StringViewTest, ConceptsTest)
 	static_assert( hamon::ranges::viewable_range_t<string_view>::value, "");
 
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<string_view const>, typename string_view::const_iterator>, "");
-	static_assert( hamon::ranges::common_range_t<string_view const>::value, "");
+	static_assert( hamon::ranges::common_range<string_view const>, "");
 	static_assert( hamon::ranges::random_access_range_t<string_view const>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<string_view const>::value, "");
 	static_assert(!hamon::ranges::view_t<string_view const>::value, "");

@@ -144,8 +144,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert( hamon::ranges::range_t<V const>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
+		static_assert(!hamon::ranges::common_range<V const>, "");
 
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using S  = hamon::ranges::sentinel_t<EV>;
@@ -164,8 +164,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert( hamon::ranges::range_t<V const>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
+		static_assert(!hamon::ranges::common_range<V const>, "");
 
 		using EV = hamon::ranges::elements_view<V, 0>;
 		using S  = hamon::ranges::sentinel_t<EV>;

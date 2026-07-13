@@ -248,7 +248,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINT_D(ranges::bidirectional_range, R, D),
-		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
+		typename = hamon::enable_if_t<ranges::common_range<R>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	back()
 	HAMON_NOEXCEPT_IF_EXPR(*ranges::prev(ranges::end(hamon::declval<R&>())))	// noexcept as an extension
@@ -259,7 +259,7 @@ public:
 	}
 
 	template <HAMON_CONSTRAINT_D(ranges::bidirectional_range, R, D const),
-		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
+		typename = hamon::enable_if_t<ranges::common_range<R>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	back() const
 	HAMON_NOEXCEPT_IF_EXPR(*ranges::prev(ranges::end(hamon::declval<R&>())))	// noexcept as an extension

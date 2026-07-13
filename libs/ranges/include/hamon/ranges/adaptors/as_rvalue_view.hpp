@@ -136,7 +136,7 @@ public:
 	}
 
 private:
-	template <typename V2, typename = hamon::enable_if_t<hamon::ranges::common_range_t<V2>::value>>
+	template <typename V2, typename = hamon::enable_if_t<hamon::ranges::common_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl(V2& base, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF_EXPR(hamon::make_move_iterator(hamon::ranges::end(base)))

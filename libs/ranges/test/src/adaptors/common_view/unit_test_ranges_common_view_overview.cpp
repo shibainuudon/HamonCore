@@ -45,9 +45,9 @@ GTEST_TEST(RangesTest, CommonViewOverviewTest)
 	}
 
 	// 無限長のiotaはcommon_rangeではない
-	static_assert(!hamon::ranges::common_range_t<decltype(hamon::views::iota(0))>::value, "");
+	static_assert(!hamon::ranges::common_range<decltype(hamon::views::iota(0))>, "");
 	// commonを適用するとcommon_rangeになる
-	static_assert(hamon::ranges::common_range_t<decltype(hamon::views::iota(0) | hamon::views::common)>::value, "");
+	static_assert(hamon::ranges::common_range<decltype(hamon::views::iota(0) | hamon::views::common)>, "");
 
 	// 元からcommon_rangeなviewに適用しても型は変わらない
 	static_assert(hamon::same_as<decltype(hamon::string_view {} | hamon::views::common), hamon::string_view>, "");

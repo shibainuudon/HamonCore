@@ -8,7 +8,6 @@
 #define HAMON_RANGES_CONCEPTS_COMMON_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
@@ -16,6 +15,7 @@
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/concepts/same_as.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #endif
 
@@ -33,7 +33,7 @@ using std::ranges::common_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept common_range =
+HAMON_CONCEPT_OR_BOOL common_range =
 	ranges::range<T> &&
 	hamon::same_as<ranges::iterator_t<T>, ranges::sentinel_t<T>>;
 
@@ -69,17 +69,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using common_range =
-	typename ranges::detail::common_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL common_range =
+	ranges::detail::common_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using common_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::common_range<T>>;
-#else
-	hamon::ranges::common_range<T>;
 #endif
 
 }	// namespace ranges

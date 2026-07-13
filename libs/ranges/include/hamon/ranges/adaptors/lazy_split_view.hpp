@@ -887,10 +887,10 @@ public:
 	}
 
 	template <typename V2 = V,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::forward_range_t<V2>,
-			hamon::ranges::common_range_t<V2>
-		>::value>,
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range_t<V2>::value &&
+			hamon::ranges::common_range<V2>
+		>,
 		bool UseConst =
 			hamon::ranges::detail::simple_view_t<V>::value &&
 			hamon::ranges::detail::simple_view_t<Pattern>::value
@@ -905,11 +905,11 @@ public:
 
 private:
 	template <typename V2 = V,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::forward_range_t<V2>,
-			hamon::ranges::forward_range_t<V2 const>,
-			hamon::ranges::common_range_t<V2 const>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range_t<V2>::value &&
+			hamon::ranges::forward_range_t<V2 const>::value &&
+			hamon::ranges::common_range<V2 const>
+		>>
 	HAMON_CXX11_CONSTEXPR outer_iterator<true>
 	end_impl(hamon::detail::overload_priority<1>) const
 		HAMON_NOEXCEPT_IF_EXPR(

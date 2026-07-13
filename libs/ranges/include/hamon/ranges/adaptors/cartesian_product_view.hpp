@@ -56,6 +56,7 @@ using std::ranges::views::cartesian_product;
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -75,7 +76,6 @@ using std::ranges::views::cartesian_product;
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -162,12 +162,9 @@ template <bool Const, typename First, typename... Vs>
 using cartesian_product_is_random_access_t = cartesian_product_is_random_access<Const, First, Vs...>;
 
 template <typename R>
-using cartesian_product_common_arg = hamon::disjunction<
-	hamon::ranges::common_range_t<R>,
-	hamon::conjunction<
-		hamon::ranges::sized_range_t<R>,
-		hamon::ranges::random_access_range_t<R>
-	>
+using cartesian_product_common_arg = hamon::bool_constant<
+	hamon::ranges::common_range<R> ||
+	(hamon::ranges::sized_range_t<R>::value && hamon::ranges::random_access_range_t<R>::value)
 >;
 
 template <bool Const, typename First, typename... Vs>
@@ -210,7 +207,7 @@ using cartesian_is_sized_sentinel_t = cartesian_is_sized_sentinel<Const, FirstSe
 
 #endif
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::common_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::common_range, R)>
 HAMON_CXX11_CONSTEXPR auto cartesian_common_arg_end_impl(R& r, hamon::detail::overload_priority<1>)
 ->decltype(hamon::ranges::end(r))
 {

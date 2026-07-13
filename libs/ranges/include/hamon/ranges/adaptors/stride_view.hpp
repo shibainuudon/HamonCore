@@ -546,11 +546,11 @@ public:
 private:
 	template <typename This, typename V2,
 		bool Const = hamon::is_const<V2>::value,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::common_range_t<V2>,
-			hamon::ranges::sized_range_t<V2>,
-			hamon::ranges::forward_range_t<V2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::common_range<V2> &&
+			hamon::ranges::sized_range_t<V2>::value &&
+			hamon::ranges::forward_range_t<V2>::value
+		>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, Difference stride, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -565,7 +565,7 @@ private:
 	template <typename This, typename V2,
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::common_range_t<V2>::value &&
+			hamon::ranges::common_range<V2> &&
 			!hamon::ranges::bidirectional_range<V2>
 		>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>

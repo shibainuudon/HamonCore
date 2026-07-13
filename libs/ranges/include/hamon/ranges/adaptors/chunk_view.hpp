@@ -918,7 +918,7 @@ private:
 	template <typename This, typename V2, typename D,
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::common_range_t<V2>::value &&
+			hamon::ranges::common_range<V2> &&
 			hamon::ranges::sized_range_t<V2>::value>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, D const& n, hamon::detail::overload_priority<2>)
@@ -935,7 +935,7 @@ private:
 	template <typename This, typename V2, typename D,
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::common_range_t<V2>::value &&
+			hamon::ranges::common_range<V2> &&
 			!hamon::ranges::bidirectional_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, D const&, hamon::detail::overload_priority<1>)

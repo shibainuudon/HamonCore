@@ -84,7 +84,7 @@ class reverse_view : public hamon::ranges::view_interface<reverse_view<V>>
 private:
 	using cache_type =
 		hamon::ranges::detail::cached_value<
-			!hamon::ranges::common_range_t<V>::value,
+			!hamon::ranges::common_range<V>,
 			hamon::ranges::iterator_t<V>
 		>;
 
@@ -140,7 +140,7 @@ private:
 		return hamon::make_reverse_iterator(m_cache.value());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto begin_impl(hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
@@ -160,7 +160,7 @@ public:
 		return begin_impl(hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto begin() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::make_reverse_iterator(hamon::ranges::end(hamon::declval<V2&>())))
@@ -179,7 +179,7 @@ public:
 		return hamon::make_reverse_iterator(hamon::ranges::begin(m_base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::make_reverse_iterator(hamon::ranges::begin(hamon::declval<V2&>())))

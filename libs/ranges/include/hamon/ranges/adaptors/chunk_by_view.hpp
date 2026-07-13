@@ -299,7 +299,7 @@ public:
 
 private:
 	// [range.chunk.by.view]/6
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator
 	end_impl(hamon::detail::overload_priority<1>)
 	{

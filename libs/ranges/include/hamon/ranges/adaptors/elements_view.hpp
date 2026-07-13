@@ -227,7 +227,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator<false>
 	end_impl(hamon::detail::overload_priority<1>)
 	{
@@ -240,7 +240,7 @@ private:
 		return sentinel<false>{hamon::ranges::end(m_base)};
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V const)>
 	HAMON_CXX11_CONSTEXPR iterator<true>
 	end_const_impl(hamon::detail::overload_priority<1>) const
 	{

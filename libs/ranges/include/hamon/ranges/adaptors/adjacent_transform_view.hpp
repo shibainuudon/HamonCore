@@ -563,7 +563,7 @@ public:
 
 private:
 	template <typename This, bool Const = hamon::is_const<This>::value,
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::common_range, IV2)>
+		HAMON_CONSTRAINT(hamon::ranges::common_range, IV2)>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, IV2& inner, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension

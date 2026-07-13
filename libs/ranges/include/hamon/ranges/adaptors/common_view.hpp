@@ -79,7 +79,7 @@ template <hamon::ranges::view V>
 template <typename V,
 	typename = hamon::enable_if_t<
 		hamon::ranges::view_t<V>::value &&
-		!hamon::ranges::common_range_t<V>::value &&
+		!hamon::ranges::common_range<V> &&
 		hamon::copyable<hamon::ranges::iterator_t<V>>
 	>>
 #endif
@@ -268,7 +268,7 @@ struct common_fn : public hamon::ranges::range_adaptor_closure<common_fn>
 {
 private:
 	// [range.common.overview]/3.1
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::common_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::common_range, R)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

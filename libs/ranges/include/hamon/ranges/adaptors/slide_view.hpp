@@ -141,7 +141,7 @@ template <typename V>
 using slide_caches_last = hamon::bool_constant<
 	!slide_caches_nothing<V>::value &&
 	hamon::ranges::bidirectional_range<V> &&
-	hamon::ranges::common_range<V>::value>;
+	hamon::ranges::common_range<V>>;
 
 template <typename V>
 using slide_caches_last_t = slide_caches_last<V>;
@@ -719,7 +719,7 @@ private:
 		return iterator<false>(hamon::move(last), m_n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::common_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::common_range, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator<false>
 	end_impl(hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension

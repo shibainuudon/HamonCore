@@ -49,8 +49,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			bidirectional_iterator_wrapper<int>
 		>;
 
-		static_assert(hamon::ranges::common_range_t<V>::value, "");
-		static_assert(hamon::ranges::common_range_t<V const>::value, "");
+		static_assert(hamon::ranges::common_range<V>, "");
+		static_assert(hamon::ranges::common_range<V const>, "");
 
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert(has_end<RV&>::value, "");
@@ -71,8 +71,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			bidirectional_iterator_wrapper<int>
 		>;
 
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
-		static_assert( hamon::ranges::common_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
+		static_assert( hamon::ranges::common_range<V const>, "");
 
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert(has_end<RV&>::value, "");
@@ -93,8 +93,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			test_sentinel<bidirectional_iterator_wrapper<int>>
 		>;
 
-		static_assert( hamon::ranges::common_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+		static_assert( hamon::ranges::common_range<V>, "");
+		static_assert(!hamon::ranges::common_range<V const>, "");
 
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert( has_end<RV&>::value, "");
@@ -114,8 +114,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			test_sentinel<bidirectional_iterator_wrapper<int>>
 		>;
 
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
+		static_assert(!hamon::ranges::common_range<V const>, "");
 
 		using RV = hamon::ranges::reverse_view<V>;
 		static_assert( has_end<RV&>::value, "");

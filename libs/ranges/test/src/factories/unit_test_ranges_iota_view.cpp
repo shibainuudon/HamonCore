@@ -476,7 +476,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -510,7 +510,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert( hamon::ranges::common_range_t<V>::value, "");
+		static_assert( hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert( invocable_size_t<V>::value, "");
 
@@ -544,7 +544,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert( invocable_size_t<V>::value, "");
 
@@ -585,7 +585,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -619,7 +619,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -653,7 +653,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -694,7 +694,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -735,7 +735,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert(!invocable_size_t<V>::value, "");
 
@@ -776,7 +776,7 @@ inline HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert( hamon::is_nothrow_default_constructible<V>::value, "");
 		static_assert( hamon::ranges::range_t<V>::value, "");
 		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::common_range_t<V>::value, "");
+		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::borrowed_range<V>, "");
 		static_assert( invocable_size_t<V>::value, "");
 
@@ -850,7 +850,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert( ranges::view_t<R>::value, "");
 	static_assert( ranges::range_t<R>::value, "");
 	static_assert(!ranges::sized_range_t<R>::value, "");
-	static_assert(!ranges::common_range_t<R>::value, "");
+	static_assert(!ranges::common_range<R>, "");
 	static_assert( ranges::random_access_range_t<R>::value, "");
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 
@@ -891,7 +891,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( ranges::view_t<R>::value, "");
 	static_assert( ranges::range_t<R>::value, "");
 	static_assert( ranges::sized_range_t<R>::value, "");
-	static_assert( ranges::common_range_t<R>::value, "");
+	static_assert( ranges::common_range<R>, "");
 	static_assert( ranges::random_access_range_t<R>::value, "");
 	static_assert(!ranges::contiguous_range_t<R>::value, "");
 

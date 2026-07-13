@@ -681,7 +681,7 @@ public:
 		begin_impl(m_base, hamon::detail::overload_priority<1>{}))
 
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::common_range, V2),
+	template <HAMON_CONSTRAINT(hamon::ranges::common_range, V2),
 		bool Const = hamon::is_const<V2>::value>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(V2& base, hamon::detail::overload_priority<2>)

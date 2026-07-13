@@ -601,7 +601,7 @@ private:
 	template <typename This, typename V2,
 		bool Const = hamon::is_const<This>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::common_range_t<V2>::value &&
+			hamon::ranges::common_range<V2> &&
 			RegularInvocable<Const>::value>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& zip, hamon::detail::overload_priority<2>)

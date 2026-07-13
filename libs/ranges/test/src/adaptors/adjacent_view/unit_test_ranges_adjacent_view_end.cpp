@@ -63,8 +63,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
-			static_assert( hamon::ranges::common_range_t<V const>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
+			static_assert( hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -105,8 +105,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
+			static_assert(!hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -150,8 +150,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
-			static_assert( hamon::ranges::common_range_t<V const>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
+			static_assert( hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -194,8 +194,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
-			static_assert( hamon::ranges::common_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
+			static_assert( hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -238,8 +238,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
+			static_assert(!hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -282,8 +282,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert( hamon::ranges::range_t<V const>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
+			static_assert(!hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -335,8 +335,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert(!hamon::ranges::range_t<V const>::value, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
+			static_assert(!hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");
@@ -369,8 +369,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 			static_assert(!hamon::ranges::range_t<V const>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
-			static_assert(!hamon::ranges::common_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
+			static_assert(!hamon::ranges::common_range<V const>, "");
 
 			using AV = hamon::ranges::adjacent_view<V, 2>;
 			static_assert( has_end<AV&>::value, "");

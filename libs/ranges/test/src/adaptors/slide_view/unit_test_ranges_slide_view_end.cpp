@@ -196,7 +196,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert( hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");
@@ -238,7 +238,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert( hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");
@@ -321,7 +321,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");
@@ -354,7 +354,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");
@@ -453,7 +453,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert( hamon::ranges::common_range_t<V>::value, "");
+			static_assert( hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");
@@ -486,7 +486,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_last<V>, "");
-			static_assert(!hamon::ranges::common_range_t<V>::value, "");
+			static_assert(!hamon::ranges::common_range<V>, "");
 
 			using SV = hamon::ranges::slide_view<V>;
 			static_assert( has_end<SV&>::value, "");

@@ -597,10 +597,10 @@ public:
 
 private:
 	template <typename V2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::common_range_t<V2>,
-			hamon::ranges::sized_range_t<V2>
-		>::value>,
+		typename = hamon::enable_if_t<
+			hamon::ranges::common_range<V2> &&
+			hamon::ranges::sized_range_t<V2>::value
+		>,
 		bool UseConst = hamon::is_const<hamon::remove_reference_t<V2>>::value>
 	static HAMON_CXX14_CONSTEXPR iterator<UseConst>
 	end_impl(V2& base, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT_IF(	// noexcept as an extension
