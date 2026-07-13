@@ -89,7 +89,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		 hamon::is_reference<IV>::value &&
 		 hamon::ranges::common_range<IV>), "");
 #endif
-	static_assert(hamon::ranges::random_access_range_t<JV>::value == false, "");
+	static_assert(hamon::ranges::random_access_range<JV> == false, "");
 	static_assert(hamon::ranges::contiguous_range<JV> == false, "");
 	static_assert(hamon::ranges::common_range<JV> ==
 		(hamon::ranges::forward_range<V> &&
@@ -111,7 +111,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_reserve_hint<JV&>::value == false, "");
 	static_assert(has_front<JV&>::value == hamon::ranges::forward_range<JV>, "");
 	static_assert(has_back<JV&>::value == (hamon::ranges::bidirectional_range<JV> && hamon::ranges::common_range<JV>), "");
-	static_assert(has_subscript<JV&>::value == hamon::ranges::random_access_range_t<JV>::value, "");
+	static_assert(has_subscript<JV&>::value == hamon::ranges::random_access_range<JV>, "");
 	static_assert(has_base<JV&>::value == true, "");
 
 	//static_assert(has_begin<JV const&>::value, "");
@@ -125,7 +125,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_reserve_hint<JV const&>::value == false, "");
 	static_assert(has_front<JV const&>::value == hamon::ranges::forward_range<JV const>, "");
 	static_assert(has_back<JV const&>::value == (hamon::ranges::bidirectional_range<JV const> && hamon::ranges::common_range<JV const>), "");
-	static_assert(has_subscript<JV const&>::value == hamon::ranges::random_access_range_t<JV const>::value, "");
+	static_assert(has_subscript<JV const&>::value == hamon::ranges::random_access_range<JV const>, "");
 	static_assert(has_base<JV const&>::value == true, "");
 
 	return true;

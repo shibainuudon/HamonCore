@@ -157,7 +157,7 @@ using zip_is_common_impl = hamon::disjunction<
 		hamon::conjunction<hamon::bool_constant<hamon::ranges::common_range<Rs>>...>
 	>,
 	hamon::conjunction<
-		hamon::conjunction<hamon::ranges::random_access_range_t<Rs>...>,
+		hamon::conjunction<hamon::bool_constant<hamon::ranges::random_access_range<Rs>>...>,
 		hamon::conjunction<hamon::ranges::sized_range_t<Rs>...>
 	>
 >;

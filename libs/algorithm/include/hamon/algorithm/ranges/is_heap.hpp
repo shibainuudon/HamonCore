@@ -28,7 +28,6 @@ using std::ranges::is_heap;
 #else
 
 #include <hamon/algorithm/ranges/is_heap_until.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -70,7 +69,7 @@ struct is_heap_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
+		HAMON_CONSTRAINT(ranges::random_access_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT_D(

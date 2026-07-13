@@ -33,7 +33,6 @@ using std::ranges::partial_sort_copy;
 #include <hamon/algorithm/ranges/push_heap.hpp>
 #include <hamon/algorithm/ranges/sort_heap.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -133,7 +132,7 @@ struct partial_sort_copy_fn
 
 	template <
 		HAMON_CONSTRAINT(ranges::input_range, Range1),
-		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range2),
+		HAMON_CONSTRAINT(ranges::random_access_range, Range2),
 		typename Comp = ranges::less,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

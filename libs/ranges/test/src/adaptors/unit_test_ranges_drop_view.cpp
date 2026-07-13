@@ -154,7 +154,7 @@ struct SizedViewWithUnsizedSentinel : hamon::ranges::view_base
 	constexpr sentinel end() const { return sentinel{iterator{m_last}}; }
 	constexpr std::size_t size() const { return static_cast<std::size_t>(m_last - m_first); }
 };
-static_assert( hamon::ranges::random_access_range_t<SizedViewWithUnsizedSentinel<int>>::value, "");
+static_assert( hamon::ranges::random_access_range<SizedViewWithUnsizedSentinel<int>>, "");
 static_assert( hamon::ranges::sized_range_t<SizedViewWithUnsizedSentinel<int>>::value, "");
 static_assert(!hamon::sized_sentinel_for<SizedViewWithUnsizedSentinel<int>::sentinel, SizedViewWithUnsizedSentinel<int>::iterator>, "");
 static_assert( hamon::ranges::view_t<SizedViewWithUnsizedSentinel<int>>::value, "");
@@ -176,7 +176,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::input_range<DV> == hamon::ranges::input_range<V>, "");
 	static_assert(hamon::ranges::forward_range<DV> == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<DV> == hamon::ranges::bidirectional_range<V>, "");
-	static_assert(hamon::ranges::random_access_range_t<DV>::value == hamon::ranges::random_access_range_t<V>::value, "");
+	static_assert(hamon::ranges::random_access_range<DV> == hamon::ranges::random_access_range<V>, "");
 	static_assert(hamon::ranges::contiguous_range<DV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<DV> == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<DV>::value == true, "");
@@ -198,7 +198,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(has_begin<DV>::value, "");
 	static_assert(has_begin<DV const>::value ==
-		(hamon::ranges::random_access_range_t<V const>::value && hamon::ranges::sized_range_t<V const>::value), "");
+		(hamon::ranges::random_access_range<V const> && hamon::ranges::sized_range_t<V const>::value), "");
 
 	static_assert(hamon::same_as<
 		decltype(hamon::declval<DV>().begin()),

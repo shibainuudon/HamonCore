@@ -30,7 +30,7 @@ using all_random_access_t = hamon::bool_constant<all_random_access<Const, Views.
 
 template <bool Const, typename... Views>
 using all_random_access_t = hamon::conjunction<
-	hamon::ranges::random_access_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
 
 #endif
 

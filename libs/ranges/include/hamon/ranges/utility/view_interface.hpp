@@ -270,7 +270,7 @@ public:
 			*ranges::prev(ranges::end(derived()));	// [view.interface.members]/4
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, R, D)>
+	template <HAMON_CONSTRAINT_D(ranges::random_access_range, R, D)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	operator[](ranges::range_difference_t<R> n)
 	HAMON_NOEXCEPT_IF_EXPR(ranges::begin(hamon::declval<R&>())[n])	// noexcept as an extension
@@ -279,7 +279,7 @@ public:
 		return ranges::begin(derived())[n];
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::random_access_range, R, D const)>
+	template <HAMON_CONSTRAINT_D(ranges::random_access_range, R, D const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator[](ranges::range_difference_t<R> n) const
 	HAMON_NOEXCEPT_IF_EXPR(ranges::begin(hamon::declval<R&>())[n])	// noexcept as an extension

@@ -30,7 +30,6 @@ using std::ranges::nth_element;
 #include <hamon/algorithm/nth_element.hpp>
 #include <hamon/algorithm/ranges/detail/make_comp_proj.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -77,7 +76,7 @@ struct nth_element_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
+		HAMON_CONSTRAINT(ranges::random_access_range, Range),
 		typename Comp = ranges::less,
 		typename Proj = hamon::identity
 	>

@@ -52,7 +52,6 @@ using std::ranges::views::common;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/common_iterator.hpp>
 #include <hamon/iterator/ranges/distance.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -124,10 +123,10 @@ public:
 
 private:
 	template <typename V2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::random_access_range_t<V2>,
-			hamon::ranges::sized_range_t<V2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::random_access_range<V2> &&
+			hamon::ranges::sized_range_t<V2>::value
+		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl2(V2& base, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -149,10 +148,10 @@ private:
 		begin_impl2(base, hamon::detail::overload_priority<1>{}))
 
 	template <typename V2,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::random_access_range_t<V2>,
-			hamon::ranges::sized_range_t<V2>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::random_access_range<V2> &&
+			hamon::ranges::sized_range_t<V2>::value
+		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl2(V2& base, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

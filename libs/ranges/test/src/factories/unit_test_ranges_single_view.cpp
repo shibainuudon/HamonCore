@@ -104,7 +104,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( hamon::ranges::input_range<SV>, "");
 	static_assert( hamon::ranges::forward_range<SV>, "");
 	static_assert( hamon::ranges::bidirectional_range<SV>, "");
-	static_assert( hamon::ranges::random_access_range_t<SV>::value, "");
+	static_assert( hamon::ranges::random_access_range<SV>, "");
 	static_assert( hamon::ranges::contiguous_range<SV>, "");
 	static_assert( hamon::ranges::common_range<SV>, "");
 	static_assert( hamon::ranges::viewable_range_t<SV>::value, "");
@@ -119,7 +119,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( hamon::ranges::input_range<CSV>, "");
 	static_assert( hamon::ranges::forward_range<CSV>, "");
 	static_assert( hamon::ranges::bidirectional_range<CSV>, "");
-	static_assert( hamon::ranges::random_access_range_t<CSV>::value, "");
+	static_assert( hamon::ranges::random_access_range<CSV>, "");
 	static_assert( hamon::ranges::contiguous_range<CSV>, "");
 	static_assert( hamon::ranges::common_range<CSV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CSV>::value, "");

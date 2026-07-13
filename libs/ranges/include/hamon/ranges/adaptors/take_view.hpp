@@ -270,7 +270,7 @@ private:
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
 			hamon::ranges::sized_range_t<V2>::value &&
-			hamon::ranges::random_access_range_t<V2>::value>>
+			hamon::ranges::random_access_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl(This* this_, hamon::detail::overload_priority<3>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -320,7 +320,7 @@ private:
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
 			hamon::ranges::sized_range_t<V2>::value &&
-			hamon::ranges::random_access_range_t<V2>::value>>
+			hamon::ranges::random_access_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl(This* this_, hamon::detail::overload_priority<2>)
 	->decltype(hamon::ranges::begin(hamon::declval<V2&>()))
@@ -458,7 +458,7 @@ private:
 		typename T = hamon::remove_cvref_t<R>,
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::random_access_range_t<T>::value &&
+			hamon::ranges::random_access_range<T> &&
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_span<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
@@ -475,7 +475,7 @@ private:
 		typename T = hamon::remove_cvref_t<R>,
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::random_access_range_t<T>::value &&
+			hamon::ranges::random_access_range<T> &&
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_basic_string_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
@@ -491,7 +491,7 @@ private:
 		typename T = hamon::remove_cvref_t<R>,
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::random_access_range_t<T>::value &&
+			hamon::ranges::random_access_range<T> &&
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_subrange<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
@@ -508,7 +508,7 @@ private:
 		typename T = hamon::remove_cvref_t<R>,
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::random_access_range_t<T>::value &&
+			hamon::ranges::random_access_range<T> &&
 			hamon::ranges::sized_range_t<T>::value &&
 			hamon::detail::is_specialization_of_iota_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto

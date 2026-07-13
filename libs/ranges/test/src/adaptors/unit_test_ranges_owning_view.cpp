@@ -90,7 +90,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::input_range<OV> == hamon::ranges::input_range<R>, "");
 	static_assert( hamon::ranges::forward_range<OV> == hamon::ranges::forward_range<R>, "");
 	static_assert( hamon::ranges::bidirectional_range<OV> == hamon::ranges::bidirectional_range<R>, "");
-	static_assert( hamon::ranges::random_access_range_t<OV>::value == hamon::ranges::random_access_range_t<R>::value, "");
+	static_assert( hamon::ranges::random_access_range<OV> == hamon::ranges::random_access_range<R>, "");
 	static_assert( hamon::ranges::contiguous_range<OV> == hamon::ranges::contiguous_range<R>, "");
 	static_assert( hamon::ranges::common_range<OV> == hamon::ranges::common_range<R>, "");
 	static_assert( hamon::ranges::viewable_range_t<OV>::value, "");

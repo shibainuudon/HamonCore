@@ -851,7 +851,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert( ranges::range_t<R>::value, "");
 	static_assert(!ranges::sized_range_t<R>::value, "");
 	static_assert(!ranges::common_range<R>, "");
-	static_assert( ranges::random_access_range_t<R>::value, "");
+	static_assert( ranges::random_access_range<R>, "");
 	static_assert(!ranges::contiguous_range<R>, "");
 
 	using I = decltype(v.begin());
@@ -892,7 +892,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( ranges::range_t<R>::value, "");
 	static_assert( ranges::sized_range_t<R>::value, "");
 	static_assert( ranges::common_range<R>, "");
-	static_assert( ranges::random_access_range_t<R>::value, "");
+	static_assert( ranges::random_access_range<R>, "");
 	static_assert(!ranges::contiguous_range<R>, "");
 
 	using I = decltype(v.begin());
@@ -955,7 +955,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04()
 	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
-	static_assert( ranges::random_access_range_t<R>::value, "");
+	static_assert( ranges::random_access_range<R>, "");
 	static_assert(!ranges::contiguous_range<R>, "");
 
 	using I = decltype(v.begin());
@@ -995,7 +995,7 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 
 	using R = decltype(v);
 	static_assert( ranges::bidirectional_range<R>, "");
-	static_assert(!ranges::random_access_range_t<R>::value, "");
+	static_assert(!ranges::random_access_range<R>, "");
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");
@@ -1065,7 +1065,7 @@ inline HAMON_CXX14_CONSTEXPR bool test08()
 	auto v = ranges::iota_view<unsigned int, unsigned int>{3u, 5u};
 
 	using R = decltype(v);
-	static_assert( ranges::random_access_range_t<R>::value, "");
+	static_assert( ranges::random_access_range<R>, "");
 	static_assert(!ranges::contiguous_range<R>, "");
 
 	VERIFY(!v.empty());

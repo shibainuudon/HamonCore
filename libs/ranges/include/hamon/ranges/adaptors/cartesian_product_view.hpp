@@ -153,8 +153,8 @@ using cartesian_is_sized_sentinel_t = hamon::bool_constant<cartesian_is_sized_se
 
 template <bool Const, typename First, typename... Vs>
 using cartesian_product_is_random_access = hamon::conjunction<
-	hamon::ranges::random_access_range_t<hamon::ranges::detail::maybe_const<Const, First>>,
-	hamon::ranges::random_access_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>>>,
+	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
 	hamon::ranges::sized_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...
 >;
 
@@ -164,7 +164,7 @@ using cartesian_product_is_random_access_t = cartesian_product_is_random_access<
 template <typename R>
 using cartesian_product_common_arg = hamon::bool_constant<
 	hamon::ranges::common_range<R> ||
-	(hamon::ranges::sized_range_t<R>::value && hamon::ranges::random_access_range_t<R>::value)
+	(hamon::ranges::sized_range_t<R>::value && hamon::ranges::random_access_range<R>)
 >;
 
 template <bool Const, typename First, typename... Vs>

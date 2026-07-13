@@ -30,7 +30,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert(!hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -49,7 +49,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -68,7 +68,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -87,7 +87,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert( hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -106,7 +106,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert( hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -126,7 +126,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert( hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -146,7 +146,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert( hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -166,7 +166,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -186,7 +186,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -207,7 +207,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert(!hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -228,7 +228,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -249,7 +249,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -268,7 +268,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert( hamon::ranges::forward_range<ZV>, "");
 		static_assert( hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert( hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -289,7 +289,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert(!hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
@@ -310,7 +310,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		static_assert( hamon::ranges::input_range<ZV>, "");
 		static_assert(!hamon::ranges::forward_range<ZV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<ZV>, "");
-		static_assert(!hamon::ranges::random_access_range_t<ZV>::value, "");
+		static_assert(!hamon::ranges::random_access_range<ZV>, "");
 		static_assert(!hamon::ranges::contiguous_range<ZV>, "");
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");

@@ -7,7 +7,6 @@
 #ifndef HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 #define HAMON_BASE64_DETAIL_BASE64_IMPL_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint/uint8_t.hpp>
@@ -306,7 +305,7 @@ public:
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 		HAMON_CONSTRAINT(hamon::ranges::contiguous_range, Range),
 #else
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::random_access_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::random_access_range, Range),
 #endif
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutputIterator)
 	>

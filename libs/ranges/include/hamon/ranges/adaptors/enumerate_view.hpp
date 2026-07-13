@@ -160,7 +160,7 @@ private:
 	public:
 		using iterator_category = hamon::input_iterator_tag;
 		using iterator_concept =
-			hamon::conditional_t<hamon::ranges::random_access_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::random_access_range<Base>,
 				hamon::random_access_iterator_tag,
 			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,
@@ -306,7 +306,7 @@ private:
 			return temp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator+=(difference_type n)
 			HAMON_NOEXCEPT_IF_EXPR(hamon::declval<BaseIter&>() += n)	// noexcept as an extension
@@ -317,7 +317,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator-=(difference_type n)
 			HAMON_NOEXCEPT_IF_EXPR(hamon::declval<BaseIter&>() -= n)	// noexcept as an extension
@@ -328,7 +328,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		reference_type operator[](difference_type n) const
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -385,7 +385,7 @@ private:
 		}
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 		iterator operator+(iterator const& x, difference_type y)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -398,7 +398,7 @@ private:
 			return temp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 		iterator operator+(difference_type x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y + x)	// noexcept as an extension
@@ -407,7 +407,7 @@ private:
 			return y + x;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::random_access_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::random_access_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 		iterator operator-(iterator const& x, difference_type y)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension

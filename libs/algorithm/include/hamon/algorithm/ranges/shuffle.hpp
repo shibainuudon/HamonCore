@@ -29,7 +29,6 @@ using std::ranges::shuffle;
 
 #include <hamon/algorithm/shuffle.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
@@ -75,7 +74,7 @@ struct shuffle_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::random_access_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::random_access_range, Range),
 		typename Gen
 	>
 	auto operator()(Range&& r, Gen&& g) const

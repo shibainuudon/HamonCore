@@ -131,8 +131,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert( hamon::ranges::range_t<V1 const>::value, "");
 			static_assert( hamon::ranges::range_t<V2 const>::value, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-			static_assert( hamon::ranges::random_access_range_t<V1>::value, "");
-			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+			static_assert( hamon::ranges::random_access_range<V1>, "");
+			static_assert( hamon::ranges::random_access_range<V2>, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert(has_end<ZV&>::value, "");
@@ -194,8 +194,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert( hamon::ranges::range_t<V1 const>::value, "");
 			static_assert( hamon::ranges::range_t<V2 const>::value, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-			static_assert(!hamon::ranges::random_access_range_t<V1>::value, "");
-			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+			static_assert(!hamon::ranges::random_access_range<V1>, "");
+			static_assert( hamon::ranges::random_access_range<V2>, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert(has_end<ZV&>::value, "");
@@ -315,8 +315,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1 const>, "");
+				static_assert( hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -376,8 +376,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert(!hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert(!hamon::ranges::random_access_range<V1 const>, "");
+				static_assert( hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -439,8 +439,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
@@ -500,11 +500,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1 const>, "");
+				static_assert( hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -563,11 +563,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert(!hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert(!hamon::ranges::random_access_range<V1 const>, "");
+				static_assert( hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -629,8 +629,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert(!hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert(!hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
@@ -690,11 +690,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert(!hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert(!hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1 const>, "");
+				static_assert( hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -753,11 +753,11 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				static_assert( hamon::ranges::range_t<V1 const>::value, "");
 				static_assert( hamon::ranges::range_t<V2 const>::value, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-				static_assert(!hamon::ranges::random_access_range_t<V1>::value, "");
-				static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+				static_assert(!hamon::ranges::random_access_range<V1>, "");
+				static_assert( hamon::ranges::random_access_range<V2>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1 const, V2 const>, "");
-				static_assert( hamon::ranges::random_access_range_t<V1 const>::value, "");
-				static_assert(!hamon::ranges::random_access_range_t<V2 const>::value, "");
+				static_assert( hamon::ranges::random_access_range<V1 const>, "");
+				static_assert(!hamon::ranges::random_access_range<V2 const>, "");
 
 				using ZV = hamon::ranges::zip_view<V1, V2>;
 				static_assert(has_end<ZV&>::value, "");
@@ -871,8 +871,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert(!hamon::ranges::range_t<V1 const>::value, "");
 			static_assert( hamon::ranges::range_t<V2 const>::value, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-			static_assert( hamon::ranges::random_access_range_t<V1>::value, "");
-			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+			static_assert( hamon::ranges::random_access_range<V1>, "");
+			static_assert( hamon::ranges::random_access_range<V2>, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert( has_end<ZV&>::value, "");
@@ -919,8 +919,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			static_assert(!hamon::ranges::range_t<V1 const>::value, "");
 			static_assert( hamon::ranges::range_t<V2 const>::value, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
-			static_assert(!hamon::ranges::random_access_range_t<V1>::value, "");
-			static_assert( hamon::ranges::random_access_range_t<V2>::value, "");
+			static_assert(!hamon::ranges::random_access_range<V1>, "");
+			static_assert( hamon::ranges::random_access_range<V2>, "");
 
 			using ZV = hamon::ranges::zip_view<V1, V2>;
 			static_assert( has_end<ZV&>::value, "");

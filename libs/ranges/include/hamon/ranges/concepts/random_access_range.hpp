@@ -32,7 +32,7 @@ using std::ranges::random_access_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept random_access_range =
+HAMON_CONCEPT_OR_BOOL random_access_range =
 	ranges::bidirectional_range<T> &&
 	hamon::random_access_iterator<ranges::iterator_t<T>>;
 
@@ -61,17 +61,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using random_access_range =
-	typename ranges::detail::random_access_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL random_access_range =
+	ranges::detail::random_access_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using random_access_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::random_access_range<T>>;
-#else
-	hamon::ranges::random_access_range<T>;
 #endif
 
 }	// namespace ranges

@@ -56,7 +56,7 @@ struct contiguous_range_impl
 private:
 	template <
 		typename U,
-		typename = hamon::enable_if_t<ranges::random_access_range<U>::value>,
+		typename = hamon::enable_if_t<ranges::random_access_range<U>>,
 		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<U>>>,
 		typename P1 = decltype(ranges::data(hamon::declval<U&>())),
 		typename P2 = hamon::add_pointer_t<ranges::range_reference_t<U>>,

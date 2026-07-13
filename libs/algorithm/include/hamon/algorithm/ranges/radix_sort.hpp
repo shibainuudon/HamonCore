@@ -10,7 +10,6 @@
 #include <hamon/algorithm/radix_sort.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/unsigned_integral.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
@@ -103,7 +102,7 @@ struct radix_sort_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range),
+		HAMON_CONSTRAINT(ranges::random_access_range, Range),
 		HAMON_CONSTRAINT(hamon::random_access_iterator, Tmp),
 		typename Proj = hamon::identity
 	>
