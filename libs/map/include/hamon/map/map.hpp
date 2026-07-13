@@ -177,7 +177,7 @@ public:
 			value_type, allocator_type, decltype(*first)>::value, "");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	map(hamon::from_range_t, R&& rg, Compare const& comp = Compare(), Allocator const& a = Allocator())
 		: map(comp, a)
@@ -189,7 +189,7 @@ public:
 		this->insert_range(hamon::forward<R>(rg));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	map(hamon::from_range_t, R&& rg, Allocator const& a)
 		: map(hamon::from_range, hamon::forward<R>(rg), Compare(), a)
@@ -624,7 +624,7 @@ public:
 		m_impl.insert_range(m_allocator, first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{

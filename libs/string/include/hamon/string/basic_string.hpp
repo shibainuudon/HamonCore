@@ -29,7 +29,6 @@ using std::basic_string;
 #include <hamon/string_view.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/bit/bitsof.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -510,7 +509,7 @@ public:
 		: basic_string(begin, end, a, hamon::detail::overload_priority<1>{})
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR
 	basic_string(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: basic_string(hamon::ranges::begin(rg), hamon::ranges::end(rg), a, hamon::detail::overload_priority<1>{})	// [string.cons]/22
@@ -1080,7 +1079,7 @@ HAMON_WARNING_POP()
 		return append(il.begin(), il.size());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	append_range(R&& rg)
 	{
@@ -1186,7 +1185,7 @@ HAMON_WARNING_POP()
 		return assign(basic_string(first, last, get_allocator()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	assign_range(R&& rg)
 	{
@@ -1376,7 +1375,7 @@ HAMON_WARNING_POP()
 		return insert(p, il.begin(), il.end());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator p, R&& rg)
 	{
@@ -1621,7 +1620,7 @@ HAMON_WARNING_POP()
 		return replace(i1, i2, il.begin(), il.size());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, CharT, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, CharT, R)>
 	HAMON_CXX14_CONSTEXPR basic_string&
 	replace_with_range(const_iterator i1, const_iterator i2, R&& rg)
 	{

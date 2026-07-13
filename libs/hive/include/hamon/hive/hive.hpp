@@ -191,7 +191,7 @@ public:
 		m_impl.InsertRange(m_allocator, hamon::ranges::make_subrange(first, last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	hive(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
@@ -203,7 +203,7 @@ public:
 		m_impl.InsertRange(m_allocator, hamon::forward<R>(rg));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	hive(hamon::from_range_t, R&& rg, hive_limits block_limits, Allocator const& a = Allocator())
 		: m_allocator(a)
@@ -429,7 +429,7 @@ public:
 		m_impl.AssignRange(m_allocator, hamon::ranges::make_subrange(first, last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
@@ -700,7 +700,7 @@ public:
 		m_impl.InsertRange(m_allocator, il);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{

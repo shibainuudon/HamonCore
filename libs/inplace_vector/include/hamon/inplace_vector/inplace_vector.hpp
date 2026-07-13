@@ -22,7 +22,6 @@
 #include <hamon/algorithm/ranges/rotate.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
@@ -117,7 +116,7 @@ public:
 		this->AppendRange(first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	inplace_vector(hamon::from_range_t, R&& rg)
 	{
@@ -184,7 +183,7 @@ public:
 		this->UncheckedAssignN(n, first);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
@@ -479,7 +478,7 @@ public:
 		return this->emplace_back(hamon::move(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	void append_range(R&& rg)
 	{
@@ -538,7 +537,7 @@ public:
 		return this->try_emplace_back(hamon::move(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR ranges::borrowed_iterator_t<R>
 	try_append_range(R&& rg)
 	{
@@ -653,7 +652,7 @@ public:
 		return pos;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator position, R&& rg)
 	{

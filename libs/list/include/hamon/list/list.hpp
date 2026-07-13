@@ -22,7 +22,6 @@
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
@@ -143,7 +142,7 @@ public:
 		m_impl.insert_range(m_allocator, m_impl.tail(), first, last);	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	list(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
@@ -316,7 +315,7 @@ public:
 		m_impl.assign_range(m_allocator, first, last);	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	assign_range(R&& rg)
 	{
@@ -537,7 +536,7 @@ public:
 		m_impl.insert(m_allocator, m_impl.head(), hamon::move(x));	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	prepend_range(R&& rg)
 	{
@@ -572,7 +571,7 @@ public:
 		m_impl.insert(m_allocator, m_impl.tail(), hamon::move(x));	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	append_range(R&& rg)
 	{
@@ -639,7 +638,7 @@ public:
 		return iterator{ m_impl.insert_range(m_allocator, position.ptr(), first, last) };	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert_range(const_iterator position, R&& rg)
 	{

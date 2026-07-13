@@ -213,7 +213,7 @@ public:
 			value_type, allocator_type, decltype(*f)>::value, "");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multiset(
 		hamon::from_range_t, R&& rg,
@@ -232,7 +232,7 @@ public:
 		this->insert_range(hamon::forward<R>(rg));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multiset(
 		hamon::from_range_t, R&& rg,
@@ -247,7 +247,7 @@ public:
 			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multiset(
 		hamon::from_range_t, R&& rg,
@@ -263,7 +263,7 @@ public:
 	}
 
 	// LWG 2713
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	unordered_multiset(hamon::from_range_t, R&& rg, allocator_type const& a)	// may throw
 		: unordered_multiset(hamon::from_range, hamon::forward<R>(rg), size_type(), hasher(), key_equal(), a)
@@ -626,7 +626,7 @@ HAMON_WARNING_POP()
 		m_impl.insert_range(m_allocator, first, last);	// may throw
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{

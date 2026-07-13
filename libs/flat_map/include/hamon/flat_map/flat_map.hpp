@@ -228,13 +228,13 @@ public:
 		this->insert(hamon::sorted_unique, hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(hamon::from_range_t, R&& rg)
 		: flat_map(hamon::from_range, hamon::forward<R>(rg), key_compare())
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR
 	flat_map(hamon::from_range_t, R&& rg, key_compare const& comp)
 		: flat_map(comp)
@@ -448,7 +448,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
+		HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -462,7 +462,7 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R),
+		HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<hamon::conjunction<		// [flat.map.cons.alloc]/1
 			hamon::uses_allocator<key_container_type, Alloc>,
@@ -848,7 +848,7 @@ public:
 		this->append_merge_unique(hamon::move(first), hamon::move(last));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, value_type, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
 	HAMON_CXX14_CONSTEXPR void
 	insert_range(R&& rg)
 	{

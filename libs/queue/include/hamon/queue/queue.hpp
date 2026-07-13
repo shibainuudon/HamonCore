@@ -15,7 +15,6 @@
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/swap.hpp>
 #include <hamon/container/detail/container_compatible_range.hpp>
@@ -90,7 +89,7 @@ public:
 		: c(first, last)	// [queue.cons]/3
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX11_CONSTEXPR
 	queue(hamon::from_range_t, R&& rg)
 		: c(hamon::ranges::to<Container>(hamon::forward<R>(rg)))	// [queue.cons]/4
@@ -139,7 +138,7 @@ public:
 		: c(first, last, a)		// [queue.cons.alloc]/7
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R),
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R),
 		typename Alloc, typename = hamon::enable_if_t<hamon::uses_allocator<container_type, Alloc>::value>>	// [queue.cons.alloc]/1
 	HAMON_CXX11_CONSTEXPR
 	queue(hamon::from_range_t, R&& rg, Alloc const& a)
@@ -217,7 +216,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR void
 	push_range(R&& rg)
 	{

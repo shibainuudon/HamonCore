@@ -17,7 +17,6 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/container/detail/forward_list_impl.hpp>
@@ -128,7 +127,7 @@ public:
 		m_impl.insert_range_after(m_allocator, this->before_begin(), first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	forward_list(hamon::from_range_t, R&& rg, Allocator const& a = Allocator())
 		: m_allocator(a)
@@ -301,7 +300,7 @@ public:
 		m_impl.assign_range(m_allocator, first, last);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	void assign_range(R&& rg)
 	{
@@ -461,7 +460,7 @@ public:
 		m_impl.insert_after(m_allocator, this->before_begin(), hamon::move(x));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	void prepend_range(R&& rg)
 	{
@@ -541,7 +540,7 @@ public:
 		return this->insert_after(position, il.begin(), il.end());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::container_compatible_range, T, R)>
+	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, T, R)>
 	HAMON_CXX14_CONSTEXPR
 	iterator insert_range_after(const_iterator position, R&& rg)
 	{

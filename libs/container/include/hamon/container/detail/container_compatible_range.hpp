@@ -11,6 +11,7 @@
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -21,17 +22,25 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename R, typename T>
-concept container_compatible_range =
+HAMON_CONCEPT_OR_BOOL container_compatible_range =
 	hamon::ranges::input_range<R> &&
 	hamon::convertible_to<hamon::ranges::range_reference_t<R>, T>;
 
 #else
 
+template <typename R, typename T, typename = void>
+struct container_compatible_range_impl
+	: public hamon::false_type{};
+
 template <typename R, typename T>
-using container_compatible_range = hamon::bool_constant<
+struct container_compatible_range_impl<R, T, hamon::enable_if_t<
 	hamon::ranges::input_range<R> &&
 	hamon::convertible_to<hamon::ranges::range_reference_t<R>, T>
->;
+>> : public hamon::true_type{};
+
+template <typename R, typename T>
+HAMON_CONCEPT_OR_BOOL container_compatible_range =
+	container_compatible_range_impl<R, T>::value;
 
 #endif
 
