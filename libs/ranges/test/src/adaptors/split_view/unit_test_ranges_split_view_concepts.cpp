@@ -31,7 +31,7 @@ void test0()
 	static_assert(hamon::ranges::range_t<SV>::value                     == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<SV>::value            == false, "");
 	static_assert(hamon::ranges::sized_range_t<SV>::value               == false, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<SV>::value == false, "");
+	static_assert(hamon::ranges::approximately_sized_range<SV> == false, "");
 	static_assert(hamon::ranges::output_range_t<SV, T>::value           == false, "");
 	static_assert(hamon::ranges::input_range_t<SV>::value               == true, "");
 	static_assert(hamon::ranges::forward_range_t<SV>::value             == true, "");
@@ -49,7 +49,7 @@ void test0()
 	static_assert(hamon::ranges::range_t<IV>::value                     == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<IV>::value            == true, "");
 	static_assert(hamon::ranges::sized_range_t<IV>::value               == hamon::sized_sentinel_for<Iter, Iter>, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<IV>::value == hamon::sized_sentinel_for<Iter, Iter>, "");
+	static_assert(hamon::ranges::approximately_sized_range<IV> == hamon::sized_sentinel_for<Iter, Iter>, "");
 	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::output_range_t<View, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<IV>::value               == true, "");
 	static_assert(hamon::ranges::forward_range_t<IV>::value             == hamon::ranges::forward_range_t<View>::value, "");

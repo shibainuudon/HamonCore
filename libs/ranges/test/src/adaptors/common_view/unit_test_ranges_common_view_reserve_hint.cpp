@@ -45,8 +45,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 {
 	{
 		using V = test_random_access_view<int>;
-		static_assert(hamon::ranges::approximately_sized_range_t<V>::value, "");
-		static_assert(hamon::ranges::approximately_sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::approximately_sized_range<V>, "");
+		static_assert(hamon::ranges::approximately_sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_reserve_hint<CV&>::value, "");
@@ -73,8 +73,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// approximately_sized_range<V> && approximately_sized_range<V const>
 		using V = TestApproximatelySizedView<int, short>;
-		static_assert(hamon::ranges::approximately_sized_range_t<V>::value, "");
-		static_assert(hamon::ranges::approximately_sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::approximately_sized_range<V>, "");
+		static_assert(hamon::ranges::approximately_sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_reserve_hint<CV&>::value, "");
@@ -86,8 +86,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// !approximately_sized_range<V> && approximately_sized_range<V const>
 		using V = TestApproximatelySizedView<void, unsigned int>;
-		static_assert(!hamon::ranges::approximately_sized_range_t<V>::value, "");
-		static_assert( hamon::ranges::approximately_sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::approximately_sized_range<V>, "");
+		static_assert( hamon::ranges::approximately_sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_reserve_hint<CV&>::value, "");
@@ -99,8 +99,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// approximately_sized_range<V> && !approximately_sized_range<V const>
 		using V = TestApproximatelySizedView<char, void>;
-		static_assert( hamon::ranges::approximately_sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::approximately_sized_range_t<V const>::value, "");
+		static_assert( hamon::ranges::approximately_sized_range<V>, "");
+		static_assert(!hamon::ranges::approximately_sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert( has_reserve_hint<CV&>::value, "");
@@ -109,8 +109,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// !approximately_sized_range<V> && !approximately_sized_range<V const>
 		using V = test_forward_view<int>;
-		static_assert(!hamon::ranges::approximately_sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::approximately_sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::approximately_sized_range<V>, "");
+		static_assert(!hamon::ranges::approximately_sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(!has_reserve_hint<CV&>::value, "");

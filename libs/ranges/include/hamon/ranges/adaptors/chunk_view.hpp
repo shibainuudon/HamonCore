@@ -532,7 +532,7 @@ public:
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference reserve_hint()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
@@ -542,7 +542,7 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
@@ -979,7 +979,7 @@ public:
 		HAMON_NOEXCEPT_RETURN(hamon::ranges::detail::to_unsigned_like(	// noexcept as an extension
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n)))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference reserve_hint()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension
@@ -989,7 +989,7 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(hamon::ranges::detail::div_ceil(s, m_n));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_base))	// noexcept as an extension

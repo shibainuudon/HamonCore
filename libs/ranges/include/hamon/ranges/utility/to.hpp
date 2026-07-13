@@ -304,7 +304,7 @@ to_impl2(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
 // [range.utility.conv.to]/2.1.4
 template <typename C, typename R,
 	typename = hamon::enable_if_t<
-		hamon::ranges::approximately_sized_range_t<R>::value &&
+		hamon::ranges::approximately_sized_range<R> &&
 		hamon::ranges::detail::reservable_container_t<C>::value>>
 HAMON_CXX14_CONSTEXPR void
 to_impl_reserve(C& c, R&& r, hamon::detail::overload_priority<1>)

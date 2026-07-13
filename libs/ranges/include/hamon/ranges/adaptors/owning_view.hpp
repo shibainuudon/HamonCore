@@ -39,6 +39,7 @@ using std::ranges::owning_view;
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/utility/declval.hpp>
@@ -181,7 +182,7 @@ public:
 		return hamon::ranges::size(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, R2, R)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, R2, R)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_r))	// noexcept as an extension
@@ -190,7 +191,7 @@ public:
 		return hamon::ranges::reserve_hint(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, R2, R const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, R2, R const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(m_r))	// noexcept as an extension

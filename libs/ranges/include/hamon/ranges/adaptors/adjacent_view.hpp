@@ -743,7 +743,7 @@ public:
 		size_impl(m_base, hamon::detail::overload_priority<1>{}))
 
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::approximately_sized_range, V2),
+	template <HAMON_CONSTRAINT(hamon::ranges::approximately_sized_range, V2),
 		typename DT = hamon::ranges::range_difference_t<V2&>,
 		typename CT = hamon::common_type_t<DT, hamon::size_t>>
 	static HAMON_CXX14_CONSTEXPR auto
@@ -757,7 +757,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint()
 	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>()))	// noexcept as an extension
@@ -766,7 +766,7 @@ public:
 		return reserve_hint_impl(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(reserve_hint_impl(hamon::declval<V2&>()))	// noexcept as an extension

@@ -36,6 +36,7 @@ using std::ranges::ref_view;
 #include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
@@ -130,7 +131,7 @@ public:
 		return hamon::ranges::size(*m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, R2, R)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, R2, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR 	// nodiscard as an extension
 	auto reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<R2&>()))	// noexcept as an extension

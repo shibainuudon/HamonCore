@@ -40,7 +40,7 @@ namespace ranges
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept approximately_sized_range =
+HAMON_CONCEPT_OR_BOOL approximately_sized_range =
 	ranges::range<T> &&
 	requires(T& t) { ranges::reserve_hint(t); };
 
@@ -69,7 +69,8 @@ public:
 }	// namespace detail
 
 template <typename T>
-using approximately_sized_range = typename ranges::detail::approximately_sized_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL approximately_sized_range =
+	ranges::detail::approximately_sized_range_impl<T>::type::value;
 
 #endif
 
@@ -77,24 +78,5 @@ using approximately_sized_range = typename ranges::detail::approximately_sized_r
 }	// namespace hamon
 
 #endif
-
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/config.hpp>
-
-namespace hamon
-{
-namespace ranges
-{
-
-template <typename T>
-using approximately_sized_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::approximately_sized_range<T>>;
-#else
-	hamon::ranges::approximately_sized_range<T>;
-#endif
-
-}	// namespace ranges
-}	// namespace hamon
 
 #endif // HAMON_RANGES_CONCEPTS_APPROXIMATELY_SIZED_RANGE_HPP

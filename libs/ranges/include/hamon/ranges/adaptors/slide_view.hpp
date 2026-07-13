@@ -775,7 +775,7 @@ public:
 		hamon::ranges::detail::to_unsigned_like(size_impl()))
 
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::approximately_sized_range, V2), typename DT>
+	template <HAMON_CONSTRAINT(hamon::ranges::approximately_sized_range, V2), typename DT>
 	static HAMON_CXX14_CONSTEXPR auto
 	reserve_hint_impl(V2& base, DT n)
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::reserve_hint(hamon::declval<V2&>()))
@@ -790,7 +790,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V),
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V),
 		typename DT = hamon::ranges::range_difference_t<V2&>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint()
@@ -800,7 +800,7 @@ public:
 		return reserve_hint_impl(m_base, m_n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const),
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V const),
 		typename DT = hamon::ranges::range_difference_t<V2&>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint() const

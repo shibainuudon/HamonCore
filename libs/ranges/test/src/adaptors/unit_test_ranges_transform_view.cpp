@@ -211,7 +211,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::borrowed_range_t<TV>::value == false, "");
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
-	static_assert(hamon::ranges::approximately_sized_range_t<TV>::value == hamon::ranges::approximately_sized_range_t<V>::value, "");
+	static_assert(hamon::ranges::approximately_sized_range<TV> == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(hamon::ranges::output_range_t<TV, T>::value == false, "");
 	static_assert(hamon::ranges::input_range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::forward_range_t<TV>::value == hamon::ranges::forward_range_t<V>::value, "");
@@ -270,8 +270,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_size<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<TV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
 
-	static_assert(has_reserve_hint<TV>::value == hamon::ranges::approximately_sized_range_t<V>::value, "");
-	static_assert(has_reserve_hint<TV const>::value == hamon::ranges::approximately_sized_range_t<V const>::value, "");
+	static_assert(has_reserve_hint<TV>::value == hamon::ranges::approximately_sized_range<V>, "");
+	static_assert(has_reserve_hint<TV const>::value == hamon::ranges::approximately_sized_range<V const>, "");
 
 	using I = decltype(hamon::declval<TV&>().begin());
 	using S = decltype(hamon::declval<TV&>().end());

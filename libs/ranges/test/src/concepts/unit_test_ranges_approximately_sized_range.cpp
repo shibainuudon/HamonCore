@@ -8,15 +8,8 @@
 #include <hamon/config.hpp>
 #include "ranges_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_RANGES_APPROXIMATELY_SIZED_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::approximately_sized_range<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::ranges::approximately_sized_range_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_RANGES_APPROXIMATELY_SIZED_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::approximately_sized_range<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::ranges::approximately_sized_range_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_RANGES_APPROXIMATELY_SIZED_RANGE_TEST(B, ...)	\
+	static_assert(B == hamon::ranges::approximately_sized_range<__VA_ARGS__>, "")
 
 namespace hamon_ranges_test
 {

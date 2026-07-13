@@ -387,7 +387,7 @@ public:
 
 private:
 	template <typename V2, typename = hamon::enable_if_t<
-		hamon::ranges::approximately_sized_range_t<V2>::value>>
+		hamon::ranges::approximately_sized_range<V2>>>
 	static HAMON_CXX14_CONSTEXPR auto
 	reserve_hint_impl(V2& base, hamon::ranges::range_difference_t<V> cnt, hamon::detail::overload_priority<1>)
 	{

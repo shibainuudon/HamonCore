@@ -619,7 +619,7 @@ public:
 		return m_inner.size();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, IV2, InnerView)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, IV2, InnerView)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint()
 	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().reserve_hint())	// noexcept as an extension
@@ -628,7 +628,7 @@ public:
 		return m_inner.reserve_hint();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, IV2, InnerView const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, IV2, InnerView const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto reserve_hint() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::declval<IV2&>().reserve_hint())	// noexcept as an extension

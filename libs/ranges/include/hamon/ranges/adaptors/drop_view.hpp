@@ -204,7 +204,7 @@ public:
 		return size_impl(hamon::ranges::size(m_base), m_count);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto reserve_hint()
 	{
@@ -212,7 +212,7 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(s < m_count ? 0 : s - m_count);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::approximately_sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::approximately_sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto reserve_hint() const
 	{

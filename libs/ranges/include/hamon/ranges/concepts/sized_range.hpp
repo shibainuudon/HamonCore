@@ -46,7 +46,7 @@ struct sized_range_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<ranges::approximately_sized_range<U>::value>,
+		typename = hamon::enable_if_t<ranges::approximately_sized_range<U>>,
 		typename = decltype(ranges::size(hamon::declval<U&>()))
 	>
 	static auto test(int) -> hamon::true_type;

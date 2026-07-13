@@ -264,7 +264,7 @@ private:
 
 	template <typename Range,
 		typename = hamon::enable_if_t<
-			hamon::ranges::approximately_sized_range_t<Range>::value>>
+			hamon::ranges::approximately_sized_range<Range>>>
 	HAMON_CXX14_CONSTEXPR void
 	InsertRangeImpl(Allocator& allocator, difference_type pos_offset, Range&& rg, hamon::detail::overload_priority<2>)
 	{
@@ -382,7 +382,7 @@ private:
 
 	template <typename Range,
 		typename = hamon::enable_if_t<
-			hamon::ranges::approximately_sized_range_t<Range>::value>>
+			hamon::ranges::approximately_sized_range<Range>>>
 	HAMON_CXX14_CONSTEXPR void
 	AssignRangeImpl(Allocator& allocator, Range&& rg, hamon::detail::overload_priority<2>)
 	{
