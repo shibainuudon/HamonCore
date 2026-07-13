@@ -42,12 +42,12 @@ struct B {};
 HAMON_RANGES_START_NAMESPACE
 
 template <>
-HAMON_RANGES_SPECIALIZE_DISABLE_SIZED_RANGE(true,
-	test_random_access_sized_range<hamon_ranges_test::sized_range_test::A>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool disable_sized_range<test_random_access_sized_range<hamon_ranges_test::sized_range_test::A>> = true;
 
 template <>
-HAMON_RANGES_SPECIALIZE_DISABLE_SIZED_RANGE(true,
-	test_bidirectional_sized_range<hamon_ranges_test::sized_range_test::B>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool disable_sized_range<test_bidirectional_sized_range<hamon_ranges_test::sized_range_test::B>> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

@@ -61,7 +61,8 @@ static_assert(hamon::same_as<decltype(hamon::ranges::size(f())), hamon::size_t>,
 HAMON_RANGES_START_NAMESPACE
 
 template <>
-HAMON_RANGES_SPECIALIZE_DISABLE_SIZED_RANGE(true, hamon_ranges_test::size_test::R5);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool disable_sized_range<hamon_ranges_test::size_test::R5> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

@@ -36,7 +36,7 @@ void size();
 template <typename T>
 concept has_adl_size =
 	hamon::detail::class_or_enum<hamon::remove_cvref_t<T>> &&
-	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
+	!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<T>> &&
 	requires(T&& t)
 	{
 		{ HAMON_AUTO_CAST(size(t)) } -> hamon::detail::is_integer_like;
@@ -53,7 +53,7 @@ private:
 			hamon::detail::class_or_enum<hamon::remove_cvref_t<U>>
 		>,
 		typename = hamon::enable_if_t<
-			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
+			!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<U>>
 		>,
 		typename V = decltype(HAMON_AUTO_CAST(size(hamon::declval<U&>()))),
 		typename = hamon::enable_if_t<

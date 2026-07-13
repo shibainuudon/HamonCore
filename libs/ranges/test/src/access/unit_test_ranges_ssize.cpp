@@ -39,7 +39,8 @@ struct R
 HAMON_RANGES_START_NAMESPACE
 
 template <>
-HAMON_RANGES_SPECIALIZE_DISABLE_SIZED_RANGE(true, hamon_ranges_test::ssize_test::R);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool disable_sized_range<hamon_ranges_test::ssize_test::R> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

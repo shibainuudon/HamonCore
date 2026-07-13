@@ -24,7 +24,7 @@ namespace detail {
 
 template <typename T>
 concept has_member_size =
-	!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<T>) &&
+	!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<T>> &&
 	requires(T&& t)
 	{
 		{ HAMON_AUTO_CAST(t.size()) } -> hamon::detail::is_integer_like;
@@ -40,7 +40,7 @@ struct has_member_size_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
+			!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<U>>
 		>,
 		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().size())),
 		typename = hamon::enable_if_t<
