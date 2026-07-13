@@ -80,7 +80,7 @@ struct generate_fn
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::invocable<F&> &&
-		ranges::output_range_t<Range, hamon::invoke_result_t<F&>>::value)
+		ranges::output_range<Range, hamon::invoke_result_t<F&>>)
 	{
 		return (*this)(ranges::begin(r), ranges::end(r), hamon::move(gen));
 	}

@@ -188,16 +188,16 @@ static_assert(!CanInstantiateTransformView<test_input_view<int>, Empty>::value, 
 static_assert(!CanInstantiateTransformView<test_input_view<int>, NonMovable>::value, "");
 static_assert(!CanInstantiateTransformView<test_input_view<int>, VoidFunc>::value, "");
 
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_input_view<int>, Double>, int>::value, "");
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_input_view<int>, Ref>, int>::value, "");
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_forward_view<int>, Double>, int>::value, "");
-static_assert( hamon::ranges::output_range_t<hamon::ranges::transform_view<test_forward_view<int>, Ref>, int>::value, "");
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_bidirectional_view<int>, Double>, int>::value, "");
-static_assert( hamon::ranges::output_range_t<hamon::ranges::transform_view<test_bidirectional_view<int>, Ref>, int>::value, "");
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_random_access_view<int>, Double>, int>::value, "");
-static_assert( hamon::ranges::output_range_t<hamon::ranges::transform_view<test_random_access_view<int>, Ref>, int>::value, "");
-static_assert(!hamon::ranges::output_range_t<hamon::ranges::transform_view<test_contiguous_view<int>, Double>, int>::value, "");
-static_assert( hamon::ranges::output_range_t<hamon::ranges::transform_view<test_contiguous_view<int>, Ref>, int>::value, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_input_view<int>, Double>, int>, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_input_view<int>, Ref>, int>, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_forward_view<int>, Double>, int>, "");
+static_assert( hamon::ranges::output_range<hamon::ranges::transform_view<test_forward_view<int>, Ref>, int>, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_bidirectional_view<int>, Double>, int>, "");
+static_assert( hamon::ranges::output_range<hamon::ranges::transform_view<test_bidirectional_view<int>, Ref>, int>, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_random_access_view<int>, Double>, int>, "");
+static_assert( hamon::ranges::output_range<hamon::ranges::transform_view<test_random_access_view<int>, Ref>, int>, "");
+static_assert(!hamon::ranges::output_range<hamon::ranges::transform_view<test_contiguous_view<int>, Double>, int>, "");
+static_assert( hamon::ranges::output_range<hamon::ranges::transform_view<test_contiguous_view<int>, Ref>, int>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 
@@ -212,7 +212,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::borrowed_range<TV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(hamon::ranges::approximately_sized_range<TV> == hamon::ranges::approximately_sized_range<V>, "");
-	static_assert(hamon::ranges::output_range_t<TV, T>::value == false, "");
+	static_assert(hamon::ranges::output_range<TV, T> == false, "");
 	static_assert(hamon::ranges::input_range<TV> == true, "");
 	static_assert(hamon::ranges::forward_range<TV> == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<TV> == hamon::ranges::bidirectional_range<V>, "");

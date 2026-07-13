@@ -27,7 +27,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -46,7 +46,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -65,7 +65,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
@@ -84,7 +84,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
@@ -103,7 +103,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
@@ -124,7 +124,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -145,7 +145,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert( hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -166,7 +166,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -187,7 +187,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
@@ -208,7 +208,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
-		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
 		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");

@@ -27,7 +27,7 @@ void test()
 	static_assert(hamon::ranges::borrowed_range<LSV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<LSV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<LSV> == false, "");
-	static_assert(hamon::ranges::output_range_t<LSV, T>::value           == false, "");
+	static_assert(hamon::ranges::output_range<LSV, T> == false, "");
 	static_assert(hamon::ranges::input_range<LSV> == true, "");
 	static_assert(hamon::ranges::forward_range<LSV>             == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<LSV> == false, "");
@@ -72,7 +72,7 @@ void test()
 	static_assert(hamon::ranges::borrowed_range<IV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<IV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<IV> == false, "");
-	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::forward_range<V>, "");
+	static_assert(hamon::ranges::output_range<IV, T>           == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::input_range<IV>               == true, "");
 	static_assert(hamon::ranges::forward_range<IV>             == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<IV>       == false, "");
