@@ -247,7 +247,7 @@ public:
 			*ranges::begin(derived());	// [view.interface.members]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, R, D),
+	template <HAMON_CONSTRAINT_D(ranges::bidirectional_range, R, D),
 		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	back()
@@ -258,7 +258,7 @@ public:
 			*ranges::prev(ranges::end(derived()));	// [view.interface.members]/4
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::bidirectional_range, R, D const),
+	template <HAMON_CONSTRAINT_D(ranges::bidirectional_range, R, D const),
 		typename = hamon::enable_if_t<ranges::common_range_t<R>::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	back() const

@@ -138,10 +138,10 @@ template <typename V>
 using slide_caches_nothing_t = slide_caches_nothing<V>;
 
 template <typename V>
-using slide_caches_last = hamon::conjunction<
-	hamon::negation<slide_caches_nothing<V>>,
-	hamon::ranges::bidirectional_range<V>,
-	hamon::ranges::common_range<V>>;
+using slide_caches_last = hamon::bool_constant<
+	!slide_caches_nothing<V>::value &&
+	hamon::ranges::bidirectional_range<V> &&
+	hamon::ranges::common_range<V>::value>;
 
 template <typename V>
 using slide_caches_last_t = slide_caches_last<V>;
@@ -291,7 +291,7 @@ private:
 		using iterator_concept =
 			hamon::conditional_t<hamon::ranges::random_access_range_t<Base>::value,
 				hamon::random_access_iterator_tag,	// [range.slide.iterator]/1.1
-			hamon::conditional_t<hamon::ranges::bidirectional_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,	// [range.slide.iterator]/1.2
 				hamon::forward_iterator_tag			// [range.slide.iterator]/1.3
 			>>;
@@ -347,7 +347,7 @@ private:
 			return tmp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 			HAMON_NOEXCEPT_IF_EXPR(--m_current)	// noexcept as an extension
 		{
@@ -363,7 +363,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
 				hamon::is_nothrow_copy_constructible<BaseIter>::value &&

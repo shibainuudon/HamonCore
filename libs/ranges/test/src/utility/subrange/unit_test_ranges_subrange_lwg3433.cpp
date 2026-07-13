@@ -287,7 +287,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 		r,
 		sr,
 		ranges::sized_range_t<decltype(sr)>{},
-		ranges::bidirectional_range_t<decltype(sr)>{});
+		hamon::bool_constant<ranges::bidirectional_range<decltype(sr)>>{});
 }
 
 GTEST_TEST(RangesTest, SubrangeLWG3433Test)

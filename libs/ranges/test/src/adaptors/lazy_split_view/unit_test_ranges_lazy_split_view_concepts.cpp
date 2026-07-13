@@ -30,7 +30,7 @@ void test()
 	static_assert(hamon::ranges::output_range_t<LSV, T>::value           == false, "");
 	static_assert(hamon::ranges::input_range_t<LSV>::value               == true, "");
 	static_assert(hamon::ranges::forward_range_t<LSV>::value             == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<LSV>::value       == false, "");
+	static_assert(hamon::ranges::bidirectional_range<LSV> == false, "");
 	static_assert(hamon::ranges::random_access_range_t<LSV>::value       == false, "");
 	static_assert(hamon::ranges::contiguous_range_t<LSV>::value          == false, "");
 	static_assert(hamon::ranges::common_range_t<LSV>::value              == hamon::ranges::common_range_t<V>::value, "");
@@ -75,7 +75,7 @@ void test()
 	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::forward_range_t<V>::value, "");
 	static_assert(hamon::ranges::input_range_t<IV>::value               == true, "");
 	static_assert(hamon::ranges::forward_range_t<IV>::value             == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<IV>::value       == false, "");
+	static_assert(hamon::ranges::bidirectional_range<IV>       == false, "");
 	static_assert(hamon::ranges::random_access_range_t<IV>::value       == false, "");
 	static_assert(hamon::ranges::contiguous_range_t<IV>::value          == false, "");
 	static_assert(hamon::ranges::common_range_t<IV>::value              == false, "");

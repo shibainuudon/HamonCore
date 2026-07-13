@@ -994,7 +994,7 @@ inline HAMON_CXX14_CONSTEXPR bool test05()
 	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
-	static_assert( ranges::bidirectional_range_t<R>::value, "");
+	static_assert( ranges::bidirectional_range<R>, "");
 	static_assert(!ranges::random_access_range_t<R>::value, "");
 
 	using I = decltype(v.begin());
@@ -1016,7 +1016,7 @@ inline HAMON_CXX14_CONSTEXPR bool test06()
 
 	using R = decltype(v);
 	static_assert( ranges::forward_range_t<R>::value, "");
-	static_assert(!ranges::bidirectional_range_t<R>::value, "");
+	static_assert(!ranges::bidirectional_range<R>, "");
 
 	using I = decltype(v.begin());
 	static_assert( has_iterator_category<I>::value, "");

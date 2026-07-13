@@ -8,13 +8,13 @@
 #define HAMON_RANGES_CONCEPTS_BIDIRECTIONAL_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #endif
 
@@ -32,7 +32,7 @@ using std::ranges::bidirectional_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept bidirectional_range =
+HAMON_CONCEPT_OR_BOOL bidirectional_range =
 	ranges::forward_range<T> &&
 	hamon::bidirectional_iterator<ranges::iterator_t<T>>;
 
@@ -65,17 +65,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using bidirectional_range =
-	typename ranges::detail::bidirectional_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL bidirectional_range =
+	ranges::detail::bidirectional_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using bidirectional_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::bidirectional_range<T>>;
-#else
-	hamon::ranges::bidirectional_range<T>;
 #endif
 
 }	// namespace ranges

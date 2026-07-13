@@ -29,7 +29,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -48,7 +48,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -67,7 +67,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -88,7 +88,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -107,7 +107,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -126,7 +126,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -147,7 +147,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -166,7 +166,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -185,7 +185,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -206,7 +206,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -225,7 +225,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");
@@ -244,7 +244,7 @@ GTEST_TEST(RangesTest, ReverseViewConceptsTest)
 		static_assert( hamon::ranges::output_range_t<CV, T>::value, "");
 		static_assert( hamon::ranges::input_range_t<CV>::value, "");
 		static_assert( hamon::ranges::forward_range_t<CV>::value, "");
-		static_assert( hamon::ranges::bidirectional_range_t<CV>::value, "");
+		static_assert( hamon::ranges::bidirectional_range<CV>, "");
 		static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::contiguous_range_t<CV>::value, "");
 		static_assert( hamon::ranges::common_range_t<CV>::value, "");

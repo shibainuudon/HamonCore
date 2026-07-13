@@ -100,7 +100,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::output_range_t<FV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
 	static_assert(hamon::ranges::input_range_t<FV>::value == true, "");
 	static_assert(hamon::ranges::forward_range_t<FV>::value == hamon::ranges::forward_range_t<V>::value, "");
-	static_assert(hamon::ranges::bidirectional_range_t<FV>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(hamon::ranges::bidirectional_range<FV> == hamon::ranges::bidirectional_range<V>, "");
 	static_assert(hamon::ranges::random_access_range_t<FV>::value == false, "");
 	static_assert(hamon::ranges::contiguous_range_t<FV>::value == false, "");
 	static_assert(hamon::ranges::common_range_t<FV>::value == hamon::ranges::common_range_t<V>::value, "");
@@ -160,8 +160,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_arrow<I>::value == (has_arrow<BI>::value && hamon::copyable<BI>), "");
 	static_assert(has_pre_increment<I>::value, "");
 	static_assert(has_post_increment<I>::value, "");
-	static_assert(has_pre_decrement<I>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
-	static_assert(has_post_decrement<I>::value == hamon::ranges::bidirectional_range_t<V>::value, "");
+	static_assert(has_pre_decrement<I>::value == hamon::ranges::bidirectional_range<V>, "");
+	static_assert(has_post_decrement<I>::value == hamon::ranges::bidirectional_range<V>, "");
 
 	return true;
 }

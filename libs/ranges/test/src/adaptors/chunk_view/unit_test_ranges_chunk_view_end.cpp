@@ -150,7 +150,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert( hamon::ranges::forward_range_t<V const>::value, "");
 			static_assert( hamon::ranges::common_range_t<V const>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
-			static_assert(!hamon::ranges::bidirectional_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::bidirectional_range<V const>, "");
 
 			using CV = hamon::ranges::chunk_view<V>;
 			static_assert( has_end<CV&>::value, "");
@@ -191,7 +191,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert( hamon::ranges::forward_range_t<V const>::value, "");
 			static_assert( hamon::ranges::common_range_t<V const>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
-			static_assert( hamon::ranges::bidirectional_range_t<V const>::value, "");
+			static_assert( hamon::ranges::bidirectional_range<V const>, "");
 
 			using CV = hamon::ranges::chunk_view<V>;
 			static_assert( has_end<CV&>::value, "");
@@ -318,8 +318,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert( hamon::ranges::common_range_t<V const>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
-			static_assert(!hamon::ranges::bidirectional_range_t<V>::value, "");
-			static_assert(!hamon::ranges::bidirectional_range_t<V const>::value, "");
+			static_assert(!hamon::ranges::bidirectional_range<V>, "");
+			static_assert(!hamon::ranges::bidirectional_range<V const>, "");
 
 			using CV = hamon::ranges::chunk_view<V>;
 			static_assert( has_end<CV&>::value, "");
@@ -441,7 +441,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(!hamon::ranges::forward_range_t<V const>::value, "");
 			static_assert( hamon::ranges::common_range_t<V>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-			static_assert(!hamon::ranges::bidirectional_range_t<V>::value, "");
+			static_assert(!hamon::ranges::bidirectional_range<V>, "");
 
 			using CV = hamon::ranges::chunk_view<V>;
 			static_assert( has_end<CV&>::value, "");
@@ -474,7 +474,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			static_assert(!hamon::ranges::forward_range_t<V const>::value, "");
 			static_assert( hamon::ranges::common_range_t<V>::value, "");
 			static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-			static_assert( hamon::ranges::bidirectional_range_t<V>::value, "");
+			static_assert( hamon::ranges::bidirectional_range<V>, "");
 
 			using CV = hamon::ranges::chunk_view<V>;
 			static_assert( has_end<CV&>::value, "");

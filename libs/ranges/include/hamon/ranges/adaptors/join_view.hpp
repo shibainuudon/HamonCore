@@ -322,8 +322,8 @@ private:
 	public:
 		using iterator_concept  = hamon::conditional_t<
 			ref_is_glvalue<Base>::value &&
-			hamon::ranges::bidirectional_range_t<Base>::value &&
-			hamon::ranges::bidirectional_range_t<hamon::ranges::range_reference_t<Base>>::value &&
+			hamon::ranges::bidirectional_range<Base> &&
+			hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<Base>> &&
 			hamon::ranges::common_range_t<hamon::ranges::range_reference_t<Base>>::value,
 				hamon::bidirectional_iterator_tag,	// [range.join.iterator]/1.1
 			hamon::conditional_t<
@@ -448,8 +448,8 @@ private:
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
 				ref_is_glvalue<B2>::value &&
-				hamon::ranges::bidirectional_range_t<B2>::value &&
-				hamon::ranges::bidirectional_range_t<hamon::ranges::range_reference_t<B2>>::value &&
+				hamon::ranges::bidirectional_range<B2> &&
+				hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<B2>> &&
 				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<B2>>::value>>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 		{
@@ -471,8 +471,8 @@ private:
 		template <typename B2 = Base,
 			typename = hamon::enable_if_t<
 				ref_is_glvalue<B2>::value &&
-				hamon::ranges::bidirectional_range_t<B2>::value &&
-				hamon::ranges::bidirectional_range_t<hamon::ranges::range_reference_t<B2>>::value &&
+				hamon::ranges::bidirectional_range<B2> &&
+				hamon::ranges::bidirectional_range<hamon::ranges::range_reference_t<B2>> &&
 				hamon::ranges::common_range_t<hamon::ranges::range_reference_t<B2>>::value>>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 		{

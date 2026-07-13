@@ -46,7 +46,7 @@ struct random_access_range_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<ranges::bidirectional_range<U>::value>,
+		typename = hamon::enable_if_t<ranges::bidirectional_range<U>>,
 		typename = hamon::enable_if_t<hamon::random_access_iterator<ranges::iterator_t<U>>>
 	>
 	static auto test(int) -> hamon::true_type;

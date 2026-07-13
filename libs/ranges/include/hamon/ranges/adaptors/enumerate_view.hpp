@@ -162,7 +162,7 @@ private:
 		using iterator_concept =
 			hamon::conditional_t<hamon::ranges::random_access_range_t<Base>::value,
 				hamon::random_access_iterator_tag,
-			hamon::conditional_t<hamon::ranges::bidirectional_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,
 			hamon::conditional_t<hamon::ranges::forward_range_t<Base>::value,
 				hamon::forward_iterator_tag,
@@ -284,7 +284,7 @@ private:
 			return post_increment_impl(hamon::detail::overload_priority<1>{});
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator--() HAMON_NOEXCEPT_IF_EXPR(--hamon::declval<BaseIter&>())	// noexcept as an extension
 		{
@@ -294,7 +294,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator
 		operator--(int) HAMON_NOEXCEPT_IF(	// noexcept as an extension
 			HAMON_NOEXCEPT_EXPR(--hamon::declval<BaseIter&>()) &&

@@ -90,7 +90,7 @@ struct fold_right_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, R),
+		HAMON_CONSTRAINT(ranges::bidirectional_range, R),
 		typename T = ranges::range_value_t<R>,
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,

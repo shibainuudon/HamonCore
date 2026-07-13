@@ -140,7 +140,7 @@ private:
 		using difference_type  = hamon::ranges::range_difference_t<V>;
 		using iterator_category = hamon::input_iterator_tag;
 		using iterator_concept =
-			hamon::conditional_t<hamon::ranges::bidirectional_range_t<V>::value,
+			hamon::conditional_t<hamon::ranges::bidirectional_range<V>,
 				hamon::bidirectional_iterator_tag,	// [range.chunk.by.iter]/1.1
 				hamon::forward_iterator_tag			// [range.chunk.by.iter]/1.2
 			>;
@@ -179,7 +179,7 @@ private:
 			return tmp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, V2, V)>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 		{
 			// [range.chunk.by.iter]/8
@@ -188,7 +188,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, V2, V)>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 		{
 			// [range.chunk.by.iter]/9
@@ -344,7 +344,7 @@ private:
 				hamon::invoke(pred, hamon::forward<T2>(rhs), hamon::forward<T1>(lhs)))
 	};
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, V2, V)>
 	HAMON_CXX14_CONSTEXPR BaseIter
 	find_prev(BaseIter current)
 	{

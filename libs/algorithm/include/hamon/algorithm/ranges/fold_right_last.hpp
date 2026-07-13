@@ -111,7 +111,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::bidirectional_range, R),
+		HAMON_CONSTRAINT(ranges::bidirectional_range, R),
 		HAMON_CONSTRAINED_PARAM(
 			ranges::detail::indirectly_binary_right_foldable,
 			ranges::range_value_t<R>, ranges::iterator_t<R>, F)

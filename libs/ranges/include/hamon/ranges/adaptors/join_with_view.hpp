@@ -173,8 +173,8 @@ using bidirectional_common_t = hamon::bool_constant<bidirectional_common<R>>;
 #else
 
 template <typename R>
-using bidirectional_common = hamon::conjunction<
-	hamon::ranges::bidirectional_range<R>, hamon::ranges::common_range<R>>;
+using bidirectional_common = hamon::bool_constant<
+	hamon::ranges::bidirectional_range<R> && hamon::ranges::common_range<R>::value>;
 
 template <typename R>
 using bidirectional_common_t = bidirectional_common<R>;
@@ -462,7 +462,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			hamon::conditional_t<
 				// [range.join.with.iterator]/1.1
 				ref_is_glvalue<Base>::value &&
-				hamon::ranges::bidirectional_range_t<Base>::value &&
+				hamon::ranges::bidirectional_range<Base> &&
 				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
 				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value,
 				hamon::bidirectional_iterator_tag,
@@ -592,12 +592,12 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 	public:
 		template <typename B2 = Base,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				ref_is_glvalue<B2>,
-				hamon::ranges::bidirectional_range_t<Base>,
-				hamon::ranges::detail::bidirectional_common_t<InnerBase>,
-				hamon::ranges::detail::bidirectional_common_t<PatternBase>
-			>::value>>
+			typename = hamon::enable_if_t<
+				ref_is_glvalue<B2>::value &&
+				hamon::ranges::bidirectional_range<Base> &&
+				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
+				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value
+			>>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator--()
 		{
@@ -643,12 +643,12 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		}
 
 		template <typename B2 = Base,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				ref_is_glvalue<B2>,
-				hamon::ranges::bidirectional_range_t<Base>,
-				hamon::ranges::detail::bidirectional_common_t<InnerBase>,
-				hamon::ranges::detail::bidirectional_common_t<PatternBase>
-			>::value>>
+			typename = hamon::enable_if_t<
+				ref_is_glvalue<B2>::value &&
+				hamon::ranges::bidirectional_range<Base> &&
+				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
+				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value
+			>>
 		HAMON_CXX14_CONSTEXPR iterator
 		operator--(int)
 		{

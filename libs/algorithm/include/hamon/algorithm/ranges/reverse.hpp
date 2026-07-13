@@ -28,7 +28,6 @@ using std::ranges::reverse;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/bidirectional_iterator.hpp>
@@ -120,7 +119,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::bidirectional_range, Range)
+		HAMON_CONSTRAINT(hamon::ranges::bidirectional_range, Range)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r) const

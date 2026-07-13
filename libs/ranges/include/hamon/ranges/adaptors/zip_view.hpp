@@ -153,7 +153,7 @@ using zip_is_common_impl = hamon::disjunction<
 		hamon::conjunction<hamon::ranges::common_range_t<Rs>...>
 	>,
 	hamon::conjunction<
-		hamon::negation<hamon::conjunction<hamon::ranges::bidirectional_range_t<Rs>...>>,
+		hamon::negation<hamon::conjunction<hamon::bool_constant<hamon::ranges::bidirectional_range<Rs>>...>>,
 		hamon::conjunction<hamon::ranges::common_range_t<Rs>...>
 	>,
 	hamon::conjunction<
@@ -167,7 +167,7 @@ using zip_is_common_t = zip_is_common_impl<hamon::ranges::detail::maybe_const<Co
 
 template <bool Const, typename... Views>
 using all_bidirectional_t = hamon::conjunction<
-	hamon::ranges::bidirectional_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
 
 template <bool Const, typename... Views>
 using all_forward_t = hamon::conjunction<

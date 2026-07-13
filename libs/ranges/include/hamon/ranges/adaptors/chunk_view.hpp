@@ -613,7 +613,7 @@ private:
 		using iterator_concept =
 			hamon::conditional_t<hamon::ranges::random_access_range_t<Base>::value,
 				hamon::random_access_iterator_tag,
-			hamon::conditional_t<hamon::ranges::bidirectional_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,
 				hamon::forward_iterator_tag
 			>>;
@@ -679,7 +679,7 @@ private:
 			return tmp;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()	// noexcept(false)
 		{
 			// [range.chunk.fwd.iter]/10
@@ -688,7 +688,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)	// noexcept(false)
 		{
 			// [range.chunk.fwd.iter]/11
@@ -936,7 +936,7 @@ private:
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
 			hamon::ranges::common_range_t<V2>::value &&
-			!hamon::ranges::bidirectional_range_t<V2>::value>>
+			!hamon::ranges::bidirectional_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, D const&, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension

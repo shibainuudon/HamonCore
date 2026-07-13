@@ -73,7 +73,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	static_assert( hamon::ranges::output_range_t<EV, T>::value, "");
 	static_assert( hamon::ranges::input_range_t<EV>::value, "");
 	static_assert( hamon::ranges::forward_range_t<EV>::value, "");
-	static_assert( hamon::ranges::bidirectional_range_t<EV>::value, "");
+	static_assert( hamon::ranges::bidirectional_range<EV>, "");
 	static_assert( hamon::ranges::random_access_range_t<EV>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<EV>::value, "");
 	static_assert( hamon::ranges::common_range_t<EV>::value, "");
@@ -88,7 +88,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	static_assert( hamon::ranges::output_range_t<CEV, T>::value, "");
 	static_assert( hamon::ranges::input_range_t<CEV>::value, "");
 	static_assert( hamon::ranges::forward_range_t<CEV>::value, "");
-	static_assert( hamon::ranges::bidirectional_range_t<CEV>::value, "");
+	static_assert( hamon::ranges::bidirectional_range<CEV>, "");
 	static_assert( hamon::ranges::random_access_range_t<CEV>::value, "");
 	static_assert( hamon::ranges::contiguous_range_t<CEV>::value, "");
 	static_assert( hamon::ranges::common_range_t<CEV>::value, "");

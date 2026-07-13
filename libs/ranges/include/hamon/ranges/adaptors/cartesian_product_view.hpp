@@ -172,8 +172,8 @@ using cartesian_product_common_arg = hamon::disjunction<
 
 template <bool Const, typename First, typename... Vs>
 using cartesian_product_is_bidirectional = hamon::conjunction<
-	hamon::ranges::bidirectional_range_t<hamon::ranges::detail::maybe_const<Const, First>>,
-	hamon::ranges::bidirectional_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, First>>>,
+	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
 	cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>...
 >;
 

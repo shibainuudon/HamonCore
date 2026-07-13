@@ -74,10 +74,10 @@ template <hamon::ranges::view V>
 	requires hamon::ranges::bidirectional_range<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::bidirectional_range_t<V>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::bidirectional_range<V>
+	>>
 #endif
 class reverse_view : public hamon::ranges::view_interface<reverse_view<V>>
 {

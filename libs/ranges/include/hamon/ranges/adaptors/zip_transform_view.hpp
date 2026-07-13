@@ -265,7 +265,7 @@ private:
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			post_increment(hamon::detail::overload_priority<1>{}))
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 			HAMON_NOEXCEPT_IF_EXPR(--m_inner)	// noexcept as an extension
 		{
@@ -274,7 +274,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
 				hamon::is_nothrow_copy_constructible<ziperator<Const>>::value &&

@@ -150,7 +150,7 @@ private:
 	public:
 		// [range.filter.iterator]/2
 		using iterator_concept =
-			hamon::conditional_t<hamon::ranges::bidirectional_range_t<V>::value,
+			hamon::conditional_t<hamon::ranges::bidirectional_range<V>,
 				hamon::bidirectional_iterator_tag,	// [range.filter.iterator]/2.1
 			hamon::conditional_t<hamon::ranges::forward_range_t<V>::value,
 				hamon::forward_iterator_tag,		// [range.filter.iterator]/2.2
@@ -272,7 +272,7 @@ private:
 		}
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, V2, V)>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 			//requires hamon::ranges::bidirectional_range<V>
 		{
@@ -286,7 +286,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::bidirectional_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::bidirectional_range, V2, V)>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 			//requires hamon::ranges::bidirectional_range<V>
 		{
