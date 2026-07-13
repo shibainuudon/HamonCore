@@ -320,24 +320,24 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::test_sized_borrowed_range<T, Iterator, Sentinel>> = true;
 
 template <typename T, typename Iterator, typename Sentinel>
-HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
-	hamon_ranges_test::test_view<T, Iterator, Sentinel>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_view<hamon_ranges_test::test_view<T, Iterator, Sentinel>> = true;
 
 template <typename T, typename Iterator, typename Sentinel>
-HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
-	hamon_ranges_test::test_sized_view<T, Iterator, Sentinel>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_view<hamon_ranges_test::test_sized_view<T, Iterator, Sentinel>> = true;
 
 template <typename T, typename Iterator, typename Sentinel>
-HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
-	hamon_ranges_test::test_approximately_sized_view<T, Iterator, Sentinel>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_view<hamon_ranges_test::test_approximately_sized_view<T, Iterator, Sentinel>> = true;
 
 template <typename T, typename Iterator, typename Sentinel>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon_ranges_test::test_borrowed_view<T, Iterator, Sentinel>> = true;
 
 template <typename T, typename Iterator, typename Sentinel>
-HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true,
-	hamon_ranges_test::test_borrowed_view<T, Iterator, Sentinel>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_view<hamon_ranges_test::test_borrowed_view<T, Iterator, Sentinel>> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

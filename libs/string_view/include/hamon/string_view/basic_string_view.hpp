@@ -1195,7 +1195,8 @@ HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon::basic_string_view<CharT, Traits>> = true;
 
 template <typename CharT, typename Traits>
-HAMON_RANGES_SPECIALIZE_ENABLE_VIEW(true, hamon::basic_string_view<CharT, Traits>);
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool enable_view<hamon::basic_string_view<CharT, Traits>> = true;
 
 HAMON_RANGES_END_NAMESPACE
 

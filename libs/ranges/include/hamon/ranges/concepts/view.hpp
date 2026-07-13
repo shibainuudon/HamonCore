@@ -37,7 +37,7 @@ template <typename T>
 concept view =
 	ranges::range<T> &&
 	hamon::movable<T> &&
-	HAMON_RANGES_ENABLE_VIEW(T);
+	hamon::ranges::enable_view<T>;
 
 #else
 
@@ -51,7 +51,7 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<ranges::range<U>::value>,
 		typename = hamon::enable_if_t<hamon::movable<U>>,
-		typename = hamon::enable_if_t<HAMON_RANGES_ENABLE_VIEW(U)>
+		typename = hamon::enable_if_t<hamon::ranges::enable_view<U>>
 	>
 	static auto test(int) -> hamon::true_type;
 
