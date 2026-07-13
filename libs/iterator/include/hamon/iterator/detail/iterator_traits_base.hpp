@@ -129,11 +129,11 @@ struct iterator_traits_base_no_members
 };
 
 template <typename I>
-using with_nested_types = hamon::conjunction<
-	hamon::detail::has_member_difference_type_t<I>,
-	hamon::detail::has_member_value_type_t<I>,
-	hamon::detail::has_member_reference_t<I>,
-	hamon::detail::has_member_iterator_category_t<I>
+using with_nested_types = hamon::bool_constant<
+	hamon::detail::has_member_difference_type<I> &&
+	hamon::detail::has_member_value_type_t<I>::value &&
+	hamon::detail::has_member_reference_t<I>::value &&
+	hamon::detail::has_member_iterator_category_t<I>::value
 >;
 
 template <typename I>

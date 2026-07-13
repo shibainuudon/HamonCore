@@ -48,7 +48,7 @@ struct cond_difference_type<T, true>
 };
 
 template <typename T,
-	bool = hamon::detail::has_member_difference_type_t<T>::value,
+	bool = hamon::detail::has_member_difference_type<T>,
 	typename = void
 >
 struct incrementable_traits_impl {};
