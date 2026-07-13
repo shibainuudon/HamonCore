@@ -62,7 +62,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int>
 			>;
 			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert( hamon::ranges::common_range<V>, "");
 			static_assert( hamon::ranges::common_range<V const>, "");
 
@@ -104,7 +104,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				test_sentinel<forward_iterator_wrapper<int>>
 			>;
 			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert(!hamon::ranges::common_range<V>, "");
 			static_assert(!hamon::ranges::common_range<V const>, "");
 
@@ -149,7 +149,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int const>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert( hamon::ranges::common_range<V>, "");
 			static_assert( hamon::ranges::common_range<V const>, "");
 
@@ -193,7 +193,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int const>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert(!hamon::ranges::common_range<V>, "");
 			static_assert( hamon::ranges::common_range<V const>, "");
 
@@ -237,7 +237,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				test_sentinel<forward_iterator_wrapper<int const>>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert( hamon::ranges::common_range<V>, "");
 			static_assert(!hamon::ranges::common_range<V const>, "");
 
@@ -281,7 +281,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				test_sentinel<forward_iterator_wrapper<int const>>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert( hamon::ranges::range_t<V const>::value, "");
+			static_assert( hamon::ranges::range<V const>, "");
 			static_assert(!hamon::ranges::common_range<V>, "");
 			static_assert(!hamon::ranges::common_range<V const>, "");
 
@@ -334,7 +334,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert(!hamon::ranges::range_t<V const>::value, "");
+			static_assert(!hamon::ranges::range<V const>, "");
 			static_assert( hamon::ranges::common_range<V>, "");
 			static_assert(!hamon::ranges::common_range<V const>, "");
 
@@ -368,7 +368,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int>
 			>;
 			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-			static_assert(!hamon::ranges::range_t<V const>::value, "");
+			static_assert(!hamon::ranges::range<V const>, "");
 			static_assert(!hamon::ranges::common_range<V>, "");
 			static_assert(!hamon::ranges::common_range<V const>, "");
 

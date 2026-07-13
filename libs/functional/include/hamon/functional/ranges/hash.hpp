@@ -10,6 +10,7 @@
 #include <hamon/functional/hash.hpp>
 #include <hamon/functional/detail/has_member_hash.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_hash.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -117,7 +118,7 @@ private:
 			hamon::make_index_sequence<hamon::tuple_size<RawT>::value>{}))
 
 	// (4) range なら begin(x)からend(x)までループしてhash_combine
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, RawT), typename T>
+	template <HAMON_CONSTRAINT(hamon::ranges::range, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<2>)
 	HAMON_HASH_RETURN(

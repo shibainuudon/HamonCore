@@ -658,7 +658,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2),
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2),
 		bool Const = hamon::is_const<V2>::value>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	begin_impl(V2& base, hamon::detail::overload_priority<1>)
@@ -675,7 +675,7 @@ public:
 	begin() HAMON_NOEXCEPT_DECLTYPE_RETURN(        // noexcept as an extension
 		begin_impl(m_base, hamon::detail::overload_priority<1>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto     // nodiscard as an extension
 	begin() const HAMON_NOEXCEPT_DECLTYPE_RETURN(  // noexcept as an extension
 		begin_impl(m_base, hamon::detail::overload_priority<1>{}))
@@ -688,7 +688,7 @@ private:
 		HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
 			iterator<Const>(as_sentinel{}, hamon::ranges::begin(base), hamon::ranges::end(base)))
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2),
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2),
 		bool Const = hamon::is_const<V2>::value>
 	static HAMON_CXX11_CONSTEXPR sentinel<Const>
 	end_impl(V2& base, hamon::detail::overload_priority<1>)
@@ -705,7 +705,7 @@ public:
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(        // noexcept as an extension
 		end_impl(m_base, hamon::detail::overload_priority<2>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto   // nodiscard as an extension
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(  // noexcept as an extension
 		end_impl(m_base, hamon::detail::overload_priority<2>{}))

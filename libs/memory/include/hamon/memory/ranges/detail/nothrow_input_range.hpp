@@ -36,10 +36,11 @@ concept nothrow_input_range =
 #else
 
 template <typename R>
-using nothrow_input_range = hamon::conjunction<
-	hamon::ranges::range<R>,
-	hamon::ranges::detail::nothrow_input_iterator<hamon::ranges::iterator_t<R>>,
-	hamon::ranges::detail::nothrow_sentinel_for<hamon::ranges::sentinel_t<R>, hamon::ranges::iterator_t<R>>>;
+using nothrow_input_range = hamon::bool_constant<
+	hamon::ranges::range<R> &&
+	hamon::ranges::detail::nothrow_input_iterator<hamon::ranges::iterator_t<R>>::value &&
+	hamon::ranges::detail::nothrow_sentinel_for<hamon::ranges::sentinel_t<R>, hamon::ranges::iterator_t<R>>::value
+>;
 
 #endif
 

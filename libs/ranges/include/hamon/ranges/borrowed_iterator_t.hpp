@@ -25,14 +25,14 @@ using std::ranges::borrowed_iterator_t;
 #include <hamon/ranges/concepts/borrowed_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/utility/dangling.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
 namespace ranges {
 
-template <HAMON_CONSTRAINED_PARAM(ranges::range, Range)>
+template <HAMON_CONSTRAINT(ranges::range, Range)>
 using borrowed_iterator_t =
 	hamon::conditional_t<
 		ranges::borrowed_range<Range>,

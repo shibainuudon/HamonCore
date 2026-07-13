@@ -93,7 +93,7 @@ struct NotSimpleViewCommonRange : hamon::ranges::view_base
 
 static_assert(hamon::ranges::view_t<NotSimpleViewCommonRange<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleViewCommonRange<int>>::value, "");
-static_assert(hamon::ranges::range_t<NotSimpleViewCommonRange<int>>::value, "");
+static_assert(hamon::ranges::range<NotSimpleViewCommonRange<int>>, "");
 static_assert(hamon::ranges::common_range<NotSimpleViewCommonRange<int>>, "");
 
 template <typename T>
@@ -108,8 +108,8 @@ struct ConstNotView : hamon::ranges::view_base
 
 static_assert(hamon::ranges::view_t<ConstNotView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<ConstNotView<int>>::value, "");
-static_assert( hamon::ranges::range_t<ConstNotView<int>>::value, "");
-static_assert(!hamon::ranges::range_t<ConstNotView<int> const>::value, "");
+static_assert( hamon::ranges::range<ConstNotView<int>>, "");
+static_assert(!hamon::ranges::range<ConstNotView<int> const>, "");
 
 template <typename T>
 struct NonCopyableView : hamon::ranges::view_base
@@ -181,7 +181,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 	static_assert(!hamon::is_implicitly_constructible<ARV, V>::value, "");
 
-	static_assert( hamon::ranges::range_t<ARV>::value, "");
+	static_assert( hamon::ranges::range<ARV>, "");
 	static_assert( hamon::ranges::borrowed_range<ARV> == hamon::ranges::borrowed_range<V>, "");
 	static_assert( hamon::ranges::sized_range_t<ARV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<ARV> == hamon::ranges::approximately_sized_range<V>, "");
@@ -242,7 +242,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	}
 
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::ranges::range_t<V const>::value)
+	if constexpr (hamon::ranges::range<V const>)
 	{
 		using CI = decltype(hamon::ranges::begin(hamon::declval<V const&>()));
 		using CS = decltype(hamon::ranges::end(hamon::declval<V const&>()));
@@ -266,10 +266,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 #endif
 
 	static_assert(has_begin<ARV>::value, "");
-	static_assert(has_begin<ARV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_begin<ARV const>::value == hamon::ranges::range<V const>, "");
 
 	static_assert(has_end<ARV>::value, "");
-	static_assert(has_end<ARV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_end<ARV const>::value == hamon::ranges::range<V const>, "");
 
 	static_assert(has_size<ARV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<ARV const>::value == hamon::ranges::sized_range_t<V const>::value, "");

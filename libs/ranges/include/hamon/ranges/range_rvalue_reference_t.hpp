@@ -23,7 +23,7 @@ using std::ranges::range_rvalue_reference_t;
 
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
@@ -32,7 +32,7 @@ namespace hamon {
 namespace ranges {
 
 // [ranges.syn]
-template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
+template <HAMON_CONSTRAINT(ranges::range, R)>
 using range_rvalue_reference_t = hamon::iter_rvalue_reference_t<ranges::iterator_t<R>>;
 
 }	// namespace ranges

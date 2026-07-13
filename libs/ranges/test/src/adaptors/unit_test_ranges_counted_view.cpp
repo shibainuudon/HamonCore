@@ -31,7 +31,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	auto cv = hamon::views::counted(a+1, 3);
 	using CV = decltype(cv);
 	static_assert(hamon::is_same<CV, hamon::span<int, hamon::dynamic_extent>>::value, "");
-	static_assert( hamon::ranges::range_t<CV>::value, "");
+	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -61,7 +61,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			random_access_iterator_wrapper<int>,
 			random_access_iterator_wrapper<int>,
 			hamon::ranges::subrange_kind::sized>>::value, "");
-	static_assert( hamon::ranges::range_t<CV>::value, "");
+	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -91,7 +91,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 			hamon::counted_iterator<bidirectional_iterator_wrapper<int>>,
 			hamon::default_sentinel_t,
 			hamon::ranges::subrange_kind::sized>>::value, "");
-	static_assert( hamon::ranges::range_t<CV>::value, "");
+	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -121,7 +121,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 			hamon::counted_iterator<forward_iterator_wrapper<int>>,
 			hamon::default_sentinel_t,
 			hamon::ranges::subrange_kind::sized>>::value, "");
-	static_assert( hamon::ranges::range_t<CV>::value, "");
+	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -151,7 +151,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 			hamon::counted_iterator<input_iterator_wrapper<int>>,
 			hamon::default_sentinel_t,
 			hamon::ranges::subrange_kind::sized>>::value, "");
-	static_assert( hamon::ranges::range_t<CV>::value, "");
+	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");

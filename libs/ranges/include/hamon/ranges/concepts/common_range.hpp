@@ -48,7 +48,7 @@ struct common_range_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			ranges::range<U>::value
+			ranges::range<U>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::same_as<

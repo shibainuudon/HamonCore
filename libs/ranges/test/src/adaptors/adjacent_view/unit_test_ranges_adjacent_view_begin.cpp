@@ -62,7 +62,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>
 		>;
 		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
-		static_assert( hamon::ranges::range_t<V const>::value, "");
+		static_assert( hamon::ranges::range<V const>, "");
 
 		using AV = hamon::ranges::adjacent_view<V, 2>;
 		static_assert( has_begin<AV&>::value, "");
@@ -103,7 +103,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int const>
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-		static_assert( hamon::ranges::range_t<V const>::value, "");
+		static_assert( hamon::ranges::range<V const>, "");
 
 		using AV = hamon::ranges::adjacent_view<V, 3>;
 		static_assert( has_begin<AV&>::value, "");
@@ -152,7 +152,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-		static_assert(!hamon::ranges::range_t<V const>::value, "");
+		static_assert(!hamon::ranges::range<V const>, "");
 
 		using AV = hamon::ranges::adjacent_view<V, 1>;
 		static_assert( has_begin<AV&>::value, "");

@@ -269,7 +269,7 @@ public:
 
 	template <typename V2 = V const,
 		typename = hamon::enable_if_t<
-			hamon::ranges::range_t<V2>::value &&
+			hamon::ranges::range<V2> &&
 			hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V2>>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
@@ -292,7 +292,7 @@ public:
 
 	template <typename V2 = V const,
 		typename = hamon::enable_if_t<
-			hamon::ranges::range_t<V2>::value &&
+			hamon::ranges::range<V2> &&
 			hamon::indirect_unary_predicate<Pred const, hamon::ranges::iterator_t<V2>>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension

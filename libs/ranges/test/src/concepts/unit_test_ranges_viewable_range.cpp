@@ -33,7 +33,7 @@ namespace viewable_range_test
 
 // viewable_range<T> is not satisfied for (range=false, view=*, constructible_from=*, lvalue-or-movable=*)
 struct T1 { };
-static_assert(!hamon::ranges::range_t<T1>::value, "");
+static_assert(!hamon::ranges::range<T1>, "");
 
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, T1);
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, T1&);
@@ -47,7 +47,7 @@ struct T2 : test_input_range<int>, hamon::ranges::view_base
 {
 	T2(T2 const&) = default;
 };
-static_assert(hamon::ranges::range_t<T2>::value, "");
+static_assert(hamon::ranges::range<T2>, "");
 static_assert(hamon::ranges::view_t<T2>::value, "");
 static_assert(hamon::constructible_from<T2, T2>, "");
 
@@ -63,7 +63,7 @@ struct T3 : test_input_range<int>, hamon::ranges::view_base
 {
 	T3(T3 const&) = default;
 };
-static_assert(hamon::ranges::range_t<T3>::value, "");
+static_assert(hamon::ranges::range<T3>, "");
 static_assert(hamon::ranges::view_t<T3>::value, "");
 static_assert(hamon::constructible_from<T3, T3>, "");
 
@@ -81,7 +81,7 @@ struct T4 : test_input_range<int>, hamon::ranges::view_base
 	T4(T4&&) = default;             // necessary to model view
 	T4& operator=(T4&&) = default;  // necessary to model view
 };
-static_assert(hamon::ranges::range_t<T4 const&>::value, "");
+static_assert(hamon::ranges::range<T4 const&>, "");
 static_assert(hamon::ranges::view_t<hamon::remove_cvref_t<T4 const&>>::value, "");
 static_assert(!hamon::constructible_from<hamon::remove_cvref_t<T4 const&>, T4 const&>, "");
 
@@ -92,7 +92,7 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(false, T4 const&);
 
 // viewable_range<T> is satisfied for (range=true, view=false, constructible_from=true, lvalue-or-movable=true)...
 struct T5 : test_input_range<int> { };
-static_assert( hamon::ranges::range_t<T5>::value, "");
+static_assert( hamon::ranges::range<T5>, "");
 static_assert(!hamon::ranges::view_t<T5>::value, "");
 static_assert( hamon::constructible_from<T5, T5>, "");
 static_assert( hamon::movable<T5>, "");
@@ -106,7 +106,7 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(true,  const T5&); // lvalue
 HAMON_RANGES_VIEWABLE_RANGE_TEST(false, const T5&&);
 
 // ...but not if the (non-view, lvalue-or-movable) range is an initializer_list.
-static_assert( hamon::ranges::range_t<std::initializer_list<int>>::value, "");
+static_assert( hamon::ranges::range<std::initializer_list<int>>, "");
 static_assert(!hamon::ranges::view_t<std::initializer_list<int>>::value, "");
 static_assert( hamon::constructible_from<std::initializer_list<int>, std::initializer_list<int>>, "");
 static_assert( hamon::movable<std::initializer_list<int>>, "");
@@ -120,7 +120,7 @@ HAMON_RANGES_VIEWABLE_RANGE_TEST(false, std::initializer_list<int> const&&);
 
 // viewable_range<T> is not satisfied for (range=true, view=false, constructible_from=true, lvalue-or-movable=false)
 struct T6 : test_input_range<int> { T6(T6&&); T6& operator=(T6&&) = delete; };
-static_assert( hamon::ranges::range_t<T6>::value, "");
+static_assert( hamon::ranges::range<T6>, "");
 static_assert(!hamon::ranges::view_t<T6>::value, "");
 static_assert( hamon::constructible_from<T6, T6>, "");
 static_assert(!hamon::movable<T6>, "");
@@ -137,7 +137,7 @@ struct T7 : test_input_range<int>
 {
 	T7(T7 const&) = delete;
 };
-static_assert(hamon::ranges::range_t<T7&>::value, "");
+static_assert(hamon::ranges::range<T7&>, "");
 static_assert(!hamon::ranges::view_t<hamon::remove_cvref_t<T7&>>::value, "");
 static_assert(!hamon::constructible_from<hamon::remove_cvref_t<T7&>, T7&>, "");
 
@@ -153,7 +153,7 @@ struct T8 : test_input_range<int>
 {
 	T8(T8 const&) = delete;
 };
-static_assert(hamon::ranges::range_t<T8>::value, "");
+static_assert(hamon::ranges::range<T8>, "");
 static_assert(!hamon::ranges::view_t<T8>::value, "");
 static_assert(!hamon::constructible_from<T8, T8>, "");
 

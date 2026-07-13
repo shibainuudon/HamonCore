@@ -27,7 +27,7 @@ void test0()
 	using Pattern = P<T>;
 	using JWV = hamon::ranges::join_with_view<V, Pattern>;
 
-	static_assert(hamon::ranges::range_t<JWV>::value                     == true, "");
+	static_assert(hamon::ranges::range<JWV>                     == true, "");
 	static_assert(hamon::ranges::borrowed_range<JWV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<JWV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<JWV> == false, "");
@@ -139,7 +139,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		using V = test_input_view<test_input_view<T>>;
 		using Pattern = test_forward_view<T>;
 		using JWV = hamon::ranges::join_with_view<V, Pattern>;
-		static_assert( hamon::ranges::range_t<JWV>::value, "");
+		static_assert( hamon::ranges::range<JWV>, "");
 		static_assert(!hamon::ranges::borrowed_range<JWV>, "");
 		static_assert(!hamon::ranges::sized_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<JWV>, "");
@@ -159,7 +159,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		using V = test_forward_view<test_forward_view<T>>;
 		using Pattern = test_forward_view<T>;
 		using JWV = hamon::ranges::join_with_view<V, Pattern>;
-		static_assert( hamon::ranges::range_t<JWV>::value, "");
+		static_assert( hamon::ranges::range<JWV>, "");
 		static_assert(!hamon::ranges::borrowed_range<JWV>, "");
 		static_assert(!hamon::ranges::sized_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<JWV>, "");
@@ -179,7 +179,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		using V = test_bidirectional_view<test_bidirectional_common_view<T>>;
 		using Pattern = test_bidirectional_common_view<T>;
 		using JWV = hamon::ranges::join_with_view<V, Pattern>;
-		static_assert( hamon::ranges::range_t<JWV>::value, "");
+		static_assert( hamon::ranges::range<JWV>, "");
 		static_assert(!hamon::ranges::borrowed_range<JWV>, "");
 		static_assert(!hamon::ranges::sized_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<JWV>, "");
@@ -199,7 +199,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		using V = test_forward_common_view<test_forward_common_view<T>>;
 		using Pattern = test_forward_view<T>;
 		using JWV = hamon::ranges::join_with_view<V, Pattern>;
-		static_assert( hamon::ranges::range_t<JWV>::value, "");
+		static_assert( hamon::ranges::range<JWV>, "");
 		static_assert(!hamon::ranges::borrowed_range<JWV>, "");
 		static_assert(!hamon::ranges::sized_range_t<JWV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<JWV>, "");

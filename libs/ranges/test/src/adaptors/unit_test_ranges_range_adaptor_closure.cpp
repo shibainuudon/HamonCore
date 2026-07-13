@@ -165,7 +165,7 @@ struct ModelsRange
 	int* end()       { return nullptr; }
 	int* end() const { return nullptr; }
 };
-static_assert(hamon::ranges::range_t<ModelsRange>::value, "");
+static_assert(hamon::ranges::range<ModelsRange>, "");
 static_assert(!is_range_adaptor_closure<ModelsRange>(), "");
 
 struct RangeAdaptorClosureMemberRefQualTest

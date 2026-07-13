@@ -22,7 +22,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_input_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -42,7 +42,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_forward_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -62,7 +62,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_bidirectional_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -82,7 +82,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_random_access_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -102,7 +102,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_contiguous_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -124,7 +124,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int const;
 		using V = test_input_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -144,7 +144,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int const;
 		using V = test_forward_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -164,7 +164,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int const;
 		using V = test_bidirectional_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -184,7 +184,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int const;
 		using V = test_random_access_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -204,7 +204,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int const;
 		using V = test_contiguous_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -226,7 +226,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_input_borrowed_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert( hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -246,7 +246,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_forward_borrowed_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert( hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -266,7 +266,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_bidirectional_borrowed_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert( hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -286,7 +286,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_random_access_borrowed_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert( hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -306,7 +306,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_contiguous_borrowed_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert( hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -328,7 +328,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_input_common_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -348,7 +348,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_forward_common_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -368,7 +368,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_bidirectional_common_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<CV>, "");
@@ -388,7 +388,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_random_access_common_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -408,7 +408,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_contiguous_common_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -430,7 +430,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_input_sized_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");
@@ -452,7 +452,7 @@ GTEST_TEST(RangesTest, AsConstViewConceptsTest)
 		using T = int;
 		using V = test_input_approximately_sized_view<T>;
 		using CV = hamon::ranges::as_const_view<V>;
-		static_assert( hamon::ranges::range_t<CV>::value, "");
+		static_assert( hamon::ranges::range<CV>, "");
 		static_assert(!hamon::ranges::borrowed_range<CV>, "");
 		static_assert(!hamon::ranges::sized_range_t<CV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<CV>, "");

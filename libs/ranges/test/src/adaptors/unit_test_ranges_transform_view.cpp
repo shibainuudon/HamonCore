@@ -208,7 +208,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using V = View<T>;
 	using TV = hamon::ranges::transform_view<V, F>;
 
-	static_assert(hamon::ranges::range_t<TV>::value == true, "");
+	static_assert(hamon::ranges::range<TV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<TV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(hamon::ranges::approximately_sized_range<TV> == hamon::ranges::approximately_sized_range<V>, "");
@@ -255,7 +255,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_begin<TV>::value, "");
 	static_assert(has_end<TV>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::ranges::range_t<V const>::value)
+	if constexpr (hamon::ranges::range<V const>)
 	{
 		static_assert(has_begin<TV const>::value == hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V const>>, "");
 		static_assert(has_end<TV const>::value   == hamon::regular_invocable<F const&, hamon::ranges::range_reference_t<V const>>, "");

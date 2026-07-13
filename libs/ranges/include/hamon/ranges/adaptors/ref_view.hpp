@@ -55,10 +55,10 @@ template <hamon::ranges::range R>
 	requires hamon::is_object_v<R>
 #else
 template <typename R,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::range_t<R>,
-		hamon::is_object<R>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::range<R> &&
+		hamon::is_object_v<R>
+	>
 >
 #endif
 class ref_view : public hamon::ranges::view_interface<ref_view<R>>

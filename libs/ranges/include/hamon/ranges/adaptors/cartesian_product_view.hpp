@@ -840,8 +840,8 @@ public:
 
 	template <typename First2 = First,
 		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::range_t<First2 const>,
-			hamon::ranges::range_t<Vs const>...
+			hamon::bool_constant<hamon::ranges::range<First2 const>>,
+			hamon::bool_constant<hamon::ranges::range<Vs const>>...
 		>::value>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension

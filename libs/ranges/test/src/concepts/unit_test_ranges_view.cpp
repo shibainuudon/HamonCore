@@ -47,7 +47,7 @@ struct NotMoveable : hamon::ranges::view_base
 	friend int* end(NotMoveable&);
 	friend int* end(NotMoveable const&);
 };
-static_assert(hamon::ranges::range_t<NotMoveable>::value, "");
+static_assert(hamon::ranges::range<NotMoveable>, "");
 static_assert(!hamon::movable<NotMoveable>, "");
 static_assert(hamon::default_initializable<NotMoveable>, "");
 static_assert(hamon::ranges::enable_view<NotMoveable>, "");
@@ -67,7 +67,7 @@ struct NotDefaultInit : hamon::ranges::view_base
 	friend int* end(NotDefaultInit&);
 	friend int* end(NotDefaultInit const&);
 };
-static_assert(hamon::ranges::range_t<NotDefaultInit>::value, "");
+static_assert(hamon::ranges::range<NotDefaultInit>, "");
 static_assert(hamon::movable<NotDefaultInit>, "");
 static_assert(!hamon::default_initializable<NotDefaultInit>, "");
 static_assert(hamon::ranges::enable_view<NotDefaultInit>, "");
@@ -90,7 +90,7 @@ struct NotExplicitlyEnabled
 	friend int* end(NotExplicitlyEnabled const&);
 };
 
-static_assert(hamon::ranges::range_t<NotExplicitlyEnabled>::value, "");
+static_assert(hamon::ranges::range<NotExplicitlyEnabled>, "");
 static_assert(hamon::movable<NotExplicitlyEnabled>, "");
 static_assert(hamon::default_initializable<NotExplicitlyEnabled>, "");
 static_assert(!hamon::ranges::enable_view<NotExplicitlyEnabled>, "");
@@ -127,7 +127,7 @@ HAMON_RANGES_END_NAMESPACE
 namespace hamon_ranges_test {
 namespace view_test {
 
-static_assert(hamon::ranges::range_t<ExplicitlyEnabled>::value, "");
+static_assert(hamon::ranges::range<ExplicitlyEnabled>, "");
 static_assert(hamon::movable<ExplicitlyEnabled>, "");
 static_assert(hamon::default_initializable<ExplicitlyEnabled>, "");
 static_assert(hamon::ranges::enable_view<ExplicitlyEnabled>, "");
@@ -145,7 +145,7 @@ struct NotARange : hamon::ranges::view_base
 	NotARange(NotARange&&) = default;
 	NotARange& operator=(NotARange&&) = default;
 };
-static_assert(!hamon::ranges::range_t<NotARange>::value, "");
+static_assert(!hamon::ranges::range<NotARange>, "");
 static_assert(hamon::movable<NotARange>, "");
 static_assert(hamon::default_initializable<NotARange>, "");
 static_assert(hamon::ranges::enable_view<NotARange>, "");
@@ -167,7 +167,7 @@ struct View : hamon::ranges::view_base
 	friend int* end(View&);
 	friend int* end(View const&);
 };
-static_assert(hamon::ranges::range_t<View>::value, "");
+static_assert(hamon::ranges::range<View>, "");
 static_assert(hamon::movable<View>, "");
 static_assert(hamon::default_initializable<View>, "");
 static_assert(hamon::ranges::enable_view<View>, "");

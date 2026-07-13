@@ -172,7 +172,7 @@ public:
 		return hamon::ranges::end(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const
 	-> hamon::ranges::sentinel_t<V2>

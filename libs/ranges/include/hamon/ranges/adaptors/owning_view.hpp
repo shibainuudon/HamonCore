@@ -58,7 +58,7 @@ template <hamon::ranges::range R>
 #else
 template <typename R,
 	typename = hamon::enable_if_t<
-		hamon::ranges::range<R>::value &&
+		hamon::ranges::range<R> &&
 		hamon::movable<R> &&
 		!hamon::ranges::detail::is_initializer_list<R>::value
 	>
@@ -126,7 +126,7 @@ public:
 		return hamon::ranges::end(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, R2, R const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, R2, R const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::begin(m_r))	// noexcept as an extension
@@ -135,7 +135,7 @@ public:
 		return hamon::ranges::begin(m_r);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, R2, R const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, R2, R const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::end(m_r))	// noexcept as an extension

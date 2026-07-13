@@ -163,7 +163,7 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	using V = View<T>;
 	using TWV = hamon::ranges::take_while_view<V, F>;
 
-	static_assert(hamon::ranges::range_t<TWV>::value == true, "");
+	static_assert(hamon::ranges::range<TWV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<TWV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<TWV>::value == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<TWV> == false, "");
@@ -209,7 +209,7 @@ HAMON_CXX14_CONSTEXPR bool test00_impl()
 	static_assert(has_begin<TWV>::value, "");
 	static_assert(has_end<TWV>::value, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
-	if constexpr (hamon::ranges::range_t<V const>::value)
+	if constexpr (hamon::ranges::range<V const>)
 	{
 		using CI = hamon::ranges::iterator_t<V const>;
 		static_assert(has_begin<TWV const>::value == hamon::indirect_unary_predicate<F const, CI>, "");

@@ -238,7 +238,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(hamon::default_initializable<TV> == hamon::default_initializable<V>, "");
 
-	static_assert(hamon::ranges::range_t<TV>::value == true, "");
+	static_assert(hamon::ranges::range<TV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<TV> == hamon::ranges::borrowed_range<V>, "");
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(hamon::ranges::approximately_sized_range<TV> == true, "");
@@ -270,10 +270,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_base<TV const&&>::value == hamon::copy_constructible<V>, "");
 
 	static_assert(has_begin<TV>::value, "");
-	static_assert(has_begin<TV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_begin<TV const>::value == hamon::ranges::range<V const>, "");
 
 	static_assert(has_end<TV>::value, "");
-	static_assert(has_end<TV const>::value == hamon::ranges::range_t<V const>::value, "");
+	static_assert(has_end<TV const>::value == hamon::ranges::range<V const>, "");
 
 	static_assert(has_size<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(has_size<TV const>::value == hamon::ranges::sized_range_t<V const>::value, "");

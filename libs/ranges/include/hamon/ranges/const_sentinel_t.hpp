@@ -23,14 +23,14 @@ using std::ranges::const_sentinel_t;
 
 #include <hamon/ranges/concepts/range.hpp>
 #include <hamon/ranges/cend.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/utility/declval.hpp>
 
 namespace hamon {
 namespace ranges {
 
 // [ranges.syn]
-template <HAMON_CONSTRAINED_PARAM(ranges::range, R)>
+template <HAMON_CONSTRAINT(ranges::range, R)>
 using const_sentinel_t = decltype(ranges::cend(hamon::declval<R&>()));
 
 }	// namespace ranges

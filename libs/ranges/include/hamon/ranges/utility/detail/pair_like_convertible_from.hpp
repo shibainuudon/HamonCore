@@ -40,7 +40,7 @@ struct pair_like_convertible_from_impl
 {
 private:
 	template <typename T2, typename U2, typename V2,
-		typename = hamon::enable_if_t<!ranges::range<T2>::value>,
+		typename = hamon::enable_if_t<!ranges::range<T2>>,
 		typename = hamon::enable_if_t<!hamon::is_reference<T2>::value>,
 		typename = hamon::enable_if_t<hamon::pair_like<T2>::value>,
 		typename = hamon::enable_if_t<hamon::constructible_from<T2, U2, V2>>,

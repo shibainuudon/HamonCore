@@ -77,7 +77,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int const>
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-		static_assert( hamon::ranges::range_t<V const>::value, "");
+		static_assert( hamon::ranges::range<V const>, "");
 
 		using AV = hamon::ranges::adjacent_view<V, 3>;
 		using I  = decltype(hamon::declval<AV&>().begin());
@@ -93,7 +93,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			ConvertibleForwardIterator<int const>
 		>;
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
-		static_assert( hamon::ranges::range_t<V const>::value, "");
+		static_assert( hamon::ranges::range<V const>, "");
 
 		using AV = hamon::ranges::adjacent_view<V, 3>;
 		using I  = decltype(hamon::declval<AV&>().begin());

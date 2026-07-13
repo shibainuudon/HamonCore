@@ -23,7 +23,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_input_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -42,7 +42,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_forward_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -61,7 +61,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_bidirectional_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -80,7 +80,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_random_access_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
@@ -99,7 +99,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_contiguous_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
@@ -120,7 +120,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_input_view<T const>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -141,7 +141,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_forward_borrowed_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert( hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -162,7 +162,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_input_common_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
@@ -183,7 +183,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_input_sized_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
@@ -204,7 +204,7 @@ GTEST_TEST(RangesTest, ElementsViewConceptsTest)
 		using T = hamon::tuple<int, char>;
 		using V = test_input_approximately_sized_view<T>;
 		using EV = hamon::ranges::elements_view<V, 0>;
-		static_assert( hamon::ranges::range_t<EV>::value, "");
+		static_assert( hamon::ranges::range<EV>, "");
 		static_assert(!hamon::ranges::borrowed_range<EV>, "");
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");

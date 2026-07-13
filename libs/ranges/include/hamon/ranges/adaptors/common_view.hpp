@@ -132,7 +132,7 @@ private:
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::ranges::begin(base))
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl2(V2& base, hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -141,7 +141,7 @@ private:
 			hamon::ranges::sentinel_t<V2>
 		>(hamon::ranges::begin(base)))
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl(V2& base)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -157,7 +157,7 @@ private:
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
 		hamon::ranges::begin(base) + hamon::ranges::distance(base))
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl2(V2& base, hamon::detail::overload_priority<0>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -166,7 +166,7 @@ private:
 			hamon::ranges::sentinel_t<V2>
 		>(hamon::ranges::end(base)))
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl(V2& base)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -181,7 +181,7 @@ public:
 		return begin_impl(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto begin() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		begin_impl(hamon::declval<V2&>()))
@@ -198,7 +198,7 @@ public:
 		return end_impl(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		end_impl(hamon::declval<V2&>()))

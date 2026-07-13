@@ -40,7 +40,6 @@ using std::ranges::view_interface;
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
@@ -188,7 +187,7 @@ public:
 		return !ranges::empty(derived());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D),
+	template <HAMON_CONSTRAINT_D(ranges::range, R, D),
 		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	data()
@@ -198,7 +197,7 @@ public:
 		return hamon::to_address(ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::range, R, D const),
+	template <HAMON_CONSTRAINT_D(ranges::range, R, D const),
 		typename = hamon::enable_if_t<hamon::contiguous_iterator<ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	data() const

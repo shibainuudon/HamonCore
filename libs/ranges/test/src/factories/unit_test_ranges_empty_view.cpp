@@ -66,7 +66,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	using EV = hamon::ranges::empty_view<T>;
 	using CEV = EV const;
 
-	static_assert( hamon::ranges::range_t<EV>::value, "");
+	static_assert( hamon::ranges::range<EV>, "");
 	static_assert( hamon::ranges::borrowed_range<EV>, "");
 	static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<EV>, "");
@@ -81,7 +81,7 @@ HAMON_CXX14_CONSTEXPR bool test()
 	static_assert( hamon::ranges::view_t<EV>::value, "");
 	static_assert(!hamon::ranges::constant_range<EV>, "");
 
-	static_assert( hamon::ranges::range_t<CEV>::value, "");
+	static_assert( hamon::ranges::range<CEV>, "");
 	static_assert( hamon::ranges::borrowed_range<CEV>, "");
 	static_assert( hamon::ranges::sized_range_t<CEV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CEV>, "");

@@ -92,7 +92,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 {
 	int a[4] ={};
 	test_input_range<int> c(a);
-	static_assert(hamon::ranges::range_t<decltype(c)>::value, "");
+	static_assert(hamon::ranges::range<decltype(c)>, "");
 
 	VERIFY(hamon::ranges::distance(c) == 4);
 

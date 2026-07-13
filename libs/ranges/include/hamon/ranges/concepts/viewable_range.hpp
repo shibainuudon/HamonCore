@@ -55,7 +55,7 @@ struct viewable_range_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<ranges::range<U>::value>,
+		typename = hamon::enable_if_t<ranges::range<U>>,
 		typename = hamon::enable_if_t<
 			((ranges::view<hamon::remove_cvref_t<U>>::value && hamon::constructible_from<hamon::remove_cvref_t<U>, U>) ||
 			 (!ranges::view<hamon::remove_cvref_t<U>>::value &&

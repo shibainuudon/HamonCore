@@ -136,8 +136,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		// !range<V const>
 		using V = TestView2<int, random_access_iterator_wrapper<int>, hamon::unreachable_sentinel_t>;
-		static_assert( hamon::ranges::range_t<V>::value, "");
-		static_assert(!hamon::ranges::range_t<V const>::value, "");
+		static_assert( hamon::ranges::range<V>, "");
+		static_assert(!hamon::ranges::range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 

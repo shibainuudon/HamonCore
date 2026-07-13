@@ -125,7 +125,7 @@ public:
 		return hamon::make_move_iterator(hamon::ranges::begin(m_base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
 	HAMON_NOEXCEPT_IF_EXPR(hamon::make_move_iterator(hamon::ranges::begin(hamon::declval<V2&>())))	// noexcept as an extension
@@ -163,7 +163,7 @@ public:
 		return end_impl(m_base, hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const
 	HAMON_NOEXCEPT_IF_EXPR(end_impl(hamon::declval<V2&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension

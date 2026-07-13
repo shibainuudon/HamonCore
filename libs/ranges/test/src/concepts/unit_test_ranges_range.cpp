@@ -15,15 +15,8 @@
 #include <hamon/vector.hpp>
 #include "ranges_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_RANGES_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::range<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::ranges::range_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_RANGES_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::range<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::ranges::range_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_RANGES_RANGE_TEST(B, ...)	\
+	static_assert(B == hamon::ranges::range<__VA_ARGS__>, "")
 
 HAMON_RANGES_RANGE_TEST(true,  int      [2]);
 HAMON_RANGES_RANGE_TEST(true,  int const[2]);

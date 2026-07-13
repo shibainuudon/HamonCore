@@ -128,7 +128,7 @@ public:
 		return hamon::ranges::cbegin(m_base);
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto begin() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::cbegin(hamon::declval<V2&>()))
@@ -146,7 +146,7 @@ public:
 		return hamon::ranges::cend(m_base);
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::cend(hamon::declval<V2&>()))

@@ -22,7 +22,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_input_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -41,7 +41,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_forward_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -60,7 +60,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_bidirectional_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -79,7 +79,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_random_access_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -98,7 +98,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_contiguous_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -118,7 +118,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using V1 = test_random_access_view<T>;
 		using V2 = test_random_access_view<T>;
 		using ZV = hamon::ranges::zip_view<V1, V2>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -138,7 +138,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using V1 = test_random_access_view<T>;
 		using V2 = test_contiguous_view<T>;
 		using ZV = hamon::ranges::zip_view<V1, V2>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -158,7 +158,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using V1 = test_random_access_view<T>;
 		using V2 = test_bidirectional_view<T>;
 		using ZV = hamon::ranges::zip_view<V1, V2>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -178,7 +178,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using V1 = test_random_access_view<T>;
 		using V2 = test_forward_view<T>;
 		using ZV = hamon::ranges::zip_view<V1, V2>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -199,7 +199,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_input_view<T const>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -220,7 +220,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_forward_borrowed_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert( hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -241,7 +241,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_bidirectional_common_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");
@@ -260,7 +260,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_random_access_common_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -281,7 +281,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_input_sized_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert( hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<ZV>, "");
@@ -302,7 +302,7 @@ GTEST_TEST(RangesTest, ZipViewConceptsTest)
 		using T = int;
 		using V = test_input_approximately_sized_view<T>;
 		using ZV = hamon::ranges::zip_view<V>;
-		static_assert( hamon::ranges::range_t<ZV>::value, "");
+		static_assert( hamon::ranges::range<ZV>, "");
 		static_assert(!hamon::ranges::borrowed_range<ZV>, "");
 		static_assert(!hamon::ranges::sized_range_t<ZV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<ZV>, "");

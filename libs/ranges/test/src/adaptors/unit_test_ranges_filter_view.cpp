@@ -93,7 +93,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(!hamon::is_constructible<FV, Pred>::value, "");
 	static_assert( hamon::is_constructible<FV, V, Pred>::value, "");
 
-	static_assert(hamon::ranges::range_t<FV>::value == true, "");
+	static_assert(hamon::ranges::range<FV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<FV> == false, "");
 	static_assert(hamon::ranges::sized_range_t<FV>::value == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<FV> == false, "");

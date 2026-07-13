@@ -31,7 +31,7 @@ using std::ranges::range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept range =
+HAMON_CONCEPT_OR_BOOL range =
 	requires(T& t)
 	{
 		ranges::begin(t);
@@ -63,16 +63,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using range = typename ranges::detail::range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL range =
+	ranges::detail::range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::range<T>>;
-#else
-	hamon::ranges::range<T>;
 #endif
 
 }	// namespace ranges

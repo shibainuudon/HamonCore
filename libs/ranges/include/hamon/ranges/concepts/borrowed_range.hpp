@@ -37,7 +37,7 @@ HAMON_CONCEPT_OR_BOOL borrowed_range =
 
 template <typename T>
 HAMON_CONCEPT_OR_BOOL borrowed_range =
-	ranges::range<T>::value &&
+	ranges::range<T> &&
 	detail::maybe_borrowed_range<T>;
 
 #endif
