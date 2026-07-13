@@ -284,7 +284,7 @@ HAMON_CXX14_CONSTEXPR bool ConceptsTest()
 	static_assert(has_dereference<CI>::value, "");
 	static_assert(hamon::same_as<decltype(hamon::declval<CI>().operator*()), decltype(*hamon::declval<I>())>, "");
 	// decltype(auto) operator*() const;
-	static_assert(has_dereference<CI const>::value == hamon::detail::dereferenceable_t<I const>::value, "");
+	static_assert(has_dereference<CI const>::value == hamon::detail::dereferenceable<I const>, "");
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 	if constexpr (has_dereference<CI const>::value)
 	{

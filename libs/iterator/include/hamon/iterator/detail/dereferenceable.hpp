@@ -23,14 +23,11 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept dereferenceable =
+HAMON_CONCEPT_OR_BOOL dereferenceable =
 	requires(T& t)
 	{
 		{ *t } -> hamon::detail::can_reference;
 	};
-
-template <typename T>
-using dereferenceable_t = hamon::bool_constant<dereferenceable<T>>;
 
 #else
 
@@ -53,11 +50,8 @@ public:
 };
 
 template <typename T>
-using dereferenceable =
-	typename detail::dereferenceable_impl<T>::type;
-
-template <typename T>
-using dereferenceable_t = dereferenceable<T>;
+HAMON_CONCEPT_OR_BOOL dereferenceable =
+	detail::dereferenceable_impl<T>::type::value;
 
 #endif
 

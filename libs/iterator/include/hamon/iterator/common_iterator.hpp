@@ -266,7 +266,7 @@ public:
 			*hamon::get<I>(m_v);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::detail::dereferenceable, I2, I const)>
+	template <HAMON_CONSTRAINT_D(hamon::detail::dereferenceable, I2, I const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator*() const
 	-> decltype(*hamon::declval<I2&>())

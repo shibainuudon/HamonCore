@@ -22,7 +22,7 @@ using std::iter_rvalue_reference_t;
 
 #include <hamon/iterator/detail/dereferenceable.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -30,7 +30,7 @@ using std::iter_rvalue_reference_t;
 namespace hamon
 {
 
-template <HAMON_CONSTRAINED_PARAM(detail::dereferenceable, I)>
+template <HAMON_CONSTRAINT(detail::dereferenceable, I)>
 using iter_rvalue_reference_t = decltype(ranges::iter_move(hamon::declval<I&>()));
 
 }	// namespace hamon

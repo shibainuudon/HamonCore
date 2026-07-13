@@ -198,7 +198,7 @@ public:
 		return *m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::detail::dereferenceable, I2, I const)>
+	template <HAMON_CONSTRAINT_D(hamon::detail::dereferenceable, I2, I const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto operator*() const
 	HAMON_NOEXCEPT_IF_EXPR(*hamon::declval<I2>())	// noexcept as an extension
