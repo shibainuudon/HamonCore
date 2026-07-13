@@ -80,7 +80,7 @@ private:
 	template <typename U,
 		typename = hamon::enable_if_t<
 			(hamon::detail::is_signed_integer_like<U>::value ||
-			 (hamon::detail::is_integer_like<U>::value && hamon::weakly_incrementable<U>))
+			 (hamon::detail::is_integer_like<U> && hamon::weakly_incrementable<U>))
 		>
 	>
 	static auto test(int) -> hamon::true_type;

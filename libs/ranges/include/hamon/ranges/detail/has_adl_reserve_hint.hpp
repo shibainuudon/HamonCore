@@ -49,9 +49,12 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::detail::class_or_enum<hamon::remove_reference_t<U>>
 		>,
-		typename I = decltype(HAMON_AUTO_CAST(reserve_hint(hamon::declval<U&>())))
+		typename I = decltype(HAMON_AUTO_CAST(reserve_hint(hamon::declval<U&>()))),
+		typename = hamon::enable_if_t<
+			hamon::detail::is_integer_like<I>
+		>
 	>
-	static auto test(int) -> hamon::detail::is_integer_like<I>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

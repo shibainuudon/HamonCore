@@ -782,7 +782,7 @@ public:
 		auto p = data();
 		size_type const m = n;			// [string.capacity]/7.4
 		auto r = hamon::move(op)(p, m);	// [string.capacity]/7.5, 7.6
-		static_assert(hamon::detail::is_integer_like_t<decltype(r)>::value, "[string.capacity]/8");
+		static_assert(hamon::detail::is_integer_like<decltype(r)>, "[string.capacity]/8");
 		auto const rr = static_cast<size_type>(r);
 		HAMON_ASSERT(rr >= 0u);	// [string.capacity]/9.2
 		HAMON_ASSERT(rr <= m);	// [string.capacity]/9.3

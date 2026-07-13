@@ -353,7 +353,7 @@ private:
 		// [range.iota.iterator]/11
 		template <typename W2,
 			typename = hamon::enable_if_t<
-				hamon::detail::is_integer_like_t<W2>::value &&
+				hamon::detail::is_integer_like<W2> &&
 				!hamon::detail::is_signed_integer_like_t<W2>::value>>
 		static HAMON_CXX14_CONSTEXPR void
 		advance_forward(W2& value, difference_type n, hamon::detail::overload_priority<1>)
@@ -386,7 +386,7 @@ HAMON_WARNING_POP()
 		// [range.iota.iterator]/12
 		template <typename W2,
 			typename = hamon::enable_if_t<
-				hamon::detail::is_integer_like_t<W2>::value &&
+				hamon::detail::is_integer_like<W2> &&
 				!hamon::detail::is_signed_integer_like_t<W2>::value>>
 		static HAMON_CXX14_CONSTEXPR void
 		advance_backward(W2& value, difference_type n, hamon::detail::overload_priority<1>)
@@ -562,7 +562,7 @@ HAMON_WARNING_POP()
 		// [range.iota.iterator]/23
 		template <typename W2 = W,
 			typename = hamon::enable_if_t<
-				hamon::detail::is_integer_like_t<W2>::value &&
+				hamon::detail::is_integer_like<W2> &&
 				hamon::detail::is_signed_integer_like_t<W2>::value>>
 		friend HAMON_CXX11_CONSTEXPR difference_type
 		subtract(iterator const& x, iterator const& y, hamon::detail::overload_priority<2>)
@@ -573,7 +573,7 @@ HAMON_WARNING_POP()
 
 		template <typename W2 = W,
 			typename = hamon::enable_if_t<
-				hamon::detail::is_integer_like_t<W2>::value &&
+				hamon::detail::is_integer_like<W2> &&
 				!hamon::detail::is_signed_integer_like_t<W2>::value>>
 		friend HAMON_CXX11_CONSTEXPR difference_type
 		subtract(iterator const& x, iterator const& y, hamon::detail::overload_priority<1>)
@@ -586,7 +586,7 @@ HAMON_WARNING_POP()
 
 		template <typename W2 = W,
 			typename = hamon::enable_if_t<
-				!hamon::detail::is_integer_like_t<W2>::value>>
+				!hamon::detail::is_integer_like<W2>>>
 		friend HAMON_CXX11_CONSTEXPR difference_type
 		subtract(iterator const& x, iterator const& y, hamon::detail::overload_priority<0>)
 		{
@@ -847,8 +847,8 @@ private:
 	// [range.iota.view]/16
 	template <typename W2, typename Bound2,
 		typename = hamon::enable_if_t<
-			hamon::detail::is_integer_like_t<W2>::value &&
-			hamon::detail::is_integer_like_t<Bound2>::value>>
+			hamon::detail::is_integer_like<W2> &&
+			hamon::detail::is_integer_like<Bound2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	size_impl(W2 const& value, Bound2 const& bound, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 	->decltype(detail::to_unsigned_like(bound) - detail::to_unsigned_like(value))
@@ -878,7 +878,7 @@ public:
 	template <typename W2 = W, typename Bound2 = Bound,
 		typename = hamon::enable_if_t<
 			(hamon::same_as<W2, Bound2> && detail::advanceable_t<W2>::value) ||
-			(hamon::detail::is_integer_like_t<W2>::value && hamon::detail::is_integer_like_t<Bound2>::value) ||
+			(hamon::detail::is_integer_like<W2> && hamon::detail::is_integer_like<Bound2>) ||
 			hamon::sized_sentinel_for<Bound2, W2>
 		>
 	>
@@ -901,11 +901,11 @@ HAMON_RANGES_SPECIALIZE_ENABLE_BORROWED_RANGE(true, hamon::ranges::iota_view<W, 
 #if defined(HAMON_HAS_CXX17_DEDUCTION_GUIDES)
 
 template <typename W, typename Bound,
-	typename = hamon::enable_if_t<hamon::disjunction<
-		hamon::negation<hamon::detail::is_integer_like_t<W>>,
-		hamon::negation<hamon::detail::is_integer_like_t<Bound>>,
-		hamon::is_same<hamon::detail::is_signed_integer_like_t<W>, hamon::detail::is_signed_integer_like_t<Bound>>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::is_integer_like<W> ||
+		!hamon::detail::is_integer_like<Bound> ||
+		(hamon::detail::is_signed_integer_like_t<W>::value == hamon::detail::is_signed_integer_like_t<Bound>::value)
+	>
 >
 	//requires (
 	//	!hamon::detail::is_integer_like<W> ||
@@ -957,7 +957,7 @@ struct indices_fn
 	// [range.iota.overview]/4
 
 	template <typename E, typename T = hamon::remove_cvref_t<E>,
-		typename = hamon::enable_if_t<hamon::detail::is_integer_like_t<T>::value>>
+		typename = hamon::enable_if_t<hamon::detail::is_integer_like<T>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	auto operator()(E&& e) const
 	{

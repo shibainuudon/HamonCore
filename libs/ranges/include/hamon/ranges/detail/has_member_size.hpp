@@ -42,9 +42,12 @@ private:
 		typename = hamon::enable_if_t<
 			!HAMON_RANGES_DISABLE_SIZED_RANGE(hamon::remove_cvref_t<U>)
 		>,
-		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().size()))
+		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().size())),
+		typename = hamon::enable_if_t<
+			hamon::detail::is_integer_like<S>
+		>
 	>
-	static auto test(int) -> hamon::detail::is_integer_like<S>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;

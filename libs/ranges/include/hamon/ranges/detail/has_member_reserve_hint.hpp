@@ -35,9 +35,12 @@ struct has_member_reserve_hint_impl
 {
 private:
 	template <typename U,
-		typename I = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().reserve_hint()))
+		typename I = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().reserve_hint())),
+		typename = hamon::enable_if_t<
+			hamon::detail::is_integer_like<I>
+		>
 	>
-	static auto test(int) -> hamon::detail::is_integer_like<I>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;
