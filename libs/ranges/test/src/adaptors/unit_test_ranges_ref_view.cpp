@@ -62,7 +62,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::random_access_range<RV> == hamon::ranges::random_access_range<R>, "");
 	static_assert( hamon::ranges::contiguous_range<RV> == hamon::ranges::contiguous_range<R>, "");
 	static_assert( hamon::ranges::common_range<RV> == hamon::ranges::common_range<R>, "");
-	static_assert( hamon::ranges::viewable_range_t<RV>::value, "");
+	static_assert( hamon::ranges::viewable_range<RV>, "");
 	static_assert( hamon::ranges::view<RV>, "");
 	static_assert(!hamon::ranges::constant_range<RV>, "");
 

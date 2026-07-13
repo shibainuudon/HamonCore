@@ -57,7 +57,6 @@ using std::ranges::views::pairwise_transform;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/move_constructible.hpp>
@@ -665,7 +664,7 @@ private:
 				hamon::forward<R>(r), hamon::forward<F>(f)))
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename F>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename F>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, F&& f) const
 		// [range.adjacent_transform.transform.overview]/2

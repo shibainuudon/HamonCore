@@ -47,7 +47,6 @@ using std::ranges::views::chunk_by;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
@@ -383,7 +382,7 @@ struct chunk_by_fn
 {
 public:
 	// [range.chunk_by.overview]/2
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename Pred>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename Pred>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, Pred pred) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

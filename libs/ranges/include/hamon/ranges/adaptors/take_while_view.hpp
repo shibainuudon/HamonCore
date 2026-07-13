@@ -330,7 +330,7 @@ namespace detail {
 
 struct take_while_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename Pred>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename Pred>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, Pred pred) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

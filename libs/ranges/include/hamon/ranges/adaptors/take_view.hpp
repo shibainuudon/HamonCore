@@ -551,7 +551,7 @@ private:
 
 public:
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::viewable_range, R),
 		HAMON_CONSTRAINT(hamon::convertible_to, hamon::ranges::range_difference_t<R>, N)
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto

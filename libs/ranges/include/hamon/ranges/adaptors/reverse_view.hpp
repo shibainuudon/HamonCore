@@ -47,7 +47,6 @@ using std::ranges::views::reverse;
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/make_reverse_iterator.hpp>
@@ -323,7 +322,7 @@ private:
 			hamon::ranges::reverse_view<hamon::views::all_t<R>>{hamon::forward<R>(r)})
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

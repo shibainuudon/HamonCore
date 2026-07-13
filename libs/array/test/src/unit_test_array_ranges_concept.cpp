@@ -29,7 +29,7 @@ void RangesConceptTest()
 	static_assert( hamon::ranges::contiguous_range<Array>, "");
 	static_assert( hamon::ranges::sized_range<Array>, "");
 	static_assert(!hamon::ranges::borrowed_range<Array>, "");
-	static_assert( hamon::ranges::viewable_range_t<Array>::value, "");
+	static_assert( hamon::ranges::viewable_range<Array>, "");
 
 	static_assert(!hamon::ranges::view<Array const>, "");
 	static_assert( hamon::same_as<hamon::ranges::iterator_t<Array const>, typename Array::const_iterator>, "");
@@ -38,7 +38,7 @@ void RangesConceptTest()
 	static_assert( hamon::ranges::contiguous_range<Array const>, "");
 	static_assert( hamon::ranges::sized_range<Array const>, "");
 	static_assert(!hamon::ranges::borrowed_range<Array const>, "");
-	static_assert(!hamon::ranges::viewable_range_t<Array const>::value, "");
+	static_assert(!hamon::ranges::viewable_range<Array const>, "");
 }
 
 GTEST_TEST(ArrayTest, RangesConceptTest)

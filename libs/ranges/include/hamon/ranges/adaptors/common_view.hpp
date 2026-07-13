@@ -47,7 +47,6 @@ using std::ranges::views::common;
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/common_iterator.hpp>
@@ -281,7 +280,7 @@ private:
 			hamon::ranges::common_view<hamon::views::all_t<R>>{hamon::forward<R>(r)})
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r) const
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

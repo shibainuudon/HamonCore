@@ -794,7 +794,7 @@ template <hamon::size_t N>
 struct adjacent_fn : public hamon::ranges::range_adaptor_closure<adjacent_fn<N>>
 {
 	// [range.enumerate.overview]/2
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	auto operator()(R&& r) const
 		// [range.enumerate.overview]/2.2
@@ -806,7 +806,7 @@ template <>
 struct adjacent_fn<0> : public hamon::ranges::range_adaptor_closure<adjacent_fn<0>>
 {
 	// [range.enumerate.overview]/2
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	auto operator()(R&&) const
 		// [range.enumerate.overview]/2.1

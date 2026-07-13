@@ -981,7 +981,7 @@ namespace detail {
 struct lazy_split_fn
 {
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename P>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename P>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, P&& p) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

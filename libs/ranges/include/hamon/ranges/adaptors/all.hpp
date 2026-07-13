@@ -29,7 +29,7 @@ using std::ranges::views::all_t;
 #include <hamon/ranges/adaptors/owning_view.hpp>
 #include <hamon/ranges/concepts/view.hpp>
 #include <hamon/ranges/concepts/viewable_range.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/type_traits/decay.hpp>
@@ -96,7 +96,7 @@ detail::all_fn all{};
 
 }	// inline namespace cpo
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 using all_t = decltype(hamon::views::all(hamon::declval<R>()));
 
 }	// namespace views

@@ -62,7 +62,6 @@ using std::ranges::views::join;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -777,7 +776,7 @@ namespace detail {
 struct join_fn : public hamon::ranges::range_adaptor_closure<join_fn>
 {
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

@@ -42,7 +42,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::random_access_range<CV>, "");
 	static_assert( hamon::ranges::contiguous_range<CV>, "");
 	static_assert( hamon::ranges::common_range<CV>, "");
-	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
+	static_assert( hamon::ranges::viewable_range<CV>, "");
 	static_assert( hamon::ranges::view<CV>, "");
 	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 3);
@@ -72,7 +72,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( hamon::ranges::random_access_range<CV>, "");
 	static_assert(!hamon::ranges::contiguous_range<CV>, "");
 	static_assert( hamon::ranges::common_range<CV>, "");
-	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
+	static_assert( hamon::ranges::viewable_range<CV>, "");
 	static_assert( hamon::ranges::view<CV>, "");
 	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 4);
@@ -102,7 +102,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!hamon::ranges::random_access_range<CV>, "");
 	static_assert(!hamon::ranges::contiguous_range<CV>, "");
 	static_assert(!hamon::ranges::common_range<CV>, "");
-	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
+	static_assert( hamon::ranges::viewable_range<CV>, "");
 	static_assert( hamon::ranges::view<CV>, "");
 	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 2);
@@ -132,7 +132,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert(!hamon::ranges::random_access_range<CV>, "");
 	static_assert(!hamon::ranges::contiguous_range<CV>, "");
 	static_assert(!hamon::ranges::common_range<CV>, "");
-	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
+	static_assert( hamon::ranges::viewable_range<CV>, "");
 	static_assert( hamon::ranges::view<CV>, "");
 	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 5);
@@ -162,7 +162,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(!hamon::ranges::random_access_range<CV>, "");
 	static_assert(!hamon::ranges::contiguous_range<CV>, "");
 	static_assert(!hamon::ranges::common_range<CV>, "");
-	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
+	static_assert( hamon::ranges::viewable_range<CV>, "");
 	static_assert( hamon::ranges::view<CV>, "");
 	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 6);

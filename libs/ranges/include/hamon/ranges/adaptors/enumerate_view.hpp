@@ -720,7 +720,7 @@ namespace detail {
 struct enumerate_fn : public hamon::ranges::range_adaptor_closure<enumerate_fn>
 {
 	// [range.enumerate.overview]/2
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R)>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	auto operator()(R&& r) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

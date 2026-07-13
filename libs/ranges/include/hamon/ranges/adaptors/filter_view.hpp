@@ -52,7 +52,6 @@ using std::ranges::views::filter;
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/constructible_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -541,7 +540,7 @@ namespace detail {
 struct filter_fn
 {
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename Pred>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename Pred>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, Pred&& pred) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

@@ -51,7 +51,7 @@ void test0()
 		 hamon::ranges::forward_range<IV> &&
 		 hamon::ranges::common_range<V> &&
 		 hamon::ranges::common_range<IV>), "");
-	static_assert(hamon::ranges::viewable_range_t<JWV>::value            == true, "");
+	static_assert(hamon::ranges::viewable_range<JWV>            == true, "");
 	static_assert(hamon::ranges::view<JWV>                      == true, "");
 	static_assert(hamon::ranges::constant_range<JWV>            == false, "");
 }
@@ -150,7 +150,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::random_access_range<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 		static_assert(!hamon::ranges::common_range<JWV>, "");
-		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
+		static_assert( hamon::ranges::viewable_range<JWV>, "");
 		static_assert( hamon::ranges::view<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 	}
@@ -170,7 +170,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::random_access_range<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 		static_assert(!hamon::ranges::common_range<JWV>, "");
-		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
+		static_assert( hamon::ranges::viewable_range<JWV>, "");
 		static_assert( hamon::ranges::view<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 	}
@@ -190,7 +190,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::random_access_range<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 		static_assert(!hamon::ranges::common_range<JWV>, "");
-		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
+		static_assert( hamon::ranges::viewable_range<JWV>, "");
 		static_assert( hamon::ranges::view<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 	}
@@ -210,7 +210,7 @@ GTEST_TEST(RangesTest, JoinWithViewConceptsTest)
 		static_assert(!hamon::ranges::random_access_range<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 		static_assert( hamon::ranges::common_range<JWV>, "");
-		static_assert( hamon::ranges::viewable_range_t<JWV>::value, "");
+		static_assert( hamon::ranges::viewable_range<JWV>, "");
 		static_assert( hamon::ranges::view<JWV>, "");
 		static_assert(!hamon::ranges::constant_range<JWV>, "");
 	}

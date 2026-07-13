@@ -55,7 +55,6 @@ using std::ranges::views::transform;
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/concepts/regular_invocable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/bind_back.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -745,7 +744,7 @@ namespace detail {
 struct transform_fn
 {
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::viewable_range, R), typename F>
+	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename F>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, F&& f) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

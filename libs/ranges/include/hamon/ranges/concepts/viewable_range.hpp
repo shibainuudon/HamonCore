@@ -38,7 +38,7 @@ using std::ranges::viewable_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept viewable_range =
+HAMON_CONCEPT_OR_BOOL viewable_range =
 	ranges::range<T> &&
 	((ranges::view<hamon::remove_cvref_t<T>> && hamon::constructible_from<hamon::remove_cvref_t<T>, T>) ||
 	 (!ranges::view<hamon::remove_cvref_t<T>> &&
@@ -76,16 +76,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using viewable_range = typename ranges::detail::viewable_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL viewable_range =
+	ranges::detail::viewable_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using viewable_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::viewable_range<T>>;
-#else
-	hamon::ranges::viewable_range<T>;
 #endif
 
 }	// namespace ranges

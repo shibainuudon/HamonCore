@@ -40,7 +40,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::ranges::viewable_range<R> &&
 			hamon::invocable<F&, R>
 		>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &
@@ -49,7 +49,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::ranges::viewable_range<R> &&
 			hamon::invocable<F const&, R>
 		>>
 	HAMON_CXX11_CONSTEXPR auto operator()(R&& r) const&
@@ -58,7 +58,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::ranges::viewable_range<R> &&
 			hamon::invocable<F&&, R>
 		>>
 	HAMON_CXX14_CONSTEXPR auto operator()(R&& r) &&
@@ -67,7 +67,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::viewable_range_t<R>::value &&
+			hamon::ranges::viewable_range<R> &&
 			hamon::invocable<F, R>
 		>>
 	HAMON_CXX11_CONSTEXPR auto operator()(R&& r) const&&
