@@ -20,23 +20,21 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_member_iterator_category = requires { typename T::iterator_category; };
-
-template <typename T>
-using has_member_iterator_category_t = hamon::bool_constant<has_member_iterator_category<T>>;
+HAMON_CONCEPT_OR_BOOL has_member_iterator_category = requires { typename T::iterator_category; };
 
 #else
 
 template <typename, typename = void>
-struct has_member_iterator_category
+struct has_member_iterator_category_impl
 	: public hamon::false_type {};
  
 template <typename T>
-struct has_member_iterator_category<T, hamon::void_t<typename T::iterator_category>>
+struct has_member_iterator_category_impl<T, hamon::void_t<typename T::iterator_category>>
 	: public hamon::true_type {};
 
 template <typename T>
-using has_member_iterator_category_t = has_member_iterator_category<T>;
+HAMON_CONCEPT_OR_BOOL has_member_iterator_category =
+	detail::has_member_iterator_category_impl<T>::value;
 
 #endif
 

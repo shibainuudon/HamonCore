@@ -133,7 +133,7 @@ using with_nested_types = hamon::bool_constant<
 	hamon::detail::has_member_difference_type<I> &&
 	hamon::detail::has_member_value_type_t<I>::value &&
 	hamon::detail::has_member_reference_t<I>::value &&
-	hamon::detail::has_member_iterator_category_t<I>::value
+	hamon::detail::has_member_iterator_category<I>
 >;
 
 template <typename I>
