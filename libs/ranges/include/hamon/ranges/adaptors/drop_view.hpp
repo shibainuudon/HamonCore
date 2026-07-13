@@ -223,7 +223,7 @@ public:
 private:
 	using cache_type =
 		hamon::ranges::detail::cached_value<
-			hamon::ranges::forward_range_t<V>::value &&
+			hamon::ranges::forward_range<V> &&
 			!(hamon::ranges::random_access_range_t<V>::value && hamon::ranges::sized_range_t<V>::value),
 			hamon::ranges::iterator_t<V>
 		>;

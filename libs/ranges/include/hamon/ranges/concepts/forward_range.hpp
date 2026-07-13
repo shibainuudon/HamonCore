@@ -8,14 +8,13 @@
 #define HAMON_RANGES_CONCEPTS_FORWARD_RANGE_HPP
 
 #include <hamon/ranges/config.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/config.hpp>
 
 #if !defined(HAMON_USE_STD_RANGES)
 #include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #endif
 
@@ -33,7 +32,7 @@ using std::ranges::forward_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept forward_range =
+HAMON_CONCEPT_OR_BOOL forward_range =
 	ranges::input_range<T> &&
 	hamon::forward_iterator<ranges::iterator_t<T>>;
 
@@ -62,26 +61,13 @@ public:
 }	// namespace detail
 
 template <typename T>
-using forward_range =
-	typename ranges::detail::forward_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL forward_range =
+	ranges::detail::forward_range_impl<T>::type::value;
 
 #endif
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <typename T>
-concept not_forward_range = !hamon::ranges::forward_range<T>;
-#else
-template <typename T>
-using not_forward_range = hamon::negation<hamon::ranges::forward_range<T>>;
-#endif
-
-template <typename T>
-using forward_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::forward_range<T>>;
-#else
-	hamon::ranges::forward_range<T>;
-#endif
+HAMON_CONCEPT_OR_BOOL not_forward_range = !hamon::ranges::forward_range<T>;
 
 }	// namespace ranges
 }	// namespace hamon

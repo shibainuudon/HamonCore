@@ -30,7 +30,6 @@ using std::ranges::search_n;
 
 #include <hamon/algorithm/ranges/find_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -202,7 +201,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R),
+		HAMON_CONSTRAINT(ranges::forward_range, R),
 		typename Pred = ranges::equal_to,
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>

@@ -102,7 +102,7 @@ struct sample_fn
 		OutIter,
 		(
 			(
-				ranges::forward_range_t<Range>::value ||
+				ranges::forward_range<Range> ||
 				hamon::random_access_iterator<OutIter>
 			) &&
 			(

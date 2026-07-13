@@ -140,7 +140,7 @@ template <hamon::ranges::forward_range V, hamon::size_t N>
 #else
 template <typename V, hamon::size_t N,
 	typename = hamon::enable_if_t<
-		hamon::ranges::forward_range_t<V>::value &&
+		hamon::ranges::forward_range<V> &&
 		hamon::ranges::view_t<V>::value &&
 		(N > 0)>>
 #endif

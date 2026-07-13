@@ -106,7 +106,7 @@ private:
 
 	using cache_type =
 		hamon::ranges::detail::cached_value<
-			hamon::ranges::forward_range_t<V>::value,
+			hamon::ranges::forward_range<V>,
 			hamon::ranges::iterator_t<V>
 		>;
 	HAMON_NO_UNIQUE_ADDRESS cache_type m_cache;
@@ -118,7 +118,7 @@ private:
 
 	// [range.filter.iterator]/3
 	template <typename V2>
-	struct iterator_category_base<V2, hamon::enable_if_t<hamon::ranges::forward_range_t<V2>::value>>
+	struct iterator_category_base<V2, hamon::enable_if_t<hamon::ranges::forward_range<V2>>>
 	{
 	private:
 		// [range.filter.iterator]/3.1
@@ -152,7 +152,7 @@ private:
 		using iterator_concept =
 			hamon::conditional_t<hamon::ranges::bidirectional_range<V>,
 				hamon::bidirectional_iterator_tag,	// [range.filter.iterator]/2.1
-			hamon::conditional_t<hamon::ranges::forward_range_t<V>::value,
+			hamon::conditional_t<hamon::ranges::forward_range<V>,
 				hamon::forward_iterator_tag,		// [range.filter.iterator]/2.2
 				hamon::input_iterator_tag			// [range.filter.iterator]/2.3
 		>>;
@@ -247,7 +247,7 @@ private:
 		}
 #else
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V)>
 		HAMON_CXX14_CONSTEXPR iterator
 		increment_impl(hamon::detail::overload_priority<1>)
 		{
@@ -456,7 +456,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator
 	begin_impl(hamon::detail::overload_priority<1>)
 	{

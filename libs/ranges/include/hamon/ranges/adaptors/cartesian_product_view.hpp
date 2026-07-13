@@ -248,7 +248,7 @@ private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	static_assert(hamon::ranges::input_range_t<First>::value, "");
 	static_assert(hamon::ranges::view_t<First>::value, "");
-	static_assert(hamon::conjunction<hamon::ranges::forward_range_t<Vs>...>::value, "");
+	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::forward_range<Vs>>...>::value, "");
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Vs>...>::value, "");
 #endif
 
@@ -295,7 +295,7 @@ private:
 				hamon::random_access_iterator_tag,
 			hamon::conditional_t<hamon::ranges::detail::cartesian_product_is_bidirectional_t<Const, First, Vs...>::value,
 				hamon::bidirectional_iterator_tag,
-			hamon::conditional_t<hamon::ranges::forward_range_t<hamon::ranges::detail::maybe_const<Const, First>>::value,
+			hamon::conditional_t<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, First>>,
 				hamon::forward_iterator_tag,
 				hamon::input_iterator_tag
 			>>>;
@@ -360,7 +360,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<hamon::ranges::detail::maybe_const<C2, First>>::value>>
+			hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<C2, First>>>>
 		HAMON_CXX14_CONSTEXPR iterator post_increment(hamon::detail::overload_priority<1>)
 		{
 			// [range.cartesian.iterator]/15

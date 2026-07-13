@@ -30,7 +30,6 @@ using std::ranges::remove;
 
 #include <hamon/algorithm/ranges/remove_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
@@ -98,7 +97,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R),
+		HAMON_CONSTRAINT(ranges::forward_range, R),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>

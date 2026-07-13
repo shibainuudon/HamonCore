@@ -90,7 +90,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		using V = test_input_view<test_input_view<int>>;
 		using Pattern = test_forward_view<int>;
-		static_assert(!hamon::ranges::forward_range_t<V>::value, "");
+		static_assert(!hamon::ranges::forward_range<V>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_begin<RV&>::value, "");
@@ -114,7 +114,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = NotSimpleView<int,
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>>;
-		static_assert(hamon::ranges::forward_range_t<V>::value, "");
+		static_assert(hamon::ranges::forward_range<V>, "");
 		static_assert(hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert(hamon::is_reference<hamon::ranges::range_reference_t<V>>::value, "");
 		static_assert(hamon::ranges::detail::simple_view_t<Pattern>::value, "");
@@ -142,7 +142,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = NotSimpleView<int,
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>>;
-		static_assert(hamon::ranges::forward_range_t<V>::value, "");
+		static_assert(hamon::ranges::forward_range<V>, "");
 		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert(hamon::is_reference<hamon::ranges::range_reference_t<V>>::value, "");
 		static_assert(hamon::ranges::detail::simple_view_t<Pattern>::value, "");
@@ -170,7 +170,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = NotSimpleView<int,
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>>;
-		static_assert(hamon::ranges::forward_range_t<V>::value, "");
+		static_assert(hamon::ranges::forward_range<V>, "");
 		static_assert(hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert(!hamon::is_reference<hamon::ranges::range_reference_t<V>>::value, "");
 		static_assert(hamon::ranges::detail::simple_view_t<Pattern>::value, "");
@@ -197,7 +197,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using Pattern = NotSimpleView<int,
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int const>>;
-		static_assert(hamon::ranges::forward_range_t<V>::value, "");
+		static_assert(hamon::ranges::forward_range<V>, "");
 		static_assert(hamon::ranges::detail::simple_view_t<V>::value, "");
 		static_assert(hamon::is_reference<hamon::ranges::range_reference_t<V>>::value, "");
 		static_assert(!hamon::ranges::detail::simple_view_t<Pattern>::value, "");
@@ -234,8 +234,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>>;
 
-		static_assert( hamon::ranges::forward_range_t<V const>::value, "");
-		static_assert( hamon::ranges::forward_range_t<Pattern const>::value, "");
+		static_assert( hamon::ranges::forward_range<V const>, "");
+		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
 		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
 
@@ -264,8 +264,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 
-		static_assert(!hamon::ranges::forward_range_t<V const>::value, "");
-		static_assert( hamon::ranges::forward_range_t<Pattern const>::value, "");
+		static_assert(!hamon::ranges::forward_range<V const>, "");
+		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
 		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
 
@@ -286,8 +286,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			input_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 
-		static_assert( hamon::ranges::forward_range_t<V const>::value, "");
-		static_assert(!hamon::ranges::forward_range_t<Pattern const>::value, "");
+		static_assert( hamon::ranges::forward_range<V const>, "");
+		static_assert(!hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
 		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
 
@@ -308,8 +308,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 
-		static_assert( hamon::ranges::forward_range_t<V const>::value, "");
-		static_assert( hamon::ranges::forward_range_t<Pattern const>::value, "");
+		static_assert( hamon::ranges::forward_range<V const>, "");
+		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert(!hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
 		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
 
@@ -334,8 +334,8 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			forward_iterator_wrapper<int>>;
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 
-		static_assert( hamon::ranges::forward_range_t<V const>::value, "");
-		static_assert( hamon::ranges::forward_range_t<Pattern const>::value, "");
+		static_assert( hamon::ranges::forward_range<V const>, "");
+		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
 		static_assert(!hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
 

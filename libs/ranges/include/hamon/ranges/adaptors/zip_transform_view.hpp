@@ -132,7 +132,7 @@ private:
 
 	// [range.zip.transform.iterator]/1
 	template <bool Const,
-		bool = hamon::ranges::forward_range_t<hamon::ranges::detail::maybe_const<Const, InnerView>>::value>
+		bool = hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, InnerView>>>
 	struct iterator_category_base
 	{
 	private:
@@ -247,7 +247,7 @@ private:
 			++m_inner;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator
 		post_increment(hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension

@@ -187,7 +187,7 @@ public:
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (
 			(hamon::ranges::approximately_sized_range<R> && !hamon::ranges::sized_range_t<R>::value) ||
-			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range_t<R>::value))
+			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range<R>))
 		{
 			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		}
@@ -372,7 +372,7 @@ public:
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (
 			(hamon::ranges::approximately_sized_range<R> && !hamon::ranges::sized_range_t<R>::value) ||
-			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range_t<R>::value))
+			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range<R>))
 		{
 			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		}

@@ -30,7 +30,6 @@ using std::ranges::find_last;
 
 #include <hamon/algorithm/ranges/find.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -137,7 +136,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
+		HAMON_CONSTRAINT(ranges::forward_range, Range),
 		typename T,
 		typename Proj = hamon::identity
 	>

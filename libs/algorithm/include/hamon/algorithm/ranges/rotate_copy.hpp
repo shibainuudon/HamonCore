@@ -30,7 +30,6 @@ using std::ranges::rotate_copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -79,7 +78,7 @@ struct rotate_copy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
+		HAMON_CONSTRAINT(ranges::forward_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto

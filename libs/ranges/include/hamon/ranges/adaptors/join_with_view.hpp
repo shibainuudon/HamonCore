@@ -81,7 +81,6 @@ using std::ranges::views::join_with;
 #include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -100,7 +99,7 @@ namespace ranges {
 
 namespace detail {
 
-template <typename V, bool = hamon::ranges::forward_range_t<V>::value>
+template <typename V, bool = hamon::ranges::forward_range<V>>
 struct join_with_view_outer_iter_base
 {
 private:
@@ -196,14 +195,14 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>
 #else
 template <typename V, typename Pattern,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range<V>,
-		hamon::ranges::forward_range<Pattern>,
-		hamon::ranges::view<V>,
-		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>,
-		hamon::ranges::view<Pattern>,
-		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V>::value &&
+		hamon::ranges::forward_range<Pattern> &&
+		hamon::ranges::view<V>::value &&
+		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>::value &&
+		hamon::ranges::view<Pattern>::value &&
+		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>::value
+	>>
 #endif
 class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pattern>>
 	, private hamon::ranges::detail::join_with_view_outer_iter_base<V>
@@ -219,8 +218,8 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 	// [range.join.with.iterator]/2
 	template <typename Base, typename InnerBase, typename PatternBase,
 		bool = hamon::is_reference<InnerBase>::value &&
-			hamon::ranges::forward_range_t<Base>::value &&
-			hamon::ranges::forward_range_t<InnerBase>::value>
+			hamon::ranges::forward_range<Base> &&
+			hamon::ranges::forward_range<InnerBase>>
 	struct iterator_category_base
 	{
 	private:
@@ -301,12 +300,12 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 
 		Parent* m_parent = nullptr;
 		HAMON_NO_UNIQUE_ADDRESS hamon::conditional_t<
-			hamon::ranges::forward_range_t<Base>::value,
+			hamon::ranges::forward_range<Base>,
 			OuterIter,
 			Empty> m_outer_it{};	// present only if Base models forward_range
 		hamon::variant<PatternIter, InnerIter> m_inner_it;
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR
 		iterator(Parent& parent, OuterIter outer)
 			// [range.join.with.iterator]/9
@@ -320,7 +319,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			}
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::not_forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::not_forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR explicit
 		iterator(Parent& parent)
 			// [range.join.with.iterator]/9
@@ -334,7 +333,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		}
 
 		// [range.join.with.iterator]/5
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR OuterIter&
 		outer_impl(hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 		{
@@ -348,7 +347,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		}
 
 		// [range.join.with.iterator]/5
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX11_CONSTEXPR OuterIter const&
 		outer_const_impl(hamon::detail::overload_priority<1>) const HAMON_NOEXCEPT
 		{
@@ -469,8 +468,8 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			hamon::conditional_t<
 				// [range.join.with.iterator]/1.2
 				ref_is_glvalue<Base>::value &&
-				hamon::ranges::forward_range_t<Base>::value &&
-				hamon::ranges::forward_range_t<InnerBase>::value,
+				hamon::ranges::forward_range<Base> &&
+				hamon::ranges::forward_range<InnerBase>,
 				hamon::forward_iterator_tag,
 				// [range.join.with.iterator]/1.3
 				hamon::input_iterator_tag
@@ -662,7 +661,7 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 		template <typename B2>
 		using EqualityComparable = hamon::bool_constant<
 			ref_is_glvalue<B2>::value &&
-			hamon::ranges::forward_range_t<B2>::value &&
+			hamon::ranges::forward_range<B2> &&
 			hamon::equality_comparable<InnerIter>
 		>;
 
@@ -856,7 +855,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V),
+	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V),
 		bool UseConst =
 			hamon::ranges::detail::simple_view_t<V2>::value &&
 			hamon::is_reference<InnerRng>::value &&
@@ -884,12 +883,12 @@ public:
 	}
 
 	template <typename V2 = V const,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::forward_range_t<V2>,
-			hamon::ranges::forward_range_t<Pattern const>,
-			hamon::is_reference<hamon::ranges::range_reference_t<V2>>,
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range<V2> &&
+			hamon::ranges::forward_range<Pattern const> &&
+			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
+			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value
+		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
 	-> iterator<true>
@@ -901,8 +900,8 @@ private:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
 			hamon::is_reference<InnerRng>::value &&
-			hamon::ranges::forward_range_t<V2>::value &&
-			hamon::ranges::forward_range_t<InnerRng>::value &&
+			hamon::ranges::forward_range<V2> &&
+			hamon::ranges::forward_range<InnerRng> &&
 			hamon::ranges::common_range<V2> &&
 			hamon::ranges::common_range<InnerRng>
 		>,
@@ -937,7 +936,7 @@ private:
 	template <typename V2 = V const,
 		typename InnerConstRng = hamon::ranges::range_reference_t<V2>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<InnerConstRng>::value &&
+			hamon::ranges::forward_range<InnerConstRng> &&
 			hamon::ranges::common_range<V2> &&
 			hamon::ranges::common_range<InnerConstRng>
 		>
@@ -956,12 +955,12 @@ private:
 
 public:
 	template <typename V2 = V const,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::forward_range_t<V2>,
-			hamon::ranges::forward_range_t<Pattern const>,
-			hamon::is_reference<hamon::ranges::range_reference_t<V2>>,
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range<V2> &&
+			hamon::ranges::forward_range<Pattern const> &&
+			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
+			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value
+		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const
 	->decltype(end_const_impl(hamon::detail::overload_priority<1>{}))

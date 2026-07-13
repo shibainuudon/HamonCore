@@ -91,7 +91,7 @@ struct find_first_of_fn
 
 	template<
 		HAMON_CONSTRAINED_PARAM(ranges::input_range,   Range1),
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range2),
+		HAMON_CONSTRAINT(ranges::forward_range, Range2),
 		typename Pred  = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

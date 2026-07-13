@@ -171,7 +171,7 @@ using all_bidirectional_t = hamon::conjunction<
 
 template <bool Const, typename... Views>
 using all_forward_t = hamon::conjunction<
-	hamon::ranges::forward_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	hamon::bool_constant<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
 
 template <bool Const, typename... Views>
 using all_sized_t = hamon::conjunction<

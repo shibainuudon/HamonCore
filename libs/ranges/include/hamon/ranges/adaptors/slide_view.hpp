@@ -169,10 +169,10 @@ template <hamon::ranges::forward_range V>
 	requires hamon::ranges::view<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::forward_range_t<V>,
-		hamon::ranges::view_t<V>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::forward_range<V> &&
+		hamon::ranges::view_t<V>::value
+	>
 >
 #endif
 class slide_view : public hamon::ranges::view_interface<slide_view<V>>

@@ -28,7 +28,6 @@ using std::ranges::search;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -123,8 +122,8 @@ struct search_fn
 	}
 
 	template<
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, Range1),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, Range2),
+		HAMON_CONSTRAINT(hamon::ranges::forward_range, Range1),
+		HAMON_CONSTRAINT(hamon::ranges::forward_range, Range2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

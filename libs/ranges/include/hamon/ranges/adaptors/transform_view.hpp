@@ -111,7 +111,7 @@ private:
 
 	// [range.transform.iterator]/2
 	template <bool Const, typename Base>
-	struct iterator_category_base<Const, Base, hamon::enable_if_t<hamon::ranges::forward_range_t<Base>::value>>
+	struct iterator_category_base<Const, Base, hamon::enable_if_t<hamon::ranges::forward_range<Base>>>
 	{
 	private:
 		// [range.transform.iterator]/2
@@ -158,7 +158,7 @@ private:
 				hamon::random_access_iterator_tag,	// [range.transform.iterator]/1.1
 			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,	// [range.transform.iterator]/1.2
-			hamon::conditional_t<hamon::ranges::forward_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::forward_range<Base>,
 				hamon::forward_iterator_tag,		// [range.transform.iterator]/1.3
 				hamon::input_iterator_tag			// [range.transform.iterator]/1.4
 		>>>;
@@ -236,7 +236,7 @@ private:
 			++m_current;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator
 		increment_impl(hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(

@@ -127,7 +127,7 @@ private:
 
 private:
 	template <typename Base,
-		bool = hamon::ranges::forward_range_t<Base>::value>
+		bool = hamon::ranges::forward_range<Base>>
 	struct iterator_category_base
 	{
 	private:
@@ -186,7 +186,7 @@ private:
 				hamon::random_access_iterator_tag,
 			hamon::conditional_t<hamon::ranges::bidirectional_range<Base>,
 				hamon::bidirectional_iterator_tag,
-			hamon::conditional_t<hamon::ranges::forward_range_t<Base>::value,
+			hamon::conditional_t<hamon::ranges::forward_range<Base>,
 				hamon::forward_iterator_tag,
 				input_iterator_tag
 			>>>;
@@ -256,7 +256,7 @@ private:
 			++*this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR iterator
 		increment_impl(hamon::detail::overload_priority<1>)	// noexcept(false)
 		{
@@ -428,7 +428,7 @@ private:
 			return r;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		static HAMON_CXX11_CONSTEXPR difference_type
 		distance_impl(iterator const& x, iterator const& y, difference_type N, hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 		{
@@ -549,7 +549,7 @@ private:
 		typename = hamon::enable_if_t<
 			hamon::ranges::common_range<V2> &&
 			hamon::ranges::sized_range_t<V2>::value &&
-			hamon::ranges::forward_range_t<V2>::value
+			hamon::ranges::forward_range<V2>
 		>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, Difference stride, hamon::detail::overload_priority<2>)

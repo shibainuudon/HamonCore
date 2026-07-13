@@ -28,7 +28,6 @@ using std::ranges::partition;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
@@ -168,7 +167,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range),
+		HAMON_CONSTRAINT(ranges::forward_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)

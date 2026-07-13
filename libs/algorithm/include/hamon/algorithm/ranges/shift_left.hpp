@@ -30,7 +30,6 @@ using std::ranges::shift_left;
 
 #include <hamon/algorithm/shift_left.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -66,7 +65,7 @@ struct shift_left_fn
 		return { hamon::move(first), hamon::move(result) };
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range)>
+	template <HAMON_CONSTRAINT(ranges::forward_range, Range)>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::range_difference_t<Range> n) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(

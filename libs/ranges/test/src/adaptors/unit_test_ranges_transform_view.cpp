@@ -214,7 +214,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::approximately_sized_range<TV> == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(hamon::ranges::output_range_t<TV, T>::value == false, "");
 	static_assert(hamon::ranges::input_range_t<TV>::value == true, "");
-	static_assert(hamon::ranges::forward_range_t<TV>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range<TV> == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<TV> == hamon::ranges::bidirectional_range<V>, "");
 	static_assert(hamon::ranges::random_access_range_t<TV>::value == hamon::ranges::random_access_range_t<V>::value, "");
 	static_assert(hamon::ranges::contiguous_range<TV> == false, "");
@@ -277,7 +277,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	using S = decltype(hamon::declval<TV&>().end());
 	using BI = decltype(hamon::declval<V&>().begin());
 	static_assert(hamon::same_as<I, S> == hamon::ranges::common_range<V>, "");
-	static_assert(has_iterator_category<I>::value == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(has_iterator_category<I>::value == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::same_as<typename I::value_type, T>, "");
 	static_assert(hamon::same_as<typename I::difference_type, hamon::ranges::range_difference_t<V>>, "");
 	static_assert(hamon::is_default_constructible<I>::value == hamon::is_default_constructible<BI>::value, "");

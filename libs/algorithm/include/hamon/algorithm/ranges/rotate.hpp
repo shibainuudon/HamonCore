@@ -33,7 +33,6 @@ using std::ranges::rotate;
 #include <hamon/algorithm/ranges/move_backward.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/swap.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
@@ -243,7 +242,7 @@ public:
 			hamon::detail::overload_priority<2>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(ranges::forward_range, Range)>
+	template <HAMON_CONSTRAINT(ranges::forward_range, Range)>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::iterator_t<Range> middle) const
 	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(

@@ -41,6 +41,7 @@ using std::ranges::view_interface;
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
@@ -114,7 +115,7 @@ public:
 	template <typename R = D,
 		typename = hamon::enable_if_t<
 			ranges::sized_range_t<R>::value ||
-			ranges::forward_range_t<R>::value>>
+			ranges::forward_range<R>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool	// nodiscard as an extension
 	empty()
 	HAMON_NOEXCEPT_IF_EXPR(empty_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
@@ -125,7 +126,7 @@ public:
 	template <typename R = D const,
 		typename = hamon::enable_if_t<
 			ranges::sized_range_t<R>::value ||
-			ranges::forward_range_t<R>::value>>
+			ranges::forward_range<R>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	empty() const
 	HAMON_NOEXCEPT_IF_EXPR(empty_impl(hamon::declval<R&>(), hamon::detail::overload_priority<1>{}))	// noexcept as an extension
@@ -207,7 +208,7 @@ public:
 		return hamon::to_address(ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D),
+	template <HAMON_CONSTRAINT_D(ranges::forward_range, R, D),
 		typename = hamon::enable_if_t<hamon::sized_sentinel_for<ranges::sentinel_t<R>, ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	size()
@@ -217,7 +218,7 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(ranges::end(derived()) - ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D const),
+	template <HAMON_CONSTRAINT_D(ranges::forward_range, R, D const),
 		typename = hamon::enable_if_t<hamon::sized_sentinel_for<ranges::sentinel_t<R>, ranges::iterator_t<R>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	size() const
@@ -227,7 +228,7 @@ public:
 		return hamon::ranges::detail::to_unsigned_like(ranges::end(derived()) - ranges::begin(derived()));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D)>
+	template <HAMON_CONSTRAINT_D(ranges::forward_range, R, D)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	front()
 	HAMON_NOEXCEPT_IF_EXPR(*ranges::begin(hamon::declval<R&>()))	// noexcept as an extension
@@ -237,7 +238,7 @@ public:
 			*ranges::begin(derived());	// [view.interface.members]/2
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::forward_range, R, D const)>
+	template <HAMON_CONSTRAINT_D(ranges::forward_range, R, D const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	front() const
 	HAMON_NOEXCEPT_IF_EXPR(*ranges::begin(hamon::declval<R&>()))	// noexcept as an extension

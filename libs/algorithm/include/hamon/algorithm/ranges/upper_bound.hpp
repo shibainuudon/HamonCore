@@ -28,7 +28,6 @@ using std::ranges::upper_bound;
 
 #else
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -95,7 +94,7 @@ struct upper_bound_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::forward_range, R),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,

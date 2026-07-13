@@ -47,7 +47,7 @@ struct bidirectional_range_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			ranges::forward_range<U>::value
+			ranges::forward_range<U>
 		>,
 		typename = hamon::enable_if_t<
 			hamon::bidirectional_iterator<ranges::iterator_t<U>>

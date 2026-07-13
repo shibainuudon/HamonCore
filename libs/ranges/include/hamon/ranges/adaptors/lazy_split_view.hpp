@@ -130,7 +130,7 @@ using tiny_range_t = tiny_range<R>;
 
 #endif
 
-template <typename V, bool = hamon::ranges::forward_range_t<V>::value>
+template <typename V, bool = hamon::ranges::forward_range<V>>
 struct lazy_split_view_base
 {
 private:
@@ -166,7 +166,7 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range_t<V>::value &&
-		hamon::ranges::forward_range_t<Pattern>::value &&
+		hamon::ranges::forward_range<Pattern> &&
 		hamon::ranges::view_t<V>::value &&
 		hamon::ranges::view_t<Pattern>::value &&
 		hamon::indirectly_comparable<
@@ -174,7 +174,7 @@ template <typename V, typename Pattern,
 			hamon::ranges::iterator_t<Pattern>,
 			hamon::ranges::equal_to> &&
 		(
-			hamon::ranges::forward_range_t<V>::value ||
+			hamon::ranges::forward_range<V> ||
 			hamon::ranges::detail::tiny_range_t<Pattern>::value
 		)
 	>>
@@ -191,7 +191,7 @@ private:
 	template <bool Const>
 	struct inner_iterator;
 
-	template <typename Base, bool = hamon::ranges::forward_range_t<Base>::value>
+	template <typename Base, bool = hamon::ranges::forward_range<Base>>
 	struct outer_iterator_base
 	{
 	private:
@@ -232,7 +232,7 @@ private:
 
 	private:
 		// [range.lazy.split.outer]/1
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR hamon::ranges::iterator_t<Base>&
 		get_current_impl(hamon::detail::overload_priority<1>) HAMON_NOEXCEPT
 		{
@@ -252,7 +252,7 @@ private:
 		}
 
 		// [range.lazy.split.outer]/1
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX11_CONSTEXPR hamon::ranges::iterator_t<Base> const&
 		get_current_impl(hamon::detail::overload_priority<1>) const HAMON_NOEXCEPT
 		{
@@ -273,7 +273,7 @@ private:
 
 	public:
 		using iterator_concept = hamon::conditional_t<
-			hamon::ranges::forward_range_t<Base>::value,
+			hamon::ranges::forward_range<Base>,
 			hamon::forward_iterator_tag,
 			hamon::input_iterator_tag>;
 
@@ -314,14 +314,14 @@ private:
 
 		outer_iterator() = default;
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::not_forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::not_forward_range, B2, Base)>
 		HAMON_CXX11_CONSTEXPR explicit
 		outer_iterator(Parent& parent) HAMON_NOEXCEPT	// noexcept as an extension
 			// [range.lazy.split.outer]/2
 			: m_parent(hamon::addressof(parent))
 		{}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX11_CONSTEXPR
 		outer_iterator(Parent& parent, hamon::ranges::iterator_t<Base> current)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -440,7 +440,7 @@ private:
 		}
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR outer_iterator
 		post_increment_impl(hamon::detail::overload_priority<1>)
 		{
@@ -464,7 +464,7 @@ private:
 		}
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator==(outer_iterator const& x, outer_iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current == y.m_current)		// noexcept as an extension
@@ -474,7 +474,7 @@ private:
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator!=(outer_iterator const& x, outer_iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))		// noexcept as an extension
@@ -523,7 +523,7 @@ private:
 	};
 
 	// [range.lazy.split.inner]/1
-	template <typename Base, bool = hamon::ranges::forward_range_t<Base>::value>
+	template <typename Base, bool = hamon::ranges::forward_range<Base>>
 	struct inner_iterator_iterator_category
 	{
 	private:
@@ -576,7 +576,7 @@ private:
 			return m_i.get_current();
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V)>
 		HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 		hamon::ranges::iterator_t<Base>
 		base() && HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -595,7 +595,7 @@ private:
 
 	private:
 		// [range.lazy.split.inner]/5
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR void
 		pre_increment_impl(hamon::detail::overload_priority<1>)
 		{
@@ -622,7 +622,7 @@ private:
 		}
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_CXX14_CONSTEXPR inner_iterator
 		post_increment_impl(hamon::detail::overload_priority<1>)
 		{
@@ -646,7 +646,7 @@ private:
 		}
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator==(inner_iterator const& x, inner_iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(bool(x.base() == y.base()))		// noexcept as an extension
@@ -656,7 +656,7 @@ private:
 		}
 
 #if !defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, B2, Base)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator!=(inner_iterator const& x, inner_iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x == y))		// noexcept as an extension
@@ -844,7 +844,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V),
+	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V),
 		bool UseConst =
 			hamon::ranges::detail::simple_view_t<V>::value &&
 			hamon::ranges::detail::simple_view_t<Pattern>::value
@@ -874,10 +874,10 @@ public:
 	}
 
 	template <typename V2 = V,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::ranges::forward_range_t<V2>,
-			hamon::ranges::forward_range_t<V2 const>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range<V2> &&
+			hamon::ranges::forward_range<V2 const>
+		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	begin() const HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
 		outer_iterator<true>{*this, hamon::ranges::begin(hamon::declval<V const&>())})
@@ -888,7 +888,7 @@ public:
 
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<V2>::value &&
+			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::common_range<V2>
 		>,
 		bool UseConst =
@@ -906,8 +906,8 @@ public:
 private:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
-			hamon::ranges::forward_range_t<V2>::value &&
-			hamon::ranges::forward_range_t<V2 const>::value &&
+			hamon::ranges::forward_range<V2> &&
+			hamon::ranges::forward_range<V2 const> &&
 			hamon::ranges::common_range<V2 const>
 		>>
 	HAMON_CXX11_CONSTEXPR outer_iterator<true>

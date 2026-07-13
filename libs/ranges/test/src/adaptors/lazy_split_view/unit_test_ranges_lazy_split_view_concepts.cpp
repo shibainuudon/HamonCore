@@ -29,7 +29,7 @@ void test()
 	static_assert(hamon::ranges::approximately_sized_range<LSV> == false, "");
 	static_assert(hamon::ranges::output_range_t<LSV, T>::value           == false, "");
 	static_assert(hamon::ranges::input_range_t<LSV>::value               == true, "");
-	static_assert(hamon::ranges::forward_range_t<LSV>::value             == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range<LSV>             == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<LSV> == false, "");
 	static_assert(hamon::ranges::random_access_range_t<LSV>::value       == false, "");
 	static_assert(hamon::ranges::contiguous_range<LSV> == false, "");
@@ -40,28 +40,28 @@ void test()
 
 	static_assert(has_begin<LSV&>::value         == true, "");
 	static_assert(has_end<LSV&>::value           == true, "");
-	static_assert(has_empty<LSV&>::value         == hamon::ranges::forward_range_t<LSV>::value, "");
+	static_assert(has_empty<LSV&>::value         == hamon::ranges::forward_range<LSV>, "");
 	static_assert(has_cbegin<LSV&>::value        == true, "");
 	static_assert(has_cend<LSV&>::value          == true, "");
-	static_assert(has_operator_bool<LSV&>::value == hamon::ranges::forward_range_t<LSV>::value, "");
+	static_assert(has_operator_bool<LSV&>::value == hamon::ranges::forward_range<LSV>, "");
 	static_assert(has_data<LSV&>::value          == false, "");
 	static_assert(has_size<LSV&>::value          == false, "");
 	static_assert(has_reserve_hint<LSV&>::value  == false, "");
-	static_assert(has_front<LSV&>::value         == hamon::ranges::forward_range_t<LSV>::value, "");
+	static_assert(has_front<LSV&>::value         == hamon::ranges::forward_range<LSV>, "");
 	static_assert(has_back<LSV&>::value          == false, "");
 	static_assert(has_subscript<LSV&>::value     == false, "");
 	static_assert(has_base<LSV&>::value          == true, "");
 
-	static_assert(has_begin<LSV const&>::value         == hamon::ranges::forward_range_t<LSV const>::value, "");
+	static_assert(has_begin<LSV const&>::value         == hamon::ranges::forward_range<LSV const>, "");
 	static_assert(has_end<LSV const&>::value           == true, "");
-	static_assert(has_empty<LSV const&>::value         == hamon::ranges::forward_range_t<LSV const>::value, "");
-	static_assert(has_cbegin<LSV const&>::value        == hamon::ranges::forward_range_t<LSV const>::value, "");
+	static_assert(has_empty<LSV const&>::value         == hamon::ranges::forward_range<LSV const>, "");
+	static_assert(has_cbegin<LSV const&>::value        == hamon::ranges::forward_range<LSV const>, "");
 	static_assert(has_cend<LSV const&>::value          == hamon::ranges::input_range_t<LSV const>::value, "");
-	static_assert(has_operator_bool<LSV const&>::value == hamon::ranges::forward_range_t<LSV const>::value, "");
+	static_assert(has_operator_bool<LSV const&>::value == hamon::ranges::forward_range<LSV const>, "");
 	static_assert(has_data<LSV const&>::value          == false, "");
 	static_assert(has_size<LSV const&>::value          == false, "");
 	static_assert(has_reserve_hint<LSV const&>::value  == false, "");
-	static_assert(has_front<LSV const&>::value         == hamon::ranges::forward_range_t<LSV const>::value, "");
+	static_assert(has_front<LSV const&>::value         == hamon::ranges::forward_range<LSV const>, "");
 	static_assert(has_back<LSV const&>::value          == false, "");
 	static_assert(has_subscript<LSV const&>::value     == false, "");
 	static_assert(has_base<LSV const&>::value          == true, "");
@@ -72,9 +72,9 @@ void test()
 	static_assert(hamon::ranges::borrowed_range<IV>            == false, "");
 	static_assert(hamon::ranges::sized_range_t<IV>::value               == false, "");
 	static_assert(hamon::ranges::approximately_sized_range<IV> == false, "");
-	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::output_range_t<IV, T>::value           == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::input_range_t<IV>::value               == true, "");
-	static_assert(hamon::ranges::forward_range_t<IV>::value             == hamon::ranges::forward_range_t<V>::value, "");
+	static_assert(hamon::ranges::forward_range<IV>             == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<IV>       == false, "");
 	static_assert(hamon::ranges::random_access_range_t<IV>::value       == false, "");
 	static_assert(hamon::ranges::contiguous_range<IV>          == false, "");

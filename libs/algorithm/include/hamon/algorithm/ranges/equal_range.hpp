@@ -30,7 +30,6 @@ using std::ranges::equal_range;
 
 #include <hamon/algorithm/ranges/lower_bound.hpp>
 #include <hamon/algorithm/ranges/upper_bound.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -109,7 +108,7 @@ struct equal_range_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::forward_range, R),
+		HAMON_CONSTRAINT(ranges::forward_range, R),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<R>, Proj>,

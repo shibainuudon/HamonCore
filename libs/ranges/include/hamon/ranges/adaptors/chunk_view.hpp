@@ -118,7 +118,7 @@ template <hamon::ranges::view V>
 class chunk_view
 #else
 template <typename V,
-	typename = hamon::ranges::forward_range_t<V>,
+	typename = hamon::bool_constant<hamon::ranges::forward_range<V>>,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::ranges::view_t<V>,
 		hamon::ranges::input_range_t<V>
@@ -905,7 +905,7 @@ public:
 		return iterator<false>(this, hamon::ranges::begin(m_base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(hamon::ranges::begin(m_base)) &&
@@ -960,7 +960,7 @@ public:
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
 		end_impl(this, m_base, m_n, hamon::detail::overload_priority<2>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::forward_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		end_impl(this, m_base, m_n, hamon::detail::overload_priority<2>{}))
@@ -1013,7 +1013,7 @@ chunk_view(R&&, hamon::ranges::range_difference_t<R>) -> chunk_view<hamon::views
 template <typename V>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon::ranges::chunk_view<V>> =
-	hamon::ranges::forward_range_t<V>::value &&
+	hamon::ranges::forward_range<V> &&
 	hamon::ranges::enable_borrowed_range<V>;
 
 namespace views {

@@ -27,7 +27,6 @@ using std::ranges::adjacent_find;
 
 #else
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -87,7 +86,7 @@ struct adjacent_find_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::forward_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::forward_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT_D(
