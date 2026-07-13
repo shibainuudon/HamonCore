@@ -511,7 +511,7 @@ public:
 		return hamon::default_sentinel;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference size()
 		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::distance(m_base))	// noexcept as an extension
@@ -521,7 +521,7 @@ public:
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference size() const
 		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::distance(m_base))	// noexcept as an extension
@@ -918,7 +918,7 @@ private:
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
 			hamon::ranges::common_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value>>
+			hamon::ranges::sized_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl(This* this_, V2& base, D const& n, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -964,14 +964,14 @@ public:
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		end_impl(this, m_base, m_n, hamon::detail::overload_priority<2>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference size()
 		// [range.chunk.view.fwd]/3
 		HAMON_NOEXCEPT_RETURN(hamon::ranges::detail::to_unsigned_like(	// noexcept as an extension
 			hamon::ranges::detail::div_ceil(hamon::ranges::distance(m_base), m_n)))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	UnsignedDifference size() const
 		// [range.chunk.view.fwd]/3

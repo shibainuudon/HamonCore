@@ -30,7 +30,7 @@ static_assert( hamon::ranges::random_access_range<range>, "");
 static_assert( hamon::ranges::contiguous_range<range>, "");
 static_assert( hamon::ranges::view_t<range>::value, "");
 static_assert( hamon::ranges::enable_view<range>, "");
-static_assert( hamon::ranges::sized_range_t<range>::value, "");
+static_assert( hamon::ranges::sized_range<range>, "");
 static_assert( hamon::ranges::borrowed_range<range>, "");
 static_assert( hamon::ranges::viewable_range_t<range>::value, "");
 
@@ -40,7 +40,7 @@ static_assert( hamon::ranges::random_access_range<range const>, "");
 static_assert( hamon::ranges::contiguous_range<range const>, "");
 static_assert(!hamon::ranges::view_t<range const>::value, "");
 static_assert(!hamon::ranges::enable_view<range const>, "");
-static_assert( hamon::ranges::sized_range_t<range const>::value, "");
+static_assert( hamon::ranges::sized_range<range const>, "");
 static_assert( hamon::ranges::borrowed_range<range const>, "");
 static_assert( hamon::ranges::viewable_range_t<range const>::value, "");
 

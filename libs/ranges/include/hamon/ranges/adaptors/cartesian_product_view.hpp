@@ -155,7 +155,7 @@ template <bool Const, typename First, typename... Vs>
 using cartesian_product_is_random_access = hamon::conjunction<
 	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>>>,
 	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
-	hamon::ranges::sized_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...
+	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...
 >;
 
 template <bool Const, typename First, typename... Vs>
@@ -164,7 +164,7 @@ using cartesian_product_is_random_access_t = cartesian_product_is_random_access<
 template <typename R>
 using cartesian_product_common_arg = hamon::bool_constant<
 	hamon::ranges::common_range<R> ||
-	(hamon::ranges::sized_range_t<R>::value && hamon::ranges::random_access_range<R>)
+	(hamon::ranges::sized_range<R> && hamon::ranges::random_access_range<R>)
 >;
 
 template <bool Const, typename First, typename... Vs>
@@ -184,7 +184,9 @@ template <typename First, typename... Vs>
 using cartesian_product_is_common_t = cartesian_product_is_common<First, Vs...>;
 
 template <typename... Vs>
-using cartesian_product_is_sized = hamon::conjunction<hamon::ranges::sized_range_t<Vs>...>;
+using cartesian_product_is_sized = hamon::conjunction<
+	hamon::bool_constant<hamon::ranges::sized_range<Vs>>...
+>;
 
 template <typename... Vs>
 using cartesian_product_is_sized_t = cartesian_product_is_sized<Vs...>;
@@ -195,7 +197,7 @@ using cartesian_is_sized_sentinel = hamon::conjunction<
 		FirstSent<hamon::ranges::detail::maybe_const<Const, First>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, First>>
 	>>,
-	hamon::ranges::sized_range_t<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
 	hamon::bool_constant<hamon::sized_sentinel_for<
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>

@@ -84,8 +84,8 @@ concept ends_withable_range =
 		Pred, Proj1, Proj2>;
 #else
 using ends_withable_range =	hamon::bool_constant<
-	(ranges::forward_range<R1> || ranges::sized_range<R1>::value) &&
-	(ranges::forward_range<R2> || ranges::sized_range<R2>::value) &&
+	(ranges::forward_range<R1> || ranges::sized_range<R1>) &&
+	(ranges::forward_range<R2> || ranges::sized_range<R2>) &&
 	hamon::indirectly_comparable<
 		ranges::iterator_t<R1>,
 		ranges::iterator_t<R2>,

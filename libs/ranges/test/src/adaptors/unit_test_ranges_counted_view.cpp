@@ -33,7 +33,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::is_same<CV, hamon::span<int, hamon::dynamic_extent>>::value, "");
 	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
-	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
+	static_assert( hamon::ranges::sized_range<CV>, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range<CV, int>, "");
 	static_assert( hamon::ranges::input_range<CV>, "");
@@ -63,7 +63,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 			hamon::ranges::subrange_kind::sized>>::value, "");
 	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
-	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
+	static_assert( hamon::ranges::sized_range<CV>, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range<CV, int>, "");
 	static_assert( hamon::ranges::input_range<CV>, "");
@@ -93,7 +93,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 			hamon::ranges::subrange_kind::sized>>::value, "");
 	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
-	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
+	static_assert( hamon::ranges::sized_range<CV>, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range<CV, int>, "");
 	static_assert( hamon::ranges::input_range<CV>, "");
@@ -123,7 +123,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 			hamon::ranges::subrange_kind::sized>>::value, "");
 	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
-	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
+	static_assert( hamon::ranges::sized_range<CV>, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range<CV, int>, "");
 	static_assert( hamon::ranges::input_range<CV>, "");
@@ -153,7 +153,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 			hamon::ranges::subrange_kind::sized>>::value, "");
 	static_assert( hamon::ranges::range<CV>, "");
 	static_assert( hamon::ranges::borrowed_range<CV>, "");
-	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
+	static_assert( hamon::ranges::sized_range<CV>, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert(!hamon::ranges::output_range<CV, int>, "");
 	static_assert( hamon::ranges::input_range<CV>, "");

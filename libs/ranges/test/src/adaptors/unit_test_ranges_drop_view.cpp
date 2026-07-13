@@ -155,7 +155,7 @@ struct SizedViewWithUnsizedSentinel : hamon::ranges::view_base
 	constexpr std::size_t size() const { return static_cast<std::size_t>(m_last - m_first); }
 };
 static_assert( hamon::ranges::random_access_range<SizedViewWithUnsizedSentinel<int>>, "");
-static_assert( hamon::ranges::sized_range_t<SizedViewWithUnsizedSentinel<int>>::value, "");
+static_assert( hamon::ranges::sized_range<SizedViewWithUnsizedSentinel<int>>, "");
 static_assert(!hamon::sized_sentinel_for<SizedViewWithUnsizedSentinel<int>::sentinel, SizedViewWithUnsizedSentinel<int>::iterator>, "");
 static_assert( hamon::ranges::view_t<SizedViewWithUnsizedSentinel<int>>::value, "");
 
@@ -170,7 +170,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(hamon::ranges::range<DV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<DV> == hamon::ranges::borrowed_range<V>, "");
-	static_assert(hamon::ranges::sized_range_t<DV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(hamon::ranges::sized_range<DV> == hamon::ranges::sized_range<V>, "");
 	static_assert(hamon::ranges::approximately_sized_range<DV> == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(hamon::ranges::output_range<DV, T> == hamon::ranges::output_range<V, T>, "");
 	static_assert(hamon::ranges::input_range<DV> == hamon::ranges::input_range<V>, "");
@@ -198,7 +198,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(has_begin<DV>::value, "");
 	static_assert(has_begin<DV const>::value ==
-		(hamon::ranges::random_access_range<V const> && hamon::ranges::sized_range_t<V const>::value), "");
+		(hamon::ranges::random_access_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 	static_assert(hamon::same_as<
 		decltype(hamon::declval<DV>().begin()),
@@ -227,8 +227,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	}
 #endif
 
-	static_assert(has_size<DV>::value == hamon::ranges::sized_range_t<V>::value, "");
-	static_assert(has_size<DV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
+	static_assert(has_size<DV>::value == hamon::ranges::sized_range<V>, "");
+	static_assert(has_size<DV const>::value == hamon::ranges::sized_range<V const>, "");
 
 	static_assert(has_reserve_hint<DV&>::value == hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(has_reserve_hint<DV const&>::value == hamon::ranges::approximately_sized_range<V const>, "");

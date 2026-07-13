@@ -84,7 +84,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert( hamon::ranges::range<OV>, "");
 	static_assert( hamon::ranges::borrowed_range<OV> == hamon::ranges::borrowed_range<R>, "");
-	static_assert( hamon::ranges::sized_range_t<OV>::value == hamon::ranges::sized_range_t<R>::value, "");
+	static_assert( hamon::ranges::sized_range<OV> == hamon::ranges::sized_range<R>, "");
 	static_assert( hamon::ranges::approximately_sized_range<OV> == hamon::ranges::approximately_sized_range<R>, "");
 	static_assert( hamon::ranges::output_range<OV, T> == hamon::ranges::output_range<R, T>, "");
 	static_assert( hamon::ranges::input_range<OV> == hamon::ranges::input_range<R>, "");
@@ -128,12 +128,12 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(noexcept(hamon::declval<OV const&&>().base()), "");
 
 	static_assert(has_empty<OV&>::value ==
-		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range<R>), "");
+		(hamon::ranges::sized_range<R> || hamon::ranges::forward_range<R>), "");
 	static_assert(has_empty<OV const&>::value ==
-		(hamon::ranges::sized_range_t<R>::value || hamon::ranges::forward_range<R>), "");
+		(hamon::ranges::sized_range<R> || hamon::ranges::forward_range<R>), "");
 
-	static_assert(has_size<OV&>::value == hamon::ranges::sized_range_t<R>::value, "");
-	static_assert(has_size<OV const&>::value == hamon::ranges::sized_range_t<R>::value, "");
+	static_assert(has_size<OV&>::value == hamon::ranges::sized_range<R>, "");
+	static_assert(has_size<OV const&>::value == hamon::ranges::sized_range<R>, "");
 	
 	static_assert(has_reserve_hint<OV&>::value == hamon::ranges::approximately_sized_range<R>, "");
 	static_assert(has_reserve_hint<OV const&>::value == hamon::ranges::approximately_sized_range<R>, "");

@@ -278,7 +278,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	using Subrange = hamon::ranges::subrange<
 		ranges::iterator_t<Container>,
 		ranges::sentinel_t<Container>,
-		ranges::sized_range_t<Container>::value ? ranges::subrange_kind::sized : ranges::subrange_kind::unsized
+		ranges::sized_range<Container> ? ranges::subrange_kind::sized : ranges::subrange_kind::unsized
 	>;
 	Subrange sr = r;
 #endif
@@ -286,7 +286,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	return test01_impl(
 		r,
 		sr,
-		ranges::sized_range_t<decltype(sr)>{},
+		hamon::bool_constant<ranges::sized_range<decltype(sr)>>{},
 		hamon::bool_constant<ranges::bidirectional_range<decltype(sr)>>{});
 }
 

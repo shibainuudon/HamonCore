@@ -52,10 +52,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using F = Add;
 		using V1 = TestSizedView<int, short>;
 		using V2 = TestSizedView<char, short>;
-		static_assert( hamon::ranges::sized_range_t<V1>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V1 const>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2 const>::value, "");
+		static_assert( hamon::ranges::sized_range<V1>, "");
+		static_assert( hamon::ranges::sized_range<V2>, "");
+		static_assert( hamon::ranges::sized_range<V1 const>, "");
+		static_assert( hamon::ranges::sized_range<V2 const>, "");
 
 		using ZV = hamon::ranges::zip_transform_view<F, V1, V2>;
 		static_assert( has_size<ZV&>::value, "");
@@ -70,10 +70,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using F = Add;
 		using V1 = TestSizedView<void, char>;
 		using V2 = TestSizedView<int, short>;
-		static_assert(!hamon::ranges::sized_range_t<V1>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V1 const>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2 const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V1>, "");
+		static_assert( hamon::ranges::sized_range<V2>, "");
+		static_assert( hamon::ranges::sized_range<V1 const>, "");
+		static_assert( hamon::ranges::sized_range<V2 const>, "");
 
 		using ZV = hamon::ranges::zip_transform_view<F, V1, V2>;
 		static_assert( has_size<ZV&>::value, "");
@@ -88,10 +88,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using F = Add;
 		using V1 = TestSizedView<int, void>;
 		using V2 = TestSizedView<int, short>;
-		static_assert( hamon::ranges::sized_range_t<V1>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V1 const>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2 const>::value, "");
+		static_assert( hamon::ranges::sized_range<V1>, "");
+		static_assert( hamon::ranges::sized_range<V2>, "");
+		static_assert(!hamon::ranges::sized_range<V1 const>, "");
+		static_assert( hamon::ranges::sized_range<V2 const>, "");
 
 		using ZV = hamon::ranges::zip_transform_view<F, V1, V2>;
 		static_assert( has_size<ZV&>::value, "");
@@ -105,10 +105,10 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using F = Add;
 		using V1 = TestSizedView<void, short>;
 		using V2 = TestSizedView<int, void>;
-		static_assert(!hamon::ranges::sized_range_t<V1>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V2>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V1 const>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V2 const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V1>, "");
+		static_assert( hamon::ranges::sized_range<V2>, "");
+		static_assert( hamon::ranges::sized_range<V1 const>, "");
+		static_assert(!hamon::ranges::sized_range<V2 const>, "");
 
 		using ZV = hamon::ranges::zip_transform_view<F, V1, V2>;
 		static_assert(!has_size<ZV&>::value, "");

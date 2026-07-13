@@ -160,7 +160,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert( hamon::ranges::range<V>, "");
 	static_assert(!hamon::ranges::borrowed_range<V>, "");
-	static_assert(!hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(!hamon::ranges::sized_range<V>, "");
 	static_assert(!hamon::ranges::approximately_sized_range<V>, "");
 	static_assert(!hamon::ranges::output_range<V, Val>, "");
 	static_assert( hamon::ranges::input_range<V>, "");

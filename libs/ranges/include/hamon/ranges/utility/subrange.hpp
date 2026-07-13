@@ -121,7 +121,7 @@ using subrange_constructible_from_range = hamon::bool_constant<
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It>::value &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
-	(!StoreSize || hamon::ranges::sized_range<Rng>::value)
+	(!StoreSize || hamon::ranges::sized_range<Rng>)
 >;
 
 template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind>
@@ -452,7 +452,7 @@ subrange(It, Sent, detail::make_unsigned_like_t<hamon::iter_difference_t<It>>)
 template <HAMON_CONSTRAINT(hamon::ranges::borrowed_range, Rng)>
 subrange(Rng&&)
 -> subrange<hamon::ranges::iterator_t<Rng>, hamon::ranges::sentinel_t<Rng>,
-	(hamon::ranges::sized_range_t<Rng>::value ||
+	(hamon::ranges::sized_range<Rng> ||
 	 hamon::sized_sentinel_for<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>) ?
 		ranges::subrange_kind::sized :
 		ranges::subrange_kind::unsized>;
@@ -603,7 +603,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 	subrange<
 		hamon::ranges::iterator_t<Rng>,
 		hamon::ranges::sentinel_t<Rng>,
-		(hamon::ranges::sized_range_t<Rng>::value ||
+		(hamon::ranges::sized_range<Rng> ||
 		 hamon::sized_sentinel_for<hamon::ranges::sentinel_t<Rng>, hamon::ranges::iterator_t<Rng>>) ?
 			ranges::subrange_kind::sized :
 			ranges::subrange_kind::unsized

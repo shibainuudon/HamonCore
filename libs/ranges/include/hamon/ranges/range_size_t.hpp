@@ -23,7 +23,7 @@ using std::ranges::range_size_t;
 
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/size.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -32,7 +32,7 @@ namespace hamon {
 namespace ranges {
 
 // [ranges.syn]
-template <HAMON_CONSTRAINED_PARAM(ranges::sized_range, R)>
+template <HAMON_CONSTRAINT(ranges::sized_range, R)>
 using range_size_t = decltype(ranges::size(hamon::declval<R&>()));
 
 }	// namespace ranges

@@ -159,7 +159,7 @@ struct reservable_container_impl
 {
 private:
 	template <typename C2,
-		typename = hamon::enable_if_t<hamon::ranges::sized_range_t<C2>::value>,
+		typename = hamon::enable_if_t<hamon::ranges::sized_range<C2>>,
 		typename SizeType = hamon::ranges::range_size_t<C2>,
 		typename = decltype(hamon::declval<C2&>().reserve(hamon::declval<SizeType>())),
 		typename R1 = decltype(hamon::declval<C2&>().capacity()),

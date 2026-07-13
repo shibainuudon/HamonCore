@@ -94,7 +94,7 @@ private:
 	}
 
 	template <typename R,
-		typename = hamon::enable_if_t<ranges::sized_range_t<R>::value>>
+		typename = hamon::enable_if_t<ranges::sized_range<R>>>
 	static HAMON_CXX11_CONSTEXPR bool
 	empty_impl(R& r, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_IF_EXPR(ranges::size(r) == 0)
@@ -113,7 +113,7 @@ private:
 public:
 	template <typename R = D,
 		typename = hamon::enable_if_t<
-			ranges::sized_range_t<R>::value ||
+			ranges::sized_range<R> ||
 			ranges::forward_range<R>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR bool	// nodiscard as an extension
 	empty()
@@ -124,7 +124,7 @@ public:
 
 	template <typename R = D const,
 		typename = hamon::enable_if_t<
-			ranges::sized_range_t<R>::value ||
+			ranges::sized_range<R> ||
 			ranges::forward_range<R>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	empty() const

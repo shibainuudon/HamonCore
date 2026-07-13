@@ -49,7 +49,6 @@ using std::ranges::views::zip_transform;
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
@@ -636,7 +635,7 @@ public:
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN( // noexcept as an extension
 		end_impl(this, m_zip, hamon::detail::overload_priority<2>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, InnerView)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, InnerView)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto  // nodiscard as an extension
 	size() HAMON_NOEXCEPT_IF_EXPR(m_zip.size()) // noexcept as an extension
 	->decltype(hamon::declval<V2&>().size())
@@ -644,7 +643,7 @@ public:
 		return m_zip.size();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, InnerView const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, InnerView const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto        // nodiscard as an extension
 	size() const HAMON_NOEXCEPT_IF_EXPR(m_zip.size()) // noexcept as an extension
 	->decltype(hamon::declval<V2&>().size())

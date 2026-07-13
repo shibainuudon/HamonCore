@@ -281,7 +281,7 @@ public:
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
-			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
+			hamon::ranges::sized_range<R> &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4
@@ -300,7 +300,7 @@ public:
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
-			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
+			hamon::ranges::sized_range<R> &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4
@@ -318,7 +318,7 @@ public:
 		typename U = hamon::remove_reference_t<ranges::range_reference_t<R>>,	// [span.cons]/14
 		typename = hamon::enable_if_t<
 			hamon::ranges::contiguous_range<R> &&	// [span.cons]/14.1
-			hamon::ranges::sized_range_t<R>::value &&		// [span.cons]/14.1
+			hamon::ranges::sized_range<R> &&		// [span.cons]/14.1
 			(hamon::ranges::borrowed_range<R> || hamon::is_const<element_type>::value) &&	// [span.cons]/14.2
 			!hamon::detail::is_specialization_of_span<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.3
 			!hamon::detail::is_specialization_of_array<hamon::remove_cvref_t<R>>::value &&	// [span.cons]/14.4

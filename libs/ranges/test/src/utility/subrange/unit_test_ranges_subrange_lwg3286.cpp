@@ -61,7 +61,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 	int x[] = { 1,2,3 };
 	my_range r{x};
 	static_assert(!hamon::ranges::forward_range<my_range>, "");
-	static_assert( hamon::ranges::sized_range_t<my_range>::value, "");
+	static_assert( hamon::ranges::sized_range<my_range>, "");
 	using Subrange = hamon::ranges::subrange<
 		hamon::ranges::iterator_t<my_range>,
 		hamon::ranges::sentinel_t<my_range>,

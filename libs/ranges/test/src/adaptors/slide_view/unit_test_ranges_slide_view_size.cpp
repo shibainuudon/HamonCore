@@ -46,8 +46,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	// sized_range<V> && sized_range<V const>
 	{
 		using V = TestSizedView<char, short>;
-		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert( hamon::ranges::sized_range<V>, "");
+		static_assert( hamon::ranges::sized_range<V const>, "");
 
 		using SV = hamon::ranges::slide_view<V>;
 		static_assert( has_size<SV&>::value, "");
@@ -60,8 +60,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	// !sized_range<V> && sized_range<V const>
 	{
 		using V = TestSizedView<void, int>;
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
+		static_assert( hamon::ranges::sized_range<V const>, "");
 
 		using SV = hamon::ranges::slide_view<V>;
 		static_assert( has_size<SV&>::value, "");
@@ -74,8 +74,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	// sized_range<V> && !sized_range<V const>
 	{
 		using V = TestSizedView<char, void>;
-		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert( hamon::ranges::sized_range<V>, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using SV = hamon::ranges::slide_view<V>;
 		static_assert( has_size<SV&>::value, "");
@@ -87,8 +87,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	// !sized_range<V> && !sized_range<V const>
 	{
 		using V = TestSizedView<void, void>;
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using SV = hamon::ranges::slide_view<V>;
 		static_assert(!has_size<SV&>::value, "");

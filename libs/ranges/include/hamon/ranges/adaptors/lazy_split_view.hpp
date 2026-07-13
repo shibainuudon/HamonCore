@@ -107,7 +107,7 @@ struct tiny_range_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range_t<U>::value
+			hamon::ranges::sized_range<U>
 		>,
 		typename = hamon::enable_if_t<
 			(hamon::remove_reference_t<U>::size() <= 1)

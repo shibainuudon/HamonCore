@@ -163,12 +163,12 @@ static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleBidirectionalSizedV
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleForwardSizedView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleInputSizedView<int>>::value, "");
 static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleOutputSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleContiguousSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleRandomAccessSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleBidirectionalSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleForwardSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleInputSizedView<int>>::value, "");
-static_assert(hamon::ranges::sized_range_t<NotSimpleOutputSizedView<int>>::value, "");
+static_assert(hamon::ranges::sized_range<NotSimpleContiguousSizedView<int>>, "");
+static_assert(hamon::ranges::sized_range<NotSimpleRandomAccessSizedView<int>>, "");
+static_assert(hamon::ranges::sized_range<NotSimpleBidirectionalSizedView<int>>, "");
+static_assert(hamon::ranges::sized_range<NotSimpleForwardSizedView<int>>, "");
+static_assert(hamon::ranges::sized_range<NotSimpleInputSizedView<int>>, "");
+static_assert(hamon::ranges::sized_range<NotSimpleOutputSizedView<int>>, "");
 
 template <typename T>
 struct CountedView : hamon::ranges::view_base
@@ -197,7 +197,7 @@ struct CountedView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view_t<CountedView<int>>::value, "");
-static_assert(!hamon::ranges::sized_range_t<CountedView<int>>::value, "");
+static_assert(!hamon::ranges::sized_range<CountedView<int>>, "");
 static_assert(hamon::sized_sentinel_for<hamon::ranges::sentinel_t<CountedView<int>>, hamon::ranges::iterator_t<CountedView<int>>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<CountedView<int>>::value, "");
 
@@ -222,7 +222,7 @@ struct UnreachableView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view_t<UnreachableView<int>>::value, "");
-static_assert(!hamon::ranges::sized_range_t<UnreachableView<int>>::value, "");
+static_assert(!hamon::ranges::sized_range<UnreachableView<int>>, "");
 static_assert(hamon::ranges::contiguous_range<UnreachableView<int>>, "");
 static_assert(!hamon::ranges::detail::simple_view_t<UnreachableView<int>>::value, "");
 static_assert(!hamon::copyable<UnreachableView<int>>, "");
@@ -240,7 +240,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	static_assert(hamon::ranges::range<TV> == true, "");
 	static_assert(hamon::ranges::borrowed_range<TV> == hamon::ranges::borrowed_range<V>, "");
-	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
+	static_assert(hamon::ranges::sized_range<TV> == hamon::ranges::sized_range<V>, "");
 	static_assert(hamon::ranges::approximately_sized_range<TV> == true, "");
 	static_assert(hamon::ranges::output_range<TV, T> == hamon::ranges::output_range<V, T>, "");
 	static_assert(hamon::ranges::input_range<TV> == hamon::ranges::input_range<V>, "");
@@ -249,7 +249,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::random_access_range<TV> == hamon::ranges::random_access_range<V>, "");
 	static_assert(hamon::ranges::contiguous_range<TV> == hamon::ranges::contiguous_range<V>, "");
 	static_assert(hamon::ranges::common_range<TV> ==
-		(hamon::ranges::sized_range_t<V>::value && hamon::ranges::random_access_range<V>), "");
+		(hamon::ranges::sized_range<V> && hamon::ranges::random_access_range<V>), "");
 	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::view_t<TV>::value == true, "");
 	static_assert(hamon::ranges::constant_range<TV> == false, "");
@@ -275,8 +275,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(has_end<TV>::value, "");
 	static_assert(has_end<TV const>::value == hamon::ranges::range<V const>, "");
 
-	static_assert(has_size<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
-	static_assert(has_size<TV const>::value == hamon::ranges::sized_range_t<V const>::value, "");
+	static_assert(has_size<TV>::value == hamon::ranges::sized_range<V>, "");
+	static_assert(has_size<TV const>::value == hamon::ranges::sized_range<V const>, "");
 
 	static_assert(has_reserve_hint<TV>::value, "");
 	static_assert(has_reserve_hint<TV const>::value, "");

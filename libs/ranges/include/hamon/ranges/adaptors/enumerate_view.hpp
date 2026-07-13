@@ -599,7 +599,7 @@ private:
 	template <typename V2,
 		typename = hamon::enable_if_t<
 			hamon::ranges::common_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value
+			hamon::ranges::sized_range<V2>
 		>,
 		bool UseConst = hamon::is_const<hamon::remove_reference_t<V2>>::value>
 	static HAMON_CXX14_CONSTEXPR iterator<UseConst>
@@ -640,7 +640,7 @@ public:
 		return end_impl(m_base, hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto size() HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))
@@ -649,7 +649,7 @@ public:
 		return hamon::ranges::size(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto size() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))

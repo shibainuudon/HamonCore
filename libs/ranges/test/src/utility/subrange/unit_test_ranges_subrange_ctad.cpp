@@ -34,7 +34,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a, a+1);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() == a+1);
 		VERIFY(sr.size() == 1);
@@ -45,7 +45,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(Iter{a}, Sent{a+2});
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::unsized>>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(!hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+2);
 	}
@@ -55,7 +55,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(Iter{a}, Sent{a+3});
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+3);
 		VERIFY(sr.size() == 3);
@@ -64,7 +64,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a, hamon::unreachable_sentinel);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::unsized>>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(!hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() != a+0);
 		VERIFY(sr.end() != a+1);
@@ -78,14 +78,14 @@ inline bool test01_2()
 	{
 		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl.begin(), fwl.end());
-		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(!hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == fwl.begin());
 		VERIFY(sr.end() == fwl.end());
 	}
 	{
 		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec.begin(), vec.end());
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == vec.begin());
 		VERIFY(sr.end() == vec.end());
 		VERIFY(sr.size() == 5);
@@ -100,7 +100,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a, a+1, 1);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() == a+1);
 		VERIFY(sr.size() == 1);
@@ -111,7 +111,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(Iter{a}, Sent{a+2}, 2);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+2);
 		VERIFY(sr.size() == 2);
@@ -122,7 +122,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(Iter{a}, Sent{a+3}, 3);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+3);
 		VERIFY(sr.size() == 3);
@@ -131,7 +131,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a, hamon::unreachable_sentinel, 3);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, hamon::unreachable_sentinel_t, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() != a+0);
 		VERIFY(sr.end() != a+1);
@@ -146,7 +146,7 @@ inline bool test02_2()
 	{
 		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl.begin(), fwl.end(), 4);
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == fwl.begin());
 		VERIFY(sr.end() == fwl.end());
 		VERIFY(sr.size() == 4);
@@ -154,7 +154,7 @@ inline bool test02_2()
 	{
 		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec.begin(), vec.end(), 5);
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == vec.begin());
 		VERIFY(sr.end() == vec.end());
 		VERIFY(sr.size() == 5);
@@ -169,7 +169,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() == a+3);
 		VERIFY(sr.size() == 3);
@@ -181,7 +181,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03_1()
 		using Sent = test_forward_range<int>::sentinel;
 		hamon::ranges::subrange sr(r);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::unsized>>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(!hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+5);
 	}
@@ -192,7 +192,7 @@ inline HAMON_CXX14_CONSTEXPR bool test03_1()
 		using Sent = test_random_access_range<int>::sentinel;
 		hamon::ranges::subrange sr(r);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+5);
 		VERIFY(sr.size() == 5);
@@ -205,14 +205,14 @@ inline bool test03_2()
 	{
 		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl);
-		static_assert(!hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(!hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == fwl.begin());
 		VERIFY(sr.end() == fwl.end());
 	}
 	{
 		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec);
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == vec.begin());
 		VERIFY(sr.end() == vec.end());
 		VERIFY(sr.size() == 5);
@@ -227,7 +227,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04_1()
 		int a[] = {1, 2, 3};
 		hamon::ranges::subrange sr(a, 3);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<int*, int*, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == a);
 		VERIFY(sr.end() == a+3);
 		VERIFY(sr.size() == 3);
@@ -239,7 +239,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04_1()
 		using Sent = test_forward_range<int>::sentinel;
 		hamon::ranges::subrange sr(r, 5);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+5);
 		VERIFY(sr.size() == 5);
@@ -251,7 +251,7 @@ inline HAMON_CXX14_CONSTEXPR bool test04_1()
 		using Sent = test_random_access_range<int>::sentinel;
 		hamon::ranges::subrange sr(r, 5);
 		static_assert(hamon::is_same<decltype(sr), hamon::ranges::subrange<Iter, Sent, hamon::ranges::subrange_kind::sized>>::value, "");
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin().m_ptr == a);
 		VERIFY(sr.end().m_it.m_ptr == a+5);
 		VERIFY(sr.size() == 5);
@@ -264,7 +264,7 @@ inline bool test04_2()
 	{
 		const hamon::forward_list fwl = {1, 2, 3, 4};
 		hamon::ranges::subrange sr(fwl, 4);
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == fwl.begin());
 		VERIFY(sr.end() == fwl.end());
 		VERIFY(sr.size() == 4);
@@ -272,7 +272,7 @@ inline bool test04_2()
 	{
 		const hamon::vector vec = {1, 2, 3, 4, 5};
 		hamon::ranges::subrange sr(vec, 5);
-		static_assert(hamon::ranges::sized_range_t<decltype(sr)>::value, "");
+		static_assert(hamon::ranges::sized_range<decltype(sr)>, "");
 		VERIFY(sr.begin() == vec.begin());
 		VERIFY(sr.end() == vec.end());
 		VERIFY(sr.size() == 5);

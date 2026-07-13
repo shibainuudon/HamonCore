@@ -178,7 +178,7 @@ public:
 	template <typename R,
 		typename = hamon::enable_if_t<
 			!hamon::is_same<hamon::remove_cvref_t<R>, basic_string_view>::value &&		// [string.view.cons]/12.1
-			ranges::contiguous_range<R> && ranges::sized_range_t<R>::value &&	// [string.view.cons]/12.2
+			ranges::contiguous_range<R> && ranges::sized_range<R> &&	// [string.view.cons]/12.2
 			hamon::is_same<ranges::range_value_t<R>, CharT>::value &&					// [string.view.cons]/12.3
 			!hamon::is_convertible<R, CharT const*>::value &&							// [string.view.cons]/12.4
 			!hamon::detail::has_operator_string_view_t<hamon::remove_cvref_t<R>, CharT, Traits>::value			// [string.view.cons]/12.5

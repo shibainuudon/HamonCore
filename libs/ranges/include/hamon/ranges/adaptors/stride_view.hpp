@@ -547,7 +547,7 @@ private:
 		bool Const = hamon::is_const<V2>::value,
 		typename = hamon::enable_if_t<
 			hamon::ranges::common_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value &&
+			hamon::ranges::sized_range<V2> &&
 			hamon::ranges::forward_range<V2>
 		>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
@@ -595,7 +595,7 @@ public:
 		end_impl(this, m_base, m_stride, hamon::detail::overload_priority<2>{}))
 
 private:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::sized_range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::sized_range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	size_impl(V2& base, Difference stride, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF_EXPR(hamon::ranges::distance(base))	// noexcept as an extension
@@ -611,12 +611,12 @@ private:
 	static void size_impl(V2&, Difference, hamon::detail::overload_priority<0>);
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	size() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		size_impl(m_base, m_stride, hamon::detail::overload_priority<1>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		size_impl(m_base, m_stride, hamon::detail::overload_priority<1>{}))

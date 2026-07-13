@@ -34,7 +34,7 @@ inline HAMON_CXX14_CONSTEXPR bool test01()
 {
 	int a[4] = { 1,2,3,4 };
 	auto r = hamon::ranges::subrange(a, a+4);
-	static_assert(hamon::ranges::sized_range_t<decltype(r)>::value, "");
+	static_assert(hamon::ranges::sized_range<decltype(r)>, "");
 	{
 		auto [first, last] = r;
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");
@@ -70,7 +70,7 @@ inline HAMON_CXX14_CONSTEXPR bool test02()
 {
 	int a[4] = { 1,2,3,4 };
 	auto r = hamon::ranges::subrange(a, hamon::unreachable_sentinel);
-	static_assert(!hamon::ranges::sized_range_t<decltype(r)>::value, "");
+	static_assert(!hamon::ranges::sized_range<decltype(r)>, "");
 	{
 		auto [first, last] = r;
 		static_assert(hamon::is_same<decltype(first), int*>::value, "");

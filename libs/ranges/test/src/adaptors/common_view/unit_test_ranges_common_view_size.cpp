@@ -44,8 +44,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 {
 	{
 		using V = test_random_access_view<int>;
-		static_assert(hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::sized_range<V>, "");
+		static_assert(hamon::ranges::sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_size<CV&>::value, "");
@@ -72,8 +72,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// sized_range<V> && sized_range<V const>
 		using V = TestSizedView<int, short>;
-		static_assert(hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::sized_range<V>, "");
+		static_assert(hamon::ranges::sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_size<CV&>::value, "");
@@ -85,8 +85,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// !sized_range<V> && sized_range<V const>
 		using V = TestSizedView<void, unsigned int>;
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert( hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
+		static_assert( hamon::ranges::sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(has_size<CV&>::value, "");
@@ -98,8 +98,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// sized_range<V> && !sized_range<V const>
 		using V = TestSizedView<char, void>;
-		static_assert( hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert( hamon::ranges::sized_range<V>, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert( has_size<CV&>::value, "");
@@ -108,8 +108,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		// !sized_range<V> && !sized_range<V const>
 		using V = test_forward_view<int>;
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using CV = hamon::ranges::common_view<V>;
 		static_assert(!has_size<CV&>::value, "");

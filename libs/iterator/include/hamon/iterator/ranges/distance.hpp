@@ -27,7 +27,6 @@ using std::ranges::distance;
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/ranges/concepts/range.hpp>
@@ -100,7 +99,7 @@ distance(It first, Sent last)
 namespace detail
 {
 
-template <HAMON_CONSTRAINED_PARAM(ranges::sized_range, Range)>
+template <HAMON_CONSTRAINT(ranges::sized_range, Range)>
 inline HAMON_CXX14_CONSTEXPR ranges::range_difference_t<Range>
 distance_impl_2(hamon::detail::overload_priority<1>, Range&& r)
 {

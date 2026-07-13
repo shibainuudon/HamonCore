@@ -13,7 +13,6 @@
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/size.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 
@@ -67,10 +66,10 @@ if constexpr (ranges::sized_range<Range>)
 }
 */
 template <typename Container, typename Range,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::is_reservable<Container>,
-		hamon::ranges::sized_range_t<Range>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::detail::is_reservable<Container>::value &&
+		hamon::ranges::sized_range<Range>
+	>>
 HAMON_CXX14_CONSTEXPR void
 reserve_append_size_impl(Container& cont, Range const& rg, hamon::detail::overload_priority<1>)
 {

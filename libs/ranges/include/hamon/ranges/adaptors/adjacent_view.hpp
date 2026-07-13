@@ -721,7 +721,7 @@ private:
 			static_cast<CT>(sz) - hamon::min<CT>(static_cast<CT>(sz), N - 1));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::sized_range, V2)>
+	template <HAMON_CONSTRAINT(hamon::ranges::sized_range, V2)>
 	static HAMON_CXX11_CONSTEXPR auto
 	size_impl(V2& base, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
@@ -732,12 +732,12 @@ private:
 	size_impl(V2& base, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto    // nodiscard as an extension
 	size() HAMON_NOEXCEPT_DECLTYPE_RETURN(		  // noexcept as an extension
 		size_impl(m_base, hamon::detail::overload_priority<1>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto    // nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(  // noexcept as an extension
 		size_impl(m_base, hamon::detail::overload_priority<1>{}))

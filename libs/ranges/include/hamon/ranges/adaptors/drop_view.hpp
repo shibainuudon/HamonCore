@@ -132,7 +132,7 @@ public:
 		typename = hamon::enable_if_t<!(
 			hamon::ranges::detail::simple_view_t<V>::value &&
 			hamon::ranges::random_access_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value
+			hamon::ranges::sized_range<V2>
 		)>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto begin()
@@ -154,7 +154,7 @@ public:
 	template <typename V2 = V const,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value
+			hamon::ranges::sized_range<V2>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
@@ -188,7 +188,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto size()
 	-> hamon::ranges::range_size_t<V2>
@@ -196,7 +196,7 @@ public:
 		return size_impl(hamon::ranges::size(m_base), m_count);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto size() const
 	-> hamon::ranges::range_size_t<V2>
@@ -224,7 +224,7 @@ private:
 	using cache_type =
 		hamon::ranges::detail::cached_value<
 			hamon::ranges::forward_range<V> &&
-			!(hamon::ranges::random_access_range<V> && hamon::ranges::sized_range_t<V>::value),
+			!(hamon::ranges::random_access_range<V> && hamon::ranges::sized_range<V>),
 			hamon::ranges::iterator_t<V>
 		>;
 
@@ -303,7 +303,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_span<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<7>)
@@ -318,7 +318,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_basic_string_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<6>)
@@ -332,7 +332,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_iota_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<5>)
@@ -346,7 +346,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_subrange<T>::value &&
 			!is_subrange_store_size<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
@@ -361,7 +361,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_subrange<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<3>)
@@ -377,7 +377,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::detail::is_specialization_of_repeat_view<T>::value &&
-			hamon::ranges::sized_range_t<T>::value>>
+			hamon::ranges::sized_range<T>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<2>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

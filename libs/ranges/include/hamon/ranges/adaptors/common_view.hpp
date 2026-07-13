@@ -125,7 +125,7 @@ private:
 	template <typename V2,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value
+			hamon::ranges::sized_range<V2>
 		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl2(V2& base, hamon::detail::overload_priority<1>)
@@ -150,7 +150,7 @@ private:
 	template <typename V2,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<V2> &&
-			hamon::ranges::sized_range_t<V2>::value
+			hamon::ranges::sized_range<V2>
 		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl2(V2& base, hamon::detail::overload_priority<1>)
@@ -207,7 +207,7 @@ public:
 		return end_impl(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto size() HAMON_NOEXCEPT_IF_EXPR(			// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))
@@ -216,7 +216,7 @@ public:
 		return hamon::ranges::size(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto size() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))

@@ -27,7 +27,7 @@ void RangesConceptTest()
 	static_assert( hamon::ranges::common_range<Array>, "");
 	static_assert( hamon::ranges::random_access_range<Array>, "");
 	static_assert( hamon::ranges::contiguous_range<Array>, "");
-	static_assert( hamon::ranges::sized_range_t<Array>::value, "");
+	static_assert( hamon::ranges::sized_range<Array>, "");
 	static_assert(!hamon::ranges::borrowed_range<Array>, "");
 	static_assert( hamon::ranges::viewable_range_t<Array>::value, "");
 
@@ -36,7 +36,7 @@ void RangesConceptTest()
 	static_assert( hamon::ranges::common_range<Array const>, "");
 	static_assert( hamon::ranges::random_access_range<Array const>, "");
 	static_assert( hamon::ranges::contiguous_range<Array const>, "");
-	static_assert( hamon::ranges::sized_range_t<Array const>::value, "");
+	static_assert( hamon::ranges::sized_range<Array const>, "");
 	static_assert(!hamon::ranges::borrowed_range<Array const>, "");
 	static_assert(!hamon::ranges::viewable_range_t<Array const>::value, "");
 }

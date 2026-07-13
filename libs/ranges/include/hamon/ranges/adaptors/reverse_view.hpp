@@ -189,7 +189,7 @@ public:
 		return hamon::make_reverse_iterator(hamon::ranges::begin(m_base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto size() HAMON_NOEXCEPT_IF_EXPR(			// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))
@@ -198,7 +198,7 @@ public:
 		return hamon::ranges::size(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto size() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2&>()))

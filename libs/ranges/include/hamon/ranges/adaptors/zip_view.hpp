@@ -158,7 +158,7 @@ using zip_is_common_impl = hamon::disjunction<
 	>,
 	hamon::conjunction<
 		hamon::conjunction<hamon::bool_constant<hamon::ranges::random_access_range<Rs>>...>,
-		hamon::conjunction<hamon::ranges::sized_range_t<Rs>...>
+		hamon::conjunction<hamon::bool_constant<hamon::ranges::sized_range<Rs>>...>
 	>
 >;
 
@@ -175,7 +175,7 @@ using all_forward_t = hamon::conjunction<
 
 template <bool Const, typename... Views>
 using all_sized_t = hamon::conjunction<
-	hamon::ranges::sized_range_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
 
 template <bool Const, typename... Views>
 using all_range_t = hamon::conjunction<

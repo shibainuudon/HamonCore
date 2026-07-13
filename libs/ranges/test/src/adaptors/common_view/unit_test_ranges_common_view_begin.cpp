@@ -53,7 +53,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		// random_access_range<V> && sized_range<V>
 		using V = test_random_access_view<int>;
 		static_assert(hamon::ranges::random_access_range<V>, "");
-		static_assert(hamon::ranges::sized_range_t<V>::value, "");
+		static_assert(hamon::ranges::sized_range<V>, "");
 
 		using I = hamon::ranges::iterator_t<V>;
 		//using S = hamon::ranges::sentinel_t<V>;
@@ -74,7 +74,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		// !random_access_range<V> && sized_range<V>
 		using V = test_forward_sized_view<int>;
 		static_assert(!hamon::ranges::random_access_range<V>, "");
-		static_assert(hamon::ranges::sized_range_t<V>::value, "");
+		static_assert(hamon::ranges::sized_range<V>, "");
 
 		using I = hamon::ranges::iterator_t<V>;
 		using S = hamon::ranges::sentinel_t<V>;
@@ -95,7 +95,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		// random_access_range<V> && !sized_range<V>
 		using V = TestView<int, random_access_iterator_wrapper<int>, hamon::unreachable_sentinel_t>;
 		static_assert(hamon::ranges::random_access_range<V>, "");
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
 
 		using I = hamon::ranges::iterator_t<V>;
 		using S = hamon::ranges::sentinel_t<V>;
@@ -111,7 +111,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		// !random_access_range<V> && !sized_range<V>
 		using V = test_forward_view<int>;
 		static_assert(!hamon::ranges::random_access_range<V>, "");
-		static_assert(!hamon::ranges::sized_range_t<V>::value, "");
+		static_assert(!hamon::ranges::sized_range<V>, "");
 
 		using I = hamon::ranges::iterator_t<V>;
 		using S = hamon::ranges::sentinel_t<V>;
@@ -150,7 +150,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		// random_access_range<V const> && sized_range<V const>
 		using V = test_random_access_view<int>;
 		static_assert(hamon::ranges::random_access_range<V const>, "");
-		static_assert(hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::sized_range<V const>, "");
 
 		using I = hamon::ranges::iterator_t<V const>;
 		//using S = hamon::ranges::sentinel_t<V const>;
@@ -171,7 +171,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		// !random_access_range<V const> && sized_range<V const>
 		using V = test_forward_sized_view<int>;
 		static_assert(!hamon::ranges::random_access_range<V const>, "");
-		static_assert(hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(hamon::ranges::sized_range<V const>, "");
 
 		using I = hamon::ranges::iterator_t<V const>;
 		using S = hamon::ranges::sentinel_t<V const>;
@@ -192,7 +192,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		// random_access_range<V const> && !sized_range<V const>
 		using V = TestView<int, random_access_iterator_wrapper<int>, hamon::unreachable_sentinel_t>;
 		static_assert(hamon::ranges::random_access_range<V const>, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using I = hamon::ranges::iterator_t<V const>;
 		using S = hamon::ranges::sentinel_t<V const>;
@@ -208,7 +208,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		// !random_access_range<V const> && !sized_range<V const>
 		using V = test_forward_view<int>;
 		static_assert(!hamon::ranges::random_access_range<V const>, "");
-		static_assert(!hamon::ranges::sized_range_t<V const>::value, "");
+		static_assert(!hamon::ranges::sized_range<V const>, "");
 
 		using I = hamon::ranges::iterator_t<V const>;
 		using S = hamon::ranges::sentinel_t<V const>;

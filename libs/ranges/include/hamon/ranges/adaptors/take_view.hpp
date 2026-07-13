@@ -269,7 +269,7 @@ public:
 private:
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range_t<V2>::value &&
+			hamon::ranges::sized_range<V2> &&
 			hamon::ranges::random_access_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl(This* this_, hamon::detail::overload_priority<3>)
@@ -277,7 +277,7 @@ private:
 		hamon::ranges::begin(this_->m_base))
 
 	template <typename V2, typename This,
-		typename = hamon::enable_if_t<hamon::ranges::sized_range_t<V2>::value>>
+		typename = hamon::enable_if_t<hamon::ranges::sized_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl(This* this_, hamon::detail::overload_priority<2>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -319,7 +319,7 @@ public:
 private:
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range_t<V2>::value &&
+			hamon::ranges::sized_range<V2> &&
 			hamon::ranges::random_access_range<V2>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl(This* this_, hamon::detail::overload_priority<2>)
@@ -330,7 +330,7 @@ private:
 
 	template <typename V2, typename This,
 		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range_t<V2>::value ||
+			hamon::ranges::sized_range<V2> ||
 			hamon::sized_sentinel_for<
 				hamon::ranges::sentinel_t<V2>, hamon::ranges::iterator_t<V2>>
 		>>
@@ -363,7 +363,7 @@ public:
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		end_impl<V2>(this, hamon::detail::overload_priority<2>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	size() HAMON_NOEXCEPT_IF_EXPR(				// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2>()))
@@ -374,7 +374,7 @@ public:
 			static_cast<decltype(hamon::ranges::size(m_base))>(m_count));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
 		hamon::ranges::size(hamon::declval<V2>()))
@@ -459,7 +459,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_span<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<6>)
@@ -476,7 +476,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_basic_string_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<5>)
@@ -492,7 +492,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_subrange<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<4>)
@@ -509,7 +509,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::random_access_range<T> &&
-			hamon::ranges::sized_range_t<T>::value &&
+			hamon::ranges::sized_range<T> &&
 			hamon::detail::is_specialization_of_iota_view<T>::value>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<3>)
@@ -524,7 +524,7 @@ private:
 		typename D = hamon::ranges::range_difference_t<R>,
 		typename = hamon::enable_if_t<
 			hamon::detail::is_specialization_of_repeat_view<T>::value &&
-			hamon::ranges::sized_range_t<T>::value>>
+			hamon::ranges::sized_range<T>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, N&& n, hamon::detail::overload_priority<2>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

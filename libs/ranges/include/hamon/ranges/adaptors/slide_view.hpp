@@ -132,7 +132,7 @@ concept not_slide_caches_first =
 template <typename V>
 using slide_caches_nothing = hamon::bool_constant<
 	hamon::ranges::random_access_range<V> &&
-	hamon::ranges::sized_range<V>::value
+	hamon::ranges::sized_range<V>
 >;
 
 template <typename V>
@@ -763,13 +763,13 @@ public:
 		return begin() + size_impl();
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	size() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		// [range.slide.view]/9
 		hamon::ranges::detail::to_unsigned_like(size_impl()))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::sized_range, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::sized_range, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		// [range.slide.view]/9
