@@ -354,7 +354,7 @@ private:
 		template <typename W2,
 			typename = hamon::enable_if_t<
 				hamon::detail::is_integer_like<W2> &&
-				!hamon::detail::is_signed_integer_like_t<W2>::value>>
+				!hamon::detail::is_signed_integer_like<W2>>>
 		static HAMON_CXX14_CONSTEXPR void
 		advance_forward(W2& value, difference_type n, hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(
@@ -387,7 +387,7 @@ HAMON_WARNING_POP()
 		template <typename W2,
 			typename = hamon::enable_if_t<
 				hamon::detail::is_integer_like<W2> &&
-				!hamon::detail::is_signed_integer_like_t<W2>::value>>
+				!hamon::detail::is_signed_integer_like<W2>>>
 		static HAMON_CXX14_CONSTEXPR void
 		advance_backward(W2& value, difference_type n, hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -563,7 +563,7 @@ HAMON_WARNING_POP()
 		template <typename W2 = W,
 			typename = hamon::enable_if_t<
 				hamon::detail::is_integer_like<W2> &&
-				hamon::detail::is_signed_integer_like_t<W2>::value>>
+				hamon::detail::is_signed_integer_like<W2>>>
 		friend HAMON_CXX11_CONSTEXPR difference_type
 		subtract(iterator const& x, iterator const& y, hamon::detail::overload_priority<2>)
 		{
@@ -574,7 +574,7 @@ HAMON_WARNING_POP()
 		template <typename W2 = W,
 			typename = hamon::enable_if_t<
 				hamon::detail::is_integer_like<W2> &&
-				!hamon::detail::is_signed_integer_like_t<W2>::value>>
+				!hamon::detail::is_signed_integer_like<W2>>>
 		friend HAMON_CXX11_CONSTEXPR difference_type
 		subtract(iterator const& x, iterator const& y, hamon::detail::overload_priority<1>)
 		{
@@ -904,7 +904,7 @@ template <typename W, typename Bound,
 	typename = hamon::enable_if_t<
 		!hamon::detail::is_integer_like<W> ||
 		!hamon::detail::is_integer_like<Bound> ||
-		(hamon::detail::is_signed_integer_like_t<W>::value == hamon::detail::is_signed_integer_like_t<Bound>::value)
+		(hamon::detail::is_signed_integer_like<W> == hamon::detail::is_signed_integer_like<Bound>)
 	>
 >
 	//requires (

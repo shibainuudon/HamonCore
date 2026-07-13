@@ -79,7 +79,7 @@ struct integer_like_with_usable_difference_type_impl
 private:
 	template <typename U,
 		typename = hamon::enable_if_t<
-			(hamon::detail::is_signed_integer_like<U>::value ||
+			(hamon::detail::is_signed_integer_like<U> ||
 			 (hamon::detail::is_integer_like<U> && hamon::weakly_incrementable<U>))
 		>
 	>
@@ -157,7 +157,7 @@ private:
 		using value_type = T;
 		// [range.repeat.iterator]/1
 		using difference_type = hamon::conditional_t<
-			hamon::detail::is_signed_integer_like_t<index_type>::value,
+			hamon::detail::is_signed_integer_like<index_type>,
 				index_type,
 				hamon::ranges::detail::iota_diff_t<index_type>>;
 

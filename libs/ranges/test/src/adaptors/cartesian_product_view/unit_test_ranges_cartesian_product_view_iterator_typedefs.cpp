@@ -207,7 +207,7 @@ HAMON_CXX14_CONSTEXPR bool test_difference_type()
 		using CV = hamon::ranges::cartesian_product_view<V>;
 		using I = decltype(hamon::declval<CV&>().begin());
 		using D = typename I::difference_type;
-		static_assert(hamon::detail::is_signed_integer_like_t<D>::value, "");
+		static_assert(hamon::detail::is_signed_integer_like<D>, "");
 	}
 	{
 		using V1 = test_input_view<char>;
@@ -215,7 +215,7 @@ HAMON_CXX14_CONSTEXPR bool test_difference_type()
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
 		using I = decltype(hamon::declval<CV&>().begin());
 		using D = typename I::difference_type;
-		static_assert(hamon::detail::is_signed_integer_like_t<D>::value, "");
+		static_assert(hamon::detail::is_signed_integer_like<D>, "");
 	}
 	{
 		using V1 = test_random_access_view<float const>;
@@ -224,7 +224,7 @@ HAMON_CXX14_CONSTEXPR bool test_difference_type()
 		using CV = hamon::ranges::cartesian_product_view<V1, V2, V3>;
 		using I = decltype(hamon::declval<CV&>().begin());
 		using D = typename I::difference_type;
-		static_assert(hamon::detail::is_signed_integer_like_t<D>::value, "");
+		static_assert(hamon::detail::is_signed_integer_like<D>, "");
 	}
 	return true;
 }
