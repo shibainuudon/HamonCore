@@ -233,7 +233,7 @@ private:
 	// [range.as.const.overview]/2.1
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::constant_range_t<hamon::views::all_t<R>>::value>>
+			hamon::ranges::constant_range<hamon::views::all_t<R>>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, hamon::detail::overload_priority<5>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -267,7 +267,7 @@ private:
 			is_specialization_of_ref_view<U>::value>,
 		typename X = hamon::remove_reference_t<decltype(hamon::declval<R>().base())>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::constant_range_t<X const>::value>>
+			hamon::ranges::constant_range<X const>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
@@ -276,11 +276,11 @@ private:
 
 	// [range.as.const.overview]/2.5
 	template <typename R, typename U = hamon::remove_cvref_t<R>,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::is_lvalue_reference<R>,
-			hamon::ranges::constant_range_t<U const>,
-			hamon::negation<hamon::ranges::view_t<U>>
-		>::value>>
+		typename = hamon::enable_if_t<
+			hamon::is_lvalue_reference<R>::value &&
+			hamon::ranges::constant_range<U const> &&
+			!hamon::ranges::view_t<U>::value
+		>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

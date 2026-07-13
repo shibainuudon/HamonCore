@@ -53,7 +53,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	// V is a constant_range
 
 	using V = test_input_view<int const>;
-	//static_assert(hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 
 	using CV = hamon::views::all_t<V>;
 
@@ -64,14 +64,14 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 
@@ -84,7 +84,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	// V is an empty_view
 
 	using V = hamon::ranges::empty_view<int>;
-	//static_assert(!hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(!hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 	//static_assert( hamon::detail::is_specialization_of_empty_view<V>::value, "");
 
 	using CV = hamon::ranges::empty_view<int const>;
@@ -95,14 +95,14 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::empty(cv));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::empty(cv));
 	}
 
@@ -115,7 +115,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	// V is a span
 
 	using V = hamon::span<int>;
-	//static_assert(!hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(!hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 	//static_assert(!hamon::detail::is_specialization_of_empty_view<V>::value, "");
 	//static_assert( hamon::detail::is_specialization_of_span<V>::value, "");
 
@@ -128,14 +128,14 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 
@@ -153,11 +153,11 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		input_iterator_wrapper<int const>,
 		input_iterator_wrapper<int const>>;
 	using V = hamon::ranges::ref_view<R>;
-	//static_assert(!hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(!hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 	//static_assert(!hamon::detail::is_specialization_of_empty_view<V>::value, "");
 	//static_assert(!hamon::detail::is_specialization_of_span<V>::value, "");
 	//static_assert( hamon::ranges::views::detail::is_specialization_of_ref_view<V>::value, "");
-	//static_assert( hamon::ranges::constant_range_t<R const>::value, "");
+	//static_assert( hamon::ranges::constant_range<R const>, "");
 
 	using CV = hamon::ranges::ref_view<R const>;
 
@@ -169,14 +169,14 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 
@@ -193,11 +193,11 @@ HAMON_CXX14_CONSTEXPR bool test04()
 		input_iterator_wrapper<int>,
 		input_iterator_wrapper<int const>,
 		input_iterator_wrapper<int const>>;
-	//static_assert(!hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(!hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 	//static_assert(!hamon::detail::is_specialization_of_empty_view<V>::value, "");
 	//static_assert(!hamon::detail::is_specialization_of_span<V>::value, "");
 	//static_assert(!hamon::ranges::views::detail::is_specialization_of_ref_view<V>::value, "");
-	//static_assert( hamon::ranges::constant_range_t<V const>::value, "");
+	//static_assert( hamon::ranges::constant_range<V const>, "");
 	//static_assert(!hamon::ranges::view_t<V>::value, "");
 
 	using CV = hamon::ranges::ref_view<V const>;
@@ -209,14 +209,14 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 
@@ -230,11 +230,11 @@ HAMON_CXX14_CONSTEXPR bool test05()
 
 	using V = test_input_range<int>;
 
-	//static_assert(!hamon::ranges::constant_range_t<hamon::views::all_t<V>>::value, "");
+	//static_assert(!hamon::ranges::constant_range<hamon::views::all_t<V>>, "");
 	//static_assert(!hamon::detail::is_specialization_of_empty_view<V>::value, "");
 	//static_assert(!hamon::detail::is_specialization_of_span<V>::value, "");
 	//static_assert(!hamon::ranges::views::detail::is_specialization_of_ref_view<V>::value, "");
-	//static_assert(!hamon::ranges::constant_range_t<V const>::value, "");
+	//static_assert(!hamon::ranges::constant_range<V const>, "");
 
 	using CV = hamon::ranges::as_const_view<hamon::views::all_t<V&>>;
 
@@ -245,14 +245,14 @@ HAMON_CXX14_CONSTEXPR bool test05()
 	{
 		auto cv = hamon::views::as_const(v);
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 	// v | views::as_const
 	{
 		auto cv = v | hamon::views::as_const;
 		static_assert(hamon::is_same<decltype(cv), CV>::value, "");
-		static_assert(hamon::ranges::constant_range_t<decltype(cv)>::value, "");
+		static_assert(hamon::ranges::constant_range<decltype(cv)>, "");
 		VERIFY(hamon::ranges::equal(cv, a));
 	}
 

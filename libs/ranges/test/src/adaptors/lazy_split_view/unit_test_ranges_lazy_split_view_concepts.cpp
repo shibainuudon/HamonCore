@@ -36,7 +36,7 @@ void test()
 	static_assert(hamon::ranges::common_range<LSV>              == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<LSV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<LSV>::value                      == true, "");
-	static_assert(hamon::ranges::constant_range_t<LSV>::value            == false, "");
+	static_assert(hamon::ranges::constant_range<LSV>            == false, "");
 
 	static_assert(has_begin<LSV&>::value         == true, "");
 	static_assert(has_end<LSV&>::value           == true, "");
@@ -81,7 +81,7 @@ void test()
 	static_assert(hamon::ranges::common_range<IV>              == false, "");
 	static_assert(hamon::ranges::viewable_range_t<IV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<IV>::value                      == true, "");
-	static_assert(hamon::ranges::constant_range_t<IV>::value            == false, "");
+	static_assert(hamon::ranges::constant_range<IV>            == false, "");
 }
 
 GTEST_TEST(RangesTest, LazySplitViewConceptsTest)

@@ -41,7 +41,7 @@ void test0()
 	static_assert(hamon::ranges::common_range<SV>              == hamon::ranges::common_range<View>, "");
 	static_assert(hamon::ranges::viewable_range_t<SV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<SV>::value                      == true, "");
-	static_assert(hamon::ranges::constant_range_t<SV>::value            == false, "");
+	static_assert(hamon::ranges::constant_range<SV>            == false, "");
 
 	using IV = hamon::ranges::range_reference_t<SV>;
 	using Iter = hamon::ranges::iterator_t<View>;
@@ -59,7 +59,7 @@ void test0()
 	static_assert(hamon::ranges::common_range<IV>              == true, "");
 	static_assert(hamon::ranges::viewable_range_t<IV>::value            == true, "");
 	static_assert(hamon::ranges::view_t<IV>::value                      == true, "");
-	static_assert(hamon::ranges::constant_range_t<IV>::value            == false, "");
+	static_assert(hamon::ranges::constant_range<IV>            == false, "");
 }
 
 template <template <typename> class V>

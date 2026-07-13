@@ -44,7 +44,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::common_range<CV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
 	static_assert( hamon::ranges::view_t<CV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<CV>::value, "");
+	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 3);
 	VERIFY(*cv.begin() == 1);
 	return true;
@@ -74,7 +74,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( hamon::ranges::common_range<CV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
 	static_assert( hamon::ranges::view_t<CV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<CV>::value, "");
+	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 4);
 	VERIFY(cv.begin() == it);
 	return true;
@@ -104,7 +104,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert(!hamon::ranges::common_range<CV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
 	static_assert( hamon::ranges::view_t<CV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<CV>::value, "");
+	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 2);
 	VERIFY(cv.begin().base() == it);
 	return true;
@@ -134,7 +134,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert(!hamon::ranges::common_range<CV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
 	static_assert( hamon::ranges::view_t<CV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<CV>::value, "");
+	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 5);
 	VERIFY(cv.begin().base() == it);
 	return true;
@@ -164,7 +164,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert(!hamon::ranges::common_range<CV>, "");
 	static_assert( hamon::ranges::viewable_range_t<CV>::value, "");
 	static_assert( hamon::ranges::view_t<CV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<CV>::value, "");
+	static_assert(!hamon::ranges::constant_range<CV>, "");
 	VERIFY(cv.size() == 6);
 	VERIFY(cv.begin().base() == it);
 	return true;

@@ -40,7 +40,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 	{
 		using T = int;
@@ -59,7 +59,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 	{
 		using T = int;
@@ -78,7 +78,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 	{
 		using T = int;
@@ -97,7 +97,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 
 	// constant
@@ -118,7 +118,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 
 	// borrowed
@@ -139,7 +139,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 
 	// common
@@ -160,7 +160,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 	{
 		using T = int;
@@ -179,7 +179,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 
 	// sized
@@ -200,7 +200,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 
 	// approximately_sized
@@ -221,7 +221,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<AV>, "");
 		static_assert( hamon::ranges::viewable_range_t<AV>::value, "");
 		static_assert( hamon::ranges::view_t<AV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<AV>::value, "");
+		static_assert( hamon::ranges::constant_range<AV>, "");
 	}
 }
 

@@ -45,7 +45,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -64,7 +64,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -83,7 +83,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -102,7 +102,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -121,7 +121,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -141,7 +141,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -161,7 +161,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -181,7 +181,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -201,7 +201,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 
 	// constant
@@ -222,7 +222,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 
 	// borrowed
@@ -243,7 +243,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 
 	// common
@@ -264,7 +264,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 	{
 		using T = int;
@@ -283,7 +283,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert( hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 
 	// sized
@@ -304,7 +304,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 
 	// approximately_sized
@@ -325,7 +325,7 @@ GTEST_TEST(RangesTest, ZipTransformViewConceptsTest)
 		static_assert(!hamon::ranges::common_range<ZV>, "");
 		static_assert( hamon::ranges::viewable_range_t<ZV>::value, "");
 		static_assert( hamon::ranges::view_t<ZV>::value, "");
-		static_assert( hamon::ranges::constant_range_t<ZV>::value, "");
+		static_assert( hamon::ranges::constant_range<ZV>, "");
 	}
 }
 

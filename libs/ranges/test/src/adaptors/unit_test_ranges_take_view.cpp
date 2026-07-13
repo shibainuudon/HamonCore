@@ -252,7 +252,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		(hamon::ranges::sized_range_t<V>::value && hamon::ranges::random_access_range_t<V>::value), "");
 	static_assert(hamon::ranges::viewable_range_t<TV>::value == true, "");
 	static_assert(hamon::ranges::view_t<TV>::value == true, "");
-	static_assert(hamon::ranges::constant_range_t<TV>::value == false, "");
+	static_assert(hamon::ranges::constant_range<TV> == false, "");
 
 	static_assert(hamon::is_default_constructible<TV>::value == hamon::is_default_constructible<V>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<TV>::value == hamon::is_nothrow_default_constructible<V>::value, "");

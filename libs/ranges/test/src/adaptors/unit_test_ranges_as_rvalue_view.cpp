@@ -194,7 +194,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::common_range<ARV> == hamon::ranges::common_range<V>, "");
 	static_assert( hamon::ranges::viewable_range_t<ARV>::value, "");
 	static_assert( hamon::ranges::view_t<ARV>::value, "");
-	static_assert(!hamon::ranges::constant_range_t<ARV>::value, "");
+	static_assert(!hamon::ranges::constant_range<ARV>, "");
 
 	static_assert(has_base<ARV&>::value == hamon::copy_constructible<V>, "");
 	static_assert(has_base<ARV&&>::value, "");

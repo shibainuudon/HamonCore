@@ -29,7 +29,7 @@ using std::ranges::constant_range;
 // [range.refinements]/7
 
 template <typename T>
-concept constant_range =
+HAMON_CONCEPT_OR_BOOL constant_range =
 	hamon::ranges::input_range<T> &&
 	hamon::detail::constant_iterator<hamon::ranges::iterator_t<T>>;
 
@@ -58,16 +58,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using constant_range = typename ranges::detail::constant_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL constant_range =
+	ranges::detail::constant_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using constant_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::constant_range<T>>;
-#else
-	hamon::ranges::constant_range<T>;
 #endif
 
 }	// namespace ranges

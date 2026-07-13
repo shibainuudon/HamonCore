@@ -181,7 +181,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::common_range<DV> == hamon::ranges::common_range<V>, "");
 	static_assert(hamon::ranges::viewable_range_t<DV>::value == true, "");
 	static_assert(hamon::ranges::view_t<DV>::value == true, "");
-	static_assert(hamon::ranges::constant_range_t<DV>::value == false, "");
+	static_assert(hamon::ranges::constant_range<DV> == false, "");
 	
 	static_assert(hamon::is_default_constructible<DV>::value == hamon::is_default_constructible<V>::value, "");
 	static_assert(hamon::is_nothrow_default_constructible<DV>::value == hamon::is_nothrow_default_constructible<V>::value, "");

@@ -6,6 +6,7 @@
 
 #include <hamon/ranges/adaptors/as_const_view.hpp>
 #include <hamon/ranges/concepts/constant_range.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/span.hpp>
 #include <hamon/vector.hpp>
 #include <gtest/gtest.h>
@@ -17,7 +18,7 @@ namespace as_const_view_test
 namespace overview_test
 {
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::constant_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::constant_range, R)>
 void cant_touch_this(R&&) {}
 
 GTEST_TEST(RangesTest, AsConstViewOverviewTest)

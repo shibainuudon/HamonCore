@@ -8,15 +8,8 @@
 #include <hamon/vector.hpp>
 #include "ranges_test.hpp"
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_RANGES_CONSTANT_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::constant_range<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::ranges::constant_range_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_RANGES_CONSTANT_RANGE_TEST(B, ...)	\
-	static_assert(B == hamon::ranges::constant_range<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::ranges::constant_range_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_RANGES_CONSTANT_RANGE_TEST(B, ...)	\
+	static_assert(B == hamon::ranges::constant_range<__VA_ARGS__>, "")
 
 HAMON_RANGES_CONSTANT_RANGE_TEST(false, int      [2]);
 HAMON_RANGES_CONSTANT_RANGE_TEST(true,  int const[2]);
