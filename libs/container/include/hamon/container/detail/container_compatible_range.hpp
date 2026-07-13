@@ -29,7 +29,7 @@ concept container_compatible_range =
 
 template <typename R, typename T>
 using container_compatible_range = hamon::bool_constant<
-	hamon::ranges::input_range_t<R>::value &&
+	hamon::ranges::input_range<R> &&
 	hamon::convertible_to<hamon::ranges::range_reference_t<R>, T>
 >;
 

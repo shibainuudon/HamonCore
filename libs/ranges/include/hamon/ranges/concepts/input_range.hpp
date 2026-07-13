@@ -32,7 +32,7 @@ using std::ranges::input_range;
 #elif defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept input_range =
+HAMON_CONCEPT_OR_BOOL input_range =
 	ranges::range<T> &&
 	hamon::input_iterator<ranges::iterator_t<T>>;
 
@@ -61,16 +61,9 @@ public:
 }	// namespace detail
 
 template <typename T>
-using input_range = typename ranges::detail::input_range_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL input_range =
+	ranges::detail::input_range_impl<T>::type::value;
 
-#endif
-
-template <typename T>
-using input_range_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::input_range<T>>;
-#else
-	hamon::ranges::input_range<T>;
 #endif
 
 }	// namespace ranges

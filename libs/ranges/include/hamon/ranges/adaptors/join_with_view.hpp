@@ -196,10 +196,10 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 #else
 template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
-		hamon::ranges::input_range<V>::value &&
+		hamon::ranges::input_range<V> &&
 		hamon::ranges::forward_range<Pattern> &&
 		hamon::ranges::view<V>::value &&
-		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>::value &&
+		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>> &&
 		hamon::ranges::view<Pattern>::value &&
 		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>::value
 	>>
@@ -825,7 +825,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::input_range_t<R>::value &&
+			hamon::ranges::input_range<R> &&
 			hamon::constructible_from<V, hamon::views::all_t<R>> &&
 			hamon::constructible_from<Pattern, hamon::ranges::single_view<hamon::ranges::range_value_t<InnerRng>>>
 		>>
@@ -887,7 +887,7 @@ public:
 			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::forward_range<Pattern const> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
@@ -959,7 +959,7 @@ public:
 			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::forward_range<Pattern const> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const
@@ -975,7 +975,7 @@ template <typename R, typename P>
 join_with_view(R&&, P&&)
 -> join_with_view<hamon::views::all_t<R>, hamon::views::all_t<P>>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 join_with_view(R&&, hamon::ranges::range_value_t<hamon::ranges::range_reference_t<R>>)
 -> join_with_view<
 	hamon::views::all_t<R>,
@@ -998,7 +998,7 @@ make_join_with_view(R&& r, P&& p)
 		join_with_view<hamon::views::all_t<R>, hamon::views::all_t<P>>(
 			hamon::forward<R>(r), hamon::forward<P>(p)))
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_join_with_view(R&& r, hamon::ranges::range_value_t<hamon::ranges::range_reference_t<R>> v)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

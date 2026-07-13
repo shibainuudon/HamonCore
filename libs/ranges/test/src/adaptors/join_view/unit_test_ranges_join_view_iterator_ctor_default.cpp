@@ -66,7 +66,7 @@ struct NoDefaultIterView : hamon::ranges::view_base
 	HAMON_CXX11_CONSTEXPR const_sentinel end()   const noexcept { return hamon::unreachable_sentinel_t{}; }
 };
 
-static_assert(hamon::ranges::input_range_t<NoDefaultIterView<int>>::value, "");
+static_assert(hamon::ranges::input_range<NoDefaultIterView<int>>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

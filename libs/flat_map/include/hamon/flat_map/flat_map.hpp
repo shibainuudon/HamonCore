@@ -1790,7 +1790,7 @@ flat_map(
 	Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Key = hamon::detail::range_key_type<R>,
 	typename Compare = hamon::less<Key>,
 	typename Allocator = hamon::allocator<hamon::byte>,
@@ -1810,7 +1810,7 @@ flat_map(
 	hamon::vector<T, hamon::detail::alloc_rebind<Allocator, T>>>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>

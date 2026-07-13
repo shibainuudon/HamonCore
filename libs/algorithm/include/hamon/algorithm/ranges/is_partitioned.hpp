@@ -29,7 +29,6 @@ using std::ranges::is_partitioned;
 
 #include <hamon/algorithm/ranges/find_if_not.hpp>
 #include <hamon/algorithm/ranges/none_of.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
@@ -76,7 +75,7 @@ struct is_partitioned_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)

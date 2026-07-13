@@ -78,7 +78,7 @@ struct contains_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, R),
+		HAMON_CONSTRAINT(ranges::input_range, R),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>

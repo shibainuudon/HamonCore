@@ -104,7 +104,7 @@ struct range_with_movable_references_impl
 private:
 	template <typename R2,
 		typename = hamon::enable_if_t<
-			hamon::ranges::input_range_t<R2>::value &&
+			hamon::ranges::input_range<R2> &&
 			hamon::move_constructible<hamon::ranges::range_reference_t<R2>> &&
 			hamon::move_constructible<hamon::ranges::range_rvalue_reference_t<R2>>
 		>>
@@ -611,7 +611,7 @@ private:
 		return iterator<UseConst>(hamon::ranges::end(base), hamon::ranges::distance(base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, V2),
+	template <HAMON_CONSTRAINT(hamon::ranges::input_range, V2),
 		bool UseConst = hamon::is_const<hamon::remove_reference_t<V2>>::value>
 	static HAMON_CXX14_CONSTEXPR sentinel<UseConst>
 	end_impl(V2& base, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT_IF(	// noexcept as an extension

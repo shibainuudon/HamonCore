@@ -72,7 +72,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	using ValueType = typename I::value_type;
 
-	static_assert( hamon::ranges::input_range_t<ValueType>::value, "");
+	static_assert( hamon::ranges::input_range<ValueType>, "");
 	static_assert(!hamon::ranges::forward_range<ValueType>, "");
 	static_assert(!hamon::ranges::common_range<ValueType>, "");
 	static_assert( hamon::ranges::view_t<ValueType>::value, "");
@@ -134,7 +134,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	using ValueType = typename I::value_type;
 
-	static_assert( hamon::ranges::input_range_t<ValueType>::value, "");
+	static_assert( hamon::ranges::input_range<ValueType>, "");
 	static_assert(!hamon::ranges::forward_range<ValueType>, "");
 	static_assert(!hamon::ranges::common_range<ValueType>, "");
 	static_assert( hamon::ranges::view_t<ValueType>::value, "");

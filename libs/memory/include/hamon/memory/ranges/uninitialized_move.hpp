@@ -77,7 +77,7 @@ struct uninitialized_move_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, IR),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, IR),
 		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, OR),
 		typename = hamon::enable_if_t<
 			hamon::constructible_from<hamon::ranges::range_value_t<OR>, hamon::ranges::range_rvalue_reference_t<IR>>

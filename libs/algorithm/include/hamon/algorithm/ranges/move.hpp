@@ -29,7 +29,6 @@ using std::ranges::move;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstring/memmove.hpp>
@@ -139,7 +138,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINT(ranges::input_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out)
 	>
 	HAMON_CXX14_CONSTEXPR auto

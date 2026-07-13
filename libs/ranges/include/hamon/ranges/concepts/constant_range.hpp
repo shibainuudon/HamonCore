@@ -43,7 +43,7 @@ struct constant_range_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<hamon::ranges::input_range_t<U>::value>,
+		typename = hamon::enable_if_t<hamon::ranges::input_range<U>>,
 		typename = hamon::enable_if_t<hamon::detail::constant_iterator<hamon::ranges::iterator_t<U>>>
 	>
 	static auto test(int) -> hamon::true_type;

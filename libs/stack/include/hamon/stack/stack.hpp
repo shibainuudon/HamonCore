@@ -267,7 +267,7 @@ template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
 stack(InputIterator, InputIterator)
 -> stack<hamon::detail::iter_value_type<InputIterator>>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 stack(hamon::from_range_t, R&&)
 -> stack<hamon::ranges::range_value_t<R>>;
 
@@ -293,7 +293,7 @@ stack(InputIterator, InputIterator, Allocator)
 -> stack<T, hamon::deque<T, Allocator>>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>								// [container.adaptors.general]/6.4

@@ -78,7 +78,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::approximately_sized_range<JV> == false, "");
 //	static_assert(hamon::ranges::output_range_t<JV, T>::value == false, "");
 #if !(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 110000))	// TODO
-	static_assert(hamon::ranges::input_range_t<JV>::value == true, "");
+	static_assert(hamon::ranges::input_range<JV> == true, "");
 	static_assert(hamon::ranges::forward_range<JV> ==
 		(hamon::ranges::forward_range<V> &&
 		 hamon::ranges::forward_range<IV> &&

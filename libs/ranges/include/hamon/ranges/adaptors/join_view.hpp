@@ -68,7 +68,6 @@ using std::ranges::views::join;
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -131,11 +130,11 @@ template <hamon::ranges::input_range V>
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range_t<V>,
-		hamon::ranges::view_t<V>,
-		hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V>>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V> &&
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>>
+	>
 >
 #endif
 class join_view : public hamon::ranges::view_interface<join_view<V>>
@@ -688,7 +687,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::ranges::forward_range<V2> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value>>
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const
 	{
@@ -748,7 +747,7 @@ public:
 		typename = hamon::enable_if_t<
 			hamon::ranges::forward_range<V2> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V2>>::value>>
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR 	// nodiscard as an extension
 	auto end() const
 	->decltype(end_const_impl(hamon::detail::overload_priority<1>{}))

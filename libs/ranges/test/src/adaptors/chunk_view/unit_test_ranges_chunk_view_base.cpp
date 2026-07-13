@@ -56,7 +56,7 @@ template <typename T> using MoveOnlyForwardView       = MoveOnlyView<T, forward_
 template <typename T> using MoveOnlyInputView         = MoveOnlyView<T, input_iterator_wrapper<T>>;
 template <typename T> using MoveOnlyOutputView        = MoveOnlyView<T, output_iterator_wrapper<T>>;
 
-static_assert( hamon::ranges::input_range_t<MoveOnlyInputView<int>>::value, "");
+static_assert( hamon::ranges::input_range<MoveOnlyInputView<int>>, "");
 static_assert(!hamon::ranges::forward_range<MoveOnlyInputView<int>>, "");
 static_assert( hamon::ranges::forward_range<MoveOnlyForwardView<int>>, "");
 

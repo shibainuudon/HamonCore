@@ -246,7 +246,7 @@ class cartesian_product_view : public hamon::ranges::view_interface<cartesian_pr
 {
 private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	static_assert(hamon::ranges::input_range_t<First>::value, "");
+	static_assert(hamon::ranges::input_range<First>, "");
 	static_assert(hamon::ranges::view_t<First>::value, "");
 	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::forward_range<Vs>>...>::value, "");
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Vs>...>::value, "");

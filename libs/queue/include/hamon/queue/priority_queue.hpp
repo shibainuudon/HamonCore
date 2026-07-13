@@ -385,7 +385,7 @@ priority_queue(InputIterator, InputIterator, Compare = Compare(), Container = Co
 -> priority_queue<T, Container, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename T = hamon::ranges::range_value_t<R>,
 	typename Compare = hamon::less<T>,
 	typename = hamon::enable_if_t<hamon::conjunction<
@@ -444,7 +444,7 @@ priority_queue(InputIterator, InputIterator, Compare, Container, Allocator)
 -> priority_queue<T, Container, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Compare, typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
@@ -456,7 +456,7 @@ priority_queue(hamon::from_range_t, R&&, Compare, Allocator)
 -> priority_queue<T, hamon::vector<T, Allocator>, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>

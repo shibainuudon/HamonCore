@@ -187,7 +187,7 @@ public:
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (
 			(hamon::ranges::approximately_sized_range<R> && !hamon::ranges::sized_range_t<R>::value) ||
-			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range<R>))
+			(hamon::ranges::input_range<R> && !hamon::ranges::forward_range<R>))
 		{
 			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		}
@@ -372,7 +372,7 @@ public:
 #if defined(HAMON_HAS_CXX17_IF_CONSTEXPR)
 		if constexpr (
 			(hamon::ranges::approximately_sized_range<R> && !hamon::ranges::sized_range_t<R>::value) ||
-			(hamon::ranges::input_range_t<R>::value && !hamon::ranges::forward_range<R>))
+			(hamon::ranges::input_range<R> && !hamon::ranges::forward_range<R>))
 		{
 			static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
 		}
@@ -797,7 +797,7 @@ vector(InputIterator, InputIterator, Allocator = Allocator())
 	->vector<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator = hamon::allocator<hamon::ranges::range_value_t<R>>>
 vector(hamon::from_range_t, R&&, Allocator = Allocator())
 	->vector<hamon::ranges::range_value_t<R>, Allocator>;

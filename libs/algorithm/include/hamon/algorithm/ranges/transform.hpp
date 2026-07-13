@@ -31,7 +31,6 @@ using std::ranges::transform;
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -88,7 +87,7 @@ struct transform_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj = hamon::identity
@@ -143,8 +142,8 @@ struct transform_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range1),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range2),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range1),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range2),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		HAMON_CONSTRAINT(hamon::copy_constructible, F),
 		typename Proj1 = hamon::identity,

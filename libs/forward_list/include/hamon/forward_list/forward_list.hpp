@@ -771,7 +771,7 @@ forward_list(InputIterator, InputIterator, Allocator = Allocator())
 	->forward_list<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator = hamon::allocator<ranges::range_value_t<R>>>
 forward_list(hamon::from_range_t, R&&, Allocator = Allocator())
 	->forward_list<ranges::range_value_t<R>, Allocator>;

@@ -30,7 +30,6 @@ using std::ranges::unique_copy;
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/identity.hpp>
@@ -197,7 +196,7 @@ public:
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINT(ranges::input_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,

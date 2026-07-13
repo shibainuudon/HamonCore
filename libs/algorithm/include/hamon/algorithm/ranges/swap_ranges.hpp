@@ -29,7 +29,6 @@ using std::ranges::swap_ranges;
 
 #include <hamon/algorithm/ranges/in_in_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -77,8 +76,8 @@ struct swap_ranges_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range1),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range2)
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range1),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range2)
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range1&& r1, Range2&& r2) const

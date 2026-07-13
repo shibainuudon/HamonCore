@@ -30,7 +30,6 @@ using std::ranges::starts_with;
 
 #include <hamon/algorithm/ranges/mismatch.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -79,8 +78,8 @@ struct starts_with_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, R1),
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, R2),
+		HAMON_CONSTRAINT(ranges::input_range, R1),
+		HAMON_CONSTRAINT(ranges::input_range, R2),
 		typename Pred = ranges::equal_to,
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity

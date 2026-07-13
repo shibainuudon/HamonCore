@@ -27,7 +27,6 @@ using std::ranges::find_if_not;
 
 #else
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/invoke.hpp>
@@ -71,7 +70,7 @@ struct find_if_not_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)

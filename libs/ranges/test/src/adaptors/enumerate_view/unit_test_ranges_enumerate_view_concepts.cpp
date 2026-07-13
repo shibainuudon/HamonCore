@@ -27,7 +27,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -46,7 +46,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -65,7 +65,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -84,7 +84,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
 		static_assert( hamon::ranges::random_access_range_t<EV>::value, "");
@@ -103,7 +103,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
 		static_assert( hamon::ranges::random_access_range_t<EV>::value, "");
@@ -124,7 +124,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -145,7 +145,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -166,7 +166,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert(!hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -185,7 +185,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert( hamon::ranges::forward_range<EV>, "");
 		static_assert( hamon::ranges::bidirectional_range<EV>, "");
 		static_assert( hamon::ranges::random_access_range_t<EV>::value, "");
@@ -206,7 +206,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert( hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");
@@ -227,7 +227,7 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert(!hamon::ranges::sized_range_t<EV>::value, "");
 		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
 		static_assert(!hamon::ranges::output_range_t<EV, T>::value, "");
-		static_assert( hamon::ranges::input_range_t<EV>::value, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
 		static_assert(!hamon::ranges::forward_range<EV>, "");
 		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
 		static_assert(!hamon::ranges::random_access_range_t<EV>::value, "");

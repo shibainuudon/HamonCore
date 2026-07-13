@@ -237,7 +237,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert( hamon::ranges::forward_range<V const>, "");
 		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert( hamon::ranges::input_range<hamon::ranges::range_reference_t<V const>>, "");
 
 		using RV = hamon::ranges::join_with_view<V, Pattern>;
 		static_assert( has_begin<RV&>::value, "");
@@ -267,7 +267,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert(!hamon::ranges::forward_range<V const>, "");
 		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert( hamon::ranges::input_range<hamon::ranges::range_reference_t<V const>>, "");
 
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");
@@ -289,7 +289,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert( hamon::ranges::forward_range<V const>, "");
 		static_assert(!hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert( hamon::ranges::input_range<hamon::ranges::range_reference_t<V const>>, "");
 
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");
@@ -311,7 +311,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert( hamon::ranges::forward_range<V const>, "");
 		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert(!hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert( hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert( hamon::ranges::input_range<hamon::ranges::range_reference_t<V const>>, "");
 
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");
@@ -337,7 +337,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 		static_assert( hamon::ranges::forward_range<V const>, "");
 		static_assert( hamon::ranges::forward_range<Pattern const>, "");
 		static_assert( hamon::is_reference<hamon::ranges::range_reference_t<V const>>::value, "");
-		static_assert(!hamon::ranges::input_range_t<hamon::ranges::range_reference_t<V const>>::value, "");
+		static_assert(!hamon::ranges::input_range<hamon::ranges::range_reference_t<V const>>, "");
 
 		static_assert( has_begin<RV&>::value, "");
 		static_assert(!has_begin<RV const&>::value, "");

@@ -53,7 +53,6 @@ using std::ranges::views::as_const;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/span.hpp>
 #include <hamon/span/detail/is_specialization_of_span.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
@@ -76,10 +75,10 @@ template <hamon::ranges::view V>
 	requires hamon::ranges::input_range<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::input_range_t<V>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::input_range<V>
+	>>
 #endif
 class as_const_view : public hamon::ranges::view_interface<as_const_view<V>>
 {

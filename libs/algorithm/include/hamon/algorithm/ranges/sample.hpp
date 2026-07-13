@@ -29,7 +29,6 @@ using std::ranges::sample;
 
 #include <hamon/algorithm/sample.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/concepts/detail/or.hpp>
@@ -91,7 +90,7 @@ struct sample_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINT(ranges::input_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, OutIter),
 		typename Gen
 	>

@@ -240,7 +240,7 @@ class zip_view : public hamon::ranges::view_interface<zip_view<Views...>>
 {
 private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	static_assert(hamon::conjunction<hamon::ranges::input_range_t<Views>...>::value, "");
+	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::input_range<Views>>...>::value, "");
 	static_assert(hamon::conjunction<hamon::ranges::view_t<Views>...>::value, "");
 	static_assert(sizeof...(Views) > 0, "");
 #endif

@@ -86,7 +86,6 @@ using elements_t = decltype(elements<N>);
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
@@ -157,13 +156,13 @@ template <hamon::ranges::input_range V, hamon::size_t N>
 		returnable_element<hamon::ranges::range_reference_t<V>, N>
 #else
 template <typename V, hamon::size_t N,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range_t<V>,
-		hamon::ranges::view_t<V>,
-		has_tuple_element<hamon::ranges::range_value_t<V>, N>,
-		has_tuple_element<hamon::remove_reference_t<hamon::ranges::range_reference_t<V>>, N>,
-		returnable_element<hamon::ranges::range_reference_t<V>, N>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V> &&
+		hamon::ranges::view_t<V>::value &&
+		has_tuple_element<hamon::ranges::range_value_t<V>, N>::value &&
+		has_tuple_element<hamon::remove_reference_t<hamon::ranges::range_reference_t<V>>, N>::value &&
+		returnable_element<hamon::ranges::range_reference_t<V>, N>::value
+	>>
 #endif
 class elements_view : public hamon::ranges::view_interface<elements_view<V, N>>
 {

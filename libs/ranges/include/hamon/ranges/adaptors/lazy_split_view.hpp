@@ -165,7 +165,7 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 #else
 template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
-		hamon::ranges::input_range_t<V>::value &&
+		hamon::ranges::input_range<V> &&
 		hamon::ranges::forward_range<Pattern> &&
 		hamon::ranges::view_t<V>::value &&
 		hamon::ranges::view_t<Pattern>::value &&
@@ -814,7 +814,7 @@ public:
 
 	template <typename R,
 		typename = hamon::enable_if_t<
-			hamon::ranges::input_range_t<R>::value &&
+			hamon::ranges::input_range<R> &&
 			hamon::constructible_from<V, hamon::views::all_t<R>> &&
 			hamon::constructible_from<Pattern, hamon::ranges::single_view<hamon::ranges::range_value_t<R>>>
 		>>
@@ -942,7 +942,7 @@ lazy_split_view(R&&, P&&)
 	hamon::views::all_t<R>,
 	hamon::views::all_t<P>>;
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 lazy_split_view(R&&, hamon::ranges::range_value_t<R>)
 -> lazy_split_view<
 	hamon::views::all_t<R>,
@@ -965,7 +965,7 @@ make_lazy_split_view(R&& r, P&& p)
 		lazy_split_view<hamon::views::all_t<R>, hamon::views::all_t<P>>(
 			hamon::forward<R>(r), hamon::forward<P>(p)))
 
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 make_lazy_split_view(R&& r, hamon::ranges::range_value_t<R> v)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

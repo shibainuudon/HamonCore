@@ -72,7 +72,7 @@ struct none_of_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
 		typename Proj = hamon::identity,
 		typename ProjectedIter = hamon::projected<ranges::iterator_t<Range>, Proj>,
 		HAMON_CONSTRAINT(hamon::indirect_unary_predicate, ProjectedIter, Pred)

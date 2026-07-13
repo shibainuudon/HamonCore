@@ -243,7 +243,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert(hamon::ranges::sized_range_t<TV>::value == hamon::ranges::sized_range_t<V>::value, "");
 	static_assert(hamon::ranges::approximately_sized_range<TV> == true, "");
 	static_assert(hamon::ranges::output_range_t<TV, T>::value == hamon::ranges::output_range_t<V, T>::value, "");
-	static_assert(hamon::ranges::input_range_t<TV>::value == hamon::ranges::input_range_t<V>::value, "");
+	static_assert(hamon::ranges::input_range<TV> == hamon::ranges::input_range<V>, "");
 	static_assert(hamon::ranges::forward_range<TV> == hamon::ranges::forward_range<V>, "");
 	static_assert(hamon::ranges::bidirectional_range<TV> == hamon::ranges::bidirectional_range<V>, "");
 	static_assert(hamon::ranges::random_access_range_t<TV>::value == hamon::ranges::random_access_range_t<V>::value, "");

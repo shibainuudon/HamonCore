@@ -29,7 +29,6 @@ using std::ranges::count;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/functional/identity.hpp>
@@ -86,7 +85,7 @@ struct count_fn
 	}
 
 	template<
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>
 	>

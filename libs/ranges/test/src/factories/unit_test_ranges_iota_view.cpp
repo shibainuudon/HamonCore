@@ -1036,7 +1036,7 @@ inline HAMON_CXX14_CONSTEXPR bool test07()
 	auto v = hamon::views::iota(r.begin(), r.end());
 
 	using R = decltype(v);
-	static_assert( ranges::input_range_t<R>::value, "");
+	static_assert( ranges::input_range<R>, "");
 	static_assert(!ranges::forward_range<R>, "");
 
 	using I = decltype(v.begin());

@@ -132,7 +132,7 @@ struct partial_sort_copy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range1),
+		HAMON_CONSTRAINT(ranges::input_range, Range1),
 		HAMON_CONSTRAINED_PARAM(ranges::random_access_range, Range2),
 		typename Comp = ranges::less,
 		typename Proj1 = hamon::identity,

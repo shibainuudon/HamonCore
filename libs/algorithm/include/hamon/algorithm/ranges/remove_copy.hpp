@@ -30,7 +30,6 @@ using std::ranges::remove_copy;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
@@ -97,7 +96,7 @@ struct remove_copy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, O),
 		typename Proj = hamon::identity,
 		typename T = hamon::projected_value_t<ranges::iterator_t<R>, Proj>

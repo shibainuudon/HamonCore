@@ -46,6 +46,7 @@ using std::ranges::to;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/derived_from.hpp>
 #include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -264,7 +265,7 @@ constexpr auto container_append(Container& c)
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
 		hamon::ranges::not_view_t<C>::value &&
-		hamon::ranges::input_range_t<R>::value>>
+		hamon::ranges::input_range<R>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 C to(R&& r, Args&&... args);	// to_implから再帰的に呼び出すため、前方宣言が必要
 
@@ -340,7 +341,7 @@ to_impl2(hamon::detail::overload_priority<0>, R&& r, Args&&... args);
 // [range.utility.conv.to]/2.1
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		!hamon::ranges::input_range_t<C>::value ||
+		!hamon::ranges::input_range<C> ||
 		hamon::convertible_to<hamon::ranges::range_reference_t<R>, hamon::ranges::range_value_t<C>>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
@@ -363,7 +364,7 @@ struct to_recursive_fn
 
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::ranges::input_range_t<hamon::ranges::range_reference_t<R>>::value>>
+		hamon::ranges::input_range<hamon::ranges::range_reference_t<R>>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl(hamon::detail::overload_priority<1>, R&& r, Args&&... args)
 {
@@ -398,7 +399,7 @@ namespace detail {
 template <typename C>
 struct to_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R), typename... Args>
+	template <HAMON_CONSTRAINT(hamon::ranges::input_range, R), typename... Args>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR C
 	operator()(R&& r, Args&&... args) const
 	{
@@ -431,7 +432,7 @@ auto to(Args&&... args)
 namespace detail {
 
 // [range.utility.conv.to]/3
-template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R)>
+template <HAMON_CONSTRAINT(hamon::ranges::input_range, R)>
 struct phony_input_iterator
 {
 	using iterator_category = hamon::input_iterator_tag;
@@ -572,7 +573,7 @@ auto deduce_helper()
 
 // 26.5.7.2 ranges​::​to[range.utility.conv.to]
 
-template <template <typename...> class C, HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R), typename... Args>
+template <template <typename...> class C, HAMON_CONSTRAINT(hamon::ranges::input_range, R), typename... Args>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 auto to(R&& r, Args&&... args)
 {
@@ -589,7 +590,7 @@ namespace detail
 template <template <typename...> class C>
 struct to_deduced_fn
 {
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R), typename... Args>
+	template <HAMON_CONSTRAINT(hamon::ranges::input_range, R), typename... Args>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, Args&&... args) const
 	{

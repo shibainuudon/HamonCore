@@ -1210,7 +1210,7 @@ unordered_multiset(InputIterator, InputIterator, Allocator)
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<ranges::range_value_t<R>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred,
@@ -1224,7 +1224,7 @@ unordered_multiset(
 ->unordered_multiset<ranges::range_value_t<R>, Hash, Pred, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_multiset(
 	hamon::from_range_t, R&&,
@@ -1237,7 +1237,7 @@ unordered_multiset(
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_multiset(
@@ -1250,7 +1250,7 @@ unordered_multiset(
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 unordered_multiset(
 	hamon::from_range_t, R&&,

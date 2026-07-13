@@ -880,7 +880,7 @@ multimap(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocato
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::range_key_type<R>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::range_to_alloc_type<R>>)>
 multimap(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
@@ -909,7 +909,7 @@ multimap(InputIterator, InputIterator, Allocator)
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 multimap(hamon::from_range_t, R&&, Allocator)
 ->multimap<

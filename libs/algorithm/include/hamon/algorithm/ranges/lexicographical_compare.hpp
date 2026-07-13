@@ -28,7 +28,6 @@ using std::ranges::lexicographical_compare;
 #else
 
 #include <hamon/algorithm/min.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstring/memcmp.hpp>
 #include <hamon/functional/ranges/less.hpp>
@@ -178,8 +177,8 @@ struct lexicographical_compare_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range1),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range2),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range1),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range2),
 		typename Proj1 = hamon::identity,
 		typename Proj2 = hamon::identity,
 		typename ProjectedIter1 = hamon::projected<ranges::iterator_t<Range1>, Proj1>,

@@ -836,7 +836,7 @@ list(InputIterator, InputIterator, Allocator = Allocator())
 	->list<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator = hamon::allocator<ranges::range_value_t<R>>>
 list(hamon::from_range_t, R&&, Allocator = Allocator())
 	->list<ranges::range_value_t<R>, Allocator>;

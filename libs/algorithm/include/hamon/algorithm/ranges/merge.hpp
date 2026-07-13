@@ -30,7 +30,6 @@ using std::ranges::merge;
 #include <hamon/algorithm/ranges/in_in_out_result.hpp>
 #include <hamon/algorithm/ranges/copy.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/ranges/less.hpp>
 #include <hamon/functional/identity.hpp>
@@ -116,8 +115,8 @@ struct merge_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range1),
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range2),
+		HAMON_CONSTRAINT(ranges::input_range, Range1),
+		HAMON_CONSTRAINT(ranges::input_range, Range2),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out),
 		typename Comp  = ranges::less,
 		typename Proj1 = hamon::identity,

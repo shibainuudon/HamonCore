@@ -36,7 +36,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range_t<CV, int>::value, "");
-	static_assert( hamon::ranges::input_range_t<CV>::value, "");
+	static_assert( hamon::ranges::input_range<CV>, "");
 	static_assert( hamon::ranges::forward_range<CV>, "");
 	static_assert( hamon::ranges::bidirectional_range<CV>, "");
 	static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
@@ -66,7 +66,7 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range_t<CV, int>::value, "");
-	static_assert( hamon::ranges::input_range_t<CV>::value, "");
+	static_assert( hamon::ranges::input_range<CV>, "");
 	static_assert( hamon::ranges::forward_range<CV>, "");
 	static_assert( hamon::ranges::bidirectional_range<CV>, "");
 	static_assert( hamon::ranges::random_access_range_t<CV>::value, "");
@@ -96,7 +96,7 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range_t<CV, int>::value, "");
-	static_assert( hamon::ranges::input_range_t<CV>::value, "");
+	static_assert( hamon::ranges::input_range<CV>, "");
 	static_assert( hamon::ranges::forward_range<CV>, "");
 	static_assert( hamon::ranges::bidirectional_range<CV>, "");
 	static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
@@ -126,7 +126,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert( hamon::ranges::output_range_t<CV, int>::value, "");
-	static_assert( hamon::ranges::input_range_t<CV>::value, "");
+	static_assert( hamon::ranges::input_range<CV>, "");
 	static_assert( hamon::ranges::forward_range<CV>, "");
 	static_assert(!hamon::ranges::bidirectional_range<CV>, "");
 	static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");
@@ -156,7 +156,7 @@ HAMON_CXX14_CONSTEXPR bool test04()
 	static_assert( hamon::ranges::sized_range_t<CV>::value, "");
 	static_assert( hamon::ranges::approximately_sized_range<CV>, "");
 	static_assert(!hamon::ranges::output_range_t<CV, int>::value, "");
-	static_assert( hamon::ranges::input_range_t<CV>::value, "");
+	static_assert( hamon::ranges::input_range<CV>, "");
 	static_assert(!hamon::ranges::forward_range<CV>, "");
 	static_assert(!hamon::ranges::bidirectional_range<CV>, "");
 	static_assert(!hamon::ranges::random_access_range_t<CV>::value, "");

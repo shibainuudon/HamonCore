@@ -866,13 +866,13 @@ hive(InputIterator, InputIterator, hamon::hive_limits, Allocator = Allocator())
 ->hive<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
 hive(hamon::from_range_t, R&&, Allocator = Allocator())
 ->hive<hamon::ranges::range_value_t<R>, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
 hive(hamon::from_range_t, R&&, hive_limits, Allocator = Allocator())
 ->hive<hamon::ranges::range_value_t<R>, Allocator>;

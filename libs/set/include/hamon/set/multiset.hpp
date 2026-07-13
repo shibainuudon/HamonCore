@@ -834,7 +834,7 @@ multiset(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocato
 ->multiset<hamon::detail::iter_value_type<InputIterator>, Compare, Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<ranges::range_value_t<R>>),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<ranges::range_value_t<R>>)>
 multiset(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
@@ -857,7 +857,7 @@ multiset(InputIterator, InputIterator, Allocator)
 	Allocator>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
 multiset(hamon::from_range_t, R&&, Allocator)
 ->multiset<

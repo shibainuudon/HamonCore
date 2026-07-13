@@ -55,7 +55,6 @@ using std::ranges::views::as_rvalue;
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/iterator/make_move_iterator.hpp>
 #include <hamon/iterator/make_move_sentinel.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
@@ -73,10 +72,10 @@ template <hamon::ranges::view V>
 	requires hamon::ranges::input_range<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view<V>,
+	typename = hamon::enable_if_t<
+		hamon::ranges::view<V>::value &&
 		hamon::ranges::input_range<V>
-	>::value>
+	>
 >
 #endif
 class as_rvalue_view : public hamon::ranges::view_interface<as_rvalue_view<V>>
@@ -247,7 +246,7 @@ private:
 	// [range.as.rvalue.overview]/2.1
 	template <typename T,
 		typename = hamon::enable_if_t<
-			hamon::ranges::input_range_t<T>::value &&
+			hamon::ranges::input_range<T> &&
 			hamon::same_as<
 				hamon::ranges::range_rvalue_reference_t<T>,
 				hamon::ranges::range_reference_t<T>>

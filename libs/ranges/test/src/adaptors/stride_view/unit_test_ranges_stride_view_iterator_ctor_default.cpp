@@ -76,8 +76,8 @@ struct TestView : hamon::ranges::view_base
 	Sentinel end()   const noexcept;
 };
 
-static_assert(!hamon::ranges::input_range_t<TestView<NoDefaultIterator<int>, NoDefaultIterator<int>>>::value, "");
-static_assert( hamon::ranges::input_range_t<TestView<NoDefaultIterator<int>, hamon::unreachable_sentinel_t>>::value, "");
+static_assert(!hamon::ranges::input_range<TestView<NoDefaultIterator<int>, NoDefaultIterator<int>>>, "");
+static_assert( hamon::ranges::input_range<TestView<NoDefaultIterator<int>, hamon::unreachable_sentinel_t>>, "");
 
 #define VERIFY(...)	if (!(__VA_ARGS__)) { return false; }
 

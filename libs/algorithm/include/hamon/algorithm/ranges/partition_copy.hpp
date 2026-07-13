@@ -29,7 +29,6 @@ using std::ranges::partition_copy;
 
 #include <hamon/algorithm/ranges/in_out_out_result.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
@@ -99,7 +98,7 @@ struct partition_copy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(ranges::input_range, Range),
+		HAMON_CONSTRAINT(ranges::input_range, Range),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out1),
 		HAMON_CONSTRAINT(hamon::weakly_incrementable, Out2),
 		typename Proj = hamon::identity,

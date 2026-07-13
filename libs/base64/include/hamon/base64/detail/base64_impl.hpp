@@ -360,7 +360,7 @@ public:
 	 *	@param	result
 	 */
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range),
 #if defined(HAMON_USE_STD_RANGES_ITERATOR)
 		HAMON_CONSTRAINT(hamon::contiguous_iterator, OutputIterator)
 #else
@@ -407,7 +407,7 @@ public:
 	 */
 	template <
 		typename Result,
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range)
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range)
 	>
 	static Result encode(Range&& rng)
 	{
@@ -443,7 +443,7 @@ public:
 	 */
 	template <
 		typename Result,
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, Range)
+		HAMON_CONSTRAINT(hamon::ranges::input_range, Range)
 	>
 	static Result decode(Range&& rng)
 	{

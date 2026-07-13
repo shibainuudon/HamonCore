@@ -76,7 +76,6 @@ using std::ranges::views::stride;
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
@@ -112,10 +111,10 @@ template <hamon::ranges::input_range V>
 	requires hamon::ranges::view<V>
 #else
 template <typename V,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::input_range_t<V>,
-		hamon::ranges::view_t<V>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::input_range<V> &&
+		hamon::ranges::view_t<V>::value
+	>>
 #endif
 class stride_view : public hamon::ranges::view_interface<stride_view<V>>
 {

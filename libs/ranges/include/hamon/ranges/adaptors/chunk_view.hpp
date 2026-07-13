@@ -81,7 +81,6 @@ using std::ranges::views::chunk;
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
@@ -119,10 +118,10 @@ class chunk_view
 #else
 template <typename V,
 	typename = hamon::bool_constant<hamon::ranges::forward_range<V>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::ranges::view_t<V>,
-		hamon::ranges::input_range_t<V>
-	>::value>>
+	typename = hamon::enable_if_t<
+		hamon::ranges::view_t<V>::value &&
+		hamon::ranges::input_range<V>
+	>>
 class chunk_view;
 
 template <typename V>

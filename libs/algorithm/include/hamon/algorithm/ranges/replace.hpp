@@ -29,7 +29,6 @@ using std::ranges::replace;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
@@ -92,7 +91,7 @@ struct replace_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 		typename Proj = hamon::identity,
 		typename T1 = hamon::projected_value_t<ranges::iterator_t<R>, Proj>,
 		typename T2 = T1

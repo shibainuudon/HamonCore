@@ -1188,7 +1188,7 @@ flat_multiset(hamon::sorted_equivalent_t, InputIterator, InputIterator, Compare 
 ->flat_multiset<hamon::detail::iter_value_type<InputIterator>, Compare>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Compare = hamon::less<ranges::range_value_t<R>>,
 	typename Allocator = hamon::allocator<ranges::range_value_t<R>>,
 	typename = hamon::enable_if_t<hamon::conjunction<
@@ -1203,7 +1203,7 @@ flat_multiset(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocat
 	hamon::vector<ranges::range_value_t<R>, hamon::detail::alloc_rebind<Allocator, ranges::range_value_t<R>>>>;
 
 template <
-	HAMON_CONSTRAINED_PARAM(hamon::ranges::input_range, R),
+	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
 	typename = hamon::enable_if_t<hamon::conjunction<
 		hamon::detail::simple_allocator_t<Allocator>

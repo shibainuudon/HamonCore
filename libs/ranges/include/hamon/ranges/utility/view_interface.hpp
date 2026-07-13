@@ -134,7 +134,7 @@ public:
 		return empty_impl(derived(), hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D)>
+	template <HAMON_CONSTRAINT_D(ranges::input_range, R, D)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	cbegin()
 	HAMON_NOEXCEPT_IF_EXPR(ranges::cbegin(hamon::declval<R&>()))	// noexcept as an extension
@@ -143,7 +143,7 @@ public:
 		return ranges::cbegin(derived());
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D const)>
+	template <HAMON_CONSTRAINT_D(ranges::input_range, R, D const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	cbegin() const
 	HAMON_NOEXCEPT_IF_EXPR(ranges::cbegin(hamon::declval<R&>()))	// noexcept as an extension
@@ -152,7 +152,7 @@ public:
 		return ranges::cbegin(derived());
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D)>
+	template <HAMON_CONSTRAINT_D(ranges::input_range, R, D)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	cend()
 	HAMON_NOEXCEPT_IF_EXPR(ranges::cend(hamon::declval<R&>()))	// noexcept as an extension
@@ -161,7 +161,7 @@ public:
 		return ranges::cend(derived());
 	}
 	
-	template <HAMON_CONSTRAINED_PARAM_D(ranges::input_range, R, D const)>
+	template <HAMON_CONSTRAINT_D(ranges::input_range, R, D const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	cend() const
 	HAMON_NOEXCEPT_IF_EXPR(ranges::cend(hamon::declval<R&>()))	// noexcept as an extension
