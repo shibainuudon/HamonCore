@@ -60,8 +60,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 		using D  = decltype(hamon::declval<CV&>().size());
 		using CD = decltype(hamon::declval<CV const&>().size());
-		static_assert(hamon::detail::is_unsigned_integer_like_t<D>::value, "");
-		static_assert(hamon::detail::is_unsigned_integer_like_t<CD>::value, "");
+		static_assert(hamon::detail::is_unsigned_integer_like<D>, "");
+		static_assert(hamon::detail::is_unsigned_integer_like<CD>, "");
 	}
 
 	// cartesian_product_is_sized<Views...> && !cartesian_product_is_sized<Views const...>
@@ -76,7 +76,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		static_assert(!has_size<CV const&>::value, "");
 
 		using D  = decltype(hamon::declval<CV&>().size());
-		static_assert(hamon::detail::is_unsigned_integer_like_t<D>::value, "");
+		static_assert(hamon::detail::is_unsigned_integer_like<D>, "");
 	}
 
 	// !cartesian_product_is_sized<Views...> && cartesian_product_is_sized<Views const...>
@@ -92,8 +92,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	
 		using D  = decltype(hamon::declval<CV&>().size());
 		using CD = decltype(hamon::declval<CV const&>().size());
-		static_assert(hamon::detail::is_unsigned_integer_like_t<D>::value, "");
-		static_assert(hamon::detail::is_unsigned_integer_like_t<CD>::value, "");
+		static_assert(hamon::detail::is_unsigned_integer_like<D>, "");
+		static_assert(hamon::detail::is_unsigned_integer_like<CD>, "");
 }
 
 	// !cartesian_product_is_sized<Views...> && !cartesian_product_is_sized<Views const...>
