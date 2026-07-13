@@ -131,7 +131,7 @@ struct iterator_traits_base_no_members
 template <typename I>
 using with_nested_types = hamon::bool_constant<
 	hamon::detail::has_member_difference_type<I> &&
-	hamon::detail::has_member_value_type_t<I>::value &&
+	hamon::detail::has_member_value_type<I> &&
 	hamon::detail::has_member_reference<I> &&
 	hamon::detail::has_member_iterator_category<I>
 >;

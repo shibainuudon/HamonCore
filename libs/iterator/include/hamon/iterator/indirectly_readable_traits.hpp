@@ -50,7 +50,7 @@ struct cond_value_type<T, true>
 
 template <typename T,
 	bool = hamon::is_array<T>::value,
-	bool = hamon::detail::has_member_value_type_t<T>::value,
+	bool = hamon::detail::has_member_value_type<T>,
 	bool = hamon::detail::has_member_element_type<T>
 >
 struct indirectly_readable_traits_impl {};

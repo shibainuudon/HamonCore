@@ -20,23 +20,21 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_member_value_type = requires { typename T::value_type; };
-
-template <typename T>
-using has_member_value_type_t = hamon::bool_constant<has_member_value_type<T>>;
+HAMON_CONCEPT_OR_BOOL has_member_value_type = requires { typename T::value_type; };
 
 #else
 
 template <typename, typename = void>
-struct has_member_value_type
+struct has_member_value_type_impl
 	: public hamon::false_type {};
  
 template <typename T>
-struct has_member_value_type<T, hamon::void_t<typename T::value_type>>
+struct has_member_value_type_impl<T, hamon::void_t<typename T::value_type>>
 	: public hamon::true_type {};
 
 template <typename T>
-using has_member_value_type_t = has_member_value_type<T>;
+HAMON_CONCEPT_OR_BOOL has_member_value_type =
+	detail::has_member_value_type_impl<T>::value;
 
 #endif
 
