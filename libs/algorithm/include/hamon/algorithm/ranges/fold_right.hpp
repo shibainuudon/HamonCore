@@ -30,7 +30,6 @@ using std::ranges::fold_right;
 #else
 
 #include <hamon/algorithm/ranges/detail/indirectly_binary_right_foldable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/functional/ref.hpp>
@@ -64,7 +63,7 @@ struct fold_right_fn
 		HAMON_CONSTRAINT(hamon::bidirectional_iterator, I),
 		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
 		typename T = hamon::iter_value_t<I>,
-		HAMON_CONSTRAINED_PARAM(
+		HAMON_CONSTRAINT(
 			ranges::detail::indirectly_binary_right_foldable,
 			T, I, F)
 	>
@@ -92,7 +91,7 @@ struct fold_right_fn
 	template <
 		HAMON_CONSTRAINT(ranges::bidirectional_range, R),
 		typename T = ranges::range_value_t<R>,
-		HAMON_CONSTRAINED_PARAM(
+		HAMON_CONSTRAINT(
 			ranges::detail::indirectly_binary_right_foldable,
 			T, ranges::iterator_t<R>, F)
 	>

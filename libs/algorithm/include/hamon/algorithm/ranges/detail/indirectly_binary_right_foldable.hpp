@@ -35,19 +35,9 @@ public:
         hamon::invocable<F&, U, T>);
 };
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename F, typename T, typename I>
-concept indirectly_binary_right_foldable =
+HAMON_CONCEPT_OR_BOOL indirectly_binary_right_foldable =
     indirectly_binary_left_foldable<flipped<F>, T, I>;
-
-#else
-
-template <typename F, typename T, typename I>
-using indirectly_binary_right_foldable =
-    indirectly_binary_left_foldable<flipped<F>, T, I>;
-
-#endif
 
 }	// namespace detail
 

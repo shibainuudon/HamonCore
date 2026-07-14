@@ -31,7 +31,6 @@ using std::ranges::fold_left_first;
 #include <hamon/algorithm/ranges/fold_left_first_with_iter.hpp>
 #include <hamon/algorithm/ranges/detail/indirectly_binary_left_foldable.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/functional/ref.hpp>
@@ -61,7 +60,7 @@ struct fold_left_first_fn
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINT(hamon::sentinel_for, I, S),
-		HAMON_CONSTRAINED_PARAM(
+		HAMON_CONSTRAINT(
 			ranges::detail::indirectly_binary_left_foldable,
 			hamon::iter_value_t<I>, I, F)
 	>
@@ -81,7 +80,7 @@ struct fold_left_first_fn
 
 	template <
 		HAMON_CONSTRAINT(ranges::input_range, R),
-		HAMON_CONSTRAINED_PARAM(
+		HAMON_CONSTRAINT(
 			ranges::detail::indirectly_binary_left_foldable,
 			ranges::range_value_t<R>, ranges::iterator_t<R>, F)
 	>

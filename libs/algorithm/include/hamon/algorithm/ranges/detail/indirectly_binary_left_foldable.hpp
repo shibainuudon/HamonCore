@@ -32,7 +32,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename F, typename T, typename I, typename U>
-concept indirectly_binary_left_foldable_impl =
+HAMON_CONCEPT_OR_BOOL indirectly_binary_left_foldable_impl =
 	hamon::movable<T> &&
 	hamon::movable<U> &&
 	hamon::convertible_to<T, U> &&
@@ -40,7 +40,7 @@ concept indirectly_binary_left_foldable_impl =
 	hamon::assignable_from<U&, hamon::invoke_result_t<F&, U, hamon::iter_reference_t<I>>>;
 
 template <typename F, typename T, typename I>
-concept indirectly_binary_left_foldable =
+HAMON_CONCEPT_OR_BOOL indirectly_binary_left_foldable =
 	hamon::copy_constructible<F> &&
 	hamon::indirectly_readable<I> &&
 	hamon::invocable<F&, T, hamon::iter_reference_t<I>> &&
@@ -105,8 +105,8 @@ public:
 };
 
 template <typename F, typename T, typename I>
-using indirectly_binary_left_foldable =
-	typename indirectly_binary_left_foldable_detail<F, T, I>::type;
+HAMON_CONCEPT_OR_BOOL indirectly_binary_left_foldable =
+	indirectly_binary_left_foldable_detail<F, T, I>::type::value;
 
 #endif
 
