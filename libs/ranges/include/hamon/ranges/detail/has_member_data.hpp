@@ -25,12 +25,12 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept pointer_to_object =
+HAMON_CONCEPT_OR_BOOL pointer_to_object =
 	hamon::is_pointer<T>::value &&
 	hamon::is_object<hamon::remove_pointer_t<T>>::value;
 
 template <typename T>
-concept has_member_data =
+HAMON_CONCEPT_OR_BOOL has_member_data =
 	requires(T&& t)
 	{
 		{ HAMON_AUTO_CAST(t.data()) } -> pointer_to_object;
@@ -57,7 +57,8 @@ public:
 };
 
 template <typename T>
-using has_member_data = typename has_member_data_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_member_data =
+	has_member_data_impl<T>::type::value;
 
 #endif
 

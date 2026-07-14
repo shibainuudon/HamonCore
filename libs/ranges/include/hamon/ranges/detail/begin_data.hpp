@@ -23,7 +23,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept begin_data =
+HAMON_CONCEPT_OR_BOOL begin_data =
 	hamon::contiguous_iterator<decltype(ranges::begin(hamon::declval<T&>()))>;
 
 #else
@@ -46,7 +46,8 @@ public:
 };
 
 template <typename T>
-using begin_data = typename begin_data_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL begin_data =
+	begin_data_impl<T>::type::value;
 
 #endif
 

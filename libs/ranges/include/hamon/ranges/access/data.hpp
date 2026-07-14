@@ -25,7 +25,6 @@ using std::ranges::data;
 #include <hamon/ranges/detail/has_member_data.hpp>
 #include <hamon/ranges/detail/begin_data.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -48,14 +47,14 @@ struct data_fn
 {
 private:
 	// [range.prim.data]/2.3
-	template <HAMON_CONSTRAINED_PARAM(has_member_data, T)>
+	template <HAMON_CONSTRAINT(has_member_data, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			HAMON_AUTO_CAST(t.data()))
 
 	// [range.prim.data]/2.4
-	template <HAMON_CONSTRAINED_PARAM(begin_data, T)>
+	template <HAMON_CONSTRAINT(begin_data, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
