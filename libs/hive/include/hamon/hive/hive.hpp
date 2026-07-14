@@ -172,8 +172,7 @@ public:
 		: m_allocator(a)
 	{
 		// [sequence.reqmts]/8
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*first)>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::ranges::make_subrange(first, last));
 	}
@@ -185,8 +184,7 @@ public:
 		, m_impl(block_limits)
 	{
 		// [sequence.reqmts]/8
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*first)>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::ranges::make_subrange(first, last));
 	}
@@ -197,8 +195,7 @@ public:
 		: m_allocator(a)
 	{
 		// [sequence.reqmts]/11
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::forward<R>(rg));
 	}
@@ -210,8 +207,7 @@ public:
 		, m_impl(block_limits)
 	{
 		// [sequence.reqmts]/11
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::forward<R>(rg));
 	}
@@ -423,8 +419,7 @@ public:
 	assign(InputIterator first, InputIterator last)
 	{
 		// [sequence.reqmts]/58
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*first)>, "");
 
 		m_impl.AssignRange(m_allocator, hamon::ranges::make_subrange(first, last));
 	}
@@ -437,8 +432,7 @@ public:
 		static_assert(hamon::assignable_from<T&, hamon::ranges::range_reference_t<R>>, "");
 
 		// [sequence.reqmts]/62
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		m_impl.AssignRange(m_allocator, hamon::forward<R>(rg));
 	}
@@ -650,8 +644,7 @@ public:
 	emplace(Args&&... args)
 	{
 		// [hive.modifiers]/1
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, Args&&...>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, Args&&...>, "");
 
 		return m_impl.Emplace(m_allocator, hamon::forward<Args>(args)...);
 	}
@@ -705,8 +698,7 @@ public:
 	insert_range(R&& rg)
 	{
 		// [hive.modifiers]/7
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			T, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<T, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::forward<R>(rg));
 	}

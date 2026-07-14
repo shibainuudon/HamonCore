@@ -177,8 +177,7 @@ public:
 		, m_impl(n, hf, eql, a)	// [unord.map.cnstr]/3
 	{
 		// [unord.req.general]/35
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 
 		// [unord.map.cnstr]/3
 		this->insert(f, l);
@@ -195,8 +194,7 @@ public:
 	{
 		// [unord.req.general]/38
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -210,8 +208,7 @@ public:
 		// [unord.req.general]/41
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	// LWG 2713
@@ -223,8 +220,7 @@ public:
 		// [unord.req.general]/44
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
@@ -239,8 +235,7 @@ public:
 		, m_impl(n, hf, eql, a)	// [unord.map.cnstr]/3
 	{
 		// [unord.req.general]/47
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 
 		// [unord.map.cnstr]/3
 		this->insert_range(hamon::forward<R>(rg));
@@ -257,8 +252,7 @@ public:
 	{
 		// [unord.req.general]/50
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
@@ -272,8 +266,7 @@ public:
 		// [unord.req.general]/53
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	// LWG 2713
@@ -285,8 +278,7 @@ public:
 		// [unord.req.general]/56
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -559,8 +551,7 @@ public:
 	emplace(Args&&... args)
 	{
 		// [unord.req.general]/79
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, Args&&...>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, Args&&...>, "");
 
 		// [unord.req.general]/80
 		return m_impl.emplace(m_allocator, hamon::forward<Args>(args)...);	// may throw
@@ -570,8 +561,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator /*position*/, Args&&... args)
 	{
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, Args...>::value, "[unord.req.general]/89");
+		// [unord.req.general]/89
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, Args...>, "");
 
 		// [unord.req.general]/90
 		return this->emplace(hamon::forward<Args>(args)...).first;	// may throw
@@ -580,7 +571,8 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& obj)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/92");
+		// [unord.req.general]/92
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [unord.req.general]/93
 		return this->emplace(obj);	// may throw
@@ -642,8 +634,7 @@ public:
 	insert(InputIterator first, InputIterator last)
 	{
 		// [unord.req.general]/107
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*first)>, "");
 
 		// TODO
 		// Neither first nor last are iterators into *this.
@@ -657,8 +648,7 @@ public:
 	insert_range(R&& rg)
 	{
 		// [unord.req.general]/111
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 
 		// TODO
 		// rg and *this do not overlap.
@@ -766,12 +756,12 @@ public:
 	try_emplace(key_type const& k, Args&&... args)
 	{
 		// [unord.map.modifiers]/5
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+		static_assert(hamon::detail::cpp17_emplace_constructible<
 			value_type, allocator_type,
 			hamon::piecewise_construct_t,
 			decltype(hamon::forward_as_tuple(k)),
 			decltype(hamon::forward_as_tuple(hamon::forward<Args>(args)...))
-		>::value, "");
+		>, "");
 
 		// [unord.map.modifiers]/6
 		return m_impl.try_emplace(m_allocator, k,
@@ -785,12 +775,12 @@ public:
 	try_emplace(key_type&& k, Args&&... args)
 	{
 		// [unord.map.modifiers]/9
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+		static_assert(hamon::detail::cpp17_emplace_constructible<
 			value_type, allocator_type,
 			hamon::piecewise_construct_t,
 			decltype(hamon::forward_as_tuple(hamon::move(k))),
 			decltype(hamon::forward_as_tuple(hamon::forward<Args>(args)...))
-		>::value, "");
+		>, "");
 
 		// [unord.map.modifiers]/10
 		return m_impl.try_emplace(m_allocator, k,
@@ -812,12 +802,12 @@ public:
 	try_emplace(K&& k, Args&&... args)
 	{
 		// [unord.map.modifiers]/14
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
+		static_assert(hamon::detail::cpp17_emplace_constructible<
 			value_type, allocator_type,
 			hamon::piecewise_construct_t,
 			decltype(hamon::forward_as_tuple(hamon::forward<K>(k))),
 			decltype(hamon::forward_as_tuple(hamon::forward<Args>(args)...))
-		>::value, "");
+		>, "");
 
 		// [unord.map.modifiers]/15
 		return m_impl.try_emplace(m_allocator, k,
@@ -858,8 +848,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [unord.map.modifiers]/19
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, key_type const&, M&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, key_type const&, M&&>, "");
 
 		// [unord.map.modifiers]/20
 		auto r = m_impl.try_emplace(m_allocator, k,
@@ -883,8 +872,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [unord.map.modifiers]/24
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, key_type&&, M&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, key_type&&, M&&>, "");
 
 		// [unord.map.modifiers]/25
 		auto r = m_impl.try_emplace(m_allocator, k,
@@ -911,8 +899,7 @@ public:
 		static_assert(hamon::is_assignable<mapped_type&, M&&>::value, "");
 
 		// [unord.map.modifiers]/30
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, K&&, M&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, K&&, M&&>, "");
 
 		// [unord.map.modifiers]/31
 		auto r = m_impl.try_emplace(m_allocator, k,

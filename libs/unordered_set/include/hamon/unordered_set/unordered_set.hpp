@@ -164,8 +164,7 @@ public:
 		, m_impl(n, hf, eql, a)	// [unord.set.cnstr]/3
 	{
 		// [unord.req.general]/35
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 
 		// [unord.set.cnstr]/3
 		this->insert(f, l);
@@ -182,8 +181,7 @@ public:
 	{
 		// [unord.req.general]/38
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator)>
@@ -197,8 +195,7 @@ public:
 		// [unord.req.general]/41
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	// LWG 2713
@@ -210,8 +207,7 @@ public:
 		// [unord.req.general]/44
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*f)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*f)>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
@@ -226,8 +222,7 @@ public:
 		, m_impl(n, hf, eql, a)	// [unord.set.cnstr]/3
 	{
 		// [unord.req.general]/47
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 
 		// [unord.set.cnstr]/3
 		this->insert_range(hamon::forward<R>(rg));
@@ -244,8 +239,7 @@ public:
 	{
 		// [unord.req.general]/50
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
@@ -259,8 +253,7 @@ public:
 		// [unord.req.general]/53
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	// LWG 2713
@@ -272,8 +265,7 @@ public:
 		// [unord.req.general]/56
 		static_assert(hamon::detail::cpp17_default_constructible<hasher>, "");
 		static_assert(hamon::detail::cpp17_default_constructible<key_equal>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -548,8 +540,7 @@ public:
 	emplace(Args&&... args)
 	{
 		// [unord.req.general]/79
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, Args&&...>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, Args&&...>, "");
 
 		// [unord.req.general]/80
 		return m_impl.emplace(m_allocator, hamon::forward<Args>(args)...);	// may throw
@@ -559,8 +550,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	emplace_hint(const_iterator /*position*/, Args&&... args)
 	{
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, Args...>::value, "[unord.req.general]/89");
+		// [unord.req.general]/89
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, Args...>, "");
 
 		// [unord.req.general]/90
 		return this->emplace(hamon::forward<Args>(args)...).first;	// may throw
@@ -593,8 +584,7 @@ public:
 	insert(K&& obj)
 	{
 		// [unord.set.modifiers]/2
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, K&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, K&&>, "");
 
 		// [unord.set.modifiers]/3
 		auto it = this->find(obj);
@@ -632,8 +622,7 @@ public:
 	insert(const_iterator /*hint*/, K&& obj)
 	{
 		// [unord.set.modifiers]/2
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, K&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, K&&>, "");
 
 		// [unord.set.modifiers]/3
 		return this->insert(hamon::forward<K>(obj)).first;	// may throw
@@ -644,8 +633,7 @@ public:
 	insert(InputIterator first, InputIterator last)
 	{
 		// [unord.req.general]/107
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*first)>, "");
 
 		// TODO
 		// Neither first nor last are iterators into *this.
@@ -659,8 +647,7 @@ public:
 	insert_range(R&& rg)
 	{
 		// [unord.req.general]/111
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*ranges::begin(rg))>, "");
 
 		// TODO
 		// rg and *this do not overlap.

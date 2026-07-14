@@ -130,8 +130,7 @@ public:
 		: set(comp, a)
 	{
 		// [associative.reqmts.general]/23
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*first)>, "");
 
 		this->insert(first, last);
 	}
@@ -143,8 +142,7 @@ public:
 	{
 		// [associative.reqmts.general]/26
 		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*first)>, "");
 	}
 
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R)>
@@ -153,8 +151,7 @@ public:
 		: set(comp, a)
 	{
 		// [associative.reqmts.general]/29
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		this->insert_range(hamon::forward<R>(rg));
 	}
@@ -166,8 +163,7 @@ public:
 	{
 		// [associative.reqmts.general]/32
 		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 	}
 
 	HAMON_CXX14_CONSTEXPR
@@ -421,8 +417,7 @@ public:
 	emplace(Args&&... args)
 	{
 		// [associative.reqmts.general]/48
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, Args&&...>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, Args&&...>, "");
 
 		return m_impl.emplace(m_allocator, hamon::forward<Args>(args)...);
 	}
@@ -460,8 +455,7 @@ public:
 	insert(K&& x)
 	{
 		// [set.modifiers]/2
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, K&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, K&&>, "");
 
 		return this->emplace(hamon::forward<K>(x));
 	}
@@ -497,8 +491,7 @@ public:
 	insert(const_iterator position, K&& x)
 	{
 		// [set.modifiers]/2
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, K&&>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, K&&>, "");
 
 		return this->emplace_hint(position, hamon::forward<K>(x));
 	}
@@ -508,8 +501,7 @@ public:
 	void insert(InputIterator first, InputIterator last)
 	{
 		// [associative.reqmts.general]/76
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*first)>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*first)>, "");
 
 		m_impl.insert_range(m_allocator, first, last);
 	}
@@ -519,8 +511,7 @@ public:
 	void insert_range(R&& rg)
 	{
 		// [associative.reqmts.general]/80
-		static_assert(hamon::detail::cpp17_emplace_constructible_t<
-			value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>::value, "");
+		static_assert(hamon::detail::cpp17_emplace_constructible<value_type, allocator_type, decltype(*hamon::ranges::begin(rg))>, "");
 
 		m_impl.insert_range(m_allocator, hamon::ranges::begin(rg), hamon::ranges::end(rg));
 	}

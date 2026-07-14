@@ -21,7 +21,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename A, typename... Args>
-concept cpp17_emplace_constructible =
+HAMON_CONCEPT_OR_BOOL cpp17_emplace_constructible =
 	requires(A& m, T* p, Args&&... args)
 	{
 		{ hamon::allocator_traits<A>::construct(m, p, hamon::forward<Args>(args)...) };
@@ -47,17 +47,9 @@ public:
 };
 
 template <typename T, typename A, typename... Args>
-using cpp17_emplace_constructible =
-	typename cpp17_emplace_constructible_impl<T, A, Args...>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_emplace_constructible =
+	cpp17_emplace_constructible_impl<T, A, Args...>::type::value;
 
-#endif
-
-template <typename T, typename A, typename... Args>
-using cpp17_emplace_constructible_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_emplace_constructible<T, A, Args...>>;
-#else
-	hamon::detail::cpp17_emplace_constructible<T, A, Args...>;
 #endif
 
 }	// namespace detail
