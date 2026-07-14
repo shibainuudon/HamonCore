@@ -27,7 +27,6 @@ using std::ranges::rend;
 #include <hamon/ranges/detail/has_adl_rend.hpp>
 #include <hamon/ranges/detail/reversable.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -51,13 +50,13 @@ struct rend_fn
 {
 private:
 	// [range.access.rend]/2.3
-	template <HAMON_CONSTRAINED_PARAM(has_member_rend, T)>
+	template <HAMON_CONSTRAINT(has_member_rend, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<3>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.rend()))
 
 	// [range.access.rend]/2.4
-	template <HAMON_CONSTRAINED_PARAM(has_adl_rend, T)>
+	template <HAMON_CONSTRAINT(has_adl_rend, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(rend(t)))
