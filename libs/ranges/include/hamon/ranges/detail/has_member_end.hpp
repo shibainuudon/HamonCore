@@ -11,6 +11,7 @@
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -23,7 +24,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_member_end =
+HAMON_CONCEPT_OR_BOOL has_member_end =
 	requires(T&& t)
 	{
 		{ HAMON_AUTO_CAST(t.end()) } -> hamon::sentinel_for<hamon::ranges::iterator_t<T>>;
@@ -37,9 +38,7 @@ struct has_member_end_impl
 private:
 	template <typename U,
 		typename S = decltype(HAMON_AUTO_CAST(hamon::declval<U&>().end())),
-		typename = hamon::enable_if_t<
-			hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>
-		>
+		typename = hamon::enable_if_t<hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>>
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -51,7 +50,8 @@ public:
 };
 
 template <typename T>
-using has_member_end = typename has_member_end_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_member_end =
+	has_member_end_impl<T>::type::value;
 
 #endif
 

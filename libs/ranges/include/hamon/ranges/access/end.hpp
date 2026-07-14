@@ -24,7 +24,6 @@ using std::ranges::end;
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
 #include <hamon/ranges/detail/has_member_end.hpp>
 #include <hamon/ranges/detail/has_adl_end.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -71,13 +70,13 @@ private:
 	}
 
 	// [range.access.end]/2.5
-	template <HAMON_CONSTRAINED_PARAM(has_member_end, T)>
+	template <HAMON_CONSTRAINT(has_member_end, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.end()))
 
 	// [range.access.end]/2.6
-	template <HAMON_CONSTRAINED_PARAM(has_adl_end, T)>
+	template <HAMON_CONSTRAINT(has_adl_end, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(end(t)))

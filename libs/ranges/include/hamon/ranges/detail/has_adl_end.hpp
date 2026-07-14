@@ -11,9 +11,9 @@
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -33,7 +33,7 @@ void end();
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_adl_end =
+HAMON_CONCEPT_OR_BOOL has_adl_end =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T&& t)
 	{
@@ -51,9 +51,7 @@ private:
 			hamon::detail::class_or_enum<hamon::remove_reference_t<U>>
 		>,
 		typename S = decltype(HAMON_AUTO_CAST(end(hamon::declval<U&>()))),
-		typename = hamon::enable_if_t<
-			hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>
-		>
+		typename = hamon::enable_if_t<hamon::sentinel_for<S, hamon::ranges::iterator_t<U>>>
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -65,7 +63,8 @@ public:
 };
 
 template <typename T>
-using has_adl_end = typename has_adl_end_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_end =
+	has_adl_end_impl<T>::type::value;
 
 #endif
 
