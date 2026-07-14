@@ -23,7 +23,7 @@ using std::apply;
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -54,7 +54,7 @@ HAMON_NOEXCEPT_DECLTYPE_RETURN(
 }	// namespace tuple_detail
 
 // Calling a function with a tuple of arguments	[tuple.apply]
-template <typename F, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
+template <typename F, HAMON_CONSTRAINT(hamon::detail::tuple_like, Tuple)>
 HAMON_CXX11_CONSTEXPR auto
 apply(F&& f, Tuple&& t)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(

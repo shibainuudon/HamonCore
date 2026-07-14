@@ -58,7 +58,7 @@ namespace HAMON_COMMON_TYPE_NAMESPACE
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 // common_reference related specializations	[tuple.common.ref]
-template <hamon::tuple_like TTuple, hamon::tuple_like UTuple>
+template <hamon::detail::tuple_like TTuple, hamon::detail::tuple_like UTuple>
 requires
 	(hamon::detail::is_specialization_of_tuple<TTuple>::value ||	// [tuple.common.ref]/3.1
 	 hamon::detail::is_specialization_of_tuple<UTuple>::value) &&
@@ -114,10 +114,10 @@ template <
 	typename UTuple
 >
 struct tuple_common_type<TTuple, UTuple,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::tuple_like_t<hamon::decay_t<TTuple>>,
-		hamon::tuple_like_t<hamon::decay_t<UTuple>>
-	>::value>
+	hamon::enable_if_t<
+		hamon::detail::tuple_like<hamon::decay_t<TTuple>> &&
+		hamon::detail::tuple_like<hamon::decay_t<UTuple>>
+	>
 >
 	: public tuple_common_type_impl<hamon::decay_t<TTuple>, hamon::decay_t<UTuple>>
 {};

@@ -129,11 +129,11 @@ struct tuple_cat_impl<R>
 
 template <
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::tuple_like... Tuples
+	hamon::detail::tuple_like... Tuples
 #else
 	typename... Tuples,
 	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::tuple_like<Tuples>...
+		hamon::bool_constant<hamon::detail::tuple_like<Tuples>>...
 	>::value>
 #endif
 >

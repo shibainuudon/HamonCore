@@ -20,7 +20,7 @@ namespace hamon {
 // [tuple.like], concept tuple-like
 template <typename T>
 concept pair_like =
-	hamon::tuple_like<T> && hamon::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
+	hamon::detail::tuple_like<T> && hamon::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
 
 }	// namespace hamon
 
@@ -37,7 +37,7 @@ struct pair_like_impl
 {
 	template <
 		typename U,
-		typename = hamon::enable_if_t<hamon::tuple_like<U>::value>,
+		typename = hamon::enable_if_t<hamon::detail::tuple_like<U>>,
 		typename S = hamon::tuple_size<hamon::remove_cvref_t<U>>
 	>
 	static auto test(int) -> hamon::bool_constant<S::value == 2>;

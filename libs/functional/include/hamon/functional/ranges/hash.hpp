@@ -109,7 +109,7 @@ private:
 			hamon::make_index_sequence<hamon::extent<RawT>::value>{}))
 
 	// (3) tuple-like なら hash_combine(get<I>(x)...)
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, RawT), typename T>
+	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<3>)
 	HAMON_HASH_RETURN(

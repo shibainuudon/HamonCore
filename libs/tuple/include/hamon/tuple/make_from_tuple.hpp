@@ -23,7 +23,7 @@ using std::make_from_tuple;
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -80,7 +80,7 @@ HAMON_NOEXCEPT_IF_EXPR(T(hamon::adl_get<I>(hamon::forward<Tuple>(t))...))
 // Calling a function with a tuple of arguments	[tuple.make_from_tuple]
 
 // [tuple.apply]/4
-template <typename T, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, Tuple)>
+template <typename T, HAMON_CONSTRAINT(hamon::detail::tuple_like, Tuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR T
 make_from_tuple(Tuple&& t)

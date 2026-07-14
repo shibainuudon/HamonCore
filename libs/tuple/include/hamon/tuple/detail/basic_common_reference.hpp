@@ -65,8 +65,8 @@ namespace HAMON_BASIC_COMMON_REFERENCE_NAMESPACE
 
 // common_reference related specializations	[tuple.common.ref]
 template <
-	hamon::tuple_like TTuple,
-	hamon::tuple_like UTuple,
+	hamon::detail::tuple_like TTuple,
+	hamon::detail::tuple_like UTuple,
 	template <typename> class TQual,
 	template <typename> class UQual>
 requires
@@ -132,10 +132,10 @@ template <
 	template <typename> class UQual
 >
 struct tuple_basic_common_reference<TTuple, UTuple, TQual, UQual,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::tuple_like_t<TTuple>,
-		hamon::tuple_like_t<UTuple>
-	>::value>
+	hamon::enable_if_t<
+		hamon::detail::tuple_like<TTuple> &&
+		hamon::detail::tuple_like<UTuple>
+	>
 >
 	: public tuple_basic_common_reference_impl<TTuple, UTuple, TQual, UQual>
 {};

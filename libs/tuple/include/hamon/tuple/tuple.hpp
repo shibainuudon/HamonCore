@@ -25,7 +25,7 @@ using std::tuple;
 #include <hamon/tuple/detail/tuple_impl.hpp>
 #include <hamon/tuple/detail/tuple_constraint.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/memory/allocator_arg_t.hpp>
 #include <hamon/memory/uses_allocator.hpp>
 #include <hamon/pair/pair.hpp>
@@ -294,7 +294,7 @@ public:
 
 	// tuple(UTuple&& u)
 	template <typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
@@ -437,7 +437,7 @@ public:
 
 	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
 	template <typename Alloc, typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
@@ -753,7 +753,7 @@ public:
 
 	// 	tuple(UTuple&& u)
 	template <typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
@@ -764,7 +764,7 @@ public:
 	{}
 
 	template <typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = TupleLikeCtor<UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
@@ -1029,7 +1029,7 @@ public:
 
 	// tuple(hamon::allocator_arg_t, Alloc const& a, UTuple&& u)
 	template <typename Alloc, typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
@@ -1040,7 +1040,7 @@ public:
 	{}
 
 	template <typename Alloc, typename UTuple,
-		hamon::enable_if_t<hamon::tuple_like_t<UTuple>::value>* = nullptr,
+		hamon::enable_if_t<hamon::detail::tuple_like<UTuple>>* = nullptr,
 		typename Constraint = AllocUTupleCtor<Alloc, UTuple>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
@@ -1275,7 +1275,7 @@ public:
 		return *this;								// [tuple.assign]/38
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple),
 		typename Constraint = TupleLikeAssign<UTuple>,
 		hamon::enable_if_t<Constraint::assignable>* = nullptr
 	>
@@ -1287,7 +1287,7 @@ public:
 		return *this;											// [tuple.assign]/41
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple),
 		typename Constraint = TupleLikeAssignConst<UTuple>,
 		hamon::enable_if_t<Constraint::assignable>* = nullptr
 	>
@@ -1339,7 +1339,7 @@ public:
 	tuple(hamon::allocator_arg_t, Alloc const&, tuple&&) HAMON_NOEXCEPT
 	{}
 
-	template <typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple),
+	template <typename Alloc, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple),
 		typename = hamon::enable_if_t<
 			hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value == 0>>
 	HAMON_CXX11_CONSTEXPR
@@ -1416,7 +1416,7 @@ operator==(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 	return tuple_detail::tuple_eq(t, u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator==(tuple<TTypes...> const& t, UTuple const& u)
@@ -1435,7 +1435,7 @@ operator<=>(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 	return tuple_detail::tuple_3way(t, u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR auto
 operator<=>(tuple<TTypes...> const& t, UTuple const& u)
@@ -1486,7 +1486,7 @@ operator>=(tuple<TTypes...> const& t, tuple<UTypes...> const& u)
 	return !(t < u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<(tuple<TTypes...> const& t, UTuple const& u)
@@ -1494,7 +1494,7 @@ operator<(tuple<TTypes...> const& t, UTuple const& u)
 	return tuple_detail::tuple_less(t, u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator!=(tuple<TTypes...> const& t, UTuple const& u)
@@ -1502,7 +1502,7 @@ operator!=(tuple<TTypes...> const& t, UTuple const& u)
 	return !(t == u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>(tuple<TTypes...> const& t, UTuple const& u)
@@ -1510,7 +1510,7 @@ operator>(tuple<TTypes...> const& t, UTuple const& u)
 	return tuple_detail::tuple_less(u, t);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator<=(tuple<TTypes...> const& t, UTuple const& u)
@@ -1518,7 +1518,7 @@ operator<=(tuple<TTypes...> const& t, UTuple const& u)
 	return !(t > u);
 }
 
-template <typename... TTypes, HAMON_CONSTRAINED_PARAM(hamon::tuple_like, UTuple)>
+template <typename... TTypes, HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 HAMON_NODISCARD	// extension
 inline HAMON_CXX11_CONSTEXPR bool
 operator>=(tuple<TTypes...> const& t, UTuple const& u)
