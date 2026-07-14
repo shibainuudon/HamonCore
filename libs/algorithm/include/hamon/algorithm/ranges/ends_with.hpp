@@ -60,38 +60,19 @@ namespace detail
 {
 
 template <typename I1, typename S1, typename I2, typename S2, typename Pred, typename Proj1, typename Proj2>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept ends_withable =
+HAMON_CONCEPT_OR_BOOL ends_withable =
 	(hamon::forward_iterator<I1> || hamon::sized_sentinel_for<S1, I1>) &&
 	(hamon::forward_iterator<I2> || hamon::sized_sentinel_for<S2, I2>) &&
 	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>;
-#else
-using ends_withable = hamon::bool_constant<
-	(hamon::forward_iterator<I1> || hamon::sized_sentinel_for<S1, I1>) &&
-	(hamon::forward_iterator<I2> || hamon::sized_sentinel_for<S2, I2>) &&
-	hamon::indirectly_comparable<I1, I2, Pred, Proj1, Proj2>
->;
-#endif
 
 template <typename R1, typename R2, typename Pred, typename Proj1, typename Proj2>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept ends_withable_range =
+HAMON_CONCEPT_OR_BOOL ends_withable_range =
 	(ranges::forward_range<R1> || ranges::sized_range<R1>) &&
 	(ranges::forward_range<R2> || ranges::sized_range<R2>) &&
 	hamon::indirectly_comparable<
 		ranges::iterator_t<R1>,
 		ranges::iterator_t<R2>,
 		Pred, Proj1, Proj2>;
-#else
-using ends_withable_range =	hamon::bool_constant<
-	(ranges::forward_range<R1> || ranges::sized_range<R1>) &&
-	(ranges::forward_range<R2> || ranges::sized_range<R2>) &&
-	hamon::indirectly_comparable<
-		ranges::iterator_t<R1>,
-		ranges::iterator_t<R2>,
-		Pred, Proj1, Proj2>
->;
-#endif
 
 }	// namespace detail
 
@@ -112,7 +93,7 @@ struct ends_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		bool,
 		detail::ends_withable<I1, S1, I2, S2, Pred, Proj1, Proj2>)
 	{
@@ -143,7 +124,7 @@ struct ends_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		bool,
 		detail::ends_withable_range<R1, R2, Pred, Proj1, Proj2>)
 	{
