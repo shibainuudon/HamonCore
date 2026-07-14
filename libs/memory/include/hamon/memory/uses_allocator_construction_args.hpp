@@ -24,7 +24,7 @@ using std::uses_allocator_construction_args;
 #include <hamon/memory/detail/uses_allocator_construction_type.hpp>
 #include <hamon/concepts/detail/is_specialization_of_pair.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/pair/pair.hpp>
 #include <hamon/pair/piecewise_construct_t.hpp>
 #include <hamon/tuple/adl_get.hpp>
@@ -33,11 +33,8 @@ using std::uses_allocator_construction_args;
 #include <hamon/tuple/make_tuple.hpp>
 #include <hamon/tuple/tuple.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_detected.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/forward.hpp>
@@ -222,7 +219,7 @@ HAMON_DECLTYPE_RETURN(
 		hamon::forward_as_tuple(hamon::adl_get<0>(hamon::move(pr))),
 		hamon::forward_as_tuple(hamon::adl_get<1>(hamon::move(pr)))))
 
-template <typename T, typename Alloc, HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+template <typename T, typename Alloc, HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 	typename = hamon::enable_if_t<
 		hamon::detail::is_cv_pair<T>::value>,		// [allocator.uses.construction]/17
 	typename = hamon::enable_if_t<
@@ -305,15 +302,13 @@ template <typename T, typename Alloc, typename U,
 	typename = hamon::enable_if_t<
 		// [allocator.uses.construction]/20
 		hamon::detail::is_cv_pair<T>::value>,
-	typename = hamon::enable_if_t<hamon::disjunction<
+	typename = hamon::enable_if_t<
 		// [allocator.uses.construction]/20.1
-		hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<U>>,
+		hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<U>>::value ||
 		// [allocator.uses.construction]/20.2
-		hamon::conjunction<
-			hamon::negation<hamon::pair_like_t<U>>,
-			hamon::negation<uses_allocator_detail::convertible_to_const_pair_ref<U>>
-		>
-	>::value>
+		(!hamon::detail::pair_like<U> &&
+		 !uses_allocator_detail::convertible_to_const_pair_ref<U>::value)
+	>
 >
 HAMON_CXX11_CONSTEXPR auto
 uses_allocator_construction_args(Alloc const& alloc, U&& u) HAMON_NOEXCEPT

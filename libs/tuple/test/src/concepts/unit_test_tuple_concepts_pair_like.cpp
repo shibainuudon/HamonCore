@@ -19,15 +19,8 @@
 #  include <ranges>
 #endif
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_PAIR_LIKE_TEST_IMPL(B, ...)	\
-	static_assert(B == hamon::pair_like<__VA_ARGS__>, "");	\
-	static_assert(B == hamon::pair_like_t<__VA_ARGS__>::value, "")
-#else
-#  define HAMON_PAIR_LIKE_TEST_IMPL(B, ...)	\
-	static_assert(B == hamon::pair_like<__VA_ARGS__>::value, "");	\
-	static_assert(B == hamon::pair_like_t<__VA_ARGS__>::value, "")
-#endif
+#define HAMON_PAIR_LIKE_TEST_IMPL(B, ...)	\
+	static_assert(B == hamon::detail::pair_like<__VA_ARGS__>, "")
 
 #define HAMON_PAIR_LIKE_TEST(B, ...)	\
 	HAMON_PAIR_LIKE_TEST_IMPL(B, __VA_ARGS__);	\

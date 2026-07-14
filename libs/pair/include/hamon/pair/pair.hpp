@@ -27,7 +27,7 @@ using std::pair;
 #include <hamon/pair/detail/pair_constraint.hpp>
 #include <hamon/compare/common_comparison_category.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/tuple/tuple_fwd.hpp>
 #include <hamon/tuple/concepts/pair_like.hpp>
@@ -234,7 +234,7 @@ public:
 	pair(pair<U1, U2> const&&) = delete;
 
 	// pair(PairLike&& p)
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 		typename Constraint = PairLikeCtor<P>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr>
 	HAMON_CXX11_CONSTEXPR explicit(!Constraint::implicitly)
@@ -442,7 +442,7 @@ public:
 	pair(pair<U1, U2> const&&) = delete;
 
 	// pair(PairLike&& p)
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 		typename Constraint = PairLikeCtor<P>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<!Constraint::implicitly>* = nullptr>
@@ -452,7 +452,7 @@ public:
 		: pair(ctor_from_pair_tag{}, hamon::forward<P>(p))
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 		typename Constraint = PairLikeCtor<P>,
 		hamon::enable_if_t<Constraint::constructible>* = nullptr,
 		hamon::enable_if_t<Constraint::implicitly>* = nullptr>
@@ -622,7 +622,7 @@ public:
 	}
 
 	// operator=(P&&)
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 		typename Constraint = PairLikeAssign<P>,
 		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair&
@@ -637,7 +637,7 @@ public:
 	}
 
 	// operator=(P&&) const
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, P),
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, P),
 		typename Constraint = PairLikeAssignConst<P>,
 		hamon::enable_if_t<Constraint::assignable>* = nullptr>
 	HAMON_CXX14_CONSTEXPR pair const&

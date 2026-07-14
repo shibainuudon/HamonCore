@@ -8,7 +8,7 @@
 #define HAMON_PAIR_DETAIL_PAIR_CONSTRAINT_HPP
 
 #include <hamon/pair/pair_fwd.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/ranges/utility/detail/different_from.hpp>
 #include <hamon/tuple/adl_get.hpp>
@@ -181,7 +181,7 @@ struct pair_constraint
 			>::value;
 	};
 	
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, PairLike)>
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, PairLike)>
 	struct PairLikeCtor
 	{
 		// [pairs.pair]/15
@@ -328,7 +328,7 @@ struct pair_constraint
 			>::value;
 	};
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, PairLike)>
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, PairLike)>
 	struct PairLikeAssign
 	{
 		using U1 = decltype(hamon::adl_get<0>(hamon::declval<PairLike>()));
@@ -350,7 +350,7 @@ struct pair_constraint
 			>::value;
 	};
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::pair_like, PairLike)>
+	template <HAMON_CONSTRAINT(hamon::detail::pair_like, PairLike)>
 	struct PairLikeAssignConst
 	{
 		using U1 = decltype(hamon::adl_get<0>(hamon::declval<PairLike>()));

@@ -28,7 +28,7 @@ template <typename T, typename U, typename V>
 concept pair_like_convertible_from =
 	!hamon::ranges::range<T> &&
 	!hamon::is_reference<T>::value &&
-	hamon::pair_like<T> &&
+	hamon::detail::pair_like<T> &&
 	hamon::constructible_from<T, U, V> &&
 	ranges::detail::convertible_to_non_slicing<U, hamon::tuple_element_t<0, T>> &&
 	hamon::convertible_to<V, hamon::tuple_element_t<1, T>>;
@@ -42,7 +42,7 @@ private:
 	template <typename T2, typename U2, typename V2,
 		typename = hamon::enable_if_t<!ranges::range<T2>>,
 		typename = hamon::enable_if_t<!hamon::is_reference<T2>::value>,
-		typename = hamon::enable_if_t<hamon::pair_like<T2>::value>,
+		typename = hamon::enable_if_t<hamon::detail::pair_like<T2>>,
 		typename = hamon::enable_if_t<hamon::constructible_from<T2, U2, V2>>,
 		typename E0 = hamon::tuple_element_t<0, T2>,
 		typename = hamon::enable_if_t<ranges::detail::convertible_to_non_slicing<U2, E0>::value>,

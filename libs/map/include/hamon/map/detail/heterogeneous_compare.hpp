@@ -33,7 +33,7 @@ public:
 
 private:
 	template <typename T, typename = hamon::enable_if_t<
-		hamon::pair_like_t<hamon::remove_cvref_t<T>>::value>>
+		hamon::detail::pair_like<hamon::remove_cvref_t<T>>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	get_key_impl(T const& t, hamon::detail::overload_priority<1>) const
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(

@@ -23,7 +23,7 @@ namespace detail {
 	{ return __VA_ARGS__; }
 
 template <typename T, typename = hamon::enable_if_t<
-	hamon::pair_like_t<hamon::remove_cvref_t<T>>::value>>
+	hamon::detail::pair_like<hamon::remove_cvref_t<T>>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 map_get_key_impl(T const& t, hamon::detail::overload_priority<1>)
 HAMON_NOEXCEPT_DECLTYPE_RETURN(

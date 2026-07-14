@@ -10,27 +10,23 @@
 #include <hamon/tuple/tuple_size.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-namespace hamon {
-
 // [tuple.like], concept tuple-like
-template <typename T>
-concept pair_like =
-	hamon::detail::tuple_like<T> && hamon::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 
 namespace hamon {
 namespace detail {
+
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+
+template <typename T>
+HAMON_CONCEPT_OR_BOOL pair_like =
+	hamon::detail::tuple_like<T> &&
+	hamon::tuple_size_v<hamon::remove_cvref_t<T>> == 2;
+
+#else
 
 template <typename T>
 struct pair_like_impl
@@ -49,27 +45,13 @@ public:
 	using type = decltype(test<T>(0));
 };
 
+template <typename T>
+HAMON_CONCEPT_OR_BOOL pair_like =
+	detail::pair_like_impl<T>::type::value;
+
+#endif
+
 }	// namespace detail
-
-// [tuple.like], concept tuple-like
-template <typename T>
-using pair_like =
-	typename detail::pair_like_impl<T>::type;
-
-}	// namespace hamon
-
-#endif
-
-namespace hamon {
-
-template <typename T>
-using pair_like_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::pair_like<T>>;
-#else
-	hamon::pair_like<T>;
-#endif
-
 }	// namespace hamon
 
 #endif // HAMON_TUPLE_CONCEPTS_PAIR_LIKE_HPP
