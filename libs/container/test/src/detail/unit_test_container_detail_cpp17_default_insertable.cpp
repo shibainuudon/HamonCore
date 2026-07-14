@@ -13,8 +13,8 @@ namespace hamon_container_test
 namespace cpp17_default_insertable_test
 {
 
-static_assert( hamon::detail::cpp17_default_insertable_t<int, hamon::allocator<int>>::value, "");
-static_assert( hamon::detail::cpp17_default_insertable_t<float, hamon::allocator<float>>::value, "");
+static_assert( hamon::detail::cpp17_default_insertable<int, hamon::allocator<int>>, "");
+static_assert( hamon::detail::cpp17_default_insertable<float, hamon::allocator<float>>, "");
 
 struct S0
 {
@@ -31,9 +31,9 @@ struct S1
 };
 
 #if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
-static_assert(!hamon::detail::cpp17_default_insertable_t<S0, hamon::allocator<S0>>::value, "");
+static_assert(!hamon::detail::cpp17_default_insertable<S0, hamon::allocator<S0>>, "");
 #endif
-static_assert( hamon::detail::cpp17_default_insertable_t<S1, hamon::allocator<S1>>::value, "");
+static_assert( hamon::detail::cpp17_default_insertable<S1, hamon::allocator<S1>>, "");
 
 }	// namespace cpp17_default_insertable_test
 

@@ -117,7 +117,7 @@ public:
 		: m_allocator(a)
 	{
 		// [hive.cons]/5
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<T, allocator_type>, "");
 
 		// [hive.cons]/6
 		m_impl.Reserve(m_allocator, n);
@@ -133,7 +133,7 @@ public:
 		, m_impl(block_limits)
 	{
 		// [hive.cons]/5
-		static_assert(hamon::detail::cpp17_default_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<T, allocator_type>, "");
 
 		// [hive.cons]/6
 		m_impl.Reserve(m_allocator, n);

@@ -112,7 +112,7 @@ public:
 		: m_allocator(a)
 	{
 		// [list.cons]/3
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		// [list.cons]/4
 		m_impl.insert_n(m_allocator, m_impl.tail(), n);	// may throw
@@ -452,7 +452,7 @@ public:
 	resize(size_type sz)
 	{
 		// [list.capacity]/1
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		// [list.capacity]/2
 		m_impl.resize(m_allocator, sz);	// may throw

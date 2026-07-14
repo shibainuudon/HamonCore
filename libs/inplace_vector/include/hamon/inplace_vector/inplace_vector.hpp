@@ -88,7 +88,7 @@ public:
 	inplace_vector(size_type n)
 	{
 		// [inplace.vector.cons]/1
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, hamon::allocator<value_type>>, "");
 
 		// [inplace.vector.cons]/2
 		this->AppendN(n);
@@ -329,7 +329,7 @@ public:
 	void resize(size_type sz)
 	{
 		// [inplace.vector.capacity]/2
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, hamon::allocator<value_type>>, "");
 
 		this->Resize(sz);
 	}

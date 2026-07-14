@@ -97,7 +97,7 @@ public:
 		: m_allocator(a)
 	{
 		// [forward.list.cons]/3
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		// [forward.list.cons]/4
 		m_impl.insert_n_after(m_allocator, this->before_begin(), n);
@@ -585,7 +585,7 @@ public:
 	void resize(size_type sz)
 	{
 		// [forward.list.modifiers]/33
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		// [forward.list.modifiers]/34
 		m_impl.resize(m_allocator, sz);

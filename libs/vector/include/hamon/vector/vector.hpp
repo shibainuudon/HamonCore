@@ -141,7 +141,7 @@ public:
 		: m_allocator(a)
 	{
 		// [vector.cons]/3
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		// [vector.cons]/4
 		this->resize(n);
@@ -509,7 +509,7 @@ public:
 	{
 		// [vector.capacity]/14
 		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
-		static_assert(hamon::detail::cpp17_default_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_default_insertable<value_type, allocator_type>, "");
 
 		m_impl.Resize(m_allocator, sz);
 	}
