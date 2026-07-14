@@ -30,7 +30,6 @@ using std::ranges::shuffle;
 #include <hamon/algorithm/shuffle.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/and.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>

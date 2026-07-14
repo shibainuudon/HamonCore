@@ -31,7 +31,6 @@ using std::ranges::remove;
 #include <hamon/algorithm/ranges/remove_if.hpp>
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
-#include <hamon/concepts/detail/and.hpp>
 #include <hamon/functional/identity.hpp>
 #include <hamon/functional/ranges/equal_to.hpp>
 #include <hamon/iterator/concepts/permutable.hpp>
