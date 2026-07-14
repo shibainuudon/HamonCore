@@ -25,7 +25,6 @@ using std::move_sentinel;
 #include <hamon/concepts/semiregular.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -41,27 +40,13 @@ namespace hamon
 namespace detail
 {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename From, typename To>
-concept move_sentinel_constructible_from =
+HAMON_CONCEPT_OR_BOOL move_sentinel_constructible_from =
 	hamon::convertible_to<From const&, To>;
 
 template <typename From, typename To>
-concept move_sentinel_assignable_from =
+HAMON_CONCEPT_OR_BOOL move_sentinel_assignable_from =
 	hamon::assignable_from<To&, From const&>;
-
-#else
-
-template <typename From, typename To>
-using move_sentinel_constructible_from =
-	hamon::bool_constant<hamon::convertible_to<From const&, To>>;
-
-template <typename From, typename To>
-using move_sentinel_assignable_from =
-	hamon::bool_constant<hamon::assignable_from<To&, From const&>>;
-
-#endif
 
 }	// namespace detail
 
@@ -76,12 +61,12 @@ public:
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Sent>::value)	// extension
 		: m_last(hamon::move(s)) {}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::move_sentinel_constructible_from, Sent, S2)>
+	template <HAMON_CONSTRAINT(detail::move_sentinel_constructible_from, Sent, S2)>
 	HAMON_CXX14_CONSTEXPR move_sentinel(move_sentinel<S2> const& s)
 	HAMON_NOEXCEPT_IF((hamon::is_nothrow_constructible<Sent, S2 const&>::value))	// extension
 		: m_last(s.base()) {}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::move_sentinel_assignable_from, Sent, S2)>
+	template <HAMON_CONSTRAINT(detail::move_sentinel_assignable_from, Sent, S2)>
 	HAMON_CXX14_CONSTEXPR move_sentinel&
 	operator=(move_sentinel<S2> const& s)
 	HAMON_NOEXCEPT_IF((hamon::is_nothrow_assignable<Sent&, S2 const&>::value))	// extension

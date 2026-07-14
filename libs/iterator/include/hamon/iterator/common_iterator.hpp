@@ -85,24 +85,21 @@ namespace common_iterator_detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept has_arrow =
+HAMON_CONCEPT_OR_BOOL has_arrow =
 	requires(I const& i) { i.operator->(); };
-
-template <typename I>
-using has_arrow_t = hamon::bool_constant<has_arrow<I>>;
 
 #else
 
 template <typename I, typename = void>
-struct has_arrow
+struct has_arrow_impl
 	: public hamon::false_type {};
 
 template <typename I>
-struct has_arrow<I, hamon::void_t<decltype(hamon::declval<I const&>().operator->())>>
+struct has_arrow_impl<I, hamon::void_t<decltype(hamon::declval<I const&>().operator->())>>
 	: public hamon::true_type {};
 
 template <typename I>
-using has_arrow_t = has_arrow<I>;
+HAMON_CONCEPT_OR_BOOL has_arrow = has_arrow_impl<I>::value;
 
 #endif
 
@@ -111,25 +108,22 @@ using has_arrow_t = has_arrow<I>;
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept has_post_increment =
+HAMON_CONCEPT_OR_BOOL has_post_increment =
 	requires(I& i) {{ *i++ } -> hamon::detail::can_reference; };
-
-template <typename I>
-using has_post_increment_t = hamon::bool_constant<has_post_increment<I>>;
 
 #else
 
 template <typename I, typename = void>
-struct has_post_increment
+struct has_post_increment_impl
 	: public hamon::false_type {};
 
 template <typename I>
-struct has_post_increment<I, hamon::void_t<decltype(*hamon::declval<I&>()++)>>
+struct has_post_increment_impl<I, hamon::void_t<decltype(*hamon::declval<I&>()++)>>
 	: public hamon::bool_constant<
 		hamon::detail::can_reference<decltype(*hamon::declval<I&>()++)>> {};
 
 template <typename I>
-using has_post_increment_t = has_post_increment<I>;
+HAMON_CONCEPT_OR_BOOL has_post_increment = has_post_increment_impl<I>::value;
 
 #endif
 
@@ -282,7 +276,7 @@ private:
 	template <typename I2 = I,
 		typename = hamon::enable_if_t<
 			hamon::is_pointer<I2>::value ||
-			hamon::common_iterator_detail::has_arrow_t<I2>::value>>
+			hamon::common_iterator_detail::has_arrow<I2>>>
 	HAMON_CXX11_CONSTEXPR auto
 	arrow_impl(hamon::detail::overload_priority<2>) const
 	-> I
@@ -337,7 +331,7 @@ public:
 		// [common.iter.access]/3
 		typename = hamon::enable_if_t<
 			hamon::indirectly_readable<I2 const> &&
-			(hamon::common_iterator_detail::has_arrow_t<I2>::value ||
+			(hamon::common_iterator_detail::has_arrow<I2> ||
 			 hamon::is_reference<hamon::iter_reference_t<I2>>::value ||
 			 hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>>)
 		>>
@@ -376,7 +370,7 @@ private:
 
 	template <typename I2 = I,
 		typename = hamon::enable_if_t<
-			common_iterator_detail::has_post_increment_t<I2>::value ||
+			common_iterator_detail::has_post_increment<I2> ||
 			!(hamon::indirectly_readable<I2> &&
 			  hamon::constructible_from<hamon::iter_value_t<I2>, hamon::iter_reference_t<I2>> &&
 			  hamon::move_constructible<hamon::iter_value_t<I2>>)>>
@@ -554,27 +548,24 @@ namespace common_iterator_detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept denotes_forward_iter =
+HAMON_CONCEPT_OR_BOOL denotes_forward_iter =
 	requires { typename hamon::iterator_traits<I>::iterator_category; } &&
 	hamon::derived_from<typename hamon::iterator_traits<I>::iterator_category, hamon::forward_iterator_tag>;
-
-template <typename I>
-using denotes_forward_iter_t = hamon::bool_constant<denotes_forward_iter<I>>;
 
 #else
 
 template <typename I, typename = void>
-struct denotes_forward_iter
+struct denotes_forward_iter_impl
 	: public hamon::false_type {};
 
 template <typename I>
-struct denotes_forward_iter<I, hamon::void_t<typename hamon::iterator_traits<I>::iterator_category>>
+struct denotes_forward_iter_impl<I, hamon::void_t<typename hamon::iterator_traits<I>::iterator_category>>
 	: public hamon::bool_constant<
 		hamon::derived_from<typename hamon::iterator_traits<I>::iterator_category, hamon::forward_iterator_tag>
 >{};
 
 template <typename I>
-using denotes_forward_iter_t = denotes_forward_iter<I>;
+HAMON_CONCEPT_OR_BOOL denotes_forward_iter = denotes_forward_iter_impl<I>::value;
 
 #endif
 
@@ -583,7 +574,7 @@ template <typename I, typename S,
 struct iterator_category_base
 {
 	using iterator_category = hamon::conditional_t<
-		denotes_forward_iter_t<I>::value,
+		denotes_forward_iter<I>,
 		hamon::forward_iterator_tag,
 		hamon::input_iterator_tag
 	>;
@@ -596,7 +587,7 @@ struct iterator_category_base<I, S, false>
 
 // [common.iter.types]/2.2
 template <typename I, typename S,
-	bool = hamon::common_iterator_detail::has_arrow_t<hamon::common_iterator<I, S>>::value>
+	bool = hamon::common_iterator_detail::has_arrow<hamon::common_iterator<I, S>>>
 struct pointer
 {
 	using type = void;

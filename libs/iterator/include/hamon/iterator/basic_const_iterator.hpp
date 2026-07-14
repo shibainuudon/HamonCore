@@ -65,7 +65,6 @@ using std::basic_const_iterator;
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_pointer.hpp>
 #include <hamon/utility/declval.hpp>
@@ -84,11 +83,7 @@ struct is_const_iterator : public hamon::false_type {};
 
 // [const.iterators.iterator]/1
 template <typename I>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept not_a_const_iterator = !hamon::detail::is_const_iterator<I>::value;
-#else
-using not_a_const_iterator = hamon::negation<hamon::detail::is_const_iterator<I>>;
-#endif
+HAMON_CONCEPT_OR_BOOL not_a_const_iterator = !hamon::detail::is_const_iterator<I>::value;
 
 template <HAMON_CONSTRAINT(hamon::indirectly_readable, I)>
 using iter_const_rvalue_reference_t =
@@ -554,7 +549,7 @@ public:
 	}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& x, basic_const_iterator const& y)
@@ -565,7 +560,7 @@ public:
 		return x < y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& x, basic_const_iterator const& y)
@@ -576,7 +571,7 @@ public:
 		return x > y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& x, basic_const_iterator const& y)
@@ -587,7 +582,7 @@ public:
 		return x <= y.m_current;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& x, basic_const_iterator const& y)
@@ -651,7 +646,7 @@ public:
 // フリー関数にする。
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sentinel_for<S, Iterator>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator==(S const& x, basic_const_iterator<Iterator> const& y)
@@ -662,7 +657,7 @@ HAMON_NOEXCEPT_IF_EXPR(x == hamon::declval<Iterator const&>())	// noexcept as an
 
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sentinel_for<S, Iterator>>>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 operator!=(S const& x, basic_const_iterator<Iterator> const& y)
@@ -677,7 +672,7 @@ HAMON_NOEXCEPT_IF_EXPR(x != hamon::declval<Iterator const&>())	// noexcept as an
 // フリー関数にする。
 template <
 	HAMON_CONSTRAINT(hamon::input_iterator, Iterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::not_a_const_iterator, S),
+	HAMON_CONSTRAINT(hamon::detail::not_a_const_iterator, S),
 	typename = hamon::enable_if_t<hamon::sized_sentinel_for<S, Iterator>>>
 //	requires hamon::sized_sentinel_for<S, Iterator>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension

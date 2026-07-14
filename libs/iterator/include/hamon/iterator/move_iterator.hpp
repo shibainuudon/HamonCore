@@ -46,7 +46,6 @@ using std::move_iterator;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/compare/compare_three_way_result.hpp>
@@ -118,30 +117,15 @@ using move_iter_concept =
 	>>>;
 
 template <typename U, typename Iter>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept move_iter_conv_constructible =
+HAMON_CONCEPT_OR_BOOL move_iter_conv_constructible =
 	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter>;
-#else
-using move_iter_conv_constructible = hamon::bool_constant<
-	(!hamon::is_same<U, Iter>::value) &&
-	hamon::convertible_to<U const&, Iter>
->;
-#endif
 
 template <typename U, typename Iter>
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-concept move_iter_conv_assignable =
+HAMON_CONCEPT_OR_BOOL move_iter_conv_assignable =
 	(!hamon::is_same<U, Iter>::value) &&
 	hamon::convertible_to<U const&, Iter> &&
 	hamon::assignable_from<Iter&, U const&>;
-#else
-using move_iter_conv_assignable = hamon::bool_constant<
-	(!hamon::is_same<U, Iter>::value) &&
-	hamon::convertible_to<U const&, Iter> &&
-	hamon::assignable_from<Iter&, U const&>
->;
-#endif
 
 }	// namespace detail
 
@@ -178,13 +162,13 @@ public:
 	HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<Iter>::value)	// extension
 		: m_current(hamon::move(i)) {}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_constructible, Iter, U)>
+	template <HAMON_CONSTRAINT(detail::move_iter_conv_constructible, Iter, U)>
 	HAMON_CXX14_CONSTEXPR
 	move_iterator(move_iterator<U> const& u)
 	HAMON_NOEXCEPT_IF((hamon::is_nothrow_constructible<Iter, U const&>::value))	// extension
 		: m_current(u.base()) {}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::move_iter_conv_assignable, Iter, U)>
+	template <HAMON_CONSTRAINT(detail::move_iter_conv_assignable, Iter, U)>
 	HAMON_CXX14_CONSTEXPR move_iterator&
 	operator=(move_iterator<U> const& u)
 	HAMON_NOEXCEPT_IF((hamon::is_nothrow_assignable<Iter&, U const&>::value))	// extension
