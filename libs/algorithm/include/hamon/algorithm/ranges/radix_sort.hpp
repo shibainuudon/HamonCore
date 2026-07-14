@@ -40,7 +40,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Iter, typename Tmp, typename Proj>
-concept radix_sortable =
+HAMON_CONCEPT_OR_BOOL radix_sortable =
 	hamon::permutable<Iter> &&
 	hamon::indirectly_swappable<Iter, Tmp> &&
 	hamon::unsigned_integral<
@@ -72,8 +72,8 @@ public:
 };
 
 template <typename Iter, typename Tmp, typename Proj>
-using radix_sortable =
-	typename detail::radix_sortable_impl<Iter, Tmp, Proj>::type;
+HAMON_CONCEPT_OR_BOOL radix_sortable =
+	detail::radix_sortable_impl<Iter, Tmp, Proj>::type::value;
 
 #endif
 
@@ -89,7 +89,7 @@ struct radix_sort_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, Tmp tmp, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		Iter,
 		hamon::ranges::detail::radix_sortable<Iter, Tmp, Proj>)
 	{
@@ -108,7 +108,7 @@ struct radix_sort_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Tmp tmp, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::ranges::detail::radix_sortable<
 			ranges::iterator_t<Range>, Tmp, Proj
