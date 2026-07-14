@@ -25,7 +25,7 @@ using std::ranges::reserve_hint;
 #include <hamon/ranges/detail/has_member_reserve_hint.hpp>
 #include <hamon/ranges/detail/has_adl_reserve_hint.hpp>
 #include <hamon/ranges/size.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/utility/forward.hpp>
@@ -52,14 +52,14 @@ private:
 			ranges::size(t))
 
 	// [range.prim.size.hint]/2.2
-	template <HAMON_CONSTRAINED_PARAM(has_member_reserve_hint, T)>
+	template <HAMON_CONSTRAINT(has_member_reserve_hint, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			HAMON_AUTO_CAST(t.reserve_hint()))
 
 	// [range.prim.size.hint]/2.3
-	template <HAMON_CONSTRAINED_PARAM(has_adl_reserve_hint, T)>
+	template <HAMON_CONSTRAINT(has_adl_reserve_hint, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
