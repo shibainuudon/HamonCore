@@ -148,7 +148,7 @@ public:
 		: m_allocator(a)
 	{
 		// [hive.cons]/8
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		// [hive.cons]/9
 		m_impl.InsertRange(m_allocator, hamon::views::repeat(hamon::cref(value), n));
@@ -160,7 +160,7 @@ public:
 		, m_impl(block_limits)
 	{
 		// [hive.cons]/8
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		// [hive.cons]/9
 		m_impl.InsertRange(m_allocator, hamon::views::repeat(hamon::cref(value), n));
@@ -222,7 +222,7 @@ public:
 		, m_impl(x.block_capacity_limits())
 	{
 		// [hive.cons]/15
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		m_impl.InsertRange(m_allocator, x);	// may throw
 	}
@@ -239,7 +239,7 @@ public:
 		, m_impl(x.block_capacity_limits())
 	{
 		// [hive.cons]/15
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		m_impl.InsertRange(m_allocator, x);	// may throw
 	}
@@ -284,7 +284,7 @@ public:
 		: m_allocator(a)
 	{
 		// [hive.cons]/22
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		m_impl.InsertRange(m_allocator, il);
 	}
@@ -295,7 +295,7 @@ public:
 		, m_impl(block_limits)
 	{
 		// [hive.cons]/22
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		m_impl.InsertRange(m_allocator, il);
 	}
@@ -335,7 +335,7 @@ public:
 	operator=(hive const& x)
 	{
 		// [hive.cons]/25
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<T>, "");
 
 		if (hamon::addressof(x) == this)
@@ -408,7 +408,7 @@ public:
 	operator=(std::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<T>, "");
 
 		// [sequence.reqmts]/18
@@ -447,7 +447,7 @@ public:
 	assign(size_type n, T const& t)
 	{
 		// [sequence.reqmts]/67
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<T>, "");
 
 		m_impl.AssignRange(m_allocator, hamon::views::repeat(hamon::cref(t), n));
@@ -723,7 +723,7 @@ public:
 	insert(size_type n, T const& x)
 	{
 		// [hive.modifiers]/11
-		static_assert(hamon::detail::cpp17_copy_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<T, allocator_type>, "");
 
 		m_impl.InsertRange(m_allocator, hamon::views::repeat(hamon::cref(x), n));
 	}

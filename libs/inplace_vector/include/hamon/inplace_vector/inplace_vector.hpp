@@ -98,7 +98,7 @@ public:
 	inplace_vector(size_type n, T const& value)
 	{
 		// [inplace.vector.cons]/4
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 
 		// [inplace.vector.cons]/5
 		this->AppendN(n, value);
@@ -156,7 +156,7 @@ public:
 	operator=(std::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/18
@@ -207,7 +207,7 @@ public:
 	assign(size_type n, T const& u)
 	{
 		// [sequence.reqmts]/67
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (n > this->capacity())
@@ -338,7 +338,7 @@ public:
 	void resize(size_type sz, T const& c)
 	{
 		// [inplace.vector.capacity]/5
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 
 		this->Resize(sz, c);
 	}
@@ -464,7 +464,7 @@ public:
 	reference push_back(T const& x)
 	{
 		// [sequence.reqmts]/102
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 
 		return this->emplace_back(x);
 	}
@@ -603,7 +603,7 @@ public:
 	insert(const_iterator position, T const& x)
 	{
 		// [sequence.reqmts]/25
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		return this->emplace(position, x);
@@ -623,7 +623,7 @@ public:
 	insert(const_iterator position, size_type n, T const& x)
 	{
 		// [sequence.reqmts]/33
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, hamon::allocator<value_type>>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, hamon::allocator<value_type>>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		auto const mid = this->end();

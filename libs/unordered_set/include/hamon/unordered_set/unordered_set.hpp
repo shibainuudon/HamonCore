@@ -342,7 +342,7 @@ public:
 		: unordered_set(x.bucket_count(), x.hash_function(), x.key_eq(), a)
 	{
 		// [container.alloc.reqmts]/13
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		m_impl.copy_from(m_allocator, x.m_impl);	// may throw
 	}
@@ -384,7 +384,7 @@ public:
 	operator=(unordered_set const& x)
 	{
 		// [container.alloc.reqmts]/22
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (hamon::addressof(x) == this)
@@ -458,8 +458,7 @@ public:
 	HAMON_CXX14_CONSTEXPR unordered_set&
 	operator=(std::initializer_list<value_type> il)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/69");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/69");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "[unord.req.general]/69");
 
 		this->clear();
@@ -570,8 +569,7 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& obj)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/92");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/92");
 
 		// [unord.req.general]/93
 		return this->emplace(obj);	// may throw
@@ -610,8 +608,7 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, value_type const& obj)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/102");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/102");
 
 		// [unord.req.general]/103
 		return this->emplace_hint(hint, obj);	// may throw

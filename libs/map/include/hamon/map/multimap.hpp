@@ -225,7 +225,7 @@ public:
 		: m_allocator(a)
 	{
 		// [container.alloc.reqmts]/13
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		m_impl.copy_from(m_allocator, x.m_impl);
 	}
@@ -263,7 +263,7 @@ public:
 	operator=(multimap const& x)
 	{
 		// [container.alloc.reqmts]/22
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		//static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (hamon::addressof(x) == this)
@@ -331,7 +331,7 @@ public:
 	operator=(std::initializer_list<value_type> il)
 	{
 		// [associative.reqmts.general]/38
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		//static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		this->clear();
@@ -466,8 +466,7 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(value_type const& x)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[associative.reqmts.general]/67");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[associative.reqmts.general]/67");
 
 		// [associative.reqmts.general]/68
 		return this->emplace(x);
@@ -496,8 +495,7 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable_t<
-			value_type, allocator_type>::value, "[associative.reqmts.general]/71");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[associative.reqmts.general]/71");
 
 		// [associative.reqmts.general]/72
 		return this->emplace_hint(position, x);

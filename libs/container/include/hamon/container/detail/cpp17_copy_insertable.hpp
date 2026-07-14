@@ -22,7 +22,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename A>
-concept cpp17_copy_insertable =
+HAMON_CONCEPT_OR_BOOL cpp17_copy_insertable =
 	hamon::detail::cpp17_move_insertable<T, A> &&
 	requires(A& m, T* p, T const& v)
 	{
@@ -50,17 +50,9 @@ public:
 };
 
 template <typename T, typename A>
-using cpp17_copy_insertable =
-	typename cpp17_copy_insertable_impl<T, A>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_copy_insertable =
+	cpp17_copy_insertable_impl<T, A>::type::value;
 
-#endif
-
-template <typename T, typename A>
-using cpp17_copy_insertable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_copy_insertable<T, A>>;
-#else
-	hamon::detail::cpp17_copy_insertable<T, A>;
 #endif
 
 }	// namespace detail

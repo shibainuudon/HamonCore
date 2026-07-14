@@ -13,8 +13,8 @@ namespace hamon_container_test
 namespace cpp17_copy_insertable_test
 {
 
-static_assert( hamon::detail::cpp17_copy_insertable_t<int, hamon::allocator<int>>::value, "");
-static_assert( hamon::detail::cpp17_copy_insertable_t<float, hamon::allocator<float>>::value, "");
+static_assert( hamon::detail::cpp17_copy_insertable<int, hamon::allocator<int>>, "");
+static_assert( hamon::detail::cpp17_copy_insertable<float, hamon::allocator<float>>, "");
 
 struct S0
 {
@@ -41,11 +41,11 @@ struct S3
 };
 
 #if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
-static_assert(!hamon::detail::cpp17_copy_insertable_t<S0, hamon::allocator<S0>>::value, "");
-static_assert(!hamon::detail::cpp17_copy_insertable_t<S1, hamon::allocator<S1>>::value, "");
-static_assert(!hamon::detail::cpp17_copy_insertable_t<S2, hamon::allocator<S2>>::value, "");
+static_assert(!hamon::detail::cpp17_copy_insertable<S0, hamon::allocator<S0>>, "");
+static_assert(!hamon::detail::cpp17_copy_insertable<S1, hamon::allocator<S1>>, "");
+static_assert(!hamon::detail::cpp17_copy_insertable<S2, hamon::allocator<S2>>, "");
 #endif
-static_assert( hamon::detail::cpp17_copy_insertable_t<S3, hamon::allocator<S3>>::value, "");
+static_assert( hamon::detail::cpp17_copy_insertable<S3, hamon::allocator<S3>>, "");
 
 }	// namespace cpp17_copy_insertable_test
 

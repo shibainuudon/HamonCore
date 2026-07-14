@@ -152,7 +152,7 @@ public:
 		: m_allocator(a)
 	{
 		// [vector.cons]/6
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [vector.cons]/7
 		this->resize(n, value);
@@ -212,7 +212,7 @@ public:
 		: m_allocator(a)
 	{
 		// [container.alloc.reqmts]/13
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		this->append_range(x);
 	}
@@ -254,7 +254,7 @@ public:
 	operator=(vector const& x)
 	{
 		// [container.alloc.reqmts]/22
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		if (hamon::addressof(x) == this)
@@ -332,7 +332,7 @@ public:
 	operator=(std::initializer_list<T> il)
 	{
 		// [sequence.reqmts]/17
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/18
@@ -385,7 +385,7 @@ public:
 	assign(size_type n, T const& u)
 	{
 		// [sequence.reqmts]/67
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		// [sequence.reqmts]/68
@@ -517,7 +517,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void resize(size_type sz, T const& c)
 	{
 		// [vector.capacity]/17
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		m_impl.Resize(m_allocator, sz, c);
 	}
@@ -637,7 +637,7 @@ public:
 	HAMON_CXX14_CONSTEXPR void push_back(T const& x)
 	{
 		// [sequence.reqmts]/102
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		this->emplace_back(x);
 	}
@@ -685,7 +685,7 @@ public:
 	insert(const_iterator position, T const& x)
 	{
 		// [sequence.reqmts]/25
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		return this->emplace(position, x);
@@ -705,7 +705,7 @@ public:
 	insert(const_iterator position, size_type n, T const& x)
 	{
 		// [sequence.reqmts]/33
-		static_assert(hamon::detail::cpp17_copy_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		auto const pos_offset = position - this->begin();
