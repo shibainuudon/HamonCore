@@ -16,7 +16,6 @@
 
 #include <hamon/algorithm/is_permutation.hpp>
 #include <hamon/cmath/ceil.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
@@ -1147,7 +1146,7 @@ private:
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
+	HAMON_CONSTRAINT_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<hamon::detail::iter_value_type<InputIterator>>),
 	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred,
 		hamon::equal_to<hamon::detail::iter_value_type<InputIterator>>),
@@ -1176,7 +1175,7 @@ unordered_multiset(
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),
+	HAMON_CONSTRAINT(hamon::detail::is_hasher, Hash),
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 unordered_multiset(
 	InputIterator, InputIterator,
@@ -1200,7 +1199,7 @@ unordered_multiset(InputIterator, InputIterator, Allocator)
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
+	HAMON_CONSTRAINT_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<ranges::range_value_t<R>>),
 	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred,
 		hamon::equal_to<ranges::range_value_t<R>>),
@@ -1227,7 +1226,7 @@ unordered_multiset(
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),
+	HAMON_CONSTRAINT(hamon::detail::is_hasher, Hash),
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 unordered_multiset(
 	hamon::from_range_t, R&&,
@@ -1252,7 +1251,7 @@ unordered_multiset(
 
 template <
 	typename T,
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash, hamon::hash<T>),
+	HAMON_CONSTRAINT_D(hamon::detail::is_hasher, Hash, hamon::hash<T>),
 	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred, hamon::equal_to<T>),
 	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<T>),
 	typename SizeType = typename hamon::allocator_traits<Allocator>::size_type>
@@ -1269,7 +1268,7 @@ unordered_multiset(std::initializer_list<T>, SizeType, Allocator)
 ->unordered_multiset<T, hamon::hash<T>, hamon::equal_to<T>, Allocator>;
 
 template <typename T,
-	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),
+	HAMON_CONSTRAINT(hamon::detail::is_hasher, Hash),
 	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator),
 	typename SizeType = typename hamon::allocator_traits<Allocator>::size_type>
 unordered_multiset(std::initializer_list<T>, SizeType, Hash, Allocator)
