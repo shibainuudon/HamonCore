@@ -1469,9 +1469,9 @@ template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),																// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<hamon::detail::iter_key_type<InputIterator>>),				// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred,
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred,
 		hamon::equal_to<hamon::detail::iter_key_type<InputIterator>>),			// [unord.req.general]/248.4
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator,
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator,
 		hamon::allocator<hamon::detail::iter_to_alloc_type<InputIterator>>)>	// [unord.req.general]/248.2
 unordered_map(
 	InputIterator, InputIterator,
@@ -1484,7 +1484,7 @@ unordered_map(
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_map(
 	InputIterator, InputIterator,
 	hamon::detail::deduced_size_type_t<Allocator>, Allocator)
@@ -1498,7 +1498,7 @@ unordered_map(
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),						// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_map(
 	InputIterator, InputIterator,
 	hamon::detail::deduced_size_type_t<Allocator>,
@@ -1512,7 +1512,7 @@ unordered_map(
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),	// [unord.req.general]/248.1
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>			// [unord.req.general]/248.2
 unordered_map(InputIterator, InputIterator, Allocator)
 ->unordered_map<
 	hamon::detail::iter_key_type<InputIterator>,
@@ -1525,9 +1525,9 @@ template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash,
 		hamon::hash<hamon::detail::range_key_type<R>>),						// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred,
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred,
 		hamon::equal_to<hamon::detail::range_key_type<R>>),					// [unord.req.general]/248.4
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator,
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator,
 		hamon::allocator<hamon::detail::range_to_alloc_type<R>>)>			// [unord.req.general]/248.2
 unordered_map(
 	hamon::from_range_t, R&&,
@@ -1540,7 +1540,7 @@ unordered_map(
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
 	hamon::from_range_t, R&&,
 	hamon::detail::deduced_size_type_t<Allocator>,
@@ -1555,7 +1555,7 @@ unordered_map(
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),				// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
 	hamon::from_range_t, R&&,
 	hamon::detail::deduced_size_type_t<Allocator>,
@@ -1569,7 +1569,7 @@ unordered_map(
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(hamon::from_range_t, R&&, Allocator)
 ->unordered_map<
 	hamon::detail::range_key_type<R>,
@@ -1581,9 +1581,9 @@ unordered_map(hamon::from_range_t, R&&, Allocator)
 template <
 	typename Key, typename T,
 	HAMON_CONSTRAINED_PARAM_D(hamon::detail::is_hasher, Hash, hamon::hash<Key>),					// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Pred, hamon::equal_to<Key>),		// [unord.req.general]/248.4
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Pred, hamon::equal_to<Key>),		// [unord.req.general]/248.4
 	typename Pair = hamon::pair<Key const, T>,
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Pair>)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Pair>)>	// [unord.req.general]/248.2
 unordered_map(
 	std::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator> = 0/*see below*/,
@@ -1591,7 +1591,7 @@ unordered_map(
 ->unordered_map<Key, T, Hash, Pred, Allocator>;
 
 template <typename Key, typename T,
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
 	std::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator>,
@@ -1600,7 +1600,7 @@ unordered_map(
 
 template <typename Key, typename T,
 	HAMON_CONSTRAINED_PARAM(hamon::detail::is_hasher, Hash),				// [unord.req.general]/248.3
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(
 	std::initializer_list<hamon::pair<Key, T>>,
 	hamon::detail::deduced_size_type_t<Allocator>,
@@ -1608,7 +1608,7 @@ unordered_map(
 ->unordered_map<Key, T, Hash, hamon::equal_to<Key>, Allocator>;
 
 template <typename Key, typename T,
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>	// [unord.req.general]/248.2
 unordered_map(std::initializer_list<hamon::pair<Key, T>>, Allocator)
 ->unordered_map<Key, T, hamon::hash<Key>, hamon::equal_to<Key>, Allocator>;
 

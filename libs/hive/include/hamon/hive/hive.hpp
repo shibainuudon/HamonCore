@@ -17,7 +17,6 @@
 #include <hamon/hive/detail/hive_traits.hpp>
 
 #include <hamon/algorithm/ranges/sort.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_move_assignable.hpp>
@@ -847,25 +846,25 @@ public:
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
 hive(InputIterator, InputIterator, Allocator = Allocator())
 ->hive<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
 hive(InputIterator, InputIterator, hamon::hive_limits, Allocator = Allocator())
 ->hive<hamon::detail::iter_value_type<InputIterator>, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
 hive(hamon::from_range_t, R&&, Allocator = Allocator())
 ->hive<hamon::ranges::range_value_t<R>, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::ranges::range_value_t<R>>)>
 hive(hamon::from_range_t, R&&, hive_limits, Allocator = Allocator())
 ->hive<hamon::ranges::range_value_t<R>, Allocator>;
 

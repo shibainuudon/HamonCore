@@ -34,7 +34,6 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
@@ -1216,8 +1215,8 @@ private:
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_key_type<InputIterator>>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_to_alloc_type<InputIterator>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_key_type<InputIterator>>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_to_alloc_type<InputIterator>>)>
 map(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
 ->map<
 	hamon::detail::iter_key_type<InputIterator>,
@@ -1227,8 +1226,8 @@ map(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::range_key_type<R>>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::range_to_alloc_type<R>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::range_key_type<R>>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::range_to_alloc_type<R>>)>
 map(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
 ->map<
 	hamon::detail::range_key_type<R>,
@@ -1239,14 +1238,14 @@ map(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
 template <
 	typename Key, typename T,
 	typename A = hamon::allocator<hamon::pair<Key const, T>>,
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, A)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, A)>
 map(std::initializer_list<hamon::pair<Key, T>>, Compare = Compare(), Allocator = Allocator())
 ->map<Key, T, Compare, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 map(InputIterator, InputIterator, Allocator)
 ->map<
 	hamon::detail::iter_key_type<InputIterator>,
@@ -1256,7 +1255,7 @@ map(InputIterator, InputIterator, Allocator)
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 map(hamon::from_range_t, R&&, Allocator)
 ->map<
 	hamon::detail::range_key_type<R>,
@@ -1266,7 +1265,7 @@ map(hamon::from_range_t, R&&, Allocator)
 
 template <
 	typename Key, typename T,
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 map(std::initializer_list<hamon::pair<Key, T>>, Allocator)
 ->map<Key, T, hamon::less<Key>, Allocator>;
 

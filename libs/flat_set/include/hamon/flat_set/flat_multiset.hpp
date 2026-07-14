@@ -181,7 +181,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR explicit
 	flat_multiset(Alloc const& a)
 		: flat_multiset(key_compare(), a)
@@ -189,7 +189,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a))
@@ -198,7 +198,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(container_type const& cont, Alloc const& a)
 		: flat_multiset(cont, key_compare(), a)
@@ -206,7 +206,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(container_type const& cont, key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a, cont))
@@ -217,7 +217,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, container_type const& cont, Alloc const& a)
 		: flat_multiset(hamon::sorted_equivalent, cont, key_compare(), a)
@@ -225,7 +225,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, container_type const& cont, key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a, cont))
@@ -237,7 +237,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(flat_multiset const& x, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a, x.c))
@@ -246,7 +246,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(flat_multiset&& x, Alloc const& a)
 		: c(hamon::move(x).extract_using_allocator(a))
@@ -256,7 +256,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(InputIterator first, InputIterator last, Alloc const& a)
 		: flat_multiset(hamon::move(first), hamon::move(last), key_compare(), a)
@@ -265,7 +265,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(InputIterator first, InputIterator last, key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a))
@@ -277,7 +277,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, InputIterator first, InputIterator last, Alloc const& a)
 		: flat_multiset(hamon::sorted_equivalent, hamon::move(first), hamon::move(last), key_compare(), a)
@@ -286,7 +286,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, InputIterator first, InputIterator last, key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a))
@@ -298,7 +298,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::from_range_t, R&& rg, Alloc const& a)
 		: flat_multiset(hamon::from_range, hamon::forward<R>(rg), key_compare(), a)
@@ -307,7 +307,7 @@ public:
 	template <HAMON_CONSTRAINT(hamon::detail::container_compatible_range, value_type, R),
 		typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::from_range_t, R&& rg, key_compare const& comp, Alloc const& a)
 		: c(hamon::make_obj_using_allocator<container_type>(a))
@@ -318,7 +318,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(std::initializer_list<value_type> il, Alloc const& a)
 		: flat_multiset(il.begin(), il.end(), a)
@@ -326,7 +326,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(std::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
 		: flat_multiset(il.begin(), il.end(), comp, a)
@@ -334,7 +334,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, std::initializer_list<value_type> il, Alloc const& a)
 		: flat_multiset(hamon::sorted_equivalent, il.begin(), il.end(), a)
@@ -342,7 +342,7 @@ public:
 
 	template <typename Alloc,
 		typename = hamon::enable_if_t<
-			hamon::uses_allocator<container_type, Alloc>::value>>		// [flat.set.cons.alloc]/1
+			hamon::uses_allocator_v<container_type, Alloc>>>		// [flat.set.cons.alloc]/1
 	HAMON_CXX14_CONSTEXPR
 	flat_multiset(hamon::sorted_equivalent_t, std::initializer_list<value_type> il, key_compare const& comp, Alloc const& a)
 		: flat_multiset(hamon::sorted_equivalent, il.begin(), il.end(), comp, a)
@@ -1067,13 +1067,13 @@ private:
 template <
 	typename KeyContainer,
 	typename Compare = hamon::less<typename KeyContainer::value_type>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_multiset(KeyContainer, Compare = Compare())
 ->flat_multiset<
@@ -1084,10 +1084,10 @@ flat_multiset(KeyContainer, Compare = Compare())
 template <
 	typename KeyContainer,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::uses_allocator<KeyContainer, Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator>
+	>
 >
 flat_multiset(KeyContainer, Allocator)
 ->flat_multiset<
@@ -1099,14 +1099,14 @@ template <
 	typename KeyContainer,
 	typename Compare,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_multiset(KeyContainer, Compare, Allocator)
 ->flat_multiset<
@@ -1117,13 +1117,13 @@ flat_multiset(KeyContainer, Compare, Allocator)
 template <
 	typename KeyContainer,
 	typename Compare = hamon::less<typename KeyContainer::value_type>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_multiset(hamon::sorted_equivalent_t, KeyContainer, Compare = Compare())
 ->flat_multiset<
@@ -1134,10 +1134,10 @@ flat_multiset(hamon::sorted_equivalent_t, KeyContainer, Compare = Compare())
 template <
 	typename KeyContainer,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::uses_allocator<KeyContainer, Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator>
+	>
 >
 flat_multiset(hamon::sorted_equivalent_t, KeyContainer, Allocator)
 ->flat_multiset<
@@ -1149,14 +1149,14 @@ template <
 	typename KeyContainer,
 	typename Compare,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_multiset(hamon::sorted_equivalent_t, KeyContainer, Compare, Allocator)
 ->flat_multiset<
@@ -1169,7 +1169,7 @@ template <
 	typename Compare = hamon::less<hamon::detail::iter_value_type<InputIterator>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::cpp17_input_iterator<InputIterator> &&
-		!hamon::detail::simple_allocator_t<Compare>::value
+		!hamon::detail::simple_allocator<Compare>
 	>
 >
 flat_multiset(InputIterator, InputIterator, Compare = Compare())
@@ -1180,7 +1180,7 @@ template <
 	typename Compare = hamon::less<hamon::detail::iter_value_type<InputIterator>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::cpp17_input_iterator<InputIterator> &&
-		!hamon::detail::simple_allocator_t<Compare>::value
+		!hamon::detail::simple_allocator<Compare>
 	>
 >
 flat_multiset(hamon::sorted_equivalent_t, InputIterator, InputIterator, Compare = Compare())
@@ -1190,10 +1190,10 @@ template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Compare = hamon::less<ranges::range_value_t<R>>,
 	typename Allocator = hamon::allocator<ranges::range_value_t<R>>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::detail::simple_allocator_t<Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::detail::simple_allocator<Allocator>
+	>
 >
 flat_multiset(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
 ->flat_multiset<
@@ -1204,9 +1204,9 @@ flat_multiset(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocat
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::simple_allocator_t<Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		hamon::detail::simple_allocator<Allocator>
+	>
 >
 flat_multiset(hamon::from_range_t, R&&, Allocator)
 ->flat_multiset<
@@ -1217,9 +1217,9 @@ flat_multiset(hamon::from_range_t, R&&, Allocator)
 template <
 	typename Key,
 	typename Compare = hamon::less<Key>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare>
+	>
 >
 flat_multiset(std::initializer_list<Key>, Compare = Compare())
 ->flat_multiset<Key, Compare>;
@@ -1227,9 +1227,9 @@ flat_multiset(std::initializer_list<Key>, Compare = Compare())
 template <
 	typename Key,
 	typename Compare = hamon::less<Key>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare>
+	>
 >
 flat_multiset(hamon::sorted_equivalent_t, std::initializer_list<Key>, Compare = Compare())
 ->flat_multiset<Key, Compare>;

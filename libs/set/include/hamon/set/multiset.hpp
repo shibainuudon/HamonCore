@@ -27,7 +27,6 @@
 #include <hamon/algorithm/lexicographical_compare_three_way.hpp>
 #include <hamon/algorithm/min.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
@@ -821,28 +820,28 @@ private:
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_value_type<InputIterator>>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<hamon::detail::iter_value_type<InputIterator>>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<hamon::detail::iter_value_type<InputIterator>>)>
 multiset(InputIterator, InputIterator, Compare = Compare(), Allocator = Allocator())
 ->multiset<hamon::detail::iter_value_type<InputIterator>, Compare, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<ranges::range_value_t<R>>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<ranges::range_value_t<R>>)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<ranges::range_value_t<R>>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<ranges::range_value_t<R>>)>
 multiset(hamon::from_range_t, R&&, Compare = Compare(), Allocator = Allocator())
 ->multiset<ranges::range_value_t<R>, Compare, Allocator>;
 
 template <
 	typename Key,
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
-	HAMON_CONSTRAINED_PARAM_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Key>)>
+	HAMON_CONSTRAINT_D(hamon::detail::not_simple_allocator, Compare, hamon::less<Key>),
+	HAMON_CONSTRAINT_D(hamon::detail::simple_allocator, Allocator, hamon::allocator<Key>)>
 multiset(std::initializer_list<Key>, Compare = Compare(), Allocator = Allocator())
 ->multiset<Key, Compare, Allocator>;
 
 template <
 	HAMON_CONSTRAINT(hamon::detail::cpp17_input_iterator, InputIterator),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 multiset(InputIterator, InputIterator, Allocator)
 ->multiset<
 	hamon::detail::iter_value_type<InputIterator>,
@@ -851,7 +850,7 @@ multiset(InputIterator, InputIterator, Allocator)
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 multiset(hamon::from_range_t, R&&, Allocator)
 ->multiset<
 	ranges::range_value_t<R>,
@@ -860,7 +859,7 @@ multiset(hamon::from_range_t, R&&, Allocator)
 
 template <
 	typename Key,
-	HAMON_CONSTRAINED_PARAM(hamon::detail::simple_allocator, Allocator)>
+	HAMON_CONSTRAINT(hamon::detail::simple_allocator, Allocator)>
 multiset(std::initializer_list<Key>, Allocator)
 ->multiset<Key, hamon::less<Key>, Allocator>;
 

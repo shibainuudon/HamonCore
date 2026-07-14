@@ -23,11 +23,7 @@ namespace detail {
 template <typename Allocator>
 using deduced_size_type_t = typename hamon::allocator_traits<
 	hamon::conditional_t<
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
 		hamon::detail::simple_allocator<Allocator>,
-#else
-		hamon::detail::simple_allocator<Allocator>::value,
-#endif
 		Allocator,
 		hamon::allocator<int>
 	>

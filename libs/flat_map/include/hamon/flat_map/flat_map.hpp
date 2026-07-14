@@ -1608,14 +1608,14 @@ template <
 	typename KeyContainer,
 	typename MappedContainer,
 	typename Compare = hamon::less<typename KeyContainer::value_type>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_map(
 	KeyContainer,
@@ -1632,12 +1632,12 @@ template <
 	typename KeyContainer,
 	typename MappedContainer,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::uses_allocator<MappedContainer, Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::uses_allocator_v<MappedContainer, Allocator>
+	>
 >
 flat_map(
 	KeyContainer,
@@ -1655,16 +1655,16 @@ template <
 	typename MappedContainer,
 	typename Compare,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::uses_allocator<MappedContainer, Allocator>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::uses_allocator_v<MappedContainer, Allocator> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_map(
 	KeyContainer,
@@ -1682,14 +1682,14 @@ template <
 	typename KeyContainer,
 	typename MappedContainer,
 	typename Compare = hamon::less<typename KeyContainer::value_type>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_map(
 	hamon::sorted_unique_t,
@@ -1707,12 +1707,12 @@ template <
 	typename KeyContainer,
 	typename MappedContainer,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::uses_allocator<MappedContainer, Allocator>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::uses_allocator_v<MappedContainer, Allocator>
+	>
 >
 flat_map(
 	hamon::sorted_unique_t,
@@ -1731,16 +1731,16 @@ template <
 	typename MappedContainer,
 	typename Compare,
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<KeyContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<MappedContainer>>,
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::uses_allocator<KeyContainer, Allocator>,
-		hamon::uses_allocator<MappedContainer, Allocator>,
-		hamon::is_invocable<Compare const&,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<KeyContainer> &&
+		!hamon::detail::simple_allocator<MappedContainer> &&
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::uses_allocator_v<KeyContainer, Allocator> &&
+		hamon::uses_allocator_v<MappedContainer, Allocator> &&
+		hamon::is_invocable_v<Compare const&,
 			typename KeyContainer::value_type const&,
 			typename KeyContainer::value_type const&>
-	>::value>
+	>
 >
 flat_map(
 	hamon::sorted_unique_t,
@@ -1760,7 +1760,7 @@ template <
 	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::cpp17_input_iterator<InputIterator> &&
-		!hamon::detail::simple_allocator_t<Compare>::value
+		!hamon::detail::simple_allocator<Compare>
 	>
 >
 flat_map(
@@ -1776,7 +1776,7 @@ template <
 	typename Compare = hamon::less<hamon::detail::iter_key_type<InputIterator>>,
 	typename = hamon::enable_if_t<
 		hamon::detail::cpp17_input_iterator<InputIterator> &&
-		!hamon::detail::simple_allocator_t<Compare>::value
+		!hamon::detail::simple_allocator<Compare>
 	>
 >
 flat_map(
@@ -1793,10 +1793,10 @@ template <
 	typename Key = hamon::detail::range_key_type<R>,
 	typename Compare = hamon::less<Key>,
 	typename Allocator = hamon::allocator<hamon::byte>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>,
-		hamon::detail::simple_allocator_t<Allocator>
-	>::value>,
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare> &&
+		hamon::detail::simple_allocator<Allocator>
+	>,
 	typename T = hamon::detail::range_mapped_type<R>
 >
 flat_map(
@@ -1811,9 +1811,9 @@ flat_map(
 template <
 	HAMON_CONSTRAINT(hamon::ranges::input_range, R),
 	typename Allocator,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::detail::simple_allocator_t<Allocator>
-	>::value>,
+	typename = hamon::enable_if_t<
+		hamon::detail::simple_allocator<Allocator>
+	>,
 	typename Key = hamon::detail::range_key_type<R>,
 	typename T = hamon::detail::range_mapped_type<R>
 >
@@ -1825,9 +1825,9 @@ flat_map(hamon::from_range_t, R&&, Allocator)
 
 template <
 	typename Key, typename T, typename Compare = hamon::less<Key>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare>
+	>
 >
 flat_map(
 	std::initializer_list<hamon::pair<Key, T>>,
@@ -1836,9 +1836,9 @@ flat_map(
 
 template <
 	typename Key, typename T, typename Compare = hamon::less<Key>,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::negation<hamon::detail::simple_allocator_t<Compare>>
-	>::value>
+	typename = hamon::enable_if_t<
+		!hamon::detail::simple_allocator<Compare>
+	>
 >
 flat_map(
 	hamon::sorted_unique_t,

@@ -13,7 +13,6 @@
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -28,7 +27,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Alloc>
-concept simple_allocator =
+HAMON_CONCEPT_OR_BOOL simple_allocator =
 	requires(Alloc alloc, hamon::size_t n)
 	{
 		{ *alloc.allocate(n) } -> hamon::same_as<typename Alloc::value_type&>;
@@ -36,9 +35,6 @@ concept simple_allocator =
 	} &&
 	hamon::copy_constructible<Alloc> &&
 	hamon::equality_comparable<Alloc>;
-
-template <typename Alloc>
-concept not_simple_allocator = !simple_allocator<Alloc>;
 
 #else
 
@@ -65,21 +61,13 @@ public:
 };
 
 template <typename Alloc>
-using simple_allocator =
-	typename simple_allocator_impl<Alloc>::type;
-
-template <typename Alloc>
-using not_simple_allocator = hamon::negation<simple_allocator<Alloc>>;
+HAMON_CONCEPT_OR_BOOL simple_allocator =
+	simple_allocator_impl<Alloc>::type::value;
 
 #endif
 
 template <typename Alloc>
-using simple_allocator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::simple_allocator<Alloc>>;
-#else
-	hamon::detail::simple_allocator<Alloc>;
-#endif
+HAMON_CONCEPT_OR_BOOL not_simple_allocator = !simple_allocator<Alloc>;
 
 }	// namespace detail
 

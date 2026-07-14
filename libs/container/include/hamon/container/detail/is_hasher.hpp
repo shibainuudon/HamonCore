@@ -29,7 +29,7 @@ concept is_hasher =
 template <typename T>
 using is_hasher = hamon::bool_constant<
 	!hamon::integral<T> &&
-	!hamon::detail::simple_allocator<T>::value
+	!hamon::detail::simple_allocator<T>
 >;
 
 #endif
