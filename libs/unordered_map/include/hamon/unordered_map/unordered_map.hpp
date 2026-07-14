@@ -123,7 +123,7 @@ public:
 
 	// TODO
 	//static_assert(hamon::detail::cpp17_hash<Hash, Key>, "[unord.req.general]/3");
-	static_assert(hamon::detail::cpp17_erasable_t<value_type, allocator_type>::value, "[unord.req.general]/16");
+	static_assert(hamon::detail::cpp17_erasable<value_type, allocator_type>, "[unord.req.general]/16");
 	static_assert(hamon::detail::cpp17_copy_constructible<Pred>, "[unord.req.general]/20");
 
 private:

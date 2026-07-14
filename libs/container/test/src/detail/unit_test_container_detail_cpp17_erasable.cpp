@@ -13,12 +13,12 @@ namespace hamon_container_test
 namespace cpp17_erasable_test
 {
 
-static_assert( hamon::detail::cpp17_erasable_t<int, hamon::allocator<int>>::value, "");
-static_assert( hamon::detail::cpp17_erasable_t<float, hamon::allocator<float>>::value, "");
+static_assert( hamon::detail::cpp17_erasable<int, hamon::allocator<int>>, "");
+static_assert( hamon::detail::cpp17_erasable<float, hamon::allocator<float>>, "");
 
-static_assert( hamon::detail::cpp17_erasable_t<int*, hamon::allocator<int>>::value, "");
-static_assert(!hamon::detail::cpp17_erasable_t<int&, hamon::allocator<int>>::value, "");
-static_assert(!hamon::detail::cpp17_erasable_t<int&&, hamon::allocator<int>>::value, "");
+static_assert( hamon::detail::cpp17_erasable<int*, hamon::allocator<int>>, "");
+static_assert(!hamon::detail::cpp17_erasable<int&, hamon::allocator<int>>, "");
+static_assert(!hamon::detail::cpp17_erasable<int&&, hamon::allocator<int>>, "");
 
 struct S0
 {
@@ -44,10 +44,10 @@ struct S3
 	S3(S3 &&);
 };
 
-static_assert( hamon::detail::cpp17_erasable_t<S0, hamon::allocator<S0>>::value, "");
-static_assert( hamon::detail::cpp17_erasable_t<S1, hamon::allocator<S1>>::value, "");
-static_assert( hamon::detail::cpp17_erasable_t<S2, hamon::allocator<S2>>::value, "");
-static_assert( hamon::detail::cpp17_erasable_t<S3, hamon::allocator<S3>>::value, "");
+static_assert( hamon::detail::cpp17_erasable<S0, hamon::allocator<S0>>, "");
+static_assert( hamon::detail::cpp17_erasable<S1, hamon::allocator<S1>>, "");
+static_assert( hamon::detail::cpp17_erasable<S2, hamon::allocator<S2>>, "");
+static_assert( hamon::detail::cpp17_erasable<S3, hamon::allocator<S3>>, "");
 
 }	// namespace cpp17_erasable_test
 

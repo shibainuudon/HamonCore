@@ -21,7 +21,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename A>
-concept cpp17_erasable =
+HAMON_CONCEPT_OR_BOOL cpp17_erasable =
 	requires(A& m, T* p)
 	{
 		{ hamon::allocator_traits<A>::destroy(m, p) };
@@ -47,17 +47,9 @@ public:
 };
 
 template <typename T, typename A>
-using cpp17_erasable =
-	typename cpp17_erasable_impl<T, A>::type;
+HAMON_CONCEPT_OR_BOOL cpp17_erasable =
+	cpp17_erasable_impl<T, A>::type::value;
 
-#endif
-
-template <typename T, typename A>
-using cpp17_erasable_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::cpp17_erasable<T, A>>;
-#else
-	hamon::detail::cpp17_erasable<T, A>;
 #endif
 
 }	// namespace detail
