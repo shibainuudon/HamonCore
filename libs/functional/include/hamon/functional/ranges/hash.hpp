@@ -9,7 +9,6 @@
 
 #include <hamon/functional/hash.hpp>
 #include <hamon/functional/detail/has_member_hash.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_hash.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -92,7 +91,7 @@ private:
 	}
 
 	// (1) メンバーのhash関数が呼び出せるならx.hash()
-	template <HAMON_CONSTRAINED_PARAM(hamon::detail::has_member_hash, RawT), typename T>
+	template <HAMON_CONSTRAINT(hamon::detail::has_member_hash, RawT), typename T>
 	static HAMON_CXX11_CONSTEXPR hamon::size_t
 	impl(T&& x, hamon::detail::overload_priority<5>)
 	HAMON_HASH_RETURN(

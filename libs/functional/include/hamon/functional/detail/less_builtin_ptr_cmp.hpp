@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	less_builtin_ptr_cmp.hpp
  *
- *	@brief	less_builtin_ptr_cmp クラステンプレートの定義
+ *	@brief	less_builtin_ptr_cmp コンセプトの定義
  */
 
 #ifndef HAMON_FUNCTIONAL_DETAIL_LESS_BUILTIN_PTR_CMP_HPP
@@ -9,9 +9,9 @@
 
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/void_t.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
@@ -28,7 +28,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept less_builtin_ptr_cmp =
+HAMON_CONCEPT_OR_BOOL less_builtin_ptr_cmp =
 	requires (T&& t, U&& u) { { t < u } -> hamon::same_as<bool>; } &&
 	hamon::convertible_to<T, const volatile void*> &&
 	hamon::convertible_to<U, const volatile void*> &&
@@ -89,8 +89,8 @@ public:
 }	// namespace less_builtin_ptr_cmp_detail
 
 template <typename T, typename U>
-using less_builtin_ptr_cmp =
-	typename less_builtin_ptr_cmp_detail::less_builtin_ptr_cmp_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL less_builtin_ptr_cmp =
+	less_builtin_ptr_cmp_detail::less_builtin_ptr_cmp_impl<T, U>::type::value;
 
 #endif
 

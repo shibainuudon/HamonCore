@@ -115,7 +115,7 @@ template <typename T>
 constexpr bool is_ref_wrapper<hamon::reference_wrapper<T>> = true;
 
 template <typename R, typename T, typename RQ, typename TQ>
-concept ref_wrap_common_reference_exists_with =
+HAMON_CONCEPT_OR_BOOL ref_wrap_common_reference_exists_with =
 	hamon::detail::is_ref_wrapper<R> &&
 	requires { typename hamon::common_reference_t<typename R::type&, TQ>; } &&
 	hamon::convertible_to<RQ, hamon::common_reference_t<typename R::type&, TQ>>;
@@ -147,8 +147,8 @@ public:
 };
 
 template <typename R, typename T, typename RQ, typename TQ>
-using ref_wrap_common_reference_exists_with =
-	typename ref_wrap_common_reference_exists_with_impl<R, T, RQ, TQ>::type;
+HAMON_CONCEPT_OR_BOOL ref_wrap_common_reference_exists_with =
+	ref_wrap_common_reference_exists_with_impl<R, T, RQ, TQ>::type::value;
 
 #endif
 
@@ -167,8 +167,8 @@ template <typename R, typename T, template <typename> class RQual, template <typ
 struct basic_common_reference<R, T, RQual, TQual
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, hamon::enable_if_t<
-		 hamon::detail::ref_wrap_common_reference_exists_with<R, T, RQual<R>, TQual<T>>::value &&
-		!hamon::detail::ref_wrap_common_reference_exists_with<T, R, TQual<T>, RQual<R>>::value
+		 hamon::detail::ref_wrap_common_reference_exists_with<R, T, RQual<R>, TQual<T>> &&
+		!hamon::detail::ref_wrap_common_reference_exists_with<T, R, TQual<T>, RQual<R>>
 	>
 #endif
 >
@@ -185,8 +185,8 @@ template <typename T, typename R, template <typename> class TQual, template <typ
 struct basic_common_reference<T, R, TQual, RQual
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	, hamon::enable_if_t<
-		 hamon::detail::ref_wrap_common_reference_exists_with<R, T, RQual<R>, TQual<T>>::value &&
-		!hamon::detail::ref_wrap_common_reference_exists_with<T, R, TQual<T>, RQual<R>>::value
+		 hamon::detail::ref_wrap_common_reference_exists_with<R, T, RQual<R>, TQual<T>> &&
+		!hamon::detail::ref_wrap_common_reference_exists_with<T, R, TQual<T>, RQual<R>>
 	>
 #endif
 >

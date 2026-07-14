@@ -1,7 +1,7 @@
 ﻿/**
  *	@file	eq_builtin_ptr_cmp.hpp
  *
- *	@brief	eq_builtin_ptr_cmp クラステンプレートの定義
+ *	@brief	eq_builtin_ptr_cmp コンセプトの定義
  */
 
 #ifndef HAMON_FUNCTIONAL_DETAIL_EQ_BUILTIN_PTR_CMP_HPP
@@ -28,7 +28,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U>
-concept eq_builtin_ptr_cmp =
+HAMON_CONCEPT_OR_BOOL eq_builtin_ptr_cmp =
 	requires (T&& t, U&& u) { { t == u } -> hamon::same_as<bool>; } &&
 	hamon::convertible_to<T, const volatile void*> &&
 	hamon::convertible_to<U, const volatile void*> &&
@@ -89,8 +89,8 @@ public:
 }	// namespace eq_builtin_ptr_cmp_detail
 
 template <typename T, typename U>
-using eq_builtin_ptr_cmp =
-	typename eq_builtin_ptr_cmp_detail::eq_builtin_ptr_cmp_impl<T, U>::type;
+HAMON_CONCEPT_OR_BOOL eq_builtin_ptr_cmp =
+	eq_builtin_ptr_cmp_detail::eq_builtin_ptr_cmp_impl<T, U>::type::value;
 
 #endif
 

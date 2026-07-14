@@ -51,7 +51,7 @@ struct equal_to
 	template <typename T, typename U,
 		typename = hamon::enable_if_t<
 			hamon::equality_comparable_with<T, U> ||
-			detail::eq_builtin_ptr_cmp<T, U>::value
+			detail::eq_builtin_ptr_cmp<T, U>
 		>
 	>
 #endif

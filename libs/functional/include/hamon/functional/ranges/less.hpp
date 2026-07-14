@@ -50,7 +50,7 @@ private:
 	template <typename T, typename U
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 		, typename = hamon::enable_if_t<
-			detail::less_builtin_ptr_cmp<T, U>::value
+			detail::less_builtin_ptr_cmp<T, U>
 		>
 #endif
 	>

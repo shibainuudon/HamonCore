@@ -53,7 +53,7 @@ struct greater_equal
 	template <typename T, typename U,
 		typename = hamon::enable_if_t<
 			hamon::totally_ordered_with<T, U> ||
-			detail::less_builtin_ptr_cmp<U, T>::value
+			detail::less_builtin_ptr_cmp<U, T>
 		>
 	>
 #endif
