@@ -27,7 +27,6 @@ using std::ranges::rbegin;
 #include <hamon/ranges/detail/has_adl_rbegin.hpp>
 #include <hamon/ranges/detail/reversable.hpp>
 #include <hamon/ranges/concepts/detail/maybe_borrowed_range.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -50,19 +49,19 @@ struct rbegin_fn
 {
 private:
 	// [range.access.rbegin]/2.3
-	template <HAMON_CONSTRAINED_PARAM(has_member_rbegin, T)>
+	template <HAMON_CONSTRAINT(has_member_rbegin, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<3>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.rbegin()))
 
 	// [range.access.rbegin]/2.4
-	template <HAMON_CONSTRAINED_PARAM(has_adl_rbegin, T)>
+	template <HAMON_CONSTRAINT(has_adl_rbegin, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(rbegin(t)))
 
 	// [range.access.rbegin]/2.5
-	template <HAMON_CONSTRAINED_PARAM(reversable, T)>
+	template <HAMON_CONSTRAINT(reversable, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF_EXPR(ranges::end(t))

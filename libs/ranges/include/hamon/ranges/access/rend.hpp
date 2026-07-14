@@ -63,7 +63,7 @@ private:
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(rend(t)))
 
 	// [range.access.rend]/2.5
-	template <HAMON_CONSTRAINED_PARAM(reversable, T)>
+	template <HAMON_CONSTRAINT(reversable, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_IF_EXPR(ranges::begin(t))

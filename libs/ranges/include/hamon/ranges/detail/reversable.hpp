@@ -25,7 +25,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept reversable =
+HAMON_CONCEPT_OR_BOOL reversable =
 	requires(T&& t)
 	{
 		{ ranges::begin(t) } -> hamon::bidirectional_iterator;
@@ -56,7 +56,8 @@ public:
 };
 
 template <typename T>
-using reversable = typename reversable_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL reversable =
+	reversable_impl<T>::type::value;
 
 #endif
 
