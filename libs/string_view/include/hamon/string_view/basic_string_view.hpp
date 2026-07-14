@@ -74,7 +74,7 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename CharT, typename Traits>
-concept has_operator_string_view =
+HAMON_CONCEPT_OR_BOOL has_operator_string_view =
 	requires(T& d)
 	{
 		d.operator hamon::basic_string_view<CharT, Traits>();
@@ -83,20 +83,15 @@ concept has_operator_string_view =
 #else
 
 template <typename T, typename CharT, typename Traits, typename = hamon::void_t<>>
-struct has_operator_string_view : hamon::false_type {};
+struct has_operator_string_view_impl : hamon::false_type {};
 
 template <typename T, typename CharT, typename Traits>
-struct has_operator_string_view<T, CharT, Traits,
+struct has_operator_string_view_impl<T, CharT, Traits,
 	hamon::void_t<decltype(hamon::declval<T&>().operator hamon::basic_string_view<CharT, Traits>())>> : hamon::true_type {};
 
-#endif
-
 template <typename T, typename CharT, typename Traits>
-using has_operator_string_view_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::detail::has_operator_string_view<T, CharT, Traits>>;
-#else
-	hamon::detail::has_operator_string_view<T, CharT, Traits>;
+HAMON_CONCEPT_OR_BOOL has_operator_string_view = has_operator_string_view_impl<T, CharT, Traits>::value;
+
 #endif
 
 }	// namespace detail
@@ -160,11 +155,11 @@ public:
 	{}
 
 	template <
-		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),				// [string.view.cons]/7.1
+		HAMON_CONSTRAINT(hamon::contiguous_iterator, It),		// [string.view.cons]/7.1
 		HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End),	// [string.view.cons]/7.2
 		typename = hamon::enable_if_t<
-			hamon::same_as<hamon::iter_value_t<It>, CharT> &&			// [string.view.cons]/7.3
-			!hamon::convertible_to<End, size_type>						// [string.view.cons]/7.4
+			hamon::same_as<hamon::iter_value_t<It>, CharT> &&	// [string.view.cons]/7.3
+			!hamon::convertible_to<End, size_type>				// [string.view.cons]/7.4
 		>
 	>
 	HAMON_CONSTEXPR
@@ -178,10 +173,10 @@ public:
 	template <typename R,
 		typename = hamon::enable_if_t<
 			!hamon::is_same<hamon::remove_cvref_t<R>, basic_string_view>::value &&		// [string.view.cons]/12.1
-			ranges::contiguous_range<R> && ranges::sized_range<R> &&	// [string.view.cons]/12.2
+			ranges::contiguous_range<R> && ranges::sized_range<R> &&					// [string.view.cons]/12.2
 			hamon::is_same<ranges::range_value_t<R>, CharT>::value &&					// [string.view.cons]/12.3
 			!hamon::is_convertible<R, CharT const*>::value &&							// [string.view.cons]/12.4
-			!hamon::detail::has_operator_string_view_t<hamon::remove_cvref_t<R>, CharT, Traits>::value			// [string.view.cons]/12.5
+			!hamon::detail::has_operator_string_view<hamon::remove_cvref_t<R>, CharT, Traits>	// [string.view.cons]/12.5
 		>
 	>
 	constexpr explicit basic_string_view(R&& r)
@@ -841,7 +836,7 @@ private:
 // [string.view.deduct], deduction guides
 
 template <
-	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),			// [string.view.deduct]/1.1
+	HAMON_CONSTRAINT(hamon::contiguous_iterator, It),		// [string.view.deduct]/1.1
 	HAMON_CONSTRAINT(hamon::sized_sentinel_for, It, End)	// [string.view.deduct]/1.2
 >
 basic_string_view(It, End)
