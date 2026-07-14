@@ -20,7 +20,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_member_empty =
+HAMON_CONCEPT_OR_BOOL has_member_empty =
 	requires(T&& t)
 	{
 		bool(t.empty());
@@ -45,7 +45,8 @@ public:
 };
 
 template <typename T>
-using has_member_empty = typename has_member_empty_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_member_empty =
+	has_member_empty_impl<T>::type::value;
 
 #endif
 

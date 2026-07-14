@@ -27,7 +27,7 @@ using std::ranges::empty;
 #include <hamon/ranges/size.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
@@ -56,19 +56,19 @@ private:
 	impl(T&&, hamon::detail::overload_priority<4>) = delete;
 
 	// [range.prim.empty]/2.2
-	template <HAMON_CONSTRAINED_PARAM(has_member_empty, T)>
+	template <HAMON_CONSTRAINT(has_member_empty, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<3>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(bool(t.empty()))
 
 	// [range.prim.empty]/2.3
-	template <HAMON_CONSTRAINED_PARAM(size0_empty, T)>
+	template <HAMON_CONSTRAINT(size0_empty, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(ranges::size(t) == 0)
 
 	// [range.prim.empty]/2.4
-	template <HAMON_CONSTRAINED_PARAM(eq_iter_empty, T)>
+	template <HAMON_CONSTRAINT(eq_iter_empty, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(

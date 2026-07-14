@@ -10,10 +10,10 @@
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
 #include <hamon/iterator/concepts/forward_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_unbounded_array.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -26,7 +26,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept eq_iter_empty =
+HAMON_CONCEPT_OR_BOOL eq_iter_empty =
 	requires(T&& t)
 	{
 		{ ranges::begin(t) } -> hamon::forward_iterator;
@@ -54,7 +54,8 @@ public:
 };
 
 template <typename T>
-using eq_iter_empty = typename eq_iter_empty_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL eq_iter_empty =
+	eq_iter_empty_impl<T>::type::value;
 
 #endif
 

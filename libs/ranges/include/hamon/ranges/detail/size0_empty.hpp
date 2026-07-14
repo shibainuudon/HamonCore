@@ -21,7 +21,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept size0_empty =
+HAMON_CONCEPT_OR_BOOL size0_empty =
 	requires(T&& t)
 	{
 		ranges::size(t) == 0;
@@ -46,7 +46,8 @@ public:
 };
 
 template <typename T>
-using size0_empty = typename size0_empty_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL size0_empty =
+	size0_empty_impl<T>::type::value;
 
 #endif
 
