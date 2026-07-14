@@ -64,7 +64,7 @@ struct shuffle_fn
 		Iter,
 		(
 			hamon::permutable<Iter> &&
-			hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+			hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>
 		)
 	)
 	{
@@ -82,7 +82,7 @@ struct shuffle_fn
 		ranges::borrowed_iterator_t<Range>,
 		(
 			hamon::permutable<ranges::iterator_t<Range>> &&
-			hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+			hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>
 		)
 	)
 	{

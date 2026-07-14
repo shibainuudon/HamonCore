@@ -79,7 +79,7 @@ struct sample_fn
 			) &&
 			(
 				hamon::indirectly_copyable<Iter, OutIter> &&
-				hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+				hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>
 			)
 		)
 	)
@@ -106,7 +106,7 @@ struct sample_fn
 			) &&
 			(
 				hamon::indirectly_copyable<ranges::iterator_t<Range>, OutIter> &&
-				hamon::uniform_random_bit_generator_t<hamon::remove_reference_t<Gen>>::value
+				hamon::uniform_random_bit_generator<hamon::remove_reference_t<Gen>>
 			)
 		)
 	)

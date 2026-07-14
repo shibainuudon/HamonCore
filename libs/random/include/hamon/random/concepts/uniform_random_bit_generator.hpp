@@ -21,7 +21,7 @@ namespace hamon
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Gen>
-concept uniform_random_bit_generator =
+HAMON_CONCEPT_OR_BOOL uniform_random_bit_generator =
 	hamon::invocable<Gen&> &&
 	hamon::unsigned_integral<hamon::invoke_result_t<Gen&>> &&
 	requires
@@ -54,17 +54,9 @@ public:
 };
 
 template <typename Gen>
-using uniform_random_bit_generator =
-	typename uniform_random_bit_generator_impl<Gen>::type;
+HAMON_CONCEPT_OR_BOOL uniform_random_bit_generator =
+	uniform_random_bit_generator_impl<Gen>::type::value;
 
-#endif
-
-template <typename Gen>
-using uniform_random_bit_generator_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::uniform_random_bit_generator<Gen>>;
-#else
-	hamon::uniform_random_bit_generator<Gen>;
 #endif
 
 }	// namespace hamon

@@ -11,13 +11,8 @@
 HAMON_WARNING_PUSH()
 HAMON_WARNING_DISABLE_MSVC(4146)
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-#  define HAMON_UNIFORM_RANDOM_BIT_GENERATOR_TEST(B, ...)	\
+#define HAMON_UNIFORM_RANDOM_BIT_GENERATOR_TEST(B, ...)	\
 	static_assert(B == hamon::uniform_random_bit_generator<__VA_ARGS__>, "")
-#else
-#  define HAMON_UNIFORM_RANDOM_BIT_GENERATOR_TEST(B, ...)	\
-	static_assert(B == hamon::uniform_random_bit_generator<__VA_ARGS__>::value, "")
-#endif
 
 namespace hamon_random_test
 {
