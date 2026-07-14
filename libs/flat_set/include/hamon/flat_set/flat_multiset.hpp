@@ -25,7 +25,6 @@
 #include <hamon/algorithm/ranges/upper_bound.hpp>
 #include <hamon/algorithm/remove_if.hpp>
 #include <hamon/compare/detail/synth_three_way.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/swap.hpp>
@@ -614,7 +613,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare),
 		typename = hamon::enable_if_t<hamon::conjunction<
 			hamon::negation<hamon::is_convertible<K&&, iterator>>,
 			hamon::negation<hamon::is_convertible<K&&, const_iterator>>
@@ -682,7 +681,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	find(K const& x)
@@ -691,7 +690,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	find(K const& x) const
@@ -708,7 +707,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR size_type
 	count(K const& x) const
@@ -725,7 +724,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR bool
 	contains(K const& x) const
@@ -748,7 +747,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	lower_bound(K const& x)
@@ -757,7 +756,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	lower_bound(K const& x) const
@@ -780,7 +779,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	upper_bound(K const& x)
@@ -789,7 +788,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	upper_bound(K const& x) const
@@ -812,7 +811,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(K const& x)
@@ -821,7 +820,7 @@ public:
 	}
 
 	template <typename K,
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, C, Compare)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, C, Compare)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& x) const

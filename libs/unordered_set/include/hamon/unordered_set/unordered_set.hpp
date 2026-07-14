@@ -580,8 +580,8 @@ public:
 
 	template <typename K,
 		// [unord.set.modifiers]/1
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(K&& obj)
 	{
@@ -619,8 +619,8 @@ public:
 
 	template <typename K,
 		// [unord.set.modifiers]/1
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator /*hint*/, K&& obj)
 	{
@@ -689,8 +689,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred),
 		typename = hamon::enable_if_t<
 			!hamon::disjunction<
 				hamon::is_convertible<K&&, iterator>,
@@ -789,8 +789,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred),
 		typename = hamon::enable_if_t<
 			!hamon::disjunction<
 				hamon::is_convertible<K&&, iterator>,
@@ -916,8 +916,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR iterator
 	find(K const& k)
@@ -929,8 +929,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR const_iterator
 	find(K const& k) const
@@ -951,8 +951,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR size_type
 	count(K const& k) const
@@ -973,8 +973,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR bool
 	contains(K const& k) const
@@ -1004,8 +1004,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, iterator>
 	equal_range(K const& k)
@@ -1017,8 +1017,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR hamon::pair<const_iterator, const_iterator>
 	equal_range(K const& k) const
@@ -1066,8 +1066,8 @@ public:
 
 	template <typename K,
 		// [unord.req.general]/247
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, H, Hash),
-		HAMON_CONSTRAINED_PARAM_D(hamon::detail::has_is_transparent, P, Pred)>
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, H, Hash),
+		HAMON_CONSTRAINT_D(hamon::detail::has_is_transparent, P, Pred)>
 	HAMON_NODISCARD	// nodiscard as an extension
 	HAMON_CXX11_CONSTEXPR size_type
 	bucket(K const& k) const

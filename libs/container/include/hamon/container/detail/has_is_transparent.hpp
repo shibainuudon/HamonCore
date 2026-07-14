@@ -20,17 +20,20 @@ namespace detail
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_is_transparent = requires { typename T::is_transparent; };
+HAMON_CONCEPT_OR_BOOL has_is_transparent = requires { typename T::is_transparent; };
 
 #else
 
 template <typename T, typename = void>
-struct has_is_transparent
+struct has_is_transparent_impl
 	: public hamon::false_type {};
 
 template <typename T>
-struct has_is_transparent<T, hamon::void_t<typename T::is_transparent>>
+struct has_is_transparent_impl<T, hamon::void_t<typename T::is_transparent>>
 	: public hamon::true_type {};
+
+template <typename T>
+HAMON_CONCEPT_OR_BOOL has_is_transparent = has_is_transparent_impl<T>::value;
 
 #endif
 
