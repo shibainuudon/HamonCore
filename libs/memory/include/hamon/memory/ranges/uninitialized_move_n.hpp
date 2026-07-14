@@ -27,7 +27,6 @@ using std::ranges::uninitialized_move_n;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/concepts/constructible_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/default_sentinel_t.hpp>
@@ -58,8 +57,8 @@ struct uninitialized_move_n_fn
 {
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_forward_iterator, O),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_sentinel_for, O, S),
 		typename = hamon::enable_if_t<
 			hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_rvalue_reference_t<I>>
 		>

@@ -26,7 +26,7 @@ using std::ranges::destroy;
 #else
 
 #include <hamon/concepts/destructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/memory/detail/destroy_impl.hpp>
 #include <hamon/memory/ranges/detail/nothrow_input_iterator.hpp>
@@ -50,8 +50,8 @@ namespace detail
 struct destroy_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_input_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_input_iterator, I),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_sentinel_for, I, S),
 		typename = hamon::enable_if_t<hamon::destructible<hamon::iter_value_t<I>>>
 	>
 //	requires hamon::destructible<hamon::iter_value_t<I>>
@@ -62,7 +62,7 @@ struct destroy_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_input_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_input_range, R),
 		typename = hamon::enable_if_t<hamon::destructible<hamon::ranges::range_value_t<R>>>
 	>
 //	requires hamon::destructible<hamon::ranges::range_value_t<R>>

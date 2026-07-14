@@ -19,18 +19,9 @@ namespace detail
 
 // 27.11.2 Special memory concepts[special.mem.concepts]
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 // [special.mem.concepts]/4
 template <typename S, typename I>
-concept nothrow_sentinel_for = hamon::sentinel_for<S, I>;
-
-#else
-
-template <typename S, typename I>
-using nothrow_sentinel_for = hamon::bool_constant<hamon::sentinel_for<S, I>>;
-
-#endif
+HAMON_CONCEPT_OR_BOOL nothrow_sentinel_for = hamon::sentinel_for<S, I>;
 
 }	// namespace detail
 }	// namespace ranges

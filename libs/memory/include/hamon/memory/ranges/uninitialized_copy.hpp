@@ -27,7 +27,6 @@ using std::ranges::uninitialized_copy;
 
 #include <hamon/algorithm/ranges/in_out_result.hpp>
 #include <hamon/concepts/constructible_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/input_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
@@ -63,8 +62,8 @@ struct uninitialized_copy_fn
 	template <
 		HAMON_CONSTRAINT(hamon::input_iterator, I),
 		HAMON_CONSTRAINT(hamon::sentinel_for, I, S1),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, O),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, O, S2),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_forward_iterator, O),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_sentinel_for, O, S2),
 		typename = hamon::enable_if_t<
 			hamon::constructible_from<hamon::iter_value_t<O>, hamon::iter_reference_t<I>>
 		>
@@ -78,7 +77,7 @@ struct uninitialized_copy_fn
 
 	template <
 		HAMON_CONSTRAINT(hamon::ranges::input_range, IR),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, OR),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_forward_range, OR),
 		typename = hamon::enable_if_t<
 			hamon::constructible_from<hamon::ranges::range_value_t<OR>, hamon::ranges::range_reference_t<IR>>
 		>

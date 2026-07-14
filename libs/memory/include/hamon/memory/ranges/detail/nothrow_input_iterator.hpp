@@ -12,6 +12,7 @@
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/config.hpp>
@@ -29,7 +30,7 @@ namespace detail
 
 // [special.mem.concepts]/2
 template <typename I>
-concept nothrow_input_iterator =
+HAMON_CONCEPT_OR_BOOL nothrow_input_iterator =
 	hamon::input_iterator<I> &&
 	hamon::is_lvalue_reference_v<hamon::iter_reference_t<I>> &&
 	hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, hamon::iter_value_t<I>>;
@@ -37,11 +38,27 @@ concept nothrow_input_iterator =
 #else
 
 template <typename I>
-using nothrow_input_iterator = hamon::bool_constant<
-	hamon::input_iterator<I> &&
-	hamon::is_lvalue_reference_v<hamon::iter_reference_t<I>> &&
-	hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I>>, hamon::iter_value_t<I>>
->;
+struct nothrow_input_iterator_impl
+{
+private:
+	template <typename I2,
+		typename = hamon::enable_if_t<
+			hamon::input_iterator<I2> &&
+			hamon::is_lvalue_reference_v<hamon::iter_reference_t<I2>> &&
+			hamon::same_as<hamon::remove_cvref_t<hamon::iter_reference_t<I2>>, hamon::iter_value_t<I2>>
+		>
+	>
+	static auto test(int) -> hamon::true_type;
+
+	template <typename>
+	static auto test(...) -> hamon::false_type;
+
+public:
+	using type = decltype(test<I>(0));
+};
+
+template <typename I>
+HAMON_CONCEPT_OR_BOOL nothrow_input_iterator = nothrow_input_iterator_impl<I>::type::value;
 
 #endif
 

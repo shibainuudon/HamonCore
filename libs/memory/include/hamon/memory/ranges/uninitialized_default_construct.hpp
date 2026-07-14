@@ -25,7 +25,7 @@ using std::ranges::uninitialized_default_construct;
 #else
 
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
 #include <hamon/memory/detail/uninitialized_default_construct_impl.hpp>
 #include <hamon/memory/ranges/detail/nothrow_forward_iterator.hpp>
@@ -49,8 +49,8 @@ namespace detail
 struct uninitialized_default_construct_fn
 {
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_iterator, I),
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_sentinel_for, I, S),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_forward_iterator, I),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_sentinel_for, I, S),
 		typename = hamon::enable_if_t<hamon::default_initializable<hamon::iter_value_t<I>>>
 	>
 //	requires hamon::default_initializable<hamon::iter_value_t<I>>
@@ -60,7 +60,7 @@ struct uninitialized_default_construct_fn
 	}
 
 	template <
-		HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::nothrow_forward_range, R),
+		HAMON_CONSTRAINT(hamon::ranges::detail::nothrow_forward_range, R),
 		typename = hamon::enable_if_t<hamon::default_initializable<hamon::ranges::range_value_t<R>>>
 	>
 //	requires hamon::default_initializable<hamon::ranges::range_value_t<R>>
