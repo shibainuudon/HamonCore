@@ -10,9 +10,9 @@
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/detail/auto_cast.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 
@@ -32,7 +32,7 @@ void begin();
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_adl_begin =
+HAMON_CONCEPT_OR_BOOL has_adl_begin =
 	hamon::detail::class_or_enum<hamon::remove_reference_t<T>> &&
 	requires(T&& t)
 	{
@@ -50,9 +50,7 @@ private:
 			hamon::detail::class_or_enum<hamon::remove_reference_t<U>>
 		>,
 		typename I = decltype(HAMON_AUTO_CAST(begin(hamon::declval<U&>()))),
-		typename = hamon::enable_if_t<
-			hamon::input_or_output_iterator<I>
-		>
+		typename = hamon::enable_if_t<hamon::input_or_output_iterator<I>>
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -64,7 +62,8 @@ public:
 };
 
 template <typename T>
-using has_adl_begin = typename has_adl_begin_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_begin =
+	has_adl_begin_impl<T>::type::value;
 
 #endif
 

@@ -23,7 +23,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_member_begin =
+HAMON_CONCEPT_OR_BOOL has_member_begin =
 	requires(T&& t)
 	{
 		{ HAMON_AUTO_CAST(t.begin()) } -> hamon::input_or_output_iterator;
@@ -49,7 +49,8 @@ public:
 };
 
 template <typename T>
-using has_member_begin = typename has_member_begin_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_member_begin =
+	has_member_begin_impl<T>::type::value;
 
 #endif
 
