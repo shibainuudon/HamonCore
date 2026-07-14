@@ -7,7 +7,6 @@
 #ifndef HAMON_CONTAINER_DETAIL_CPP17_DEFAULT_INSERTABLE_HPP
 #define HAMON_CONTAINER_DETAIL_CPP17_DEFAULT_INSERTABLE_HPP
 
-#include <hamon/container/detail/cpp17_move_insertable.hpp>
 #include <hamon/memory/allocator_traits.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/enable_if.hpp>

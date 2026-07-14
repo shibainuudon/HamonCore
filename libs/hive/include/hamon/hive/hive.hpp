@@ -252,7 +252,7 @@ private:
 		: m_allocator(alloc)
 	{
 		// [hive.cons]/18
-		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<T, allocator_type>, "");
 
 		if (hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
@@ -366,7 +366,7 @@ private:
 	op_assign_move(hive&& x, hamon::false_type)
 	{
 		// [hive.cons]/28
-		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<T, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_move_assignable<T>, "");
 
 		if (hamon::detail::equals_allocator(m_allocator, x.m_allocator))
@@ -580,7 +580,7 @@ public:
 	shrink_to_fit()
 	{
 		// [hive.capacity]/8
-		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<T, allocator_type>, "");
 
 		// [hive.capacity]/9
 		if (this->capacity() == this->size())
@@ -633,7 +633,7 @@ public:
 	reshape(hive_limits block_limits)
 	{
 		// [hive.capacity]/21
-		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<T, allocator_type>, "");
 
 		m_impl.Reshape(m_allocator, block_limits);
 	}
@@ -816,7 +816,7 @@ public:
 	sort(Compare comp = Compare())
 	{
 		// [hive.operations]/13
-		static_assert(hamon::detail::cpp17_move_insertable_t<T, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<T, allocator_type>, "");
 		static_assert(hamon::detail::cpp17_move_assignable<T>, "");
 		static_assert(hamon::detail::cpp17_swappable<T>, "");
 

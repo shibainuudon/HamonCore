@@ -349,7 +349,7 @@ public:
 		, m_impl(x.hash_function(), x.key_eq())
 	{
 		// [container.alloc.reqmts]/18
-		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
@@ -409,7 +409,7 @@ public:
 	{
 		// [container.alloc.reqmts]/26
 		static_assert(AllocTraits::propagate_on_container_move_assignment::value ||
-			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+			hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		if (hamon::addressof(x) == this)
 		{
@@ -450,8 +450,9 @@ public:
 	HAMON_CXX14_CONSTEXPR unordered_set&
 	operator=(std::initializer_list<value_type> il)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/69");
-		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "[unord.req.general]/69");
+		// [unord.req.general]/69
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
+		static_assert(hamon::detail::cpp17_copy_assignable<value_type>, "");
 
 		this->clear();
 		this->insert(il);	// may throw
@@ -560,7 +561,8 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& obj)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/92");
+		// [unord.req.general]/92
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [unord.req.general]/93
 		return this->emplace(obj);	// may throw
@@ -569,8 +571,8 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& obj)
 	{
-		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/92");
+		// [unord.req.general]/92
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		// [unord.req.general]/93
 		return this->emplace(hamon::move(obj));	// may throw
@@ -598,7 +600,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, value_type const& obj)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[unord.req.general]/102");
+		// [unord.req.general]/102
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [unord.req.general]/103
 		return this->emplace_hint(hint, obj);	// may throw
@@ -607,8 +610,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, value_type&& obj)
 	{
-		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[unord.req.general]/102");
+		// [unord.req.general]/102
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		// [unord.req.general]/103
 		return this->emplace_hint(hint, hamon::move(obj));	// may throw

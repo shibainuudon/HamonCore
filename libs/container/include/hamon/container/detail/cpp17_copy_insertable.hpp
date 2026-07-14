@@ -36,7 +36,7 @@ struct cpp17_copy_insertable_impl
 {
 private:
 	template <typename U, typename UA,
-		typename = hamon::enable_if_t<hamon::detail::cpp17_move_insertable<U, UA>::value>,
+		typename = hamon::enable_if_t<hamon::detail::cpp17_move_insertable<U, UA>>,
 		typename = decltype(hamon::allocator_traits<UA>::construct(
 			hamon::declval<UA&>(), hamon::declval<U*>(), hamon::declval<U const&>()))
 	>

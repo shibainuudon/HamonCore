@@ -210,7 +210,7 @@ public:
 		: m_allocator(a)
 	{
 		// [container.alloc.reqmts]/18
-		static_assert(hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		if (!hamon::detail::equals_allocator(m_allocator, x.m_allocator))
 		{
@@ -263,7 +263,7 @@ public:
 	{
 		// [container.alloc.reqmts]/26
 		static_assert(NodeAllocTraits::propagate_on_container_move_assignment::value ||
-			hamon::detail::cpp17_move_insertable_t<value_type, allocator_type>::value, "");
+			hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		if (hamon::addressof(x) == this)
 		{
@@ -432,7 +432,8 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type const& x)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[associative.reqmts.general]/62");
+		// [associative.reqmts.general]/62
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [associative.reqmts.general]/63
 		return this->emplace(x);
@@ -441,8 +442,8 @@ public:
 	HAMON_CXX14_CONSTEXPR hamon::pair<iterator, bool>
 	insert(value_type&& x)
 	{
-		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[associative.reqmts.general]/62");
+		// [associative.reqmts.general]/62
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		// [associative.reqmts.general]/63
 		return this->emplace(hamon::move(x));
@@ -463,7 +464,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type const& x)
 	{
-		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "[associative.reqmts.general]/71");
+		// [associative.reqmts.general]/71
+		static_assert(hamon::detail::cpp17_copy_insertable<value_type, allocator_type>, "");
 
 		// [associative.reqmts.general]/72
 		return this->emplace_hint(position, x);
@@ -472,8 +474,8 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator position, value_type&& x)
 	{
-		static_assert(hamon::detail::cpp17_move_insertable_t<
-			value_type, allocator_type>::value, "[associative.reqmts.general]/71");
+		// [associative.reqmts.general]/71
+		static_assert(hamon::detail::cpp17_move_insertable<value_type, allocator_type>, "");
 
 		// [associative.reqmts.general]/72
 		return this->emplace_hint(position, hamon::move(x));
