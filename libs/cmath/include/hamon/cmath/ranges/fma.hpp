@@ -7,10 +7,10 @@
 #ifndef HAMON_CMATH_RANGES_FMA_HPP
 #define HAMON_CMATH_RANGES_FMA_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_fma.hpp>
 #include <hamon/cmath/fma.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -31,13 +31,7 @@ struct fma_fn
 {
 private:
 	template <typename T1, typename T2, typename T3,
-		typename = hamon::enable_if_t<
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-			has_adl_fma<T1, T2, T3>
-#else
-			has_adl_fma<T1, T2, T3>::value
-#endif
-		>
+		typename = hamon::enable_if_t<has_adl_fma<T1, T2, T3>>
 	>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& x, T2 const& y, T3 const& z, hamon::detail::overload_priority<1>)

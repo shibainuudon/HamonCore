@@ -10,7 +10,9 @@
 #include <hamon/cmath/ranges/detail/is_not_void.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -30,7 +32,7 @@ template <typename T1, typename T2, typename T3> void lerp(T1 const&, T2 const&,
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T1, typename T2, typename T3>
-concept has_adl_lerp =
+HAMON_CONCEPT_OR_BOOL has_adl_lerp =
 	(hamon::detail::class_or_enum<T1> ||
 	 hamon::detail::class_or_enum<T2> ||
 	 hamon::detail::class_or_enum<T3>) &&
@@ -54,9 +56,10 @@ private:
 		typename S = decltype(lerp(
 			hamon::declval<U1 const&>(),
 			hamon::declval<U2 const&>(),
-			hamon::declval<U3 const&>()))
+			hamon::declval<U3 const&>())),
+		typename = hamon::enable_if_t<hamon::detail::is_not_void<S>>
 	>
-	static auto test(int) -> hamon::detail::is_not_void<S>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U1, typename U2, typename U3>
 	static auto test(...) -> hamon::false_type;
@@ -66,7 +69,7 @@ public:
 };
 
 template <typename T1, typename T2, typename T3>
-using has_adl_lerp = typename has_adl_lerp_impl<T1, T2, T3>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_lerp = has_adl_lerp_impl<T1, T2, T3>::type::value;
 
 #endif
 

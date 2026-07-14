@@ -7,7 +7,7 @@
 #ifndef HAMON_CMATH_RANGES_ASIN_HPP
 #define HAMON_CMATH_RANGES_ASIN_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_asin.hpp>
 #include <hamon/cmath/asin.hpp>
@@ -30,7 +30,7 @@ namespace asin_detail
 struct asin_fn
 {
 private:
-	template <HAMON_CONSTRAINED_PARAM(has_adl_asin, T)>
+	template <HAMON_CONSTRAINT(has_adl_asin, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(asin(x))

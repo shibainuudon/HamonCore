@@ -10,7 +10,9 @@
 #include <hamon/cmath/ranges/detail/is_not_void.hpp>
 #include <hamon/concepts/detail/class_or_enum.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/utility/declval.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -30,7 +32,7 @@ template <typename T> void saturate(const T&) = delete;
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_adl_saturate =
+HAMON_CONCEPT_OR_BOOL has_adl_saturate =
 	hamon::detail::class_or_enum<T> &&
 	requires(T const& t)
 	{
@@ -44,11 +46,11 @@ struct has_adl_saturate_impl
 {
 private:
 	template <typename U,
-		typename = hamon::enable_if_t<
-			hamon::detail::class_or_enum<U>>,
-		typename S = decltype(saturate(hamon::declval<U const&>()))
+		typename = hamon::enable_if_t<hamon::detail::class_or_enum<U>>,
+		typename S = decltype(saturate(hamon::declval<U const&>())),
+		typename = hamon::enable_if_t<hamon::detail::is_not_void<S>>
 	>
-	static auto test(int) -> hamon::detail::is_not_void<S>;
+	static auto test(int) -> hamon::true_type;
 
 	template <typename U>
 	static auto test(...) -> hamon::false_type;
@@ -58,7 +60,7 @@ public:
 };
 
 template <typename T>
-using has_adl_saturate = typename has_adl_saturate_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_saturate = has_adl_saturate_impl<T>::type::value;
 
 #endif
 

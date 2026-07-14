@@ -7,7 +7,7 @@
 #ifndef HAMON_CMATH_RANGES_LOG10_HPP
 #define HAMON_CMATH_RANGES_LOG10_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_log10.hpp>
 #include <hamon/cmath/log10.hpp>
@@ -30,7 +30,7 @@ namespace log10_detail
 struct log10_fn
 {
 private:
-	template <HAMON_CONSTRAINED_PARAM(has_adl_log10, T)>
+	template <HAMON_CONSTRAINT(has_adl_log10, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(log10(x))

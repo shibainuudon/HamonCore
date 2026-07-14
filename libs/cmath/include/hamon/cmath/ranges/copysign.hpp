@@ -11,6 +11,7 @@
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_copysign.hpp>
 #include <hamon/cmath/copysign.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -31,13 +32,7 @@ struct copysign_fn
 {
 private:
 	template <typename T1, typename T2,
-		typename = hamon::enable_if_t<
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-			has_adl_copysign<T1, T2>
-#else
-			has_adl_copysign<T1, T2>::value
-#endif
-		>
+		typename = hamon::enable_if_t<has_adl_copysign<T1, T2>>
 	>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T1 const& x, T2 const& y, hamon::detail::overload_priority<1>)

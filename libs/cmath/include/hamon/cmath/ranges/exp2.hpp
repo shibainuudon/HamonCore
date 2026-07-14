@@ -7,7 +7,7 @@
 #ifndef HAMON_CMATH_RANGES_EXP2_HPP
 #define HAMON_CMATH_RANGES_EXP2_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_exp2.hpp>
 #include <hamon/cmath/exp2.hpp>
@@ -30,7 +30,7 @@ namespace exp2_detail
 struct exp2_fn
 {
 private:
-	template <HAMON_CONSTRAINED_PARAM(has_adl_exp2, T)>
+	template <HAMON_CONSTRAINT(has_adl_exp2, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T const& x, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(exp2(x))
