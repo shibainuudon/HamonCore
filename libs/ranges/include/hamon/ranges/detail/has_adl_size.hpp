@@ -34,7 +34,7 @@ void size();
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept has_adl_size =
+HAMON_CONCEPT_OR_BOOL has_adl_size =
 	hamon::detail::class_or_enum<hamon::remove_cvref_t<T>> &&
 	!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<T>> &&
 	requires(T&& t)
@@ -56,9 +56,7 @@ private:
 			!hamon::ranges::disable_sized_range<hamon::remove_cvref_t<U>>
 		>,
 		typename V = decltype(HAMON_AUTO_CAST(size(hamon::declval<U&>()))),
-		typename = hamon::enable_if_t<
-			hamon::detail::is_integer_like<V>
-		>
+		typename = hamon::enable_if_t<hamon::detail::is_integer_like<V>>
 	>
 	static auto test(int) -> hamon::true_type;
 
@@ -70,7 +68,8 @@ public:
 };
 
 template <typename T>
-using has_adl_size = typename has_adl_size_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL has_adl_size =
+	has_adl_size_impl<T>::type::value;
 
 #endif
 

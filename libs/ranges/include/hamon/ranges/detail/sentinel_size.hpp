@@ -27,7 +27,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T>
-concept sentinel_size =
+HAMON_CONCEPT_OR_BOOL sentinel_size =
 	requires(T&& t)
 	{
 		{ ranges::begin(t) } -> hamon::forward_iterator;
@@ -60,7 +60,8 @@ public:
 };
 
 template <typename T>
-using sentinel_size = typename sentinel_size_impl<T>::type;
+HAMON_CONCEPT_OR_BOOL sentinel_size =
+	sentinel_size_impl<T>::type::value;
 
 #endif
 

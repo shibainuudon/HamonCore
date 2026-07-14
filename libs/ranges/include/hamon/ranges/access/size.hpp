@@ -27,7 +27,7 @@ using std::ranges::size;
 #include <hamon/ranges/detail/to_unsigned_like.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/decay_copy.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/extent.hpp>
@@ -67,19 +67,19 @@ private:
 			HAMON_AUTO_CAST(hamon::extent<hamon::remove_cvref_t<T>>::value))
 
 	// [range.prim.size]/2.3
-	template <HAMON_CONSTRAINED_PARAM(has_member_size, T)>
+	template <HAMON_CONSTRAINT(has_member_size, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<3>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(t.size()))
 
 	// [range.prim.size]/2.4
-	template <HAMON_CONSTRAINED_PARAM(has_adl_size, T)>
+	template <HAMON_CONSTRAINT(has_adl_size, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(HAMON_AUTO_CAST(size(t)))
 
 	// [range.prim.size]/2.5
-	template <HAMON_CONSTRAINED_PARAM(sentinel_size, T)>
+	template <HAMON_CONSTRAINT(sentinel_size, T)>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(T&& t, hamon::detail::overload_priority<1>)
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
