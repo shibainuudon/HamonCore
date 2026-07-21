@@ -55,7 +55,6 @@ using std::ranges::views::cartesian_product;
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/cstddef/size_t.hpp>
@@ -455,7 +454,7 @@ private:
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::all_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		auto operator<=>(iterator const& x, iterator const& y)
 		{
@@ -465,7 +464,7 @@ private:
 
 #else
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::all_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator<(iterator const& x, iterator const& y)
 		{
@@ -473,7 +472,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::all_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator>(iterator const& x, iterator const& y)
 		{
@@ -481,7 +480,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::all_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator<=(iterator const& x, iterator const& y)
 		{
@@ -489,7 +488,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::all_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		bool operator>=(iterator const& x, iterator const& y)
 		{

@@ -9,28 +9,24 @@
 
 #include <hamon/ranges/concepts/random_access_range.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
 namespace ranges {
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX17_FOLD_EXPRESSIONS)
 
 template <bool Const, typename... Views>
-concept all_random_access =
+HAMON_CONCEPT_OR_BOOL all_random_access =
 	(hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_random_access_t = hamon::bool_constant<all_random_access<Const, Views...>>;
 
 #else
 
 template <bool Const, typename... Views>
-using all_random_access_t = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
+HAMON_CONCEPT_OR_BOOL all_random_access = hamon::detail::all_v<
+	hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 #endif
 

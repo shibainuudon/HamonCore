@@ -272,7 +272,7 @@ private:
 	public:
 		//using iterator_category = hamon::input_iterator_tag;		// not always present
 		using iterator_concept =
-			hamon::conditional_t<hamon::ranges::detail::all_random_access_t<Const, Views...>::value,
+			hamon::conditional_t<hamon::ranges::detail::all_random_access<Const, Views...>,
 				hamon::random_access_iterator_tag,	// [range.zip.iterator]/1.1
 			hamon::conditional_t<hamon::ranges::detail::all_bidirectional_t<Const, Views...>::value,
 				hamon::bidirectional_iterator_tag,	// [range.zip.iterator]/1.2
@@ -495,7 +495,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator+=(difference_type x) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::ranges::detail::tuple_for_each(add_assign_fn{x}, m_current))
@@ -507,7 +507,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator-=(difference_type x) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::ranges::detail::tuple_for_each(sub_assign_fn{x}, m_current))
@@ -519,7 +519,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		operator[](difference_type n) const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::ranges::detail::tuple_transform(subscript_fn{n}, m_current))
@@ -569,7 +569,7 @@ private:
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 		operator<=>(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current <=> y.m_current)	// noexcept as an extension
@@ -589,7 +589,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator<(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current < y.m_current)	// noexcept as an extension
@@ -599,7 +599,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator>(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(y < x)	// noexcept as an extension
@@ -609,7 +609,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator<=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x > y))	// noexcept as an extension
@@ -619,7 +619,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 		operator>=(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(!(x < y))	// noexcept as an extension
@@ -629,7 +629,7 @@ private:
 #endif
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR iterator	// nodiscard as an extension
 		operator+(iterator const& i, difference_type n)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -644,7 +644,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR iterator	// nodiscard as an extension
 		operator+(difference_type n, iterator const& i)
 			HAMON_NOEXCEPT_IF_EXPR(i + n)	// noexcept as an extension
@@ -655,7 +655,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_random_access_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_random_access<C2, Views...>>>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR iterator	// nodiscard as an extension
 		operator-(iterator const& i, difference_type n)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -970,7 +970,7 @@ private:
 
 	template <typename ViewsTuple, bool Const = hamon::is_const<ViewsTuple>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_random_access_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_random_access<Const, Views...>>>
 	static HAMON_CXX11_CONSTEXPR iterator<Const>
 	end_impl2(ViewsTuple& views, hamon::detail::overload_priority<2>)
 		HAMON_NOEXCEPT_IF_EXPR(begin_impl(views))	// noexcept as an extension
