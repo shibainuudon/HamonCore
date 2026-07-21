@@ -185,7 +185,7 @@ using all_range_t = hamon::conjunction<
 
 template <bool Const, typename... Views>
 using all_simple_view_t = hamon::conjunction<
-	hamon::ranges::detail::simple_view_t<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	hamon::bool_constant<hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
 
 #endif
 

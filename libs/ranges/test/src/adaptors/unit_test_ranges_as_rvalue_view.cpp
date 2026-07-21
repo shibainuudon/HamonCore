@@ -67,7 +67,7 @@ struct NotSimpleView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<NotSimpleView<int>>, "");
-static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleView<int>>::value, "");
+static_assert(!hamon::ranges::detail::simple_view<NotSimpleView<int>>, "");
 
 template <typename T>
 struct NotSimpleViewCommonRange : hamon::ranges::view_base
@@ -92,7 +92,7 @@ struct NotSimpleViewCommonRange : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<NotSimpleViewCommonRange<int>>, "");
-static_assert(!hamon::ranges::detail::simple_view_t<NotSimpleViewCommonRange<int>>::value, "");
+static_assert(!hamon::ranges::detail::simple_view<NotSimpleViewCommonRange<int>>, "");
 static_assert(hamon::ranges::range<NotSimpleViewCommonRange<int>>, "");
 static_assert(hamon::ranges::common_range<NotSimpleViewCommonRange<int>>, "");
 
@@ -107,7 +107,7 @@ struct ConstNotView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<ConstNotView<int>>, "");
-static_assert(!hamon::ranges::detail::simple_view_t<ConstNotView<int>>::value, "");
+static_assert(!hamon::ranges::detail::simple_view<ConstNotView<int>>, "");
 static_assert( hamon::ranges::range<ConstNotView<int>>, "");
 static_assert(!hamon::ranges::range<ConstNotView<int> const>, "");
 
@@ -124,7 +124,7 @@ struct NonCopyableView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<NonCopyableView<int>>, "");
-static_assert(hamon::ranges::detail::simple_view_t<NonCopyableView<int>>::value, "");
+static_assert(hamon::ranges::detail::simple_view<NonCopyableView<int>>, "");
 static_assert(!hamon::copy_constructible<NonCopyableView<int>>, "");
 
 template <typename T>
@@ -140,7 +140,7 @@ struct ThrowOnCopyView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<ThrowOnCopyView<int>>, "");
-static_assert(hamon::ranges::detail::simple_view_t<ThrowOnCopyView<int>>::value, "");
+static_assert(hamon::ranges::detail::simple_view<ThrowOnCopyView<int>>, "");
 static_assert(hamon::is_move_constructible<ThrowOnCopyView<int>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<ThrowOnCopyView<int>>::value, "");
 static_assert( hamon::is_nothrow_move_constructible<ThrowOnCopyView<int>>::value, "");
@@ -158,7 +158,7 @@ struct ThrowOnMoveView : hamon::ranges::view_base
 };
 
 static_assert(hamon::ranges::view<ThrowOnMoveView<int>>, "");
-static_assert(hamon::ranges::detail::simple_view_t<ThrowOnMoveView<int>>::value, "");
+static_assert(hamon::ranges::detail::simple_view<ThrowOnMoveView<int>>, "");
 static_assert(hamon::is_move_constructible<ThrowOnMoveView<int>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<ThrowOnMoveView<int>>::value, "");
 static_assert(!hamon::is_nothrow_move_constructible<ThrowOnMoveView<int>>::value, "");

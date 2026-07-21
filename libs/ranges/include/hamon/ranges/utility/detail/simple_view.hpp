@@ -13,9 +13,7 @@
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -27,50 +25,35 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename R>
-concept simple_view =
+HAMON_CONCEPT_OR_BOOL simple_view =
 	hamon::ranges::view<R> &&
 	hamon::ranges::range<R const> &&
 	hamon::same_as<hamon::ranges::iterator_t<R>, hamon::ranges::iterator_t<R const>> &&
 	hamon::same_as<hamon::ranges::sentinel_t<R>, hamon::ranges::sentinel_t<R const>>;
 
-template <typename R>
-using simple_view_t = hamon::bool_constant<simple_view<R>>;
-
-template <typename R>
-concept not_simple_view = !simple_view<R>;
-
 #else
 
-template <typename R>
+template <typename R, typename = void>
 struct simple_view_impl
-{
-private:
-	template <typename R2,
-		typename = hamon::enable_if_t<hamon::ranges::view<R2>>,
-		typename = hamon::enable_if_t<hamon::ranges::range<R2 const>>,
-		typename = hamon::enable_if_t<hamon::same_as<hamon::ranges::iterator_t<R2>, hamon::ranges::iterator_t<R2 const>>>,
-		typename = hamon::enable_if_t<hamon::same_as<hamon::ranges::sentinel_t<R2>, hamon::ranges::sentinel_t<R2 const>>>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename R2>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<R>(0));
-};
+	: public hamon::false_type
+{};
 
 template <typename R>
-using simple_view =
-	typename simple_view_impl<R>::type;
+struct simple_view_impl<R, hamon::enable_if_t<
+	hamon::ranges::view<R> &&
+	hamon::ranges::range<R const> &&
+	hamon::same_as<hamon::ranges::iterator_t<R>, hamon::ranges::iterator_t<R const>> &&
+	hamon::same_as<hamon::ranges::sentinel_t<R>, hamon::ranges::sentinel_t<R const>>
+>> : public hamon::true_type
+{};
 
 template <typename R>
-using simple_view_t = simple_view<R>;
-
-template <typename R>
-using not_simple_view = hamon::negation<simple_view<R>>;
+HAMON_CONCEPT_OR_BOOL simple_view = simple_view_impl<R>::value;
 
 #endif
+
+template <typename R>
+HAMON_CONCEPT_OR_BOOL not_simple_view = !simple_view<R>;
 
 }	// namespace detail
 }	// namespace ranges

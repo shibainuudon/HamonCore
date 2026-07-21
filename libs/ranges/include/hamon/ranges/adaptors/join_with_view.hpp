@@ -856,9 +856,9 @@ public:
 private:
 	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V),
 		bool UseConst =
-			hamon::ranges::detail::simple_view_t<V2>::value &&
+			hamon::ranges::detail::simple_view<V2> &&
 			hamon::is_reference<InnerRng>::value &&
-			hamon::ranges::detail::simple_view_t<Pattern>::value
+			hamon::ranges::detail::simple_view<Pattern>
 	>
 	HAMON_CXX14_CONSTEXPR iterator<UseConst>
 	begin_impl(hamon::detail::overload_priority<1>)
@@ -905,8 +905,8 @@ private:
 			hamon::ranges::common_range<InnerRng>
 		>,
 		bool UseConst =
-			hamon::ranges::detail::simple_view_t<V2>::value &&
-			hamon::ranges::detail::simple_view_t<Pattern>::value>
+			hamon::ranges::detail::simple_view<V2> &&
+			hamon::ranges::detail::simple_view<Pattern>>
 	HAMON_CXX14_CONSTEXPR iterator<UseConst>
 	end_impl(hamon::detail::overload_priority<1>)
 	{
@@ -915,8 +915,8 @@ private:
 
 	template <typename V2 = V,
 		bool UseConst =
-			hamon::ranges::detail::simple_view_t<V2>::value &&
-			hamon::ranges::detail::simple_view_t<Pattern>::value>
+			hamon::ranges::detail::simple_view<V2> &&
+			hamon::ranges::detail::simple_view<Pattern>>
 	HAMON_CXX14_CONSTEXPR sentinel<UseConst>
 	end_impl(hamon::detail::overload_priority<0>)
 	{

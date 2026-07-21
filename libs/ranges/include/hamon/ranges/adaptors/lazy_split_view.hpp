@@ -846,8 +846,8 @@ public:
 private:
 	template <HAMON_CONSTRAINT_D(hamon::ranges::forward_range, V2, V),
 		bool UseConst =
-			hamon::ranges::detail::simple_view_t<V>::value &&
-			hamon::ranges::detail::simple_view_t<Pattern>::value
+			hamon::ranges::detail::simple_view<V> &&
+			hamon::ranges::detail::simple_view<Pattern>
 	>
 	HAMON_CXX14_CONSTEXPR outer_iterator<UseConst>
 	begin_impl(hamon::detail::overload_priority<1>)
@@ -892,8 +892,8 @@ public:
 			hamon::ranges::common_range<V2>
 		>,
 		bool UseConst =
-			hamon::ranges::detail::simple_view_t<V>::value &&
-			hamon::ranges::detail::simple_view_t<Pattern>::value
+			hamon::ranges::detail::simple_view<V> &&
+			hamon::ranges::detail::simple_view<Pattern>
 	>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	end() HAMON_NOEXCEPT_IF_EXPR(				// noexcept as an extension

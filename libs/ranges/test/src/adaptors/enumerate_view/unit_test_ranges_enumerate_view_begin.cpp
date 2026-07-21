@@ -59,7 +59,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
@@ -97,7 +97,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int const>,
 			input_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
@@ -142,7 +142,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int const>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
 
 		using EV = hamon::ranges::enumerate_view<V>;

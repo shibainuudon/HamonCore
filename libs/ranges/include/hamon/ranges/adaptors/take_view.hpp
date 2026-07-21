@@ -58,7 +58,6 @@ using std::ranges::views::take;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
@@ -306,7 +305,7 @@ private:
 		hamon::make_counted_iterator(hamon::ranges::begin(this_->m_base), this_->m_count))
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	begin() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		begin_impl<V2>(this, hamon::detail::overload_priority<3>{}))
@@ -353,7 +352,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto	// nodiscard as an extension
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
 		end_impl<V2>(this, hamon::detail::overload_priority<2>{}))

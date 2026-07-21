@@ -59,7 +59,6 @@ using std::ranges::views::drop;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_subrange.hpp>
 #include <hamon/detail/decay_copy.hpp>
@@ -130,7 +129,7 @@ public:
 
 	template <typename V2 = V const,
 		typename = hamon::enable_if_t<!(
-			hamon::ranges::detail::simple_view_t<V>::value &&
+			hamon::ranges::detail::simple_view<V> &&
 			hamon::ranges::random_access_range<V2> &&
 			hamon::ranges::sized_range<V2>
 		)>>
@@ -164,7 +163,7 @@ public:
 		return hamon::ranges::next(hamon::ranges::begin(m_base), m_count, hamon::ranges::end(m_base));
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto end()
 	-> hamon::ranges::sentinel_t<V2>

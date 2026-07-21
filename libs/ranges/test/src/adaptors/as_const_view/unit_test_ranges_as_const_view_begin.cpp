@@ -59,7 +59,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 
 		using CV = hamon::ranges::as_const_view<V>;
@@ -94,7 +94,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int const>,
 			input_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 
 		using CV = hamon::ranges::as_const_view<V>;
@@ -135,7 +135,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int const>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert(!hamon::ranges::range<V const>, "");
 
 		using CV = hamon::ranges::as_const_view<V>;

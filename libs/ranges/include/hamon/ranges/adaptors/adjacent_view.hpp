@@ -70,7 +70,6 @@ using adjacent_t = decltype(adjacent<N>);
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -670,7 +669,7 @@ private:
 	begin_impl(V2& base, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto     // nodiscard as an extension
 	begin() HAMON_NOEXCEPT_DECLTYPE_RETURN(        // noexcept as an extension
 		begin_impl(m_base, hamon::detail::overload_priority<1>{}))
@@ -700,7 +699,7 @@ private:
 	end_impl(V2& base, hamon::detail::overload_priority<0>) HAMON_NOEXCEPT;
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto   // nodiscard as an extension
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(        // noexcept as an extension
 		end_impl(m_base, hamon::detail::overload_priority<2>{}))

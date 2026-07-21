@@ -829,8 +829,8 @@ public:
 
 	template <typename First2 = First,
 		typename = hamon::enable_if_t<!hamon::conjunction<
-			hamon::ranges::detail::simple_view_t<First2>,
-			hamon::ranges::detail::simple_view_t<Vs>...
+			hamon::bool_constant<hamon::ranges::detail::simple_view<First2>>,
+			hamon::bool_constant<hamon::ranges::detail::simple_view<Vs>>...
 		>::value>
 	>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
@@ -900,8 +900,8 @@ private:
 public:
 	template <typename First2 = First,
 		typename = hamon::enable_if_t<!hamon::conjunction<
-			hamon::ranges::detail::simple_view_t<First2>,
-			hamon::ranges::detail::simple_view_t<Vs>...
+			hamon::bool_constant<hamon::ranges::detail::simple_view<First2>>,
+			hamon::bool_constant<hamon::ranges::detail::simple_view<Vs>>...
 		>::value>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::detail::cartesian_product_is_common_t<First2, Vs...>::value

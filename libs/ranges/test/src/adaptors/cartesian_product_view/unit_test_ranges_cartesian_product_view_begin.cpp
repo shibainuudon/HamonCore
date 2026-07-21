@@ -63,7 +63,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V1>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V1>, "");
 		static_assert( hamon::ranges::range<V1 const>, "");
 
 		using V2 = TestView<int,
@@ -72,7 +72,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V2>, "");
 		static_assert( hamon::ranges::range<V2 const>, "");
 
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
@@ -113,7 +113,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V1>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V1>, "");
 		static_assert( hamon::ranges::range<V1 const>, "");
 
 		using V2 = TestView<int,
@@ -122,7 +122,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int const>,
 			forward_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V2>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V2>, "");
 		static_assert( hamon::ranges::range<V2 const>, "");
 
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;
@@ -169,7 +169,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<int const>,
 			input_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V1>, "");
 		static_assert(!hamon::ranges::range<V1 const>, "");
 
 		using V2 = TestView<int,
@@ -178,7 +178,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V2>, "");
 		static_assert( hamon::ranges::range<V2 const>, "");
 
 		using CV = hamon::ranges::cartesian_product_view<V1, V2>;

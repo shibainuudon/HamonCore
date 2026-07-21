@@ -59,7 +59,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int>,
 			random_access_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::slide_caches_nothing<V const>, "");
 		//static_assert(!hamon::ranges::detail::slide_caches_first<V>, "");
 
@@ -98,7 +98,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int const>,
 			random_access_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::slide_caches_nothing<V const>, "");
 		//static_assert(!hamon::ranges::detail::slide_caches_first<V>, "");
 
@@ -139,7 +139,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int>,
 				forward_iterator_wrapper<int>
 			>;
-			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+			static_assert( hamon::ranges::detail::simple_view<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert( hamon::ranges::detail::slide_caches_first<V>, "");
 
@@ -169,7 +169,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				bidirectional_iterator_wrapper<int>,
 				bidirectional_iterator_wrapper<int>
 			>;
-			static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+			static_assert( hamon::ranges::detail::simple_view<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_first<V>, "");
 
@@ -203,7 +203,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int const>,
 				forward_iterator_wrapper<int const>
 			>;
-			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+			static_assert(!hamon::ranges::detail::simple_view<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert( hamon::ranges::detail::slide_caches_first<V>, "");
 
@@ -233,7 +233,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				bidirectional_iterator_wrapper<int const>,
 				bidirectional_iterator_wrapper<int const>
 			>;
-			static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+			static_assert(!hamon::ranges::detail::simple_view<V>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_nothing<V const>, "");
 			//static_assert(!hamon::ranges::detail::slide_caches_first<V>, "");
 

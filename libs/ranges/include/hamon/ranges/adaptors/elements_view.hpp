@@ -70,7 +70,6 @@ using elements_t = decltype(elements<N>);
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
 #include <hamon/concepts/move_constructible.hpp>
@@ -207,7 +206,7 @@ public:
 		return hamon::move(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator<false> begin() HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(hamon::ranges::begin(hamon::declval<V2&>())) &&
@@ -253,7 +252,7 @@ private:
 	}
 
 public:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto end() HAMON_NOEXCEPT_IF(			// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(hamon::ranges::end(hamon::declval<V2&>())) &&

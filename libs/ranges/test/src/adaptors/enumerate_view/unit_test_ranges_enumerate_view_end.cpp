@@ -124,7 +124,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int>,
 			random_access_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -152,7 +152,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int const>,
 			random_access_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -190,7 +190,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			TestRandomAccessIterator<NotMovable, NotMovable, NotMovable>,
 			TestRandomAccessIterator<NotMovable, NotMovable, NotMovable>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -227,7 +227,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int>,
 			random_access_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -265,7 +265,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			TestRandomAccessIterator<NotMovable, NotMovable, NotMovable>,
 			TestRandomAccessIterator<NotMovable, NotMovable, NotMovable>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -302,7 +302,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -340,7 +340,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			random_access_iterator_wrapper<int const>,
 			random_access_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -366,7 +366,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int>,
 			forward_iterator_wrapper<int>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -394,7 +394,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int const>,
 			forward_iterator_wrapper<int const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
@@ -432,7 +432,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			forward_iterator_wrapper<int const>,
 			forward_iterator_wrapper<int>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
 		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
 		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");

@@ -65,7 +65,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple>,
 			input_iterator_wrapper<Tuple>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::common_range<V const>, "");
@@ -115,7 +115,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			input_iterator_wrapper<Tuple const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::common_range<V const>, "");
@@ -183,7 +183,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			input_iterator_wrapper<Tuple const>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert( hamon::ranges::common_range<V const>, "");
@@ -251,7 +251,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			test_sentinel<input_iterator_wrapper<Tuple const>>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V const>, "");
@@ -307,7 +307,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			input_iterator_wrapper<Tuple>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert(!hamon::ranges::range<V const>, "");
 		static_assert( hamon::ranges::common_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V const>, "");
@@ -346,7 +346,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple>,
 			test_sentinel<input_iterator_wrapper<Tuple>>
 		>;
-		static_assert( hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V const>, "");
@@ -394,7 +394,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			test_sentinel<input_iterator_wrapper<Tuple const>>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert( hamon::ranges::range<V const>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V const>, "");
@@ -448,7 +448,7 @@ HAMON_CXX14_CONSTEXPR bool test00()
 			input_iterator_wrapper<Tuple const>,
 			input_iterator_wrapper<Tuple>
 		>;
-		static_assert(!hamon::ranges::detail::simple_view_t<V>::value, "");
+		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		static_assert(!hamon::ranges::range<V const>, "");
 		static_assert(!hamon::ranges::common_range<V>, "");
 		static_assert(!hamon::ranges::common_range<V const>, "");

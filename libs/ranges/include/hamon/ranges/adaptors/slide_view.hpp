@@ -664,7 +664,7 @@ private:
 public:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
-			!(hamon::ranges::detail::simple_view_t<V2>::value &&
+			!(hamon::ranges::detail::simple_view<V2> &&
 			hamon::ranges::detail::slide_caches_nothing_t<V2 const>::value)>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator<false> begin() HAMON_NOEXCEPT_RETURN(	// noexcept as an extension
@@ -746,7 +746,7 @@ private:
 public:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
-			!(hamon::ranges::detail::simple_view_t<V2>::value &&
+			!(hamon::ranges::detail::simple_view<V2> &&
 			hamon::ranges::detail::slide_caches_nothing_t<V2 const>::value)>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR			// nodiscard as an extension
 	auto end() HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension

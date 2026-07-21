@@ -48,7 +48,6 @@ using std::ranges::views::as_const;
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/span.hpp>
@@ -119,7 +118,7 @@ public:
 		return hamon::move(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto begin() HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
 		hamon::ranges::cbegin(hamon::declval<V2&>()))
@@ -137,7 +136,7 @@ public:
 		return hamon::ranges::cbegin(m_base);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_simple_view, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto end() HAMON_NOEXCEPT_IF_EXPR(			// noexcept as an extension
 		hamon::ranges::cend(hamon::declval<V2&>()))

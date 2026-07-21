@@ -71,8 +71,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				test_sentinel<forward_iterator_wrapper<int>>
 			>;
 
-			static_assert( hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert( hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert( hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -126,8 +126,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				random_access_iterator_wrapper<int>
 			>;
 
-			static_assert( hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert( hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert( hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -189,8 +189,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				random_access_iterator_wrapper<int>
 			>;
 
-			static_assert( hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert( hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert( hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -250,8 +250,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					forward_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -309,8 +309,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -370,8 +370,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -434,8 +434,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -495,8 +495,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -558,8 +558,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -624,8 +624,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -685,8 +685,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					random_access_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert( hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -748,8 +748,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 					forward_iterator_wrapper<int>
 				>;
 
-				static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-				static_assert(!hamon::ranges::detail::simple_view_t<V2>::value, "");
+				static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+				static_assert(!hamon::ranges::detail::simple_view<V2>, "");
 				static_assert( hamon::ranges::range<V1 const>, "");
 				static_assert( hamon::ranges::range<V2 const>, "");
 				//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -820,8 +820,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				forward_iterator_wrapper<int>
 			>;
 
-			static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert(!hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert(!hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -866,8 +866,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				random_access_iterator_wrapper<int>
 			>;
 
-			static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert(!hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
@@ -914,8 +914,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 				random_access_iterator_wrapper<int>
 			>;
 
-			static_assert(!hamon::ranges::detail::simple_view_t<V1>::value, "");
-			static_assert( hamon::ranges::detail::simple_view_t<V2>::value, "");
+			static_assert(!hamon::ranges::detail::simple_view<V1>, "");
+			static_assert( hamon::ranges::detail::simple_view<V2>, "");
 			static_assert(!hamon::ranges::range<V1 const>, "");
 			static_assert( hamon::ranges::range<V2 const>, "");
 			//static_assert( hamon::ranges::detail::zip_is_common<V1, V2>, "");
