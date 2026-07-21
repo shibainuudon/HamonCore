@@ -27,6 +27,7 @@ using std::tuple_cat;
 #include <hamon/tuple/adl_get.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -132,9 +133,7 @@ template <
 	hamon::detail::tuple_like... Tuples
 #else
 	typename... Tuples,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		hamon::bool_constant<hamon::detail::tuple_like<Tuples>>...
-	>::value>
+	typename = hamon::enable_if_t<hamon::detail::all_v<hamon::detail::tuple_like<Tuples>...>>
 #endif
 >
 HAMON_NODISCARD	// extension

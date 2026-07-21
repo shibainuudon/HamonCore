@@ -76,7 +76,7 @@ using std::ranges::views::zip;
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
-#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
@@ -147,45 +147,29 @@ using all_simple_view_t = hamon::bool_constant<all_simple_view<Const, Views...>>
 #else
 
 template <typename... Rs>
-using zip_is_common_impl = hamon::disjunction<
-	hamon::conjunction<
-		hamon::bool_constant<sizeof...(Rs) == 1>,
-		hamon::conjunction<hamon::bool_constant<hamon::ranges::common_range<Rs>>...>
-	>,
-	hamon::conjunction<
-		hamon::negation<hamon::conjunction<hamon::bool_constant<hamon::ranges::bidirectional_range<Rs>>...>>,
-		hamon::conjunction<hamon::bool_constant<hamon::ranges::common_range<Rs>>...>
-	>,
-	hamon::conjunction<
-		hamon::conjunction<hamon::bool_constant<hamon::ranges::random_access_range<Rs>>...>,
-		hamon::conjunction<hamon::bool_constant<hamon::ranges::sized_range<Rs>>...>
-	>
+using zip_is_common_impl = hamon::bool_constant<
+	((sizeof...(Rs) == 1) && hamon::detail::all_v<hamon::ranges::common_range<Rs>...>) ||
+	(!hamon::detail::all_v<hamon::ranges::bidirectional_range<Rs>...> && hamon::detail::all_v<hamon::ranges::common_range<Rs>...>) ||
+	(hamon::detail::all_v<hamon::ranges::random_access_range<Rs>...> && hamon::detail::all_v<hamon::ranges::sized_range<Rs>...>)
 >;
 
 template <bool Const, typename... Views>
 using zip_is_common_t = zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>;
 
 template <bool Const, typename... Views>
-using all_bidirectional_t = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
+using all_bidirectional_t = hamon::detail::all<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 template <bool Const, typename... Views>
-using all_forward_t = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
+using all_forward_t = hamon::detail::all<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 template <bool Const, typename... Views>
-using all_sized_t = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
+using all_sized_t = hamon::detail::all<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 template <bool Const, typename... Views>
-using all_range_t = hamon::conjunction<
-	hamon::bool_constant<
-		hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>>
-	>...>;
+using all_range_t = hamon::detail::all<hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 template <bool Const, typename... Views>
-using all_simple_view_t = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>>>...>;
+using all_simple_view_t = hamon::detail::all<hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>>...>;
 
 #endif
 
@@ -242,8 +226,8 @@ class zip_view : public hamon::ranges::view_interface<zip_view<Views...>>
 {
 private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::input_range<Views>>...>::value, "");
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::view<Views>>...>::value, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::input_range<Views>...>, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::view<Views>...>, "");
 	static_assert(sizeof...(Views) > 0, "");
 #endif
 
@@ -406,13 +390,14 @@ private:
 #endif
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<C2>,
-				hamon::bool_constant<hamon::convertible_to<
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				C2,
+				hamon::convertible_to<
 					IteratorT<!C2, Views>,
 					IteratorT<C2, Views>
-				>>...
-			>::value>>
+				>...
+			>>
+		>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i)
 			HAMON_NOEXCEPT_IF(hamon::conjunction<	// noexcept as an extension
@@ -546,11 +531,7 @@ private:
 
 	private:
 		template <bool C2>
-		using AllEqualityComparable = hamon::conjunction<
-			hamon::bool_constant<
-				hamon::equality_comparable<IteratorT<C2, Views>>
-			>...
-		>;
+		using AllEqualityComparable = hamon::detail::all<hamon::equality_comparable<IteratorT<C2, Views>>...>;
 
 		template <bool C2,
 			typename = hamon::enable_if_t<hamon::ranges::detail::all_bidirectional_t<C2, Views...>::value>>
@@ -688,11 +669,13 @@ private:
 		}
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<hamon::sized_sentinel_for<
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				hamon::sized_sentinel_for<
 					IteratorT<C2, Views>,
-					IteratorT<C2, Views>>>...
-			>::value>>
+					IteratorT<C2, Views>
+				>...
+			>>
+		>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 		operator-(iterator const& x, iterator const& y) HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::apply(
@@ -710,9 +693,8 @@ private:
 		iter_move(iterator const& i)
 			// [range.zip.iterator]/22
 			HAMON_NOEXCEPT_IF(
-				(hamon::conjunction<hamon::bool_constant<HAMON_NOEXCEPT_EXPR(
-					hamon::ranges::iter_move(hamon::declval<IteratorT<Const, Views> const&>()))>...
-				>::value) &&
+				(hamon::detail::all_v<HAMON_NOEXCEPT_EXPR(
+					hamon::ranges::iter_move(hamon::declval<IteratorT<Const, Views> const&>()))...>) &&
 				(hamon::conjunction<
 					hamon::is_nothrow_move_constructible<
 						hamon::ranges::range_rvalue_reference_t<
@@ -725,18 +707,19 @@ private:
 		}
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<hamon::indirectly_swappable<IteratorT<C2, Views>>>...
-			>::value>>
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				hamon::indirectly_swappable<IteratorT<C2, Views>>...
+			>>
+		>
 		friend HAMON_CXX14_CONSTEXPR void
 		iter_swap(iterator const& l, iterator const& r)
 			// [range.zip.iterator]/24
-			HAMON_NOEXCEPT_IF((hamon::conjunction<
-				hamon::bool_constant<HAMON_NOEXCEPT_EXPR(
+			HAMON_NOEXCEPT_IF((hamon::detail::all_v<
+				HAMON_NOEXCEPT_EXPR(
 					hamon::ranges::iter_swap(
 						hamon::declval<IteratorT<Const, Views>&>(),
-						hamon::declval<IteratorT<Const, Views>&>()))>...
-			>::value))
+						hamon::declval<IteratorT<Const, Views>&>()))...
+			>))
 		{
 			// [range.zip.iterator]/23
 			hamon::ranges::detail::tuple_for_each2(hamon::ranges::iter_swap, l.m_current, r.m_current);
@@ -774,13 +757,14 @@ private:
 		sentinel() = default;
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<C2>,
-				hamon::bool_constant<hamon::convertible_to<
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				C2,
+				hamon::convertible_to<
 					SentinelT<!C2, Views>,
 					SentinelT<C2, Views>
-				>>...
-			>::value>>
+				>...
+			>>
+		>
 		HAMON_CXX11_CONSTEXPR sentinel(sentinel<!Const> i)
 			HAMON_NOEXCEPT_IF(hamon::conjunction<	// noexcept as an extension
 				hamon::is_nothrow_convertible<
@@ -830,11 +814,12 @@ private:
 		}
 
 		template <bool OtherConst>
-		using AllSentinelFor = hamon::conjunction<
-			hamon::bool_constant<hamon::sentinel_for<
+		using AllSentinelFor = hamon::detail::all<
+			hamon::sentinel_for<
 				SentinelT<Const, Views>,
 				IteratorT<OtherConst, Views>
-			>>...>;
+			>...
+		>;
 
 		template <bool OtherConst,
 			typename = hamon::enable_if_t<AllSentinelFor<OtherConst>::value>>
@@ -914,12 +899,13 @@ private:
 		}
 
 		template <bool OtherConst,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<hamon::sized_sentinel_for<
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				hamon::sized_sentinel_for<
 					SentinelT<Const, Views>,
 					IteratorT<OtherConst, Views>
-				>>...
-			>::value>>
+				>...
+			>>
+		>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::common_type_t<DistanceT<OtherConst, Views>...>
 		operator-(iterator<OtherConst> const& x, sentinel const& y)
@@ -929,12 +915,13 @@ private:
 		}
 
 		template <bool OtherConst,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<hamon::sized_sentinel_for<
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				hamon::sized_sentinel_for<
 					SentinelT<Const, Views>,
 					IteratorT<OtherConst, Views>
-				>>...
-			>::value>>
+				>...
+			>>
+		>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		hamon::common_type_t<DistanceT<OtherConst, Views>...>
 		operator-(sentinel const& y, iterator<OtherConst> const& x)
@@ -1100,7 +1087,7 @@ zip_view(Rs&&...) -> zip_view<hamon::views::all_t<Rs>...>;
 template <typename... Views>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool enable_borrowed_range<hamon::ranges::zip_view<Views...>> =
-	hamon::conjunction<hamon::bool_constant<hamon::ranges::enable_borrowed_range<Views>>...>::value;
+	hamon::detail::all_v<hamon::ranges::enable_borrowed_range<Views>...>;
 
 namespace views {
 

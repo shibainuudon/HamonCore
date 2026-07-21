@@ -25,7 +25,7 @@ using std::indirect_result_t;
 #include <hamon/concepts/invocable.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -65,9 +65,7 @@ struct indirect_result_t_impl;
 
 template <typename F, typename... Is>
 struct indirect_result_t_impl<F, type_pack<Is...>,
-	hamon::enable_if_t<
-		hamon::conjunction<hamon::bool_constant<hamon::indirectly_readable<Is>>...>::value
-	>
+	hamon::enable_if_t<hamon::detail::all_v<hamon::indirectly_readable<Is>...>>
 > : public indirect_result_t_impl_2<F, type_pack<hamon::iter_reference_t<Is>...>> {};
 
 }	// namespace detail

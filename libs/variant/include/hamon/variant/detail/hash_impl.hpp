@@ -13,7 +13,7 @@
 #include <hamon/functional/detail/disabled_hash.hpp>
 #include <hamon/functional/ranges/hash_combine.hpp>
 #include <hamon/type_traits/enable_if.hpp>
-#include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/type_traits/remove_const.hpp>
 #include <functional>	// std::hash
 
@@ -38,11 +38,11 @@ struct hash_impl : public hamon::detail::disabled_hash
 
 template <typename... Types>
 struct hash_impl<hamon::variant<Types...>,
-	hamon::enable_if_t<hamon::conjunction<
-		hamon::bool_constant<hamon::detail::cpp17_hash<
+	hamon::enable_if_t<hamon::detail::all_v<
+		hamon::detail::cpp17_hash<
 			std::hash<hamon::remove_const_t<Types>>, hamon::remove_const_t<Types>
-		>>...
-	>::value>
+		>...
+	>>
 >
 {
 	HAMON_NODISCARD hamon::size_t

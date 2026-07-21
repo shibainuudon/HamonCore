@@ -64,6 +64,7 @@ using std::ranges::views::zip_transform;
 #include <hamon/tuple/apply.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/decay.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/is_const.hpp>
@@ -109,8 +110,8 @@ class zip_transform_view : public hamon::ranges::view_interface<zip_transform_vi
 private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	static_assert(hamon::move_constructible<F>, "");
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::input_range<Views>>...>::value, "");
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::view<Views>>...>::value, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::input_range<Views>...>, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::view<Views>...>, "");
 	static_assert(sizeof...(Views) > 0, "");
 	static_assert(hamon::is_object<F>::value, "");
 	static_assert(hamon::regular_invocable<F&, hamon::ranges::range_reference_t<Views>...>, "");
@@ -150,11 +151,11 @@ private:
 		using iterator_category =
 			hamon::conditional_t<!hamon::is_reference<R>::value,
 				hamon::input_iterator_tag,	// [range.zip.transform.iterator]/1.1
-			hamon::conditional_t<hamon::conjunction_v<hamon::bool_constant<hamon::derived_from<C<Views>, hamon::random_access_iterator_tag>>...>,
+			hamon::conditional_t<hamon::detail::all_v<hamon::derived_from<C<Views>, hamon::random_access_iterator_tag>...>,
 				hamon::random_access_iterator_tag,	// [range.zip.transform.iterator]/1.2.1
-			hamon::conditional_t<hamon::conjunction_v<hamon::bool_constant<hamon::derived_from<C<Views>, hamon::bidirectional_iterator_tag>>...>,
+			hamon::conditional_t<hamon::detail::all_v<hamon::derived_from<C<Views>, hamon::bidirectional_iterator_tag>...>,
 				hamon::bidirectional_iterator_tag,	// [range.zip.transform.iterator]/1.2.2
-			hamon::conditional_t<hamon::conjunction_v<hamon::bool_constant<hamon::derived_from<C<Views>, hamon::forward_iterator_tag>>...>,
+			hamon::conditional_t<hamon::detail::all_v<hamon::derived_from<C<Views>, hamon::forward_iterator_tag>...>,
 				hamon::forward_iterator_tag,		// [range.zip.transform.iterator]/1.2.3
 				hamon::input_iterator_tag			// [range.zip.transform.iterator]/1.2.4
 			>>>>;

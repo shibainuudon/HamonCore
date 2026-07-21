@@ -76,6 +76,7 @@ using std::ranges::views::cartesian_product;
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
+#include <hamon/type_traits/detail/all.hpp>
 #include <hamon/type_traits/is_const.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/remove_reference.hpp>
@@ -152,10 +153,10 @@ using cartesian_is_sized_sentinel_t = hamon::bool_constant<cartesian_is_sized_se
 #else
 
 template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_random_access = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>>>,
-	hamon::bool_constant<hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
-	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...
+using cartesian_product_is_random_access = hamon::detail::all<
+	hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>>,
+	hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>...
 >;
 
 template <bool Const, typename First, typename... Vs>
@@ -168,10 +169,10 @@ using cartesian_product_common_arg = hamon::bool_constant<
 >;
 
 template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_bidirectional = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, First>>>,
-	hamon::bool_constant<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
-	cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>...
+using cartesian_product_is_bidirectional = hamon::detail::all<
+	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, First>>,
+	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>::value...
 >;
 
 template <bool Const, typename First, typename... Vs>
@@ -184,24 +185,22 @@ template <typename First, typename... Vs>
 using cartesian_product_is_common_t = cartesian_product_is_common<First, Vs...>;
 
 template <typename... Vs>
-using cartesian_product_is_sized = hamon::conjunction<
-	hamon::bool_constant<hamon::ranges::sized_range<Vs>>...
->;
+using cartesian_product_is_sized = hamon::detail::all<hamon::ranges::sized_range<Vs>...>;
 
 template <typename... Vs>
 using cartesian_product_is_sized_t = cartesian_product_is_sized<Vs...>;
 
 template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
-using cartesian_is_sized_sentinel = hamon::conjunction<
-	hamon::bool_constant<hamon::sized_sentinel_for<
+using cartesian_is_sized_sentinel = hamon::detail::all<
+	hamon::sized_sentinel_for<
 		FirstSent<hamon::ranges::detail::maybe_const<Const, First>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, First>>
-	>>,
-	hamon::bool_constant<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>>...,
-	hamon::bool_constant<hamon::sized_sentinel_for<
+	>,
+	hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>...,
+	hamon::sized_sentinel_for<
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>
-	>>...
+	>...
 >;
 
 template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
@@ -250,8 +249,8 @@ private:
 #if !defined(HAMON_HAS_CXX20_CONCEPTS)
 	static_assert(hamon::ranges::input_range<First>, "");
 	static_assert(hamon::ranges::view<First>, "");
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::forward_range<Vs>>...>::value, "");
-	static_assert(hamon::conjunction<hamon::bool_constant<hamon::ranges::view<Vs>>...>::value, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::forward_range<Vs>...>, "");
+	static_assert(hamon::detail::all_v<hamon::ranges::view<Vs>...>, "");
 #endif
 
 	template <bool Const>
@@ -318,11 +317,12 @@ private:
 		iterator() = default;
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<C2>,
-				hamon::bool_constant<hamon::convertible_to<hamon::ranges::iterator_t<First>, hamon::ranges::iterator_t<First const>>>,
-				hamon::bool_constant<hamon::convertible_to<hamon::ranges::iterator_t<Vs>, hamon::ranges::iterator_t<Vs const>>>...
-			>::value>>
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				C2,
+				hamon::convertible_to<hamon::ranges::iterator_t<First>, hamon::ranges::iterator_t<First const>>,
+				hamon::convertible_to<hamon::ranges::iterator_t<Vs>, hamon::ranges::iterator_t<Vs const>>...
+			>>
+		>
 		HAMON_CXX11_CONSTEXPR
 		iterator(iterator<!Const> i)
 			// [range.cartesian.iterator]/11
@@ -612,21 +612,19 @@ private:
 
 		template <hamon::size_t... N>
 		struct is_iter_move_noexcept<hamon::index_sequence<N...>>
-			: hamon::conjunction<
-				hamon::is_nothrow_move_constructible<
+			: hamon::detail::all<
+				hamon::is_nothrow_move_constructible_v<
 					hamon::ranges::range_rvalue_reference_t<
 						hamon::ranges::detail::maybe_const<Const, First>
 					>
 				>,
-				hamon::is_nothrow_move_constructible<
+				hamon::is_nothrow_move_constructible_v<
 					hamon::ranges::range_rvalue_reference_t<
 						hamon::ranges::detail::maybe_const<Const, Vs>
 					>
 				>...,
-				hamon::bool_constant<
-					HAMON_NOEXCEPT_EXPR(hamon::ranges::iter_move(
-						hamon::adl_get<N>(hamon::declval<iterator const&>().m_current)))
-				>...
+				HAMON_NOEXCEPT_EXPR(hamon::ranges::iter_move(
+					hamon::adl_get<N>(hamon::declval<iterator const&>().m_current)))...
 			>
 		{};
 
@@ -645,20 +643,19 @@ private:
 
 		template <hamon::size_t... N>
 		struct is_iter_swap_noexcept<hamon::index_sequence<N...>>
-			: hamon::conjunction<
-				hamon::bool_constant<
-					HAMON_NOEXCEPT_EXPR(hamon::ranges::iter_swap(
-						hamon::adl_get<N>(hamon::declval<iterator const&>().m_current),
-						hamon::adl_get<N>(hamon::declval<iterator const&>().m_current)))
-				>...
+			: hamon::detail::all<
+				HAMON_NOEXCEPT_EXPR(hamon::ranges::iter_swap(
+					hamon::adl_get<N>(hamon::declval<iterator const&>().m_current),
+					hamon::adl_get<N>(hamon::declval<iterator const&>().m_current)))...
 			>
 		{};
 
 		template <bool C2 = Const,
-			typename = hamon::enable_if_t<hamon::conjunction<
-				hamon::bool_constant<hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>>,
-				hamon::bool_constant<hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, Vs>>>>...
-			>::value>>
+			typename = hamon::enable_if_t<hamon::detail::all_v<
+				hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, First>>>,
+				hamon::indirectly_swappable<hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<C2, Vs>>>...
+			>>
+		>
 		friend HAMON_CXX14_CONSTEXPR void iter_swap(iterator const& l, iterator const& r)
 			HAMON_NOEXCEPT_IF(is_iter_swap_noexcept<hamon::make_index_sequence<1 + sizeof...(Vs)>>::value)
 		{
@@ -828,10 +825,10 @@ public:
 	{}
 
 	template <typename First2 = First,
-		typename = hamon::enable_if_t<!hamon::conjunction<
-			hamon::bool_constant<hamon::ranges::detail::simple_view<First2>>,
-			hamon::bool_constant<hamon::ranges::detail::simple_view<Vs>>...
-		>::value>
+		typename = hamon::enable_if_t<!hamon::detail::all_v<
+			hamon::ranges::detail::simple_view<First2>,
+			hamon::ranges::detail::simple_view<Vs>...
+		>>
 	>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator<false> begin()
@@ -841,10 +838,10 @@ public:
 	}
 
 	template <typename First2 = First,
-		typename = hamon::enable_if_t<hamon::conjunction<
-			hamon::bool_constant<hamon::ranges::range<First2 const>>,
-			hamon::bool_constant<hamon::ranges::range<Vs const>>...
-		>::value>
+		typename = hamon::enable_if_t<hamon::detail::all_v<
+			hamon::ranges::range<First2 const>,
+			hamon::ranges::range<Vs const>...
+		>>
 	>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const
@@ -899,10 +896,10 @@ private:
 
 public:
 	template <typename First2 = First,
-		typename = hamon::enable_if_t<!hamon::conjunction<
-			hamon::bool_constant<hamon::ranges::detail::simple_view<First2>>,
-			hamon::bool_constant<hamon::ranges::detail::simple_view<Vs>>...
-		>::value>,
+		typename = hamon::enable_if_t<!hamon::detail::all_v<
+			hamon::ranges::detail::simple_view<First2>,
+			hamon::ranges::detail::simple_view<Vs>...
+		>>,
 		typename = hamon::enable_if_t<
 			hamon::ranges::detail::cartesian_product_is_common_t<First2, Vs...>::value
 		>
