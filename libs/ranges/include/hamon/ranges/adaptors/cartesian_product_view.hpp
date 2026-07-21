@@ -97,45 +97,33 @@ namespace ranges {
 
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+template <typename R>
+HAMON_CONCEPT_OR_BOOL cartesian_product_common_arg =
+	hamon::ranges::common_range<R> ||
+	(hamon::ranges::sized_range<R> && hamon::ranges::random_access_range<R>);
+
+template <typename First, typename...>
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_common = cartesian_product_common_arg<First>;
+
+#if defined(HAMON_HAS_CXX17_FOLD_EXPRESSIONS)
 
 template <bool Const, typename First, typename... Vs>
-concept cartesian_product_is_random_access =
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_random_access =
 	(hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>> && ... &&
 	(hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>> &&
 	 hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>));
 
 template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_random_access_t = hamon::bool_constant<cartesian_product_is_random_access<Const, First, Vs...>>;
-
-template <typename R>
-concept cartesian_product_common_arg =
-	hamon::ranges::common_range<R> ||
-	(hamon::ranges::sized_range<R> && hamon::ranges::random_access_range<R>);
-
-template <bool Const, typename First, typename... Vs>
-concept cartesian_product_is_bidirectional =
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_bidirectional =
 	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, First>> && ... &&
 	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Vs>> &&
 	 cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>));
 
-template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_bidirectional_t = hamon::bool_constant<cartesian_product_is_bidirectional<Const, First, Vs...>>;
-
-template <typename First, typename...>
-concept cartesian_product_is_common = cartesian_product_common_arg<First>;
-
-template <typename First, typename... Vs>
-using cartesian_product_is_common_t = hamon::bool_constant<cartesian_product_is_common<First, Vs...>>;
-
 template <typename... Vs>
-concept cartesian_product_is_sized = (hamon::ranges::sized_range<Vs> && ...);
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_sized = (hamon::ranges::sized_range<Vs> && ...);
 
-template <typename... Vs>
-using cartesian_product_is_sized_t = hamon::bool_constant<cartesian_product_is_sized<Vs...>>;
-
-template <bool Const, template <typename> class FirstSent, typename First, typename... Vs>
-concept cartesian_is_sized_sentinel = (
+template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
+HAMON_CONCEPT_OR_BOOL cartesian_is_sized_sentinel = (
 	hamon::sized_sentinel_for<
 		FirstSent<hamon::ranges::detail::maybe_const<Const, First>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, First>>
@@ -147,51 +135,27 @@ concept cartesian_is_sized_sentinel = (
 	 >)
 );
 
-template <bool Const, template <typename> class FirstSent, typename First, typename... Vs>
-using cartesian_is_sized_sentinel_t = hamon::bool_constant<cartesian_is_sized_sentinel<Const, FirstSent, First, Vs...>>;
-
 #else
 
 template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_random_access = hamon::detail::all<
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_random_access = hamon::detail::all_v<
 	hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, First>>,
 	hamon::ranges::random_access_range<hamon::ranges::detail::maybe_const<Const, Vs>>...,
 	hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Vs>>...
 >;
 
 template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_random_access_t = cartesian_product_is_random_access<Const, First, Vs...>;
-
-template <typename R>
-using cartesian_product_common_arg = hamon::bool_constant<
-	hamon::ranges::common_range<R> ||
-	(hamon::ranges::sized_range<R> && hamon::ranges::random_access_range<R>)
->;
-
-template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_bidirectional = hamon::detail::all<
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_bidirectional = hamon::detail::all_v<
 	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, First>>,
 	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Vs>>...,
-	cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>::value...
+	cartesian_product_common_arg<hamon::ranges::detail::maybe_const<Const, Vs>>...
 >;
 
-template <bool Const, typename First, typename... Vs>
-using cartesian_product_is_bidirectional_t = cartesian_product_is_bidirectional<Const, First, Vs...>;
-
-template <typename First, typename...>
-using cartesian_product_is_common = cartesian_product_common_arg<First>;
-
-template <typename First, typename... Vs>
-using cartesian_product_is_common_t = cartesian_product_is_common<First, Vs...>;
-
 template <typename... Vs>
-using cartesian_product_is_sized = hamon::detail::all<hamon::ranges::sized_range<Vs>...>;
-
-template <typename... Vs>
-using cartesian_product_is_sized_t = cartesian_product_is_sized<Vs...>;
+HAMON_CONCEPT_OR_BOOL cartesian_product_is_sized = hamon::detail::all_v<hamon::ranges::sized_range<Vs>...>;
 
 template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
-using cartesian_is_sized_sentinel = hamon::detail::all<
+HAMON_CONCEPT_OR_BOOL cartesian_is_sized_sentinel = hamon::detail::all_v<
 	hamon::sized_sentinel_for<
 		FirstSent<hamon::ranges::detail::maybe_const<Const, First>>,
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, First>>
@@ -202,9 +166,6 @@ using cartesian_is_sized_sentinel = hamon::detail::all<
 		hamon::ranges::iterator_t<hamon::ranges::detail::maybe_const<Const, Vs>>
 	>...
 >;
-
-template <bool Const, template <typename...> class FirstSent, typename First, typename... Vs>
-using cartesian_is_sized_sentinel_t = cartesian_is_sized_sentinel<Const, FirstSent, First, Vs...>;
 
 #endif
 
@@ -222,7 +183,7 @@ HAMON_CXX11_CONSTEXPR auto cartesian_common_arg_end_impl(R& r, hamon::detail::ov
 	return hamon::ranges::begin(r) + hamon::ranges::distance(r);
 }
 
-template <HAMON_CONSTRAINED_PARAM(cartesian_product_common_arg, R)>
+template <HAMON_CONSTRAINT(cartesian_product_common_arg, R)>
 HAMON_CXX11_CONSTEXPR auto cartesian_common_arg_end(R& r)
 ->decltype(cartesian_common_arg_end_impl(r, hamon::detail::overload_priority<1>{}))
 {
@@ -292,9 +253,9 @@ private:
 	public:
 		using iterator_category = hamon::input_iterator_tag;
 		using iterator_concept  =
-			hamon::conditional_t<hamon::ranges::detail::cartesian_product_is_random_access_t<Const, First, Vs...>::value,
+			hamon::conditional_t<hamon::ranges::detail::cartesian_product_is_random_access<Const, First, Vs...>,
 				hamon::random_access_iterator_tag,
-			hamon::conditional_t<hamon::ranges::detail::cartesian_product_is_bidirectional_t<Const, First, Vs...>::value,
+			hamon::conditional_t<hamon::ranges::detail::cartesian_product_is_bidirectional<Const, First, Vs...>,
 				hamon::bidirectional_iterator_tag,
 			hamon::conditional_t<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, First>>,
 				hamon::forward_iterator_tag,
@@ -377,7 +338,7 @@ private:
 			post_increment(hamon::detail::overload_priority<1>{}))
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_bidirectional_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_bidirectional<C2, First, Vs...>>>
 		HAMON_CXX14_CONSTEXPR iterator& operator--()
 		{
 			// [range.cartesian.iterator]/16
@@ -386,7 +347,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_bidirectional_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_bidirectional<C2, First, Vs...>>>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 		{
 			// [range.cartesian.iterator]/17
@@ -396,7 +357,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_CXX14_CONSTEXPR iterator& operator+=(difference_type x)
 		{
 			advance(x);
@@ -406,7 +367,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_CXX14_CONSTEXPR iterator& operator-=(difference_type x)
 		{
 			// [range.cartesian.iterator]/23
@@ -415,7 +376,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		reference operator[](difference_type n) const
 		{
@@ -537,7 +498,7 @@ private:
 #endif
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		iterator operator+(iterator const& x, difference_type y)
 		{
@@ -546,7 +507,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		iterator operator+(difference_type x, iterator const& y)
 		{
@@ -555,7 +516,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_random_access_t<C2, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_product_is_random_access<C2, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		iterator operator-(iterator const& x, difference_type y)
 		{
@@ -564,7 +525,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_is_sized_sentinel_t<C2, hamon::ranges::iterator_t, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_is_sized_sentinel<C2, hamon::ranges::iterator_t, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& x, iterator const& y)
 		{
@@ -589,7 +550,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_is_sized_sentinel_t<C2, hamon::ranges::sentinel_t, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_is_sized_sentinel<C2, hamon::ranges::sentinel_t, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(iterator const& i, hamon::default_sentinel_t)
 		{
@@ -598,7 +559,7 @@ private:
 		}
 
 		template <bool C2 = Const, typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_is_sized_sentinel_t<C2, hamon::ranges::sentinel_t, First, Vs...>::value>>
+			hamon::ranges::detail::cartesian_is_sized_sentinel<C2, hamon::ranges::sentinel_t, First, Vs...>>>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 		difference_type operator-(hamon::default_sentinel_t s, iterator const& i)
 		{
@@ -901,7 +862,7 @@ public:
 			hamon::ranges::detail::simple_view<Vs>...
 		>>,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::cartesian_product_is_common_t<First2, Vs...>::value
+			hamon::ranges::detail::cartesian_product_is_common<First2, Vs...>
 		>
 	>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
@@ -912,7 +873,7 @@ public:
 
 private:
 	template <typename First2 = First, typename = hamon::enable_if_t<
-		hamon::ranges::detail::cartesian_product_is_common_t<First2 const, Vs const...>::value>>
+		hamon::ranges::detail::cartesian_product_is_common<First2 const, Vs const...>>>
 	HAMON_CXX11_CONSTEXPR iterator<true>
 	end_impl(hamon::detail::overload_priority<1>) const
 	{
@@ -963,7 +924,7 @@ private:
 
 public:
 	template <typename First2 = First, typename = hamon::enable_if_t<
-		hamon::ranges::detail::cartesian_product_is_sized_t<First2, Vs...>::value>>
+		hamon::ranges::detail::cartesian_product_is_sized<First2, Vs...>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	auto size()
 	->decltype(size_impl<1 + sizeof...(Vs)>::invoke(hamon::declval<hamon::tuple<First2, Vs...>&>()))
@@ -972,7 +933,7 @@ public:
 	}
 
 	template <typename First2 = First, typename = hamon::enable_if_t<
-		hamon::ranges::detail::cartesian_product_is_sized_t<First2 const, Vs const...>::value>>
+		hamon::ranges::detail::cartesian_product_is_sized<First2 const, Vs const...>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto size() const
 	->decltype(size_impl<1 + sizeof...(Vs)>::invoke(hamon::declval<hamon::tuple<First2, Vs...> const&>()))
