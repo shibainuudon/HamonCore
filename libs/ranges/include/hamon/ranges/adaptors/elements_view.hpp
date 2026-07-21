@@ -84,8 +84,8 @@ using elements_t = decltype(elements<N>);
 #include <hamon/iterator/random_access_iterator_tag.hpp>
 #include <hamon/tuple/concepts/tuple_like.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/disjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_lvalue_reference.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
@@ -105,43 +105,42 @@ namespace ranges {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, hamon::size_t N>
-concept has_tuple_element =
+HAMON_CONCEPT_OR_BOOL has_tuple_element =
 	hamon::detail::tuple_like<T> && N < hamon::tuple_size<T>::value;
 
 template <typename T, hamon::size_t N>
-concept returnable_element =
-	hamon::is_reference<T>::value ||
+HAMON_CONCEPT_OR_BOOL returnable_element =
+	hamon::is_reference_v<T> ||
 	hamon::move_constructible<hamon::tuple_element_t<N, T>>;
 
 #else
 
+template <typename T, hamon::size_t N, typename = void>
+struct has_tuple_element_impl
+	: public hamon::false_type {};
+
 template <typename T, hamon::size_t N>
-using has_tuple_element = hamon::bool_constant<
+struct has_tuple_element_impl<T, N, hamon::enable_if_t<
 	hamon::detail::tuple_like<T> &&
 	(N < hamon::tuple_size<T>::value)
->;
+>> : public hamon::true_type {};
 
 template <typename T, hamon::size_t N>
+HAMON_CONCEPT_OR_BOOL has_tuple_element = has_tuple_element_impl<T, N>::value;
+
+template <typename T, hamon::size_t N, typename = void>
 struct returnable_element_impl
-{
-private:
-	template <typename T2, hamon::size_t N2,
-		typename E = hamon::tuple_element_t<N2, T2>,
-		typename = hamon::enable_if_t<hamon::move_constructible<E>>>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename T2, hamon::size_t N2>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<T, N>(0));
-};
+	: public hamon::false_type {};
 
 template <typename T, hamon::size_t N>
-using returnable_element = hamon::disjunction<
-	hamon::is_reference<T>,
-	typename returnable_element_impl<T, N>::type
->;
+struct returnable_element_impl<T, N, hamon::enable_if_t<
+	hamon::move_constructible<hamon::tuple_element_t<N, T>>
+>> : public hamon::true_type {};
+
+template <typename T, hamon::size_t N>
+HAMON_CONCEPT_OR_BOOL returnable_element =
+	hamon::is_reference_v<T> ||
+	returnable_element_impl<T, N>::value;
 
 #endif
 
@@ -158,9 +157,9 @@ template <typename V, hamon::size_t N,
 	typename = hamon::enable_if_t<
 		hamon::ranges::input_range<V> &&
 		hamon::ranges::view<V> &&
-		has_tuple_element<hamon::ranges::range_value_t<V>, N>::value &&
-		has_tuple_element<hamon::remove_reference_t<hamon::ranges::range_reference_t<V>>, N>::value &&
-		returnable_element<hamon::ranges::range_reference_t<V>, N>::value
+		has_tuple_element<hamon::ranges::range_value_t<V>, N> &&
+		has_tuple_element<hamon::remove_reference_t<hamon::ranges::range_reference_t<V>>, N> &&
+		returnable_element<hamon::ranges::range_reference_t<V>, N>
 	>>
 #endif
 class elements_view : public hamon::ranges::view_interface<elements_view<V, N>>
