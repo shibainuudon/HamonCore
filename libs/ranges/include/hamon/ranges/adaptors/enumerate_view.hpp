@@ -57,7 +57,6 @@ using std::ranges::views::enumerate;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/move_constructible.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -70,6 +69,7 @@ using std::ranges::views::enumerate;
 #include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/tuple.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_const.hpp>
@@ -90,35 +90,26 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename R>
-concept range_with_movable_references =
+HAMON_CONCEPT_OR_BOOL range_with_movable_references =
 	hamon::ranges::input_range<R> &&
 	hamon::move_constructible<hamon::ranges::range_reference_t<R>> &&
 	hamon::move_constructible<hamon::ranges::range_rvalue_reference_t<R>>;
 
 #else
 
-template <typename R>
+template <typename R, typename = void>
 struct range_with_movable_references_impl
-{
-private:
-	template <typename R2,
-		typename = hamon::enable_if_t<
-			hamon::ranges::input_range<R2> &&
-			hamon::move_constructible<hamon::ranges::range_reference_t<R2>> &&
-			hamon::move_constructible<hamon::ranges::range_rvalue_reference_t<R2>>
-		>>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename R2>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<R>(0));
-};
+	: public hamon::false_type {};
 
 template <typename R>
-using range_with_movable_references =
-	typename range_with_movable_references_impl<R>::type;
+struct range_with_movable_references_impl<R, hamon::enable_if_t<
+	hamon::ranges::input_range<R> &&
+	hamon::move_constructible<hamon::ranges::range_reference_t<R>> &&
+	hamon::move_constructible<hamon::ranges::range_rvalue_reference_t<R>>
+>> : public hamon::true_type {};
+
+template <typename R>
+HAMON_CONCEPT_OR_BOOL range_with_movable_references = range_with_movable_references_impl<R>::value;
 
 #endif
 
@@ -136,7 +127,7 @@ template <hamon::ranges::view V>
 template <typename V,
 	typename = hamon::enable_if_t<
 		hamon::ranges::view<V> &&
-		hamon::ranges::detail::range_with_movable_references<V>::value
+		hamon::ranges::detail::range_with_movable_references<V>
 	>>
 #endif
 class enumerate_view : public hamon::ranges::view_interface<enumerate_view<V>>
@@ -585,7 +576,7 @@ public:
 		return iterator<false>(hamon::ranges::begin(m_base), 0);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::range_with_movable_references, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::range_with_movable_references, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(hamon::ranges::begin(hamon::declval<V2&>())) &&
@@ -630,7 +621,7 @@ public:
 		return end_impl(m_base, hamon::detail::overload_priority<1>{});
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::range_with_movable_references, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::range_with_movable_references, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR		// nodiscard as an extension
 	auto end() const HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 		end_impl(hamon::declval<V2&>(), hamon::detail::overload_priority<1>{}))
