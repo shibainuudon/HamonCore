@@ -78,7 +78,7 @@ public:
 #else
 	template <typename T,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::different_from_t<T, ref_view>::value &&
+			hamon::ranges::detail::different_from<T, ref_view> &&
 			hamon::convertible_to<T, R&>
 		>,
 		typename = decltype(FUN(hamon::declval<T>()))

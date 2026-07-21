@@ -117,7 +117,7 @@ using subrange_constructible_from_iter_sent_size = hamon::bool_constant<
 
 template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize>
 using subrange_constructible_from_range = hamon::bool_constant<
-	hamon::ranges::detail::different_from<Rng, Subrange>::value &&
+	hamon::ranges::detail::different_from<Rng, Subrange> &&
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It> &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
@@ -133,9 +133,9 @@ using subrange_constructible_from_range_size = hamon::bool_constant<
 >;
 
 template <typename PairLike, typename It, typename Sent, typename Subrange>
-using subrange_convertible_to_pair_like = hamon::conjunction<
-	hamon::ranges::detail::different_from<PairLike, Subrange>,
-	detail::pair_like_convertible_from<PairLike, It const&, Sent const&>
+using subrange_convertible_to_pair_like = hamon::bool_constant<
+	hamon::ranges::detail::different_from<PairLike, Subrange> &&
+	detail::pair_like_convertible_from<PairLike, It const&, Sent const&>::value
 >;
 
 #endif

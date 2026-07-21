@@ -9,7 +9,6 @@
 
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
-#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon {
@@ -18,33 +17,11 @@ namespace detail {
 
 // [range.utility.helpers]/1
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename T, typename U>
-concept different_from =
+HAMON_CONCEPT_OR_BOOL different_from =
 	!hamon::same_as<
 		hamon::remove_cvref_t<T>,
 		hamon::remove_cvref_t<U>>;
-
-#else
-
-template <typename T, typename U>
-using different_from = hamon::bool_constant<
-	!hamon::same_as<
-		hamon::remove_cvref_t<T>,
-		hamon::remove_cvref_t<U>
-	>
->;
-
-#endif
-
-template <typename T, typename U>
-using different_from_t =
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-	hamon::bool_constant<hamon::ranges::detail::different_from<T, U>>;
-#else
-	hamon::ranges::detail::different_from<T, U>;
-#endif
 
 }	// namespace detail
 }	// namespace ranges

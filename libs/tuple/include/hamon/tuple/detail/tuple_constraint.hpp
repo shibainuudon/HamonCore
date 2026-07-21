@@ -299,9 +299,9 @@ private:
 public:
 	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 	struct TupleLikeCtor : public TupleLikeCtorImpl<
-		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/29.1
+		hamon::ranges::detail::different_from<UTuple, hamon::tuple<Types...>> &&				// [tuple.cnstr]/29.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/29.2
-		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/29.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,			// [tuple.cnstr]/29.3
 		UTuple
 	>{};
 
@@ -397,9 +397,9 @@ private:
 public:
 	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 	struct TupleLikeAssign : public TupleLikeAssignImpl<
-		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/39.1
+		hamon::ranges::detail::different_from<UTuple, hamon::tuple<Types...>> &&				// [tuple.cnstr]/39.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/39.2
-		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/39.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,			// [tuple.cnstr]/39.3
 		UTuple
 	>{};
 
@@ -434,9 +434,9 @@ private:
 public:
 	template <HAMON_CONSTRAINT(hamon::detail::tuple_like, UTuple)>
 	struct TupleLikeAssignConst : public TupleLikeAssignConstImpl<
-		hamon::ranges::detail::different_from_t<UTuple, hamon::tuple<Types...>>::value &&		// [tuple.cnstr]/42.1
+		hamon::ranges::detail::different_from<UTuple, hamon::tuple<Types...>> &&				// [tuple.cnstr]/42.1
 		!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<UTuple>>::value &&	// [tuple.cnstr]/42.2
-		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,				// [tuple.cnstr]/42.3
+		sizeof...(Types) == hamon::tuple_size<hamon::remove_cvref_t<UTuple>>::value,			// [tuple.cnstr]/42.3
 		UTuple
 	>{};
 

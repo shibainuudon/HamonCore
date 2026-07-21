@@ -32,7 +32,6 @@
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/reference_constructs_from_temporary.hpp>
 #include <hamon/type_traits/remove_cvref.hpp>
 #include <hamon/utility/declval.hpp>
@@ -335,13 +334,10 @@ struct pair_constraint
 		using U2 = decltype(hamon::adl_get<1>(hamon::declval<PairLike>()));
 
 		static const bool assignable =
-			hamon::conjunction<
-				hamon::ranges::detail::different_from_t<PairLike, hamon::pair<T1, T2>>,	// [pairs.pair]/42.1
-				hamon::negation<											// [pairs.pair]/42.2
-					hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<PairLike>>>,
-				hamon::is_assignable<T1&, U1>,								// [pairs.pair]/42.3
-				hamon::is_assignable<T2&, U2>								// [pairs.pair]/42.4
-			>::value;
+			hamon::ranges::detail::different_from<PairLike, hamon::pair<T1, T2>> &&						// [pairs.pair]/42.1
+			!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<PairLike>>::value &&	// [pairs.pair]/42.2
+			hamon::is_assignable_v<T1&, U1> &&															// [pairs.pair]/42.3
+			hamon::is_assignable_v<T2&, U2>;															// [pairs.pair]/42.4
 
 		static const bool nothrow =
 			hamon::conjunction<
@@ -357,13 +353,10 @@ struct pair_constraint
 		using U2 = decltype(hamon::adl_get<1>(hamon::declval<PairLike>()));
 
 		static const bool assignable =
-			hamon::conjunction<
-				hamon::ranges::detail::different_from_t<PairLike, hamon::pair<T1, T2>>,	// [pairs.pair]/45.1
-				hamon::negation<									// [pairs.pair]/45.2
-					hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<PairLike>>>,
-				hamon::is_assignable<T1 const&, U1>,				// [pairs.pair]/45.3
-				hamon::is_assignable<T2 const&, U2>					// [pairs.pair]/45.4
-			>::value;
+			hamon::ranges::detail::different_from<PairLike, hamon::pair<T1, T2>> &&						// [pairs.pair]/45.1
+			!hamon::detail::is_specialization_of_subrange<hamon::remove_cvref_t<PairLike>>::value &&	// [pairs.pair]/45.2
+			hamon::is_assignable_v<T1 const&, U1> &&													// [pairs.pair]/45.3
+			hamon::is_assignable_v<T2 const&, U2>;														// [pairs.pair]/45.4
 
 		static const bool nothrow =
 			hamon::conjunction<

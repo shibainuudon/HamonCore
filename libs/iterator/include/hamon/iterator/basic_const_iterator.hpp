@@ -47,7 +47,6 @@ using std::basic_const_iterator;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/totally_ordered_with.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -184,7 +183,7 @@ public:
 		: m_current(hamon::move(current.m_current))	// [const.iterators.ops]/2
 	{}
 	
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, T),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, T),
 		typename = hamon::enable_if_t<hamon::convertible_to<T, Iterator>>>
 //		requires hamon::convertible_to<T, Iterator>
 	HAMON_CXX11_CONSTEXPR
@@ -475,14 +474,14 @@ private:
 	// clang15までだとテンプレートが無限に再帰的インスタンス化されてしまう。
 	// それを防ぐためにこれらのクラスが必要。
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I)>
 	struct TotallyOrdered : public hamon::bool_constant<
 		hamon::random_access_iterator<Iterator> &&
 		hamon::totally_ordered_with<Iterator, I>
 	>{};
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I)>
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I)>
 	struct ThreeWayComparable : public hamon::bool_constant<
 		hamon::random_access_iterator<Iterator> &&
 		hamon::totally_ordered_with<Iterator, I> &&
@@ -491,7 +490,7 @@ private:
 #endif
 
 public:
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<(I const& y) const
@@ -502,7 +501,7 @@ public:
 		return m_current < y;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>(I const& y) const
@@ -513,7 +512,7 @@ public:
 		return m_current > y;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator<=(I const& y) const
@@ -524,7 +523,7 @@ public:
 		return m_current <= y;
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename TO = TotallyOrdered<I>, typename = hamon::enable_if_t<TO::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR bool	// nodiscard as an extension
 	operator>=(I const& y) const
@@ -536,7 +535,7 @@ public:
 	}
 
 #if defined(HAMON_HAS_CXX20_THREE_WAY_COMPARISON)
-	template <HAMON_CONSTRAINED_PARAM(hamon::ranges::detail::different_from, basic_const_iterator, I),
+	template <HAMON_CONSTRAINT(hamon::ranges::detail::different_from, basic_const_iterator, I),
 		typename TWC = ThreeWayComparable<I>, typename = hamon::enable_if_t<TWC::value>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto	// nodiscard as an extension
 	operator<=>(I const& y) const
