@@ -54,7 +54,6 @@ using std::ranges::views::lazy_split;
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
@@ -91,42 +90,25 @@ template <auto>
 struct require_constant;
 
 template <typename R>
-concept tiny_range =
+HAMON_CONCEPT_OR_BOOL tiny_range =
 	hamon::ranges::sized_range<R> &&
 	requires { typename require_constant<hamon::remove_reference_t<R>::size()>; } &&
 	(hamon::remove_reference_t<R>::size() <= 1);
 
-template <typename R>
-using tiny_range_t = hamon::bool_constant<tiny_range<R>>;
-
 #else
 
-template <typename T>
+template <typename T, typename = void>
 struct tiny_range_impl
-{
-private:
-	template <typename U,
-		typename = hamon::enable_if_t<
-			hamon::ranges::sized_range<U>
-		>,
-		typename = hamon::enable_if_t<
-			(hamon::remove_reference_t<U>::size() <= 1)
-		>
-	>
-	static auto test(int) -> hamon::true_type;
+	: public hamon::false_type {};
 
-	template <typename U>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<T>(0));
-};
+template <typename T>
+struct tiny_range_impl<T, hamon::enable_if_t<
+	hamon::ranges::sized_range<T> &&
+	(hamon::remove_reference_t<T>::size() <= 1)
+>> : public hamon::true_type {};
 
 template <typename R>
-using tiny_range = typename tiny_range_impl<R>::type;
-
-template <typename R>
-using tiny_range_t = tiny_range<R>;
+HAMON_CONCEPT_OR_BOOL tiny_range = tiny_range_impl<R>::value;
 
 #endif
 
@@ -173,10 +155,7 @@ template <typename V, typename Pattern,
 			hamon::ranges::iterator_t<V>,
 			hamon::ranges::iterator_t<Pattern>,
 			hamon::ranges::equal_to> &&
-		(
-			hamon::ranges::forward_range<V> ||
-			hamon::ranges::detail::tiny_range_t<Pattern>::value
-		)
+		(hamon::ranges::forward_range<V> || hamon::ranges::detail::tiny_range<Pattern>)
 	>>
 #endif
 class lazy_split_view : public hamon::ranges::view_interface<lazy_split_view<V, Pattern>>
@@ -356,7 +335,7 @@ private:
 
 	private:
 		template <typename T1, typename T2, typename T3,
-			HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::tiny_range, P2, Pattern)>
+			HAMON_CONSTRAINT_D(hamon::ranges::detail::tiny_range, P2, Pattern)>
 		HAMON_CXX14_CONSTEXPR
 		void pre_increment_impl(
 			T1 const& end,
@@ -667,7 +646,7 @@ private:
 
 		// [range.lazy.split.inner]/7
 		template <typename T1, typename T2, typename T3,
-			HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::tiny_range, P2, Pattern)>
+			HAMON_CONSTRAINT_D(hamon::ranges::detail::tiny_range, P2, Pattern)>
 		HAMON_CXX14_CONSTEXPR bool
 		at_end_impl(
 			T1 pcur,
