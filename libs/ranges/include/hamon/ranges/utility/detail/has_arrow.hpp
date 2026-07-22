@@ -23,12 +23,12 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename I>
-concept has_arrow =
+HAMON_CONCEPT_OR_BOOL has_arrow =
 	hamon::input_iterator<I> &&
 	(hamon::is_pointer_v<I> || requires(const I i) { i.operator->(); });
 
-template <typename I>
-using has_arrow_t = hamon::bool_constant<has_arrow<I>>;
+//template <typename I>
+//using has_arrow_t = hamon::bool_constant<has_arrow<I>>;
 
 #else
 
@@ -41,13 +41,12 @@ struct has_arrow_impl<I, hamon::void_t<decltype(hamon::declval<const I&>().opera
 	: public hamon::true_type {};
 
 template <typename I>
-using has_arrow = hamon::bool_constant<
+HAMON_CONCEPT_OR_BOOL has_arrow =
 	hamon::input_iterator<I> &&
-	(hamon::is_pointer_v<I> || has_arrow_impl<I>::value)
->;
+	(hamon::is_pointer_v<I> || has_arrow_impl<I>::value);
 
-template <typename I>
-using has_arrow_t = has_arrow<I>;
+//template <typename I>
+//using has_arrow_t = has_arrow<I>;
 
 #endif
 
