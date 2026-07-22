@@ -26,7 +26,7 @@ using std::ranges::range_adaptor_closure;
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/functional/invoke.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_class.hpp>
@@ -53,34 +53,16 @@ namespace detail {
 template <typename D>
 struct range_adaptor_closure_base {};
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename T>
-concept range_adaptor_closure_object =
+HAMON_CONCEPT_OR_BOOL range_adaptor_closure_object =
 	!hamon::ranges::range<hamon::remove_cvref_t<T>> &&
 	hamon::derived_from<hamon::remove_cvref_t<T>, range_adaptor_closure_base<hamon::remove_cvref_t<T>>>;
 
-template <typename T>
-using range_adaptor_closure_object_t = hamon::bool_constant<range_adaptor_closure_object<T>>;
-
-#else
-
-template <typename T>
-using range_adaptor_closure_object = hamon::bool_constant<
-	!hamon::ranges::range<hamon::remove_cvref_t<T>> &&
-	hamon::derived_from<hamon::remove_cvref_t<T>, range_adaptor_closure_base<hamon::remove_cvref_t<T>>>
->;
-
-template <typename T>
-using range_adaptor_closure_object_t = range_adaptor_closure_object<T>;
-
-#endif
-
 template <typename ClosureLhs, typename ClosureRhs,
-	typename = hamon::enable_if_t<hamon::conjunction<
-		range_adaptor_closure_object_t<ClosureLhs>,
-		range_adaptor_closure_object_t<ClosureRhs>
-	>::value>
+	typename = hamon::enable_if_t<
+		range_adaptor_closure_object<ClosureLhs> &&
+		range_adaptor_closure_object<ClosureRhs>
+	>
 >
 struct range_adaptor_closure_t
 	: public range_adaptor_closure_base<range_adaptor_closure_t<ClosureLhs, ClosureRhs>>
@@ -126,8 +108,8 @@ public:
 };
 
 template <
-	HAMON_CONSTRAINED_PARAM(range_adaptor_closure_object, Lhs),
-	HAMON_CONSTRAINED_PARAM(range_adaptor_closure_object, Rhs),
+	HAMON_CONSTRAINT(range_adaptor_closure_object, Lhs),
+	HAMON_CONSTRAINT(range_adaptor_closure_object, Rhs),
 	typename = hamon::enable_if_t<
 		hamon::constructible_from<hamon::remove_cvref_t<Lhs>, Lhs> &&
 		hamon::constructible_from<hamon::remove_cvref_t<Rhs>, Rhs>
@@ -140,7 +122,7 @@ operator|(Lhs&& lhs, Rhs&& rhs)
 
 template <
 	HAMON_CONSTRAINT(hamon::ranges::range, Lhs),
-	HAMON_CONSTRAINED_PARAM(range_adaptor_closure_object, Rhs)>
+	HAMON_CONSTRAINT(range_adaptor_closure_object, Rhs)>
 HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 operator|(Lhs&& lhs, Rhs&& rhs) 
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(
