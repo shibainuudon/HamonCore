@@ -56,7 +56,6 @@ using std::ranges::views::slide;
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
@@ -69,13 +68,11 @@ using std::ranges::views::slide;
 #include <hamon/iterator/ranges/next.hpp>
 #include <hamon/iterator/ranges/prev.hpp>
 #include <hamon/type_traits/conditional.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/decay.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/utility/declval.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -96,70 +93,25 @@ namespace ranges {
 
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename V>
-concept slide_caches_nothing =
+HAMON_CONCEPT_OR_BOOL slide_caches_nothing =
 	hamon::ranges::random_access_range<V> &&
 	hamon::ranges::sized_range<V>;
 
 template <typename V>
-using slide_caches_nothing_t = hamon::bool_constant<slide_caches_nothing<V>>;
-
-template <typename V>
-concept slide_caches_last =
+HAMON_CONCEPT_OR_BOOL slide_caches_last =
 	!slide_caches_nothing<V> &&
 	hamon::ranges::bidirectional_range<V> &&
 	hamon::ranges::common_range<V>;
 
 template <typename V>
-using slide_caches_last_t = hamon::bool_constant<slide_caches_last<V>>;
-
-template <typename V>
-concept slide_caches_first =
+HAMON_CONCEPT_OR_BOOL slide_caches_first =
 	!slide_caches_nothing<V> &&
 	!slide_caches_last<V>;
 
 template <typename V>
-using slide_caches_first_t = hamon::bool_constant<slide_caches_first<V>>;
-
-template <typename V>
-concept not_slide_caches_first =
+HAMON_CONCEPT_OR_BOOL not_slide_caches_first =
 	!slide_caches_first<V>;
-
-#else
-
-template <typename V>
-using slide_caches_nothing = hamon::bool_constant<
-	hamon::ranges::random_access_range<V> &&
-	hamon::ranges::sized_range<V>
->;
-
-template <typename V>
-using slide_caches_nothing_t = slide_caches_nothing<V>;
-
-template <typename V>
-using slide_caches_last = hamon::bool_constant<
-	!slide_caches_nothing<V>::value &&
-	hamon::ranges::bidirectional_range<V> &&
-	hamon::ranges::common_range<V>>;
-
-template <typename V>
-using slide_caches_last_t = slide_caches_last<V>;
-
-template <typename V>
-using slide_caches_first = hamon::conjunction<
-	hamon::negation<slide_caches_nothing<V>>,
-	hamon::negation<slide_caches_last<V>>>;
-
-template <typename V>
-using slide_caches_first_t = slide_caches_first<V>;
-
-template <typename V>
-using not_slide_caches_first =
-	hamon::negation<slide_caches_first<V>>;
-
-#endif
 
 }	// namespace detail
 
@@ -184,7 +136,7 @@ private:
 
 	using cache_type =
 		hamon::ranges::detail::cached_value<
-			!hamon::ranges::detail::slide_caches_nothing_t<V>::value,
+			!hamon::ranges::detail::slide_caches_nothing<V>,
 			hamon::ranges::iterator_t<V>
 		>;
 
@@ -206,7 +158,7 @@ private:
 
 	template <typename Base>
 	class iterator_base<Base,
-		hamon::enable_if_t<hamon::ranges::detail::slide_caches_first_t<Base>::value>>
+		hamon::enable_if_t<hamon::ranges::detail::slide_caches_first<Base>>>
 	{
 	private:
 		using BaseIter = hamon::ranges::iterator_t<Base>;
@@ -268,7 +220,7 @@ private:
 		BaseDifference m_n = 0;
 
 	private:
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::not_slide_caches_first, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_slide_caches_first, B2, Base)>
 		HAMON_CXX11_CONSTEXPR
 		iterator(BaseIter current, BaseDifference n)
 			HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<BaseIter>::value)	// noexcept as an extension
@@ -277,7 +229,7 @@ private:
 			, m_n(n)
 		{}
 
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
 		HAMON_CXX11_CONSTEXPR
 		iterator(BaseIter current, BaseIter last_ele, BaseDifference n)
 			HAMON_NOEXCEPT_IF(hamon::is_nothrow_move_constructible<BaseIter>::value)	// noexcept as an extension
@@ -417,7 +369,7 @@ private:
 
 	private:
 		// [range.slide.iterator]/22
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
 		HAMON_CXX11_CONSTEXPR bool
 		equal_impl(iterator const& y, hamon::detail::overload_priority<1>) const
 			HAMON_NOEXCEPT_RETURN(		// noexcept as an extension
@@ -512,7 +464,7 @@ private:
 		}
 
 		// [range.slide.iterator]/30
-		template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
+		template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_first, B2, Base)>
 		HAMON_CXX11_CONSTEXPR difference_type
 		distance_impl(iterator const& y, hamon::detail::overload_priority<1>) const
 			HAMON_NOEXCEPT_RETURN(this->m_last_ele - y.m_last_ele)		// noexcept as an extension
@@ -633,7 +585,7 @@ public:
 	}
 
 private:
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_first, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_first, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator<false>
 	begin_impl(hamon::detail::overload_priority<1>)
 	{
@@ -665,12 +617,12 @@ public:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
 			!(hamon::ranges::detail::simple_view<V2> &&
-			hamon::ranges::detail::slide_caches_nothing_t<V2 const>::value)>>
+			hamon::ranges::detail::slide_caches_nothing<V2 const>)>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR	// nodiscard as an extension
 	iterator<false> begin() HAMON_NOEXCEPT_RETURN(	// noexcept as an extension
 		begin_impl(hamon::detail::overload_priority<1>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_nothing, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_nothing, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	iterator<true> begin() const
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -690,7 +642,7 @@ private:
 	size_impl() const HAMON_NOEXCEPT_RETURN(	// noexcept as an extension
 		hamon::ranges::max(hamon::ranges::distance(m_base) - m_n + 1, hamon::ranges::range_difference_t<V const>(0)))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_nothing, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_nothing, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator<false>
 	end_impl(hamon::detail::overload_priority<3>)
 		HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -703,7 +655,7 @@ private:
 			m_n);
 	}
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_last, V2, V)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_last, V2, V)>
 	HAMON_CXX14_CONSTEXPR iterator<false>
 	end_impl(hamon::detail::overload_priority<2>)
 	{
@@ -747,12 +699,12 @@ public:
 	template <typename V2 = V,
 		typename = hamon::enable_if_t<
 			!(hamon::ranges::detail::simple_view<V2> &&
-			hamon::ranges::detail::slide_caches_nothing_t<V2 const>::value)>>
+			hamon::ranges::detail::slide_caches_nothing<V2 const>)>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR			// nodiscard as an extension
 	auto end() HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
 		end_impl(hamon::detail::overload_priority<3>{}))
 
-	template <HAMON_CONSTRAINED_PARAM_D(hamon::ranges::detail::slide_caches_nothing, V2, V const)>
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::slide_caches_nothing, V2, V const)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR			// nodiscard as an extension
 	iterator<true> end() const HAMON_NOEXCEPT_IF(	// noexcept as an extension
 		HAMON_NOEXCEPT_EXPR(begin()) &&
