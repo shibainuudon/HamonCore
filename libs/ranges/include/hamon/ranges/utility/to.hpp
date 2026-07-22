@@ -45,7 +45,6 @@ using std::ranges::to;
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -111,7 +110,7 @@ struct can_insert<Container, Ref,
 
 // [range.utility.conv.general]/3
 template <typename Container>
-constexpr bool reservable_container =
+HAMON_CONCEPT_OR_BOOL reservable_container =
 	hamon::ranges::sized_range<Container> &&
 	requires(Container& c, hamon::ranges::range_size_t<Container> n)
 	{
@@ -120,12 +119,9 @@ constexpr bool reservable_container =
 		{ c.max_size() } -> hamon::same_as<decltype(n)>;
 	};
 
-template <typename Container>
-using reservable_container_t = hamon::bool_constant<reservable_container<Container>>;
-
 // [range.utility.conv.general]/4
 template <typename Container, typename Ref>
-constexpr bool container_appendable =
+HAMON_CONCEPT_OR_BOOL container_appendable =
 	requires(Container& c, Ref&& ref)
 	{
 		requires (
@@ -135,12 +131,9 @@ constexpr bool container_appendable =
 			requires { c.insert(c.end(), hamon::forward<Ref>(ref)); });
 	};
 
-template <typename Container, typename Ref>
-using container_appendable_t = hamon::bool_constant<container_appendable<Container, Ref>>;
-
 // [range.utility.conv.to]/2.1.3
 template <typename C, typename R, typename... Args>
-concept container_common_constructible =
+HAMON_CONCEPT_OR_BOOL container_common_constructible =
 	// [range.utility.conv.to]/2.1.3.1
 	hamon::ranges::common_range<R> &&
 	// [range.utility.conv.to]/2.1.3.2
@@ -148,9 +141,6 @@ concept container_common_constructible =
 	hamon::derived_from<typename hamon::iterator_traits<hamon::ranges::iterator_t<R>>::iterator_category, hamon::input_iterator_tag> &&
 	// [range.utility.conv.to]/2.1.3.3
 	hamon::constructible_from<C, hamon::ranges::iterator_t<R>, hamon::ranges::sentinel_t<R>, Args...>;
-
-template <typename C, typename R, typename... Args>
-using container_common_constructible_t = hamon::bool_constant<container_common_constructible<C, R, Args...>>;
 
 #else	// defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -177,16 +167,15 @@ public:
 };
 
 template <typename Container>
-using reservable_container_t =
-	typename reservable_container_impl<Container>::type;
+HAMON_CONCEPT_OR_BOOL reservable_container =
+	reservable_container_impl<Container>::type::value;
 
 template <typename Container, typename Ref>
-using container_appendable_t = hamon::disjunction<
-	can_emplace_back<Container, Ref>,
-	can_push_back<Container, Ref>,
-	can_emplace<Container, Ref>,
-	can_insert<Container, Ref>
->;
+HAMON_CONCEPT_OR_BOOL container_appendable =
+	can_emplace_back<Container, Ref>::value ||
+	can_push_back<Container, Ref>::value ||
+	can_emplace<Container, Ref>::value ||
+	can_insert<Container, Ref>::value;
 
 template <typename C, typename R, typename... Args>
 struct container_common_constructible_impl
@@ -208,8 +197,8 @@ public:
 };
 
 template <typename C, typename R, typename... Args>
-using container_common_constructible_t =
-	typename container_common_constructible_impl<C, R, Args...>::type;
+HAMON_CONCEPT_OR_BOOL container_common_constructible =
+	container_common_constructible_impl<C, R, Args...>::type::value;
 
 #endif	// defined(HAMON_HAS_CXX20_CONCEPTS)
 
@@ -295,7 +284,7 @@ to_impl2(hamon::detail::overload_priority<3>, R&& r, Args&&... args)
 // [range.utility.conv.to]/2.1.3
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
-		hamon::ranges::detail::container_common_constructible_t<C, R, Args...>::value>>
+		hamon::ranges::detail::container_common_constructible<C, R, Args...>>>
 HAMON_CXX11_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
 {
@@ -306,7 +295,7 @@ to_impl2(hamon::detail::overload_priority<2>, R&& r, Args&&... args)
 template <typename C, typename R,
 	typename = hamon::enable_if_t<
 		hamon::ranges::approximately_sized_range<R> &&
-		hamon::ranges::detail::reservable_container_t<C>::value>>
+		hamon::ranges::detail::reservable_container<C>>>
 HAMON_CXX14_CONSTEXPR void
 to_impl_reserve(C& c, R&& r, hamon::detail::overload_priority<1>)
 {
@@ -323,7 +312,7 @@ to_impl_reserve(C&, R&&, hamon::detail::overload_priority<0>)
 template <typename C, typename R, typename... Args,
 	typename = hamon::enable_if_t<
 		hamon::constructible_from<C, Args...> &&
-		hamon::ranges::detail::container_appendable_t<C, hamon::ranges::range_reference_t<R>>::value>>
+		hamon::ranges::detail::container_appendable<C, hamon::ranges::range_reference_t<R>>>>
 HAMON_CXX14_CONSTEXPR C
 to_impl2(hamon::detail::overload_priority<1>, R&& r, Args&&... args)
 {
@@ -450,28 +439,16 @@ struct phony_input_iterator
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <template <typename...> class C, typename R, typename... Args>
-concept deduce_direct_constructible =
+HAMON_CONCEPT_OR_BOOL deduce_direct_constructible =
 	requires { C(hamon::declval<R>(), hamon::declval<Args>()...); };
 
 template <template <typename...> class C, typename R, typename... Args>
-using deduce_direct_constructible_t =
-	hamon::bool_constant<deduce_direct_constructible<C, R, Args...>>;
-
-template <template <typename...> class C, typename R, typename... Args>
-concept deduce_from_range_constructible =
+HAMON_CONCEPT_OR_BOOL deduce_from_range_constructible =
 	requires { C(hamon::from_range, hamon::declval<R>(), hamon::declval<Args>()...); };
 
 template <template <typename...> class C, typename R, typename... Args>
-using deduce_from_range_constructible_t =
-	hamon::bool_constant<deduce_from_range_constructible<C, R, Args...>>;
-
-template <template <typename...> class C, typename R, typename... Args>
-concept deduce_common_constructible =
+HAMON_CONCEPT_OR_BOOL deduce_common_constructible =
 	requires { C(hamon::declval<phony_input_iterator<R>>(), hamon::declval<phony_input_iterator<R>>(), hamon::declval<Args>()...); };
-
-template <template <typename...> class C, typename R, typename... Args>
-using deduce_common_constructible_t =
-	hamon::bool_constant<deduce_common_constructible<C, R, Args...>>;
 
 #else
 
@@ -491,8 +468,8 @@ public:
 };
 
 template <template <typename...> class C, typename R, typename... Args>
-using deduce_direct_constructible_t =
-	typename deduce_direct_constructible_impl<C, R, Args...>::type;
+HAMON_CONCEPT_OR_BOOL deduce_direct_constructible =
+	deduce_direct_constructible_impl<C, R, Args...>::type::value;
 
 template <template <typename...> class C, typename R, typename... Args>
 struct deduce_from_range_constructible_impl
@@ -510,8 +487,8 @@ public:
 };
 
 template <template <typename...> class C, typename R, typename... Args>
-using deduce_from_range_constructible_t =
-	typename deduce_from_range_constructible_impl<C, R, Args...>::type;
+HAMON_CONCEPT_OR_BOOL deduce_from_range_constructible =
+	deduce_from_range_constructible_impl<C, R, Args...>::type::value;
 
 template <template <typename...> class C, typename R, typename... Args>
 struct deduce_common_constructible_impl
@@ -529,14 +506,14 @@ public:
 };
 
 template <template <typename...> class C, typename R, typename... Args>
-using deduce_common_constructible_t =
-	typename deduce_common_constructible_impl<C, R, Args...>::type;
+HAMON_CONCEPT_OR_BOOL deduce_common_constructible =
+	deduce_common_constructible_impl<C, R, Args...>::type::value;
 
 #endif
 
 // [range.utility.conv.to]/4.1
 template <template <typename...> class C, typename R, typename... Args,
-	typename = hamon::enable_if_t<deduce_direct_constructible_t<C, R, Args...>::value>>
+	typename = hamon::enable_if_t<deduce_direct_constructible<C, R, Args...>>>
 auto deduce_helper_impl(hamon::detail::overload_priority<3>)
 {
 	return static_cast<decltype(C(hamon::declval<R>(), hamon::declval<Args>()...))*>(nullptr);
@@ -544,7 +521,7 @@ auto deduce_helper_impl(hamon::detail::overload_priority<3>)
 
 // [range.utility.conv.to]/4.2
 template <template <typename...> class C, typename R, typename... Args,
-	typename = hamon::enable_if_t<deduce_from_range_constructible_t<C, R, Args...>::value>>
+	typename = hamon::enable_if_t<deduce_from_range_constructible<C, R, Args...>>>
 auto deduce_helper_impl(hamon::detail::overload_priority<2>)
 {
 	return static_cast<decltype(C(hamon::from_range, hamon::declval<R>(), hamon::declval<Args>()...))*>(nullptr);
@@ -552,7 +529,7 @@ auto deduce_helper_impl(hamon::detail::overload_priority<2>)
 
 // [range.utility.conv.to]/4.3
 template <template <typename...> class C, typename R, typename... Args,
-	typename = hamon::enable_if_t<deduce_common_constructible_t<C, R, Args...>::value>>
+	typename = hamon::enable_if_t<deduce_common_constructible<C, R, Args...>>>
 auto deduce_helper_impl(hamon::detail::overload_priority<1>)
 {
 	return static_cast<decltype(C(hamon::declval<phony_input_iterator<R>>(), hamon::declval<phony_input_iterator<R>>(), hamon::declval<Args>()...))*>(nullptr);
