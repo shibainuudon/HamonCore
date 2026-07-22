@@ -64,39 +64,10 @@ namespace ranges {
 
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename T>
-concept integer_like_with_usable_difference_type =
+HAMON_CONCEPT_OR_BOOL integer_like_with_usable_difference_type =
 	hamon::detail::is_signed_integer_like<T> ||
 	(hamon::detail::is_integer_like<T> && hamon::weakly_incrementable<T>);
-
-#else
-
-template <typename T>
-struct integer_like_with_usable_difference_type_impl
-{
-private:
-	template <typename U,
-		typename = hamon::enable_if_t<
-			(hamon::detail::is_signed_integer_like<U> ||
-			 (hamon::detail::is_integer_like<U> && hamon::weakly_incrementable<U>))
-		>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename U>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<T>(0));
-};
-
-template <typename T>
-using integer_like_with_usable_difference_type =
-	typename integer_like_with_usable_difference_type_impl<T>::type;
-
-#endif
 
 }	// namespace detail
 
@@ -104,17 +75,15 @@ using integer_like_with_usable_difference_type =
 
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 template <hamon::move_constructible T, hamon::semiregular Bound = hamon::unreachable_sentinel_t>
-requires (hamon::is_object<T>::value && hamon::same_as<T, hamon::remove_cv_t<T>> &&
+requires (hamon::is_object_v<T> && hamon::same_as<T, hamon::remove_cv_t<T>> &&
 	(ranges::detail::integer_like_with_usable_difference_type<Bound> ||
 	 hamon::same_as<Bound, hamon::unreachable_sentinel_t>))
 #else
 template <typename T, typename Bound = hamon::unreachable_sentinel_t,
 	typename = hamon::enable_if_t<
-		hamon::move_constructible<T> &&
-		hamon::semiregular<Bound> &&
-		hamon::is_object<T>::value &&
-		hamon::same_as<T, hamon::remove_cv_t<T>> &&
-		(ranges::detail::integer_like_with_usable_difference_type<Bound>::value ||
+		hamon::move_constructible<T> && hamon::semiregular<Bound> &&
+		hamon::is_object_v<T> && hamon::same_as<T, hamon::remove_cv_t<T>> &&
+		(ranges::detail::integer_like_with_usable_difference_type<Bound> ||
 		 hamon::same_as<Bound, hamon::unreachable_sentinel_t>)
 	>
 >
