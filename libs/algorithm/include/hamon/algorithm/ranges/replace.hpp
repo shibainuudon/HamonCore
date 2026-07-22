@@ -70,7 +70,7 @@ struct replace_fn
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		I,
 		(
 			hamon::indirectly_writable<I, T2 const&> &&
@@ -100,7 +100,7 @@ struct replace_fn
 		T1 const& old_value,
 		T2 const& new_value,
 		Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<R>,
 		(
 			hamon::indirectly_writable<ranges::iterator_t<R>, T2 const&> &&

@@ -64,7 +64,7 @@ struct contains_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(I first, S last, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
@@ -83,7 +83,7 @@ struct contains_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(R&& r, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,

@@ -81,7 +81,7 @@ struct partial_sort_copy_fn
 		Comp  comp  = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		partial_sort_copy_result<Iter1 HAMON_PP_COMMA() Iter2>,
 		(
 			hamon::indirectly_copyable<Iter1, Iter2> &&
@@ -141,7 +141,7 @@ struct partial_sort_copy_fn
 		Comp  comp  = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		partial_sort_copy_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::borrowed_iterator_t<Range2>>,

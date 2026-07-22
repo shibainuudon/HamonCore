@@ -93,7 +93,7 @@ struct ends_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		detail::ends_withable<I1, S1, I2, S2, Pred, Proj1, Proj2>)
 	{
@@ -124,7 +124,7 @@ struct ends_with_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		bool,
 		detail::ends_withable_range<R1, R2, Pred, Proj1, Proj2>)
 	{

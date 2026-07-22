@@ -67,7 +67,7 @@ struct search_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::subrange<Iter1>,
 		hamon::indirectly_comparable<Iter1, Iter2, Pred, Proj1, Proj2>)
 	{
@@ -134,7 +134,7 @@ struct search_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_subrange_t<Range1>,
 		hamon::indirectly_comparable<
 			ranges::iterator_t<Range1>,

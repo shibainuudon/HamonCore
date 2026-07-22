@@ -67,7 +67,7 @@ struct find_first_of_fn
 		Iter2 first2, Sent2 last2,
 		Pred pred = {},
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter1,
 		hamon::indirectly_comparable<
 			Iter1, Iter2, Pred, Proj1, Proj2>)
@@ -99,7 +99,7 @@ struct find_first_of_fn
 		Range1&& r1, Range2&& r2,
 		Pred pred = {},
 		Proj1 proj1 = {}, Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range1>,
 		hamon::indirectly_comparable<
 			ranges::iterator_t<Range1>,

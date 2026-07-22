@@ -89,7 +89,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, hamon::iter_difference_t<Iter> n, Out result) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		copy_n_result<Iter HAMON_PP_COMMA() Out>,
 		hamon::indirectly_copyable<Iter, Out>)
 	{

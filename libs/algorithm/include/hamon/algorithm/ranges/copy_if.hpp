@@ -68,7 +68,7 @@ struct copy_if_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, Out result, Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		copy_if_result<Iter HAMON_PP_COMMA() Out>,
 		hamon::indirectly_copyable<Iter, Out>)
 	{
@@ -93,7 +93,7 @@ struct copy_if_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Out result, Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		copy_if_result<
 			ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out>,
 		hamon::indirectly_copyable<

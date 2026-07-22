@@ -68,7 +68,7 @@ struct sample_fn
 		Iter first, Sent last,
 		OutIter out_first,
 		hamon::iter_difference_t<Iter> n, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		OutIter,
 		(
 			(
@@ -95,7 +95,7 @@ struct sample_fn
 	auto operator()(
 		Range&& r, OutIter out_first,
 		ranges::range_difference_t<Range> n, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		OutIter,
 		(
 			(

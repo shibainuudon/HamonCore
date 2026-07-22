@@ -62,7 +62,7 @@ struct pop_heap_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last,
 		Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
 		hamon::sortable<Iter, Comp, Proj>)
 	{
@@ -79,7 +79,7 @@ struct pop_heap_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Comp comp = {}, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::sortable<ranges::iterator_t<Range>, Comp, Proj>)
 	{

@@ -97,7 +97,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		O first, hamon::iter_difference_t<O> n, T const& value) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		O,
 		hamon::output_iterator<O, T const&>)
 	{

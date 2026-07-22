@@ -64,7 +64,7 @@ struct find_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		I,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
@@ -86,7 +86,7 @@ struct find_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		R&& r, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<R>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,

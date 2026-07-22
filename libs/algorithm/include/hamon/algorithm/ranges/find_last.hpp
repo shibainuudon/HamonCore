@@ -120,7 +120,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::subrange<Iter>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
@@ -142,7 +142,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,

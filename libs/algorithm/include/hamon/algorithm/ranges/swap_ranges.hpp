@@ -63,7 +63,7 @@ struct swap_ranges_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter1 first1, Sent1 last1,
 		Iter2 first2, Sent2 last2) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		swap_ranges_result<Iter1 HAMON_PP_COMMA() Iter2>,
 		hamon::indirectly_swappable<Iter1, Iter2>)
 	{
@@ -81,7 +81,7 @@ struct swap_ranges_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range1&& r1, Range2&& r2) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		swap_ranges_result<
 			ranges::borrowed_iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::borrowed_iterator_t<Range2>>,

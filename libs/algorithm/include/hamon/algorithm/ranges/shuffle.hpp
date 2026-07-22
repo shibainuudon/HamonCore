@@ -59,7 +59,7 @@ struct shuffle_fn
 		typename Gen
 	>
 	auto operator()(Iter first, Sent last, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
 		(
 			hamon::permutable<Iter> &&
@@ -77,7 +77,7 @@ struct shuffle_fn
 		typename Gen
 	>
 	auto operator()(Range&& r, Gen&& g) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
 		(
 			hamon::permutable<ranges::iterator_t<Range>> &&

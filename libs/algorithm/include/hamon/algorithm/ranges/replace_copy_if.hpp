@@ -71,7 +71,7 @@ struct replace_copy_if_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, O result,
 		Pred pred, T const& new_value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		replace_copy_if_result<I HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<I, O> &&
@@ -105,7 +105,7 @@ struct replace_copy_if_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		R&& r, O result,
 		Pred pred, T const& new_value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		replace_copy_if_result<ranges::borrowed_iterator_t<R> HAMON_PP_COMMA() O>,
 		(
 			hamon::indirectly_copyable<ranges::iterator_t<R>, O> &&

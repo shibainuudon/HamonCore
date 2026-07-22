@@ -58,7 +58,7 @@ struct generate_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Out first, Sent last, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Out,
 		hamon::invocable<F&> &&
 		hamon::indirectly_writable<Out, hamon::invoke_result_t<F&>>)
@@ -75,7 +75,7 @@ struct generate_fn
 		HAMON_CONSTRAINT(hamon::copy_constructible, F)
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(Range&& r, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::invocable<F&> &&
 		ranges::output_range<Range, hamon::invoke_result_t<F&>>)

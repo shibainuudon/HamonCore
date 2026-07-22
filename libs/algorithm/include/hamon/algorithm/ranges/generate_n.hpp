@@ -52,7 +52,7 @@ struct generate_n_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Out first, hamon::iter_difference_t<Out> n, F gen) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Out,
 		hamon::invocable<F&> &&
 		hamon::indirectly_writable<Out, hamon::invoke_result_t<F&>>)

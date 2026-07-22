@@ -105,7 +105,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		O first, S last, T const& value) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		O,
 		hamon::output_iterator<O, T const&>)
 	{
@@ -122,7 +122,7 @@ public:
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(R&& r, T const& value) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<R>,
 		ranges::output_range<R, T const&>)
 	{

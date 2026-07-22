@@ -65,7 +65,7 @@ struct count_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		I first, S last, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		hamon::iter_difference_t<I>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,
@@ -91,7 +91,7 @@ struct count_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		R&& r, T const& value, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::range_difference_t<R>,
 		hamon::indirect_binary_predicate<
 			ranges::equal_to,

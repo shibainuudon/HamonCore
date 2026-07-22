@@ -89,7 +89,7 @@ struct radix_sort_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Iter first, Sent last, Tmp tmp, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		Iter,
 		hamon::ranges::detail::radix_sortable<Iter, Tmp, Proj>)
 	{
@@ -108,7 +108,7 @@ struct radix_sort_fn
 	>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, Tmp tmp, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_iterator_t<Range>,
 		hamon::ranges::detail::radix_sortable<
 			ranges::iterator_t<Range>, Tmp, Proj

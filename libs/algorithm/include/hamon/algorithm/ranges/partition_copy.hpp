@@ -71,7 +71,7 @@ struct partition_copy_fn
 		Iter first, Sent last,
 		Out1 out_true, Out2 out_false,
 		Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		partition_copy_result<Iter HAMON_PP_COMMA() Out1 HAMON_PP_COMMA() Out2>,
 		(
 			hamon::indirectly_copyable<Iter, Out1> &&
@@ -107,7 +107,7 @@ struct partition_copy_fn
 	HAMON_CXX14_CONSTEXPR auto operator()(
 		Range&& r, Out1 out_true, Out2 out_false,
 		Pred pred, Proj proj = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		partition_copy_result<ranges::borrowed_iterator_t<Range> HAMON_PP_COMMA() Out1 HAMON_PP_COMMA() Out2>,
 		(
 			hamon::indirectly_copyable<ranges::iterator_t<Range>, Out1> &&

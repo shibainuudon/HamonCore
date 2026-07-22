@@ -245,7 +245,7 @@ public:
 	template <HAMON_CONSTRAINT(ranges::forward_range, Range)>
 	HAMON_CXX14_CONSTEXPR auto
 	operator()(Range&& r, ranges::iterator_t<Range> middle) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		ranges::borrowed_subrange_t<Range>,
 		hamon::permutable<ranges::iterator_t<Range>>)
 	{

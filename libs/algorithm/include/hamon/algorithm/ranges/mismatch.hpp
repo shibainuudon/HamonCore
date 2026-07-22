@@ -70,7 +70,7 @@ struct mismatch_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		mismatch_result<Iter1 HAMON_PP_COMMA() Iter2>,
 		hamon::indirectly_comparable<
 			Iter1, Iter2, Pred, Proj1, Proj2>)
@@ -100,7 +100,7 @@ struct mismatch_fn
 		Pred pred = {},
 		Proj1 proj1 = {},
 		Proj2 proj2 = {}) const
-	HAMON_RETURN_TYPE_REQUIRES_CLAUSES_(
+	HAMON_RETURN_TYPE_REQUIRES_CLAUSES(
 		mismatch_result<
 			ranges::iterator_t<Range1> HAMON_PP_COMMA()
 			ranges::iterator_t<Range2>>,
