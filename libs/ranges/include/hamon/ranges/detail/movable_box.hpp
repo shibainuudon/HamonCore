@@ -31,60 +31,29 @@
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/optional.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon {
 namespace ranges {
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 // [range.move.wrap]/1.1
 template <typename T>
-concept boxable = hamon::move_constructible<T> && hamon::is_object_v<T>;
+HAMON_CONCEPT_OR_BOOL boxable = hamon::move_constructible<T> && hamon::is_object_v<T>;
 
 // [range.move.wrap]/2.1
 template <typename T>
-concept boxable_copyable = hamon::copy_constructible<T> &&
+HAMON_CONCEPT_OR_BOOL boxable_copyable = hamon::copy_constructible<T> &&
 	(hamon::copyable<T> || (hamon::is_nothrow_move_constructible_v<T> && hamon::is_nothrow_copy_constructible_v<T>));
 
 // [range.move.wrap]/2.2
 template <typename T>
-concept boxable_movable = (!hamon::copy_constructible<T>) &&
+HAMON_CONCEPT_OR_BOOL boxable_movable = (!hamon::copy_constructible<T>) &&
 	(hamon::movable<T> || hamon::is_nothrow_move_constructible_v<T>);
 
-template <typename T>
-using boxable_t = hamon::bool_constant<boxable<T>>;
-
-template <typename T>
-using boxable_copyable_t = hamon::bool_constant<boxable_copyable<T>>;
-
-template <typename T>
-using boxable_movable_t = hamon::bool_constant<boxable_movable<T>>;
-
-#else
-
-template <typename T>
-using boxable_t = hamon::bool_constant<
-	hamon::move_constructible<T> && hamon::is_object_v<T>
->;
-
-template <typename T>
-using boxable_copyable_t = hamon::bool_constant<
-	hamon::copy_constructible<T> &&
-	(hamon::copyable<T> || (hamon::is_nothrow_move_constructible_v<T> && hamon::is_nothrow_copy_constructible_v<T>))
->;
-
-template <typename T>
-using boxable_movable_t = hamon::bool_constant<
-	(!hamon::copy_constructible<T>) &&
-	(hamon::movable<T> || hamon::is_nothrow_move_constructible_v<T>)
->;
-
-#endif
-
 template <typename T,
-	bool = boxable_copyable_t<T>::value || boxable_movable_t<T>::value,
-	bool = boxable_t<T>::value
+	bool = boxable_copyable<T> || boxable_movable<T>,
+	bool = boxable<T>
 >
 struct movable_box;
 
