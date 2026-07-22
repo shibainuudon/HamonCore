@@ -98,80 +98,66 @@ namespace ranges {
 
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
+#if defined(HAMON_HAS_CXX17_FOLD_EXPRESSIONS)
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_bidirectional =
+	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_forward =
+	(hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_sized =
+	(hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_range =
+	(hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_simple_view =
+	(hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
 
 template <typename... Rs>
-concept zip_is_common_impl =
+HAMON_CONCEPT_OR_BOOL zip_is_common_impl =
 	(sizeof...(Rs) == 1 && (hamon::ranges::common_range<Rs> && ...)) ||
 	(!(hamon::ranges::bidirectional_range<Rs> && ...) && (hamon::ranges::common_range<Rs> && ...)) ||
 	((hamon::ranges::random_access_range<Rs> && ...) && (hamon::ranges::sized_range<Rs> && ...));
 
-template <bool Const, typename... Views>
-using zip_is_common_t = hamon::bool_constant<zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>>;
-
-template <bool Const, typename... Views>
-concept all_bidirectional =
-	(hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_bidirectional_t = hamon::bool_constant<all_bidirectional<Const, Views...>>;
-
-template <bool Const, typename... Views>
-concept all_forward =
-	(hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_forward_t = hamon::bool_constant<all_forward<Const, Views...>>;
-
-template <bool Const, typename... Views>
-concept all_sized =
-	(hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_sized_t = hamon::bool_constant<all_sized<Const, Views...>>;
-
-template <bool Const, typename... Views>
-concept all_range =
-	(hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_range_t = hamon::bool_constant<all_range<Const, Views...>>;
-
-template <bool Const, typename... Views>
-concept all_simple_view =
-	(hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>> && ...);
-
-template <bool Const, typename... Views>
-using all_simple_view_t = hamon::bool_constant<all_simple_view<Const, Views...>>;
-
 #else
 
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_bidirectional = hamon::detail::all_v<
+	hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_forward = hamon::detail::all_v<
+	hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_sized = hamon::detail::all_v<
+	hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_range = hamon::detail::all_v<
+	hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL all_simple_view = hamon::detail::all_v<
+	hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+
 template <typename... Rs>
-using zip_is_common_impl = hamon::bool_constant<
-	((sizeof...(Rs) == 1) && hamon::detail::all_v<hamon::ranges::common_range<Rs>...>) ||
+HAMON_CONCEPT_OR_BOOL zip_is_common_impl =
+	(sizeof...(Rs) == 1 && hamon::detail::all_v<hamon::ranges::common_range<Rs>...>) ||
 	(!hamon::detail::all_v<hamon::ranges::bidirectional_range<Rs>...> && hamon::detail::all_v<hamon::ranges::common_range<Rs>...>) ||
-	(hamon::detail::all_v<hamon::ranges::random_access_range<Rs>...> && hamon::detail::all_v<hamon::ranges::sized_range<Rs>...>)
->;
-
-template <bool Const, typename... Views>
-using zip_is_common_t = zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>;
-
-template <bool Const, typename... Views>
-using all_bidirectional_t = hamon::detail::all<hamon::ranges::bidirectional_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
-using all_forward_t = hamon::detail::all<hamon::ranges::forward_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
-using all_sized_t = hamon::detail::all<hamon::ranges::sized_range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
-using all_range_t = hamon::detail::all<hamon::ranges::range<hamon::ranges::detail::maybe_const<Const, Views>>...>;
-
-template <bool Const, typename... Views>
-using all_simple_view_t = hamon::detail::all<hamon::ranges::detail::simple_view<hamon::ranges::detail::maybe_const<Const, Views>>...>;
+	(hamon::detail::all_v<hamon::ranges::random_access_range<Rs>...> && hamon::detail::all_v<hamon::ranges::sized_range<Rs>...>);
 
 #endif
+
+template <bool Const, typename... Views>
+HAMON_CONCEPT_OR_BOOL zip_is_common = zip_is_common_impl<hamon::ranges::detail::maybe_const<Const, Views>...>;
 
 template <typename F, typename Tuple1, typename Tuple2, hamon::size_t... I>
 HAMON_CXX11_CONSTEXPR auto
@@ -235,7 +221,7 @@ private:
 
 	// [range.zip.iterator]/2
 	template <bool Const,
-		bool = hamon::ranges::detail::all_forward_t<Const, Views...>::value>
+		bool = hamon::ranges::detail::all_forward<Const, Views...>>
 	struct iterator_category_base
 	{
 		using iterator_category = hamon::input_iterator_tag;
@@ -274,9 +260,9 @@ private:
 		using iterator_concept =
 			hamon::conditional_t<hamon::ranges::detail::all_random_access<Const, Views...>,
 				hamon::random_access_iterator_tag,	// [range.zip.iterator]/1.1
-			hamon::conditional_t<hamon::ranges::detail::all_bidirectional_t<Const, Views...>::value,
+			hamon::conditional_t<hamon::ranges::detail::all_bidirectional<Const, Views...>,
 				hamon::bidirectional_iterator_tag,	// [range.zip.iterator]/1.2
-			hamon::conditional_t<hamon::ranges::detail::all_forward_t<Const, Views...>::value,
+			hamon::conditional_t<hamon::ranges::detail::all_forward<Const, Views...>,
 				hamon::forward_iterator_tag,		// [range.zip.iterator]/1.3
 				hamon::input_iterator_tag			// [range.zip.iterator]/1.4
 			>>>;
@@ -430,7 +416,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_forward_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_forward<C2, Views...>>>
 		HAMON_CXX14_CONSTEXPR iterator
 		post_increment(hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -468,7 +454,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_bidirectional_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_bidirectional<C2, Views...>>>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator--() HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
 			hamon::ranges::detail::tuple_for_each(decrement_fn{}, m_current))
@@ -480,7 +466,7 @@ private:
 
 		template <bool C2 = Const,
 			typename = hamon::enable_if_t<
-				hamon::ranges::detail::all_bidirectional_t<C2, Views...>::value>>
+				hamon::ranges::detail::all_bidirectional<C2, Views...>>>
 		HAMON_CXX14_CONSTEXPR iterator operator--(int)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
 				//hamon::is_nothrow_copy_constructible<iterator>::value &&
@@ -534,7 +520,7 @@ private:
 		using AllEqualityComparable = hamon::detail::all<hamon::equality_comparable<IteratorT<C2, Views>>...>;
 
 		template <bool C2,
-			typename = hamon::enable_if_t<hamon::ranges::detail::all_bidirectional_t<C2, Views...>::value>>
+			typename = hamon::enable_if_t<hamon::ranges::detail::all_bidirectional<C2, Views...>>>
 		static HAMON_CXX11_CONSTEXPR bool
 		equal_impl(iterator const& x, iterator const& y, hamon::detail::overload_priority<1>)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_current == y.m_current)	// noexcept as an extension
@@ -942,7 +928,7 @@ private:
 	// begin
 	template <typename ViewsTuple, bool Const = hamon::is_const<ViewsTuple>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_range_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_range<Const, Views...>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	begin_impl2(ViewsTuple& views, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
@@ -961,8 +947,8 @@ private:
 	// end
 	template <typename ViewsTuple, bool Const = hamon::is_const<ViewsTuple>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_range_t<Const, Views...>::value &&
-			!hamon::ranges::detail::zip_is_common_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_range<Const, Views...> &&
+			!hamon::ranges::detail::zip_is_common<Const, Views...>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl2(ViewsTuple& views, hamon::detail::overload_priority<3>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
@@ -980,7 +966,7 @@ private:
 
 	template <typename ViewsTuple, bool Const = hamon::is_const<ViewsTuple>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_range_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_range<Const, Views...>>>
 	static HAMON_CXX11_CONSTEXPR auto
 	end_impl2(ViewsTuple& views, hamon::detail::overload_priority<1>)
 	HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
@@ -1033,42 +1019,42 @@ public:
 
 	template <typename Dummy = void, bool Const = always_false<Dummy>::value,
 		typename = hamon::enable_if_t<
-			!hamon::ranges::detail::all_simple_view_t<Const, Views...>::value>>
+			!hamon::ranges::detail::all_simple_view<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	begin() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		begin_impl(m_views))
 
 	template <typename Dummy = void, bool Const = always_true<Dummy>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_range_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_range<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	begin() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		begin_impl(m_views))
 
 	template <typename Dummy = void, bool Const = always_false<Dummy>::value,
 		typename = hamon::enable_if_t<
-			!hamon::ranges::detail::all_simple_view_t<Const, Views...>::value>>
+			!hamon::ranges::detail::all_simple_view<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	end() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		end_impl(m_views))
 
 	template <typename Dummy = void, bool Const = always_true<Dummy>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_range_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_range<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	end() const HAMON_NOEXCEPT_DECLTYPE_RETURN(		// noexcept as an extension
 		end_impl(m_views))
 
 	template <typename Dummy = void, bool Const = always_false<Dummy>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_sized_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_sized<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR auto		// nodiscard as an extension
 	size() HAMON_NOEXCEPT_DECLTYPE_RETURN(			// noexcept as an extension
 		size_impl(m_views))
 
 	template <typename Dummy = void, bool Const = always_true<Dummy>::value,
 		typename = hamon::enable_if_t<
-			hamon::ranges::detail::all_sized_t<Const, Views...>::value>>
+			hamon::ranges::detail::all_sized<Const, Views...>>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto		// nodiscard as an extension
 	size() const HAMON_NOEXCEPT_DECLTYPE_RETURN(	// noexcept as an extension
 		size_impl(m_views))
