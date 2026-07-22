@@ -54,8 +54,8 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename Val, typename CharT, typename Traits>
-concept stream_extractable =
-	requires(std::basic_istream<CharT, Traits>&is, Val& t)
+HAMON_CONCEPT_OR_BOOL stream_extractable =
+	requires(std::basic_istream<CharT, Traits>& is, Val& t)
 	{
 		is >> t;
 	};
@@ -80,8 +80,8 @@ public:
 };
 
 template <typename Val, typename CharT, typename Traits>
-using stream_extractable =
-	typename stream_extractable_impl<Val, CharT, Traits>::type;
+HAMON_CONCEPT_OR_BOOL stream_extractable =
+	stream_extractable_impl<Val, CharT, Traits>::type::value;
 
 #endif
 
@@ -98,7 +98,7 @@ template <typename Val, typename CharT, typename Traits = std::char_traits<CharT
 	typename = hamon::enable_if_t<
 		hamon::movable<Val> &&
 		hamon::default_initializable<Val> &&
-		detail::stream_extractable<Val, CharT, Traits>::value
+		detail::stream_extractable<Val, CharT, Traits>
 	>
 >
 #endif
