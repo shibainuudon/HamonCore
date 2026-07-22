@@ -45,7 +45,6 @@ using std::reverse_iterator;
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/derived_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/bool_constant.hpp>

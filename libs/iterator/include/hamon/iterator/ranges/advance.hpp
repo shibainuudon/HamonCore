@@ -32,7 +32,6 @@ using std::ranges::advance;
 #include <hamon/cmath/abs.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/same_as.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/type_traits/enable_if.hpp>

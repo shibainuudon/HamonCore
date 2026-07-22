@@ -10,7 +10,6 @@
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/concepts/enable_borrowed_range.hpp>
 #include <hamon/ranges/concepts/enable_view.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/iterator/concepts/random_access_iterator.hpp>

@@ -33,7 +33,6 @@ using std::ranges::views::single;
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/constructible_from.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/decay.hpp>

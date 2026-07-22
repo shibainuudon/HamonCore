@@ -7,7 +7,6 @@
 #ifndef HAMON_CMATH_RANGES_ATAN2_HPP
 #define HAMON_CMATH_RANGES_ATAN2_HPP
 
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/cmath/ranges/detail/has_adl_atan2.hpp>
 #include <hamon/cmath/atan2.hpp>

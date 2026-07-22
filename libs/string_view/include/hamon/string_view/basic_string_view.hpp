@@ -25,7 +25,6 @@ using std::basic_string_view;
 #include <hamon/algorithm/clamp.hpp>
 #include <hamon/concepts/same_as.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>

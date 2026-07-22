@@ -31,7 +31,6 @@ using std::ranges::next;
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/concepts/convertible_to.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/config.hpp>

@@ -23,7 +23,6 @@ using std::span;
 #include <hamon/span/span_fwd.hpp>
 #include <hamon/span/dynamic_extent.hpp>
 #include <hamon/span/detail/is_specialization_of_span.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/is_specialization_of_array.hpp>
 #include <hamon/cstddef/ptrdiff_t.hpp>
@@ -652,7 +651,7 @@ HAMON_RANGES_END_NAMESPACE
 
 #include <hamon/iterator/concepts/contiguous_iterator.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/ranges/concepts/contiguous_range.hpp>
 #include <hamon/ranges/range_reference_t.hpp>

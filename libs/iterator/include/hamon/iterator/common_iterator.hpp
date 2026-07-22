@@ -40,7 +40,6 @@ using std::common_iterator;
 #include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/assignable_from.hpp>
 #include <hamon/concepts/constructible_from.hpp>

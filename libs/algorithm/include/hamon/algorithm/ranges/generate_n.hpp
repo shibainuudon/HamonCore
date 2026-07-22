@@ -28,7 +28,6 @@ using std::ranges::generate_n;
 #else
 
 #include <hamon/algorithm/ranges/detail/return_type_requires_clauses.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
 #include <hamon/concepts/invocable.hpp>
