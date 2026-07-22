@@ -131,7 +131,7 @@ struct join_with_view_inner_iter_base<V, true>
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename R, typename P>
-concept compatible_joinable_ranges =
+HAMON_CONCEPT_OR_BOOL compatible_joinable_ranges =
 	hamon::common_with<
 		hamon::ranges::range_value_t<R>,
 		hamon::ranges::range_value_t<P>> &&
@@ -144,8 +144,12 @@ concept compatible_joinable_ranges =
 
 #else
 
+template <typename R, typename P, typename = void>
+struct compatible_joinable_ranges_impl
+	: public hamon::false_type {};
+
 template <typename R, typename P>
-using compatible_joinable_ranges = hamon::bool_constant<
+struct compatible_joinable_ranges_impl<R, P, hamon::enable_if_t<
 	hamon::common_with<
 		hamon::ranges::range_value_t<R>,
 		hamon::ranges::range_value_t<P>> &&
@@ -155,29 +159,16 @@ using compatible_joinable_ranges = hamon::bool_constant<
 	hamon::common_reference_with<
 		hamon::ranges::range_rvalue_reference_t<R>,
 		hamon::ranges::range_rvalue_reference_t<P>>
->;
+>>	: public hamon::true_type {};
+
+template <typename R, typename P>
+HAMON_CONCEPT_OR_BOOL compatible_joinable_ranges = compatible_joinable_ranges_impl<R, P>::value;
 
 #endif
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename R>
-concept bidirectional_common =
+HAMON_CONCEPT_OR_BOOL bidirectional_common =
 	hamon::ranges::bidirectional_range<R> && hamon::ranges::common_range<R>;
-
-template <typename R>
-using bidirectional_common_t = hamon::bool_constant<bidirectional_common<R>>;
-
-#else
-
-template <typename R>
-using bidirectional_common = hamon::bool_constant<
-	hamon::ranges::bidirectional_range<R> && hamon::ranges::common_range<R>>;
-
-template <typename R>
-using bidirectional_common_t = bidirectional_common<R>;
-
-#endif
 
 }	// namespace detail
 
@@ -200,7 +191,7 @@ template <typename V, typename Pattern,
 		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>> &&
 		hamon::ranges::view<Pattern> &&
-		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>::value
+		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>
 	>>
 #endif
 class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pattern>>
@@ -461,8 +452,8 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 				// [range.join.with.iterator]/1.1
 				ref_is_glvalue<Base>::value &&
 				hamon::ranges::bidirectional_range<Base> &&
-				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
-				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value,
+				hamon::ranges::detail::bidirectional_common<InnerBase> &&
+				hamon::ranges::detail::bidirectional_common<PatternBase>,
 				hamon::bidirectional_iterator_tag,
 			hamon::conditional_t<
 				// [range.join.with.iterator]/1.2
@@ -593,8 +584,8 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			typename = hamon::enable_if_t<
 				ref_is_glvalue<B2>::value &&
 				hamon::ranges::bidirectional_range<Base> &&
-				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
-				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value
+				hamon::ranges::detail::bidirectional_common<InnerBase> &&
+				hamon::ranges::detail::bidirectional_common<PatternBase>
 			>>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator--()
@@ -644,8 +635,8 @@ class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pa
 			typename = hamon::enable_if_t<
 				ref_is_glvalue<B2>::value &&
 				hamon::ranges::bidirectional_range<Base> &&
-				hamon::ranges::detail::bidirectional_common_t<InnerBase>::value &&
-				hamon::ranges::detail::bidirectional_common_t<PatternBase>::value
+				hamon::ranges::detail::bidirectional_common<InnerBase> &&
+				hamon::ranges::detail::bidirectional_common<PatternBase>
 			>>
 		HAMON_CXX14_CONSTEXPR iterator
 		operator--(int)
