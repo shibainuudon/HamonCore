@@ -25,7 +25,7 @@ namespace detail {
 #if defined(HAMON_HAS_CXX20_CONCEPTS)
 
 template <typename T, typename U, typename V>
-concept pair_like_convertible_from =
+HAMON_CONCEPT_OR_BOOL pair_like_convertible_from =
 	!hamon::ranges::range<T> &&
 	!hamon::is_reference<T>::value &&
 	hamon::detail::pair_like<T> &&
@@ -59,7 +59,7 @@ public:
 };
 
 template <typename T, typename U, typename V>
-using pair_like_convertible_from = typename pair_like_convertible_from_impl<T, U, V>::type;
+HAMON_CONCEPT_OR_BOOL pair_like_convertible_from = pair_like_convertible_from_impl<T, U, V>::type::value;
 
 #endif
 

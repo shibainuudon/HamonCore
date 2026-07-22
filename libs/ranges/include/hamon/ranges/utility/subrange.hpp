@@ -41,7 +41,6 @@ using ranges::get;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copyable.hpp>
@@ -55,7 +54,6 @@ using ranges::get;
 #include <hamon/iterator/ranges/advance.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/conjunction.hpp>
 #include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
@@ -69,20 +67,25 @@ namespace ranges {
 
 namespace detail {
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
 template <typename It2, typename It, bool StoreSize>
-concept subrange_constructible_from_iter_sent =
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_iter_sent =
 	hamon::ranges::detail::convertible_to_non_slicing<It2, It> &&
 	!StoreSize;
 
 template <typename It2, typename It, ranges::subrange_kind Kind>
-concept subrange_constructible_from_iter_sent_size =
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_iter_sent_size =
 	hamon::ranges::detail::convertible_to_non_slicing<It2, It> &&
 	Kind == ranges::subrange_kind::sized;
 
+template <typename PairLike, typename It, typename Sent, typename Subrange>
+HAMON_CONCEPT_OR_BOOL subrange_convertible_to_pair_like =
+	hamon::ranges::detail::different_from<PairLike, Subrange> &&
+	detail::pair_like_convertible_from<PairLike, It const&, Sent const&>;
+
+#if defined(HAMON_HAS_CXX20_CONCEPTS)
+
 template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize>
-concept subrange_constructible_from_range =
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_range =
 	hamon::ranges::detail::different_from<Rng, Subrange> &&
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It> &&
@@ -90,53 +93,46 @@ concept subrange_constructible_from_range =
 	(!StoreSize || hamon::ranges::sized_range<Rng>);
 
 template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind>
-concept subrange_constructible_from_range_size =
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_range_size =
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It> &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
 	(Kind == ranges::subrange_kind::sized);
 
-template <typename PairLike, typename It, typename Sent, typename Subrange>
-concept subrange_convertible_to_pair_like =
-	hamon::ranges::detail::different_from<PairLike, Subrange> &&
-	detail::pair_like_convertible_from<PairLike, It const&, Sent const&>;
-
 #else
 
-template <typename It2, typename It, bool StoreSize>
-using subrange_constructible_from_iter_sent = hamon::bool_constant<
-	hamon::ranges::detail::convertible_to_non_slicing<It2, It> &&
-	!StoreSize
->;
-
-template <typename It2, typename It, ranges::subrange_kind Kind>
-using subrange_constructible_from_iter_sent_size = hamon::bool_constant<
-	hamon::ranges::detail::convertible_to_non_slicing<It2, It> &&
-	(Kind == ranges::subrange_kind::sized)
->;
+template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize, typename = void>
+struct subrange_constructible_from_range_impl
+	: public hamon::false_type {};
 
 template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize>
-using subrange_constructible_from_range = hamon::bool_constant<
+struct subrange_constructible_from_range_impl<Rng, It, Sent, Subrange, StoreSize, hamon::enable_if_t<
 	hamon::ranges::detail::different_from<Rng, Subrange> &&
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It> &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
 	(!StoreSize || hamon::ranges::sized_range<Rng>)
->;
+>>	: public hamon::true_type {};
+
+template <typename Rng, typename It, typename Sent, typename Subrange, bool StoreSize>
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_range =
+	subrange_constructible_from_range_impl<Rng, It, Sent, Subrange, StoreSize>::value;
+
+template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind, typename = void>
+struct subrange_constructible_from_range_size_impl
+	: public hamon::false_type {};
 
 template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind>
-using subrange_constructible_from_range_size = hamon::bool_constant<
+struct subrange_constructible_from_range_size_impl<Rng, It, Sent, Kind, hamon::enable_if_t<
 	hamon::ranges::borrowed_range<Rng> &&
 	detail::convertible_to_non_slicing<hamon::ranges::iterator_t<Rng>, It> &&
 	hamon::convertible_to<hamon::ranges::sentinel_t<Rng>, Sent> &&
 	(Kind == ranges::subrange_kind::sized)
->;
+>>	: public hamon::true_type {};
 
-template <typename PairLike, typename It, typename Sent, typename Subrange>
-using subrange_convertible_to_pair_like = hamon::bool_constant<
-	hamon::ranges::detail::different_from<PairLike, Subrange> &&
-	detail::pair_like_convertible_from<PairLike, It const&, Sent const&>::value
->;
+template <typename Rng, typename It, typename Sent, ranges::subrange_kind Kind>
+HAMON_CONCEPT_OR_BOOL subrange_constructible_from_range_size =
+	subrange_constructible_from_range_size_impl<Rng, It, Sent, Kind>::value;
 
 #endif
 
@@ -312,14 +308,14 @@ public:
 	{}
 #endif
 
-	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_iter_sent, It, StoreSize, It2)>
+	template <HAMON_CONSTRAINT(detail::subrange_constructible_from_iter_sent, It, StoreSize, It2)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(It2 i, Sent s)
 		HAMON_NOEXCEPT_IF_EXPR(ImplType(hamon::move(i), hamon::move(s)))
 		: m_impl(hamon::move(i), hamon::move(s))
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_iter_sent_size, It, Kind, It2)>
+	template <HAMON_CONSTRAINT(detail::subrange_constructible_from_iter_sent_size, It, Kind, It2)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(It2 i, Sent s, size_type n)
 		HAMON_NOEXCEPT_IF_EXPR(ImplType(hamon::move(i), hamon::move(s), n))
@@ -333,21 +329,21 @@ public:
 #endif
 	}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_range, It, Sent, subrange, StoreSize, Rng)>
+	template <HAMON_CONSTRAINT(detail::subrange_constructible_from_range, It, Sent, subrange, StoreSize, Rng)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(Rng&& r)
 		HAMON_NOEXCEPT_IF_EXPR(ImplType(r))
 		: m_impl(r)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::subrange_constructible_from_range_size, It, Sent, Kind, Rng)>
+	template <HAMON_CONSTRAINT(detail::subrange_constructible_from_range_size, It, Sent, Kind, Rng)>
 	HAMON_CXX11_CONSTEXPR
 	subrange(Rng&& r, size_type n)
 		HAMON_NOEXCEPT_IF_EXPR(ImplType(r, n))
 		: m_impl(r, n)
 	{}
 
-	template <HAMON_CONSTRAINED_PARAM(detail::subrange_convertible_to_pair_like, It, Sent, subrange, PairLike)>
+	template <HAMON_CONSTRAINT(detail::subrange_convertible_to_pair_like, It, Sent, subrange, PairLike)>
 	HAMON_CXX11_CONSTEXPR operator PairLike() const
 	{
 		return PairLike(m_impl.m_begin, m_impl.m_end);
@@ -561,7 +557,7 @@ struct is_specialization_of_subrange<hamon::ranges::subrange<Iter, Sent, Kind>>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/iterator/concepts/input_or_output_iterator.hpp>
 #include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/concepts/sized_sentinel_for.hpp>
