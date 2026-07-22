@@ -38,7 +38,6 @@ using std::ranges::views::iota;
 #include <hamon/concepts/copyable.hpp>
 #include <hamon/concepts/default_initializable.hpp>
 #include <hamon/concepts/equality_comparable.hpp>
-#include <hamon/concepts/detail/constrained_param.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/weakly_equality_comparable_with.hpp>
 #include <hamon/detail/overload_priority.hpp>
@@ -68,16 +67,13 @@ namespace detail {
 
 // [range.iota.view]/2
 template <typename I>
-concept decrementable =
+HAMON_CONCEPT_OR_BOOL decrementable =
 	hamon::incrementable<I> &&
 	requires(I i)
 	{
 		{ --i } -> hamon::same_as<I&>;
 		{ i-- } -> hamon::same_as<I>;
 	};
-
-template <typename I>
-using decrementable_t = hamon::bool_constant<decrementable<I>>;
 
 #else
 
@@ -104,11 +100,8 @@ public:
 };
 
 template <typename I>
-using decrementable =
-	typename decrementable_impl<I>::type;
-
-template <typename I>
-using decrementable_t = decrementable<I>;
+HAMON_CONCEPT_OR_BOOL decrementable =
+	decrementable_impl<I>::type::value;
 
 #endif
 
@@ -116,7 +109,7 @@ using decrementable_t = decrementable<I>;
 
 // [range.iota.view]/5
 template <typename I>
-concept advanceable =
+HAMON_CONCEPT_OR_BOOL advanceable =
 	detail::decrementable<I> &&
 	hamon::totally_ordered<I> &&
 	requires(I i, I const j, detail::iota_diff_t<I> const n)
@@ -129,9 +122,6 @@ concept advanceable =
 		{ j - j } -> hamon::convertible_to<detail::iota_diff_t<I>>;
 	};
 
-template <typename I>
-using advanceable_t = hamon::bool_constant<advanceable<I>>;
-
 #else
 
 template <typename I>
@@ -139,7 +129,7 @@ struct advanceable_impl
 {
 private:
 	template <typename I2,
-		typename = hamon::enable_if_t<detail::decrementable_t<I2>::value>,
+		typename = hamon::enable_if_t<detail::decrementable<I2>>,
 		typename = hamon::enable_if_t<hamon::totally_ordered<I2>>,
 		typename D = detail::iota_diff_t<I2>,
 		typename R1 = decltype(hamon::declval<I2&>() += hamon::declval<D>()),
@@ -164,11 +154,8 @@ public:
 };
 
 template <typename I>
-using advanceable =
-	typename advanceable_impl<I>::type;
-
-template <typename I>
-using advanceable_t = advanceable<I>;
+HAMON_CONCEPT_OR_BOOL advanceable =
+	advanceable_impl<I>::type::value;
 
 #endif
 
@@ -224,9 +211,9 @@ private:
 	public:
 		// [range.iota.iterator]/1
 		using iterator_concept =
-			hamon::conditional_t<detail::advanceable_t<W>::value,
+			hamon::conditional_t<detail::advanceable<W>,
 				hamon::random_access_iterator_tag,	// [range.iota.iterator]/1.1
-			hamon::conditional_t<detail::decrementable_t<W>::value,
+			hamon::conditional_t<detail::decrementable<W>,
 				hamon::bidirectional_iterator_tag,	// [range.iota.iterator]/1.2
 			hamon::conditional_t<hamon::incrementable<W>,
 				hamon::forward_iterator_tag,		// [range.iota.iterator]/1.3
@@ -324,7 +311,7 @@ private:
 		}
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::decrementable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::decrementable, W2, W)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator--()
 			HAMON_NOEXCEPT_IF_EXPR(--m_value)	// noexcept as an extension
@@ -335,7 +322,7 @@ private:
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::decrementable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::decrementable, W2, W)>
 		HAMON_CXX14_CONSTEXPR iterator
 		operator--(int)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -417,7 +404,7 @@ HAMON_WARNING_DISABLE_GCC("-Wconversion")
 HAMON_WARNING_POP()
 
 	public:
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator+=(difference_type n)
 			HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
@@ -428,7 +415,7 @@ HAMON_WARNING_POP()
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_CXX14_CONSTEXPR iterator&
 		operator-=(difference_type n)
 			HAMON_NOEXCEPT_IF_EXPR(	// noexcept as an extension
@@ -439,7 +426,7 @@ HAMON_WARNING_POP()
 			return *this;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_NODISCARD HAMON_CXX11_CONSTEXPR W	// nodiscard as an extension
 		operator[](difference_type n) const
 			HAMON_NOEXCEPT_IF_EXPR(W(m_value + n))	// noexcept as an extension
@@ -522,7 +509,7 @@ HAMON_WARNING_POP()
 		}
 #endif
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR iterator	// nodiscard as an extension
 		operator+(iterator i, difference_type n)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -535,7 +522,7 @@ HAMON_WARNING_POP()
 			return i;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR iterator	// nodiscard as an extension
 		operator+(difference_type n, iterator i)
 			HAMON_NOEXCEPT_IF_EXPR(i + n)	// noexcept as an extension
@@ -545,7 +532,7 @@ HAMON_WARNING_POP()
 			return i + n;
 		}
 
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX14_CONSTEXPR iterator	// nodiscard as an extension
 		operator-(iterator i, difference_type n)
 			HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -594,7 +581,7 @@ HAMON_WARNING_POP()
 		}
 
 	public:
-		template <HAMON_CONSTRAINED_PARAM_D(detail::advanceable, W2, W)>
+		template <HAMON_CONSTRAINT_D(detail::advanceable, W2, W)>
 		HAMON_NODISCARD friend HAMON_CXX11_CONSTEXPR difference_type	// nodiscard as an extension
 		operator-(iterator const& x, iterator const& y)
 			HAMON_NOEXCEPT_IF_EXPR(x.m_value - y.m_value)	// noexcept as an extension
@@ -877,7 +864,7 @@ HAMON_WARNING_POP()
 public:
 	template <typename W2 = W, typename Bound2 = Bound,
 		typename = hamon::enable_if_t<
-			(hamon::same_as<W2, Bound2> && detail::advanceable_t<W2>::value) ||
+			(hamon::same_as<W2, Bound2> && detail::advanceable<W2>) ||
 			(hamon::detail::is_integer_like<W2> && hamon::detail::is_integer_like<Bound2>) ||
 			hamon::sized_sentinel_for<Bound2, W2>
 		>
