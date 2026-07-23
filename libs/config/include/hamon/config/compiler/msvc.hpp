@@ -1331,7 +1331,7 @@
 #if (_MSC_FULL_VER >= 194435227)
 #endif
 
-// Visual Studio 2022 Version 17.14.(34-36)
+// Visual Studio 2022 Version 17.14.(34-37)
 #if (_MSC_FULL_VER >= 194435228)
 #endif
 
@@ -1464,6 +1464,10 @@
 
 // Visual Studio 2026 Version: 18.8.0
 #if (_MSC_FULL_VER >= 195136248)
+#endif
+
+// Visual Studio 2026 Version: 18.8.1
+#if (_MSC_FULL_VER >= 195136252)
 #endif
 
 #define HAMON_NO_COMPLETE_VALUE_INITIALIZATION
