@@ -40,29 +40,15 @@ HAMON_CXX14_CONSTEXPR bool test00()
 	};
 
 	// views::adjacent<N>(v)
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = hamon::views::adjacent<2>(v);
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(hamon::ranges::equal(av, expected));
 	}
-#endif
-	{
-		auto av = hamon::views::adjacent_t<2>{}(v);
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(hamon::ranges::equal(av, expected));
-	}
 
 	// v | views::adjacent<N>
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = v | hamon::views::adjacent<2>;
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(hamon::ranges::equal(av, expected));
-	}
-#endif
-	{
-		auto av = v | hamon::views::adjacent_t<2>{};
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(hamon::ranges::equal(av, expected));
 	}
@@ -98,29 +84,15 @@ HAMON_CXX14_CONSTEXPR bool test01()
 	};
 
 	// views::adjacent<N>(v)
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = hamon::views::adjacent<3>(a);
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(hamon::ranges::equal(av, expected));
 	}
-#endif
-	{
-		auto av = hamon::views::adjacent_t<3>{}(a);
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(hamon::ranges::equal(av, expected));
-	}
 
 	// v | views::adjacent<N>
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = a | hamon::views::adjacent<3>;
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(hamon::ranges::equal(av, expected));
-	}
-#endif
-	{
-		auto av = a | hamon::views::adjacent_t<3>{};
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(hamon::ranges::equal(av, expected));
 	}
@@ -136,29 +108,15 @@ HAMON_CXX14_CONSTEXPR bool test02()
 	int a[] = {1,2,3,4,5};
 
 	// views::adjacent<N>(v)
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = hamon::views::adjacent<0>(a);
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(av.empty());
 	}
-#endif
-	{
-		auto av = hamon::views::adjacent_t<0>{}(a);
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(av.empty());
-	}
 
 	// v | views::adjacent<N>
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = a | hamon::views::adjacent<0>;
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(av.empty());
-	}
-#endif
-	{
-		auto av = a | hamon::views::adjacent_t<0>{};
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(av.empty());
 	}
@@ -174,29 +132,15 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	int a[] = {1,2,3};
 
 	// views::adjacent<N>(v)
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = hamon::views::adjacent<4>(a);
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(av.empty());
 	}
-#endif
-	{
-		auto av = hamon::views::adjacent_t<4>{}(a);
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(av.empty());
-	}
 
 	// v | views::adjacent<N>
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		auto av = a | hamon::views::adjacent<4>;
-		static_assert(hamon::is_same<decltype(av), AV>::value, "");
-		VERIFY(av.empty());
-	}
-#endif
-	{
-		auto av = a | hamon::views::adjacent_t<4>{};
 		static_assert(hamon::is_same<decltype(av), AV>::value, "");
 		VERIFY(av.empty());
 	}

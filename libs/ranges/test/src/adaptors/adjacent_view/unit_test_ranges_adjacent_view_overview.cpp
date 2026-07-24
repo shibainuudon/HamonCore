@@ -24,11 +24,7 @@ GTEST_TEST(RangesTest, AdjacentViewOverviewTest)
 		// Example 1:
 		hamon::vector<int> v = { 1, 2, 3, 4 };
 		std::stringstream out;
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		for (auto i : v | hamon::views::adjacent<2>)
-#else
-		for (auto i : v | hamon::views::adjacent_t<2>{})
-#endif
 		{
 			out << "(" << hamon::adl_get<0>(i) << ", " << hamon::adl_get<1>(i) << ") ";  // prints (1, 2) (2, 3) (3, 4)
 		}

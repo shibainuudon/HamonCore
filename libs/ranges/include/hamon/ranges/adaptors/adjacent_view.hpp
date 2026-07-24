@@ -24,12 +24,6 @@ namespace views {
 using std::ranges::views::adjacent;
 using std::ranges::views::pairwise;
 
-// variable templates が使える場合も使えない場合も、
-// hamon::views::adjacent_t<N>{}
-// の形で使えるようにする。
-template <hamon::size_t N>
-using adjacent_t = decltype(adjacent<N>);
-
 }	// namespace views
 
 }	// namespace ranges
@@ -818,22 +812,14 @@ struct adjacent_fn<0> : public hamon::ranges::range_adaptor_closure<adjacent_fn<
 inline namespace cpo
 {
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+// [range.adjacent], adjacent view
 
 template <hamon::size_t N>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 detail::adjacent_fn<N> adjacent{};
 
-#endif
-
-// variable templates が使える場合も使えない場合も、
-// hamon::views::adjacent_t<N>{}
-// の形で使えるようにする。
-template <hamon::size_t N>
-using adjacent_t = detail::adjacent_fn<N>;
-
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-auto pairwise = detail::adjacent_fn<2>{};
+auto pairwise = adjacent<2>;
 
 }	// inline namespace cpo
 
