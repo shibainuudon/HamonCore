@@ -17,6 +17,7 @@
 #if (defined(__cpp_lib_ranges) && (__cpp_lib_ranges >= 202110)) && \
 	(defined(__cpp_lib_ranges_as_const) && (__cpp_lib_ranges_as_const >= 202207L)) && \
 	(defined(__cpp_lib_ranges_concat) && (__cpp_lib_ranges_concat >= 202403L)) && \
+	(defined(__cpp_lib_ranges_cache_latest) && (__cpp_lib_ranges_cache_latest >= 202411L)) && \
 	(defined(__cpp_lib_ranges_reserve_hint) && (__cpp_lib_ranges_reserve_hint >= 202502L)) && \
 	(defined(__cpp_lib_ranges_indices) && (__cpp_lib_ranges_indices >= 202506L)) && \
 	defined(HAMON_USE_STD_TUPLE) && \
