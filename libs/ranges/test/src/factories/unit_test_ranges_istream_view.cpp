@@ -115,7 +115,6 @@ static_assert( CanInstantiateIstreamView<WCharStreamExtratable, wchar_t>::value,
 static_assert(!CanInstantiateIstreamView<NonMovable, wchar_t>::value, "");
 static_assert(!CanInstantiateIstreamView<NoDefaultCtor, wchar_t>::value, "");
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::istream&>, "");
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), std::ostream&>, "");
 static_assert( hamon::invocable<decltype(hamon::views::istream<int>), std::iostream&>, "");
@@ -150,7 +149,6 @@ static_assert(!hamon::invocable<decltype(hamon::views::istream<NonMovable>), std
 static_assert(!hamon::invocable<decltype(hamon::views::istream<NoDefaultCtor>), std::wstringstream&>, "");
 
 static_assert(!hamon::invocable<decltype(hamon::views::istream<int>), int&>, "");
-#endif
 
 template <typename Val, typename CharT>
 HAMON_CXX14_CONSTEXPR bool test00()

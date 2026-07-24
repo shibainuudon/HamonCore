@@ -258,24 +258,9 @@ public:
 inline namespace cpo
 {
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
 HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 detail::istream_fn<T> istream{};
-
-#else
-
-// variable templates が使えない場合は、関数として実装する。
-template <typename T, typename U>
-HAMON_CXX11_CONSTEXPR auto istream(U& e)
-HAMON_NOEXCEPT_IF_EXPR(detail::istream_fn<T>{}(e))
-->decltype(detail::istream_fn<T>{}(e))
-{
-	return detail::istream_fn<T>{}(e);
-}
-
-#endif
 
 }	// inline namespace cpo
 
