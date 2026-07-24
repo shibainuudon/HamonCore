@@ -195,6 +195,25 @@ GTEST_TEST(RangesTest, EnumerateViewConceptsTest)
 		static_assert( hamon::ranges::view<EV>, "");
 		static_assert(!hamon::ranges::constant_range<EV>, "");
 	}
+	{
+		using T = int;
+		using V = test_sized_view<T, input_iterator_wrapper<T>, input_iterator_wrapper<T>>;
+		using EV = hamon::ranges::enumerate_view<V>;
+		static_assert( hamon::ranges::range<EV>, "");
+		static_assert(!hamon::ranges::borrowed_range<EV>, "");
+		static_assert( hamon::ranges::sized_range<EV>, "");
+		static_assert( hamon::ranges::approximately_sized_range<EV>, "");
+		static_assert(!hamon::ranges::output_range<EV, T>, "");
+		static_assert( hamon::ranges::input_range<EV>, "");
+		static_assert(!hamon::ranges::forward_range<EV>, "");
+		static_assert(!hamon::ranges::bidirectional_range<EV>, "");
+		static_assert(!hamon::ranges::random_access_range<EV>, "");
+		static_assert(!hamon::ranges::contiguous_range<EV>, "");
+		static_assert(!hamon::ranges::common_range<EV>, "");
+		static_assert( hamon::ranges::viewable_range<EV>, "");
+		static_assert( hamon::ranges::view<EV>, "");
+		static_assert(!hamon::ranges::constant_range<EV>, "");
+	}
 
 	// sized
 	{

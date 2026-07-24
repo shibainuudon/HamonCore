@@ -9,6 +9,7 @@
 
 #include <hamon/ranges/adaptors/enumerate_view.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
+#include <hamon/ranges/concepts/forward_range.hpp>
 #include <hamon/ranges/concepts/sized_range.hpp>
 #include <hamon/ranges/view_base.hpp>
 #include <hamon/ranges/utility/detail/simple_view.hpp>
@@ -115,8 +116,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 {
 	// simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			random_access_iterator_wrapper<int>,
@@ -126,8 +127,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert( (hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert( (hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -143,8 +144,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			random_access_iterator_wrapper<int>,
@@ -154,8 +155,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert( (hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert( (hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -171,8 +172,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> && !range_with_movable_references<V const> ということは、
 		// range_with_movable_references<V> も false になってしまうので
@@ -181,8 +182,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<NotMovable,
 			TestRandomAccessIterator<NotMovable, NotMovable&, NotMovable&>,
@@ -192,8 +193,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert( (hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert( (hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -207,8 +208,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> の場合、
 		// common_range<V> == common_range<V const>
@@ -218,8 +219,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			forward_iterator_wrapper<int>,
@@ -229,8 +230,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert(!(hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert( (hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -246,8 +247,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> && !range_with_movable_references<V const> ということは、
 		// range_with_movable_references<V> も false になってしまうので
@@ -256,8 +257,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// (common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// (forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<NotMovable,
 			TestForwardIterator<NotMovable, NotMovable&, NotMovable&>,
@@ -267,8 +268,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert( (hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert(!(hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert( (hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -282,8 +283,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> の場合、
 		// common_range<V> == common_range<V const>
@@ -293,8 +294,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			random_access_iterator_wrapper<int>,
@@ -304,8 +305,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert( (hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert(!(hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -321,8 +322,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> && !range_with_movable_references<V const> ということは、
 		// range_with_movable_references<V> も false になってしまうので
@@ -331,8 +332,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// (common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// (forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			random_access_iterator_wrapper<int>,
@@ -342,8 +343,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert( (hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert( (hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert(!(hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -357,8 +358,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			forward_iterator_wrapper<int>,
@@ -368,8 +369,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert( hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert(!(hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert(!(hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -385,8 +386,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			forward_iterator_wrapper<int>,
@@ -396,8 +397,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert( hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert(!(hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert(!(hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -413,8 +414,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		// simple_view<V> && !range_with_movable_references<V const> ということは、
 		// range_with_movable_references<V> も false になってしまうので
@@ -423,8 +424,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// !simple_view<V> &&
 	// !range_with_movable_references<V const> &&
-	// !(common_range<V> && sized_range<V>)
-	// !(common_range<V const> && sized_range<V const>)
+	// !(forward_range<V> && common_range<V> && sized_range<V>)
+	// !(forward_range<V const> && common_range<V const> && sized_range<V const>)
 	{
 		using V = TestView<int,
 			forward_iterator_wrapper<int>,
@@ -434,8 +435,8 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		>;
 		static_assert(!hamon::ranges::detail::simple_view<V>, "");
 		//static_assert(!hamon::ranges::detail::range_with_movable_references<V const>, "");
-		static_assert(!(hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
-		static_assert(!(hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
+		static_assert(!(hamon::ranges::forward_range<V> && hamon::ranges::common_range<V> && hamon::ranges::sized_range<V>), "");
+		static_assert(!(hamon::ranges::forward_range<V const> && hamon::ranges::common_range<V const> && hamon::ranges::sized_range<V const>), "");
 
 		using EV = hamon::ranges::enumerate_view<V>;
 		static_assert( has_end<EV&>::value, "");
@@ -452,49 +453,85 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 HAMON_CXX14_CONSTEXPR bool test01()
 {
-	{
-		using V = TestView<int,
-			random_access_iterator_wrapper<int>,
-			random_access_iterator_wrapper<int>,
-			random_access_iterator_wrapper<int const>,
-			random_access_iterator_wrapper<int const>
-		>;
-		using EV = hamon::ranges::enumerate_view<V>;
+	using V = TestView<int,
+		random_access_iterator_wrapper<int>,
+		random_access_iterator_wrapper<int>,
+		random_access_iterator_wrapper<int const>,
+		random_access_iterator_wrapper<int const>
+	>;
+	using EV = hamon::ranges::enumerate_view<V>;
 
-		int a[] = {1, 2, 3};
-		V v(a);
-		{
-			EV ev(v);
-			auto it = ev.end();
-			(void)it;
-		}
-		{
-			EV const ev(v);
-			auto it = ev.end();
-			(void)it;
-		}
+	int a[] = {1, 2, 3};
+	V v(a);
+	{
+		EV ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
 	}
 	{
-		using V = TestView<int,
-			forward_iterator_wrapper<int>,
-			forward_iterator_wrapper<int>,
-			forward_iterator_wrapper<int const>,
-			forward_iterator_wrapper<int const>
-		>;
-		using EV = hamon::ranges::enumerate_view<V>;
+		EV const ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
+	}
 
-		int a[] = {1, 2, 3};
-		V v(a);
-		{
-			EV ev(v);
-			auto it = ev.end();
-			(void)it;
-		}
-		{
-			EV const ev(v);
-			auto it = ev.end();
-			(void)it;
-		}
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test02()
+{
+	using V = TestView<int,
+		forward_iterator_wrapper<int>,
+		forward_iterator_wrapper<int>,
+		forward_iterator_wrapper<int const>,
+		forward_iterator_wrapper<int const>
+	>;
+	using EV = hamon::ranges::enumerate_view<V>;
+
+	int a[] = {1, 2, 3};
+	V v(a);
+	{
+		EV ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(!hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
+	}
+	{
+		EV const ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(!hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
+	}
+
+	return true;
+}
+
+HAMON_CXX14_CONSTEXPR bool test03()
+{
+	using T = int;
+	using V = test_sized_view<T, input_iterator_wrapper<T>, input_iterator_wrapper<T>>;
+	using EV = hamon::ranges::enumerate_view<V>;
+
+	int a[] = {1, 2, 3};
+	V v(a);
+	{
+		EV ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(!hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
+	}
+	{
+		EV const ev(v);
+		auto b = ev.begin();
+		auto e = ev.end();
+		static_assert(!hamon::is_same<decltype(b), decltype(e)>::value, "");
+		VERIFY(b != e);
 	}
 
 	return true;
@@ -506,6 +543,8 @@ GTEST_TEST(RangesTest, EnumerateViewEndTest)
 {
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test00());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
 }
 
 }	// namespace end_test

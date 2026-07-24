@@ -588,6 +588,7 @@ public:
 private:
 	template <typename V2,
 		typename = hamon::enable_if_t<
+			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::common_range<V2> &&
 			hamon::ranges::sized_range<V2>
 		>,
