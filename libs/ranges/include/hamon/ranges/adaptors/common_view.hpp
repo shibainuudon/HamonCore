@@ -39,6 +39,7 @@ using std::ranges::views::common;
 #include <hamon/ranges/concepts/viewable_range.hpp>
 #include <hamon/ranges/iterator_t.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/end.hpp>
@@ -172,6 +173,7 @@ private:
 		end_impl2(base, hamon::detail::overload_priority<1>{}))
 
 public:
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto begin() HAMON_NOEXCEPT_IF_EXPR(		// noexcept as an extension
 		begin_impl(hamon::declval<V&>()))
@@ -189,6 +191,7 @@ public:
 		return begin_impl(m_base);
 	}
 
+	template <HAMON_CONSTRAINT_D(hamon::ranges::detail::not_simple_view, V2, V)>
 	HAMON_NODISCARD HAMON_CXX14_CONSTEXPR		// nodiscard as an extension
 	auto end() HAMON_NOEXCEPT_IF_EXPR(			// noexcept as an extension
 		end_impl(hamon::declval<V&>()))
