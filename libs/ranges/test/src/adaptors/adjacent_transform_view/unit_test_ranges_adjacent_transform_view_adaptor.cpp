@@ -131,7 +131,6 @@ HAMON_CXX14_CONSTEXPR bool test02()
 
 HAMON_CXX14_CONSTEXPR bool test03()
 {
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 	{
 		using CPO = decltype(hamon::views::adjacent_transform<0>);
 		static_assert( hamon::is_invocable<CPO, int(&)[3], F0<int>>::value, "");
@@ -156,7 +155,7 @@ HAMON_CXX14_CONSTEXPR bool test03()
 		static_assert(!hamon::is_invocable<CPO, int(&)[3], F1>::value, "");
 		static_assert( hamon::is_invocable<CPO, int(&)[3], Add>::value, "");
 	}
-#endif
+
 	return true;
 }
 

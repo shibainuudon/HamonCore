@@ -688,24 +688,12 @@ public:
 inline namespace cpo
 {
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <hamon::size_t N>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-detail::adjacent_transform_fn<N> adjacent_transform {};
-
-#else
-
-// variable templates が使えない場合は、関数として実装する。
-template <hamon::size_t N, typename... Args>
-HAMON_CXX11_CONSTEXPR auto adjacent_transform(Args&&... args)
-	HAMON_NOEXCEPT_DECLTYPE_RETURN(
-		detail::adjacent_transform_fn<N>{}(hamon::forward<Args>(args)...))
-
-#endif
+detail::adjacent_transform_fn<N> adjacent_transform{};
 
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-auto pairwise_transform = detail::adjacent_transform_fn<2> {};
+auto pairwise_transform = adjacent_transform<2>;
 
 }	// inline namespace cpo
 
