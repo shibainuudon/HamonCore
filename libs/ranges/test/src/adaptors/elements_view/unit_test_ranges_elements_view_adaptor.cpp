@@ -41,21 +41,13 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// views::elements(v)
 	{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		auto ev = hamon::views::elements<0>(a);
-#else
-		auto ev = hamon::views::elements_t<0>{}(a);
-#endif
 		static_assert(hamon::is_same<decltype(ev), EV0>::value, "");
 		int const expected[] = {1,3,5};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		auto ev = hamon::views::elements<1>(a);
-#else
-		auto ev = hamon::views::elements_t<1>{}(a);
-#endif
 		static_assert(hamon::is_same<decltype(ev), EV1>::value, "");
 		int const expected[] = {2,4,6};
 		VERIFY(hamon::ranges::equal(ev, expected));
@@ -75,21 +67,13 @@ HAMON_CXX14_CONSTEXPR bool test00()
 
 	// v | views::elements
 	{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		auto ev = a | hamon::views::elements<0>;
-#else
-		auto ev = a | hamon::views::elements_t<0>{};
-#endif
 		static_assert(hamon::is_same<decltype(ev), EV0>::value, "");
 		int const expected[] = {1,3,5};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 		auto ev = a | hamon::views::elements<1>;
-#else
-		auto ev = a | hamon::views::elements_t<1>{};
-#endif
 		static_assert(hamon::is_same<decltype(ev), EV1>::value, "");
 		int const expected[] = {2,4,6};
 		VERIFY(hamon::ranges::equal(ev, expected));
@@ -129,19 +113,19 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	// views::elements(v)
 	{
-		auto ev = hamon::views::elements_t<0>{}(v);
+		auto ev = hamon::views::elements<0>(v);
 		static_assert(hamon::is_same<decltype(ev), EV0>::value, "");
 		int const expected[] = {10,20,30,40};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-		auto ev = hamon::views::elements_t<1>{}(v);
+		auto ev = hamon::views::elements<1>(v);
 		static_assert(hamon::is_same<decltype(ev), EV1>::value, "");
 		long const expected[] = {11,21,31,41};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-		auto ev = hamon::views::elements_t<2>{}(v);
+		auto ev = hamon::views::elements<2>(v);
 		static_assert(hamon::is_same<decltype(ev), EV2>::value, "");
 		short const expected[] = {12,22,32,42};
 		VERIFY(hamon::ranges::equal(ev, expected));
@@ -149,19 +133,19 @@ HAMON_CXX14_CONSTEXPR bool test01()
 
 	// v | views::elements
 	{
-		auto ev = v | hamon::views::elements_t<0>{};
+		auto ev = v | hamon::views::elements<0>;
 		static_assert(hamon::is_same<decltype(ev), EV0>::value, "");
 		int const expected[] = {10,20,30,40};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-		auto ev = v | hamon::views::elements_t<1>{};
+		auto ev = v | hamon::views::elements<1>;
 		static_assert(hamon::is_same<decltype(ev), EV1>::value, "");
 		long const expected[] = {11,21,31,41};
 		VERIFY(hamon::ranges::equal(ev, expected));
 	}
 	{
-		auto ev = v | hamon::views::elements_t<2>{};
+		auto ev = v | hamon::views::elements<2>;
 		static_assert(hamon::is_same<decltype(ev), EV2>::value, "");
 		short const expected[] = {12,22,32,42};
 		VERIFY(hamon::ranges::equal(ev, expected));

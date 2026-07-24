@@ -34,11 +34,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 		};
 
 		{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 			auto names = historical_figures | hamon::views::elements<0>;
-#else
-			auto names = historical_figures | hamon::views::elements_t<0>{};
-#endif
 			std::stringstream out;
 			for (auto&& name : names)
 			{
@@ -47,11 +43,7 @@ GTEST_TEST(RangesTest, ElementsViewOverviewTest)
 			EXPECT_EQ("Babbage Hamilton Lovelace Turing ", out.str());
 		}
 		{
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 			auto birth_years = historical_figures | hamon::views::elements<1>;
-#else
-			auto birth_years = historical_figures | hamon::views::elements_t<1>{};
-#endif
 			std::stringstream out;
 			for (auto&& born : birth_years)
 			{

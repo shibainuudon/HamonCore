@@ -27,12 +27,6 @@ using std::ranges::views::elements;
 using std::ranges::views::keys;
 using std::ranges::views::values;
 
-// variable templates が使える場合も使えない場合も、
-// hamon::views::elements_t<N>{}
-// の形で使えるようにする。
-template <hamon::size_t N>
-using elements_t = decltype(elements<N>);
-
 }	// inline namespace cpo
 }	// namespace views
 
@@ -810,25 +804,15 @@ struct elements_fn : public hamon::ranges::range_adaptor_closure<elements_fn<N>>
 inline namespace cpo
 {
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <hamon::size_t N>
 HAMON_INLINE_VAR HAMON_CONSTEXPR
 detail::elements_fn<N> elements{};
 
-#endif
-
-// variable templates が使える場合も使えない場合も、
-// hamon::views::elements_t<N>{}
-// の形で使えるようにする。
-template <hamon::size_t N>
-using elements_t = detail::elements_fn<N>;
+HAMON_INLINE_VAR HAMON_CONSTEXPR
+auto keys = elements<0>;
 
 HAMON_INLINE_VAR HAMON_CONSTEXPR
-auto keys = detail::elements_fn<0>{};
-
-HAMON_INLINE_VAR HAMON_CONSTEXPR
-auto values = detail::elements_fn<1>{};
+auto values = elements<1>;
 
 }	// inline namespace cpo
 
