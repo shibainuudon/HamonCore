@@ -32,27 +32,25 @@ using std::ranges::views::join_with;
 
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/detail/as_lvalue.hpp>
+#include <hamon/ranges/adaptors/detail/concatable.hpp>
 #include <hamon/ranges/adaptors/detail/non_propagating_cache.hpp>
 #include <hamon/ranges/adaptors/detail/range_adaptor.hpp>
-#include <hamon/ranges/factories/single_view.hpp>
 #include <hamon/ranges/begin.hpp>
-#include <hamon/ranges/end.hpp>
-#include <hamon/ranges/range_value_t.hpp>
-#include <hamon/ranges/range_reference_t.hpp>
-#include <hamon/ranges/range_rvalue_reference_t.hpp>
-#include <hamon/ranges/iterator_t.hpp>
-#include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/concepts/bidirectional_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
-#include <hamon/ranges/concepts/viewable_range.hpp>
-#include <hamon/ranges/utility/detail/simple_view.hpp>
-#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/forward_range.hpp>
+#include <hamon/ranges/concepts/input_range.hpp>
 #include <hamon/ranges/concepts/view.hpp>
+#include <hamon/ranges/concepts/viewable_range.hpp>
 #include <hamon/ranges/detail/maybe_const.hpp>
+#include <hamon/ranges/end.hpp>
+#include <hamon/ranges/factories/single_view.hpp>
+#include <hamon/ranges/iterator_t.hpp>
+#include <hamon/ranges/range_value_t.hpp>
+#include <hamon/ranges/range_reference_t.hpp>
+#include <hamon/ranges/sentinel_t.hpp>
+#include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
-#include <hamon/concepts/common_with.hpp>
-#include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
 #include <hamon/concepts/copy_constructible.hpp>
@@ -62,17 +60,17 @@ using std::ranges::views::join_with;
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/functional/bind_back.hpp>
+#include <hamon/iterator/bidirectional_iterator_tag.hpp>
+#include <hamon/iterator/concepts/forward_iterator.hpp>
+#include <hamon/iterator/concepts/indirectly_swappable.hpp>
+#include <hamon/iterator/concepts/sentinel_for.hpp>
+#include <hamon/iterator/forward_iterator_tag.hpp>
+#include <hamon/iterator/input_iterator_tag.hpp>
 #include <hamon/iterator/iterator_traits.hpp>
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/iter_rvalue_reference_t.hpp>
 #include <hamon/iterator/iter_value_t.hpp>
-#include <hamon/iterator/input_iterator_tag.hpp>
-#include <hamon/iterator/forward_iterator_tag.hpp>
-#include <hamon/iterator/bidirectional_iterator_tag.hpp>
-#include <hamon/iterator/concepts/forward_iterator.hpp>
-#include <hamon/iterator/concepts/indirectly_swappable.hpp>
-#include <hamon/iterator/concepts/sentinel_for.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
 #include <hamon/memory/addressof.hpp>
@@ -128,44 +126,6 @@ struct join_with_view_inner_iter_base<V, true>
 {
 };
 
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename R, typename P>
-HAMON_CONCEPT_OR_BOOL compatible_joinable_ranges =
-	hamon::common_with<
-		hamon::ranges::range_value_t<R>,
-		hamon::ranges::range_value_t<P>> &&
-	hamon::common_reference_with<
-		hamon::ranges::range_reference_t<R>,
-		hamon::ranges::range_reference_t<P>> &&
-	hamon::common_reference_with<
-		hamon::ranges::range_rvalue_reference_t<R>,
-		hamon::ranges::range_rvalue_reference_t<P>>;
-
-#else
-
-template <typename R, typename P, typename = void>
-struct compatible_joinable_ranges_impl
-	: public hamon::false_type {};
-
-template <typename R, typename P>
-struct compatible_joinable_ranges_impl<R, P, hamon::enable_if_t<
-	hamon::common_with<
-		hamon::ranges::range_value_t<R>,
-		hamon::ranges::range_value_t<P>> &&
-	hamon::common_reference_with<
-		hamon::ranges::range_reference_t<R>,
-		hamon::ranges::range_reference_t<P>> &&
-	hamon::common_reference_with<
-		hamon::ranges::range_rvalue_reference_t<R>,
-		hamon::ranges::range_rvalue_reference_t<P>>
->>	: public hamon::true_type {};
-
-template <typename R, typename P>
-HAMON_CONCEPT_OR_BOOL compatible_joinable_ranges = compatible_joinable_ranges_impl<R, P>::value;
-
-#endif
-
 template <typename R>
 HAMON_CONCEPT_OR_BOOL bidirectional_common =
 	hamon::ranges::bidirectional_range<R> && hamon::ranges::common_range<R>;
@@ -182,7 +142,7 @@ template <hamon::ranges::input_range V, hamon::ranges::forward_range Pattern>
 	requires hamon::ranges::view<V> &&
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>> &&
 		hamon::ranges::view<Pattern> &&
-		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>
+		hamon::ranges::detail::concatable<hamon::ranges::range_reference_t<V>, Pattern>
 #else
 template <typename V, typename Pattern,
 	typename = hamon::enable_if_t<
@@ -191,7 +151,7 @@ template <typename V, typename Pattern,
 		hamon::ranges::view<V> &&
 		hamon::ranges::input_range<hamon::ranges::range_reference_t<V>> &&
 		hamon::ranges::view<Pattern> &&
-		hamon::ranges::detail::compatible_joinable_ranges<hamon::ranges::range_reference_t<V>, Pattern>
+		hamon::ranges::detail::concatable<hamon::ranges::range_reference_t<V>, Pattern>
 	>>
 #endif
 class join_with_view : public hamon::ranges::view_interface<join_with_view<V, Pattern>>
@@ -877,7 +837,8 @@ public:
 			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::forward_range<Pattern const> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>> &&
+			hamon::ranges::detail::concatable<range_reference_t<V2>, Pattern const>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto begin() const
@@ -949,7 +910,8 @@ public:
 			hamon::ranges::forward_range<V2> &&
 			hamon::ranges::forward_range<Pattern const> &&
 			hamon::is_reference<hamon::ranges::range_reference_t<V2>>::value &&
-			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>>
+			hamon::ranges::input_range<hamon::ranges::range_reference_t<V2>> &&
+			hamon::ranges::detail::concatable<range_reference_t<V2>, Pattern const>
 		>>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 	auto end() const

@@ -25,6 +25,10 @@ using hamon::ranges::concat_view;
 #include <hamon/ranges/adaptors/detail/all_bidirectional.hpp>
 #include <hamon/ranges/adaptors/detail/all_forward.hpp>
 #include <hamon/ranges/adaptors/detail/all_random_access.hpp>
+#include <hamon/ranges/adaptors/detail/concatable.hpp>
+#include <hamon/ranges/adaptors/detail/concat_reference_t.hpp>
+#include <hamon/ranges/adaptors/detail/concat_rvalue_reference_t.hpp>
+#include <hamon/ranges/adaptors/detail/concat_value_t.hpp>
 #include <hamon/ranges/begin.hpp>
 #include <hamon/ranges/concepts/approximately_sized_range.hpp>
 #include <hamon/ranges/concepts/common_range.hpp>
@@ -39,7 +43,6 @@ using hamon::ranges::concat_view;
 #include <hamon/ranges/range_difference_t.hpp>
 #include <hamon/ranges/range_reference_t.hpp>
 #include <hamon/ranges/range_rvalue_reference_t.hpp>
-#include <hamon/ranges/range_value_t.hpp>
 #include <hamon/ranges/reserve_hint.hpp>
 #include <hamon/ranges/sentinel_t.hpp>
 #include <hamon/ranges/size.hpp>
@@ -47,6 +50,7 @@ using hamon::ranges::concat_view;
 #include <hamon/ranges/utility/detail/simple_view.hpp>
 #include <hamon/ranges/utility/view_interface.hpp>
 #include <hamon/compare/concepts/three_way_comparable.hpp>
+#include <hamon/compare/concepts/three_way_comparable_with.hpp>
 #include <hamon/concepts/common_reference_with.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/convertible_to.hpp>
@@ -67,12 +71,11 @@ using hamon::ranges::concat_view;
 #include <hamon/iterator/iter_difference_t.hpp>
 #include <hamon/iterator/iter_reference_t.hpp>
 #include <hamon/iterator/random_access_iterator_tag.hpp>
+#include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/iterator/ranges/iter_move.hpp>
 #include <hamon/iterator/ranges/iter_swap.hpp>
-#include <hamon/iterator/ranges/distance.hpp>
 #include <hamon/tuple.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/common_reference.hpp>
 #include <hamon/type_traits/common_type.hpp>
 #include <hamon/type_traits/conditional.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -96,139 +99,6 @@ namespace ranges {
 // 25.7.18.2 Class template concat_view[range.concat.view]
 
 namespace detail {
-
-template <typename... Rs>
-using concat_reference_t = hamon::common_reference_t<hamon::ranges::range_reference_t<Rs>...>;
-
-template <typename... Rs>
-using concat_value_t = hamon::common_type_t<hamon::ranges::range_value_t<Rs>...>;
-
-template <typename... Rs>
-using concat_rvalue_reference_t = hamon::common_reference_t<hamon::ranges::range_rvalue_reference_t<Rs>...>;
-
-// [range.concat.view]/1
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename Ref, typename RRef, typename It>
-HAMON_CONCEPT_OR_BOOL concat_indirectly_readable_impl =
-	requires (const It it)
-	{
-		{ *it } -> hamon::convertible_to<Ref>;
-		{ hamon::ranges::iter_move(it) } -> hamon::convertible_to<RRef>;
-	};
-
-template <typename... Rs>
-HAMON_CONCEPT_OR_BOOL concat_indirectly_readable =
-	hamon::common_reference_with<
-		hamon::ranges::detail::concat_reference_t<Rs...>&&,
-		hamon::ranges::detail::concat_value_t<Rs...>&> &&
-	hamon::common_reference_with<
-		hamon::ranges::detail::concat_reference_t<Rs...>&&,
-		hamon::ranges::detail::concat_rvalue_reference_t<Rs...>&&> &&
-	hamon::common_reference_with<
-		hamon::ranges::detail::concat_rvalue_reference_t<Rs...>&&,
-		hamon::ranges::detail::concat_value_t<Rs...> const&> &&
-	(concat_indirectly_readable_impl<
-		hamon::ranges::detail::concat_reference_t<Rs...>,
-		hamon::ranges::detail::concat_rvalue_reference_t<Rs...>,
-		hamon::ranges::iterator_t<Rs>> && ...);
-
-#else
-
-template <typename Ref, typename RRef, typename It>
-struct concat_indirectly_readable_impl
-{
-private:
-	template <typename Ref2, typename RRef2, typename It2,
-		typename D = decltype(*hamon::declval<const It2>()),
-		typename = hamon::enable_if_t<hamon::convertible_to<D, Ref2>>,
-		typename E = decltype(hamon::ranges::iter_move(hamon::declval<const It2>())),
-		typename = hamon::enable_if_t<hamon::convertible_to<E, RRef2>>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename...>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<Ref, RRef, It>(0));
-};
-
-template <typename... Rs>
-struct concat_indirectly_readable_impl2
-{
-private:
-	template <typename... R2s,
-		typename = hamon::enable_if_t<
-			hamon::common_reference_with<
-				hamon::ranges::detail::concat_reference_t<R2s...>&&,
-				hamon::ranges::detail::concat_value_t<R2s...>&> &&
-			hamon::common_reference_with<
-				hamon::ranges::detail::concat_reference_t<R2s...>&&,
-				hamon::ranges::detail::concat_rvalue_reference_t<R2s...>&&> &&
-			hamon::common_reference_with<
-				hamon::ranges::detail::concat_rvalue_reference_t<R2s...>&&,
-				hamon::ranges::detail::concat_value_t<R2s...> const&> &&
-			hamon::detail::all_v<concat_indirectly_readable_impl<
-				hamon::ranges::detail::concat_reference_t<R2s...>,
-				hamon::ranges::detail::concat_rvalue_reference_t<R2s...>,
-				hamon::ranges::iterator_t<R2s>>::type::value...>
-		>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename...>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<Rs...>(0));
-};
-
-template <typename... Rs>
-HAMON_CONCEPT_OR_BOOL concat_indirectly_readable =
-	concat_indirectly_readable_impl2<Rs...>::type::value;
-
-#endif
-
-// [range.concat.view]/2
-#if defined(HAMON_HAS_CXX20_CONCEPTS)
-
-template <typename... Rs>
-HAMON_CONCEPT_OR_BOOL concatable =
-	requires
-	{
-		typename hamon::ranges::detail::concat_reference_t<Rs...>;
-		typename hamon::ranges::detail::concat_value_t<Rs...>;
-		typename hamon::ranges::detail::concat_rvalue_reference_t<Rs...>;
-	} && hamon::ranges::detail::concat_indirectly_readable<Rs...>;
-
-#else
-
-template <typename... Rs>
-struct concatable_impl
-{
-private:
-	template <typename... R2s,
-		typename = hamon::ranges::detail::concat_reference_t<R2s...>,
-		typename = hamon::ranges::detail::concat_value_t<R2s...>,
-		typename = hamon::ranges::detail::concat_rvalue_reference_t<R2s...>,
-		typename = hamon::enable_if_t<
-			hamon::ranges::detail::concat_indirectly_readable<R2s...>
-		>
-	>
-	static auto test(int) -> hamon::true_type;
-
-	template <typename...>
-	static auto test(...) -> hamon::false_type;
-
-public:
-	using type = decltype(test<Rs...>(0));
-};
-
-template <typename... Rs>
-HAMON_CONCEPT_OR_BOOL concatable = concatable_impl<Rs...>::type::value;
-
-#endif
 
 template <typename R0, typename... Rs>
 struct all_but_last_common : public hamon::conjunction<
