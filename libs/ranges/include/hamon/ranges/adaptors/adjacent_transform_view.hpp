@@ -647,27 +647,28 @@ template <hamon::size_t N>
 struct adjacent_transform_fn
 {
 private:
-	template <typename R, typename F,
-		hamon::size_t N2 = N, typename = hamon::enable_if_t<N2 == 0>>
+	// [range.adjacent_transform.transform.overview]/2.1
+	template <typename R, typename F, typename = hamon::enable_if_t<
+		(N == 0) && hamon::ranges::forward_range<R>
+	>>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&&, F&& f, hamon::detail::overload_priority<1>)
-		// [range.adjacent_transform.transform.overview]/2.1
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			hamon::views::zip_transform(hamon::forward<F>(f)))
 
+	// [range.adjacent_transform.transform.overview]/2.2
 	template <typename R, typename F>
 	static HAMON_CXX11_CONSTEXPR auto
 	impl(R&& r, F&& f, hamon::detail::overload_priority<0>)
-		// [range.adjacent_transform.transform.overview]/2.2
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
 			hamon::ranges::adjacent_transform_view<hamon::views::all_t<R>, hamon::decay_t<F>, N>(
 				hamon::forward<R>(r), hamon::forward<F>(f)))
 
 public:
+	// [range.adjacent_transform.transform.overview]/2
 	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R), typename F>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR auto
 	operator()(R&& r, F&& f) const
-		// [range.adjacent_transform.transform.overview]/2
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(impl(
 			hamon::forward<R>(r),
 			hamon::forward<F>(f),

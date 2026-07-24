@@ -159,6 +159,17 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	return true;
 }
 
+// N == 0 && !forward_range
+HAMON_CXX14_CONSTEXPR bool test_LWG_4098()
+{
+	using CPO = decltype(hamon::views::adjacent_transform<0>);
+
+	static_assert(!hamon::is_invocable_v<CPO, test_input_view<int>, F0<int>>, "");
+	static_assert( hamon::is_invocable_v<CPO, test_forward_view<int>, F0<int>>, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, AdjacentTransformViewAdaptorTest)
@@ -167,6 +178,7 @@ GTEST_TEST(RangesTest, AdjacentTransformViewAdaptorTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test_LWG_4098());
 }
 
 }	// namespace adaptor_test
