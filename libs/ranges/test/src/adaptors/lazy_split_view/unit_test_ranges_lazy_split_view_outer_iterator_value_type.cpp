@@ -37,18 +37,12 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using RV = hamon::ranges::lazy_split_view<V, P>;
 		using I = hamon::ranges::iterator_t<RV>;
 		using ValueType = typename I::value_type;
-		static_assert(hamon::ranges::view<ValueType>, "");
-		static_assert(hamon::is_default_constructible<ValueType>::value, "");
-		static_assert(hamon::is_constructible<ValueType, I>::value, "");
+		static_assert( hamon::ranges::view<ValueType>, "");
+		static_assert(!hamon::is_default_constructible<ValueType>::value, "");
+		static_assert(!hamon::is_constructible<ValueType, I>::value, "");
 		static_assert(!hamon::is_constructible<ValueType, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<ValueType&>().begin()), typename RV::inner_iterator<true>>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<ValueType&>().end()), hamon::default_sentinel_t>::value, "");
-
-		ValueType v{};
-		auto first = v.begin();
-		auto last = v.end();
-		(void)first;
-		(void)last;
 	}
 	{
 		using V = test_input_view<int>;
@@ -56,18 +50,12 @@ HAMON_CXX14_CONSTEXPR bool test00()
 		using RV = hamon::ranges::lazy_split_view<V, P>;
 		using I = hamon::ranges::iterator_t<RV>;
 		using ValueType = typename I::value_type;
-		static_assert(hamon::ranges::view<ValueType>, "");
-		static_assert(hamon::is_default_constructible<ValueType>::value, "");
-		static_assert(hamon::is_constructible<ValueType, I>::value, "");
+		static_assert( hamon::ranges::view<ValueType>, "");
+		static_assert(!hamon::is_default_constructible<ValueType>::value, "");
+		static_assert(!hamon::is_constructible<ValueType, I>::value, "");
 		static_assert(!hamon::is_constructible<ValueType, int>::value, "");
 		//static_assert(hamon::is_same<decltype(hamon::declval<ValueType&>().begin()), typename RV::inner_iterator<false>>::value, "");
 		static_assert(hamon::is_same<decltype(hamon::declval<ValueType&>().end()), hamon::default_sentinel_t>::value, "");
-
-		ValueType v{};
-		auto first = v.begin();
-		auto last = v.end();
-		(void)first;
-		(void)last;
 	}
 	return true;
 }

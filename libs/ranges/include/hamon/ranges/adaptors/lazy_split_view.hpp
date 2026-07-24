@@ -262,10 +262,9 @@ private:
 		struct value_type : public hamon::ranges::view_interface<value_type>
 		{
 		private:
-			HAMON_NO_UNIQUE_ADDRESS outer_iterator m_i = outer_iterator();
+			friend outer_iterator;
 
-		public:
-			value_type() = default;
+			HAMON_NO_UNIQUE_ADDRESS outer_iterator m_i = outer_iterator();
 
 			HAMON_CXX11_CONSTEXPR explicit
 			value_type(outer_iterator i) HAMON_NOEXCEPT_IF(	// noexcept as an extension
@@ -274,6 +273,7 @@ private:
 				: m_i(hamon::move(i))
 			{}
 
+		public:
 			HAMON_NODISCARD HAMON_CXX11_CONSTEXPR	// nodiscard as an extension
 			inner_iterator<Const> begin() const
 			{
