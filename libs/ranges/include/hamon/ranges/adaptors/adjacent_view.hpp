@@ -786,25 +786,30 @@ namespace detail {
 template <hamon::size_t N>
 struct adjacent_fn : public hamon::ranges::range_adaptor_closure<adjacent_fn<N>>
 {
+private:
+	// [range.enumerate.overview]/2.1
+	template <typename R, typename = hamon::enable_if_t<
+		(N == 0) && hamon::ranges::forward_range<R>
+	>>
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(R&&, hamon::detail::overload_priority<1>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+			hamon::ranges::empty_view<hamon::tuple<>>{})
+
+	// [range.enumerate.overview]/2.2
+	template <typename R>
+	static HAMON_CXX11_CONSTEXPR auto
+	impl(R&& r, hamon::detail::overload_priority<0>)
+		HAMON_NOEXCEPT_DECLTYPE_RETURN(
+			hamon::ranges::adjacent_view<hamon::views::all_t<R>, N>{hamon::forward<R>(r)})
+
+public:
 	// [range.enumerate.overview]/2
 	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
 	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
 	auto operator()(R&& r) const
-		// [range.enumerate.overview]/2.2
 		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			hamon::ranges::adjacent_view<hamon::views::all_t<R>, N>{hamon::forward<R>(r)})
-};
-
-template <>
-struct adjacent_fn<0> : public hamon::ranges::range_adaptor_closure<adjacent_fn<0>>
-{
-	// [range.enumerate.overview]/2
-	template <HAMON_CONSTRAINT(hamon::ranges::viewable_range, R)>
-	HAMON_NODISCARD HAMON_CXX11_CONSTEXPR
-	auto operator()(R&&) const
-		// [range.enumerate.overview]/2.1
-		HAMON_NOEXCEPT_DECLTYPE_RETURN(
-			hamon::ranges::empty_view<hamon::tuple<>>{})
+			impl(hamon::forward<R>(r), hamon::detail::overload_priority<1>{}))
 };
 
 } // namespace detail

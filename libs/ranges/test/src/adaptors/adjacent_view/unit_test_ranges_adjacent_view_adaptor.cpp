@@ -8,6 +8,7 @@
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/factories/empty_view.hpp>
 #include <hamon/algorithm/ranges/equal.hpp>
+#include <hamon/type_traits/is_invocable.hpp>
 #include <hamon/type_traits/is_same.hpp>
 #include <hamon/tuple.hpp>
 #include <gtest/gtest.h>
@@ -148,6 +149,17 @@ HAMON_CXX14_CONSTEXPR bool test03()
 	return true;
 }
 
+// N == 0 && !forward_range
+HAMON_CXX14_CONSTEXPR bool test_LWG_4098()
+{
+	using CPO = decltype(hamon::views::adjacent<0>);
+
+	static_assert(!hamon::is_invocable_v<CPO, test_input_view<int>>, "");
+	static_assert( hamon::is_invocable_v<CPO, test_forward_view<int>>, "");
+
+	return true;
+}
+
 #undef VERIFY
 
 GTEST_TEST(RangesTest, AdjacentViewAdaptorTest)
@@ -156,6 +168,7 @@ GTEST_TEST(RangesTest, AdjacentViewAdaptorTest)
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test01());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test02());
 	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test03());
+	HAMON_CXX14_CONSTEXPR_EXPECT_TRUE(test_LWG_4098());
 }
 
 }	// namespace adaptor_test
