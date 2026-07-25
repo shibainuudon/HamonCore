@@ -19,12 +19,13 @@
 #include <hamon/concepts/movable.hpp>
 #include <hamon/concepts/constructible_from.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
+#include <hamon/detail/overload_priority.hpp>
+#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/type_traits/is_object.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
-#include <hamon/type_traits/enable_if.hpp>
 #include <hamon/memory/addressof.hpp>
 #include <hamon/memory/construct_at.hpp>
 #include <hamon/utility/in_place_t.hpp>
@@ -164,42 +165,59 @@ public:
 
 	movable_box(movable_box const&) = default;
 	movable_box(movable_box&&) = default;
-	
-	movable_box& operator=(movable_box const&)
-//		requires hamon::copyable<T>	// TODO
-	= default;
-	
-	movable_box& operator=(movable_box&&)
-//		requires hamon::movable<T>	// TODO
-	= default;
 
-#if 0	// TODO
-	HAMON_CXX14_CONSTEXPR movable_box&
-	operator=(movable_box const& that) HAMON_NOEXCEPT
-		requires (!hamon::copyable<T>) && hamon::copy_constructible<T>
+private:
+	template <typename U = T, hamon::enable_if_t<hamon::copyable<U>>>
+	HAMON_CXX14_CONSTEXPR
+	void copy_assign(movable_box const& that, hamon::detail::overload_priority<1>)
 	{
-		static_assert(hamon::is_nothrow_copy_constructible<T>::value);
+		m_value = that.m_value;
+	}
+
+	template <typename U = T, hamon::enable_if_t<hamon::copy_constructible<U>>>
+	HAMON_CXX14_CONSTEXPR
+	void copy_assign(movable_box const& that, hamon::detail::overload_priority<0>)
+	{
+		static_assert(hamon::is_nothrow_copy_constructible<T>::value, "");
 		if (this != hamon::addressof(that))
 		{
 			m_value.~T();
 			hamon::construct_at(hamon::addressof(m_value), *that);
 		}
-		return *this;
 	}
 
-	HAMON_CXX14_CONSTEXPR movable_box&
-	operator=(movable_box&& that) HAMON_NOEXCEPT
-		requires (!hamon::movable<T>)
+	template <typename U = T, hamon::enable_if_t<hamon::movable<U>>>
+	HAMON_CXX14_CONSTEXPR
+	void move_assign(movable_box&& that, hamon::detail::overload_priority<1>)
 	{
-		static_assert(hamon::is_nothrow_move_constructible<T>::value);
+		m_value = hamon::move(that.m_value);
+	}
+
+	HAMON_CXX14_CONSTEXPR
+	void move_assign(movable_box&& that, hamon::detail::overload_priority<0>)
+	{
+		static_assert(hamon::is_nothrow_move_constructible<T>::value, "");
 		if (this != hamon::addressof(that))
 		{
 			m_value.~T();
 			hamon::construct_at(hamon::addressof(m_value), hamon::move(*that));
 		}
+	}
+
+public:
+	HAMON_CXX14_CONSTEXPR movable_box&
+	operator=(movable_box const& that) HAMON_NOEXCEPT
+	{
+		this->copy_assign(that, hamon::detail::overload_priority<1>{});
 		return *this;
 	}
-#endif
+
+	HAMON_CXX14_CONSTEXPR movable_box&
+	operator=(movable_box&& that) HAMON_NOEXCEPT
+	{
+		this->move_assign(that, hamon::detail::overload_priority<1>{});
+		return *this;
+	}
 
 	HAMON_CXX11_CONSTEXPR bool
 	has_value() const HAMON_NOEXCEPT

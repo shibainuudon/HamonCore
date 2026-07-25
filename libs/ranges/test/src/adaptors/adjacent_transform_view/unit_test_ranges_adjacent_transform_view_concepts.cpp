@@ -5,7 +5,9 @@
  */
 
 #include <hamon/ranges/adaptors/adjacent_transform_view.hpp>
+#include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/concepts.hpp>
+#include <hamon/concepts.hpp>
 #include <gtest/gtest.h>
 #include "ranges_test.hpp"
 
@@ -23,6 +25,14 @@ struct F
 
 GTEST_TEST(RangesTest, AdjacentTransformViewConceptsTest)
 {
+	{
+		using R = int[10];
+		using V = hamon::views::all_t<R&>;
+		auto l = [&](int, int) { return 0; };
+		using L = decltype(l);
+		using AV = hamon::ranges::adjacent_transform_view<V, L, 2>;
+		static_assert( hamon::copyable<AV>, "");
+	}
 	{
 		using T = int;
 		using V = test_forward_view<T>;
