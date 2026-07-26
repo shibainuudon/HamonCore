@@ -28,7 +28,6 @@ struct non_propagating_cache : public hamon::optional<T>
 {
 	using base_type = hamon::optional<T>;
 	using base_type::base_type;
-	using base_type::operator=;
 
 	HAMON_CXX14_CONSTEXPR
 	non_propagating_cache() noexcept {}
@@ -63,6 +62,13 @@ struct non_propagating_cache : public hamon::optional<T>
 	{
 		this->reset();
 		other.reset();
+		return *this;
+	}
+
+	HAMON_CXX14_CONSTEXPR non_propagating_cache&
+	operator=(T val)
+	{
+		this->emplace(hamon::move(val));
 		return *this;
 	}
 
