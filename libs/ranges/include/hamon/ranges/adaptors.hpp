@@ -13,6 +13,7 @@
 #include <hamon/ranges/adaptors/adjacent_view.hpp>
 #include <hamon/ranges/adaptors/all.hpp>
 #include <hamon/ranges/adaptors/as_const_view.hpp>
+#include <hamon/ranges/adaptors/as_input_view.hpp>
 #include <hamon/ranges/adaptors/as_rvalue_view.hpp>
 #include <hamon/ranges/adaptors/cache_latest_view.hpp>
 #include <hamon/ranges/adaptors/cartesian_product_view.hpp>
