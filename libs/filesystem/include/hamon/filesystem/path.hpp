@@ -26,12 +26,14 @@ using std::filesystem::path;
 #else
 
 #include <hamon/compare/strong_ordering.hpp>
+#include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/memory/allocator.hpp>
+#include <hamon/memory/detail/simple_allocator.hpp>
 #include <hamon/string.hpp>
 #include <hamon/string_view.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/config.hpp>
-#include <locale>
+//#include <locale>
 #include <ostream>
 #include <istream>
 
@@ -42,11 +44,17 @@ namespace hamon
 namespace filesystem
 {
 
+// Source -> specialization of basic_string or basic_string_view, or
+// iterator_traits<decay_t<Source>>::value_type is valid and denotes a possibly const encoded character type
+
 namespace detail
 {
 
 // 31.12.3 Requirements[fs.req]
 
+// [fs.req]/1
+// Throughout subclause [filesystems], char, wchar_t, char8_t, char16_t, and char32_t are
+// collectively called encoded character types.
 template <typename>
 struct is_encoded_character : hamon::false_type {};
 
@@ -67,13 +75,29 @@ template <>
 struct is_encoded_character<char32_t> : hamon::true_type {};
 #endif
 
+// [fs.req]/3
+// Functions with template parameters named EcharT shall not participate in overload resolution unless
+// EcharT is one of the encoded character types.
+template <typename EcharT>
+HAMON_CONCEPT_OR_BOOL encoded_character =
+	is_encoded_character<EcharT>::value;
+
+// [fs.req]/3
+// Template parameters named InputIterator shall meet the Cpp17InputIterator requirements ([input.iterators]) and
+// shall have a value type that is one of the encoded character types.
+template <typename InputIterator>
+HAMON_CONCEPT_OR_BOOL encoded_character_iterator =
+	hamon::detail::cpp17_input_iterator<InputIterator> &&
+	encoded_character<hamon::iter_value_t<InputIterator>>;
+
 // 31.12.6.4 Requirements[fs.path.req]
 
-template <typename>
-struct is_source : hamon::false_type {};
-
-template <typename ECharT, hamon::size_t N>
-struct is_source<ECharT[N]> : hamon::true_type {};
+// [fs.path.req]/2
+template <typename Source>
+HAMON_CONCEPT_OR_BOOL is_source =
+	hamon::detail::is_specialization_of_basic_string<Source>::value ||
+	hamon::detail::is_specialization_of_basic_string_view<Source>::value ||
+	encoded_character<typename hamon::iterator_traits<hamon::decay_t<Source>>::value_type>;
 
 }	// namespace detail
 
@@ -102,57 +126,81 @@ public:
 	// [fs.path.construct], constructors and destructor
 	path() noexcept {}
 
-	path(path const& p) : __pn_(p.__pn_) {}
+	path(path const& p)
+		: __pn_(p.__pn_)
+	{}
 
-	path(path&& p) noexcept : __pn_(hamon::move(p.__pn_)) {}
+	path(path&& p) noexcept
+		: __pn_(hamon::move(p.__pn_))
+	{}
 
-	path(string_type&& source, format /*fmt*/ = auto_format) : __pn_(hamon::move(source)) {}
+	path(string_type&& source, format /*fmt*/ = auto_format)
+		: __pn_(hamon::move(source))
+	{}
 
-	template <typename Source, typename = hamon::enable_if_t<hamon::filesystem::detail::is_source<Source>::value>>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path(Source const& source, format /*fmt*/ = auto_format)
 	{
 		(void)source;
 	}
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINT(detail::encoded_character_iterator, InputIterator)>
 	path(InputIterator first, InputIterator last, format fmt = auto_format);
 
-	template <typename Source>
+#if 0
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path(Source const& source, std::locale const& loc, format fmt = auto_format);
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINT(detail::encoded_character_iterator, InputIterator)>
 	path(InputIterator first, InputIterator last, std::locale const& loc, format fmt = auto_format);
+#endif
 
 	~path() {}
 
 	// [fs.path.assign], assignments
-	path& operator=(path const& p);
+	path& operator=(path const& p)
+	{
+		__pn_ = p.__pn_;
+		return *this;
+	}
 
-	path& operator=(path&& p) noexcept;
+	path& operator=(path&& p) noexcept
+	{
+		__pn_ = std::move(p.__pn_);
+		return *this;
+	}
 
-	path& operator=(string_type&& source);
+	path& operator=(string_type&& source)
+	{
+		__pn_ = std::move(source);
+		return *this;
+	}
 
-	path& assign(string_type&& source);
+	path& assign(string_type&& source)
+	{
+		__pn_ = std::move(source);
+		return *this;
+	}
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& operator=(Source const& source);
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& assign(Source const& source);
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINT(detail::encoded_character_iterator, InputIterator)>
 	path& assign(InputIterator first, InputIterator last);
 
 	// [fs.path.append], appends
 	path& operator/=(path const& p);
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& operator/=(Source const& source);
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& append(Source const& source);
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINT(detail::encoded_character_iterator, InputIterator)>
 	path& append(InputIterator first, InputIterator last);
 
 	// [fs.path.concat], concatenation
@@ -166,16 +214,16 @@ public:
 
 	path& operator+=(value_type x);
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& operator+=(Source const& x);
 
-	template <typename EcharT>
+	template <HAMON_CONSTRAINT(detail::encoded_character, EcharT)>
 	path& operator+=(EcharT x);
 
-	template <typename Source>
+	template <HAMON_CONSTRAINT(detail::is_source, Source)>
 	path& concat(Source const& x);
 
-	template <typename InputIterator>
+	template <HAMON_CONSTRAINT(detail::encoded_character_iterator, InputIterator)>
 	path& concat(InputIterator first, InputIterator last);
 
 	// [fs.path.modifiers], modifiers
@@ -207,16 +255,35 @@ public:
 		return __pn_;
 	}
 
-	value_type const* c_str() const noexcept;
+	value_type const* c_str() const noexcept
+	{
+		// [fs.path.native.obs]/3
+		return native().c_str();
+	}
 
-	operator string_type() const;
+	operator string_type() const
+	{
+		// [fs.path.native.obs]/4
+		return native();
+	}
 
 	template <
 		typename EcharT,
 		typename traits = hamon::char_traits<EcharT>,
-		typename Allocator = hamon::allocator<EcharT>>
+		typename Allocator = hamon::allocator<EcharT>,
+		typename = hamon::enable_if_t<
+			detail::encoded_character<EcharT> &&
+			hamon::detail::simple_allocator<Allocator>
+		>
+	>
 	hamon::basic_string<EcharT, traits, Allocator>
-	string(Allocator const& a = Allocator()) const;
+	string(Allocator const& a = Allocator()) const
+	{
+		hamon::basic_string<EcharT, traits, Allocator> s(a);
+		s.reserve(__pn_.size());
+		//PathExport<ECharT>::append(s, __pn_);
+		return s;
+	}
 
 	hamon::string display_string() const;
 
@@ -238,7 +305,12 @@ public:
 	template <
 		typename EcharT,
 		typename traits = hamon::char_traits<EcharT>,
-		typename Allocator = hamon::allocator<EcharT>>
+		typename Allocator = hamon::allocator<EcharT>,
+		typename = hamon::enable_if_t<
+			detail::encoded_character<EcharT> &&
+			hamon::detail::simple_allocator<Allocator>
+		>
+	>
 	hamon::basic_string<EcharT, traits, Allocator>
 	generic_string(Allocator const& a = Allocator()) const;
 
