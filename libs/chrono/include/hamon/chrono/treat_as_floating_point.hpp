@@ -39,7 +39,8 @@ struct treat_as_floating_point
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
 template <typename Rep>
-constexpr bool treat_as_floating_point_v = treat_as_floating_point<Rep>::value;
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool treat_as_floating_point_v = treat_as_floating_point<Rep>::value;
 
 #endif
 
