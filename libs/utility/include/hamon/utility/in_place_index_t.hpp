@@ -37,7 +37,8 @@ struct in_place_index_t
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
 template <hamon::size_t I>
-HAMON_STATIC_CONSTEXPR hamon::in_place_index_t<I> in_place_index{};
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+hamon::in_place_index_t<I> in_place_index{};
 
 #endif	// defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
