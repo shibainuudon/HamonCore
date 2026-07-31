@@ -36,7 +36,8 @@ struct in_place_type_t
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
 template <typename T>
-HAMON_STATIC_CONSTEXPR hamon::in_place_type_t<T> in_place_type{};
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+hamon::in_place_type_t<T> in_place_type{};
 
 #endif	// defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
