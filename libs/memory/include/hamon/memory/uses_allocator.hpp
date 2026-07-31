@@ -21,7 +21,8 @@ struct uses_allocator : public std::uses_allocator<T, Alloc> {};
 
 // [allocator.uses.trait], uses_allocator
 template <typename T, typename Alloc>
-constexpr bool uses_allocator_v = uses_allocator<T, Alloc>::value;
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool uses_allocator_v = uses_allocator<T, Alloc>::value;
 
 #endif
 
