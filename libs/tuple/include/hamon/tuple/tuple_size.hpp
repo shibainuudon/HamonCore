@@ -19,7 +19,8 @@ using std::tuple_size;
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
 template <typename T>
-constexpr hamon::size_t tuple_size_v = tuple_size<T>::value;
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+hamon::size_t tuple_size_v = tuple_size<T>::value;
 
 #endif
 
