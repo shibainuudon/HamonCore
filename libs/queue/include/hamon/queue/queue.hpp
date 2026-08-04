@@ -37,6 +37,7 @@
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -52,6 +53,10 @@ namespace detail { struct queue_access; }
 template <typename T, typename Container /*= deque<T>*/>
 class queue
 {
+private:
+	// [container.adaptors.general]/2
+	static_assert(hamon::is_same<T, typename Container::value_type>::value, "");
+
 public:
 	using value_type      = typename Container::value_type;
 	using reference       = typename Container::reference;
