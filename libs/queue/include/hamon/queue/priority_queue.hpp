@@ -37,6 +37,7 @@
 #include <hamon/type_traits/is_nothrow_copy_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_default_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_swappable.hpp>
+#include <hamon/type_traits/is_same.hpp>
 #include <hamon/type_traits/is_swappable.hpp>
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
@@ -55,6 +56,10 @@ template <
 	typename Compare/* = less<typename Container::value_type>*/>
 class priority_queue
 {
+private:
+	// [container.adaptors.general]/2
+	static_assert(hamon::is_same<T, typename Container::value_type>::value, "");
+
 public:
 	using value_type      = typename Container::value_type;
 	using reference       = typename Container::reference;
