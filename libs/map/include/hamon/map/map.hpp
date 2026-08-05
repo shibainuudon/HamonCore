@@ -146,7 +146,10 @@ public:
 	// [map.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
 	map() : map(Compare())
-	{}
+	{
+		// [associative.reqmts.general]/20
+		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
+	}
 
 	explicit HAMON_CXX11_CONSTEXPR
 	map(Compare const& comp, Allocator const& a = Allocator())

@@ -140,7 +140,10 @@ public:
 	// [multimap.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
 	multimap() : multimap(Compare())
-	{}
+	{
+		// [associative.reqmts.general]/20
+		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
+	}
 
 	explicit HAMON_CXX11_CONSTEXPR
 	multimap(Compare const& comp, Allocator const& a = Allocator())

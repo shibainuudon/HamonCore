@@ -114,7 +114,10 @@ public:
 	// [multiset.cons], construct/copy/destroy
 	HAMON_CXX11_CONSTEXPR
 	multiset() : multiset(Compare())
-	{}
+	{
+		// [associative.reqmts.general]/20
+		static_assert(hamon::detail::cpp17_default_constructible<key_compare>, "");
+	}
 
 	explicit HAMON_CXX11_CONSTEXPR
 	multiset(Compare const& comp, Allocator const& a = Allocator())
