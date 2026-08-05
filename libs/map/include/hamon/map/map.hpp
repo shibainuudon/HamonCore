@@ -27,6 +27,7 @@
 #include <hamon/container/detail/has_is_transparent.hpp>
 #include <hamon/container/detail/cpp17_copy_insertable.hpp>
 #include <hamon/container/detail/cpp17_emplace_constructible.hpp>
+#include <hamon/container/detail/cpp17_erasable.hpp>
 #include <hamon/container/detail/cpp17_move_insertable.hpp>
 
 #include <hamon/algorithm/equal.hpp>
@@ -96,7 +97,10 @@ public:
 	using size_type              = typename hamon::allocator_traits<Allocator>::size_type;
 	using difference_type        = typename hamon::allocator_traits<Allocator>::difference_type;
 
+private:
 	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
+
+	static_assert(hamon::detail::cpp17_erasable<value_type, allocator_type>, "[associative.reqmts.general]/13");
 
 public:
 	class value_compare
