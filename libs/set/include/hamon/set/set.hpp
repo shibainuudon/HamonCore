@@ -668,6 +668,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(set<Key, C2, Allocator>& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		m_impl.merge(source.m_impl);
 	}
 
@@ -675,6 +678,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(set<Key, C2, Allocator>&& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		this->merge(source);
 	}
 
@@ -682,6 +688,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(multiset<Key, C2, Allocator>& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		m_impl.merge(source.m_impl);
 	}
 
@@ -689,6 +698,9 @@ public:
 	HAMON_CXX14_CONSTEXPR
 	void merge(multiset<Key, C2, Allocator>&& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		this->merge(source);
 	}
 

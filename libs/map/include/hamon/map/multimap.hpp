@@ -674,6 +674,9 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR void
 	merge(multimap<Key, T, C2, Allocator>& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		m_impl.merge(source.m_impl);
 	}
 
@@ -681,6 +684,9 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR void
 	merge(multimap<Key, T, C2, Allocator>&& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		this->merge(source);
 	}
 
@@ -688,6 +694,9 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR void
 	merge(map<Key, T, C2, Allocator>& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		m_impl.merge(source.m_impl);
 	}
 
@@ -695,6 +704,9 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR void
 	merge(map<Key, T, C2, Allocator>&& source)
 	{
+		// [associative.reqmts.general]/113
+		HAMON_ASSERT(this->get_allocator() == source.get_allocator());
+
 		this->merge(source);
 	}
 
