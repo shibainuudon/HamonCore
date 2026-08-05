@@ -63,6 +63,7 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
 
@@ -546,12 +547,18 @@ HAMON_WARNING_POP()
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(node_type&& nh)
 	{
+		// [associative.reqmts.general]/90
+		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+
 		return m_impl.insert_node(hamon::detail::node_handle_access::release(nh)).first;
 	}
 
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, node_type&& nh)
 	{
+		// [associative.reqmts.general]/95
+		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+
 		return m_impl.insert_node_hint(hint, hamon::detail::node_handle_access::release(nh)).first;
 	}
 

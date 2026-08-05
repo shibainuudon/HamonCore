@@ -64,6 +64,7 @@
 #include <hamon/utility/forward.hpp>
 #include <hamon/utility/move.hpp>
 #include <hamon/utility/swap.hpp>
+#include <hamon/assert.hpp>
 #include <hamon/config.hpp>
 #include <initializer_list>
 
@@ -572,6 +573,9 @@ public:
 	HAMON_CXX14_CONSTEXPR insert_return_type
 	insert(node_type&& nh)
 	{
+		// [associative.reqmts.general]/85
+		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+
 		auto r = m_impl.insert_node(hamon::detail::node_handle_access::ptr(nh));
 		if (r.second)
 		{
@@ -583,6 +587,9 @@ public:
 	HAMON_CXX14_CONSTEXPR iterator
 	insert(const_iterator hint, node_type&& nh)
 	{
+		// [associative.reqmts.general]/95
+		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+
 		auto r = m_impl.insert_node_hint(hint, hamon::detail::node_handle_access::ptr(nh));
 		if (r.second)
 		{
