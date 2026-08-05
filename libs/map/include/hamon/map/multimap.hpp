@@ -36,6 +36,7 @@
 #include <hamon/compare/detail/synth_three_way.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/concepts/detail/cpp17_copy_assignable.hpp>
+#include <hamon/concepts/detail/cpp17_copy_constructible.hpp>
 #include <hamon/concepts/detail/cpp17_default_constructible.hpp>
 #include <hamon/functional/less.hpp>
 #include <hamon/iterator/detail/cpp17_input_iterator.hpp>
@@ -96,6 +97,7 @@ private:
 	static_assert(hamon::is_same<typename allocator_type::value_type, value_type>::value, "[container.alloc.reqmts]/5");
 
 	static_assert(hamon::detail::cpp17_erasable<value_type, allocator_type>, "[associative.reqmts.general]/13");
+	static_assert(hamon::detail::cpp17_copy_constructible<key_compare>, "[associative.reqmts.general]/15");
 
 public:
 	class value_compare
