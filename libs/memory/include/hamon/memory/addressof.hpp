@@ -44,6 +44,10 @@ HAMON_CONSTEXPR T* addressof(T& r) HAMON_NOEXCEPT
 	return detail::addressof_impl<hamon::remove_cv_t<T>>::get(r);
 }
 
+// [specialized.addressof], addressof
+template <typename T>
+const T* addressof(const T&&) = delete;
+
 }	// namespace hamon
 
 #endif

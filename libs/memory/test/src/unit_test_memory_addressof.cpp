@@ -5,6 +5,9 @@
  */
 
 #include <hamon/memory/addressof.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/void_t.hpp>
+#include <hamon/utility/declval.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -60,6 +63,22 @@ HAMON_CONSTEXPR int func(C const*)
 {
 	return 3;
 }
+
+template <typename T, typename U, typename = void>
+struct is_invocable_addressof
+	: public hamon::false_type {};
+
+template <typename T, typename U>
+struct is_invocable_addressof<T, U, hamon::void_t<decltype(hamon::addressof<T>(hamon::declval<U>()))>>
+	: public hamon::true_type {};
+
+// LWG2598
+static_assert( is_invocable_addressof<int, int&>::value, "");
+static_assert(!is_invocable_addressof<int, int&&>::value, "");
+static_assert(!is_invocable_addressof<int, int>::value, "");
+static_assert( is_invocable_addressof<int const, int const&>::value, "");
+static_assert(!is_invocable_addressof<int const, int const&&>::value, "");
+static_assert(!is_invocable_addressof<int const, int const>::value, "");
 
 GTEST_TEST(MemoryTest, AddressofTest)
 {
