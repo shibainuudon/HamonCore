@@ -680,11 +680,26 @@ public:
 		return this->extract(it);
 	}
 
+private:
+	HAMON_CXX14_CONSTEXPR bool
+	empty_or_same_allocator(node_type const& nh)
+	{
+#if defined(HAMON_MSVC)
+		(void)nh;
+		return true;
+		// MSVC では下記のように書くとnh.empty()のときにショートサーキットされず、
+		// 無効なoptionalの値を参照してしまうためconstexprにすることができない。
+#else
+		return nh.empty() || (this->get_allocator() == nh.get_allocator());
+#endif
+	}
+
+public:
 	HAMON_CXX14_CONSTEXPR insert_return_type
 	insert(node_type&& nh)
 	{
 		// [associative.reqmts.general]/85
-		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+		HAMON_ASSERT(empty_or_same_allocator(nh));
 
 		auto r = m_impl.insert_node(hamon::detail::node_handle_access::ptr(nh));
 		if (r.second)
@@ -698,7 +713,7 @@ public:
 	insert(const_iterator hint, node_type&& nh)
 	{
 		// [associative.reqmts.general]/95
-		HAMON_ASSERT((nh.empty() || (this->get_allocator() == nh.get_allocator())));
+		HAMON_ASSERT(empty_or_same_allocator(nh));
 
 		auto r = m_impl.insert_node_hint(hint, hamon::detail::node_handle_access::ptr(nh));
 		if (r.second)
