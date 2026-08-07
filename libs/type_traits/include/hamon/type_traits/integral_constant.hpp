@@ -7,23 +7,12 @@
 #ifndef HAMON_TYPE_TRAITS_INTEGRAL_CONSTANT_HPP
 #define HAMON_TYPE_TRAITS_INTEGRAL_CONSTANT_HPP
 
-#include <type_traits>
-
-#if defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::integral_constant;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.4 Helper classes[meta.help]
 
 /**
  *	@brief	整数定数
@@ -53,7 +42,5 @@ constexpr T integral_constant<T, v>::value;
 #endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_INTEGRAL_CONSTANT_HPP
