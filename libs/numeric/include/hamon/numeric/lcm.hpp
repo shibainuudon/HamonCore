@@ -24,6 +24,8 @@ using std::lcm;
 #include <hamon/concepts/integral.hpp>
 #include <hamon/concepts/detail/constraint.hpp>
 #include <hamon/type_traits/common_type.hpp>
+#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/cmath/abs.hpp>
 #include <hamon/config.hpp>
 
@@ -50,6 +52,10 @@ HAMON_CONSTEXPR hamon::common_type_t<M, N>
 lcm(M m, N n)
 HAMON_NOEXCEPT
 {
+	// [numeric.ops.lcm]/1
+	static_assert(!hamon::is_same_v<hamon::remove_cv_t<M>, bool>, "");
+	static_assert(!hamon::is_same_v<hamon::remove_cv_t<N>, bool>, "");
+
 	return
 		(m == 0 || n == 0) ?
 			0 :
