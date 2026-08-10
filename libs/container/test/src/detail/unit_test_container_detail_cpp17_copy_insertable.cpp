@@ -40,11 +40,9 @@ struct S3
 	S3(S3 &&);
 };
 
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_copy_insertable<S0, hamon::allocator<S0>>, "");
 static_assert(!hamon::detail::cpp17_copy_insertable<S1, hamon::allocator<S1>>, "");
 static_assert(!hamon::detail::cpp17_copy_insertable<S2, hamon::allocator<S2>>, "");
-#endif
 static_assert( hamon::detail::cpp17_copy_insertable<S3, hamon::allocator<S3>>, "");
 
 }	// namespace cpp17_copy_insertable_test

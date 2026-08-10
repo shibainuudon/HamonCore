@@ -310,7 +310,6 @@ GTEST_TEST(MemoryTest, AllocatorTraitsTest)
 	static_assert(hamon::is_same<Traits1::size_type, hamon::size_t>::value, "");
 	static_assert(hamon::is_same<Traits2::size_type, unsigned int>::value, "");
 
-#if 0	// TODO
 	// propagate_on_container_copy_assignment
 	static_assert(hamon::is_same<Traits1::propagate_on_container_copy_assignment, hamon::false_type>::value, "");
 	static_assert(hamon::is_same<Traits2::propagate_on_container_copy_assignment, hamon::true_type>::value, "");
@@ -326,7 +325,6 @@ GTEST_TEST(MemoryTest, AllocatorTraitsTest)
 	// is_always_equal
 	static_assert(hamon::is_same<Traits1::is_always_equal, hamon::true_type>::value, "");
 	static_assert(hamon::is_same<Traits2::is_always_equal, hamon::false_type>::value, "");
-#endif
 
 	// rebind_alloc
 	static_assert(hamon::is_same<Traits1::template rebind_alloc<float>, MyAllocator1>::value, "");

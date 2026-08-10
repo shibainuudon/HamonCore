@@ -7,19 +7,6 @@
 #ifndef HAMON_MEMORY_ALLOCATOR_TRAITS_HPP
 #define HAMON_MEMORY_ALLOCATOR_TRAITS_HPP
 
-#include <hamon/memory/config.hpp>
-
-#if defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
-
-namespace hamon
-{
-
-using std::allocator_traits;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/detail/overload_priority.hpp>
 #include <hamon/memory/allocation_result.hpp>
 #include <hamon/memory/construct_at.hpp>
@@ -421,7 +408,5 @@ public:
 }	// namespace hamon
 
 HAMON_WARNING_POP()
-
-#endif
 
 #endif // HAMON_MEMORY_ALLOCATOR_TRAITS_HPP

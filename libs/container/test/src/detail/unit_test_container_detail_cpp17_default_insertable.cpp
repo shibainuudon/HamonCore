@@ -30,9 +30,7 @@ struct S1
 	S1(S1 &&) = delete;
 };
 
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_default_insertable<S0, hamon::allocator<S0>>, "");
-#endif
 static_assert( hamon::detail::cpp17_default_insertable<S1, hamon::allocator<S1>>, "");
 
 }	// namespace cpp17_default_insertable_test

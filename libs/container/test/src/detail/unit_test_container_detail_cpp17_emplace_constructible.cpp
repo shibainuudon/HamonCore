@@ -17,9 +17,7 @@ namespace cpp17_emplace_constructible_test
 
 static_assert( hamon::detail::cpp17_emplace_constructible<int, hamon::allocator<int>>, "");
 static_assert( hamon::detail::cpp17_emplace_constructible<int, hamon::allocator<int>, int>, "");
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_emplace_constructible<int, hamon::allocator<int>, int, int>, "");
-#endif
 
 struct S1
 {
@@ -27,10 +25,8 @@ struct S1
 };
 
 static_assert( hamon::detail::cpp17_emplace_constructible<S1, hamon::allocator<S1>, int>, "");
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_emplace_constructible<S1, hamon::allocator<S1>>, "");
 static_assert(!hamon::detail::cpp17_emplace_constructible<S1, hamon::allocator<S1>, int, int>, "");
-#endif
 
 struct S2
 {
@@ -38,10 +34,8 @@ struct S2
 };
 
 static_assert( hamon::detail::cpp17_emplace_constructible<S2, hamon::allocator<S2>, int, int>, "");
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_emplace_constructible<S2, hamon::allocator<S2>>, "");
 static_assert(!hamon::detail::cpp17_emplace_constructible<S2, hamon::allocator<S2>, int>, "");
-#endif
 
 using P = hamon::pair<int, S2>;
 
@@ -58,9 +52,7 @@ struct S3
 };
 
 static_assert( hamon::detail::cpp17_emplace_constructible<S3, hamon::allocator<S3>, S3 const&>, "");
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_emplace_constructible<S3, hamon::allocator<S3>, S3 &&>, "");
-#endif
 
 struct S4
 {
@@ -68,9 +60,7 @@ struct S4
 	S4(S4 &&);
 };
 
-#if !defined(HAMON_USE_STD_ALLOCATOR_TRAITS)
 static_assert(!hamon::detail::cpp17_emplace_constructible<S4, hamon::allocator<S4>, S4 const&>, "");
-#endif
 static_assert( hamon::detail::cpp17_emplace_constructible<S4, hamon::allocator<S4>, S4 &&>, "");
 
 }	// namespace cpp17_emplace_constructible_test
