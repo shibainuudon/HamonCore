@@ -468,7 +468,6 @@ using invoke_visit = decltype(hamon::visit<R>(hamon::declval<Visitor&>(), hamon:
 
 inline void SfinaeTest()
 {
-#if !defined(HAMON_USE_STD_VARIANT)
 	struct BadVariant : private hamon::variant<long, float> {};
 
 	static_assert( hamon::is_detected<invoke_visit, void, AnyVisitor, hamon::variant<int>>::value, "");
@@ -562,7 +561,6 @@ inline void SfinaeTest()
 	static_assert(!hamon::is_detected<invoke_visit, int*, F4, hamon::variant<T2, T3>, hamon::variant<T2, T3>>::value, "");
 	static_assert(!hamon::is_detected<invoke_visit, int*, F4, hamon::variant<T1, T2, T3>, hamon::variant<T1, T2, T3>>::value, "");
 	static_assert(!hamon::is_detected<invoke_visit, int*, F4, hamon::variant<T1, T2, T1>, hamon::variant<T2, T1>>::value, "");
-#endif
 }
 
 GTEST_TEST(VariantTest, VisitRTest)

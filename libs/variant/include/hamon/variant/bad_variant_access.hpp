@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_BAD_VARIANT_ACCESS_HPP
 #define HAMON_VARIANT_BAD_VARIANT_ACCESS_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::bad_variant_access;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/cstdlib/abort.hpp>
 #include <hamon/config.hpp>
 #include <exception>
@@ -48,7 +35,5 @@ void throw_bad_variant_access()
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_BAD_VARIANT_ACCESS_HPP

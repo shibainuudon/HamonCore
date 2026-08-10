@@ -33,9 +33,7 @@ GTEST_TEST(VariantTest, ValuelessByExceptionTest)
 		hamon::variant<float, int> v{12.f};
 		EXPECT_FALSE(v.valueless_by_exception());
 		EXPECT_THROW(v.emplace<1>(S()), int);
-#if !defined(HAMON_USE_STD_VARIANT)
 		EXPECT_TRUE(v.valueless_by_exception());
-#endif
 	}
 #endif
 }

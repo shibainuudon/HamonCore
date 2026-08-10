@@ -42,9 +42,7 @@ GTEST_TEST(VariantTest, IndexTest)
 		hamon::variant<float, int> v{12.f};
 		EXPECT_EQ(0u, v.index());
 		EXPECT_THROW(v.emplace<1>(S()), int);
-#if !defined(HAMON_USE_STD_VARIANT)
 		EXPECT_EQ(hamon::variant_npos, v.index());
-#endif
 	}
 #endif
 }

@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_GET_HPP
 #define HAMON_VARIANT_GET_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::get;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/detail/access.hpp>
 #include <hamon/variant/detail/exactly_once.hpp>
 #include <hamon/variant/detail/find_index.hpp>
@@ -136,7 +123,5 @@ get(variant<Types...> const&& v)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_GET_HPP

@@ -7,20 +7,6 @@
 #ifndef HAMON_VARIANT_VARIANT_SIZE_HPP
 #define HAMON_VARIANT_VARIANT_SIZE_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::variant_size;
-using std::variant_size_v;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/variant_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/integral_constant.hpp>
@@ -59,7 +45,5 @@ struct variant_size<variant<Types...>>
 	: public hamon::integral_constant<hamon::size_t, sizeof...(Types)> {};
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_VARIANT_SIZE_HPP

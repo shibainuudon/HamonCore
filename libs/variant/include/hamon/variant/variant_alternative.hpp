@@ -7,20 +7,6 @@
 #ifndef HAMON_VARIANT_VARIANT_ALTERNATIVE_HPP
 #define HAMON_VARIANT_VARIANT_ALTERNATIVE_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::variant_alternative;
-using std::variant_alternative_t;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/variant_fwd.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/add_const.hpp>
@@ -59,7 +45,5 @@ struct variant_alternative<I, variant<Types...>>
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_VARIANT_ALTERNATIVE_HPP

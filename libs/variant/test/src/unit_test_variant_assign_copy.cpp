@@ -189,8 +189,6 @@ static_assert( hamon::is_nothrow_copy_assignable<S3_2>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<S3_3>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<S3_4>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
-
 // Types...のすべての型Tiについて、
 // is_nothrow_copy_constructible<Ti> &&
 // is_nothrow_copy_assignable<Ti>がtrueであるとき、
@@ -199,8 +197,6 @@ static_assert( hamon::is_nothrow_copy_assignable<hamon::variant<S3_1>>::value, "
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::variant<S3_2>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::variant<S3_3>>::value, "");
 static_assert(!hamon::is_nothrow_copy_assignable<hamon::variant<S3_4>>::value, "");
-
-#endif
 
 struct CopyOnlyTrivial
 {

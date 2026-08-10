@@ -8,7 +8,6 @@
 #define HAMON_VARIANT_HPP
 
 #include <hamon/variant/bad_variant_access.hpp>
-#include <hamon/variant/config.hpp>
 #include <hamon/variant/get.hpp>
 #include <hamon/variant/get_if.hpp>
 #include <hamon/variant/holds_alternative.hpp>

@@ -85,7 +85,6 @@ static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in
 static_assert( hamon::is_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
 static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept2>, hamon::in_place_index_t<0>, std::initializer_list<int>>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<Noexcept1>, hamon::in_place_index_t<0>, std::initializer_list<int>, int>::value, "");
@@ -94,7 +93,6 @@ static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, h
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, Noexcept1>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept2>, hamon::in_place_index_t<1>, std::initializer_list<int>, int>::value, "");
-#endif
 
 GTEST_TEST(VariantTest, CtorInPlaceIndexInitListArgsTest)
 {

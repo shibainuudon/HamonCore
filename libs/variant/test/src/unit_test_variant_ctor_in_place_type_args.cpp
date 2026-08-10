@@ -50,14 +50,12 @@ static_assert( hamon::is_constructible<hamon::variant<int, NotNoexcept>, hamon::
 static_assert( hamon::is_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_type_t<int>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_type_t<int>, int>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
 static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept>,         hamon::in_place_type_t<Noexcept>, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<NotNoexcept>,      hamon::in_place_type_t<NotNoexcept>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_type_t<Noexcept>, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_type_t<NotNoexcept>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_type_t<int>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_type_t<int>, int>::value, "");
-#endif
 
 GTEST_TEST(VariantTest, CtorInPlaceTypeArgsTest)
 {

@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_VISIT_HPP
 #define HAMON_VARIANT_VISIT_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::visit;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/detail/visit_impl.hpp>
 #include <hamon/variant/variant_fwd.hpp>
 #include <hamon/variant/bad_variant_access.hpp>
@@ -125,7 +112,5 @@ visit(Visitor&& vis, Variants&&... vars)
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_VISIT_HPP

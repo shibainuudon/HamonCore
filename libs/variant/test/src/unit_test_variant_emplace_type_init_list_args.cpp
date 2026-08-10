@@ -94,9 +94,7 @@ GTEST_TEST(VariantTest, EmplaceTypeInitListArgsTest)
 		struct S { operator int() { throw 42; } };
 		hamon::variant<float, Y> v{12.f};
 		EXPECT_THROW(v.emplace<Y>({1,2,3}, S()), int);
-#if !defined(HAMON_USE_STD_VARIANT)
 		EXPECT_TRUE(v.valueless_by_exception());
-#endif
 	}
 #endif
 }

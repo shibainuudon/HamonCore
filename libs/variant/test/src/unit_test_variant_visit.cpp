@@ -443,7 +443,6 @@ inline void SfinaeTest()
 	static_assert(!hamon::is_detected<invoke_visit, AnyVisitor, hamon::variant<int>, BadVariant>::value, "");
 	static_assert(!hamon::is_detected<invoke_visit, AnyVisitor, hamon::variant<int>, hamon::variant<float>, BadVariant>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
 	static_assert( hamon::is_detected<invoke_visit, IdentityVisitor, hamon::variant<int>>::value, "");
 	static_assert( hamon::is_detected<invoke_visit, IdentityVisitor, hamon::variant<long>>::value, "");
 	static_assert( hamon::is_detected<invoke_visit, IdentityVisitor, hamon::variant<int*>>::value, "");
@@ -470,7 +469,6 @@ inline void SfinaeTest()
 	static_assert( hamon::is_detected<invoke_visit, F4, hamon::variant<T1, T2, T3>, hamon::variant<T1, T2>>::value, "");
 	static_assert( hamon::is_detected<invoke_visit, F4, hamon::variant<T1, T3>, hamon::variant<T1, T2, T3>>::value, "");
 	static_assert( hamon::is_detected<invoke_visit, F4, hamon::variant<T1, T2, T1>, hamon::variant<T2, T1>>::value, "");
-#endif
 }
 
 GTEST_TEST(VariantTest, VisitTest)

@@ -390,7 +390,6 @@ GTEST_TEST(VariantTest, SwapTest)
 
 	// only one empty
 	{
-#if !defined(HAMON_USE_STD_VARIANT)
 		hamon::variant<int, MakeEmptyT> v1(hamon::in_place_index_t<0>{}, 42);
 		hamon::variant<int, MakeEmptyT> v2(hamon::in_place_index_t<0>{}, 43);
 		MakeEmpty(v1);
@@ -412,7 +411,6 @@ GTEST_TEST(VariantTest, SwapTest)
 		hamon::adl_swap(v1, v2);
 		EXPECT_TRUE( v1.valueless_by_exception());
 		EXPECT_TRUE(!v2.valueless_by_exception());
-#endif
 	}
 #endif
 }

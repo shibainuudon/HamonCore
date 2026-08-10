@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_MONOSTATE_HPP
 #define HAMON_VARIANT_MONOSTATE_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::monostate;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/compare/strong_ordering.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
@@ -67,7 +54,5 @@ struct hash<hamon::monostate>
 };
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_VARIANT_MONOSTATE_HPP

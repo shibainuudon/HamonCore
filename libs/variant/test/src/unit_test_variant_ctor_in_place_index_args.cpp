@@ -51,14 +51,12 @@ static_assert( hamon::is_constructible<hamon::variant<int, NotNoexcept>, hamon::
 static_assert( hamon::is_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_index_t<1>, int>::value, "");
 static_assert( hamon::is_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_index_t<1>, int>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
 static_assert( hamon::is_nothrow_constructible<hamon::variant<Noexcept>,         hamon::in_place_index_t<0>, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<NotNoexcept>,      hamon::in_place_index_t<0>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_index_t<0>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_index_t<0>, int>::value, "");
 static_assert( hamon::is_nothrow_constructible<hamon::variant<int, Noexcept>,    hamon::in_place_index_t<1>, int>::value, "");
 static_assert(!hamon::is_nothrow_constructible<hamon::variant<int, NotNoexcept>, hamon::in_place_index_t<1>, int>::value, "");
-#endif
 
 struct Vec2
 {

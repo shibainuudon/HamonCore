@@ -90,7 +90,6 @@ static_assert( hamon::is_trivially_copy_constructible<hamon::variant<int, float>
 static_assert( hamon::is_trivially_copy_constructible<hamon::variant<int, CopyOnlyTrivial>>::value, "");
 static_assert(!hamon::is_trivially_copy_constructible<hamon::variant<int, CopyOnlyNonTrivial>>::value, "");
 
-#if !defined(HAMON_USE_STD_VARIANT)
 // Tiが全て例外を投げずにコピー構築可能であれば、例外を投げずにコピー構築可能
 static_assert( hamon::is_nothrow_copy_constructible<hamon::variant<int>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<hamon::variant<CopyOnlyTrivial>>::value, "");
@@ -100,7 +99,6 @@ static_assert( hamon::is_nothrow_copy_constructible<hamon::variant<int, int>>::v
 static_assert( hamon::is_nothrow_copy_constructible<hamon::variant<int, CopyOnlyTrivial>>::value, "");
 static_assert( hamon::is_nothrow_copy_constructible<hamon::variant<int, Noexcept>>::value, "");
 static_assert(!hamon::is_nothrow_copy_constructible<hamon::variant<int, NotNoexcept>>::value, "");
-#endif
 
 #if !defined(HAMON_NO_EXCEPTIONS)
 
@@ -156,7 +154,7 @@ GTEST_TEST(VariantTest, CtorCopyTest)
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(v2.index(), 0u);
 		HAMON_CXX11_CONSTEXPR_EXPECT_EQ(hamon::adl_get<0>(v2).value, 42);
 	}
-#if 1//defined(HAMON_USE_STD_VARIANT)
+#if 1
 	{
 		hamon::variant<CopyOnlyNonTrivial> v1(
 			hamon::in_place_index_t<0>{}, 42);

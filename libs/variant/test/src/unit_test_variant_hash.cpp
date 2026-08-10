@@ -88,7 +88,6 @@ GTEST_TEST(VariantTest, HashTest)
 		EXPECT_NE(std::hash<V>{}(v1), std::hash<V>{}(v3));
 		EXPECT_EQ(std::hash<V>{}(v2), std::hash<V>{}(v3));
 	}
-#if !defined(HAMON_USE_STD_VARIANT)
 	{
 		using V = hamon::variant<int, int, int>;
 		V const v1(hamon::in_place_index_t<0>{}, 42);
@@ -100,7 +99,6 @@ GTEST_TEST(VariantTest, HashTest)
 		EXPECT_NE(std::hash<V>{}(v1), std::hash<V>{}(v4));
 		EXPECT_NE(std::hash<V>{}(v3), std::hash<V>{}(v4));
 	}
-#endif
 #if !defined(HAMON_NO_EXCEPTIONS)
 	{
 		using V = hamon::variant<int, MakeEmptyT>;

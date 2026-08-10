@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_VARIANT_HPP
 #define HAMON_VARIANT_VARIANT_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::variant;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/detail/variant_swap.hpp>
 #include <hamon/variant/detail/select_overload.hpp>
 #include <hamon/variant/detail/find_index.hpp>
@@ -437,7 +424,5 @@ struct hash<hamon::variant<Types...>>
 {};
 
 }	// namespace std
-
-#endif
 
 #endif // HAMON_VARIANT_VARIANT_HPP

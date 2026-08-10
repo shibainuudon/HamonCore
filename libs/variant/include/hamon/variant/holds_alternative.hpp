@@ -7,19 +7,6 @@
 #ifndef HAMON_VARIANT_HOLDS_ALTERNATIVE_HPP
 #define HAMON_VARIANT_HOLDS_ALTERNATIVE_HPP
 
-#include <hamon/variant/config.hpp>
-
-#if defined(HAMON_USE_STD_VARIANT)
-
-namespace hamon
-{
-
-using std::holds_alternative;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/variant/detail/exactly_once.hpp>
 #include <hamon/variant/detail/find_index.hpp>
 #include <hamon/variant/variant.hpp>
@@ -41,7 +28,5 @@ holds_alternative(variant<Types...> const& v) HAMON_NOEXCEPT
 }
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_VARIANT_HOLDS_ALTERNATIVE_HPP
