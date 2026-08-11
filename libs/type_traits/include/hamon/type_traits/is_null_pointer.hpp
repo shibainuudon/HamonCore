@@ -7,27 +7,14 @@
 #ifndef HAMON_TYPE_TRAITS_IS_NULL_POINTER_HPP
 #define HAMON_TYPE_TRAITS_IS_NULL_POINTER_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_null_pointer) && (__cpp_lib_is_null_pointer >= 201309) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::is_null_pointer;
-
-}	// namespace hamon
-
-#else
-
-#include <hamon/type_traits/remove_cv.hpp>
-#include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/cstddef/nullptr_t.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
 
 /**
  *	@brief	型Tがnullptr_tか調べる
@@ -38,26 +25,20 @@ namespace hamon
  *	true_typeから派生し、そうでなければfalse_typeから派生する。
  */
 template <typename T>
-struct is_null_pointer
-	: public hamon::is_same<
-		hamon::remove_cv_t<T>, hamon::nullptr_t
-	>
-{};
+struct is_null_pointer : public hamon::false_type{};
 
-}	// namespace hamon
-
-#endif
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+template <>
+struct is_null_pointer<hamon::nullptr_t> : public hamon::true_type{};
+template <>
+struct is_null_pointer<hamon::nullptr_t const> : public hamon::true_type{};
+template <>
+struct is_null_pointer<hamon::nullptr_t volatile> : public hamon::true_type{};
+template <>
+struct is_null_pointer<hamon::nullptr_t const volatile> : public hamon::true_type{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_null_pointer_v = is_null_pointer<T>::value;
-
-#endif
 
 }	// namespace hamon
 
