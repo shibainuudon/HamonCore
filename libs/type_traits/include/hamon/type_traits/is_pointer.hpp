@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
 
 /**
  *	@brief	型Tがポインタ型か調べる
@@ -25,19 +26,20 @@ namespace hamon
  *	nullptrはポインタ型へ変換できるが，nullptr_t型はポインタ型ではない。
  */
 template <typename T>
-struct is_pointer
-	: public hamon::bool_constant<
-		std::is_pointer<T>::value
-	>
-{};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+struct is_pointer : public hamon::false_type{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
-bool is_pointer_v = is_pointer<T>::value;
+struct is_pointer<T*> : public hamon::true_type{};
+template <typename T>
+struct is_pointer<T* const> : public hamon::true_type{};
+template <typename T>
+struct is_pointer<T* volatile> : public hamon::true_type{};
+template <typename T>
+struct is_pointer<T* const volatile> : public hamon::true_type{};
 
-#endif
+template <typename T>
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool is_pointer_v = is_pointer<T>::value;
 
 }	// namespace hamon
 
