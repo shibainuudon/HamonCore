@@ -8,11 +8,28 @@
 #define HAMON_TYPE_TRAITS_IS_FLOATING_POINT_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
+
+namespace detail
+{
+
+template <typename T>
+struct is_floating_point_impl : public hamon::false_type{};
+
+template <>
+struct is_floating_point_impl<float> : public hamon::true_type{};
+template <>
+struct is_floating_point_impl<double> : public hamon::true_type{};
+template <>
+struct is_floating_point_impl<long double> : public hamon::true_type{};
+
+}	// namespace detail
 
 /**
  *	@brief	型Tが浮動小数点型か調べる
@@ -24,18 +41,11 @@ namespace hamon
  */
 template <typename T>
 struct is_floating_point
-	: public hamon::bool_constant<
-		std::is_floating_point<T>::value
-	>
-{};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+	: public hamon::detail::is_floating_point_impl<hamon::remove_cv_t<T>> {};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_floating_point_v = is_floating_point<T>::value;
-
-#endif
 
 }	// namespace hamon
 
