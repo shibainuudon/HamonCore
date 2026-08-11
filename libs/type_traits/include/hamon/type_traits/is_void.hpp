@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
 
 /**
  *	@brief	型Tがvoidかを調べる。
@@ -23,19 +24,20 @@ namespace hamon
  *	true_typeから派生し、そうでなければfalse_typeから派生する。
  */
 template <typename T>
-struct is_void
-	: public hamon::bool_constant<
-		std::is_void<T>::value
-	>
-{};
+struct is_void : public hamon::false_type{};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+template <>
+struct is_void<void> : public hamon::true_type{};
+template <>
+struct is_void<void const> : public hamon::true_type{};
+template <>
+struct is_void<void volatile> : public hamon::true_type{};
+template <>
+struct is_void<void const volatile> : public hamon::true_type{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_void_v = is_void<T>::value;
-
-#endif
 
 }	// namespace hamon
 
