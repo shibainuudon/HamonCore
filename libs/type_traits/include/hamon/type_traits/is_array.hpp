@@ -8,11 +8,13 @@
 #define HAMON_TYPE_TRAITS_IS_ARRAY_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
 
 /**
  *	@brief	型Tが配列型かを調べる
@@ -25,19 +27,17 @@ namespace hamon
  *	クラステンプレートarrayは、配列型とは見なされない。
  */
 template <typename T>
-struct is_array
-	: public hamon::bool_constant<
-		std::is_array<T>::value
-	>
-{};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+struct is_array : public hamon::false_type{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
-bool is_array_v = is_array<T>::value;
+struct is_array<T[]> : public hamon::true_type{};
 
-#endif
+template <typename T, hamon::size_t N>
+struct is_array<T[N]> : public hamon::true_type{};
+
+template <typename T>
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool is_array_v = is_array<T>::value;
 
 }	// namespace hamon
 
