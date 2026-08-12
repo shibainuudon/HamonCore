@@ -8,11 +8,30 @@
 #define HAMON_TYPE_TRAITS_IS_MEMBER_POINTER_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/remove_cv.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
+
+namespace detail
+{
+
+template <typename T>
+struct is_member_pointer_impl : public hamon::false_type{};
+
+template <typename T, typename U>
+struct is_member_pointer_impl<T U::*> : public hamon::true_type{};
+template <typename T, typename U>
+struct is_member_pointer_impl<T U::* const> : public hamon::true_type{};
+template <typename T, typename U>
+struct is_member_pointer_impl<T U::* volatile> : public hamon::true_type{};
+template <typename T, typename U>
+struct is_member_pointer_impl<T U::* const volatile> : public hamon::true_type{};
+
+}	// namespace detail
 
 /**
  *	@brief	型Tがメンバポインタ型か調べる
@@ -27,18 +46,11 @@ namespace hamon
  */
 template <typename T>
 struct is_member_pointer
-	: public hamon::bool_constant<
-		std::is_member_pointer<T>::value
-	>
-{};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+	: public hamon::detail::is_member_pointer_impl<hamon::remove_cv_t<T>> {};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_member_pointer_v = is_member_pointer<T>::value;
-
-#endif
 
 }	// namespace hamon
 
