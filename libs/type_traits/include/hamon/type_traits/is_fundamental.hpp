@@ -7,7 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_IS_FUNDAMENTAL_HPP
 #define HAMON_TYPE_TRAITS_IS_FUNDAMENTAL_HPP
 
-#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_void.hpp>
 #include <hamon/type_traits/is_null_pointer.hpp>
@@ -15,6 +15,8 @@
 
 namespace hamon
 {
+
+// 21.3.5.3 Composite type traits
 
 /**
  *	@brief	型Tが単純型(Fundamental types)か調べる
@@ -27,20 +29,16 @@ namespace hamon
  */
 template <typename T>
 struct is_fundamental
-	: public hamon::disjunction<
-		hamon::is_arithmetic<T>,
-		hamon::is_void<T>,
-		hamon::is_null_pointer<T>
+	: public hamon::bool_constant<
+		hamon::is_arithmetic_v<T> ||
+		hamon::is_void_v<T> ||
+		hamon::is_null_pointer_v<T>
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_fundamental_v = is_fundamental<T>::value;
-
-#endif
 
 }	// namespace hamon
 

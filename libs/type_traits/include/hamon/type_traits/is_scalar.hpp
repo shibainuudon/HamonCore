@@ -7,7 +7,7 @@
 #ifndef HAMON_TYPE_TRAITS_IS_SCALAR_HPP
 #define HAMON_TYPE_TRAITS_IS_SCALAR_HPP
 
-#include <hamon/type_traits/disjunction.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/type_traits/is_pointer.hpp>
@@ -17,6 +17,8 @@
 
 namespace hamon
 {
+
+// 21.3.5.3 Composite type traits
 
 /**
  *	@brief	型Tがスカラ型か調べる
@@ -29,22 +31,23 @@ namespace hamon
  */
 template <typename T>
 struct is_scalar
-	: public hamon::disjunction<
-		hamon::is_arithmetic<T>,
-		hamon::is_enum<T>,
-		hamon::is_pointer<T>,
-		hamon::is_member_pointer<T>,
-		hamon::is_null_pointer<T>
+	: public hamon::bool_constant<
+		// 6.9.1 General[basic.types.general]/7
+		// Arithmetic types ([basic.fundamental]), enumeration types, pointer types,
+		// pointer-to-member types ([basic.compound]), std​::​meta​::​​info, std​::​nullptr_t,
+		// and cv-qualified versions of these types are collectively called scalar types.
+		hamon::is_arithmetic_v<T> ||
+		hamon::is_enum_v<T> ||
+		hamon::is_pointer_v<T> ||
+		hamon::is_member_pointer_v<T> ||
+		//hamon::is_reflection_v<T> ||		// TODO
+		hamon::is_null_pointer_v<T>
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_scalar_v = is_scalar<T>::value;
-
-#endif
 
 }	// namespace hamon
 

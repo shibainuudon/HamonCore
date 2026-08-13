@@ -14,7 +14,7 @@
 namespace hamon
 {
 
-// 21.3.5.2 Primary type categories[meta.unary.cat]
+// 21.3.5.3 Composite type traits
 
 namespace detail
 {

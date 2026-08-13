@@ -7,12 +7,14 @@
 #ifndef HAMON_TYPE_TRAITS_IS_COMPOUND_HPP
 #define HAMON_TYPE_TRAITS_IS_COMPOUND_HPP
 
-#include <hamon/type_traits/negation.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/is_fundamental.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.3 Composite type traits
 
 /**
  *	@brief	型Tが複合型 (Compound types) か調べる
@@ -28,15 +30,11 @@ namespace hamon
  */
 template <typename T>
 struct is_compound
-	: public hamon::negation<hamon::is_fundamental<T>> {};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+	: public hamon::bool_constant<!hamon::is_fundamental_v<T>> {};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_compound_v = is_compound<T>::value;
-
-#endif
 
 }	// namespace hamon
 
