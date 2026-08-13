@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tがスタンダードレイアウト型か調べる。
@@ -34,17 +35,17 @@ namespace hamon
 template <typename T>
 struct is_standard_layout
 	: public hamon::bool_constant<
-		std::is_standard_layout<T>::value
+#if HAMON_HAS_BUILTIN(__is_standard_layout) || defined(HAMON_MSVC)
+		__is_standard_layout(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_standard_layout_v = is_standard_layout<T>::value;
-
-#endif
 
 }	// namespace hamon
 
