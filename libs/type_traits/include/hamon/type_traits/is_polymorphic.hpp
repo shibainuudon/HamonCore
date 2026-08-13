@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tが多相的なクラスか調べる
@@ -28,17 +29,17 @@ namespace hamon
 template <typename T>
 struct is_polymorphic
 	: public hamon::bool_constant<
-		std::is_polymorphic<T>::value
+#if HAMON_HAS_BUILTIN(__is_polymorphic) || defined(HAMON_MSVC)
+		__is_polymorphic(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_polymorphic_v = is_polymorphic<T>::value;
-
-#endif
 
 }	// namespace hamon
 
