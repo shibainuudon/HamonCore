@@ -8,11 +8,17 @@
 #define HAMON_TYPE_TRAITS_IS_FUNCTION_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_const.hpp>
+#include <hamon/type_traits/is_reference.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
+
+HAMON_WARNING_PUSH()
+HAMON_WARNING_DISABLE_MSVC(4180)	// 関数型へ適用された修飾子は無効なため、無視されます。
 
 /**
  *	@brief	型Tが関数型か調べる
@@ -25,17 +31,17 @@ namespace hamon
 template <typename T>
 struct is_function
 	: public hamon::bool_constant<
-		std::is_function<T>::value
+		// const修飾できないのは関数型と参照型のみ
+		!hamon::is_const_v<T const> &&
+		!hamon::is_reference_v<T>
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+HAMON_WARNING_POP()
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_function_v = is_function<T>::value;
-
-#endif
 
 }	// namespace hamon
 
