@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tがvolatile修飾型かを調べる。
@@ -26,19 +27,14 @@ namespace hamon
  *	参照型は、volatile修飾型でない。
  */
 template <typename T>
-struct is_volatile
-	: public hamon::bool_constant<
-		std::is_volatile<T>::value
-	>
-{};
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+struct is_volatile : public hamon::false_type{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
-bool is_volatile_v = is_volatile<T>::value;
+struct is_volatile<T volatile> : public hamon::true_type{};
 
-#endif
+template <typename T>
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+bool is_volatile_v = is_volatile<T>::value;
 
 }	// namespace hamon
 
