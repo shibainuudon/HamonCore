@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.2 Primary type categories[meta.unary.cat]
 
 /**
  *	@brief	型Tが列挙型か調べる
@@ -27,17 +28,17 @@ namespace hamon
 template <typename T>
 struct is_enum
 	: public hamon::bool_constant<
-		std::is_enum<T>::value
+#if HAMON_HAS_BUILTIN(__is_enum) || defined(HAMON_MSVC)
+		__is_enum(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_enum_v = is_enum<T>::value;
-
-#endif
 
 }	// namespace hamon
 
