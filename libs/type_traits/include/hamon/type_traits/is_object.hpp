@@ -8,11 +8,15 @@
 #define HAMON_TYPE_TRAITS_IS_OBJECT_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/is_function.hpp>
+#include <hamon/type_traits/is_reference.hpp>
+#include <hamon/type_traits/is_void.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.3 Composite type traits
 
 /**
  *	@brief	型Tがオブジェクト型か調べる
@@ -26,17 +30,18 @@ namespace hamon
 template <typename T>
 struct is_object
 	: public hamon::bool_constant<
-		std::is_object<T>::value
+		// 6.9.1 General[basic.types.general]/6
+		// An object type is a (possibly cv-qualified) type that is
+		// not a function type, not a reference type, and not cv void.
+		!hamon::is_function_v<T> &&
+		!hamon::is_reference_v<T> &&
+		!hamon::is_void_v<T>
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_object_v = is_object<T>::value;
-
-#endif
 
 }	// namespace hamon
 
