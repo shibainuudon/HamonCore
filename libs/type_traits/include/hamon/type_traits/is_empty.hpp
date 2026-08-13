@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tが空のクラスか調べる
@@ -34,17 +35,17 @@ namespace hamon
 template <typename T>
 struct is_empty
 	: public hamon::bool_constant<
-		std::is_empty<T>::value
+#if HAMON_HAS_BUILTIN(__is_empty) || defined(HAMON_MSVC)
+		__is_empty(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_empty_v = is_empty<T>::value;
-
-#endif
 
 }	// namespace hamon
 
