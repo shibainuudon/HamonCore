@@ -11,8 +11,6 @@
 #include <gtest/gtest.h>
 #include "type_traits_test_utility.hpp"
 
-#if defined(HAMON_HAS_IS_FINAL)
-
 #if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 
 #define HAMON_IS_FINAL_TEST(b, T)	\
@@ -162,7 +160,3 @@ HAMON_IS_FINAL_TEST_CV(false, __uint128_t);
 
 #undef HAMON_IS_FINAL_TEST
 #undef HAMON_IS_FINAL_TEST_CV
-
-#else
-#pragma message("hamon doesn't have is_final")
-#endif

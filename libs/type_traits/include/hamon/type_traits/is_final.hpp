@@ -7,26 +7,13 @@
 #ifndef HAMON_TYPE_TRAITS_IS_FINAL_HPP
 #define HAMON_TYPE_TRAITS_IS_FINAL_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_final) && (__cpp_lib_is_final >= 201402) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::is_final;
-
-}	// namespace hamon
-
-#elif (defined(HAMON_MSVC) && HAMON_MSVC >= 1920) ||	\
-	HAMON_HAS_BUILTIN(__is_final)
-
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tにfinalが付いているかを調べる。
@@ -40,30 +27,19 @@ namespace hamon
  */
 template <typename T>
 struct is_final
-	: public hamon::bool_constant<__is_final(T)>
+	: public hamon::bool_constant<
+#if HAMON_HAS_BUILTIN(__is_final) || defined(HAMON_MSVC)
+		__is_final(T)
+#else
+		// TODO
+#endif
+	>
 {};
 
-}	// namespace hamon
-
-#else
-#  define HAMON_NO_IS_FINAL
-#endif
-
-#if !defined(HAMON_NO_IS_FINAL)
-
-#define HAMON_HAS_IS_FINAL
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_final_v = is_final<T>::value;
-#endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_IS_FINAL_HPP
