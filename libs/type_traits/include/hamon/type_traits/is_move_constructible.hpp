@@ -7,12 +7,14 @@
 #ifndef HAMON_TYPE_TRAITS_IS_MOVE_CONSTRUCTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_MOVE_CONSTRUCTIBLE_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/add_rvalue_reference.hpp>
+#include <hamon/type_traits/is_constructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tがムーブ構築可能か調べる
@@ -26,18 +28,12 @@ namespace hamon
  */
 template <typename T>
 struct is_move_constructible
-	: public hamon::bool_constant<
-		std::is_move_constructible<T>::value
-	>
+	: public hamon::is_constructible<T, hamon::add_rvalue_reference_t<T>>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_move_constructible_v = is_move_constructible<T>::value;
-
-#endif
 
 }	// namespace hamon
 
