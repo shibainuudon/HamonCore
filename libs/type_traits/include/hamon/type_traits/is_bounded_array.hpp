@@ -10,17 +10,11 @@
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
 
-#if defined(__cpp_lib_bounded_array_traits) && (__cpp_lib_bounded_array_traits >= 201902) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-using std::is_bounded_array;
-
-#else
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief		型Tが要素数の判明している配列型かを調べる
@@ -38,15 +32,9 @@ struct is_bounded_array : public hamon::false_type {};
 template <typename T, hamon::size_t N>
 struct is_bounded_array<T[N]> : public hamon::true_type {};
 
-#endif
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_bounded_array_v  = is_bounded_array<T>::value;
-
-#endif
 
 }	// namespace hamon
 
