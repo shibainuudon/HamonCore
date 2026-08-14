@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tのコンストラクタ呼出しが適格か調べる。
@@ -29,17 +30,17 @@ namespace hamon
 template <typename T, typename... Args>
 struct is_constructible
 	: public hamon::bool_constant<
-		std::is_constructible<T, Args...>::value
+#if HAMON_HAS_BUILTIN(__is_constructible) || defined(HAMON_MSVC)
+		__is_constructible(T, Args...)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T, typename... Args>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_constructible_v = is_constructible<T, Args...>::value;
-
-#endif
 
 }	// namespace hamon
 
