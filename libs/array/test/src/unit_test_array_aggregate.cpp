@@ -30,13 +30,11 @@ struct NonTrivial
 template <typename T>
 void AggregateTest()
 {
-#if defined(HAMON_HAS_IS_AGGREGATE)
 	static_assert(hamon::is_aggregate<hamon::array<T, 0>>::value, "");
 	static_assert(hamon::is_aggregate<hamon::array<T, 1>>::value, "");
 	static_assert(hamon::is_aggregate<hamon::array<T, 2>>::value, "");
 	static_assert(hamon::is_aggregate<hamon::array<T, 3>>::value, "");
 	static_assert(hamon::is_aggregate<hamon::array<T, 4>>::value, "");
-#endif
 }
 
 GTEST_TEST(ArrayTest, AggregateTest)

@@ -9,8 +9,6 @@
 #include <gtest/gtest.h>
 #include <array>
 
-#if defined(HAMON_HAS_IS_AGGREGATE)
-
 namespace hamon_type_traits_test
 {
 
@@ -126,7 +124,3 @@ HAMON_IS_AGGREGATE_TEST_CV(false, __uint128_t);
 }	// namespace is_aggregate_test
 
 }	// namespace hamon_type_traits_test
-
-#else
-#pragma message("hamon doesn't have is_aggregate")
-#endif

@@ -7,27 +7,13 @@
 #ifndef HAMON_TYPE_TRAITS_IS_AGGREGATE_HPP
 #define HAMON_TYPE_TRAITS_IS_AGGREGATE_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_aggregate) && (__cpp_lib_is_aggregate >= 201703) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::is_aggregate;
-
-}	// namespace hamon
-
-#elif (defined(HAMON_MSVC) && HAMON_MSVC >= 1920) ||	\
-	HAMON_HAS_BUILTIN(__is_aggregate)
-
 #include <hamon/type_traits/bool_constant.hpp>
-#include <hamon/type_traits/remove_cv.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tが集成体か調べる
@@ -48,29 +34,19 @@ namespace hamon
  */
 template <typename T>
 struct is_aggregate
-	: public hamon::bool_constant<__is_aggregate(hamon::remove_cv_t<T>)> {};
-
-}	// namespace hamon
-
+	: public hamon::bool_constant<
+#if HAMON_HAS_BUILTIN(__is_aggregate) || defined(HAMON_MSVC)
+		__is_aggregate(T)
 #else
-#  define HAMON_NO_IS_AGGREGATE
+		// TODO
 #endif
+	>
+{};
 
-#if !defined(HAMON_NO_IS_AGGREGATE)
-
-#define HAMON_HAS_IS_AGGREGATE
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_aggregate_v = is_aggregate<T>::value;
-#endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_IS_AGGREGATE_HPP

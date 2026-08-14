@@ -20,6 +20,4 @@ static_assert( hamon::is_empty<hamon::nullopt_t>::value, "");
 // Type nullopt_t shall not have a default constructor or
 // an initializer-list constructor, and shall not be an aggregate.
 static_assert(!hamon::is_default_constructible<hamon::nullopt_t>::value, "");
-#if defined(HAMON_HAS_IS_AGGREGATE)
 static_assert(!hamon::is_aggregate<hamon::nullopt_t>::value, "");
-#endif
