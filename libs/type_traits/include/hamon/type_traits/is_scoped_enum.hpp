@@ -7,29 +7,16 @@
 #ifndef HAMON_TYPE_TRAITS_IS_SCOPED_ENUM_HPP
 #define HAMON_TYPE_TRAITS_IS_SCOPED_ENUM_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_scoped_enum) && (__cpp_lib_is_scoped_enum >= 202011) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::is_scoped_enum;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/type_traits/underlying_type.hpp>
-#include <hamon/type_traits/negation.hpp>
 #include <hamon/type_traits/is_enum.hpp>
 #include <hamon/type_traits/is_convertible.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 namespace detail
 {
@@ -39,8 +26,8 @@ struct is_scoped_enum_impl : public hamon::false_type {};
 
 template <typename T>
 struct is_scoped_enum_impl<T, true>
-	: public hamon::negation<
-		hamon::is_convertible<T, hamon::underlying_type_t<T>>
+	: public hamon::bool_constant<
+		!hamon::is_convertible_v<T, hamon::underlying_type_t<T>>
 	>
 {};
 
@@ -59,21 +46,10 @@ struct is_scoped_enum
 	: public detail::is_scoped_enum_impl<T>
 {};
 
-}	// namespace hamon
-
-#endif
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
-namespace hamon
-{
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_scoped_enum_v = is_scoped_enum<T>::value;
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_IS_SCOPED_ENUM_HPP
