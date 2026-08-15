@@ -8,11 +8,13 @@
 #define HAMON_TYPE_TRAITS_IS_DESTRUCTIBLE_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/detail/is_destructible_impl.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tが破棄可能か調べる
@@ -34,17 +36,17 @@ namespace hamon
 template <typename T>
 struct is_destructible
 	: public hamon::bool_constant<
-		std::is_destructible<T>::value
+#if HAMON_HAS_BUILTIN(__is_destructible) || defined(HAMON_MSVC)
+		__is_destructible(T)
+#else
+		hamon::detail::is_destructible_impl<T>::value
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_destructible_v = is_destructible<T>::value;
-
-#endif
 
 }	// namespace hamon
 
