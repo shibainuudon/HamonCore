@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tが型Uからトリビアルに代入可能か調べる。
@@ -29,17 +30,17 @@ namespace hamon
 template <typename T, typename U>
 struct is_trivially_assignable
 	: public hamon::bool_constant<
-		std::is_trivially_assignable<T, U>::value
+#if HAMON_HAS_BUILTIN(__is_trivially_assignable) || defined(HAMON_MSVC)
+		__is_trivially_assignable(T, U)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T, typename U>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_trivially_assignable_v = is_trivially_assignable<T, U>::value;
-
-#endif
 
 }	// namespace hamon
 
