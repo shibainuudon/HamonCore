@@ -7,12 +7,15 @@
 #ifndef HAMON_TYPE_TRAITS_IS_NOTHROW_COPY_CONSTRUCTIBLE_HPP
 #define HAMON_TYPE_TRAITS_IS_NOTHROW_COPY_CONSTRUCTIBLE_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/add_const.hpp>
+#include <hamon/type_traits/add_lvalue_reference.hpp>
+#include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tがコピー構築でき、かつそのコピーコンストラクタが例外を投げないか調べる
@@ -26,18 +29,12 @@ namespace hamon
  */
 template <typename T>
 struct is_nothrow_copy_constructible
-	: public hamon::bool_constant<
-		std::is_nothrow_copy_constructible<T>::value
-	>
+	: public hamon::is_nothrow_constructible<T, hamon::add_lvalue_reference_t<hamon::add_const_t<T>>>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_nothrow_copy_constructible_v = is_nothrow_copy_constructible<T>::value;
-
-#endif
 
 }	// namespace hamon
 
