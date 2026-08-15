@@ -7,12 +7,15 @@
 #ifndef HAMON_TYPE_TRAITS_IS_NOTHROW_COPY_ASSIGNABLE_HPP
 #define HAMON_TYPE_TRAITS_IS_NOTHROW_COPY_ASSIGNABLE_HPP
 
-#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/add_const.hpp>
+#include <hamon/type_traits/add_lvalue_reference.hpp>
+#include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief	型Tがコピー代入可能で、かつ代入操作が例外を投げないかを調べる
@@ -33,18 +36,12 @@ namespace hamon
  */
 template <typename T>
 struct is_nothrow_copy_assignable
-	: public hamon::bool_constant<
-		std::is_nothrow_copy_assignable<T>::value
-	>
+	: public hamon::is_nothrow_assignable<hamon::add_lvalue_reference_t<T>, hamon::add_lvalue_reference_t<hamon::add_const_t<T>>>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_nothrow_copy_assignable_v = is_nothrow_copy_assignable<T>::value;
-
-#endif
 
 }	// namespace hamon
 
