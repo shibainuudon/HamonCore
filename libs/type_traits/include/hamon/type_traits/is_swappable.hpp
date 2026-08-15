@@ -7,25 +7,13 @@
 #ifndef HAMON_TYPE_TRAITS_IS_SWAPPABLE_HPP
 #define HAMON_TYPE_TRAITS_IS_SWAPPABLE_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_is_swappable) && (__cpp_lib_is_swappable >= 201603) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::is_swappable;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/detail/is_swappable.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief		型 T が Swap 可能か調べる
@@ -48,20 +36,9 @@ struct is_swappable
 	: public hamon::detail::is_swappable<T>
 {};
 
-}	// namespace hamon
-
-#endif
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_swappable_v = is_swappable<T>::value;
-
-#endif
 
 }	// namespace hamon
 
