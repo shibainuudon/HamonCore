@@ -49,6 +49,99 @@ struct S2
 	S2(UDT);
 };
 
+struct S3
+{
+	S3() = delete;
+	S3(const S3&);
+	S3(S3&&);
+};
+
+struct S4
+{
+	S4();
+	S4(const S4&);
+	S4(S4&&) = delete;
+};
+
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3]);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3]);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3]);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S4[3]);
+
+#if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT)
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1, S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1, S1, S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1 const&, S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S1[3], S1 const&, S1 const&, S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1 const&, S1 const&, S1 const&, S1 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S2[3], S2, S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2, S2, S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&, S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&, S2 const&, S2 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S3[3], S3, S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3, S3, S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&, S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S3[3], S3 const&, S3 const&, S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&, S3 const&, S3 const&, S3 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4, S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S4[3], S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S4[3], S4 const&, S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(true,  S4[3], S4 const&, S4 const&, S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4 const&, S4 const&, S4 const&, S4 const&);
+#else
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1, S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1, S1, S1, S1);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1 const&, S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1 const&, S1 const&, S1 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S1[3], S1 const&, S1 const&, S1 const&, S1 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2, S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2, S2, S2, S2);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&, S2 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S2[3], S2 const&, S2 const&, S2 const&, S2 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3, S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3, S3, S3, S3);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&, S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&, S3 const&, S3 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S3[3], S3 const&, S3 const&, S3 const&, S3 const&);
+
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4, S4, S4, S4);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4 const&, S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4 const&, S4 const&, S4 const&);
+HAMON_IS_CONSTRUCTIBLE_TEST(false, S4[3], S4 const&, S4 const&, S4 const&, S4 const&);
+#endif
+
 HAMON_IS_CONSTRUCTIBLE_TEST(false,                void);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, const          void);
 HAMON_IS_CONSTRUCTIBLE_TEST(false,       volatile void);
@@ -1199,10 +1292,8 @@ HAMON_IS_CONSTRUCTIBLE_TEST(false,                int&&,                int(*)[]
 //HAMON_IS_CONSTRUCTIBLE_TEST(false, const volatile int&&,       volatile int(*)[]);
 //HAMON_IS_CONSTRUCTIBLE_TEST(false, const volatile int&&, const volatile int(*)[]);
 
-#if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1950))
+#if defined(HAMON_HAS_CXX20_AGGREGATE_PAREN_INIT)
 // P0960R3 によってint n[2](1, 2); のような形での初期化が可能になった
-// ただし、Visual Studio 2022 までの__is_constructibleはfalseを返してくる
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  int[2], int);
 HAMON_IS_CONSTRUCTIBLE_TEST(true,  int[2], int, int);
 HAMON_IS_CONSTRUCTIBLE_TEST(false, int[2], int, int, int);

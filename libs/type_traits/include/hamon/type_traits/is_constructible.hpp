@@ -8,6 +8,7 @@
 #define HAMON_TYPE_TRAITS_IS_CONSTRUCTIBLE_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/detail/is_constructible_impl.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -30,10 +31,10 @@ namespace hamon
 template <typename T, typename... Args>
 struct is_constructible
 	: public hamon::bool_constant<
-#if HAMON_HAS_BUILTIN(__is_constructible) || defined(HAMON_MSVC)
+#if HAMON_HAS_BUILTIN(__is_constructible) && !defined(HAMON_MSVC)	// MSVCの__is_constructibleは挙動がおかしいので使わない
 		__is_constructible(T, Args...)
 #else
-		// TODO
+		hamon::detail::is_constructible_impl<T, Args...>::value
 #endif
 	>
 {};
