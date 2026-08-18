@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_LOGICAL_AND_HPP
 #define HAMON_FUNCTIONAL_LOGICAL_AND_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_FUNCTIONAL_OPERATORS)
-
-namespace hamon
-{
-
-using std::logical_and;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -59,7 +46,5 @@ struct logical_and<void>
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_LOGICAL_AND_HPP

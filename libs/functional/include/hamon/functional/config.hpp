@@ -11,12 +11,6 @@
 #include <hamon/ranges/config.hpp>
 #include <functional>
 
-#if HAMON_CXX_STANDARD >= 17
-#  if defined(__cpp_lib_transparent_operators) && (__cpp_lib_transparent_operators >= 201210)
-#    define HAMON_USE_STD_FUNCTIONAL_OPERATORS
-#  endif
-#endif
-
 #if defined(HAMON_USE_STD_RANGES)
 #  define HAMON_USE_STD_RANGES_FUNCTIONAL
 #endif

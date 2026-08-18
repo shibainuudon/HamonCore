@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_LESS_EQUAL_HPP
 #define HAMON_FUNCTIONAL_LESS_EQUAL_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_FUNCTIONAL_OPERATORS)
-
-namespace hamon
-{
-
-using std::less_equal;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -65,7 +52,5 @@ struct less_equal<void>
 HAMON_WARNING_POP()
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_LESS_EQUAL_HPP

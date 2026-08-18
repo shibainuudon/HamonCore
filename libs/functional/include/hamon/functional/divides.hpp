@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_DIVIDES_HPP
 #define HAMON_FUNCTIONAL_DIVIDES_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_FUNCTIONAL_OPERATORS)
-
-namespace hamon
-{
-
-using std::divides;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -59,7 +46,5 @@ struct divides<void>
 };
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_DIVIDES_HPP

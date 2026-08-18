@@ -7,19 +7,6 @@
 #ifndef HAMON_FUNCTIONAL_NOT_EQUAL_TO_HPP
 #define HAMON_FUNCTIONAL_NOT_EQUAL_TO_HPP
 
-#include <hamon/functional/config.hpp>
-
-#if defined(HAMON_USE_STD_FUNCTIONAL_OPERATORS)
-
-namespace hamon
-{
-
-using std::not_equal_to;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/forward.hpp>
 #include <hamon/config.hpp>
 
@@ -65,7 +52,5 @@ struct not_equal_to<void>
 HAMON_WARNING_POP()
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_FUNCTIONAL_NOT_EQUAL_TO_HPP
