@@ -7,24 +7,6 @@
 #ifndef HAMON_UTILITY_SWAP_HPP
 #define HAMON_UTILITY_SWAP_HPP
 
-#include <hamon/config.hpp>
-
-#if (HAMON_CXX_STANDARD >= 20) &&	\
-	!(defined(HAMON_GCC_VERSION) && (HAMON_GCC_VERSION < 100000)) && \
-	!(defined(HAMON_CLANG_VERSION) && (HAMON_CLANG_VERSION < 130000)) && \
-	!(defined(HAMON_MSVC) && (HAMON_MSVC < 1926))
-
-#include <utility>
-
-namespace hamon
-{
-
-using std::swap;
-
-}	// namespace hamon
-
-#else
-
 #include <hamon/utility/move.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/type_traits/conjunction.hpp>
@@ -33,6 +15,7 @@ using std::swap;
 #include <hamon/type_traits/is_move_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_move_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_move_constructible.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
@@ -92,7 +75,5 @@ HAMON_NOEXCEPT_IF((hamon::detail::is_nothrow_swappable<T>::value))
 }	// namespace hamon
 
 #include <hamon/utility/detail/is_swappable.hpp>
-
-#endif
 
 #endif // HAMON_UTILITY_SWAP_HPP

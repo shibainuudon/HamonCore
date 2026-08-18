@@ -5,7 +5,7 @@
  */
 
 #include <hamon/string_view/basic_string_view.hpp>
-#include <hamon/utility/adl_swap.hpp>
+#include <hamon/utility/swap.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
 #include "constexpr_test.hpp"
@@ -42,7 +42,7 @@ inline HAMON_CXX14_CONSTEXPR bool SwapTest()
 	VERIFY(sv1.length() == 7);
 	VERIFY(sv2.length() == 6);
 
-	hamon::adl_swap(sv1, sv2);
+	hamon::swap(sv1, sv2);
 
 	VERIFY(sv1.data() == p1);
 	VERIFY(sv2.data() == p2);
