@@ -8,6 +8,7 @@
 #define HAMON_TYPE_TRAITS_IS_NOTHROW_ASSIGNABLE_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/detail/is_nothrow_assignable_impl.hpp>
 #include <hamon/config.hpp>
 
 namespace hamon
@@ -34,7 +35,7 @@ struct is_nothrow_assignable
 #if HAMON_HAS_BUILTIN(__is_nothrow_assignable) || defined(HAMON_MSVC)
 		__is_nothrow_assignable(T, U)
 #else
-		// TODO
+		hamon::detail::is_nothrow_assignable_impl<T, U>::value
 #endif
 	>
 {};
