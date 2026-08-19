@@ -7,16 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_TYPE_IDENTITY_HPP
 #define HAMON_TYPE_TRAITS_TYPE_IDENTITY_HPP
 
-#include <type_traits>
-
 namespace hamon
 {
 
-#if defined(__cpp_lib_type_identity) && (__cpp_lib_type_identity >= 201806)
-
-using std::type_identity;
-
-#else
+// 21.3.8.7 Other transformations[meta.trans.other]
 
 /**
  *	@brief		type_identity
@@ -30,8 +24,6 @@ struct type_identity
 {
 	using type = T;
 };
-
-#endif
 
 /**
  *	@brief	type_identityのエイリアステンプレート
