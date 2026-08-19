@@ -7,10 +7,30 @@
 #ifndef HAMON_TYPE_TRAITS_ADD_POINTER_HPP
 #define HAMON_TYPE_TRAITS_ADD_POINTER_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/void_t.hpp>
+#include <hamon/type_traits/remove_reference.hpp>
 
 namespace hamon
 {
+
+// 21.3.8.6 Pointer modifications[meta.trans.ptr]
+
+namespace detail
+{
+
+template <typename T, typename = void>
+struct add_pointer_impl
+{
+	using type = T;
+};
+
+template <typename T>
+struct add_pointer_impl<T, hamon::void_t<hamon::remove_reference_t<T>*>>
+{
+	using type = hamon::remove_reference_t<T>*;
+};
+
+}	// namespace detail
 
 /**
  *	@brief		型にポインタを追加する
@@ -22,7 +42,10 @@ namespace hamon
  *	void型の場合(cv修飾を含む)、T*をメンバ型typeとして定義する。
  *	いずれでもない場合、Tをメンバ型typeとして定義する。
  */
-using std::add_pointer;
+template <typename T>
+struct add_pointer
+	: public detail::add_pointer_impl<T>
+{};
 
 /**
  *	@brief	add_pointerのエイリアステンプレート
