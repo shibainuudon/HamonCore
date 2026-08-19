@@ -9,8 +9,6 @@
 #include <gtest/gtest.h>
 #include "type_traits_test_utility.hpp"
 
-#if defined(HAMON_HAS_HAS_UNIQUE_OBJECT_REPRESENTATIONS)
-
 namespace hamon_type_traits_test
 {
 
@@ -92,7 +90,3 @@ HAMON_HAS_UNIQUE_OBJECT_REPRESENTATIONS_TEST(true, char[]);
 }	// namespace has_unique_object_representations_test
 
 }	// namespace hamon_type_traits_test
-
-#else
-#pragma message("hamon doesn't have has_unique_object_representations")
-#endif

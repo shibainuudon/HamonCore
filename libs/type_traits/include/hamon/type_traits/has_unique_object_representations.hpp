@@ -7,26 +7,13 @@
 #ifndef HAMON_TYPE_TRAITS_HAS_UNIQUE_OBJECT_REPRESENTATIONS_HPP
 #define HAMON_TYPE_TRAITS_HAS_UNIQUE_OBJECT_REPRESENTATIONS_HPP
 
-#include <hamon/config.hpp>
-#include <type_traits>
-
-#if defined(__cpp_lib_has_unique_object_representations) && (__cpp_lib_has_unique_object_representations >= 201606) && \
-	defined(__cpp_lib_integral_constant_callable) && (__cpp_lib_integral_constant_callable >= 201304)
-
-namespace hamon
-{
-
-using std::has_unique_object_representations;
-
-}	// namespace hamon
-
-#elif (defined(HAMON_MSVC) && HAMON_MSVC >= 1920) ||	\
-	HAMON_HAS_BUILTIN(__has_unique_object_representations)
-
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/config.hpp>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief		同じ値を持つT型のオブジェクトが同じオブジェクト表現を持つか
@@ -46,31 +33,18 @@ namespace hamon
 template <typename T>
 struct has_unique_object_representations
 	: public hamon::bool_constant<
+#if HAMON_HAS_BUILTIN(__has_unique_object_representations) || defined(HAMON_MSVC)
 		__has_unique_object_representations(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-}	// namespace hamon
-
-#else
-#  define HAMON_NO_HAS_UNIQUE_OBJECT_REPRESENTATIONS
-#endif
-
-#if !defined(HAMON_NO_HAS_UNIQUE_OBJECT_REPRESENTATIONS)
-
-#define HAMON_HAS_HAS_UNIQUE_OBJECT_REPRESENTATIONS
-
-namespace hamon
-{
-
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool has_unique_object_representations_v = has_unique_object_representations<T>::value;
-#endif
 
 }	// namespace hamon
-
-#endif
 
 #endif // HAMON_TYPE_TRAITS_HAS_UNIQUE_OBJECT_REPRESENTATIONS_HPP
