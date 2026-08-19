@@ -71,6 +71,8 @@ struct make_signed_impl<T, false> {};
 
 }	// namespace detail
 
+// 21.3.8.4 Sign modifications[meta.trans.sign]
+
 /**
  *	@brief	整数型を符号付きにする。
  *
