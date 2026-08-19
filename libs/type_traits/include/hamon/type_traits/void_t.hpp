@@ -7,16 +7,8 @@
 #ifndef HAMON_TYPE_TRAITS_VOID_T_HPP
 #define HAMON_TYPE_TRAITS_VOID_T_HPP
 
-#include <type_traits>
-
 namespace hamon
 {
-
-#if defined(__cpp_lib_void_t) && (__cpp_lib_void_t >= 201411L)
-
-using std::void_t;
-
-#else
 
 namespace detail
 {
@@ -29,10 +21,10 @@ struct make_void
 
 }	// namespace detail
 
+// [meta.trans.other], other transformations
+
 template <typename... Ts>
 using void_t = typename detail::make_void<Ts...>::type;
-
-#endif
 
 }	// namespace hamon
 
