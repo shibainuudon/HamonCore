@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.7 Relationships between types[meta.rel]
 
 /**
  *	@brief	2つの型TとUが同じ型か調べる
@@ -24,15 +25,16 @@ namespace hamon
  *	true_typeから派生し、そうでなければfalse_typeから派生する。
  */
 template <typename T, typename U>
-struct is_same : public hamon::bool_constant<std::is_same<T, U>::value> {};
+struct is_same
+	: public hamon::false_type {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+template <typename T>
+struct is_same<T, T>
+	: public hamon::true_type {};
 
 template <typename T, typename U>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_same_v = is_same<T, U>::value;
-
-#endif
 
 }	// namespace hamon
 
