@@ -7,10 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_REMOVE_POINTER_HPP
 #define HAMON_TYPE_TRAITS_REMOVE_POINTER_HPP
 
-#include <type_traits>
-
 namespace hamon
 {
+
+// 21.3.8.6 Pointer modifications[meta.trans.ptr]
 
 /**
  *	@brief		型Tからポインタを除去する。
@@ -21,7 +21,35 @@ namespace hamon
  *	型に含まれるポインタを除去した型Uを、メンバ型typeとして定義する。
  *	そうでなければ、型Tをそのままメンバ型typeとして定義する。
  */
-using std::remove_pointer;
+template <typename T>
+struct remove_pointer
+{
+	using type = T;
+};
+
+template <typename T>
+struct remove_pointer<T*>
+{
+	using type = T;
+};
+
+template <typename T>
+struct remove_pointer<T* const>
+{
+	using type = T;
+};
+
+template <typename T>
+struct remove_pointer<T* volatile>
+{
+	using type = T;
+};
+
+template <typename T>
+struct remove_pointer<T* const volatile>
+{
+	using type = T;
+};
 
 template <typename T>
 using remove_pointer_t = typename remove_pointer<T>::type;
