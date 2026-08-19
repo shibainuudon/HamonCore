@@ -1331,7 +1331,7 @@
 #if (_MSC_FULL_VER >= 194435227)
 #endif
 
-// Visual Studio 2022 Version 17.14.(34-38)
+// Visual Studio 2022 Version 17.14.(34-39)
 #if (_MSC_FULL_VER >= 194435228)
 #endif
 
@@ -1470,7 +1470,7 @@
 #if (_MSC_FULL_VER >= 195136252)
 #endif
 
-// Visual Studio 2026 Version: 18.9.0
+// Visual Studio 2026 Version: 18.9.(0-1)
 #if (_MSC_FULL_VER >= 195136256)
 #endif
 
