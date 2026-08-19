@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.7 Relationships between types[meta.rel]
 
 /**
  *	@brief	型Baseが型Derivedの基底クラスか調べる。
@@ -31,17 +32,17 @@ namespace hamon
 template <typename Base, typename Derived>
 struct is_base_of
 	: public hamon::bool_constant<
-		std::is_base_of<Base, Derived>::value
+#if HAMON_HAS_BUILTIN(__is_base_of) || defined(HAMON_MSVC)
+		__is_base_of(Base, Derived)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename Base, typename Derived>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_base_of_v = is_base_of<Base, Derived>::value;
-
-#endif
 
 }	// namespace hamon
 
