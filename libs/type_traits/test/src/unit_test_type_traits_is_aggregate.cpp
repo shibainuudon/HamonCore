@@ -5,9 +5,9 @@
  */
 
 #include <hamon/type_traits/is_aggregate.hpp>
+#include <hamon/array.hpp>
 #include <hamon/config.hpp>
 #include <gtest/gtest.h>
-#include <array>
 
 namespace hamon_type_traits_test
 {
@@ -110,7 +110,7 @@ HAMON_IS_AGGREGATE_TEST_CV(true,  int[3]);
 HAMON_IS_AGGREGATE_TEST_CV(false, void);
 HAMON_IS_AGGREGATE_TEST_CV(false, void*);
 HAMON_IS_AGGREGATE_TEST   (false, void());
-using ArrayType = std::array<Aggregate1, 4>;
+using ArrayType = hamon::array<Aggregate1, 4>;
 HAMON_IS_AGGREGATE_TEST_CV(true,  ArrayType);
 
 #if defined(HAMON_HAS_INT128)
