@@ -17,6 +17,7 @@
 //#include <hamon/type_traits/aligned_storage.hpp>	// deprecated in C++23
 //#include <hamon/type_traits/aligned_union.hpp>	// deprecated in C++23
 #include <hamon/type_traits/alignment_of.hpp>
+//#include <hamon/type_traits/apply result.hpp>		// since C++26
 #include <hamon/type_traits/arithmetic_promote.hpp>
 #include <hamon/type_traits/basic_common_reference.hpp>
 #include <hamon/type_traits/bool_constant.hpp>
@@ -36,6 +37,7 @@
 #include <hamon/type_traits/invoke_result.hpp>
 #include <hamon/type_traits/is_abstract.hpp>
 #include <hamon/type_traits/is_aggregate.hpp>
+//#include <hamon/type_traits/is_applicable.hpp>	// since C++26
 #include <hamon/type_traits/is_arithmetic.hpp>
 #include <hamon/type_traits/is_array.hpp>
 #include <hamon/type_traits/is_assignable.hpp>
@@ -75,6 +77,7 @@
 #include <hamon/type_traits/is_member_pointer.hpp>
 #include <hamon/type_traits/is_move_assignable.hpp>
 #include <hamon/type_traits/is_move_constructible.hpp>
+//#include <hamon/type_traits/is_nothrow_applicable.hpp>	// since C++26
 #include <hamon/type_traits/is_nothrow_assignable.hpp>
 #include <hamon/type_traits/is_nothrow_constructible.hpp>
 #include <hamon/type_traits/is_nothrow_convertible.hpp>
