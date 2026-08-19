@@ -9,10 +9,11 @@
 
 #include <hamon/type_traits/bool_constant.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.5.4 Type properties[meta.unary.prop]
 
 /**
  *	@brief		型Tが仮想デストラクタを持っているか調べる
@@ -27,17 +28,17 @@ namespace hamon
 template <typename T>
 struct has_virtual_destructor
 	: public hamon::bool_constant<
-		std::has_virtual_destructor<T>::value
+#if HAMON_HAS_BUILTIN(__has_virtual_destructor) || defined(HAMON_MSVC)
+		__has_virtual_destructor(T)
+#else
+		// TODO
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool has_virtual_destructor_v = has_virtual_destructor<T>::value;
-
-#endif
 
 }	// namespace hamon
 
