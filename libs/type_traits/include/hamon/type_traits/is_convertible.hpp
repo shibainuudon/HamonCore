@@ -8,11 +8,13 @@
 #define HAMON_TYPE_TRAITS_IS_CONVERTIBLE_HPP
 
 #include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/detail/is_convertible_impl.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.7 Relationships between types[meta.rel]
 
 /**
  *	@brief	型Fromから型Toに変換可能か調べる。
@@ -28,17 +30,19 @@ namespace hamon
 template <typename From, typename To>
 struct is_convertible
 	: public hamon::bool_constant<
-		std::is_convertible<From, To>::value
+#if HAMON_HAS_BUILTIN(__is_convertible)
+		__is_convertible(From, To)
+#elif defined(HAMON_MSVC)
+		__is_convertible_to(From, To)
+#else
+		hamon::detail::is_convertible_impl<From, To>::value
+#endif
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename From, typename To>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 bool is_convertible_v = is_convertible<From, To>::value;
-
-#endif
 
 }	// namespace hamon
 

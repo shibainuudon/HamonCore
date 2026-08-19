@@ -93,6 +93,60 @@ HAMON_IS_CONVERTIBLE_TEST(false, enum_class_UDT,    int);
 HAMON_IS_CONVERTIBLE_TEST(false, int_constructible, int);
 HAMON_IS_CONVERTIBLE_TEST(true,  int_convertible,   int);
 
+HAMON_IS_CONVERTIBLE_TEST(true,  enum_UDT, enum_UDT);
+HAMON_IS_CONVERTIBLE_TEST(true,  enum_class_UDT, enum_class_UDT);
+
+HAMON_IS_CONVERTIBLE_TEST(true,  void, void);
+HAMON_IS_CONVERTIBLE_TEST(false, int,  void);
+HAMON_IS_CONVERTIBLE_TEST(false, void, int);
+
+HAMON_IS_CONVERTIBLE_TEST(true,  f1, f1);
+HAMON_IS_CONVERTIBLE_TEST(false, int[2], int[2]);
+HAMON_IS_CONVERTIBLE_TEST(false, foo0_t, foo0_t);
+HAMON_IS_CONVERTIBLE_TEST(false, foo1_t, foo1_t);
+
+HAMON_IS_CONVERTIBLE_TEST(false, void,             f1);
+HAMON_IS_CONVERTIBLE_TEST(false, void*,            f1);
+HAMON_IS_CONVERTIBLE_TEST(true,  hamon::nullptr_t, f1);
+
+HAMON_IS_CONVERTIBLE_TEST(false, int,   int[2]);
+HAMON_IS_CONVERTIBLE_TEST(false, int*,  int[2]);
+HAMON_IS_CONVERTIBLE_TEST(false, void,  int[2]);
+HAMON_IS_CONVERTIBLE_TEST(false, void*, int[2]);
+
+HAMON_IS_CONVERTIBLE_TEST(false, int,   int[]);
+HAMON_IS_CONVERTIBLE_TEST(false, int*,  int[]);
+HAMON_IS_CONVERTIBLE_TEST(false, void,  int[]);
+HAMON_IS_CONVERTIBLE_TEST(false, void*, int[]);
+
+HAMON_IS_CONVERTIBLE_TEST(false, void,  foo0_t);
+HAMON_IS_CONVERTIBLE_TEST(false, void*, foo0_t);
+HAMON_IS_CONVERTIBLE_TEST(false, int,   foo0_t);
+
+HAMON_IS_CONVERTIBLE_TEST(false, void,  foo1_t);
+HAMON_IS_CONVERTIBLE_TEST(false, void*, foo1_t);
+HAMON_IS_CONVERTIBLE_TEST(false, int,   foo1_t);
+
+HAMON_IS_CONVERTIBLE_TEST(false, f1, void);
+HAMON_IS_CONVERTIBLE_TEST(false, f1, hamon::nullptr_t);
+HAMON_IS_CONVERTIBLE_TEST(false, f1, int);
+
+HAMON_IS_CONVERTIBLE_TEST(false, int[2], int);
+HAMON_IS_CONVERTIBLE_TEST(true,  int[2], int*);
+HAMON_IS_CONVERTIBLE_TEST(false, int[2], void);
+HAMON_IS_CONVERTIBLE_TEST(true,  int[2], void*);
+
+HAMON_IS_CONVERTIBLE_TEST(false, int[], int);
+HAMON_IS_CONVERTIBLE_TEST(true,  int[], int*);
+HAMON_IS_CONVERTIBLE_TEST(false, int[], void);
+HAMON_IS_CONVERTIBLE_TEST(true,  int[], void*);
+
+HAMON_IS_CONVERTIBLE_TEST(false, foo0_t, void);
+HAMON_IS_CONVERTIBLE_TEST(false, foo0_t, int);
+
+HAMON_IS_CONVERTIBLE_TEST(false, foo1_t, void);
+HAMON_IS_CONVERTIBLE_TEST(false, foo1_t, int);
+
 HAMON_IS_CONVERTIBLE_TEST(true,                 int*,                int*);
 HAMON_IS_CONVERTIBLE_TEST(true,                 int*, const          int*);
 HAMON_IS_CONVERTIBLE_TEST(true,                 int*,       volatile int*);
