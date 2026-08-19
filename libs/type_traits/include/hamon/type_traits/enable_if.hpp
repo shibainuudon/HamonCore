@@ -7,10 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_ENABLE_IF_HPP
 #define HAMON_TYPE_TRAITS_ENABLE_IF_HPP
 
-#include <type_traits>
-
 namespace hamon
 {
+
+// 21.3.8.7 Other transformations[meta.trans.other]
 
 /**
  *	@brief	コンパイル時条件式が真の場合のみ有効な型。
@@ -26,10 +26,19 @@ namespace hamon
  *	enable_ifのメンバ型typeを使用することにより、テンプレートの置き換え失敗が発生し、
  *	SFINAEによってその関数がオーバーロード解決の候補から除外される。
  */
-using std::enable_if;
+template <bool B, typename T = void>
+struct enable_if
+{
+};
 
-template <bool Condition, typename T = void>
-using enable_if_t = typename enable_if<Condition, T>::type;
+template <typename T>
+struct enable_if<true, T>
+{
+	using type = T;
+};
+
+template <bool B, typename T = void>
+using enable_if_t = typename enable_if<B, T>::type;
 
 }	// namespace hamon
 
