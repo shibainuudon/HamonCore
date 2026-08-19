@@ -7,10 +7,10 @@
 #ifndef HAMON_TYPE_TRAITS_CONDITIONAL_HPP
 #define HAMON_TYPE_TRAITS_CONDITIONAL_HPP
 
-#include <type_traits>
-
 namespace hamon
 {
+
+// 21.3.8.7 Other transformations[meta.trans.other]
 
 /**
  *	@brief		コンパイル時条件式
@@ -21,7 +21,17 @@ namespace hamon
  *
  *	conditionalは、条件式Bがtrueであれば型Tを、そうでなければ型Fを、メンバ型typeとして定義する。
  */
-using std::conditional;
+template <bool B, typename T, typename F>
+struct conditional
+{
+	using type = T;
+};
+
+template <typename T, typename F>
+struct conditional<false, T, F>
+{
+	using type = F;
+};
 
 /**
  *	@brief	conditionalのエイリアステンプレート
