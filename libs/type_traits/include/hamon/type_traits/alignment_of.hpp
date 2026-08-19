@@ -10,10 +10,11 @@
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.6 Type property queries[meta.unary.prop.query]
 
 /**
  *	@brief		型Tのアラインメントを取得する
@@ -29,17 +30,13 @@ namespace hamon
 template <typename T>
 struct alignment_of
 	: public hamon::integral_constant<
-		hamon::size_t, std::alignment_of<T>::value
+		hamon::size_t, alignof(T)
 	>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
-
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
 hamon::size_t alignment_of_v = alignment_of<T>::value;
-
-#endif
 
 }	// namespace hamon
 
