@@ -7,10 +7,29 @@
 #ifndef HAMON_TYPE_TRAITS_ADD_RVALUE_REFERENCE_HPP
 #define HAMON_TYPE_TRAITS_ADD_RVALUE_REFERENCE_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/void_t.hpp>
 
 namespace hamon
 {
+
+// 21.3.8.3 Reference modifications[meta.trans.ref]
+
+namespace detail
+{
+
+template <typename T, typename = void>
+struct add_rvalue_reference_impl
+{
+	using type = T;
+};
+
+template <typename T>
+struct add_rvalue_reference_impl<T, hamon::void_t<T&&>>
+{
+	using type = T&&;
+};
+
+}	// namespace detail
 
 /**
  *	@brief		型に右辺値参照を追加する
@@ -25,7 +44,10 @@ namespace hamon
  *	add_rvalue_reference<int&>::type is int&
  *	add_rvalue_reference<int&&>::type is int&&
  */
-using std::add_rvalue_reference;
+template <typename T>
+struct add_rvalue_reference
+	: public detail::add_rvalue_reference_impl<T>
+{};
 
 /**
  *	@brief	add_rvalue_referenceのエイリアステンプレート
