@@ -7,10 +7,28 @@
 #ifndef HAMON_TYPE_TRAITS_UNDERLYING_TYPE_HPP
 #define HAMON_TYPE_TRAITS_UNDERLYING_TYPE_HPP
 
-#include <type_traits>
+#include <hamon/type_traits/is_enum.hpp>
 
 namespace hamon
 {
+
+// 21.3.8.7 Other transformations[meta.trans.other]
+
+namespace detail
+{
+
+template <typename T, bool = hamon::is_enum_v<T>>
+struct underlying_type_impl
+{
+	using type = __underlying_type(T);
+};
+
+template <typename T>
+struct underlying_type_impl<T, false>
+{
+};
+
+}	// namespace detail
 
 /**
  *	@brief		enumの基底型を取得する
@@ -21,7 +39,10 @@ namespace hamon
  *
  *	underlying_typeは、列挙型Tの基底型を、メンバ型typeとして定義する。
  */
-using std::underlying_type;
+template <typename T>
+struct underlying_type
+	: public detail::underlying_type_impl<T>
+{};
 
 /**
  *	@brief	underlying_typeのエイリアステンプレート

@@ -6,6 +6,8 @@
 
 #include <hamon/type_traits/underlying_type.hpp>
 #include <hamon/type_traits/is_same.hpp>
+#include <hamon/type_traits/bool_constant.hpp>
+#include <hamon/type_traits/void_t.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/cstdint.hpp>
 #include <gtest/gtest.h>
@@ -65,6 +67,27 @@ HAMON_UNDERLYING_TYPE_TEST(E12, unsigned long long);
 HAMON_UNDERLYING_TYPE_TEST(E13, hamon::size_t);
 
 #undef HAMON_UNDERLYING_TYPE_TEST
+
+template <typename T, typename = void>
+struct has_type
+	: public hamon::false_type {};
+
+template <typename T>
+struct has_type<T, hamon::void_t<typename T::type>>
+	: public hamon::true_type {};
+
+static_assert( has_type<hamon::underlying_type<enum_UDT>>::value, "");
+static_assert( has_type<hamon::underlying_type<E1>>::value, "");
+static_assert( has_type<hamon::underlying_type<E2>>::value, "");
+static_assert(!has_type<hamon::underlying_type<int>>::value, "");
+static_assert(!has_type<hamon::underlying_type<float>>::value, "");
+static_assert(!has_type<hamon::underlying_type<hamon::size_t>>::value, "");
+static_assert(!has_type<hamon::underlying_type<UDT>>::value, "");
+static_assert(!has_type<hamon::underlying_type<enum_UDT*>>::value, "");
+static_assert(!has_type<hamon::underlying_type<enum_UDT&>>::value, "");
+static_assert(!has_type<hamon::underlying_type<enum_UDT&&>>::value, "");
+static_assert(!has_type<hamon::underlying_type<enum_UDT[2]>>::value, "");
+static_assert(!has_type<hamon::underlying_type<enum_UDT[]>>::value, "");
 
 }	// namespace underlying_type_test
 
