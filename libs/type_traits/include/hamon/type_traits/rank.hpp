@@ -10,10 +10,11 @@
 #include <hamon/type_traits/integral_constant.hpp>
 #include <hamon/cstddef/size_t.hpp>
 #include <hamon/config.hpp>
-#include <type_traits>
 
 namespace hamon
 {
+
+// 21.3.6 Type property queries[meta.unary.prop.query]
 
 /**
  *	@brief	配列型の次元数を取得する。
@@ -25,18 +26,22 @@ namespace hamon
  */
 template <typename T>
 struct rank
-	: public hamon::integral_constant<
-		hamon::size_t, std::rank<T>::value
-	>
+	: public hamon::integral_constant<hamon::size_t, 0>
 {};
 
-#if defined(HAMON_HAS_CXX14_VARIABLE_TEMPLATES)
+template <typename T, hamon::size_t N>
+struct rank<T[N]>
+	: public hamon::integral_constant<hamon::size_t, hamon::rank<T>::value + 1>
+{};
 
 template <typename T>
-HAMON_INLINE_VAR HAMON_CONSTEXPR
-hamon::size_t rank_v = rank<T>::value;
+struct rank<T[]>
+	: public hamon::integral_constant<hamon::size_t, hamon::rank<T>::value + 1>
+{};
 
-#endif
+template <typename T>
+HAMON_INLINE_VAR HAMON_CXX11_CONSTEXPR
+hamon::size_t rank_v = rank<T>::value;
 
 }	// namespace hamon
 
