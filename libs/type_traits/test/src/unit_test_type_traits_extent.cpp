@@ -44,6 +44,8 @@ namespace alignment_of_test
 #endif
 
 HAMON_EXTENT_TEST  ( 0, int);
+HAMON_EXTENT_TEST_2( 0, int, 0);
+HAMON_EXTENT_TEST_2( 0, int, 1);
 HAMON_EXTENT_TEST  ( 0, int*);
 HAMON_EXTENT_TEST  ( 0, int&);
 HAMON_EXTENT_TEST  ( 0, int&&);
@@ -56,6 +58,10 @@ HAMON_EXTENT_TEST  ( 2, int[2][3]);
 HAMON_EXTENT_TEST_2( 2, int[2][3], 0);
 HAMON_EXTENT_TEST_2( 3, int[2][3], 1);
 HAMON_EXTENT_TEST_2( 0, int[2][3], 2);
+HAMON_EXTENT_TEST  ( 0, int[][3]);
+HAMON_EXTENT_TEST_2( 0, int[][3], 0);
+HAMON_EXTENT_TEST_2( 3, int[][3], 1);
+HAMON_EXTENT_TEST_2( 0, int[][3], 2);
 HAMON_EXTENT_TEST_2( 5, int[5][10][40], 0);
 HAMON_EXTENT_TEST_2(10, int[5][10][40], 1);
 HAMON_EXTENT_TEST_2(40, int[5][10][40], 2);
